@@ -1,4 +1,5 @@
 <?php
+require_once('private/config/wordlift.php');
 require_once('log4php.php');
 
 class StanbolJob {
@@ -12,7 +13,9 @@ class StanbolJob {
     
     const status_location_key        = 'wordlift_status_location';
     const status_key                 = 'wordlift_status';
-    const output_location_key        = 'wordlift_output_location';    
+    const output_location_key        = 'wordlift_output_location';
+
+    private $logger;
     
     function __construct( $post_id ) {
         $this->post_id = $post_id;
@@ -20,10 +23,14 @@ class StanbolJob {
         $this->status_location  = get_post_meta( $this->post_id, self::status_location_key, true);
         $this->status           = get_post_meta( $this->post_id, self::status_key, true);
         $this->output_location  = get_post_meta( $this->post_id, self::output_location_key, true);
+
+        $this->logger = Logger::getLogger(__CLASS__);
     }
     
-    function enhance( $url = 'http://localhost:8080/enhancerjobs/' ) {
+    function enhance( $url = STANBOL_URL ) {
         
+        $this->logger->debug("Going to request content analysis to [$url].");
+
         // get a reference to the post.
         $post = get_post( $this->post_id );
         
@@ -39,6 +46,8 @@ class StanbolJob {
             )
          );
          
+         var_dump($response);
+
          $this->location = $response['headers']['location'];
          
          // set the status location in W/P.
@@ -46,9 +55,11 @@ class StanbolJob {
     }
 
     function status() {
+        $this->logger->debug("Going to request status to [$this->status_location].");
+
         $response = wp_remote_get( $this->status_location );
 	
-	var_dump($response);
+        var_dump($response);
 
         preg_match('/"status": "(.*?)"/', $response['body'], $matches);
         $this->status = $matches[1];

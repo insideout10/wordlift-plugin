@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://logging.apache.org/log4php/">
+    <appender name="default" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutTTCC" />
+        <param name="file" value="private/log/wordlift.log" />
+        <param name="append" value="true" />
+    </appender>
+    <root>
+        <appender_ref ref="default" />
+    </root>
+</configuration>

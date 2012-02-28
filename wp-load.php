@@ -1,3 +1,3 @@
 <?php
-require_once( '../../../wp-load.php' );
+require_once( dirname(dirname(dirname(dirname(__FILE__)))).'/wp-load.php' );
 ?>
