@@ -14,23 +14,40 @@ class EntityService {
 		$this->slug_service = $slug_service;
 	}
 
+	function bind_entity_to_post(&$entity_post_id, &$post_id) {
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_POSTS, 	$post_id,	false);
+	}
+
 	function get_entities_by_post_id(&$post_id) {
-		$terms = get_the_terms( $post_id, WORDLIFT_20_TAXONOMY_NAME);
+		$args = array(
+			'numberposts' 	=> -1,
+			'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+			'post_type'   	=> POST_CUSTOM_TYPE_ENTITY,
+			'meta_key'		=> WORDLIFT_20_ENTITY_POSTS,
+			'meta_value'	=> $post_id
+		);
 
-		if (true == is_wp_error($terms)) {
-			$this->logger->error('Could not retrieve entities for post [id:'.$post_id.']: '.var_export($terms,true));
-			return null;
-		}
+		$posts = get_posts($args);
 
-		$slugs = array();
-		foreach ( $terms as $term ) {
-			$slugs[] = $term->slug;
-		}
+		return $this->create_entities_from_entity_posts( $posts );
+		
+		// $terms = get_the_terms( $post_id, WORDLIFT_20_TAXONOMY_NAME);
 
-		$this->logger->debug('Found ['.count($slugs).'] slugs.');
+		// if (true == is_wp_error($terms)) {
+		// 	$this->logger->error('Could not retrieve entities for post [id:'.$post_id.']: '.var_export($terms,true));
+		// 	return null;
+		// }
 
-		return $this->create_entities_from_entity_posts( 
-					$this->get_entities_by_slugs( $slugs ) );
+		// $slugs = array();
+		// foreach ( $terms as $term ) {
+		// 	$slugs[] = $term->slug;
+		// }
+
+		// $this->logger->debug('Found ['.count($slugs).'] slugs.');
+
+		// return $this->create_entities_from_entity_posts( 
+		// 			$this->get_entities_by_slugs( $slugs ) );
 	}
 
 	function create_entities_from_entity_posts( &$posts ) {
@@ -162,12 +179,10 @@ class EntityService {
 
 	function save( &$entity ) {
 
-		$post_id = $this->get_entity_post_id($entity);
+		$post_id 			= $this->get_entity_post_id($entity);
+		$action				= (false != $post_id ? 'updated' : 'created');
 
-		if (false != $post_id)
-			$this->logger->debug('Found an existing entity with [id:'.$post_id.']: the entity will be updated.');
-
-		$wp_error = false;
+		$wp_error 			= false;
 		$post_id = wp_insert_post( array(
 				'ID'   		 => $post_id,
 				'post_title' => $entity->text,
@@ -192,7 +207,7 @@ class EntityService {
 
 			foreach ($values as $value) {
 				if (null != $post_meta[$meta_key] && true == in_array( $value, array_values($post_meta[$meta_key]))) {
-					$this->logger->debug($meta_key.':'.$value.' already exists.');
+					// $this->logger->debug($meta_key.':'.$value.' already exists.');
 				}
 				else {
 					add_post_meta($post_id, $meta_key, $value, false);
@@ -210,13 +225,13 @@ class EntityService {
 			$result = wp_insert_term( $entity->get_term(), WORDLIFT_20_TAXONOMY_NAME, 	$term_args);
 		}
 		else {
-			$result = wp_update_term( $term['term_id'], WORDLIFT_20_TAXONOMY_NAME, 		$term_args);	
+			// $result = wp_update_term( $term['term_id'], WORDLIFT_20_TAXONOMY_NAME, 		$term_args);	
 		}
 
-		if ($result instanceof WP_Error && false == isset($result->errors->term_exists))
-			$this->logger->error('The term ['.$entity->get_term().'] has not been created: '.var_export($result->errors, true));
+		// if ($result instanceof WP_Error && false == isset($result->errors->term_exists))
+		//	$this->logger->error('The term ['.$entity->get_term().'] has not been created: '.var_export($result->errors, true));
 
-		$this->logger->info('An entity with id [post_id:'.$post_id.'] has been created/updated.');
+		$this->logger->info('An entity with id [post_id:'.$post_id.'] has been '.$action.'.');
 		return $post_id;
 
 	}

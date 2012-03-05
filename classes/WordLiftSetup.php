@@ -4,11 +4,52 @@ class WordLiftSetup {
 
 	private static $logger;
 
+	/*
+	 * sets-up the WordLift plug-in pre-requisites such as:
+	 *  - the Entity Post-Type.
+	 *  - the taxonomy. 
+	 */
 	function setup() {
 		self::$logger = Logger::getLogger(__CLASS__);
 
 		self::create_post_type();
 		self::create_taxonomies();
+	}
+
+	/* 
+	 * enqueus the JavaScript and style-sheets for WordPress inclusion.
+	 */
+	function admin_enqueue_scripts() {
+
+		wp_enqueue_style('jquery.isotope.css',
+			plugins_url('/css/jquery.isotope.css', WORDLIFT_20_ROOT_PATH));
+
+		wp_enqueue_script('jquery.isotope',
+			plugins_url('/js/jquery.isotope.min.js', WORDLIFT_20_ROOT_PATH),
+			array('jquery'),
+			false,
+			true);
+
+		wp_enqueue_script('underscore',
+			plugins_url('/js/underscore-min.js', WORDLIFT_20_ROOT_PATH),
+			array(),
+			false,
+			true);
+
+		wp_enqueue_script('backbone',
+			plugins_url('/js/backbone-min.js', WORDLIFT_20_ROOT_PATH),
+			array('underscore'),
+			false,
+			true);
+
+		wp_enqueue_script('wordlift',
+			plugins_url('/js/wordlift.js', WORDLIFT_20_ROOT_PATH),
+			array('backbone'),
+			false,
+			true);
+
+		echo '<script type="text/javascript"> var WORDLIFT_20_URL = \''.plugins_url('/', WORDLIFT_20_ROOT_PATH).'\'; var WORDLIFT_20_POST_ID = \''.get_the_ID().'\';</script>';
+
 	}
 
 	function create_post_type() {

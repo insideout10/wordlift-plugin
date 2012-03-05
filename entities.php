@@ -2,6 +2,8 @@
 require_once('private/config/wordlift.php');
 require_once('log4php.php');
 
+require_once('classes/JobService.php');
+
 $post_id = $_GET['id'];
 
 if (false == is_numeric($post_id)) {
@@ -10,8 +12,9 @@ if (false == is_numeric($post_id)) {
 	return;
 }
 
-$entities = $entity_service->get_entities_by_post_id( $post_id );
+$job 		= $job_service->get_job_by_post_id($post_id);
+$entities 	= $entity_service->get_entities_by_post_id($post_id);
 
-echo json_encode($entities);
+echo json_encode(array( 'job' => $job, 'entities' => $entities));
 
 ?>

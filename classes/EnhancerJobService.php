@@ -27,11 +27,11 @@ class EnhancerJobService {
             )
          );
          
-         $this->logger->debug("Received a response: ".var_export($response, true));
-
          return json_decode( $response['body'] );
     }
 
 }
+
+$enhancer_job_service   = new EnhancerJobService();
 
 ?>

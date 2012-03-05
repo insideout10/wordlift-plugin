@@ -6,36 +6,36 @@ require_once('classes/WordLiftSetup.php');
 require_once('classes/EntityService.php');
 require_once('classes/Entity.php');
 require_once('classes/SlugService.php');
+require_once('classes/JobService.php');
 
-WordLiftSetup::init();
+WordLiftSetup::setup();
 
-$logger = Logger::getLogger("complete.php");
-$logger->debug("received job results: ".var_export(file_get_contents("php://input"),true));
+$logger 	= Logger::getLogger("complete.php");
+// $logger->debug("received job results: ".var_export(file_get_contents("php://input"),true));
 
 $job_result = json_decode( file_get_contents("php://input") );
 
-$posts = get_posts(array(
-	'numberposts' => 1,
-	'meta_key'    => POST_META_JOB_ID,
-	'meta_value'  => $job_result->id
-	));
-
-$logger->debug("found post [id:".$posts[0]->ID."].");
+$job 		= $job_service->get_job_by_id($job_result->id);
 
 $slugs = array();
 foreach ($job_result->entities as $e) {
 	$entity = $entity_service->create($e);
 	$entity_post_id = $entity_service->save($entity);
 
+	$entity_service->bind_entity_to_post($entity_post_id, $job->post_id);
+
 	$slugs[] = $entity->slug;
 
-	$logger->debug('An entity as been saved [entity_post_id:'.$entity_post_id.'].');
+	// $logger->debug('An entity as been saved [entity_post_id:'.$entity_post_id.'].');
 }
 
-$logger->debug('Saving ['.count($slugs).'] entities to [entity_post_id:'.$entity_post_id.'].');
-$result = wp_set_object_terms($posts[0]->ID, $slugs, WORDLIFT_20_TAXONOMY_NAME);
+// $logger->debug('Saving ['.count($slugs).'] entities to [entity_post_id:'.$entity_post_id.'].');
+$result = wp_set_object_terms($job->post_id, $slugs, WORDLIFT_20_TAXONOMY_NAME);
 
 if ($result instanceof WP_Error)
 	$logger->error('An error occurred: '.var_export($result, true));
+
+$job->set_completed();
+$job_service->save($job);
 
 ?>

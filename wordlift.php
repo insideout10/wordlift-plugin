@@ -18,6 +18,7 @@ require_once('classes/EnhancerJobService.php');
 require_once('classes/WordLift.php');
 require_once('classes/EntityService.php');
 require_once('classes/SlugService.php');
+require_once('classes/EntitiesBoxService.php');
 
 function display_the_content($content){
 	global $logger, $entity_service, $slug_service;
@@ -55,28 +56,10 @@ function register_meta_box_cb(){
 	$logger->debug('register_meta_box_cb');
 }
 
-function custom_box($post) {
-	global $logger;
+add_action('init', 					array('wordliftsetup', 			'setup'));
+add_action('admin_enqueue_scripts',	array('wordliftsetup', 			'admin_enqueue_scripts'));
+add_action('edit_post', 			array( $wordlift, 				'analyze_text'));
+add_filter('the_content', 			'display_the_content' );
+add_action('add_meta_boxes', 		array( $entities_box_service, 	'create_custom_box'));
 
-	$logger->debug('custom_box');	
-
-	echo 'Entities for post id '.$post->ID;
-}
-
-function create_custom_box() {
-	add_meta_box( 
-        'wordlift_20_entities',
-        _x( 'Entities', 'Entities (Custom-Box Title)' ),
-        'custom_box',
-        'post' 
-    );
-}
-
-add_action('init', 		array('wordliftsetup', 'setup'));
-
-add_action('edit_post', array('wordlift', 'analyze_text'));
-
-add_filter('the_content', 'display_the_content' );
-
-add_action( 'add_meta_boxes', 'create_custom_box' );
 ?>

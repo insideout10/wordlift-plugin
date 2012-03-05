@@ -7,7 +7,14 @@ define('POST_CUSTOM_TYPE_ENTITY', 'wordlift20_entity');
 // The position in the menu order the post type should appear.
 define('POST_CUSTOM_TYPE_ENTITY_MENU_POSITION', 21);
 
-define('POST_META_JOB_ID', 							'wordlift20_job_id');
+define('WORDLIFT_20_POST_META_JOB_ID', 				'wordlift20_job_id');
+define('WORDLIFT_20_POST_META_JOB_STATE', 			'wordlift20_job_state');
+
+define('WORDLIFT_20_ENTITY_POSTS', 					'wordlift20_entity_posts');
+
+define('WORDLIFT_20_JOB_SERVICE_ANALYZING',			'analyzing');
+define('WORDLIFT_20_JOB_SERVICE_COMPLETED',			'completed');
+
 define('POST_META_ENTITY_ID', 						'wordlift20_entity_id');
 define('POST_META_ENTITY_TYPE', 					'wordlift20_entity_type');
 define('POST_META_ENTITY_SLUG', 					'wordlift20_entity_slug');
@@ -37,9 +44,10 @@ $base = dirname(dirname(__FILE__));
 
 require_once( dirname($base).'/wp-load.php' );
 
-define('ENHANCE_TEXT_URL','http://localhost:8081/insideout10/enhance/text');
-define('ON_COMPLETE_URL', plugins_url('complete.php', $base));
-define('ON_PROGRESS_URL', plugins_url('progress.php', $base));
-define('CHAIN_NAME', 'default');
+define('WORDLIFT_20_ROOT_PATH', 					$base);
+define('ENHANCE_TEXT_URL',							'http://localhost:8081/insideout10/enhance/text');
+define('ON_COMPLETE_URL', 							plugins_url('complete.php', $base));
+define('ON_PROGRESS_URL', 							plugins_url('progress.php', $base));
+define('CHAIN_NAME', 								'default');
 
 ?>
