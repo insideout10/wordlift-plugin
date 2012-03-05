@@ -14,6 +14,22 @@ class EntityService {
 		$this->slug_service = $slug_service;
 	}
 
+	function unbind_all_entities_from_post(&$post_id) {
+		$args = array(
+			'numberposts' 	=> -1,
+			'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+			'post_type'   	=> POST_CUSTOM_TYPE_ENTITY,
+			'meta_key'		=> WORDLIFT_20_ENTITY_POSTS,
+			'meta_value'	=> $post_id
+		);
+
+		$entity_posts = get_posts($args);
+
+		foreach ($entity_posts as $entity_post) {
+			delete_post_meta(	$entity_post->ID, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);	
+		}
+	}
+
 	function bind_entity_to_post(&$entity_post_id, &$post_id) {
 		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
 		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_POSTS, 	$post_id,	false);

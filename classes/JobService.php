@@ -34,7 +34,7 @@ class JobService {
 			$custom_fields[WORDLIFT_20_POST_META_JOB_STATE][0],
 			$post_id);
 
-		$this->logger->debug('A job has been retrieved [id:'.$job->id.'][state:'.$job->state.'].');
+		$this->logger->debug('A job has been retrieved [id:'.$job->id.'][state:'.$job->state.'][post_id:'.$post_id.'].');
 
 		return $job;
 	}

@@ -21,7 +21,7 @@ class WordLift {
 		$this->post_helper 		= $post_helper;
 	}
 
-	function analyze_text($id) {
+	function analyze_text($post_id) {
 
 		$post = $this->post_helper->get_post($post_id);
 

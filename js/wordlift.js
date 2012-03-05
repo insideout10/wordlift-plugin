@@ -1,6 +1,8 @@
 
 jQuery(window).ready(function($) {
 
+	var WORDLIFT_20_REFRESH_INTERVAL = 10000;
+
 	var EntityModel 		= Backbone.Model.extend({
 	});
 
@@ -9,6 +11,11 @@ jQuery(window).ready(function($) {
 		url  : WORDLIFT_20_URL+'entities.php',
 		parse: function(response) {
 			return response.entities;
+		},
+		findByReference: function(reference) {
+			return this.find(function(element) {
+				return (reference === element.get('reference'));
+			});
 		}
 	});
 
@@ -16,37 +23,46 @@ jQuery(window).ready(function($) {
 		el: 		$('#entities-container'),
 		template: 	_.template($('#entities-template').html()),
 		render: 	function() {
+			var container 			= $(this.el);
+			var entitiesToAdd 		= [];
+			var elementsToRemove 	= [];
+			var me 					= this;
 
-			var container = $(this.el);
-			container.isotope('destroy');
-			container.empty();
-
-			container.isotope({
-				itemSelector : '.isotope-item',
-				layoutMode : 'masonry'
+			container.children().each(function(index,element) {
+				if (null == me.collection.findByReference($(element).data('reference')))
+					elementsToRemove[elementsToRemove.length] = element;
 			});
 
-			var entitiesToAdd = [];
 			this.collection.each(function(element, index, list) {
-				if (0 < container.children('div[data-reference='+element.reference+']').length) {
-					console.log('entity found, not adding.');
-				} else {
-					console.log('entity not found, adding.');
-					entitiesToAdd[entitiesToAdd.length] = element;
+				if (0 == container.children('[data-reference="'+element.get('reference')+'"]').length) {
+					entitiesToAdd[entitiesToAdd.length] = element.toJSON();
 				}
+
 			});
 
-			container.isotope('insert', $( this.template({entities: this.collection.toJSON()})) );
+			console.log('Entities [remove:'+elementsToRemove.length+'][add:'+entitiesToAdd.length+'].');
 
-			setTimeout( function() {
-				container.isotope('reLayout', function() {console.log('relayout');} );
-			}, 1000);
+			if (0 < elementsToRemove.length)
+				container.isotope('remove', $(elementsToRemove) );
+
+			if (0 < entitiesToAdd.length)
+				container.isotope('insert', $( this.template({entities: entitiesToAdd})) );
+
+			if (0 < elementsToRemove.length || 0 < entitiesToAdd.length)
+				setTimeout( function() {
+					container.isotope('reLayout', function() {} );
+				}, 1000);
 
 			return this;
 		}
 	});
 
 	var entities 			= new EntityCollection;
+
+	$('#entities-container').isotope({
+		itemSelector : '.isotope-item',
+		layoutMode : 'masonry'
+	});
 
 	var updateEntities = function() {
 		entities.fetch({
@@ -59,6 +75,6 @@ jQuery(window).ready(function($) {
 	}
 
 	updateEntities();
-	setInterval(updateEntities, 30000);
+	setInterval(updateEntities, WORDLIFT_20_REFRESH_INTERVAL);
 
 });
