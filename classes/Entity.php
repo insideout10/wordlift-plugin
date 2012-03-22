@@ -15,6 +15,10 @@ class Entity {
 	public $rank;
 	public $properties;
 	
+	public $post_id;
+	public $accepted = false;
+	public $rejected = false;
+
 	private $logger;
 
 	function __construct() {

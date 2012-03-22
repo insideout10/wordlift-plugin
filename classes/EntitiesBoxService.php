@@ -20,46 +20,43 @@ class EntitiesBoxService {
 		echo 'An analysis job for this post is '.$job->state.'.<br/>';
 	?>
 
-		<style>
-			.entity-item {
-				background: white;
-				border: 1px solid black;
-				width: 140px;
-				min-height: 50px;
-				margin: 2px;
-				border-radius: 0.2em;
-			}
-
-			.entity-caption-outer {
-				position: absolute;
-				bottom: 0;
-				background: white;
-				width: 100%;
-				opacity: 0.7;
-				-moz-opacity: 0.7;
-				filter:alpha(opacity=7);
-			}
-
-			.entity-caption-inner {
-				padding: 2px 4px;
-				font-weight: bold;
-			}
-		</style>
 		<script type="text/template" id="entities-template">
 			<% _.each(entities, function(entity) { %>
-				<div class="isotope-item entity-item <%= entity.type %>" data-reference="<%= entity.reference %>">
-					<% if (entity.properties[0]['thumbnail']) { %>
-						<div><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="<%= entity.properties[0]['thumbnail'] %>" /></div>
+				<div class="isotope-item entity-item <%= entity.type %> <%= (entity.accepted ? 'accepted' : '') %> <%= (entity.rejected ? 'rejected' : '') %>" data-post-id="<%= entity.post_id %>" data-reference="<%= entity.reference %>">
+					<% if (entity.properties['image']) { %>
+						<div><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="<%= entity.properties['image'] %>" /></div>
 					<% } %>
 					<div class="entity-caption-outer">
-						<div class="entity-caption-inner"><%= entity.text %></div>
+						<div class="entity-caption-inner"><a href="post.php?post=<%= entity.post_id %>&action=edit"><%= entity.text %></a></div>
+					</div>
+					<div class="entity-toolbar">
+						<!-- <div class="forbidden <%= (entity.forbidden ? 'selected' : 'deselected') %>"><img class="clickable" src="<%= WORDLIFT_20_URL %>images/1330954875_thumbs_down_48.png" /></div> -->
+						<div class="accepted <%= (entity.accepted ? 'selected' : 'deselected') %>"><img class="clickable" src="<%= WORDLIFT_20_URL %>images/1330946282_accepted_48.png" /></div>
+						<div class="rejected <%= (entity.rejected ? 'selected' : 'deselected') %>"><img class="clickable" src="<%= WORDLIFT_20_URL %>images/1330946285_cancel_48.png" /></div>
 					</div>
 				</div>
 			<% }); %>
 		</script>
 
-		[<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Person' });">People</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Place' });">Places</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.CreativeWork' });">Creative Works</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Organization' });">Organizations</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Other' });">Other</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '' });">All</a>]
+		[<a href="javascript:jQuery('#entities-container').isotope({ filter: '' });">All</a>]<br/>
+		[<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Person' });">People</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Place' });">Places</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.CreativeWork' });">Creative Works</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Organization' });">Organizations</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.Other' });">Other</a>]<br/>
+		[<a href="javascript:jQuery('#entities-container').isotope({ filter: '.accepted' });">Accepted</a>][<a href="javascript:jQuery('#entities-container').isotope({ filter: '.rejected' });">Rejected</a>]
 		<div id="entities-container" class="isotope" style="width: 100%;"></div>
+
+
+		<script type="text/javascript">
+
+			// load the entities when the document is ready.
+			jQuery(window).ready(function(jQuery) {
+
+				(function ($ , $wl) {
+
+					$wl.services.loadEntities();
+
+				})(jQuery,io.insideout.wordlift);
+
+			});
+		</script>
 
 	<?php
 

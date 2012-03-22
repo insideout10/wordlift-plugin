@@ -33,10 +33,11 @@ foreach ($job_result->entities as $e) {
 }
 
 // $logger->debug('Saving ['.count($slugs).'] entities to [entity_post_id:'.$entity_post_id.'].');
-$result = wp_set_object_terms($job->post_id, $slugs, WORDLIFT_20_TAXONOMY_NAME);
+// $result = wp_set_object_terms($job->post_id, $slugs, WORDLIFT_20_TAXONOMY_NAME);
 
-if ($result instanceof WP_Error)
-	$logger->error('An error occurred: '.var_export($result, true));
+// if ($result instanceof WP_Error)
+// 	$logger->error('An error occurred: '.var_export($result, true));
+
 
 $job->set_completed();
 $job_service->save($job);
