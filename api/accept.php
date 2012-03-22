@@ -1,8 +1,5 @@
 <?php
-require_once('private/config/wordlift.php');
-require_once('log4php.php');
-
-require_once('classes/EntityService.php');
+require_once('../wordlift.php');
 
 $post_id 	= $_GET['post_id'];
 $entity_id 	= $_GET['entity_id'];

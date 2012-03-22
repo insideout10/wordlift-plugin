@@ -1,6 +1,4 @@
 <?php
-require_once('JobService.php');
-
 class EntitiesBoxService {
 	
 	private $job_service;
@@ -8,8 +6,14 @@ class EntitiesBoxService {
 
 	function __construct() {
 		global $job_service;
-
+		
 		$this->logger 		= Logger::getLogger(__CLASS__);
+		
+		if (NULL == $job_service) {
+			$this->logger->error('The JobService is undefined.');
+			return;	
+		}
+		
 		$this->job_service 	= $job_service;
 	}
 
@@ -22,7 +26,7 @@ class EntitiesBoxService {
 
 		<script type="text/template" id="entities-template">
 			<% _.each(entities, function(entity) { %>
-				<div class="isotope-item entity-item <%= entity.type %> <%= (entity.accepted ? 'accepted' : '') %> <%= (entity.rejected ? 'rejected' : '') %>" data-post-id="<%= entity.post_id %>" data-reference="<%= entity.reference %>">
+				<div class="isotope-item entity-item <%= entity.type %> <%= (entity.accepted ? 'accepted' : '') %> <%= (entity.rejected ? 'rejected' : '') %>" data-post-id="<%= entity.post_id %>" data-about="<%= entity.about %>">
 					<% if (entity.properties['image']) { %>
 						<div><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="<%= entity.properties['image'] %>" /></div>
 					<% } %>

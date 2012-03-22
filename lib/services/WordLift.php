@@ -39,10 +39,10 @@ class WordLift {
 		}
 
 		$post_content			= strip_tags($post->post_content);
-		$job_request 			= new TextJobRequest($post_content, ON_COMPLETE_URL, ON_PROGRESS_URL, CHAIN_NAME );
+		$job_request 			= new TextJobRequest($post_content, WORDLIFT_20_URLS_ON_COMPLETE, WORDLIFT_20_URLS_ON_PROGRESS, WORDLIFT_20_CHAIN_NAME );
 		$job_response			= $this->enhancer_job_service->requestJob($job_request);
 
-		$job 					= $this->job_service->create($job_response->id, WORDLIFT_20_JOB_SERVICE_ANALYZING, $post->ID);
+		$job 					= $this->job_service->create($job_response->id, WORDLIFT_20_JOB_STATE_ANALYZING, $post->ID);
 		$this->job_service->save($job);
 
 		$this->logger->debug('A job [id:'.$job->id.'] has been created for post [id:'.$job->post_id.'].');

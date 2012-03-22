@@ -10,7 +10,7 @@ class Entity {
 
 	public $count;
 	public $relevance;
-	public $reference;
+	public $about;
 	public $score;
 	public $rank;
 	public $properties;
@@ -25,7 +25,7 @@ class Entity {
 	}
 
 	function get_id() {
-		return $this->reference;
+		return $this->about;
 	}
 
 	function get_term() {

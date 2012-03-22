@@ -1,16 +1,5 @@
 <?php
 
-require_once(dirname(dirname(__FILE__)).'/model/Type.php');
-require_once(dirname(dirname(__FILE__)).'/model/Thing.php');
-require_once(dirname(dirname(__FILE__)).'/model/Person.php');
-require_once(dirname(dirname(__FILE__)).'/model/Organization.php');
-require_once(dirname(dirname(__FILE__)).'/model/Place.php');
-require_once(dirname(dirname(__FILE__)).'/model/Other.php');
-require_once(dirname(dirname(__FILE__)).'/model/Product.php');
-require_once(dirname(dirname(__FILE__)).'/model/CreativeWork.php');
-require_once(dirname(dirname(__FILE__)).'/model/GeoCoordinates.php');
-require_once('PropertyService.php');
-
 class TypeService {
 	
 	public static function create($class_name) {

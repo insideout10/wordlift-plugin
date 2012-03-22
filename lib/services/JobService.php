@@ -1,5 +1,5 @@
 <?php
-require_once('JobModel.php');
+require_once(dirname(dirname(__FILE__)).'/domain/JobModel.php');
 
 class JobService {
 	
@@ -17,10 +17,10 @@ class JobService {
 	}
 
 	function save(&$job) {
-		delete_post_meta($job->post_id, WORDLIFT_20_POST_META_JOB_ID);
-		delete_post_meta($job->post_id, WORDLIFT_20_POST_META_JOB_STATE);
-		add_post_meta($job->post_id, WORDLIFT_20_POST_META_JOB_ID, 		$job->id,		true);
-		add_post_meta($job->post_id, WORDLIFT_20_POST_META_JOB_STATE, 	$job->state, 	true);
+		delete_post_meta($job->post_id, WORDLIFT_20_FIELD_JOB_ID);
+		delete_post_meta($job->post_id, WORDLIFT_20_FIELD_JOB_STATE);
+		add_post_meta($job->post_id, WORDLIFT_20_FIELD_JOB_ID, 		$job->id,		true);
+		add_post_meta($job->post_id, WORDLIFT_20_FIELD_JOB_STATE, 	$job->state, 	true);
 	}
 
 	/*
@@ -30,8 +30,8 @@ class JobService {
 		$custom_fields		= get_post_custom($post_id);
 		
 		$job = new JobModel(
-			$custom_fields[WORDLIFT_20_POST_META_JOB_ID][0],
-			$custom_fields[WORDLIFT_20_POST_META_JOB_STATE][0],
+			$custom_fields[WORDLIFT_20_FIELD_JOB_ID][0],
+			$custom_fields[WORDLIFT_20_FIELD_JOB_STATE][0],
 			$post_id);
 
 		$this->logger->debug('A job has been retrieved [id:'.$job->id.'][state:'.$job->state.'][post_id:'.$post_id.'].');
@@ -45,7 +45,7 @@ class JobService {
 		$posts = get_posts(array(
 			'numberposts' 	=> 1,
 			'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
-			'meta_key'    	=> WORDLIFT_20_POST_META_JOB_ID,
+			'meta_key'    	=> WORDLIFT_20_FIELD_JOB_ID,
 			'meta_value'  	=> $job_id
 		));
 

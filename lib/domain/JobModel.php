@@ -13,11 +13,11 @@ class JobModel {
 	}
 
 	function is_running() {
-		return (WORDLIFT_20_JOB_SERVICE_ANALYZING === $this->state);
+		return (WORDLIFT_20_JOB_STATE_ANALYZING === $this->state);
 	}
 
 	function set_completed() {
-		$this->state 	= WORDLIFT_20_JOB_SERVICE_COMPLETED;
+		$this->state 	= WORDLIFT_20_JOB_STATE_COMPLETED;
 	}
 
 }

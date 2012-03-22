@@ -10,17 +10,10 @@ License: APL
 */
 
 require_once('constants.php');
-require_once('private/config/wordlift.php');
-require_once('log4php.php');
+require_once('dependencies.php');
 
-require_once('classes/WordLiftSetup.php');
-require_once('classes/TextJobRequest.php');
-require_once('classes/EnhancerJobService.php');
-require_once('classes/WordLift.php');
-require_once('classes/EntityService.php');
-require_once('classes/SlugService.php');
-require_once('classes/EntitiesBoxService.php');
-require_once('classes/EntityBoxService.php');
+
+
 
 function display_the_content($content){
 	global $logger, $entity_service, $slug_service;
@@ -29,15 +22,18 @@ function display_the_content($content){
 
 	// we only add entities to posts.
 	if ('post' != $post->post_type) return $content;
+	
+// 	$logger->debug('Adding entities to the content.');
 
-	$entities 	= $entity_service->get_accepted_entities_by_post_id( $post->ID );
-
+// 	$entities 	= $entity_service->get_accepted_entities_by_post_id( $post->ID );
+	$entities 	= $entity_service->get_entities_by_post_id( $post->ID );
+	
 	$terms_body .= '<div style="width: 100%;" id="entities">';
 	foreach ($entities as $entity) {
 
 		$terms_body .= '<div class="isotope-item entity-item itemscope itemtype="http://schema.org/'.$entity->type.'">';
-		if (NULL != $entity->properties['thumbnail']) {
-			$terms_body .= '<div><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="'.$entity->properties['thumbnail'][0].'" /></div>';
+		if (NULL != $entity->properties['image']) {
+			$terms_body .= '<div><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="'.$entity->properties['image'][0].'" /></div>';
 		}
 
 		$terms_body .= '<div class="entity-caption-outer">';
@@ -173,12 +169,4 @@ function create_admin_add_new() {
 }
 
 add_action('init', 					array('wordliftsetup', 			'setup'));
-add_action('admin_enqueue_scripts',	array('wordliftsetup', 			'admin_enqueue_scripts'));
-add_action('wp_enqueue_scripts',	array('wordliftsetup', 			'enqueue_scripts'));
-add_action('edit_post', 			array( $wordlift, 				'analyze_text'));
-add_action('edit_post', 			array( $entity_service, 		'save_entity_from_post_edit'));
-add_filter('the_content', 			'display_the_content' );
-add_action('add_meta_boxes', 		array( $entities_box_service, 	'create_custom_box'));
-// uncomment this to enable a custom menu.
-// add_action('admin_menu', 			'create_admin_menu');
 ?>

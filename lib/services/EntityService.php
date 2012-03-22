@@ -1,0 +1,289 @@
+<?php
+require_once(dirname(dirname(__FILE__)).'/domain/Entity.php');
+require_once('SlugService.php');
+
+class EntityService {
+
+	private $slug_service;
+
+	private $logger;
+
+	function __construct( &$slug_service) {
+		$this->logger = Logger::getLogger(__CLASS__);
+
+		if (NULL == $slug_service) {
+			$this->logger->error('The SlugService is undefined.');
+			return;
+		}
+		
+		$this->slug_service = $slug_service;
+	}
+
+	function save_entity_from_post_edit($post_id) {
+		$this->logger->debug('Saving post [post_id:'.$post_id.'].');
+
+		if (WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE != get_post_type( $post_id )) return;
+
+		$keys = get_post_custom_keys($post_id);
+
+		// delete existing values.
+		foreach ($keys as $key) {
+			if (0 == strpos( $key, WORDLIFT_20_FIELD_PREFIX )) {
+				delete_post_meta($post_id, $key);
+			}
+		}
+
+		// save the new values.
+		foreach ($_POST as $key => $value) {
+			if (0 == strpos( $key, WORDLIFT_20_FIELD_PREFIX )) {
+				add_post_meta($post_id, $key, $value);
+			}
+		}
+
+	}
+
+	function get_all($limit, $offset) {
+		$args = array(
+				'numberposts' 	=> $limit,
+				'offset' 		=> $offset,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'orderby'  		=> 'title',
+				'order' 		=> 'ASC'
+		);
+
+		$entity_posts 		= get_posts($args);
+
+		$post_id 			= NULL;
+
+		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
+	}
+
+	function get_count() {
+		$counts = wp_count_posts(WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE);
+		$total  = 0;
+		foreach ($counts as $key => $value)
+			$total += $value;
+
+		return $total;
+	}
+
+	function unbind_all_entities_from_post(&$post_id) {
+		$args = array(
+				'numberposts' 	=> -1,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'meta_key'		=> WORDLIFT_20_ENTITY_POSTS,
+				'meta_value'	=> $post_id
+		);
+
+		$entity_posts = get_posts($args);
+
+		foreach ($entity_posts as $entity_post) {
+			delete_post_meta(	$entity_post->ID, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
+		}
+	}
+
+	function bind_entity_to_post(&$entity_post_id, &$post_id) {
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_POSTS, 	$post_id,	false);
+	}
+
+	function accept_entity_for_post(&$entity_post_id, &$post_id) {
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_REJECTED, 	$post_id);
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id,	false);
+	}
+
+	function reject_entity_for_post(&$entity_post_id, &$post_id) {
+
+
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_REJECTED, 	$post_id);
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_REJECTED, 	$post_id,	false);
+
+		// 		$this->logger->debug('Entity ['.$entity_post_id.'] will be rejected for post ['.$post_id.']: '.$result.'.');
+	}
+
+	function get_accepted_entities_by_post_id(&$post_id) {
+		$args = array(
+				'numberposts' 	=> -1,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'meta_key'  	=> WORDLIFT_20_ENTITY_ACCEPTED,
+				'meta_value'	=> $post_id,
+				'meta_compare'  => 'IN'
+		);
+
+		$entity_posts = get_posts($args);
+
+		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
+	}
+
+	function get_entities_by_post_id(&$post_id) {
+		$args = array(
+				'numberposts' 	=> -1,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'meta_query'  => array(
+						'relation' => 'OR',
+						array(  'key' 	  	=> WORDLIFT_20_ENTITY_POSTS,
+								'value'   	=> $post_id,
+								'compare' 	=> 'IN')
+// 						, array(  'key'		=> WORDLIFT_20_ENTITY_ACCEPTED,
+// 								'value' 	=> $post_id,
+// 								'compare' 	=> 'IN')
+						// , array(  'key'		=> WORDLIFT_20_ENTITY_REJECTED,
+						// 		'value' 	=> $post_id,
+						// 		'compare' 	=> 'IN')
+				)
+				// 'meta_key'		=> WORDLIFT_20_ENTITY_POSTS,
+				// 'meta_value'	=> $post_id
+		);
+
+		$entity_posts = get_posts($args);
+
+		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
+	}
+
+	function create_entities_from_entity_posts( &$entity_posts, &$post_id ) {
+		$entities = array();
+
+		foreach ($entity_posts as $entity_post) {
+			$entities[] = $this->create_entity_from_entity_post( $entity_post, $post_id );
+		}
+
+		return $entities;
+	}
+
+	function create_entity_from_entity_post( &$entity_post, &$post_id ) {
+
+		$entity = new Entity();
+
+		$post_meta 			= get_post_custom($entity_post->ID);
+
+		$entity->text 		= $entity_post->post_title;
+		$entity->type 		= $post_meta[WORDLIFT_20_FIELD_SCHEMA_TYPE][0];
+		$entity->about		= $post_meta[WORDLIFT_20_FIELD_ABOUT][0];
+		$entity->post_id 	= $entity_post->ID;
+
+		// $this->logger->debug(var_export($post_meta,true));
+
+		// 		$this->logger->debug('WORDLIFT_20_ENTITY_ACCEPTED: '.$post_meta[WORDLIFT_20_ENTITY_ACCEPTED].';WORDLIFT_20_ENTITY_REJECTED: '.$post_meta[WORDLIFT_20_ENTITY_REJECTED]);
+
+		if (NULL != $post_meta[WORDLIFT_20_ENTITY_ACCEPTED])
+			$entity->accepted = in_array( $post_id,  $post_meta[WORDLIFT_20_ENTITY_ACCEPTED]);
+
+		if (NULL != $post_meta[WORDLIFT_20_ENTITY_REJECTED])
+			$entity->rejected = in_array( $post_id, $post_meta[WORDLIFT_20_ENTITY_REJECTED] );
+
+
+		$entity->properties = array();
+
+		// add the custom fields as properties of the entity.
+		foreach ($post_meta as $key => $values) {
+			if (0 == strpos($key, WORDLIFT_20_FIELD_PREFIX)) {
+				$this_key = substr($key, strlen(WORDLIFT_20_FIELD_PREFIX));
+				$entity->properties[$this_key] = $values;
+			}
+		}
+
+		return $entity;
+	}
+
+	function get_entity_post_id( &$entity ) {
+		$args = array(
+				'numberposts' 	=> 1,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'meta_key'  	=> WORDLIFT_20_FIELD_ABOUT,
+				'meta_value' 	=> $entity->get_id()
+		);
+
+		$posts = get_posts($args);
+
+		if (0 == count($posts)) return '';
+
+		return $posts[0]->ID;
+	}
+
+	function create( &$entity_array ) {
+
+		$entity 			= new Entity();
+
+		$entity->text 		= $entity_array->text;
+		$entity->type 		= $entity_array->type;
+		$entity->count 		= $entity_array->count;
+		$entity->relevance 	= $entity_array->relevance;
+		$entity->about 		= $entity_array->reference;
+		$entity->score     	= $entity_array->score;
+		$entity->rank 		= $entity_array->rank;
+		$entity->properties = $entity_array->properties;
+
+		$entity->slug 		= $this->slug_service->get_slug($entity);
+
+		return $entity;
+	}
+
+	function add_properties(&$entity,$post_id) {
+
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_PREFIX.'description');
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_PREFIX.'name');
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_PREFIX.'url');
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_PREFIX.'image');
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_SCHEMA_TYPE);
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_LATITUDE);
+		delete_post_meta($post_id, WORDLIFT_20_FIELD_LONGITUDE);
+
+		add_post_meta($post_id,WORDLIFT_20_FIELD_PREFIX.'schema-type',$entity->type,true);
+
+		// description
+		if (array_key_exists('description', $entity->properties))
+			add_post_meta($post_id,WORDLIFT_20_FIELD_PREFIX.'description',$entity->properties->description[0],true);
+		// name
+		if (array_key_exists('label', $entity->properties))
+			add_post_meta($post_id,WORDLIFT_20_FIELD_PREFIX.'name',$entity->properties->label[0],true);
+		// url
+		add_post_meta($post_id,WORDLIFT_20_FIELD_PREFIX.'url',$entity->get_id(),true);
+		// image
+		if (array_key_exists('thumbnail', $entity->properties))
+			add_post_meta($post_id,WORDLIFT_20_FIELD_PREFIX.'image',$entity->properties->thumbnail[0],true);
+
+		if (array_key_exists('latitude', $entity->properties) && array_key_exists('longitude', $entity->properties)) {
+			add_post_meta($post_id,WORDLIFT_20_FIELD_LATITUDE,$entity->properties->latitude[0],true);
+			add_post_meta($post_id,WORDLIFT_20_FIELD_LONGITUDE,$entity->properties->longitude[0],true);
+		}
+	}
+
+	function save( &$entity ) {
+
+		$post_id 			= $this->get_entity_post_id($entity);
+		$action				= (false != $post_id ? 'updated' : 'created');
+
+		$wp_error 			= false;
+		$post_id = wp_insert_post( array(
+				'ID'   		 => $post_id,
+				'post_title' => $entity->text,
+				'post_type'  => WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'post_status' => 'publish'),
+				$wp_error
+		);
+
+		if (true == $wp_error) {
+			$logger->error('An error occurred while creating a new post ['.var_export($wp_error,true).'].');
+			return null;
+		}
+
+		$this->add_properties($entity, $post_id);
+
+		$this->logger->info('An entity with id [post_id:'.$post_id.'] has been '.$action.'.');
+
+		return $post_id;
+
+	}
+}
+
+$slug_service	= new SlugService();
+$entity_service = new EntityService( $slug_service );
+
+?>

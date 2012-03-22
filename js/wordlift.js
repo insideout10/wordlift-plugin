@@ -23,7 +23,7 @@ jQuery(window).ready(function($) {
 			},
 			findByReference: function(reference) {
 				return this.find(function(element) {
-					return (reference === element.get('reference'));
+					return (reference === element.get('about'));
 				});
 			}
 		})
@@ -40,12 +40,12 @@ jQuery(window).ready(function($) {
 				var me 					= this;
 
 				container.children().each(function(index,element) {
-					if (null == me.collection.findByReference($(element).data('reference')))
+					if (null == me.collection.findByReference($(element).data('about')))
 						elementsToRemove[elementsToRemove.length] = element;
 				});
 
 				this.collection.each(function(element, index, list) {
-					if (0 == container.children('[data-reference="'+element.get('reference')+'"]').length) {
+					if (0 == container.children('[data-about="'+element.get('about')+'"]').length) {
 						entitiesToAdd[entitiesToAdd.length] = element.toJSON();
 					}
 

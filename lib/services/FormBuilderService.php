@@ -87,11 +87,12 @@ class FormBuilderService {
 					echo '</div>';
 ?>
 					<script type="text/javascript">
-<?php					echo 'var longitude = \''.$longitude.'\';';  ?>
-<?php					echo 'var latitude  = \''.$latitude.'\';'; 	?>
 						jQuery(window).ready( function($){
 			
-					        var map = new OpenLayers.Map("entityMap");
+<?php						echo 'var longitude = \''.$longitude.'\';';  ?>
+<?php						echo 'var latitude  = \''.$latitude.'\';'; 	?>
+
+							var map = new OpenLayers.Map("entityMap");
 					        var mapnik = new OpenLayers.Layer.OSM();
 					        map.addLayer(mapnik);
 					        map.setCenter(new OpenLayers.LonLat( longitude , latitude ) // Center of the map

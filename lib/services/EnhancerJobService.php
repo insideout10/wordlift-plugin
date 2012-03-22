@@ -8,14 +8,14 @@ class EnhancerJobService {
         $this->logger = Logger::getLogger(__CLASS__);
     }
     
-    function requestJob( $job_request, $url = ENHANCE_TEXT_URL ) {
+    function requestJob( $job_request, $url = WORDLIFT_20_URLS_ENHANCE_TEXT ) {
         
         $this->logger->debug("Going to request content analysis to [$url].");
 
         // get a reference to the post.
         $post = get_post( $this->post_id );
         
-        $response = wp_remote_post( $url, array(
+        $return = wp_remote_post( $url, array(
         	'method' => 'POST',
         	'timeout' => 45,
         	'redirection' => 5,
@@ -27,7 +27,14 @@ class EnhancerJobService {
             )
          );
          
-         return json_decode( $response['body'] );
+		if (is_wp_error($return)) {
+			
+			$this->logger->error('An error occurred: '.$return->get_error_message());
+			
+			return NULL;
+		}
+		 
+        return json_decode( $return['body'] );
     }
 
 }
