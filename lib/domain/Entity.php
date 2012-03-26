@@ -18,7 +18,13 @@ class Entity {
 	public $post_id;
 	public $accepted = false;
 	public $rejected = false;
+	
+	public $posts = array();
+	public $accepted_posts = array();
+	public $rejected_posts = array();
 
+	public $relative_rank;
+	
 	private $logger;
 
 	function __construct() {

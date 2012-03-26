@@ -41,7 +41,15 @@ require_once('lib/domain/Type.php');
 /**
  * views classes
  */
+require_once('lib/views/MapView.php');
 require_once('lib/views/admin/EntityMetaBox.php');
+require_once('lib/views/PostTileView.php');
+require_once('lib/views/EntityTileView.php');
+require_once('lib/views/EntityPostView.php');
+require_once('lib/views/AllEntitiesView.php');
+require_once('lib/views/PostsListView.php');
+require_once('lib/views/PostListView.php');
+require_once('lib/views/EntitiesMapView.php');
 
 /**
  * services classes
@@ -50,6 +58,7 @@ require_once('lib/services/EnhancerJobService.php');
 require_once('lib/services/JobService.php');
 require_once('lib/services/EntitiesBoxService.php');
 require_once('lib/services/SlugService.php');
+require_once('lib/services/EntityRankingService.php');
 require_once('lib/services/EntityService.php');
 require_once('lib/services/FormBuilderService.php');
 require_once('lib/services/PostHelper.php');

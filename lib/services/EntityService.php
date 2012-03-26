@@ -156,7 +156,7 @@ class EntityService {
 		return $entities;
 	}
 
-	function create_entity_from_entity_post( &$entity_post, &$post_id ) {
+	function create_entity_from_entity_post( &$entity_post, $post_id ) {
 
 		$entity = new Entity();
 
@@ -167,6 +167,9 @@ class EntityService {
 		$entity->about		= $post_meta[WORDLIFT_20_FIELD_ABOUT][0];
 		$entity->post_id 	= $entity_post->ID;
 
+		$entity->posts = $post_meta[WORDLIFT_20_ENTITY_POSTS];
+		$entity->accepted_posts = $post_meta[WORDLIFT_20_ENTITY_ACCEPTED];
+		$entity->rejected_posts = $post_meta[WORDLIFT_20_ENTITY_REJECTED];
 		// $this->logger->debug(var_export($post_meta,true));
 
 		// 		$this->logger->debug('WORDLIFT_20_ENTITY_ACCEPTED: '.$post_meta[WORDLIFT_20_ENTITY_ACCEPTED].';WORDLIFT_20_ENTITY_REJECTED: '.$post_meta[WORDLIFT_20_ENTITY_REJECTED]);

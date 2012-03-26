@@ -45,6 +45,9 @@ define('WORDLIFT_20_ADMIN_MENU_POSITION', 21);
  ************************************************************************************/
 define('WORDLIFT_20_ENTITIES_SLUG',					'entities');
 
+define('WORDLIFT_20_ENTITIES_PAGE_NAME',			'all-entities');
+define('WORDLIFT_20_ENTITIES_MAP_PAGE_NAME',		'entities-map');
+
 
 /************************************************************************************
  * some helpful variables

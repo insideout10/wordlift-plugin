@@ -1,0 +1,42 @@
+
+$box-width:110px;
+$box-height:110px;
+$box-margin:5px;
+
+$box-image-opacity:1.0;
+$box-image-background:white;
+
+$box-caption-background:white;
+
+$box-font-family:sans-serif;
+$box-font-size:12px;
+$box-font-color:white;
+
+$style-1-color:#7bb34a;
+$style-2-color:#bc0202;
+$style-3-color:#3c88d0;
+$style-4-color:#47dfdd;
+$style-5-color:#4bc1e6;
+$style-6-color:#da4dd9;
+$style-7-color:#deab09;
+
+$style-1-linear-gradient:linear-gradient(bottom, #4e9014,#7bb34a 100%);
+$style-2-linear-gradient:linear-gradient(bottom, #961010,#bc0202 100%);
+$style-3-linear-gradient:linear-gradient(bottom, #3c6f9f,#3c88d0 100%);
+$style-4-linear-gradient:linear-gradient(bottom, #32aeac,#47dfdd 100%);
+$style-5-linear-gradient:linear-gradient(bottom, #52a7c2,#4bc1e6 100%);
+$style-6-linear-gradient:linear-gradient(bottom, #983797,#da4dd9 100%);
+$style-7-linear-gradient:linear-gradient(bottom, #ce9d03,#deab09 100%);
+
+$entity-icon-width:36px;
+$entity-icon-height:42px;
+
+$entity-organization-icon:'../images/organization.png';
+$entity-creativework-icon:'../images/creativeworks.png';
+$entity-other-icon:'../images/other.png';
+$entity-person-icon:'../images/person.png';
+$entity-place-icon:'../images/place.png';
+$entity-event-icon:'../images/event.png';
+$entity-product-icon:'../images/product.png';
+
+$entities-map-view-height:400px;

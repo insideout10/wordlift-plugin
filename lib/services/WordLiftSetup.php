@@ -30,6 +30,8 @@ class WordLiftSetup {
 		}
 		
 		self::create_post_type();
+		self::create_all_entities_page();
+		self::create_entities_map_page();
 		self::kill_autosave_on_entities();
 
 		// administration area
@@ -53,6 +55,44 @@ class WordLiftSetup {
 		add_action( 'manage_'.WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE.'_posts_custom_column' , 	array('WordLiftSetup', 'manage_entities_custom_column'), 10, 2);
 		
 		self::$logger->debug('Set-up complete.');
+	}
+	
+	function create_all_entities_page() {
+		$page = get_page_by_path(WORDLIFT_20_ENTITIES_PAGE_NAME);
+
+		if (NULL == $page) {
+			self::$logger->debug('Creating the All Entities page ['.WORDLIFT_20_ENTITIES_PAGE_NAME.'].');
+			
+			$page = wp_insert_post(	array( 
+				'post_title' => 'All Entities',
+				'post_status' => 'publish',
+				'post_name' => 'all-entities',
+				'post_type' => 'page')
+				,$wp_error);
+			
+			if (NULL != $wp_error) {
+				self::$logger->error('An error occurred: '.var_export($wp_error,true));
+			}
+		}
+	}
+	
+	function create_entities_map_page() {
+		$page = get_page_by_path(WORDLIFT_20_ENTITIES_MAP_PAGE_NAME);
+	
+		if (NULL == $page) {
+			self::$logger->debug('Creating the Entities Map page ['.WORDLIFT_20_ENTITIES_MAP_PAGE_NAME.'].');
+				
+			$page = wp_insert_post(	array(
+					'post_title' => 'Entities Map',
+					'post_status' => 'publish',
+					'post_name' => 'entities-map',
+					'post_type' => 'page')
+					,$wp_error);
+				
+			if (NULL != $wp_error) {
+				self::$logger->error('An error occurred: '.var_export($wp_error,true));
+			}
+		}
 	}
 
 	function manage_entities_custom_column($column, $post_id) {
@@ -100,11 +140,15 @@ class WordLiftSetup {
 	function admin_enqueue_scripts() {
 		self::common_scripts();
 
+		wp_enqueue_style('wordlift.css',
+				plugins_url('/css/wordlift.css', WORDLIFT_20_ROOT_PATH));
+		
+		
 		wp_enqueue_style('wordlift-admin.css',
 				plugins_url('/css/wordlift-admin.css', WORDLIFT_20_ROOT_PATH));
 		
-		wp_enqueue_script('wordlift',
-			plugins_url('/js/wordlift.js', WORDLIFT_20_ROOT_PATH),
+		wp_enqueue_script('wordlift-admin',
+			plugins_url('/js/wordlift-admin.js', WORDLIFT_20_ROOT_PATH),
 			array('backbone'),
 			false,
 			false);
@@ -113,12 +157,19 @@ class WordLiftSetup {
 
 	function enqueue_scripts() {
 		self::common_scripts();
+		
+		wp_enqueue_style('wordlift-screen.css',
+				plugins_url('/css/screen.css', WORDLIFT_20_ROOT_PATH));
+				
+		wp_enqueue_script('wordlift',
+			plugins_url('/js/wordlift.js', WORDLIFT_20_ROOT_PATH),
+			array('jquery'),
+			false,
+			false);
+
 	}
 
 	function common_scripts() {
-		wp_enqueue_style('wordlift.css',
-			plugins_url('/css/wordlift.css', WORDLIFT_20_ROOT_PATH));
-
 		wp_enqueue_style('jquery.isotope.css',
 			plugins_url('/css/jquery.isotope.css', WORDLIFT_20_ROOT_PATH));
 

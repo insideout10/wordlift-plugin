@@ -1,0 +1,15 @@
+
+.entities-map-view {
+  width:100%;
+  height:$entities-map-view-height;
+  
+  #entities-map {
+    width:100%;
+    height:100%;
+    
+    .olControlAttribution {
+      position:absolute;
+      bottom:0;
+    }
+  }
+}

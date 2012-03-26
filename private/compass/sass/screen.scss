@@ -1,0 +1,222 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset";
+@import "compass/css3/images";
+@import "compass/css3/opacity";
+
+@import "constants";
+@import "entities_map";
+
+.entity-item {
+  border-width:1px;
+  border-style:solid;
+  margin:$box-margin;
+  overflow:hidden;
+  float:left;
+  position:relative;
+  cursor:pointer;
+  
+  font-family:$box-font-family;
+  font-size:$box-font-size;
+  font-weight:bold;
+  color:$box-font-color;
+
+  width:$box-width;
+  height:$box-height;
+  
+  &.rank-2 {
+    width:($box-width + $box-margin) * 1.5;
+    height:($box-height + $box-margin) * 1.5;
+  }
+
+  &.rank-3 {
+    width:($box-width + $box-margin) * 2;
+    height:($box-height + $box-margin) * 2;
+  }
+
+  a {
+    text-decoration:none;
+    color:$box-font-color;
+  }
+  
+  .front {
+    height:100%;
+  }
+  
+  .back {
+    display:none;
+  }
+  
+  .image {
+    @include opacity($box-image-opacity);
+    background:$box-image-background;
+    min-height:100%;    
+  }
+  
+  .description {
+    font-weight:normal;
+    padding:2px;
+  }
+  
+  .textual {
+    padding:2px;
+    position:absolute;
+    top:0;
+    left:0;
+    
+    .label {
+      margin-bottom:4px;
+      font-size:$box-font-size + 2px;
+    }
+  }
+  
+  .type {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width:$entity-icon-width;
+    height:$entity-icon-height;
+    margin:0 2px;
+  }
+  
+  &.selected {
+    .back {
+      display:block;
+    }
+    
+    .front {
+      display:none;
+    }
+  }
+  
+  &.Place {
+    border-color:$style-4-color;
+    @include background($style-4-linear-gradient);
+    
+    .type {
+      background:url($entity-place-icon);
+    }
+  }
+  
+  &.Event {
+    border-color:$style-6-color;
+    @include background($style-6-linear-gradient);
+    
+    .type {
+      background:url($entity-event-icon);
+    }
+  }
+
+  &.Person {
+    border-color:$style-7-color;
+    @include background($style-7-linear-gradient);
+    
+    .type {
+      background:url($entity-person-icon);
+    }
+  }
+  
+  &.Organization {
+    border-color:$style-1-color;
+    @include background($style-1-linear-gradient);
+
+    .type {
+      background:url($entity-organization-icon);
+    }
+  }
+  
+  &.Product {
+    border-color:$style-2-color;
+    @include background($style-2-linear-gradient);
+
+    .type {
+      background:url($entity-product-icon);
+    }
+  }
+  
+  &.CreativeWork {
+    border-color:$style-3-color;
+    @include background($style-3-linear-gradient);
+
+    .type {
+      background:url($entity-product-icon);
+    }
+  }
+  
+  &.Other {
+    border-color:$style-5-color;
+    @include background($style-5-linear-gradient);
+
+    .type {
+      background:url($entity-other-icon);
+    }
+  }
+
+}
+
+.post-content {
+  .entity {
+    .entity-inner {
+      min-height:130px;
+      margin-bottom:20px;
+    }
+    .title {
+      display:none;
+    }
+    .place {
+      font-weight:bold;
+      font-size:120%;
+    }
+    .about {
+      font-style:italic;
+      margin-bottom:4px;
+    }
+    .image {
+      float:left;
+      img {
+        max-height:120px;
+        margin:2px 8px 8px;
+      }
+    }
+    .description {
+      text-align:justify;
+    }
+    #map {
+      width:100%;
+      height:200px;
+      
+      .olControlAttribution {
+        bottom:0;
+      }
+    }
+  }
+}
+
+.entity-posts {
+  margin:10px 0;
+  
+  a {
+    text-decoration:none;
+  }
+  
+  .post-tile {
+    width:$box-width;
+    height:$box-height;
+    border:black 1px solid;
+    cursor:pointer;
+    padding:2px;
+    margin:5px;
+    float:left;
+    overflow:auto;
+    
+    .title {
+      font-size:80%;
+    }
+    .author,.date,.excerpt {
+      display:none;
+    }
+  }
+}
