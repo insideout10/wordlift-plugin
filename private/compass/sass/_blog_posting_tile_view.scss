@@ -1,0 +1,36 @@
+$width:240px;
+$height:120px;
+$border-radius:5px;
+$margin:5px;
+$padding:5px;
+$background:linear-gradient(bottom, #999,#fff 100%);
+
+$name-font-size:80%;
+$name-font-weight:bold;
+$name-margin:0 0 5px;
+
+$date-published-font-size:60%;
+$date-published-font-weight:normal;
+$date-published-color:black;
+
+.blog-posting-tile-view {
+  float:left;
+  width:$width;
+  height:$height;
+  margin:$margin;
+  padding:$padding;
+  @include border-radius($border-radius);
+  @include background($background);
+  
+  .name {
+    font-size:$name-font-size;
+    font-weight:$name-font-weight;
+    margin:$name-margin;
+  }
+
+  .date-published {
+    font-size:$date-published-font-size;
+    font-weight:$date-published-font-weight;
+    color:$date-published-color;
+  }
+}

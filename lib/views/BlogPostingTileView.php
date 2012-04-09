@@ -23,11 +23,37 @@ class BlogPostingTileView implements IView {
 	 */
 	public function getContent($content=null) {
 		
-		$name = $this->blog_posting->name;
+		// the style-sheets class-name.
+		$class_name = self::CLASS_NAME;
+		
+		
+		// The following properties are available in the BlogPosting.
+		//  [1] Thing:
+		//      a) description (Text)
+		//      b) image (URL)
+		//      c) name (Text)
+		//      d) url (URL)
+		//  [2] CreativeWork:
+		//      e) dateCreated (Date)
+		//      f) dateModified (Date)
+		//      g) datePublished (Date)
+		
+		$description = HtmlService::htmlEncode($this->blog_posting->description);
+		$image = HtmlService::getImageFragment( HtmlService::htmlEncode($this->blog_posting->image) );
+		$name = HtmlService::htmlEncode($this->blog_posting->name);
+		$url= HtmlService::htmlEncode($this->blog_posting->url);
+		$name_with_link = HtmlService::getLinkFragment( $url, $name);
+		$date_created = HtmlService::htmlEncode($this->blog_posting->dateCreated);
+		$date_modified = HtmlService::htmlEncode($this->blog_posting->dateModified);
+		$date_published = HtmlService::htmlEncode($this->blog_posting->datePublished);
 		
 		return <<<EOD
 
-		<div class="{CLASS_NAME}">$name</div>
+		<div class="$class_name">
+			<div class="name">$name_with_link</div>
+			<div class="description">$description</div>
+			<div class="date-published">$date_published</div>
+		</div>
 		
 EOD;
 		

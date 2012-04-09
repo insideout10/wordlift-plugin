@@ -37,6 +37,11 @@ class EntityService {
 		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id,	false);
 	}
 	
+	function setEntityBogus($entity_post_id, $bogus) {
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_BOGUS, 	$bogus);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_BOGUS, 	$bogus,	false);
+	}
+	
 	/**
 	 * Retrieves all the entities in this blog.
 	 * @param integer $limit
@@ -234,21 +239,18 @@ class EntityService {
 		$entity->text 		= $entity_post->post_title;
 		$entity->type 		= $post_meta[WORDLIFT_20_FIELD_SCHEMA_TYPE][0];
 		$entity->about		= $post_meta[WORDLIFT_20_FIELD_ABOUT][0];
-		$entity->post_id 	= $entity_post->ID;
+		$entity->setPostId($entity_post->ID);
 
-		$entity->posts = $post_meta[WORDLIFT_20_ENTITY_POSTS];
-		$entity->accepted_posts = $post_meta[WORDLIFT_20_ENTITY_ACCEPTED];
-		$entity->rejected_posts = $post_meta[WORDLIFT_20_ENTITY_REJECTED];
-		// $this->logger->debug(var_export($post_meta,true));
+		$entity->setPosts( $post_meta[WORDLIFT_20_ENTITY_POSTS] );
+		$entity->setAcceptedPosts( $post_meta[WORDLIFT_20_ENTITY_ACCEPTED] );
+		$entity->setRejectedPosts( $post_meta[WORDLIFT_20_ENTITY_REJECTED] );
+		$entity->setBogus( (true == $post_meta[WORDLIFT_20_ENTITY_BOGUS] ? true : false) );
 
-		// 		$this->logger->debug('WORDLIFT_20_ENTITY_ACCEPTED: '.$post_meta[WORDLIFT_20_ENTITY_ACCEPTED].';WORDLIFT_20_ENTITY_REJECTED: '.$post_meta[WORDLIFT_20_ENTITY_REJECTED]);
+		if (NULL != $entity->getAcceptedPosts())
+			$entity->accepted = in_array( $post_id, $entity->getAcceptedPosts());
 
-		if (NULL != $post_meta[WORDLIFT_20_ENTITY_ACCEPTED])
-			$entity->accepted = in_array( $post_id,  $post_meta[WORDLIFT_20_ENTITY_ACCEPTED]);
-
-		if (NULL != $post_meta[WORDLIFT_20_ENTITY_REJECTED])
-			$entity->rejected = in_array( $post_id, $post_meta[WORDLIFT_20_ENTITY_REJECTED] );
-
+		if (NULL != $entity->getRejectedPosts())
+			$entity->rejected = in_array( $post_id, $entity->getRejectedPosts());
 
 		$entity->properties = array();
 

@@ -29,4 +29,19 @@ if ('bind-entity' == $action) {
 	return;
 }
 
+/**
+ * Binds and entity to a post.
+ */
+if ('set-bogus' == $action) {
+	$bogus 	= ('true' == $_GET['bogus'] ? true : false);
+	
+	// bind the entity to the post.
+	$entity_service = new EntityService();
+	$entity_service->setEntityBogus($entity_post_id, $bogus);
+
+	echo '{\'result\': \'success\'}';
+	
+	return;
+}
+
 ?>

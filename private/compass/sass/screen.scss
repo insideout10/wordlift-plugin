@@ -6,11 +6,14 @@
 @import "compass/reset";
 @import "compass/css3/images";
 @import "compass/css3/opacity";
+@import "compass/css3/border-radius";
 
 @import "constants";
 @import "entities_map";
 @import "all_entities_view";
 @import "entities_view";
+@import "blog_posting_list_view";
+@import "blog_posting_tile_view";
 
 .entity-item {
   border-width:1px;

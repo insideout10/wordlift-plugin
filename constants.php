@@ -19,7 +19,7 @@ define('WORDLIFT_20_FIELD_LONGITUDE',				WORDLIFT_20_FIELD_PREFIX.'geo-longitude
 define('WORDLIFT_20_ENTITY_POSTS', 					'_'.WORDLIFT_20_FIELD_PREFIX.'posts');
 define('WORDLIFT_20_ENTITY_ACCEPTED', 				'_'.WORDLIFT_20_FIELD_PREFIX.'posts-accepted');
 define('WORDLIFT_20_ENTITY_REJECTED', 				'_'.WORDLIFT_20_FIELD_PREFIX.'posts-rejected');
-
+define('WORDLIFT_20_ENTITY_BOGUS', 					'_'.WORDLIFT_20_FIELD_PREFIX.'bogus');
 
 /************************************************************************************
  * Stanbol Job Metadata

@@ -22,6 +22,7 @@ $logger = Logger::getLogger('global');
  */
 require_once('lib/views/IShortCode.php');
 require_once('lib/views/IView.php');
+require_once('lib/domain/IEntityPost.php');
 
 /**
  * schema.org inclusions
@@ -82,6 +83,7 @@ require_once('lib/services/TypeService.php');
 require_once('lib/services/WordLift.php');
 require_once('lib/services/ShortCodeService.php');
 require_once('lib/services/BlogPostingService.php');
+require_once('lib/services/HtmlService.php');
 require_once('lib/services/WordLiftSetup.php');
 
 
