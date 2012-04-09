@@ -1,15 +1,25 @@
 <?php
 
+/**
+ * This class generated the Html code for an Entity tile.
+ */
 class EntityTileView {
 
 	private $entity;
 	
-	public function __construct(&$entity) {
+	// The logger instance.
+	private $logger;
+	
+	function __construct(&$entity) {
+		$this->logger = $GLOBALS['logger'];
 		$this->entity = $entity;
 	}
 	
-	public function display() {
-		$url = get_permalink( $this->entity->post_id );		
+	public function getContent($content = '') {
+		
+// 		$this->logger->debug('Generating content for an entity.');
+		
+		$url = get_permalink( $this->entity->post_id );
 		$label= htmlentities( $this->entity->text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 		$type = htmlentities( $this->entity->type, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 		$about = htmlentities( $this->entity->about, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
@@ -21,32 +31,32 @@ class EntityTileView {
 		
 		$latitude = $this->entity->properties['geo-latitude'][0];
 		$longitude = $this->entity->properties['geo-longitude'][0];
-
-?>
-		<div onclick="location.href='<?php echo $url ?>';" class="isotope-item entity-item <?php echo $type.' '.$relative_rank_class ?>" itemscope itemtype="http://schema.org/<?php echo $type ?>">
-
-		<div class="back">
-<?php if (NULL != $image) { ?>
-			<div class="image"><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="<?php echo $image ?>" /></div>
-<?php } else { ?>		
-			<div class="description-outer">
-			<div class="description">
-<?php 	echo $description ?>
-			</div>
-			</div>
-<?php }?>
-		</div>
-
-		<div class="front textual">
-		<div class="label">
-		<a itemprop="name" href="<?php echo $url ?>"><?php echo $label ?></a>
-		</div>
-		<div class="type"></div>
-		</div>
 		
-		</div>
-
-<?php
+		$content = '<div onclick="location.href=\''.$url.'\';" class="isotope-item entity-item '.$type.' '.$relative_rank_class.'" itemscope itemtype="http://schema.org/'.$type.'">';
+		$content .= '<div class="back">';
+		if (NULL != $image) {
+			$content .= '<div class="image"><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="'.$image.'" /></div>';
+		} else {		
+			$content .= '<div class="description-outer">';
+			$content .= '<div class="description">';
+			$content .= $description;
+			$content .= '</div>';
+			$content .= '</div>';
+		}
+		$content .= '</div>';
+		$content .= '<div class="front textual">';
+		$content .= '<div class="label">';
+		$content .= '<a itemprop="name" href=".$url.">'.$label.'</a>';
+		$content .= '</div>';
+		$content .= '<div class="type"></div>';
+		$content .= '</div>';
+		$content .= '</div>';
+				
+		return $content;
+	}
+	
+	public function display() {
+		echo $this->getContent();
 	}
 }
 

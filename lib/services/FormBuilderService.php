@@ -21,7 +21,10 @@ class FormBuilderService {
 	
 	public static function build_form_for_type(&$type,$field_prefix,&$meta = NULL) {
 		
-		echo '<input type="hidden" name="'.WORDLIFT_20_FIELD_SCHEMA_TYPE.'" value="'.$meta[WORDLIFT_20_FIELD_SCHEMA_TYPE][0].'">';
+// 		echo '<input type="hidden" name="'.WORDLIFT_20_FIELD_SCHEMA_TYPE.'" value="'.$meta[WORDLIFT_20_FIELD_SCHEMA_TYPE][0].'">';
+		
+		$type_selection_view = new TypeSelectionView($type->name);
+		echo $type_selection_view->getContent();
 		
 		foreach ($type->properties as $property) {
 			

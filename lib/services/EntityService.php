@@ -1,24 +1,112 @@
 <?php
-require_once(dirname(dirname(__FILE__)).'/domain/Entity.php');
-require_once('SlugService.php');
 
+/**
+ * This class provide read/write access to the entities in this blog. 
+ */
 class EntityService {
 
-	private $slug_service;
-
+	// The logger instance.
 	private $logger;
 
-	function __construct( &$slug_service) {
+	/**
+	 * Initialize the class.
+	 */
+	function __construct() {
 		$this->logger = Logger::getLogger(__CLASS__);
-
-		if (NULL == $slug_service) {
-			$this->logger->error('The SlugService is undefined.');
-			return;
-		}
-		
-		$this->slug_service = $slug_service;
 	}
 
+	/**
+	 * Adds the entity ID to the post ID, and sets the entity as accepted for that post.
+	 * @param integer $entity_post_id
+	 * @param integer $post_id
+	 * @return NULL
+	 */
+	public function bind_entity_to_post($entity_post_id, $post_id) {
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_POSTS, 	$post_id,	false);
+	}
+
+	/**
+	 * Marks an entity as accepted for the specified post.
+	 * @param integer $entity_post_id
+	 * @param integer $post_id
+	 */
+	function accept_entity_for_post($entity_post_id, $post_id) {
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_REJECTED, 	$post_id);
+		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id);
+		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id,	false);
+	}
+	
+	/**
+	 * Retrieves all the entities in this blog.
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @return multitype:Entity
+	 */
+	function get_all($limit, $offset) {
+		$args = array(
+				'numberposts' 	=> $limit,
+				'offset' 		=> $offset,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'orderby'  		=> 'title',
+				'order' 		=> 'ASC'
+		);
+	
+		$entity_posts 		= get_posts($args);
+	
+		return $this->create_entities_from_entity_posts( $entity_posts );
+	}
+	
+	/**
+	 * Returns a structure with the total number of entities:
+	 *  {}->publish
+	 *  {}->draft
+	 * @return Array('publish','draft')
+	 */
+	function get_count() {
+		$counts = wp_count_posts(WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE);
+		$total  = 0;
+		foreach ($counts as $key => $value)
+			$total += $value;
+	
+		return $total;
+	}
+
+	/**
+	 * Gets a list of entities whose names contain the specified value.
+	 * @param string $name
+	 * @param integer $limit
+	 * @param integer $offset
+	 * @return multitype:Entity
+	 */
+	public function findEntitiesByName($name, $limit = -1, $offset = 0) {
+		
+		$args = array(
+				'numberposts' 	=> $limit,
+				'offset' 		=> $offset,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'meta_query'	=> array(
+					array(
+						'key'		=> WORDLIFT_20_FIELD_NAME,
+						'value'		=> $name,
+						'compare'	=> 'LIKE'
+					)
+				),				
+				'orderby'  		=> 'title',
+				'order' 		=> 'ASC'
+		);
+		
+		$entity_posts 		= get_posts($args);
+		
+		return $this->create_entities_from_entity_posts( $entity_posts );
+	}
+	
+	/**
+	 * Saves the data for an entity by looking for properties that starts with the WordLift 2.0 prefix.
+	 * @param integer $post_id
+	 */
 	function save_entity_from_post_edit($post_id) {
 		$this->logger->debug('Saving post [post_id:'.$post_id.'].');
 
@@ -42,31 +130,8 @@ class EntityService {
 
 	}
 
-	function get_all($limit, $offset) {
-		$args = array(
-				'numberposts' 	=> $limit,
-				'offset' 		=> $offset,
-				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
-				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
-				'orderby'  		=> 'title',
-				'order' 		=> 'ASC'
-		);
+	
 
-		$entity_posts 		= get_posts($args);
-
-		$post_id 			= NULL;
-
-		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
-	}
-
-	function get_count() {
-		$counts = wp_count_posts(WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE);
-		$total  = 0;
-		foreach ($counts as $key => $value)
-			$total += $value;
-
-		return $total;
-	}
 
 	function unbind_all_entities_from_post(&$post_id) {
 		$args = array(
@@ -82,17 +147,6 @@ class EntityService {
 		foreach ($entity_posts as $entity_post) {
 			delete_post_meta(	$entity_post->ID, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
 		}
-	}
-
-	function bind_entity_to_post(&$entity_post_id, &$post_id) {
-		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_POSTS, 	$post_id);
-		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_POSTS, 	$post_id,	false);
-	}
-
-	function accept_entity_for_post(&$entity_post_id, &$post_id) {
-		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_REJECTED, 	$post_id);
-		delete_post_meta(	$entity_post_id, 	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id);
-		add_post_meta(		$entity_post_id,	WORDLIFT_20_ENTITY_ACCEPTED, 	$post_id,	false);
 	}
 
 	function reject_entity_for_post(&$entity_post_id, &$post_id) {
@@ -120,6 +174,21 @@ class EntityService {
 		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
 	}
 
+	function get_all_accepted_entities() {
+		$args = array(
+				'numberposts' 	=> -1,
+				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
+				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
+				'meta_key'  	=> WORDLIFT_20_ENTITY_ACCEPTED,
+				'meta_value'	=> NULL,
+				'meta_compare'  => '<>'
+		);
+
+		$entity_posts = get_posts($args);
+
+		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
+	}
+	
 	function get_entities_by_post_id(&$post_id) {
 		$args = array(
 				'numberposts' 	=> -1,
@@ -130,12 +199,12 @@ class EntityService {
 						array(  'key' 	  	=> WORDLIFT_20_ENTITY_POSTS,
 								'value'   	=> $post_id,
 								'compare' 	=> 'IN')
-// 						, array(  'key'		=> WORDLIFT_20_ENTITY_ACCEPTED,
-// 								'value' 	=> $post_id,
-// 								'compare' 	=> 'IN')
-						// , array(  'key'		=> WORDLIFT_20_ENTITY_REJECTED,
-						// 		'value' 	=> $post_id,
-						// 		'compare' 	=> 'IN')
+						, array(  'key'		=> WORDLIFT_20_ENTITY_ACCEPTED,
+								'value' 	=> $post_id,
+								'compare' 	=> 'IN')
+						, array(  'key'		=> WORDLIFT_20_ENTITY_REJECTED,
+								'value' 	=> $post_id,
+								'compare' 	=> 'IN')
 				)
 				// 'meta_key'		=> WORDLIFT_20_ENTITY_POSTS,
 				// 'meta_value'	=> $post_id
@@ -146,7 +215,7 @@ class EntityService {
 		return $this->create_entities_from_entity_posts( $entity_posts, $post_id );
 	}
 
-	function create_entities_from_entity_posts( &$entity_posts, &$post_id ) {
+	function create_entities_from_entity_posts( &$entity_posts, $post_id = NULL) {
 		$entities = array();
 
 		foreach ($entity_posts as $entity_post) {
@@ -286,7 +355,5 @@ class EntityService {
 	}
 }
 
-$slug_service	= new SlugService();
 $entity_service = new EntityService( $slug_service );
-
 ?>

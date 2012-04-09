@@ -9,6 +9,8 @@
 
 @import "constants";
 @import "entities_map";
+@import "all_entities_view";
+@import "entities_view";
 
 .entity-item {
   border-width:1px;
@@ -26,16 +28,7 @@
 
   width:$box-width;
   height:$box-height;
-  
-  &.rank-2 {
-    width:($box-width + $box-margin) * 1.5;
-    height:($box-height + $box-margin) * 1.5;
-  }
 
-  &.rank-3 {
-    width:($box-width + $box-margin) * 2;
-    height:($box-height + $box-margin) * 2;
-  }
 
   a {
     text-decoration:none;
@@ -43,7 +36,28 @@
   }
   
   .front {
+    width:100%;
     height:100%;
+    
+    .entity-toolbar {
+      position:absolute;
+      bottom:0;
+      right:0;
+      padding:0 6px;
+      
+      .accepted,.rejected {
+        float:left;
+
+        .clickable {
+          width:24px;
+          height:24px;
+        }
+        
+        &.deselected {
+          @include opacity(0.5);
+        }
+      }
+    }
   }
   
   .back {
@@ -69,7 +83,7 @@
     
     .label {
       margin-bottom:4px;
-      font-size:$box-font-size + 2px;
+      font-size:$box-font-size * 1.1;
     }
   }
   
@@ -142,7 +156,7 @@
     @include background($style-3-linear-gradient);
 
     .type {
-      background:url($entity-product-icon);
+      background:url($entity-creativework-icon);
     }
   }
   

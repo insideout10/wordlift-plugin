@@ -24,7 +24,7 @@ class EntityMetaBox {
 
 		$custom_fields 	= get_post_custom($post->ID);
 
-		$type = TypeService::create($custom_fields[WORDLIFT_20_FIELD_SCHEMA_TYPE][0]);
+		$type = TypeService::create($custom_fields[WORDLIFT_20_FIELD_SCHEMA_TYPE][0]);		
 		FormBuilderService::build_form_for_type($type,WORDLIFT_20_FIELD_PREFIX,$custom_fields);
 
 	}

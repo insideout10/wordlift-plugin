@@ -18,6 +18,12 @@ $logger = Logger::getLogger('global');
 
 
 /**
+ * Interfaces.
+ */
+require_once('lib/views/IShortCode.php');
+require_once('lib/views/IView.php');
+
+/**
  * schema.org inclusions
  */
 require_once('lib/domain/schema/Thing.php');
@@ -28,6 +34,8 @@ require_once('lib/domain/schema/Other.php');
 require_once('lib/domain/schema/Place.php');
 require_once('lib/domain/schema/Person.php');
 require_once('lib/domain/schema/Product.php');
+require_once('lib/domain/schema/BlogPosting.php');
+require_once('lib/domain/schema/SchemaOrg.php');
 
 /**
  * domain classes
@@ -46,10 +54,16 @@ require_once('lib/views/admin/EntityMetaBox.php');
 require_once('lib/views/PostTileView.php');
 require_once('lib/views/EntityTileView.php');
 require_once('lib/views/EntityPostView.php');
-require_once('lib/views/AllEntitiesView.php');
+require_once('lib/views/EntitiesTreemapView.php');
 require_once('lib/views/PostsListView.php');
 require_once('lib/views/PostListView.php');
-require_once('lib/views/EntitiesMapView.php');
+require_once('lib/views/EntitiesGeomapView.php');
+require_once('lib/views/PostView.php');
+require_once('lib/views/EntitiesView.php');
+require_once('lib/views/admin/EntitiesAutoCompleteView.php');
+require_once('lib/views/TypeSelectionView.php');
+require_once('lib/views/BlogPostingTileView.php');
+require_once('lib/views/BlogPostingListView.php');
 
 /**
  * services classes
@@ -66,6 +80,8 @@ require_once('lib/services/PropertyService.php');
 require_once('lib/services/TermService.php');
 require_once('lib/services/TypeService.php');
 require_once('lib/services/WordLift.php');
+require_once('lib/services/ShortCodeService.php');
+require_once('lib/services/BlogPostingService.php');
 require_once('lib/services/WordLiftSetup.php');
 
 

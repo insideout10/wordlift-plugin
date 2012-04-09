@@ -8,6 +8,7 @@
 define('WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE', 		'io-wordlift-entity');
 
 define('WORDLIFT_20_FIELD_PREFIX',					'io-wordlift-');
+define('WORDLIFT_20_FIELD_NAME',					WORDLIFT_20_FIELD_PREFIX.'name');
 define('WORDLIFT_20_FIELD_SCHEMA_TYPE',				WORDLIFT_20_FIELD_PREFIX.'schema-type');
 define('WORDLIFT_20_FIELD_IMAGE',					WORDLIFT_20_FIELD_PREFIX.'image');
 define('WORDLIFT_20_FIELD_ABOUT',					WORDLIFT_20_FIELD_PREFIX.'url');

@@ -1,6 +1,13 @@
+$admin-entity-item-box-width:110px;
+$admin-entity-item-box-height:110px;
 
-$box-width:110px;
-$box-height:110px;
+$all-entities-view-box-width:75px;
+$all-entities-view-box-height:75px;
+$all-entities-view-box-margin:5px;
+$all-entities-view-font-size:65%;
+
+$box-width:75px;
+$box-height:75px;
 $box-margin:5px;
 
 $box-image-opacity:1.0;
@@ -9,7 +16,7 @@ $box-image-background:white;
 $box-caption-background:white;
 
 $box-font-family:sans-serif;
-$box-font-size:12px;
+$box-font-size:65%;
 $box-font-color:white;
 
 $style-1-color:#7bb34a;
@@ -38,5 +45,8 @@ $entity-person-icon:'../images/person.png';
 $entity-place-icon:'../images/place.png';
 $entity-event-icon:'../images/event.png';
 $entity-product-icon:'../images/product.png';
+
+$entity-accept-icon:'../images/accepted.png';
+$entity-reject-icon:'../images/rejected.png';
 
 $entities-map-view-height:400px;

@@ -59,7 +59,7 @@ class Organization extends Thing {
 	
 	/**
 	 * @type Text
-	 * @description A count of a specific user interactions with this item—for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.
+	 * @description A count of a specific user interactions with this item-for example, 20 UserLikes, 5 UserComments, or 300 UserDownloads. The user interaction type should be one of the sub types of UserInteraction.
 	 */
 	public $interactionCount;
 	

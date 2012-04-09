@@ -13,89 +13,26 @@ require_once('constants.php');
 require_once('dependencies.php');
 
 
-
-
 function display_the_content($content){
-	global $logger, $entity_service, $slug_service;
-
-	$post = $GLOBALS['post'];
+	global $post, $logger, $entity_service, $slug_service;
 	
 	$logger->debug('displaying the content. [post_type:'.$post->post_type.']['.$post->post_name.']');
-
-	/* All Entities page display */ 
-	if ('page' == $post->post_type && WORDLIFT_20_ENTITIES_PAGE_NAME == $post->post_name) {
-		$entities = $entity_service->get_all(-1, 0);
-		$entity_ranking_service = new EntityRankingService();
-		$entity_ranking_service->rank($entities);
-		$all_entities_view = new AllEntitiesView($entities);
-		return $all_entities_view->display();
-	}
-	
-	/* Entities Map page display */
-	if ('page' == $post->post_type && WORDLIFT_20_ENTITIES_MAP_PAGE_NAME == $post->post_name) {
-		$entities = $entity_service->get_all(-1, 0);
-		$entities_map_view = new EntitiesMapView($entities);
-		return $entities_map_view->display();
-	}
 	
 	/* Entity Post display */
 	if (WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE == $post->post_type) {
-		global $entity_post_view;
-		return $entity_post_view->displayPostView($entity_service->create_entity_from_entity_post($post, NULL));
+		$entity = $entity_service->create_entity_from_entity_post($post, NULL);
+		$entity_post_view = new EntityPostView($entity);
+		return $entity_post_view->display();
 	}
 	
 	// we only add entities to posts.
 	if ('post' != $post->post_type) return $content;
-	
-// 	$logger->debug('Adding entities to the content.');
 
-	echo $content;
-	
-// 	$entities 	= $entity_service->get_accepted_entities_by_post_id( $post->ID );
-	$entities 	= $entity_service->get_entities_by_post_id( $post->ID );
-	
-	$terms_body .= '<div style="width: 100%;" id="entities">';
-	foreach ($entities as $entity) {
-		$entity_tile_view = new EntityTileView($entity);
-		$entity_tile_view->display();
-		
-		continue;
-		
-		$label = $entity->text;
-		$description = $entity->properties['description'][0];
-		$url = get_permalink( $entity->post_id );
-		$about = htmlentities($entity->about);
-		
-		$terms_body .= '<div onclick="location.href=\''.$url.'\';" class="isotope-item entity-item '.$entity->type.'" itemscope itemtype="http://schema.org/'.$entity->type.'">';
+	$entities 	= $entity_service->get_accepted_entities_by_post_id( $post->ID );
+	$entities_view = new EntitiesView($entities);
+	$post_view = new PostView($entities_view);
 
-		$terms_body .= '<div class="back">';
-		if (NULL != $entity->properties['image']) {
-			$terms_body .= '<div class="image"><img style="width: 100%;" alt="" onerror="jQuery(this).remove();" src="'.$entity->properties['image'][0].'" /></div>';
-		} else {		
-			$terms_body .= '<div class="description-outer">';
-			$terms_body .= '<div class="description">';
-			$terms_body .= htmlentities($description);
-			$terms_body .= '</div>';
-			$terms_body .= '</div>';
-		}
-		$terms_body .= '</div>';
-
-		$terms_body .= '<div class="front textual">';
-		$terms_body .= '<div class="label">';
-		$terms_body .= '<a itemprop="name" href="'.$url.'">'.htmlentities($label).'</a>';
-		$terms_body .= '</div>';
-		$terms_body .= '<div class="type"></div>';
-		$terms_body .= '</div>';
-		
-		// if (NULL != $entity->reference) 	$terms_body .= '<span itemprop="url">'.$entity->reference.'</span>';
-		// if (NULL != $entity->properties['description']) 	$terms_body .= '<span itemprop="description">'.$entity->properties['description'][0].'</span>';
-		// if (NULL != $entity->properties['thumbnail']) 	$terms_body .= '<img itemprop="thumbnail" src="'.$entity->properties['thumbnail'][0].'" />';
-
-		$terms_body .= '</div>';
-	}
-
-	$terms_body .= '</div>';
-	$terms_body .= '<script type="text/javascript">jQuery(window).ready(function(){wordlift.client.setupUI();});</script>';
+	echo $post_view->getContent($content);	
 
 	return '';
 }

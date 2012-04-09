@@ -1,11 +1,20 @@
 <?php
 
+/**
+ * Provides reflection access to the class properties.
+ */
 class TypeService {
 	
 	public static function create($class_name) {
 		global $logger;
 		
+		if (NULL == $class_name || '' == $class_name)
+			$class_name = 'Thing';
+		
+		$logger->debug('Creating a type for class ['.$class_name.'].');
+		
 		$type = new Type();
+		$type->name = $class_name;
 		
 		try {
 			$class = new ReflectionClass( $class_name );
@@ -33,13 +42,7 @@ class TypeService {
 			$properties[] = PropertyService::create($reference_property);
 		}
 		
-// 		echo var_export($properties,true).'<br/>';
-		
 		return $properties;
-	}
-	
-	public static function get_types() {
-		return array('Thing','Person');
 	}
 	
 	private static function add_properties(&$properties,&$properties_to_add) {

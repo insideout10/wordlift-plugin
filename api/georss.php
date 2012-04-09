@@ -1,13 +1,15 @@
-<?php 
+<?xml version="1.0" encoding="utf-8"?>
+<?php
+/**
+ * This end-point is called to retrieve a GeoRSS version of the entities that have a latitude/longitude.  
+ */
+ 
 require_once('../wordlift.php');
 
-WordLiftSetup::setup();
-
 $logger 	= Logger::getLogger(__FILE__);
-
 $url = get_permalink( get_page_by_path(WORDLIFT_20_ENTITIES_MAP_PAGE_NAME) );
 
-?><?xml version="1.0" encoding="utf-8"?>
+?>
 <feed xmlns="http://www.w3.org/2005/Atom" 
   xmlns:georss="http://www.georss.org/georss">
   <title>Entities</title>
@@ -19,10 +21,9 @@ $url = get_permalink( get_page_by_path(WORDLIFT_20_ENTITIES_MAP_PAGE_NAME) );
     <email></email>
   </author>
   <id><?php echo url ?></id>
-?>
 <?php
 
-	$entities = $entity_service->get_all(-1, 0);
+	$entities = $entity_service->get_all_accepted_entities();
 	
 	foreach ($entities as $entity) {
 		$latitude = $entity->properties['geo-latitude'][0];
@@ -31,9 +32,9 @@ $url = get_permalink( get_page_by_path(WORDLIFT_20_ENTITIES_MAP_PAGE_NAME) );
 		if (NULL == $latitude || NULL == $longitude)
 			continue;
 		
-		$title = htmlentities($entity->text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$title = htmlspecialchars($entity->text, ENT_QUOTES | ENT_XML1, 'UTF-8' );
 		$url = get_permalink($entity->post_id);
-		$summary = htmlentities( substr( $entity->properties['description'][0], 0, 128), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$summary = htmlspecialchars( substr( $entity->properties['description'][0], 0, 128), ENT_QUOTES | ENT_XML1, 'UTF-8' );
 		
 		$latitude = $entity->properties['geo-latitude'][0];
 		$longitude = $entity->properties['geo-longitude'][0];

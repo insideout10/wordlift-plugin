@@ -71,7 +71,7 @@ jQuery(window).ready(function($) {
 					var entityId 	= me.parents('.entity-item').data('post-id');
 
 					$.ajax({
-						url 	: WORDLIFT_20_URL+'accept.php',
+						url 	: WORDLIFT_20_URL+'api/accept.php',
 						data 	: {
 							'post_id'	: WORDLIFT_20_POST_ID,
 							'entity_id'	: entityId
@@ -99,7 +99,7 @@ jQuery(window).ready(function($) {
 					var entityId 	= me.parents('.entity-item').data('post-id');
 
 					$.ajax({
-						url 	: WORDLIFT_20_URL+'reject.php',
+						url 	: WORDLIFT_20_URL+'api/reject.php',
 						data 	: {
 							'post_id'	: WORDLIFT_20_POST_ID,
 							'entity_id'	: entityId
@@ -128,6 +128,24 @@ jQuery(window).ready(function($) {
 	(function($,$wl) {
 
 		io.insideout.wordlift.services 	= {
+			postService   : {
+				bindEntity: function(postId, entityPostId) {
+					$.ajax({
+						url: WORDLIFT_20_URL+'api/post.php',
+						data: {
+							action: 'bind-entity',
+							post: postId,
+							entity: entityPostId
+						},
+						success: function(data, textStatus, jqXHR) {
+							console.log('bindEntity: success');
+						},
+						error: function(jqXHR, textStatus, errorThrown) {
+							console.log('bindEntity: error');
+						}
+					})
+				}
+			},
 			entityService : {
 				getAll 		: function(container) {
 

@@ -1,0 +1,44 @@
+@import "compass/reset";
+@import "constants";
+@import "admin_post_entities";
+
+.postbox label {
+  display:block;
+  text-transform:capitalize;
+}
+
+.postbox .geo {
+  height:260px;
+}
+
+.postbox .geo .properties {
+  width:100%;
+}
+
+.postbox .geo .properties .property {
+  float:left;
+}
+
+.postbox .geo .map {
+  width:90%;
+  height:200px;
+}
+
+.postbox .geo .map #entityMap {
+  height:100%;
+  width:100%;
+}
+
+.postbox input[type=text], .postbox textarea {
+  width:90%;
+  margin-left:-4px;
+}
+
+.postbox .description {
+  font-style:italic;
+  font-size:80%;
+}
+
+.postbox .property {
+  padding-bottom:10px;
+}
