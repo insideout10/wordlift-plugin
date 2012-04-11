@@ -4,6 +4,7 @@
  * log4php
  */
 require_once('lib/externals/log4php/Logger.php');
+require_once('lib/externals/SchemaOrgFramework/SchemaOrgFramework.php');
 
 // Tell log4php to use our configuration file.
 // temporary change the current directory in order to give a well-known context to the log4php configuration.
@@ -23,20 +24,6 @@ $logger = Logger::getLogger('global');
 require_once('lib/views/IShortCode.php');
 require_once('lib/views/IView.php');
 require_once('lib/domain/IEntityPost.php');
-
-/**
- * schema.org inclusions
- */
-require_once('lib/domain/schema/Thing.php');
-require_once('lib/domain/schema/CreativeWork.php');
-require_once('lib/domain/schema/GeoCoordinates.php');
-require_once('lib/domain/schema/Organization.php');
-require_once('lib/domain/schema/Other.php');
-require_once('lib/domain/schema/Place.php');
-require_once('lib/domain/schema/Person.php');
-require_once('lib/domain/schema/Product.php');
-require_once('lib/domain/schema/BlogPosting.php');
-require_once('lib/domain/schema/SchemaOrg.php');
 
 /**
  * domain classes
@@ -65,6 +52,7 @@ require_once('lib/views/admin/EntitiesAutoCompleteView.php');
 require_once('lib/views/TypeSelectionView.php');
 require_once('lib/views/BlogPostingTileView.php');
 require_once('lib/views/BlogPostingListView.php');
+require_once('lib/views/admin/SettingsPageView.php');
 
 /**
  * services classes

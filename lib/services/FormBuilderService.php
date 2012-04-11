@@ -110,10 +110,85 @@ class FormBuilderService {
 <?php				
 					break;	
 				
+				case 'Date':
+					
+					echo <<<EOD
+					
+						<div class="property">
+						<label for="$field_name">$name: </label>
+						<input name="$field_name" value="$field_value" type="text" />
+						<div class="description">$description</div>
+						</div>
+						
+						<script type="text/javascript">
+							jQuery(function($) {
+								$( 'input[name=$field_name]' ).datepicker();
+							});
+						</script>
+
+EOD;
+					
+					break;
+											
 				default:
-// 					echo '<div class="property">';
-// 					echo 'Type &quot;'.$type.'&quot; not supported for field &quot;'.$name.'&quot;.';
-// 					echo '</div>';					
+					
+					if (false == SchemaOrgFramework::isSchemaSupported($type)) {
+					
+						echo '<div class="property">';
+						echo 'Type &quot;'.$type.'&quot; not supported for field &quot;'.$name.'&quot;.';
+						echo '</div>';
+						
+						return;
+					}
+
+					echo '<a href="post-new.php?post_type=' . HtmlService::htmlEncode(WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE) . '">Create new ' . HtmlService::htmlEncode($type) . '</a><br/>';
+
+					echo <<<EOD
+			
+						<div class="property">
+						<label for="$field_name">$name: </label>
+						<input name="$field_name" value="$field_value" type="text" />
+						<div class="description">$description</div>
+						</div>
+					
+						<script type="text/javascript">
+							jQuery(function($) {
+							
+								$('input[name=$field_name]').autocomplete({
+									source: function( request, response ) {
+										$.ajax({
+											url: '/wordlift/wp-content/plugins/wordlift/lib/externals/SchemaOrgFramework/api/http.php',
+											dataType: "jsonp",
+											data: {
+												schema: '$type',
+												name: request.term
+											},
+											success: function( data ) {
+												response( $.map( data, function( item ) {
+													return {
+														label: item.name + ' (' + unescape(item.url) + ')',
+														value: item.url
+													}
+												}));
+											}
+										});
+									},
+									minLength: 2,
+									select: function( event, ui ) {
+									},
+									open: function() {
+										$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
+									},
+									close: function() {
+										$( this ).removeClass( "ui-corner-top" ).addClass( "ui-corner-all" );
+									}
+								});
+							});
+						</script>
+					
+EOD;
+			
+					
 			}
 		}
 		

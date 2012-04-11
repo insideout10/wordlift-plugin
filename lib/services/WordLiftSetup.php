@@ -52,6 +52,7 @@ class WordLiftSetup {
 		add_filter('the_content', 			'display_the_content' );
 		// uncomment this to enable a custom menu.
 		// add_action('admin_menu', 			'create_admin_menu');
+		add_action( 'admin_menu', 			array('wordliftsetup', 'createSettingsMenu'));
 
 		add_filter( 'manage_'.WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE.'_posts_columns' , 		array('WordLiftSetup', 'manage_entities_columns'));
 		add_action( 'manage_'.WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE.'_posts_custom_column' , 	array('WordLiftSetup', 'manage_entities_custom_column'), 10, 2);
@@ -60,6 +61,15 @@ class WordLiftSetup {
 		ShortCodeService::registerShortCodes();
 
 		self::$logger->debug('Set-up complete.');
+	}
+	
+	/**
+	 * Creates an entry for the configuration page of WordLift in the Settings menu (Admin). 
+	 */
+	public function createSettingsMenu() {
+		// http://codex.wordpress.org/Function_Reference/add_options_page
+		$settings_view_page = new SettingsPageView();
+		add_options_page( 'WordLift settings', 'WordLift', 'manage_options', 'wordlift-20-settings', array($settings_view_page, 'display') );
 	}
 
 	function create_all_entities_page() {
@@ -181,7 +191,10 @@ class WordLiftSetup {
 		
 		// jQuery UI scripts and style-sheets.
 		wp_enqueue_style('jquery-ui-lightness-css',
-				plugins_url('/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.18.custom.css', WORDLIFT_20_ROOT_PATH));
+// 						'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css'
+						'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css'
+// 						,plugins_url('/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.18.custom.css',WORDLIFT_20_ROOT_PATH)
+			);
 		
 		wp_enqueue_script('jquery-ui',
 				'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',

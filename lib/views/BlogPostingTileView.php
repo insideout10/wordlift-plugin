@@ -8,13 +8,17 @@ class BlogPostingTileView implements IView {
 	// The BlogPosting to display.
 	private $blog_posting;
 	
+	// If true, will echo the schema.org tags.
+	private $enable_schema_org;
+	
 	const CLASS_NAME = 'blog-posting-tile-view';
 	
 	/**
 	 * Creates an instance of the BlogPostingTileView by passing the BlogPosting to display.
 	 */
-	function __construct(&$blog_posting) {
+	function __construct(&$blog_posting,$enable_schema_org=false) {
 		$this->blog_posting = $blog_posting;
+		$this->enable_schema_org = $enable_schema_org;
 	}
 	
 	/**
@@ -46,17 +50,32 @@ class BlogPostingTileView implements IView {
 		$date_created = HtmlService::htmlEncode($this->blog_posting->dateCreated);
 		$date_modified = HtmlService::htmlEncode($this->blog_posting->dateModified);
 		$date_published = HtmlService::htmlEncode($this->blog_posting->datePublished);
-		
-		return <<<EOD
 
-		<div class="$class_name">
-			<div class="name">$name_with_link</div>
-			<div class="description">$description</div>
-			<div class="date-published">$date_published</div>
-		</div>
+		if (true == $this->enable_schema_org) {
 		
+			$content = <<<EOD
+
+				<div itemscope itemtype="http://schema.org/BlogPosting" class="$class_name">
+					<div itemprop="name" class="name"><a itemprop="url" href="$url">$name</a></div>
+					<div itemprop="description" class="description">$description</div>
+					<div itemprop="datePublished" class="date-published">$date_published</div>
+				</div>		
 EOD;
 		
+		} else {
+
+			$content = <<<EOD
+			
+				<div class="$class_name">
+					<div class="name"><a href="$url">$name</a></div>
+					<div class="description">$description</div>
+					<div class="date-published">$date_published</div>
+				</div>
+EOD;
+		}
+
+		return $content;
+			
 	}
 	
 }

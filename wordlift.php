@@ -12,7 +12,6 @@ License: APL
 require_once('constants.php');
 require_once('dependencies.php');
 
-
 function display_the_content($content){
 	global $post, $logger, $entity_service, $slug_service;
 	

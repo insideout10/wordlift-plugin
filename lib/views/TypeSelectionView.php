@@ -14,7 +14,7 @@ class TypeSelectionView {
 	
 	public function getContent($content='') {
 
-		$types = SchemaOrg::getSupportedTypes();
+		$types = SchemaOrgFramework::getSchemas();
 		
 		$schema_type = WORDLIFT_20_FIELD_SCHEMA_TYPE;
 		
