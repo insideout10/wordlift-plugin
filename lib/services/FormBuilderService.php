@@ -28,11 +28,11 @@ class FormBuilderService {
 		
 		foreach ($type->properties as $property) {
 			
-			$name = htmlentities($property->name);
-			$description = htmlentities($property->description);
+			$name = HtmlService::htmlEncode($property->name);
+			$description = HtmlService::htmlEncode($property->description);
 			$type = $property->type;
-			$field_name = htmlentities($field_prefix.$name);
-			$field_value = htmlentities($meta[$field_name][0]);
+			$field_name = HtmlService::htmlEncode($field_prefix.$name);
+			$field_value = HtmlService::htmlEncode($meta[$field_name][0]);
 			
 			switch ($type) {
 				case 'Text';
@@ -141,14 +141,15 @@ EOD;
 						return;
 					}
 
-					echo '<a href="post-new.php?post_type=' . HtmlService::htmlEncode(WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE) . '">Create new ' . HtmlService::htmlEncode($type) . '</a><br/>';
-
 					echo <<<EOD
 			
 						<div class="property">
 						<label for="$field_name">$name: </label>
 						<input name="$field_name" value="$field_value" type="text" />
 						<div class="description">$description</div>
+						<select id="$field_name" name="$field_name" multiple="multiple" size="5">
+						</select>
+						<a href="javascript:jQuery('#$field_name option:selected').remove();">remove</a>
 						</div>
 					
 						<script type="text/javascript">
@@ -175,6 +176,12 @@ EOD;
 									},
 									minLength: 2,
 									select: function( event, ui ) {
+										if (0 === $('#$field_name option[value="' + ui.item.value + '"]').length) {
+											$('#$field_name').append('<option value="' + ui.item.value + '">' + ui.item.label + '</option>');
+										}
+
+										event.target.value = '';
+										return false; 
 									},
 									open: function() {
 										$( this ).removeClass( "ui-corner-all" ).addClass( "ui-corner-top" );
