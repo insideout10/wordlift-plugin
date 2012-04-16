@@ -54,15 +54,15 @@ define('WORDLIFT_20_ENTITIES_MAP_PAGE_NAME',		'entities-map');
  * some helpful variables
  ************************************************************************************/
 // get the base folder for plugins_url translations.
-$base = __FILE__;
-
+// $base = __FILE__;
+require_once __DIR__ . '/lib/externals/WordPressFramework/WordPressFramework.php';
+$base = WordPressFramework::getPluginDir('ec20e942-0fd9-4780-af19-86919129638b') . 'fake';
 // load WordPress
-require_once( dirname(dirname(dirname(dirname(__FILE__)))).'/wp-load.php' );
+// require_once( dirname(dirname(dirname(dirname(__FILE__)))).'/wp-load.php' );
 
-define('WORDLIFT_20_ROOT_PATH', 					$base);
-define('WORDLIFT_20_PLUGIN_DIR', 					'wordlift/');
+define('WORDLIFT_20_ROOT_PATH', 					$base . 'wordlift.php');
+define('WORDLIFT_20_PLUGIN_DIR', 					basename(WORDLIFT_20_ROOT_PATH) . '/');
 define('WORDLIFT_20_CHAIN_NAME', 					'default');
-
 
 /************************************************************************************
  * End-Points

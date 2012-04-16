@@ -274,6 +274,8 @@ class WordLiftSetup {
 								'choose_from_most_used' => _x('Choose from the most used Entities', ''),
 								'menu_name'		=> _x('Entities', '')
 						),
+						'exclude_from_search'   => false,
+						'publicly_queryable'	=> true,
 						'description' 			=> 'The entities found in this blog.',
 						'public' 				=> true,
 						'has_archive' 			=> true,
@@ -281,7 +283,11 @@ class WordLiftSetup {
 						'menu_position' 		=> WORDLIFT_20_ADMIN_MENU_POSITION,
 						'supports' 				=> $supports,
 						'register_meta_box_cb' 	=> array( $entity_meta_box, 'register_meta_box_cb'),
-						'rewrite' 				=> array( 'slug' => WORDLIFT_20_ENTITIES_SLUG )
+						'rewrite' 				=> array( 'slug' => WORDLIFT_20_ENTITIES_SLUG ),
+						'taxonomies'			=> array(
+														'category',
+														'post_tag'
+													)
 				)
 		);
 
