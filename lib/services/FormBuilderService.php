@@ -26,13 +26,16 @@ class FormBuilderService {
 		$type_selection_view = new TypeSelectionView($type->name);
 		echo $type_selection_view->getContent();
 		
+		// we want a case-insensitive look-up to avoid issues with WordLift importer, where usually keys are all lowercase.
+		$meta_lower_case = array_change_key_case($meta);
+		
 		foreach ($type->properties as $property) {
 			
 			$name = HtmlService::htmlEncode($property->name);
 			$description = HtmlService::htmlEncode($property->description);
 			$type = $property->type;
 			$field_name = HtmlService::htmlEncode($field_prefix.$name);
-			$field_value = HtmlService::htmlEncode($meta[$field_name][0]);
+			$field_value = HtmlService::htmlEncode($meta_lower_case[strtolower($field_name)][0]);
 			
 			switch ($type) {
 				case 'Text';
