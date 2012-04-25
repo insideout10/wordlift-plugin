@@ -2,8 +2,6 @@ var io;
 
 jQuery(window).ready(function($) {
 
-	console.log('WordLift initializing...');
-
 	io = {
 		insideout : {
 			wordlift : {

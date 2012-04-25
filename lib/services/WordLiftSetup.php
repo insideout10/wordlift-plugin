@@ -2,6 +2,7 @@
 
 /**
  * This class is responsible for setting up the plug-in in WordPress.
+ * @requires WordPressFramework [01].
  */
 class WordLiftSetup {
 
@@ -11,7 +12,7 @@ class WordLiftSetup {
 	/*
 	 * Sets up the WordLift plug-in pre-requisites.
 	*/
-	function setup() {
+	function load() {
 		global $entities_box_service, $wordlift, $entity_service;
 
 		self::$logger = Logger::getLogger(__CLASS__);
@@ -196,12 +197,12 @@ class WordLiftSetup {
 // 						,plugins_url('/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.18.custom.css',WORDLIFT_20_ROOT_PATH)
 			);
 		
-		wp_enqueue_script('jquery-ui',
-				'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
-// 				plugins_url('/js/jquery-ui/js/jquery-ui-1.8.18.custom.min.js', WORDLIFT_20_ROOT_PATH),
-				array('jquery'),
-				false,
-				false);
+//      wp_enqueue_script('jquery-ui',
+//              'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
+// //               plugins_url('/js/jquery-ui/js/jquery-ui-1.8.18.custom.min.js', WORDLIFT_20_ROOT_PATH),
+//              array('jquery'),
+//              false,
+//              false);
 
 		wp_enqueue_style('wordlift-screen.css',
 				plugins_url('/css/screen.css', WORDLIFT_20_ROOT_PATH));
@@ -221,11 +222,11 @@ class WordLiftSetup {
 				false,
 				true);
 
-		wp_enqueue_script('jquery.isotope',
-				plugins_url('/js/jquery.isotope.min.js', WORDLIFT_20_ROOT_PATH),
-				array('jquery'),
-				false,
-				true);
+        wp_enqueue_script('jquery.isotope',
+             plugins_url('/js/jquery.isotope.min.js', WORDLIFT_20_ROOT_PATH),
+             array('jquery'),
+             false,
+             true);
 
 		wp_enqueue_script('openlayers',
 				'http://www.openlayers.org/api/OpenLayers.js',

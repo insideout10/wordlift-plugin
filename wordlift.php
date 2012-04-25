@@ -11,6 +11,7 @@ License: APL
 
 require_once('constants.php');
 require_once('dependencies.php');
+require_once('WordLiftPlugin.php');
 
 function display_the_content($content){
 	global $post, $logger, $entity_service, $slug_service;
@@ -151,5 +152,6 @@ function create_admin_add_new() {
 	$logger->debug('create_admin_add_new');
 }
 
-add_action('init', 					array('wordliftsetup', 			'setup'));
+PlugInService::load('WordLiftSetup');
+
 ?>
