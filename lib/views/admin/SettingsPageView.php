@@ -2,6 +2,12 @@
 
 /**
  * Displays the settings page.
+ * @service options_page
+ * @title WordLift settings
+ * @menu WordLift
+ * @capability manage_options
+ * @slug wordlift-20-settings
+ * @callback display
  */
 class SettingsPageView implements IView {
 	

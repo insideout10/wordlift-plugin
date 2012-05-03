@@ -40,15 +40,13 @@ class FormBuilderService {
 			switch ($type) {
 				case 'Text';
 					echo '<div class="property">';
-					echo '<label for="'.$field_name.'">'.$name.': </label>';
+					echo '<label for="'.$field_name.'">' . $name . ': </label>';
+					echo '<div class="description">' . $description . '</div>';
 					
-					if (true == $property->multiline) {
+					if (true == $property->multiline)
 						echo '<textarea name="'.$field_name.'">'.$field_value.'</textarea>';
-						echo '<div class="description">'.$description.'</div>';
-					} else {
+                    else
 						echo '<input name="'.$field_name.'" value="'.$field_value.'" type="text" />';
-						echo '<div class="description">'.$description.'</div>';
-					}
 					
 					echo '</div>';
 					
@@ -57,8 +55,8 @@ class FormBuilderService {
 				case 'URL';
 					echo '<div class="property">';
 					echo '<label for="'.$field_name.'">'.$name.': </label>';					
-					echo '<input name="'.$field_name.'" value="'.$field_value.'" type="text" />';
 					echo '<div class="description">'.$description.'</div>';
+					echo '<input name="'.$field_name.'" value="'.$field_value.'" type="text" />';
 					echo '</div>';
 					
 					break;
@@ -119,8 +117,8 @@ class FormBuilderService {
 					
 						<div class="property">
 						<label for="$field_name">$name: </label>
-						<input name="$field_name" value="$field_value" type="text" />
 						<div class="description">$description</div>
+						<input name="$field_name" value="$field_value" type="text" />
 						</div>
 						
 						<script type="text/javascript">
@@ -148,8 +146,8 @@ EOD;
 			
 						<div class="property">
 						<label for="$field_name">$name: </label>
-						<input name="$field_name" value="$field_value" type="text" />
 						<div class="description">$description</div>
+						<input name="$field_name" value="$field_value" type="text" />
 						<select id="$field_name" name="$field_name" multiple="multiple" size="5">
 						</select>
 						<a href="javascript:jQuery('#$field_name option:selected').remove();">remove</a>
@@ -161,7 +159,8 @@ EOD;
 								$('input[name=$field_name]').autocomplete({
 									source: function( request, response ) {
 										$.ajax({
-											url: '/wordlift/wp-content/plugins/wordlift/lib/externals/SchemaOrgFramework/api/http.php',
+											url: 'admin-ajax.php?action=schema-org.posts',
+											// '/wordlift/wp-content/plugins/wordlift/lib/externals/SchemaOrgFramework/api/http.php'
 											dataType: "jsonp",
 											data: {
 												schema: '$type',
@@ -170,7 +169,7 @@ EOD;
 											success: function( data ) {
 												response( $.map( data, function( item ) {
 													return {
-														label: item.name + ' (' + unescape(item.url) + ')',
+														label: item.name + ' (' + unescape(item['@type']) + ')',
 														value: item.url
 													}
 												}));

@@ -53,10 +53,17 @@ class WordLiftSetup {
 		add_filter('the_content', 			'display_the_content' );
 		// uncomment this to enable a custom menu.
 		// add_action('admin_menu', 			'create_admin_menu');
-		add_action( 'admin_menu', 			array('wordliftsetup', 'createSettingsMenu'));
+		add_action( 'admin_menu', create_function('', "OptionsPageService::load('SettingsPageView');"));
 
+        // from WordPress 3.1 onward...
+        /*
 		add_filter( 'manage_'.WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE.'_posts_columns' , 		array('WordLiftSetup', 'manage_entities_columns'));
 		add_action( 'manage_'.WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE.'_posts_custom_column' , 	array('WordLiftSetup', 'manage_entities_custom_column'), 10, 2);
+		*/
+
+        // before WordPress 3.1
+		add_action( 'manage_edit-' . WordLiftPlugin::POST_TYPE . '_columns' , 	array('WordLiftSetup', 'manage_entities_columns'), 10, 2);
+		add_action( "manage_posts_custom_column" , 	array('WordLiftSetup', 'manage_entities_custom_column'), 10, 2);
 		
 		// add short-codes.
 		ShortCodeService::registerShortCodes();
@@ -64,15 +71,6 @@ class WordLiftSetup {
 		self::$logger->debug('Set-up complete.');
 	}
 	
-	/**
-	 * Creates an entry for the configuration page of WordLift in the Settings menu (Admin). 
-	 */
-	public function createSettingsMenu() {
-		// http://codex.wordpress.org/Function_Reference/add_options_page
-		$settings_view_page = new SettingsPageView();
-		add_options_page( 'WordLift settings', 'WordLift', 'manage_options', 'wordlift-20-settings', array($settings_view_page, 'display') );
-	}
-
 	function create_all_entities_page() {
 		$page = get_page_by_path(WORDLIFT_20_ENTITIES_PAGE_NAME);
 
@@ -197,12 +195,12 @@ class WordLiftSetup {
 // 						,plugins_url('/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.18.custom.css',WORDLIFT_20_ROOT_PATH)
 			);
 		
-//      wp_enqueue_script('jquery-ui',
-//              'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
-// //               plugins_url('/js/jquery-ui/js/jquery-ui-1.8.18.custom.min.js', WORDLIFT_20_ROOT_PATH),
-//              array('jquery'),
-//              false,
-//              false);
+     wp_enqueue_script('jquery-ui',
+             'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js',
+//               plugins_url('/js/jquery-ui/js/jquery-ui-1.8.18.custom.min.js', WORDLIFT_20_ROOT_PATH),
+             array('jquery'),
+             false,
+             false);
 
 		wp_enqueue_style('wordlift-screen.css',
 				plugins_url('/css/screen.css', WORDLIFT_20_ROOT_PATH));
@@ -210,11 +208,11 @@ class WordLiftSetup {
 		wp_enqueue_style('jquery.isotope.css',
 				plugins_url('/css/jquery.isotope.css', WORDLIFT_20_ROOT_PATH));
 
-		wp_enqueue_script('underscore',
-				plugins_url('/js/underscore-min.js', WORDLIFT_20_ROOT_PATH),
-				array(),
-				false,
-				true);
+        // wp_enqueue_script('underscore',
+        //      plugins_url('/js/underscore-min.js', WORDLIFT_20_ROOT_PATH),
+        //      array(),
+        //      false,
+        //      true);
 
 		wp_enqueue_script('backbone',
 				plugins_url('/js/backbone-min.js', WORDLIFT_20_ROOT_PATH),
@@ -234,11 +232,11 @@ class WordLiftSetup {
 				false,
 				false);
 
-		// 		wp_enqueue_script('insideout-wordlift',
-		// 			plugins_url('/js/insideout-wordlift.js', WORDLIFT_20_ROOT_PATH),
-		// 			array('backbone'),
-		// 			false,
-		// 			false);
+        wp_enqueue_script('insideout-wordlift',
+            plugins_url('/js/insideout-wordlift.js', WORDLIFT_20_ROOT_PATH),
+            array('backbone'),
+            false,
+            false);
 
 		echo '<script type="text/javascript"> var WORDLIFT_20_URL = \''.plugins_url('/', WORDLIFT_20_ROOT_PATH).'\'; var WORDLIFT_20_POST_ID = \''.get_the_ID().'\'; var WORDLIFT_20_NO_PREVIEW_URL = WORDLIFT_20_URL+\'images/nopreview.jpg\';</script>';
 	}

@@ -154,4 +154,8 @@ function create_admin_add_new() {
 
 PlugInService::load('WordLiftSetup');
 
+require_once "lib/externals/SchemaOrgFramework/SchemaOrgFramework.php";
+AjaxService::load('SchemaServices');
+
+
 ?>
