@@ -32,9 +32,7 @@ function display_the_content($content){
 	$entities_view = new EntitiesView($entities);
 	$post_view = new PostView($entities_view);
 
-	echo $post_view->getContent($content);	
-
-	return '';
+	return $post_view->getContent($content);
 }
 
 function create_admin_menu() {

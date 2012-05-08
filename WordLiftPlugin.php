@@ -14,7 +14,11 @@ spl_autoload_register(array('WordLiftPlugin', 'autoload'));
 class WordLiftPlugin {
     
     const POST_TYPE = "io-wordlift-entity";
+
     const FIELD_PREFIX = "io-wordlift-";
+    const SCHEMA_TYPE = "io-wordlift-schema-type";
+
+    const ACCEPTED_POSTS = "_io-wordlift-posts-accepted";
 
 	// the list of classes part of this framework, for autoloading.
 	private static $_classes = array(

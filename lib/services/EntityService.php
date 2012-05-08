@@ -167,9 +167,9 @@ class EntityService {
 	function get_accepted_entities_by_post_id(&$post_id) {
 		$args = array(
 				'numberposts' 	=> -1,
-				'post_status' 	=> array('publish','pending','draft','auto-draft','future','private','inherit'),
-				'post_type'   	=> WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE,
-				'meta_key'  	=> WORDLIFT_20_ENTITY_ACCEPTED,
+				'post_status' 	=> "publish, pending, draft, auto-draft, future, private, inherit", // array(),
+				'post_type'   	=> WordLiftPlugin::POST_TYPE,
+				'meta_key'  	=> WordLiftPlugin::ACCEPTED_POSTS,
 				'meta_value'	=> $post_id,
 				'meta_compare'  => 'IN'
 		);
