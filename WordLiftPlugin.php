@@ -22,6 +22,9 @@ class WordLiftPlugin {
 
 	// the list of classes part of this framework, for autoloading.
 	private static $_classes = array(
+	    "JobServices" => "/lib/services/JobServices.php",
+	    "EntitiesServices" => "/lib/services/EntitiesServices.php",
+	    "SlugService" => "/lib/services/SlugService.php"
 	);
 
 	/**
