@@ -7,12 +7,16 @@ class EntityService {
 
 	// The logger instance.
 	private $logger;
+	
+	private $slugService;
 
 	/**
 	 * Initialize the class.
 	 */
-	function __construct() {
+	function __construct($slugService) {
 		$this->logger = Logger::getLogger(__CLASS__);
+		
+		$this->slugService = $slugService;
 	}
 
 	/**
@@ -282,6 +286,7 @@ class EntityService {
 	}
 
 	function create( &$entity_array ) {
+	    $this->logger->debug("Creating a new entity.");
 
 		$entity 			= new Entity();
 
@@ -294,8 +299,12 @@ class EntityService {
 		$entity->rank 		= $entity_array->rank;
 		$entity->properties = $entity_array->properties;
 
-		$entity->slug 		= $this->slug_service->get_slug($entity);
-
+	    if (null === $this->slugService) {
+	        $this->logger->warn("The slugService is not set.");
+	    } else {
+		    $entity->slug 		= $this->slugService->get_slug($entity);
+        }
+    
 		return $entity;
 	}
 
@@ -330,6 +339,7 @@ class EntityService {
 	}
 
 	function save( &$entity ) {
+	    $this->logger->debug("Saving an entity.");
 
 		$post_id 			= $this->get_entity_post_id($entity);
 		$action				= (false != $post_id ? 'updated' : 'created');
@@ -344,7 +354,7 @@ class EntityService {
 		);
 
 		if (true == $wp_error) {
-			$logger->error('An error occurred while creating a new post ['.var_export($wp_error,true).'].');
+			$this->logger->error('An error occurred while creating a new post ['.var_export($wp_error,true).'].');
 			return null;
 		}
 
@@ -357,5 +367,7 @@ class EntityService {
 	}
 }
 
-$entity_service = new EntityService( $slug_service );
+$entity_service = new EntityService(
+        new SlugService()
+    );
 ?>
