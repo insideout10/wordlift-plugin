@@ -154,6 +154,7 @@ PlugInService::load('WordLiftSetup');
 
 require_once "lib/externals/SchemaOrgFramework/SchemaOrgFramework.php";
 AjaxService::load('SchemaServices');
-
+AjaxService::load('JobServices');
+AjaxService::load('EntitiesServices');
 
 ?>
