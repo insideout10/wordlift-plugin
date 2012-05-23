@@ -67,8 +67,8 @@ define('WORDLIFT_20_CHAIN_NAME', 					'default');
 /************************************************************************************
  * End-Points
  ************************************************************************************/
-define('WORDLIFT_20_URLS_ENHANCE_TEXT',				'http://localhost:8081/insideout10/enhance/text');
-define('WORDLIFT_20_URLS_ON_COMPLETE', 				plugins_url('api/complete.php', $base));
-define('WORDLIFT_20_URLS_ON_PROGRESS', 				plugins_url('api/progress.php', $base));
+define('WORDLIFT_20_URLS_ENHANCE_TEXT',				'http://stanbol-01.insideout.io/wordlift/enhance/text');
+define('WORDLIFT_20_URLS_ON_COMPLETE', 				admin_url("admin-ajax.php?action=wordlift.job-complete"));
+define('WORDLIFT_20_URLS_ON_PROGRESS', 				admin_url("admin-ajax.php?action=wordlift.job-progress"));
 
 ?>
