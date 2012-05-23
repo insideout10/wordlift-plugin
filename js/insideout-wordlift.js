@@ -24,7 +24,7 @@
 
 	wordlift.domain.EntitiesCollection = Backbone.Collection.extend({
 		model: Backbone.Model.extend({}),
-		url  : WORDLIFT_20_URL+'api/entities.php',
+		url  : 'admin-ajax.php?action=wordlift.entities',
 		parse: function(response) {
 			return response.entities;
 		},
