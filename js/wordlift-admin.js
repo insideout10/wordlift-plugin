@@ -15,7 +15,7 @@ jQuery(window).ready(function($) {
 	io.insideout.wordlift.models 	= {
 		entityCollection: Backbone.Collection.extend({
 			model: Backbone.Model.extend({}),
-			url  : WORDLIFT_20_URL+'api/entities.php',
+			url  : 'admin-ajax.php?action=wordlift.entities',
 			parse: function(response) {
 				return response.entities;
 			},
@@ -69,7 +69,7 @@ jQuery(window).ready(function($) {
 					var entityId 	= me.parents('.entity-item').data('post-id');
 
 					$.ajax({
-						url 	: WORDLIFT_20_URL+'api/accept.php',
+						url 	: 'admin-ajax.php?action=wordlift.accept-entity',
 						data 	: {
 							'post_id'	: WORDLIFT_20_POST_ID,
 							'entity_id'	: entityId
@@ -97,7 +97,7 @@ jQuery(window).ready(function($) {
 					var entityId 	= me.parents('.entity-item').data('post-id');
 
 					$.ajax({
-						url 	: WORDLIFT_20_URL+'api/reject.php',
+						url 	: 'admin-ajax.php?action=reject-entity',
 						data 	: {
 							'post_id'	: WORDLIFT_20_POST_ID,
 							'entity_id'	: entityId
