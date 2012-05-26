@@ -11,8 +11,8 @@ require_once('lib/externals/SchemaOrgFramework/SchemaOrgFramework.php');
 // Tell log4php to use our configuration file.
 // temporary change the current directory in order to give a well-known context to the log4php configuration.
 $current_directory = getcwd();
-chdir(__DIR__);
-Logger::configure(__DIR__.'/private/config/log4php.xml');
+chdir(dirname(__FILE__));
+Logger::configure(dirname(__FILE__).'/private/config/log4php.xml');
 // return to the initial working directory.
 chdir($current_directory);
 
