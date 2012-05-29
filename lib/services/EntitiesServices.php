@@ -77,6 +77,62 @@ class EntitiesServices {
         $entity_service->reject_entity_for_post($entity_id, $post_id);
     }
 
+    /**
+     * @service ajax
+     * @action wordlift.georss
+     */
+    public function geoRss() {
+        global $entity_service;
+        
+        echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+
+        $url = get_permalink( get_page_by_path(WORDLIFT_20_ENTITIES_MAP_PAGE_NAME) );
+
+echo <<<EOD
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss">
+    <title>Entities</title>
+    <subtitle>Geo-located Entities</subtitle>
+    <link href="$url"/>
+    <updated>2005-12-13T18:30:02Z</updated>
+    <author>
+    <name></name>
+    <email></email>
+    </author>
+    <id>$url</id>
+EOD;
+
+        $entities = $entity_service->get_all_accepted_entities();
+
+        foreach ($entities as $entity) {
+        	$latitude = $entity->properties['geo-latitude'][0];
+        	$longitude = $entity->properties['geo-longitude'][0];
+
+        	if (NULL == $latitude || NULL == $longitude)
+        		continue;
+
+        	$title = htmlspecialchars($entity->text, ENT_QUOTES | ENT_XML1, 'UTF-8' );
+        	$url = get_permalink($entity->post_id);
+        	$summary = htmlspecialchars( substr( $entity->properties['description'][0], 0, 128), ENT_QUOTES | ENT_XML1, 'UTF-8' );
+
+        	$latitude = $entity->properties['geo-latitude'][0];
+        	$longitude = $entity->properties['geo-longitude'][0];
+        
+echo <<<EOD
+    <entry>
+        <title>$title</title>
+        <link href="$url"/>
+        <id>$url</id>
+        <summary>summary</summary>
+        <georss:point>$latitude $longitude</georss:point>
+    </entry>
+</feed>
+EOD;
+
+            return AjaxService::CALLBACK_RETURN_NULL;
+
+        }
+  }
+
 }
 
 ?>
