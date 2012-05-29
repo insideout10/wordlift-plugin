@@ -13,7 +13,7 @@ class EntityService {
 	/**
 	 * Initialize the class.
 	 */
-	function __construct($slugService) {
+	function __construct($slugService = null) {
 		$this->logger = Logger::getLogger(__CLASS__);
 		
 		$this->slugService = $slugService;
