@@ -104,34 +104,31 @@ EOD;
         $entities = $entity_service->get_all_accepted_entities();
 
         foreach ($entities as $entity) {
-        	$latitude = $entity->properties['geo-latitude'][0];
-        	$longitude = $entity->properties['geo-longitude'][0];
+        	$latitude = $entity->properties['latitude'][0];
+        	$longitude = $entity->properties['longitude'][0];
 
-        	if (NULL == $latitude || NULL == $longitude)
-        		continue;
+            if (NULL == $latitude || NULL == $longitude)
+             continue;
 
         	$title = htmlspecialchars($entity->text, ENT_QUOTES | ENT_XML1, 'UTF-8' );
         	$url = get_permalink($entity->post_id);
         	$summary = htmlspecialchars( substr( $entity->properties['description'][0], 0, 128), ENT_QUOTES | ENT_XML1, 'UTF-8' );
 
-        	$latitude = $entity->properties['geo-latitude'][0];
-        	$longitude = $entity->properties['geo-longitude'][0];
-        
 echo <<<EOD
     <entry>
         <title>$title</title>
         <link href="$url"/>
         <id>$url</id>
-        <summary>summary</summary>
+        <summary>$summary</summary>
         <georss:point>$latitude $longitude</georss:point>
     </entry>
-</feed>
 EOD;
-
-            return AjaxService::CALLBACK_RETURN_NULL;
-
         }
-  }
+
+        echo "</feed>\n";
+
+        return AjaxService::CALLBACK_RETURN_NULL;
+    }
 
 }
 
