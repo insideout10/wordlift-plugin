@@ -10,8 +10,10 @@ class EntitiesAutoCompleteView {
 	}
 	
 	public function getContent($content='') {
+
+        $url = WORDLIFT_20_URLS_ENTITIES_BY_NAME;
 		
-		return <<<EOD
+return <<<EOD
 
 		
 <script type="text/javascript">
@@ -20,13 +22,13 @@ class EntitiesAutoCompleteView {
 			$( '#entity-name' ).autocomplete({
 				source: function( request, response ) {
 					$.ajax({
-						url: WORDLIFT_20_URL+'api/e.php',
+						url: '$url',
 						dataType: "jsonp",
 						data: {
 							name: request.term
 						},
 						success: function( data ) {
-							response( $.map( data.entities, function( item ) {
+							response( $.map( data, function( item ) {
 								return {
 									label: item.text + '('+item.type+')',
 									value: item.post_id

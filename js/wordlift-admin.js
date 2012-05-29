@@ -129,9 +129,9 @@ jQuery(window).ready(function($) {
 			postService   : {
 				bindEntity: function(postId, entityPostId) {
 					$.ajax({
-						url: WORDLIFT_20_URL+'api/post.php',
+						url: 'admin-ajax.php',
 						data: {
-							action: 'bind-entity',
+							action: 'wordlift.bind-entity',
 							post: postId,
 							entity: entityPostId
 						},

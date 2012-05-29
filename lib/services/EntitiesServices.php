@@ -44,6 +44,21 @@ class EntitiesServices {
     
     /**
      * @service ajax
+     * @action wordlift.entities-by-name
+     * @authentication none
+     */
+    public function entitiesByName( $name = null, $limit = -1, $offset = 0 ) {
+        global $entity_service;
+
+        // create the entity service and find all the entities that contain that name.
+        $entity_service = new EntityService();
+        $entities = $entity_service->findEntitiesByName($name);
+        
+        return $entities;
+    }
+    
+    /**
+     * @service ajax
      * @action wordlift.accept-entity
      * @authentication edit_posts
      */
@@ -75,6 +90,23 @@ class EntitiesServices {
         }
 
         $entity_service->reject_entity_for_post($entity_id, $post_id);
+    }
+
+    /**
+     * @service ajax
+     * @action wordlift.bind-entity
+     * @authentication edit_posts
+     */
+    public function bindEntity($entity, $post) {
+        global $entity_service;
+        
+        /**
+         * Binds and entity to a post.
+         */
+    	$entity_service->bind_entity_to_post($entity, $post);
+    	$entity_service->accept_entity_for_post($entity, $post);
+
+    	return true;
     }
 
     /**

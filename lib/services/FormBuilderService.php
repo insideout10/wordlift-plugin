@@ -68,7 +68,7 @@ class FormBuilderService {
 					
 					echo '<div class="property">';
 					
-					$field_name = htmlentities($field_prefix.'geo-latitude');
+					$field_name = htmlentities(WORDLIFT_20_FIELD_LATITUDE);
 					$latitude = htmlentities($meta[$field_name][0]);
 					echo '<label for="'.$field_name.'">Latitude: </label>';
 					echo '<input name="'.$field_name.'" value="'.$latitude.'" type="text" />';
@@ -76,7 +76,7 @@ class FormBuilderService {
 					echo '</div>';
 					echo '<div class="property">';
 					
-					$field_name = htmlentities($field_prefix.'geo-longitude');
+					$field_name = htmlentities(WORDLIFT_20_FIELD_LONGITUDE);
 					$longitude = htmlentities($meta[$field_name][0]);
 					echo '<label for="'.$field_name.'">Longitude: </label>';
 					echo '<input name="'.$field_name.'" value="'.$longitude.'" type="text" />';

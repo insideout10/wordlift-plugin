@@ -71,6 +71,7 @@ define('WORDLIFT_20_URLS_ENHANCE_TEXT',				'http://stanbol-01.insideout.io/wordl
 define('WORDLIFT_20_URLS_ON_COMPLETE', 				admin_url("admin-ajax.php?action=wordlift.job-complete"));
 define('WORDLIFT_20_URLS_ON_PROGRESS', 				admin_url("admin-ajax.php?action=wordlift.job-progress"));
 
+define('WORDLIFT_20_URLS_ENTITIES_BY_NAME', 		admin_url("admin-ajax.php?action=wordlift.entities-by-name"));
 define('WORDLIFT_20_GEORSS', 			        	admin_url("admin-ajax.php?action=wordlift.georss"));
 
 ?>
