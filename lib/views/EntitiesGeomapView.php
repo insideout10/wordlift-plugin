@@ -73,7 +73,7 @@ EOD;
 		$icon_url = plugins_url('/images/1332499409_Internet.png', WORDLIFT_20_ROOT_PATH);
 		$icon_url_width = 24;
 		$icon_url_height = 24;
-		$geo_rss_url = plugins_url('/api/georss.php', WORDLIFT_20_ROOT_PATH);
+		$geo_rss_url = WORDLIFT_20_GEORSS;
 
 
 		return <<<EOD
