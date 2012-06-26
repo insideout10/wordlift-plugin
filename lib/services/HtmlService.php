@@ -10,6 +10,9 @@ class HtmlService {
 	 * @param string $content
 	 */
 	public static function htmlEncode($content) {
+		if (false === is_string($content))
+			return $content;
+
 		return htmlentities( $content, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 	}
 
