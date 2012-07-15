@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application xmlns="http://purl.org/insideout/configuration" xmlns:wordpress="http://purl.org/insideout/wordpress">
+
+    <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
+    <wordpress:postType name="io-wordlift-entity" class="entityPostType" />
+
+    <!-- ***** W O R D P R E S S   F I L T E R S -->
+    <wordpress:filter name="the_content" class="contentFilter" method="content" />
+
+    <!-- ***** W O R D P R E S S   S T Y L E S -->
+    <wordpress:style target="user" name="style.css" url="/wp-content/plugins/wordlift/sass/css/style.css" />
+
+    <!-- ***** W O R D P R E S S   S C R I P T S -->
+    <wordpress:script target="user" name="jquery-ui"
+            version="1.8.21"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/jquery-ui-1.8.21.custom.min.js">
+    </wordpress:script>
+
+    <wordpress:script target="user" name="ioio"
+            version="0.9.2"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/ioio-0.9.2.min.js">
+        <dependsOn name="jquery-ui" />
+    </wordpress:script>
+
+    <wordpress:script target="user" name="entityTiles"
+            version="1"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/entityTiles.js">
+        <dependsOn name="ioio" />
+    </wordpress:script>
+
+
+    <!-- ***** E N T I T Y P O S T T Y P E -->
+    <class id="entityPostType" name="WordLift_EntityPostType"
+           filename="/php/insideout/wordlift/types/EntityPostType.php">
+        <dependsOn filename="/php/insideout/wordlift/types/IEntityPostType.php" />
+
+        <property name="customPostType" value="io-wordlift-entity" />
+        <property name="rewriteSlug" value="entities" />
+    </class>
+
+    <!-- ***** C O N T E N T   F I L T E R -->
+    <class id="contentFilter" name="WordLift_ContentFilter"
+           filename="/php/insideout/wordlift/filters/ContentFilter.php">
+        <dependsOn filename="/php/insideout/schemaorg/domain/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/Entity.php" />
+
+        <property name="dataStore" reference="dataStore" />
+        <property name="metaKey" value="_io-wordlift-posts-accepted" />
+        <property name="postType" value="io-wordlift-entity" />
+        <property name="postStatus" value="any" />
+        <property name="schemaOrg" value="http://schema.org" />
+    </class>
+
+    <!-- ***** X R A Y S E R V I C E -->
+    <class id="xRayService" name="SchemaOrg_XRayService"
+           filename="/php/insideout/schemaorg/services/XRayService.php" />
+
+    <!-- ***** S C H E M A S E R V I C E -->
+    <class id="schemaService" name="SchemaOrg_SchemaService"
+           filename="/php/insideout/schemaorg/services/SchemaService.php">
+        <dependsOn filename="/php/insideout/schemaorg/domain/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/SchemaProperty.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/Schema.php" />
+
+        <dependsOn filename="/php/insideout/schemaorg/schemas/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Thing.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/CreativeWork.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/MediaObject.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/AudioObject.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/BlogPosting.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/GeoCoordinates.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Movie.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Organization.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Other.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Person.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Place.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Product.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/VideoObject.php" />
+
+        <property name="xRayService" reference="xRayService" />
+    </class>
+
+    <!-- ***** W O R D P R E S S   D A T A S T O R E -->
+    <class id="dataStore" name="SchemaOrg_WordPressDataStore"
+           filename="/php/insideout/schemaorg/stores/WordPressDataStore.php">
+        <dependsOn filename="/php/insideout/schemaorg/domain/EntityProperty.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/EntityPropertyValue.php" />
+        <dependsOn filename="/php/insideout/schemaorg/stores/IDataStore.php" />
+
+        <property name="fieldPrefix" value="io-wordlift-" />
+        <property name="fieldType" value="io-wordlift-schema-type" />
+	    <property name="schemaService" reference="schemaService" />
+    </class>
+
+</application>

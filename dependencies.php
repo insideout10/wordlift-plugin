@@ -4,7 +4,7 @@
  * log4php
  */
 if (false === class_exists('Logger'))
-    require_once('lib/externals/log4php/Logger.php');
+    require_once('src/main/php/lib/log4php/Logger.php');
 
 require_once('lib/externals/SchemaOrgFramework/SchemaOrgFramework.php');
 
