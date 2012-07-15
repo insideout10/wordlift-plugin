@@ -10,6 +10,7 @@ class WordLift_EntityPostType implements WordLift_IEntityPostType {
 
     public $rewriteSlug;
     public $customPostType;
+    public $menuIconURL;
 
     /**
      * Registers the meta-box handler.
@@ -52,7 +53,7 @@ class WordLift_EntityPostType implements WordLift_IEntityPostType {
             'description' 			=> 'The entities found in this blog.',
             'public' 				=> true,
             'has_archive' 			=> true,
-            'menu_icon'				=> plugins_url('images/semantic-box-14x16.png'),
+            'menu_icon'				=> plugins_url($this->menuIconURL),
             'menu_position' 		=> 21,
             'supports' 				=> array('title'),
 //            'register_meta_box_cb' 	=> array( $this, 'register_meta_box_cb'),
