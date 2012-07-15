@@ -6,7 +6,7 @@
         <param name="append" value="true" />
     </appender>
     <root>
-        <level value="trace" />
+        <level value="debug" />
         <appender_ref ref="default" />
     </root>
 </configuration>
