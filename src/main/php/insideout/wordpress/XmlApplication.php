@@ -10,6 +10,7 @@ class WordPress_XmlApplication {
     const WORDPRESS_NAMESPACE = "http://purl.org/insideout/wordpress";
 
     const LOGGER_PROPERTY = "logger";
+    const APPLICATION_CONTEXT_PROPERTY = "applicationContext";
 
     const WP_ACTION_INIT = "init";
 
@@ -21,6 +22,9 @@ class WordPress_XmlApplication {
     private static $scripts = null;
     private static $styles = null;
 
+    private static $rootFolder = null;
+    private static $xmlConfiguration = null;
+
     public static function setUp( $rootFolder, $fileName, $loggerConfiguration ) {
 
         // call back the setup when the INIT action is called by WordPress.
@@ -31,6 +35,8 @@ class WordPress_XmlApplication {
     }
 
     public static function setUpCallback( $rootFolder, $fileName, $loggerConfiguration ) {
+
+        self::$rootFolder = $rootFolder;
 
         $fileName = $rootFolder . $fileName;
         $loggerConfiguration = $rootFolder . $loggerConfiguration;
@@ -49,6 +55,8 @@ class WordPress_XmlApplication {
         // load the configuration.
         self::$logger->trace( "Creating application from [$fileName]." );
         $xmlConfiguration = simplexml_load_file ( $fileName );
+
+        self::$xmlConfiguration = $xmlConfiguration;
 
         // register the wordpress namespace.
         $wordpress = "wordpress";
@@ -69,7 +77,7 @@ class WordPress_XmlApplication {
             if ("" === $classID)
                 throw new Exception( "A postType configuration element requires a class attribute." );
 
-            $instance = self::getClass( $rootFolder, $xmlConfiguration, $classID );
+            $instance = self::getClass( $classID, $rootFolder, $xmlConfiguration );
 
             if (NULL === $instance || false === method_exists( $instance, "getArguments"))
                 throw new Exception( "A postType configuration is invalid. The referenced class does not exist or does not support the getArguments method." );
@@ -107,7 +115,7 @@ class WordPress_XmlApplication {
 
             self::$logger->trace( "A filter [$name] has been found [priority :: $priority][acceptedArguments :: $acceptedArguments]." );
 
-            $class = self::getClass( $rootFolder, $xmlConfiguration, $class );
+            $class = self::getClass( $class, $rootFolder, $xmlConfiguration );
             if ( "" !== $priority && "" !== $acceptedArguments )
                 add_filter( $name , array( $class, $method), $priority, $acceptedArguments );
             elseif ( "" !== $priority )
@@ -115,6 +123,33 @@ class WordPress_XmlApplication {
             else
                 add_filter( $name, array( $class, $method) );
         }
+
+        // ***** S H O R T C O D E S *****
+        $shortCodes = $xmlConfiguration->xpath( "//$wordpress:shortCode" );
+        self::$logger->trace( count($filters) . " short-code(s) found in file [$fileName]." );
+
+        // each filter has a name and optionally a priority and acceptedArguments.
+        foreach ( $shortCodes as $shortCode ) {
+
+            $attributes = $shortCode->attributes();
+
+            $name = (string) $attributes->name;
+            $class = (string) $attributes->class;
+            $method = (string) $attributes->method;
+
+            if ( "" === $name )
+                throw new Exception( "A short-code is missing a name in [$fileName]." );
+
+            if ( "" === $class )
+                throw new Exception( "A short-code is missing the class attribute in [$fileName]." );
+
+            if ( "" === $method )
+                throw new Exception( "A short-code is missing the method attribute in [$fileName]." );
+
+            $class = self::getClass( $class );
+            add_shortcode( $name, array( $class, $method) );
+        }
+
 
         // ***** S T Y L E S *****
         // get the filters.
@@ -268,7 +303,13 @@ class WordPress_XmlApplication {
         );
     }
 
-    private static function getClass( $rootFolder, $xmlConfiguration, $classID ) {
+    private static function getClass( $classID, $rootFolder = NULL, $xmlConfiguration = NULL ) {
+
+        if (NULL === $rootFolder)
+            $rootFolder = self::$rootFolder;
+
+        if (NULL === $xmlConfiguration)
+            $xmlConfiguration = self::$xmlConfiguration;
 
         // get the class definition.
         $classes = $xmlConfiguration->xpath( "//application:class[@id='$classID']" );
@@ -314,7 +355,7 @@ class WordPress_XmlApplication {
             // set a property reference.
             if ( "" !== $propertyReference) {
                 self::$logger->trace( "Looking for [$propertyReference] referenced by [$classID]." );
-                $reference = self::getClass( $rootFolder, $xmlConfiguration, $propertyReference );
+                $reference = self::getClass( $propertyReference, $rootFolder, $xmlConfiguration );
                 $reflectionClass->getProperty( $propertyName )->setValue( $instance, $reference );
             } else {
                 // set a property value.
@@ -324,10 +365,12 @@ class WordPress_XmlApplication {
         }
 
         // assign a Logger instance if the class has a logger property.
-        if (false === $reflectionClass->hasProperty( self::LOGGER_PROPERTY ))
-            return $instance;
+        if (true === $reflectionClass->hasProperty( self::LOGGER_PROPERTY ))
+            $reflectionClass->getProperty( self::LOGGER_PROPERTY )->setValue( $instance, Logger::getLogger( get_class($instance) ) );
 
-        $reflectionClass->getProperty( self::LOGGER_PROPERTY )->setValue( $instance, Logger::getLogger( get_class($instance) ) );
+        // assign the application-context (this class) to the instance if the class has an applicationContext property.
+        if (true === $reflectionClass->hasProperty( self::APPLICATION_CONTEXT_PROPERTY ))
+            $reflectionClass->getProperty( self::APPLICATION_CONTEXT_PROPERTY )->setValue( $instance, self );
 
         return $instance;
     }

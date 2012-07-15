@@ -8,6 +8,8 @@
     <!-- ***** W O R D P R E S S   F I L T E R S -->
     <wordpress:filter name="the_content" class="contentFilter" method="content" />
 
+    <wordpress:shortCode name="entities_bar" class="entitiesBar" method="get" />
+
     <!-- ***** W O R D P R E S S   S T Y L E S -->
     <wordpress:style target="user" name="style.css" url="/wp-content/plugins/wordlift/sass/css/style.css" />
 
@@ -40,6 +42,12 @@
 
         <property name="customPostType" value="io-wordlift-entity" />
         <property name="rewriteSlug" value="entities" />
+    </class>
+
+    <!-- ***** E N T I T I E S   B A R -->
+    <class id="entitiesBar" name="WordLift_EntitiesBar"
+           filename="/php/insideout/wordlift/shortcodes/EntitiesBar.php">
+        <property name="contentFilterClass" reference="contentFilter" />
     </class>
 
     <!-- ***** C O N T E N T   F I L T E R -->
