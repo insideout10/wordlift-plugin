@@ -21,7 +21,7 @@ class PostView {
 		
 		return <<<EOD
 		
-<div id="tabs">
+<div class="entity-tabs">
 <ul>
 	<li><a href="#tabs-1">Article</a></li>
 	<li><a href="#tabs-2">Entities</a></li>
@@ -36,7 +36,7 @@ class PostView {
 
 <script type="text/javascript">
 	jQuery(function($) {
-		$( "#tabs" ).tabs();
+		$( '.entity-tabs' ).tabs();
 	});
 </script>
 
