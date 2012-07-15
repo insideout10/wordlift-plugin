@@ -8,6 +8,7 @@
     <!-- ***** W O R D P R E S S   F I L T E R S -->
     <wordpress:filter name="the_content" class="contentFilter" method="content" />
 
+    <!-- ***** W O R D P R E S S   S H O R T C O D E S -->
     <wordpress:shortCode name="entities_bar" class="entitiesBar" method="get" />
 
     <!-- ***** W O R D P R E S S   S T Y L E S -->
@@ -35,7 +36,7 @@
     </wordpress:script>
 
 
-    <!-- ***** E N T I T Y P O S T T Y P E -->
+    <!-- ***** E N T I T Y    P O S T - T Y P E -->
     <class id="entityPostType" name="WordLift_EntityPostType"
            filename="/php/insideout/wordlift/types/EntityPostType.php">
         <dependsOn filename="/php/insideout/wordlift/types/IEntityPostType.php" />
