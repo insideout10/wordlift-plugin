@@ -49,7 +49,7 @@ class SchemaOrg_WordPressDataStore implements SchemaOrg_IDataStore {
 			# TODO: get the type from the actual post instance.
 			$schema = $this->schemaService->getSchema($schemaProperty->getType());
 
-			$id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_name = '$value'");
+            $id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_name = '" . esc_sql( $value ) . "'");
 			if (NULL !== $id)
 				$reference = new SchemaOrg_Entity( $id, $schema, $this );
 
