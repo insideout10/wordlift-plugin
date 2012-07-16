@@ -21,10 +21,10 @@ class ShortCodeService {
 		//  b) while the short-code is read via 'getShortCode'
 
 		$logger->debug('registering short-code ['.EntitiesTreemapView::getShortCode().'].');
-		add_shortcode(EntitiesTreemapView::getShortCode(), array(EntitiesTreemapView, self::SHORT_CODE_FUNCTION));
+		add_shortcode(EntitiesTreemapView::getShortCode(), array("EntitiesTreemapView", self::SHORT_CODE_FUNCTION));
 		
 		$logger->debug('registering short-code ['.EntitiesGeomapView::getShortCode().'].');
-		add_shortcode(EntitiesGeomapView::getShortCode(), array(EntitiesGeomapView, self::SHORT_CODE_FUNCTION));
+		add_shortcode(EntitiesGeomapView::getShortCode(), array("EntitiesGeomapView", self::SHORT_CODE_FUNCTION));
 		
 	}
 	
