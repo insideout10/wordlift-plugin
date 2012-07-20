@@ -6,6 +6,8 @@
 
 interface WordPress_IMetaBox {
 
+    public function getHtml( $post );
+
 }
 
 ?>
