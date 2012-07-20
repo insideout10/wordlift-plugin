@@ -21,6 +21,9 @@ class WordPress_XmlApplication {
     const TARGET_ADMIN = "admin";
     const TARGET_USER = "user";
 
+    const FILTER = "filter";
+    const ACTION = "action";
+
     private static $logger = null;
 
     private static $scripts = null;
@@ -107,41 +110,16 @@ class WordPress_XmlApplication {
 
         flush_rewrite_rules(true);
 
+        // ***** F I L T E R S *****
         // get the filters.
         $filters = $xmlConfiguration->xpath( "//$wordpress:filter" );
         self::$logger->trace( count($filters) . " filter(s) found in file [$fileName]." );
+        self::loadActionOrFilter( self::FILTER, $filters );
 
-        // each filter has a name and optionally a priority and acceptedArguments.
-        foreach ( $filters as $filter ) {
-
-            $attributes = $filter->attributes();
-
-            $name = (string) $attributes->name;
-            $class = (string) $attributes->class;
-            $method = (string) $attributes->method;
-
-            if ( "" === $name )
-                throw new Exception( "A filter is missing a name in [$fileName]." );
-
-            if ( "" === $class )
-                throw new Exception( "A filter is missing the class attribute in [$fileName]." );
-
-            if ( "" === $method )
-                throw new Exception( "A filter is missing the method attribute in [$fileName]." );
-
-            $priority = (string) $attributes->priority;
-            $acceptedArguments = (string) $attributes->acceptedArguments;
-
-            self::$logger->trace( "A filter [$name] has been found [priority :: $priority][acceptedArguments :: $acceptedArguments]." );
-
-            $class = self::getClass( $class, $rootFolder, $xmlConfiguration );
-            if ( "" !== $priority && "" !== $acceptedArguments )
-                add_filter( $name , array( $class, $method), $priority, $acceptedArguments );
-            elseif ( "" !== $priority )
-                add_filter( $name, array( $class, $method), $priority );
-            else
-                add_filter( $name, array( $class, $method) );
-        }
+        // ***** A C T I O N S *****
+        $actions = $xmlConfiguration->xpath( "//$wordpress:action" );
+        self::$logger->trace( count($actions) . " action(s) found in file [$fileName]." );
+        self::loadActionOrFilter( self::ACTION, $actions );
 
         // ***** S H O R T C O D E S *****
         $shortCodes = $xmlConfiguration->xpath( "//$wordpress:shortCode" );
@@ -195,6 +173,43 @@ class WordPress_XmlApplication {
 
     }
 
+    private static function loadActionOrFilter( $type, $items ) {
+
+        $add = ( $type === self::ACTION ? add_action : add_filter );
+
+        // each filter has a name and optionally a priority and acceptedArguments.
+        foreach ( $items as $item ) {
+
+            $attributes = $item->attributes();
+
+            $name = (string) $attributes->name;
+            $class = (string) $attributes->class;
+            $method = (string) $attributes->method;
+
+            if ( "" === $name )
+                throw new Exception( "A $type is missing a name." );
+
+            if ( "" === $class )
+                throw new Exception( "A $type is missing the class attribute." );
+
+            if ( "" === $method )
+                throw new Exception( "A $type is missing the method attribute." );
+
+            $priority = (string) $attributes->priority;
+            $acceptedArguments = (string) $attributes->acceptedArguments;
+
+            self::$logger->trace( "A $type [$name] has been found [priority :: $priority][acceptedArguments :: $acceptedArguments]." );
+
+            $class = self::getClass( $class, self::$rootFolder, self::$xmlConfiguration );
+            if ( "" !== $priority && "" !== $acceptedArguments )
+                $add( $name , array( $class, $method), $priority, $acceptedArguments );
+            elseif ( "" !== $priority )
+                $add( $name, array( $class, $method), $priority );
+            else
+                $add( $name, array( $class, $method) );
+        }
+    }
+
     public static function loadMetaBoxesCallback() {
         foreach (self::$metaBoxes as $metaBox) {
             self::$logger->trace("Adding meta-box [id :: " . $metaBox["id"] . "][title :: " . $metaBox["title"] . "][postType :: " . $metaBox["postType"] . "][context :: " . $metaBox["context"] . "][priority :: " . $metaBox["priority"] . "].");
@@ -244,7 +259,7 @@ class WordPress_XmlApplication {
                 array(
                     "id" => $id,
                     "title" => $title,
-                    "callback" => array( &$instance, "getHtml" ),
+                    "callback" => array( $instance, "getHtml" ),
                     "postType" => $postType,
                     "context" => $context,
                     "priority" => $priority
