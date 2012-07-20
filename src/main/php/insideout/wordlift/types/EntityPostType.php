@@ -12,6 +12,9 @@ class WordLift_EntityPostType implements WordLift_IEntityPostType {
     public $customPostType;
     public $menuIconURL;
 
+    public $fieldPrefix;
+    public $fieldType;
+
     /**
      * Registers the meta-box handler.
      */
@@ -63,6 +66,34 @@ class WordLift_EntityPostType implements WordLift_IEntityPostType {
                 'post_tag'
             )
         );
+    }
+
+    /**
+     * Must conform to http://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
+     * @param $column
+     * @param $postID
+     * @return mixed
+     */
+    public function getColumnValue( $column, $postID ) {
+        if ( $this->customPostType !== get_post_type( $postID ) )
+            return;
+
+        echo get_post_meta( $postID, $column, true );
+    }
+
+    /**
+     * Must conform to http://codex.wordpress.org/Plugin_API/Filter_Reference/manage_edit-post_type_columns
+     * @param $columns
+     * @return array
+     */
+    public function getColumns( $columns ) {
+        if ( true === array_key_exists( "categories", $columns ) )
+            unset( $columns["categories"] );
+
+        return array_merge($columns, array(
+            $this->fieldPrefix . "name" => __("Name"),
+            $this->fieldType => __("Type")
+        ) );
     }
 
 }

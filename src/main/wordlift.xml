@@ -44,6 +44,8 @@
         <property name="customPostType" value="io-wordlift-entity" />
         <property name="rewriteSlug" value="entities" />
         <property name="menuIconURL" value="/wordlift/sass/img/semantic-box-14x16.png" />
+        <property name="fieldPrefix" value="io-wordlift-" />
+        <property name="fieldType" value="io-wordlift-schema-type" />
     </class>
 
     <!-- ***** E N T I T I E S   B A R -->

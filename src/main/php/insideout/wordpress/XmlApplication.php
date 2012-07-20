@@ -63,6 +63,7 @@ class WordPress_XmlApplication {
         $xmlConfiguration->registerXPathNamespace( "application", self::APPLICATION_NAMESPACE );
         $xmlConfiguration->registerXPathNamespace( $wordpress, self::WORDPRESS_NAMESPACE );
 
+        // ***** P O S T  T Y P E S ***** //
         // get the post types.
         $types = $xmlConfiguration->xpath( "//$wordpress:postType" );
         self::$logger->trace( count($types) . " type(s) found in file [$fileName]." );
@@ -83,7 +84,14 @@ class WordPress_XmlApplication {
                 throw new Exception( "A postType configuration is invalid. The referenced class does not exist or does not support the getArguments method." );
 
             self::$logger->trace( "Registering post custom type [$typeName]." );
+//            add_action( 'manage_edit-' . WordLiftPlugin::POST_TYPE . '_columns' , 	array('WordLiftSetup', 'manage_entities_columns'), 10, 2);
+//            add_action( "manage_posts_custom_column" , 	array('WordLiftSetup', 'manage_entities_custom_column'), 10, 2);
+
             register_post_type( $typeName, $instance->getArguments());
+
+            add_filter( "manage_edit-" . $typeName . "_columns", array( $instance, "getColumns") );
+            // TODO: make this compatible with WordPress pre-3.1 http://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
+            add_action( "manage_posts_custom_column", array( $instance, "getColumnValue"), 10, 2 );
         }
 
         flush_rewrite_rules(true);
