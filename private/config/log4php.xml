@@ -6,6 +6,6 @@
         <param name="append" value="true" />
     </appender>
     <root>
-        <appender_ref ref="default" />
+        <!-- appender_ref ref="default" / -->
     </root>
 </configuration>
