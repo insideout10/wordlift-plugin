@@ -70,23 +70,6 @@ EOD;
 
         $content .= "</div></div>";
 
-
-        /* Entity Post display */
-//        if (WORDLIFT_20_ENTITY_CUSTOM_POST_TYPE == $post->post_type) {
-//            $entity = $this->entityService->create_entity_from_entity_post($post, NULL);
-//            $entity_post_view = new EntityPostView($entity);
-//            return $entity_post_view->display();
-//        }
-//
-//        // we only add entities to posts.
-//        if ('post' != $post->post_type) return $content;
-//
-//        $entities 	= $this->entityService->get_accepted_entities_by_post_id( $post->ID );
-//        $entities_view = new EntitiesView($entities);
-//        $post_view = new PostView($entities_view);
-//
-//        return $post_view->getContent($content);
-
         return $content;
     }
 }
