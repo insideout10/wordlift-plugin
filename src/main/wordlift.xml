@@ -5,6 +5,9 @@
     <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
     <wordpress:postType name="io-wordlift-entity" class="entityPostType" />
 
+    <!-- ***** W O R D P R E S S   A C T I O N S -->
+    <wordpress:action name="save_post" class="postAnalyzer" method="analyze" />
+
     <!-- ***** W O R D P R E S S   F I L T E R S -->
     <wordpress:filter name="the_content" class="contentFilter" method="content" />
 
@@ -41,7 +44,6 @@
     <!--
         id = (string) (required) HTML 'id' attribute of the edit screen section
         title = (string) (required) Title of the edit screen section, visible to user
-        method = (callback) (required) Function that prints out the HTML for the edit screen section.
         postType = (string) (required) The type of Write screen on which to show the edit screen section
             ('post', 'page', 'link', or 'custom_post_type' where custom_post_type is the custom post type slug)
         context = (string) (optional) The part of the page where the edit screen section should be shown ('normal',
@@ -50,7 +52,9 @@
             'default' or 'low')
     -->
     <!-- add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args ); -->
-    <wordpress:metaBox id="wordlift_entities_meta_box" title="WordLift Entities" class="entitiesMetaBox" method="metaBox" postType="post" />
+    <wordpress:metaBox id="wordlift_entities_meta_box" title="WordLift Entities" class="entitiesMetaBox" postType="post" />
+
+    <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox" postType="post" />
 
     <!-- ***** E N T I T Y    P O S T - T Y P E -->
     <class id="entityPostType" name="WordLift_EntityPostType"
@@ -76,11 +80,24 @@
         <property name="schemaOrg" value="http://schema.org" />
     </class>
 
+    <!-- ***** J O B M E T A B O X **** -->
+    <class id="jobMetaBox" name="WordLift_JobMetaBox"
+           filename="/php/insideout/wordlift/metaboxes/JobMetaBox.php">
+
+        <property name="jobService" reference="jobService" />
+    </class>
 
     <!-- ***** E N T I T I E S   B A R -->
     <class id="entitiesBar" name="WordLift_EntitiesBar"
            filename="/php/insideout/wordlift/shortcodes/EntitiesBar.php">
         <property name="contentFilterClass" reference="contentFilter" />
+    </class>
+
+    <!-- ***** P O S T   A N A L Y Z E R -->
+    <class id="postAnalyzer" name="WordLift_PostAnalyzer"
+           filename="/php/insideout/wordlift/actions/PostAnalyzer.php">
+
+        <property name="jobService" reference="jobService" />
     </class>
 
     <!-- ***** C O N T E N T   F I L T E R -->
@@ -135,6 +152,15 @@
         <property name="fieldPrefix" value="io-wordlift-" />
         <property name="fieldType" value="io-wordlift-schema-type" />
 	    <property name="schemaService" reference="schemaService" />
+    </class>
+
+    <!-- ***** J O B S E R V I C E **** -->
+    <class id="jobService" name="WordLift_JobService"
+           filename="/php/insideout/wordlift/services/JobService.php" >
+        <dependsOn filename="/php/insideout/wordlift/domain/Job.php" />
+
+        <property name="jobID" value="_io-wordlift-job-id" />
+        <property name="jobState" value="_io-wordlift-job-state" />
     </class>
 
 </application>
