@@ -9,6 +9,7 @@ class WordLift_PostAnalyzer {
     public $logger;
 
     public $jobService;
+    public $jobRequestService;
 
     public function analyze( $postID ) {
         $isRevision = !wp_is_post_revision( $postID );
@@ -17,6 +18,11 @@ class WordLift_PostAnalyzer {
 
         $this->logger->trace( "A post [$postID][revision :: $isRevision] has been saved; a job is $job->state [$job->id]." );
 
+        $post = get_post( $postID );
+        $content = &$post->post_content;
+
+        $jobRequest = $this->jobRequestService->create( $content );
+        $this->jobRequestService->post( $jobRequest );
     }
 
 }

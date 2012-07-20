@@ -98,6 +98,7 @@
            filename="/php/insideout/wordlift/actions/PostAnalyzer.php">
 
         <property name="jobService" reference="jobService" />
+        <property name="jobRequestService" reference="jobRequestService" />
     </class>
 
     <!-- ***** C O N T E N T   F I L T E R -->
@@ -161,6 +162,14 @@
 
         <property name="jobID" value="_io-wordlift-job-id" />
         <property name="jobState" value="_io-wordlift-job-state" />
+    </class>
+
+    <!-- ***** J O B R E Q U E S T S E R V I C E **** -->
+    <class id="jobRequestService" name="WordLift_JobRequestService"
+           filename="/php/insideout/wordlift/services/JobRequestService.php" >
+        <dependsOn filename="/php/insideout/wordlift/domain/JobRequest.php" />
+
+        <property name="url" value="http://stanbol-01.insideout.io/wordlift/enhance/text" />
     </class>
 
 </application>
