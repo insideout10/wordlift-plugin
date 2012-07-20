@@ -13,6 +13,10 @@ class WordPress_XmlApplication {
     const APPLICATION_CONTEXT_PROPERTY = "applicationContext";
 
     const WP_ACTION_INIT = "init";
+    const WP_REGISTER_META_BOX_CB = "register_meta_box_cb";
+    const WP_ADD_META_BOXES = "add_meta_boxes";
+
+    const REGISTER_META_BOX_CALLBACK = "registerMetaBox";
 
     const TARGET_ADMIN = "admin";
     const TARGET_USER = "user";
@@ -21,6 +25,7 @@ class WordPress_XmlApplication {
 
     private static $scripts = null;
     private static $styles = null;
+    private static $metaBoxes = null;
 
     private static $rootFolder = null;
     private static $xmlConfiguration = null;
@@ -63,6 +68,12 @@ class WordPress_XmlApplication {
         $xmlConfiguration->registerXPathNamespace( "application", self::APPLICATION_NAMESPACE );
         $xmlConfiguration->registerXPathNamespace( $wordpress, self::WORDPRESS_NAMESPACE );
 
+        // ***** M E T A B O X E S ***** //
+        $metaBoxes = $xmlConfiguration->xpath( "//$wordpress:metaBox" );
+        self::$logger->trace( count($metaBoxes) . " meta-boxes(s) found in file [$fileName]." );
+        self::loadMetaBoxes( $metaBoxes );
+
+
         // ***** P O S T  T Y P E S ***** //
         // get the post types.
         $types = $xmlConfiguration->xpath( "//$wordpress:postType" );
@@ -84,10 +95,10 @@ class WordPress_XmlApplication {
                 throw new Exception( "A postType configuration is invalid. The referenced class does not exist or does not support the getArguments method." );
 
             self::$logger->trace( "Registering post custom type [$typeName]." );
-//            add_action( 'manage_edit-' . WordLiftPlugin::POST_TYPE . '_columns' , 	array('WordLiftSetup', 'manage_entities_columns'), 10, 2);
-//            add_action( "manage_posts_custom_column" , 	array('WordLiftSetup', 'manage_entities_custom_column'), 10, 2);
 
-            register_post_type( $typeName, $instance->getArguments());
+            $postTypeConfiguration = $instance->getArguments();
+            $postTypeConfiguration[ self::WP_REGISTER_META_BOX_CB ] = array( $instance, self::REGISTER_META_BOX_CALLBACK );
+            register_post_type( $typeName, $postTypeConfiguration );
 
             add_filter( "manage_edit-" . $typeName . "_columns", array( $instance, "getColumns") );
             // TODO: make this compatible with WordPress pre-3.1 http://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
@@ -182,6 +193,66 @@ class WordPress_XmlApplication {
         add_action( "admin_enqueue_scripts", create_function("\$arguments", __CLASS__ . "::queueScripts('" . self::TARGET_ADMIN . "');" ) );
         add_action( "wp_enqueue_scripts", create_function("\$arguments", __CLASS__ . "::queueScripts('" . self::TARGET_USER . "');" ) );
 
+    }
+
+    public static function loadMetaBoxesCallback() {
+        foreach (self::$metaBoxes as $metaBox) {
+            self::$logger->trace("Adding meta-box [id :: " . $metaBox["id"] . "][title :: " . $metaBox["title"] . "][postType :: " . $metaBox["postType"] . "][context :: " . $metaBox["context"] . "][priority :: " . $metaBox["priority"] . "].");
+
+            add_meta_box( $metaBox["id"], $metaBox["title"], $metaBox["callback"], $metaBox["postType"], $metaBox["context"], $metaBox["priority"] );
+        }
+    }
+
+    private static function loadMetaBoxes( $metaBoxes ) {
+
+        self::$metaBoxes = array();
+
+        foreach ($metaBoxes as $metaBox) {
+
+            $classID = (string) $metaBox->attributes()->class;
+            $id = (string) $metaBox->attributes()->id;
+            $title = (string) $metaBox->attributes()->title;
+            $postType = (string) $metaBox->attributes()->postType;
+            $context = (string) $metaBox->attributes()->context;
+            if ( "" === $context )
+                $context = "normal";
+            $priority = (string) $metaBox->attributes()->priority;
+            if ( "" === $priority )
+                $priority = "default";
+
+            if ("" === $classID )
+                throw new Exception( "A metaBox configuration element requires an class attribute." );
+
+            if ("" === $id )
+                throw new Exception( "A metaBox configuration element requires an id attribute." );
+
+            if ("" === $title)
+                throw new Exception( "A metaBox configuration element requires a type attribute." );
+
+            if ("" === $postType)
+                throw new Exception( "A metaBox configuration element requires a postType attribute." );
+
+            $instance = self::getClass( $classID, self::$rootFolder, self::$xmlConfiguration );
+
+            if (NULL === $instance || false === method_exists( $instance, "getHtml"))
+                throw new Exception( "A metaBox configuration is invalid. The referenced class does not exist or does not support the getHtml method." );
+
+            self::$logger->trace( "Registering meta-box [$id]." );
+
+            array_push(
+                self::$metaBoxes,
+                array(
+                    "id" => $id,
+                    "title" => $title,
+                    "callback" => array( &$instance, "getHtml" ),
+                    "postType" => $postType,
+                    "context" => $context,
+                    "priority" => $priority
+                )
+            );
+        }
+
+        add_action( self::WP_ADD_META_BOXES, array( __CLASS__, "loadMetaBoxesCallback" ) );
     }
 
     public static function queueScripts( $target ) {

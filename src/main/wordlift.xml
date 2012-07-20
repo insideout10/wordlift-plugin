@@ -21,6 +21,22 @@
             url="/wp-content/plugins/wordlift/js/jquery-ui-1.8.21.custom.min.js">
     </wordpress:script>
 
+    <!-- ***** W O R D P R E S S   M E T A B O X E S -->
+    <!--
+        id = (string) (required) HTML 'id' attribute of the edit screen section
+        title = (string) (required) Title of the edit screen section, visible to user
+        method = (callback) (required) Function that prints out the HTML for the edit screen section.
+        postType = (string) (required) The type of Write screen on which to show the edit screen section
+            ('post', 'page', 'link', or 'custom_post_type' where custom_post_type is the custom post type slug)
+        context = (string) (optional) The part of the page where the edit screen section should be shown ('normal',
+            'advanced', or 'side').
+        priority = (string) (optional) The priority within the context where the boxes should show ('high', 'core',
+            'default' or 'low')
+    -->
+    <!-- add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args ); -->
+    <wordpress:metaBox id="entities" title="WordLift Entities" class="entitiesMetaBox" method="metaBox" postType="post" context="normal"
+                       priority="default" />
+
     <wordpress:script target="user" name="ioio"
             version="0.9.2"
             footer="true"
@@ -39,7 +55,7 @@
     <!-- ***** E N T I T Y    P O S T - T Y P E -->
     <class id="entityPostType" name="WordLift_EntityPostType"
            filename="/php/insideout/wordlift/types/EntityPostType.php">
-        <dependsOn filename="/php/insideout/wordlift/types/IEntityPostType.php" />
+        <dependsOn filename="/php/insideout/wordpress/IPostType.php" />
 
         <property name="customPostType" value="io-wordlift-entity" />
         <property name="rewriteSlug" value="entities" />
@@ -47,6 +63,14 @@
         <property name="fieldPrefix" value="io-wordlift-" />
         <property name="fieldType" value="io-wordlift-schema-type" />
     </class>
+
+    <!-- ***** E N T I T I E S   M E T A - B O X -->
+    <class id="entitiesMetaBox" name="WordLift_EntitiesMetaBox"
+           filename="/php/insideout/wordlift/metaboxes/EntitiesMetaBox.php">
+        <dependsOn filename="/php/insideout/wordpress/IMetaBox.php" />
+
+    </class>
+
 
     <!-- ***** E N T I T I E S   B A R -->
     <class id="entitiesBar" name="WordLift_EntitiesBar"

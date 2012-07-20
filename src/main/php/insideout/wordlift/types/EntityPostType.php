@@ -4,7 +4,7 @@
  * Date: 15/07/12 16:47
  */
 
-class WordLift_EntityPostType implements WordLift_IEntityPostType {
+class WordLift_EntityPostType implements WordPress_IPostType {
 
     public $logger;
 
@@ -18,8 +18,9 @@ class WordLift_EntityPostType implements WordLift_IEntityPostType {
     /**
      * Registers the meta-box handler.
      */
-    private function register_meta_box_cb(){
-        add_meta_box('entities-properties','Properties', array( $this, 'entities_properties_box'), $this->customPostType);
+    public function registerMetaBox(){
+        $this->logger->trace( "Registering meta-box for type [$this->customPostType]." );
+//        add_meta_box('entities-properties','Properties', array( $this, 'entities_properties_box'), $this->customPostType);
     }
 
     /**
