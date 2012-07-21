@@ -8,10 +8,7 @@ class WordLift_EntitiesMetaBox implements WordPress_IMetaBox {
 
     public $logger;
 
-    public $dataStore;
-    public $metaKey;
-    public $postType;
-    public $postStatus;
+    public $entityService;
 
     public $schemaOrg;
 
@@ -22,36 +19,15 @@ class WordLift_EntitiesMetaBox implements WordPress_IMetaBox {
     public function getHtml( $post ) {
         $this->logger->trace( "Printing out Html.");
 
-        if (NULL === $this->dataStore)
-            throw new Exception( "The data-store hasn't been set. Check your configuration." );
-
-
-        $this->logger->trace( "Getting entities for post ID [$post->ID]." );
-
-        $entityPosts = get_posts( array(
-            "numberposts" => -1,
-            "offset" => 0,
-            "meta_key" => $this->metaKey,
-            "meta_value" => $post->ID,
-            "post_type" => $this->postType,
-            "post_status" => $this->postStatus
-        ));
-
-        $this->logger->trace( "Found " . count($entityPosts) . " entity post(s) for post ID [$postID]." );
+        $entities = $this->entityService->getEntities( $post->ID );
 
         // return the content w/o modifying it if there are not entities.
-        if (0 === count($entityPosts))
-            return $content;
+        if (0 === count($entities))
+            return;
 
-        $content .= "<div class=\"container entities\"><div class=\"tiles entities\">";
+        $content = "<div class=\"container entities\"><div class=\"tiles entities\">";
 
-        foreach ($entityPosts as $entityPost) {
-
-            $this->logger->trace( "Loading Entity from Entity Post ID [$entityPost->ID]." );
-            $entity = new SchemaOrg_Entity(
-                $entityPost->ID,
-                NULL,
-                $this->dataStore);
+        foreach ($entities as $entity) {
 
             $name = $entity->name->getValue(0);
             $type = $entity->getSchema()->getType();
