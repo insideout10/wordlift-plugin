@@ -7,14 +7,14 @@
 class WordLift_JobRequest {
 
     public $text;
-    public $onCompleteURL;
-    public $onProgressURL;
+    public $onCompleteUrl;
+    public $onProgressUrl;
     public $chainName;
 
     function __construct( $text, $onCompleteURL, $onProgressURL, $chainName ) {
         $this->text 		 = $text;
-        $this->onCompleteURL = $onCompleteURL;
-        $this->onProgressURL = $onProgressURL;
+        $this->onCompleteUrl = $onCompleteURL;
+        $this->onProgressUrl = $onProgressURL;
         $this->chainName	 = $chainName;
     }
 

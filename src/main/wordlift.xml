@@ -2,6 +2,8 @@
 
 <application xmlns="http://purl.org/insideout/configuration" xmlns:wordpress="http://purl.org/insideout/wordpress">
 
+    <property name="stanbol-url" value="http://stanbol-01.insideout.io/wordlift/enhance/text" />
+    <property name="stanbol-url-development" value="http://localizeme.dyndns.org:8080/wordlift/enhance/text" />
     <property name="job-complete-action" value="wordlift.job-complete" />
     <property name="job-progress-action" value="wordlift.job-progress" />
     <property name="entity-post-type" value="io-wordlift-entity" />
@@ -74,7 +76,10 @@
 
     <!-- ***** J O B  A J A X ***** -->
     <class id="jobAjax" name="WordLift_JobAjax"
-           filename="/php/insideout/wordlift/ajax/JobAjax.php" />
+           filename="/php/insideout/wordlift/ajax/JobAjax.php">
+
+        <property name="jobService" reference="jobService" />
+    </class>
 
     <!-- ***** A J A X   A N D   J S O N   I N S T A N C E S ***** -->
     <class id="jsonService" name="WordPress_JsonService"
@@ -206,10 +211,11 @@
            filename="/php/insideout/wordlift/services/JobRequestService.php" >
         <dependsOn filename="/php/insideout/wordlift/domain/JobRequest.php" />
 
-        <property name="url" value="http://stanbol-01.insideout.io/wordlift/enhance/text" />
+        <property name="url" value="{stanbol-url}" />
         <property name="completeAction" value="{job-complete-action}" />
         <property name="progressAction" value="{job-progress-action}" />
         <property name="chainName" value="default" />
+        <property name="jobService" reference="jobService" />
     </class>
 
 </application>
