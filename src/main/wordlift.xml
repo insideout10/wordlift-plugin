@@ -56,6 +56,33 @@
 
     <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox" postType="post" />
 
+
+    <!-- ***** W O R D P R E S S  A J A X ***** -->
+    <wordpress:ajax service="ajaxService" action="wordlift.echo" class="echoService" method="getPong" authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.job-complete" class="jobAjax" method="complete" authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.job-progress" class="jobAjax" method="progress" authentication="false" capabilities="any" />
+
+    <!-- ***** E C H O  S E R V I C E ***** -->
+    <class id="echoService" name="WordLift_EchoService"
+           filename="/php/insideout/wordlift/ajax/EchoService.php" />
+
+    <!-- ***** J O B  A J A X ***** -->
+    <class id="jobAjax" name="WordLift_JobAjax"
+           filename="/php/insideout/wordlift/ajax/JobAjax.php" />
+
+    <!-- ***** A J A X   A N D   J S O N   I N S T A N C E S ***** -->
+    <class id="jsonService" name="WordPress_JsonService"
+           filename="/php/insideout/wordpress/services/JsonService.php" />
+
+    <class id="ajaxService" name="WordPress_AjaxService"
+           filename="/php/insideout/wordpress/services/AjaxService.php">
+        <dependsOn filename="/php/insideout/wordpress/IAjaxService.php" />
+        <dependsOn filename="/php/insideout/wordpress/services/AjaxProxy.php" />
+
+        <property name="jsonService" reference="jsonService" />
+    </class>
+
+
     <!-- ***** E N T I T Y    P O S T - T Y P E -->
     <class id="entityPostType" name="WordLift_EntityPostType"
            filename="/php/insideout/wordlift/types/EntityPostType.php">
@@ -73,10 +100,7 @@
            filename="/php/insideout/wordlift/metaboxes/EntitiesMetaBox.php">
         <dependsOn filename="/php/insideout/wordpress/IMetaBox.php" />
 
-        <property name="dataStore" reference="dataStore" />
-        <property name="metaKey" value="_io-wordlift-posts-accepted" />
-        <property name="postType" value="io-wordlift-entity" />
-        <property name="postStatus" value="any" />
+        <property name="entityService" reference="entityService" />
         <property name="schemaOrg" value="http://schema.org" />
     </class>
 
@@ -104,13 +128,8 @@
     <!-- ***** C O N T E N T   F I L T E R -->
     <class id="contentFilter" name="WordLift_ContentFilter"
            filename="/php/insideout/wordlift/filters/ContentFilter.php">
-        <dependsOn filename="/php/insideout/schemaorg/domain/ISchema.php" />
-        <dependsOn filename="/php/insideout/schemaorg/domain/Entity.php" />
 
-        <property name="dataStore" reference="dataStore" />
-        <property name="metaKey" value="_io-wordlift-posts-accepted" />
-        <property name="postType" value="io-wordlift-entity" />
-        <property name="postStatus" value="any" />
+        <property name="entityService" reference="entityService" />
         <property name="schemaOrg" value="http://schema.org" />
     </class>
 
@@ -155,6 +174,18 @@
 	    <property name="schemaService" reference="schemaService" />
     </class>
 
+    <!-- ***** E N T I T Y  S E R V I C E **** -->
+    <class id="entityService" name="WordLift_EntityService"
+           filename="/php/insideout/wordlift/services/EntityService.php" >
+        <dependsOn filename="/php/insideout/schemaorg/domain/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/Entity.php" />
+
+        <property name="dataStore" reference="dataStore" />
+        <property name="metaKey" value="_io-wordlift-posts-accepted" />
+        <property name="postType" value="io-wordlift-entity" />
+        <property name="postStatus" value="any" />
+    </class>
+
     <!-- ***** J O B S E R V I C E **** -->
     <class id="jobService" name="WordLift_JobService"
            filename="/php/insideout/wordlift/services/JobService.php" >
@@ -170,6 +201,9 @@
         <dependsOn filename="/php/insideout/wordlift/domain/JobRequest.php" />
 
         <property name="url" value="http://stanbol-01.insideout.io/wordlift/enhance/text" />
+        <property name="completeAction" value="wordlift.job-complete" />
+        <property name="progressAction" value="wordlift.job-progress" />
+        <property name="chainName" value="default" />
     </class>
 
 </application>
