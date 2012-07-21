@@ -171,6 +171,50 @@ class WordPress_XmlApplication {
         add_action( "admin_enqueue_scripts", create_function("\$arguments", __CLASS__ . "::queueScripts('" . self::TARGET_ADMIN . "');" ) );
         add_action( "wp_enqueue_scripts", create_function("\$arguments", __CLASS__ . "::queueScripts('" . self::TARGET_USER . "');" ) );
 
+        // ***** A J A X S E R V I C E S *****
+        $ajaxes = $xmlConfiguration->xpath( "//$wordpress:ajax" );
+        self::$logger->trace( count($ajaxes) . " ajax service(s) found in file [$fileName]." );
+
+        self::loadAjax( $ajaxes );
+
+    }
+
+    private static function loadAjax( $ajaxes ) {
+        // service="ajaxService" action="wordlift.echo" class="echoService" method="getPong" authentication="false" capabilities="any"
+
+        foreach ($ajaxes as $ajax) {
+
+            $attributes = $ajax->attributes();
+
+            $service = (string) $attributes->service;
+            $action = (string) $attributes->action;
+            $class = (string) $attributes->class;
+            $method = (string) $attributes->method;
+            $authentication = ( "true" === (string) $attributes->authentication );
+            $capabilities = (string) $attributes->capabilities;
+            if ( "" === $capabilities )
+                $capabilities = "any";
+            $compression = ( "false" === (string) $attributes->compression );
+
+            if ( "" === $service )
+                throw new Exception( "An Ajax method is missing its service manager." );
+
+            if ( "" === $action )
+                throw new Exception( "An Ajax method is missing an action name." );
+
+            if ( "" === $class )
+                throw new Exception( "An Ajax method is missing the class reference." );
+
+            if ( "" === $method )
+                throw new Exception( "An Ajax method is missing the method name." );
+
+            self::$logger->trace( "Binding $action to method $class::$method [authentication :: $authentication][capabilities :: $capabilities][compression :: $compression]." );
+
+            $ajaxService = self::getClass( $service );
+            $instance = self::getClass( $class );
+
+            $ajaxService->bindAction( $instance, $method, $action, $authentication, $capabilities, $compression );
+        }
     }
 
     private static function loadActionOrFilter( $type, $items ) {
@@ -405,6 +449,8 @@ class WordPress_XmlApplication {
         if (NULL === $xmlConfiguration)
             $xmlConfiguration = self::$xmlConfiguration;
 
+        self::$logger->trace( "Loading class [$classID][rootFolder :: $rootFolder]." );
+
         // get the class definition.
         $classes = $xmlConfiguration->xpath( "//application:class[@id='$classID']" );
 
@@ -425,12 +471,19 @@ class WordPress_XmlApplication {
             if ( false === file_exists($rootFolder . $dependsOnFileName) )
                 throw new Exception( "The file [$dependsOnFileName] is not found, it is required by [$classID]." );
 
+            self::$logger->trace( "Including dependency [$dependsOnFileName]." );
+
             require_once( $rootFolder . $dependsOnFileName);
         }
 
         // load the class from the filename if the class is not yet defined.
-        if ( false === class_exists( $class ) )
+        if ( !class_exists( $class ) ) {
+            self::$logger->trace( "Including class filename [$fileName]." );
+
             require_once( $rootFolder . $fileName);
+        }
+
+        self::$logger->trace( "Creating an instance of class [$classID]." );
 
         // create a new class instance.
         $instance = new $className();
@@ -465,6 +518,8 @@ class WordPress_XmlApplication {
         // assign the application-context (this class) to the instance if the class has an applicationContext property.
         if (true === $reflectionClass->hasProperty( self::APPLICATION_CONTEXT_PROPERTY ))
             $reflectionClass->getProperty( self::APPLICATION_CONTEXT_PROPERTY )->setValue( $instance, self );
+
+        self::$logger->trace( "Returning an instance of class [$classID]." );
 
         return $instance;
     }

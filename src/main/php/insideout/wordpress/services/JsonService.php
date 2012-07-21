@@ -3,14 +3,14 @@
 /**
  * Provides helper functions to publish contents via JSON.
  */
-class JsonService {
+class WordPress_JsonService {
 
 	/**
 	 * Sends the content to the browser, json-encoded.
 	 * @param array|mixed $content The structured content to send back as JSON.
 	 * @param boolean $enableCompression If true, enables compression of output.
 	 */
-	public static function sendResponse(&$content, $enableCompression = true) {
+	public function sendResponse(&$content, $enableCompression = true) {
 
 		/************************************************************
 		 * HTTP Response starts here.								*
@@ -45,7 +45,7 @@ class JsonService {
 	 * @param string $subject
 	 * @return boolean
 	 */
-	private static function isValidCallback($subject) {
+	private function isValidCallback($subject) {
 
 		/**
 		 * Handy stuff to check that the callback is valid: see
