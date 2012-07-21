@@ -2,6 +2,12 @@
 
 <application xmlns="http://purl.org/insideout/configuration" xmlns:wordpress="http://purl.org/insideout/wordpress">
 
+    <property name="job-complete-action" value="wordlift.job-complete" />
+    <property name="job-progress-action" value="wordlift.job-progress" />
+    <property name="entity-post-type" value="io-wordlift-entity" />
+    <property name="entity-field-prefix" value="io-wordlift-" />
+    <property name="entity-field-type" value="io-wordlift-schema-type" />
+
     <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
     <wordpress:postType name="io-wordlift-entity" class="entityPostType" />
 
@@ -88,11 +94,11 @@
            filename="/php/insideout/wordlift/types/EntityPostType.php">
         <dependsOn filename="/php/insideout/wordpress/interfaces/IPostType.php" />
 
-        <property name="customPostType" value="io-wordlift-entity" />
+        <property name="customPostType" value="{entity-post-type}" />
         <property name="rewriteSlug" value="entities" />
         <property name="menuIconURL" value="/wordlift/sass/img/semantic-box-14x16.png" />
-        <property name="fieldPrefix" value="io-wordlift-" />
-        <property name="fieldType" value="io-wordlift-schema-type" />
+        <property name="fieldPrefix" value="{entity-field-prefix}" />
+        <property name="fieldType" value="{entity-field-type}" />
     </class>
 
     <!-- ***** E N T I T I E S   M E T A - B O X -->
@@ -169,8 +175,8 @@
         <dependsOn filename="/php/insideout/schemaorg/domain/EntityPropertyValue.php" />
         <dependsOn filename="/php/insideout/schemaorg/stores/IDataStore.php" />
 
-        <property name="fieldPrefix" value="io-wordlift-" />
-        <property name="fieldType" value="io-wordlift-schema-type" />
+        <property name="fieldPrefix" value="{entity-field-prefix}" />
+        <property name="fieldType" value="{entity-field-type}" />
 	    <property name="schemaService" reference="schemaService" />
     </class>
 
@@ -182,7 +188,7 @@
 
         <property name="dataStore" reference="dataStore" />
         <property name="metaKey" value="_io-wordlift-posts-accepted" />
-        <property name="postType" value="io-wordlift-entity" />
+        <property name="postType" value="{entity-post-type}" />
         <property name="postStatus" value="any" />
     </class>
 
@@ -201,8 +207,8 @@
         <dependsOn filename="/php/insideout/wordlift/domain/JobRequest.php" />
 
         <property name="url" value="http://stanbol-01.insideout.io/wordlift/enhance/text" />
-        <property name="completeAction" value="wordlift.job-complete" />
-        <property name="progressAction" value="wordlift.job-progress" />
+        <property name="completeAction" value="{job-complete-action}" />
+        <property name="progressAction" value="{job-progress-action}" />
         <property name="chainName" value="default" />
     </class>
 

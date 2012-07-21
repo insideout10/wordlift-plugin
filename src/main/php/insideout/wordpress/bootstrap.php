@@ -4,9 +4,6 @@
  * Date: 15/07/12 11:45
  */
 
-// add annotations support.
-require_once( dirname(dirname(dirname(__FILE__))) . "/addendum/annotations.php");
-
 // add logging support.
 require_once( dirname(dirname(dirname(__FILE__))) . "/log4php/Logger.php");
 

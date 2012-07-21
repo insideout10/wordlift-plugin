@@ -26,6 +26,8 @@ class WordPress_XmlApplication {
 
     private static $logger = null;
 
+    private static $propertyPatterns = null;
+    private static $propertyReplacements = null;
     private static $scripts = null;
     private static $styles = null;
     private static $metaBoxes = null;
@@ -70,6 +72,11 @@ class WordPress_XmlApplication {
         $wordpress = "wordpress";
         $xmlConfiguration->registerXPathNamespace( "application", self::APPLICATION_NAMESPACE );
         $xmlConfiguration->registerXPathNamespace( $wordpress, self::WORDPRESS_NAMESPACE );
+
+        // ***** P R O P E R T I E S ***** //
+        $properties = $xmlConfiguration->xpath( "//application:property" );
+        self::$logger->trace( count($properties) . " property(ies) found in file [$fileName]." );
+        self::loadProperties( $properties );
 
         // ***** M E T A B O X E S ***** //
         $metaBoxes = $xmlConfiguration->xpath( "//$wordpress:metaBox" );
@@ -177,6 +184,26 @@ class WordPress_XmlApplication {
 
         self::loadAjax( $ajaxes );
 
+    }
+
+    private static function loadProperties( $properties ) {
+        self::$propertyPatterns = array();
+        self::$propertyReplacements = array();
+
+        foreach ( $properties as $property ) {
+            $name = (string) $property->attributes()->name;
+            $value = (string)  $property->attributes()->value;
+
+            array_push( self::$propertyPatterns, "/\{$name\}/" );
+            array_push( self::$propertyReplacements, $value );
+        }
+
+        ksort( self::$propertyPatterns );
+        ksort( self::$propertyReplacements );
+    }
+
+    private static function getPropertyValue( $value ) {
+        return preg_replace( self::$propertyPatterns, self::$propertyReplacements, $value );
     }
 
     private static function loadAjax( $ajaxes ) {
@@ -494,6 +521,7 @@ class WordPress_XmlApplication {
         foreach ($class->property as $property) {
             $propertyName = (string) $property->attributes()->name;
             $propertyValue = (string) $property->attributes()->value;
+            $propertyValue = self::getPropertyValue( $propertyValue );
             $propertyReference = (string) $property->attributes()->reference;
 
             if (false === $reflectionClass->hasProperty( $propertyName ))
