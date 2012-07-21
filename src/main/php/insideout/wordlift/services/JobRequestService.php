@@ -5,34 +5,33 @@ class WordLift_JobRequestService {
     public $logger;
 
     public $url;
+    public $completeAction;
+    public $progressAction;
+
     public $onCompleteURL;
     public $onProgressURL;
     public $chainName;
 
-    function __construct() {
-        $this->onCompleteURL = admin_url("admin-ajax.php?action=wordlift.job-complete");
-        $this->onProgressURL = admin_url("admin-ajax.php?action=wordlift.job-progress");
-        $this->chainName = "default";
-    }
+    public function create( $text, $onCompleteURL = NULL, $onProgressURL = NULL, $chainName = NULL ) {
 
-    public function create( $text, $onCompleteUrl = NULL, $onProgressUrl = NULL, $chainName = NULL ) {
-        if ( NULL === $onCompleteUrl )
-            $onCompleteUrl = $this->onCompleteURL;
+        if ( NULL === $onCompleteURL )
+            $onCompleteURL = admin_url("admin-ajax.php?action=$this->completeAction" );
 
-        if ( NULL === $onProgressUrl )
-            $onProgressUrl = $this->onProgressURL;
+        if ( NULL === $onProgressURL )
+            $onProgressURL = admin_url("admin-ajax.php?action=$this->progressAction" );
 
         if ( NULL === $chainName )
             $chainName = $this->chainName;
 
-        return new WordLift_JobRequest( $text, $onCompleteUrl, $onProgressUrl, $chainName );
+        return new WordLift_JobRequest( $text, $onCompleteURL, $onProgressURL, $chainName );
     }
 
     public function postText( $text ) {
         $this->post( $this->create( $text ) );
     }
+
     public function post ( $jobRequest ) {
-        $this->logger->trace( "Sending a job-request to $this->url." );
+        $this->logger->trace( "Sending a job-request to $this->url [complete :: $jobRequest->onCompleteURL][progress :: $jobRequest->onProgressURL]." );
 
         $return = wp_remote_post( $this->url, array(
             "method" => "POST",
@@ -45,7 +44,7 @@ class WordLift_JobRequestService {
             "cookies" => array()
         ));
 
-        if ( true === is_wp_error($return) ) {
+        if ( is_wp_error($return) ) {
             $this->logger->error('An error occurred: '.$return->get_error_message());
             return NULL;
         }

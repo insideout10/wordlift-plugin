@@ -21,8 +21,7 @@ class WordLift_PostAnalyzer {
         $post = get_post( $postID );
         $content = &$post->post_content;
 
-        $jobRequest = $this->jobRequestService->create( $content );
-        $this->jobRequestService->post( $jobRequest );
+        $this->jobRequestService->postText( $content );
     }
 
 }
