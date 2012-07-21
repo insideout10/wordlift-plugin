@@ -76,7 +76,7 @@
 
     <class id="ajaxService" name="WordPress_AjaxService"
            filename="/php/insideout/wordpress/services/AjaxService.php">
-        <dependsOn filename="/php/insideout/wordpress/IAjaxService.php" />
+        <dependsOn filename="/php/insideout/wordpress/interfaces/IAjaxService.php" />
         <dependsOn filename="/php/insideout/wordpress/services/AjaxProxy.php" />
 
         <property name="jsonService" reference="jsonService" />
@@ -86,7 +86,7 @@
     <!-- ***** E N T I T Y    P O S T - T Y P E -->
     <class id="entityPostType" name="WordLift_EntityPostType"
            filename="/php/insideout/wordlift/types/EntityPostType.php">
-        <dependsOn filename="/php/insideout/wordpress/IPostType.php" />
+        <dependsOn filename="/php/insideout/wordpress/interfaces/IPostType.php" />
 
         <property name="customPostType" value="io-wordlift-entity" />
         <property name="rewriteSlug" value="entities" />
@@ -98,7 +98,7 @@
     <!-- ***** E N T I T I E S   M E T A - B O X -->
     <class id="entitiesMetaBox" name="WordLift_EntitiesMetaBox"
            filename="/php/insideout/wordlift/metaboxes/EntitiesMetaBox.php">
-        <dependsOn filename="/php/insideout/wordpress/IMetaBox.php" />
+        <dependsOn filename="/php/insideout/wordpress/interfaces/IMetaBox.php" />
 
         <property name="entityService" reference="entityService" />
         <property name="schemaOrg" value="http://schema.org" />
