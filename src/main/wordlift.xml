@@ -62,7 +62,7 @@
     <!-- add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args ); -->
     <wordpress:metaBox id="wordlift_entities_meta_box" title="WordLift Entities" class="entitiesMetaBox" postType="post" />
 
-    <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox" postType="post" />
+    <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox" postType="post" context="side" />
 
 
     <!-- ***** W O R D P R E S S  A J A X ***** -->
