@@ -246,7 +246,7 @@ class WordPress_XmlApplication {
 
     private static function loadActionOrFilter( $type, $items ) {
 
-        $add = ( $type === self::ACTION ? add_action : add_filter );
+        $add = ( $type === self::ACTION ? "add_action" : "add_filter" );
 
         // each filter has a name and optionally a priority and acceptedArguments.
         foreach ( $items as $item ) {
