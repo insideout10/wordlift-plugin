@@ -21,6 +21,10 @@ class EntitiesBoxService {
 
 		$job 				= $this->job_service->get_job_by_post_id($post->ID);
 
+        // exit if there's no job for this post.
+        if ( NULL === $job )
+            return;
+
 		$entities_auto_complete_view = new EntitiesAutoCompleteView();
 		echo $entities_auto_complete_view->getContent();
 		
