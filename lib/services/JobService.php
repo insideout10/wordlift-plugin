@@ -28,7 +28,11 @@ class JobService {
 	 */
 	function get_job_by_post_id(&$post_id) {
 		$custom_fields		= get_post_custom($post_id);
-		
+
+        // exit if the post does not have job information.
+        if ( !array_key_exists( WORDLIFT_20_FIELD_JOB_ID, $custom_fields ) || !array_key_exists( WORDLIFT_20_FIELD_JOB_STATE, $custom_fields ))
+            return NULL;
+
 		$job = new JobModel(
 			$custom_fields[WORDLIFT_20_FIELD_JOB_ID][0],
 			$custom_fields[WORDLIFT_20_FIELD_JOB_STATE][0],
