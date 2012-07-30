@@ -66,8 +66,8 @@ class WordPress_AjaxProxy {
             }
 
             if ( !array_key_exists( $parameterName, $_REQUEST ) ) {
-                if ( $parameter->isOptional() )
-                    array_push( $args, NULL );
+                if ( !$parameter->isOptional() )
+                    throw new Exception( "Parameter [$parameterName] is required." );
                 else
                     array_push( $args, $parameter->getDefaultValue() );
 
