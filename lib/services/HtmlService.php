@@ -13,7 +13,7 @@ class HtmlService {
 		if (false === is_string($content))
 			return $content;
 
-		return htmlentities( $content, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		return htmlentities( $content, ENT_QUOTES , 'UTF-8' );
 	}
 
 	/**
