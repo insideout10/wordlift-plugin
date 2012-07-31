@@ -73,6 +73,12 @@ class WordPress_XmlApplication {
         $xmlConfiguration->registerXPathNamespace( "application", self::APPLICATION_NAMESPACE );
         $xmlConfiguration->registerXPathNamespace( $wordpress, self::WORDPRESS_NAMESPACE );
 
+        // ***** T H U M B N A I L S ***** //
+        // get the thumbnails.
+        $thumbnails = $xmlConfiguration->xpath( "//$wordpress:thumbnail" );
+        self::$logger->trace( count($thumbnails) . " thumbnail(s) found in file [$fileName]." );
+        self::loadThumbnails( $thumbnails );
+
         // ***** P R O P E R T I E S ***** //
         $properties = $xmlConfiguration->xpath( "//application:property" );
         self::$logger->trace( count($properties) . " property(ies) found in file [$fileName]." );
@@ -183,6 +189,25 @@ class WordPress_XmlApplication {
         self::$logger->trace( count($ajaxes) . " ajax service(s) found in file [$fileName]." );
 
         self::loadAjax( $ajaxes );
+
+    }
+
+    private static function loadThumbnails( $thumbnails ) {
+
+        if ( 0 === count( $thumbnails ) )
+            return;
+
+        add_theme_support( "post-thumbnails" );
+
+        foreach ( $thumbnails as $thumbnail ) {
+            $name = (string) $thumbnail->attributes()->name;
+            $width = (string)  $thumbnail->attributes()->width;
+            $height = (string)  $thumbnail->attributes()->height;
+            $crop = (string)  $thumbnail->attributes()->crop;
+            $crop = ( "true" === $crop );
+
+            add_image_size( $name, $width, $height, $crop );
+        }
 
     }
 
@@ -468,7 +493,7 @@ class WordPress_XmlApplication {
         );
     }
 
-    private static function getClass( $classID, $rootFolder = NULL, $xmlConfiguration = NULL ) {
+    public static function getClass( $classID, $rootFolder = NULL, $xmlConfiguration = NULL ) {
 
         if (NULL === $rootFolder)
             $rootFolder = self::$rootFolder;
