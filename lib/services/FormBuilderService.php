@@ -35,7 +35,11 @@ class FormBuilderService {
 			$description = HtmlService::htmlEncode($property->description);
 			$type = $property->type;
 			$field_name = HtmlService::htmlEncode($field_prefix.$name);
-			$field_value = HtmlService::htmlEncode($meta_lower_case[strtolower($field_name)][0]);
+            $field_name_lower = strtolower($field_name);
+            if ( array_key_exists(  $field_name_lower, $meta_lower_case ) && is_array( $meta_lower_case[strtolower($field_name)] ) )
+			    $field_value = HtmlService::htmlEncode($meta_lower_case[strtolower($field_name)][0]);
+            else
+                $field_value = "";
 			
 			switch ($type) {
 				case 'Text';
