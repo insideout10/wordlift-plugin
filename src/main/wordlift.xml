@@ -9,12 +9,16 @@
     <property name="entity-post-type" value="io-wordlift-entity" />
     <property name="entity-field-prefix" value="io-wordlift-" />
     <property name="entity-field-type" value="io-wordlift-schema-type" />
+    <property name="schemaorg-field-type" value="@type" />
+
+    <context name="wordLift" />
 
     <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
     <wordpress:postType name="io-wordlift-entity" class="entityPostType" />
 
     <!-- ***** W O R D P R E S S   A C T I O N S -->
-    <wordpress:action name="save_post" class="postAnalyzer" method="analyze" />
+    <!-- uncomment the following to enable posts analysis via WordLift Server -->
+    <!--<wordpress:action name="save_post" class="postAnalyzer" method="analyze" />-->
 
     <!-- ***** W O R D P R E S S   F I L T E R S -->
     <wordpress:filter name="the_content" class="contentFilter" method="content" />
@@ -60,15 +64,24 @@
             'default' or 'low')
     -->
     <!-- add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args ); -->
-    <wordpress:metaBox id="wordlift_entities_meta_box" title="WordLift Entities" class="entitiesMetaBox" postType="post" />
+    <wordpress:metaBox id="wordlift_entities_meta_box" title="WordLift Entities" class="entitiesMetaBox"
+                       postType="post" />
 
-    <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox" postType="post" context="side" />
+    <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox"
+                       postType="post" context="side" />
 
 
     <!-- ***** W O R D P R E S S  A J A X ***** -->
-    <wordpress:ajax service="ajaxService" action="wordlift.echo" class="echoService" method="getPong" authentication="false" capabilities="any" />
-    <wordpress:ajax service="ajaxService" action="wordlift.job-complete" class="jobAjax" method="complete" authentication="false" capabilities="any" />
-    <wordpress:ajax service="ajaxService" action="wordlift.job-progress" class="jobAjax" method="progress" authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.echo" class="echoService" method="getPong"
+                    authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.job-complete" class="jobAjax" method="complete"
+                    authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.job-progress" class="jobAjax" method="progress"
+                    authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="schema-org.create-post" class="postsAjaxService" method="createPost"
+                    authentication="true" capabilities="publish_posts" />
+    <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
+                    authentication="false" capabilities="any" />
 
     <!-- ***** E C H O  S E R V I C E ***** -->
     <class id="echoService" name="WordLift_EchoService"
@@ -217,5 +230,36 @@
         <property name="chainName" value="default" />
         <property name="jobService" reference="jobService" />
     </class>
+
+    <!-- ***** P R E P R O C E S S O R S ***** -->
+    <class id="videoObjectQualityPreprocessor" name="SchemaOrg_VideoObjectQualityPreprocessor"
+            filename="/php/insideout/schemaorg/preprocessors/VideoObjectQualityPreprocessor.php">
+        <dependsOn filename="/php/insideout/schemaorg/preprocessors/IPreprocessor.php" />
+    </class>
+
+    <!-- ***** P O S T S   A J A X   S E R V I C E ***** -->
+    <class id="postsAjaxService" name="SchemaOrg_PostsAjaxService"
+           filename="/php/insideout/schemaorg/ajax/PostsAjaxService.php">
+        <property name="preprocessor" reference="videoObjectQualityPreprocessor" />
+        <property name="saveToUploads" value="false" />
+        <property name="proxyService" reference="proxyService" />
+        <property name="entityPostType" value="{entity-post-type}" />
+        <property name="entityPostStatus" value="publish" />
+        <property name="entityFieldPrefix" value="{entity-field-prefix}" />
+        <property name="entityFieldType" value="{entity-field-type}" />
+        <property name="schemaOrgFieldType" value="{schemaorg-field-type}" />
+    </class>
+
+    <!-- ***** P R O X Y   S E R V I C E ***** -->
+    <class id="proxyService" name="WordPress_ProxyService"
+           filename="/php/insideout/wordpress/services/ProxyService.php">
+
+        <property name="urlPrefix" value="http://emlimg.enel.com/" />
+        <property name="expiryModifier" value=" +7 days" />
+        <property name="dateFormat" value="D, d M Y H:i:s e" />
+        <property name="cacheSubdir" value="cache" />
+        <property name="hashAlgo" value="sha512" />
+    </class>
+
 
 </application>

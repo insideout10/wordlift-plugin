@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: WordLift
+Plugin Name: WordLift 2.0
 Plugin URI: http://wordlift.insideout.io
-Description: WordLift is a WordPress plugin that will add semantic intelligence to your site.
-Version: <version>2.0b</version>
-Author: InsideOut10
-Author URI: http://wordlift.insideout.io
+Description: WordLift 2.0
+Version: 0.2.0
+Author: InSideOut10
+Author URI: http://www.insideout.io
 License: APL
 */
 
