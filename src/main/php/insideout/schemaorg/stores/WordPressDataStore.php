@@ -27,7 +27,7 @@ class SchemaOrg_WordPressDataStore implements SchemaOrg_IDataStore {
 
 		$postID = $properties;
 
-        $post = get_post($id);
+        $post = get_post($postID);
 
 		if (NULL === $post)
 			throw new Exception("Cannot find a WordPress post with [postID:$postID].");
