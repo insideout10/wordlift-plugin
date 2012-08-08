@@ -17,7 +17,7 @@ class SchemaOrg_SchemaService {
 
 		$schemaProperties = array();
 
-        $this->logger->trace( "Found schema [$name] with " . count($properties) . " properties." );
+//        $this->logger->trace( "Found schema [$name] with " . count($properties) . " properties." );
 
         foreach ($properties as $key => $value) {
 			$descriptors = &$value[SchemaOrg_XRayService::DESCRIPTORS];
