@@ -25,16 +25,26 @@ class SchemaOrg_WordPressDataStore implements SchemaOrg_IDataStore {
 
 		$name = $schemaProperty->getName();
 
-		$postID = $properties;
+        if ( is_array( $properties ) )
+            $fields = $properties[ "fields" ];
 
-        $post = get_post($postID);
+        if ( is_numeric( $properties ) ) {
+            $postID = $properties;
+            $post = get_post($postID);
 
-		if (NULL === $post)
-			throw new Exception("Cannot find a WordPress post with [postID:$postID].");
+            if (NULL === $post)
+                throw new Exception("Cannot find a WordPress post with [postID:$postID].");
 
-		# see http://codex.wordpress.org/Function_Reference/get_post_custom
-		$fields = get_post_custom($postID);
-		$field = $this->getField($fields, $name);
+            # see http://codex.wordpress.org/Function_Reference/get_post_custom
+            $fields = get_post_custom($postID);
+
+            $properties = array(
+                "ID" => $postID,
+                "fields" => $fields
+            );
+        }
+
+        $field = $this->getField($fields, $name);
 
 		// $field = implode(",", $field);
 		// $field = explode(",", $field);
@@ -56,7 +66,7 @@ class SchemaOrg_WordPressDataStore implements SchemaOrg_IDataStore {
 			$values[] = new SchemaOrg_EntityPropertyValue($value, $reference);
 		}
 
-        $this->logger->trace( "Found " . count($values) . " value(s) for property [$name] of Entity Post ID [$postID]." );
+//        $this->logger->trace( "Found " . count($values) . " value(s) for property [$name] of Entity Post ID [$postID]." );
 
         $property = new SchemaOrg_EntityProperty(
 				$schemaProperty,
