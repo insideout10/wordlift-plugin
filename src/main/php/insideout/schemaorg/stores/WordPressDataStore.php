@@ -46,9 +46,6 @@ class SchemaOrg_WordPressDataStore implements SchemaOrg_IDataStore {
 
         $field = $this->getField($fields, $name);
 
-		// $field = implode(",", $field);
-		// $field = explode(",", $field);
-		
 		# create an array of values.
 		$values = array();
 
@@ -65,8 +62,6 @@ class SchemaOrg_WordPressDataStore implements SchemaOrg_IDataStore {
 
 			$values[] = new SchemaOrg_EntityPropertyValue($value, $reference);
 		}
-
-//        $this->logger->trace( "Found " . count($values) . " value(s) for property [$name] of Entity Post ID [$postID]." );
 
         $property = new SchemaOrg_EntityProperty(
 				$schemaProperty,
