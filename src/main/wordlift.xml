@@ -82,10 +82,19 @@
                     authentication="true" capabilities="publish_posts" />
     <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
                     authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.jobCallback" class="jobCallbackService" method="callback"
+                    authentication="false" capabilities="any" />
 
     <!-- ***** E C H O  S E R V I C E ***** -->
     <class id="echoService" name="WordLift_EchoService"
            filename="/php/insideout/wordlift/ajax/EchoService.php" />
+
+    <!-- ***** J O B  R E Q U E S T  S E R V I C E ***** -->
+    <class id="jobCallbackService" name="WordLift_JobCallbackService"
+           filename="/php/insideout/wordlift/ajax/JobCallbackService.php">
+
+        <dependsOn filename="/php/arc2/ARC2.php" />
+    </class>
 
     <!-- ***** J O B  A J A X ***** -->
     <class id="jobAjax" name="WordLift_JobAjax"
