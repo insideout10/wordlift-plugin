@@ -70,7 +70,10 @@ class WordLift_EntityReferencesMetaBox implements WordPress_IMetaBox {
 
             $this->logger->trace( "[ rowsCount :: $rowsCount ][ queryTime :: $queryTime ]." );
 
-            echo "<li>$name [ type :: $type ][ reference :: $reference ][ url :: $url ][ image :: $image ]</li>";
+            echo "<li style=\"border: 1px solid steelBlue; background: lightSteelBlue;\">";
+            if ( $image )
+                echo "<img width=\"40\" src=\"" . htmlentities( $image ) . "\" onerror=\"this.parentNode.removeChild( this );\" />";
+            echo "<div>$name</div><div>[ type :: $type ]</div></li>";
         }
 
         echo "</ul>";
