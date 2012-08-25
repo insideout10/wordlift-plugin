@@ -16,6 +16,10 @@ class WordLift_DefaultEntityService implements WordLift_EntityService {
     public $metaKeySubject;
     public $metaKeyReferences;
 
+    public function getByPostID( $postID ) {
+        return get_post_custom_values( $this->metaKeyReferences, $postID );
+    }
+
     public function getBySubject( $subject ) {
 
         return get_posts( array(

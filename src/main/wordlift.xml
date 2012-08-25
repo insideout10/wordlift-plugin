@@ -69,6 +69,9 @@
     <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox"
                        postType="post" context="side" />
 
+    <wordpress:metaBox id="wordlift_entity_references_meta_box" title="WordLift Entity References" class="entityReferencesMetaBox"
+                       postType="post" context="side" priority="high" />
+
 
     <!-- ***** W O R D P R E S S  A J A X ***** -->
     <wordpress:ajax service="ajaxService" action="wordlift.echo" class="echoService" method="getPong"
@@ -127,6 +130,14 @@
         <property name="menuIconURL" value="/wordlift/sass/img/semantic-box-14x16.png" />
         <property name="fieldPrefix" value="{entity-field-prefix}" />
         <property name="fieldType" value="{entity-field-type}" />
+    </class>
+
+
+    <!-- ***** E N T I T Y  R E F E R E N C E S  M E T A - B O X -->
+    <class id="entityReferencesMetaBox" name="WordLift_EntityReferencesMetaBox"
+           filename="/php/insideout/wordlift/metaboxes/EntityReferencesMetaBox.php">
+
+        <property name="entityService" reference="entityService" />
     </class>
 
     <!-- ***** E N T I T I E S   M E T A - B O X -->

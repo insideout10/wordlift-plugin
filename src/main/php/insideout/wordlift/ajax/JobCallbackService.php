@@ -32,6 +32,22 @@ class WordLift_JobCallbackService {
         $parser->parseData( $requestBody );
         $triples = $parser->getTriples();
 
+
+        /** @var ARC2_Store $store */
+        $store = ARC2::getStore(array(
+            "db_host" => DB_HOST,
+            "db_name" => DB_NAME,
+            "db_user" => DB_USER,
+            "db_pwd" => DB_PASSWORD,
+            "store_name" => "wordlift"
+        ));
+
+        if (!$store->isSetUp()) {
+            $store->setUp();
+        }
+
+        $store->insert( $triples, "" );
+
         $this->logger->trace( count( $triples ) . " triple(s) found." );
 
         $index = $parser->getSimpleIndex(0);
@@ -63,6 +79,7 @@ class WordLift_JobCallbackService {
                 $this->entityService->create( $subject );
 
             $this->entityService->bindPostToSubjects( $postID, $subject );
+
 
         // ##### A N O N Y M O U S  E N T I T I E S #####
         // create a checksum for the anonymous entity.
