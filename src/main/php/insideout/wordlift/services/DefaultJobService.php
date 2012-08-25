@@ -19,11 +19,11 @@ class WordLift_DefaultJobService implements WordLift_JobService {
     public function getPostByJobID( $jobID ) {
 
         return get_posts( array(
-            "numberofposts" => 1,
+            "numberposts" => 1,
             "post_type" => "post",
             "meta_key" => $this->metaKeyJobID,
             "meta_value" => $jobID,
-            "status" => "any"
+            "post_status" => "any"
         ));
 
     }

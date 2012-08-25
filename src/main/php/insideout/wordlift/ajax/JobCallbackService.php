@@ -21,7 +21,7 @@ class WordLift_JobCallbackService {
         $posts = $this->jobService->getPostByJobID( $jobID );
 
         if ( 0 === count( $posts ) ) {
-            $this->logger->error( "No job found for id [ jobID :: $jobID ]." );
+            $this->logger->error( "No job found for id [ jobID :: $jobID ][ posts :: " . var_export( $posts, true ) . " ]." );
             return;
         }
 

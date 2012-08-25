@@ -23,7 +23,7 @@ class WordLift_DefaultEntityService implements WordLift_EntityService {
     public function getBySubject( $subject ) {
 
         return get_posts( array(
-            "numberofposts" => 1,
+            "numberposts" => 1,
             "post_type" => $this->postType,
             "meta_key" => $this->metaKeySubject,
             "meta_value" => $subject,
