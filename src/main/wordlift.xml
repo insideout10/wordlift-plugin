@@ -89,7 +89,22 @@
                     authentication="false" capabilities="any" />
     <wordpress:ajax service="ajaxService" action="wordlift.jobRequest" class="jobRequestAjaxService" method="sendJobRequest"
                     authentication="false" capabilities="any" />
+    <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="dump"
+                    authentication="false" capabilities="any" />
 
+
+    <class id="tripleStoreService" name="WordLift_TripleStoreService"
+           filename="/php/insideout/wordlift/services/TripleStoreService.php">
+        <dependsOn filename="/php/arc2/ARC2.php" />
+
+        <property name="tablePrefix" value="wordlift" />
+    </class>
+
+    <class id="dumpAjaxService" name="WordLift_DumpAjaxService"
+           filename="/php/insideout/wordlift/ajax/DumpAjaxService.php">
+
+        <property name="tripleStoreService" reference="tripleStoreService" />
+    </class>
 
     <class id="jobRequestAjaxService" name="WordLift_JobRequestAjaxService"
            filename="/php/insideout/wordlift/ajax/JobRequestAjaxService.php">
@@ -104,10 +119,11 @@
     <!-- ***** J O B  C A L L B A C K  S E R V I C E ***** -->
     <class id="jobCallbackService" name="WordLift_JobCallbackService"
            filename="/php/insideout/wordlift/ajax/JobCallbackService.php">
-        <dependsOn filename="/php/arc2/ARC2.php" />
+
 
         <property name="entityService" reference="entityService" />
         <property name="jobService" reference="jobService" />
+        <property name="tripleStoreService" reference="tripleStoreService" />
     </class>
 
     <!-- ***** J O B  A J A X ***** -->

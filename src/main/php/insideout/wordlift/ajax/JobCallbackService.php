@@ -13,100 +13,104 @@ class WordLift_JobCallbackService {
     public $entityService;
     /** @var WordLift_JobService $jobService */
     public $jobService;
+    /** @var WordLift_TripleStoreService $tripleStoreService */
+    public $tripleStoreService;
 
-    public function callback( $jobID, $requestBody ) {
-        $this->logger->trace( "A message has been received [ jobID :: $jobID ][ requestBody :: $requestBody ]." );
+    public function callback( $jobID, $contentItemURI, $requestBody ) {
 
-        // exit if the job ID does NOT exist.
+        $this->logger->trace( "A message has been received [ jobID :: $jobID ][ contentItemURI :: $contentItemURI ][ requestBody :: $requestBody ]." );
+
+        // get the posts for the specified job ID.
         $posts = $this->jobService->getPostByJobID( $jobID );
 
+        // exit if the job ID does NOT exist.
         if ( 0 === count( $posts ) ) {
             $this->logger->error( "No job found for id [ jobID :: $jobID ][ posts :: " . var_export( $posts, true ) . " ]." );
             return;
         }
 
+        // get the post ID.
         $postID = $posts[0]->ID;
         $this->logger->trace( "A post was found [ postID :: $postID ][ jobID :: $jobID ]." );
 
-        $parser = ARC2::getRDFParser();
+        // get a parser.
+        $parser = $this->tripleStoreService->getRDFParser();
         $parser->parseData( $requestBody );
         $triples = $parser->getTriples();
-
-
-        /** @var ARC2_Store $store */
-        $store = ARC2::getStore(array(
-            "db_host" => DB_HOST,
-            "db_name" => DB_NAME,
-            "db_user" => DB_USER,
-            "db_pwd" => DB_PASSWORD,
-            "store_name" => "wordlift"
-        ));
-
-        if (!$store->isSetUp()) {
-            $store->setUp();
-        }
-
-        $store->insert( $triples, "" );
-
         $this->logger->trace( count( $triples ) . " triple(s) found." );
 
+        // get a store and save the triples in the store.
+        $store = $this->tripleStoreService->getStore();
+        $this->logger->trace( "Removing existing enhancements [ postID :: $postID ]." );
+        $store->query( "DELETE FROM <http://example.org> { ?subject ?p ?o }
+                        WHERE { ?subject a <http://fise.iks-project.eu/ontology/Enhancement> .
+                                ?subject <http://purl.org/insideout/wordpress/postID> \"$postID\"^^xsd:long .
+                                ?subject ?p ?o }" );
+        if ( $store->getErrors() ) {
+            $this->logger->error( var_export( $store->getErrors(), true ) );
+            return;
+        }
+
+        $this->logger->trace( "Inserting new triples [ postID :: $postID ]." );
+        $store->insert( $triples, "" );
+        if ( $store->getErrors() ) {
+            $this->logger->error( var_export( $store->getErrors(), true ) );
+            return;
+        }
+
+        $this->logger->trace( "Setting the postID on the enhancements [ postID :: $postID ]." );
+        $store->query( "INSERT INTO <http://example.org> { ?subject <http://purl.org/insideout/wordpress/postID> \"$postID\"^^xsd:long }
+                        WHERE { ?subject a <http://fise.iks-project.eu/ontology/Enhancement> .
+                                ?subject <http://fise.iks-project.eu/ontology/extracted-from> $contentItemURI }" );
+
+        if ( $store->getErrors() ) {
+            $this->logger->error( var_export( $store->getErrors(), true ) );
+            return;
+        }
+
+        // get the triples indexed by subject.
         $index = $parser->getSimpleIndex(0);
 
         // list all the subjects.
-        foreach ( $index as $subject => $predicates ) {
-            $predicatesCount = count( $predicates );
+        foreach ( $index as $subject => $predicates )
+            bindPostToSubjects( $postID, $subject, $predicates );
+    }
 
-            // check if the subject is blank node.
-            $isBlankNode = ( 1 === preg_match( '/^\_:/', $subject ) );
+    private function bindPostToSubjects( $postID, $subject, $predicates ) {
 
-            $this->logger->trace( "[ subject :: $subject ][ predicatesCount :: $predicatesCount ][ isBlankNode :: " . ( $isBlankNode ? "yes" : "no" ) . " ]." );
+        $predicatesCount = count( $predicates );
 
-            if ( $isBlankNode ) continue;
+        // check if the subject is blank node.
+        $isBlankNode = ( 1 === preg_match( '/^\_:/', $subject ) );
 
-            $posts = $this->entityService->getBySubject( $subject );
-            $postsCount = count( $posts );
+        $this->logger->trace( "[ subject :: $subject ][ predicatesCount :: $predicatesCount ][ isBlankNode :: " . ( $isBlankNode ? "yes" : "no" ) . " ]." );
 
-            $this->logger->trace( "$postsCount post(s) found with subject [ subject :: $subject ]." );
+        if ( $isBlankNode ) return;
 
-        // ##### E N T I T I E S #####
-        // load the existing entity if the subject is not anonymous.
+        $posts = $this->entityService->getBySubject( $subject );
+        $postsCount = count( $posts );
 
-        // update the existing entity if found.
+        $this->logger->trace( "$postsCount post(s) found with subject [ subject :: $subject ]." );
 
-        // create a new entity if not found.
+        // create an entity post if it does not exist.
+        if ( 0 === $postsCount )
+            $this->entityService->create( $subject );
 
-            if ( 0 === $postsCount )
-                $this->entityService->create( $subject );
+        // bind the WordPress post to the entity.
+        $this->entityService->bindPostToSubjects( $postID, $subject );
 
-            $this->entityService->bindPostToSubjects( $postID, $subject );
-
-
-        // ##### A N O N Y M O U S  E N T I T I E S #####
-        // create a checksum for the anonymous entity.
-
-        // load an existing entity by checksum.
-
-        // create an entity by checksum if not found.
-
-        // save the properties.
-
-        // create a referenced entity if the property is a bnode reference.
-
-
-
-            foreach ( $predicates as $predicate => $objects ) {
-                $objectsCount = count( $objects );
-
-                $this->logger->trace( "   [ predicate :: $predicate ][ objectsCount :: $objectsCount ]" );
-
-                foreach ( $objects as $object ) {
-                    $type = $object[ "type" ];
-                    $value = $object[ "value" ];
-
-                    $this->logger->trace( "      [ value :: $value ][ type :: $type ]" );
-                }
-            }
-        }
+//            foreach ( $predicates as $predicate => $objects ) {
+//                $objectsCount = count( $objects );
+//
+//                $this->logger->trace( "   [ predicate :: $predicate ][ objectsCount :: $objectsCount ]" );
+//
+//                foreach ( $objects as $object ) {
+//                    $type = $object[ "type" ];
+//                    $value = $object[ "value" ];
+//
+//                    $this->logger->trace( "      [ value :: $value ][ type :: $type ]" );
+//                }
+//            }
     }
 
 }
