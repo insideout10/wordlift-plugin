@@ -42,10 +42,10 @@ class WordLift_JobCallbackService {
         // get a store and save the triples in the store.
         $store = $this->tripleStoreService->getStore();
         $this->logger->trace( "Removing existing enhancements [ postID :: $postID ]." );
-        $store->query( "DELETE FROM <http://example.org> { ?subject ?p ?o }
-                        WHERE { ?subject a <http://fise.iks-project.eu/ontology/Enhancement> .
-                                ?subject <http://purl.org/insideout/wordpress/postID> \"$postID\"^^xsd:long .
-                                ?subject ?p ?o }" );
+        $store->query( "DELETE { ?s ?p ?o }
+                        WHERE {
+                            ?s ?p ?o ; wordlift:postID \"$postID\"
+                        }" );
         if ( $store->getErrors() ) {
             $this->logger->error( var_export( $store->getErrors(), true ) );
             return;
@@ -59,24 +59,29 @@ class WordLift_JobCallbackService {
         }
 
         $this->logger->trace( "Setting the postID on the enhancements [ postID :: $postID ]." );
-        $store->query( "INSERT INTO <http://example.org> { ?subject <http://purl.org/insideout/wordpress/postID> \"$postID\"^^xsd:long }
-                        WHERE { ?subject a <http://fise.iks-project.eu/ontology/Enhancement> .
-                                ?subject <http://fise.iks-project.eu/ontology/extracted-from> $contentItemURI }" );
+        $store->query( "INSERT INTO <> { ?subject wordlift:postID \"$postID\" }
+                        WHERE { ?subject a fise:Enhancement .
+                                ?subject fise:extracted-from $contentItemURI }" );
 
         if ( $store->getErrors() ) {
             $this->logger->error( var_export( $store->getErrors(), true ) );
             return;
         }
 
+        $this->logger->trace( "Setting the job to completed [ postID :: $postID ][ jobID :: $jobID ]." );
+        $this->jobService->setJobForPost( $postID, $jobID, WordLift_JobService::COMPLETED );
+
         // get the triples indexed by subject.
-        $index = $parser->getSimpleIndex(0);
+//        $index = $parser->getSimpleIndex(0);
 
         // list all the subjects.
-        foreach ( $index as $subject => $predicates )
-            bindPostToSubjects( $postID, $subject, $predicates );
+//        foreach ( $index as $subject => $predicates )
+//            bindPostToSubjects( $postID, $subject, $predicates );
+
     }
 
     private function bindPostToSubjects( $postID, $subject, $predicates ) {
+        $this->logger->trace( "Binding the post to the subject [ postID :: $postID ][ subject :: $subject ]." );
 
         $predicatesCount = count( $predicates );
 

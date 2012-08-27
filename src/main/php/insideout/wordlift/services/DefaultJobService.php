@@ -6,7 +6,6 @@
 
 class WordLift_DefaultJobService implements WordLift_JobService {
 
-    const COMPLETED = "completed";
     const IN_PROGRESS = "in progress";
 
     public $logger;
@@ -15,6 +14,7 @@ class WordLift_DefaultJobService implements WordLift_JobService {
     public $jobState;
 
     public $metaKeyJobID;
+    public $metaKeyJobStatus;
 
     public function getPostByJobID( $jobID ) {
 
@@ -25,6 +25,23 @@ class WordLift_DefaultJobService implements WordLift_JobService {
             "meta_value" => $jobID,
             "post_status" => "any"
         ));
+
+    }
+
+    /**
+     * Set the job ID for the post ID.
+     * @param $jobID The job ID.
+     * @param $postID The post ID.
+     * @return mixed The result of the update_post_meta call.
+     */
+    public function setJobForPost( $postID, $jobID, $jobState ) {
+
+        $this->logger->trace( "Setting a job for a post [ postID :: $postID ][ jobID :: $jobID ][ jobState :: $jobState ][ metaKeyJobID :: $this->metaKeyJobID ][ metaKeyJobStatus :: $this->metaKeyJobStatus ]." );
+
+        $jobID = update_post_meta( $postID, $this->metaKeyJobID, $jobID );
+        $jobState = update_post_meta( $postID, $this->metaKeyJobStatus, $jobState );
+
+        return ( $jobID && $jobState );
 
     }
 

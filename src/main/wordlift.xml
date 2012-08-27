@@ -10,7 +10,7 @@
     <property name="entity-field-prefix" value="io-wordlift-" />
     <property name="entity-field-type" value="io-wordlift-schema-type" />
     <property name="schemaorg-field-type" value="@type" />
-    <property name="meta-key-job-id" value="_wordlift_jobID" />
+    <property name="meta-key-job-id" value="_wordlift_job_id" />
 
     <context name="wordLift" />
 
@@ -85,12 +85,43 @@
                     authentication="true" capabilities="publish_posts" />
     <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
                     authentication="false" capabilities="any" />
-    <wordpress:ajax service="ajaxService" action="wordlift.jobCallback" class="jobCallbackService" method="callback"
-                    authentication="false" capabilities="any" />
-    <wordpress:ajax service="ajaxService" action="wordlift.jobRequest" class="jobRequestAjaxService" method="sendJobRequest"
-                    authentication="false" capabilities="any" />
     <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="dump"
                     authentication="false" capabilities="any" />
+
+    <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
+                    authentication="false" capabilities="any" httpMethod="POST" />
+
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="createJob"
+                    authentication="false" capabilities="any" httpMethod="POST" />
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="getJob"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="updateJob"
+                    authentication="false" capabilities="any" httpMethod="PUT" />
+
+    <!-- ***** J O B  A J A X  S E R V I C E ***** -->
+    <class id="jobAjaxService" name="WordLift_JobAjaxService"
+           filename="/php/insideout/wordlift/ajax/JobAjaxService.php">
+
+        <property name="jobRequestService" reference="jobRequestService" />
+        <property name="jobService" reference="jobService" />
+    </class>
+
+    <!-- ***** J O B  R E Q U E S T  S E R V I C E ***** -->
+    <class id="jobRequestService" name="WordLift_PlainTextJobRequestService"
+           filename="/php/insideout/wordlift/services/PlainTextJobRequestService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/JobRequestService.php" />
+
+        <property name="consumerKey" value="0123456789" />
+        <property name="callbackURL" value="http://localizeme.dyndns.org/wordlift/wp-admin/admin-ajax.php?action=wordlift.callback" />
+        <property name="requestMimeType" value="application/rdf+xml" />
+
+        <property name="requestProtocol" value="http" />
+        <property name="requestHttpMethod" value="POST" />
+        <property name="requestContentTypeHeader" value="application/json" />
+        <property name="requestAcceptHeader" value="application/json" />
+
+        <property name="requestURL" value="http://localhost:8080/wordlift/api/job" />
+    </class>
 
 
     <class id="tripleStoreService" name="WordLift_TripleStoreService"
@@ -104,12 +135,6 @@
            filename="/php/insideout/wordlift/ajax/DumpAjaxService.php">
 
         <property name="tripleStoreService" reference="tripleStoreService" />
-    </class>
-
-    <class id="jobRequestAjaxService" name="WordLift_JobRequestAjaxService"
-           filename="/php/insideout/wordlift/ajax/JobRequestAjaxService.php">
-
-        <property name="metaKeyJobID" value="{meta-key-job-id}" />
     </class>
 
     <!-- ***** E C H O  S E R V I C E ***** -->
@@ -270,18 +295,7 @@
         <property name="jobID" value="_io-wordlift-job-id" />
         <property name="jobState" value="_io-wordlift-job-state" />
         <property name="metaKeyJobID" value="{meta-key-job-id}" />
-    </class>
-
-    <!-- ***** J O B R E Q U E S T S E R V I C E **** -->
-    <class id="jobRequestService" name="WordLift_JobRequestService"
-           filename="/php/insideout/wordlift/services/JobRequestService.php" >
-        <dependsOn filename="/php/insideout/wordlift/domain/JobRequest.php" />
-
-        <property name="url" value="{stanbol-url}" />
-        <property name="completeAction" value="{job-complete-action}" />
-        <property name="progressAction" value="{job-progress-action}" />
-        <property name="chainName" value="default" />
-        <property name="jobService" reference="jobService" />
+        <property name="metaKeyJobStatus" value="_wordlift_job_status" />
     </class>
 
     <!-- ***** P R E P R O C E S S O R S ***** -->

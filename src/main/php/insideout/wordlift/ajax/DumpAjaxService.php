@@ -12,25 +12,49 @@ class WordLift_DumpAjaxService {
     public $tripleStoreService;
 
     public function dump( $postID ) {
+        header( "Access-Control-Allow-Origin: *" );
+        header( "Access-Control-Allow-Methods: GET, OPTIONS" );
+        header( "Access-Control-Allow-Headers: origin, x-requested-with, accept" );
+
         $store = $this->tripleStoreService->getStore();
 
-        return array(
-            "textAnnotations" => $this->dumpTextAnnotations( $postID, $store ),
-            "entityAnnotations" => $this->dumpEntityAnnotations( $postID, $store ),
-            "entities" => $this->dumpEntities( $postID, $store )
-        );
+        $textAnnotations = $this->dumpTextAnnotations( $postID, $store );
+        $entityAnnotations = $this->dumpEntityAnnotations( $postID, $store );
+        $entities = $this->dumpEntities( $postID, $store );
+
+//        return $entities;
+
+        foreach ( $entityAnnotations as $entityAnnotation ) {
+            $relation = $entityAnnotation[ "relation" ];
+            $entityReference = $entityAnnotation[ "entityReference" ];
+            $confidence = $entityAnnotation[ "confidence" ];
+            $textAnnotations[ $relation ][ "entities" ][ $entityReference ] = $entities[ $entityReference ];
+            $textAnnotations[ $relation ][ "entities" ][ $entityReference ][ "subject" ] = $entityReference;
+            $textAnnotations[ $relation ][ "entities" ][ $entityReference ][ "confidence" ] = $confidence;
+
+        }
+
+        return $textAnnotations;
+
+//        return array(
+//            "textAnnotations" => $this->dumpTextAnnotations( $postID, $store ),
+//            "entityAnnotations" => $this->dumpEntityAnnotations( $postID, $store ),
+//            "entities" => $this->dumpEntities( $postID, $store )
+//        );
     }
 
     public function dumpEntityAnnotations( $postID, &$store ) {
 
         $store = $this->tripleStoreService->getStore();
 
-        $query = "SELECT ?confidence ?entityReference
+        $query = "SELECT ?relation ?confidence ?entityReference
                   WHERE {
-                    ?subject a <http://fise.iks-project.eu/ontology/EntityAnnotation> .
-                    ?subject <http://purl.org/insideout/wordpress/postID> \"$postID\" .
-                    ?subject <http://fise.iks-project.eu/ontology/confidence> ?confidence .
-                    ?subject <http://fise.iks-project.eu/ontology/entity-reference> ?entityReference .
+                    ?subject a fise:EntityAnnotation .
+                    ?subject wordlift:postID \"$postID\" .
+                    ?subject fise:confidence ?confidence .
+                    ?subject fise:entity-reference ?entityReference .
+                    ?subject dcterms:relation ?relation .
+                    ?entityReference schema:name ?name
                   }";
 
         $this->logger->trace( $query );
@@ -49,6 +73,7 @@ class WordLift_DumpAjaxService {
 
         foreach ( $rows as $row )
             $entityAnnotations[] = array(
+                "relation" => $row[ "relation" ],
                 "confidence" => $row[ "confidence" ],
                 "entityReference" => $row[ "entityReference" ]
             );
@@ -58,14 +83,15 @@ class WordLift_DumpAjaxService {
 
     public function dumpTextAnnotations( $postID, &$store ) {
 
-        $query = "SELECT ?selectionHead ?selectionPrefix ?selectionSuffix ?selectionTail
+        $query = "SELECT ?subject ?selectionHead ?selectionPrefix ?selectionSuffix ?selectionTail ?selectedText
                   WHERE {
-                    ?subject a <http://fise.iks-project.eu/ontology/TextAnnotation> .
-                    ?subject <http://purl.org/insideout/wordpress/postID> \"$postID\" .
-                    ?subject <http://fise.iks-project.eu/ontology/selection-head> ?selectionHead .
-                    ?subject <http://fise.iks-project.eu/ontology/selection-prefix> ?selectionPrefix .
-                    ?subject <http://fise.iks-project.eu/ontology/selection-suffix> ?selectionSuffix .
-                    ?subject <http://fise.iks-project.eu/ontology/selection-tail> ?selectionTail .
+                    ?subject a fise:TextAnnotation .
+                    ?subject wordlift:postID \"$postID\" .
+                    ?subject fise:selection-head ?selectionHead .
+                    ?subject fise:selection-prefix ?selectionPrefix .
+                    ?subject fise:selection-suffix ?selectionSuffix .
+                    ?subject fise:selection-tail ?selectionTail .
+                    ?subject fise:selected-text ?selectedText
                   }";
 
         $this->logger->trace( $query );
@@ -82,13 +108,16 @@ class WordLift_DumpAjaxService {
 
         $textAnnotations = array();
 
-        foreach ( $rows as $row )
-            $textAnnotations[] = array(
+        foreach ( $rows as $row ) {
+            $subject = $row[ "subject" ];
+            $textAnnotations[ $subject ] = array(
                 "selectionHead" => $row[ "selectionHead" ],
                 "selectionPrefix" => $row[ "selectionPrefix" ],
                 "selectionSuffix" => $row[ "selectionSuffix" ],
-                "selectionTail" => $row[ "selectionTail" ]
+                "selectionTail" => $row[ "selectionTail" ],
+                "selectedText" => $row[ "selectedText" ]
             );
+        }
 
         return $textAnnotations;
 
@@ -127,8 +156,7 @@ class WordLift_DumpAjaxService {
             if ( $subject === $row[ "subject" ] ) continue;
 
             $subject = $row[ "subject" ];
-            $entities[] = array(
-                "subject" => $subject,
+            $entities[ $subject ] = array(
                 "name" => $row[ "name" ],
                 "type" => $row[ "type" ],
                 "image" => $row[ "image" ],

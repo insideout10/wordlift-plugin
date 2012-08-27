@@ -23,7 +23,8 @@ class WordLift_TripleStoreService {
                 "dbpedia" => "http://dbpedia.org/ontology/",
                 "schema" => "http://schema.org/",
                 "fise" => "http://fise.iks-project.eu/ontology/",
-                "wordlift" => "http://purl.org/insideout/wordpress/"
+                "wordlift" => "http://purl.org/insideout/wordpress/",
+                "dcterms" => "http://purl.org/dc/terms/"
             ),
 
             "db_host" => DB_HOST,
