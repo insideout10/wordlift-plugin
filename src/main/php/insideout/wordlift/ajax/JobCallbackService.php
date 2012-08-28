@@ -69,7 +69,7 @@ class WordLift_JobCallbackService {
         }
 
         $this->logger->trace( "Setting the job to completed [ postID :: $postID ][ jobID :: $jobID ]." );
-        $this->jobService->setJobForPost( $postID, $jobID, WordLift_JobService::COMPLETED );
+        $this->jobService->setJob( $postID, $jobID, WordLift_JobService::COMPLETED );
 
         // get the triples indexed by subject.
 //        $index = $parser->getSimpleIndex(0);

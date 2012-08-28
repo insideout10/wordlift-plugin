@@ -37,7 +37,7 @@ class WordLift_JobAjaxService {
         $jobRequest = $this->jobRequestService->createJobRequest( $post->post_content );
         $jobResponse = $this->jobRequestService->sendJobRequest( $jobRequest );
 
-        $result = $this->jobService->setJobForPost( $postID, $jobResponse->jobID, WordLift_JobService::RUNNING );
+        $result = $this->jobService->setJob( $postID, $jobResponse->jobID, WordLift_JobService::RUNNING );
 
         if ( false === $result )
             $this->logger->error( "An error occurred saving the job ID to the post [ jobID :: $jobResponse->jobID ][ postID :: $postID ]." );
@@ -46,9 +46,17 @@ class WordLift_JobAjaxService {
 
     }
 
-    public function getJob( $jobID ) {
+    public function getJob( $jobID = NULL, $postID = NULL ) {
 
-        $this->logger->trace( "[ jobID :: $jobID ]." );
+        $this->logger->trace( "[ jobID :: $jobID ][ postID :: $postID ]." );
+
+        if ( NULL === $jobID && NULL === $postID )
+            return WordPress_AjaxProxy::CALLBACK_RETURN_ERROR;
+
+        if ( NULL !== $jobID && "" !== $jobID )
+            return $this->jobService->getByJobID( $jobID );
+
+        return $this->jobService->getByPostID( $postID );
 
     }
 
@@ -56,6 +64,14 @@ class WordLift_JobAjaxService {
 
         $this->logger->trace( "[ jobID :: $jobID ][ jobState :: $jobState ]." );
 
+        $posts = $this->jobService->getPostByJobID( $jobID );
+
+        if ( 0 === count( $posts ) )
+            return WordPress_AjaxProxy::CALLBACK_RETURN_ERROR;
+
+        $this->jobService->setJob( $posts[0]->ID, $jobID, $jobState );
+
+        return $this->getJob( NULL, $posts[0]->ID );
     }
 
 }

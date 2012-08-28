@@ -8,7 +8,11 @@ interface WordLift_JobService {
 
     public function getPostByJobID( $jobID );
 
-    public function setJobForPost( $postID, $jobID, $jobState );
+    public function getByJobID( $jobID );
+
+    public function getByPostID( $postID );
+
+    public function setJob( $postID, $jobID, $jobState );
 
 }
 

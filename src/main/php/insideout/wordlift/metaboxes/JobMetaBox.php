@@ -8,13 +8,16 @@ class WordLift_JobMetaBox implements WordPress_IMetaBox {
 
     public $logger;
 
+    /** @var WordLift_JobService $jobService */
     public $jobService;
 
     public function getHtml( $post ) {
 
-        $job = $this->jobService->getJob( $post->ID );
+        $job = $this->jobService->getByPostID( $post->ID );
 
-        echo "A job for this post is <strong>$job->state</strong> [$job->id].";
+        if ( is_array( $job ) && array_key_exists( "jobState", $job ) )
+            echo "Analysis " . $job[ "jobState" ] . " (" . $job[ "jobID" ] . ")";
+
     }
 
 }

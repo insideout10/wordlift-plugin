@@ -6,12 +6,7 @@
 
 class WordLift_DefaultJobService implements WordLift_JobService {
 
-    const IN_PROGRESS = "in progress";
-
     public $logger;
-
-    public $jobID;
-    public $jobState;
 
     public $metaKeyJobID;
     public $metaKeyJobStatus;
@@ -34,7 +29,7 @@ class WordLift_DefaultJobService implements WordLift_JobService {
      * @param $postID The post ID.
      * @return mixed The result of the update_post_meta call.
      */
-    public function setJobForPost( $postID, $jobID, $jobState ) {
+    public function setJob( $postID, $jobID, $jobState ) {
 
         $this->logger->trace( "Setting a job for a post [ postID :: $postID ][ jobID :: $jobID ][ jobState :: $jobState ][ metaKeyJobID :: $this->metaKeyJobID ][ metaKeyJobStatus :: $this->metaKeyJobStatus ]." );
 
@@ -45,42 +40,38 @@ class WordLift_DefaultJobService implements WordLift_JobService {
 
     }
 
-    public function createJob( $id, $state, $postID = NULL) {
-        return new WordLift_Job( $id, $state, $postID );
+    public function getByJobID( $jobID ) {
+
+        $posts = $this->getPostByJobID( $jobID );
+
+        if ( 0 === count( $posts ) ) {
+            $this->logger->warn( "No post found for job [ jobID :: $jobID ]." );
+            return array();
+        }
+
+        return $this->getByPostID( $posts[0]->ID );
+
     }
 
-    public function getJob( $postID ) {
+    public function getByPostID( $postID ) {
 
-        $jobID = get_post_meta( $postID, $this->jobID, true );
-        $jobState = get_post_meta( $postID, $this->jobState, true );
+        $jobID = get_post_meta( $postID, $this->metaKeyJobID, true );
 
-        return new WordLift_Job( $jobID, $jobState, $postID );
+        if ( "" === $jobID ) {
+            $this->logger->warn( "No job found for post [ postID :: $postID ]." );
+            return array(
+                "postID" => $postID
+            );
+        }
 
-    }
+        $jobState = get_post_meta( $postID, $this->metaKeyJobStatus, true );
 
-    public function getJobByUUID( $uuid ) {
+        return array(
+            "jobID" => $jobID,
+            "jobState" => $jobState,
+            "postID" => $postID
+        );
 
-        $posts = get_posts( array(
-            "numberposts" => 1,
-            "post_status" => array( "any" ),
-            "meta_key" => $this->jobID,
-            "meta_value" => $uuid
-        ));
-
-        if ( 0 === count($posts) )
-            return NULL;
-
-        return $this->getJob( $posts[0]->ID );
-    }
-
-    public function save( $job ) {
-        update_post_meta( $job->postID , $this->jobID, $job->id );
-        update_post_meta( $job->postID , $this->jobState, $job->state );
-    }
-
-    public function markCompleted( $job ) {
-        update_post_meta( $job->postID , $this->jobID, $job->id );
-        update_post_meta( $job->postID , $this->jobState, self::COMPLETED );
     }
 
 }
