@@ -3,6 +3,8 @@ WordLift Plug-in for WordPress
 
 ## Overview
 
+The official WordLift Web Site: [wordlift.it](http://wordlift.it)
+
 ## Installation
 
 ## Configuration
