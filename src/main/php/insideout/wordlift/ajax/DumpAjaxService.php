@@ -22,25 +22,18 @@ class WordLift_DumpAjaxService {
         $entityAnnotations = $this->dumpEntityAnnotations( $postID, $store );
         $entities = $this->dumpEntities( $postID, $store );
 
-//        return $entities;
-
-        foreach ( $entityAnnotations as $entityAnnotation ) {
-            $relation = $entityAnnotation[ "relation" ];
+        foreach ( $entityAnnotations as &$entityAnnotation ) {
             $entityReference = $entityAnnotation[ "entityReference" ];
-            $confidence = $entityAnnotation[ "confidence" ];
-            $textAnnotations[ $relation ][ "entities" ][ $entityReference ] = $entities[ $entityReference ];
-            $textAnnotations[ $relation ][ "entities" ][ $entityReference ][ "subject" ] = $entityReference;
-            $textAnnotations[ $relation ][ "entities" ][ $entityReference ][ "confidence" ] = $confidence;
-
+            $entityAnnotation = array_merge(
+                $entityAnnotation,
+                $entities[ $entityReference ]
+            );
         }
 
-        return $textAnnotations;
-
-//        return array(
-//            "textAnnotations" => $this->dumpTextAnnotations( $postID, $store ),
-//            "entityAnnotations" => $this->dumpEntityAnnotations( $postID, $store ),
-//            "entities" => $this->dumpEntities( $postID, $store )
-//        );
+        return array(
+            "annotations" => $textAnnotations,
+            "entities" => $entityAnnotations
+        );
     }
 
     public function dumpEntityAnnotations( $postID, &$store ) {
@@ -74,7 +67,7 @@ class WordLift_DumpAjaxService {
         foreach ( $rows as $row )
             $entityAnnotations[] = array(
                 "relation" => $row[ "relation" ],
-                "confidence" => $row[ "confidence" ],
+                "confidence" => (double) $row[ "confidence" ],
                 "entityReference" => $row[ "entityReference" ]
             );
 
@@ -83,7 +76,7 @@ class WordLift_DumpAjaxService {
 
     public function dumpTextAnnotations( $postID, &$store ) {
 
-        $query = "SELECT ?subject ?selectionHead ?selectionPrefix ?selectionSuffix ?selectionTail ?selectedText
+        $query = "SELECT DISTINCT ?subject ?selectionHead ?selectionPrefix ?selectionSuffix ?selectionTail ?selectedText
                   WHERE {
                     ?subject a fise:TextAnnotation .
                     ?subject wordlift:postID \"$postID\" .
@@ -91,7 +84,8 @@ class WordLift_DumpAjaxService {
                     ?subject fise:selection-prefix ?selectionPrefix .
                     ?subject fise:selection-suffix ?selectionSuffix .
                     ?subject fise:selection-tail ?selectionTail .
-                    ?subject fise:selected-text ?selectedText
+                    ?subject fise:selected-text ?selectedText .
+                    ?entityAnnotation dcterms:relation ?subject .
                   }";
 
         $this->logger->trace( $query );
@@ -110,7 +104,8 @@ class WordLift_DumpAjaxService {
 
         foreach ( $rows as $row ) {
             $subject = $row[ "subject" ];
-            $textAnnotations[ $subject ] = array(
+            $textAnnotations[] = array(
+                "subject" => $subject,
                 "selectionHead" => $row[ "selectionHead" ],
                 "selectionPrefix" => $row[ "selectionPrefix" ],
                 "selectionSuffix" => $row[ "selectionSuffix" ],

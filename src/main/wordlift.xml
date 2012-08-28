@@ -49,6 +49,20 @@
         <dependsOn name="ioio" />
     </wordpress:script>
 
+    <wordpress:script target="admin" name="angularjs"
+                      version="1.0.1"
+                      footer="true"
+                      url="/wp-content/plugins/wordlift/js/angular-1.0.1.min.js">
+    </wordpress:script>
+
+    <wordpress:script target="admin" name="angularjs-resource"
+                      version="1.0.1"
+                      footer="true"
+                      url="/wp-content/plugins/wordlift/js/angular-resource-1.0.1.min.js">
+        <dependsOn name="angularjs" />
+    </wordpress:script>
+
+
     <!-- ***** W O R D P R E S S   M E T A B O X E S -->
     <!--
         id = (string) (required) HTML 'id' attribute of the edit screen section
@@ -78,14 +92,15 @@
                     authentication="true" capabilities="publish_posts" />
     <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
                     authentication="false" capabilities="any" />
+
     <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="dump"
-                    authentication="false" capabilities="any" />
+                    authentication="false" capabilities="any" httpMethod="GET,OPTIONS" />
 
     <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
                     authentication="false" capabilities="any" httpMethod="POST" />
 
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="createJob"
-                    authentication="true" capabilities="any" httpMethod="POST" />
+                    authentication="false" capabilities="any" httpMethod="POST" />
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="getJob"
                     authentication="true" capabilities="any" httpMethod="GET" />
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="updateJob"

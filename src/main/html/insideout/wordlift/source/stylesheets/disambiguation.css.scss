@@ -1,0 +1,73 @@
+.annotation {
+
+  font-family: Times;
+
+  ul.entity {
+    overflow: hidden;
+    width: 200px;
+    height: 40px;
+
+    margin-left: 0px;
+    padding-left: 0px;
+
+    list-style: none;
+    background: white;
+    border: 1px solid gray;
+
+    text-align: left;
+    font-weight: normal;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    &:hover {
+      overflow: auto;
+      height: auto;
+    }
+
+    li {
+      overflow: hidden;
+      position: relative;
+
+      height: 40px;
+
+      border-bottom: 1px solid lightgray;
+
+      &:hover {
+        background: #e0e0e0;
+      }
+
+      .image {
+        float: left;
+        margin: 4px;
+
+        width: 40px;
+        height: 20px;
+
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      .name {
+        padding-top: 2px;
+      }
+
+      .type {
+        position: absolute;
+
+        bottom: 0;
+        right: 0;
+
+        margin: 2px;
+
+        width: 20px;
+        height: 20px;
+
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+  }
+}
