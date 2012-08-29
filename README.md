@@ -28,7 +28,7 @@ PUT http://.../wp-admin/admin-ajax.php?action=wordlift.job&jobID={jobID}&jobStat
 #### Action *wordlift.post/entites*
 
 ```
-POST http://localizeme.dyndns.org/wordlift/wp-admin/admin-ajax.php?action=wordlift.post/entities&postID={postID}&entity={entity}&textAnnotation={textAnnotation}
+POST http://.../wp-admin/admin-ajax.php?action=wordlift.post/entities&postID={postID}&entity={entity}&textAnnotation={textAnnotation}
 ```
 
 Parameters:
