@@ -11,7 +11,7 @@ class WordLift_PostAjaxService {
     /** @var WordLift_TripleStoreService $tripleStoreService */
     public $tripleStoreService;
 
-    public function bindSingleEntity( $textAnnotation, $postID, $entity ) {
+    public function createBinding( $textAnnotation, $postID, $entity ) {
         $this->logger->trace( "[ postID :: $postID ][ entity :: $entity ]." );
 
         /*
@@ -19,18 +19,7 @@ class WordLift_PostAjaxService {
          * erase any existing link between the textAnnotation, the entityAnnotation and the entity for this postID.
          */
 
-        $query = "DELETE { ?entityAnnotation wordlift:selected true }
-                  WHERE {
-                    ?entityAnnotation a fise:EntityAnnotation .
-                    ?entityAnnotation wordlift:postID \"$postID\" .
-                    ?entityAnnotation dcterms:relation <$textAnnotation> .
-                  }";
-
-        $results = $this->tripleStoreService->query( $query );
-
-        if ( false === $results )
-            return WordPress_AjaxProxy::CALLBACK_RETURN_ERROR;
-
+        $this->deleteBinding( $textAnnotation, $postID );
 
         $query = "INSERT INTO <> { ?entityAnnotation wordlift:selected true }
                   WHERE {
@@ -48,6 +37,22 @@ class WordLift_PostAjaxService {
         return "OK";
     }
 
+    public function deleteBinding( $textAnnotation, $postID ) {
+
+        $query = "DELETE { ?entityAnnotation wordlift:selected true }
+                  WHERE {
+                    ?entityAnnotation a fise:EntityAnnotation .
+                    ?entityAnnotation wordlift:postID \"$postID\" .
+                    ?entityAnnotation dcterms:relation <$textAnnotation> .
+                  }";
+
+        $results = $this->tripleStoreService->query( $query );
+
+        if ( false === $results )
+            return WordPress_AjaxProxy::CALLBACK_RETURN_ERROR;
+
+        return "OK";
+    }
 }
 
 ?>

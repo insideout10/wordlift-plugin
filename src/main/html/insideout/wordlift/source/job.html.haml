@@ -1,0 +1,9 @@
+%div{:id => "wordlift-job",
+     :"ng-controller" => "JobCtrl",
+     :class => "wordlift job"}
+
+    %div{:class => "refresh",
+         :"ng-show" => "!isRunning()",
+         :"ng-click" => "postJob()" }
+    %div{ :"ng-class" => "{true: 'running', false: ''}[isRunning()]" }
+        {{state}}

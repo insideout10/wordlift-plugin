@@ -4,7 +4,7 @@
 
   ul.entity {
     overflow: hidden;
-    width: 200px;
+    width: 250px;
     height: 40px;
 
     margin-left: 0px;
@@ -25,6 +25,10 @@
       height: auto;
     }
 
+    &.binding {
+      cursor: progress;
+    }
+
     li {
       overflow: hidden;
       position: relative;
@@ -38,7 +42,7 @@
       }
 
       &.selected {
-        background: #f5deb3;
+        background: #ffdab9;
       }
 
       .image {

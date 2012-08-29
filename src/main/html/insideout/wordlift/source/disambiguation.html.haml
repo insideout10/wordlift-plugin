@@ -1,20 +1,20 @@
+%div{:id => "wordlift-disambiguation",
+     :"ng-controller" => "AnnotationCtrl"}
 
-%div{:"ng-app" => "wordlift.disambiguation"}
+    %div{:class => "annotation",
+        :"ng-repeat" => "annotation in annotations | orderBy:'selectedText'",
+        :"ng-click" => "open = !open",
+        :"ng-init" => "open = false" }
 
-    %div{:"ng-controller" => "AnnotationCtrl"}
-
-        %div{:class => "annotation",
-            :"ng-repeat" => "annotation in annotations | orderBy:'selectedText'",
-            :"ng-click" => "open = !open",
-            :"ng-init" => "open = false" }
-
-            %ul{:class => "entity",
-                :"ng-class" => "{open: open}" }
-                %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true",
-                    :"ng-class" => "{true:'selected', false:''}[entity.selected]" }
-                    %div{:class => "image",
-                         :style => "background-image: url( {{entity.image}} );" }
-                    %div{:class => "name"}
-                        {{entity.name}}
-                    %div{:class => "type",
-                         :style => "background-image: url( {{getImageURL(entity.type)}} );" }
+        %ul{:class => "entity",
+            :"ng-class" => "{open: open}",
+            :"ng-class" => "{true:'binding', false:''}[annotation.binding]" }
+            %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true | orderBy:'selected':true",
+                :"ng-class" => "{true:'selected', false:''}[entity.selected]",
+                :"ng-click" => "bindEntityToPost( annotation, entity )" }
+                %div{:class => "image",
+                     :style => "background-image: url( {{entity.image}} );" }
+                %div{:class => "name"}
+                    {{entity.name}}
+                %div{:class => "type",
+                     :style => "background-image: url( {{getImageURL(entity.type)}} );" }

@@ -42,14 +42,13 @@ class WordLift_JobCallbackService {
         // get a store and save the triples in the store.
         $store = $this->tripleStoreService->getStore();
         $this->logger->trace( "Removing existing enhancements [ postID :: $postID ]." );
-        $store->query( "DELETE { ?s ?p ?o }
+        $this->tripleStoreService->query( "DELETE { ?s ?p ?o }
                         WHERE {
-                            ?s ?p ?o ; wordlift:postID \"$postID\"
+                            ?s a fise:Enhancement .
+                            ?s wordlift:postID \"$postID\" .
+                            ?s ?p ?o .
                         }" );
-        if ( $store->getErrors() ) {
-            $this->logger->error( var_export( $store->getErrors(), true ) );
-            return;
-        }
+
 
         $this->logger->trace( "Inserting new triples [ postID :: $postID ]." );
         $store->insert( $triples, "" );
@@ -59,14 +58,9 @@ class WordLift_JobCallbackService {
         }
 
         $this->logger->trace( "Setting the postID on the enhancements [ postID :: $postID ]." );
-        $store->query( "INSERT INTO <> { ?subject wordlift:postID \"$postID\" }
+        $this->tripleStoreService->query( "INSERT INTO <> { ?subject wordlift:postID \"$postID\" }
                         WHERE { ?subject a fise:Enhancement .
                                 ?subject fise:extracted-from $contentItemURI }" );
-
-        if ( $store->getErrors() ) {
-            $this->logger->error( var_export( $store->getErrors(), true ) );
-            return;
-        }
 
         $this->logger->trace( "Setting the job to completed [ postID :: $postID ][ jobID :: $jobID ]." );
         $this->jobService->setJob( $postID, $jobID, WordLift_JobService::COMPLETED );
