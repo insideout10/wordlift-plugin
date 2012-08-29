@@ -10,7 +10,8 @@
 
             %ul{:class => "entity",
                 :"ng-class" => "{open: open}" }
-                %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true"}
+                %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true",
+                    :"ng-class" => "{true:'selected', false:''}[entity.selected]" }
                     %div{:class => "image",
                          :style => "background-image: url( {{entity.image}} );" }
                     %div{:class => "name"}

@@ -12,15 +12,10 @@ class WordLift_DumpAjaxService {
     public $tripleStoreService;
 
     public function dump( $postID ) {
-        header( "Access-Control-Allow-Origin: *" );
-        header( "Access-Control-Allow-Methods: GET, OPTIONS" );
-        header( "Access-Control-Allow-Headers: origin, x-requested-with, accept" );
 
-        $store = $this->tripleStoreService->getStore();
-
-        $textAnnotations = $this->dumpTextAnnotations( $postID, $store );
-        $entityAnnotations = $this->dumpEntityAnnotations( $postID, $store );
-        $entities = $this->dumpEntities( $postID, $store );
+        $textAnnotations = $this->dumpTextAnnotations( $postID );
+        $entityAnnotations = $this->dumpEntityAnnotations( $postID );
+        $entities = $this->dumpEntities( $postID );
 
         foreach ( $entityAnnotations as &$entityAnnotation ) {
             $entityReference = $entityAnnotation[ "entityReference" ];
@@ -36,31 +31,21 @@ class WordLift_DumpAjaxService {
         );
     }
 
-    public function dumpEntityAnnotations( $postID, &$store ) {
+    public function dumpEntityAnnotations( $postID ) {
 
-        $store = $this->tripleStoreService->getStore();
-
-        $query = "SELECT ?relation ?confidence ?entityReference
+        $query = "SELECT ?relation ?confidence ?entityReference ?selected
                   WHERE {
                     ?subject a fise:EntityAnnotation .
                     ?subject wordlift:postID \"$postID\" .
                     ?subject fise:confidence ?confidence .
                     ?subject fise:entity-reference ?entityReference .
                     ?subject dcterms:relation ?relation .
-                    ?entityReference schema:name ?name
+                    ?entityReference schema:name ?name .
+                    OPTIONAL { ?subject wordlift:selected ?selected }
                   }";
 
-        $this->logger->trace( $query );
-        $result = $store->query( $query );
-
-        if ( $store->getErrors() ) {
-            $this->logger->error( var_export( $store->getErrors(), true ) );
-            return;
-        }
-
-        $queryTime = $result[ "query_time" ];
+        $result = $this->tripleStoreService->query( $query );
         $rows = &$result[ "result" ][ "rows" ];
-        $rowsCount = count( $rows );
 
         $entityAnnotations = array();
 
@@ -68,13 +53,14 @@ class WordLift_DumpAjaxService {
             $entityAnnotations[] = array(
                 "relation" => $row[ "relation" ],
                 "confidence" => (double) $row[ "confidence" ],
-                "entityReference" => $row[ "entityReference" ]
+                "entityReference" => $row[ "entityReference" ],
+                "selected" => ( "true" === $row[ "selected" ] ? true : false )
             );
 
         return $entityAnnotations;
     }
 
-    public function dumpTextAnnotations( $postID, &$store ) {
+    public function dumpTextAnnotations( $postID ) {
 
         $query = "SELECT DISTINCT ?subject ?selectionHead ?selectionPrefix ?selectionSuffix ?selectionTail ?selectedText
                   WHERE {
@@ -88,17 +74,8 @@ class WordLift_DumpAjaxService {
                     ?entityAnnotation dcterms:relation ?subject .
                   }";
 
-        $this->logger->trace( $query );
-        $result = $store->query( $query );
-
-        if ( $store->getErrors() ) {
-            $this->logger->error( var_export( $store->getErrors(), true ) );
-            return;
-        }
-
-        $queryTime = $result[ "query_time" ];
+        $result = $this->tripleStoreService->query( $query );
         $rows = &$result[ "result" ][ "rows" ];
-        $rowsCount = count( $rows );
 
         $textAnnotations = array();
 
@@ -118,7 +95,7 @@ class WordLift_DumpAjaxService {
 
     }
 
-    public function dumpEntities( $postID, &$store ) {
+    public function dumpEntities( $postID ) {
 
         $query = "SELECT ?subject ?name ?type ?image ?url ?abstract
                   WHERE {
@@ -131,17 +108,8 @@ class WordLift_DumpAjaxService {
                     OPTIONAL { ?subject schema:image ?image }
                   }";
 
-        $this->logger->trace( $query );
-        $result = $store->query( $query );
-
-        if ( $store->getErrors() ) {
-            $this->logger->error( var_export( $store->getErrors(), true ) );
-            return;
-        }
-
-        $queryTime = $result[ "query_time" ];
+        $result = $this->tripleStoreService->query( $query );
         $rows = &$result[ "result" ][ "rows" ];
-        $rowsCount = count( $rows );
 
         $entities = array();
 

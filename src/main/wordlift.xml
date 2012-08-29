@@ -94,7 +94,8 @@
                     authentication="false" capabilities="any" />
 
     <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="dump"
-                    authentication="false" capabilities="any" httpMethod="GET,OPTIONS" />
+                    authentication="false" capabilities="any" httpMethod="GET,OPTIONS"
+                    corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
 
     <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
                     authentication="false" capabilities="any" httpMethod="POST" />
@@ -106,12 +107,24 @@
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="updateJob"
                     authentication="true" capabilities="any" httpMethod="PUT" />
 
+
+    <wordpress:ajax service="ajaxService" action="wordlift.post/entities" class="postAjaxService" method="bindSingleEntity"
+                    authentication="false" capabilities="any" httpMethod="POST,OPTIONS"
+                    corsOrigin="*" corsMethods="POST,OPTIONS" corsHeaders="origin, x-requested-with, accept"/>
+
     <!-- ***** J O B  A J A X  S E R V I C E ***** -->
     <class id="jobAjaxService" name="WordLift_JobAjaxService"
            filename="/php/insideout/wordlift/ajax/JobAjaxService.php">
 
         <property name="jobRequestService" reference="jobRequestService" />
         <property name="jobService" reference="jobService" />
+    </class>
+
+    <!-- ***** P O S T  A J A X  S E R V I C E ***** -->
+    <class id="postAjaxService" name="WordLift_PostAjaxService"
+           filename="/php/insideout/wordlift/ajax/PostAjaxService.php">
+
+        <property name="tripleStoreService" reference="tripleStoreService" />
     </class>
 
     <!-- ***** J O B  R E Q U E S T  S E R V I C E ***** -->

@@ -37,6 +37,10 @@
         background: #e0e0e0;
       }
 
+      &.selected {
+        background: #f5deb3;
+      }
+
       .image {
         float: left;
         margin: 4px;

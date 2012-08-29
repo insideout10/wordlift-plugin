@@ -6,6 +6,8 @@
 
 class WordLift_TripleStoreService {
 
+    public $logger;
+
     // the table prefix for the triple store tables.
     public $tablePrefix;
 
@@ -53,6 +55,20 @@ class WordLift_TripleStoreService {
         return $parser;
     }
 
+    public function query( $query ) {
+
+        $this->logger->trace( "[ query :: $query ]." );
+
+        $store = $this->getStore();
+
+        $results = $store->query( $query );
+        if ( $store->getErrors() ) {
+            $this->logger->error( var_export( $store->getErrors(), true ) );
+            return false;
+        }
+
+        return $results;
+    }
 }
 
 ?>
