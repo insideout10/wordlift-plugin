@@ -16,7 +16,7 @@
 
         %ul
 
-            %li{:"ng-repeat" => "entity in disambiguation.entities | orderBy:'selected':true",
+            %li{:"ng-repeat" => "entity in disambiguation.entities | orderBy:'highestConfidence':true | orderBy:'selected':true",
                 :"ng-click" => "clearAndBind( disambiguation, entity )",
                 :"ng-class" => "{true:'selected', false:''}[entity.selected]" }
 

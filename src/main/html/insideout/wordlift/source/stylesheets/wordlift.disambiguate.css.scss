@@ -46,6 +46,9 @@
         overflow: auto;
         height: 39px;
 
+        padding: 0;
+        margin: 0;
+
         border-bottom: 1px solid lightgray;
 
         background: white;
@@ -53,7 +56,7 @@
         cursor: pointer;
 
         &.selected {
-          background: #F8E6CB;
+          background: #F3DEA4;
         }
 
         &:hover {
@@ -100,10 +103,10 @@
           &.organization {
             background-image: url('../img/noun_project_921.svg');
           }
-          &.person {
+          &.creativework {
             background-image: url('../img/noun_project_2572.svg');
           }
-          &.creativework {
+          &.person {
             background-image: url('../img/noun_project_419.svg');
           }
           &.event {
