@@ -106,6 +106,8 @@
 
     <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
                     authentication="false" capabilities="any" httpMethod="POST" />
+    <wordpress:ajax service="ajaxService" action="wordlift.inject" class="jobCallbackService" method="injectTextAnnotations"
+                    authentication="false" capabilities="any" httpMethod="POST" />
 
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="createJob"
                     authentication="false" capabilities="any" httpMethod="POST"
