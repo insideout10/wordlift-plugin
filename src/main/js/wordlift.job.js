@@ -5,7 +5,7 @@
 
   app = angular.module("wordlift.job", []);
 
-  app.controller("JobCtrl", function($scope, $http, $timeout) {
+  app.controller("JobCtrl", function($scope, $rootScope, $http, $timeout) {
     var postID;
     postID = $("#post_ID").val();
     $scope.getJob = function() {
@@ -46,12 +46,13 @@
       }
     });
     $scope.watchJob = function() {
-      if (!!$scope.isRunning()) {
-        return $timeout(function() {
-          $scope.getJob();
-          return $scope.watchJob();
-        }, 5000);
+      if (!$scope.isRunning()) {
+        return $rootScope.$broadcast("job-complete");
       }
+      return $timeout(function() {
+        $scope.getJob();
+        return $scope.watchJob();
+      }, 5000);
     };
     return $scope.getJob();
   });

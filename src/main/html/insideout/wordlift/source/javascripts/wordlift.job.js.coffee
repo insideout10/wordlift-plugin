@@ -2,7 +2,7 @@ $ = jQuery
 
 app = angular.module "wordlift.job", []
 
-app.controller "JobCtrl", ($scope, $http, $timeout ) ->
+app.controller "JobCtrl", ($scope, $rootScope, $http, $timeout ) ->
 
   postID = $( "#post_ID" ).val()
 
@@ -40,10 +40,12 @@ app.controller "JobCtrl", ($scope, $http, $timeout ) ->
     $scope.watchJob() if $scope.isRunning()
 
   $scope.watchJob = ->
+    return $rootScope.$broadcast( "job-complete" ) if not $scope.isRunning()
+
     $timeout( ->
       $scope.getJob()
       $scope.watchJob()
-    , 5000 ) unless not $scope.isRunning()
+    , 5000 )
 
 
   $scope.getJob()

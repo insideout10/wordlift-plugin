@@ -33,16 +33,17 @@
       overflow: hidden;
       position: relative;
 
-      height: 40px;
+      height: 39px;
+      margin-bottom: 0px;
 
       border-bottom: 1px solid lightgray;
 
-      &:hover {
-        background: #e0e0e0;
+      &.selected {
+        background: #D3E6F2;
       }
 
-      &.selected {
-        background: #ffdab9;
+      &:hover {
+        background: #C7E1F2 !important;
       }
 
       .image {
@@ -58,13 +59,14 @@
       }
 
       .name {
+        width: 224px;
         padding-top: 2px;
       }
 
       .type {
         position: absolute;
 
-        bottom: 0;
+        bottom: 4px;
         right: 0;
 
         margin: 2px;
@@ -75,6 +77,14 @@
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
+      }
+
+      .confidence {
+        background: #AFD0E5;
+        height: 2px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
       }
     }
   }

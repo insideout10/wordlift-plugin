@@ -11,24 +11,187 @@ class WordLift_DumpAjaxService {
     /** @var WordLift_TripleStoreService $tripleStoreService */
     public $tripleStoreService;
 
-    public function dump( $postID ) {
+    public function options() {
+        // DO nothing.
+    }
 
-        $textAnnotations = $this->dumpTextAnnotations( $postID );
-        $entityAnnotations = $this->dumpEntityAnnotations( $postID );
-        $entities = $this->dumpEntities( $postID );
+    public function getDisambiguationOptions( $postID ) {
 
-        foreach ( $entityAnnotations as &$entityAnnotation ) {
-            $entityReference = $entityAnnotation[ "entityReference" ];
-            $entityAnnotation = array_merge(
-                $entityAnnotation,
-                $entities[ $entityReference ]
+        $entitiesAndTextAnnotations = $this->getEntitiesAndTextAnnotations( $postID );
+
+        $disambiguations = array();
+
+
+        while ( 0 < count( $entitiesAndTextAnnotations[ "textAnnotations" ] ) ) {
+
+            $textAnnotation = key( $entitiesAndTextAnnotations[ "textAnnotations" ] );
+            $entities = array_shift( $entitiesAndTextAnnotations[ "textAnnotations" ] );
+
+            $textAnnotations = array( $textAnnotation );
+
+            foreach ( $entities as $entity => $bag ) {
+                $entities[ $entity ] = array_merge( $bag, $entitiesAndTextAnnotations[ "entities" ][ $entity ] );
+
+                foreach( $entitiesAndTextAnnotations[ "entities" ][ $entity ][ "textAnnotations" ] as $textAnnotation ) {
+                    if ( !in_array( $textAnnotation, $textAnnotations ) )
+                        $textAnnotations[] = $textAnnotation;
+
+                    foreach ( $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ] as $entity => $bag )
+                        if ( !array_key_exists( $entity, $entities ) )
+                            $entities[ $entity ] = array_merge( $bag, $entitiesAndTextAnnotations[ "entities" ][ $entity ] );
+
+                    unset( $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ] );
+                }
+            }
+
+            $disambiguations[] = array(
+                "textAnnotations" => $textAnnotations,
+                "entities" => array_values( $entities )
             );
         }
 
+        return $disambiguations;
+    }
+
+    private function getEntitiesAndTextAnnotations( $postID ) {
+
+        $query = "SELECT ?textAnnotation ?confidence ?entity ?name ?type ?image ?url ?selected
+                  WHERE {
+                    ?textAnnotation a fise:TextAnnotation;
+                                    wordlift:postID \"$postID\" .
+                    ?entityAnnotation a fise:EntityAnnotation;
+                                    dcterms:relation ?textAnnotation .
+                    ?entityAnnotation fise:entity-reference ?entity .
+                    ?entityAnnotation fise:confidence ?confidence .
+                    ?entity schema:name ?name .
+                    ?entity a ?type .
+                    OPTIONAL { ?entity schema:image ?image } .
+                    OPTIONAL { ?entity schema:url ?url } .
+                    OPTIONAL { ?entityAnnotation wordlift:selected ?selected } .
+                  } ORDER BY DESC( ?confidence )";
+
+        $result = $this->tripleStoreService->query( $query );
+        $rows = &$result[ "result" ][ "rows" ];
+
+        $textAnnotations = array();
+        $entities = array();
+
+        foreach ( $rows as $row ) {
+            $textAnnotation = $row[ "textAnnotation" ];
+            $entity = $row[ "entity" ];
+            $confidence = (double) $row[ "confidence" ];
+            $name = $row[ "name" ];
+            $type = $row[ "type" ];
+            $image = $row[ "image" ];
+            $url = $row[ "url" ];
+            $selected = ( "true" === $row[ "selected" ] ? true : false );
+
+            if ( !array_key_exists( $textAnnotation, $textAnnotations ) )
+                $textAnnotations[ $textAnnotation ] = array();
+
+            if ( !array_key_exists( $entity, $textAnnotations[ $textAnnotation ] ) )
+                $textAnnotations[ $textAnnotation ][ $entity ] = array(
+                    "highestConfidence" => $confidence,
+                    "lowestConfidence" => $confidence,
+                    "selected" => $selected
+                );
+
+            if ( $confidence > $textAnnotations[ $textAnnotation ][ $entity ][ "highestConfidence" ] )
+                $textAnnotations[ $textAnnotation ][ $entity ][ "highestConfidence" ] = $confidence;
+            if ( $confidence < $textAnnotations[ $textAnnotation ][ $entity ][ "lowestConfidence" ] )
+                $textAnnotations[ $textAnnotation ][ $entity ][ "lowestConfidence" ] = $confidence;
+            $textAnnotations[ $textAnnotation ][ $entity ][ "selected" ] = (boolean) $textAnnotations[ $textAnnotation ][ $entity ][ "selected" ] && $selected;
+
+
+            if ( !array_key_exists( $entity, $entities ) )
+                $entities[ $entity ] = array(
+                    "textAnnotations" => array(),
+                    "about" => $entity,
+                    "name" => $name,
+                    "type" => $type,
+                    "image" => array(),
+                    "url" => array()
+                );
+
+            if ( NULL !== $image && !in_array( $image, $entities[ $entity ][ "image "] ) )
+                $entities[ $entity ][ "image"][] = $image;
+            if ( NULL !== $url && !in_array( $url, $entities[ $entity ][ "url "] ) )
+                $entities[ $entity ][ "url"][] = $url;
+
+            if ( !in_array( $textAnnotation, $entities[ $entity ][ "textAnnotations" ] ) )
+                $entities[ $entity ][ "textAnnotations" ][] = $textAnnotation;
+        }
+
         return array(
-            "annotations" => $textAnnotations,
-            "entities" => $entityAnnotations
+            "entities" => $entities,
+            "textAnnotations" => $textAnnotations
         );
+    }
+
+    public function dump( $postID ) {
+        $annotations = $this->getEntities( $postID );
+
+        $entities = array();
+
+        foreach ( $annotations as $annotation ) {
+
+            $subject = $annotation[ "entity" ];
+            $name = $annotation[ "name" ];
+            $type = $annotation[ "type" ];
+            $confidence = $annotation[ "confidence" ];
+            $url = ( array_key_exists( "url", $annotation ) ? $annotation[ "url" ] : NULL );
+            $image = ( array_key_exists( "image", $annotation ) ? $annotation[ "image" ] : NULL );
+            $textAnnotation = ( array_key_exists( "textAnnotation", $annotation ) ? $annotation[ "textAnnotation" ] : NULL );
+            $selected = ( array_key_exists( "selected", $annotation ) && "true" === $annotation[ "selected" ] );
+
+            if ( !array_key_exists( $subject, $entities ) )
+                $entities[ $subject ] = array(
+                    "entity" => $subject,
+                    "name" => $name,
+                    "type" => $type,
+                    "confidence" => (double) $confidence,
+                    "url" => array(),
+                    "image" => array(),
+                    "texts" => array(),
+                    "selected" => $selected
+                );
+
+            $entity = &$entities[ $subject ];
+            if ( NULL !== $url && !in_array( $url, $entity[ "url" ] ) )
+                $entity[ "url" ][] = $url;
+            if ( NULL !== $image && !in_array( $image, $entity[ "image" ] ) )
+                $entity[ "image" ][] = $image;
+            if ( NULL !== $textAnnotation && !in_array( $textAnnotation, $entity[ "texts" ] ) )
+                $entity[ "texts" ][] = $textAnnotation;
+
+        }
+
+        return array_values( $entities );
+    }
+
+    public function getEntities( $postID ) {
+
+        $query = "SELECT ?entity ?name ?type ?confidence ?url ?image ?textAnnotation ?selected
+                  WHERE {
+                    ?entity schema:name ?name .
+                    ?entity a ?type .
+                    ?entityAnnotation a fise:EntityAnnotation .
+                    ?entityAnnotation wordlift:postID \"$postID\" .
+                    ?entityAnnotation fise:entity-reference ?entity .
+                    ?entityAnnotation fise:confidence ?confidence .
+                    ?entityAnnotation dcterms:relation ?textAnnotation .
+                    ?textAnnotation a fise:TextAnnotation .
+                    OPTIONAL { ?entity schema:description ?description } .
+                    OPTIONAL { ?entity schema:url ?url } .
+                    OPTIONAL { ?entity schema:image ?image } .
+                    OPTIONAL { ?entityAnnotation wordlift:selected ?selected }
+                  }
+                  ORDER BY DESC( ?confidence )";
+
+        $result = $this->tripleStoreService->query( $query );
+        $rows = &$result[ "result" ][ "rows" ];
+
+        return $rows;
     }
 
     public function dumpEntityAnnotations( $postID ) {
@@ -72,6 +235,8 @@ class WordLift_DumpAjaxService {
                     ?subject fise:selection-tail ?selectionTail .
                     ?subject fise:selected-text ?selectedText .
                     ?entityAnnotation dcterms:relation ?subject .
+                    ?entityAnnotation fise:entity-reference ?entity .
+                    ?entity schema:name ?name .
                   }";
 
         $result = $this->tripleStoreService->query( $query );
@@ -103,7 +268,7 @@ class WordLift_DumpAjaxService {
                     ?entityAnnotation wordlift:postID \"$postID\" .
                     ?subject schema:name ?name .
                     ?subject a ?type .
-                    OPTIONAL { ?subject schema:url ?abstract } .
+                    OPTIONAL { ?subject schema:description ?abstract } .
                     OPTIONAL { ?subject schema:url ?url } .
                     OPTIONAL { ?subject schema:image ?image }
                   }";

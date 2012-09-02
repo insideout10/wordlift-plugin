@@ -1,20 +1,69 @@
-%div{:id => "wordlift-disambiguation",
-     :"ng-controller" => "AnnotationCtrl"}
+%div{:id => "wordlift-metabox" }
 
-    %div{:class => "annotation",
-        :"ng-repeat" => "annotation in annotations | orderBy:'selectedText'",
-        :"ng-click" => "open = !open",
-        :"ng-init" => "open = false" }
+    %div{:"ng-controller" => "JobCtrl",
+         :class => "wordlift job"}
 
-        %ul{:class => "entity",
-            :"ng-class" => "{open: open}",
-            :"ng-class" => "{true:'binding', false:''}[annotation.binding]" }
-            %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true | orderBy:'selected':true",
-                :"ng-class" => "{true:'selected', false:''}[entity.selected]",
-                :"ng-click" => "bindEntityToPost( annotation, entity )" }
-                %div{:class => "image",
-                     :style => "background-image: url( {{entity.image}} );" }
-                %div{:class => "name"}
-                    {{entity.name}}
-                %div{:class => "type",
-                     :style => "background-image: url( {{getImageURL(entity.type)}} );" }
+        %div{:class => "refresh",
+             :"ng-show" => "!isRunning()",
+             :"ng-click" => "postJob()" }
+        %div{ :"ng-class" => "{true: 'running', false: ''}[isRunning()]" }
+            {{state}}
+
+    %div{:"ng-controller" => "EntitiesCtrl"}
+
+        %div{:class => "annotation",
+            :"ng-repeat" => "entity in entities | confidence:1" }
+
+            %ul{:class => "entity",
+                :"ng-class" => "{true:'binding', false:''}[entity.binding]" }
+
+                %li{:"ng-repeat" => "related in entities | related:entity | orderBy:'confidence':true | orderBy:'selected':true",
+                    :"ng-class" => "{true:'selected', false:''}[related.selected]",
+                    :"ng-click" => "bindEntity( related, entity )" }
+                    %div{:class => "image",
+                         :style => "background-image: url( {{related.image[0]}} );" }
+                    %div{:class => "name"}
+                        {{related.name}}
+                    %div{:class => "confidence",
+                         :style => "width: {{related.confidence*100}}%;" }
+                    %div{:class => "type",
+                         :style => "background-image: url( {{getImageURL(related.type)}} );" }
+
+
+    -#%ul{:class => "entity",
+    -#    :"ng-class" => "{open: open}",
+    -#    :"ng-class" => "{true:'binding', false:''}[annotation.binding]" }
+    -#    %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true | orderBy:'selected':true",
+    -#        :"ng-class" => "{true:'selected', false:''}[entity.selected]",
+    -#        :"ng-click" => "bindEntityToPost( annotation, entity )" }
+    -#        %div{:class => "image",
+    -#             :style => "background-image: url( {{entity.image}} );" }
+    -#        %div{:class => "name"}
+    -#            {{entity.name}}
+    -#        %div{:class => "confidence",
+    -#             :style => "width: {{entity.confidence*100}}%;" }
+    -#        %div{:class => "type",
+    -#             :style => "background-image: url( {{getImageURL(entity.type)}} );" }
+
+-#%div{:id => "wordlift-disambiguation",
+-#     :"ng-controller" => "AnnotationCtrl"}
+-#
+-#    %div{:class => "annotation",
+-#        :"ng-repeat" => "annotation in annotations | orderBy:'selectedText'",
+-#        :"ng-click" => "open = !open",
+-#        :"ng-init" => "open = false" }
+-#
+-#        %ul{:class => "entity",
+-#            :"ng-class" => "{open: open}",
+-#            :"ng-class" => "{true:'binding', false:''}[annotation.binding]" }
+-#            %li{:"ng-repeat" => "entity in entities | filter:{'relation':annotation.subject} | orderBy:'confidence':true | orderBy:'selected':true",
+-#                :"ng-class" => "{true:'selected', false:''}[entity.selected]",
+-#                :"ng-click" => "bindEntityToPost( annotation, entity )" }
+-#                %div{:class => "image",
+-#                     :style => "background-image: url( {{entity.image}} );" }
+-#                %div{:class => "name"}
+-#                    {{entity.name}}
+-#                %div{:class => "confidence",
+-#                     :style => "width: {{entity.confidence*100}}%;" }
+-#                %div{:class => "type",
+-#                     :style => "background-image: url( {{getImageURL(entity.type)}} );" }

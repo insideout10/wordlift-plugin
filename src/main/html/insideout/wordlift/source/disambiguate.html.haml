@@ -1,0 +1,34 @@
+%div{:id => "wordlift-disambiguate",
+     :"ng-controller" => "DisambiguationsController" }
+
+    %div{:"ng-controller" => "JobController",
+        :class => "wordlift job"}
+
+        %div{:class => "refresh",
+             :"ng-show" => "!isRunning()",
+             :"ng-click" => "postJob()" }
+        %div{ :"ng-class" => "{true: 'running', false: ''}[isRunning()]" }
+            {{state}}
+
+    %div{:class => "disambiguation",
+          :"ng-class" => "{true:'working', false:''}[disambiguation.working]",
+          :"ng-repeat" => "disambiguation in disambiguations" }
+
+        %ul
+
+            %li{:"ng-repeat" => "entity in disambiguation.entities | orderBy:'selected':true",
+                :"ng-click" => "clearAndBind( disambiguation, entity )",
+                :"ng-class" => "{true:'selected', false:''}[entity.selected]" }
+
+                %div{:class => "image",
+                    :style => "background-image: url('{{entity.image[0]}}');" }
+                %div{:class => "name",
+                    :"ng-bind" => "entity.name" }
+                %div{:class => "type",
+                    :"ng-class" => "getTypeName( entity.type )" }
+                %div{:class => "confidence highest",
+                    :style => "width: {{entity.highestConfidence * 100}}%" }
+                %div{:class => "confidence lowest",
+                    :style => "width: {{entity.lowestConfidence * 100}}%" }
+
+

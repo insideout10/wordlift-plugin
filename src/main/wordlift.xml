@@ -90,8 +90,18 @@
     <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
                     authentication="false" capabilities="any" />
 
+    <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="options"
+                    authentication="false" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
     <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="dump"
-                    authentication="false" capabilities="any" httpMethod="GET,OPTIONS"
+                    authentication="false" capabilities="any" httpMethod="GET"
+                    corsOrigin="*" corsMethods="GET" corsHeaders="origin, x-requested-with, accept" />
+
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguation" class="dumpAjaxService" method="options"
+                    authentication="false" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguation" class="dumpAjaxService" method="getDisambiguationOptions"
+                    authentication="false" capabilities="any" httpMethod="GET"
                     corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
 
     <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
@@ -114,20 +124,30 @@
                     authentication="false" capabilities="any" httpMethod="DELETE,OPTIONS"
                     corsOrigin="*" corsMethods="POST,DELETE,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
 
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="options"
+                    authentication="false" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="POST,DELETE,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="clear"
+                    authentication="false" capabilities="any" httpMethod="DELETE"
+                    corsOrigin="*" corsMethods="DELETE" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="bind"
+                    authentication="false" capabilities="any" httpMethod="POST"
+                    corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
+
     <!-- ***** W O R D L I F T  D I S A M B I G U A T I O N  M E T A B O X ***** -->
     <class id="entitiesHtmlMetaBox" name="WordPress_HtmlMetaBox"
            filename="/php/insideout/wordpress/metaboxes/HtmlMetaBox.php">
         <dependsOn filename="/php/insideout/wordpress/interfaces/IMetaBox.php" />
 
-        <property name="htmlFilename" value="/wordlift/html/insideout/wordlift/build/disambiguation.html" />
+        <property name="htmlFilename" value="/wordlift/html/insideout/wordlift/build/disambiguate.html" />
     </class>
 
-    <wordpress:style target="admin" name="wordlift.disambiguation.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.disambiguation.css" />
+    <wordpress:style target="admin" name="wordlift.disambiguation.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" />
 
     <wordpress:script target="admin" name="wordlift-disambiguation"
                       version="1.0.0"
                       footer="true"
-                      url="/wp-content/plugins/wordlift/js/wordlift.disambiguation.js">
+                      url="/wp-content/plugins/wordlift/js/wordlift.disambiguate.js">
         <dependsOn name="angularjs" />
     </wordpress:script>
 
@@ -135,25 +155,17 @@
                        postType="post" context="side" priority="high" />
 
 
-    <!-- ***** W O R D L I F T  J O B   M E T A B O X ***** -->
-    <class id="jobHtmlMetaBox" name="WordPress_HtmlMetaBox"
-           filename="/php/insideout/wordpress/metaboxes/HtmlMetaBox.php">
-        <dependsOn filename="/php/insideout/wordpress/interfaces/IMetaBox.php" />
-
-        <property name="htmlFilename" value="/wordlift/html/insideout/wordlift/build/job.html" />
-    </class>
-
     <wordpress:style target="admin" name="wordlift.job.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.job.css" />
 
-    <wordpress:script target="admin" name="wordlift-job"
-                      version="1.0.0"
-                      footer="true"
-                      url="/wp-content/plugins/wordlift/js/wordlift.job.js">
-        <dependsOn name="angularjs" />
-    </wordpress:script>
+    <!--<wordpress:script target="admin" name="wordlift-job"-->
+                      <!--version="1.0.0"-->
+                      <!--footer="true"-->
+                      <!--url="/wp-content/plugins/wordlift/js/wordlift.job.js">-->
+        <!--<dependsOn name="angularjs" />-->
+    <!--</wordpress:script>-->
 
-    <wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Job Activity" class="jobHtmlMetaBox"
-                       postType="post" context="side" priority="high" />
+    <!--<wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Job Activity" class="jobHtmlMetaBox"-->
+                       <!--postType="post" context="side" priority="high" />-->
 
 
 
