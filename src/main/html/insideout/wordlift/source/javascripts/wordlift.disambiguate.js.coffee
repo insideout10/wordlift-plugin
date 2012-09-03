@@ -11,7 +11,12 @@ angular.module( "wordlift.disambiguate", [])
 
     $scope.highlight = ( entity ) ->
       return if not tinyMCE?
+
       $( tinyMCE.get('content').dom.select(".textannotation") ).removeClass( "strong" )
+
+      return if not entity?.textAnnotations?
+      return if 0 is entity.textAnnotations.length
+
       $( tinyMCE.get('content').dom.select( "##{textAnnotation.replace(':','\\:')}" ) ).addClass( "strong" ) for textAnnotation in entity.textAnnotations
       $( tinyMCE.get('content').dom.select( '.mceContentBody' ) ).animate
         "scrollTop": $( tinyMCE.get('content').dom.select( "##{entity.textAnnotations[0].replace(':','\\:')}" ) ).position().top

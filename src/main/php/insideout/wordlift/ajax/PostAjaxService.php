@@ -49,12 +49,11 @@ class WordLift_PostAjaxService {
         $textAnnotations = "";
         while ( 0 < count( $clear ) ) {
             $textAnnotation = array_shift( $clear );
-            $textAnnotations .= "?entityAnnotation dcterms:relation <" . $textAnnotation . "> . \n";
 
             $query = "DELETE { ?entityAnnotation wordlift:selected true }
                       WHERE {
                         ?entityAnnotation a fise:EntityAnnotation;
-                                        dcterms:relation <$textAnnotation>
+                                        dcterms:relation <$textAnnotation->about>
                       }";
 
             $this->tripleStoreService->query( $query );
