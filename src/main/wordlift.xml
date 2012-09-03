@@ -136,6 +136,15 @@
                     authentication="false" capabilities="any" httpMethod="POST"
                     corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
 
+
+    <!-- ***** E D I T O R  I N I T I A L I Z A T I O N  F I L T E R -->
+    <class id="editorInitializationFilter" name="WordLift_EditorInitializationFilter"
+           filename="/php/insideout/wordlift/filters/EditorInitializationFilter.php">
+    </class>
+    <wordpress:filter name="tiny_mce_before_init" class="editorInitializationFilter" method="editorInitialize" />
+    <wordpress:filter name="mce_css" class="editorInitializationFilter" method="stylesheets" />
+
+
     <!-- ***** W O R D L I F T  D I S A M B I G U A T I O N  M E T A B O X ***** -->
     <class id="entitiesHtmlMetaBox" name="WordPress_HtmlMetaBox"
            filename="/php/insideout/wordpress/metaboxes/HtmlMetaBox.php">
@@ -149,7 +158,8 @@
     <wordpress:script target="admin" name="wordlift-disambiguation"
                       version="1.0.0"
                       footer="true"
-                      url="/wp-content/plugins/wordlift/js/wordlift.disambiguate.js">
+                      production-url="/wp-content/plugins/wordlift/js/wordlift.disambiguate.js"
+                      url="http://localizeme.dyndns.org:4567/javascripts/wordlift.disambiguate.js">
         <dependsOn name="angularjs" />
     </wordpress:script>
 
@@ -158,18 +168,6 @@
 
 
     <wordpress:style target="admin" name="wordlift.job.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.job.css" />
-
-    <!--<wordpress:script target="admin" name="wordlift-job"-->
-                      <!--version="1.0.0"-->
-                      <!--footer="true"-->
-                      <!--url="/wp-content/plugins/wordlift/js/wordlift.job.js">-->
-        <!--<dependsOn name="angularjs" />-->
-    <!--</wordpress:script>-->
-
-    <!--<wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Job Activity" class="jobHtmlMetaBox"-->
-                       <!--postType="post" context="side" priority="high" />-->
-
-
 
     <!-- ***** J O B  A J A X  S E R V I C E ***** -->
     <class id="jobAjaxService" name="WordLift_JobAjaxService"

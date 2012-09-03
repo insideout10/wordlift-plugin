@@ -1,5 +1,16 @@
 @import "compass/css3";
 
+.mceContentBody .highlight {
+  background-color: lightGoldenrodYellow;
+  border: 1px solid darkgrey;
+  padding: 2px;
+
+  &.strong {
+    background-color: yellow;
+    font-weight: bold;
+  }
+}
+
 #wordlift-disambiguate {
   overflow: auto;
 

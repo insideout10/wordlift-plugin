@@ -1,13 +1,20 @@
 $ = jQuery
 
 angular.module( "wordlift.disambiguate", [])
-  .controller "DisambiguationsController", ( $scope, $http ) ->
+  .controller "DisambiguationsController", ( $scope, $http, $timeout ) ->
 
     # get the post ID.
     postID = $( "#post_ID" ).val()
 
     # initialize the disambiguations array.
     $scope.disambiguations = [];
+
+    $scope.highlight = ( entity ) ->
+      return if not tinyMCE?
+      $( tinyMCE.get('content').dom.select(".textannotation") ).removeClass( "strong" )
+      $( tinyMCE.get('content').dom.select( "##{textAnnotation.replace(':','\\:')}" ) ).addClass( "strong" ) for textAnnotation in entity.textAnnotations
+      $( tinyMCE.get('content').dom.select( '.mceContentBody' ) ).animate
+        "scrollTop": $( tinyMCE.get('content').dom.select( "##{entity.textAnnotations[0].replace(':','\\:')}" ) ).position().top
 
     $scope.clearAndBind = ( disambiguation, entity ) ->
       disambiguation.working = true
@@ -30,26 +37,59 @@ angular.module( "wordlift.disambiguate", [])
         disambiguation.working = false
 
 
-
     $scope.getTypeName = ( typeURI ) ->
         typeURI.match( /.+\/(.+$)/ )[1].toLowerCase()
 
-      # get the disambiguations.
-      $scope.getDisambiguations = ->
-        $http
-          "method": "GET"
-          "url": "admin-ajax.php"
-          "params":
-            "action": "wordlift.disambiguation"
-            "postID": postID
-        .success (data) ->
-          $scope.disambiguations = data
-      # .error (data, status, headers, config) ->
+    # get the disambiguations.
+    $scope.getDisambiguations = ->
+      $http
+        "method": "GET"
+        "url": "admin-ajax.php"
+        "params":
+          "action": "wordlift.disambiguation"
+          "postID": postID
+      .success (data) ->
+        $scope.disambiguations = data
+    # .error (data, status, headers, config) ->
 
     $scope.$on "job-complete", ->
       $scope.getDisambiguations()
 
     $scope.getDisambiguations()
+
+    $scope.$watch "disambiguations", ->
+
+      if tinyMCE?.get( "content" )?
+        content = tinyMCE.get( "content" ).getContent()
+      else
+        content = $( "#content" ).html()
+
+      # remove existing annotations.
+      content = content.replace( /<span .*? typeof="http:\/\/fise.iks-project.eu\/ontology\/TextAnnotation">(.*?)<\/span>/g, '$1' )
+
+      for disambiguation in $scope.disambiguations
+        for textAnnotation in disambiguation.textAnnotations
+          selectionHead = textAnnotation.selectionHead
+            .replace( '\(', '\\(' )
+            .replace( '\)', '\\)' )
+          selectionTail = textAnnotation.selectionTail
+            .replace( '\(', '\\(' )
+            .replace( '\)', '\\)' )
+          # regexp = new RegExp( "(#{selectionHead})(<[^>]*>[\\W\\D]*)*(#{textAnnotation.selectedText})(<[^>]*>[\\W\\D]*)*(#{selectionTail})" )
+          regexp = new RegExp( "(\\W)(#{textAnnotation.selectedText})(\\W)" )
+          replace = "$1<span id=\"#{textAnnotation.about}\" class=\"textannotation\"
+           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\"
+           about=\"#{textAnnotation.about}\">$2</span>$3"
+          content = content.replace( regexp, replace )
+
+      if tinyMCE?.get( "content" )?
+        isDirty = tinyMCE.get( "content").isDirty()
+        tinyMCE.get( "content").setContent( content )
+        tinyMCE.get( "content").isNotDirty = 1 if not isDirty
+      else
+        $( "#content" ).html( content )
+
+      $( tinyMCE.get( "content").dom.select('.textannotation') ).toggleClass('highlight') if tinyMCE?
 
 
   .controller "JobController", ($scope, $rootScope, $http, $timeout ) ->
@@ -100,4 +140,4 @@ angular.module( "wordlift.disambiguate", [])
     $scope.getJob()
 
 
-angular.bootstrap $( "#wordlift-disambiguate" ), [ "wordlift.disambiguate" ]
+$ angular.bootstrap $( "#wordlift-disambiguate" ), [ "wordlift.disambiguate" ]
