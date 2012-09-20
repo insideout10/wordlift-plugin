@@ -12,13 +12,21 @@
       if (!(typeof tinyMCE !== "undefined" && tinyMCE !== null)) {
         return;
       }
-      $(tinyMCE.activeEditor.dom.select(".textannotation")).removeClass("strong");
+      $(tinyMCE.get('content').dom.select(".textannotation")).removeClass("strong");
+      if (!((entity != null ? entity.textAnnotations : void 0) != null)) {
+        return;
+      }
+      if (0 === entity.textAnnotations.length) {
+        return;
+      }
       _ref = entity.textAnnotations;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         textAnnotation = _ref[_i];
-        $(tinyMCE.activeEditor.dom.select("#" + (textAnnotation.replace(':', '\\:')))).addClass("strong");
+        $(tinyMCE.get('content').dom.select("#" + (textAnnotation.replace(':', '\\:')))).addClass("strong");
       }
-      return console.log(entity.textAnnotations);
+      return $(tinyMCE.get('content').dom.select('.mceContentBody')).animate({
+        "scrollTop": $(tinyMCE.get('content').dom.select("#" + (entity.textAnnotations[0].replace(':', '\\:')))).position().top
+      });
     };
     $scope.clearAndBind = function(disambiguation, entity) {
       var method;
@@ -70,7 +78,7 @@
     });
     $scope.getDisambiguations();
     return $scope.$watch("disambiguations", function() {
-      var content, disambiguation, regexp, replace, selectionHead, selectionTail, textAnnotation, _i, _j, _len, _len1, _ref, _ref1;
+      var content, disambiguation, isDirty, regexp, replace, selectionHead, selectionTail, textAnnotation, _i, _j, _len, _len1, _ref, _ref1;
       if ((typeof tinyMCE !== "undefined" && tinyMCE !== null ? tinyMCE.get("content") : void 0) != null) {
         content = tinyMCE.get("content").getContent();
       } else {
@@ -85,18 +93,22 @@
           textAnnotation = _ref1[_j];
           selectionHead = textAnnotation.selectionHead.replace('\(', '\\(').replace('\)', '\\)');
           selectionTail = textAnnotation.selectionTail.replace('\(', '\\(').replace('\)', '\\)');
-          regexp = new RegExp("(" + selectionHead + ")(" + textAnnotation.selectedText + ")(\\s{0,1})(" + selectionTail + ")");
-          replace = "$1<span id=\"" + textAnnotation.about + "\" class=\"textannotation\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\" about=\"" + textAnnotation.about + "\">$2</span>$3$4";
+          regexp = new RegExp("(\\W)(" + textAnnotation.selectedText + ")(\\W)");
+          replace = "$1<span id=\"" + textAnnotation.about + "\" class=\"textannotation\"           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\"           about=\"" + textAnnotation.about + "\">$2</span>$3";
           content = content.replace(regexp, replace);
         }
       }
       if ((typeof tinyMCE !== "undefined" && tinyMCE !== null ? tinyMCE.get("content") : void 0) != null) {
+        isDirty = tinyMCE.get("content").isDirty();
         tinyMCE.get("content").setContent(content);
+        if (!isDirty) {
+          tinyMCE.get("content").isNotDirty = 1;
+        }
       } else {
         $("#content").html(content);
       }
       if (typeof tinyMCE !== "undefined" && tinyMCE !== null) {
-        return $(tinyMCE.activeEditor.dom.select('.textannotation')).toggleClass('highlight');
+        return $(tinyMCE.get("content").dom.select('.textannotation')).toggleClass('highlight');
       }
     });
   }).controller("JobController", function($scope, $rootScope, $http, $timeout) {

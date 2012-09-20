@@ -133,3 +133,91 @@
 .container.entities .tiles.entities .tile.entity.thing .type {
   background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMTY3MEM2ODZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMTY3MEM2NzZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDM4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5uDvWAAAACrUlEQVR42syYSWsUQRSAZzLZ1AQV1KAxaOKCC2hQFAQvKorgCqIeAoJCDkE8CCKCXiJiTm7oH1DBiydvgjdRL17Eg5igomREYzSai45Zpv0evIGm09VdM6ma+OCDnp7qnq+76r2aqmwQBJn/KbIpQqfgEDRBA4zAADyFZ/rZbYhQAofhUzA1JuARbEu5vmxsGm2AF0F8vIfd1RYSVsJjg9Q7WONDaB6sS2jcCg8MUvd8CHVBP2xJuKAdnscIfYe1LoRqQuO7E1bDFVhoyIGi4Xwz7HSdZQ9DT3wDaiP20qV3DV1WhOuu31AudHxaa1Ap5kAfnDDVM6hz8YJqQ8f50LHc/DK0w0fYDN0J9xmHQddddjKoPP7AVtdZtgLeVij0JGbMTVtI5rWeCmR+wna9RwvsgqWuKnUj3NSssYmCdnWdPozUsVGt3sdcTR0idR6+wKRBZBwG9EfrtUxE24rYcZdz2Sa4Bq/gAwzqk8tEewmWa7szCeIj5UrZNGqADtgIbVAT+m4x5FO6VaSOuJ7tTezXlE+LYf1v5V1ovWaZTXzVB/AqJKXiHIxZSn2GfT6FMpryF8qoWzLm9voUymjqXyyjfknG7vEpVKpfvVqjbEJKyQ6fQqUScRX+Wkq9hlU+hUrd15dQLKNx1vQHzVWMQS/csmzfWM5CcTrMgtsWGdfpu8vCNMMdg8wQHPQ9qONoinlT8mYOxLVP22xwFbJIOKpLpV9wH15WsvvhImQ1swQW6GIgr1KZmRDK6eJzWehcAd7At2oLiUwHtIaTWtdwUhr64Ue1hKS+tUFLylpOpH77FhKZRTpm0mIIhn0KSXfMh7mW7WVLcNSXUFbTe7Yep8WEZtukLyHZFK2PkZyyetdtnUJUxqVQTsdOnEgQOReoSHGmCqPTfeqqxz8BBgCDoG1wlDF+/wAAAABJRU5ErkJggg==');
 }
+
+/* line 1, ../_treemap.scss */
+#wordlift.treemap {
+  width: 100%;
+}
+/* line 4, ../_treemap.scss */
+#wordlift.treemap .entity {
+  border: 0px solid gray;
+  margin: 2px;
+  padding: 2px;
+  color: black;
+  font-weight: bold;
+  font-size: 12px;
+}
+/* line 13, ../_treemap.scss */
+#wordlift.treemap .entity .type, #wordlift.treemap .entity .count {
+  display: none;
+}
+/* line 17, ../_treemap.scss */
+#wordlift.treemap .entity .symbol {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin: 2px;
+  background-size: 20px 20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+/* line 30, ../_treemap.scss */
+#wordlift.treemap .entity.place {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #47dfdd), color-stop(100%, #32aeac));
+  background-image: -webkit-linear-gradient(#47dfdd, #32aeac);
+  background-image: -moz-linear-gradient(#47dfdd, #32aeac);
+  background-image: -o-linear-gradient(#47dfdd, #32aeac);
+  background-image: linear-gradient(#47dfdd, #32aeac);
+}
+/* line 33, ../_treemap.scss */
+#wordlift.treemap .entity.place .symbol {
+  background-image: url("../img/noun_project_462.svg");
+}
+/* line 38, ../_treemap.scss */
+#wordlift.treemap .entity.creativework {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #3c6f9f));
+  background-image: -webkit-linear-gradient(#3c88d0, #3c6f9f);
+  background-image: -moz-linear-gradient(#3c88d0, #3c6f9f);
+  background-image: -o-linear-gradient(#3c88d0, #3c6f9f);
+  background-image: linear-gradient(#3c88d0, #3c6f9f);
+}
+/* line 41, ../_treemap.scss */
+#wordlift.treemap .entity.creativework .symbol {
+  background-image: url("../img/noun_project_2572.svg");
+}
+/* line 46, ../_treemap.scss */
+#wordlift.treemap .entity.organization {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #4e9014));
+  background-image: -webkit-linear-gradient(#7bb34a, #4e9014);
+  background-image: -moz-linear-gradient(#7bb34a, #4e9014);
+  background-image: -o-linear-gradient(#7bb34a, #4e9014);
+  background-image: linear-gradient(#7bb34a, #4e9014);
+}
+/* line 49, ../_treemap.scss */
+#wordlift.treemap .entity.organization .symbol {
+  background-image: url("../img/noun_project_921.svg");
+}
+/* line 54, ../_treemap.scss */
+#wordlift.treemap .entity.person {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ce9d03));
+  background-image: -webkit-linear-gradient(#deab09, #ce9d03);
+  background-image: -moz-linear-gradient(#deab09, #ce9d03);
+  background-image: -o-linear-gradient(#deab09, #ce9d03);
+  background-image: linear-gradient(#deab09, #ce9d03);
+}
+/* line 57, ../_treemap.scss */
+#wordlift.treemap .entity.person .symbol {
+  background-image: url("../img/noun_project_419.svg");
+}
+/* line 62, ../_treemap.scss */
+#wordlift.treemap .entity.event {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #983797));
+  background-image: -webkit-linear-gradient(#da4dd9, #983797);
+  background-image: -moz-linear-gradient(#da4dd9, #983797);
+  background-image: -o-linear-gradient(#da4dd9, #983797);
+  background-image: linear-gradient(#da4dd9, #983797);
+}
+/* line 65, ../_treemap.scss */
+#wordlift.treemap .entity.event .symbol {
+  background-image: url("../img/noun_project_404.svg");
+}

@@ -17,6 +17,10 @@ class WordLift_JobAjaxService {
     /** @var WordLift_JobService $jobService */
     public $jobService;
 
+    public function options() {
+        // to enable CORS.
+    }
+
     /**
      * Create a new Job for the post with postID.
      * @param $postID The ID of the post.

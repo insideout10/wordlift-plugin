@@ -23,22 +23,47 @@
     <!-- ***** W O R D P R E S S   S H O R T C O D E S -->
     <wordpress:shortCode name="entities_bar" class="entitiesBar" method="get" />
 
+    <class id="geoMapShortCode" name="WordLift_GeoMap"
+           filename="/php/insideout/wordlift/shortcodes/GeoMap.php" />
+    <wordpress:shortCode name="wordlift.geomap" class="geoMapShortCode" method="get" />
+
+    <class id="treeMapShortCode" name="WordLift_TreeMap"
+           filename="/php/insideout/wordlift/shortcodes/TreeMap.php">
+        <property name="entityService" reference="entityService" />
+        <property name="width" value="100"/>
+        <property name="height" value="75"/>
+        <property name="columnWidth" value="108"/>
+    </class>
+    <wordpress:shortCode name="wordlift.treemap" class="treeMapShortCode" method="get" />
+
     <!-- ***** W O R D P R E S S   S T Y L E S -->
     <wordpress:style target="user" name="style.css" url="/wp-content/plugins/wordlift/sass/css/style.css" />
 
     <wordpress:style target="admin" name="admin.css" url="/wp-content/plugins/wordlift/sass/css/admin.css" />
 
     <!-- ***** W O R D P R E S S   S C R I P T S -->
+    <wordpress:script target="user" name="ba-debug"
+                      version="0.0.4"
+                      footer="true"
+                      url="https://raw.github.com/cowboy/javascript-debug/master/ba-debug.min.js">
+    </wordpress:script>
+
     <wordpress:script target="user" name="jquery-ui"
             version="1.8.21"
             footer="true"
             url="/wp-content/plugins/wordlift/js/jquery-ui-1.8.21.custom.min.js">
     </wordpress:script>
 
+    <wordpress:script target="user" name="jquery-isotope"
+                      version="1.8.21"
+                      footer="true"
+                      url="/wp-content/plugins/wordlift/js/jquery.isotope.min.js">
+    </wordpress:script>
+
     <wordpress:script target="user" name="ioio"
-            version="0.9.2"
+            version="0.9.6"
             footer="true"
-            url="/wp-content/plugins/wordlift/js/ioio-0.9.2.min.js">
+            url="/wp-content/plugins/wordlift/js/ioio-0.9.6.debug.js">
         <dependsOn name="jquery-ui" />
     </wordpress:script>
 
@@ -55,12 +80,6 @@
                       url="/wp-content/plugins/wordlift/js/angular-1.0.1.min.js">
     </wordpress:script>
 
-    <!-- wordpress:script target="admin" name="angularjs-resource"
-                      version="1.0.1"
-                      footer="false"
-                      url="/wp-content/plugins/wordlift/js/angular-resource-1.0.1.min.js">
-        <dependsOn name="angularjs" />
-    </wordpress:script -->
 
     <!-- ***** W O R D P R E S S   M E T A B O X E S -->
     <!--
@@ -74,58 +93,49 @@
             'default' or 'low')
     -->
     <!-- add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args ); -->
-    <!--<wordpress:metaBox id="wordlift_entities_meta_box" title="WordLift Entities" class="entitiesMetaBox"-->
-                       <!--postType="post" />-->
 
-    <!--<wordpress:metaBox id="wordlift_job_meta_box" title="WordLift Analysis Job" class="jobMetaBox"-->
-                       <!--postType="post" context="side" />-->
-
-
-
-    <!-- ***** W O R D P R E S S  A J A X ***** -->
+    <!-- ***** S I M P L E  E C H O  S E R V I C E ***** -->
     <wordpress:ajax service="ajaxService" action="wordlift.echo" class="echoService" method="getPong"
                     authentication="false" capabilities="any" />
+
+    <!-- ***** S C H E M A . O R G  S E R V I C E S ***** -->
+    <!--       to create and read posts -->
     <wordpress:ajax service="ajaxService" action="schema-org.create-post" class="postsAjaxService" method="createPost"
                     authentication="true" capabilities="publish_posts" />
     <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
                     authentication="false" capabilities="any" />
 
-    <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="options"
-                    authentication="false" capabilities="any" httpMethod="OPTIONS"
-                    corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
-    <wordpress:ajax service="ajaxService" action="wordlift.dump" class="dumpAjaxService" method="dump"
-                    authentication="false" capabilities="any" httpMethod="GET"
-                    corsOrigin="*" corsMethods="GET" corsHeaders="origin, x-requested-with, accept" />
-
+    <!-- ***** W O R D L I F T  E N T I T I E S  D U M P  S E R V I C E ***** -->
+    <!--       disambiguations -->
     <wordpress:ajax service="ajaxService" action="wordlift.disambiguation" class="dumpAjaxService" method="options"
                     authentication="false" capabilities="any" httpMethod="OPTIONS"
                     corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
     <wordpress:ajax service="ajaxService" action="wordlift.disambiguation" class="dumpAjaxService" method="getDisambiguationOptions"
                     authentication="false" capabilities="any" httpMethod="GET"
-                    corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
+                    corsOrigin="*" corsMethods="GET" corsHeaders="origin, x-requested-with, accept" />
 
+    <!-- ***** W O R D L I F T  C A L L B A C K  S E R V I C E ***** -->
+    <!--       receives callback data -->
     <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
                     authentication="false" capabilities="any" httpMethod="POST" />
-    <wordpress:ajax service="ajaxService" action="wordlift.inject" class="jobCallbackService" method="injectTextAnnotations"
-                    authentication="false" capabilities="any" httpMethod="POST" />
 
+    <!-- ***** W O R D L I F T  J O B  A J A X  S E R V I C E ***** -->
+    <!--       methods to create, read, update an analysis job. -->
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="options"
+                    authentication="true" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="GET,POST,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="createJob"
-                    authentication="false" capabilities="any" httpMethod="POST"
-                    corsOrigin="*" corsMethods="GET,POST,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
+                    authentication="true" capabilities="any" httpMethod="POST"
+                    corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="getJob"
-                    authentication="false" capabilities="any" httpMethod="GET,OPTIONS"
-                    corsOrigin="*" corsMethods="GET,POST,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
+                    authentication="true" capabilities="any" httpMethod="GET"
+                    corsOrigin="*" corsMethods="GET" corsHeaders="origin, x-requested-with, content-type, accept"/>
     <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="updateJob"
                     authentication="true" capabilities="any" httpMethod="PUT" />
 
 
-    <wordpress:ajax service="ajaxService" action="wordlift.post/entities" class="postAjaxService" method="createBinding"
-                    authentication="false" capabilities="any" httpMethod="POST,OPTIONS"
-                    corsOrigin="*" corsMethods="POST,DELETE,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
-    <wordpress:ajax service="ajaxService" action="wordlift.post/entities" class="postAjaxService" method="deleteBinding"
-                    authentication="false" capabilities="any" httpMethod="DELETE,OPTIONS"
-                    corsOrigin="*" corsMethods="POST,DELETE,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
-
+    <!-- ****** W O R D L I F T  P O S T  A J A X  S E R V I C E ***** -->
+    <!--        methods to select a binding between textannotations and entities. -->
     <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="options"
                     authentication="false" capabilities="any" httpMethod="OPTIONS"
                     corsOrigin="*" corsMethods="POST,DELETE,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
@@ -137,15 +147,25 @@
                     corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
 
 
-    <!-- ***** E D I T O R  I N I T I A L I Z A T I O N  F I L T E R -->
-    <class id="editorInitializationFilter" name="WordLift_EditorInitializationFilter"
-           filename="/php/insideout/wordlift/filters/EditorInitializationFilter.php">
+    <class id="geoRssAjaxService" name="WordLift_GeoRssAjaxService" filename="/php/insideout/wordlift/ajax/GeoRssAjaxService.php">
+        <property name="tripleStoreService" reference="tripleStoreService" />
     </class>
-    <wordpress:filter name="tiny_mce_before_init" class="editorInitializationFilter" method="editorInitialize" />
-    <wordpress:filter name="mce_css" class="editorInitializationFilter" method="stylesheets" />
+    <wordpress:ajax service="ajaxService" action="wordlift.georss" class="geoRssAjaxService" method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
+
+    <!-- ***** W O R D P R E S S  E D I T O R  C O N F I G U R A T I O N ***** -->
+    <wordpress:editor property="extended_valid_elements" value="span[about|class|id|typeof]" />
+    <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" />
 
 
     <!-- ***** W O R D L I F T  D I S A M B I G U A T I O N  M E T A B O X ***** -->
+    <!--       composed of:
+                1. a reference to the entities HTML metabox class.
+                2. a stylesheet.
+                3. a script.
+                4. a metaBox configuration.
+    -->
     <class id="entitiesHtmlMetaBox" name="WordPress_HtmlMetaBox"
            filename="/php/insideout/wordpress/metaboxes/HtmlMetaBox.php">
         <dependsOn filename="/php/insideout/wordpress/interfaces/IMetaBox.php" />
@@ -158,16 +178,14 @@
     <wordpress:script target="admin" name="wordlift-disambiguation"
                       version="1.0.0"
                       footer="true"
-                      production-url="/wp-content/plugins/wordlift/js/wordlift.disambiguate.js"
-                      url="http://localizeme.dyndns.org:4567/javascripts/wordlift.disambiguate.js">
+                      url="/wp-content/plugins/wordlift/js/wordlift.disambiguate.js"
+                      developmentUrl="http://localizeme.dyndns.org:4567/javascripts/wordlift.disambiguate.js">
         <dependsOn name="angularjs" />
     </wordpress:script>
 
-    <wordpress:metaBox id="wordlift_entity_references_meta_box" title="WordLift Entity References" class="entitiesHtmlMetaBox"
+    <wordpress:metaBox id="wordlift_entity_references_meta_box" title="WordLift Semantic Blog" class="entitiesHtmlMetaBox"
                        postType="post" context="side" priority="high" />
 
-
-    <wordpress:style target="admin" name="wordlift.job.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.job.css" />
 
     <!-- ***** J O B  A J A X  S E R V I C E ***** -->
     <class id="jobAjaxService" name="WordLift_JobAjaxService"
@@ -262,23 +280,6 @@
         <property name="fieldType" value="{entity-field-type}" />
     </class>
 
-
-    <!-- ***** E N T I T I E S   M E T A - B O X -->
-    <!--<class id="entitiesMetaBox" name="WordLift_EntitiesMetaBox"-->
-           <!--filename="/php/insideout/wordlift/metaboxes/EntitiesMetaBox.php">-->
-        <!--<dependsOn filename="/php/insideout/wordpress/interfaces/IMetaBox.php" />-->
-
-        <!--<property name="entityService" reference="entityService" />-->
-        <!--<property name="schemaOrg" value="http://schema.org" />-->
-    <!--</class>-->
-
-    <!-- ***** J O B M E T A B O X **** -->
-    <!--<class id="jobMetaBox" name="WordLift_JobMetaBox"-->
-           <!--filename="/php/insideout/wordlift/metaboxes/JobMetaBox.php">-->
-
-        <!--<property name="jobService" reference="jobService" />-->
-    <!--</class>-->
-
     <!-- ***** E N T I T I E S   B A R -->
     <class id="entitiesBar" name="WordLift_EntitiesBar"
            filename="/php/insideout/wordlift/shortcodes/EntitiesBar.php">
@@ -356,6 +357,8 @@
         <property name="metaKeySubject" value="_wordlift_subject" />
         <property name="metaKeyReferences" value="_wordlift_references" />
         <property name="postStatus" value="any" />
+
+        <property name="tripleStoreService" reference="tripleStoreService" />
     </class>
 
     <!-- ***** P R E P R O C E S S O R S ***** -->

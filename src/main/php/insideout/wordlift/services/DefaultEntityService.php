@@ -16,6 +16,30 @@ class WordLift_DefaultEntityService implements WordLift_EntityService {
     public $metaKeySubject;
     public $metaKeyReferences;
 
+    /** @var WordLift_TripleStoreService $tripleStoreService */
+    public $tripleStoreService;
+
+    public function findAll() {
+
+        $query = "SELECT DISTINCT ?entity ?postID ?name ?type
+                  WHERE {
+                    ?textAnnotation a fise:TextAnnotation .
+                    ?textAnnotation wordlift:postID ?postID .
+                    ?entityAnnotation a fise:EntityAnnotation .
+                    ?entityAnnotation dcterms:relation ?textAnnotation .
+                    ?entityAnnotation fise:entity-reference ?entity .
+                    ?entityAnnotation wordlift:selected true .
+                    ?entity a ?type .
+                    ?entity schema:name ?name .
+                  }";
+
+        $result = $this->tripleStoreService->query( $query );
+        $rows = &$result[ "result" ][ "rows" ];
+
+        return $rows;
+
+    }
+
     public function getByPostID( $postID ) {
         return get_post_custom_values( $this->metaKeyReferences, $postID );
     }
