@@ -3,6 +3,90 @@
 
   .entity {
     @include entity-symbols;
+
+    padding: 0;
+    margin-bottom: 6px;
+    border-top: 0px;
+    background-image: none !important;
+
+    .metadata {
+      white-space: nowrap;
+      position: relative;
+      height: 20px;
+      padding: 2px;
+      //border-bottom: 1px solid gray;
+
+      .image {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 0;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+
+      .name {
+        left: 24px;
+        position: absolute;
+        top: 0px;
+      }
+
+      .symbol {
+        right: 0;
+        top: 0;
+        margin:0px;
+        position: absolute;
+      }
+    }
+
+    .arrowscroller.arrow.left {
+      margin-left: 0px !important;
+      background: inline-image('../img/arrow-2.png');
+      width: 10px;
+      height: 88px;
+    }
+
+    .arrowscroller.arrow.right {
+      background: inline-image('../img/arrow-1.png');
+      width: 10px;
+      height: 88px;
+    }
+
+    .posts {
+      background: white;
+
+      &.container {
+        width: 240px;
+        margin-top: 0px !important;
+
+        .content {
+          white-space: nowrap;
+
+          .post {
+            display: inline-block;
+            overflow: hidden;
+
+            width: 80px;
+            height: 80px;
+
+            padding: 2px;
+            margin: 2px;
+
+            vertical-align: top;
+
+            border: 1px solid gray;
+
+            font-size: 10px;
+            font-weight: normal;
+            line-height: 1.1;
+
+            white-space: normal;
+          }
+        }
+      }
+
+    }
   }
 
 }

@@ -37,22 +37,34 @@ class WordLift_RelatedEntitiesWidget extends WordPress_WidgetProxy {
             $matches = array();
             preg_match( "/.*\\/(.*)/", $type, $matches ) ;
             $className = ( 0 < count( $matches ) ? strtolower( $matches[ 1 ] ) : "" );
+            $imageURL = htmlentities( ( ! empty( $properties["images"] ) ? $properties["images"][0] : "" ) );
 
-            echo "<li class=\"entity $className\"><div class=\"symbol\"></div>$name</li>";
-//            echo "<li><a href=\"" . get_permalink( $postID ) . "\">" . get_the_title( $postID ) . "</a></strong><br/>";
-//
-//            foreach( $properties[ "entities" ] as $entity => $properties ) {
-//                if ( 0 < count( $properties[ "images" ] ) && !empty( $properties[ "images" ][0] ) ) {
-//                    $title = htmlentities( $properties[ "names" ][0] );
-//                    echo "<img title=\"$title\" class=\"entity image\" src=\"" . $properties[ "images" ][0] . "\"
-//                        onerror=\"this.parentNode.removeChild(this);\"/>";
-//                }
-//            }
-            echo "</li>";
+            echo "<li class=\"entity $className\">
+                    <div class=\"metadata\"><div class=\"image\" style=\"background-image: url($imageURL);\"></div><div class=\"name\">$name</div><div class=\"symbol\"></div>
+                </div>";
+
+            echo "<div class=\"posts container\"><div class=\"content\">";
+            foreach ( $properties[ "posts" ] as $postID )
+                echo "<div class=\"post\"><a href=\"" . get_permalink( $postID ) . "\">" . get_the_title( $postID ) . "</a></div>";
+            echo "</div></div>
+                </li>";
 
         }
 
         echo "</ul></div>";
+
+echo <<<EOF
+<script type="text/javascript">
+    jQuery( function($) {
+        $('.posts.container').arrowscrollers({
+            arrow: {
+                width: 10
+            }
+        });
+    });
+</script>
+EOF;
+
     }
 
     /**
