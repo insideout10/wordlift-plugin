@@ -40,6 +40,78 @@ class WordLift_DefaultEntityService implements WordLift_EntityService {
 
     }
 
+    public function findRelated( $postID ) {
+
+        $query =<<<EOF
+            SELECT DISTINCT ?postID ?entity ?type ?name ?image
+                WHERE {
+                    ?entity a ?type;
+                        schema:name ?name .
+                    ?textAnnotation a fise:TextAnnotation;
+                        wordlift:postID "$postID" .
+                    ?entityAnnotation a fise:EntityAnnotation;
+                        dcterms:relation ?textAnnotation;
+                        fise:entity-reference ?entity;
+                        wordlift:selected true .
+                    ?entityAnnotations fise:entity-reference ?entity;
+                        dcterms:relation ?textAnnotations;
+                        wordlift:selected true .
+                    ?textAnnotations wordlift:postID ?postID .
+                OPTIONAL { ?entity schema:image ?image }
+                FILTER( ?postID != "$postID" )
+            }
+            ORDER BY DESC( ?postID )
+EOF;
+
+        $result = $this->tripleStoreService->query( $query );
+        $rows = &$result[ "result" ][ "rows" ];
+
+        $related = array(
+            "entities" => array(),
+            "posts" => array()
+        );
+        $entities = &$related[ "entities" ];
+        $posts = &$related[ "posts" ];
+
+        foreach ( $rows as $row ) {
+
+            if ( ! array_key_exists( $row[ "postID" ], $posts ) )
+                $posts[ $row[ "postID" ] ] = array(
+                    "entities" => array()
+                );
+
+            $post = &$posts[ $row["postID"] ];
+
+            if ( ! array_key_exists( $row[ "entity" ], $entities ) )
+                $entities[ $row[ "entity" ] ] = array(
+                    "images" => array(),
+                    "names" => array(),
+                    "types" => array(),
+                    "posts" => array()
+                );
+
+            $entity = &$entities[ $row[ "entity" ] ];
+
+            if ( ! in_array( $row[ "postID" ], $entity[ "posts" ] ) )
+                $entity[ "posts" ][] = $row[ "postID" ];
+
+            if ( ! in_array( $row[ "entity" ], $post[ "entities" ] ) )
+                $post[ "entities" ][] = $row[ "entity" ];
+
+            if ( ! empty( $row[ "image" ] ) && ! in_array( $row[ "image" ], $entity[ "images" ] ) )
+                $entity[ "images" ][] = $row[ "image" ];
+
+            if ( ! empty( $row[ "name" ] ) && ! in_array( $row[ "name" ], $entity[ "names" ] ) )
+                $entity[ "names" ][] = $row[ "name" ];
+
+            if ( ! empty( $row[ "type" ] ) && ! in_array( $row[ "type" ], $entity[ "types" ] ) )
+                $entity[ "types" ][] = $row[ "type" ];
+
+        }
+
+        return $related;
+    }
+
     public function getByPostID( $postID ) {
         return get_post_custom_values( $this->metaKeyReferences, $postID );
     }

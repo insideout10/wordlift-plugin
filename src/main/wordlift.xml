@@ -11,6 +11,22 @@
 
     <context name="wordLift" />
 
+    <!-- ***** R E L A T E D  P O S T S  W I D G E T ***** -->
+    <class id="relatedPostsWidget" name="WordLift_RelatedPostsWidget"
+           filename="/php/insideout/wordlift/widgets/RelatedPostsWidget.php">
+
+        <property name="entityService" reference="entityService" />
+    </class>
+    <wordpress:widget class="relatedPostsWidget" />
+
+    <!-- ***** R E L A T E D  E N T I T I E S  W I D G E T ***** -->
+    <class id="relatedEntitiesWidget" name="WordLift_RelatedEntitiesWidget"
+           filename="/php/insideout/wordlift/widgets/RelatedEntitiesWidget.php">
+
+        <property name="entityService" reference="entityService" />
+    </class>
+    <wordpress:widget class="relatedEntitiesWidget" />
+
     <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
     <wordpress:postType name="io-wordlift-entity" class="entityPostType" />
 
@@ -31,8 +47,8 @@
            filename="/php/insideout/wordlift/shortcodes/TreeMap.php">
         <property name="entityService" reference="entityService" />
         <property name="width" value="100"/>
-        <property name="height" value="75"/>
-        <property name="columnWidth" value="108"/>
+        <property name="height" value="70"/>
+        <property name="columnWidth" value="4"/>
     </class>
     <wordpress:shortCode name="wordlift.treemap" class="treeMapShortCode" method="get" />
 
@@ -147,12 +163,21 @@
                     corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
 
 
+    <!-- ***** REST API : wordlift.georss ***** -->
     <class id="geoRssAjaxService" name="WordLift_GeoRssAjaxService" filename="/php/insideout/wordlift/ajax/GeoRssAjaxService.php">
         <property name="tripleStoreService" reference="tripleStoreService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.georss" class="geoRssAjaxService" method="get"
                     authentication="false" capabilities="any" httpMethod="GET" />
 
+    <!-- ***** REST API : wordlift.relatedposts ***** -->
+    <class id="relatedPostsAjaxService"
+           name="WordLift_RelatedPostsAjaxService"
+           filename="/php/insideout/wordlift/ajax/RelatedPostsAjaxService.php">
+        <property name="entityService" reference="entityService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.relatedposts" class="relatedPostsAjaxService" method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
 
     <!-- ***** W O R D P R E S S  E D I T O R  C O N F I G U R A T I O N ***** -->
     <wordpress:editor property="extended_valid_elements" value="span[about|class|id|typeof]" />

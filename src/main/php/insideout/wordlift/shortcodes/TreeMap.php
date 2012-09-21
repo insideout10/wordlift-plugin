@@ -45,7 +45,7 @@ class WordLift_TreeMap {
 
             $count = &$properties[ "count" ];
             if ( 1 < $count )
-                $count *= 0.75;
+                $count *= 0.70;
 
             $width = ( $this->width * $count ) . "px";
             $height = ( $this->height * $count ) . "px";

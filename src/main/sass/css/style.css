@@ -147,11 +147,11 @@
   font-weight: bold;
   font-size: 12px;
 }
-/* line 13, ../_treemap.scss */
+/* line 9, ../_treemap.scss */
 #wordlift.treemap .entity .type, #wordlift.treemap .entity .count {
   display: none;
 }
-/* line 17, ../_treemap.scss */
+/* line 6, ../_mixins.scss */
 #wordlift.treemap .entity .symbol {
   width: 20px;
   height: 20px;
@@ -161,7 +161,7 @@
   background-position: center center;
   background-repeat: no-repeat;
 }
-/* line 30, ../_treemap.scss */
+/* line 19, ../_mixins.scss */
 #wordlift.treemap .entity.place {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #47dfdd), color-stop(100%, #32aeac));
   background-image: -webkit-linear-gradient(#47dfdd, #32aeac);
@@ -169,11 +169,11 @@
   background-image: -o-linear-gradient(#47dfdd, #32aeac);
   background-image: linear-gradient(#47dfdd, #32aeac);
 }
-/* line 33, ../_treemap.scss */
+/* line 22, ../_mixins.scss */
 #wordlift.treemap .entity.place .symbol {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 38, ../_treemap.scss */
+/* line 27, ../_mixins.scss */
 #wordlift.treemap .entity.creativework {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #3c6f9f));
   background-image: -webkit-linear-gradient(#3c88d0, #3c6f9f);
@@ -181,11 +181,11 @@
   background-image: -o-linear-gradient(#3c88d0, #3c6f9f);
   background-image: linear-gradient(#3c88d0, #3c6f9f);
 }
-/* line 41, ../_treemap.scss */
+/* line 30, ../_mixins.scss */
 #wordlift.treemap .entity.creativework .symbol {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 46, ../_treemap.scss */
+/* line 35, ../_mixins.scss */
 #wordlift.treemap .entity.organization {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #4e9014));
   background-image: -webkit-linear-gradient(#7bb34a, #4e9014);
@@ -193,11 +193,11 @@
   background-image: -o-linear-gradient(#7bb34a, #4e9014);
   background-image: linear-gradient(#7bb34a, #4e9014);
 }
-/* line 49, ../_treemap.scss */
+/* line 38, ../_mixins.scss */
 #wordlift.treemap .entity.organization .symbol {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 54, ../_treemap.scss */
+/* line 43, ../_mixins.scss */
 #wordlift.treemap .entity.person {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ce9d03));
   background-image: -webkit-linear-gradient(#deab09, #ce9d03);
@@ -205,11 +205,11 @@
   background-image: -o-linear-gradient(#deab09, #ce9d03);
   background-image: linear-gradient(#deab09, #ce9d03);
 }
-/* line 57, ../_treemap.scss */
+/* line 46, ../_mixins.scss */
 #wordlift.treemap .entity.person .symbol {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 62, ../_treemap.scss */
+/* line 51, ../_mixins.scss */
 #wordlift.treemap .entity.event {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #983797));
   background-image: -webkit-linear-gradient(#da4dd9, #983797);
@@ -217,7 +217,92 @@
   background-image: -o-linear-gradient(#da4dd9, #983797);
   background-image: linear-gradient(#da4dd9, #983797);
 }
-/* line 65, ../_treemap.scss */
+/* line 54, ../_mixins.scss */
 #wordlift.treemap .entity.event .symbol {
+  background-image: url("../img/noun_project_404.svg");
+}
+
+/* line 3, ../_related_posts_widget.scss */
+.wordlift.related img.entity.image {
+  float: right;
+  max-height: 40px;
+  max-width: 40px;
+  margin: 2px;
+}
+
+/* line 4, ../_related_entities_widget.scss */
+.wordlift.widget.related .entity {
+  color: black;
+  font-weight: bold;
+  font-size: 12px;
+}
+/* line 6, ../_mixins.scss */
+.wordlift.widget.related .entity .symbol {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin: 2px;
+  background-size: 20px 20px;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+/* line 19, ../_mixins.scss */
+.wordlift.widget.related .entity.place {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #47dfdd), color-stop(100%, #32aeac));
+  background-image: -webkit-linear-gradient(#47dfdd, #32aeac);
+  background-image: -moz-linear-gradient(#47dfdd, #32aeac);
+  background-image: -o-linear-gradient(#47dfdd, #32aeac);
+  background-image: linear-gradient(#47dfdd, #32aeac);
+}
+/* line 22, ../_mixins.scss */
+.wordlift.widget.related .entity.place .symbol {
+  background-image: url("../img/noun_project_462.svg");
+}
+/* line 27, ../_mixins.scss */
+.wordlift.widget.related .entity.creativework {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #3c6f9f));
+  background-image: -webkit-linear-gradient(#3c88d0, #3c6f9f);
+  background-image: -moz-linear-gradient(#3c88d0, #3c6f9f);
+  background-image: -o-linear-gradient(#3c88d0, #3c6f9f);
+  background-image: linear-gradient(#3c88d0, #3c6f9f);
+}
+/* line 30, ../_mixins.scss */
+.wordlift.widget.related .entity.creativework .symbol {
+  background-image: url("../img/noun_project_2572.svg");
+}
+/* line 35, ../_mixins.scss */
+.wordlift.widget.related .entity.organization {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #4e9014));
+  background-image: -webkit-linear-gradient(#7bb34a, #4e9014);
+  background-image: -moz-linear-gradient(#7bb34a, #4e9014);
+  background-image: -o-linear-gradient(#7bb34a, #4e9014);
+  background-image: linear-gradient(#7bb34a, #4e9014);
+}
+/* line 38, ../_mixins.scss */
+.wordlift.widget.related .entity.organization .symbol {
+  background-image: url("../img/noun_project_921.svg");
+}
+/* line 43, ../_mixins.scss */
+.wordlift.widget.related .entity.person {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ce9d03));
+  background-image: -webkit-linear-gradient(#deab09, #ce9d03);
+  background-image: -moz-linear-gradient(#deab09, #ce9d03);
+  background-image: -o-linear-gradient(#deab09, #ce9d03);
+  background-image: linear-gradient(#deab09, #ce9d03);
+}
+/* line 46, ../_mixins.scss */
+.wordlift.widget.related .entity.person .symbol {
+  background-image: url("../img/noun_project_419.svg");
+}
+/* line 51, ../_mixins.scss */
+.wordlift.widget.related .entity.event {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #983797));
+  background-image: -webkit-linear-gradient(#da4dd9, #983797);
+  background-image: -moz-linear-gradient(#da4dd9, #983797);
+  background-image: -o-linear-gradient(#da4dd9, #983797);
+  background-image: linear-gradient(#da4dd9, #983797);
+}
+/* line 54, ../_mixins.scss */
+.wordlift.widget.related .entity.event .symbol {
   background-image: url("../img/noun_project_404.svg");
 }
