@@ -9,6 +9,8 @@
     border-top: 0px;
     background-image: none !important;
 
+    cursor: pointer;
+
     .metadata {
       white-space: nowrap;
       position: relative;
@@ -40,6 +42,10 @@
       }
     }
 
+    .arrowscroller {
+      display: none;
+    }
+
     .arrowscroller.arrow.left {
       margin-left: 0px !important;
       background: inline-image('../img/arrow-2.png');
@@ -59,6 +65,7 @@
       &.container {
         width: 240px;
         margin-top: 0px !important;
+        display: none;
 
         .content {
           white-space: nowrap;
@@ -85,7 +92,10 @@
           }
         }
       }
+    }
 
+    &:hover .posts.container, &:hover .arrowscroller {
+      display: block;
     }
   }
 

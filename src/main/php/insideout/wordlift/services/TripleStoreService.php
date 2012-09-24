@@ -66,6 +66,10 @@ class WordLift_TripleStoreService {
             $this->logger->error( var_export( $store->getErrors(), true ) );
             return false;
         }
+        if ( $store->getWarnings() ) {
+            $this->logger->warn( var_export( $store->getWarnings(), true ) );
+            return false;
+        }
 
         return $results;
     }

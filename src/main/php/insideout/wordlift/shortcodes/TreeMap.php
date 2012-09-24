@@ -33,7 +33,20 @@ class WordLift_TreeMap {
 
         }
 
-        $content = "<div id=\"wordlift\" class=\"treemap\">";
+        $content =<<<EOF
+
+<div class="treemap toolbar">
+    <div class="selector person" data-filter="">All</div>
+    <div class="selector person" data-filter=".person"><div class="symbol"></div>Person</div>
+    <div class="selector organization" data-filter=".organization"><div class="symbol"></div>Organization</div>
+    <div class="selector place" data-filter=".place"><div class="symbol"></div>Place</div>
+    <div class="selector event" data-filter=".event"><div class="symbol"></div>Event</div>
+    <!-- div class="selector product" data-filter="product"><div class="symbol"></div>Product</div -->
+    <div class="selector creativework data-filter=".creativework"><div class="symbol"></div>Creative Works</div>
+</div>
+
+<div id="wordlift" class="treemap isotope">
+EOF;
 
         foreach ( $entities as $entity => $properties ) {
             $name = &$properties[ "name" ];
@@ -44,8 +57,16 @@ class WordLift_TreeMap {
             $className = ( 0 < count( $matches ) ? strtolower( $matches[ 1 ] ) : "" );
 
             $count = &$properties[ "count" ];
-            if ( 1 < $count )
-                $count *= 0.70;
+            if ( 8 < $count )
+                $count = 8;
+
+            if ( 1 < $count && 4 >= $count )
+                $count *= 0.60;
+
+            if ( 4 < $count )
+                $count *= 0.40;
+
+
 
             $width = ( $this->width * $count ) . "px";
             $height = ( $this->height * $count ) . "px";
@@ -65,6 +86,7 @@ EOF;
 
         <script type="text/javascript">
             jQuery( function($) {
+
                 $('#wordlift.treemap').isotope({
                     // options
                     itemSelector : '.entity',
@@ -73,6 +95,15 @@ EOF;
                         columnWidth: $this->columnWidth
                     }
                 });
+
+                $('.treemap.toolbar .selector')
+                    .click( function( event ) {
+                    console.log( event );
+                        $('#wordlift.treemap')
+                            .isotope({
+                                filter: $( event.target ).data('filter')
+                            });
+                    });
             });
         </script>
 

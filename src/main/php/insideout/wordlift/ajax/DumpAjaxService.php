@@ -89,17 +89,17 @@ class WordLift_DumpAjaxService {
 
         $query = "SELECT ?textAnnotation ?confidence ?selectionHead ?selectionTail ?selectedText ?entity ?name ?type ?image ?url ?selected
                   WHERE {
-                    ?textAnnotation a fise:TextAnnotation;
-                                    wordlift:postID \"$postID\";
-                                    fise:selection-head ?selectionHead;
-                                    fise:selection-tail ?selectionTail;
-                                    fise:selected-text ?selectedText .
-                    ?entityAnnotation a fise:EntityAnnotation;
-                                      dcterms:relation ?textAnnotation;
-                                      fise:entity-reference ?entity;
-                                      fise:confidence ?confidence .
                     ?entity a ?type;
-                            schema:name ?name .
+                        schema:name ?name .
+                    ?textAnnotation a fise:TextAnnotation;
+                        wordlift:postID \"$postID\";
+                        fise:selection-head ?selectionHead;
+                        fise:selection-tail ?selectionTail;
+                        fise:selected-text ?selectedText .
+                    ?entityAnnotation a fise:EntityAnnotation;
+                        dcterms:relation ?textAnnotation;
+                        fise:entity-reference ?entity;
+                        fise:confidence ?confidence .
                     OPTIONAL { ?entity schema:image ?image } .
                     OPTIONAL { ?entity schema:url ?url } .
                     OPTIONAL { ?entityAnnotation wordlift:selected ?selected } .
@@ -107,6 +107,8 @@ class WordLift_DumpAjaxService {
 
         $result = $this->tripleStoreService->query( $query );
         $rows = &$result[ "result" ][ "rows" ];
+
+        $this->logger->trace( "Found " . count( $rows ) . " row(s)." );
 
         $textAnnotations = array();
         $entities = array();

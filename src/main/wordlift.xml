@@ -54,6 +54,7 @@
 
     <!-- ***** W O R D P R E S S   S T Y L E S -->
     <wordpress:style target="user" name="style.css" url="/wp-content/plugins/wordlift/sass/css/style.css" />
+    <wordpress:style target="user" name="isotope.css" url="/wp-content/plugins/wordlift/sass/css/isotope.css" />
 
     <wordpress:style target="admin" name="admin.css" url="/wp-content/plugins/wordlift/sass/css/admin.css" />
 

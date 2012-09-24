@@ -1,3 +1,19 @@
+.treemap.toolbar {
+  margin-bottom: 4px;
+
+  .selector {
+    display: inline-block;
+    cursor: pointer;
+
+    padding: 0 8px 0 2px;
+
+    border-right: 1px solid gray;
+
+    @include entity-symbols;
+    background: none !important;
+  }
+}
+
 #wordlift.treemap {
   width: 100%;
 
