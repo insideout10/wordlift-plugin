@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="span12" ng-hide="isLoggedIn">
+    <form class="horizontal" ng-submit="login()">
+      <div class="control-group">
+        <label class="control-label" for="username">
+          Username
+        </label>
+        <div class="controls">
+          <input id="username" ng-model="username" placeholder="Username" required type="text">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="password">
+          Password
+        </label>
+        <div class="controls">
+          <input id="password" ng-model="password" placeholder="Password" required type="password">
+        </div>
+      </div>
+      <div class="control-group">
+        <div class="controls"></div>
+        <button class="btn btn-large btn-primary" type="submit">
+          Login
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="span12" ng-hide="isLoggedIn">
+    <a class="btn btn-large" ng-click="register()">
+      Register
+    </a>
+  </div>
+</div>
