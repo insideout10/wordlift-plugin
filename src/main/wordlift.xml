@@ -11,6 +11,34 @@
 
     <context name="wordLift" />
 
+    <class id="settingsValidator" name="WordLift_SettingsValidator"
+        filename="/php/insideout/wordlift/notices/SettingsValidator.php">
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the WordLift Settings to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+    </class>
+    <wordpress:notice class="settingsValidator" method="validate" />
+
+    <class id="htmlSettingsProxy" name="WordPress_HtmlSettingsProxy"
+        filename="/php/insideout/wordpress/services/HtmlSettingsProxy.php">
+
+        <property name="url" value="../wp-content/plugins/wordlift/html/userly/settings.html" />
+    </class>
+
+    <wordpress:settings 
+        menuTitle="WordLift"
+        pageTitle="WordLift Settings"
+        capability="manage_options"
+        menuSlug="wordlift_settings"
+        proxy="htmlSettingsProxy">
+    </wordpress:settings>
+
+    <class id="ajaxOptionsService" name="WordPress_AjaxOptionsService"
+        filename="/php/insideout/wordpress/services/AjaxOptionsService.php" />
+    <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="getOption"
+                    authentication="true" capabilities="manage_options" httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
+                    authentication="true" capabilities="manage_options" httpMethod="PUT" />
+
+
     <!-- ***** R E L A T E D  P O S T S  W I D G E T ***** -->
     <class id="relatedPostsWidget" name="WordLift_RelatedPostsWidget"
            filename="/php/insideout/wordlift/widgets/RelatedPostsWidget.php">
@@ -92,9 +120,9 @@
     </wordpress:script>
 
     <wordpress:script target="admin" name="angularjs"
-                      version="1.0.1"
+                      version="1.0.2"
                       footer="false"
-                      url="/wp-content/plugins/wordlift/js/angular-1.0.1.min.js">
+                      url="/wp-content/plugins/wordlift/js/angular-1.0.2.min.js">
     </wordpress:script>
 
 

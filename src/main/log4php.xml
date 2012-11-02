@@ -2,8 +2,9 @@
 <configuration xmlns="http://logging.apache.org/log4php/">
     <appender name="default" class="LoggerAppenderFile">
         <layout class="LoggerLayoutTTCC" />
-        <param name="file" value="/var/log/wordlift/wordlift.log" />
         <param name="append" value="true" />
+        <!-- param name="file" value="/var/log/wordlift/wordlift.log" / -->
+	<param name="file" value="/Users/david/workspaces/io.insideout/log/wordlift.log" />
     </appender>
     <root>
         <level value="trace" />

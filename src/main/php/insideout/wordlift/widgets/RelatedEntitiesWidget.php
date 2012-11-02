@@ -40,7 +40,9 @@ class WordLift_RelatedEntitiesWidget extends WordPress_WidgetProxy {
             $imageURL = htmlentities( ( ! empty( $properties["images"] ) ? $properties["images"][0] : "" ) );
 
             echo "<li class=\"entity $className\">
-                    <div class=\"metadata\"><div class=\"image\" style=\"background-image: url($imageURL);\"></div><div class=\"name\">$name</div><div class=\"symbol\"></div>
+                    <div itemscope itemtype=\"$type\" class=\"metadata\"><div
+                        class=\"image\" style=\"background-image: url($imageURL);\"></div><div
+                        itemprop=\"name\" class=\"name\">$name</div><div class=\"symbol\"></div>
                 </div>";
 
             echo "<div class=\"posts container\"><div class=\"content\">";
