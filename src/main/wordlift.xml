@@ -38,7 +38,6 @@
     <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
                     authentication="true" capabilities="manage_options" httpMethod="PUT" />
 
-
     <!-- ***** R E L A T E D  P O S T S  W I D G E T ***** -->
     <class id="relatedPostsWidget" name="WordLift_RelatedPostsWidget"
            filename="/php/insideout/wordlift/widgets/RelatedPostsWidget.php">
