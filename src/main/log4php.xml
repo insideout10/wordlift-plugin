@@ -4,7 +4,7 @@
         <layout class="LoggerLayoutTTCC" />
         <param name="append" value="true" />
         <!-- param name="file" value="/var/log/wordlift/wordlift.log" / -->
-	<param name="file" value="/Users/david/workspaces/io.insideout/log/wordlift.log" />
+	<param name="file" value="/Users/david/Developer/wordlift/home/log/wordlift.log" />
     </appender>
     <root>
         <level value="trace" />
