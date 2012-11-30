@@ -44,7 +44,7 @@
           return this.authToken = null;
         },
         getUrl: function() {
-          return "http://idntik.it:8081/api/";
+          return "http://localizeme.dyndns.org:8081/api/";
         },
         execute: function(method, path, userName, password, storeAuthToken, data) {
           var authToken, deferred, that;

@@ -1,28 +1,4 @@
-<form class='form-inline' id='loginForm' ng-submit='login()'>
-  <fieldset>
-    <legend>
-      Login
-    </legend>
-    <ul class='signin'>
-      <li class='twitter' ng-click="signIn('twitter')"></li>
-      <li class='facebook' ng-click="signIn('facebook')"></li>
-      <li class='linkedin' ng-click="signIn('linkedin')"></li>
-    </ul>
-    <div class='alert' ng-bind-html-unsafe='alert' ng-class='alertClass' ng-show='alert'></div>
-    <input ng-model='userName' placeholder='Username' type='text'>
-    <input ng-model='password' placeholder='Password' type='password'>
-    <button class='btn btn-primary' type='submit'>
-      Login
-    </button>
-    <span class='help-block'>
-      Login to retrieve your consumer key
-    </span>
-  </fieldset>
-</form>
-<p class='divider'>
-  or
-</p>
-<form class='horizontal' id='registerForm' name='registerForm' ng-controller='RegisterCtrl' ng-submit='register()'>
+<form class='horizontal' id='registerForm' name='registerForm' ng-submit='register()'>
   <legend>
     Register
   </legend>

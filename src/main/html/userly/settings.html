@@ -1,10 +1,11 @@
-<link charset="utf-8" href="../wp-content/plugins/wordlift/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<script src="../wp-content/plugins/wordlift/js/jquery-1.8.2.min.js" type="text/javascript"></script>
-<script src="../wp-content/plugins/wordlift/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="../wp-content/plugins/wordlift/js/angular-1.0.2.min.js" type="text/javascript"></script>
-<script src="../wp-content/plugins/wordlift/js/userly/userly.js" type="text/javascript"></script>
-<script src="../wp-content/plugins/wordlift/js/userly/app.js" type="text/javascript"></script>
-<script src="../wp-content/plugins/wordlift/js/spin.min.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<link charset='utf-8' href='../wp-content/plugins/wordlift/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+<script src='../wp-content/plugins/wordlift/js/jquery-1.8.2.min.js' type='text/javascript'></script>
+<script src='../wp-content/plugins/wordlift/js/bootstrap.min.js' type='text/javascript'></script>
+<script src='http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js' type='text/javascript'></script>
+<script src='../wp-content/plugins/wordlift/js/userly/userly.js' type='text/javascript'></script>
+<script src='../wp-content/plugins/wordlift/js/userly/app.js' type='text/javascript'></script>
+<script src='../wp-content/plugins/wordlift/js/spin.min.js' type='text/javascript'></script>
 <style>
   @import url(http://fonts.googleapis.com/css?family=Paprika);
   
@@ -20,105 +21,42 @@
   	box-sizing: content-box !important;
   }
 </style>
-<div class="container" id="userlyApp">
-  <div class="row">
-    <div class="span7 well" ng-controller="RegisterCtrl">
-      <form class="horizontal" id="registerForm" name="registerForm" ng-submit="register()">
-        <legend>
-          Register
-        </legend>
-        <div class="alert" ng-bind-html-unsafe="alert" ng-class="alertClass" ng-show="alert"></div>
-        <div class="control-group">
-          <label class="control-label" for="username">
-            Username
-          </label>
-          <div class="controls">
-            <input id="username" ng-model="username" placeholder="Username" required type="text">
+<div class='container' id='userlyApp'>
+  <div class='row' id='spinnable'>
+    <div class='span7 well'>
+      <div class='tabbable'>
+        <ul class='nav nav-tabs'>
+          <li class='active'>
+            <a data-toggle='tab' href='#userlogin'>
+              Login/Register
+            </a>
+          </li>
+          <li>
+            <a data-toggle='tab' href='#consumerKey'>
+              Consumer Key
+            </a>
+          </li>
+        </ul>
+        <div class='tab-content'>
+          <div class='tab-pane active' id='userlogin' ng-view></div>
+          <div class='tab-pane' id='consumerKey' ng-controller='ConsumerKeyCtrl'>
+            <form class='form-inline' ng-submit='setConsumerKey()'>
+              <fieldset>
+                <!-- %legend -->
+                <!-- Consumer Key -->
+                <div class='alert' ng-bind-html-unsafe='alert' ng-class='alertClass' ng-show='alert'></div>
+                <input ng-model='consumerKey' placeholder='Consumer Key' required type='text'>
+                <button class='btn btn-primary' type='submit'>
+                  Save
+                </button>
+                <span class='help-block'>
+                  Type here your consumer key
+                </span>
+              </fieldset>
+            </form>
           </div>
         </div>
-        <div class="control-group">
-          <label class="control-label" for="password">
-            Password
-          </label>
-          <div class="controls">
-            <input id="password" ng-model="password" placeholder="Password" required type="password">
-          </div>
-        </div>
-        <div class="control-group" ng-class="{error: registerForm.passwordControl.$error.passwordConfirmation}">
-          <label class="control-label" for="passwordControl">
-            Password (repeat)
-          </label>
-          <div class="controls">
-            <input name="passwordControl" ng-model="passwordControl" password-confirmation placeholder="Repeat Password" required type="password">
-            <span class="help-inline" ng-show="registerForm.passwordControl.$error.passwordConfirmation">
-              Password don't match
-            </span>
-          </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label" for="email">
-            E-mail
-          </label>
-          <div class="controls">
-            <input id="email" ng-model="email" placeholder="E-mail" required type="email">
-          </div>
-        </div>
-        <div class="control-group">
-          <div class="controls"></div>
-          <button class="btn btn-primary" type="submit">
-            Register
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span7 divider">
-      or
-    </div>
-  </div>
-  <div class="row">
-    <div class="span7 well" ng-controller="LoginCtrl">
-      <form class="form-inline" id="loginForm" ng-submit="login()">
-        <fieldset>
-          <legend>
-            Login
-          </legend>
-          <div class="alert" ng-bind-html-unsafe="alert" ng-class="alertClass" ng-show="alert"></div>
-          <input ng-model="userName" placeholder="Username" type="text">
-          <input ng-model="password" placeholder="Password" type="password">
-          <button class="btn btn-primary" type="submit">
-            Login
-          </button>
-          <span class="help-block">
-            Login to retrieve your consumer key
-          </span>
-        </fieldset>
-      </form>
-    </div>
-  </div>
-  <div class="row">
-    <div class="span7 divider">
-      or
-    </div>
-  </div>
-  <div class="row">
-    <div class="span7 well" ng-controller="ConsumerKeyCtrl">
-      <form class="form-inline" ng-submit="setConsumerKey()">
-        <fieldset>
-          <legend>
-            Consumer Key
-          </legend>
-          <div class="alert" ng-bind-html-unsafe="alert" ng-class="alertClass" ng-show="alert"></div>
-          <input ng-model="consumerKey" placeholder="Consumer Key" required type="text">
-          <button class="btn btn-primary" type="submit">
-            Save
-          </button>
-          <span class="help-block">
-            Type here your consumer key
-          </span>
-        </fieldset>
-      </form>
+      </div>
     </div>
   </div>
 </div>

@@ -11,11 +11,28 @@
 
     <context name="wordLift" />
 
+    <class id="idntikitAjaxService" name="WordLift_IdntikitAjaxService"
+        filename="/php/insideout/wordlift/ajax/IdntikitAjaxService.php">
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.idntikit" class="idntikitAjaxService" method="redirectTo"
+                    authentication="true" capabilities="manage_options" httpMethod="GET" />
+
+    <class id="activationService" name="WordLift_ActivationService"
+        filename="/php/insideout/wordlift/services/ActivationService.php">
+        <property name="url" value="http://localhost:8082/api/site" />
+    </class>
+
     <class id="settingsValidator" name="WordLift_SettingsValidator"
         filename="/php/insideout/wordlift/notices/SettingsValidator.php">
-        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the WordLift Settings to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;options-general.php?page=wordlift_settings&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+    </class>
+    <class id="siteKeyValidator" name="WordLift_SiteKeyValidator"
+        filename="/php/insideout/wordlift/notices/SiteKeyValidator.php">
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;siteKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please deactivate and reactivate the WordLift plugin." />
+        <property name="activationService" reference="activationService" />
     </class>
     <wordpress:notice class="settingsValidator" method="validate" />
+    <wordpress:notice class="siteKeyValidator" method="validate" />
 
     <class id="htmlSettingsProxy" name="WordPress_HtmlSettingsProxy"
         filename="/php/insideout/wordpress/services/HtmlSettingsProxy.php">

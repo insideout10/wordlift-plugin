@@ -4,22 +4,56 @@ angular
 	.constant( "consumerKeyOptionName", "wordlift_consumer_key" )
 	.config( [ "applicationId", "baseUrl", "$httpProvider", "$locationProvider", "$routeProvider", ( applicationId, baseUrl, $httpProvider, $locationProvider, $routeProvider ) ->
 
+		$locationProvider.html5Mode false
+
 		$routeProvider
-			.when "/login"
+			.when "/:sid/:tok"
+				templateUrl: "#{baseUrl}/html/userly/loggedin.html"
+				controller: "LoggedInCtrl"
+			.when "/userlogin"				
 				templateUrl: "#{baseUrl}/html/userly/login.html"
-				controller: "AuthenticationCtrl"
-
-			.when "/activate/:activationKey",
-				templateUrl: "#{baseUrl}/html/userly/activate.html"
-				controller: "UserActivationCtrl"
-
-			.when "/register",
-				templateUrl: "#{baseUrl}/html/userly/register.html"
-				controller: "UserRegistrationCtrl"
-
+				controller: "LoginCtrl"
 			.otherwise
-				redirectTo: "/login"
+				redirectTo: "/userlogin"
 
+	])
+	.service( "SessionApiService", [ "ApiService", "$http", "$q", "$location", "$window", "$log", ( ApiService, $http, $q, $location, $window, $log ) ->
+
+		applicationKey: "wordliftkey"
+		sessionId: null
+		sessionToken: null
+
+		call: ( sessionId = null, sessionToken = null ) ->
+			deferred = $q.defer()
+
+			if null isnt sessionId and null isnt sessionToken
+				@sessionId = sessionId
+				@sessionToken = sessionToken
+
+			that = @
+
+			$http(
+					method: "GET"
+					cache: false
+					url: ApiService.getUrl() + "user/me"
+					headers:
+						"Application-Key": @applicationKey
+						"Session-Id": @sessionId
+						"Session-Token": @sessionToken
+				)
+				.success (data, status, headers) ->
+					that.sessionToken = headers( "Session-Token" )
+					deferred.resolve data
+				.error (data, status, headers) ->
+					$log.info headers()
+					$log.info headers( "sessionToken" )
+					deferred.reject data
+
+			deferred.promise
+
+		clear: ->
+			@sessionId = @sessionToken = null
+			$location.path("")		
 	])
 	.service( "WordPressOptionsService", [ "$http", "$q", "$rootScope", "$log", ( $http, $q, $rootScope, $log ) ->
 
@@ -115,7 +149,7 @@ angular
 
 		$scope.getConsumerKey()
 	])
-	.controller( "LoginCtrl", [ "consumerKeyOptionName", "AuthenticationService", "MessageService", "SpinnerService", "WordPressOptionsService", "$scope", "$log", ( consumerKeyOptionName, AuthenticationService, MessageService, SpinnerService, WordPressOptionsService, $scope, $log ) ->
+	.controller( "LoginCtrl", [ "consumerKeyOptionName", "ApiService", "AuthenticationService", "MessageService", "SessionApiService", "SpinnerService", "WordPressOptionsService", "$window", "$scope", "$log", ( consumerKeyOptionName, ApiService, AuthenticationService, MessageService, SessionApiService, SpinnerService, WordPressOptionsService, $window, $scope, $log ) ->
 
 		$scope.login = ->
 			SpinnerService.spin "loginForm"
@@ -133,6 +167,28 @@ angular
 					$scope.alert = "<strong>Ouch!</strong> Authentication failed: #{data.message}\n<small>(#{data.simpleName})</small>"
 					SpinnerService.stop "loginForm"
 
+		$scope.signIn = ( provider ) ->
+			$window.location.href = "admin-ajax.php?action=wordlift.idntikit&url=" + escape( ApiService.getUrl() + "provider/wordlift/#{provider}" ) # ApiService.getUrl() + "provider/wordlift/#{provider}"
+
+	])
+	.controller( "LoggedInCtrl", [ "consumerKeyOptionName", "SessionApiService", "SpinnerService", "WordPressOptionsService", "$routeParams", "$scope", "$log", ( consumerKeyOptionName, SessionApiService, SpinnerService, WordPressOptionsService, $routeParams, $scope, $log ) ->
+		$log.info $routeParams
+
+		SpinnerService.spin "spinnable"
+		SessionApiService.call( $routeParams.sid, $routeParams.tok )
+			.then ( data ) ->
+				$scope.alertClass = "alert-success"
+				$scope.alert = "<strong>Good!</strong> Authentication is successful, you're consumer key has been set and you're ready to go."
+				WordPressOptionsService.setOption consumerKeyOptionName, data.consumerKey
+				SpinnerService.stop "spinnable"
+
+			, ( data ) ->
+				$scope.alertClass = "alert-error"
+				$scope.alert = "<strong>Ouch!</strong> Authentication failed: #{data.message}\n<small>(#{data.simpleName})</small>"
+				SpinnerService.stop "spinnable"
+
+		$scope.logout = ->
+			SessionApiService.clear()
 	])
 	.controller( "RegisterCtrl", [ "applicationId", "consumerKeyOptionName", "MessageService", "SpinnerService", "UserRegistrationService", "WordPressOptionsService", "$scope" ,"$log", ( applicationId, consumerKeyOptionName, MessageService, SpinnerService, UserRegistrationService, WordPressOptionsService, $scope, $log ) ->
 

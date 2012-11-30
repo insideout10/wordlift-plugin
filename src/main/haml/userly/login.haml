@@ -1,22 +1,52 @@
-%div{:class => "row"}
-	%div{:class => "span12", :"ng-hide" => "isLoggedIn"}
-		%form{:class => "horizontal", :"ng-submit" => "login()"}
-			%div{:class => "control-group"}
-				%label{:class => "control-label", :for => "username"}
-					Username
-				%div{:class => "controls"}
-					%input{:id => "username", :type => "text", :placeholder => "Username", :"ng-model" => "username", :required => true}
-			%div{:class => "control-group"}
-				%label{:class => "control-label", :for => "password"}
-					Password
-				%div{:class => "controls"}
-					%input{:id => "password", :type => "password", :placeholder => "Password", :"ng-model" => "password", :required => true}
-			%div{:class => "control-group"}
-				%div{:class => "controls"}
-				%button{:class => "btn btn-large btn-primary", :type => "submit"}
-					Login
+%form{:class => "form-inline", :id => "loginForm", :"ng-submit" => "login()"}
+	%fieldset
+		%legend
+			Login
 
-%div{:class => "row"}
-	%div{:class => "span12", :"ng-hide" => "isLoggedIn"}
-		%a{:class => "btn btn-large", :"ng-click" => "register()"}
+		%ul{:class => "signin"}
+			%li{:class => "twitter", :"ng-click" => "signIn('twitter')"}
+			%li{:class => "facebook", :"ng-click" => "signIn('facebook')"}
+			%li{:class => "linkedin", :"ng-click" => "signIn('linkedin')"}
+
+		%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
+		%input{:type => "text", :placeholder => "Username", :"ng-model" => "userName"}
+		%input{:type => "password", :placeholder => "Password", :"ng-model" => "password"}
+		%button{:type => "submit", :class => "btn btn-primary"}
+			Login
+		%span{:class => "help-block"}
+			Login to retrieve your consumer key
+
+
+%p{:class => "divider"}
+	or
+
+%form{:class => "horizontal", :"ng-controller" => "RegisterCtrl", :id => "registerForm", :name => "registerForm", :"ng-submit" => "register()"}
+	%legend
+		Register
+	%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
+	%div{:class => "control-group"}
+		%label{:class => "control-label", :for => "username"}
+			Username
+		%div{:class => "controls"}
+			%input{:id => "username", :type => "text", :placeholder => "Username", :"ng-model" => "username", :required => true}
+	%div{:class => "control-group"}
+		%label{:class => "control-label", :for => "password"}
+			Password
+		%div{:class => "controls"}
+			%input{:id => "password", :type => "password", :placeholder => "Password", :"ng-model" => "password", :required => true}
+	%div{:class => "control-group", :"ng-class" => "{error: registerForm.passwordControl.$error.passwordConfirmation}"}
+		%label{:class => "control-label", :for => "passwordControl"}
+			Password (repeat)
+		%div{:class => "controls"}
+			%input{:name => "passwordControl", :type => "password", :placeholder => "Repeat Password", :"ng-model" => "passwordControl", :required => true, :"password-confirmation" => true}
+			%span{:class => "help-inline", :"ng-show" => "registerForm.passwordControl.$error.passwordConfirmation"}
+				Password don't match
+	%div{:class => "control-group"}
+		%label{:class => "control-label", :for => "email"}
+			E-mail
+		%div{:class => "controls"}
+			%input{:id => "email", :type => "email", :placeholder => "E-mail", :"ng-model" => "email", :required => true}
+	%div{:class => "control-group"}
+		%div{:class => "controls"}
+		%button{:class => "btn btn-primary", :type => "submit"}
 			Register

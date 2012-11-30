@@ -3,7 +3,7 @@
 %link{:rel => "stylesheet", :href => "../wp-content/plugins/wordlift/css/bootstrap.min.css", :type => "text/css", :charset => "utf-8"}
 %script{:type => "text/javascript", :src => "../wp-content/plugins/wordlift/js/jquery-1.8.2.min.js"}
 %script{:type => "text/javascript", :src => "../wp-content/plugins/wordlift/js/bootstrap.min.js"}
-%script{:type => "text/javascript", :src => "../wp-content/plugins/wordlift/js/angular-1.0.2.min.js"}
+%script{:type => "text/javascript", :src => "http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"}
 %script{:type => "text/javascript", :src  => "../wp-content/plugins/wordlift/js/userly/userly.js"}
 %script{:type => "text/javascript", :src  => "../wp-content/plugins/wordlift/js/userly/app.js"}
 %script{:type => "text/javascript", :src  => "../wp-content/plugins/wordlift/js/spin.min.js"}
@@ -25,72 +25,31 @@
 
 %div{:class => "container", :id => "userlyApp"}
 
-	%div{:class => "row"}
-		%div{:class => "span7 well", :"ng-controller" => "ConsumerKeyCtrl"}
+	%div{:class => "row", :id=> "spinnable"}
+		%div{:class => "span7 well"}
+			%div{:class => "tabbable"}
+				%ul{:class => "nav nav-tabs"}
+					%li{:class => "active"}
+						%a{:href => "#userlogin", :"data-toggle" => "tab"}
+							Login/Register
+					%li
+						%a{:href => "#consumerKey", :"data-toggle" => "tab"}
+							Consumer Key
+				%div{:class => "tab-content"}
+					%div{:class => "tab-pane active", :id => "userlogin", :"ng-view" => true}
 
-			%form{:class => "form-inline", :"ng-submit" => "setConsumerKey()"}
-				%fieldset
-					%legend
-						Consumer Key
-					%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
-					%input{:type => "text", :placeholder => "Consumer Key", :required => true, :"ng-model" => "consumerKey"}
-					%button{:type => "submit", :class => "btn btn-primary"}
-						Save
-					%span{:class => "help-block"}
-						Type here your consumer key
-	%div{:class => "row"}
-		%div{:class => "span7 divider"}
-			or
-	%div{:class => "row"}
-		%div{:class => "span7 well", :"ng-controller" => "LoginCtrl"}
+					%div{:class => "tab-pane", :id => "consumerKey", :"ng-controller" => "ConsumerKeyCtrl"}
 
-			%form{:class => "form-inline", :id => "loginForm", :"ng-submit" => "login()"}
-				%fieldset
-					%legend
-						Login
-					%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
-					%input{:type => "text", :placeholder => "Username", :"ng-model" => "userName"}
-					%input{:type => "password", :placeholder => "Password", :"ng-model" => "password"}
-					%button{:type => "submit", :class => "btn btn-primary"}
-						Login
-					%span{:class => "help-block"}
-						Login to retrieve your consumer key
-	%div{:class => "row"}
-		%div{:class => "span7 divider"}
-			or
-	%div{:class => "row"}
-		%div{:class => "span7 well", :"ng-controller" => "RegisterCtrl"}
-
-			%form{:class => "horizontal", :id => "registerForm", :name => "registerForm", :"ng-submit" => "register()"}
-				%legend
-					Register
-				%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
-				%div{:class => "control-group"}
-					%label{:class => "control-label", :for => "username"}
-						Username
-					%div{:class => "controls"}
-						%input{:id => "username", :type => "text", :placeholder => "Username", :"ng-model" => "username", :required => true}
-				%div{:class => "control-group"}
-					%label{:class => "control-label", :for => "password"}
-						Password
-					%div{:class => "controls"}
-						%input{:id => "password", :type => "password", :placeholder => "Password", :"ng-model" => "password", :required => true}
-				%div{:class => "control-group", :"ng-class" => "{error: registerForm.passwordControl.$error.passwordConfirmation}"}
-					%label{:class => "control-label", :for => "passwordControl"}
-						Password (repeat)
-					%div{:class => "controls"}
-						%input{:name => "passwordControl", :type => "password", :placeholder => "Repeat Password", :"ng-model" => "passwordControl", :required => true, :"password-confirmation" => true}
-						%span{:class => "help-inline", :"ng-show" => "registerForm.passwordControl.$error.passwordConfirmation"}
-							Password don't match
-				%div{:class => "control-group"}
-					%label{:class => "control-label", :for => "email"}
-						E-mail
-					%div{:class => "controls"}
-						%input{:id => "email", :type => "email", :placeholder => "E-mail", :"ng-model" => "email", :required => true}
-				%div{:class => "control-group"}
-					%div{:class => "controls"}
-					%button{:class => "btn btn-primary", :type => "submit"}
-						Register
+						%form{:class => "form-inline", :"ng-submit" => "setConsumerKey()"}
+							%fieldset
+								/ %legend
+								/ 	Consumer Key
+								%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
+								%input{:type => "text", :placeholder => "Consumer Key", :required => true, :"ng-model" => "consumerKey"}
+								%button{:type => "submit", :class => "btn btn-primary"}
+									Save
+								%span{:class => "help-block"}
+									Type here your consumer key
 
 :coffee
 	angular.element(document).ready ->
