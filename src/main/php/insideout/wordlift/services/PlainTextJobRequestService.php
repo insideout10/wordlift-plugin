@@ -6,8 +6,10 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
 
     public $jobService;
 
-    public $consumerKey;
+    public $consumerKeyOptionName;
+
     public $callbackURL;
+    public $applicationId;
     public $requestMimeType;
 
     public $requestProtocol;
@@ -27,8 +29,6 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
         $this->logger->trace( "Creating a job request [ consumerKey :: $this->consumerKey ][ callbackURL :: $this->callbackURL ][ mimeType :: $this->requestMimeType ]." );
 
         return array(
-            "consumerKey" => $this->consumerKey,
-            "callbackURL" => $this->callbackURL,
             "mimeType" => $this->requestMimeType,
             "text" => strip_tags( $text )
         );
@@ -44,19 +44,26 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
 
         $this->logger->trace( "[ request :: " . var_export( $request, true ) . " ]" );
 
+        $requestURL = $this->requestURL . "job";
+        $consumerKey = get_option( $this->consumerKeyOptionName );
+
         $params = array(
             $this->requestProtocol => array(
                 "method" => $this->requestHttpMethod,
                 "header"  => array(
                     "Content-type: $this->requestContentTypeHeader",
-                    "Accept: $this->requestAcceptHeader"
+                    "Accept: $this->requestAcceptHeader",
+                    "Application-Id: $this->applicationId",
+                    "Consumer-Key: $consumerKey",
+                    "Callback-Url: $this->callbackURL",
+
                 ),
                 "content" => json_encode( $request )
         ));
 
         // create the context and open the connection.
         $context = stream_context_create($params);
-        $fileHandle = @fopen( $this->requestURL, "rb", false, $context);
+        $fileHandle = @fopen( $requestURL, "rb", false, $context);
         if ( !$fileHandle ) {
             $this->logger->error( "An error occurred while opening the connection [ requestURL :: $this->requestURL ][ params :: " . var_export( $params, true ) . " ]." );
             return false;
@@ -69,8 +76,19 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
             return false;
         }
 
+        $transactionId = null;
+
+        foreach ( $http_response_header as $headerLine ) {
+            $header = explode( ": ", $headerLine );
+
+            if ( "Proxy-Transaction-Id" === $header[0] ) {
+                $transactionId = $header[1];
+                break;
+            }
+        }
+
         // decode the response to a job response.
-        return json_decode( $response );
+        return $transactionId;
 
     }
 

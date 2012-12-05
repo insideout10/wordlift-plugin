@@ -19,7 +19,7 @@ angular
 	])
 	.service( "SessionApiService", [ "ApiService", "$http", "$q", "$location", "$window", "$log", ( ApiService, $http, $q, $location, $window, $log ) ->
 
-		applicationKey: "wordliftkey"
+		applicationKey: "I1ijAG2PklODaWaqQOyp"
 		sessionId: null
 		sessionToken: null
 

@@ -16,9 +16,11 @@ class WordLift_JobCallbackService {
     /** @var WordLift_TripleStoreService $tripleStoreService */
     public $tripleStoreService;
 
-    public function callback( $jobID, $contentItemURI, $requestBody ) {
+    public function callback( $headers, $requestBody ) {
 
-        $this->logger->trace( "A message has been received [ jobID :: $jobID ][ contentItemURI :: $contentItemURI ][ requestBody :: $requestBody ]." );
+        $jobID = $headers[ "Proxy-Transaction-Id" ];
+        $contentItemURI = $headers[ "Content-Item-Id" ];
+        $this->logger->trace( "A message has been received [ jobId :: $jobID ][ contentItemURI :: $contentItemURI ][ requestBody :: $requestBody ]." );
 
         // get the posts for the specified job ID.
         $posts = $this->jobService->getPostByJobID( $jobID );

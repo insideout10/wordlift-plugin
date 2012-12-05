@@ -3,10 +3,11 @@
 class WordLift_SettingsValidator {
 
 	public $message;
+	public $consumerKeyOptionName;
 
 	public function validate() {
 	  
-		$consumerKey = get_option( 'wordlift_consumer_key' );
+		$consumerKey = get_option( $this->consumerKeyOptionName );
 
 		if ( !empty( $consumerKey ))
 			return;

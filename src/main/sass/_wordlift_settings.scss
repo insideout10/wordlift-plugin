@@ -1,5 +1,9 @@
 .container.ng-scope {
 	margin-top: 10px;
+
+	input {
+		-moz-box-sizing: content-box !important;
+	}
 }
 
 .separator {

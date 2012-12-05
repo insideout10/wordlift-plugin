@@ -39,14 +39,14 @@ class WordLift_JobAjaxService {
         }
 
         $jobRequest = $this->jobRequestService->createJobRequest( $post->post_content );
-        $jobResponse = $this->jobRequestService->sendJobRequest( $jobRequest );
+        $transactionId = $this->jobRequestService->sendJobRequest( $jobRequest );
 
-        $result = $this->jobService->setJob( $postID, $jobResponse->jobID, WordLift_JobService::RUNNING );
+        $result = $this->jobService->setJob( $postID, $transactionId, WordLift_JobService::RUNNING );
 
         if ( false === $result )
-            $this->logger->error( "An error occurred saving the job ID to the post [ jobID :: $jobResponse->jobID ][ postID :: $postID ]." );
+            $this->logger->error( "An error occurred saving the job ID to the post [ transactionId :: $transactionId ][ postID :: $postID ]." );
         else
-            $this->logger->info( "A new job has been created and submitted [ postID :: $postID ][ jobID :: $jobResponse->jobID ]." );
+            $this->logger->info( "A new job has been created and submitted [ postID :: $postID ][ transactionId :: $transactionId ]." );
 
     }
 

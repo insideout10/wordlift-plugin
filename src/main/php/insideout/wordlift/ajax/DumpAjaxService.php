@@ -54,9 +54,14 @@ class WordLift_DumpAjaxService {
                             "selectedText" => $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ][ "selectedText" ]
                         );
 
-                    foreach ( $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ][ "entities" ] as $entity => $bag ) {
-                        $entities[ $entity ] = array_merge( $bag, $entitiesAndTextAnnotations[ "entities" ][ $entity ] );
-                        $this->setConfidence( $entities[ $entity ] );
+                    if ( is_array( $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ] )
+                        && in_array( "entities", $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ] ) ) {
+
+                        foreach ( $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ][ "entities" ] as $entity => $bag ) {
+                            $entities[ $entity ] = array_merge( $bag, $entitiesAndTextAnnotations[ "entities" ][ $entity ] );
+                            $this->setConfidence( $entities[ $entity ] );
+                        }
+
                     }
 
                     unset( $entitiesAndTextAnnotations[ "textAnnotations" ][ $textAnnotation ] );
@@ -73,10 +78,13 @@ class WordLift_DumpAjaxService {
     }
 
     private function setConfidence( &$entity) {
-        if ( !in_array( $entity, "lowestConfidence" )
+        if ( !is_array( $entity ) )
+            return $entity;
+
+        if ( !in_array( "lowestConfidence", $entity )
             || $entity[ "confidence" ] < $entity[ "lowestConfidence" ] )
             $entity[ "lowestConfidence" ] = $entity[ "confidence" ];
-        if ( !in_array( $entity, "highestConfidence" )
+        if ( !in_array( "highestConfidence", $entity )
             || $entity[ "confidence" ] > $entity[ "highestConfidence" ] )
             $entity[ "highestConfidence" ] = $entity[ "confidence" ];
 

@@ -17,7 +17,7 @@
   ]).service("SessionApiService", [
     "ApiService", "$http", "$q", "$location", "$window", "$log", function(ApiService, $http, $q, $location, $window, $log) {
       return {
-        applicationKey: "wordliftkey",
+        applicationKey: "I1ijAG2PklODaWaqQOyp",
         sessionId: null,
         sessionToken: null,
         call: function(sessionId, sessionToken) {

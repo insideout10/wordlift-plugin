@@ -37,8 +37,8 @@ angular
 			@authToken = null
 
 		getUrl: ->
-			# "https://idntik.it:8443/api/"
-			"http://localizeme.dyndns.org:8081/api/"
+			"http://api.idntik.it:8081/api/"
+			# "http://localizeme.dyndns.org:8081/api/"
 
 		execute: ( method, path, userName = null, password  = null, storeAuthToken = false, data = null) ->
 			deferred = $q.defer()

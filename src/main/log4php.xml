@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration xmlns="http://logging.apache.org/log4php/">
     <appender name="default" class="LoggerAppenderFile">
-        <layout class="LoggerLayoutTTCC" />
+        <layout class="LoggerLayoutPattern"> 
+            <param name="conversionPattern" value="%d{m/d/y H:i:s,u} [%t] %p %c %x - %m%n" />
+        </layout>
+
         <param name="append" value="true" />
         <!-- param name="file" value="/var/log/wordlift/wordlift.log" / -->
-	<param name="file" value="/Users/david/Developer/wordlift/home/log/wordlift.log" />
+        <param name="file" value="/Users/david/Developer/wordlift/home/log/wordlift.log" />
     </appender>
+
     <root>
         <level value="trace" />
         <appender_ref ref="default" />

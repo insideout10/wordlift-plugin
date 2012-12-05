@@ -132,15 +132,19 @@
 .container.ng-scope {
   margin-top: 10px;
 }
+/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+.container.ng-scope input {
+  -moz-box-sizing: content-box !important;
+}
 
-/* line 5, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+/* line 9, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
 .separator {
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 20px;
 }
 
-/* line 14, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+/* line 18, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
 .signin * {
   display: inline-block;
   width: 150px;
@@ -148,19 +152,19 @@
   margin: 2px;
   cursor: pointer;
 }
-/* line 24, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+/* line 28, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
 .signin *:hover {
   background-position: 0px 22px;
 }
-/* line 30, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+/* line 34, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
 .signin .twitter {
   background-image: url("../img/twitter_signin.png");
 }
-/* line 34, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+/* line 38, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
 .signin .facebook {
   background-image: url("../img/facebook_signin.png");
 }
-/* line 38, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
+/* line 42, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_settings.scss */
 .signin .linkedin {
   background-image: url("../img/linkedin_signin.png");
 }

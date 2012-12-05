@@ -8,6 +8,12 @@
     <property name="schemaorg-field-type" value="@type" />
     <property name="meta-key-job-id" value="_wordlift_job_id" />
     <property name="meta-key-job-status" value="_wordlift_job_status" />
+    <property name="wordlift-services-api" value="https://api.wordlift.it:25062/api" />
+    <property name="wordpress-site-url" value="http://localizeme.dyndns.org/wordlift/" />
+    <property name="wordpress-api-url" value="http://localhost:8081/api/proxy/wordlift/api/" />
+    <property name="wordpress-api-url-production" value="https://api.idntik.it:30680/api/proxy/wordlift/api/" />
+    <property name="application-id" value="wordlift" />
+    <property name="consumer-key-option-name" value="wordlift_consumer_key" />
 
     <context name="wordLift" />
 
@@ -19,12 +25,13 @@
 
     <class id="activationService" name="WordLift_ActivationService"
         filename="/php/insideout/wordlift/services/ActivationService.php">
-        <property name="url" value="http://localhost:8082/api/site" />
+        <property name="url" value="{wordlift-services-api}/site" />
     </class>
 
     <class id="settingsValidator" name="WordLift_SettingsValidator"
         filename="/php/insideout/wordlift/notices/SettingsValidator.php">
         <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;options-general.php?page=wordlift_settings&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+        <property name="consumerKeyOptionName" value="{consumer-key-option-name}" />
     </class>
     <class id="siteKeyValidator" name="WordLift_SiteKeyValidator"
         filename="/php/insideout/wordlift/notices/SiteKeyValidator.php">
@@ -113,6 +120,7 @@
             version="1.8.21"
             footer="true"
             url="/wp-content/plugins/wordlift/js/jquery-ui-1.8.21.custom.min.js">
+            <dependsOn name="jquery" />
     </wordpress:script>
 
     <wordpress:script target="user" name="jquery-isotope"
@@ -277,8 +285,7 @@
            filename="/php/insideout/wordlift/services/PlainTextJobRequestService.php">
         <dependsOn filename="/php/insideout/wordlift/services/JobRequestService.php" />
 
-        <property name="consumerKey" value="0123456789" />
-        <property name="callbackURL" value="http://localizeme.dyndns.org/wordlift/wp-admin/admin-ajax.php?action=wordlift.callback" />
+        <property name="callbackURL" value="{wordpress-site-url}wp-admin/admin-ajax.php?action=wordlift.callback" />
         <property name="requestMimeType" value="application/rdf+xml" />
 
         <property name="requestProtocol" value="http" />
@@ -286,7 +293,9 @@
         <property name="requestContentTypeHeader" value="application/json" />
         <property name="requestAcceptHeader" value="application/json" />
 
-        <property name="requestURL" value="http://localhost:8080/wordlift/api/job" />
+        <property name="requestURL" value="{wordpress-api-url}" />
+        <property name="applicationId" value="{application-id}" />
+        <property name="consumerKeyOptionName" value="{consumer-key-option-name}" />
     </class>
 
     <!-- ***** J O B S E R V I C E **** -->
