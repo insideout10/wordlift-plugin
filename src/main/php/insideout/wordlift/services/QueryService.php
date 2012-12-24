@@ -7,12 +7,15 @@ class WordLift_QueryService {
 	const RESULT_NAME = "result";
 	const ROWS_NAME = "rows";
 
-	public function create( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL ) {
+	public function create( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, $groupBy = NULL ) {
 
 		$query = "SELECT $fields";
 
 		if ( NULL != $whereClause )
 			$query .= " WHERE { $whereClause }";
+
+		if ( NULL != $groupBy )
+			$query .= " GROUP BY $groupBy";
 
 		if ( NULL != $limit && is_numeric( $limit ) )
 			$query .= " LIMIT $limit";
@@ -23,10 +26,10 @@ class WordLift_QueryService {
 		return $query;
 	}
 
-	public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL ) {
+	public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL ) {
 		$store = $this->storeService->getStore();
 
-		$query = $this->create( $fields, $whereClause, $limit, $offset );
+		$query = $this->create( $fields, $whereClause, $limit, $offset, $groupBy );
 
 		if ( NULL !== $count )
 			$count = $this->getCount( $whereClause );
@@ -34,10 +37,10 @@ class WordLift_QueryService {
 		return $store->query( $query );
 	}
 
-	private function getCount( $whereClause ) {
+	private function getCount( $whereClause, $groupBy = NULL ) {
 		$store = $this->storeService->getStore();
 
-		$query = $this->create( "COUNT( * ) as ?count", $whereClause );
+		$query = $this->create( "COUNT( * ) as ?count", $whereClause, NULL, NULL, $groupBy );
 
 		$recordset = $store->query( $query );
 		

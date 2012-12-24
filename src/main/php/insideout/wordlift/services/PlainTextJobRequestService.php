@@ -30,7 +30,12 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
 
         return array(
             "mimeType" => $this->requestMimeType,
-            "text" => strip_tags( $text )
+            "content" => strip_tags( $text ),
+            "configuration" => array(
+                "freebase.entity-recognition.search.score.minimum" => "10",
+                "freebase.entity-recognition.entity.score.minimum" => "0.5",
+                "freebase.entity-recognition.search.limit" => "5"
+            )
         );
 
     }
@@ -44,7 +49,7 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
 
         $this->logger->trace( "[ request :: " . var_export( $request, true ) . " ]" );
 
-        $requestURL = $this->requestURL . "job";
+        $requestURL = $this->requestURL;
         $consumerKey = get_option( $this->consumerKeyOptionName );
 
         $params = array(

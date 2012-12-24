@@ -9,12 +9,20 @@
     <property name="meta-key-job-id" value="_wordlift_job_id" />
     <property name="meta-key-job-status" value="_wordlift_job_status" />
     <property name="wordlift-services-api" value="https://api.wordlift.it:25062/api" />
-    <property name="wordpress-site-url" value="http://sample.wordlift.it/" />
-    <property name="wordpress-api-url" value="https://api.idntik.it:30680/api/proxy/wordlift/api/" />
+    <property name="wordpress-site-url" value="http://localizeme.dyndns.org/wordlift/" />
+    <property name="wordpress-api-url" value="https://api.idntik.it/api/proxy/call/api/tasks" />
     <property name="application-id" value="wordlift" />
     <property name="consumer-key-option-name" value="wordlift_consumer_key" />
 
     <context name="wordLift" />
+
+    <wordpress:style target="admin" name="bootstrap.min.css" url="/wp-content/plugins/wordlift/css/bootstrap.min.css" />
+
+    <class id="entitiesManagementPage" name="WordLift_EntitiesManagementPage"
+        filename="/php/insideout/wordlift/pages/EntitiesManagementPage.php">
+    </class>
+    <wordpress:adminMenu pageTitle="Entities" menuTitle="Entities" capability="edit_posts" menuSlug="entities_management"
+        class="entitiesManagementPage" method="get" position="6" iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
 
     <class id="queryService" name="WordLift_QueryService"
         filename="/php/insideout/wordlift/services/QueryService.php">
@@ -161,9 +169,9 @@
     </wordpress:script>
 
     <wordpress:script target="admin" name="angularjs"
-                      version="1.0.2"
+                      version="1.0.3"
                       footer="false"
-                      url="/wp-content/plugins/wordlift/js/angular-1.0.2.min.js">
+                      url="/wp-content/plugins/wordlift/js/angular-1.0.3.min.js">
     </wordpress:script>
 
 

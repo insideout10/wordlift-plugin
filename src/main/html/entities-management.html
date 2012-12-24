@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<style>
+  [ng-cloak] {
+  	display: none;
+  }
+</style>
+<div id='wordliftApp' ng-cloak ng-controller='EntitiesCtrl'>
+  <table class='table table-striped table-hover'>
+    <thead>
+      <tr>
+        <th></th>
+        <th>
+          Name
+        </th>
+        <th>
+          Image
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat='entity in data.content'>
+        <td>
+          <div class='type' ng-class='getTypeName( entity.type )'></div>
+        </td>
+        <td ng-bind='entity.name'></td>
+        <td>
+          <div class='image' style="background-image: url( '{{entity.image}}' );"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class='pagination pagination-centered'>
+    <ul>
+      <li>
+        <a href='#'>
+          Prev
+        </a>
+      </li>
+      <li>
+        <a href='#'>
+          1
+        </a>
+      </li>
+      <li>
+        <a href='#'>
+          2
+        </a>
+      </li>
+      <li>
+        <a href='#'>
+          3
+        </a>
+      </li>
+      <li>
+        <a href='#'>
+          4
+        </a>
+      </li>
+      <li>
+        <a href='#'>
+          Next
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<script>
+  (function() {
+  
+    angular.element(document).ready(function() {
+      angular.module("wordliftApp", []).controller("EntitiesCtrl", [
+        "EntitiesService", "$scope", "$log", function(EntitiesService, $scope, $log) {
+          $scope.$on("event.entities", function(event, data) {
+            return $scope.data = data;
+          });
+          EntitiesService.list();
+          return $scope.getTypeName = function(type) {
+            var matches;
+            matches = type.match(/([^\/]*)$/i);
+            if (matches != null) {
+              return matches[0];
+            }
+          };
+        }
+      ]).service("EntitiesService", [
+        "$http", "$rootScope", "$log", function($http, $rootScope, $log) {
+          return {
+            list: function() {
+              return $http({
+                method: "GET",
+                url: "admin-ajax.php",
+                params: {
+                  action: "wordlift.entities",
+                  limit: 10
+                }
+              }).success(function(data, status, headers, config) {
+                return $rootScope.$broadcast("event.entities", data);
+              }).error(function(data, status, headers, config) {
+                return $rootScope.$broadcast("event.error", data);
+              });
+            }
+          };
+        }
+      ]);
+      return angular.bootstrap(document.getElementById("wordliftApp"), ["wordliftApp"]);
+    });
+  
+  }).call(this);
+</script>
