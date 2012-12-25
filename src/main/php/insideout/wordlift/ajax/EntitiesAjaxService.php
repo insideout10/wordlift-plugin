@@ -12,15 +12,15 @@ class WordLift_EntitiesAjaxService {
 	public function get( $limit = self::DEFAULT_LIMIT, $offset = self::DEFAULT_OFFSET ) {
 
 		$whereClause = <<<EOF
-					 	?s a ?type;
+					 	?subject a ?a;
 					 	   schema:name ?name
 
 EOF;
 
 		$count = 0;
-		$recordset = $this->queryService->execute( "?type ?name", $whereClause, $limit, $offset, $count );
+		$recordset = $this->queryService->execute( "?subject ?a ?name", $whereClause, $limit, $offset, $count );
 
-		$this->recordSetService->write( $recordset, $count, $offset );
+		$this->recordSetService->write( $recordset, $limit, $offset, $count );
 
 	}
 

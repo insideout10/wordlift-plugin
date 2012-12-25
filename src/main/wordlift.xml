@@ -33,6 +33,15 @@
         filename="/php/insideout/wordlift/services/RecordSetService.php">
     </class>
 
+    <class id="entityAjaxService" name="WordLift_EntityAjaxService"
+        filename="/php/insideout/wordlift/ajax/EntityAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.entity" class="entityAjaxService" method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
     <class id="entitiesAjaxService" name="WordLift_EntitiesAjaxService"
         filename="/php/insideout/wordlift/ajax/EntitiesAjaxService.php">
 
@@ -377,6 +386,7 @@
            filename="/php/insideout/wordlift/types/EntityPostType.php">
         <dependsOn filename="/php/insideout/wordpress/interfaces/IPostType.php" />
 
+        <property name="public" value="false" />
         <property name="customPostType" value="{entity-post-type}" />
         <property name="rewriteSlug" value="entities" />
         <property name="menuIconURL" value="/wordlift/sass/img/semantic-box-14x16.png" />

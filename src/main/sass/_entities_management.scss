@@ -1,12 +1,24 @@
-div.image {
-  width: 20px;
-  height: 20px;
+div.image {  
+    margin: 6px 2px;
 
-  margin: 6px 2px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;  
+}
 
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;  
+table.entity {
+
+  div.image {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+table.entities {
+  div.image {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 div.type {

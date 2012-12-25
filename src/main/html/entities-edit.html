@@ -1,0 +1,49 @@
+<table class='entity table table-striped table-hover'>
+  <thead>
+    <tr>
+      <th>
+        Key
+      </th>
+      <th>
+        Language
+      </th>
+      <th>
+        Value
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat='property in data.content'>
+      <td>
+        <div ng-bind='property.key'></div>
+        <div>
+          ({{property.type}})
+        </div>
+      </td>
+      <td>
+        <div ng-bind='property.lang'></div>
+      </td>
+      <td>
+        <div class='image' ng-show='isImage( property.value )' style="background-image: url('{{property.value}}');"></div>
+        <div ng-bind='property.value'></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class='pagination pagination-centered' style='display: none;'>
+  <ul>
+    <li ng-class="{true: 'disabled', false: ''}[0==data.page]">
+      <a ng-click='goToPreviousPage()'>
+        Prev
+      </a>
+    </li>
+    <li ng-class="{true: 'active', false: ''}[page==(data.page + 1)]" ng-repeat='page in getPages()'>
+      <a ng-bind='page' ng-click='goToPage( page - 1 )'></a>
+    </li>
+    <li ng-class="{true: 'disabled', false: ''}[data.page==(data.pages - 1)]">
+      <a ng-click='goToNextPage()'>
+        Next
+      </a>
+    </li>
+  </ul>
+</div>

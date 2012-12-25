@@ -5,77 +5,111 @@
 		display: none;
 	}
 
-%div{ :id => "wordliftApp", :"ng-controller" => "EntitiesCtrl", :"ng-cloak" => true }
-	%table{ :class => "table table-striped table-hover" }
-		%thead
-			%tr
-				%th
-				%th
-					Name
-				%th
-					Image
-		%tbody
-			%tr{ :"ng-repeat" => "entity in data.content" }
-				%td
-					%div{ :class => "type", :"ng-class" => "getTypeName( entity.type )" }
-				%td{ :"ng-bind" => "entity.name" }
-				%td
-					%div{ :class => "image", :"style" => "background-image: url( '{{entity.image}}' );" }
-
-
-	%div{ :class => "pagination pagination-centered" }
-		%ul
-			%li
-				%a{ :href => "#" }
-					Prev
-			%li
-				%a{ :href => "#" }
-					1
-			%li
-				%a{ :href => "#" }
-					2
-			%li
-				%a{ :href => "#" }
-					3
-			%li
-				%a{ :href => "#" }
-					4
-			%li
-				%a{ :href => "#" }
-					Next
-
+%div{ :id => "wordliftApp", :"ng-controller" => "EntitiesCtrl", :"ng-cloak" => true, :"ng-view" => true }
 
 :coffee
 
 	angular.element(document).ready ->
 		angular
 			.module( "wordliftApp", [] )
-			.controller( "EntitiesCtrl", [ "EntitiesService", "$scope", "$log", ( EntitiesService, $scope, $log ) ->
+			.constant( "BASE_URL", "../wp-content/plugins/wordlift/html/" )
+			.constant( "ENTITIES_DEFAULT_LIMIT", 10)
+			.constant( "ENTITY_DEFAULT_LIMIT", 100)
+			.constant( "DEFAULT_LIMIT", 10)
+			.config( [ "BASE_URL", "$httpProvider", "$locationProvider", "$routeProvider", ( BASE_URL, $httpProvider, $locationProvider, $routeProvider ) ->
 
-				$scope.$on "event.entities", (event, data) ->
+				# $locationProvider.html5Mode false
+
+				$routeProvider
+					.when "/list"
+						templateUrl: BASE_URL + "/entities-list.html"
+						controller: "EntitiesCtrl"
+					.when "/edit/:subject"				
+						templateUrl: BASE_URL + "/entities-edit.html"
+						controller: "EntityCtrl"
+					.otherwise
+						redirectTo: "/list"
+
+			])
+			.controller( "EntityCtrl", [ "ENTITY_DEFAULT_LIMIT", "EntitiesService", "$location", "$routeParams", "$scope", "$log", ( ENTITY_DEFAULT_LIMIT, EntitiesService, $location, $routeParams, $scope, $log ) ->
+
+				$log.info $routeParams[ "subject" ]
+				event = "entity"
+
+				$scope.$on event, (event, data) ->
 					$scope.data = data
 
-				EntitiesService.list()
+				$scope.goToPreviousPage = ->
+					$scope.goToPage ( $scope.data.page - 1 )
+
+				$scope.goToNextPage = ->
+					$scope.goToPage ( $scope.data.page + 1 )
+
+				$scope.getPages = ->
+					[1 .. $scope.data.pages]
+
+				$scope.goToPage = (page) ->
+					EntitiesService.list "wordlift.entity", event, { "subject": $routeParams[ "subject" ] }, page * ENTITY_DEFAULT_LIMIT, ENTITY_DEFAULT_LIMIT
+
+				$scope.isImage = (url) ->
+					matches = url.match /\.(jpg|jpeg|svg|gif|png)$/i
+					matches?
+
+				$scope.goToPage 0
+
+			])
+			.controller( "EntitiesCtrl", [ "ENTITIES_DEFAULT_LIMIT", "EntitiesService", "$location", "$scope", "$log", ( ENTITIES_DEFAULT_LIMIT, EntitiesService, $location, $scope, $log ) ->
+
+				$scope.data =
+					page: 0
+					pages: 1
+					content: []
+
+				$scope.$on "entities", (event, data) ->
+					$scope.data = data
 
 				$scope.getTypeName = (type) ->
 					matches = type.match /([^\/]*)$/i
 					matches[0] if matches?
 
-			])
-			.service( "EntitiesService", [ "$http", "$rootScope", "$log", ( $http, $rootScope, $log ) ->
+				$scope.getEntityName = (entity) ->
+					matches = entity.subject.match /([^\/]*)$/i
+					matches[0] if matches?					
 
-				list: ->
+				$scope.getPages = ->
+					[1 .. $scope.data.pages]
+
+				$scope.goToPage = (page) ->
+					EntitiesService.list "wordlift.entities", "entities", [], page * ENTITIES_DEFAULT_LIMIT, ENTITIES_DEFAULT_LIMIT
+
+				$scope.goToPreviousPage = ->
+					$scope.goToPage ( $scope.data.page - 1 )
+
+				$scope.goToNextPage = ->
+					$scope.goToPage ( $scope.data.page + 1 )
+
+				$scope.goToEntity = (entity) ->
+					$location.path "/edit/" + $scope.getEntityName( entity )
+
+				$scope.goToPage 0
+
+			])
+			.service( "EntitiesService", [ "DEFAULT_LIMIT", "$http", "$rootScope", "$log", ( DEFAULT_LIMIT, $http, $rootScope, $log ) ->
+
+				list: ( action, event, params = [], offset = 0, limit = DEFAULT_LIMIT ) ->
+
+					params[ "action" ] = action
+					params[ "limit" ] = limit
+					params[ "offset" ] = offset
 
 					$http
 						method: "GET"
 						url: "admin-ajax.php"
-						params:
-							action: "wordlift.entities"
-							limit: 10
+						params: params
 					.success ( data, status, headers, config ) ->
-						$rootScope.$broadcast "event.entities", data
+						$rootScope.$broadcast event, data
 					.error ( data, status, headers, config ) ->
-						$rootScope.$broadcast "event.error", data
+						$rootScope.$broadcast "error", data
 
 			])
 

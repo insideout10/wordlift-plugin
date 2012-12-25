@@ -1,0 +1,28 @@
+%table{ :class => "entities table table-striped table-hover" }
+	%thead
+		%tr
+			%th{ :style => "width: 20px;" }
+			%th
+				Name
+			%th
+				Image
+	%tbody
+		%tr{ :"ng-repeat" => "entity in data.content" }
+			%td
+				%div{ :class => "type", :"ng-class" => "getTypeName( entity.a )" }
+			%td
+				%a{ :"ng-click" => "goToEntity( entity )", :"ng-bind" => "entity.name" }
+			%td
+				%div{ :class => "image", :"style" => "background-image: url( '{{entity.image}}' );" }
+
+
+%div{ :class => "pagination pagination-centered" }
+	%ul
+		%li{ :"ng-class" => "{true: 'disabled', false: ''}[0==data.page]" }
+			%a{ :"ng-click" => "goToPreviousPage()" }
+				Prev
+		%li{ :"ng-repeat" => "page in getPages()", :"ng-class" => "{true: 'active', false: ''}[page==(data.page + 1)]" }
+			%a{ :"ng-click" => "goToPage( page - 1 )", :"ng-bind" => "page" }
+		%li{ :"ng-class" => "{true: 'disabled', false: ''}[data.page==(data.pages - 1)]" }
+			%a{ :"ng-click" => "goToNextPage()" }
+				Next

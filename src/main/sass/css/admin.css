@@ -171,15 +171,25 @@
 
 /* line 1, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.image {
-  width: 20px;
-  height: 20px;
   margin: 6px 2px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
 }
 
-/* line 12, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 11, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+table.entity div.image {
+  width: 60px;
+  height: 60px;
+}
+
+/* line 18, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+table.entities div.image {
+  width: 20px;
+  height: 20px;
+}
+
+/* line 24, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type {
   width: 20px;
   height: 20px;
@@ -188,27 +198,27 @@ div.type {
   background-repeat: no-repeat;
   background-position: center center;
 }
-/* line 24, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 36, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Place {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 27, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 39, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Organization {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 30, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 42, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.CreativeWork {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 33, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Person {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 36, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 48, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Event {
   background-image: url("../img/noun_project_404.svg");
 }
-/* line 39, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Product {
   background-image: url("../img/noun_project_7341.svg");
 }

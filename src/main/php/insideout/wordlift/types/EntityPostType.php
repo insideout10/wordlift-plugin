@@ -15,6 +15,8 @@ class WordLift_EntityPostType implements WordPress_IPostType {
     public $fieldPrefix;
     public $fieldType;
 
+    public $public;
+
     /**
      * Registers the meta-box handler.
      */
@@ -55,7 +57,7 @@ class WordLift_EntityPostType implements WordPress_IPostType {
             'exclude_from_search'   => false,
             'publicly_queryable'	=> true,
             'description' 			=> 'The entities found in this blog.',
-            'public' 				=> true,
+            'public' 				=> ($this->public === "true"),
             'has_archive' 			=> true,
             'menu_icon'				=> plugins_url($this->menuIconURL),
             'menu_position' 		=> 21,

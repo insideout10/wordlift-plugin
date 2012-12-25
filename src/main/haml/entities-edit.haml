@@ -1,0 +1,32 @@
+%table{ :class => "entity table table-striped table-hover" }
+	%thead
+		%tr
+			%th
+				Key
+			%th
+				Language
+			%th
+				Value
+	%tbody
+		%tr{ :"ng-repeat" => "property in data.content" }
+			%td
+				%div{ :"ng-bind" => "property.key" }
+				%div
+					({{property.type}})
+			%td
+				%div{ :"ng-bind" => "property.lang" }
+			%td
+				%div{ :class => "image", :style => "background-image: url('{{property.value}}');", :"ng-show" => "isImage( property.value )" }
+				%div{ :"ng-bind" => "property.value" }
+
+
+%div{ :class => "pagination pagination-centered", :style => "display: none;" }
+	%ul
+		%li{ :"ng-class" => "{true: 'disabled', false: ''}[0==data.page]" }
+			%a{ :"ng-click" => "goToPreviousPage()" }
+				Prev
+		%li{ :"ng-repeat" => "page in getPages()", :"ng-class" => "{true: 'active', false: ''}[page==(data.page + 1)]" }
+			%a{ :"ng-click" => "goToPage( page - 1 )", :"ng-bind" => "page" }
+		%li{ :"ng-class" => "{true: 'disabled', false: ''}[data.page==(data.pages - 1)]" }
+			%a{ :"ng-click" => "goToNextPage()" }
+				Next
