@@ -17,6 +17,24 @@
     <context name="wordLift" />
 
     <wordpress:style target="admin" name="bootstrap.min.css" url="/wp-content/plugins/wordlift/css/bootstrap.min.css" />
+    <wordpress:style target="admin" name="avgrund.css" url="/wp-content/plugins/wordlift/css/avgrund.css" />
+    <wordpress:script target="admin" name="avgrund"
+            version="0.1"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/avgrund.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
+    <class id="propertyAjaxService" name="WordLift_PropertyAjaxService"
+        filename="/php/insideout/wordlift/ajax/PropertyAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.property" class="propertyAjaxService" method="save"
+                    authentication="true" capabilities="edit_posts" httpMethod="POST" />
+    <wordpress:ajax service="ajaxService" action="wordlift.property" class="propertyAjaxService" method="delete"
+                    authentication="true" capabilities="edit_posts" httpMethod="DELETE" />
 
     <class id="entitiesManagementPage" name="WordLift_EntitiesManagementPage"
         filename="/php/insideout/wordlift/pages/EntitiesManagementPage.php">
@@ -40,7 +58,7 @@
         <property name="recordSetService" reference="recordSetService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.entity" class="entityAjaxService" method="get"
-                    authentication="false" capabilities="any" httpMethod="GET" />
+                    authentication="true" capabilities="edit_posts" httpMethod="GET" />
 
     <class id="entitiesAjaxService" name="WordLift_EntitiesAjaxService"
         filename="/php/insideout/wordlift/ajax/EntitiesAjaxService.php">
@@ -49,7 +67,7 @@
         <property name="recordSetService" reference="recordSetService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.entities" class="entitiesAjaxService" method="get"
-                    authentication="false" capabilities="any" httpMethod="GET" />
+                    authentication="true" capabilities="edit_posts" httpMethod="GET" />
 
     <class id="idntikitAjaxService" name="WordLift_IdntikitAjaxService"
         filename="/php/insideout/wordlift/ajax/IdntikitAjaxService.php">

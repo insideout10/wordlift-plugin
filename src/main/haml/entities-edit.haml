@@ -1,3 +1,22 @@
+%aside{ :id => "delete-confirmation-dialog", :class => "avgrund-popup" }
+	%div{ :class => "alert alert-block" }
+		%button{ :type => "button", :class => "close", :"ng-click" => "cancelDeleteProperty()" }
+			&times;
+		%h4
+			Warning!
+
+		Are you sure you want to delete the property? The action cannot be undone.
+		%br
+		%br
+
+		%div{ :class => "pagination-centered" }
+			%button{ :class => "btn btn-warning", :"ng-click" => "confirmDeleteProperty()" }
+				Delete
+			%button{ :class => "btn", :"ng-click" => "cancelDeleteProperty()" }
+				Cancel
+
+%div{ :class => "avgrund-cover" }
+
 %table{ :class => "entity table table-striped table-hover" }
 	%thead
 		%tr
@@ -5,6 +24,7 @@
 				Key
 			%th
 				Language
+			%th
 			%th
 				Value
 	%tbody
@@ -16,8 +36,16 @@
 			%td
 				%div{ :"ng-bind" => "property.lang" }
 			%td
+				%a{ :class => "icon-pencil", :"ng-click" => "setEditMode( property, true )", :"ng-hide" => "property.editMode" }
+				%a{ :class => "icon-trash", :"ng-click" => "deleteProperty( property )", :"ng-hide" => "property.editMode" }
+				%a{ :class => "icon-ok", :"ng-click" => "saveProperty( property )", :"ng-show" => "true == property.editMode" }
+				%a{ :class => "icon-remove", :"ng-click" => "setEditMode( property, false )", :"ng-show" => "true == property.editMode" }
+			%td
 				%div{ :class => "image", :style => "background-image: url('{{property.value}}');", :"ng-show" => "isImage( property.value )" }
-				%div{ :"ng-bind" => "property.value" }
+				%div{ :"ng-bind" => "property.value", :"ng-hide" => "property.editMode" }
+				%textarea{ :"ng-model" => "property.value", :"ng-show" => "'literal'==property.type && true == property.editMode" }
+				%input{ :type => "url", :"ng-model" => "property.value", :"ng-show" => "'uri'==property.type && true == property.editMode" }
+				%select{ :"ng-model" => "property.value", :"ng-show" => "'bnode'==property.type && true == property.editMode" }
 
 
 %div{ :class => "pagination pagination-centered", :style => "display: none;" }

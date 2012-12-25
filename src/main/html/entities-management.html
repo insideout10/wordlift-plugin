@@ -23,11 +23,14 @@
         }
       ]).controller("EntityCtrl", [
         "ENTITY_DEFAULT_LIMIT", "EntitiesService", "$location", "$routeParams", "$scope", "$log", function(ENTITY_DEFAULT_LIMIT, EntitiesService, $location, $routeParams, $scope, $log) {
-          var event;
-          $log.info($routeParams["subject"]);
+          var event, subject;
           event = "entity";
+          subject = $routeParams["subject"];
           $scope.$on(event, function(event, data) {
             return $scope.data = data;
+          });
+          $scope.$on("property.update", function(event, data) {
+            return $scope.goToPage(0);
           });
           $scope.goToPreviousPage = function() {
             return $scope.goToPage($scope.data.page - 1);
@@ -45,13 +48,50 @@
           };
           $scope.goToPage = function(page) {
             return EntitiesService.list("wordlift.entity", event, {
-              "subject": $routeParams["subject"]
+              "subject": subject
             }, page * ENTITY_DEFAULT_LIMIT, ENTITY_DEFAULT_LIMIT);
           };
           $scope.isImage = function(url) {
             var matches;
+            if (!(url != null)) {
+              return;
+            }
             matches = url.match(/\.(jpg|jpeg|svg|gif|png)$/i);
             return matches != null;
+          };
+          $scope.setEditMode = function(property, editMode) {
+            if (editMode) {
+              $scope.tmp = {
+                property: angular.copy(property)
+              };
+            }
+            return property.editMode = editMode;
+          };
+          $scope.saveProperty = function(property) {
+            EntitiesService.list("wordlift.property", "property.update", {
+              "subject": subject
+            }, null, null, "DELETE", $scope.tmp.property);
+            return EntitiesService.list("wordlift.property", "property.update", {
+              "subject": subject
+            }, null, null, "POST", property);
+          };
+          $scope.deleteProperty = function(property) {
+            $scope.tmp = {
+              property: property
+            };
+            return Avgrund.show("#delete-confirmation-dialog");
+          };
+          $scope.cancelDeleteProperty = function() {
+            delete $scope.tmp.property;
+            return Avgrund.hide("#delete-confirmation-dialog");
+          };
+          $scope.confirmDeleteProperty = function() {
+            var property;
+            Avgrund.hide("#delete-confirmation-dialog");
+            property = $scope.tmp.property;
+            return EntitiesService.list("wordlift.property", "property.update", {
+              "subject": subject
+            }, null, null, "DELETE", property);
           };
           return $scope.goToPage(0);
         }
@@ -104,7 +144,7 @@
       ]).service("EntitiesService", [
         "DEFAULT_LIMIT", "$http", "$rootScope", "$log", function(DEFAULT_LIMIT, $http, $rootScope, $log) {
           return {
-            list: function(action, event, params, offset, limit) {
+            list: function(action, event, params, offset, limit, method, data) {
               if (params == null) {
                 params = [];
               }
@@ -114,13 +154,20 @@
               if (limit == null) {
                 limit = DEFAULT_LIMIT;
               }
+              if (method == null) {
+                method = "GET";
+              }
+              if (data == null) {
+                data = null;
+              }
               params["action"] = action;
               params["limit"] = limit;
               params["offset"] = offset;
               return $http({
-                method: "GET",
+                method: method,
                 url: "admin-ajax.php",
-                params: params
+                params: params,
+                data: data
               }).success(function(data, status, headers, config) {
                 return $rootScope.$broadcast(event, data);
               }).error(function(data, status, headers, config) {

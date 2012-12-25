@@ -33,11 +33,14 @@
 			])
 			.controller( "EntityCtrl", [ "ENTITY_DEFAULT_LIMIT", "EntitiesService", "$location", "$routeParams", "$scope", "$log", ( ENTITY_DEFAULT_LIMIT, EntitiesService, $location, $routeParams, $scope, $log ) ->
 
-				$log.info $routeParams[ "subject" ]
 				event = "entity"
+				subject = $routeParams[ "subject" ]
 
 				$scope.$on event, (event, data) ->
 					$scope.data = data
+
+				$scope.$on "property.update", (event, data) ->
+					$scope.goToPage 0
 
 				$scope.goToPreviousPage = ->
 					$scope.goToPage ( $scope.data.page - 1 )
@@ -49,11 +52,33 @@
 					[1 .. $scope.data.pages]
 
 				$scope.goToPage = (page) ->
-					EntitiesService.list "wordlift.entity", event, { "subject": $routeParams[ "subject" ] }, page * ENTITY_DEFAULT_LIMIT, ENTITY_DEFAULT_LIMIT
+					EntitiesService.list "wordlift.entity", event, { "subject": subject }, page * ENTITY_DEFAULT_LIMIT, ENTITY_DEFAULT_LIMIT
 
 				$scope.isImage = (url) ->
+					return if not url?
 					matches = url.match /\.(jpg|jpeg|svg|gif|png)$/i
 					matches?
+
+				$scope.setEditMode = ( property, editMode ) ->
+					$scope.tmp = { property: angular.copy property } if editMode
+					property.editMode = editMode
+
+				$scope.saveProperty = ( property ) ->
+					EntitiesService.list "wordlift.property", "property.update", { "subject": subject }, null, null, "DELETE", $scope.tmp.property
+					EntitiesService.list "wordlift.property", "property.update", { "subject": subject }, null, null, "POST", property
+
+				$scope.deleteProperty = ( property ) ->
+					$scope.tmp = { property: property }
+					Avgrund.show "#delete-confirmation-dialog"
+
+				$scope.cancelDeleteProperty = ->
+					delete $scope.tmp.property
+					Avgrund.hide "#delete-confirmation-dialog"
+
+				$scope.confirmDeleteProperty = ->
+					Avgrund.hide "#delete-confirmation-dialog"
+					property = $scope.tmp.property
+					EntitiesService.list "wordlift.property", "property.update", { "subject": subject }, null, null, "DELETE", property
 
 				$scope.goToPage 0
 
@@ -96,16 +121,17 @@
 			])
 			.service( "EntitiesService", [ "DEFAULT_LIMIT", "$http", "$rootScope", "$log", ( DEFAULT_LIMIT, $http, $rootScope, $log ) ->
 
-				list: ( action, event, params = [], offset = 0, limit = DEFAULT_LIMIT ) ->
+				list: ( action, event, params = [], offset = 0, limit = DEFAULT_LIMIT, method = "GET", data = null ) ->
 
 					params[ "action" ] = action
 					params[ "limit" ] = limit
 					params[ "offset" ] = offset
 
 					$http
-						method: "GET"
+						method: method
 						url: "admin-ajax.php"
 						params: params
+						data: data
 					.success ( data, status, headers, config ) ->
 						$rootScope.$broadcast event, data
 					.error ( data, status, headers, config ) ->

@@ -37,6 +37,12 @@ class WordLift_QueryService {
 		return $store->query( $query );
 	}
 
+	public function query( $query ) {
+		$store = $this->storeService->getStore();
+		
+		return $store->query( $query );	
+	}
+
 	private function getCount( $whereClause, $groupBy = NULL ) {
 		$store = $this->storeService->getStore();
 
