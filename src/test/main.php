@@ -24,6 +24,7 @@ const CHANGESET_CREATOR_NAME_URI = "http://purl.org/vocab/changeset/schema#creat
 const CHANGESET_CHANGE_REASON_URI = "http://purl.org/vocab/changeset/schema#changeReason";
 const CHANGESET_REMOVAL_URI = "http://purl.org/vocab/changeset/schema#removal";
 const CHANGESET_ADDITION_URI = "http://purl.org/vocab/changeset/schema#addition";
+const CHANGESET_PRECEDING_CHANGE_SET_URI = "http://purl.org/vocab/changeset/schema#precedingChangeSet";
 const RDF_STATEMENT_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement";
 const RDF_SUBJECT_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject";
 const RDF_PREDICATE_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate";
@@ -72,7 +73,7 @@ foreach ( $newIndex as $subject => $predicates ) {
 			// echo( $insertStatement );
 			// echo("======== /INSERT =======\n");
 
-			// query( $store, $insertStatement );
+			query( $store, $insertStatement );
 		}
 
 		if ( 0 < count( $removals ) ) {
@@ -82,7 +83,7 @@ foreach ( $newIndex as $subject => $predicates ) {
 			// echo( $deleteStatement );
 			// echo("======== /DELETE =======\n");
 
-			// query( $store, $deleteStatement );
+			query( $store, $deleteStatement );
 		}
 
 		$statement = "SELECT ?changeSetSubject \n";
@@ -90,11 +91,17 @@ foreach ( $newIndex as $subject => $predicates ) {
 		$statement .= "		?changeSetSubject <" . RDF_TYPE . "> <" . CHANGESET_TYPE_URI . "> ; \n";
 		$statement .= "		                  <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
 		$statement .= "		                  <" . CHANGESET_CREATED_DATE_URI . "> ?createdDate } \n";
-		$statement .= "	ORDER BY DESC(?createdDate) LIMIT 1";
-		$recordset = query( $store, $changeSetStatement );
-		var_dump( $recordset );
+		$statement .= "	ORDER BY DESC(?createdDate) LIMIT 1 \n";
 
-		$changeSetStatement = createChangeSetStatement( $subject, date_create(), "auto", "tests", $removals, $additions, GRAPH_URI );
+		$recordset = query( $store, $statement );
+		$previousChangeSetSubject = NULL;
+		if ( array_key_exists( "rows", $recordset )
+			&& 1 === count( $recordset[ "rows" ] ) ) {
+
+			$previousChangeSetSubject = $recordset[ "rows" ][ 0 ][ "changeSetSubject" ];
+		}
+
+		$changeSetStatement = createChangeSetStatement( $subject, date_create(), "auto", "tests", $removals, $additions, $previousChangeSetSubject, GRAPH_URI );
 
 		echo( "======== CHANGESET =========\n" );
 		echo( $changeSetStatement );
@@ -111,7 +118,7 @@ foreach ( $newIndex as $subject => $predicates ) {
 	}
 }
 
-function createChangeSetStatement( $subjectOfChange, $createdDate, $creatorName, $changeReason, $removals, $additions, $namespace ) {
+function createChangeSetStatement( $subjectOfChange, $createdDate, $creatorName, $changeReason, $removals, $additions, $precedingChangeSet, $namespace ) {
 
 	$subjectOfChange = escapeValue( $subjectOfChange );
 	$creatorName = escapeValue( $creatorName );
@@ -123,9 +130,13 @@ function createChangeSetStatement( $subjectOfChange, $createdDate, $creatorName,
 	$statement = "INSERT INTO <$namespace> {\n";
 	$statement .= "<$subject> <" . RDF_TYPE . "> <" . CHANGESET_TYPE_URI . "> ; \n";
 	$statement .= "           <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subjectOfChange> ; \n";
+	if ( NULL !== $precedingChangeSet )
+		$statement .= "           <" . CHANGESET_PRECEDING_CHANGE_SET_URI . "> <$precedingChangeSet> ; \n";
+
 	$statement .= "           <" . CHANGESET_CREATED_DATE_URI . "> \"$createdDate\"^^<" . RDFS_DATE_TIME_DATATYPE_URI . "> ; \n";
 	$statement .= "           <" . CHANGESET_CREATOR_NAME_URI . "> \"$creatorName\" ; \n";
 	$statement .= "           <" . CHANGESET_CHANGE_REASON_URI . "> \"$changeReason\" . \n";
+
 
 	if ( 0 < count( $additions ) )
 		$statement .= getChangeSetChanges( $subject, $subjectOfChange, $additions, CHANGE_ADDITION_NAME );
@@ -172,6 +183,8 @@ function query( &$store, $statement ) {
 	if ($errs = $store->getErrors()) {
 		echo( "ERROR\n" );
 	}
+
+	return $result;
 }
 
 function escapeValue( $value ) {
