@@ -85,6 +85,15 @@ foreach ( $newIndex as $subject => $predicates ) {
 			// query( $store, $deleteStatement );
 		}
 
+		$statement = "SELECT ?changeSetSubject \n";
+		$statement .= " WHERE { \n";
+		$statement .= "		?changeSetSubject <" . RDF_TYPE . "> <" . CHANGESET_TYPE_URI . "> ; \n";
+		$statement .= "		                  <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
+		$statement .= "		                  <" . CHANGESET_CREATED_DATE_URI . "> ?createdDate } \n";
+		$statement .= "	ORDER BY DESC(?createdDate) LIMIT 1";
+		$recordset = query( $store, $changeSetStatement );
+		var_dump( $recordset );
+
 		$changeSetStatement = createChangeSetStatement( $subject, date_create(), "auto", "tests", $removals, $additions, GRAPH_URI );
 
 		echo( "======== CHANGESET =========\n" );
