@@ -5,10 +5,15 @@ class WordLift_EntityAjaxService {
 	public $queryService;
 	public $recordSetService;
 
+	const DEFAULT_NAMESPACE = "http://dbpedia.org/resource/";
+
 	public function get( $subject ) {
 
+		if ( ! strpos( $subject, ":" ) )
+			$subject = self::DEFAULT_NAMESPACE . $subject;
+
 		$whereClause = <<<EOF
-					 	<http://dbpedia.org/resource/$subject> ?key ?value
+					 	<$subject> ?key ?value
 
 EOF;
 

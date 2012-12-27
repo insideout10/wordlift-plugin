@@ -12,6 +12,10 @@ html {
 	background-repeat: repeat;
 }
 
+#wpwrap {
+	background: white;
+}
+
 .avgrund-active body {
 	-webkit-transform: scale( 0.9 );
 	   -moz-transform: scale( 0.9 );
