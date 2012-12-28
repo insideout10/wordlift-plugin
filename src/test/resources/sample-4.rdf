@@ -6,6 +6,8 @@
     xmlns:j.3="http://schema.org/"
 xmlns:j.4="http://fise.iks-project.eu/ontology/" >
   <rdf:Description rdf:about="http://dbpedia.org/resource/Province_of_Rome">
+      <j.3:name xml:lang="it">Provincia di Roma</j.3:name>
+      <j.3:name xml:lang="en">Province of Rome</j.3:name>
       <rdf:type rdf:resource="http://schema.org/Place"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://dbpedia.org/resource/Michael_Palmer_(politician)">

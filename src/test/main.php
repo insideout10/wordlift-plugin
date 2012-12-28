@@ -33,6 +33,8 @@ const RDFS_DATE_TIME_DATATYPE_URI = "http://www.w3.org/2001/XMLSchema#dateTime";
 
 const CHANGE_ADDITION_NAME = "addition";
 const CHANGE_REMOVAL_NAME = "removal";
+const CHANGE_FORCE = false;
+const CHANGE_CREATOR = "system1";
 
 include_once( "php/arc2/ARC2.php" );
 include_once( "ChangeSet.php" );
@@ -67,6 +69,28 @@ foreach ( $newIndex as $subject => $predicates ) {
 		echo( "changes detected [ subject :: $subject ][ additions # :: " . count( $additions ) . " ][ removals :: " . count( $removals ) . " ].\n" );
 
 		if ( 0 < count( $additions ) ) {
+
+			// we don't add something that has been deleted in the past (unless told so).
+			if ( ! CHANGE_FORCE ) {
+				foreach ( $additions as $predicate => $objects ) {
+					foreach ( $objects as $object ) {
+						$statement = "ASK WHERE {\n";
+						$statement .= " ?changeSet a <" . CHANGESET_TYPE_URI . "> ; \n";
+						$statement .= "            <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
+						$statement .= "            <" . CHANGESET_CREATOR_NAME_URI . "> ?creator ; \n";
+						$statement .= "            <" . CHANGESET_REMOVAL_URI . "> [ \n";
+						$statement .= "            <" . RDF_SUBJECT_URI . "> <$subject>; \n";
+						$statement .= "            <" . RDF_PREDICATE_URI . "> <$predicate>; \n";
+						$statement .= "            " . getPredicateAndObject( RDF_OBJECT_URI , $object ) . " ] . \n";
+						$statement .= " FILTER( ?creator != \"" . CHANGE_CREATOR . "\" ) . \n";
+						$statement .= "} \n";
+
+						// if true, that statement has been already removed in the past by a different user.
+						$result = query( $store, $statement );
+					}
+				}
+			}
+
 			$insertStatement = createStatement( array( $subject => $additions ), INSERT_FORM_NAME, GRAPH_URI );
 
 			// echo("======== INSERT ========\n");
@@ -88,7 +112,7 @@ foreach ( $newIndex as $subject => $predicates ) {
 
 		$statement = "SELECT ?changeSetSubject \n";
 		$statement .= " WHERE { \n";
-		$statement .= "		?changeSetSubject <" . RDF_TYPE . "> <" . CHANGESET_TYPE_URI . "> ; \n";
+		$statement .= "		?changeSetSubject a <" . CHANGESET_TYPE_URI . "> ; \n";
 		$statement .= "		                  <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
 		$statement .= "		                  <" . CHANGESET_CREATED_DATE_URI . "> ?createdDate } \n";
 		$statement .= "	ORDER BY DESC(?createdDate) LIMIT 1 \n";
@@ -101,7 +125,7 @@ foreach ( $newIndex as $subject => $predicates ) {
 			$previousChangeSetSubject = $recordset[ "rows" ][ 0 ][ "changeSetSubject" ];
 		}
 
-		$changeSetStatement = createChangeSetStatement( $subject, date_create(), "auto", "tests", $removals, $additions, $previousChangeSetSubject, GRAPH_URI );
+		$changeSetStatement = createChangeSetStatement( $subject, date_create(), CHANGE_CREATOR, "tests", $removals, $additions, $previousChangeSetSubject, GRAPH_URI );
 
 		echo( "======== CHANGESET =========\n" );
 		echo( $changeSetStatement );
@@ -180,8 +204,8 @@ function getChangeSetChanges( $subject, $subjectOfChange, $changes, $changeType 
 function query( &$store, $statement ) {
 	$result = $store->query( $statement, "raw", "", true );
 
-	if ($errs = $store->getErrors()) {
-		echo( "ERROR\n" );
+	foreach ( $store->getErrors() as $error ) {
+		var_dump( $error );
 	}
 
 	return $result;
