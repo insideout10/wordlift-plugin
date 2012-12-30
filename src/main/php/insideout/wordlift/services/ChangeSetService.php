@@ -186,9 +186,9 @@ class WordLift_ChangeSetService {
 			if ( 0 < count( $removals ) ) {
 				$deleteStatement = $this->queryService->createStatement( array( $subject => $removals ), WordLift_QueryService::DELETE_COMMAND );
 
-				echo("======== DELETE ========\n");
-				echo( $deleteStatement );
-				echo("======== /DELETE =======\n");
+				// echo("======== DELETE ========\n");
+				// echo( $deleteStatement );
+				// echo("======== /DELETE =======\n");
 
 				$this->queryService->query( $deleteStatement, "raw", "", true );
 			}

@@ -24,6 +24,17 @@ class WordLift_TriplesUtils {
 		);
 	}
 
+	public function getIndexFromData( $data ) {
+
+		$parser = ARC2::getRDFParser();
+		$parser->parseData( $data );
+
+		return ARC2::getSimpleIndex(
+			$parser->getTriples(),
+			false
+		);
+	}
+
 	public function bNodesToMD5 ( $index ) {
 
 		return $this->processNodes( $index );

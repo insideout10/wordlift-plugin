@@ -16,6 +16,13 @@ class WordLift_JobCallbackService {
     /** @var WordLift_TripleStoreService $tripleStoreService */
     public $tripleStoreService;
 
+    /** @var WordLift_ChangeSetService $changeSetService */
+    public $changeSetService;
+
+    public $triplesUtils;
+
+    public $changeCreator;
+
     public function callback( $headers, $requestBody ) {
 
         $jobID = $headers[ "Proxy-Transaction-Id" ];
@@ -35,12 +42,6 @@ class WordLift_JobCallbackService {
         $postID = $posts[0]->ID;
         $this->logger->trace( "A post was found [ postID :: $postID ][ jobID :: $jobID ]." );
 
-        // get a parser.
-        $parser = $this->tripleStoreService->getRDFParser();
-        $parser->parseData( $requestBody );
-        $triples = $parser->getTriples();
-        $this->logger->trace( count( $triples ) . " triple(s) found." );
-
         $this->logger->trace( "Removing existing enhancements [ postID :: $postID ]." );
         $this->tripleStoreService->query( "DELETE { ?s ?p ?o }
                         WHERE {
@@ -49,14 +50,10 @@ class WordLift_JobCallbackService {
                             ?s ?p ?o .
                         }" );
 
+        $index = $this->triplesUtils->getIndexFromData( $requestBody );
+        $newIndex = $this->triplesUtils->bNodesToMD5( $index );
+        $this->changeSetService->applyChanges( $newIndex, $this->changeCreator, false, "analysis" );
 
-        $this->logger->trace( "Inserting new triples [ postID :: $postID ]." );
-        $store = $this->tripleStoreService->getStore();
-        $store->insert( $triples, "" );
-        if ( $store->getErrors() ) {
-            $this->logger->error( var_export( $store->getErrors(), true ) );
-            return;
-        }
 
         $this->logger->trace( "Setting the postID on the enhancements [ postID :: $postID ]." );
         $this->tripleStoreService->query( "INSERT INTO <> { ?subject wordlift:postID \"$postID\" }
