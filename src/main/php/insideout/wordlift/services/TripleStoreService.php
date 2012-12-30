@@ -28,7 +28,7 @@ class WordLift_TripleStoreService {
                 "wordlift" => "http://purl.org/insideout/wordpress/",
                 "dcterms" => "http://purl.org/dc/terms/"
             ),
-
+            "bnode_prefix" => "bn",
             "db_host" => DB_HOST,
             "db_name" => DB_NAME,
             "db_user" => DB_USER,
@@ -73,6 +73,17 @@ class WordLift_TripleStoreService {
 
         return $results;
     }
+
+    public function getResourcePredicates( $subject ) {
+        $resource = ARC2::getResource();
+        $resource->setStore( $this->getStore() );
+        $resource->setURI( $subject );
+
+        $properties = $resource->getProps();
+
+        return $properties;
+    }
+
 }
 
 ?>

@@ -4,10 +4,15 @@ const RDF_TYPE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 const RDF_SEQ = "rdf:Seq";
 const RDF_LI = "rdf:li";
 const RDF_VALUE = "rdf:value";
-const BNODE_PREFIX = "_:";
-const HASH_PREFIX = "md5-";
 const GRAPH_URI = "http://wordlift.it/graph";
 
+const DB_HOST = "localhost";
+const DB_NAME = "wordlift_dev";
+const DB_USER = "wordlift";
+const DB_PASSWORD = "wordliftpwd";
+
+const BNODE_PREFIX = "_:";
+const HASH_PREFIX = "_:md5-";
 const LANGUAGE_NAME = "lang";
 const VALUE_NAME = "value";
 const TYPE_NAME = "type";
@@ -34,31 +39,47 @@ const RDFS_DATE_TIME_DATATYPE_URI = "http://www.w3.org/2001/XMLSchema#dateTime";
 const CHANGE_ADDITION_NAME = "addition";
 const CHANGE_REMOVAL_NAME = "removal";
 const CHANGE_FORCE = false;
-const CHANGE_CREATOR = "system1";
+const CHANGE_CREATOR = "system7";
 
-include_once( "php/arc2/ARC2.php" );
-include_once( "ChangeSet.php" );
-include_once( "ChangeSetService.php" );
+include_once( "src/main/php/log4php/Logger.php" );
+include_once( "src/test/php/arc2/ARC2.php" );
+include_once( "src/test/TriplesUtils.php" );
+include_once( "src/main/php/insideout/wordlift/services/TripleStoreService.php" );
+include_once( "src/main/php/insideout/wordlift/services/QueryService.php" );
 
-$changeSetService = new ChangeSetService();
+$logger = Logger::getLogger(__CLASS__);
 
-$parser = ARC2::getRDFParser();
-// $parser->parse( "changeset.rdf" );
-$parser->parse( "resources/sample-4.rdf" );
-$triples = $parser->getTriples();
+$storeService = new WordLift_TripleStoreService();
+$storeService->logger = Logger::getLogger( "WordLift_TripleStoreService" );
+$storeService->tablePrefix = "wordlift";
 
-$index = ARC2::getSimpleIndex($triples, false );
-$newIndex = processNodes( $index );
+$queryService = new WordLift_QueryService();
+$queryService->logger = Logger::getLogger( "WordLift_QueryService" );
+$queryService->storeService = $storeService;
+$queryService->defaultGraphURI = GRAPH_URI;
 
-$store = getStore();
+$triplesUtils = new WordLift_TriplesUtils();
+
+$index = $triplesUtils->getIndexFromFile( "src/test/resources/sample-4.rdf" );
+$newIndex = $triplesUtils->bNodesToMD5( $index );
+
+// $store = getStore();
 
 foreach ( $newIndex as $subject => $predicates ) {
-	$existingPredicates = getResourcePredicates( $subject, $store );
+	$existingPredicates = $storeService->getResourcePredicates( $subject );
 
 	if ( md5( serialize( $existingPredicates ) ) !== md5( serialize( $predicates ) ) ) {
 		
-		$additions = getDifferences( $predicates, $existingPredicates );
-		$removals = getDifferences( $existingPredicates, $predicates );
+		$additions = $triplesUtils->getDifferences( $predicates, $existingPredicates );
+		$removals = $triplesUtils->getDifferences( $existingPredicates, $predicates );
+
+		if ( ! CHANGE_FORCE && 0 < count( $removals ) )
+			$removals = getNewItems( $subject, $removals, CHANGESET_ADDITION_URI, $queryService );
+
+
+		// we don't add something that has been deleted in the past (unless told so).
+		if ( ! CHANGE_FORCE && 0 < count( $additions ) )
+			$additions = getNewItems( $subject, $additions, CHANGESET_REMOVAL_URI, $queryService );
 
 		if ( 0 === count( $additions )
 			&& 0 === count( $removals ) ) {
@@ -68,47 +89,30 @@ foreach ( $newIndex as $subject => $predicates ) {
 
 		echo( "changes detected [ subject :: $subject ][ additions # :: " . count( $additions ) . " ][ removals :: " . count( $removals ) . " ].\n" );
 
+		// continue;
+
 		if ( 0 < count( $additions ) ) {
 
-			// we don't add something that has been deleted in the past (unless told so).
-			if ( ! CHANGE_FORCE ) {
-				foreach ( $additions as $predicate => $objects ) {
-					foreach ( $objects as $object ) {
-						$statement = "ASK WHERE {\n";
-						$statement .= " ?changeSet a <" . CHANGESET_TYPE_URI . "> ; \n";
-						$statement .= "            <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
-						$statement .= "            <" . CHANGESET_CREATOR_NAME_URI . "> ?creator ; \n";
-						$statement .= "            <" . CHANGESET_REMOVAL_URI . "> [ \n";
-						$statement .= "            <" . RDF_SUBJECT_URI . "> <$subject>; \n";
-						$statement .= "            <" . RDF_PREDICATE_URI . "> <$predicate>; \n";
-						$statement .= "            " . getPredicateAndObject( RDF_OBJECT_URI , $object ) . " ] . \n";
-						$statement .= " FILTER( ?creator != \"" . CHANGE_CREATOR . "\" ) . \n";
-						$statement .= "} \n";
 
-						// if true, that statement has been already removed in the past by a different user.
-						$result = query( $store, $statement );
-					}
-				}
-			}
-
-			$insertStatement = createStatement( array( $subject => $additions ), INSERT_FORM_NAME, GRAPH_URI );
+			$insertStatement = $queryService->createStatement( array( $subject => $additions ), WordLift_QueryService::INSERT_COMMAND );
 
 			// echo("======== INSERT ========\n");
 			// echo( $insertStatement );
 			// echo("======== /INSERT =======\n");
 
-			query( $store, $insertStatement );
+			$queryService->query( $insertStatement, "raw", "", true );
 		}
 
 		if ( 0 < count( $removals ) ) {
-			$deleteStatement = createStatement( array( $subject => $removals ), DELETE_FORM_NAME, GRAPH_URI );
+			$deleteStatement = $queryService->createStatement( array( $subject => $removals ), WordLift_QueryService::DELETE_COMMAND );
 
-			// echo("======== DELETE ========\n");
-			// echo( $deleteStatement );
-			// echo("======== /DELETE =======\n");
+			echo("======== DELETE ========\n");
+			echo( $deleteStatement );
+			echo("======== /DELETE =======\n");
 
-			query( $store, $deleteStatement );
+			$queryService->query( $deleteStatement, "raw", "", true );
 		}
+		// continue;
 
 		$statement = "SELECT ?changeSetSubject \n";
 		$statement .= " WHERE { \n";
@@ -117,7 +121,7 @@ foreach ( $newIndex as $subject => $predicates ) {
 		$statement .= "		                  <" . CHANGESET_CREATED_DATE_URI . "> ?createdDate } \n";
 		$statement .= "	ORDER BY DESC(?createdDate) LIMIT 1 \n";
 
-		$recordset = query( $store, $statement );
+		$recordset = $queryService->query( $statement, "raw", "", true );
 		$previousChangeSetSubject = NULL;
 		if ( array_key_exists( "rows", $recordset )
 			&& 1 === count( $recordset[ "rows" ] ) ) {
@@ -127,11 +131,11 @@ foreach ( $newIndex as $subject => $predicates ) {
 
 		$changeSetStatement = createChangeSetStatement( $subject, date_create(), CHANGE_CREATOR, "tests", $removals, $additions, $previousChangeSetSubject, GRAPH_URI );
 
-		echo( "======== CHANGESET =========\n" );
-		echo( $changeSetStatement );
-		echo( "======== /CHANGESET ========\n" );
+		// echo( "======== CHANGESET =========\n" );
+		// echo( $changeSetStatement );
+		// echo( "======== /CHANGESET ========\n" );
 
-		query( $store, $changeSetStatement );
+		$queryService->query( $changeSetStatement, "raw", "", true );
 
 		// echo( "======== ADDITIONS =========\n" );
 		// var_dump( $additions );
@@ -140,6 +144,38 @@ foreach ( $newIndex as $subject => $predicates ) {
 		// var_dump( $removals );
 		// echo( "======== /REMOVALS =========\n" );
 	}
+}
+
+/**
+ * @param type CHANGESET_REMOVAL_URI or CHANGESET_ADDITION_URI
+ */
+function getNewItems( $subject, $differences, $type, $queryService ) {
+
+	$results = array();
+
+	foreach ( $differences as $predicate => $objects ) {
+		foreach ( $objects as $object ) {
+			$statement = "ASK WHERE {\n";
+			$statement .= " ?changeSet a <" . CHANGESET_TYPE_URI . "> ; \n";
+			$statement .= "            <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
+			$statement .= "            <" . CHANGESET_CREATOR_NAME_URI . "> ?creator ; \n";
+			$statement .= "            <$type> [ \n";
+			$statement .= "            <" . RDF_SUBJECT_URI . "> <$subject>; \n";
+			$statement .= "            <" . RDF_PREDICATE_URI . "> <$predicate>; \n";
+			$statement .= "            " . getPredicateAndObject( RDF_OBJECT_URI , $object ) . " ] . \n";
+			$statement .= " FILTER( ?creator != \"" . CHANGE_CREATOR . "\" ) . \n";
+			$statement .= "} \n";
+
+			// if true, that statement has been already removed in the past by a different user.
+			$exists = $queryService->query( $statement, "raw", "", true );
+
+			if ( ! $exists ) {
+				$results[ $predicate ][] = $object;
+			}
+		}
+	}
+
+	return $results;
 }
 
 function createChangeSetStatement( $subjectOfChange, $createdDate, $creatorName, $changeReason, $removals, $additions, $precedingChangeSet, $namespace ) {
@@ -201,78 +237,59 @@ function getChangeSetChanges( $subject, $subjectOfChange, $changes, $changeType 
 	return $statement;
 }
 
-function query( &$store, $statement ) {
-	$result = $store->query( $statement, "raw", "", true );
+// function query( $statement , "raw", "", true) {
+// 	$result = $store->query( $statement, "raw", "", true );
 
-	foreach ( $store->getErrors() as $error ) {
-		var_dump( $error );
-	}
+// 	foreach ( $store->getErrors() as $error ) {
+// 		var_dump( $error );
+// 	}
 
-	return $result;
-}
+// 	return $result;
+// }
 
 function escapeValue( $value ) {
-	$value = str_replace( "\\", "\\\\", $value );
-	$value = str_replace( "\"", "\\\"", $value ); 
-	$value = str_replace( "'", "\\'", $value );
+	$value = str_replace( "\\", "\u005c", $value );
+	$value = str_replace( "\"", "\u0022", $value ); 
+	$value = str_replace( "'", "\u0027", $value );
 
 	return $value;
 }
 
-function createStatement( $array, $form, $namespace = "" ) {
+// function createStatement( $array, $form, $namespace = "" ) {
 
-	$statement = "";
+// 	$statement = "";
 
-	switch ( $form ) {
-		case DELETE_FORM_NAME:
-			$statement .= "DELETE FROM <$namespace> {\n";
-			break;
-		case INSERT_FORM_NAME:
-			$statement .= "INSERT INTO <$namespace> {\n";
-			break;
-		default:
-	}
+// 	switch ( $form ) {
+// 		case DELETE_FORM_NAME:
+// 			$statement .= "DELETE FROM <$namespace> {\n";
+// 			break;
+// 		case INSERT_FORM_NAME:
+// 			$statement .= "INSERT INTO <$namespace> {\n";
+// 			break;
+// 		default:
+// 	}
 
-	foreach ( $array as $subject => &$predicates ) {
-		foreach ( $predicates as $predicate => &$objects ) {
-			foreach ( $objects as $object ) {
-				$statement .= "<$subject> ";
+// 	foreach ( $array as $subject => &$predicates ) {
+// 		foreach ( $predicates as $predicate => &$objects ) {
+// 			foreach ( $objects as $object ) {
+// 				$statement .= "<$subject> ";
+// 				$statement .= getPredicateAndObject( $predicate, $object ) . ". \n";
+// 			}
+// 		}
+// 	}
 
-				// $type = $object[ TYPE_NAME ];
-				// $datatype = ( array_key_exists( DATATYPE_NAME, $object ) ? escapeValue( $object[ DATATYPE_NAME ] ) : "" );
-				// $value = escapeValue( $object[ VALUE_NAME ] );
-				// $language = ( array_key_exists( LANGUAGE_NAME, $object ) ? "@" . $object[ LANGUAGE_NAME ] : "" );
+// 	switch ( $form ) {
+// 		case DELETE_FORM_NAME:
+// 			$statement .= "}\n";
+// 			break;
+// 		case INSERT_FORM_NAME:
+// 			$statement .= "}\n";
+// 			break;
+// 		default:
+// 	}
 
-				// switch ( $type ) {
-				// 	case "bnode":
-				// 	case "uri":
-				// 		$statement .= "<$predicate> <$value> ";
-				// 		break;
-				// 	default:
-				// 		if ( empty( $datatype ) ) 
-				// 			$statement .= "<$predicate> \"$value\"$language ";
-				// 		else
-				// 			$statement .= "<$predicate> \"$value\"^^<$datatype> ";
-				// 		break;
-				// }
-
-				$statement .= getPredicateAndObject( $predicate, $object ) . ". \n";
-			}
-		}
-	}
-
-	switch ( $form ) {
-		case DELETE_FORM_NAME:
-			$statement .= "}\n";
-			break;
-		case INSERT_FORM_NAME:
-			$statement .= "}\n";
-			break;
-		default:
-	}
-
-	return $statement;
-}
+// 	return $statement;
+// }
 
 function getPredicateAndObject( $predicate, $object ) {
 	$type = $object[ TYPE_NAME ];
@@ -296,328 +313,134 @@ function getPredicateAndObject( $predicate, $object ) {
 	return "";
 }
 
-function getDifferences( &$predicates, &$referencePredicates ) {
-	$differences = array();
-
-	foreach ( $predicates as $predicate => &$objects ) {
-		if ( ! array_key_exists( $predicate, $referencePredicates ) ) {
-			$differences[ $predicate ] = $objects;
-			continue;
-		}
-
-		foreach ( $objects as &$object ) {
-
-			$found = false;
-			foreach ( $referencePredicates[ $predicate ] as $referenceObject ) {
-				if ( md5( serialize( $object ) ) ===  md5( serialize( $referenceObject ) ) ) {
-					$found = true;
-					break;
-				}
-			}
-
-			if ( $found ) // on to the next object, if this one has been found.
-				continue;
-			else { // add the object if not found.
-				$differences[ $predicate ][] = $object;
-			}
-		}
-	}
-
-	return $differences;
-}
-
-function getStore() {
-	$store = ARC2::getStore( getConfig() );
-	// $store->drop();
-
-	if (!$store->isSetUp())
-		$store->setUp();
-
-	return $store;
-}
-
-function getConfig() {
-	return array(
-		'ns' => array(
-		  'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-		  'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
-		  'dbpedia' => 'http://dbpedia.org/ontology/'
-		),
-		/* db */
-		'db_host' => '127.0.0.1', /* default: localhost */
-		'db_name' => 'arc2_dev',
-		'db_user' => 'arc2',
-		'db_pwd' => 'arc2pwd',
-		/* store */
-		'store_name' => 'arc2',
-		/* network */
-		// 'proxy_host' => '192.168.1.1',
-		// 'proxy_port' => 8080,
-		/* parsers */
-		'bnode_prefix' => 'bn',
-		/* sem html extraction */
-		'sem_html_formats' => 'rdfa microformats',
-	);
-}
-
-function getResourcePredicates( $subject, &$store ) {
-	$resource = ARC2::getResource();
-	$resource->setStore( $store );
-	$resource->setURI( $subject );
-
-	$properties = $resource->getProps();
-
-	return $properties;
-}
-
-function processNodes( $index ) {
-	$newIndex = array();
-	$bNodesMap = array();
-
-	while ( NULL !== ( $subject = key( $index ) ) )
-		processNode( $index, $subject, $newIndex, $bNodesMap );
-
-	return $newIndex;
-}
-
-function processNode( &$index, $subject, &$newIndex, &$bNodesMap ) {
-	// echo( "processing [ subject :: $subject ]...\n" );
-
-	if ( array_key_exists( $subject, $bNodesMap ) ) {
-		// echo( "node already processed [ subject :: $subject ].\n" );
-		return $bNodesMap[ $subject ];
-	} 
-
-	if ( ! array_key_exists( $subject, $index ) ) {
-		// echo( "subject not found [ subject :: $subject ].\n" );
-		return;
-	}
-
-	$predicates = &$index[ $subject ];
-
-	// check if the value references to a bnode.
-	foreach ( $predicates as $predicate => &$objects ) {
-		foreach ( $objects as &$object ) {
-			if ( is_array( $object )
-				&& array_key_exists( TYPE_NAME, $object)
-				&& TYPE_BNODE_NAME === $object[ TYPE_NAME ]
-				&& array_key_exists( VALUE_NAME, $object )
- 				// we don't take processed bnodes.
-				&& ( 0 !== strpos( $object[ VALUE_NAME ], BNODE_PREFIX . HASH_PREFIX ) ) ) {
-
-				$bNodeName = $object[ VALUE_NAME ];
-				// echo( "found a BNode [ bNodeName :: $bNodeName ].\n" );
-
-				$object[ VALUE_NAME ] = processNode( $index, $bNodeName, $newIndex, $bNodesMap );
-				// echo( "replacing [ nNodeName :: $bNodeName ] with [ new :: " . $object[ VALUE_NAME ] . " ].\n" );
-			}
-		}
-	}
-
-	$newSubject = $subject;
-	if ( 0 === strpos( $subject, BNODE_PREFIX )
-		&& 0 !== strpos( $subject, BNODE_PREFIX . HASH_PREFIX ) ) {
-
-		$newSubject = BNODE_PREFIX . HASH_PREFIX . md5( serialize( $predicates ) );
-		$bNodesMap[ $subject ] = $newSubject;
-
-		// echo( "assigning new subject [ subject :: $subject ][ newSubject :: $newSubject ].\n" );
-	}
-
-	$newIndex[ $newSubject ] = $predicates;
-	unset( $index[ $subject ] );
-
-	return $newSubject;
-}
-
-exit;
-
-
-
-$entities = array();
-
-$keysReferencingAnonymousNode = getKeysReferencingAnonymousNode( $index );
-$anonymousNodesMap = array();
-
-
-
-replaceURIs( $index, $anonymousNodesMap );
-
-unset( $index );
-
-var_dump($entities);
-
-function replaceURIs( &$array, $anonymousNodesMap ) {
-	foreach ( $array as $subject => &$predicates ) {
-		foreach ( $predicates as $predicate => &$objects ) {
-			foreach ( $objects as &$object ) {
-				if ( "bnode" === $object[ "type" ] ) {
-					$bnode = $object[ "value" ];
-					echo "replacing bnode [ $bnode ].\n";
-					$object[ "value" ] = $anonymousNodesMap[ $bnode ];
-				}
-			}
-		}
-	}
-}
-
-function getKeysReferencingAnonymousNode( $array ) {
-	$keys = array();
-
-	foreach ( $array as $key => $value )
-		if ( ( is_array( $value ) && 0 < count( getKeysReferencingAnonymousNode( $value ) ) )
-			|| ( ! is_array( $value ) && 0 === strpos( $value, BNODE_PREFIX ) ) ) {
-
-			$keys[] = $key;
-		}
-
-	return $keys;
-}
-
-function getNewKey( $key, $value, &$anonymousNodesMap ) {
-	if ( 0 === strpos( $key, BNODE_PREFIX ) ) {
-
-		if ( array_key_exists( $key, $anonymousNodesMap ) )
-			return $anonymousNodesMap[ $key ];
-
-		$newKey = BNODE_PREFIX . HASH_PREFIX. md5( serialize( $value ) );
-		$anonymousNodesMap[ $key ] = $newKey;
-		return $newKey;
-	}
-
-	return $key;
-}
-exit;
-
-$store = getStore();
-
-while ( NULL !== ( $key = key( $index ) ) ) {
-	$newPredicates = $index[ $key ];
-
-	// move next if the entity is not supported.
-	if ( ! isSupported( $key, $newPredicates ) ) {
-		next( $index );
-		continue;
-	}
-
-	// check if this entity is already in the store.
-	if ( FALSE === ( $predicates = getEntityPredicates( $key, $store ) ) ) {
-		echo "$key does not exists, creating.\n";
-		$store->insert( array( $key => $entity ), GRAPH_URI );
-	}
-	else {
-		$additions = entityDiff( $newPredicates, $predicates );
-		$removals = entityDiff( $predicates, $newPredicates );
-
-		$changeSetService->create( $key, "auto", "this is the reason", $additions, $removals);
-	}
-
-	next( $index );
-}
-
-function entityDiff( $source, $search ) {
-	$additions = array();
-
-	foreach ( $source as $predicate => $objects ) {
-		if ( ! array_key_exists( $predicate, $search ) ) {
-			$additions[] = array( $predicate => $objects );
-		}
-		else {
-			foreach ( $objects as $object ) {
-				$hash = md5( serialize( $object ) );	
-		
-				$found = FALSE;
-				foreach ( $search[ $predicate ] as $searchObject ) {
-					if ( $hash === md5( serialize( $searchObject ) ) ) {
-						$found = TRUE;
-						break;
-					}
-				}
-
-				if ( ! $found ) {
-					$additions = array_merge_recursive( $additions, array( $predicate => array( $object ) ) );
-				}
-			}
-		}
-	}
-
-	return $additions;
-}
-
-function isSupported( $key, $entity ) {
-	// return not supported, if it's a bnode.
-	if ( 0 === strpos( $key, BNODE_PREFIX ) )
-		return false;
-
-	// return not supported, if the type is inexistent.
-	if ( ! array_key_exists( RDF_TYPE, $entity ) )
-		return false;
-
-	// check for supported types.
-	$types = &$entity[ RDF_TYPE ];
-	foreach ( $types as $type ) {
-		if ( array_key_exists( "value", $type ) 
-			&& 1 === preg_match( "/^http:\/\/schema.org\//", $type[ "value" ] ) )
-
-			return true;
-	}
-
-	return false;
-}
-
-
-
-// function createStatement( $subject, &$predicates ) {
-
-// 	$statements = array();
-
-// 	foreach ( $predicates as $predicate => $objects ) {
-// 		foreach ( $objects as $object ) {
-// 			$statements[] = "<$subject> <$predicate> " . getVersionedObject( $object ) . " . \n";
+// function getDifferences( &$predicates, &$referencePredicates ) {
+// 	$differences = array();
+
+// 	foreach ( $predicates as $predicate => &$objects ) {
+// 		if ( ! array_key_exists( $predicate, $referencePredicates ) ) {
+// 			$differences[ $predicate ] = $objects;
+// 			continue;
+// 		}
+
+// 		foreach ( $objects as &$object ) {
+
+// 			$found = false;
+// 			foreach ( $referencePredicates[ $predicate ] as $referenceObject ) {
+// 				if ( md5( serialize( $object ) ) ===  md5( serialize( $referenceObject ) ) ) {
+// 					$found = true;
+// 					break;
+// 				}
+// 			}
+
+// 			if ( $found ) // on to the next object, if this one has been found.
+// 				continue;
+// 			else { // add the object if not found.
+// 				$differences[ $predicate ][] = $object;
+// 			}
 // 		}
 // 	}
 
-// 	return $statements;
+// 	return $differences;
 // }
 
-function getVersionedObject( &$object ) {
-	$subject = uniqid( BNODE_PREFIX );
-	$objectId = uniqid( BNODE_PREFIX );
+// function getStore() {
+// 	$store = ARC2::getStore( getConfig() );
+// 	// $store->drop();
 
-	$statement  = "<$subject> . \n";
-	$statement .= "<$subject> <" . RDF_TYPE . "> <" . RDF_SEQ . "> ; \n";
-	$statement .= "           <" . RDF_LI . ">   <$objectId> .  \n";
-	$statement .= "<$objectId>  <" . RDF_VALUE . "> " .getObject( $object ) . "\n";
+// 	if (!$store->isSetUp())
+// 		$store->setUp();
 
-	return $statement;
-}
+// 	return $store;
+// }
 
-function getObject( &$object ) {
+// function getConfig() {
+// 	return array(
+//         "ns" => array(
+//             "rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+//             "rdfs" => "http://www.w3.org/2000/01/rdf-schema#",
+//             "dbpedia" => "http://dbpedia.org/ontology/",
+//             "schema" => "http://schema.org/",
+//             "fise" => "http://fise.iks-project.eu/ontology/",
+//             "wordlift" => "http://purl.org/insideout/wordpress/",
+//             "dcterms" => "http://purl.org/dc/terms/"
+//         ),
+//   		"bnode_prefix" => "bn",
+//         "db_host" => DB_HOST,
+//         "db_name" => DB_NAME,
+//         "db_user" => DB_USER,
+//         "db_pwd" => DB_PASSWORD,
+//         "store_name" => "wordlift"
+// 	);
+// }
 
-	$type = &$object[ "type" ];
-	$value = &$object[ "value" ];
-	$language = ( array_key_exists( "lang", $object ) ? "@" . $object[ "lang" ] : "" );
+// function getResourcePredicates( $subject, &$store ) {
+// 	$resource = ARC2::getResource();
+// 	$resource->setStore( $store );
+// 	$resource->setURI( $subject );
 
-	switch ( $type ) {
-		case "uri":
-		case "bnode":
-			return "<$value>";
-			break;
-		
-		case "literal":
-			return escapeValue($value) . "$language";
-			break;
-	}
+// 	$properties = $resource->getProps();
 
-	return escapeValue($value) . "^^$type";
-}
+// 	return $properties;
+// }
 
-// function escapeValue( $value ) {
-// 	$value = str_replace( "\\", "\\\\", $value );
-// 	$value = str_replace( "\"", "\\\"", $value ); 
-// 	$value = str_replace( "'", "\\'", $value );
+// function processNodes( $index ) {
+// 	$newIndex = array();
+// 	$bNodesMap = array();
 
-// 	return "\"" . $value . "\"";
+// 	while ( NULL !== ( $subject = key( $index ) ) )
+// 		processNode( $index, $subject, $newIndex, $bNodesMap );
+
+// 	return $newIndex;
+// }
+
+// function processNode( &$index, $subject, &$newIndex, &$bNodesMap ) {
+// 	// echo( "processing [ subject :: $subject ]...\n" );
+
+// 	if ( array_key_exists( $subject, $bNodesMap ) ) {
+// 		// echo( "node already processed [ subject :: $subject ].\n" );
+// 		return $bNodesMap[ $subject ];
+// 	} 
+
+// 	if ( ! array_key_exists( $subject, $index ) ) {
+// 		// echo( "subject not found [ subject :: $subject ].\n" );
+// 		return;
+// 	}
+
+// 	$predicates = &$index[ $subject ];
+
+// 	// check if the value references to a bnode.
+// 	foreach ( $predicates as $predicate => &$objects ) {
+// 		foreach ( $objects as &$object ) {
+// 			if ( is_array( $object )
+// 				&& array_key_exists( TYPE_NAME, $object)
+// 				&& TYPE_BNODE_NAME === $object[ TYPE_NAME ]
+// 				&& array_key_exists( VALUE_NAME, $object )
+//  				// we don't take processed bnodes.
+// 				&& ( 0 !== strpos( $object[ VALUE_NAME ], HASH_PREFIX ) ) ) {
+
+// 				$bNodeName = $object[ VALUE_NAME ];
+// 				// echo( "found a BNode [ bNodeName :: $bNodeName ].\n" );
+
+// 				$object[ VALUE_NAME ] = processNode( $index, $bNodeName, $newIndex, $bNodesMap );
+// 				// echo( "replacing [ nNodeName :: $bNodeName ] with [ new :: " . $object[ VALUE_NAME ] . " ].\n" );
+// 			}
+// 		}
+// 	}
+
+// 	$newSubject = $subject;
+// 	if ( 0 === strpos( $subject, BNODE_PREFIX )
+// 		&& 0 !== strpos( $subject, HASH_PREFIX ) ) {
+
+// 		$newSubject = HASH_PREFIX . md5( serialize( $predicates ) );
+// 		$bNodesMap[ $subject ] = $newSubject;
+
+// 		// echo( "assigning new subject [ subject :: $subject ][ newSubject :: $newSubject ].\n" );
+// 	}
+
+// 	$newIndex[ $newSubject ] = $predicates;
+// 	unset( $index[ $subject ] );
+
+// 	return $newSubject;
 // }
 
 

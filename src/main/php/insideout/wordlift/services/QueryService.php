@@ -2,10 +2,21 @@
 
 class WordLift_QueryService {
 
+	public $logger;
+
 	public $storeService;
+	public $defaultGraphURI;
 
 	const RESULT_NAME = "result";
 	const ROWS_NAME = "rows";
+
+	const DELETE_COMMAND = "DELETE";
+	const INSERT_COMMAND = "INSERT";
+
+	const TYPE_NAME = "type";
+	const DATATYPE_NAME = "datatype";
+	const VALUE_NAME = "value";
+	const LANGUAGE_NAME = "lang";
 
 	public function create( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, $groupBy = NULL ) {
 
@@ -37,10 +48,78 @@ class WordLift_QueryService {
 		return $store->query( $query );
 	}
 
-	public function query( $query ) {
+	public function query( $query, $format = "rows", $queryBase = "", $keepBNodeIds = false ) {
 		$store = $this->storeService->getStore();
 		
-		return $store->query( $query );	
+		// return $store->query( $query );	
+
+		$result = $store->query( $query, $format, $queryBase, $keepBNodeIds );
+
+		foreach ( $store->getErrors() as $error ) {
+			$this->logger->error( $error );
+		}
+
+		return $result;
+	}
+
+	public function createStatement( $array, $command, $namespace = NULL ) {
+		if ( NULL === $namespace )
+			$namespace = $this->defaultGraphURI;
+
+		$statement = "";
+
+		switch ( $command ) {
+			case self::DELETE_COMMAND:
+				$statement .= "DELETE FROM <$namespace> {\n";
+				break;
+			case self::INSERT_COMMAND:
+				$statement .= "INSERT INTO <$namespace> {\n";
+				break;
+			default:
+		}
+
+		foreach ( $array as $subject => &$predicates ) {
+			foreach ( $predicates as $predicate => &$objects ) {
+				foreach ( $objects as $object ) {
+					$statement .= "<$subject> ";
+					$statement .= $this->getPredicateAndObject( $predicate, $object ) . ". \n";
+				}
+			}
+		}
+
+		switch ( $command ) {
+			case self::DELETE_COMMAND:
+				$statement .= "}\n";
+				break;
+			case self::INSERT_COMMAND:
+				$statement .= "}\n";
+				break;
+			default:
+		}
+
+		return $statement;
+	}
+
+	public function getPredicateAndObject( $predicate, $object ) {
+		$type = $object[ self::TYPE_NAME ];
+		$datatype = ( array_key_exists( self::DATATYPE_NAME, $object ) ? escapeValue( $object[ self::DATATYPE_NAME ] ) : "" );
+		$value = escapeValue( $object[ self::VALUE_NAME ] );
+		$language = ( array_key_exists( self::LANGUAGE_NAME, $object ) ? "@" . $object[ self::LANGUAGE_NAME ] : "" );
+
+		switch ( $type ) {
+			case "bnode":
+			case "uri":
+				return "<$predicate> <$value> ";
+				break;
+			default:
+				if ( empty( $datatype ) ) 
+					return "<$predicate> \"$value\"$language ";
+				else
+					return "<$predicate> \"$value\"^^<$datatype> ";
+				break;
+		}
+
+		return "";
 	}
 
 	private function getCount( $whereClause, $groupBy = NULL ) {
