@@ -48,6 +48,8 @@
 
         <property name="queryService" reference="queryService" />
         <property name="recordSetService" reference="recordSetService" />
+        <property name="changeSetService" reference="changeSetService" />
+        <property name="triplesUtils" reference="triplesUtils" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.property" class="propertyAjaxService" method="save"
                     authentication="true" capabilities="edit_posts" httpMethod="POST" />
