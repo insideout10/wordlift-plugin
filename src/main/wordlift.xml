@@ -25,7 +25,10 @@
     </class>
 
     <class id="triplesUtils" name="WordLift_TriplesUtils"
-        filename="/php/insideout/wordlift/services/TriplesUtils.php" />
+        filename="/php/insideout/wordlift/services/TriplesUtils.php">
+        
+        <dependsOn filename="/php/arc2/ARC2.php" />
+    </class>
     <class id="changeSetService" name="WordLift_ChangeSetService"
         filename="/php/insideout/wordlift/services/ChangeSetService.php">
 

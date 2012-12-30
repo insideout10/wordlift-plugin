@@ -2,6 +2,8 @@
 
 class WordLift_ChangeSetService {
 
+	public $logger;
+
 	public $queryService;
 	public $storeService;
 	public $triplesUtils;
@@ -45,11 +47,15 @@ class WordLift_ChangeSetService {
 				$statement .= " FILTER( ?creator != \"$creatorName\" ) . \n";
 				$statement .= "} \n";
 
+				$this->logger->trace($statement);
+
 				// if true, that statement has been already removed in the past by a different user.
 				$exists = $this->queryService->query( $statement, "raw", "", true );
 
 				if ( ! $exists ) {
 					$results[ $predicate ][] = $object;
+				} else {
+					$this->logger->trace( "<$subject> <$predicate> will not be set." );
 				}
 			}
 		}
@@ -167,45 +173,46 @@ class WordLift_ChangeSetService {
 				continue;
 			}
 
-			echo( "changes detected [ subject :: $subject ][ additions # :: " . count( $additions ) . " ][ removals :: " . count( $removals ) . " ].\n" );
+			$this->logger->trace( "changes detected [ subject :: $subject ][ additions # :: " . count( $additions ) . " ][ removals :: " . count( $removals ) . " ]." );
 
-			// continue;
-
-			// echo( "Inserting.\n" );
-			if ( 0 < count( $additions ) ) {
-				$insertStatement = $this->queryService->createStatement( array( $subject => $additions ), WordLift_QueryService::INSERT_COMMAND );
-
-				// echo("======== INSERT ========\n");
-				// echo( $insertStatement );
-				// echo("======== /INSERT =======\n");
-
-				$this->queryService->query( $insertStatement, "raw", "", true );
-			}
-
-			// echo( "Deleting.\n" );
-			if ( 0 < count( $removals ) ) {
-				$deleteStatement = $this->queryService->createStatement( array( $subject => $removals ), WordLift_QueryService::DELETE_COMMAND );
-
-				// echo("======== DELETE ========\n");
-				// echo( $deleteStatement );
-				// echo("======== /DELETE =======\n");
-
-				$this->queryService->query( $deleteStatement, "raw", "", true );
-			}
-
-			// echo( "Getting last subject.\n" );
-			$previousChangeSetSubject = $this->getLastChangeSetSubject( $subject );
-
-			// echo( "Creating changeset.\n" );
-			$changeSetStatement = $this->createStatement( $subject, date_create(), $creator, $reason, $removals, $additions, $previousChangeSetSubject );
-
-			// echo( "======== CHANGESET =========\n" );
-			// echo( $changeSetStatement );
-			// echo( "======== /CHANGESET ========\n" );
-
-			$this->queryService->query( $changeSetStatement, "raw", "", true );
-
+			$this->saveChanges( $subject, $creator, $additions, $removals, $reason );
 		}
+	}
+
+	public function saveChanges( $subject, $creator, $additions = array(), $removals = array(), $reason = "none given" ) {
+		// echo( "Inserting.\n" );
+		if ( is_array( $additions ) && 0 < count( $additions ) ) {
+			$insertStatement = $this->queryService->createStatement( array( $subject => $additions ), WordLift_QueryService::INSERT_COMMAND );
+
+			// echo("======== INSERT ========\n");
+			// echo( $insertStatement );
+			// echo("======== /INSERT =======\n");
+
+			$this->queryService->query( $insertStatement, "raw", "", true );
+		}
+
+		// echo( "Deleting.\n" );
+		if ( is_array( $removals ) && 0 < count( $removals ) ) {
+			$deleteStatement = $this->queryService->createStatement( array( $subject => $removals ), WordLift_QueryService::DELETE_COMMAND );
+
+			// echo("======== DELETE ========\n");
+			// echo( $deleteStatement );
+			// echo("======== /DELETE =======\n");
+
+			$this->queryService->query( $deleteStatement, "raw", "", true );
+		}
+
+		// echo( "Getting last subject.\n" );
+		$previousChangeSetSubject = $this->getLastChangeSetSubject( $subject );
+
+		// echo( "Creating changeset.\n" );
+		$changeSetStatement = $this->createStatement( $subject, date_create(), $creator, $reason, $removals, $additions, $previousChangeSetSubject );
+
+		// echo( "======== CHANGESET =========\n" );
+		// echo( $changeSetStatement );
+		// echo( "======== /CHANGESET ========\n" );
+
+		$this->queryService->query( $changeSetStatement, "raw", "", true );
 	}
 }
 

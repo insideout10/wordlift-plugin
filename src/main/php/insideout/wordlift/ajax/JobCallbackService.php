@@ -55,10 +55,12 @@ class WordLift_JobCallbackService {
         $this->changeSetService->applyChanges( $newIndex, $this->changeCreator, false, "analysis" );
 
 
-        $this->logger->trace( "Setting the postID on the enhancements [ postID :: $postID ]." );
-        $this->tripleStoreService->query( "INSERT INTO <> { ?subject wordlift:postID \"$postID\" }
-                        WHERE { ?subject a fise:Enhancement .
-                                ?subject fise:extracted-from $contentItemURI }" );
+        if ( ! empty( $contentItemURI ) ) {
+            $this->logger->trace( "Setting the postID on the enhancements [ postID :: $postID ]." );
+            $this->tripleStoreService->query( "INSERT INTO <> { ?subject wordlift:postID \"$postID\" }
+                            WHERE { ?subject a fise:Enhancement .
+                                    ?subject fise:extracted-from $contentItemURI }" );
+        }
 
         $this->logger->trace( "Setting the job to completed [ postID :: $postID ][ jobID :: $jobID ]." );
         $this->jobService->setJob( $postID, $jobID, WordLift_JobService::COMPLETED );

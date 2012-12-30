@@ -35,7 +35,7 @@ class WordLift_PostAjaxService {
             $this->tripleStoreService->query( $query );
         }
 
-        $this->logger->trace( "[ entity :: $entity ][ bind :: " . var_export( $bind, true ) . " ]." );
+        // $this->logger->trace( "[ entity :: $entity ][ bind :: " . var_export( $bind, true ) . " ]." );
 
     }
 

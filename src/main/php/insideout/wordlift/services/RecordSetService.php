@@ -66,6 +66,7 @@ class WordLift_RecordSetService {
 				// print the language of the property
 				$this->writeAttribute( $row, $variable, "lang" );
 				$this->writeAttribute( $row, $variable, "type" );
+				$this->writeAttribute( $row, $variable, "datatype" );
 
 				if ( ++$variablesIndex !== $variablesCount )
 					echo ",";
