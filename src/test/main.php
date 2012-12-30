@@ -44,6 +44,7 @@ const CHANGE_CREATOR = "system7";
 include_once( "src/main/php/log4php/Logger.php" );
 include_once( "src/test/php/arc2/ARC2.php" );
 include_once( "src/test/TriplesUtils.php" );
+include_once( "src/test/ChangeSetService.php" );
 include_once( "src/main/php/insideout/wordlift/services/TripleStoreService.php" );
 include_once( "src/main/php/insideout/wordlift/services/QueryService.php" );
 
@@ -59,6 +60,8 @@ $queryService->storeService = $storeService;
 $queryService->defaultGraphURI = GRAPH_URI;
 
 $triplesUtils = new WordLift_TriplesUtils();
+$changeSetService = new WordLift_ChangeSetService();
+$changeSetService->queryService = $queryService;
 
 $index = $triplesUtils->getIndexFromFile( "src/test/resources/sample-4.rdf" );
 $newIndex = $triplesUtils->bNodesToMD5( $index );
@@ -74,12 +77,12 @@ foreach ( $newIndex as $subject => $predicates ) {
 		$removals = $triplesUtils->getDifferences( $existingPredicates, $predicates );
 
 		if ( ! CHANGE_FORCE && 0 < count( $removals ) )
-			$removals = getNewItems( $subject, $removals, CHANGESET_ADDITION_URI, $queryService );
+			$removals = $changeSetService->getNewItems( $subject, $removals, WordLift_ChangeSetService::CHANGESET_ADDITION_URI );
 
 
 		// we don't add something that has been deleted in the past (unless told so).
 		if ( ! CHANGE_FORCE && 0 < count( $additions ) )
-			$additions = getNewItems( $subject, $additions, CHANGESET_REMOVAL_URI, $queryService );
+			$additions = $changeSetService->getNewItems( $subject, $additions, WordLift_ChangeSetService::CHANGESET_REMOVAL_URI);
 
 		if ( 0 === count( $additions )
 			&& 0 === count( $removals ) ) {
@@ -146,37 +149,37 @@ foreach ( $newIndex as $subject => $predicates ) {
 	}
 }
 
-/**
- * @param type CHANGESET_REMOVAL_URI or CHANGESET_ADDITION_URI
- */
-function getNewItems( $subject, $differences, $type, $queryService ) {
+// /**
+//  * @param type CHANGESET_REMOVAL_URI or CHANGESET_ADDITION_URI
+//  */
+// function getNewItems( $subject, $differences, $type, $queryService ) {
 
-	$results = array();
+// 	$results = array();
 
-	foreach ( $differences as $predicate => $objects ) {
-		foreach ( $objects as $object ) {
-			$statement = "ASK WHERE {\n";
-			$statement .= " ?changeSet a <" . CHANGESET_TYPE_URI . "> ; \n";
-			$statement .= "            <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
-			$statement .= "            <" . CHANGESET_CREATOR_NAME_URI . "> ?creator ; \n";
-			$statement .= "            <$type> [ \n";
-			$statement .= "            <" . RDF_SUBJECT_URI . "> <$subject>; \n";
-			$statement .= "            <" . RDF_PREDICATE_URI . "> <$predicate>; \n";
-			$statement .= "            " . getPredicateAndObject( RDF_OBJECT_URI , $object ) . " ] . \n";
-			$statement .= " FILTER( ?creator != \"" . CHANGE_CREATOR . "\" ) . \n";
-			$statement .= "} \n";
+// 	foreach ( $differences as $predicate => $objects ) {
+// 		foreach ( $objects as $object ) {
+// 			$statement = "ASK WHERE {\n";
+// 			$statement .= " ?changeSet a <" . CHANGESET_TYPE_URI . "> ; \n";
+// 			$statement .= "            <" . CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
+// 			$statement .= "            <" . CHANGESET_CREATOR_NAME_URI . "> ?creator ; \n";
+// 			$statement .= "            <$type> [ \n";
+// 			$statement .= "            <" . RDF_SUBJECT_URI . "> <$subject>; \n";
+// 			$statement .= "            <" . RDF_PREDICATE_URI . "> <$predicate>; \n";
+// 			$statement .= "            " . getPredicateAndObject( RDF_OBJECT_URI , $object ) . " ] . \n";
+// 			$statement .= " FILTER( ?creator != \"" . CHANGE_CREATOR . "\" ) . \n";
+// 			$statement .= "} \n";
 
-			// if true, that statement has been already removed in the past by a different user.
-			$exists = $queryService->query( $statement, "raw", "", true );
+// 			// if true, that statement has been already removed in the past by a different user.
+// 			$exists = $queryService->query( $statement, "raw", "", true );
 
-			if ( ! $exists ) {
-				$results[ $predicate ][] = $object;
-			}
-		}
-	}
+// 			if ( ! $exists ) {
+// 				$results[ $predicate ][] = $object;
+// 			}
+// 		}
+// 	}
 
-	return $results;
-}
+// 	return $results;
+// }
 
 function createChangeSetStatement( $subjectOfChange, $createdDate, $creatorName, $changeReason, $removals, $additions, $precedingChangeSet, $namespace ) {
 
