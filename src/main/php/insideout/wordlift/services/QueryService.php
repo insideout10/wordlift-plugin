@@ -102,8 +102,8 @@ class WordLift_QueryService {
 
 	public function getPredicateAndObject( $predicate, $object ) {
 		$type = $object[ self::TYPE_NAME ];
-		$datatype = ( array_key_exists( self::DATATYPE_NAME, $object ) ? escapeValue( $object[ self::DATATYPE_NAME ] ) : "" );
-		$value = escapeValue( $object[ self::VALUE_NAME ] );
+		$datatype = ( array_key_exists( self::DATATYPE_NAME, $object ) ? $this->escapeValue( $object[ self::DATATYPE_NAME ] ) : "" );
+		$value = $this->escapeValue( $object[ self::VALUE_NAME ] );
 		$language = ( array_key_exists( self::LANGUAGE_NAME, $object ) ? "@" . $object[ self::LANGUAGE_NAME ] : "" );
 
 		switch ( $type ) {
@@ -121,6 +121,15 @@ class WordLift_QueryService {
 
 		return "";
 	}
+
+	public function escapeValue( $value ) {
+		$value = str_replace( "\\", "\u005c", $value );
+		$value = str_replace( "\"", "\u0022", $value ); 
+		$value = str_replace( "'", "\u0027", $value );
+
+		return $value;
+	}
+
 
 	private function getCount( $whereClause, $groupBy = NULL ) {
 		$store = $this->storeService->getStore();

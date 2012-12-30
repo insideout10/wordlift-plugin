@@ -18,10 +18,15 @@ class WordLift_ChangeSetService {
 	const RDF_OBJECT_URI = "http://www.w3.org/1999/02/22-rdf-syntax-ns#object";
 	const RDFS_DATE_TIME_DATATYPE_URI = "http://www.w3.org/2001/XMLSchema#dateTime";
 
+	const CHANGE_ADDITION_NAME = "addition";
+	const CHANGE_REMOVAL_NAME = "removal";
+
+	const BNODE_PREFIX = "_:";
+
 	/**
 	 * @param type CHANGESET_REMOVAL_URI or CHANGESET_ADDITION_URI
 	 */
-	public function getNewItems( $subject, $differences, $type ) {
+	public function getNewItems( $type, $subject, $differences, $creatorName ) {
 
 		$results = array();
 
@@ -35,7 +40,7 @@ class WordLift_ChangeSetService {
 				$statement .= "            <" . self::RDF_SUBJECT_URI . "> <$subject>; \n";
 				$statement .= "            <" . self::RDF_PREDICATE_URI . "> <$predicate>; \n";
 				$statement .= "            " . $this->queryService->getPredicateAndObject( self::RDF_OBJECT_URI , $object ) . " ] . \n";
-				$statement .= " FILTER( ?creator != \"" . self::CHANGE_CREATOR . "\" ) . \n";
+				$statement .= " FILTER( ?creator != \"$creatorName\" ) . \n";
 				$statement .= "} \n";
 
 				// if true, that statement has been already removed in the past by a different user.
@@ -48,6 +53,88 @@ class WordLift_ChangeSetService {
 		}
 
 		return $results;
+	}
+
+	public function getLastChangeSetSubject( $subject ) {
+		$statement = "SELECT ?changeSetSubject \n";
+		$statement .= " WHERE { \n";
+		$statement .= "		?changeSetSubject a <" . self::CHANGESET_TYPE_URI . "> ; \n";
+		$statement .= "		                  <" . self::CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subject> ; \n";
+		$statement .= "		                  <" . self::CHANGESET_CREATED_DATE_URI . "> ?createdDate } \n";
+		$statement .= "	ORDER BY DESC(?createdDate) LIMIT 1 \n";
+
+		$recordset = $this->queryService->query( $statement, "raw", "", true );
+		
+		$previousChangeSetSubject = NULL;
+		if ( array_key_exists( "rows", $recordset )
+			&& 1 === count( $recordset[ "rows" ] ) ) {
+
+			$previousChangeSetSubject = $recordset[ "rows" ][ 0 ][ "changeSetSubject" ];
+		}
+
+		return $previousChangeSetSubject;
+	}
+
+	public function createStatement( $subjectOfChange, $createdDate, $creatorName, $changeReason, $removals, $additions, $precedingChangeSet, $namespace = NULL ) {
+
+		if ( NULL === $namespace)
+			$namespace = $this->queryService->defaultGraphURI;
+
+		$subjectOfChange = $this->queryService->escapeValue( $subjectOfChange );
+		$creatorName = $this->queryService->escapeValue( $creatorName );
+		$changeReason = $this->queryService->escapeValue( $changeReason );
+		
+		$createdDate = date_format( $createdDate, "Y-m-d\TH:i:s\Z" );
+
+		$subject = self::BNODE_PREFIX . uniqid( "changeset-" );
+		$statement = "INSERT INTO <$namespace> {\n";
+		$statement .= "<$subject> a <" . self::CHANGESET_TYPE_URI . "> ; \n";
+		$statement .= "           <" . self::CHANGESET_SUBJECT_OF_CHANGE_URI . "> <$subjectOfChange> ; \n";
+		if ( NULL !== $precedingChangeSet )
+			$statement .= "           <" . self::CHANGESET_PRECEDING_CHANGE_SET_URI . "> <$precedingChangeSet> ; \n";
+
+		$statement .= "           <" . self::CHANGESET_CREATED_DATE_URI . "> \"$createdDate\"^^<" . self::RDFS_DATE_TIME_DATATYPE_URI . "> ; \n";
+		$statement .= "           <" . self::CHANGESET_CREATOR_NAME_URI . "> \"$creatorName\" ; \n";
+		$statement .= "           <" . self::CHANGESET_CHANGE_REASON_URI . "> \"$changeReason\" . \n";
+
+
+		if ( 0 < count( $additions ) )
+			$statement .= $this->getChanges( $subject, $subjectOfChange, $additions, self::CHANGE_ADDITION_NAME );
+
+		if ( 0 < count( $removals ) )
+			$statement .= $this->getChanges( $subject, $subjectOfChange, $removals, self::CHANGE_REMOVAL_NAME ); 
+
+		$statement .= "}";
+
+		return $statement;
+	}
+
+	public function getChanges( $subject, $subjectOfChange, $changes, $changeType ) {
+
+		switch ( $changeType ) {
+			case self::CHANGE_ADDITION_NAME:
+				$type = self::CHANGESET_ADDITION_URI;
+				break;
+			case self::CHANGE_REMOVAL_NAME:
+				$type = self::CHANGESET_REMOVAL_URI;
+				break;
+		}
+
+		$statement = "";
+		if ( 0 < count( $changes ) ) {
+			foreach ( $changes as $predicate => $objects ) {
+				foreach ( $objects as $object ) {
+					$changeSubject = self::BNODE_PREFIX . uniqid( "changeset-$changeType-" );
+					$statement .= "<$subject> <$type> <$changeSubject> . \n";
+					$statement .= "<$changeSubject> a <" . self::RDF_STATEMENT_URI . "> ; \n";
+					$statement .= "                   <" . self::RDF_SUBJECT_URI . "> <$subjectOfChange> ; \n";
+					$statement .= "                   <" . self::RDF_PREDICATE_URI . "> <$predicate> ; \n";
+					$statement .= $this->queryService->getPredicateAndObject( self::RDF_OBJECT_URI, $object ) . " . \n";
+				}
+			}
+		}	
+
+		return $statement;
 	}
 
 }
