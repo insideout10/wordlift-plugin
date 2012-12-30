@@ -3,6 +3,8 @@
 class WordLift_ChangeSetService {
 
 	public $queryService;
+	public $storeService;
+	public $triplesUtils;
 
 	const CHANGESET_TYPE_URI = "http://purl.org/vocab/changeset/schema#ChangeSet";
 	const CHANGESET_SUBJECT_OF_CHANGE_URI = "http://purl.org/vocab/changeset/schema#subjectOfChange";
@@ -137,6 +139,74 @@ class WordLift_ChangeSetService {
 		return $statement;
 	}
 
+	public function applyChanges( &$newIndex, $creator, $force, $reason = "none given" ) {
+
+		foreach ( $newIndex as $subject => $predicates ) {
+
+			// echo( "Getting resource predicates.\n" );
+			$existingPredicates = $this->storeService->getResourcePredicates( $subject );
+
+			if ( md5( serialize( $existingPredicates ) ) === md5( serialize( $predicates ) ) )
+				continue;
+				
+			// echo( "Getting differences.\n" );
+			$additions = $this->triplesUtils->getDifferences( $predicates, $existingPredicates );
+			$removals = $this->triplesUtils->getDifferences( $existingPredicates, $predicates );
+
+			// echo( "Getting new items.\n" );
+			if ( ! $force && 0 < count( $removals ) )
+				$removals = $this->getNewItems( self::CHANGESET_ADDITION_URI, $subject, $removals, $creator );
+
+			// we don't add something that has been deleted in the past (unless told so).
+			if ( ! $force && 0 < count( $additions ) )
+				$additions = $this->getNewItems( self::CHANGESET_REMOVAL_URI, $subject, $additions, $creator );
+
+			if ( 0 === count( $additions )
+				&& 0 === count( $removals ) ) {
+
+				continue;
+			}
+
+			echo( "changes detected [ subject :: $subject ][ additions # :: " . count( $additions ) . " ][ removals :: " . count( $removals ) . " ].\n" );
+
+			// continue;
+
+			// echo( "Inserting.\n" );
+			if ( 0 < count( $additions ) ) {
+				$insertStatement = $this->queryService->createStatement( array( $subject => $additions ), WordLift_QueryService::INSERT_COMMAND );
+
+				// echo("======== INSERT ========\n");
+				// echo( $insertStatement );
+				// echo("======== /INSERT =======\n");
+
+				$this->queryService->query( $insertStatement, "raw", "", true );
+			}
+
+			// echo( "Deleting.\n" );
+			if ( 0 < count( $removals ) ) {
+				$deleteStatement = $this->queryService->createStatement( array( $subject => $removals ), WordLift_QueryService::DELETE_COMMAND );
+
+				echo("======== DELETE ========\n");
+				echo( $deleteStatement );
+				echo("======== /DELETE =======\n");
+
+				$this->queryService->query( $deleteStatement, "raw", "", true );
+			}
+
+			// echo( "Getting last subject.\n" );
+			$previousChangeSetSubject = $this->getLastChangeSetSubject( $subject );
+
+			// echo( "Creating changeset.\n" );
+			$changeSetStatement = $this->createStatement( $subject, date_create(), $creator, $reason, $removals, $additions, $previousChangeSetSubject );
+
+			// echo( "======== CHANGESET =========\n" );
+			// echo( $changeSetStatement );
+			// echo( "======== /CHANGESET ========\n" );
+
+			$this->queryService->query( $changeSetStatement, "raw", "", true );
+
+		}
+	}
 }
 
 ?>
