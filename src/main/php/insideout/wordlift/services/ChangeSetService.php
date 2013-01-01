@@ -47,7 +47,7 @@ class WordLift_ChangeSetService {
 				$statement .= " FILTER( ?creator != \"$creatorName\" ) . \n";
 				$statement .= "} \n";
 
-				$this->logger->trace($statement);
+				// $this->logger->trace($statement);
 
 				// if true, that statement has been already removed in the past by a different user.
 				$exists = $this->queryService->query( $statement, "raw", "", true );
@@ -55,7 +55,7 @@ class WordLift_ChangeSetService {
 				if ( ! $exists ) {
 					$results[ $predicate ][] = $object;
 				} else {
-					$this->logger->trace( "<$subject> <$predicate> will not be set." );
+					// $this->logger->trace( "<$subject> <$predicate> will not be set." );
 				}
 			}
 		}

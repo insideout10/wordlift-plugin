@@ -40,6 +40,70 @@ class WordLift_DefaultEntityService implements WordLift_EntityService {
 
     }
 
+    public function findRelatedEntities( $postID ) {
+
+        $query =<<<EOF
+            SELECT DISTINCT ?entity ?type ?name ?image
+                WHERE {
+                    ?enhacement a fise:Enhacement ;
+                                wordlift:selected true ;
+                                wordlift:postID "$postID" ;
+                                fise:entity-reference ?entity .
+                    ?entity a ?type ;
+                                schema:name ?name 
+                OPTIONAL { ?entity schema:image ?image }
+            }
+EOF;
+
+        $result = $this->tripleStoreService->query( $query );
+        $rows = &$result[ "result" ][ "rows" ];
+
+        $related = array(
+            "entities" => array(),
+            "posts" => array()
+        );
+        $entities = &$related[ "entities" ];
+        $posts = &$related[ "posts" ];
+
+        foreach ( $rows as $row ) {
+
+            if ( ! array_key_exists( $row[ "postID" ], $posts ) )
+                $posts[ $row[ "postID" ] ] = array(
+                    "entities" => array()
+                );
+
+            $post = &$posts[ $row["postID"] ];
+
+            if ( ! array_key_exists( $row[ "entity" ], $entities ) )
+                $entities[ $row[ "entity" ] ] = array(
+                    "images" => array(),
+                    "names" => array(),
+                    "types" => array(),
+                    "posts" => array()
+                );
+
+            $entity = &$entities[ $row[ "entity" ] ];
+
+            if ( ! in_array( $row[ "postID" ], $entity[ "posts" ] ) )
+                $entity[ "posts" ][] = $row[ "postID" ];
+
+            if ( ! in_array( $row[ "entity" ], $post[ "entities" ] ) )
+                $post[ "entities" ][] = $row[ "entity" ];
+
+            if ( ! empty( $row[ "image" ] ) && ! in_array( $row[ "image" ], $entity[ "images" ] ) )
+                $entity[ "images" ][] = $row[ "image" ];
+
+            if ( ! empty( $row[ "name" ] ) && ! in_array( $row[ "name" ], $entity[ "names" ] ) )
+                $entity[ "names" ][] = $row[ "name" ];
+
+            if ( ! empty( $row[ "type" ] ) && ! in_array( $row[ "type" ], $entity[ "types" ] ) )
+                $entity[ "types" ][] = $row[ "type" ];
+
+        }
+
+        return $related;
+    }
+
     public function findRelated( $postID ) {
 
         $query =<<<EOF

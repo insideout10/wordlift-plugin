@@ -11,24 +11,46 @@ class WordLift_GeoRssAjaxService {
     /** @var WordLift_TripleStoreService $tripleStoreService */
     public $tripleStoreService;
 
+    public $queryService;
+
     public function get() {
 
-        $query = "SELECT DISTINCT ?postID ?latitude ?longitude
-                  WHERE {
-                    ?textAnnotation a fise:TextAnnotation .
-                    ?textAnnotation wordlift:postID ?postID .
-                    ?entityAnnotation a fise:EntityAnnotation .
-                    ?entityAnnotation dcterms:relation ?textAnnotation .
-                    ?entityAnnotation fise:entity-reference ?entity .
-                    ?entityAnnotation wordlift:selected true .
-                    ?entity schema:location ?place .
-                    ?place schema:geo ?geo .
-                    ?geo schema:latitude ?latitude .
-                    ?geo schema:longitude ?longitude .
-                  }";
+        $query = "SELECT DISTINCT ?name ?postID ?latitude ?longitude"; // ?latitude ?longitude \n";
+        $query .= " WHERE { \n";
+        $query .= "   ?ea a fise:Enhancement ; \n";
+        $query .= "       wordlift:postID ?postID ; \n";
+        $query .= "       wordlift:selected true ; \n";
+        $query .= "       fise:entity-reference [ \n";
+        $query .= "            a ?type ; \n";
+        $query .= "            schema:name ?name ; \n";
+        $query .= "            ?predicate [ \n";
+        $query .= "              a schema:Place ; \n";
+        $query .= "              schema:geo [ \n"; 
+        $query .= "                schema:latitude ?latitude ; \n";
+        $query .= "                schema:longitude ?longitude ] ] ] . \n";
+        $query .= " FILTER regex( str(?type), \"http://schema.org/\" ) \n";
+        $query .= "  } \n";
 
-        $result = $this->tripleStoreService->query( $query );
-        $rows = &$result[ "result" ][ "rows" ];
+        // $query = "SELECT DISTINCT ?postID ?latitude ?longitude
+        //           WHERE {
+        //             ?textAnnotation a fise:TextAnnotation .
+        //             ?textAnnotation wordlift:postID ?postID .
+        //             ?entityAnnotation a fise:EntityAnnotation .
+        //             ?entityAnnotation dcterms:relation ?textAnnotation .
+        //             ?entityAnnotation fise:entity-reference ?entity .
+        //             ?entityAnnotation wordlift:selected true .
+        //             ?entity schema:location ?place .
+        //             ?place schema:geo ?geo .
+        //             ?geo schema:latitude ?latitude .
+        //             ?geo schema:longitude ?longitude .
+        //           }";
+
+        $result = $this->queryService->query( $query, "raw", "", true );
+        $rows = &$result[ "rows" ];
+
+        // echo( $query );
+        // var_dump( $result );
+        // exit;
 
 
         $title = "";
@@ -48,16 +70,18 @@ EOF;
         $coordinates = array();
 
         // group data by coordinates.
-        foreach ( $rows as $row )
-            $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][] = $row[ "postID" ];
+        foreach ( $rows as $row ) {
+            $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "name" ] = $row[ "name" ];
+            $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "posts" ][] = $row[ "postID" ];
+        }
 
         foreach ( $coordinates as $point => $posts ) {
 
-            $title = implode( ",", $posts );
+            $title = $posts[ "name" ]; // implode( ",", $posts[ "posts" ] );
             $id = "";
             $updated = "";
             $summary = "<ul class=\"posts\">";
-            foreach ( $posts as $post )
+            foreach ( $posts[ "posts" ] as $post )
                 $summary .= "<li class=\"item\"><a href=\"" . get_permalink( $post ) . "\">" . get_the_title( $post ) . "</a></li>";
             $summary .= "</div>";
 
