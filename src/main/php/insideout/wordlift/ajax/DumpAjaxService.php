@@ -8,8 +8,8 @@ class WordLift_DumpAjaxService {
 
     public $logger;
 
-    /** @var WordLift_TripleStoreService $tripleStoreService */
-    public $tripleStoreService;
+    /** @var WordLift_TripleStoreService $queryService */
+    public $queryService;
 
     public function options() {
         // enable CORS when the OPTIONS method is requested.
@@ -111,9 +111,10 @@ class WordLift_DumpAjaxService {
                     OPTIONAL { ?entity schema:image ?image } .
                     OPTIONAL { ?entity schema:url ?url } .
                     OPTIONAL { ?entityAnnotation wordlift:selected ?selected } .
+                    FILTER ( lang(?name) = \"EN\" )
                   } ORDER BY DESC( ?confidence )";
 
-        $result = $this->tripleStoreService->query( $query );
+        $result = $this->queryService->query( $query );
         $rows = &$result[ "result" ][ "rows" ];
 
         $this->logger->trace( "Found " . count( $rows ) . " row(s)." );

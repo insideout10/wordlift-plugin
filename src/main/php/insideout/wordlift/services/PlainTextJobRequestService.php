@@ -34,7 +34,8 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
             "configuration" => array(
                 "freebase.entity-recognition.search.score.minimum" => "10",
                 "freebase.entity-recognition.entity.score.minimum" => "0.5",
-                "freebase.entity-recognition.search.limit" => "5"
+                "freebase.entity-recognition.search.limit" => "5",
+                "schemaorg.language.filter" => "false"
             )
         );
 

@@ -166,7 +166,7 @@
     <wordpress:filter name="the_content" class="contentFilter" method="content" />
 
     <!-- ***** W O R D P R E S S   S H O R T C O D E S -->
-    <wordpress:shortCode name="entities_bar" class="entitiesBar" method="get" />
+    <wordpress:shortCode name="wordlift.entities" class="entitiesBar" method="get" />
 
     <class id="geoMapShortCode" name="WordLift_GeoMap"
            filename="/php/insideout/wordlift/shortcodes/GeoMap.php" />
@@ -396,7 +396,7 @@
     <class id="dumpAjaxService" name="WordLift_DumpAjaxService"
            filename="/php/insideout/wordlift/ajax/DumpAjaxService.php">
 
-        <property name="tripleStoreService" reference="tripleStoreService" />
+        <property name="queryService" reference="queryService" />
     </class>
 
     <!-- ***** E C H O  S E R V I C E ***** -->
@@ -445,7 +445,7 @@
     <!-- ***** E N T I T I E S   B A R -->
     <class id="entitiesBar" name="WordLift_EntitiesBar"
            filename="/php/insideout/wordlift/shortcodes/EntitiesBar.php">
-        <property name="contentFilterClass" reference="contentFilter" />
+        <property name="queryService" reference="queryService" />
     </class>
 
     <!-- ***** P O S T   A N A L Y Z E R -->

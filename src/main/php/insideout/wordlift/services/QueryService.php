@@ -38,17 +38,17 @@ class WordLift_QueryService {
 	}
 
 	public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL ) {
-		$store = $this->storeService->getStore();
+		// $store = $this->storeService->getStore();
 
 		$query = $this->create( $fields, $whereClause, $limit, $offset, $groupBy );
 
 		if ( NULL !== $count )
 			$count = $this->getCount( $whereClause );
 
-		return $store->query( $query );
+		return $this->query( $query );
 	}
 
-	public function query( $query, $format = "rows", $queryBase = "", $keepBNodeIds = false ) {
+	public function query( $query, $format = "", $queryBase = "", $keepBNodeIds = false ) {
 		$store = $this->storeService->getStore();
 		
 		// return $store->query( $query );	

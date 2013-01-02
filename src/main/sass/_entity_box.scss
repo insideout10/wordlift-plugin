@@ -1,0 +1,71 @@
+$width: 110px;
+$height: 110px;
+
+ul.entity-list {
+    height: $height + 20px;
+
+	list-style: none;
+	white-space: nowrap;
+	// overflow: auto;
+	margin-left: 0;
+
+	li {
+		display: inline-block;
+		vertical-align: top;
+		margin: 2px;
+	}
+
+}
+
+.entity-box {
+	position: relative;
+	padding: 2px;
+	border: 1px solid;
+	height: $height;
+	width: $width;
+	overflow: hidden;
+	overflow-y: scroll;
+	font-size: 10px;
+	white-space: normal;
+
+	.names {
+		white-space: nowrap;
+		font-size: 11px;
+		font-weight: bold;
+
+		.name {
+			width: $width;
+			display: inline-block;
+		}
+	}
+
+	.image {
+		max-width: 40px;
+		max-height: 40px;
+	}
+
+	.description {
+		position: absolute;
+		top: 126px;
+		text-align: justify;
+		line-height: 10px;
+	}
+}
+
+.arrowscroller.left, .arrowscroller.right {
+  height: $height + 20px;
+}
+
+.arrowscroller.left {
+  background: url('../img/arrow-2.png') center center no-repeat;
+}
+
+.arrowscroller.right {
+  background: url('../img/arrow-1.png') center center no-repeat;
+}
+
+.entity-container {
+  overflow-x: scroll;
+  height: $height + 20px;
+  width: 584px;
+}

@@ -1,9 +1,9 @@
 
-( ($) ->
+# ( ($) ->
 
-  $(".container.entities").arrowscrollers
-    arrow:
-      width:36
-    marginTop: false
+#   $(".container.entities").arrowscrollers
+#     arrow:
+#       width:36
+#     marginTop: false
 
-)(jQuery)
+# )(jQuery)

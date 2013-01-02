@@ -55,13 +55,13 @@ class WordLift_TripleStoreService {
         return $parser;
     }
 
-    public function query( $query ) {
+    public function query( $query, $format = "rows", $queryBase = "", $keepBNodeIds = false ) {
 
         $this->logger->trace( "[ query :: $query ]." );
 
         $store = $this->getStore();
 
-        $results = $store->query( $query );
+        $results = $store->query( $query, $format, $queryBase, $keepBNodeIds );
         if ( $store->getErrors() ) {
             $this->logger->error( var_export( $store->getErrors(), true ) );
             return false;
