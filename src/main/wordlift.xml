@@ -17,11 +17,22 @@
 
     <context name="wordLift" />
 
-    <class id="entityPage" name="WordLift_EntityPage"
-           filename="/php/insideout/wordlift/shortcodes/EntityPage.php">
+    <class id="goToEntity" name="WordLift_GoToEntity"
+        filename="/php/insideout/wordlift/ajax/GoToEntity.php" />
+    <wordpress:ajax service="ajaxService" action="wordlift.gotoentity" class="goToEntity" method="redirectToEntity"
+                    authentication="false" capabilities="any" httpMethod="GET" />
 
-           <property name="storeService" reference="tripleStoreService" />
-           <property name="queryService" reference="queryService" />
+    <class id="entityAutocompleteWidget" name="WordLift_EntityAutocompleteWidget"
+        filename="/php/insideout/wordlift/widgets/EntityAutocompleteWidget.php">
+
+    </class>
+    <wordpress:widget class="entityAutocompleteWidget" />
+
+    <class id="entityPage" name="WordLift_EntityPage"
+       filename="/php/insideout/wordlift/shortcodes/EntityPage.php">
+
+       <property name="storeService" reference="tripleStoreService" />
+       <property name="queryService" reference="queryService" />
     </class>
     <wordpress:shortCode name="wordlift.entity" class="entityPage" method="getContent" />
 
@@ -100,7 +111,7 @@
         <property name="recordSetService" reference="recordSetService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.entities" class="entitiesAjaxService" method="get"
-                    authentication="true" capabilities="edit_posts" httpMethod="GET" />
+                    authentication="false" capabilities="any" httpMethod="GET" />
 
     <class id="idntikitAjaxService" name="WordLift_IdntikitAjaxService"
         filename="/php/insideout/wordlift/ajax/IdntikitAjaxService.php">
@@ -156,13 +167,13 @@
     <wordpress:widget class="relatedPostsWidget" />
 
     <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
-    <wordpress:postType name="io-wordlift-entity" class="entityPostType" />
+    <!-- <wordpress:postType name="io-wordlift-entity" class="entityPostType" /> -->
 
     <!-- ***** W O R D P R E S S   A C T I O N S -->
     <!-- uncomment the following to enable posts analysis via WordLift Server -->
 
     <!-- ***** W O R D P R E S S   F I L T E R S -->
-    <wordpress:filter name="the_content" class="contentFilter" method="content" />
+<!--     <wordpress:filter name="the_content" class="contentFilter" method="content" /> -->
 
     <!-- ***** W O R D P R E S S   S H O R T C O D E S -->
     <wordpress:shortCode name="wordlift.entities" class="entitiesBar" method="get" />
@@ -193,12 +204,13 @@
                       url="https://raw.github.com/cowboy/javascript-debug/master/ba-debug.min.js">
     </wordpress:script>
 
-    <wordpress:script target="user" name="jquery-ui"
-            version="1.8.21"
+     <wordpress:script target="user" name="jquery-ui"
+            version="1.9.2"
             footer="true"
-            url="/wp-content/plugins/wordlift/js/jquery-ui-1.8.21.custom.min.js">
+            url="/wp-content/plugins/wordlift/js/jquery-ui.min.js">
             <dependsOn name="jquery" />
     </wordpress:script>
+    <wordpress:style target="user" name="jquery-ui.css" url="/wp-content/plugins/wordlift/css/jquery-ui.css" />
 
     <wordpress:script target="user" name="jquery-isotope"
                       version="1.8.21"
@@ -246,10 +258,10 @@
 
     <!-- ***** S C H E M A . O R G  S E R V I C E S ***** -->
     <!--       to create and read posts -->
-    <wordpress:ajax service="ajaxService" action="schema-org.create-post" class="postsAjaxService" method="createPost"
+<!--     <wordpress:ajax service="ajaxService" action="schema-org.create-post" class="postsAjaxService" method="createPost"
                     authentication="true" capabilities="publish_posts" />
     <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
-                    authentication="false" capabilities="any" />
+                    authentication="false" capabilities="any" /> -->
 
     <!-- ***** W O R D L I F T  E N T I T I E S  D U M P  S E R V I C E ***** -->
     <!--       disambiguations -->
@@ -302,14 +314,14 @@
                     authentication="false" capabilities="any" httpMethod="GET" />
 
     <!-- ***** REST API : wordlift.relatedposts ***** -->
-    <class id="relatedPostsAjaxService"
+<!--     <class id="relatedPostsAjaxService"
            name="WordLift_RelatedPostsAjaxService"
            filename="/php/insideout/wordlift/ajax/RelatedPostsAjaxService.php">
         <property name="entityService" reference="entityService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.relatedposts" class="relatedPostsAjaxService" method="get"
                     authentication="false" capabilities="any" httpMethod="GET" />
-
+ -->
     <!-- ***** W O R D P R E S S  E D I T O R  C O N F I G U R A T I O N ***** -->
     <wordpress:editor property="extended_valid_elements" value="span[about|class|id|typeof]" />
     <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" />
@@ -429,7 +441,7 @@
 
 
     <!-- ***** E N T I T Y    P O S T - T Y P E -->
-    <class id="entityPostType" name="WordLift_EntityPostType"
+<!--     <class id="entityPostType" name="WordLift_EntityPostType"
            filename="/php/insideout/wordlift/types/EntityPostType.php">
         <dependsOn filename="/php/insideout/wordpress/interfaces/IPostType.php" />
 
@@ -439,7 +451,7 @@
         <property name="menuIconURL" value="/wordlift/sass/img/semantic-box-14x16.png" />
         <property name="fieldPrefix" value="{entity-field-prefix}" />
         <property name="fieldType" value="{entity-field-type}" />
-    </class>
+    </class> -->
 
     <!-- ***** E N T I T I E S   B A R -->
     <class id="entitiesBar" name="WordLift_EntitiesBar"
@@ -456,12 +468,12 @@
     </class>
 
     <!-- ***** C O N T E N T   F I L T E R -->
-    <class id="contentFilter" name="WordLift_ContentFilter"
+<!--     <class id="contentFilter" name="WordLift_ContentFilter"
            filename="/php/insideout/wordlift/filters/ContentFilter.php">
 
         <property name="entityService" reference="entityService" />
         <property name="schemaOrg" value="http://schema.org" />
-    </class>
+    </class> -->
 
     <!-- ***** X R A Y S E R V I C E -->
     <class id="xRayService" name="SchemaOrg_XRayService"
@@ -529,7 +541,7 @@
     </class>
 
     <!-- ***** P O S T S   A J A X   S E R V I C E ***** -->
-    <class id="postsAjaxService" name="SchemaOrg_PostsAjaxService"
+<!--     <class id="postsAjaxService" name="SchemaOrg_PostsAjaxService"
            filename="/php/insideout/schemaorg/ajax/PostsAjaxService.php">
         <property name="preprocessor" reference="videoObjectQualityPreprocessor" />
         <property name="saveToUploads" value="false" />
@@ -539,10 +551,10 @@
         <property name="entityFieldPrefix" value="{entity-field-prefix}" />
         <property name="entityFieldType" value="{entity-field-type}" />
         <property name="schemaOrgFieldType" value="{schemaorg-field-type}" />
-    </class>
+    </class> -->
 
     <!-- ***** P R O X Y   S E R V I C E ***** -->
-    <class id="proxyService" name="WordPress_ProxyService"
+<!--     <class id="proxyService" name="WordPress_ProxyService"
            filename="/php/insideout/wordpress/services/ProxyService.php">
 
         <property name="urlPrefix" value="http://emlimg.enel.com/" />
@@ -550,7 +562,7 @@
         <property name="dateFormat" value="D, d M Y H:i:s e" />
         <property name="cacheSubdir" value="cache" />
         <property name="hashAlgo" value="sha512" />
-    </class>
+    </class> -->
 
 
 </application>

@@ -53,8 +53,6 @@ class WordLift_QueryService {
 
 	public function query( $query, $format = "", $queryBase = "", $keepBNodeIds = false ) {
 		$store = $this->storeService->getStore();
-		
-		// return $store->query( $query );	
 
 		$result = $store->query( $query, $format, $queryBase, $keepBNodeIds );
 

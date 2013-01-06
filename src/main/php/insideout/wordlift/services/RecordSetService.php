@@ -7,7 +7,7 @@ class WordLift_RecordSetService {
 	const ROWS_NAME = "rows";
 	const CONTENT_TYPE = "Content-Type: application/json";
 
-	public function write( &$recordset, $limit = NULL, $offset = NULL, $count = NULL ) {
+	public function write( &$recordset, $limit = NULL, $offset = NULL, $count = NULL, $ignoreLanguage = FALSE ) {
 
 		header( self::CONTENT_TYPE );
 
@@ -33,7 +33,7 @@ class WordLift_RecordSetService {
 			echo " \"content\": ";
 		}
 
-		$this->writeRecordSet( $recordset );
+		$this->writeRecordSet( $recordset, $ignoreLanguage );
 
 		if ( NULL !== $count) {
 			echo "}";
@@ -52,6 +52,7 @@ class WordLift_RecordSetService {
 		$rowsIndex = 0;
 
 		echo "[";
+		$items = array();
 		foreach ( $rows as &$row ) {
 
 			echo "{";
@@ -80,13 +81,16 @@ class WordLift_RecordSetService {
 
 	}
 
-	private function writeAttribute( &$row, $variable, $attribute) {
-		if ( array_key_exists( "$variable $attribute", $row ) ) {
-			echo ", ";
-			echo json_encode( $attribute );
-			echo ": ";
-			echo json_encode( $row[ "$variable $attribute" ] ); 
-		}
+	private function getAttribute( &$row, $variable, $attribute) {
+		if ( array_key_exists( "$variable $attribute", $row ) )
+			return ", " . json_encode( $attribute ) . ": " . json_encode( $row[ "$variable $attribute" ] );
+		
+		return NULL;
+	}
+
+	private function writeAttribute( &$row, $variable, $attribute ) {
+		if ( NULL !== ( $attributeString = $this->getAttribute( $row, $variable, $attribute ) ) )
+			echo( $attributeString );
 	}
 	
 }

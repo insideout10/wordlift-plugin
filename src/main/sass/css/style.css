@@ -702,3 +702,54 @@ ul.entity-list li {
 .entity-page .posts .post .content {
   text-align: justify;
 }
+
+/* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_autocomplete.scss */
+.ui-autocomplete li {
+  font-size: 12px;
+  position: relative;
+}
+/* line 8, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_autocomplete.scss */
+.ui-autocomplete li a {
+  display: block;
+  width: 139px;
+  height: 32px;
+  padding-right: 30px !important;
+  overflow: hidden;
+  cursor: pointer;
+}
+/* line 17, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_autocomplete.scss */
+.ui-autocomplete li div.type {
+  position: absolute;
+  top: 0px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  margin: 6px 2px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+/* line 71, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+.ui-autocomplete li div.type.Place {
+  background-image: url("../img/noun_project_462.svg");
+}
+/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+.ui-autocomplete li div.type.Organization {
+  background-image: url("../img/noun_project_921.svg");
+}
+/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+.ui-autocomplete li div.type.CreativeWork {
+  background-image: url("../img/noun_project_2572.svg");
+}
+/* line 80, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+.ui-autocomplete li div.type.Person {
+  background-image: url("../img/noun_project_419.svg");
+}
+/* line 83, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+.ui-autocomplete li div.type.Event {
+  background-image: url("../img/noun_project_404.svg");
+}
+/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+.ui-autocomplete li div.type.Product {
+  background-image: url("../img/noun_project_7341.svg");
+}

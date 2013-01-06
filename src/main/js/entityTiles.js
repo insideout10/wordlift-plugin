@@ -2,13 +2,34 @@
 (function() {
 
   (function($) {
-    return $('.entity-container').arrowscrollers({
+    $('.entity-container').arrowscrollers({
       settings: {
         arrow: {
           width: 36
         }
       }
     });
+    return $(".entity-autocomplete").autocomplete({
+      minLength: 0,
+      source: function(request, response) {
+        return $.ajax({
+          url: "wp-admin/admin-ajax.php?action=wordlift.entities&limit=999&name=" + escape("^" + request.term) + "&order=" + escape("?name"),
+          success: function(data, status, xhr) {
+            return response(data.content);
+          },
+          error: function(xhr, status, error) {
+            return response(null);
+          }
+        });
+      },
+      select: function(event, ui) {
+        return window.location.replace("wp-admin/admin-ajax.php?action=wordlift.gotoentity&e=" + escape(ui.item.subject));
+      }
+    }).data("autocomplete")._renderItem = function(ul, item) {
+      var simpleTypeName;
+      simpleTypeName = item.a.match(/([^\/]*)$/)[1];
+      return $("<li>").data("item.autocomplete", item).append("<a>" + item.name + "</a><div class=\"type " + simpleTypeName + "\" />").appendTo(ul);
+    };
   })(jQuery);
 
 }).call(this);

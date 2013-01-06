@@ -1,0 +1,25 @@
+
+.ui-autocomplete {
+	li {
+		font-size: 12px;
+		position: relative;
+		// width: 170px;
+
+		a {
+			display: block;
+			width: 139px;
+			height: 32px;
+			padding-right: 30px !important;
+			overflow: hidden;
+			cursor: pointer;
+		}
+
+		div.type {
+			position: absolute;
+			top: 0px;
+			right: 2px;
+
+			@include entity-type;
+		}
+	}
+}

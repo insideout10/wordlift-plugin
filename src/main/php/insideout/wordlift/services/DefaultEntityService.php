@@ -222,45 +222,45 @@ EOF;
             $this->logger->error( "An error occured while binding a post to an entity [ postID :: $postID ][ metaKeyReferences :: $this->metaKeyReferences ][ subject :: $subject ]." );
     }
 
-    public function getPosts( $postID ) {
-        $this->logger->trace( "Getting entities for post ID [$postID]." );
+    // public function getPosts( $postID ) {
+    //     $this->logger->trace( "Getting entities for post ID [$postID]." );
 
-        $posts = get_posts( array(
-            "numberposts" => -1,
-            "offset" => 0,
-            "meta_key" => $this->metaKey,
-            "meta_value" => $postID,
-            "post_type" => $this->postType,
-            "post_status" => $this->postStatus
-        ));
+    //     // $posts = get_posts( array(
+    //     //     "numberposts" => -1,
+    //     //     "offset" => 0,
+    //     //     "meta_key" => $this->metaKey,
+    //     //     "meta_value" => $postID,
+    //     //     "post_type" => $this->postType,
+    //     //     "post_status" => $this->postStatus
+    //     // ));
 
-        $this->logger->trace( "Found " . count($posts) . " entity post(s) for post ID [$postID]." );
+    //     // $this->logger->trace( "Found " . count($posts) . " entity post(s) for post ID [$postID]." );
 
-        return $posts;
-    }
+    //     // return $posts;
+    // }
 
-    public function getEntities( $postID ) {
+    // public function getEntities( $postID ) {
 
-        if (NULL === $this->dataStore)
-            throw new Exception( "The data-store hasn't been set. Check your configuration." );
+    //     // if (NULL === $this->dataStore)
+    //     //     throw new Exception( "The data-store hasn't been set. Check your configuration." );
 
-        $posts = $this->getPosts( $postID );
+    //     // $posts = $this->getPosts( $postID );
 
-        $entities = array();
-        foreach ($posts as &$post) {
-            $this->logger->trace( "Loading Entity from Entity Post ID [$post->ID]." );
+    //     // $entities = array();
+    //     // foreach ($posts as &$post) {
+    //     //     $this->logger->trace( "Loading Entity from Entity Post ID [$post->ID]." );
 
-            array_push( $entities,
-                new SchemaOrg_Entity(
-                    $post->ID,
-                    NULL,
-                    $this->dataStore)
-            );
+    //     //     array_push( $entities,
+    //     //         new SchemaOrg_Entity(
+    //     //             $post->ID,
+    //     //             NULL,
+    //     //             $this->dataStore)
+    //     //     );
 
-        }
+    //     // }
 
-        return $entities;
-    }
+    //     // return $entities;
+    // }
 }
 
 ?>

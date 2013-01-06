@@ -6,6 +6,7 @@
 
 class WordLift_EntitiesBar {
 
+    public $logger;
 	public $queryService;
 
     public function get( $attributes, $content = NULL) {
@@ -39,17 +40,22 @@ EOF;
 		$fields = array( "subject", "name", "type", "description", "image", "title", "homepage" );
 
         // public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL ) {
-        $results = $this->queryService->execute( "?" . implode( " ?", $fields ) , $whereClause );
+        $results = $this->queryService->execute( "DISTINCT ?" . implode( " ?", $fields ) , $whereClause );
         $rows = &$results[ "result" ][ "rows" ];
 
+        // var_dump($rows);
+        // return;
+
         $index = array();
+        // $this->logger->trace( "preparing index..." );
         foreach ( $rows as &$row )
             foreach ( $fields as &$field )
 	            $this->addToIndex( $index, $row[ "subject" ], $row, $field );
+        // $this->logger->trace( "index ready." );
 
 		$fragment .= "<div class=\"entity-container\"><ul class=\"entity-list\">";
 
-        while ( NULL !== ( $key = key( $index ) ) ) {
+        while ( NULL !== ( $key = key( $index ) ) ) :
 
             $subject = &$index[ $key ];
 
@@ -66,8 +72,7 @@ EOF;
             $fragment .= "<div class=\"names\">";
             if ( NULL !== ( $name = $this->getValueByLanguage( $subject, "name", $languages ) ) ) :
                 $htmlName = htmlspecialchars( $name, ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $htmlEntityLink = get_page_link( 45 );
-                $htmlEntityLink .= "&e=" . urlencode( $key );
+                $htmlEntityLink = admin_url( "admin-ajax.php?action=wordlift.gotoentity&e=" . urlencode( $key ) );
                 $fragment .= "<a class=\"name\" itemprop=\"name\" href=\"$htmlEntityLink\">$htmlName</a>\n";
 
             endif;
@@ -80,20 +85,18 @@ EOF;
 
             if ( NULL !== ( $image = $this->getFirstValue( $subject, "image" ) ) ) {
                 $htmlImage = htmlspecialchars( $image, ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                // $fragment .= "<div style=\"width: 120px; height: 120px; background-size: contain; background-repeat: no-repeat; background-position: center; background-image: url( '$htmlImage' );\"></div>";
                 $fragment .= "<img class=\"image\" itemprop=\"image\" onerror=\"this.parentNode.removeChild( this );\" src=\"$htmlImage\" />";
             } 
 
             if ( NULL !== ( $description = $this->getValueByLanguage( $subject, "description", $languages ) ) ) {
-            	$description = &$subject[ "description" ][0];
-                $htmlDescription = htmlspecialchars( $description[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $htmlDescriptionLanguage = htmlspecialchars( $description[ "lang" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $fragment .= "<div class=\"description\" itemprop=\"description\" lang=\"$htmlDescriptionLanguage\">$htmlDescription<br/>";
+                $htmlDescription = &$description; // htmlspecialchars( $description, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+                $fragment .= "<div class=\"description\" itemprop=\"description\">$htmlDescription<br/>";
 
-                foreach ( $subject[ "homepage" ] as &$url ) {
-                    $htmlURL = htmlspecialchars( $url[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                    $fragment .= "<a itemprop=\"url\" href=\"$htmlURL\">$htmlURL</a><br/>\n";
-                }
+                if ( array_key_exists( "homepage", $subject ) )
+                    foreach ( $subject[ "homepage" ] as &$url ) {
+                        $htmlURL = htmlspecialchars( $url[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
+                        $fragment .= "<a itemprop=\"url\" href=\"$htmlURL\">$htmlURL</a><br/>\n";
+                    }
 
                 $fragment .= "</div>";
 
@@ -103,7 +106,7 @@ EOF;
 
             $fragment .= "</li>";
 
-        }
+        endwhile;
 
         $fragment .= "</ul></div>";
         // the following is executed once in the entities bar javascript.
@@ -114,17 +117,16 @@ EOF;
 
     private function addToIndex( &$index, $subject, &$row, $field ) {
 
+        // return if we have no data for that field.
+        if ( ! array_key_exists( $field, $row ) || empty( $row[ $field ] ) )
+            return;
+
     	// create an empty array for the field if it doesn't exist.
-    	if ( ! array_key_exists( $subject, $index ) )
-    		$index[ $subject ] = array();
-
-    	$item = &$index[ $subject ];
-    	if ( ! array_key_exists( $field, $item ) )
-    		$item[ $field ] = array();
-
-    	// return if we have no data for that field.
-    	if ( ! array_key_exists( $field, $row ) || empty( $row[ $field ] ) )
-    		return;
+    	if ( ! array_key_exists( $subject, $index ) ) :
+    		$index[ $subject ] = array( $field => array() );
+        elseif ( ! array_key_exists( $field, $index[ $subject ] ) ) :
+            $index[ $subject ][ $field ] = array();
+        endif;
 
     	// if we're here, we've got data, then:
     	// set the value
@@ -137,8 +139,8 @@ EOF;
             $var[ "lang" ] = $row[ "$field lang" ];
 
         // add the value to the array of values for the requested field
-        if ( ! in_array( $var, $item[ $field ] ) )
-            $item[ $field ][] = $var;
+        if ( ! in_array( $var, $index[ $subject ][ $field ] ) )
+            $index[ $subject ][ $field ][] = $var;
     }
 
     private function getFirstValue( &$array, $key ) {
