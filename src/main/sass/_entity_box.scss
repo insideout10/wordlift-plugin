@@ -1,5 +1,5 @@
-$width: 110px;
-$height: 110px;
+$width: 80px;
+$height: 80px;
 
 ul.entity-list {
     height: $height + 20px;
@@ -36,19 +36,37 @@ ul.entity-list {
 		.name {
 			width: $width;
 			display: inline-block;
+			white-space: normal;
+			vertical-align: top;
 		}
 	}
 
 	.image {
+		position: absolute;
 		max-width: 40px;
 		max-height: 40px;
+		left: 2px;
+		bottom: 2px;
+	}
+
+	.title {
+		margin-top: 66px;
+		font-weight: bold;
 	}
 
 	.description {
-		position: absolute;
-		top: 126px;
+		margin-top: 66px;
 		text-align: justify;
 		line-height: 10px;
+	}
+
+	.type {
+		
+		@include entity-type;
+
+		position: absolute;
+		right: 2px;
+		bottom: 0px;
 	}
 }
 
@@ -67,5 +85,5 @@ ul.entity-list {
 .entity-container {
   overflow-x: scroll;
   height: $height + 20px;
-  width: 584px;
+  width: 544px;
 }

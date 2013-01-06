@@ -13,11 +13,17 @@ class WordLift_EntitiesBar {
     	// get the current post ID.
     	$postId = get_the_ID();
 
+        if ( ! is_numeric( $postId ) )
+            return "unknown post id " . $content;
+
     	// will containt the content fragment to send back to the client.
     	$fragment = "";
 
+        // get the post languages.
+        $languages = $this->getPostLanguages( $postId );
+
         $whereClause = <<<EOF
- 
+
  [] a fise:Enhancement ;
     wordlift:postID "$postId" ;
     wordlift:selected true ;
@@ -36,37 +42,41 @@ EOF;
         $results = $this->queryService->execute( "?" . implode( " ?", $fields ) , $whereClause );
         $rows = &$results[ "result" ][ "rows" ];
 
-        // var_dump($rows);
-
         $index = array();
-        foreach ( $rows as &$row ) {
-        	// echo( $row["subject"] . "<br/>" );
+        foreach ( $rows as &$row )
             foreach ( $fields as &$field )
 	            $this->addToIndex( $index, $row[ "subject" ], $row, $field );
-	    }
 
 		$fragment .= "<div class=\"entity-container\"><ul class=\"entity-list\">";
 
-        foreach ( $index as &$subject ) {
+        while ( NULL !== ( $key = key( $index ) ) ) {
 
-            $fragment .= "<li class=\"entity-box\" itemscope ";
-            if ( NULL !== ( $type = $this->getFirstValue( $subject, "type" ) ) )
-                $fragment .= " itemtype=\"$type\"";
-            $fragment .= ">";
+            $subject = &$index[ $key ];
+
+            $fragment .= "<li itemscope class=\"entity-box";
+            if ( NULL !== ( $type = $this->getFirstValue( $subject, "type" ) ) ) {
+                $typeSimpleName = substr( $type, strrpos( $type, "/") + 1 ); 
+                $htmlTypeSimpleName = htmlspecialchars( $typeSimpleName, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+                $fragment .= " $htmlTypeSimpleName\"";
+                $fragment .= " itemtype=\"$type";
+            }
+            $fragment .= "\">";
+            $fragment .= "<div class=\"type $htmlTypeSimpleName\"></div>";
 
             $fragment .= "<div class=\"names\">";
-            foreach ( $subject[ "name" ] as &$name ) {
-                $htmlName = htmlspecialchars( $name[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $htmlNameLanguage = htmlspecialchars( $name[ "lang" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $fragment .= "<div class=\"name\" itemprop=\"name\" lang=\"$htmlNameLanguage\">$htmlName</div>\n";
-            }
+            if ( NULL !== ( $name = $this->getValueByLanguage( $subject, "name", $languages ) ) ) :
+                $htmlName = htmlspecialchars( $name, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+                $htmlEntityLink = get_page_link( 45 );
+                $htmlEntityLink .= "&e=" . urlencode( $key );
+                $fragment .= "<a class=\"name\" itemprop=\"name\" href=\"$htmlEntityLink\">$htmlName</a>\n";
+
+            endif;
             $fragment .= "</div>";
 
-            foreach ( $subject[ "title" ] as &$jobTitle ) {
-                $htmlJobTitle = htmlspecialchars( $jobTitle[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $htmlJobTitleLanguage = htmlspecialchars( $jobTitle[ "lang" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $fragment .= "<div itemprop=\"jobTitle\" lang=\"$htmlJobTitleLanguage\">$htmlJobTitle</div>\n";
-            }
+            if ( NULL !== ( $title = $this->getValueByLanguage( $subject, "title", $languages ) ) ) :
+                $htmlJobTitle = htmlspecialchars( $title, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+                $fragment .= "<div itemprop=\"jobTitle\" class=\"title\">$htmlJobTitle</div>\n";
+            endif;
 
             if ( NULL !== ( $image = $this->getFirstValue( $subject, "image" ) ) ) {
                 $htmlImage = htmlspecialchars( $image, ENT_COMPAT | ENT_HTML401, "UTF-8" );
@@ -74,7 +84,7 @@ EOF;
                 $fragment .= "<img class=\"image\" itemprop=\"image\" onerror=\"this.parentNode.removeChild( this );\" src=\"$htmlImage\" />";
             } 
 
-            if ( NULL !== ( $description = $this->getFirstValue( $subject, "description" ) ) ) {
+            if ( NULL !== ( $description = $this->getValueByLanguage( $subject, "description", $languages ) ) ) {
             	$description = &$subject[ "description" ][0];
                 $htmlDescription = htmlspecialchars( $description[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
                 $htmlDescriptionLanguage = htmlspecialchars( $description[ "lang" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
@@ -87,6 +97,8 @@ EOF;
 
                 $fragment .= "</div>";
 
+                next( $index );
+
             }
 
             $fragment .= "</li>";
@@ -94,7 +106,8 @@ EOF;
         }
 
         $fragment .= "</ul></div>";
-        $fragment .= "<script type=\"text/javascript\">jQuery( function() { jQuery('.entity-container').arrowscrollers({settings:{arrow:{width:36}}}) });</script>";
+        // the following is executed once in the entities bar javascript.
+        // $fragment .= "<script type=\"text/javascript\">jQuery( function() { jQuery('.entity-container').arrowscrollers({settings:{arrow:{width:36}}}) });</script>";
 
         return $fragment . $content; 
     }
@@ -133,6 +146,45 @@ EOF;
             return NULL;
 
         return $array[ $key ][0][ "value" ];
+    }
+
+    private function getValueByLanguage( &$array, $key, $languages ) {
+        if ( 0 === count( $array[ $key ] ) )
+            return NULL;
+
+        foreach ( $languages as &$language ) :
+            foreach ( $array[ $key ] as &$object ) :
+                if ( $language === $object[ "lang" ] )
+                    return $object[ "value" ];
+            endforeach;
+        endforeach;
+
+        // return $array[ $key ][0][ "value" ];
+        return NULL;
+    }
+
+    private function getPostLanguages( $postId ) {
+
+        $whereClause = <<<EOF
+
+ [] a fise:Enhancement ;
+    wordlift:postID "$postId" ;
+    <http://purl.org/dc/terms/type> <http://purl.org/dc/terms/LinguisticSystem> ;
+    <http://fise.iks-project.eu/ontology/confidence> ?confidence ;
+    <http://purl.org/dc/terms/language> ?language .
+EOF;
+
+        $count = 0;
+        $results = $this->queryService->execute( "DISTINCT ?language ?confidence" , $whereClause, NULL, NULL, $count, NULL, "DESC(?confidence)" );
+        $rows = &$results[ "result" ][ "rows" ];
+
+        $languages = array();
+        foreach ( $rows as &$row ) :
+            $languages[] = $row[ "language" ];
+        endforeach;
+
+        return $languages;
+
     }
 }
 

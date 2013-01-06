@@ -240,3 +240,8 @@ label {
 .widget-title h4 {
   font-size: 12px;
 }
+
+/* line 19, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_bootstrap_wordpress_fix.scss */
+.wp-submenu.sub-open .wp-submenu-wrap ul {
+  margin: 0;
+}

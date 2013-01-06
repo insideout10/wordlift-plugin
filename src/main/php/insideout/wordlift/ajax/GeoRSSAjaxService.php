@@ -70,10 +70,12 @@ EOF;
         $coordinates = array();
 
         // group data by coordinates.
-        foreach ( $rows as $row ) {
+        foreach ( $rows as $row ) :
+            $postId = $row[ "postID" ];
             $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "name" ] = $row[ "name" ];
-            $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "posts" ][] = $row[ "postID" ];
-        }
+            if ( ! in_array( $postId, $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "posts" ] ) )
+                $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "posts" ][] = $row[ "postID" ];
+        endforeach;
 
         foreach ( $coordinates as $point => $posts ) {
 

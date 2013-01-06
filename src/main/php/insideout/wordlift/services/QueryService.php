@@ -18,7 +18,7 @@ class WordLift_QueryService {
 	const VALUE_NAME = "value";
 	const LANGUAGE_NAME = "lang";
 
-	public function create( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, $groupBy = NULL ) {
+	public function create( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, $groupBy = NULL, $orderBy = NULL ) {
 
 		$query = "SELECT $fields";
 
@@ -27,6 +27,9 @@ class WordLift_QueryService {
 
 		if ( NULL != $groupBy )
 			$query .= " GROUP BY $groupBy";
+
+		if ( NULL != $orderBy )
+			$query .= " ORDER BY $orderBy";
 
 		if ( NULL != $limit && is_numeric( $limit ) )
 			$query .= " LIMIT $limit";
@@ -37,10 +40,10 @@ class WordLift_QueryService {
 		return $query;
 	}
 
-	public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL ) {
+	public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL, $orderBy = NULL ) {
 		// $store = $this->storeService->getStore();
 
-		$query = $this->create( $fields, $whereClause, $limit, $offset, $groupBy );
+		$query = $this->create( $fields, $whereClause, $limit, $offset, $groupBy, $orderBy );
 
 		if ( NULL !== $count )
 			$count = $this->getCount( $whereClause );

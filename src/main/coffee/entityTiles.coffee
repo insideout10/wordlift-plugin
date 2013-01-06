@@ -7,3 +7,12 @@
 #     marginTop: false
 
 # )(jQuery)
+
+( ($) ->
+
+	$('.entity-container').arrowscrollers
+		settings:
+			arrow:
+				width:36
+
+)(jQuery)

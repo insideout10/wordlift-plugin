@@ -34,6 +34,9 @@ class WordLift_ActivationService {
 
 		if ( NULL != $siteKey )
 			add_option( "wordlift_site_key", $siteKey );
+
+		// create a phantom page for the entity page.
+		$this->createPage();
 	}
 
 	private function getUrl() {
@@ -61,6 +64,21 @@ class WordLift_ActivationService {
 			return $json->key;
 		else
 			return NULL;
+	}
+
+	private function createPage() {
+
+		$entityPage = array(
+				"post_type" => "page",
+				"post_status" => "publish",
+				"post_name" => "entity",
+				"post_content" => "[wordlift.entity]"
+			);
+
+		$error = NULL;
+		wp_insert_post( $post, $error );
+
+		$this->logger->info( var_dump($error) );
 
 	}
 

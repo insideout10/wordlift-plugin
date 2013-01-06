@@ -1,0 +1,63 @@
+.entity-page {
+
+	.entity {
+		position: relative;
+		border: 1px dashed;
+		float: left;
+		overflow: auto;
+		padding: 4px;
+		margin: 0 8px 4px 0;
+		min-height: 140px;
+		width: 220px;
+		background: white;
+
+		img {
+			max-width: 200px;
+			max-height: 120px;
+			margin: 0 10px;
+		}
+
+		.type {
+			@include entity-type;
+		}
+
+		.name {
+			text-align: right;
+			margin-top: -30px;
+			font-weight: bold;
+			font-size: 14px;
+			padding: 4px;
+		}
+
+		.description {
+			text-align: justify;
+			padding: 4px;
+		}
+	}
+
+	.posts {
+
+		.post {
+			padding: 4px;
+			margin-bottom: 10px;
+			border: 0;
+			border-bottom: 1px dashed;
+
+			.title {
+				font-weight: bold;
+				font-size: 14px;
+			}
+
+			.modified {
+				font-size: 8px;
+				text-align: right;
+			}
+
+			.content {
+				text-align: justify;
+			}
+
+		}
+	}
+
+}

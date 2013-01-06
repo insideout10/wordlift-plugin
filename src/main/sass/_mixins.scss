@@ -56,3 +56,34 @@
     }
   }
 }
+
+@mixin entity-type {
+  width: 20px;
+  height: 20px;
+
+  margin: 6px 2px;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+
+  &.Place {
+    background-image: url('../img/noun_project_462.svg');
+  }
+  &.Organization {
+    background-image: url('../img/noun_project_921.svg');
+  }
+  &.CreativeWork {
+    background-image: url('../img/noun_project_2572.svg');
+  }
+  &.Person {
+    background-image: url('../img/noun_project_419.svg');
+  }
+  &.Event {
+    background-image: url('../img/noun_project_404.svg');
+  }
+  &.Product {
+    background-image: url('../img/noun_project_7341.svg');
+  }
+}

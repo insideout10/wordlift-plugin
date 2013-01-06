@@ -13,3 +13,11 @@ label {
 .widget-title h4 {
 	font-size: 12px;
 }
+
+.wp-submenu.sub-open {
+	.wp-submenu-wrap {
+		ul {
+			margin: 0;
+		}
+	}
+}
