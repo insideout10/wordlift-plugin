@@ -245,3 +245,13 @@ label {
 .wp-submenu.sub-open .wp-submenu-wrap ul {
   margin: 0;
 }
+
+/* line 25, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_bootstrap_wordpress_fix.scss */
+.action-links {
+  font-size: 12px;
+}
+/* line 28, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_bootstrap_wordpress_fix.scss */
+.action-links ul {
+  padding: 0px;
+  margin: 12px 0;
+}

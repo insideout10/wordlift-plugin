@@ -530,16 +530,17 @@ ul.entity-list li {
 .entity-box .names {
   white-space: nowrap;
   font-size: 11px;
+  line-height: 14px;
   font-weight: bold;
 }
-/* line 36, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 37, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .names .name {
   width: 80px;
   display: inline-block;
   white-space: normal;
   vertical-align: top;
 }
-/* line 44, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .image {
   position: absolute;
   max-width: 40px;
@@ -547,18 +548,18 @@ ul.entity-list li {
   left: 2px;
   bottom: 2px;
 }
-/* line 52, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 53, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .title {
-  margin-top: 66px;
+  margin-top: 68px;
   font-weight: bold;
 }
-/* line 57, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 58, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .description {
-  margin-top: 66px;
+  margin-top: 68px;
   text-align: justify;
   line-height: 10px;
 }
-/* line 63, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 64, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .type {
   width: 20px;
   height: 20px;
@@ -595,22 +596,22 @@ ul.entity-list li {
   background-image: url("../img/noun_project_7341.svg");
 }
 
-/* line 73, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .arrowscroller.left, .arrowscroller.right {
   height: 100px;
 }
 
-/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 78, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .arrowscroller.left {
   background: url("../img/arrow-2.png") center center no-repeat;
 }
 
-/* line 81, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 82, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .arrowscroller.right {
   background: url("../img/arrow-1.png") center center no-repeat;
 }
 
-/* line 85, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-container {
   overflow-x: scroll;
   height: 100px;
