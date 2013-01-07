@@ -58,6 +58,7 @@ EOF;
         while ( NULL !== ( $key = key( $index ) ) ) :
 
             $subject = &$index[ $key ];
+            $htmlEntityLink = admin_url( "admin-ajax.php?action=wordlift.gotoentity&e=" . urlencode( $key ) );
 
             $fragment .= "<li itemscope class=\"entity-box";
             if ( NULL !== ( $type = $this->getFirstValue( $subject, "type" ) ) ) {
@@ -67,13 +68,13 @@ EOF;
                 $fragment .= " itemtype=\"$type";
             }
             $fragment .= "\">";
+            $fragment .= "<a class=\"entity-link\" href=\"$htmlEntityLink\">";
             $fragment .= "<div class=\"type $htmlTypeSimpleName\"></div>";
 
             $fragment .= "<div class=\"names\">";
             if ( NULL !== ( $name = $this->getValueByLanguage( $subject, "name", $languages ) ) ) :
                 $htmlName = htmlspecialchars( $name, ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                $htmlEntityLink = admin_url( "admin-ajax.php?action=wordlift.gotoentity&e=" . urlencode( $key ) );
-                $fragment .= "<a class=\"name\" itemprop=\"name\" href=\"$htmlEntityLink\">$htmlName</a>\n";
+                $fragment .= "<div class=\"name widget-title\" itemprop=\"name\">$htmlName</div>\n";
 
             endif;
             $fragment .= "</div>";
@@ -95,7 +96,7 @@ EOF;
                 if ( array_key_exists( "homepage", $subject ) )
                     foreach ( $subject[ "homepage" ] as &$url ) {
                         $htmlURL = htmlspecialchars( $url[ "value" ], ENT_COMPAT | ENT_HTML401, "UTF-8" );
-                        $fragment .= "<a itemprop=\"url\" href=\"$htmlURL\">$htmlURL</a><br/>\n";
+                        $fragment .= "<div itemprop=\"url\">$htmlURL</div>\n";
                     }
 
                 $fragment .= "</div>";
@@ -104,7 +105,7 @@ EOF;
 
             }
 
-            $fragment .= "</li>";
+            $fragment .= "</a></li>";
 
         endwhile;
 

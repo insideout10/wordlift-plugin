@@ -23,8 +23,9 @@
 
                 %div{:class => "image",
                     :style => "background-image: url('{{entity.image[0]}}');" }
-                %div{:class => "name",
-                    :"ng-bind" => "entity.name" }
+                %div{ :class => "name" }
+                    %a{ :class => "entity-edit icon-pencil", :href => "admin.php?page=entities_management#/edit/{{getSimpleName(entity.about)}}" }
+                    {{entity.name}}
                 %div{:class => "type",
                     :"ng-class" => "getTypeName( entity.type )" }
                 %div{:class => "confidence highest",

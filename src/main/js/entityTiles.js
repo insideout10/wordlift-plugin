@@ -2,6 +2,7 @@
 (function() {
 
   (function($) {
+    var p, postId;
     $('.entity-container').arrowscrollers({
       settings: {
         arrow: {
@@ -9,7 +10,7 @@
         }
       }
     });
-    return $(".entity-autocomplete").autocomplete({
+    $(".entity-autocomplete").autocomplete({
       minLength: 0,
       source: function(request, response) {
         return $.ajax({
@@ -30,6 +31,30 @@
       simpleTypeName = item.a.match(/([^\/]*)$/)[1];
       return $("<li>").data("item.autocomplete", item).append("<a>" + item.name + "</a><div class=\"type " + simpleTypeName + "\" />").appendTo(ul);
     };
+    p = "&p=" + ((function() {
+      var _i, _len, _ref, _results;
+      _ref = $("input[name=postId]");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        postId = _ref[_i];
+        _results.push("" + (escape(postId.value)));
+      }
+      return _results;
+    })()).toString();
+    return $.ajax({
+      url: "wp-admin/admin-ajax.php?action=wordlift.textannotations" + p,
+      success: function(data, status, xhr) {
+        var ann, _i, _len, _ref, _results;
+        console.log(data);
+        _ref = data.content;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          ann = _ref[_i];
+          _results.push($("#" + (ann.textAnnotation.replace(':', '\\:'))).addClass("selected"));
+        }
+        return _results;
+      }
+    });
   })(jQuery);
 
 }).call(this);

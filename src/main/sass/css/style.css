@@ -1,520 +1,64 @@
-/* line 34, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.arrowscroller.left, .arrowscroller.right {
-  height: 112px;
-}
-/* line 38, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.arrowscroller.left {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAACKCAIAAABNdH9RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAmdJREFUeNrsmM1u2kAUhYmpBAZXYssCJdCokVD6DMbONskjJN0WDA+QvkD6FM06fYq2pEnzAwgJFkZi0aRIUKBZIRtPmE6CRPNTmwGMRZVzNQtLvp5vzp0z14alre1tn1fxglIK2Mwh+DwM7BlgCwTzeaoM5wywxXEjrA8YeiNgcOMzciNeMThnOGfYM/w1gXYF68P6sD7c+KzdKDDUjGN5ZYUzU7g1yAwjJctvd3c4kwU6Q8iynE6/Y/XhzJ/+UCupVCaTHl7TuRpEUR6QOCcRpiNpmYwX1lcV5TGJ8iqbrF2pqqJpTzVRzkkmMMgdSfvnLepuI1ZVNWtDuqNR1/bslpTVHBJccyMj5XJZLxrxxsZ4EuV3Ix1DyvHM4oJBtjY3B4PBeBIdcBrEqRHv7b3X9Vq/bzkPyyKcjdgfliS7hbB58kdH62/WX0rSjX00m83PX77yKPOHw2GH22zZx9+Ok8kkS7ODtVqtfD7vjvV7vd7+/od6vd63CbYgTuv7Q6HQ2CQ23enp2draa5b8VFm73T45+c4HcyzjXx4hFxeF1Verohgi5Ob++NXunJ2fu6ZsGMSyisViIpEQRfG+sk6nUygUuGDsSf5+Qwgpl8vxeDwYDI5g3W63VCrN5U1tGMbBwcfLyx+maQwH8wivQSZSNtJXrVZjsVggEGDKrq9/VyqVOX5+m6Z5ePjp6uqnYZjM/LzKWPWn4zF9tVotGo2yMuq6Pq8yjoLVkB12SZIajQZP/lIkEsFPJiiDMihDGaEMylBGKPtPy+glzAc3wo1wI6yPMmLPAJso/CgjYAsDQyAc448AAwAaTUNkFLgnrAAAAABJRU5ErkJggg==') center center no-repeat;
-}
-/* line 42, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.arrowscroller.right {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAACKCAIAAABNdH9RAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAhxJREFUeNrsmLtuwjAUhoEiBrPxAjEP1D5SCElFBzq0UtuBhUp0aQcWJt6mXMtFwIBKAiJOTRFVL8EmxESI/kdWFClWPv7j/9gnxM8vLmJRRdLzPMBCRyIWYWDNADsiWCxSZagzwI7HjbA+YNgbAYMb/5EbccSgzlBnWDP8NYHtCtaH9WH9E3UjpRq/vr42onAjIWld19dIBTBPFoQQztM0zQsdCZ5EwdjoI7mcrlEqniwdiZVBBGND5Dwjp1NNk8wXDmkav68fMYxcmHwmpNp/+oXk88be+ZQb5I8/iZk36F769tmIVzwzn6VUsfW37S9rHq+/gMp2c6MvzzLNlb4AbgxiEB+eZdJsVlGdefL1u7R21RfYjf68S4vyepBFUvwiPmO5XEp5fM4uP0tyxDDGFouF+BWz2cw0rUajEbYtkMJmtl0oXDWbTQUnNYfN5/NtT23bLhavW62WmpPadd1tME66ubltt9vKuivm+StzHOfu/qHT6ahseJjrA+OkUqnU7b4F765kBvkF46Ry+bHX66nvrn7B+H2l8tTv9w/SEbuMOc78i/T88jIYDA7VpLKNG3m1VavV4XB4wCaVrZQ5nFSr1UajUej2W2aQ6XRar9fH43H4JjWeyWQEj9PpdCqVmkwmij4shPH+GfjMhTIogzIoQxqhDMqQRig7YYNECYvBjXAj3AjrI41YM8ACxRnSCNjRwBAIYXwIMAAimySCysMvAgAAAABJRU5ErkJggg==') center center no-repeat;
-}
-
-/* line 47, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities {
-  position: relative;
-  overflow-x: scroll;
-  width: 496px;
-}
-/* line 55, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities {
-  width: 496px;
-  height: 124px;
-  background: lightgoldenrodyellow;
-  white-space: nowrap;
-}
-/* line 64, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  width: 112px;
-  height: 112px;
-  margin: 4px 4px 4px 4px;
-  padding: 2px 2px 2px 2px;
-  background: gray;
-  background: gray;
-}
-/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity .type {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 40px;
-  height: 40px;
-  font-size: 0pt;
-}
-/* line 89, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity .description, .container.entities .tiles.entities .tile.entity .url {
-  display: none;
-}
-/* line 95, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.place {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #4e9014), color-stop(100%, #7bb34a));
-  background: -webkit-linear-gradient(bottom, #4e9014, #7bb34a 100%);
-  background: -moz-linear-gradient(bottom, #4e9014, #7bb34a 100%);
-  background: -o-linear-gradient(bottom, #4e9014, #7bb34a 100%);
-  background: -ms-linear-gradient(bottom, #4e9014, #7bb34a 100%);
-  background: linear-gradient(bottom, #4e9014, #7bb34a 100%);
-}
-/* line 98, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.place .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowQkE5QkU2QTZFRTcxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowQkE5QkU2OTZFRTcxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4tFfB2AAAFJElEQVR42syYW2yUVRDHu7ul0GK72nLVYEAuxQdBEEFEKVQRExExIBZREjWCiQg8NKHxhho1+lQTFYwFDKJy0ReKhGoAHygXJdy8EFSsVLRAKNsbbRfW7ud/zH+T8Xi+yy40cZJftt9tzpw5c2bmNOQ4TlaGMgSM4e9AsBrM4t/fkyPgYlpaxaA0uRNsAA3Ov2UneAjE1L0vQHE6+rPTsH0SGAXyQZnleSn4CzwO5oPd4BC/qQA7wCdXykOLQDtIgKlgn/NfaQWrQRHIBsvBT8Y774Jcr7GCGPOCoXQjmAOSvO4AlWAcjf0SvAQqHLt8BnpnatBCi8IuMBtsBTVgAg2pVu9cBDPoEZtscPOUlzHDQJOLwi0gH4wHH3ApTfkNjAV7LM9qubSBDQqBweCsRdk2MAkMAu843vI5uIPxJdIMloHbQRUYHtQgiZF5YK1SLjHzIhjJ5TrGFBDzMWoh42k7l1euz/DZG0EMEu/sBSvBY/ywBcwHM8EpNdhSsMLHoMOMl9E0SovkskI/g0aAC+A4PfAtuAeUM6C1/AkmghMuxqwDJZzIAy7vPOxnUJl6+S5wA9fbTd607MYTHGgqg1omcit3lylVfga9zBfrwEDGk5c0McgP8fo95iSJj7h6bxPvtxvf1/gZ9CnX9j7wOmf2R4DddDdYAO4HR13yl+y4D9W902CaHj9sqSZnwTLwBHgOXAs+8qg+Ur/qWasKQDXrlyky1iJQxevzYCmY6FfLhnDG2qWjGOim7Af3gqeZIh50SZJ6eW9hLMmuXQ/q/ZZsiaEkwZ2ik6DUr+eZqTeq+9J+rPJZXomtCHif13v8DHrEoqSGZaAT7Aal9IqZyQ8y+bklS/HGZGb5mKprnjF0FLQY96aDYWAyeAuUg1Wgn/HeWPK2RW8t+6h54EZwQN33jKEeLH5mMZUdkgOO+CzJScZJnZFrbmIdFHmFodHFPOdbyx7lh7Ldn2Km/ga8xjjxk1fBs6ARPAluU3lKZAfTysdBi2sRM3Apc1EnFV1i9l3rY1CcO3Mcs3iz8Vw2xRRbC+LVD0VZGG3FcrSxJFrqGPB9WOfcpMw2btgj4cnxZb/l/s1gCXgGdKr7jQx42QAhsJcHgm0WHXIA2JVJky9tw2aXGVaw3z7PmBnDJFlrbIYpRk37js1fxk2+NORrLAZ9xRjoD+ayubfJTJ5GHPZZQy/31JFiMfiR1Xw600A5s3i1R6z8wM0hO7TAb5x0T60hKl3JHZfqk6WGfe1yVlvPNibQGKEMzvY54DqeZEtAMWgAlWAFA7meGbgGnExHeSYGdauEs/5nkn0Z3+aBKH97gt/BANALtII2FulkdxtUCAaDIg6ekihjR7qCHqr7PAYudEcMXcOAlUmM0DpSOZZtaT2DPkZPiff68lnDlfKQDDCcMXeYZSJKI1LSRU80gXPgejCSS5pFo2RCv3gtYxCDBlF5gtf9uJWLeS3Kz9CICL3XSgNlAnGlqw89+rObUX5L1pfG6OWRD+oYQyEugwzcn15LLd+vvNZdpcNvYpxUMh0P5XDQuOVZPo3qydi6mgPpd8WQU/RanlnTVewFNijJ9iJi3O8AzfRKb+60uIsO8dBppoMwdTaxtSmknkQQg3pxBpJHctVsWjl4AQ1toY6wCnA98wifNdLjbUwJUT7LDWpQDk+kHWqwdv5epXZVWBnttXHa6O08GpQgYRWXrgaFaYyjjEp9LMouKSUh9Y/xkBH4KaMTqkQl6WH9fYTj/CN/CzAAvlLozpAg5C8AAAAASUVORK5CYII=');
-}
-/* line 103, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.creativework {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #961010), color-stop(100%, #bc0202));
-  background: -webkit-linear-gradient(bottom, #961010, #bc0202 100%);
-  background: -moz-linear-gradient(bottom, #961010, #bc0202 100%);
-  background: -o-linear-gradient(bottom, #961010, #bc0202 100%);
-  background: -ms-linear-gradient(bottom, #961010, #bc0202 100%);
-  background: linear-gradient(bottom, #961010, #bc0202 100%);
-}
-/* line 106, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.creativework .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMTY3MEM2NDZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMTY3MEM2MzZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDM4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4dCdvqAAACSUlEQVR42syYXSsEURjHd8bKymsoUohQckFJylvyFbx+Ai74KhIXLtz4BFyJCyJFSLnAjaS0LHkr5KWxdo//qUdN2xpznpk59qlf286emfnv/5znec6MIYQIZVKEmecVgVbQCepABNyCU7BPnxbrytIhRTrAEoiL9BEDc6CZcW1lQQPgQbiLKBgGZlCCesG9UItnMAoMvwWVgDXBC+lUm1tBpsul1g76mQlQBQbdDnYrqENh7G/n+yqo0WN5qfBbUIFHQUm/BT16FHTvt6ADj4JO/Ra0qnLRlHgBy34LugTzzLUzA1aC6GXFYFOxKMpiWh5kL+tW6GU3oEu1uaoWu10w62LcJ03Vjo7tRw04/MOdbVDE2X5w2kEULDr8/gYWwDMnJTmC5J53izIvXVyBDW7B4jZM6VLMoQhe6N5TP9GN66jWZNFxA5yTi6wwmE8deaAFlNH3LHI7h5w74fY/jkPy5uNgEnyBhM0R6VY+2ANj1DYCFyTPaQK1DmPeQTFHEHfK6kEPTVPCfj1y8IwyUduijoM7mjKRIihJWahtUcupmAYjKe7YQ7ozBD50OCRdqAS5DmMauKnPccigp4g++kNxckoez6ZpPATrOuvQT/pLJyZAKa2dKXDkMJWBtY4Q3VQWwWNySVboay9ivDqUUe+H7A5X0/sii3YAb/8lKExYtr4VpoWdUHk49GPKCqkeGSlrxqRjFhXOpC6HcmxbjnSJESGnLF2CXh3+vUFZF9edZYaLra62RW3+UcMEtx5lXB0yQxkW3wIMAJVuwzArsvAAAAAAAElFTkSuQmCC');
-}
-/* line 111, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.organization {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #3c6f9f), color-stop(100%, #3c88d0));
-  background: -webkit-linear-gradient(bottom, #3c6f9f, #3c88d0 100%);
-  background: -moz-linear-gradient(bottom, #3c6f9f, #3c88d0 100%);
-  background: -o-linear-gradient(bottom, #3c6f9f, #3c88d0 100%);
-  background: -ms-linear-gradient(bottom, #3c6f9f, #3c88d0 100%);
-  background: linear-gradient(bottom, #3c6f9f, #3c88d0 100%);
-}
-/* line 114, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.organization .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENjJERTRFMTZFRTkxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENjJERTRFMDZFRTkxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5P+GclAAAEVklEQVR42syYSWgUURCGpyczmUmiJnFL1MSFKO6i4hJBcTmooKgoongQLyoqoh48KIgiggjizZsIiriBojmoEXE9aCAiLrjgnrhHXBLNTGZ7/g//B2XTmfS0mZAHH+mq7tevuupV1ZtYSilfZxp+XycbXgyaAvaA4VmxSIcsAzaBJvV3NIDVGc5vE7cP9gbHlfM4Cco60qBKcF+lH8/BomwblA+2gqRyPw6D8v8xyEqT9nrDjwUWiLWRAPqZHJAPHoHvXvd0IM29iWCR3vcZvrMvOJWNLNujvI07/xOydB5Kiutv4CsIgXIRvl+8lwd6UdeSrcJoQpUCSxnCyeAK9c1gOahksbxtm5e1Sq09dRc0gs+gjvoouAE+gpfgdXsU6oCLZ4JgM7jHkE2lvgtYDR4wZOM6yiA9djnocsGB9m5lbg06DR6CrmAlKOVeuQiegEKwBBR3hEEJsAV8oFxKo36CdWJP9WTd0nsuDHbwb5C6BAtokImidefBrUwNsugZMwpEQqSEPkd8QBHYTrmR8y2RDGFex+wGuckyvVAVuA7ugHnUd+MXXmApmOVQMs6xbi2gfBkMBAuF8Z72UHfWnVzhCR8PaT2ZfQWttJG5YDRlvcfGpz3cpSnju0Q7mA5CIA8coS4C5oAuoBCcp74alPC6GdSAOspRUAvqKe+0r+v2CPuGLSECGoS7n7F96A3+yWFeFav7CsrVYJKQA15Dtg/UMjQm/vqosY37Sl/PdJini+VuMITyMLBVyCmvBi0j9oRYQ1obBdw3uZR19vUHvVvre24NauChK8wX+kS3/0EPdXeYVwM2ggqwmD1xAygD820J4tqgZobpCRc+ww7fyHR+wUp9AoyxzZ3NU0ARZd0Hr1G2bEcc13Uowsb6g9X6PfW/2e21/BjUO8yNcp5P7JkAa5jnkBWz2z+nhyZQr72yXnhopMPcs2AtmEHP6EK5CkwDNzMNWVB4ca/DfW3cQQd9WLQJk5EjRQj3g1G2NVwZdImbT/Y05dDnjF7R+KugCRxilvVgWI9yvYGsW8cY8n9f2Nn++xFoo38N8PDOr9z8o7hH/PReit6UsvbcF7cGaVeX2MLj5hAf5CJ9eLxo4HG3kPJHyr2Yqa4N0jUiTgPesh7lcA+E+IWvWBb0ewZxQ5s5cXrqqejyn1jPipj6GR0/EqwjCTbXlDjc9+CCdbbyUEQvKM7VB7OhNDTKuSP4QVEng/wuDIoxDEpklNGHqAvQYKM3RTHJe8pmQIKnh4w8FOdL9OjHyX6GzejLhd4SBhkDdPq/Y3OtYO+r5wcO9hKyiMOZOepQi5TQG4Mi4qgboKy4uY0c92KQ+XdMnNchm3HmK/PoKemhpEjxCOWkw1zXBrWIXw4psXCICzWJBZLUx8WCMaZ2QHjvF0Nmec0yn/hSn0hr072VeF4JXZR/g/RcC++FxH5LZNI6/CILlcgySxTJlENfMz8Cg2kqtHz2n2PsHwEGAD7M7p6gXFdVAAAAAElFTkSuQmCC');
-}
-/* line 119, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.person {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #32aeac), color-stop(100%, #47dfdd));
-  background: -webkit-linear-gradient(bottom, #32aeac, #47dfdd 100%);
-  background: -moz-linear-gradient(bottom, #32aeac, #47dfdd 100%);
-  background: -o-linear-gradient(bottom, #32aeac, #47dfdd 100%);
-  background: -ms-linear-gradient(bottom, #32aeac, #47dfdd 100%);
-  background: linear-gradient(bottom, #32aeac, #47dfdd 100%);
-}
-/* line 122, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.person .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENjJERTRFOTZFRTkxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENjJERTRFODZFRTkxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5A8+42AAACVklEQVR42uyYPUvEMByHr556er4cDgq+DooOgg4OiqDgB1AUBydxcHDUxc/h5CKK4K7o5uAoh4uLIjj5iiKoCILcm3cXf5EUQmiTJm0OBwMPl6ZJ+7T5J2nOIYTE/lKqiv2xZCpUC5bBKbgHz+ACbIDuUEa0yzRpAUfEP92BCYPr/qLboArsEXV6Av2VEJohwRMVd3SFdGLIAQsa9WdBp82gbgCDGvVToNemUDWo17x+k02hDHjVvP6LTaECSGvUvwY3tifGXfARsO4W+KzExLgEioohfwBqKzEPuSyCGw+RT7AJGk1naifEat8I5sEQG30P4BhchVnKTIR6wAAYAW0gz/JpNhKzLKAfwa2tGEqCdXAC1oRzHeADjArlL2AbDEcdQ33gjIuTaeE8n9yyOCizMiq7EpVQOzgXbkpv1KUQavcI+NUohPYkwzrB6hQFoaRPmywYCyM0CTKSuWbR5w0lJW32QbOp0I5i8qOyc0JZv6LNFxg3/R5Srez0/JpQtq5oU8PmL6O1LBNg1pgSjlcCbhCMhAoWdjn0q7POVChnSShhKpS3tA9M/HeZrS4rW9q+p1Q7Cb90CQ5ZLFE5wv26efGYSOq6+XTU30NWk+wNtbJ/Mtwni3G/fvkg59/Bm4lQErSI33MsML1u6ijq8oPFSKhkaaTlTbuszIQc4W34HYtlxGPI07JvUyEbbyiUUJHtIKJOoYRykkB2JIErGwSlsEIxRbfGhaevUQiGEiI+QUy4BTjBHedUi6dKSDZTOx7CvGCJjcRqTrLI8nGfbi2rhH4EGACwNKH8f9BdBQAAAABJRU5ErkJggg==');
-}
-/* line 127, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.event {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #52a7c2), color-stop(100%, #4bc1e6));
-  background: -webkit-linear-gradient(bottom, #52a7c2, #4bc1e6 100%);
-  background: -moz-linear-gradient(bottom, #52a7c2, #4bc1e6 100%);
-  background: -o-linear-gradient(bottom, #52a7c2, #4bc1e6 100%);
-  background: -ms-linear-gradient(bottom, #52a7c2, #4bc1e6 100%);
-  background: linear-gradient(bottom, #52a7c2, #4bc1e6 100%);
-}
-/* line 130, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.event .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpENjJERTRFNTZFRTkxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpENjJERTRFNDZFRTkxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDI4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz6lxSCMAAADCUlEQVR42uyYz2sTQRTHd2M01aKSpMaKtGjEQy5FSA7evKQX8SAF66keFNq7lwb/AT3otVC9VUu1Bw8ePKgHQTzZXIqHFmn8gUoVsVWrJmST9Tv4XTqOk81smq1B+uDDzs5O9n3nzczbmdiu61qdZJEAbfvAXfAYXDRofxbcANdAwtiLiJAhOXfdlgzaL0rt86Z+ok2idxQcAEvgnfSsBxwHayAlRboGvoIfICm1Pw2e8DfL4AWoB4lQBtwDDnu4C0TcP20HOOH+bc9ADHyS6iZBgmWH787ofOvE9IMFxYkI+T6lrgsMuXpLgVvS/Sm+Q7YF+moqaELj4C1IgnGwBq6yx08bCLoADoIpMA26wYym3YSJoPkGTu6APcAGveASqDRou8yIiAj0gRFQ1rSbV/3bmjxUAoc3Ke28BOlW81DHJcZNMb889Bwsgu1t9lkFA8xxRnmoxAl3PkAWD0qBPkrqs0jA4RwXfZD4zDrPsmBOev5QnbTtnkPC4RiwQQ7EwRU6FeVZlo+AYZBnnbHfaEBBw5q6EhmlmKJUt8JOpHkfyirLcjjmeF/gNS4JVC0d5rIvcsgSjMAsRf7zPLQiRSPN+0bRKIUhKM5Vk5WGzhPyCFxnOU1G+ZtiEEF+k7pbExFLmjsWhRSkZ4Ngkhs67/mY5t31IIJsXgc0zwYN5lfOIBBJxZfvkDm8ngGZkD5ZecWXryBv77wbPADnwM42CTkGbvNqKfv03yHT7IdGwJRS9xF828CqrLNTYqhiUr3o7M1mH1ch8jKoueFZjT5skx2jZyfBEOhv475JROoND5z3dQ3sTjtKN8pDYjnuB72gS7c8WzTR+zIPix943zRC3on1kPQSW7mqOUttYyllS1P3SneC1UUoRX7yBeIHFR6TWzFPaITb4SjLwscXRstX0F7wnWUR3vdgtU1DFuNU6JF8NRVUpSCRRV/rsukGrMJVZnFuVk0mtfjnYhv/2XBCWkyr/BI4poIiHK6wrEIfdRNBZU5EJ0RBDhdNveMT49bZfkvQfyfolwADADD8+nbPZBQxAAAAAElFTkSuQmCC');
-}
-/* line 135, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.product {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #983797), color-stop(100%, #da4dd9));
-  background: -webkit-linear-gradient(bottom, #983797, #da4dd9 100%);
-  background: -moz-linear-gradient(bottom, #983797, #da4dd9 100%);
-  background: -o-linear-gradient(bottom, #983797, #da4dd9 100%);
-  background: -ms-linear-gradient(bottom, #983797, #da4dd9 100%);
-  background: linear-gradient(bottom, #983797, #da4dd9 100%);
-}
-/* line 138, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.product .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMTY3MEM2QzZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMTY3MEM2QjZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDM4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4XMFpjAAADCklEQVR42syYW2sTQRTHM9tskuI99YY3RARFBREVihcUwS/gg/okUkEo4psfwicRBMEXP4AgvvhUBEGqUKQVRDTVB6+xtZqq2KQxbbL+B/4Lw7iX7Mwm6YEfO7PMzp6dc+acMys8z8sosgpcAYfZF6AKboDxTDdEKqRw0QuWu9q4juFo+g2E6H0ErOjGAgnNZEW+vB80wBlwAbTAIfCi2ybTGVTMdrUXJtNlEnxi+6RyPw+ynViguEl/gmdgG9hPRaRJb4Em+A2+grKC7M+CPwqLaSkkZRScB9vBLiBXdW/MM00q9UO5fgdTYAa8BM/BfFIfkuwDdfrRMCiCOc9O5HxDJj7k+1GJ7dP84pKlq+TpBv9JOwotgMdsHwQF8NR2czOUGCnk+5GUzfSf0RQUatooNEbH7ANHmdeqvVyhL+AV26fAB96zESuFpIzwOkg/Guu1Qk+41OvBAfColz4k5TV4zxrpGAObTYYQppFaTSMTYAc4Du6wcNvEeXzciL5LWoxnibO9zmVG2gpYnfBZWeq4fG4A9AeN0+uhONnNPORydSYDzO6FtB3uzIc29ZBOAYxb5rEhm3pIlzq4x5KiBuaYWtpJP76cSFLCtiMyWq+jObaAad7LBTiv3Elraep3fOYtTZ2KyXz6wG1Q4onEDRm3BoyAGXAf5OPmNlXorOYXl0LGDWvjztnW1GHyN8C3gqQc00/NZFlwHUyAm9x9QeMccA08YAwTcXObOHVHxfQoI7hz5G6rgDch2Vsw1RRZ3H/slEIbwE7lB8WvEP+Q4/awvZHxazZqYlOndgJiU5AUYvqpKTTFqlFG6s8R1WOZ57EGn5lO+rOhXf/JMeoW+DL/4wRxlHpHjl3GVJNhLV5N04e28kwlNEX0DC/Y1q/fos51WQPfWamsiolU0txlLr+yxmNRUsUWuNNSUyhHZZqMKy0D/3MU03ppmKym5LLl2pYXmj8FtYWyyvM2CgmujKqQUL7S0/qZkJOFp/yysTZZgxMu8mV15aVhinjavUiFllxydTJLTP4JMABm9VCmbr4OmgAAAABJRU5ErkJggg==');
-}
-/* line 143, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.thing {
-  background: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, #ce9d03), color-stop(100%, #deab09));
-  background: -webkit-linear-gradient(bottom, #ce9d03, #deab09 100%);
-  background: -moz-linear-gradient(bottom, #ce9d03, #deab09 100%);
-  background: -o-linear-gradient(bottom, #ce9d03, #deab09 100%);
-  background: -ms-linear-gradient(bottom, #ce9d03, #deab09 100%);
-  background: linear-gradient(bottom, #ce9d03, #deab09 100%);
-}
-/* line 146, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_tile.scss */
-.container.entities .tiles.entities .tile.entity.thing .type {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAqCAYAAADbCvnoAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo5MDIxRUJGNjE4MjA2ODExOEE4QUFDMTQyOTNEQjAxOCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDowMTY3MEM2ODZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDowMTY3MEM2NzZFRUIxMUUxOTU3NDg2MDY1MzYwN0Y0MyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1LjEgTWFjaW50b3NoIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6MDM4MDExNzQwNzIwNjgxMThGNjJEQUY2OTFFNUMxMkUiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6OTAyMUVCRjYxODIwNjgxMThBOEFBQzE0MjkzREIwMTgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5uDvWAAAACrUlEQVR42syYSWsUQRSAZzLZ1AQV1KAxaOKCC2hQFAQvKorgCqIeAoJCDkE8CCKCXiJiTm7oH1DBiydvgjdRL17Eg5igomREYzSai45Zpv0evIGm09VdM6ma+OCDnp7qnq+76r2aqmwQBJn/KbIpQqfgEDRBA4zAADyFZ/rZbYhQAofhUzA1JuARbEu5vmxsGm2AF0F8vIfd1RYSVsJjg9Q7WONDaB6sS2jcCg8MUvd8CHVBP2xJuKAdnscIfYe1LoRqQuO7E1bDFVhoyIGi4Xwz7HSdZQ9DT3wDaiP20qV3DV1WhOuu31AudHxaa1Ap5kAfnDDVM6hz8YJqQ8f50LHc/DK0w0fYDN0J9xmHQddddjKoPP7AVtdZtgLeVij0JGbMTVtI5rWeCmR+wna9RwvsgqWuKnUj3NSssYmCdnWdPozUsVGt3sdcTR0idR6+wKRBZBwG9EfrtUxE24rYcZdz2Sa4Bq/gAwzqk8tEewmWa7szCeIj5UrZNGqADtgIbVAT+m4x5FO6VaSOuJ7tTezXlE+LYf1v5V1ovWaZTXzVB/AqJKXiHIxZSn2GfT6FMpryF8qoWzLm9voUymjqXyyjfknG7vEpVKpfvVqjbEJKyQ6fQqUScRX+Wkq9hlU+hUrd15dQLKNx1vQHzVWMQS/csmzfWM5CcTrMgtsWGdfpu8vCNMMdg8wQHPQ9qONoinlT8mYOxLVP22xwFbJIOKpLpV9wH15WsvvhImQ1swQW6GIgr1KZmRDK6eJzWehcAd7At2oLiUwHtIaTWtdwUhr64Ue1hKS+tUFLylpOpH77FhKZRTpm0mIIhn0KSXfMh7mW7WVLcNSXUFbTe7Yep8WEZtukLyHZFK2PkZyyetdtnUJUxqVQTsdOnEgQOReoSHGmCqPTfeqqxz8BBgCDoG1wlDF+/wAAAABJRU5ErkJggg==');
-}
-
-/* line 1, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_treemap.scss */
-.treemap.toolbar {
-  margin-bottom: 4px;
-}
-/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_treemap.scss */
-.treemap.toolbar .selector {
-  display: inline-block;
-  cursor: pointer;
-  padding: 0 8px 0 2px;
-  border-right: 1px solid gray;
-  color: black;
-  font-weight: bold;
-  font-size: 12px;
-  background: none !important;
-}
-/* line 6, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector .symbol {
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin: 2px;
-  background-size: 20px 20px;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-/* line 19, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.place {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #47dfdd), color-stop(100%, #32aeac));
-  background-image: -webkit-linear-gradient(#47dfdd, #32aeac);
-  background-image: -moz-linear-gradient(#47dfdd, #32aeac);
-  background-image: -o-linear-gradient(#47dfdd, #32aeac);
-  background-image: -ms-linear-gradient(#47dfdd, #32aeac);
-  background-image: linear-gradient(#47dfdd, #32aeac);
-}
-/* line 22, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.place .symbol {
-  background-image: url("../img/noun_project_462.svg");
-}
-/* line 27, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.creativework {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #3c6f9f));
-  background-image: -webkit-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -moz-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -o-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -ms-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: linear-gradient(#3c88d0, #3c6f9f);
-}
-/* line 30, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.creativework .symbol {
-  background-image: url("../img/noun_project_2572.svg");
-}
-/* line 35, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.organization {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #4e9014));
-  background-image: -webkit-linear-gradient(#7bb34a, #4e9014);
-  background-image: -moz-linear-gradient(#7bb34a, #4e9014);
-  background-image: -o-linear-gradient(#7bb34a, #4e9014);
-  background-image: -ms-linear-gradient(#7bb34a, #4e9014);
-  background-image: linear-gradient(#7bb34a, #4e9014);
-}
-/* line 38, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.organization .symbol {
-  background-image: url("../img/noun_project_921.svg");
-}
-/* line 43, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.person {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ce9d03));
-  background-image: -webkit-linear-gradient(#deab09, #ce9d03);
-  background-image: -moz-linear-gradient(#deab09, #ce9d03);
-  background-image: -o-linear-gradient(#deab09, #ce9d03);
-  background-image: -ms-linear-gradient(#deab09, #ce9d03);
-  background-image: linear-gradient(#deab09, #ce9d03);
-}
-/* line 46, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.person .symbol {
-  background-image: url("../img/noun_project_419.svg");
-}
-/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.event {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #983797));
-  background-image: -webkit-linear-gradient(#da4dd9, #983797);
-  background-image: -moz-linear-gradient(#da4dd9, #983797);
-  background-image: -o-linear-gradient(#da4dd9, #983797);
-  background-image: -ms-linear-gradient(#da4dd9, #983797);
-  background-image: linear-gradient(#da4dd9, #983797);
-}
-/* line 54, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.treemap.toolbar .selector.event .symbol {
-  background-image: url("../img/noun_project_404.svg");
-}
-
-/* line 17, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_treemap.scss */
-#wordlift.treemap {
-  width: 100%;
-}
-/* line 20, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_treemap.scss */
-#wordlift.treemap .entity {
-  border: 0px solid gray;
-  margin: 2px;
-  padding: 2px;
-  color: black;
-  font-weight: bold;
-  font-size: 12px;
-}
-/* line 25, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_treemap.scss */
-#wordlift.treemap .entity .type, #wordlift.treemap .entity .count {
-  display: none;
-}
-/* line 6, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity .symbol {
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin: 2px;
-  background-size: 20px 20px;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-/* line 19, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.place {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #47dfdd), color-stop(100%, #32aeac));
-  background-image: -webkit-linear-gradient(#47dfdd, #32aeac);
-  background-image: -moz-linear-gradient(#47dfdd, #32aeac);
-  background-image: -o-linear-gradient(#47dfdd, #32aeac);
-  background-image: -ms-linear-gradient(#47dfdd, #32aeac);
-  background-image: linear-gradient(#47dfdd, #32aeac);
-}
-/* line 22, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.place .symbol {
-  background-image: url("../img/noun_project_462.svg");
-}
-/* line 27, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.creativework {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #3c6f9f));
-  background-image: -webkit-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -moz-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -o-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -ms-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: linear-gradient(#3c88d0, #3c6f9f);
-}
-/* line 30, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.creativework .symbol {
-  background-image: url("../img/noun_project_2572.svg");
-}
-/* line 35, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.organization {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #4e9014));
-  background-image: -webkit-linear-gradient(#7bb34a, #4e9014);
-  background-image: -moz-linear-gradient(#7bb34a, #4e9014);
-  background-image: -o-linear-gradient(#7bb34a, #4e9014);
-  background-image: -ms-linear-gradient(#7bb34a, #4e9014);
-  background-image: linear-gradient(#7bb34a, #4e9014);
-}
-/* line 38, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.organization .symbol {
-  background-image: url("../img/noun_project_921.svg");
-}
-/* line 43, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.person {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ce9d03));
-  background-image: -webkit-linear-gradient(#deab09, #ce9d03);
-  background-image: -moz-linear-gradient(#deab09, #ce9d03);
-  background-image: -o-linear-gradient(#deab09, #ce9d03);
-  background-image: -ms-linear-gradient(#deab09, #ce9d03);
-  background-image: linear-gradient(#deab09, #ce9d03);
-}
-/* line 46, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.person .symbol {
-  background-image: url("../img/noun_project_419.svg");
-}
-/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.event {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #983797));
-  background-image: -webkit-linear-gradient(#da4dd9, #983797);
-  background-image: -moz-linear-gradient(#da4dd9, #983797);
-  background-image: -o-linear-gradient(#da4dd9, #983797);
-  background-image: -ms-linear-gradient(#da4dd9, #983797);
-  background-image: linear-gradient(#da4dd9, #983797);
-}
-/* line 54, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-#wordlift.treemap .entity.event .symbol {
-  background-image: url("../img/noun_project_404.svg");
-}
-
-/* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_posts_widget.scss */
-.wordlift.related img.entity.image {
-  float: right;
-  max-height: 40px;
-  max-width: 40px;
-  margin: 2px;
-}
-
-/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity {
-  color: black;
-  font-weight: bold;
-  font-size: 12px;
-  padding: 0;
-  margin-bottom: 6px;
-  border-top: 0px;
-  background-image: none !important;
-  cursor: pointer;
-}
-/* line 6, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity .symbol {
-  width: 20px;
-  height: 20px;
-  float: left;
-  margin: 2px;
-  background-size: 20px 20px;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-/* line 19, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.place {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #47dfdd), color-stop(100%, #32aeac));
-  background-image: -webkit-linear-gradient(#47dfdd, #32aeac);
-  background-image: -moz-linear-gradient(#47dfdd, #32aeac);
-  background-image: -o-linear-gradient(#47dfdd, #32aeac);
-  background-image: -ms-linear-gradient(#47dfdd, #32aeac);
-  background-image: linear-gradient(#47dfdd, #32aeac);
-}
-/* line 22, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.place .symbol {
-  background-image: url("../img/noun_project_462.svg");
-}
-/* line 27, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.creativework {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #3c6f9f));
-  background-image: -webkit-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -moz-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -o-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: -ms-linear-gradient(#3c88d0, #3c6f9f);
-  background-image: linear-gradient(#3c88d0, #3c6f9f);
-}
-/* line 30, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.creativework .symbol {
-  background-image: url("../img/noun_project_2572.svg");
-}
-/* line 35, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.organization {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #4e9014));
-  background-image: -webkit-linear-gradient(#7bb34a, #4e9014);
-  background-image: -moz-linear-gradient(#7bb34a, #4e9014);
-  background-image: -o-linear-gradient(#7bb34a, #4e9014);
-  background-image: -ms-linear-gradient(#7bb34a, #4e9014);
-  background-image: linear-gradient(#7bb34a, #4e9014);
-}
-/* line 38, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.organization .symbol {
-  background-image: url("../img/noun_project_921.svg");
-}
-/* line 43, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.person {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ce9d03));
-  background-image: -webkit-linear-gradient(#deab09, #ce9d03);
-  background-image: -moz-linear-gradient(#deab09, #ce9d03);
-  background-image: -o-linear-gradient(#deab09, #ce9d03);
-  background-image: -ms-linear-gradient(#deab09, #ce9d03);
-  background-image: linear-gradient(#deab09, #ce9d03);
-}
-/* line 46, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.person .symbol {
-  background-image: url("../img/noun_project_419.svg");
-}
-/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.event {
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #983797));
-  background-image: -webkit-linear-gradient(#da4dd9, #983797);
-  background-image: -moz-linear-gradient(#da4dd9, #983797);
-  background-image: -o-linear-gradient(#da4dd9, #983797);
-  background-image: -ms-linear-gradient(#da4dd9, #983797);
-  background-image: linear-gradient(#da4dd9, #983797);
-}
-/* line 54, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
-.wordlift.widget.related .entity.event .symbol {
-  background-image: url("../img/noun_project_404.svg");
-}
-/* line 14, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .metadata {
-  white-space: nowrap;
-  position: relative;
-  height: 20px;
-  padding: 2px;
-}
-/* line 21, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .metadata .image {
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: 0;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-/* line 31, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .metadata .name {
-  left: 24px;
-  position: absolute;
-  top: 0px;
-}
-/* line 37, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .metadata .symbol {
-  right: 0;
-  top: 0;
-  margin: 0px;
-  position: absolute;
-}
-/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .arrowscroller {
-  display: none;
-}
-/* line 49, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .arrowscroller.arrow.left {
-  margin-left: 0px !important;
-  background: url('data:image/png;base64,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');
-  width: 10px;
-  height: 88px;
-}
-/* line 56, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .arrowscroller.arrow.right {
-  background: url('data:image/png;base64,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');
-  width: 10px;
-  height: 88px;
-}
-/* line 62, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .posts {
-  background: white;
-}
-/* line 65, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .posts.container {
-  width: 240px;
-  margin-top: 0px !important;
-  display: none;
-}
-/* line 70, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .posts.container .content {
-  white-space: nowrap;
-}
-/* line 73, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity .posts.container .content .post {
-  display: inline-block;
-  overflow: hidden;
-  width: 80px;
-  height: 80px;
-  padding: 2px;
-  margin: 2px;
-  vertical-align: top;
-  border: 1px solid gray;
-  font-size: 10px;
-  font-weight: normal;
-  line-height: 1.1;
-  white-space: normal;
-}
-/* line 97, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_related_entities_widget.scss */
-.wordlift.widget.related .entity:hover .posts.container, .wordlift.widget.related .entity:hover .arrowscroller {
-  display: block;
-}
-
-/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 4, ../_entity_box.scss */
 ul.entity-list {
   height: 100px;
   list-style: none;
   white-space: nowrap;
   margin-left: 0;
 }
-/* line 12, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 12, ../_entity_box.scss */
 ul.entity-list li {
   display: inline-block;
   vertical-align: top;
   margin: 2px;
+  border: 0px;
+}
+/* line 92, ../_mixins.scss */
+ul.entity-list li.Place {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #bf2633), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#bf2633, #ffffff);
+  background-image: -moz-linear-gradient(#bf2633, #ffffff);
+  background-image: -o-linear-gradient(#bf2633, #ffffff);
+  background-image: -ms-linear-gradient(#bf2633, #ffffff);
+  background-image: linear-gradient(#bf2633, #ffffff);
+}
+/* line 96, ../_mixins.scss */
+ul.entity-list li.CreativeWork {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #3c88d0), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#3c88d0, #ffffff);
+  background-image: -moz-linear-gradient(#3c88d0, #ffffff);
+  background-image: -o-linear-gradient(#3c88d0, #ffffff);
+  background-image: -ms-linear-gradient(#3c88d0, #ffffff);
+  background-image: linear-gradient(#3c88d0, #ffffff);
+}
+/* line 100, ../_mixins.scss */
+ul.entity-list li.Organization {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #7bb34a), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#7bb34a, #ffffff);
+  background-image: -moz-linear-gradient(#7bb34a, #ffffff);
+  background-image: -o-linear-gradient(#7bb34a, #ffffff);
+  background-image: -ms-linear-gradient(#7bb34a, #ffffff);
+  background-image: linear-gradient(#7bb34a, #ffffff);
+}
+/* line 104, ../_mixins.scss */
+ul.entity-list li.Person {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #deab09), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#deab09, #ffffff);
+  background-image: -moz-linear-gradient(#deab09, #ffffff);
+  background-image: -o-linear-gradient(#deab09, #ffffff);
+  background-image: -ms-linear-gradient(#deab09, #ffffff);
+  background-image: linear-gradient(#deab09, #ffffff);
+}
+/* line 108, ../_mixins.scss */
+ul.entity-list li.Event {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da4dd9), color-stop(100%, #ffffff));
+  background-image: -webkit-linear-gradient(#da4dd9, #ffffff);
+  background-image: -moz-linear-gradient(#da4dd9, #ffffff);
+  background-image: -o-linear-gradient(#da4dd9, #ffffff);
+  background-image: -ms-linear-gradient(#da4dd9, #ffffff);
+  background-image: linear-gradient(#da4dd9, #ffffff);
 }
 
-/* line 20, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 23, ../_entity_box.scss */
 .entity-box {
   position: relative;
   padding: 2px;
@@ -526,21 +70,33 @@ ul.entity-list li {
   font-size: 10px;
   white-space: normal;
 }
-/* line 31, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 34, ../_entity_box.scss */
+.entity-box .entity-link {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+/* line 39, ../_entity_box.scss */
+.entity-box .entity-link:visited {
+  color: black;
+}
+/* line 44, ../_entity_box.scss */
 .entity-box .names {
   white-space: nowrap;
   font-size: 11px;
   line-height: 14px;
   font-weight: bold;
 }
-/* line 37, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 50, ../_entity_box.scss */
 .entity-box .names .name {
   width: 80px;
   display: inline-block;
   white-space: normal;
   vertical-align: top;
+  text-decoration: none;
+  color: black;
 }
-/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 60, ../_entity_box.scss */
 .entity-box .image {
   position: absolute;
   max-width: 40px;
@@ -548,18 +104,18 @@ ul.entity-list li {
   left: 2px;
   bottom: 2px;
 }
-/* line 53, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 68, ../_entity_box.scss */
 .entity-box .title {
   margin-top: 68px;
   font-weight: bold;
 }
-/* line 58, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 73, ../_entity_box.scss */
 .entity-box .description {
   margin-top: 68px;
   text-align: justify;
   line-height: 10px;
 }
-/* line 64, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 79, ../_entity_box.scss */
 .entity-box .type {
   width: 20px;
   height: 20px;
@@ -571,54 +127,54 @@ ul.entity-list li {
   right: 2px;
   bottom: 0px;
 }
-/* line 71, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 71, ../_mixins.scss */
 .entity-box .type.Place {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 74, ../_mixins.scss */
 .entity-box .type.Organization {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 77, ../_mixins.scss */
 .entity-box .type.CreativeWork {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 80, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 80, ../_mixins.scss */
 .entity-box .type.Person {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 83, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 83, ../_mixins.scss */
 .entity-box .type.Event {
   background-image: url("../img/noun_project_404.svg");
 }
-/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 86, ../_mixins.scss */
 .entity-box .type.Product {
   background-image: url("../img/noun_project_7341.svg");
 }
 
-/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 89, ../_entity_box.scss */
 .arrowscroller.left, .arrowscroller.right {
   height: 100px;
 }
 
-/* line 78, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 93, ../_entity_box.scss */
 .arrowscroller.left {
   background: url("../img/arrow-2.png") center center no-repeat;
 }
 
-/* line 82, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 97, ../_entity_box.scss */
 .arrowscroller.right {
   background: url("../img/arrow-1.png") center center no-repeat;
 }
 
-/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 101, ../_entity_box.scss */
 .entity-container {
   overflow-x: scroll;
   height: 100px;
   width: 544px;
 }
 
-/* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 3, ../_entity_page.scss */
 .entity-page .entity {
   position: relative;
   border: 1px dashed;
@@ -630,13 +186,13 @@ ul.entity-list li {
   width: 220px;
   background: white;
 }
-/* line 14, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 14, ../_entity_page.scss */
 .entity-page .entity img {
   max-width: 200px;
   max-height: 120px;
   margin: 0 10px;
 }
-/* line 20, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 20, ../_entity_page.scss */
 .entity-page .entity .type {
   width: 20px;
   height: 20px;
@@ -645,31 +201,31 @@ ul.entity-list li {
   background-repeat: no-repeat;
   background-position: center center;
 }
-/* line 71, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 71, ../_mixins.scss */
 .entity-page .entity .type.Place {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 74, ../_mixins.scss */
 .entity-page .entity .type.Organization {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 77, ../_mixins.scss */
 .entity-page .entity .type.CreativeWork {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 80, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 80, ../_mixins.scss */
 .entity-page .entity .type.Person {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 83, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 83, ../_mixins.scss */
 .entity-page .entity .type.Event {
   background-image: url("../img/noun_project_404.svg");
 }
-/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 86, ../_mixins.scss */
 .entity-page .entity .type.Product {
   background-image: url("../img/noun_project_7341.svg");
 }
-/* line 24, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 24, ../_entity_page.scss */
 .entity-page .entity .name {
   text-align: right;
   margin-top: -30px;
@@ -677,39 +233,39 @@ ul.entity-list li {
   font-size: 14px;
   padding: 4px;
 }
-/* line 32, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 32, ../_entity_page.scss */
 .entity-page .entity .description {
   text-align: justify;
   padding: 4px;
 }
-/* line 40, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 40, ../_entity_page.scss */
 .entity-page .posts .post {
   padding: 4px;
   margin-bottom: 10px;
   border: 0;
   border-bottom: 1px dashed;
 }
-/* line 46, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 46, ../_entity_page.scss */
 .entity-page .posts .post .title {
   font-weight: bold;
   font-size: 14px;
 }
-/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 51, ../_entity_page.scss */
 .entity-page .posts .post .modified {
   font-size: 8px;
   text-align: right;
 }
-/* line 56, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */
+/* line 56, ../_entity_page.scss */
 .entity-page .posts .post .content {
   text-align: justify;
 }
 
-/* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_autocomplete.scss */
+/* line 3, ../_entity_autocomplete.scss */
 .ui-autocomplete li {
   font-size: 12px;
   position: relative;
 }
-/* line 8, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_autocomplete.scss */
+/* line 8, ../_entity_autocomplete.scss */
 .ui-autocomplete li a {
   display: block;
   width: 139px;
@@ -718,7 +274,7 @@ ul.entity-list li {
   overflow: hidden;
   cursor: pointer;
 }
-/* line 17, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_autocomplete.scss */
+/* line 17, ../_entity_autocomplete.scss */
 .ui-autocomplete li div.type {
   position: absolute;
   top: 0px;
@@ -730,27 +286,39 @@ ul.entity-list li {
   background-repeat: no-repeat;
   background-position: center center;
 }
-/* line 71, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 71, ../_mixins.scss */
 .ui-autocomplete li div.type.Place {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 74, ../_mixins.scss */
 .ui-autocomplete li div.type.Organization {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 77, ../_mixins.scss */
 .ui-autocomplete li div.type.CreativeWork {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 80, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 80, ../_mixins.scss */
 .ui-autocomplete li div.type.Person {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 83, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 83, ../_mixins.scss */
 .ui-autocomplete li div.type.Event {
   background-image: url("../img/noun_project_404.svg");
 }
-/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+/* line 86, ../_mixins.scss */
 .ui-autocomplete li div.type.Product {
   background-image: url("../img/noun_project_7341.svg");
+}
+
+/* line 1, ../_openlayers_fix.scss */
+.olControlAttribution {
+  font-size: 10px !important;
+  font-family: Helvetica;
+  bottom: 2px !important;
+}
+
+/* line 1, ../_post_text_annotations.scss */
+.textannotation.selected {
+  border-bottom: 1px dashed;
 }

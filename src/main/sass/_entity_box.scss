@@ -10,9 +10,12 @@ ul.entity-list {
 	margin-left: 0;
 
 	li {
+		@include entity-backgrounds;
+
 		display: inline-block;
 		vertical-align: top;
 		margin: 2px;
+		border: 0px;
 	}
 
 }
@@ -28,6 +31,16 @@ ul.entity-list {
 	font-size: 10px;
 	white-space: normal;
 
+	.entity-link {
+		display: block;
+		text-decoration: none;
+		color: black;
+
+		&:visited {
+			color: black;
+		}
+	}
+
 	.names {
 		white-space: nowrap;
 		font-size: 11px;
@@ -39,6 +52,8 @@ ul.entity-list {
 			display: inline-block;
 			white-space: normal;
 			vertical-align: top;
+			text-decoration: none;
+			color: black;
 		}
 	}
 

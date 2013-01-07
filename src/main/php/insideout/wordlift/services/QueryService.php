@@ -46,7 +46,7 @@ class WordLift_QueryService {
 		$query = $this->create( $fields, $whereClause, $limit, $offset, $groupBy, $orderBy );
 
 		if ( NULL !== $count )
-			$count = $this->getCount( $whereClause );
+			$count = $this->getCount( $whereClause, $groupBy );
 
 		return $this->query( $query );
 	}
@@ -132,10 +132,11 @@ class WordLift_QueryService {
 	}
 
 
-	private function getCount( $whereClause, $groupBy = NULL ) {
+	private function getCount( $whereClause, $groupBy = NULL, $fields = NULL ) {
 		$store = $this->storeService->getStore();
 
-		$query = $this->create( "COUNT( * ) as ?count", $whereClause, NULL, NULL, $groupBy );
+		$query = $this->create( "COUNT( * ) AS ?count", $whereClause, NULL, NULL, "?count", "DESC(?count)" );
+		// echo( $query );
 
 		$recordset = $store->query( $query );
 		

@@ -9,7 +9,10 @@
     <ul>
       <li ng-class="{true:'selected', false:''}[entity.selected]" ng-click='clearAndBind( disambiguation, entity )' ng-mouseenter='highlight( entity )' ng-repeat="entity in disambiguation.entities | orderBy:'highestConfidence':true | orderBy:'selected':true">
         <div class='image' style="background-image: url('{{entity.image[0]}}');"></div>
-        <div class='name' ng-bind='entity.name'></div>
+        <div class='name'>
+          <a class='entity-edit icon-pencil' href='admin.php?page=entities_management#/edit/{{getSimpleName(entity.about)}}'></a>
+          {{entity.name}}
+        </div>
         <div class='type' ng-class='getTypeName( entity.type )'></div>
         <div class='confidence highest' style='width: {{entity.highestConfidence * 100}}%'></div>
         <div class='confidence lowest' style='width: {{entity.lowestConfidence * 100}}%'></div>

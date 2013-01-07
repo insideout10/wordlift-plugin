@@ -44,6 +44,18 @@ $content = <<<EOF
                             }
                         }
                     });
+
+                $.ajax( 'http://maps.stamen.com/js/tile.stamen.js?v1.2.1', {
+                    dataType: "script",
+                    success: function(data, textStatus, jqXHR) {
+                        var map = $( that ).data('map');
+                        var stamenLayer = new OpenLayers.Layer.Stamen( 'watercolor' );
+                        map.addLayer( stamenLayer );
+                        map.setBaseLayer( stamenLayer );
+                        $( '.olControlAttribution' ).html( 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.' );
+                    }
+                });
+
             })
             .on('mapify.georss', function (event, layer) {
 
@@ -65,7 +77,6 @@ $content = <<<EOF
                 title: 'World Map',
                 location: {latitude:41.91613, longitude:12.503052}
             });
-
     });
 </script>
 

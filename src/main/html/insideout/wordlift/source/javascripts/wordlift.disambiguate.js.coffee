@@ -45,6 +45,9 @@ angular.module( "wordlift.disambiguate", [])
     $scope.getTypeName = ( typeURI ) ->
         typeURI.match( /.+\/(.+$)/ )[1].toLowerCase()
 
+    $scope.getSimpleName = ( about ) ->
+        about.match( /.+\/(.+$)/ )[1]      
+
     # get the disambiguations.
     $scope.getDisambiguations = ->
       $http

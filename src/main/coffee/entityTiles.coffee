@@ -24,4 +24,12 @@
 				.append( "<a>#{item.name}</a><div class=\"type #{simpleTypeName}\" />" )
 				.appendTo( ul )
 
+	p = "&p=" + ( "#{escape(postId.value)}" for postId in $( "input[name=postId]" ) ).toString()
+	$.ajax
+		url: "wp-admin/admin-ajax.php?action=wordlift.textannotations#{p}"
+		success: ( data, status, xhr ) ->
+			console.log data
+			$( "##{ann.textAnnotation.replace(':','\\:')}" ).addClass "selected" for ann in data.content
+
+
 )(jQuery)

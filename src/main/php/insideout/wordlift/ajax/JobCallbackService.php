@@ -9,8 +9,8 @@ class WordLift_JobCallbackService {
 
     public $logger;
 
-    /** @var WordLift_EntityService $entityService */
-    public $entityService;
+    // * @var WordLift_EntityService $entityService 
+    // public $entityService;
     /** @var WordLift_JobService $jobService */
     public $jobService;
     /** @var WordLift_TripleStoreService $tripleStoreService */
