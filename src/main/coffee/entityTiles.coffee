@@ -29,7 +29,7 @@
 		url: "wp-admin/admin-ajax.php?action=wordlift.textannotations#{p}"
 		success: ( data, status, xhr ) ->
 			console.log data
-			$( "##{ann.textAnnotation.replace(':','\\:')}" ).addClass "selected" for ann in data.content
+			$( "##{ann.textAnnotation.replace(':','\\:')}" ).addClass( "selected" ).addClass( ann.entityType.match( /([^\/]*)$/ )[0] ) for ann in data.content
 
 
 )(jQuery)

@@ -50,7 +50,7 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           ann = _ref[_i];
-          _results.push($("#" + (ann.textAnnotation.replace(':', '\\:'))).addClass("selected"));
+          _results.push($("#" + (ann.textAnnotation.replace(':', '\\:'))).addClass("selected").addClass(ann.entityType.match(/([^\/]*)$/)[0]));
         }
         return _results;
       }

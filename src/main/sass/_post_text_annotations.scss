@@ -1,3 +1,5 @@
 .textannotation.selected {
-	border-bottom: 1px dashed;
+	border-bottom: 1px solid;
+
+	@include entity-border-colors;
 }
