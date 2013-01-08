@@ -16,7 +16,7 @@
     background-repeat: no-repeat;
   }
 
-  &.place {
+  &.Place {
     @include background-image(linear-gradient(#47DFDD, #32AEAC));
 
     .symbol {
@@ -24,7 +24,7 @@
     }
   }
 
-  &.creativework {
+  &.CreativeWork {
     @include background-image(linear-gradient(#3c88d0, #3c6f9f));
 
     .symbol {
@@ -32,7 +32,7 @@
     }
   }
 
-  &.organization {
+  &.Organization {
     @include background-image(linear-gradient(#7BB34A, #4E9014));
 
     .symbol {
@@ -40,7 +40,7 @@
     }
   }
 
-  &.person {
+  &.Person {
     @include background-image(linear-gradient(#DEAB09, #CE9D03));
 
     .symbol {
@@ -48,11 +48,19 @@
     }
   }
 
-  &.event {
+  &.Event {
     @include background-image(linear-gradient(#da4dd9, #983797));
 
     .symbol {
       background-image: url('../img/noun_project_404.svg');
+    }
+  }
+
+  &.Product {
+    @include background-image(linear-gradient(#da4dd9, #983797));
+
+    .symbol {
+      background-image: url('../img/noun_project_7341.svg');
     }
   }
 }

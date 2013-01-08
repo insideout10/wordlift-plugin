@@ -41,7 +41,7 @@
       }
       return _results;
     })()).toString();
-    return $.ajax({
+    $.ajax({
       url: "wp-admin/admin-ajax.php?action=wordlift.textannotations" + p,
       success: function(data, status, xhr) {
         var ann, _i, _len, _ref, _results;
@@ -54,6 +54,18 @@
         }
         return _results;
       }
+    });
+    $(".entity-treemap").isotope({
+      itemSelector: ".entity-box",
+      layoutMode: 'masonry',
+      masonry: {
+        columnWidth: 108
+      }
+    });
+    return $(".entity-treemap-toolbar .selector").click(function(event) {
+      return $(".entity-treemap").isotope({
+        filter: $(event.target).data("filter")
+      });
     });
   })(jQuery);
 

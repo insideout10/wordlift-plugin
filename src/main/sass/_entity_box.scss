@@ -28,8 +28,8 @@ ul.entity-list {
 	width: $width;
 	overflow: hidden;
 	overflow-y: scroll;
-	font-size: 10px;
 	white-space: normal;
+	font-family: Helvetica;
 
 	.entity-link {
 		display: block;
@@ -43,18 +43,18 @@ ul.entity-list {
 
 	.names {
 		white-space: nowrap;
+	}
+
+	.name {
+		width: $width;
+		display: inline-block;
+		white-space: normal;
+		vertical-align: top;
+		text-decoration: none;
+		color: black;
 		font-size: 11px;
 		line-height: 14px;
 		font-weight: bold;
-
-		.name {
-			width: $width;
-			display: inline-block;
-			white-space: normal;
-			vertical-align: top;
-			text-decoration: none;
-			color: black;
-		}
 	}
 
 	.image {

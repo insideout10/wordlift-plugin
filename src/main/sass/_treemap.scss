@@ -1,4 +1,4 @@
-.treemap.toolbar {
+.entity-treemap-toolbar {
   margin-bottom: 4px;
 
   .selector {
@@ -14,18 +14,10 @@
   }
 }
 
-#wordlift.treemap {
-  width: 100%;
-
-  .entity {
-    border: 0px solid gray;
-    margin: 2px;
-    padding: 2px;
-
-    .type, .count {
-      display: none;
-    }
-
-    @include entity-symbols;
+.entity-treemap {
+  .entity-box {
+    display: block;
+    border: 0;
+    @include entity-backgrounds;
   }
 }

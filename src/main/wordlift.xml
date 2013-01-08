@@ -198,15 +198,15 @@
            filename="/php/insideout/wordlift/shortcodes/GeoMap.php" />
     <wordpress:shortCode name="wordlift.geomap" class="geoMapShortCode" method="get" />
 
-<!--     <class id="treeMapShortCode" name="WordLift_TreeMap"
+    <class id="treeMapShortCode" name="WordLift_TreeMap"
            filename="/php/insideout/wordlift/shortcodes/TreeMap.php">
-        <property name="entityService" reference="entityService" />
+        <property name="queryService" reference="queryService"/>
         <property name="width" value="100"/>
         <property name="height" value="70"/>
         <property name="columnWidth" value="4"/>
     </class>
     <wordpress:shortCode name="wordlift.treemap" class="treeMapShortCode" method="get" />
- -->
+
     <!-- ***** W O R D P R E S S   S T Y L E S -->
     <wordpress:style target="user" name="style.css" url="/wp-content/plugins/wordlift/sass/css/style.css" />
     <wordpress:style target="user" name="isotope.css" url="/wp-content/plugins/wordlift/sass/css/isotope.css" />

@@ -32,4 +32,16 @@
 			$( "##{ann.textAnnotation.replace(':','\\:')}" ).addClass( "selected" ).addClass( ann.entityType.match( /([^\/]*)$/ )[0] ) for ann in data.content
 
 
+
+	$( ".entity-treemap" ).isotope
+		itemSelector : ".entity-box"
+		layoutMode: 'masonry'
+		masonry:
+			columnWidth: 108
+
+	$( ".entity-treemap-toolbar .selector" )
+		.click ( event ) ->
+			$( ".entity-treemap" ).isotope
+				filter: $( event.target ).data "filter"
+
 )(jQuery)
