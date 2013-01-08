@@ -75,9 +75,11 @@ EOF;
             $image = $bag[ "image" ];
             $htmlImage = htmlspecialchars( $image, ENT_COMPAT | ENT_HTML401, "UTF-8" );
             $type = $bag[ "type" ];
-            $htmlType = htmlspecialchars( $type, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+            $simpleTypeName = substr( $type, strrpos( $type, "/" ) + 1 );
+            $htmlSimpleTypeName = htmlspecialchars( $simpleTypeName, ENT_COMPAT | ENT_HTML401, "UTF-8" );
 
-            $summary = "$name<br/>"; 
+            $summary = "<img src=\"$htmlImage\" onerror=\"this.parentNode.removeChild(this);\" class=\"image\" />";
+            $summary .= "<div class=\"name\">$name</div><div class=\"type $htmlSimpleTypeName\"></div>"; 
             $summary .= "<ul class=\"posts\">";
             foreach ( $bag[ "posts" ] as &$post )
                 $summary .= "<li class=\"item\"><a href=\"" . get_permalink( $post ) . "\">" . get_the_title( $post ) . "</a></li>";
@@ -88,10 +90,11 @@ echo <<<EOF
     <entry>
         <title>$htmlName</title>
         <link href="$link"/>
+        <id></id>
         <summary><![CDATA[$summary]]></summary>
         <thumbnail url="$htmlImage" />
-        <category term="$htmlType" />
-        <georss:point>$point</georss:point>
+        <category term="$htmlSimpleTypeName" />
+        <georss:point>$coordinates</georss:point>
     </entry>
 EOF;
         endforeach;

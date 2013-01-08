@@ -235,9 +235,9 @@
     </wordpress:script>
 
     <wordpress:script target="user" name="ioio"
-            version="0.9.6"
+            version="0.9.7"
             footer="true"
-            url="/wp-content/plugins/wordlift/js/ioio-0.9.6.debug.js">
+            url="/wp-content/plugins/wordlift/js/ioio-0.9.7.min.js">
         <dependsOn name="jquery-ui" />
     </wordpress:script>
 

@@ -342,3 +342,93 @@ ul.entity-list li.Event {
 .textannotation.selected.Event {
   border-color: #da4dd9;
 }
+
+/* line 1, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map {
+  font-family: Helvetica;
+}
+/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map #popup {
+  width: 222px !important;
+  height: auto !important;
+  max-height: 300px;
+  overflow: auto;
+}
+/* line 10, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map #popup #popup_contentDiv {
+  height: auto !important;
+}
+/* line 15, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map .layersDiv {
+  font-weight: normal;
+}
+/* line 18, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map .layersDiv input {
+  margin: 3.85px 3px !important;
+}
+/* line 23, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map .image {
+  float: left;
+  max-width: 50px;
+  max-height: 50px;
+  padding: 2px;
+  overflow: auto;
+}
+/* line 31, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map .name {
+  text-align: right;
+  font-weight: bold;
+}
+/* line 36, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map .type {
+  position: absolute;
+  right: 0px;
+  width: 20px;
+  height: 20px;
+  margin: 6px 2px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+/* line 71, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+#map .type.Place {
+  background-image: url("../img/noun_project_462.svg");
+}
+/* line 74, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+#map .type.Organization {
+  background-image: url("../img/noun_project_921.svg");
+}
+/* line 77, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+#map .type.CreativeWork {
+  background-image: url("../img/noun_project_2572.svg");
+}
+/* line 80, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+#map .type.Person {
+  background-image: url("../img/noun_project_419.svg");
+}
+/* line 83, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+#map .type.Event {
+  background-image: url("../img/noun_project_404.svg");
+}
+/* line 86, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_mixins.scss */
+#map .type.Product {
+  background-image: url("../img/noun_project_7341.svg");
+}
+/* line 42, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map ul {
+  margin-top: 36px;
+  text-align: justify;
+  font-size: 14px;
+  list-style: none;
+  margin-left: 0px;
+}
+/* line 49, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map ul li {
+  border-top: 1px dashed;
+}
+/* line 52, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_geo_map.scss */
+#map ul li a, #map ul li a:visited {
+  text-decoration: none;
+  border-bottom: 1px solid blue;
+  color: black;
+}
