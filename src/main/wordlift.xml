@@ -323,7 +323,6 @@
 
     <!-- ***** REST API : wordlift.georss ***** -->
     <class id="geoRssAjaxService" name="WordLift_GeoRssAjaxService" filename="/php/insideout/wordlift/ajax/GeoRssAjaxService.php">
-        <property name="tripleStoreService" reference="tripleStoreService" />
         <property name="queryService" reference="queryService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.georss" class="geoRssAjaxService" method="get"

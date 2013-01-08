@@ -8,99 +8,93 @@ class WordLift_GeoRssAjaxService {
 
     public $logger;
 
-    /** @var WordLift_TripleStoreService $tripleStoreService */
-    public $tripleStoreService;
-
     public $queryService;
 
-    public function get() {
+    public $defaultLanguage = "EN";
 
-        $query = "SELECT DISTINCT ?name ?postID ?latitude ?longitude"; // ?latitude ?longitude \n";
-        $query .= " WHERE { \n";
-        $query .= "   ?ea a fise:Enhancement ; \n";
-        $query .= "       wordlift:postID ?postID ; \n";
-        $query .= "       wordlift:selected true ; \n";
-        $query .= "       fise:entity-reference [ \n";
-        $query .= "            a ?type ; \n";
-        $query .= "            schema:name ?name ; \n";
-        $query .= "            ?predicate [ \n";
-        $query .= "              a schema:Place ; \n";
-        $query .= "              schema:geo [ \n"; 
-        $query .= "                schema:latitude ?latitude ; \n";
-        $query .= "                schema:longitude ?longitude ] ] ] . \n";
-        $query .= " FILTER regex( str(?type), \"http://schema.org/\" ) \n";
-        $query .= "  } \n";
+    public function get( $type = NULL ) {
 
-        // $query = "SELECT DISTINCT ?postID ?latitude ?longitude
-        //           WHERE {
-        //             ?textAnnotation a fise:TextAnnotation .
-        //             ?textAnnotation wordlift:postID ?postID .
-        //             ?entityAnnotation a fise:EntityAnnotation .
-        //             ?entityAnnotation dcterms:relation ?textAnnotation .
-        //             ?entityAnnotation fise:entity-reference ?entity .
-        //             ?entityAnnotation wordlift:selected true .
-        //             ?entity schema:location ?place .
-        //             ?place schema:geo ?geo .
-        //             ?geo schema:latitude ?latitude .
-        //             ?geo schema:longitude ?longitude .
-        //           }";
+        $whereClause =  " ?enhancement a fise:Enhancement ; \n";
+        $whereClause .= "       wordlift:postID ?postID ; \n";
+        $whereClause .= "       wordlift:selected true ; \n";
+        $whereClause .= "       fise:entity-reference ?subject . \n";
+        $whereClause .= " ?subject a ?type ; \n";
+        $whereClause .= "       schema:name ?name ; \n";
+        $whereClause .= "       ?predicate [ \n";
+        $whereClause .= "         a schema:Place ; \n";
+        $whereClause .= "         schema:geo [ \n"; 
+        $whereClause .= "           schema:latitude ?latitude ; \n";
+        $whereClause .= "           schema:longitude ?longitude ] ] . \n";
+        $whereClause .= "   OPTIONAL { ?subject schema:image ?image } . \n";
+        $whereClause .= "   FILTER langMatches( lang(?name), \"" . $this->defaultLanguage . "\" ) . \n";
 
-        $result = $this->queryService->query( $query, "raw", "", true );
-        $rows = &$result[ "rows" ];
+        if ( NULL === $type ) :
+            $whereClause .= "   FILTER regex( str(?type), \"http://schema.org/\" ) . \n";
+        else :
+            $escType = $this->queryService->escapeValue( $type );
+            $whereClause .= "   FILTER ( str(?type) = \"http://schema.org/$escType\" ) . \n";
+        endif;
 
-        // echo( $query );
-        // var_dump( $result );
-        // exit;
-
-
-        $title = "";
-        $subtitle = "";
-        $link = "";
-        $updated = "";
+        // public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL, $orderBy = NULL ) {
+        $count = 0;
+        $result = $this->queryService->execute( "DISTINCT ?latitude ?longitude ?name ?type ?image ?postID", $whereClause, 999, 0, $count, "?latitude ?longitude ?name ?type ?image ?postID", "DESC(?postID)" );
+        $rows = &$result[ "result" ][ "rows" ];
 
 echo <<<EOF
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss">
-    <title>$title</title>
-    <subtitle>$subtitle</subtitle>
-    <link href="$link"/>
-    <updated>$updated</updated>
 EOF;
 
-        $coordinates = array();
+        $pins = array();
 
         // group data by coordinates.
-        foreach ( $rows as $row ) :
+        foreach ( $rows as &$row ) :
+            $coordinates = $row[ "latitude" ] . " " . $row[ "longitude" ];
+            $name = $row[ "name" ];
             $postId = $row[ "postID" ];
-            $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "name" ] = $row[ "name" ];
-            if ( ! in_array( $postId, $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "posts" ] ) )
-                $coordinates[ $row[ "latitude" ] . " " . $row[ "longitude" ] ][ "posts" ][] = $row[ "postID" ];
+            $image = $row[ "image" ];
+            $type = $row[ "type" ];
+
+            if ( ! array_key_exists( $coordinates, $pins ) ) :
+                $pins[ $coordinates ] = array(
+                    "name" => $name, 
+                    "image" => $image, 
+                    "type" => $type, 
+                    "posts" => array()
+                );
+            endif;
+
+            if ( ! in_array( $postId, $pins[ $coordinates ][ "posts" ] ) )
+                $pins[ $coordinates ][ "posts" ][] = $postId;
         endforeach;
 
-        foreach ( $coordinates as $point => $posts ) {
+        foreach ( $pins as $coordinates => $bag ) :
+            $name = $bag[ "name" ];
+            $htmlName = htmlspecialchars( $name, ENT_COMPAT | ENT_HTML401, "UTF-8" );
 
-            $title = $posts[ "name" ]; // implode( ",", $posts[ "posts" ] );
-            $id = "";
-            $updated = "";
-            $summary = "<ul class=\"posts\">";
-            foreach ( $posts[ "posts" ] as $post )
+            $image = $bag[ "image" ];
+            $htmlImage = htmlspecialchars( $image, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+            $type = $bag[ "type" ];
+            $htmlType = htmlspecialchars( $type, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+
+            $summary = "$name<br/>"; 
+            $summary .= "<ul class=\"posts\">";
+            foreach ( $bag[ "posts" ] as &$post )
                 $summary .= "<li class=\"item\"><a href=\"" . get_permalink( $post ) . "\">" . get_the_title( $post ) . "</a></li>";
-            $summary .= "</div>";
+            $summary .= "</ul>";
 
 echo <<<EOF
 
     <entry>
-        <title>$title</title>
+        <title>$htmlName</title>
         <link href="$link"/>
-        <id>$id</id>
-        <updated>$updated</updated>
         <summary><![CDATA[$summary]]></summary>
-        <thumbnail url="" />
-        <category term="" />
+        <thumbnail url="$htmlImage" />
+        <category term="$htmlType" />
         <georss:point>$point</georss:point>
     </entry>
 EOF;
-        }
+        endforeach;
 
 echo <<<EOF
 
