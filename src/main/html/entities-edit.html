@@ -20,6 +20,13 @@
   </div>
 </aside>
 <div class='avgrund-cover'></div>
+<ul class='nav nav-pills'>
+  <li ng-class='{active: isCurrentLanguage(language)}' ng-repeat='language in languages'>
+    <a ng-click='setLanguage(language);'>
+      {{language}}
+    </a>
+  </li>
+</ul>
 <table class='entity table table-striped table-hover'>
   <thead>
     <tr>
@@ -36,7 +43,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat='property in data.content'>
+    <tr ng-repeat='property in data.content' ng-show='isCurrentLanguage(property.lang)'>
       <td>
         <div ng-bind='property.key'></div>
         <div>

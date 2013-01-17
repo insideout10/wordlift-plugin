@@ -35,9 +35,22 @@
 
 				event = "entity"
 				subject = $routeParams[ "subject" ]
+				$scope.languages = []
+				$scope.currentLanguage = "";
 
 				$scope.$on event, (event, data) ->
 					$scope.data = data
+					$scope.languages = [ "(none)" ]
+					( $scope.languages.push entity.lang if entity.lang and -1 is $scope.languages.indexOf entity.lang ) for entity in data.content
+					$scope.languages = $scope.languages.sort()
+
+				$scope.setLanguage = (language) ->
+					$scope.currentLanguage = if language isnt "(none)" then language else ""
+
+				$scope.isCurrentLanguage = (lang) ->
+					$log.info lang
+					return true if $scope.currentLanguage is "" and ( not lang? or lang is "(none)" )
+					$scope.currentLanguage is lang
 
 				$scope.$on "property.update", (event, data) ->
 					$scope.goToPage 0

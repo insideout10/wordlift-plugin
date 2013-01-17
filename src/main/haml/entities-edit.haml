@@ -17,6 +17,11 @@
 
 %div{ :class => "avgrund-cover" }
 
+%ul{ :class => "nav nav-pills" }
+	%li{ :"ng-repeat" => "language in languages", :"ng-class" => "{active: isCurrentLanguage(language)}" }
+		%a{ :"ng-click" => "setLanguage(language);" }
+			{{language}}
+
 %table{ :class => "entity table table-striped table-hover" }
 	%thead
 		%tr
@@ -28,7 +33,7 @@
 			%th
 				Value
 	%tbody
-		%tr{ :"ng-repeat" => "property in data.content" }
+		%tr{ :"ng-repeat" => "property in data.content", :"ng-show" => "isCurrentLanguage(property.lang)" }
 			%td
 				%div{ :"ng-bind" => "property.key" }
 				%div

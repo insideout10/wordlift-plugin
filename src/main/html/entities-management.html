@@ -26,9 +26,31 @@
           var event, subject;
           event = "entity";
           subject = $routeParams["subject"];
+          $scope.languages = [];
+          $scope.currentLanguage = "";
           $scope.$on(event, function(event, data) {
-            return $scope.data = data;
+            var entity, _i, _len, _ref;
+            $scope.data = data;
+            $scope.languages = ["(none)"];
+            _ref = data.content;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              entity = _ref[_i];
+              if (entity.lang && -1 === $scope.languages.indexOf(entity.lang)) {
+                $scope.languages.push(entity.lang);
+              }
+            }
+            return $scope.languages = $scope.languages.sort();
           });
+          $scope.setLanguage = function(language) {
+            return $scope.currentLanguage = language !== "(none)" ? language : "";
+          };
+          $scope.isCurrentLanguage = function(lang) {
+            $log.info(lang);
+            if ($scope.currentLanguage === "" && (!(lang != null) || lang === "(none)")) {
+              return true;
+            }
+            return $scope.currentLanguage === lang;
+          };
           $scope.$on("property.update", function(event, data) {
             return $scope.goToPage(0);
           });
