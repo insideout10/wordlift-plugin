@@ -30,7 +30,7 @@
 <table class='entity table table-striped table-hover'>
   <thead>
     <tr>
-      <th>
+      <th class='column-key'>
         Key
       </th>
       <th>
@@ -43,6 +43,33 @@
     </tr>
   </thead>
   <tbody>
+    <tr class='new-property'>
+      <td>
+        <div>
+          <input ng-model='newProperty.key' type='url'>
+          <select class='type' ng-model='newProperty.type'>
+            <option value='literal'>
+              Literal
+            </option>
+            <option value='uri'>
+              URI
+            </option>
+          </select>
+        </div>
+      </td>
+      <td>
+        <div>
+          <input class='language' ng-model='newProperty.lang' type='text'>
+        </div>
+      </td>
+      <td>
+        <a class='icon-ok' ng-click='saveNewProperty( newProperty, clearNewProperty )'></a>
+      </td>
+      <td>
+        <textarea ng-model='newProperty.value' ng-show="'literal'==newProperty.type"></textarea>
+        <input ng-model='newProperty.value' ng-show="'uri'==newProperty.type" type='url'>
+      </td>
+    </tr>
     <tr ng-repeat='property in data.content' ng-show='isCurrentLanguage(property.lang)'>
       <td>
         <div ng-bind='property.key'></div>

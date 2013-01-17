@@ -25,7 +25,7 @@
 %table{ :class => "entity table table-striped table-hover" }
 	%thead
 		%tr
-			%th
+			%th{ :class => "column-key" }
 				Key
 			%th
 				Language
@@ -33,6 +33,24 @@
 			%th
 				Value
 	%tbody
+		%tr{ :class => "new-property" }
+			%td
+				%div
+					%input{ :"ng-model" => "newProperty.key", :type => "url" }
+					%select{ :"ng-model" => "newProperty.type", :class => "type" }
+						%option{ :value => "literal" }
+							Literal
+						%option{ :value => "uri" }
+							URI
+			%td
+				%div
+					%input{ :type => "text", :class => "language", :"ng-model" => "newProperty.lang" }
+			%td
+				%a{ :class => "icon-ok", :"ng-click" => "saveNewProperty( newProperty, clearNewProperty )" }
+			%td
+				%textarea{ :"ng-model" => "newProperty.value", :"ng-show" => "'literal'==newProperty.type" }
+				%input{ :type => "url", :"ng-model" => "newProperty.value", :"ng-show" => "'uri'==newProperty.type" }
+
 		%tr{ :"ng-repeat" => "property in data.content", :"ng-show" => "isCurrentLanguage(property.lang)" }
 			%td
 				%div{ :"ng-bind" => "property.key" }

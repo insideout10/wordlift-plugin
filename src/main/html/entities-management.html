@@ -45,7 +45,6 @@
             return $scope.currentLanguage = language !== "(none)" ? language : "";
           };
           $scope.isCurrentLanguage = function(lang) {
-            $log.info(lang);
             if ($scope.currentLanguage === "" && (!(lang != null) || lang === "(none)")) {
               return true;
             }
@@ -93,9 +92,23 @@
             EntitiesService.list("wordlift.property", "property.update", {
               "subject": subject
             }, null, null, "DELETE", $scope.tmp.property);
-            return EntitiesService.list("wordlift.property", "property.update", {
+            return $scope.saveNewProperty(property);
+          };
+          $scope.saveNewProperty = function(property, callback) {
+            EntitiesService.list("wordlift.property", "property.update", {
               "subject": subject
             }, null, null, "POST", property);
+            if (callback != null) {
+              return callback();
+            }
+          };
+          $scope.clearNewProperty = function() {
+            return $scope.newProperty = {
+              key: "",
+              lang: "",
+              type: "",
+              value: ""
+            };
           };
           $scope.deleteProperty = function(property) {
             $scope.tmp = {

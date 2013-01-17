@@ -48,7 +48,6 @@
 					$scope.currentLanguage = if language isnt "(none)" then language else ""
 
 				$scope.isCurrentLanguage = (lang) ->
-					$log.info lang
 					return true if $scope.currentLanguage is "" and ( not lang? or lang is "(none)" )
 					$scope.currentLanguage is lang
 
@@ -78,7 +77,19 @@
 
 				$scope.saveProperty = ( property ) ->
 					EntitiesService.list "wordlift.property", "property.update", { "subject": subject }, null, null, "DELETE", $scope.tmp.property
+					$scope.saveNewProperty property
+
+				$scope.saveNewProperty = ( property, callback ) ->
 					EntitiesService.list "wordlift.property", "property.update", { "subject": subject }, null, null, "POST", property
+					callback() if callback?
+
+				$scope.clearNewProperty = ->
+					$scope.newProperty =
+						key: ""
+						lang: ""
+						type: ""
+						value: ""
+
 
 				$scope.deleteProperty = ( property ) ->
 					$scope.tmp = { property: property }

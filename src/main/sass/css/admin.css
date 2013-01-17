@@ -261,3 +261,16 @@ label {
   margin-top: 8px;
   margin-right: 8px;
 }
+
+/* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+#wordliftApp .column-key {
+  width: 320px;
+}
+/* line 8, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+#wordliftApp .new-property .type {
+  width: 100px;
+}
+/* line 12, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+#wordliftApp .new-property .language {
+  width: 40px;
+}
