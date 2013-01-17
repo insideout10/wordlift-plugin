@@ -3,9 +3,9 @@ ul.entity-list {
   height: 100px;
   list-style: none;
   white-space: nowrap;
-  margin-left: 0;
+  margin: 6px 0;
 }
-/* line 12, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 14, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 ul.entity-list li {
   display: inline-block;
   vertical-align: top;
@@ -58,7 +58,7 @@ ul.entity-list li.Event {
   background-image: linear-gradient(#da4dd9, #ffffff);
 }
 
-/* line 23, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 25, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box {
   position: relative;
   padding: 2px;
@@ -70,21 +70,21 @@ ul.entity-list li.Event {
   white-space: normal;
   font-family: Helvetica;
 }
-/* line 34, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 36, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .entity-link {
   display: block;
   text-decoration: none;
   color: black;
 }
-/* line 39, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 41, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .entity-link:visited {
   color: black;
 }
-/* line 44, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 46, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .names {
   white-space: nowrap;
 }
-/* line 48, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 50, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .name {
   width: 80px;
   display: inline-block;
@@ -96,7 +96,7 @@ ul.entity-list li.Event {
   line-height: 14px;
   font-weight: bold;
 }
-/* line 60, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 62, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .image {
   position: absolute;
   max-width: 40px;
@@ -104,18 +104,19 @@ ul.entity-list li.Event {
   left: 2px;
   bottom: 2px;
 }
-/* line 68, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 70, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .title {
   margin-top: 68px;
   font-weight: bold;
 }
-/* line 73, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 75, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .description {
   margin-top: 68px;
   text-align: justify;
   line-height: 10px;
+  font-size: 10px;
 }
-/* line 79, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 82, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-box .type {
   width: 20px;
   height: 20px;
@@ -152,26 +153,27 @@ ul.entity-list li.Event {
   background-image: url("../img/noun_project_7341.svg");
 }
 
-/* line 89, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 92, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .arrowscroller.left, .arrowscroller.right {
   height: 100px;
 }
 
-/* line 93, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 96, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .arrowscroller.left {
   background: url("../img/arrow-2.png") center center no-repeat;
+  float: none;
 }
 
-/* line 97, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 101, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .arrowscroller.right {
   background: url("../img/arrow-1.png") center center no-repeat;
 }
 
-/* line 101, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
+/* line 105, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_box.scss */
 .entity-container {
   overflow-x: scroll;
   height: 100px;
-  width: 544px;
+  width: 496px;
 }
 
 /* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_page.scss */

@@ -85,6 +85,10 @@
 			])
 			.controller( "EntitiesCtrl", [ "ENTITIES_DEFAULT_LIMIT", "EntitiesService", "$location", "$scope", "$log", ( ENTITIES_DEFAULT_LIMIT, EntitiesService, $location, $scope, $log ) ->
 
+				$scope.filters = 
+					nameFilter : ""
+					languagesFilter: ""
+
 				$scope.data =
 					page: 0
 					pages: 1
@@ -105,7 +109,7 @@
 					[1 .. $scope.data.pages]
 
 				$scope.goToPage = (page) ->
-					EntitiesService.list "wordlift.entities", "entities", [], page * ENTITIES_DEFAULT_LIMIT, ENTITIES_DEFAULT_LIMIT
+					EntitiesService.list "wordlift.entities", "entities", { name: $scope.filters.nameFilter, languages: $scope.filters.languagesFilter }, page * ENTITIES_DEFAULT_LIMIT, ENTITIES_DEFAULT_LIMIT
 
 				$scope.goToPreviousPage = ->
 					$scope.goToPage ( $scope.data.page - 1 )
@@ -115,6 +119,9 @@
 
 				$scope.goToEntity = (entity) ->
 					$location.path "/edit/" + $scope.getEntityName( entity )
+
+				$scope.filter = ->
+					$scope.goToPage 0				
 
 				$scope.goToPage 0
 

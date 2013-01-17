@@ -7,7 +7,9 @@ ul.entity-list {
 	list-style: none;
 	white-space: nowrap;
 	// overflow: auto;
-	margin-left: 0;
+	// elemin theme: margin: 6px 0;
+	margin: 6px 0;
+	// other themes: margin: 0;
 
 	li {
 		@include entity-backgrounds;
@@ -74,6 +76,7 @@ ul.entity-list {
 		margin-top: 68px;
 		text-align: justify;
 		line-height: 10px;
+		font-size: 10px;
 	}
 
 	.type {
@@ -92,6 +95,7 @@ ul.entity-list {
 
 .arrowscroller.left {
   background: url('../img/arrow-2.png') center center no-repeat;
+  float:none;
 }
 
 .arrowscroller.right {
@@ -101,5 +105,6 @@ ul.entity-list {
 .entity-container {
   overflow-x: scroll;
   height: $height + 20px;
-  width: 544px;
+  // elemen theme: width: 380px;
+  width: 496px; // 544px
 }

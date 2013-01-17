@@ -22,7 +22,7 @@ class WordLift_RecordSetService {
 
 			if ( NULL != $limit && NULL != $offset ) {
 				echo " \"page\": ";
-				echo floor( $offset / $limit );
+				echo floor( ( $offset + 1 ) / $limit );
 				echo ",";
 
 				echo " \"pages\": ";

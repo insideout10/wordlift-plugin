@@ -1,3 +1,10 @@
+<div class='well'>
+  <form class='form-inline' name='filterForm' ng-submit='filter()'>
+    <input class='input-medium search-query' ng-model='filters.nameFilter' placeholder='Name' type='text'>
+    <input class='input-medium search-query' ng-model='filters.languagesFilter' placeholder='Languages' type='text'>
+    <input class='btn' type='submit' value='Filter'>
+  </form>
+</div>
 <table class='entities table table-striped table-hover'>
   <thead>
     <tr>

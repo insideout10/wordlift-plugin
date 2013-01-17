@@ -17,6 +17,16 @@
 
     <context name="wordLift" />
 
+    <class id="languagesAjaxService" name="WordLift_LanguagesAjaxService"
+        filename="/php/insideout/wordlift/ajax/LanguagesAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.languages" class="languagesAjaxService"
+                    method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
     <class id="javaScriptPostIdFilter" name="WordLift_JavaScriptPostIdFilter"
         filename="/php/insideout/wordlift/filters/JavaScriptPostIdFilter.php" />
     <wordpress:filter name="the_content" class="javaScriptPostIdFilter" method="get" />

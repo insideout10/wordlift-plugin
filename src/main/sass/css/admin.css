@@ -255,3 +255,9 @@ label {
   padding: 0px;
   margin: 12px 0;
 }
+
+/* line 1, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_app.scss */
+#wordliftApp {
+  margin-top: 8px;
+  margin-right: 8px;
+}
