@@ -33,7 +33,12 @@
 			%th
 				Value
 	%tbody
-		%tr{ :class => "new-property" }
+		%tr{ :class => "add-property" }
+			%td{ :colspan => "4" }
+				%a{ :"ng-click" => "showNewProperty()" }
+					%div{ :"ng-class" => "{true:'icon-minus', false:'icon-plus'}[isNewPropertyVisible]" }
+					add property
+		%tr{ :class => "new-property", :"ng-show" => "isNewPropertyVisible" }
 			%td
 				%div
 					%input{ :"ng-model" => "newProperty.key", :type => "url" }

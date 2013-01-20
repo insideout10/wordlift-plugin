@@ -17,6 +17,19 @@
 
     <context name="wordLift" />
 
+    <wordpress:script target="admin" name="wordlift"
+            version="SNAPSHOT"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/wordlift.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
+    <class id="tasksAjaxService" name="WordLift_TasksAjaxService"
+        filename="/php/insideout/wordlift/ajax/TasksAjaxService.php">
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.tasks" class="tasksAjaxService"
+        method="get" authentication="false" capabilities="edit_posts" httpMethod="GET" />
+
     <class id="languagesAjaxService" name="WordLift_LanguagesAjaxService"
         filename="/php/insideout/wordlift/ajax/LanguagesAjaxService.php">
 
@@ -116,6 +129,17 @@
     <wordpress:adminMenu pageTitle="Entities" menuTitle="Entities" capability="edit_posts" menuSlug="entities_management"
         class="entitiesManagementPage" method="get" position="6" iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
 
+    <class id="wordLiftSettingsPage" name="WordLift_WordLiftSettingsPage"
+        filename="/php/insideout/wordlift/pages/WordLiftSettingsPage.php">
+    </class>
+    <wordpress:adminMenu pageTitle="Analysis Tasks" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
+        class="wordLiftSettingsPage" method="get" position="80" iconUrl="../wp-content/plugins/wordlift/sass/img/logo-wl-27x27.png" />
+
+    <class id="wordLiftRegisterLoginPage" name="WordLift_WordLiftRegisterLoginPage"
+        filename="/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php">
+    </class>
+    <wordpress:subAdminMenu parentSlug="wordlift_settings" pageTitle="Register/Login" menuTitle="Register/Login" capability="edit_posts" menuSlug="wordlift_register_login" class="wordLiftRegisterLoginPage" method="get" />
+
     <class id="recordSetService" name="WordLift_RecordSetService"
         filename="/php/insideout/wordlift/services/RecordSetService.php">
     </class>
@@ -151,7 +175,7 @@
 
     <class id="settingsValidator" name="WordLift_SettingsValidator"
         filename="/php/insideout/wordlift/notices/SettingsValidator.php">
-        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;options-general.php?page=wordlift_settings&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;options-general.php?page=wordlift_register_login&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
         <property name="consumerKeyOptionName" value="{consumer-key-option-name}" />
     </class>
     <class id="siteKeyValidator" name="WordLift_SiteKeyValidator"
@@ -162,19 +186,19 @@
     <wordpress:notice class="settingsValidator" method="validate" />
     <wordpress:notice class="siteKeyValidator" method="validate" />
 
-    <class id="htmlSettingsProxy" name="WordPress_HtmlSettingsProxy"
+<!--     <class id="htmlSettingsProxy" name="WordPress_HtmlSettingsProxy"
         filename="/php/insideout/wordpress/services/HtmlSettingsProxy.php">
 
         <property name="url" value="../wp-content/plugins/wordlift/html/userly/settings.html" />
-    </class>
+    </class> -->
 
-    <wordpress:settings 
+<!--     <wordpress:settings 
         menuTitle="WordLift"
         pageTitle="WordLift Settings"
         capability="manage_options"
         menuSlug="wordlift_settings"
         proxy="htmlSettingsProxy">
-    </wordpress:settings>
+    </wordpress:settings> -->
 
     <class id="ajaxOptionsService" name="WordPress_AjaxOptionsService"
         filename="/php/insideout/wordpress/services/AjaxOptionsService.php" />
@@ -392,6 +416,7 @@
     <class id="postAjaxService" name="WordLift_PostAjaxService"
            filename="/php/insideout/wordlift/ajax/PostAjaxService.php">
 
+        <property name="metaKeyJobStatus" value="{meta-key-job-status}" />
         <property name="tripleStoreService" reference="tripleStoreService" />
     </class>
 

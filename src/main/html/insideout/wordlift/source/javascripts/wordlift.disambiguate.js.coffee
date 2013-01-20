@@ -32,6 +32,7 @@ angular.module( "wordlift.disambiguate", [])
           "action": "wordlift.disambiguations"
           "entity": entity.about
         "data":
+          "postID": postID
           "clear": disambiguation.textAnnotations
           "bind": entity.textAnnotations
       .success (data) ->

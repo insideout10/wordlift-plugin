@@ -43,7 +43,15 @@
     </tr>
   </thead>
   <tbody>
-    <tr class='new-property'>
+    <tr class='add-property'>
+      <td colspan='4'>
+        <a ng-click='showNewProperty()'>
+          <div ng-class="{true:'icon-minus', false:'icon-plus'}[isNewPropertyVisible]"></div>
+          add property
+        </a>
+      </td>
+    </tr>
+    <tr class='new-property' ng-show='isNewPropertyVisible'>
       <td>
         <div>
           <input ng-model='newProperty.key' type='url'>

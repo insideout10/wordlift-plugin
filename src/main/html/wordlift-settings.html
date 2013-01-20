@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<style>
+  [ng-cloak] {
+  	display: none;
+  }
+</style>
+<div id='wordliftApp' ng-controller='TasksCtrl'>
+  <ul class='nav nav-pills'>
+    <li ng-class="{running:'active'}[state]">
+      <a ng-click="select('running')">
+        Running Tasks
+      </a>
+    </li>
+    <li ng-class="{completed:'active'}[state]">
+      <a ng-click="select('completed')">
+        Awaiting Disambiguation
+      </a>
+    </li>
+    <li ng-class="{disambiguated:'active'}[state]">
+      <a ng-click="select('disambiguated')">
+        Completed Tasks
+      </a>
+    </li>
+  </ul>
+  <table class='table table-striped table-hover'>
+    <thead>
+      <tr>
+        <th>
+          Title
+        </th>
+        <th>
+          State
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat='task in data'>
+        <td>
+          <a href='{{task.edit}}'>
+            {{task.title}}
+          </a>
+        </td>
+        <td ng-class='state'>
+          {{state}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

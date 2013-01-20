@@ -8,8 +8,12 @@ class WordLift_PostAjaxService {
 
     public $logger;
 
+    public $metaKeyJobStatus;
+
     /** @var WordLift_TripleStoreService $tripleStoreService */
     public $tripleStoreService;
+
+    const JOB_STATUS_DISAMBIGUATED = "disambiguated";
 
     public function options() {
         // to enable CORS.
@@ -21,6 +25,7 @@ class WordLift_PostAjaxService {
 
         $json = json_decode( $requestBody );
         $bind = &$json->bind;
+        $postID = $json->postID;
 
         while ( 0 < count( $bind ) ) {
             $textAnnotation = array_shift( $bind );
@@ -35,6 +40,7 @@ class WordLift_PostAjaxService {
             $this->tripleStoreService->query( $query );
         }
 
+        update_post_meta( $postID, $this->metaKeyJobStatus, self::JOB_STATUS_DISAMBIGUATED );
         // $this->logger->trace( "[ entity :: $entity ][ bind :: " . var_export( $bind, true ) . " ]." );
 
     }

@@ -263,14 +263,21 @@ label {
 }
 
 /* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+#wordliftApp .add-property a {
+  display: block;
+  width: 300px;
+  padding-left: 20px;
+  background-repeat: no-repeat;
+}
+/* line 10, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .column-key {
   width: 320px;
 }
-/* line 8, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+/* line 15, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .new-property .type {
   width: 100px;
 }
-/* line 12, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+/* line 19, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .new-property .language {
   width: 40px;
 }

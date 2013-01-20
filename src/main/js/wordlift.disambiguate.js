@@ -41,6 +41,7 @@
           "entity": entity.about
         },
         "data": {
+          "postID": postID,
           "clear": disambiguation.textAnnotations,
           "bind": entity.textAnnotations
         }
