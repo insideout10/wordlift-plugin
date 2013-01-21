@@ -1,5 +1,3 @@
-@import "compass/css3";
-
 .mceContentBody .highlight {
   background-color: lightGoldenrodYellow;
   border: 1px solid darkgrey;
@@ -16,6 +14,20 @@
 
   font-size: 14px;
   font-family: Times;
+
+  .alert {
+    display: block;
+    margin: 0 0 10px;
+    height: auto;
+    width: auto;
+    position: inherit;
+    top: inherit;
+    left: inherit;
+    z-index: 100;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+  }
 
   div.disambiguation {
     overflow: hidden;
@@ -46,7 +58,7 @@
       margin: 0px;
       list-style: none;
 
-      border: 1px solid lightgray;
+      border: 1px solid #C095CC;
       border-bottom: 0px;
 
       background: white;
@@ -60,24 +72,37 @@
         padding: 0;
         margin: 0;
 
-        border-bottom: 1px solid lightgray;
+        border-bottom: 1px solid #C095CC;
 
         background: white;
 
         cursor: pointer;
 
         &.selected {
-          background: #F3DEA4;
+          background: lighten( #C095CC, 20% );
         }
 
         &:hover {
-          background: #F5EFE7;
+          background: lighten( #C095CC, 15% );
+        }
+
+        .entity-edit {
+          width: 14px;
+          height: 14px;
+          padding: 4px;
+          margin-top: 4px;
+          float: left;
+
+          a {
+            padding: 0;
+            margin: 0;
+          }
         }
 
         .image {
           float: left;
 
-          width: 40px;
+          width: 30px;
           height: 20px;
 
           margin: 4px;
@@ -89,6 +114,7 @@
 
         .name {
           width: 220px;
+          font-weight: bold;
 
           margin-top: 2px;
         }
@@ -97,7 +123,7 @@
           position: absolute;
 
           right: 2px;
-          bottom: 2px;
+          bottom: 0px;
 
           width: 20px;
           height: 20px;
@@ -123,6 +149,9 @@
           &.event {
             background-image: url('../img/noun_project_404.svg');
           }
+          &.product {
+            background-image: url('../img/noun_project_7341.svg');
+          }
         }
 
         .confidence {
@@ -132,11 +161,11 @@
 
           &.lowest {
             height: 2px;
-            background: #DBDBF5;
+            background: #C095CC;
           }
           &.highest {
             height: 4px;
-            background: #E7EFF5;
+            background: lighten( #C095CC, 10% );
           }
         }
       }

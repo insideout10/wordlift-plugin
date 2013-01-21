@@ -17,6 +17,14 @@
 
 %div{ :class => "avgrund-cover" }
 
+%div{ :class => "alert alert-info" }
+	%span{ :class => "label label-info" }
+		Edit an Entity
+
+	Hello, let us explain you what to do now.
+
+
+
 %ul{ :class => "nav nav-pills" }
 	%li{ :"ng-repeat" => "language in languages", :"ng-class" => "{active: isCurrentLanguage(language)}" }
 		%a{ :"ng-click" => "setLanguage(language);" }
@@ -41,7 +49,7 @@
 		%tr{ :class => "new-property", :"ng-show" => "isNewPropertyVisible" }
 			%td
 				%div
-					%input{ :"ng-model" => "newProperty.key", :type => "url" }
+					%input{ :"ng-model" => "newProperty.key", :type => "text", :placeholder => "http://schema.org/property" }
 					%select{ :"ng-model" => "newProperty.type", :class => "type" }
 						%option{ :value => "literal" }
 							Literal
@@ -49,12 +57,12 @@
 							URI
 			%td
 				%div
-					%input{ :type => "text", :class => "language", :"ng-model" => "newProperty.lang" }
+					%input{ :type => "text", :class => "language", :"ng-model" => "newProperty.lang", :placeholder => "en" }
 			%td
 				%a{ :class => "icon-ok", :"ng-click" => "saveNewProperty( newProperty, clearNewProperty )" }
 			%td
 				%textarea{ :"ng-model" => "newProperty.value", :"ng-show" => "'literal'==newProperty.type" }
-				%input{ :type => "url", :"ng-model" => "newProperty.value", :"ng-show" => "'uri'==newProperty.type" }
+				%input{ :type => "url", :"ng-model" => "newProperty.value", :"ng-show" => "'uri'==newProperty.type", :placeholder => "http://example.org/path" }
 
 		%tr{ :"ng-repeat" => "property in data.content", :"ng-show" => "isCurrentLanguage(property.lang)" }
 			%td

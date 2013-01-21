@@ -1,0 +1,39 @@
+%form{:class => "horizontal", :id => "registerForm", :name => "registerForm", :"ng-submit" => "register()"}
+	%legend
+		Register
+	%div{:class => "alert", :"ng-class" => "alertClass", :"ng-bind-html-unsafe" => "alert", :"ng-show" => "alert"}
+	%div{:class => "control-group"}
+		%label{:class => "control-label", :for => "username"}
+			Username
+		%div{:class => "controls"}
+			%input{:id => "username", :type => "text", :placeholder => "Username", :"ng-model" => "username", :required => true}
+	%div{:class => "control-group"}
+		%label{:class => "control-label", :for => "password"}
+			Password
+		%div{:class => "controls"}
+			%input{:id => "password", :type => "password", :placeholder => "Password", :"ng-model" => "password", :required => true}
+	%div{:class => "control-group", :"ng-class" => "{error: registerForm.passwordControl.$error.passwordConfirmation}"}
+		%label{:class => "control-label", :for => "passwordControl"}
+			Password (repeat)
+		%div{:class => "controls"}
+			%input{:name => "passwordControl", :type => "password", :placeholder => "Repeat Password", :"ng-model" => "passwordControl", :required => true, :"password-confirmation" => true}
+			%span{:class => "help-inline", :"ng-show" => "registerForm.passwordControl.$error.passwordConfirmation"}
+				Password don't match
+	%div{:class => "control-group"}
+		%label{:class => "control-label", :for => "email"}
+			E-mail
+		%div{:class => "controls"}
+			%input{:id => "email", :type => "email", :placeholder => "E-mail", :"ng-model" => "email", :required => true}
+	%div{:class => "control-group"}
+		%div{:class => "controls"}
+		%button{:class => "btn btn-primary", :type => "submit"}
+			Register
+
+%div{:class => "alert alert-info"}
+	%span{ :class => "label label-info" }
+		Login
+
+	%a{ :href => "#/login" }
+		Click here to login
+
+

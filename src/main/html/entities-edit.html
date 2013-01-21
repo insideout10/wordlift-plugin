@@ -20,6 +20,12 @@
   </div>
 </aside>
 <div class='avgrund-cover'></div>
+<div class='alert alert-info'>
+  <span class='label label-info'>
+    Edit an Entity
+  </span>
+  Hello, let us explain you what to do now.
+</div>
 <ul class='nav nav-pills'>
   <li ng-class='{active: isCurrentLanguage(language)}' ng-repeat='language in languages'>
     <a ng-click='setLanguage(language);'>
@@ -54,7 +60,7 @@
     <tr class='new-property' ng-show='isNewPropertyVisible'>
       <td>
         <div>
-          <input ng-model='newProperty.key' type='url'>
+          <input ng-model='newProperty.key' placeholder='http://schema.org/property' type='text'>
           <select class='type' ng-model='newProperty.type'>
             <option value='literal'>
               Literal
@@ -67,7 +73,7 @@
       </td>
       <td>
         <div>
-          <input class='language' ng-model='newProperty.lang' type='text'>
+          <input class='language' ng-model='newProperty.lang' placeholder='en' type='text'>
         </div>
       </td>
       <td>
@@ -75,7 +81,7 @@
       </td>
       <td>
         <textarea ng-model='newProperty.value' ng-show="'literal'==newProperty.type"></textarea>
-        <input ng-model='newProperty.value' ng-show="'uri'==newProperty.type" type='url'>
+        <input ng-model='newProperty.value' ng-show="'uri'==newProperty.type" placeholder='http://example.org/path' type='url'>
       </td>
     </tr>
     <tr ng-repeat='property in data.content' ng-show='isCurrentLanguage(property.lang)'>

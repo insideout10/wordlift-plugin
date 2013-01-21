@@ -5,6 +5,22 @@
   }
 </style>
 <div id='wordliftApp' ng-controller='TasksCtrl'>
+  <div class='alert alert-info'>
+    <span class='label label-info'>
+      Running Tasks
+    </span>
+    Hello, let us explain you what to do now.
+    <br clear='all'>
+    <span class='label label-info'>
+      Awaiting Disambiguation
+    </span>
+    Hello, let us explain you what to do now.
+    <br clear='all'>
+    <span class='label label-info'>
+      Completed Tasks
+    </span>
+    Hello, let us explain you what to do now.
+  </div>
   <ul class='nav nav-pills'>
     <li ng-class="{running:'active'}[state]">
       <a ng-click="select('running')">

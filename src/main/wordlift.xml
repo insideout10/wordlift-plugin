@@ -126,7 +126,7 @@
     <class id="entitiesManagementPage" name="WordLift_EntitiesManagementPage"
         filename="/php/insideout/wordlift/pages/EntitiesManagementPage.php">
     </class>
-    <wordpress:adminMenu pageTitle="Entities" menuTitle="Entities" capability="edit_posts" menuSlug="entities_management"
+    <wordpress:adminMenu pageTitle="WordLift Entities" menuTitle="WordLift Entities" capability="edit_posts" menuSlug="entities_management"
         class="entitiesManagementPage" method="get" position="6" iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
 
     <class id="wordLiftSettingsPage" name="WordLift_WordLiftSettingsPage"
@@ -373,7 +373,8 @@
  -->
     <!-- ***** W O R D P R E S S  E D I T O R  C O N F I G U R A T I O N ***** -->
     <wordpress:editor property="extended_valid_elements" value="span[about|class|id|typeof]" />
-    <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" />
+    <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/admin.css" />
+    <!-- <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" /> -->
 
 
     <!-- ***** W O R D L I F T  D I S A M B I G U A T I O N  M E T A B O X ***** -->
@@ -390,7 +391,7 @@
         <property name="htmlFilename" value="/wordlift/html/insideout/wordlift/build/disambiguate.html" />
     </class>
 
-    <wordpress:style target="admin" name="wordlift.disambiguation.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" />
+    <!-- <wordpress:style target="admin" name="wordlift.disambiguation.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" /> -->
 
     <wordpress:script target="admin" name="wordlift-disambiguation"
                       version="1.0.0"
@@ -400,7 +401,7 @@
         <dependsOn name="angularjs" />
     </wordpress:script>
 
-    <wordpress:metaBox id="wordlift_entity_references_meta_box" title="WordLift Semantic Blog" class="entitiesHtmlMetaBox"
+    <wordpress:metaBox id="wordlift_entity_references_meta_box" title="WordLift Entities" class="entitiesHtmlMetaBox"
                        postType="post" context="side" priority="high" />
 
 

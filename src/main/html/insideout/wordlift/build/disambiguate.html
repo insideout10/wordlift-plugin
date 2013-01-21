@@ -1,4 +1,17 @@
 <div id='wordlift-disambiguate' ng-controller='DisambiguationsController'>
+  <div class='alert alert-info'>
+    Use the controls below to:
+    <br clear='all'>
+      <span class='label label-info'>
+        Analyze
+      </span>
+      Start an new analysis task on the post contents
+      <span class='label label-info'>
+        Disambiguate
+      </span>
+      Select the right entities among those discovered
+    </br>
+  </div>
   <div class='wordlift job' ng-controller='JobController'>
     <div class='refresh' ng-click='postJob()' ng-show='!isRunning()'></div>
     <div ng-class="{true: 'running', false: ''}[isRunning()]">
@@ -8,9 +21,11 @@
   <div class='disambiguation' ng-class="{true:'working', false:''}[disambiguation.working]" ng-repeat='disambiguation in disambiguations'>
     <ul>
       <li ng-class="{true:'selected', false:''}[entity.selected]" ng-click='clearAndBind( disambiguation, entity )' ng-mouseenter='highlight( entity )' ng-repeat="entity in disambiguation.entities | orderBy:'highestConfidence':true | orderBy:'selected':true">
+        <div class='entity-edit'>
+          <a class='icon-pencil' href='admin.php?page=entities_management#/edit/{{getSimpleName(entity.about)}}'></a>
+        </div>
         <div class='image' style="background-image: url('{{entity.image[0]}}');"></div>
         <div class='name'>
-          <a class='entity-edit icon-pencil' href='admin.php?page=entities_management#/edit/{{getSimpleName(entity.about)}}'></a>
           {{entity.name}}
         </div>
         <div class='type' ng-class='getTypeName( entity.type )'></div>

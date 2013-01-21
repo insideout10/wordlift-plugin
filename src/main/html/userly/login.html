@@ -19,53 +19,11 @@
     </span>
   </fieldset>
 </form>
-<p class='divider'>
-  or
-</p>
-<form class='horizontal' id='registerForm' name='registerForm' ng-controller='RegisterCtrl' ng-submit='register()'>
-  <legend>
+<div class='alert alert-info'>
+  <span class='label label-info'>
     Register
-  </legend>
-  <div class='alert' ng-bind-html-unsafe='alert' ng-class='alertClass' ng-show='alert'></div>
-  <div class='control-group'>
-    <label class='control-label' for='username'>
-      Username
-    </label>
-    <div class='controls'>
-      <input id='username' ng-model='username' placeholder='Username' required type='text'>
-    </div>
-  </div>
-  <div class='control-group'>
-    <label class='control-label' for='password'>
-      Password
-    </label>
-    <div class='controls'>
-      <input id='password' ng-model='password' placeholder='Password' required type='password'>
-    </div>
-  </div>
-  <div class='control-group' ng-class='{error: registerForm.passwordControl.$error.passwordConfirmation}'>
-    <label class='control-label' for='passwordControl'>
-      Password (repeat)
-    </label>
-    <div class='controls'>
-      <input name='passwordControl' ng-model='passwordControl' password-confirmation placeholder='Repeat Password' required type='password'>
-      <span class='help-inline' ng-show='registerForm.passwordControl.$error.passwordConfirmation'>
-        Password don't match
-      </span>
-    </div>
-  </div>
-  <div class='control-group'>
-    <label class='control-label' for='email'>
-      E-mail
-    </label>
-    <div class='controls'>
-      <input id='email' ng-model='email' placeholder='E-mail' required type='email'>
-    </div>
-  </div>
-  <div class='control-group'>
-    <div class='controls'></div>
-    <button class='btn btn-primary' type='submit'>
-      Register
-    </button>
-  </div>
-</form>
+  </span>
+  <a href='#/register'>
+    Click here to register
+  </a>
+</div>

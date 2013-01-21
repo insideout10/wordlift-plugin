@@ -13,6 +13,9 @@ angular
 			.when "/userlogin"				
 				templateUrl: "#{baseUrl}/html/userly/login.html"
 				controller: "LoginCtrl"
+			.when "/register"				
+				templateUrl: "#{baseUrl}/html/userly/register.html"
+				controller: "RegisterCtrl"
 			.otherwise
 				redirectTo: "/userlogin"
 
