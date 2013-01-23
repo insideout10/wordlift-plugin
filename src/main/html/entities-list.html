@@ -1,8 +1,32 @@
+<div class='alert alert-info'>
+  <span class='label label-info'>
+    Entities
+  </span>
+  Type the
+  <strong>
+    Name
+  </strong>
+  and hit the
+  <string>
+    Filter
+  </string>
+  button to choose the entity you wish to edit; use the
+  <strong>
+    language selector
+  </strong>
+  to choose the language of the entity's properties you wish to edit
+</div>
 <div class='well'>
-  <form class='form-inline' name='filterForm' ng-submit='filter()'>
+  <form id='filter-form' name='filterForm' ng-submit='filter()'>
     <input class='input-medium search-query' ng-model='filters.nameFilter' placeholder='Name' type='text'>
-    <input class='input-medium search-query' ng-model='filters.languagesFilter' placeholder='Languages' type='text'>
     <input class='btn' type='submit' value='Filter'>
+    <ul class='nav nav-pills'>
+      <li class='language' ng-class="{'active': language.selected}" ng-repeat='(code, language) in languages'>
+        <a ng-click='switchLanguage(code);'>
+          {{language.language}}
+        </a>
+      </li>
+    </ul>
   </form>
 </div>
 <table class='entities table table-striped table-hover'>

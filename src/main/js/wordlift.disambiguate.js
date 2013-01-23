@@ -4,7 +4,7 @@
 
   $ = jQuery;
 
-  angular.module("wordlift.disambiguate", []).controller("DisambiguationsController", function($scope, $http, $timeout) {
+  angular.module("wordlift.disambiguate", []).controller("DisambiguationsController", function($scope, $http, $timeout, $log) {
     var postID;
     postID = $("#post_ID").val();
     $scope.disambiguations = [];
@@ -75,6 +75,7 @@
           "postID": postID
         }
       }).success(function(data) {
+        $log.info(data);
         return $scope.disambiguations = data;
       });
     };

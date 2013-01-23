@@ -24,15 +24,49 @@
   <span class='label label-info'>
     Edit an Entity
   </span>
-  Hello, let us explain you what to do now.
+  Use this page to edit an entity:
+  <ul>
+    <li></li>
+    <li>
+      <div class='icon-plus'></div>
+      Add new properties to an entity by filling the property name, type and value (and optionally the language code)
+    </li>
+    <li>
+      <div class='icon-pencil'></div>
+      Edit an existing property
+    </li>
+    <li>
+      <div class='icon-trash'></div>
+      Delete a property
+    </li>
+    <li>
+      <div class='icon-ok'></div>
+      Save the changes
+    </li>
+    <li>
+      <div class='icon-remove'></div>
+      Cancel the changes
+    </li>
+  </ul>
+  <span class='label label-info'>
+    Languages
+  </span>
+  Use the following list to select the language you would like to use to display the properties of the entities
 </div>
-<ul class='nav nav-pills'>
-  <li ng-class='{active: isCurrentLanguage(language)}' ng-repeat='language in languages'>
-    <a ng-click='setLanguage(language);'>
-      {{language}}
-    </a>
-  </li>
-</ul>
+<div class='well'>
+  <ul class='nav nav-pills'>
+    <li class='language' ng-class="{'active': isCurrentLanguage('')}">
+      <a ng-click="setLanguage('');">
+        (none)
+      </a>
+    </li>
+    <li class='language' ng-class="{'active': isCurrentLanguage(code)}" ng-repeat='(code, language) in languages'>
+      <a ng-click='setLanguage(code);'>
+        {{language.language}}
+      </a>
+    </li>
+  </ul>
+</div>
 <table class='entity table table-striped table-hover'>
   <thead>
     <tr>

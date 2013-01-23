@@ -1,8 +1,29 @@
+%div{ :class => "alert alert-info" }
+	%span{ :class => "label label-info" }
+		Entities
+
+	Type the
+	%strong
+		Name
+	and hit the
+	%string
+		Filter
+	button to choose the entity you wish to edit; use the
+	%strong
+		language selector
+	to choose the language of the entity's properties you wish to edit
+
 %div{ :class => "well" }
-	%form{ :"ng-submit" => "filter()", :name => "filterForm", :class => "form-inline" }
+	%form{ :"ng-submit" => "filter()", :name => "filterForm", :id => "filter-form" }
 		%input{ :"ng-model" => "filters.nameFilter", :type => "text", :class => "input-medium search-query", :placeholder => "Name" }
-		%input{ :"ng-model" => "filters.languagesFilter", :type => "text", :class => "input-medium search-query", :placeholder => "Languages" }
 		%input{ :type => "submit", :value => "Filter", :class => "btn" }
+
+		%ul{ :class => "nav nav-pills" }
+			%li{ :"ng-repeat" => "(code, language) in languages", :class => "language", :"ng-class" => "{'active': language.selected}" }
+				%a{ :"ng-click" => "switchLanguage(code);" }
+					{{language.language}}
+
+
 
 %table{ :class => "entities table table-striped table-hover" }
 	%thead

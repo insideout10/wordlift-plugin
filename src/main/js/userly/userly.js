@@ -44,7 +44,7 @@
           return this.authToken = null;
         },
         getUrl: function() {
-          return "http://api.idntik.it:8081/api/";
+          return "https://api.idntik.it/api/";
         },
         execute: function(method, path, userName, password, storeAuthToken, data) {
           var authToken, deferred, that;

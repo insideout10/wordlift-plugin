@@ -37,7 +37,7 @@ angular
 			@authToken = null
 
 		getUrl: ->
-			"http://api.idntik.it:8081/api/"
+			"https://api.idntik.it/api/"
 			# "http://localizeme.dyndns.org:8081/api/"
 
 		execute: ( method, path, userName = null, password  = null, storeAuthToken = false, data = null) ->

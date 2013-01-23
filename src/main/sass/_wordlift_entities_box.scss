@@ -1,10 +1,13 @@
+$base-color: #F58996; // #C095CC;
+$confidence-color: #000;
+
 .mceContentBody .highlight {
-  background-color: lightGoldenrodYellow;
-  border: 1px solid darkgrey;
+  background-color: lighten( $base-color, 20% );
+  border: 1px solid $base-color;
   padding: 2px;
 
   &.strong {
-    background-color: yellow;
+    background-color: lighten( $base-color, 15% );
     font-weight: bold;
   }
 }
@@ -58,7 +61,7 @@
       margin: 0px;
       list-style: none;
 
-      border: 1px solid #C095CC;
+      border: 1px solid $base-color;
       border-bottom: 0px;
 
       background: white;
@@ -72,18 +75,18 @@
         padding: 0;
         margin: 0;
 
-        border-bottom: 1px solid #C095CC;
+        border-bottom: 1px solid $base-color;
 
         background: white;
 
         cursor: pointer;
 
         &.selected {
-          background: lighten( #C095CC, 20% );
+          background: lighten( $base-color, 15% );
         }
 
         &:hover {
-          background: lighten( #C095CC, 15% );
+          background: lighten( $base-color, 12% );
         }
 
         .entity-edit {
@@ -160,12 +163,12 @@
           bottom: 0;
 
           &.lowest {
-            height: 2px;
-            background: #C095CC;
+            height: 1px;
+            background: $confidence-color;
           }
           &.highest {
-            height: 4px;
-            background: lighten( #C095CC, 10% );
+            height: 2px;
+            background: lighten( $confidence-color, 10% );
           }
         }
       }

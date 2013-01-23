@@ -133,7 +133,7 @@
         filename="/php/insideout/wordlift/pages/WordLiftSettingsPage.php">
     </class>
     <wordpress:adminMenu pageTitle="Analysis Tasks" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
-        class="wordLiftSettingsPage" method="get" position="80" iconUrl="../wp-content/plugins/wordlift/sass/img/logo-wl-27x27.png" />
+        class="wordLiftSettingsPage" method="get" position="80" iconUrl="../wp-content/plugins/wordlift/sass/img/logo-wl-27x27.gif" />
 
     <class id="wordLiftRegisterLoginPage" name="WordLift_WordLiftRegisterLoginPage"
         filename="/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php">

@@ -2,7 +2,64 @@
 (function() {
 
   angular.element(document).ready(function() {
-    angular.module("wordliftApp", []).constant("BASE_URL", "../wp-content/plugins/wordlift/html/").constant("ENTITIES_DEFAULT_LIMIT", 10).constant("ENTITY_DEFAULT_LIMIT", 100).constant("DEFAULT_LIMIT", 10).config([
+    angular.module("wordliftApp", []).constant("BASE_URL", "../wp-content/plugins/wordlift/html/").constant("ENTITIES_DEFAULT_LIMIT", 10).constant("ENTITY_DEFAULT_LIMIT", 100).constant("DEFAULT_LIMIT", 10).constant("LANGUAGES", {
+      "en": {
+        language: "English",
+        selected: true
+      },
+      "es": {
+        language: "Spanish",
+        selected: false
+      },
+      "it": {
+        language: "Italian",
+        selected: false
+      },
+      "ru": {
+        language: "Russian",
+        selected: false
+      },
+      "pt": {
+        language: "Portuguese",
+        selected: false
+      },
+      "fr": {
+        language: "French",
+        selected: false
+      },
+      "de": {
+        language: "German",
+        selected: false
+      },
+      "zh": {
+        language: "Chinese",
+        selected: false
+      },
+      "sv": {
+        language: "Swedish",
+        selected: false
+      },
+      "da": {
+        language: "Danish",
+        selected: false
+      },
+      "ja": {
+        language: "Japanese",
+        selected: false
+      },
+      "cy": {
+        language: "Welsh",
+        selected: false
+      },
+      "ca": {
+        language: "Catalan",
+        selected: false
+      },
+      "ga": {
+        language: "Galician",
+        selected: false
+      }
+    }).config([
       "BASE_URL", "$httpProvider", "$locationProvider", "$routeProvider", function(BASE_URL, $httpProvider, $locationProvider, $routeProvider) {
         return $routeProvider.when("/list", {
           templateUrl: BASE_URL + "/entities-list.html",
@@ -35,37 +92,24 @@
         return $scope.goToPage(0);
       }
     ]).controller("EntityCtrl", [
-      "ENTITY_DEFAULT_LIMIT", "EntitiesService", "$location", "$routeParams", "$scope", "$log", function(ENTITY_DEFAULT_LIMIT, EntitiesService, $location, $routeParams, $scope, $log) {
+      "ENTITY_DEFAULT_LIMIT", "EntitiesService", "LANGUAGES", "$location", "$routeParams", "$scope", "$log", function(ENTITY_DEFAULT_LIMIT, EntitiesService, LANGUAGES, $location, $routeParams, $scope, $log) {
         var event, subject;
         event = "entity";
         subject = $routeParams["subject"];
-        $scope.languages = [];
+        $scope.languages = LANGUAGES;
         $scope.currentLanguage = "";
         $scope.isNewPropertyVisible = false;
         $scope.$on(event, function(event, data) {
-          var entity, _i, _len, _ref;
-          $scope.data = data;
-          $scope.languages = ["(none)"];
-          _ref = data.content;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            entity = _ref[_i];
-            if (entity.lang && -1 === $scope.languages.indexOf(entity.lang)) {
-              $scope.languages.push(entity.lang);
-            }
-          }
-          return $scope.languages = $scope.languages.sort();
+          return $scope.data = data;
         });
         $scope.showNewProperty = function() {
           return $scope.isNewPropertyVisible = !$scope.isNewPropertyVisible;
         };
-        $scope.setLanguage = function(language) {
-          return $scope.currentLanguage = language !== "(none)" ? language : "";
+        $scope.setLanguage = function(requestedCode) {
+          return $scope.currentLanguage = requestedCode;
         };
-        $scope.isCurrentLanguage = function(lang) {
-          if ($scope.currentLanguage === "" && (!(lang != null) || lang === "(none)")) {
-            return true;
-          }
-          return $scope.currentLanguage === lang;
+        $scope.isCurrentLanguage = function(requestedCode) {
+          return $scope.currentLanguage === requestedCode || ("" === $scope.currentLanguage && !(requestedCode != null));
         };
         $scope.$on("property.update", function(event, data) {
           return $scope.goToPage(0);
@@ -148,15 +192,32 @@
         return $scope.goToPage(0);
       }
     ]).controller("EntitiesCtrl", [
-      "ENTITIES_DEFAULT_LIMIT", "EntitiesService", "$location", "$scope", "$log", function(ENTITIES_DEFAULT_LIMIT, EntitiesService, $location, $scope, $log) {
+      "ENTITIES_DEFAULT_LIMIT", "EntitiesService", "LANGUAGES", "$location", "$scope", "$log", function(ENTITIES_DEFAULT_LIMIT, EntitiesService, LANGUAGES, $location, $scope, $log) {
+        $scope.languages = LANGUAGES;
         $scope.filters = {
           nameFilter: "",
-          languagesFilter: ""
+          languagesFilter: ["en"]
         };
         $scope.data = {
           page: 0,
           pages: 1,
           content: []
+        };
+        $scope.switchLanguage = function(language) {
+          $scope.languages[language].selected = !$scope.languages[language].selected;
+          return $scope.goToPage(0);
+        };
+        $scope.getLanguageFilter = function() {
+          var code, language, _ref, _results;
+          _ref = $scope.languages;
+          _results = [];
+          for (code in _ref) {
+            language = _ref[code];
+            if (language.selected) {
+              _results.push(code);
+            }
+          }
+          return _results;
         };
         $scope.$on("entities", function(event, data) {
           return $scope.data = data;
@@ -186,7 +247,7 @@
         $scope.goToPage = function(page) {
           return EntitiesService.list("wordlift.entities", "entities", {
             name: $scope.filters.nameFilter,
-            languages: $scope.filters.languagesFilter
+            languages: $scope.getLanguageFilter().join(",")
           }, page * ENTITIES_DEFAULT_LIMIT, ENTITIES_DEFAULT_LIMIT);
         };
         $scope.goToPreviousPage = function() {

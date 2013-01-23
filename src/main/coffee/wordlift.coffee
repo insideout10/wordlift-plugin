@@ -5,6 +5,50 @@ angular.element(document).ready ->
 		.constant( "ENTITIES_DEFAULT_LIMIT", 10)
 		.constant( "ENTITY_DEFAULT_LIMIT", 100)
 		.constant( "DEFAULT_LIMIT", 10)
+		.constant( "LANGUAGES", {
+			"en":
+				language: "English"
+				selected: true
+			"es":
+				language: "Spanish"
+				selected: false
+			"it":
+				language: "Italian"
+				selected: false
+			"ru":
+				language: "Russian" 
+				selected: false
+			"pt":
+				language: "Portuguese"
+				selected: false
+			"fr":
+				language: "French"
+				selected: false
+			"de":
+				language: "German"
+				selected: false
+			"zh":
+				language: "Chinese"
+				selected: false
+			"sv":
+				language: "Swedish"
+				selected: false
+			"da":
+				language: "Danish"
+				selected: false
+			"ja":
+				language: "Japanese"
+				selected: false
+			"cy":
+				language: "Welsh"
+				selected: false
+			"ca":
+				language: "Catalan" 
+				selected: false
+			"ga":
+				language: "Galician"
+				selected: false
+		} )
 		.config( [ "BASE_URL", "$httpProvider", "$locationProvider", "$routeProvider", ( BASE_URL, $httpProvider, $locationProvider, $routeProvider ) ->
 
 			# $locationProvider.html5Mode false
@@ -39,29 +83,28 @@ angular.element(document).ready ->
 			$scope.goToPage 0
 
 		])
-		.controller( "EntityCtrl", [ "ENTITY_DEFAULT_LIMIT", "EntitiesService", "$location", "$routeParams", "$scope", "$log", ( ENTITY_DEFAULT_LIMIT, EntitiesService, $location, $routeParams, $scope, $log ) ->
+		.controller( "EntityCtrl", [ "ENTITY_DEFAULT_LIMIT", "EntitiesService", "LANGUAGES", "$location", "$routeParams", "$scope", "$log", ( ENTITY_DEFAULT_LIMIT, EntitiesService, LANGUAGES, $location, $routeParams, $scope, $log ) ->
 
 			event = "entity"
 			subject = $routeParams[ "subject" ]
-			$scope.languages = []
+			$scope.languages = LANGUAGES
 			$scope.currentLanguage = "";
 			$scope.isNewPropertyVisible = false
 
 			$scope.$on event, (event, data) ->
 				$scope.data = data
-				$scope.languages = [ "(none)" ]
-				( $scope.languages.push entity.lang if entity.lang and -1 is $scope.languages.indexOf entity.lang ) for entity in data.content
-				$scope.languages = $scope.languages.sort()
+				# $scope.languages = [ "(none)" ]
+				# ( $scope.languages.push entity.lang if entity.lang and -1 is $scope.languages.indexOf entity.lang ) for entity in data.content
+				# $scope.languages = $scope.languages.sort()
 
 			$scope.showNewProperty = ->
 				$scope.isNewPropertyVisible = not $scope.isNewPropertyVisible
 
-			$scope.setLanguage = (language) ->
-				$scope.currentLanguage = if language isnt "(none)" then language else ""
+			$scope.setLanguage = (requestedCode) ->
+				$scope.currentLanguage = requestedCode
 
-			$scope.isCurrentLanguage = (lang) ->
-				return true if $scope.currentLanguage is "" and ( not lang? or lang is "(none)" )
-				$scope.currentLanguage is lang
+			$scope.isCurrentLanguage = (requestedCode) ->
+				$scope.currentLanguage is requestedCode or ( "" is $scope.currentLanguage and not requestedCode? )
 
 			$scope.$on "property.update", (event, data) ->
 				$scope.goToPage 0
@@ -102,7 +145,6 @@ angular.element(document).ready ->
 					type: ""
 					value: ""
 
-
 			$scope.deleteProperty = ( property ) ->
 				$scope.tmp = { property: property }
 				Avgrund.show "#delete-confirmation-dialog"
@@ -119,16 +161,25 @@ angular.element(document).ready ->
 			$scope.goToPage 0
 
 		])
-		.controller( "EntitiesCtrl", [ "ENTITIES_DEFAULT_LIMIT", "EntitiesService", "$location", "$scope", "$log", ( ENTITIES_DEFAULT_LIMIT, EntitiesService, $location, $scope, $log ) ->
+		.controller( "EntitiesCtrl", [ "ENTITIES_DEFAULT_LIMIT", "EntitiesService", "LANGUAGES", "$location", "$scope", "$log", ( ENTITIES_DEFAULT_LIMIT, EntitiesService, LANGUAGES, $location, $scope, $log ) ->
+
+			$scope.languages = LANGUAGES
 
 			$scope.filters = 
 				nameFilter : ""
-				languagesFilter: ""
+				languagesFilter: [ "en" ]
 
 			$scope.data =
 				page: 0
 				pages: 1
 				content: []
+
+			$scope.switchLanguage = (language) ->
+				$scope.languages[ language ].selected = not $scope.languages[ language ].selected
+				$scope.goToPage 0
+
+			$scope.getLanguageFilter = ->
+				( code for code, language of $scope.languages when language.selected )
 
 			$scope.$on "entities", (event, data) ->
 				$scope.data = data
@@ -145,7 +196,7 @@ angular.element(document).ready ->
 				[1 .. $scope.data.pages]
 
 			$scope.goToPage = (page) ->
-				EntitiesService.list "wordlift.entities", "entities", { name: $scope.filters.nameFilter, languages: $scope.filters.languagesFilter }, page * ENTITIES_DEFAULT_LIMIT, ENTITIES_DEFAULT_LIMIT
+				EntitiesService.list "wordlift.entities", "entities", { name: $scope.filters.nameFilter, languages: $scope.getLanguageFilter().join( "," ) }, page * ENTITIES_DEFAULT_LIMIT, ENTITIES_DEFAULT_LIMIT
 
 			$scope.goToPreviousPage = ->
 				$scope.goToPage ( $scope.data.page - 1 )

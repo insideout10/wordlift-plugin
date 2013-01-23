@@ -1,7 +1,8 @@
 $ = jQuery
 
-angular.module( "wordlift.disambiguate", [])
-  .controller "DisambiguationsController", ( $scope, $http, $timeout ) ->
+angular
+  .module( "wordlift.disambiguate", [])
+  .controller "DisambiguationsController", ( $scope, $http, $timeout, $log ) ->
 
     # get the post ID.
     postID = $( "#post_ID" ).val()
@@ -58,6 +59,7 @@ angular.module( "wordlift.disambiguate", [])
           "action": "wordlift.disambiguation"
           "postID": postID
       .success (data) ->
+        $log.info data
         $scope.disambiguations = data
     # .error (data, status, headers, config) ->
 

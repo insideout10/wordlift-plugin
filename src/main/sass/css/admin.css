@@ -170,6 +170,16 @@
 }
 
 /* line 1, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+#filter-form {
+  margin-bottom: 0 !important;
+}
+/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+#filter-form .nav.nav-pills {
+  margin-top: 20px;
+  margin-bottom: 0 !important;
+}
+
+/* line 10, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.image {
   margin: 6px 2px;
   background-size: contain;
@@ -177,19 +187,19 @@ div.image {
   background-position: center center;
 }
 
-/* line 11, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 20, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 table.entity div.image {
   width: 60px;
   height: 60px;
 }
 
-/* line 18, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 27, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 table.entities div.image {
   width: 20px;
   height: 20px;
 }
 
-/* line 24, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 33, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type {
   width: 20px;
   height: 20px;
@@ -198,27 +208,27 @@ div.type {
   background-repeat: no-repeat;
   background-position: center center;
 }
-/* line 36, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Place {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 39, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 48, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Organization {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 42, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.CreativeWork {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 54, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Person {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 48, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 57, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Event {
   background-image: url("../img/noun_project_404.svg");
 }
-/* line 51, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
+/* line 60, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss */
 div.type.Product {
   background-image: url("../img/noun_project_7341.svg");
 }
@@ -262,45 +272,49 @@ label {
   margin-right: 8px;
 }
 
-/* line 3, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+/* line 2, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+#wordliftApp .nav.nav-pills {
+  margin-bottom: 0;
+}
+/* line 6, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .add-property a {
   display: block;
   width: 300px;
   padding-left: 20px;
   background-repeat: no-repeat;
 }
-/* line 10, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+/* line 13, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .column-key {
   width: 320px;
 }
-/* line 15, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+/* line 18, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .new-property .type {
   width: 100px;
 }
-/* line 19, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
+/* line 22, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss */
 #wordliftApp .new-property .language {
   width: 40px;
 }
 
-/* line 1, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 4, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 .mceContentBody .highlight {
-  background-color: lightGoldenrodYellow;
-  border: 1px solid darkgrey;
+  background-color: #fde7ea;
+  border: 1px solid #f58996;
   padding: 2px;
 }
-/* line 6, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 9, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 .mceContentBody .highlight.strong {
-  background-color: yellow;
+  background-color: #fbd0d5;
   font-weight: bold;
 }
 
-/* line 12, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 15, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate {
   overflow: auto;
   font-size: 14px;
   font-family: Times;
 }
-/* line 18, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 21, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate .alert {
   display: block;
   margin: 0 0 10px;
@@ -314,7 +328,7 @@ label {
   font-size: 14px;
   line-height: 20px;
 }
-/* line 32, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 35, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation {
   overflow: hidden;
   float: left;
@@ -322,49 +336,49 @@ label {
   height: 41px;
   margin: 4px;
 }
-/* line 41, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 44, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation:hover {
   overflow: visible;
   height: auto;
 }
-/* line 45, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 48, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation:hover li {
   z-index: 1;
 }
-/* line 50, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 53, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation.working ul li {
   cursor: progress;
 }
-/* line 54, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 57, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul {
   width: 238px;
   padding: 0px;
   margin: 0px;
   list-style: none;
-  border: 1px solid #C095CC;
+  border: 1px solid #f58996;
   border-bottom: 0px;
   background: white;
 }
-/* line 66, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 69, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li {
   position: relative;
   overflow: auto;
   height: 39px;
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid #C095CC;
+  border-bottom: 1px solid #f58996;
   background: white;
   cursor: pointer;
 }
-/* line 81, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 84, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li.selected {
-  background: #e9daed;
+  background: #fbd0d5;
 }
-/* line 85, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 88, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li:hover {
-  background: #dfc9e5;
+  background: #fac1c8;
 }
-/* line 89, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 92, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .entity-edit {
   width: 14px;
   height: 14px;
@@ -372,12 +386,12 @@ label {
   margin-top: 4px;
   float: left;
 }
-/* line 96, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 99, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .entity-edit a {
   padding: 0;
   margin: 0;
 }
-/* line 102, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 105, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .image {
   float: left;
   width: 30px;
@@ -387,13 +401,13 @@ label {
   background-repeat: no-repeat;
   background-position: center center;
 }
-/* line 115, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 118, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .name {
   width: 220px;
   font-weight: bold;
   margin-top: 2px;
 }
-/* line 122, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 125, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type {
   position: absolute;
   right: 2px;
@@ -405,54 +419,54 @@ label {
   background-repeat: no-repeat;
   background-position: center center;
 }
-/* line 137, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 140, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type.place {
   background-image: url("../img/noun_project_462.svg");
 }
-/* line 140, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 143, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type.organization {
   background-image: url("../img/noun_project_921.svg");
 }
-/* line 143, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 146, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type.creativework {
   background-image: url("../img/noun_project_2572.svg");
 }
-/* line 146, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 149, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type.person {
   background-image: url("../img/noun_project_419.svg");
 }
-/* line 149, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 152, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type.event {
   background-image: url("../img/noun_project_404.svg");
 }
-/* line 152, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 155, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .type.product {
   background-image: url("../img/noun_project_7341.svg");
 }
-/* line 157, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 160, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .confidence {
   position: absolute;
   left: 0;
   bottom: 0;
 }
-/* line 162, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 165, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .confidence.lowest {
-  height: 2px;
-  background: #C095CC;
+  height: 1px;
+  background: black;
 }
-/* line 166, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 169, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate div.disambiguation ul li .confidence.highest {
-  height: 4px;
-  background: #d4b7dd;
+  height: 2px;
+  background: #1a1a1a;
 }
-/* line 177, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 180, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate .wordlift.job {
   overflow: auto;
   margin-bottom: 10px;
   padding: 4px;
   border-bottom: 1px solid lightgray;
 }
-/* line 185, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 188, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate .wordlift.job .refresh {
   float: left;
   width: 20px;
@@ -463,7 +477,7 @@ label {
   background-size: 20px;
   cursor: pointer;
 }
-/* line 199, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
+/* line 202, /Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss */
 #wordlift-disambiguate .wordlift.job .running {
   height: 20px;
   padding-left: 22px;
