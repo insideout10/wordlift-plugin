@@ -213,11 +213,9 @@
         if ($scope.registerForm.$valid) {
           SpinnerService.spin("registerForm");
           return UserRegistrationService.register({
-            application: {
-              applicationId: applicationId
-            },
             userName: $scope.username,
             password: $scope.password,
+            confirmPassword: $scope.passwordControl,
             email: $scope.email
           }).then(function(data) {
             $scope.alertClass = "alert-success";

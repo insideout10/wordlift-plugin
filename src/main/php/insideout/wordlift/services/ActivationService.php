@@ -3,7 +3,8 @@
 class WordLift_ActivationService {
 
 	public $logger;
-	public $url;
+	public $apiUrl;
+	public $menuUrl;
 
 	public function activate() {
 
@@ -23,7 +24,7 @@ class WordLift_ActivationService {
 						)
 					);
 		$context  = stream_context_create($options);
-		$result = file_get_contents( $this->url, false, $context );
+		$result = file_get_contents( $this->apiUrl, false, $context );
 
 		$json = json_decode( $result );
 
@@ -40,12 +41,12 @@ class WordLift_ActivationService {
 	}
 
 	private function getUrl() {
-		return admin_url( "options-general.php?page=wordlift_settings" );
+		return admin_url( $this->menuUrl );
 	}
 
 	private function getSiteKey() {
 
-		$url = $this->url . "?url=" . urlencode( $this->getUrl() );
+		$url = $this->apiUrl . "?url=" . urlencode( $this->getUrl() );
 
 		// use key 'http' even if you send the request to https://...
 		$options = array('http' =>

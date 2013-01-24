@@ -124,7 +124,7 @@
       };
     }
   ]).service("UserRegistrationService", [
-    "ApiService", "MessageService", "$q", "$log", function(ApiService, MessageService, $q, $log) {
+    "ApiService", "MessageService", "$http", "$q", "$log", function(ApiService, MessageService, $http, $q, $log) {
       return {
         activate: function(activationKey) {
           var deferred;
@@ -139,9 +139,13 @@
         register: function(data) {
           var deferred;
           deferred = $q.defer();
-          ApiService.execute("POST", "user", null, null, false, data).then(function(data) {
+          $http({
+            method: "POST",
+            url: "admin-ajax.php?action=wordlift.register",
+            data: data
+          }).success(function(data, status, headers, config) {
             return deferred.resolve(data);
-          }, function(data) {
+          }).error(function(data, status, headers, config) {
             return deferred.reject(data);
           });
           return deferred.promise;
@@ -177,24 +181,6 @@
       };
       return $scope.register = function() {
         return $location.path("/register");
-      };
-    }
-  ]).controller("UserRegistrationCtrl", [
-    "applicationId", "UserRegistrationService", "$location", "$scope", "$log", function(applicationId, UserRegistrationService, $location, $scope, $log) {
-      $scope.openLogin = function() {
-        return $location.path("/");
-      };
-      return $scope.register = function() {
-        if ($scope.registerForm.$valid) {
-          return UserRegistrationService.register({
-            application: {
-              applicationId: applicationId
-            },
-            userName: $scope.username,
-            password: $scope.password,
-            email: $scope.email
-          });
-        }
       };
     }
   ]).controller("UserActivationCtrl", [

@@ -38,7 +38,6 @@ angular
 
 		getUrl: ->
 			"https://api.idntik.it/api/"
-			# "http://localizeme.dyndns.org:8081/api/"
 
 		execute: ( method, path, userName = null, password  = null, storeAuthToken = false, data = null) ->
 			deferred = $q.defer()
@@ -103,7 +102,7 @@ angular
 			@setLoggedIn false
 
 	])
-	.service( "UserRegistrationService", [ "ApiService", "MessageService", "$q", "$log", ( ApiService, MessageService, $q, $log ) ->
+	.service( "UserRegistrationService", [ "ApiService", "MessageService", "$http", "$q", "$log", ( ApiService, MessageService, $http, $q, $log ) ->
 
 		activate: ( activationKey ) ->
 			deferred = $q.defer()
@@ -119,10 +118,14 @@ angular
 		register: ( data ) ->
 			deferred = $q.defer()
 
-			ApiService.execute( "POST", "user", null, null, false, data )
-				.then ( data ) ->
+			$http(
+					method: "POST"
+					url: "admin-ajax.php?action=wordlift.register"
+					data: data
+				)
+				.success (data, status, headers, config) ->
 					deferred.resolve data
-				, ( data ) ->
+				.error (data, status, headers, config) ->
 					deferred.reject data
 
 			deferred.promise
@@ -157,20 +160,6 @@ angular
 		$scope.register = ->
 			$location.path "/register"
 
-	])
-	.controller( "UserRegistrationCtrl", [ "applicationId", "UserRegistrationService", "$location", "$scope" ,"$log", ( applicationId, UserRegistrationService, $location, $scope, $log ) ->
-
-		$scope.openLogin = ->
-			$location.path "/"
-
-		$scope.register = ->
-			if $scope.registerForm.$valid
-				UserRegistrationService.register
-					application:
-						applicationId: applicationId
-					userName: $scope.username
-					password: $scope.password
-					email: $scope.email
 	])
 	.controller( "UserActivationCtrl", [ "applicationId", "MessageService", "UserRegistrationService", "$location", "$routeParams", "$scope" ,"$log", ( applicationId, MessageService, UserRegistrationService, $location, $routeParams, $scope, $log ) ->
 

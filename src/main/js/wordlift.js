@@ -175,15 +175,15 @@
           $scope.tmp = {
             property: property
           };
-          return Avgrund.show("#delete-confirmation-dialog");
+          return jQuery("#delete-confirmation-dialog").modal("show");
         };
         $scope.cancelDeleteProperty = function() {
           delete $scope.tmp.property;
-          return Avgrund.hide("#delete-confirmation-dialog");
+          return jQuery("#delete-confirmation-dialog").modal("hide");
         };
         $scope.confirmDeleteProperty = function() {
           var property;
-          Avgrund.hide("#delete-confirmation-dialog");
+          jQuery("#delete-confirmation-dialog").modal("hide");
           property = $scope.tmp.property;
           return EntitiesService.list("wordlift.property", "property.update", {
             "subject": subject

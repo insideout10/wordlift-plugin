@@ -147,14 +147,15 @@ angular.element(document).ready ->
 
 			$scope.deleteProperty = ( property ) ->
 				$scope.tmp = { property: property }
-				Avgrund.show "#delete-confirmation-dialog"
+				jQuery( "#delete-confirmation-dialog" ).modal "show"
+				# Avgrund.show 
 
 			$scope.cancelDeleteProperty = ->
 				delete $scope.tmp.property
-				Avgrund.hide "#delete-confirmation-dialog"
+				jQuery( "#delete-confirmation-dialog" ).modal "hide"
 
 			$scope.confirmDeleteProperty = ->
-				Avgrund.hide "#delete-confirmation-dialog"
+				jQuery( "#delete-confirmation-dialog" ).modal "hide"
 				property = $scope.tmp.property
 				EntitiesService.list "wordlift.property", "property.update", { "subject": subject }, null, null, "DELETE", property
 

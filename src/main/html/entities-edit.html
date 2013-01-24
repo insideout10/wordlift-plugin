@@ -1,25 +1,26 @@
-<aside class='avgrund-popup' id='delete-confirmation-dialog'>
-  <div class='alert alert-block'>
-    <button class='close' ng-click='cancelDeleteProperty()' type='button'>
+<div class='modal hide fade' id='delete-confirmation-dialog'>
+  <div class='modal-header'>
+    <button aria-hidden='true' class='close' data-dismiss='modal' ng-click='cancelDeleteProperty()' type='button'>
       &times;
     </button>
-    <h4>
+    <h3>
       Warning!
-    </h4>
-    Are you sure you want to delete the property? The action cannot be undone.
-    <br>
-    <br>
-    <div class='pagination-centered'>
-      <button class='btn btn-warning' ng-click='confirmDeleteProperty()'>
-        Delete
-      </button>
-      <button class='btn' ng-click='cancelDeleteProperty()'>
-        Cancel
-      </button>
-    </div>
+    </h3>
   </div>
-</aside>
-<div class='avgrund-cover'></div>
+  <div class='modal-body'>
+    <p>
+      Are you sure you want to delete the property? The action cannot be undone.
+    </p>
+  </div>
+  <div class='modal-footer'>
+    <a class='btn' href='javascript:void(0);' ng-click='cancelDeleteProperty()'>
+      Cancel
+    </a>
+    <a class='btn btn-primary' href='javascript:void(0);' ng-click='confirmDeleteProperty()'>
+      Delete
+    </a>
+  </div>
+</div>
 <div class='alert alert-info'>
   <span class='label label-info'>
     Edit an Entity

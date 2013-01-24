@@ -17,6 +17,13 @@
 
     <context name="wordLift" />
 
+    <class id="userRegistrationAjaxService" name="WordLift_UserRegistrationAjaxService"
+        filename="/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php">
+        <property name="apiUrl" value="http://localhost:8082/api/user" a="https://api.wordlift.it:25062/api/user" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.register" class="userRegistrationAjaxService"
+        method="register" authentication="true" capabilities="manage_options" httpMethod="POST" />
+
     <wordpress:script target="admin" name="wordlift"
             version="SNAPSHOT"
             footer="true"
@@ -102,6 +109,13 @@
     </class>
 
     <wordpress:style target="admin" name="bootstrap.min.css" url="/wp-content/plugins/wordlift/css/bootstrap.min.css" />
+    <wordpress:script target="admin" name="bootstrap.min.js"
+            version="2.2.2"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/bootstrap.min.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
     <wordpress:style target="admin" name="avgrund.css" url="/wp-content/plugins/wordlift/css/avgrund.css" />
     <wordpress:script target="admin" name="avgrund"
             version="0.1"
@@ -170,7 +184,8 @@
 
     <class id="activationService" name="WordLift_ActivationService"
         filename="/php/insideout/wordlift/services/ActivationService.php">
-        <property name="url" value="{wordlift-services-api}/site" />
+        <property name="apiUrl" value="{wordlift-services-api}/site" />
+        <property name="menuUrl" value="admin.php?page=wordlift_register_login" />
     </class>
 
     <class id="settingsValidator" name="WordLift_SettingsValidator"
