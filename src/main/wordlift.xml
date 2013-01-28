@@ -116,14 +116,6 @@
             <dependsOn name="jquery" />
     </wordpress:script>
 
-    <wordpress:style target="admin" name="avgrund.css" url="/wp-content/plugins/wordlift/css/avgrund.css" />
-    <wordpress:script target="admin" name="avgrund"
-            version="0.1"
-            footer="true"
-            url="/wp-content/plugins/wordlift/js/avgrund.js">
-            <dependsOn name="jquery" />
-    </wordpress:script>
-
     <class id="propertyAjaxService" name="WordLift_PropertyAjaxService"
         filename="/php/insideout/wordlift/ajax/PropertyAjaxService.php">
 
@@ -147,7 +139,7 @@
         filename="/php/insideout/wordlift/pages/WordLiftSettingsPage.php">
     </class>
     <wordpress:adminMenu pageTitle="Analysis Tasks" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
-        class="wordLiftSettingsPage" method="get" position="80" iconUrl="../wp-content/plugins/wordlift/sass/img/logo-wl-27x27.gif" />
+        class="wordLiftSettingsPage" method="get" position="81" iconUrl="../wp-content/plugins/wordlift/sass/img/wordlift-logo-18px.png" />
 
     <class id="wordLiftRegisterLoginPage" name="WordLift_WordLiftRegisterLoginPage"
         filename="/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php">
@@ -190,7 +182,7 @@
 
     <class id="settingsValidator" name="WordLift_SettingsValidator"
         filename="/php/insideout/wordlift/notices/SettingsValidator.php">
-        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;options-general.php?page=wordlift_register_login&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;admin.php?page=wordlift_register_login#/userlogin&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
         <property name="consumerKeyOptionName" value="{consumer-key-option-name}" />
     </class>
     <class id="siteKeyValidator" name="WordLift_SiteKeyValidator"
