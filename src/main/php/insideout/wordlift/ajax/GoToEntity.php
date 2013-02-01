@@ -2,17 +2,20 @@
 
 class WordLift_GoToEntity {
 
-	public $pageId = 21;
+    public $optionName;
 
-	public function redirectToEntity( $e ) {
+    public function redirectToEntity( $e )
+    {
 
-		$htmlEntityLink = get_page_link( $this->pageId );
-		$htmlEntityLink .= "?e=" . urlencode( $e );
+        $pageId = get_option($this->optionName);
+        $htmlEntityLink = get_page_link($pageId);
+        $htmlEntityLink .= (false === strpos($htmlEntityLink, "?") ? "?" : "&");
+        $htmlEntityLink .= "e=" . urlencode($e);
 
-		header( "Location: $htmlEntityLink" );
-		end();
+        header( "Location: $htmlEntityLink" );
+        end();
 
-	}
+    }
 
 }
 

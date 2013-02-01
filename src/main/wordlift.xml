@@ -14,8 +14,16 @@
     <property name="application-id" value="wordlift" />
     <property name="consumer-key-option-name" value="wordlift_consumer_key" />
     <property name="graph-uri" value="http://wordlift.it/graph" />
+    <property name="entity-page-id-option-name" value="_wordlift_entity_page_id" />
 
     <context name="wordLift" />
+
+    <class id="entityPageValidator" name="WordLift_Notices_EntityPageValidator"
+        filename="/php/insideout/wordlift/notices/EntityPageValidator.php">
+        <property name="optionName" value="{entity-page-id-option-name}" />
+        <property name="shortCode" value="wordlift.entity" />
+    </class>
+    <wordpress:notice class="entityPageValidator" method="validate" />
 
     <class id="userRegistrationAjaxService" name="WordLift_UserRegistrationAjaxService"
         filename="/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php">
@@ -63,7 +71,10 @@
     
 
     <class id="goToEntity" name="WordLift_GoToEntity"
-        filename="/php/insideout/wordlift/ajax/GoToEntity.php" />
+        filename="/php/insideout/wordlift/ajax/GoToEntity.php">
+
+        <property name="optionName" value="{entity-page-id-option-name}" />
+    </class>
     <wordpress:ajax service="ajaxService" action="wordlift.gotoentity" class="goToEntity" method="redirectToEntity"
                     authentication="false" capabilities="any" httpMethod="GET" />
 
