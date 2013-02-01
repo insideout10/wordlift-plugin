@@ -11,14 +11,8 @@ class WordLift_TripleStoreService {
     // the table prefix for the triple store tables.
     public $tablePrefix;
 
-    /**
-     * Get the triple store.
-     * @return ARC2_Store A triple store.
-     */
-    public function getStore() {
-
-        /** @var ARC2_Store $store */
-        $store = ARC2::getStore(array(
+    public function getConfig() {
+        return array(
             "ns" => array(
                 "rdf" => "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
                 "rdfs" => "http://www.w3.org/2000/01/rdf-schema#",
@@ -35,7 +29,17 @@ class WordLift_TripleStoreService {
             "db_user" => DB_USER,
             "db_pwd" => DB_PASSWORD,
             "store_name" => $this->tablePrefix
-        ));
+        );
+    }
+
+    /**
+     * Get the triple store.
+     * @return ARC2_Store A triple store.
+     */
+    public function getStore() {
+
+        /** @var ARC2_Store $store */
+        $store = ARC2::getStore($this->getConfig());
 
         if (!$store->isSetUp()) {
             $store->setUp();

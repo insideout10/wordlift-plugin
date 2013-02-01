@@ -79,16 +79,19 @@ EOF;
 
 		$predicates = $this->storeService->getResourcePredicates( $entityURI );
 
-		$name = $predicates[ self::NAME_URI ][ 0 ][ "value" ];
+		// $name = $predicates[ self::NAME_URI ][ 0 ][ "value" ];
+		$name = $this->getValue( $predicates[ self::NAME_URI ], array( "it", "en" ) );
 		$htmlName = h( $name );
 
 		$type = $predicates[ self::TYPE_URI ][ 0 ][ "value" ];
+		// $type = $this->getValue( $predicates[ self::TYPE_URI ], array( "it", "en" ) );
 		$htmlType = h( $type );
 
 		$simpleType = substr( $type, strrpos( $type, "/" ) + 1 );
 		$htmlSimpleType = h( $simpleType );
 
-		$description = $predicates[ self::DESCRIPTION_URI ][ 0 ][ "value" ];
+		// $description = $predicates[ self::DESCRIPTION_URI ][ 0 ][ "value" ];
+		$description = $this->getValue( $predicates[ self::DESCRIPTION_URI ], array( "it", "en" ) );
 		$htmlDescription = h( $description );
 
 
@@ -110,6 +113,14 @@ EOF;
 		return $content;
 	}
 
+	private function getValue( $values, $languages ) {
+		foreach ( $values as &$value ) :
+
+			if ( $languages[0] === $value[ "lang" ] )
+				return $value[ "value" ];
+
+		endforeach;
+	}
 
 }
 

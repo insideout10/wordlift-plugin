@@ -84,9 +84,12 @@
     <class id="sparqlEndPointAjaxService" name="WordLift_SparqlEndPointAjaxService"
         filename="/php/insideout/wordlift/ajax/SparqlEndPointAjaxService.php">
         <dependsOn filename="/php/arc2/ARC2.php" />
+
+        <property name="storeService" reference="tripleStoreService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.sparql" class="sparqlEndPointAjaxService" method="process"
                     authentication="true" capabilities="edit_posts" httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordlift.sparql" class="sparqlEndPointAjaxService" method="process" authentication="true" capabilities="edit_posts" httpMethod="POST" />
 
     <class id="queryService" name="WordLift_QueryService"
         filename="/php/insideout/wordlift/services/QueryService.php">
