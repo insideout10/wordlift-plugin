@@ -21,7 +21,8 @@ class WordLift_TripleStoreService {
                 "fise" => "http://fise.iks-project.eu/ontology/",
                 "wordlift" => "http://purl.org/insideout/wordpress/",
                 "dcterms" => "http://purl.org/dc/terms/",
-                "mysql" => "http://web-semantics.org/ns/mysql/" 
+                "mysql" => "http://web-semantics.org/ns/mysql/",
+                "changeset" => "http://purl.org/vocab/changeset/schema#"
             ),
             "bnode_prefix" => "bn",
             "db_host" => DB_HOST,

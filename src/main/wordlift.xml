@@ -18,6 +18,14 @@
 
     <context name="wordLift" />
 
+    <wordpress:action name="deleted_post" class="postsActionsSyncService" method="postDeleted" />
+    <wordpress:action name="save_post" class="postsActionsSyncService" method="postSaved" />
+    <class id="postsActionsSyncService" name="WordLift_Services_PostsActionsSyncService"
+        filename="/php/insideout/wordlift/services/PostsActionsSyncService.php">
+
+        <property name="queryService" reference="queryService" />
+    </class>
+
     <class id="entityPageValidator" name="WordLift_Notices_EntityPageValidator"
         filename="/php/insideout/wordlift/notices/EntityPageValidator.php">
         <property name="optionName" value="{entity-page-id-option-name}" />
