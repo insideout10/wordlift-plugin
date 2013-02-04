@@ -30,12 +30,15 @@ class WordLift_PostAjaxService {
         while ( 0 < count( $bind ) ) {
             $textAnnotation = array_shift( $bind );
 
-            $query = "INSERT INTO <> { ?entityAnnotation wordlift:selected true }
-                      WHERE {
+            $query = "INSERT INTO <> {
+                        ?entityAnnotation wordlift:selected true ;
+                                          dcterms:references <urn:wordpress:$postID> 
+                    }
+                    WHERE {
                         ?entityAnnotation a fise:EntityAnnotation .
                         ?entityAnnotation fise:entity-reference <$entity> .
                         ?entityAnnotation dcterms:relation <$textAnnotation> .
-                      }";
+                    }";
 
             $this->tripleStoreService->query( $query );
         }
@@ -49,17 +52,21 @@ class WordLift_PostAjaxService {
 
         $json = json_decode( $requestBody );
         $clear = &$json->clear;
+        $postID = $json->postID;
 
         $this->logger->trace( "[ entity :: $entity ][ clear :: " . var_export( $clear, true ) . " ]." );
 
         while ( 0 < count( $clear ) ) {
             $textAnnotation = array_shift( $clear );
 
-            $query = "DELETE { ?entityAnnotation wordlift:selected true }
-                      WHERE {
+            $query = "DELETE {
+                        ?entityAnnotation wordlift:selected true ; 
+                                          dcterms:references <urn:wordpress:$postID> . 
+                    }
+                    WHERE {
                         ?entityAnnotation a fise:EntityAnnotation;
-                                        dcterms:relation <$textAnnotation->about>
-                      }";
+                            dcterms:relation <$textAnnotation->about>
+                    }";
 
             $this->tripleStoreService->query( $query );
         }

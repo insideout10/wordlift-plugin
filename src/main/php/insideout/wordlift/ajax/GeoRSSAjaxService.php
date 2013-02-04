@@ -14,19 +14,26 @@ class WordLift_GeoRssAjaxService {
 
     public function get( $type = NULL ) {
 
-        $whereClause =  " ?enhancement a fise:Enhancement ; \n";
-        $whereClause .= "       wordlift:postID ?postID ; \n";
-        $whereClause .= "       wordlift:selected true ; \n";
-        $whereClause .= "       fise:entity-reference ?subject . \n";
-        $whereClause .= " ?subject a ?type ; \n";
-        $whereClause .= "       schema:name ?name ; \n";
-        $whereClause .= "       ?predicate [ \n";
-        $whereClause .= "         a schema:Place ; \n";
-        $whereClause .= "         schema:geo [ \n"; 
-        $whereClause .= "           schema:latitude ?latitude ; \n";
-        $whereClause .= "           schema:longitude ?longitude ] ] . \n";
-        $whereClause .= "   OPTIONAL { ?subject schema:image ?image } . \n";
-        $whereClause .= "   FILTER langMatches( lang(?name), \"" . $this->defaultLanguage . "\" ) . \n";
+        $whereClause = <<<EOF
+            ?enhancement a fise:Enhancement ;
+                wordlift:postID ?postID ;
+                wordlift:selected true ;
+                fise:entity-reference ?subject ;
+                dcterms:references [
+                    a dctype:Text ;
+                    dcterms:accessRights ?rights . 
+                ] . 
+            ?subject a ?type ;
+                schema:name ?name ;
+                ?predicate [
+                    a schema:Place ;
+                    schema:geo [ 
+                        schema:latitude ?latitude ;
+                        schema:longitude ?longitude ] ] .
+            OPTIONAL { ?subject schema:image ?image } .
+            FILTER langMatches( lang(?name), "$this->defaultLanguage" ) .
+            FILTER( ?rights = "publish" ) .
+EOF;
 
         if ( NULL === $type ) :
             $whereClause .= "   FILTER regex( str(?type), \"http://schema.org/\" ) . \n";

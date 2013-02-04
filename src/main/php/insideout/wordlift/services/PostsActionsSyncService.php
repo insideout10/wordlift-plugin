@@ -26,19 +26,57 @@ class WordLift_Services_PostsActionsSyncService
             "urn:wordpress:$postId" => array(
                 "http://purl.org/dc/terms/accessRights" => array(
                     array(
-                        WordLift_QueryService::VALUE_NAME => $status
+                        WordLift_QueryService::VALUE_NAME => "?rights"
                     )
                 ),
                 "http://purl.org/dc/terms/modified" => array(
                     array(
-                        WordLift_QueryService::VALUE_NAME => $modified
+                        WordLift_QueryService::VALUE_NAME => "?modified"
                     )
                 )
             )
         );
 
-        $query = $this->queryService->createStatement($data, WordLift_QueryService::INSERT_COMMAND);
-        $this->logger->trace($query);
+        $graphURI = $this->queryService->defaultGraphURI;
+        
+        $this->queryService->query(
+            $this->getQueryDelete($graphURI, $postId)
+        );
+
+        $this->logger->trace(
+            $this->getQueryInsert($graphURI, $postId, $status, $modified)
+        );
+        $this->queryService->query(
+            $this->getQueryInsert($graphURI, $postId, $status, $modified)
+        );
+    }
+
+    private function getQueryDelete($graphURI, $postId)
+    {
+
+        return <<<EOF
+
+        DELETE FROM <$graphURI> {
+            <urn:wordpress:$postId> a ?type . 
+            <urn:wordpress:$postId> <http://purl.org/dc/terms/accessRights> ?rights . 
+            <urn:wordpress:$postId> <http://purl.org/dc/terms/modified> ?modified . 
+        }
+EOF;
+
+    }
+
+    private function getQueryInsert($graphURI, $postId, $status, $modified)
+    {
+
+        return <<<EOF
+
+        INSERT INTO <$graphURI> {
+            <urn:wordpress:$postId> a <http://http://purl.org/dc/dcmitype/Text> .
+            <urn:wordpress:$postId> <http://purl.org/dc/terms/accessRights> "$status" . 
+            <urn:wordpress:$postId> <http://purl.org/dc/terms/modified> "$modified" . 
+        }
+EOF;
+
     } 
 
 }

@@ -25,16 +25,16 @@ class WordLift_EntitiesBar {
 
         $whereClause = <<<EOF
 
- [] a fise:Enhancement ;
-    wordlift:postID "$postId" ;
-    wordlift:selected true ;
-    fise:entity-reference ?subject .
- ?subject a ?type;
-   <http://schema.org/name> ?name ;
-   <http://schema.org/description> ?description .
- OPTIONAL { ?subject <http://schema.org/image> ?image } .
- OPTIONAL { ?subject <http://schema.org/jobTitle> ?title } .
- OPTIONAL { ?subject <http://schema.org/url> ?homepage } .
+            [] a fise:Enhancement ;
+                wordlift:postID "$postId" ;
+                wordlift:selected true ;
+                fise:entity-reference ?subject . 
+            ?subject a ?type;
+                <http://schema.org/name> ?name ;
+                <http://schema.org/description> ?description .
+            OPTIONAL { ?subject <http://schema.org/image> ?image } .
+            OPTIONAL { ?subject <http://schema.org/jobTitle> ?title } .
+            OPTIONAL { ?subject <http://schema.org/url> ?homepage } .
 EOF;
 
 		$fields = array( "subject", "name", "type", "description", "image", "title", "homepage" );
