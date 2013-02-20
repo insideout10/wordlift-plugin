@@ -30,11 +30,12 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
 
         return array(
             "mimeType" => $this->requestMimeType,
-            "content" => strip_tags( $text ),
+            "content" => strip_tags(str_replace("’", "'", $text)),
+            "chainName" => "wordlift",
             "configuration" => array(
                 "freebase.entity-recognition.search.score.minimum" => "10",
                 "freebase.entity-recognition.entity.score.minimum" => "0.5",
-                "freebase.entity-recognition.search.limit" => "5",
+                "freebase.entity-recognition.search.limit" => "10",
                 "schemaorg.language.filter" => "false"
             )
         );
@@ -46,12 +47,14 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
      * @param $request The request (created using the createJobRequest method).
      * @throws Exception
      */
-    public function sendJobRequest( $request ) {
+    public function sendJobRequest( $request )
+    {
 
         $this->logger->trace( "[ request :: " . var_export( $request, true ) . " ]" );
 
         $requestURL = $this->requestURL;
         $consumerKey = get_option( $this->consumerKeyOptionName );
+        $callbackURL = site_url($this->callbackURL);
 
         $params = array(
             $this->requestProtocol => array(
@@ -61,7 +64,7 @@ class WordLift_PlainTextJobRequestService implements WordLift_JobRequestService 
                     "Accept: $this->requestAcceptHeader",
                     "Application-Id: $this->applicationId",
                     "Consumer-Key: $consumerKey",
-                    "Callback-Url: $this->callbackURL",
+                    "Callback-Url: $callbackURL",
 
                 ),
                 "content" => json_encode( $request )
