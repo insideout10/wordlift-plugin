@@ -3,11 +3,11 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.1.1" override="true" />
+    <property name="version" value="2.1.2" override="true" />
     <property name="wpversion" value="3.1" override="true" />
 
     <!-- Fileset for all files -->
-    <fileset dir="src/main" id="AllSources">
+    <fileset dir="src/main" expandsymboliclinks="true" id="AllSources">
         <exclude name="coffee/**" />
         <exclude name="haml/**" />
         <exclude name="sass/**" />
