@@ -3,14 +3,14 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.1.2" override="true" />
-    <property name="wpversion" value="3.1" override="true" />
+    <property name="version" value="2.1.4" override="true" />
+    <property name="wpversion" value="3.3.0" override="true" />
+    <property name="wordliftsites" value="../home/var/www" override="true" />
 
     <!-- Fileset for all files -->
     <fileset dir="src/main" expandsymboliclinks="true" id="AllSources">
         <exclude name="coffee/**" />
         <exclude name="haml/**" />
-        <exclude name="sass/**" />
         <include name="*.xml" />
         <include name="*.php" />
         <include name="*.txt" />
@@ -21,6 +21,12 @@
         <include name="html/**" />
         <include name="css/**" />
         <include name="bootstrap/**" />
+        <include name="sass/css/**" />
+        <include name="sass/img/**" />
+    </fileset>
+
+    <fileset dir="${wordliftsites}" id="WordLiftSites">
+        <include name="wordlift-*/wp-content/plugins/wordlift" />
     </fileset>
 
     <target name="svn-update">
@@ -82,6 +88,42 @@
         <phingcall target="clean" />
         <phingcall target="build" />
     </target>
+
+    <target name="qa-clean">
+        <delete dir="../home/var/www/wordlift-3.1.0/wp-content/plugins/wordlift" includeemptydirs="true" />
+        <delete dir="../home/var/www/wordlift-3.3.0/wp-content/plugins/wordlift" includeemptydirs="true" />
+        <delete dir="../home/var/www/wordlift-3.4.2/wp-content/plugins/wordlift" includeemptydirs="true" />
+        <delete dir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" includeemptydirs="true" />
+    </target>
+
+    <target name="qa-copy">
+        <mkdir dir="../home/var/www/wordlift-3.1.0/wp-content/plugins/wordlift" />
+        <copy todir="../home/var/www/wordlift-3.1.0/wp-content/plugins/wordlift">
+            <fileset refid="AllSources" />
+        </copy>
+
+        <mkdir dir="../home/var/www/wordlift-3.3.0/wp-content/plugins/wordlift" />
+        <copy todir="../home/var/www/wordlift-3.3.0/wp-content/plugins/wordlift">
+            <fileset refid="AllSources" />
+        </copy>
+
+        <mkdir dir="../home/var/www/wordlift-3.4.2/wp-content/plugins/wordlift" />
+        <copy todir="../home/var/www/wordlift-3.4.2/wp-content/plugins/wordlift">
+            <fileset refid="AllSources" />
+        </copy>
+
+        <mkdir dir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
+        <copy todir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift">
+            <fileset refid="AllSources" />
+        </copy>
+    </target>
+
+    <target name="qa-update">
+        <phingcall target="qa-clean" />
+        <phingcall target="qa-copy" />
+    </target>
+
+    
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->
