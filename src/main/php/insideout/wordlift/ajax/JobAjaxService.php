@@ -50,18 +50,22 @@ class WordLift_JobAjaxService {
 
     }
 
-    public function getJob( $jobID = NULL, $postID = NULL ) {
+    public function getJob( $jobID = NULL, $postID = NULL )
+    {
 
-        $this->logger->trace( "[ jobID :: $jobID ][ postID :: $postID ]." );
+        // $this->logger->trace( "[ jobID :: $jobID ][ postID :: $postID ]." );
 
-        if ( NULL === $jobID && NULL === $postID )
+        if (NULL === $jobID && NULL === $postID)
+        {
             return WordPress_AjaxProxy::CALLBACK_RETURN_ERROR;
+        }
 
-        if ( NULL !== $jobID && "" !== $jobID )
-            return $this->jobService->getByJobID( $jobID );
+        if (!empty($jobID))
+        {
+            return $this->jobService->getByJobID($jobID);
+        }
 
-        return $this->jobService->getByPostID( $postID );
-
+        return $this->jobService->getByPostID($postID);
     }
 
     public function updateJob( $jobID, $jobState ) {
