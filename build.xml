@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="WordLiftPlugin" default="rebuild">
+    <property name="builddir" value="target" override="true" />
+    <property name="svndir" value="wordpress-svn" override="true" />
+    <property name="version" value="2.1.1" override="true" />
+    <property name="wpversion" value="3.1" override="true" />
+
+    <!-- Fileset for all files -->
+    <fileset dir="src/main" id="AllSources">
+        <exclude name="coffee/**" />
+        <exclude name="haml/**" />
+        <exclude name="sass/**" />
+        <include name="*.xml" />
+        <include name="*.php" />
+        <include name="*.txt" />
+        <include name="php/**" />
+        <include name="js/**" />
+        <include name="img/**" />
+        <include name="images/**" />
+        <include name="html/**" />
+        <include name="css/**" />
+        <include name="bootstrap/**" />
+    </fileset>
+
+    <target name="svn-update">
+        <echo msg="Updating SVN..." />
+        <exec command="svn up" dir="${svndir}" />
+    </target>
+
+    <target name="svn-copy">
+        <echo msg="Deleting ${svndir}/trunk..." />
+        <exec command="svn delete trunk --force" dir="${svndir}" />
+        <exec command="svn ci -m 'removed old trunk'" dir="${svndir}" />
+
+        <echo msg="Copying files to ${svndir}/trunk..." />
+        <mkdir dir="${svndir}/trunk" />
+        <copy todir="${svndir}/trunk">
+            <fileset refid="AllSources" />
+        </copy>
+
+        <echo msg="Updating files in ${svndir}/trunk..." />
+        <exec command="svn add trunk" dir="${svndir}" />
+        <exec command="replace {version} ${version} {wpversion} ${wpversion} -- trunk/readme.txt trunk/wordlift.php" dir="${svndir}" />
+        <exec command="svn ci -m 'commit plug-in updates'" dir="${svndir}" />
+    </target>
+
+    <target name="svn-tag">
+        <echo msg="Deleting tags/${version}..." />
+        <exec command="svn delete tags/${version} --force" dir="${svndir}" />
+
+        <echo msg="Copying trunk to tags/${version}..." />
+        <exec command="svn cp trunk tags/${version}" dir="${svndir}" />
+
+        <echo msg="Tagging version ${version}..." />
+        <exec command="svn ci -m 'tagging version ${version}'" dir="${svndir}" />
+
+
+        <echo msg="Updating..." />
+        <exec command="svn update" dir="${svndir}" />
+    </target>
+
+    <target name="svn">
+        <phingcall target="svn-update" />
+        <phingcall target="svn-copy" />
+        <phingcall target="svn-tag" />
+    </target>
+
+    <target name="clean">
+        <echo msg="Cleaning up ${builddir}..." />
+        <delete dir="${builddir}" />
+    </target>
+
+    <target name="build">
+        <echo msg="Copying files up ${builddir}..." />
+        <copy todir="${builddir}">
+            <fileset refid="AllSources" />
+        </copy>
+    </target>
+
+    <target name="rebuild">
+        <phingcall target="clean" />
+        <phingcall target="build" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directory ${builddir}" />
+        <mkdir dir="${builddir}" />
+    </target>
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT) Target: main                        -->
+    <!-- ============================================  -->
+    <target name="main" description="main target" depends="prepare">
+
+        <echo msg="Copying files to ${builddir}" />
+        <copy todir="${builddir}">
+            <fileset refid="AllSources" />
+        </copy>
+    </target>
+
+</project>

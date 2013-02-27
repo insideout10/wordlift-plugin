@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WordLift 2.0
-Plugin URI: http://wordlift.insideout.io
-Description: WordLift 2.0
-Version: 0.2.0
+Plugin Name: WordLift {version}
+Plugin URI: http://wordlift.it
+Description: Supercharge your WordPress Site with Semantic Tagging and schema.org - a brand new way to publish your contents on the Linked Open Data cloud.
+Version: {version}
 Author: InSideOut10
 Author URI: http://www.insideout.io
 License: APL
