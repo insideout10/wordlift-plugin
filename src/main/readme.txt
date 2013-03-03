@@ -1,33 +1,39 @@
 === Plugin Name ===
-Contributors: ziodave
+Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata
 Requires at least: {wpversion}
 Tested up to: 3.5.1
 Stable tag: {version}
 
-WordLift is a WordPress Plug-In to enrich user-created text (a blog post, article or web page) with HTML Microdata and to improve content findability.
+Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
 
 == Description ==
 
-**WordLift** is a WordPress Plug-In developed by [InSideOut10](http://www.linkedin.com/company/2184022?trk=tyah "InSideOut10 on LinkedIn") to enrich user-created text (a blog post, article or web page) with *HTML Microdata* and to improve content findability.
- 
-WordLift *reads* your pages or blog posts, *understands* it and *enriches* it by querying the semantic web and by adding the most relevant information using *HTML Microdata*. All the information retrieved can be manually edited by the author of the post (or page) and uses a markup vocabulary that all major search providers (Google, Bing and Yahoo!) recognized. 
+**WordLift** is a WordPress Plug-in developed by [InSideOut10](http://www.insideout.io) to help you organise your post and pages using "concepts" like you do in the real world. 
 
-Through a simple Plug-In all your contents will be instantly compliant with schema.org specifications for a better SEO.
- 
+"Concepts" are just like tags but let you add structure to your information providing you and your visitors many ways to filter and visualize your content. 
+
+We developed WordLift with love because we believe that your website deserve a special place in the Semantic Web.
+
+WordLift reads your pages or blog posts, understands it, *enriches it* by querying the semantic web and tags them using a markup vocabulary that all major search providers (Google, Bing, Yahoo! and Yandex) recognise. 
+
+Through a simple Plug-in all your contents will be instantly compliant with [schema.org](http://www.schema.org) specifications; moreover WordLift will add to your blog an interface to ask *meaning-driven questions* about your contents (hence connecting your website to the Linked Data Cloud).
+
+ * Organize your contents using "Concepts" (or Entities)
+ * Treemap, Geomap and Entity List available as add-on Widgets
+ * Multi-language support (see below)  
  * Attract more search traffic
- * Compatible with WordPress {wpversion} and above
+ * Compatible with WordPress 3.3.0 and above
  * Eye-catching supplementary SERP data
  * Instantly review and markup old post
- * Use the schema.org vocabulary
+ * Use the [schema.org](http://www.schema.org) vocabulary
  * Add HTML Microdata
+ * Enable a SPARQL end-point for your site
 
-The Plug-In uses [IKS](http://www.iks-project.eu/ "visit the IKS website") (Interactive Knowledge Stack) an open source technology for semantically enhanced Content Management Systems (CMS).
+WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
-WordLift is currently enhancing content entities related to people and places.
-
-For more information on the vocabulary used by WordLift you can visit [Schema.org](http://schema.org/ "Schema.org website") 
+The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* largest platform for semantic enrichment and search. 
 
 == Installation ==
 

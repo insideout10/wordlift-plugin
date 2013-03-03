@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: WordLift - Semantic Tagging and schema.org
+Plugin Name: WordLift
 Plugin URI: http://wordlift.it
-Description: Supercharge your WordPress Site with Semantic Tagging and schema.org - a brand new way to publish your contents on the Linked Open Data cloud.
+Description: Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
 Version: {version}
 Author: InSideOut10
 Author URI: http://www.insideout.io

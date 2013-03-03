@@ -16,6 +16,6 @@
 
     <root>
         <level value="trace" />
-        <appender_ref ref="default" />
+        <!-- <appender_ref ref="default" /> -->
     </root>
 </configuration>
