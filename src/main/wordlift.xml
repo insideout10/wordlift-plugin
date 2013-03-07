@@ -34,7 +34,7 @@
 
     <class id="userRegistrationAjaxService" name="WordLift_UserRegistrationAjaxService"
         filename="/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php">
-        <property name="apiUrl" value="http://localhost:8082/api/user" a="https://api.wordlift.it:25062/api/user" />
+        <property name="apiUrl" value="https://api.wordlift.it:25062/api/user" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.register" class="userRegistrationAjaxService"
         method="register" authentication="true" capabilities="manage_options" httpMethod="POST" />
