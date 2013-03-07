@@ -5,7 +5,8 @@
  */
 
 
-class WordLift_JobCallbackService {
+class WordLift_JobCallbackService
+{
 
     public $logger;
 
@@ -23,7 +24,7 @@ class WordLift_JobCallbackService {
 
     public $changeCreator;
 
-    public function callback( $headers, $requestBody )
+    public function callback($headers, $requestBody)
     {
 
         $jobID = $headers[ "Proxy-Transaction-Id" ];
@@ -45,13 +46,20 @@ class WordLift_JobCallbackService {
                 . "[ posts :: " . var_export( $posts, true ) . " ]."
             );
 
+            echo(
+                "No job found for id [ jobID :: $jobID ]"
+                . "[ posts :: " . var_export( $posts, true ) . " ]."
+            );
+
             return;
         }
 
         // get the post ID.
         $postID = $posts[0]->ID;
-        $this->logger->trace( "A post was found [ postID :: $postID ]"
-            . "[ jobID :: $jobID ].");
+        $this->logger->trace(
+            "A post was found [ postID :: $postID ]"
+            . "[ jobID :: $jobID ]."
+        );
 
         $this->logger->trace(
             "Removing existing enhancements [ postID :: $postID ]."
@@ -99,8 +107,10 @@ class WordLift_JobCallbackService {
             WordLift_JobService::COMPLETED
         );
 
-    }
+        echo("Data load completed successfully.");
 
+        return WordPress_AjaxProxy::CALLBACK_RETURN_NULL;
+    }
 }
 
 ?>
