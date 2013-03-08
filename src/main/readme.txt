@@ -6,7 +6,7 @@ Requires at least: {wpversion}
 Tested up to: 3.5.1
 Stable tag: {version}
 
-Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
+Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
 
 == Description ==
 
@@ -14,7 +14,7 @@ Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a br
 
 "Concepts" are just like tags but let you add structure to your information providing you and your visitors many ways to filter and visualize your content. 
 
-We developed WordLift with love because we believe that your website deserve a special place in the Semantic Web.
+We developed WordLift with love because we believe that your website deserves a special place in the Semantic Web.
 
 WordLift reads your pages or blog posts, understands it, *enriches it* by querying the semantic web and tags them using a markup vocabulary that all major search providers (Google, Bing, Yahoo! and Yandex) recognise. 
 
@@ -43,12 +43,24 @@ The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* l
 
 == Frequently Asked Questions ==
 
-= How can this plug-in increase the content fundability of my blog? =
+= How do I get my API-Key? =
 
-WordLift adds HTML Microdata using Schema.org vocabulary; Schema.org was designed by engineers from *Google*, *Yahoo* and *Bing* to make search engine results better and easier to use.
-WordLift allows you to provide attributes for sections of your web pages, this makes it easier for the search engines to extract specific information from the content of your pages with less guessing and this is likely to result in more precise results, inclusion of more information in the search engine result page and a better ranking.
+To grab an existing API-Key or to generate a new one, follow these steps:
+1. go to the **Register/Login** section in the WordLift menu on the Dashboard
+2. register using your Facebook, LinkedIn or Twitter account or choose login, password and e-mail by clicking *"Click here to register"*
+3. enter the **Consumer Key** and hit the **Save** button. API-Key provide full access to your WordLift account, so always keep them secure.
 
-There are many factors that shall be consider and for an in-depth understanding of what Schema.org means for SEO we suggest you the reading of [this article](http://www.seoskeptic.com/what-schema-org-means-for-seo-and-beyond/ "What Schema.org Means for SEO and Beyond").    
+= Can I use WordLift on other blogging platforms other then WordPress? =
+
+WordLift is powered by RedLink a semantic enrichment platform that is currently available for Drupal, Typo3, Alfresco and OpenCMS. Get in contact with us for more information, we'll be happy to help.
+
+= Which version of WordPress do you support? =
+
+We currently support WordPress 3.3.0 or higher.
+
+= What is an "entity"? =
+
+An entity is something that exists in the real-world: celebrities, cities, sports teams, buildings, geographical features, movies, celestial objects and works of art are all entities. WordLift by reading your posts and pages understands the real-world entities associated with your contents as well as their relationships —in geek-speak— it builds a “graph” of your website.
 
 = What do I do if I have questions? =
 
@@ -57,9 +69,12 @@ We're glad to support you and you can send us an e-mail to
 
 == Screenshots ==
 
-1. WordLift button appears on the editor toolbar: by clicking it WordLift will send the text of your article to our content enrichment platform.
-2. Here WordLift is analyzing the text provided and it is extracting the main content entities (limited to people and places for the current version); for each one it will query the semantic web and it will gather the information required by Schema.org to properly markup your pages.  
-3. The entities WordLift found shall be selected using your mouse and holding Shift or Command Key (Apple users only). Once the article is saved the proper markup will be shown in the HTML of the page and it can then be tested with the [Google Rich Snippets Testing Tool](http://www.google.com/webmasters/tools/richsnippets)      
+1. To add the schema.org mark-up simply add the [wordlift.entites] shortcode, WordLift will take care of the rest.
+2. User Registration
+3. WordLift Widget in Edit Post
+4. In order to add the Geo-map Widget use the shortcode <em>[wordlift.geomap]</em>
+5. In order to add the Treemap Widget use the shortcode <em>[wordlift.treemap]</em>
+
 == Changelog ==
 
 = 1.0 =
@@ -83,6 +98,9 @@ We're glad to support you and you can send us an e-mail to
 
 = 1.6 =
  * Fixed an issue that would prevent the plug-in from working. This upgrade is strongly recommended.
+
+ = 2.5.7 =
+ * Major release with fixes on the user registration.
 
 == Upgrade Notice ==
 
