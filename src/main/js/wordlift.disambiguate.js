@@ -129,7 +129,7 @@
           "postID": postID
         }
       }).success(function(data, status, headers, config) {
-        return $scope.state = data.jobState;
+        return $scope.state = data.jobState != null ? data.jobState : "click to analyze";
       }).error(function(data, status, headers, config) {
         return console.log(status);
       });

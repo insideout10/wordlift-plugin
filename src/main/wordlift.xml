@@ -153,8 +153,12 @@
     <class id="entitiesManagementPage" name="WordLift_EntitiesManagementPage"
         filename="/php/insideout/wordlift/pages/EntitiesManagementPage.php">
     </class>
-    <wordpress:adminMenu pageTitle="WordLift Entities" menuTitle="WordLift Entities" capability="edit_posts" menuSlug="entities_management"
-        class="entitiesManagementPage" method="get" position="6" iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
+    <wordpress:adminMenu pageTitle="WordLift Entities"
+        menuTitle="WordLift Entities"
+        capability="edit_posts"
+        menuSlug="entities_management"
+        class="entitiesManagementPage" method="get" position="6"
+        iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
 
     <class id="wordLiftSettingsPage" name="WordLift_WordLiftSettingsPage"
         filename="/php/insideout/wordlift/pages/WordLiftSettingsPage.php">
@@ -429,8 +433,10 @@
         <dependsOn name="angularjs" />
     </wordpress:script>
 
-    <wordpress:metaBox id="wordlift_entity_references_meta_box" title="WordLift Entities" class="entitiesHtmlMetaBox"
-                       postType="post" context="side" priority="high" />
+    <wordpress:metaBox id="wordlift_entity_references_meta_box"
+        title="WordLift Entities"
+        class="entitiesHtmlMetaBox"
+        postType="post" context="side" priority="high" />
 
 
     <!-- ***** J O B  A J A X  S E R V I C E ***** -->

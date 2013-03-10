@@ -3,7 +3,7 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.5.7" override="true" />
+    <property name="version" value="2.5.8" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
 
@@ -78,6 +78,9 @@
     </target>
 
     <target name="build">
+        <phingcall target="haml-build" />
+        <phingcall target="coffee-build" />
+
         <echo msg="Copying files up ${builddir}..." />
         <copy todir="${builddir}">
             <fileset refid="AllSources" />
@@ -123,7 +126,14 @@
         <phingcall target="qa-copy" />
     </target>
 
-    
+    <target name="haml-build">
+        <echo msg="Compiling the disambiguate widget..." />
+        <exec command="haml src/main/html/insideout/wordlift/source/disambiguate.html.haml src/main/html/insideout/wordlift/build/disambiguate.html" dir="." />
+    </target>
+
+    <target name="coffee-build">
+        <exec command="coffee --compile --output src/main/js/ src/main/coffee/wordlift.disambiguate.coffee" dir="." />
+    </target>
 
     <!-- ============================================  -->
     <!-- Target: prepare                               -->

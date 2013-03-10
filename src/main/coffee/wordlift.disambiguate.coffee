@@ -105,6 +105,8 @@ angular
 
   .controller "JobController", ($scope, $rootScope, $http, $timeout ) ->
 
+    # $scope.state = "click to analyze"
+
     postID = $( "#post_ID" ).val()
 
     $scope.getJob = ->
@@ -115,7 +117,7 @@ angular
           "action": "wordlift.job"
           "postID": postID
       .success (data, status, headers, config) ->
-        $scope.state = data.jobState
+        $scope.state = if data.jobState? then data.jobState else "click to analyze"
       .error (data, status, headers, config) ->
         console.log( status )
 
