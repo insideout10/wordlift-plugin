@@ -6,6 +6,7 @@
     <property name="version" value="2.5.8" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
+    <property name="sassdir" value="src/main/sass" override="true" />
 
     <!-- Fileset for all files -->
     <fileset dir="src/main" expandsymboliclinks="true" id="AllSources">
@@ -79,6 +80,7 @@
 
     <target name="build">
         <phingcall target="haml-build" />
+        <phingcall target="css-build" />
         <phingcall target="coffee-build" />
 
         <echo msg="Copying files up ${builddir}..." />
@@ -133,6 +135,11 @@
 
     <target name="coffee-build">
         <exec command="coffee --compile --output src/main/js/ src/main/coffee/wordlift.disambiguate.coffee" dir="." />
+    </target>
+
+    <target name="css-build">
+        <echo msg="Builing stylesheets..." />
+        <exec command="compass compile" dir="${sassdir}" />
     </target>
 
     <!-- ============================================  -->
