@@ -5,21 +5,36 @@
  */
 
 
-class WordLift_GeoMap {
+class WordLift_GeoMap
+{
 
-    public $defaultTypes = array( "Person", "Place", "Organization", "Event", "CreativeWork" );
-    public $urlTemplate = "wp-admin/admin-ajax.php?action=wordlift.georss&type={type}";
-    public $markerUrlTemplate = "wp-content/plugins/wordlift/images/marker_{type}.svg";
+    public $defaultTypes = array(
+        "Person",
+        "Place",
+        "Organization",
+        "Event",
+        "CreativeWork"
+    );
+    // public $urlTemplate = "wp-admin/admin-ajax.php?action=wordlift.georss&type={type}";
+    // public $markerUrlTemplate = "wp-content/plugins/wordlift/images/marker_{type}.svg";
 
-    public function get( $attributes, $content = NULL) {
+    public function get($attributes, $content = NULL)
+    {
 
         // javascript code fragment.
         $fragment = "";
 
+        $urlTemplate = site_url(
+            "wp-admin/admin-ajax.php?action=wordlift.georss&type={type}"
+        );
+        $markerUrlTemplate = site_url(
+            "wp-content/plugins/wordlift/images/marker_{type}.svg"
+        );
+
         $geoCount = count( $this->defaultTypes );
         foreach ( $this->defaultTypes as &$type ) :
-            $url = str_replace( "{type}", $type, $this->urlTemplate );
-            $markerUrl = str_replace( "{type}", strtolower( $type ), $this->markerUrlTemplate );
+            $url = str_replace( "{type}", $type, $urlTemplate);
+            $markerUrl = str_replace( "{type}", strtolower( $type ), $markerUrlTemplate );
             $fragment .= <<<EOF
 
 $( that ).mapify( 'geoRSS', {

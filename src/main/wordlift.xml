@@ -106,7 +106,7 @@
         <property name="storeService" reference="tripleStoreService" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.sparql" class="sparqlEndPointAjaxService" method="process"
-                    authentication="true" capabilities="edit_posts" httpMethod="GET" />
+                    authentication="false"  httpMethod="GET" />
     <wordpress:ajax service="ajaxService" action="wordlift.sparql" class="sparqlEndPointAjaxService" method="process" authentication="true" capabilities="edit_posts" httpMethod="POST" />
 
     <class id="queryService" name="WordLift_QueryService"

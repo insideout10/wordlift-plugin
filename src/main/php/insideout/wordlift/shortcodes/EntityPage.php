@@ -4,7 +4,8 @@ function h( $string ) {
 }
 
 
-class WordLift_EntityPage {
+class WordLift_EntityPage
+{
 
 	public $queryService;
 	public $storeService;
@@ -46,6 +47,10 @@ EOF;
 
 			$postID = &$row[ "postID" ];
 			$post = get_post( $postID );
+			if ("publish" !== $post->post_status)
+			{
+				continue;
+			}
 
 			// $fragment .= "<pre>" . var_export($post, true) . "</pre>";
 

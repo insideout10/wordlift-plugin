@@ -4,7 +4,8 @@
  * Date: 20/09/12 14:51
  */
 
-class WordLift_TreeMap {
+class WordLift_TreeMap
+{
 
     public $queryService;
 
@@ -16,17 +17,29 @@ class WordLift_TreeMap {
     public $maxSide = 200;
     public $minSide = 100;
 
-    public function get( $attributes, $content ) {
+    public function get($attributes, $content)
+    {
 
         // get the type filter.
-        $types = array( "Person", "Organization", "Place", "CreativeWork", "Event", "Product" );
+        $types = array(
+            "Person",
+            "Organization",
+            "Place",
+            "CreativeWork",
+            "Event",
+            "Product"
+        );
         $typeFilter = "";
 
-        $fragment = "<div class=\"entity-treemap-toolbar\"><div class=\"selector\" data-filter=\"\">All</div>";
+        $fragment = "<div class=\"entity-treemap-toolbar\">"
+            . "<div class=\"selector\" data-filter=\"\">All</div>";
 
-        if ( is_array( $attributes ) && array_key_exists( "types", $attributes ) ) :
+        if (
+            is_array( $attributes )
+            && array_key_exists( "types", $attributes)
+        ) {
             $types = explode( ",", $attributes[ "types" ] );
-        endif;
+        }
 
         foreach ( $types as &$type ) :
             $htmlSimpleTypeName = htmlspecialchars( $type, ENT_COMPAT | ENT_HTML401, "UTF-8" );;
@@ -107,7 +120,11 @@ EOF;
 
             $side = $this->minSide + ( $count - 1 ) * $interval;
             $htmlSubject = htmlspecialchars( $subject, ENT_COMPAT | ENT_HTML401, "UTF-8" );;
-            $fragment .= "<a class=\"entity-box $htmlSimpleTypeName\" style=\"width: " . $side . "px; height: " . $side . "px\" href=\"wp-admin/admin-ajax.php?action=wordlift.gotoentity&e=$htmlSubject\">";
+            $fragment .= "<a class=\"entity-box $htmlSimpleTypeName\""
+                . "style=\"width: " . $side . "px; height: " . $side . "px\""
+                . " href=\""
+                . site_url("wp-admin/admin-ajax.php")
+                . "?action=wordlift.gotoentity&e=$htmlSubject\">";
 
             $htmlName = htmlspecialchars( $name, ENT_COMPAT | ENT_HTML401, "UTF-8" );;
             $fragment .= "<div class=\"name\" style=\"font-size: " . ceil( $side * 0.1 ) . "px; line-height: " . ceil( $side * 0.1 ) . "px;\">$htmlName</div>";
