@@ -12,6 +12,24 @@ License: APL
 // bootstrap the WordPress framework.
 require_once("php/insideout/wordpress/bootstrap.php");
 
-WordPress_XmlApplication::setUp( dirname(__FILE__), "/wordlift.xml", "/log4php.xml" );
+WordPress_XmlApplication::setUp(
+    dirname(__FILE__),
+    "/wordlift.xml",
+    "/log4php.xml"
+);
 
+function wordlift_activate()
+{
+    delete_option("wordlift_consumer_key");
+    delete_option("wordlift_site_key");
+}
+
+function wordlift_deactivate()
+{
+    delete_option("wordlift_consumer_key");
+    delete_option("wordlift_site_key");
+}
+
+register_activation_hook(__FILE__, "wordlift_activate");
+register_deactivation_hook(__FILE__, "wordlift_deactivate");
 ?>

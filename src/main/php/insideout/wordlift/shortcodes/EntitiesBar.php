@@ -90,7 +90,7 @@ EOF;
             } 
 
             if ( NULL !== ( $description = $this->getValueByLanguage( $subject, "description", $languages ) ) ) {
-                $htmlDescription = strip_tags( &$description ); // htmlspecialchars( $description, ENT_COMPAT | ENT_HTML401, "UTF-8" );
+                $htmlDescription = strip_tags( $description ); // htmlspecialchars( $description, ENT_COMPAT | ENT_HTML401, "UTF-8" );
                 $fragment .= "<div class=\"description\" itemprop=\"description\">$htmlDescription<br/>";
 
                 if ( array_key_exists( "homepage", $subject ) )

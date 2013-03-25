@@ -12,6 +12,8 @@ Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a ne
 
 **WordLift** is a WordPress Plug-in developed by [InSideOut10](http://www.insideout.io) to help you organise your post and pages using "concepts" like you do in the real world. 
 
+**Warning:** WordLift is still under heavy testing, therefore some features might not work as expected or not work at all. Should you encounter any issue while installing, activating, configuring and using the plug-in, we would love to receive your feedback to support [AT] wordlift.it
+
 "Concepts" are just like tags but let you add structure to your information providing you and your visitors many ways to filter and visualize your content. 
 
 We developed WordLift with love because we believe that your website deserves a special place in the Semantic Web.

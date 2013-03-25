@@ -1,6 +1,7 @@
 <?php
 
-class WordLift_Notices_EntityPageValidator {
+class WordLift_Notices_EntityPageValidator
+{
 
     public $optionName;
     public $logger;
@@ -14,6 +15,8 @@ class WordLift_Notices_EntityPageValidator {
             $pageId = $this->createEntityPage();
             update_option($this->optionName, $pageId);
         }
+
+        return "";
     }
 
     private function createEntityPage()

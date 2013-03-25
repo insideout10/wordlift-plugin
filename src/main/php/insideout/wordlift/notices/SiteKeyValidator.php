@@ -1,35 +1,30 @@
 <?php
 
-class WordLift_SiteKeyValidator {
+class WordLift_SiteKeyValidator
+{
+    public $message;
+    public $activationService;
 
-	public $message;
+    public function validate()
+    {
+        $siteKey = get_option("wordlift_site_key");
 
-	public $activationService;
+        if (!empty($siteKey))
+            return "";
 
-	public function validate() {
-	  
-		$siteKey = get_option( 'wordlift_site_key' );
+        // try to activate and get a site key.
+        $this->activationService->activate();
 
-		if ( !empty( $siteKey ))
-			return;
+        $siteKey = get_option("wordlift_site_key");
 
-		// try to activate and get a site key.
-		$this->activationService->activate();
+        if (empty($siteKey)) {
+            echo("<div class=\"error\">");
+            echo($this->message);
+            echo("</div>");
+        }
 
-		$siteKey = get_option( 'wordlift_site_key' );
-
-		if ( !empty( $siteKey ))
-			return;
-
-echo <<<EOF
-
-	<div class="error">
-		$this->message
-	</div>
-
-EOF;
-
-	}
+        return "";
+    }
 }
 
 ?>

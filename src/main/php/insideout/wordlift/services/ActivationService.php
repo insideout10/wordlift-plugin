@@ -1,87 +1,105 @@
 <?php
 
-class WordLift_ActivationService {
+class WordLift_ActivationService
+{
 
-	public $logger;
-	public $apiUrl;
-	public $menuUrl;
+    public $logger;
+    public $apiUrl;
+    public $menuUrl;
 
-	public function activate() {
+    public function activate()
+    {
 
-		$this->logger->trace( "Activating the WordLift Plugin..." );
+        $this->logger->trace( "Activating the WordLift Plugin..." );
 
-		$data = array(
-			"url" => $this->getUrl()
-		);
+        if (!ini_get("allow_url_fopen")) {
+            echo("<div class=\"error\"><p>");
+            echo("<strong>Error</strong>: WordLift requires the"
+                    . " <em>allow_url_fopen</em>"
+                    . " setting to be set to <em>On</em> in your"
+                    . " <em>php.ini</em> configuration file.");
+            echo("</p></div>");
 
-		// use key 'http' even if you send the request to https://...
-		$options = array('http' =>
-						array(
-							'method'  => 'POST',
-							'content' => json_encode( $data ),
-							'header'=>  "Content-Type: application/json\r\n" .
-										"Accept: application/json\r\n"
-						)
-					);
-		$context  = stream_context_create($options);
-		$result = file_get_contents( $this->apiUrl, false, $context );
+            return;
+        }
 
-		$json = json_decode( $result );
+        $data = array(
+            "url" => $this->getUrl()
+        );
 
-		if ( property_exists( $json, "key") )
-			$siteKey = $json->key;
-		else
-			$siteKey = $this->getSiteKey();			
+        // use key 'http' even if you send the request to https://...
+        $options = array('http' =>
+            array(
+                'method'  => 'POST',
+                'content' => json_encode( $data ),
+                'header'=>  "Content-Type: application/json\r\n" .
+                            "Accept: application/json\r\n"
+            )
+        );
 
-		if ( NULL != $siteKey )
-			add_option( "wordlift_site_key", $siteKey );
+        $context  = stream_context_create($options);
+        $result = file_get_contents( $this->apiUrl, false, $context );
 
-		// create a phantom page for the entity page.
-		$this->createPage();
-	}
+        $json = json_decode( $result );
 
-	private function getUrl() {
-		return admin_url( $this->menuUrl );
-	}
+        if ( property_exists( $json, "key") )
+            $siteKey = $json->key;
+        else
+            $siteKey = $this->getSiteKey();         
 
-	private function getSiteKey() {
+        if ( null !== $siteKey )
+            add_option( "wordlift_site_key", $siteKey );
 
-		$url = $this->apiUrl . "?url=" . urlencode( $this->getUrl() );
+        // create a phantom page for the entity page.
+        $this->createPage();
+    }
 
-		// use key 'http' even if you send the request to https://...
-		$options = array('http' =>
-						array(
-							'method'  => 'GET',
-							'header'=>  "Content-Type: application/json\r\n" .
-										"Accept: application/json\r\n"
-						)
-					);
-		$context  = stream_context_create($options);
-		$result = file_get_contents( $url, false, $context );
+    private function getUrl() {
+        return admin_url( $this->menuUrl );
+    }
 
-		$json = json_decode( $result );
+    private function getSiteKey()
+    {
 
-		if ( property_exists( $json, "key") )
-			return $json->key;
-		else
-			return NULL;
-	}
+        $url = $this->apiUrl . "?url=" . urlencode( $this->getUrl() );
 
-	private function createPage() {
+        // use key 'http' even if you send the request to https://...
+        $options = array('http' =>
+                        array(
+                            'method'  => 'GET',
+                            'header'=>  "Content-Type: application/json\r\n" .
+                                        "Accept: application/json\r\n"
+                        )
+                    );
+        $context  = stream_context_create($options);
+        $result = file_get_contents( $url, false, $context );
 
-		$entityPage = array(
-				"post_type" => "page",
-				"post_status" => "publish",
-				"post_name" => "entity",
-				"post_content" => "[wordlift.entity]"
-			);
+        $json = json_decode( $result );
 
-		$error = NULL;
-		wp_insert_post( $post, $error );
+        if (property_exists($json, "key"))
+            return $json->key;
 
-		$this->logger->info( var_dump($error) );
+        echo("<div class=\"error\"><p>");
+        echo("An error occurred: ");
+        echo(var_export($json));
+        echo("</p></div>");
+    }
 
-	}
+    private function createPage()
+    {
+
+        $entityPage = array(
+            "post_type" => "page",
+            "post_status" => "publish",
+            "post_name" => "entity",
+            "post_content" => "[wordlift.entity]"
+        );
+
+        $error = null;
+        wp_insert_post($entityPage, $error);
+
+        $this->logger->info(var_export($error, true));
+    }
 
 }
 

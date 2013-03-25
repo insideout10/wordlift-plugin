@@ -13,6 +13,9 @@
       }).when("/register", {
         templateUrl: "" + baseUrl + "/html/userly/register.html",
         controller: "RegisterCtrl"
+      }).when("/activate/:activationKey", {
+        templateUrl: "" + baseUrl + "/html/userly/login.html",
+        controller: "UserActivationCtrl"
       }).otherwise({
         redirectTo: "/userlogin"
       });
@@ -218,10 +221,15 @@
             confirmPassword: $scope.passwordControl,
             email: $scope.email
           }).then(function(data) {
-            $scope.alertClass = "alert-success";
-            $scope.alert = "<strong>Good!</strong> Registration is successful, your consumer key has been set and you're ready to go. <strong>Don't forget to activate you're account though</strong>, by clicking the link we sent to your e-mail address.";
-            WordPressOptionsService.setOption(consumerKeyOptionName, data.consumerKey);
-            return SpinnerService.stop("registerForm");
+            SpinnerService.stop("registerForm");
+            if ((data.userName != null)) {
+              $scope.alertClass = "alert-success";
+              $scope.alert = "<strong>Good!</strong> Registration is successful, your consumer key has been set and you're ready to go. <strong>Don't forget to activate you're account though</strong>, by clicking the link we sent to your e-mail address.<br/><br/><strong>Warning</strong>: for the time being, if successful, the activation page will be blank, nothing will be displayed. We're working on that.";
+              return WordPressOptionsService.setOption(consumerKeyOptionName, data.consumerKey);
+            } else {
+              $scope.alertClass = "alert-error";
+              return $scope.alert = "<strong>Ouch!</strong> Registration failed, please try with a different username.";
+            }
           }, function(data) {
             $scope.alertClass = "alert-error";
             $scope.alert = "<strong>Ouch!</strong> Registration failed: " + data.message + "\n<small>(" + data.simpleName + ")</small>";

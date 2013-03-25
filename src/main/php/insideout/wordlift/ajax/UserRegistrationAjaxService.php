@@ -9,13 +9,6 @@ class WordLift_UserRegistrationAjaxService
     {
         $siteKey = get_option("wordlift_site_key");
 
-        $data = array(
-            "userName" => $userName,
-            "email" => $email,
-            "password" => $password,
-            "confirmPassword" => $confirmPassword
-        );
-
         $options = array(
             "http" => array(
                 "method"  => "POST",
