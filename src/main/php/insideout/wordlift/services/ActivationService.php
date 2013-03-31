@@ -7,82 +7,115 @@ class WordLift_ActivationService
     public $apiUrl;
     public $menuUrl;
 
+    public $operations;
+
     public function activate()
     {
 
         $this->logger->trace( "Activating the WordLift Plugin..." );
 
-        if (!ini_get("allow_url_fopen")) {
+        $siteKey = $this->getSiteKey();
+        
+        // add the key locally if the site is registered already.
+        if (null !== $siteKey) {
+            add_option("wordlift_site_key", $siteKey);
+
+            echo("<div class=\"updated\"><p>");
+            echo("<strong>Information</strong>: the WordLift site key has"
+                . " been set successfully.");
+            echo("</p></div>");
+
+            // create a phantom page for the entity page.
+            $this->createPage();
+
+            return;
+        }
+
+        // request a site key.
+        $operations = WordLift_HttpOperations::create(
+            $this->apiUrl,
+            WordLift_HttpOperations::CONTENT_TYPE_JSON,
+            WordLift_HttpOperations::CONTENT_TYPE_JSON
+        );
+
+        $response = $operations->post(
+            null,
+            json_encode(
+                array(
+                    "url" => $this->getUrl()
+                )
+            )
+        );
+
+        if (is_wp_error($response)) {
+            $errorMessage = $response->get_error_message();
             echo("<div class=\"error\"><p>");
-            echo("<strong>Error</strong>: WordLift requires the"
-                    . " <em>allow_url_fopen</em>"
-                    . " setting to be set to <em>On</em> in your"
-                    . " <em>php.ini</em> configuration file.");
+            echo("<strong>Error</strong>: WordLift could not set or get a"
+                . " valid site key ($errorMessage while connecting to "
+                . "$this->apiUrl).");
             echo("</p></div>");
 
             return;
         }
 
-        $data = array(
-            "url" => $this->getUrl()
-        );
+        $respObject = json_decode($response["body"]);
+        if (property_exists($respObject, "key")) {
+            add_option("wordlift_site_key", $respObject->key);
 
-        // use key 'http' even if you send the request to https://...
-        $options = array('http' =>
-            array(
-                'method'  => 'POST',
-                'content' => json_encode( $data ),
-                'header'=>  "Content-Type: application/json\r\n" .
-                            "Accept: application/json\r\n"
-            )
-        );
+            echo("<div class=\"updated\"><p>");
+            echo("<strong>Information</strong>: the WordLift site key has"
+                . " been set successfully.");
+            echo("</p></div>");
 
-        $context  = stream_context_create($options);
-        $result = file_get_contents( $this->apiUrl, false, $context );
+            // create a phantom page for the entity page.
+            $this->createPage();
 
-        $json = json_decode( $result );
+            return;
+        }
 
-        if ( property_exists( $json, "key") )
-            $siteKey = $json->key;
-        else
-            $siteKey = $this->getSiteKey();         
 
-        if ( null !== $siteKey )
-            add_option( "wordlift_site_key", $siteKey );
-
-        // create a phantom page for the entity page.
-        $this->createPage();
+        echo("<div class=\"error\"><p>");
+        echo("<strong>Error</strong>: WordLift could not set or get a valid"
+                . " site key.");
+        echo("</p></div>");
     }
 
-    private function getUrl() {
-        return admin_url( $this->menuUrl );
+    private function getUrl()
+    {
+        return admin_url($this->menuUrl);
     }
 
     private function getSiteKey()
     {
+        $operations = WordLift_HttpOperations::create(
+            $this->apiUrl,
+            WordLift_HttpOperations::CONTENT_TYPE_JSON,
+            WordLift_HttpOperations::CONTENT_TYPE_JSON
+        );
 
-        $url = $this->apiUrl . "?url=" . urlencode( $this->getUrl() );
+        $response = $operations->get(
+            array(
+                "url" => $this->getUrl()
+            )
+        );
 
-        // use key 'http' even if you send the request to https://...
-        $options = array('http' =>
-                        array(
-                            'method'  => 'GET',
-                            'header'=>  "Content-Type: application/json\r\n" .
-                                        "Accept: application/json\r\n"
-                        )
-                    );
-        $context  = stream_context_create($options);
-        $result = file_get_contents( $url, false, $context );
+        if (is_wp_error($response)) {
+            $errorMessage = $response->get_error_message();
+            echo("<div class=\"error\"><p>");
+            echo("<strong>Error</strong>: WordLift could not set or get a"
+                . " valid site key ($errorMessage while connecting to "
+                . "$this->apiUrl).");
+            echo("</p></div>");
 
-        $json = json_decode( $result );
+            return null;
+        }
 
-        if (property_exists($json, "key"))
-            return $json->key;
+        $respObject = json_decode($response["body"]);
+        if (property_exists($respObject, "key")) {
+            return $respObject->key;
+        } 
 
-        echo("<div class=\"error\"><p>");
-        echo("An error occurred: ");
-        echo(var_export($json));
-        echo("</p></div>");
+        return null;
     }
 
     private function createPage()

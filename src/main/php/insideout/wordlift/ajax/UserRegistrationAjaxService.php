@@ -9,21 +9,35 @@ class WordLift_UserRegistrationAjaxService
     {
         $siteKey = get_option("wordlift_site_key");
 
-        $options = array(
-            "http" => array(
-                "method"  => "POST",
-                "content" => $requestBody,
-                "header" =>  "Content-Type: application/json\r\n" .
-                            "Accept: application/json\r\n" .
-                            "Site-Key: $siteKey"
-            )
+        $operations = WordLift_HttpOperations::create(
+            $this->apiUrl,
+            WordLift_HttpOperations::CONTENT_TYPE_JSON,
+            WordLift_HttpOperations::CONTENT_TYPE_JSON,
+            array("Site-Key" => $siteKey)
         );
 
-        $context  = stream_context_create($options);
-        $result = file_get_contents($this->apiUrl, false, $context);
-        $response = json_decode($result);
+        $response = $operations->post(
+            null,
+            $requestBody
+        );
 
-        return $response;
+        return json_decode($response["body"]);
+
+        // $options = array(
+        //     "http" => array(
+        //         "method"  => "POST",
+        //         "content" => $requestBody,
+        //         "header" =>  "Content-Type: application/json\r\n" .
+        //                     "Accept: application/json\r\n" .
+        //                     "Site-Key: $siteKey"
+        //     )
+        // );
+
+        // $context  = stream_context_create($options);
+        // $result = file_get_contents($this->apiUrl, false, $context);
+        // $response = json_decode($result);
+
+        // return $response;
     }
 }
 

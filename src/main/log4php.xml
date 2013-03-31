@@ -6,8 +6,7 @@
         </layout>
 
         <param name="append" value="true" />
-        <!-- param name="file" value="/var/log/wordlift/wordlift.log" / -->
-        <param name="file" value="/Users/david/Developer/wordlift/home/log/wordlift.log" />
+        <param name="file" value="/var/log/wordlift/wordlift.log" />
         <filter class="LoggerFilterStringMatch">
             <param name="StringToMatch" value="WordPress_XmlApplication" />
             <param name="AcceptOnMatch" value="false" />
@@ -16,6 +15,6 @@
 
     <root>
         <level value="trace" />
-        <!-- <appender_ref ref="default" /> -->
+       <!--  <appender_ref ref="default" /> -->
     </root>
 </configuration>

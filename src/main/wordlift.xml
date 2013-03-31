@@ -34,6 +34,8 @@
 
     <class id="userRegistrationAjaxService" name="WordLift_UserRegistrationAjaxService"
         filename="/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
+
         <property name="apiUrl" value="https://api.wordlift.it:25062/api/user" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.register" class="userRegistrationAjaxService"
@@ -157,7 +159,7 @@
         menuTitle="WordLift Entities"
         capability="edit_posts"
         menuSlug="entities_management"
-        class="entitiesManagementPage" method="get" position="6"
+        class="entitiesManagementPage" method="get" position="14.759"
         iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
 
     <class id="wordLiftSettingsPage" name="WordLift_WordLiftSettingsPage"
@@ -201,6 +203,8 @@
 
     <class id="activationService" name="WordLift_ActivationService"
         filename="/php/insideout/wordlift/services/ActivationService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
+
         <property name="apiUrl" value="{wordlift-services-api}/site" />
         <property name="menuUrl" value="admin.php?page=wordlift_register_login" />
     </class>
@@ -458,15 +462,11 @@
     <!-- ***** J O B  R E Q U E S T  S E R V I C E ***** -->
     <class id="jobRequestService" name="WordLift_PlainTextJobRequestService"
            filename="/php/insideout/wordlift/services/PlainTextJobRequestService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
         <dependsOn filename="/php/insideout/wordlift/services/JobRequestService.php" />
 
         <property name="callbackURL" value="wp-admin/admin-ajax.php?action=wordlift.callback" />
         <property name="requestMimeType" value="application/rdf+xml" />
-
-        <property name="requestProtocol" value="http" />
-        <property name="requestHttpMethod" value="POST" />
-        <property name="requestContentTypeHeader" value="application/json" />
-        <property name="requestAcceptHeader" value="application/json" />
 
         <property name="requestURL" value="{wordpress-api-url}" />
         <property name="applicationId" value="{application-id}" />
