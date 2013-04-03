@@ -4,24 +4,19 @@
  * Date: 15/07/12 21:23
  */
 
-class WordLift_PostEntitiesServices {
+class WordLift_PostEntitiesService
+{
 
     public $logger;
-	public $queryService;
+    public $queryService;
 
-    public function get( $attributes, $content = NULL) {
+    public function get($postId = null)
+    {
 
-    	// get the current post ID.
-    	$postId = get_the_ID();
-
-        if ( ! is_numeric( $postId ) )
-            return "unknown post id " . $content;
-
-    	// will containt the content fragment to send back to the client.
-    	$fragment = "";
-
-        // get the post languages.
-        $languages = $this->getPostLanguages( $postId );
+        // get the current post ID.
+        if (null === $postId) {
+            $postId = get_the_ID();    
+        }
 
         $whereClause = <<<EOF
 
@@ -37,7 +32,7 @@ class WordLift_PostEntitiesServices {
             OPTIONAL { ?subject <http://schema.org/url> ?homepage } .
 EOF;
 
-		$fields = array( "subject", "name", "type", "description", "image", "title", "homepage" );
+        $fields = array( "subject", "name", "type", "description", "image", "title", "homepage" );
 
         // public function execute( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, &$count = NULL, $groupBy = NULL ) {
         $results = $this->queryService->execute( "DISTINCT ?" . implode( " ?", $fields ) , $whereClause );
@@ -50,10 +45,12 @@ EOF;
         // $this->logger->trace( "preparing index..." );
         foreach ( $rows as &$row )
             foreach ( $fields as &$field )
-	            $this->addToIndex( $index, $row[ "subject" ], $row, $field );
+                $this->addToIndex( $index, $row[ "subject" ], $row, $field );
         // $this->logger->trace( "index ready." );
 
-		$fragment .= "<div class=\"entity-container\"><ul class=\"entity-list\">";
+        return $index;
+
+        $fragment .= "<div class=\"entity-container\"><ul class=\"entity-list\">";
 
         while ( NULL !== ( $key = key( $index ) ) ) :
 
@@ -122,15 +119,15 @@ EOF;
         if ( ! array_key_exists( $field, $row ) || empty( $row[ $field ] ) )
             return;
 
-    	// create an empty array for the field if it doesn't exist.
-    	if ( ! array_key_exists( $subject, $index ) ) :
-    		$index[ $subject ] = array( $field => array() );
+        // create an empty array for the field if it doesn't exist.
+        if ( ! array_key_exists( $subject, $index ) ) :
+            $index[ $subject ] = array( $field => array() );
         elseif ( ! array_key_exists( $field, $index[ $subject ] ) ) :
             $index[ $subject ][ $field ] = array();
         endif;
 
-    	// if we're here, we've got data, then:
-    	// set the value
+        // if we're here, we've got data, then:
+        // set the value
         $var = array(
             "value" => $row[ $field ]
         );
@@ -144,14 +141,14 @@ EOF;
             $index[ $subject ][ $field ][] = $var;
     }
 
-    private function getFirstValue( &$array, $key ) {
+    public function getFirstValue( &$array, $key ) {
         if ( 0 === count( $array[ $key ] ) )
             return NULL;
 
         return $array[ $key ][0][ "value" ];
     }
 
-    private function getValueByLanguage( &$array, $key, $languages ) {
+    public function getValueByLanguage( &$array, $key, $languages ) {
         if ( 0 === count( $array[ $key ] ) )
             return NULL;
 
@@ -166,7 +163,7 @@ EOF;
         return NULL;
     }
 
-    private function getPostLanguages( $postId ) {
+    public function getPostLanguages( $postId ) {
 
         $whereClause = <<<EOF
 

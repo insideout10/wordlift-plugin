@@ -83,7 +83,7 @@
         <phingcall target="css-build" />
         <phingcall target="coffee-build" />
 
-        <echo msg="Copying files up ${builddir}..." />
+        <echo msg="Copying files to ${builddir}..." />
         <copy todir="${builddir}">
             <fileset refid="AllSources" />
         </copy>
@@ -92,6 +92,18 @@
     <target name="rebuild">
         <phingcall target="clean" />
         <phingcall target="build" />
+    </target>
+
+    <target name="enable-dev">
+        <delete dir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" includeemptydirs="true" />
+        <delete file="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
+        <echo msg="linking ${project.basedir}/src/main" />
+        <symlink target="${project.basedir}/src/main" link="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
+    </target>
+
+    <target name="disable-dev">
+        <delete dir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" includeemptydirs="true" />
+        <delete file="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
     </target>
 
     <target name="qa-clean">
@@ -137,6 +149,7 @@
         <exec command="coffee --compile --output src/main/js/ src/main/coffee/wordlift.disambiguate.coffee" dir="." />
         <exec command="coffee --compile --output src/main/js/userly/ src/main/coffee/userly/app.coffee" dir="." />
         <exec command="coffee --compile --output src/main/js/userly/ src/main/coffee/userly/userly.coffee" dir="." />
+        <exec command="coffee --compile --output src/main/js/ src/main/coffee/wordlift-bar.coffee" dir="." />
     </target>
 
     <target name="css-build">

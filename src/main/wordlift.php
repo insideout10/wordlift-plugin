@@ -30,36 +30,80 @@ function wordlift_deactivate()
     delete_option("wordlift_site_key");
 }
 
+function wordlift_scripts() {
+    wp_enqueue_script(
+        "wordlift-bar",
+        plugins_url("wordlift/js/wordlift-bar.js"),
+        array("jquery")
+    );
+}
+
 function wordlift_footer() {
-	$id = get_the_ID();
-    echo("<div id=\"wordlift-bar\">WordLift Bar [$id]");
+    $id = get_the_ID();
 
-	$context = WordPress_XmlApplication::getContext("wordLift");
-	$queryService = $context->getClass("queryService");
+    $context = WordPress_XmlApplication::getContext("wordLift");
+    $postEntitiesService = $context->getClass("postEntitiesService");
+    $entities = $postEntitiesService->get($id);
 
-	$sparql = "select distinct *"
-		. " where {"
-	  	. " ?enhancement dcterms:references <urn:wordpress:$id>;"
-	    . " fise:entity-reference ?object ."
-	 	. " ?object a ?type;"
-	    . " schema:name ?name ."
-	 	. " FILTER( langMatches( lang(?name), \"EN\") )"
-	 	. " }";
+    $entitiesCount = count($entities);
+    if (0 === $entitiesCount) {
+        return;
+    }
 
-	$query = $queryService->query($sparql);
+    $index = 0;
+    $languages = $postEntitiesService->getPostLanguages($id);
 
-	foreach ($query["result"]["rows"] as $row) {
-		// enhancement
-		// object
-		// type
-		$htmlName = htmlentities($row["name"]);
-		echo($htmlName . "<br/>");
-	}
+    echo("<div id=\"wordlift-bar\">");
+    echo("<ul>");
+    echo("<li class=\"separator\"></li>");
+    foreach ($entities as $key => &$entity) {
+        $index++;
 
-	echo("</div>");
+        $link = admin_url(
+            "admin-ajax.php?action=wordlift.gotoentity&e=" . urlencode($key)
+        );
+
+        $type = $postEntitiesService->getFirstValue($entity, "type");
+        $shortType = strtolower(substr($type, strrpos( $type, "/") + 1));
+
+        $name = $postEntitiesService->getValueByLanguage(
+            $entity,
+            "name",
+            $languages
+        );
+        $title = $postEntitiesService->getValueByLanguage(
+            $entity,
+            "title",
+            $languages
+        );
+        $image = $postEntitiesService->getFirstValue(
+            $entity,
+            "image"
+        );
+        $description = $postEntitiesService->getValueByLanguage(
+            $entity,
+            "description",
+            $languages
+        );
+
+        echo("<li itemscope itemtype=\"$type\" class=\"entity $shortType\">");
+        echo("<a href=\"$link\">");
+        echo("<h1 itemprop=\"name\">$name</h1>\n");
+        echo("<h2 itemprop=\"title\">$title<h2>\n");
+        echo("<img onerror=\"this.parentNode.removeChild(this);\" itemprop=\"image\" src=\"$image\" />\n");
+        echo("<p itemprop=\"description\">$description</p>\n");
+        echo("</a>");
+        echo("</li>");
+        echo("<li class=\"separator\"></li>");
+    }
+    echo("</ul>");
+    echo("<div id=\"wordlift-bar-switch\">");
+    echo("</div>");
+    echo("</div>");
 }
 
 register_activation_hook(__FILE__, "wordlift_activate");
 register_deactivation_hook(__FILE__, "wordlift_deactivate");
+add_action("wp_enqueue_scripts", "wordlift_scripts");
 add_action("wp_footer", "wordlift_footer");
 ?>
