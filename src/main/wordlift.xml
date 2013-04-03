@@ -8,7 +8,7 @@
     <property name="schemaorg-field-type" value="@type" />
     <property name="meta-key-job-id" value="_wordlift_job_id" />
     <property name="meta-key-job-status" value="_wordlift_job_status" />
-    <property name="wordlift-services-api" value="https://api.wordlift.it:25062/api" />
+    <property name="wordlift-services-api" value="https://api.wordlift.it/api" />
     <property name="wordpress-api-url" value="https://api.idntik.it/api/proxy/call/api/tasks" />
     <property name="application-id" value="wordlift" />
     <property name="consumer-key-option-name" value="wordlift_consumer_key" />
@@ -16,6 +16,11 @@
     <property name="entity-page-id-option-name" value="_wordlift_entity_page_id" />
 
     <context name="wordLift" />
+
+    <class id="postEntitiesService" name="WordLift_PostEntitiesService"
+           filename="/php/insideout/wordlift/services/PostEntitiesService.php">
+        <property name="queryService" reference="queryService" />
+    </class>
 
     <wordpress:action name="deleted_post" class="postsActionsSyncService" method="postDeleted" />
     <wordpress:action name="save_post" class="postsActionsSyncService" method="postSaved" />

@@ -79,30 +79,33 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
-= 1.0 =
-* First public release
+= 2.5.26 =
+ * Cloud Services address changed to use standard ports to ease WordPress installations behind firewalls or proxies.
 
-= 1.1 =
-* Removed the requirement for a logs folder
+= 2.5.7 =
+ * Major release with fixes on the user registration.
 
-= 1.2 =
- * The entity elements are now hidden by default.
-
-= 1.3 =
- * Added support for WordPress 3.0.x
-
-= 1.4 =
- * Fixed some compatibility issues with Internet Explorer.
+= 1.6 =
+ * Fixed an issue that would prevent the plug-in from working. This upgrade is strongly recommended.
 
 = 1.5 =
  * Fixed an issue that would block the plug-in when discovering corrupted type formats.
    (NOTE: this version does not work, please upgrade to 1.6)
 
-= 1.6 =
- * Fixed an issue that would prevent the plug-in from working. This upgrade is strongly recommended.
+= 1.4 =
+ * Fixed some compatibility issues with Internet Explorer.
 
- = 2.5.7 =
- * Major release with fixes on the user registration.
+= 1.3 =
+ * Added support for WordPress 3.0.x
+
+= 1.2 =
+ * The entity elements are now hidden by default.
+
+= 1.1 =
+* Removed the requirement for a logs folder
+
+= 1.0 =
+* First public release
 
 == Upgrade Notice ==
 
