@@ -143,6 +143,7 @@
     <target name="haml-build">
         <echo msg="Compiling the disambiguate widget..." />
         <exec command="haml src/main/html/insideout/wordlift/source/disambiguate.html.haml src/main/html/insideout/wordlift/build/disambiguate.html" dir="." />
+        <exec command="haml src/main/haml/options.haml src/main/html/options.html" dir="." />
     </target>
 
     <target name="coffee-build">
@@ -150,6 +151,7 @@
         <exec command="coffee --compile --output src/main/js/userly/ src/main/coffee/userly/app.coffee" dir="." />
         <exec command="coffee --compile --output src/main/js/userly/ src/main/coffee/userly/userly.coffee" dir="." />
         <exec command="coffee --compile --output src/main/js/ src/main/coffee/wordlift-bar.coffee" dir="." />
+        <exec command="coffee --compile --output src/main/js/ src/main/coffee/options.coffee" dir="." />
     </target>
 
     <target name="css-build">

@@ -1,0 +1,14 @@
+!!! 5
+
+%div{:class => "bootstrap-reset", :id => "wordLiftOptions", :"ng-controller" => "OptionsController"}
+	%form{:"ng-submit" => "save()"}
+		%fieldset
+			%legend
+				Options
+			%label{:class => "checkbox"}
+				%input{:type => "checkbox", :"ng-model" => "enableFooterBar"}
+					Enable the WordLift Bar
+			%span{:class => "help-block"}
+				If enabled, the WordLift Bar will appear on the lower part of your
+				site.
+			%input{:type => "submit", :class => "btn btn-primary", :value => "Save"}

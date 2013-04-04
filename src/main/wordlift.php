@@ -39,6 +39,10 @@ function wordlift_scripts() {
 }
 
 function wordlift_footer() {
+    if ("true" !== get_option("wordlift_show_footer_bar", "true")) {
+        return;
+    }
+    
     $id = get_the_ID();
 
     $context = WordPress_XmlApplication::getContext("wordLift");

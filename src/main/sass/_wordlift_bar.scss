@@ -25,11 +25,12 @@ $bar-height: 100px;
 	#wordlift-bar-switch {
 		position: absolute;
 		top: -32px;
+		left: 10px;
 		width: 32px;
 		height: 32px;
 		background: inline-image("../img/wordlift-logo-32x32.gif");
 		display: inline-block;
-		margin-left: -16px;
+		// margin-left: -16px;
 		padding: 0;
 		cursor: pointer;
 		@include transition-duration(1s);
@@ -71,7 +72,7 @@ $bar-height: 100px;
 			// border-right: 2px dotted gray;
 			white-space: normal;
 			font-size: 10px;
-			overflow-y: scroll;
+			overflow-y: hidden;
 			padding: 4px;
 
 			&:hover {

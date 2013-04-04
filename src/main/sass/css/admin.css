@@ -226,7 +226,28 @@ div.type.Product {
   background-image: url("../img/noun_project_7341.svg");
 }
 
-/* line 4, ../_bootstrap_wordpress_fix.scss */
+/* line 2, ../_bootstrap_wordpress_fix.scss */
+.bootstrap-reset .checkbox, .bootstrap-reset .side-info, .bootstrap-reset .plugins tr, .bootstrap-reset #your-profile #rich_editing {
+  background-color: inherit;
+}
+/* line 5, ../_bootstrap_wordpress_fix.scss */
+.bootstrap-reset .checkbox {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+/* line 10, ../_bootstrap_wordpress_fix.scss */
+.bootstrap-reset .radio, .bootstrap-reset .checkbox {
+  min-height: 20px;
+  padding-left: 20px;
+}
+/* line 14, ../_bootstrap_wordpress_fix.scss */
+.bootstrap-reset label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* line 23, ../_bootstrap_wordpress_fix.scss */
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"],
 input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"],
 input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"],
@@ -234,26 +255,26 @@ input[type="tel"], input[type="color"], .uneditable-input {
   height: inherit;
 }
 
-/* line 9, ../_bootstrap_wordpress_fix.scss */
+/* line 28, ../_bootstrap_wordpress_fix.scss */
 label {
   display: inline;
 }
 
-/* line 13, ../_bootstrap_wordpress_fix.scss */
+/* line 32, ../_bootstrap_wordpress_fix.scss */
 .widget-title h4 {
   font-size: 12px;
 }
 
-/* line 19, ../_bootstrap_wordpress_fix.scss */
+/* line 38, ../_bootstrap_wordpress_fix.scss */
 .wp-submenu.sub-open .wp-submenu-wrap ul {
   margin: 0;
 }
 
-/* line 25, ../_bootstrap_wordpress_fix.scss */
+/* line 44, ../_bootstrap_wordpress_fix.scss */
 .action-links {
   font-size: 12px;
 }
-/* line 28, ../_bootstrap_wordpress_fix.scss */
+/* line 47, ../_bootstrap_wordpress_fix.scss */
 .action-links ul {
   padding: 0px;
   margin: 12px 0;

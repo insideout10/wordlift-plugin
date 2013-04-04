@@ -17,6 +17,15 @@
 
     <context name="wordLift" />
 
+    <class id="optionAjaxService" name="WordLift_OptionAjaxService"
+        filename="/php/insideout/wordlift/ajax/OptionAjaxService.php">
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.option" class="optionAjaxService"
+        method="get" authentication="true" capabilities="manage_options" httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordlift.option" class="optionAjaxService"
+        method="set" authentication="true" capabilities="manage_options" httpMethod="POST" />
+
+
     <class id="postEntitiesService" name="WordLift_PostEntitiesService"
            filename="/php/insideout/wordlift/services/PostEntitiesService.php">
         <property name="queryService" reference="queryService" />
@@ -167,15 +176,27 @@
         class="entitiesManagementPage" method="get" position="14.759"
         iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
 
-    <class id="wordLiftSettingsPage" name="WordLift_WordLiftSettingsPage"
-        filename="/php/insideout/wordlift/pages/WordLiftSettingsPage.php">
+    <class id="wordLiftOptionsPage" name="WordLift_OptionsPage"
+        filename="/php/insideout/wordlift/pages/OptionsPage.php">
     </class>
-    <wordpress:adminMenu pageTitle="Analysis Tasks" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
-        class="wordLiftSettingsPage" method="get" position="81" iconUrl="../wp-content/plugins/wordlift/sass/img/wordlift-logo-18px.png" />
+    <class id="wordLiftJobsPage" name="WordLift_JobsPage"
+        filename="/php/insideout/wordlift/pages/JobsPage.php">
+    </class>
+    <wordpress:script target="admin" name="wordlift-options"
+            version="SNAPSHOT"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/options.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
+
+    <wordpress:adminMenu pageTitle="Options" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
+        class="wordLiftOptionsPage" method="get" position="81" iconUrl="../wp-content/plugins/wordlift/sass/img/wordlift-logo-18x18.gif" />
 
     <class id="wordLiftRegisterLoginPage" name="WordLift_WordLiftRegisterLoginPage"
         filename="/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php">
     </class>
+    <wordpress:subAdminMenu parentSlug="wordlift_settings" pageTitle="Tasks" menuTitle="Tasks" capability="edit_posts" menuSlug="wordlift_tasks" class="wordLiftJobsPage" method="get" />
     <wordpress:subAdminMenu parentSlug="wordlift_settings" pageTitle="Register/Login" menuTitle="Register/Login" capability="edit_posts" menuSlug="wordlift_register_login" class="wordLiftRegisterLoginPage" method="get" />
 
     <class id="recordSetService" name="WordLift_RecordSetService"

@@ -1,3 +1,22 @@
+.bootstrap-reset {
+	.checkbox, .side-info, .plugins tr, #your-profile #rich_editing {
+		background-color: inherit;		
+	}
+	.checkbox {
+		border: 0;
+		margin: 0;
+		padding: 0;
+	}
+	.radio, .checkbox {
+		min-height: 20px;
+		padding-left: 20px;
+	}
+	label {
+		display: block;
+		margin-bottom: 5px;
+	}
+}
+
 select, textarea, input[type="text"], input[type="password"], input[type="datetime"],
  input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"],
  input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"],
