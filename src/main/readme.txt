@@ -12,6 +12,8 @@ Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a ne
 
 **WordLift** is a WordPress Plug-in developed by [InSideOut10](http://www.insideout.io) to help you organise your post and pages using "concepts" like you do in the real world. 
 
+We now feature the **WordLift Bar** with the list of entities and links to the entity page right within your blog. WordLift Bar is *experimental*, if you encounter any issue you can disable it from the plugin options and report us any trouble or suggestion.
+
 **Warning:** WordLift is still under heavy testing, therefore some features might not work as expected or not work at all. Should you encounter any issue while installing, activating, configuring and using the plug-in, we would love to receive your feedback to support [AT] wordlift.it
 
 "Concepts" are just like tags but let you add structure to your information providing you and your visitors many ways to filter and visualize your content. 
@@ -76,8 +78,12 @@ We're glad to support you and you can send us an e-mail to
 3. WordLift Widget in Edit Post
 4. In order to add the Geo-map Widget use the shortcode <em>[wordlift.geomap]</em>
 5. In order to add the Treemap Widget use the shortcode <em>[wordlift.treemap]</em>
+6. The WordLift Bar.
 
 == Changelog ==
+
+= 2.5.27 =
+ * Now featuring the experimental WordLift Bar.
 
 = 2.5.26 =
  * Cloud Services address changed to use standard ports to ease WordPress installations behind firewalls or proxies.
