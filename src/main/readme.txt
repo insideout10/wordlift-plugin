@@ -14,6 +14,10 @@ Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a ne
 
 We now feature the **WordLift Bar** with the list of entities and links to the entity page right within your blog. WordLift Bar is *experimental*, if you encounter any issue you can disable it from the plugin options and report us any trouble or suggestion.
 
+You can view some examples of the WordLift Bar:
+ * English: [demo 1](http://bit.ly/wlbar-english)
+ * Russian: [demo 2](http://bit.ly/wlbar-russian)
+
 **Warning:** WordLift is still under heavy testing, therefore some features might not work as expected or not work at all. Should you encounter any issue while installing, activating, configuring and using the plug-in, we would love to receive your feedback to support [AT] wordlift.it
 
 "Concepts" are just like tags but let you add structure to your information providing you and your visitors many ways to filter and visualize your content. 
@@ -81,6 +85,9 @@ We're glad to support you and you can send us an e-mail to
 6. The WordLift Bar.
 
 == Changelog ==
+
+= 2.5.28 =
+ * readme updated with links to WordLift Bar samples.
 
 = 2.5.27 =
  * Now featuring the experimental WordLift Bar.
