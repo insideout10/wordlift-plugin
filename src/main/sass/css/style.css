@@ -729,3 +729,10 @@ ul.entity-list li.Event {
   font-weight: normal;
   color: black;
 }
+
+@media (max-width: 320px) {
+  /* line 161, ../_wordlift_bar.scss */
+  #wordlift-bar {
+    display: none;
+  }
+}

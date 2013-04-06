@@ -5,8 +5,19 @@
   $ = jQuery;
 
   $(function() {
-    return $("#wordlift-bar-switch").click(function() {
+    $("#wordlift-bar-switch").click(function() {
       return $("#wordlift-bar").toggleClass("closed");
+    });
+    return $(window).scroll(function(event) {
+      if (0 >= $("body").height() - $(window).height() - $("body").scrollTop()) {
+        if (false === $("#wordlift-bar").hasClass("closed")) {
+          return $("#wordlift-bar").addClass("closed").addClass("automatic");
+        }
+      } else {
+        if ($("#wordlift-bar").hasClass("closed") && $("#wordlift-bar").hasClass("automatic")) {
+          return $("#wordlift-bar").removeClass("closed").removeClass("automatic");
+        }
+      }
     });
   });
 

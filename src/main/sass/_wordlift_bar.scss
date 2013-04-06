@@ -156,3 +156,9 @@ $bar-height: 100px;
 		}
 	}
 }
+
+@media (max-width: 320px) {
+	#wordlift-bar {
+		display: none;
+	}
+}

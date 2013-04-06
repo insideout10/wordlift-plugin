@@ -86,6 +86,12 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.5.30 =
+ * WordLift Bar stays hidden for screen width <= 320px.
+
+= 2.5.29 =
+ * WordLift Bar hides/shows automatically when the page is scrolled down.
+
 = 2.5.28 =
  * readme updated with links to WordLift Bar samples.
 
