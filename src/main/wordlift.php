@@ -42,8 +42,23 @@ function wordlift_footer() {
     if ("true" !== get_option("wordlift_show_footer_bar", "true")) {
         return;
     }
+
+    $args = array(
+        "numberposts" => 1,
+        "orderby" => "post_date",
+        "order" => "DESC",
+        "post_type" => "post",
+        "post_status" => "publish",
+        "suppress_filters" => true
+    );
+
+    $recentPosts = wp_get_recent_posts($args, $output = ARRAY_A);
+
+    if (0 === count($recentPosts)) {
+        return;
+    }
     
-    $id = get_the_ID();
+    $id = $recentPosts[0]["ID"];
 
     $context = WordPress_XmlApplication::getContext("wordLift");
     $postEntitiesService = $context->getClass("postEntitiesService");
@@ -75,11 +90,22 @@ function wordlift_footer() {
             "name",
             $languages
         );
+        $name = htmlspecialchars(
+            $name,
+            ENT_COMPAT,
+            "UTF-8"
+        );
+
+        if (empty($name)) {
+            continue;
+        }
+        
         $title = $postEntitiesService->getValueByLanguage(
             $entity,
             "title",
             $languages
         );
+
         $image = $postEntitiesService->getFirstValue(
             $entity,
             "image"
@@ -88,6 +114,11 @@ function wordlift_footer() {
             $entity,
             "description",
             $languages
+        );
+        $description = htmlspecialchars(
+            $description,
+            ENT_COMPAT,
+            "UTF-8"
         );
 
         echo("<li itemscope itemtype=\"$type\" class=\"entity $shortType\">");

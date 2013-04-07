@@ -148,9 +148,11 @@ EOF;
         return $array[ $key ][0][ "value" ];
     }
 
-    public function getValueByLanguage( &$array, $key, $languages ) {
-        if ( 0 === count( $array[ $key ] ) )
+    public function getValueByLanguage(&$array, $key, $languages)
+    {
+        if (!array_key_exists($key, $array) || 0 === count($array[$key ])) {
             return NULL;
+        }
 
         foreach ( $languages as &$language ) :
             foreach ( $array[ $key ] as &$object ) :

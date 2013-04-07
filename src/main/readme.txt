@@ -86,6 +86,12 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.5.31 =
+ * Fixed a 'notice' in the WordLift Bar,
+ * Changed the WordLift Bar to show entities from the most recent post in the
+   home page,
+ * Added HTML encoding of entity data on the WordLift Bar.
+
 = 2.5.30 =
  * WordLift Bar stays hidden for screen width <= 320px.
 
