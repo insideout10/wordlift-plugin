@@ -50,7 +50,7 @@
         filename="/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php">
         <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
 
-        <property name="apiUrl" value="https://api.wordlift.it:25062/api/user" />
+        <property name="apiUrl" value="https://api.wordlift.it/api/user" />
     </class>
     <wordpress:ajax service="ajaxService" action="wordlift.register" class="userRegistrationAjaxService"
         method="register" authentication="true" capabilities="manage_options" httpMethod="POST" />
@@ -268,6 +268,8 @@
                     authentication="true" capabilities="manage_options" httpMethod="GET" />
     <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
                     authentication="true" capabilities="manage_options" httpMethod="PUT" />
+    <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
+                    authentication="true" capabilities="manage_options" httpMethod="POST" />
 
     <!-- ***** R E L A T E D  P O S T S  W I D G E T ***** -->
 <!--     <class id="relatedPostsWidget" name="WordLift_RelatedPostsWidget"

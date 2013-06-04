@@ -3,7 +3,7 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.5.31" override="true" />
+    <property name="version" value="2.5.33" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
     <property name="sassdir" value="src/main/sass" override="true" />
@@ -99,6 +99,11 @@
         <delete file="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
         <echo msg="linking ${project.basedir}/src/main" />
         <symlink target="${project.basedir}/src/main" link="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
+
+        <delete dir="../home/var/www/wordlift-3.6b1/wp-content/plugins/wordlift" includeemptydirs="true" />
+        <delete file="../home/var/www/wordlift-3.6b1/wp-content/plugins/wordlift" />
+        <echo msg="linking ${project.basedir}/src/main" />
+        <symlink target="${project.basedir}/src/main" link="../home/var/www/wordlift-3.6b1/wp-content/plugins/wordlift" />
     </target>
 
     <target name="disable-dev">

@@ -86,6 +86,13 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.5.33 =
+ * "Registration failed: undefined (undefined)": Fixed a configuration setting that didn't allow some blogs to register to WordLift Services. (Many thanks to http://www.pruk2digital.com/ for helping us out finding this error).
+
+= 2.5.32 =
+ * Added initial compatibility with WordPress 3.6 beta 1,
+ * Fix an issue that displayed entities alway for the most recent post.
+
 = 2.5.31 =
  * Fixed a 'notice' in the WordLift Bar,
  * Changed the WordLift Bar to show entities from the most recent post in the

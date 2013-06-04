@@ -43,22 +43,26 @@ function wordlift_footer() {
         return;
     }
 
-    $args = array(
-        "numberposts" => 1,
-        "orderby" => "post_date",
-        "order" => "DESC",
-        "post_type" => "post",
-        "post_status" => "publish",
-        "suppress_filters" => true
-    );
+    if (is_home()) {
+        $args = array(
+            "numberposts" => 1,
+            "orderby" => "post_date",
+            "order" => "DESC",
+            "post_type" => "post",
+            "post_status" => "publish",
+            "suppress_filters" => true
+        );
 
-    $recentPosts = wp_get_recent_posts($args, $output = ARRAY_A);
+        $recentPosts = wp_get_recent_posts($args, $output = ARRAY_A);
 
-    if (0 === count($recentPosts)) {
-        return;
-    }
+        if (0 === count($recentPosts)) {
+            return;
+        }
     
-    $id = $recentPosts[0]["ID"];
+        $id = $recentPosts[0]["ID"];
+    } else {
+        $id = get_the_ID();
+    }
 
     $context = WordPress_XmlApplication::getContext("wordLift");
     $postEntitiesService = $context->getClass("postEntitiesService");
@@ -70,7 +74,7 @@ function wordlift_footer() {
     }
 
     $index = 0;
-    $languages = $postEntitiesService->getPostLanguages($id);
+    $languages = @$postEntitiesService->getPostLanguages($id);
 
     echo("<div id=\"wordlift-bar\">");
     echo("<ul>");
@@ -124,7 +128,9 @@ function wordlift_footer() {
         echo("<li itemscope itemtype=\"$type\" class=\"entity $shortType\">");
         echo("<a href=\"$link\">");
         echo("<h1 itemprop=\"name\">$name</h1>\n");
-        echo("<h2 itemprop=\"title\">$title<h2>\n");
+        if (!empty($title)) {
+            echo("<h2 itemprop=\"title\">$title<h2>\n");
+        }
         echo("<img onerror=\"this.parentNode.removeChild(this);\" itemprop=\"image\" src=\"$image\" />\n");
         echo("<p itemprop=\"description\">$description</p>\n");
         echo("</a>");

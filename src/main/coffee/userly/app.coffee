@@ -84,7 +84,7 @@ angular
 			deferred = $q.defer()
 
 			$http(
-					method: "PUT"
+					method: "POST"
 					url: "admin-ajax.php"
 					params:
 						action: "wordpress.option"

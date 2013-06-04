@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"def",
+				"deferred"
+			],
+			[
+				"entit",
+				"entitiesCount"
+			],
+			[
+				"strto",
+				"strtolower"
+			],
+			[
+				"border",
+				"border-bottom"
+			],
+			[
+				"margin-",
+				"margin-bottom"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
 				"htm",
 				"htmlentities"
 			],
@@ -14,10 +42,6 @@
 			[
 				"url",
 				"urlencode"
-			],
-			[
-				"tex",
-				"text-decoration"
 			],
 			[
 				"min-",
@@ -206,10 +230,6 @@
 			[
 				"vari",
 				"variable"
-			],
-			[
-				"border",
-				"border-top"
 			],
 			[
 				"text",
@@ -480,10 +500,6 @@
 				"predicates"
 			],
 			[
-				"entit",
-				"entityDiff"
-			],
-			[
 				"array_mer",
 				"array_merge_recursive"
 			],
@@ -498,72 +514,40 @@
 			[
 				"is_a",
 				"is_array"
-			],
-			[
-				"new",
-				"newPredicates"
-			],
-			[
-				"prefi",
-				"prefixes"
-			],
-			[
-				"jsn",
-				"json_decode"
-			],
-			[
-				"array_ke",
-				"array_key_exists"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "src/main/log4php.xml",
-			"settings":
-			{
-				"buffer_size": 765,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/main/php/insideout/wordlift/notices/SettingsValidator.php",
-			"settings":
-			{
-				"buffer_size": 1079,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "src/main/wordlift.php",
-			"settings":
-			{
-				"buffer_size": 1648,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "src/main/sass/_wordlift_bar.scss",
 			"settings":
 			{
-				"buffer_size": 125,
+				"buffer_size": 3110,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "build.xml",
+			"file": "src/main/sass/_bootstrap_wordpress_fix.scss",
 			"settings":
 			{
-				"buffer_size": 6526,
+				"buffer_size": 886,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/php/insideout/wordlift/services/ActivationService.php",
+			"file": "src/main/haml/options.haml",
 			"settings":
 			{
-				"buffer_size": 3686,
+				"buffer_size": 492,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main/php/insideout/wordlift/ajax/OptionAjaxService.php",
+			"settings":
+			{
+				"buffer_size": 225,
 				"line_ending": "Unix"
 			}
 		},
@@ -571,55 +555,71 @@
 			"file": "src/main/wordlift.xml",
 			"settings":
 			{
-				"buffer_size": 33693,
+				"buffer_size": 34986,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/php/insideout/wordpress/XmlApplication.php",
+			"file": "src/main/coffee/options.coffee",
 			"settings":
 			{
-				"buffer_size": 40113,
+				"buffer_size": 1351,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/sass/style.scss",
+			"file": "build.xml",
 			"settings":
 			{
-				"buffer_size": 368,
+				"buffer_size": 7872,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/php/insideout/wordlift/services/EntityService.php",
+			"file": "src/main/wordlift.php",
 			"settings":
 			{
-				"buffer_size": 320,
+				"buffer_size": 4022,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/php/insideout/wordlift/services/DefaultEntityService.php",
+			"file": "src/main/readme.txt",
 			"settings":
 			{
-				"buffer_size": 9022,
+				"buffer_size": 6794,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/php/insideout/wordlift/ajax/EntitiesAjaxService.php",
+			"file": "src/main/coffee/wordlift.coffee",
 			"settings":
 			{
-				"buffer_size": 1544,
+				"buffer_size": 7621,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "src/main/php/insideout/wordlift/ajax/DumpAjaxService.php",
+			"file": "src/main/coffee/wordlift-bar.coffee",
 			"settings":
 			{
-				"buffer_size": 8326,
+				"buffer_size": 485,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main/bootstrap/css/bootstrap-responsive.css",
+			"settings":
+			{
+				"buffer_size": 21709,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/main/php/insideout/wordlift/services/PostEntitiesService.php",
+			"settings":
+			{
+				"buffer_size": 7209,
 				"line_ending": "Unix"
 			}
 		}
@@ -631,7 +631,23 @@
 		"selected_items":
 		[
 			[
+				"convertab",
+				"Indentation: Convert to Tabs"
+			],
+			[
 				"convespace",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"convespac",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"convertspace",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"conver spa",
 				"Indentation: Convert to Spaces"
 			],
 			[
@@ -740,21 +756,40 @@
 	},
 	"file_history":
 	[
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/notices/SiteKeyValidator.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/wordlift.xml",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/pages/OptionsPage.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/options.haml",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/wordlift.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/coffee/wordlift-bar.coffee",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/PostEntitiesService.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/build.xml",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/log4php.xml",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_bar.scss",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/style.scss",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/pages/WordLiftSettingsPage.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/pages/JobsPage.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/wordlift-settings.haml",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_bootstrap_wordpress_fix.scss",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/Options.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/wordlift-options.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/ssrc/main/coffee/wordlift-bar.coffee",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/notices/SettingsValidator.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/ActivationService.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordpress/XmlApplication.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/EntityService.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/DefaultEntityService.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/EntitiesAjaxService.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/DumpAjaxService.php",
+		"/Users/david/Developer/wordlift/wordlift-plugin/wordlift-plugin.sublime-project",
+		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/notices/SiteKeyValidator.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordpress/services/ProxyService.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordpress/services/AjaxProxy.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/PlainTextJobRequestService.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/notices/SettingsValidator.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/services/HttpOperations.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/wordlift.xml",
-		"/Users/david/Developer/wordlift/wordlift-plugin/build.xml",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/JobAjaxService.php",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/JobCallbackService.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/log4php.xml",
 		"/Users/david/Developer/wordlift/home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift/php/insideout/wordlift/services/ActivationService.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/wordlift-plugin.sublime-project",
 		"/Users/david/Developer/helixcommerce/www/wp-content/themes/appply/functions/admin-functions.php",
 		"/Users/david/Developer/helixcommerce/www/wp-content/themes/appply/footer.php",
 		"/Users/david/Developer/helixcommerce/www/wp-content/themes/appply/index.php",
@@ -848,26 +883,7 @@
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/userly/login.haml",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/entities-edit.haml",
 		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/coffee/wordlift.coffee",
-		"/Users/david/Documents/Work/A1 Telekom/Licenses/RNKey-01-0006-0246-98579-nullnull-05416839302925103.lic",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/entities-list.haml",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entities_management.scss",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_entity_edit.scss",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/html/insideout/wordlift/source/javascripts/wordlift.disambiguate.js.coffee",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/coffee/wordlift.disambiguate.coffee",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/js/wordlift.disambiguate.js",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/html/insideout/wordlift/source/disambiguate.html.haml",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/DumpAjaxService.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/wordlift-settings.haml",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/_wordlift_entities_box.scss",
-		"/Volumes/borgosyrah.com/www/borgosyrah.unbit.it/wp-content/themes/Lucid/style.css",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/haml/entities-management.haml",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/TasksAjaxService.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/pages/WordLiftSettingsPage.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordpress/XmlApplication.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/php/insideout/wordlift/ajax/PostAjaxService.php",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/html/insideout/wordlift/source/stylesheets/wordlift.disambiguate.css.scss",
-		"/Users/david/Developer/wordlift/wordlift-plugin/src/main/sass/admin.scss"
+		"/Users/david/Documents/Work/A1 Telekom/Licenses/RNKey-01-0006-0246-98579-nullnull-05416839302925103.lic"
 	],
 	"find":
 	{
@@ -892,6 +908,21 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"encode",
+			"coffee",
+			"options",
+			":",
+			"<",
+			"wordlift_settings",
+			"haml",
+			"wordlift_settings",
+			" 2px right",
+			"\"img",
+			"-color;",
+			"&.",
+			": #",
+			"#",
+			"$attrib",
 			"adminMenus",
 			"adminMenu",
 			"צקמו",
@@ -1004,22 +1035,7 @@
 			"wordlift_settings",
 			"loadAdminMenu",
 			"adminMenu",
-			"WORDLIFT_SETTINGS",
-			"htmlSettingsProxy",
-			"wordlift_settings",
-			"tripleStoreService",
-			"@include background-image(linear-gradient(",
-			"10a1d402-b591-9daf-5db8-76ba7582f837",
-			":script",
-			"admin",
-			"entitiesManagementPage",
-			"admin",
-			"entityService",
-			"insideout",
-			"entityService",
-			"SchemaOrg",
-			"schemaorg",
-			"SchemaOrg"
+			"WORDLIFT_SETTINGS"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -1045,23 +1061,23 @@
 	"groups":
 	[
 		{
-			"selected": 12,
+			"selected": 6,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "src/main/log4php.xml",
+					"file": "src/main/sass/_wordlift_bar.scss",
 					"settings":
 					{
-						"buffer_size": 765,
+						"buffer_size": 3110,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								427,
-								427
+								2946,
+								2946
 							]
 						],
 						"settings":
@@ -1154,30 +1170,29 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/XML/XML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/SCSS/SCSS.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1396.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "src/main/php/insideout/wordlift/notices/SettingsValidator.php",
+					"file": "src/main/sass/_bootstrap_wordpress_fix.scss",
 					"settings":
 					{
-						"buffer_size": 1079,
+						"buffer_size": 886,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								173,
-								178
+								237,
+								237
 							]
 						],
 						"settings":
@@ -1270,9 +1285,8 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/SCSS/SCSS.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1282,18 +1296,133 @@
 				},
 				{
 					"buffer": 2,
-					"file": "src/main/wordlift.php",
+					"file": "src/main/haml/options.haml",
 					"settings":
 					{
-						"buffer_size": 1648,
+						"buffer_size": 492,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1224,
-								1224
+								271,
+								271
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_mark_style": "outline",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/Rails/Ruby Haml.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/main/php/insideout/wordlift/ajax/OptionAjaxService.php",
+					"settings":
+					{
+						"buffer_size": 225,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								199,
+								199
 							]
 						],
 						"settings":
@@ -1395,133 +1524,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "src/main/sass/_wordlift_bar.scss",
-					"settings":
-					{
-						"buffer_size": 125,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								121,
-								17
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/SCSS/SCSS.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
 					"buffer": 4,
-					"file": "build.xml",
+					"file": "src/main/wordlift.xml",
 					"settings":
 					{
-						"buffer_size": 6526,
+						"buffer_size": 34986,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3941,
-								4616
+								9765,
+								9765
 							]
 						],
 						"settings":
@@ -1619,25 +1634,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1266.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 5,
-					"file": "src/main/php/insideout/wordlift/services/ActivationService.php",
+					"file": "src/main/coffee/options.coffee",
 					"settings":
 					{
-						"buffer_size": 3686,
+						"buffer_size": 1351,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2071,
-								2071
+								1084,
+								1084
 							]
 						],
 						"settings":
@@ -1730,9 +1745,8 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1742,18 +1756,18 @@
 				},
 				{
 					"buffer": 6,
-					"file": "src/main/wordlift.xml",
+					"file": "build.xml",
 					"settings":
 					{
-						"buffer_size": 33693,
+						"buffer_size": 7872,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3184,
-								3196
+								265,
+								265
 							]
 						],
 						"settings":
@@ -1858,18 +1872,18 @@
 				},
 				{
 					"buffer": 7,
-					"file": "src/main/php/insideout/wordpress/XmlApplication.php",
+					"file": "src/main/wordlift.php",
 					"settings":
 					{
-						"buffer_size": 40113,
+						"buffer_size": 4022,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2252,
-								2262
+								1547,
+								1547
 							]
 						],
 						"settings":
@@ -1966,26 +1980,26 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 5.0,
-						"translation.y": 0.0,
+						"translation.x": 0.0,
+						"translation.y": 362.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 8,
-					"file": "src/main/sass/style.scss",
+					"file": "src/main/readme.txt",
 					"settings":
 					{
-						"buffer_size": 368,
+						"buffer_size": 6794,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								366,
-								366
+								5001,
+								5001
 							]
 						],
 						"settings":
@@ -2078,20 +2092,20 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/SCSS/SCSS.tmLanguage"
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1149.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 9,
-					"file": "src/main/php/insideout/wordlift/services/EntityService.php",
+					"file": "src/main/coffee/wordlift.coffee",
 					"settings":
 					{
-						"buffer_size": 320,
+						"buffer_size": 7621,
 						"regions":
 						{
 						},
@@ -2192,237 +2206,7 @@
 								"Ruby on Rails": "ruby"
 							},
 							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/PHP/PHP.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 10,
-					"file": "src/main/php/insideout/wordlift/services/DefaultEntityService.php",
-					"settings":
-					{
-						"buffer_size": 9022,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 148.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 11,
-					"file": "src/main/php/insideout/wordlift/ajax/EntitiesAjaxService.php",
-					"settings":
-					{
-						"buffer_size": 1544,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"annotations":
-							[
-								"TODO",
-								"README",
-								"FIXME"
-							],
-							"csslint_options":
-							{
-								"adjoining-classes": "warning",
-								"box-model": true,
-								"box-sizing": "warning",
-								"compatible-vendor-prefixes": "warning",
-								"display-property-grouping": true,
-								"duplicate-background-images": "warning",
-								"duplicate-properties": true,
-								"empty-rules": true,
-								"errors": true,
-								"fallback-colors": "warning",
-								"floats": "warning",
-								"font-faces": "warning",
-								"font-sizes": "warning",
-								"gradients": "warning",
-								"ids": "warning",
-								"import": "warning",
-								"important": "warning",
-								"known-properties": true,
-								"outline-none": "warning",
-								"overqualified-elements": "warning",
-								"qualified-headings": "warning",
-								"regex-selectors": "warning",
-								"rules-count": "warning",
-								"shorthand": "warning",
-								"star-property-hack": "warning",
-								"text-indent": "warning",
-								"underscore-property-hack": "warning",
-								"unique-headings": "warning",
-								"universal-selector": "warning",
-								"vendor-prefix": true,
-								"zero-units": "warning"
-							},
-							"gjslint_ignore":
-							[
-								110.0
-							],
-							"gjslint_options":
-							[
-							],
-							"javascript_linter": "jshint",
-							"jshint_options":
-							{
-								"browser": true,
-								"evil": true,
-								"regexdash": true,
-								"sub": true,
-								"trailing": true,
-								"wsh": true
-							},
-							"pep8": true,
-							"pep8_ignore":
-							[
-								"E501"
-							],
-							"perl_linter": "perlcritic",
-							"pyflakes_ignore":
-							[
-							],
-							"pyflakes_ignore_import_*": true,
-							"sublimelinter": true,
-							"sublimelinter_delay": 2.0,
-							"sublimelinter_disable":
-							[
-							],
-							"sublimelinter_executable_map":
-							{
-							},
-							"sublimelinter_fill_outlines": false,
-							"sublimelinter_gutter_marks": false,
-							"sublimelinter_mark_style": "outline",
-							"sublimelinter_notes": false,
-							"sublimelinter_objj_check_ascii": false,
-							"sublimelinter_popup_errors_on_save": false,
-							"sublimelinter_syntax_map":
-							{
-								"C++": "c",
-								"Python Django": "python",
-								"Ruby on Rails": "ruby"
-							},
-							"sublimelinter_wrap_find": true,
-							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
@@ -2432,19 +2216,249 @@
 					"type": "text"
 				},
 				{
-					"buffer": 12,
-					"file": "src/main/php/insideout/wordlift/ajax/DumpAjaxService.php",
+					"buffer": 10,
+					"file": "src/main/coffee/wordlift-bar.coffee",
 					"settings":
 					{
-						"buffer_size": 8326,
+						"buffer_size": 485,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								464,
+								464
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_mark_style": "outline",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "src/main/bootstrap/css/bootstrap-responsive.css",
+					"settings":
+					{
+						"buffer_size": 21709,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1252,
+								1225
+							]
+						],
+						"settings":
+						{
+							"annotations":
+							[
+								"TODO",
+								"README",
+								"FIXME"
+							],
+							"csslint_options":
+							{
+								"adjoining-classes": "warning",
+								"box-model": true,
+								"box-sizing": "warning",
+								"compatible-vendor-prefixes": "warning",
+								"display-property-grouping": true,
+								"duplicate-background-images": "warning",
+								"duplicate-properties": true,
+								"empty-rules": true,
+								"errors": true,
+								"fallback-colors": "warning",
+								"floats": "warning",
+								"font-faces": "warning",
+								"font-sizes": "warning",
+								"gradients": "warning",
+								"ids": "warning",
+								"import": "warning",
+								"important": "warning",
+								"known-properties": true,
+								"outline-none": "warning",
+								"overqualified-elements": "warning",
+								"qualified-headings": "warning",
+								"regex-selectors": "warning",
+								"rules-count": "warning",
+								"shorthand": "warning",
+								"star-property-hack": "warning",
+								"text-indent": "warning",
+								"underscore-property-hack": "warning",
+								"unique-headings": "warning",
+								"universal-selector": "warning",
+								"vendor-prefix": true,
+								"zero-units": "warning"
+							},
+							"gjslint_ignore":
+							[
+								110.0
+							],
+							"gjslint_options":
+							[
+							],
+							"javascript_linter": "jshint",
+							"jshint_options":
+							{
+								"browser": true,
+								"evil": true,
+								"regexdash": true,
+								"sub": true,
+								"trailing": true,
+								"wsh": true
+							},
+							"pep8": true,
+							"pep8_ignore":
+							[
+								"E501"
+							],
+							"perl_linter": "perlcritic",
+							"pyflakes_ignore":
+							[
+							],
+							"pyflakes_ignore_import_*": true,
+							"sublimelinter": true,
+							"sublimelinter_delay": 2.0,
+							"sublimelinter_disable":
+							[
+							],
+							"sublimelinter_executable_map":
+							{
+							},
+							"sublimelinter_fill_outlines": false,
+							"sublimelinter_gutter_marks": false,
+							"sublimelinter_mark_style": "outline",
+							"sublimelinter_notes": false,
+							"sublimelinter_objj_check_ascii": false,
+							"sublimelinter_popup_errors_on_save": false,
+							"sublimelinter_syntax_map":
+							{
+								"C++": "c",
+								"Python Django": "python",
+								"Ruby on Rails": "ruby"
+							},
+							"sublimelinter_wrap_find": true,
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 622.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "src/main/php/insideout/wordlift/services/PostEntitiesService.php",
+					"settings":
+					{
+						"buffer_size": 7209,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2170,
+								2241
 							]
 						],
 						"settings":
@@ -2542,7 +2556,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 332.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -2595,6 +2609,58 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"",
+				"src/main/wordlift.php"
+			],
+			[
+				"barscss",
+				"src/main/sass/_wordlift_bar.scss"
+			],
+			[
+				"build",
+				"build.xml"
+			],
+			[
+				"postentit",
+				"src/main/php/insideout/wordlift/services/PostEntitiesService.php"
+			],
+			[
+				"coffee",
+				"src/main/coffee/wordlift.coffee"
+			],
+			[
+				"wordlift.xml",
+				"src/main/wordlift.xml"
+			],
+			[
+				"wordliftbarscss",
+				"src/main/sass/_wordlift_bar.scss"
+			],
+			[
+				"bootsscss",
+				"src/main/sass/_bootstrap_wordpress_fix.scss"
+			],
+			[
+				"wordliftsettingspage",
+				"src/main/php/insideout/wordlift/pages/WordLiftSettingsPage.php"
+			],
+			[
+				"build.",
+				"build.xml"
+			],
+			[
+				"wordliftbarscs",
+				"src/main/sass/_wordlift_bar.scss"
+			],
+			[
+				"log4",
+				"src/main/log4php.xml"
+			],
+			[
+				"wordlift.php",
+				"src/main/wordlift.php"
+			],
 			[
 				"buil",
 				"build.xml"
@@ -2766,10 +2832,6 @@
 			[
 				"adminchanneleditscss",
 				"src/resources/sass/sass/_admin_channel_edit.scss"
-			],
-			[
-				"",
-				"web-app/js/users.js"
 			],
 			[
 				"app.co",

@@ -638,14 +638,16 @@ ul.entity-list li.Event {
   white-space: nowrap;
   overflow-x: scroll;
   overflow-y: hidden;
+  margin: 0;
+  padding: 0;
 }
-/* line 58, ../_wordlift_bar.scss */
+/* line 60, ../_wordlift_bar.scss */
 #wordlift-bar ul li {
   display: inline-block;
   vertical-align: top;
   height: 100px;
 }
-/* line 64, ../_wordlift_bar.scss */
+/* line 66, ../_wordlift_bar.scss */
 #wordlift-bar ul li.separator {
   width: 1px;
   background: black;
@@ -655,7 +657,7 @@ ul.entity-list li.Event {
   background-image: -o-linear-gradient(#aaaaaa, #cccccc 20%, #bbbbbb);
   background-image: linear-gradient(#aaaaaa, #cccccc 20%, #bbbbbb);
 }
-/* line 70, ../_wordlift_bar.scss */
+/* line 72, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity {
   width: 200px;
   white-space: normal;
@@ -663,11 +665,11 @@ ul.entity-list li.Event {
   overflow-y: hidden;
   padding: 4px;
 }
-/* line 78, ../_wordlift_bar.scss */
+/* line 80, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity:hover {
   background: #ccc;
 }
-/* line 86, ../_wordlift_bar.scss */
+/* line 88, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity h1 {
   color: black;
   font-size: 12px;
@@ -676,54 +678,56 @@ ul.entity-list li.Event {
   border-bottom: solid 1px;
   background-repeat: no-repeat;
   background-position: right 0px bottom 4px;
+  margin: 0;
 }
-/* line 97, ../_wordlift_bar.scss */
+/* line 100, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.place h1 {
   border-bottom-color: #4e9014;
   background-image: url("../img/icon-place.png");
 }
-/* line 103, ../_wordlift_bar.scss */
+/* line 106, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.person h1 {
   border-bottom-color: #32aeac;
   background-image: url("../img/icon-person.png");
 }
-/* line 109, ../_wordlift_bar.scss */
+/* line 112, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.event h1 {
   border-bottom-color: #52a7c2;
   background-image: url("../img/icon-event.png");
 }
-/* line 115, ../_wordlift_bar.scss */
+/* line 118, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.creativework h1 {
   border-bottom-color: #961010;
   background-image: url("../img/icon-creativework.png");
 }
-/* line 121, ../_wordlift_bar.scss */
+/* line 124, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.organization h1 {
   border-bottom-color: #3c6f9f;
   background-image: url("../img/icon-organization.png");
 }
-/* line 127, ../_wordlift_bar.scss */
+/* line 130, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.product h1 {
   border-bottom-color: #983797;
   background-image: url("../img/icon-product.png");
 }
-/* line 133, ../_wordlift_bar.scss */
+/* line 136, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity.thing h1 {
   border-bottom-color: #ce9d03;
 }
-/* line 139, ../_wordlift_bar.scss */
+/* line 142, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity a {
   text-decoration: none;
 }
-/* line 143, ../_wordlift_bar.scss */
+/* line 146, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity img {
   max-width: 60px;
   max-height: 60px;
   float: left;
   margin-right: 4px;
   margin-bottom: 4px;
+  margin-top: 4px;
 }
-/* line 151, ../_wordlift_bar.scss */
+/* line 155, ../_wordlift_bar.scss */
 #wordlift-bar ul li.entity p {
   text-align: justify;
   font-weight: normal;
@@ -731,7 +735,7 @@ ul.entity-list li.Event {
 }
 
 @media (max-width: 320px) {
-  /* line 161, ../_wordlift_bar.scss */
+  /* line 165, ../_wordlift_bar.scss */
   #wordlift-bar {
     display: none;
   }

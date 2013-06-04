@@ -54,6 +54,8 @@ $bar-height: 100px;
 		white-space: nowrap;
 		overflow-x: scroll;
 		overflow-y: hidden;
+		margin: 0;
+		padding: 0;
 
 		li {
 			display: inline-block;
@@ -91,6 +93,7 @@ $bar-height: 100px;
 				border-bottom: solid 1px;
 				background-repeat: no-repeat;
 				background-position: right 0px bottom 4px;
+				margin: 0;
 			}
 
 			&.place {
@@ -146,6 +149,7 @@ $bar-height: 100px;
 				float: left;
 				margin-right: 4px;
 				margin-bottom: 4px;
+				margin-top: 4px;
 			}
 
 			p {
