@@ -6,7 +6,7 @@ Description: Supercharge your WordPress Site with Smart Tagging and #Schemaorg s
 Version: {version}
 Author: InSideOut10
 Author URI: http://www.insideout.io
-License: APL
+License: GPLv2 or later
 */
 
 
