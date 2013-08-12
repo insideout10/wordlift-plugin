@@ -19,7 +19,9 @@ function indepth_post_class( $classes, $class, $id ) {
 
 function indepth_the_title( $title, $id ) {
 
-	return "<span itemprop='name'>$title</span>";
+	$comments_number = get_comments_number();
+	
+	return "<meta itemprop='interactionCount' content='UserComments:$comments_number'><span itemprop='name'>$title</span>";
 }
 
 function indepth_the_content( $content ) {
@@ -64,8 +66,7 @@ function indepth_save_extra_user_profile_fields( $user_id ) {
 	update_user_meta( $user_id, 'googleplus', $_POST['googleplus'] );
 }
 
-function indepth_start() {
-
+function indepth_get_link_author() {
 	$post         = get_post( get_the_ID() );
 	$author_id    = $post->post_author;
 	$google_plus  = get_the_author_meta( 'googleplus', $author_id) ;
@@ -73,22 +74,46 @@ function indepth_start() {
 	if ( ! empty( $google_plus ) ) {
 		$display_name = esc_html( get_the_author_meta( 'display_name', $author_id) );
 
-		echo "<link href='http://plus.google.com/$google_plus?rel=author'>$display_name</link>";
+		return "<link href='http://plus.google.com/$google_plus' rel='author' title='$display_name' />";
 	}
+
+	return '';
+}
+
+function indepth_head() {
+
+	echo indepth_get_link_author();
+}
+
+function indepth_start() {
 	
-	ob_start();
+	ob_start( 'indepth_ob_callback' );
+}
+
+function indepth_ob_callback( $content ) {
+	// add the itemprop date published to time tags.
+	$content = preg_replace(
+		'/<time ([^>]*)>/i',
+		'<time itemprop="datePublished" $1>',
+		$content
+	);
+
+	$content = preg_replace(
+		'/<img (.*)alt="logo"/i',
+		'<img itemprop="logo" $1alt="logo"',
+		$content
+	);
+
+	$content = preg_replace(
+		'/<a class="logo([^>]*)>(.*)<\/a>/i',
+		'<span itemscope itemtype="http://schema.org/Organization"><a itemprop="url" class="$1>$2</a></span>',
+		$content
+	);
+
+	return $content;
 }
 
 function indepth_end() {
-	$content = ob_get_contents(); ob_clean();
-
-	// add the itemprop date published to time tags.
-	$content = preg_replace( '/<time ([^>]*)>/i', '<time itemprop="datePublished" $1>', $content );
-
-	// force display of authorship.
-	// $content = preg_replace( '/<span class="author vcard">/i', '<span style="display:inline;" class="author vcard">', $content );
-
-	echo $content;
 
 	ob_end_flush();
 }
@@ -104,7 +129,8 @@ add_action( 'edit_user_profile',        'indepth_add_extra_profile_fields');
 add_action( 'personal_options_update',  'indepth_save_extra_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'indepth_save_extra_user_profile_fields' );
 
-add_action( 'wp_head',   'indepth_start', 1,    1 );
-add_action( 'wp_footer', 'indepth_end',   9999, 1 );
+add_action( 'wp_head',   'indepth_head',  -PHP_INT_MAX, 0 );
+add_action( 'wp_head',   'indepth_start', PHP_INT_MAX,  0 );
+add_action( 'wp_footer', 'indepth_end',   0, 0 );
 
 ?>

@@ -145,7 +145,7 @@
         <property name="triplesUtils" reference="triplesUtils" />
     </class>
 
-    <wordpress:style target="admin" name="bootstrap.min.css" url="/wp-content/plugins/wordlift/css/bootstrap.min.css" />
+    <wordpress:style target="admin" name="bootstrap.min.css" url="/wp-content/plugins/wordlift/sass/css/bootstrap.css" />
     <wordpress:script target="admin" name="bootstrap.min.js"
             version="2.2.2"
             footer="true"

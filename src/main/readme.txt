@@ -5,6 +5,7 @@ Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata
 Requires at least: {wpversion}
 Tested up to: 3.5.1
 Stable tag: {version}
+License: GPLv2 or later
 
 Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
 
@@ -12,9 +13,38 @@ Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a ne
 
 **WordLift** is a WordPress Plug-in developed by [InSideOut10](http://www.insideout.io) to help you organise your post and pages using "concepts" like you do in the real world. 
 
+**In-Depth features**
+
+The web is changing fast and search engines update the algorithms to find quality content. For editor it means to mark up their pages in the right way.
+
+WordLift comes to the rescue with new **In-Depth features** that automatically add the correct semantic tagging for you, just download, install and activate WordLift.
+
+Features:
+
+ * Article
+   * author
+   * name
+   * text
+   * interactionCount
+   * datePublished (Twenty Thirteen)
+
+ * Organization (Avamsys)
+   * logo
+   * url
+
+Since these tags are highly coupled with your WordPress theme, we list here the themes we tested so far:
+
+ * Twenty Thirteen
+ * Avamsys
+
+Please let us know if your theme is working or not, and we'll try to add support for it.
+
+**WordLift Bar**
+
 We now feature the **WordLift Bar** with the list of entities and links to the entity page right within your blog. WordLift Bar is *experimental*, if you encounter any issue you can disable it from the plugin options and report us any trouble or suggestion.
 
 You can view some examples of the WordLift Bar:
+
  * English: [demo 1](http://bit.ly/wlbar-english)
  * Russian: [demo 2](http://bit.ly/wlbar-russian)
 
@@ -85,6 +115,9 @@ We're glad to support you and you can send us an e-mail to
 6. The WordLift Bar.
 
 == Changelog ==
+
+= 2.6.0 =
+ * Feature: add new *In-Depth* features.
 
 = 2.5.33 =
  * "Registration failed: undefined (undefined)": Fixed a configuration setting that didn't allow some blogs to register to WordLift Services. (Many thanks to http://www.pruk2digital.com/ for helping us out finding this error).

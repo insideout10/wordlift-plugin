@@ -15,6 +15,7 @@
         <include name="*.xml" />
         <include name="*.php" />
         <include name="*.txt" />
+        <include name="indepth/**" />
         <include name="php/**" />
         <include name="js/**" />
         <include name="img/**" />
