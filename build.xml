@@ -3,7 +3,7 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.5.33" override="true" />
+    <property name="version" value="2.6.0" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
     <property name="sassdir" value="src/main/sass" override="true" />
@@ -50,6 +50,7 @@
         <echo msg="Updating files in ${svndir}/trunk..." />
         <exec command="svn add trunk" dir="${svndir}" />
         <exec command="replace {version} ${version} {wpversion} ${wpversion} -- trunk/readme.txt trunk/wordlift.php" dir="${svndir}" />
+        <exec command="replace {version} ${version} {wpversion} ${wpversion} -- trunk/indepth/readme.txt trunk/indepth/indepth.php" dir="${svndir}" />
         <exec command="svn ci -m 'commit plug-in version ${version}.'" dir="${svndir}" />
     </target>
 
