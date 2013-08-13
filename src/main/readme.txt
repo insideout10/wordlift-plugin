@@ -116,6 +116,12 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.2 =
+ * Fix: fix a bug that would cause rewrite rules to be incomplete (WordPress Framework).
+
+= 2.6.1 =
+ * Feature: add option to disable *In-Depth* features.
+
 = 2.6.0 =
  * Feature: add new *In-Depth* features.
 
