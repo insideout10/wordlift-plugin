@@ -148,5 +148,7 @@ register_deactivation_hook(__FILE__, "wordlift_deactivate");
 add_action("wp_enqueue_scripts", "wordlift_scripts");
 add_action("wp_footer", "wordlift_footer");
 
-require_once("indepth/indepth.php");
+if ( 'false' !== get_option( 'wordlift_enable_in_depth', 'true' ) ) {
+    require_once 'indepth/indepth.php';
+}
 ?>

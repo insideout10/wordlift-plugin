@@ -42,12 +42,18 @@
     ]).controller("OptionsController", [
       "OptionService", "$scope", "$log", function(OptionService, $scope, $log) {
         $scope.enableFooterBar = false;
+        $scope.enableInDepth = false;
         $scope.$on("wordlift_show_footer_bar", function(event, value) {
           return $scope.enableFooterBar = value === "\"true\"";
         });
+        $scope.$on("wordlift_enable_in_depth", function(event, value) {
+          return $scope.enableInDepth = value === "\"true\"";
+        });
         OptionService.get("wordlift_show_footer_bar", true, $scope.enableFooterBar);
+        OptionService.get("wordlift_enable_in_depth", true, $scope.enableInDepth);
         return $scope.save = function() {
-          return OptionService.set("wordlift_show_footer_bar", $scope.enableFooterBar);
+          OptionService.set("wordlift_show_footer_bar", $scope.enableFooterBar);
+          return OptionService.set("wordlift_enable_in_depth", $scope.enableInDepth);
         };
       }
     ]);
