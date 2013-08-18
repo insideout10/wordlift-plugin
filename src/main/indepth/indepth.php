@@ -17,16 +17,15 @@ function indepth_post_class( $classes, $class, $id ) {
 	return $classes;
 }
 
-function indepth_the_title( $title, $id ) {
-
-	$comments_number = get_comments_number();
+function indepth_the_title( $title ) {
 	
-	return "<meta itemprop='interactionCount' content='UserComments:$comments_number'><span itemprop='name'>$title</span>";
+	return "<span itemprop='name'>$title</span>";
 }
 
 function indepth_the_content( $content ) {
 
-	return "<span itemprop='text'>$content</span>";
+	$comments_number = get_comments_number();
+	return "<span itemprop='text'>$content</span><meta itemprop='interactionCount' content='UserComments:$comments_number'>";
 }
 
 function indepth_the_author( $author ) {
@@ -118,19 +117,21 @@ function indepth_end() {
 	ob_end_flush();
 }
 
-add_filter( 'post_class',  'indepth_post_class',  1000, 3 );
-add_filter( 'the_title',   'indepth_the_title',   1000, 2 );
-add_filter( 'the_content', 'indepth_the_content', 1000, 1 );
-add_filter( 'the_author',  'indepth_the_author',  1000, 1 );
-add_filter( 'post_thumbnail_html', 'indepth_post_thumbnail_html', 1000, 5 );
+if ( is_single() ) {
+	add_filter( 'post_class',  'indepth_post_class',  1000, 3 );
+	add_filter( 'the_title',   'indepth_the_title',   1000, 1 );
+	add_filter( 'the_content', 'indepth_the_content', 1000, 1 );
+	add_filter( 'the_author',  'indepth_the_author',  1000, 1 );
+	add_filter( 'post_thumbnail_html', 'indepth_post_thumbnail_html', 1000, 5 );
+
+	add_action( 'wp_head',   'indepth_head',  ~PHP_INT_MAX, 0 );
+	add_action( 'wp_head',   'indepth_start', PHP_INT_MAX,  0 );
+	add_action( 'wp_footer', 'indepth_end',   0, 0 );
+}
 
 add_action( 'show_user_profile',        'indepth_add_extra_profile_fields');
 add_action( 'edit_user_profile',        'indepth_add_extra_profile_fields');
 add_action( 'personal_options_update',  'indepth_save_extra_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'indepth_save_extra_user_profile_fields' );
-
-add_action( 'wp_head',   'indepth_head',  -PHP_INT_MAX, 0 );
-add_action( 'wp_head',   'indepth_start', PHP_INT_MAX,  0 );
-add_action( 'wp_footer', 'indepth_end',   0, 0 );
 
 ?>
