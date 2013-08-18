@@ -116,6 +116,10 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.3 =
+ * Fix: fix a bug that would cause the interaction count to show up in the page title.
+ * Fix: ensure adding schema.org mark-up happens only in single post views.
+
 = 2.6.2 =
  * Fix: fix a bug that would cause rewrite rules to be incomplete (WordPress Framework).
 
