@@ -3,7 +3,7 @@ Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata
 Requires at least: {wpversion}
-Tested up to: 3.5.1
+Tested up to: 3.6
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -116,7 +116,10 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
-= 2.6.3 =
+= 2.6.5 =
+ * Other: add compatibility up to WordPress 3.6.
+
+= 2.6.4 =
  * Fix: fix a bug that would cause the interaction count to show up in the page title.
  * Fix: ensure adding schema.org mark-up happens only in single post views.
 
