@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
-Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata
+Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search
 Requires at least: {wpversion}
 Tested up to: 3.6
 Stable tag: {version}
@@ -115,6 +115,9 @@ We're glad to support you and you can send us an e-mail to
 6. The WordLift Bar.
 
 == Changelog ==
+
+= 2.6.6 =
+ * Other: add new keywords.
 
 = 2.6.5 =
  * Other: add compatibility up to WordPress 3.6.
