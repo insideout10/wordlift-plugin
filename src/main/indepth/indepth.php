@@ -17,21 +17,10 @@ function indepth_post_class( $classes, $class, $id ) {
 	return $classes;
 }
 
-function indepth_the_title( $title ) {
-	
-	return "<span itemprop='name'>$title</span>";
-}
-
 function indepth_the_content( $content ) {
 
 	$comments_number = get_comments_number();
 	return "<span itemprop='text'>$content</span><meta itemprop='interactionCount' content='UserComments:$comments_number'>";
-}
-
-function indepth_the_author( $author ) {
-
-	return $author;
-	// return ( is_single() ? "by $author" : $author );
 }
 
 function indepth_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
@@ -66,9 +55,9 @@ function indepth_save_extra_user_profile_fields( $user_id ) {
 }
 
 function indepth_get_link_author() {
-	$post         = get_post( get_the_ID() );
-	$author_id    = $post->post_author;
-	$google_plus  = get_the_author_meta( 'googleplus', $author_id) ;
+	$post        = get_post( get_the_ID() );
+	$author_id   = $post->post_author;
+	$google_plus = get_the_author_meta( 'googleplus', $author_id) ;
 
 	if ( ! empty( $google_plus ) ) {
 		$display_name = esc_html( get_the_author_meta( 'display_name', $author_id) );
@@ -81,6 +70,15 @@ function indepth_get_link_author() {
 
 function indepth_head() {
 
+	if ( ! is_single() ) return;
+
+	add_filter( 'post_class',  'indepth_post_class',  1000, 3 );
+	add_filter( 'the_content', 'indepth_the_content', 1000, 1 );
+	add_filter( 'post_thumbnail_html', 'indepth_post_thumbnail_html', 1000, 5 );
+
+	add_action( 'wp_head',   'indepth_start', PHP_INT_MAX,  0 );
+	add_action( 'wp_footer', 'indepth_end',   0, 0 );
+
 	echo indepth_get_link_author();
 }
 
@@ -90,6 +88,13 @@ function indepth_start() {
 }
 
 function indepth_ob_callback( $content ) {
+
+	$content = preg_replace(
+		'/<div class="post-top clearfix">[ \t\r\n]*<h1>([^<]*)<\/h1>/i',
+		'<div class="post-top clearfix"><h1><span itemprop="name">$1</span></h1>',
+		$content
+	);
+
 	// add the itemprop date published to time tags.
 	$content = preg_replace(
 		'/<time ([^>]*)>/i',
@@ -117,17 +122,8 @@ function indepth_end() {
 	ob_end_flush();
 }
 
-if ( is_single() ) {
-	add_filter( 'post_class',  'indepth_post_class',  1000, 3 );
-	add_filter( 'the_title',   'indepth_the_title',   1000, 1 );
-	add_filter( 'the_content', 'indepth_the_content', 1000, 1 );
-	add_filter( 'the_author',  'indepth_the_author',  1000, 1 );
-	add_filter( 'post_thumbnail_html', 'indepth_post_thumbnail_html', 1000, 5 );
 
-	add_action( 'wp_head',   'indepth_head',  ~PHP_INT_MAX, 0 );
-	add_action( 'wp_head',   'indepth_start', PHP_INT_MAX,  0 );
-	add_action( 'wp_footer', 'indepth_end',   0, 0 );
-}
+add_action( 'wp_head',   'indepth_head',  ~PHP_INT_MAX, 0 );
 
 add_action( 'show_user_profile',        'indepth_add_extra_profile_fields');
 add_action( 'edit_user_profile',        'indepth_add_extra_profile_fields');
