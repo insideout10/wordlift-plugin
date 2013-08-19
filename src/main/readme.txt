@@ -116,6 +116,9 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.7 =
+ * Fix: html tagging in the title did cause issues when the post title is being used as an html attribute.
+
 = 2.6.6 =
  * Other: add new keywords.
 
