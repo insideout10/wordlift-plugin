@@ -3,7 +3,7 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.6.8" override="true" />
+    <property name="version" value="2.6.9" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
     <property name="sassdir" value="src/main/sass" override="true" />
@@ -33,13 +33,21 @@
 
     <target name="svn-update">
         <echo msg="Updating SVN..." />
-        <exec command="svn up" dir="${svndir}" />
+        <exec command="svn up --username ziodave" dir="${svndir}" />
+    </target>
+
+    <target name="update-trunk">
+        <echo msg="Copying files to ${svndir}/trunk..." />
+        <mkdir dir="${svndir}/trunk" />
+        <copy todir="${svndir}/trunk">
+            <fileset refid="AllSources" />
+        </copy>
     </target>
 
     <target name="svn-copy">
         <echo msg="Deleting ${svndir}/trunk..." />
-        <exec command="svn delete trunk --force" dir="${svndir}" />
-        <exec command="svn ci -m 'removed old trunk'" dir="${svndir}" />
+        <exec command="svn delete trunk --force --username ziodave" dir="${svndir}" />
+        <exec command="svn ci -m 'removed old trunk' --username ziodave" dir="${svndir}" />
 
         <echo msg="Copying files to ${svndir}/trunk..." />
         <mkdir dir="${svndir}/trunk" />
@@ -48,25 +56,28 @@
         </copy>
 
         <echo msg="Updating files in ${svndir}/trunk..." />
-        <exec command="svn add trunk" dir="${svndir}" />
+        <exec command="svn add trunk --username ziodave" dir="${svndir}" />
         <exec command="replace {version} ${version} {wpversion} ${wpversion} -- trunk/readme.txt trunk/wordlift.php" dir="${svndir}" />
         <exec command="replace {version} ${version} {wpversion} ${wpversion} -- trunk/indepth/readme.txt trunk/indepth/indepth.php" dir="${svndir}" />
-        <exec command="svn ci -m 'commit plug-in version ${version}.'" dir="${svndir}" />
+        <exec command="svn ci -m 'commit plug-in version ${version}.' --username ziodave" dir="${svndir}" />
     </target>
 
     <target name="svn-tag">
         <echo msg="Deleting tags/${version}..." />
-        <exec command="svn delete tags/${version} --force" dir="${svndir}" />
+        <exec command="svn delete tags/${version} --force --username ziodave" dir="${svndir}" />
+
+        <echo msg="Committing delete of tag version ${version}..." />
+        <exec command="svn ci -m 'delete tag version ${version}' --username ziodave" dir="${svndir}" />
 
         <echo msg="Copying trunk to tags/${version}..." />
-        <exec command="svn cp trunk tags/${version}" dir="${svndir}" />
+        <exec command="svn cp trunk tags/${version} --username ziodave" dir="${svndir}" />
 
         <echo msg="Tagging version ${version}..." />
-        <exec command="svn ci -m 'tagging version ${version}'" dir="${svndir}" />
+        <exec command="svn ci -m 'tagging version ${version}' --username ziodave" dir="${svndir}" />
 
 
         <echo msg="Updating..." />
-        <exec command="svn update" dir="${svndir}" />
+        <exec command="svn update --username ziodave" dir="${svndir}" />
     </target>
 
     <target name="svn">

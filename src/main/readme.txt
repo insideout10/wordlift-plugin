@@ -116,6 +116,9 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.9 =
+ * Improvement: add better support for is_single call.
+
 = 2.6.8 =
  * Other: fix repository versioning.
 
