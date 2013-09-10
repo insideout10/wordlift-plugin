@@ -26,7 +26,7 @@ class WordLift_ActivationService
             echo("</p></div>");
 
             // create a phantom page for the entity page.
-            $this->createPage();
+            $this->create_page();
 
             return;
         }
@@ -68,7 +68,7 @@ class WordLift_ActivationService
             echo("</p></div>");
 
             // create a phantom page for the entity page.
-            $this->createPage();
+            $this->create_page();
 
             return;
         }
@@ -118,18 +118,40 @@ class WordLift_ActivationService
         return null;
     }
 
-    private function createPage()
+    private function create_page()
     {
 
-        $entityPage = array(
-            "post_type" => "page",
-            "post_status" => "publish",
-            "post_name" => "entity",
-            "post_content" => "[wordlift.entity]"
+        $page = array(
+            'post_type'    => 'page',
+            'post_status'  => 'publish',
+            'post_name'    => 'wordlift-entity',
+            'post_content' => '[wordlift.entity]',
+            'post_title'   => 'WordLift Entity'
         );
 
         $error = null;
-        wp_insert_post($entityPage, $error);
+        $page_id = wp_insert_post( $page, $error );
+
+        // add the entity page option and remove the page from menus.
+        if ( is_numeric( $page_id ) && 0 !== $page_id ) {
+
+            update_option( '_wordlift_entity_page_id', $page_id );
+
+            $args = array(
+                'meta_key'   => '_menu_item_object_id',
+                'meta_value' => $page_id,
+                'post_type'  => 'nav_menu_item'
+            );
+
+            $menu_items = get_posts( $args );
+
+            foreach ( $menu_items as $menu_item ) {
+                if ( is_nav_menu_item( $menu_item->ID ) ) {
+                    wp_delete_post( $menu_item->ID, true );
+                }
+            }
+            
+        }
 
         $this->logger->info(var_export($error, true));
     }

@@ -116,6 +116,14 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.11 =
+ * Fix: the entity page might appear in the primary menu with some themes (e.g. Twenty Thirteen).
+ * Fix: the entity page called without an entity parameter would return a warning.
+ * Fix: a warning might appear in the entity page.
+
+= 2.6.10 =
+ * Fix: temporary disabled twitter authentication due to API changes.
+
 = 2.6.9 =
  * Improvement: add better support for is_single call.
 

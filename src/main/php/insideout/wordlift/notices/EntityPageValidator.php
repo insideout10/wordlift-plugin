@@ -11,10 +11,10 @@ class WordLift_Notices_EntityPageValidator
     {
         $pageId = get_option($this->optionName, null);
 
-        if (null === $pageId) {
-            $pageId = $this->createEntityPage();
-            update_option($this->optionName, $pageId);
-        }
+        // if (null === $pageId) {
+            // $pageId = $this->createEntityPage();
+            // update_option($this->optionName, $pageId);
+        // }
 
         return "";
     }

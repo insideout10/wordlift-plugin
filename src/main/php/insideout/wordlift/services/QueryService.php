@@ -134,13 +134,9 @@ class WordLift_QueryService {
 	private function getCount( $whereClause, $groupBy = NULL, $fields = NULL ) {
 		$store = $this->storeService->getStore();
 
-		// public function create( $fields, $whereClause = NULL, $limit = NULL, $offset = NULL, $groupBy = NULL, $orderBy = NULL ) {
-		// $query = $this->create( "?subject ?a ?name", $whereClause, NULL, NULL, "?subject ?a ?name", "DESC(?count)" );
 		$query = $this->create( "COUNT( * ) AS ?count", $whereClause, NULL, NULL, $groupBy ); // , "DESC(?count)" );
-		// echo( $query . "\n" );
 
-		$recordset = $store->query( $query );
-		// var_export( $recordset );
+		$recordset = @$store->query( $query );
 		
 		return count( $recordset[ self::RESULT_NAME ][ self::ROWS_NAME ] );
 		// return $recordset[ self::RESULT_NAME ][ self::ROWS_NAME ][ 0 ][ "count" ];

@@ -25,7 +25,12 @@ class WordLift_EntityPage
         // initialize the empty fragment that will be returned along with the existing content.
         $fragment = "<div class=\"entity-page\">";
 
-        $entityURI = $_GET[ "e" ];
+        $entityURI = $_GET['e'];
+
+        if ( empty($entityURI) ) {
+            return $pageContent;
+        }
+
         $escEntityURI = $this->queryService->escapeValue( $entityURI );
 
         $fragment .= $this->getEntityContent( $entityURI );
@@ -127,6 +132,11 @@ EOF;
     }
 
     private function getValue( $values, $languages ) {
+
+        // if ( null === $values ) {
+        //     return '';
+        // }
+
         foreach ( $values as &$value ) :
 
             if ( $languages[0] === $value[ "lang" ] )

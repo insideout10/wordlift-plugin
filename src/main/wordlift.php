@@ -18,16 +18,16 @@ WordPress_XmlApplication::setUp(
     "/log4php.xml"
 );
 
-function wordlift_activate()
-{
-    // delete_option("wordlift_consumer_key");
-    // delete_option("wordlift_site_key");
-}
-
 function wordlift_deactivate()
 {
-    delete_option("wordlift_consumer_key");
-    delete_option("wordlift_site_key");
+    delete_option( 'wordlift_consumer_key' );
+    delete_option( 'wordlift_site_key' );
+
+    $page_id = get_option( '_wordlift_entity_page_id', 'notfound' );
+    if ( is_numeric( $page_id ) ) {
+        wp_delete_post( $page_id, true );
+        delete_option( '_wordlift_entity_page_id' );        
+    }
 }
 
 function wordlift_scripts() {
@@ -143,10 +143,24 @@ function wordlift_footer() {
     echo("</div>");
 }
 
-register_activation_hook(__FILE__, "wordlift_activate");
-register_deactivation_hook(__FILE__, "wordlift_deactivate");
+// remove the entity page from the menu.
+function wordlift_exclude_entity_page_from_menu( $exclude_array ) {
+
+    $page_id = get_option( '_wordlift_entity_page_id', 'notfound' );
+
+    if ( is_numeric( $page_id) ) {
+        array_push( $exclude_array, $page_id );
+    }
+
+    return $exclude_array;
+}
+
+register_deactivation_hook( __FILE__, 'wordlift_deactivate' );
+
 add_action("wp_enqueue_scripts", "wordlift_scripts");
 add_action("wp_footer", "wordlift_footer");
+
+add_filter( 'wp_list_pages_excludes', 'wordlift_exclude_entity_page_from_menu');
 
 if ( 'false' !== get_option( 'wordlift_enable_in_depth', 'true' ) ) {
     require_once 'indepth/indepth.php';
