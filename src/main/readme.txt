@@ -116,6 +116,9 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.13 =
+ * Fix: overlap with Facebook admin menu.
+
 = 2.6.12 =
  * Fix: enable authorship information only for regular posts (post type 'post').
 
