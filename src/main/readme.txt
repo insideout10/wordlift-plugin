@@ -116,6 +116,9 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.12 =
+ * Fix: enable authorship information only for regular posts (post type 'post').
+
 = 2.6.11 =
  * Fix: the entity page might appear in the primary menu with some themes (e.g. Twenty Thirteen).
  * Fix: the entity page called without an entity parameter would return a warning.
