@@ -191,7 +191,7 @@
 
 
     <wordpress:adminMenu pageTitle="Options" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
-        class="wordLiftOptionsPage" method="get" position="81" iconUrl="../wp-content/plugins/wordlift/sass/img/wordlift-logo-18x18.gif" />
+        class="wordLiftOptionsPage" method="get" position="66221" iconUrl="../wp-content/plugins/wordlift/sass/img/wordlift-logo-18x18.gif" />
 
     <class id="wordLiftRegisterLoginPage" name="WordLift_WordLiftRegisterLoginPage"
         filename="/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php">
