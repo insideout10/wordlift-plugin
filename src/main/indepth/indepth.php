@@ -17,25 +17,28 @@ function indepth_post_class( $classes, $class, $id ) {
 	return $classes;
 }
 
-function indepth_the_title( $title, $id ) {
+function interaction_count() {
 
 	$comments_number = get_comments_number();
 	
-	return "<meta itemprop='interactionCount' content='UserComments:$comments_number'><span itemprop='name'>$title</span>";
+	return "<meta itemprop='interactionCount' content='UserComments:$comments_number' />";
 }
 
 function indepth_the_content( $content ) {
 
-	return "<span itemprop='text'>$content</span>";
+	return "<span itemprop='text'>$content</span>" . interaction_count();
 }
 
 function indepth_the_author( $author ) {
 
 	return $author;
-	// return ( is_single() ? "by $author" : $author );
 }
 
 function indepth_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+
+	if ( empty( $html ) ) {
+		return $html;
+	}
 
 	$url = wp_get_attachment_url( $post_thumbnail_id );
 	return "<a href='$url' itemprop='image'>$html</a>";
@@ -110,6 +113,19 @@ function indepth_ob_callback( $content ) {
 		$content
 	);
 
+	// avamasys
+	$content = preg_replace(
+		'/<div class="post-top clearfix">[^<]*<h1>([^<]*)<\/h1>/i',
+		'<div class="post-top clearfix"><h1 itemprop="name">$1</h1>',
+		$content
+	);
+
+	$content = preg_replace(
+		'/<h1 class="entry-title">/i',
+		'<h1 class="entry-title" itemprop="name">',
+		$content
+	);
+
 	return $content;
 }
 
@@ -119,7 +135,6 @@ function indepth_end() {
 }
 
 add_filter( 'post_class',  'indepth_post_class',  1000, 3 );
-add_filter( 'the_title',   'indepth_the_title',   1000, 2 );
 add_filter( 'the_content', 'indepth_the_content', 1000, 1 );
 add_filter( 'the_author',  'indepth_the_author',  1000, 1 );
 add_filter( 'post_thumbnail_html', 'indepth_post_thumbnail_html', 1000, 5 );
