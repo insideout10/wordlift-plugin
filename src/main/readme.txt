@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
-Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search
+Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
 Requires at least: {wpversion}
-Tested up to: 3.6
+Tested up to: 3.6.1
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -35,7 +35,9 @@ Features:
 Since these tags are highly coupled with your WordPress theme, we list here the themes we tested so far:
 
  * Twenty Thirteen
- * Avamsys
+ * Twenty Twelve
+ * [DW Focus](http://www.designwall.com/wordpress/themes/dw-focus/) 1.0.3
+ * [Avamsys](http://themeforest.net/item/avamys-retina-ready-business-wordpress-theme/4122827?ref=cyberandy)
 
 Please let us know if your theme is working or not, and we'll try to add support for it.
 
@@ -115,6 +117,11 @@ We're glad to support you and you can send us an e-mail to
 6. The WordLift Bar.
 
 == Changelog ==
+
+= 2.6.14 =
+ * Fix: post thumbnail html output even if there's no thumbnail.
+ * Fix: adding schema.org title using the_title filter could cause issues with theme that use this function for the img tag alt attribute value.
+ * Enhancement: add support for DW Focus theme.
 
 = 2.6.13 =
  * Fix: overlap with Facebook admin menu.

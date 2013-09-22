@@ -3,7 +3,7 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.6.13" override="true" />
+    <property name="version" value="2.6.14" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
     <property name="sassdir" value="src/main/sass" override="true" />
@@ -132,23 +132,18 @@
     </target>
 
     <target name="qa-copy">
-<!--         <mkdir dir="../home/var/www/wordlift-3.1.0/wp-content/plugins/wordlift" />
-        <copy todir="../home/var/www/wordlift-3.1.0/wp-content/plugins/wordlift">
+        <mkdir dir="../../wordpress/3.5.2/var/www/wp-content/plugins" />
+        <copy todir="../../wordpress/3.5.2/var/www/wp-content/plugins/wordlift">
             <fileset refid="AllSources" />
         </copy>
 
-        <mkdir dir="../home/var/www/wordlift-3.3.0/wp-content/plugins/wordlift" />
-        <copy todir="../home/var/www/wordlift-3.3.0/wp-content/plugins/wordlift">
+        <mkdir dir="../../wordpress/3.6/var/www/wp-content/plugins" />
+        <copy todir="../../wordpress/3.6/var/www/wp-content/plugins/wordlift">
             <fileset refid="AllSources" />
         </copy>
 
-        <mkdir dir="../home/var/www/wordlift-3.4.2/wp-content/plugins/wordlift" />
-        <copy todir="../home/var/www/wordlift-3.4.2/wp-content/plugins/wordlift">
-            <fileset refid="AllSources" />
-        </copy>
-
- -->        <mkdir dir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift" />
-        <copy todir="../home/var/www/wordlift-3.5.1/wp-content/plugins/wordlift">
+        <mkdir dir="../../redlink/var/www/wp-content/plugins" />
+        <copy todir="../../redlink/var/www/wp-content/plugins/wordlift">
             <fileset refid="AllSources" />
         </copy>
     </target>
