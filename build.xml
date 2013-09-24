@@ -142,6 +142,11 @@
             <fileset refid="AllSources" />
         </copy>
 
+        <mkdir dir="../../wordpress/3.6.1/var/www/wp-content/plugins" />
+        <copy todir="../../wordpress/3.6.1/var/www/wp-content/plugins/wordlift">
+            <fileset refid="AllSources" />
+        </copy>
+
         <mkdir dir="../../redlink/var/www/wp-content/plugins" />
         <copy todir="../../redlink/var/www/wp-content/plugins/wordlift">
             <fileset refid="AllSources" />
