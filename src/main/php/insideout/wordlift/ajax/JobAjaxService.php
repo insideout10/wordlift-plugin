@@ -38,7 +38,9 @@ class WordLift_JobAjaxService {
             return WordPress_AjaxProxy::CALLBACK_RETURN_ERROR;
         }
 
-        $jobRequest = $this->jobRequestService->createJobRequest( $post->post_content );
+        $content = strip_tags( do_shortcode( $post->post_content ) );
+
+        $jobRequest = $this->jobRequestService->createJobRequest( $content );
         $transactionId = $this->jobRequestService->sendJobRequest( $jobRequest );
 
         $result = $this->jobService->setJob( $postID, $transactionId, WordLift_JobService::RUNNING );
