@@ -87,7 +87,7 @@ angular
             .replace( '\(', '\\(' )
             .replace( '\)', '\\)' )
           # regexp = new RegExp( "(#{selectionHead})(<[^>]*>[\\W\\D]*)*(#{textAnnotation.selectedText})(<[^>]*>[\\W\\D]*)*(#{selectionTail})" )
-          regexp = new RegExp( "(\\W)(#{textAnnotation.selectedText})(\\W)" )
+          regexp = new RegExp( "(\\W)(#{textAnnotation.selectedText})(\\W)(?![^>]*\")" )
           replace = "$1<span id=\"#{textAnnotation.about}\" class=\"textannotation\"
            typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\"
            about=\"#{textAnnotation.about}\">$2</span>$3"
@@ -119,7 +119,7 @@ angular
       .success (data, status, headers, config) ->
         $scope.state = if data.jobState? then data.jobState else "click to analyze"
       .error (data, status, headers, config) ->
-        console.log( status )
+        # console.log( status )
 
     $scope.postJob = ->
       $scope.state = "running"
