@@ -43,6 +43,10 @@ class WordLift_RecordSetService {
 
 	private function writeRecordSet( &$recordset ) {
 
+		if ( ! is_array( $recordset ) ) {
+			return;
+		}
+
 		$result = &$recordset[ self::RESULT_NAME ];
 		$variables = &$result[ self::VARIABLES_NAME ];
 		$rows = &$result[ self::ROWS_NAME ];
