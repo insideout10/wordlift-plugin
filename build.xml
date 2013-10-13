@@ -3,7 +3,7 @@
 <project name="WordLiftPlugin" default="rebuild">
     <property name="builddir" value="target" override="true" />
     <property name="svndir" value="wordpress-svn" override="true" />
-    <property name="version" value="2.6.14" override="true" />
+    <property name="version" value="2.6.15" override="true" />
     <property name="wpversion" value="3.3.0" override="true" />
     <property name="wordliftsites" value="../home/var/www" override="true" />
     <property name="sassdir" value="src/main/sass" override="true" />
@@ -165,6 +165,7 @@
     </target>
 
     <target name="coffee-build">
+        <echo msg="Compiling CoffeeScript..." />
         <exec command="coffee --compile --output src/main/js/ src/main/coffee/wordlift.disambiguate.coffee" dir="." />
         <exec command="coffee --compile --output src/main/js/userly/ src/main/coffee/userly/app.coffee" dir="." />
         <exec command="coffee --compile --output src/main/js/userly/ src/main/coffee/userly/userly.coffee" dir="." />

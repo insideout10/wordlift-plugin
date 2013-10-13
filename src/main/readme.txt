@@ -118,6 +118,10 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.15 =
+ * Fix: PHP warning in RecordSetService (thanks to Kevin Polley),
+ * Fix: image alt attributes were incorrectly highlighted with entities (thanks to Lee Hodson).
+
 = 2.6.14 =
  * Fix: post thumbnail html output even if there's no thumbnail.
  * Fix: adding schema.org title using the_title filter could cause issues with theme that use this function for the img tag alt attribute value.
