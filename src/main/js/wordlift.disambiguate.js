@@ -99,7 +99,7 @@
           textAnnotation = _ref1[_j];
           selectionHead = textAnnotation.selectionHead.replace('\(', '\\(').replace('\)', '\\)');
           selectionTail = textAnnotation.selectionTail.replace('\(', '\\(').replace('\)', '\\)');
-          regexp = new RegExp("(\\W)(" + textAnnotation.selectedText + ")(\\W)");
+          regexp = new RegExp("(\\W)(" + textAnnotation.selectedText + ")(\\W)(?![^>]*\")");
           replace = "$1<span id=\"" + textAnnotation.about + "\" class=\"textannotation\"           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\"           about=\"" + textAnnotation.about + "\">$2</span>$3";
           content = content.replace(regexp, replace);
         }
@@ -130,9 +130,7 @@
         }
       }).success(function(data, status, headers, config) {
         return $scope.state = data.jobState != null ? data.jobState : "click to analyze";
-      }).error(function(data, status, headers, config) {
-        return console.log(status);
-      });
+      }).error(function(data, status, headers, config) {});
     };
     $scope.postJob = function() {
       $scope.state = "running";
