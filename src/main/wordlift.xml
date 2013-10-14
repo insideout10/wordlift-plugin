@@ -271,24 +271,6 @@
     <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
                     authentication="true" capabilities="manage_options" httpMethod="POST" />
 
-    <!-- ***** R E L A T E D  P O S T S  W I D G E T ***** -->
-<!--     <class id="relatedPostsWidget" name="WordLift_RelatedPostsWidget"
-           filename="/php/insideout/wordlift/widgets/RelatedPostsWidget.php">
-
-        <property name="entityService" reference="entityService" />
-    </class>
-    <wordpress:widget class="relatedPostsWidget" /> -->
-
-    <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
-    <!-- <wordpress:postType name="io-wordlift-entity" class="entityPostType" /> -->
-
-    <!-- ***** W O R D P R E S S   A C T I O N S -->
-    <!-- uncomment the following to enable posts analysis via WordLift Server -->
-
-    <!-- ***** W O R D P R E S S   F I L T E R S -->
-<!--     <wordpress:filter name="the_content" class="contentFilter" method="content" /> -->
-
-
     <!-- ***** W O R D P R E S S   S H O R T C O D E S -->
     <wordpress:shortCode name="wordlift.entities" class="entitiesBar" method="get" />
 
@@ -318,13 +300,16 @@
                       url="https://raw.github.com/cowboy/javascript-debug/master/ba-debug.min.js">
     </wordpress:script>
 
-     <wordpress:script target="user" name="jquery-ui"
-            version="1.9.2"
-            footer="true"
-            url="/wp-content/plugins/wordlift/js/jquery-ui.min.js">
-            <dependsOn name="jquery" />
+<!--
+    <wordpress:script target="user" name="jquery-ui"
+        version="1.9.2"
+        footer="true"
+        url="/wp-content/plugins/wordlift/js/jquery-ui.min.js">
+
+        <dependsOn name="jquery" />
     </wordpress:script>
     <wordpress:style target="user" name="jquery-ui.css" url="/wp-content/plugins/wordlift/css/jquery-ui.css" />
+-->
 
     <wordpress:script target="user" name="jquery-isotope"
                       version="1.8.21"
@@ -336,7 +321,7 @@
             version="0.9.7"
             footer="true"
             url="/wp-content/plugins/wordlift/js/ioio-0.9.7.min.js">
-        <dependsOn name="jquery-ui" />
+        <!-- <dependsOn name="jquery-ui" /> -->
     </wordpress:script>
 
     <wordpress:script target="user" name="entityTiles"
