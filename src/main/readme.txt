@@ -118,6 +118,9 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.16 =
+ * Fix: removed useless references to jQuery UI libraries and conflicting CSS (thanks to Lee Hodson).
+
 = 2.6.15 =
  * Fix: PHP warning in RecordSetService (thanks to Kevin Polley),
  * Fix: image alt attributes were incorrectly highlighted with entities (thanks to Lee Hodson).
