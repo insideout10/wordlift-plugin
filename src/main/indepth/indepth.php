@@ -40,8 +40,7 @@ function indepth_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size
 		return $html;
 	}
 
-	$url = wp_get_attachment_url( $post_thumbnail_id );
-	return "<a href='$url' itemprop='image'>$html</a>";
+	return str_ireplace('<img ', '<img itemprop="image" ', $html);
 }
 
 function indepth_add_extra_profile_fields( $user ) {
