@@ -118,6 +118,9 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 2.6.18 =
+ * Enhancement: Twitter authentication is now back.
+
 = 2.6.17 =
  * Fix: change regular expression to add image itemprops for In-Depth articles to avoid conflicts with linked images and plugins such Nav Menu Images (thanks to Lee Hodson).
 
