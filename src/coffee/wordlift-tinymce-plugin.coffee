@@ -4,4 +4,6 @@ tinymce.PluginManager.add 'wordlift', (editor, url) ->
     editor.addButton 'wordlift',
         text   : 'WordLift'
         icon   : false
-        onclick: -> alert('Hello!')
+        onclick: -> 
+            content = tinyMCE.activeEditor.getContent({format : 'raw'})
+            alert(content)

@@ -4,7 +4,11 @@
       text: 'WordLift',
       icon: false,
       onclick: function() {
-        return alert('Hello!');
+        var content;
+        content = tinyMCE.activeEditor.getContent({
+          format: 'raw'
+        });
+        return alert(content);
       }
     });
   });
