@@ -9,6 +9,13 @@ Author URI: http://www.insideout.io
 License: APL
 */
 
+function wordlift_load_admin_css() {
+		// TODO Parametrizzare la directory corrente del plugin
+        wp_register_style( 'custom_wp_admin_css', '/wp-content/plugins/wordlift/stylesheets/wordlift-admin.css', false, '1.0.0' );
+        wp_enqueue_style( 'custom_wp_admin_css' );
+}
+
+add_action( 'admin_enqueue_scripts', 'wordlift_load_admin_css' );
 
 function wordlift_buttonhooks() {
    // Only add hooks when the current user has permissions AND is in Rich Text editor mode
