@@ -9,7 +9,7 @@ module.exports = (grunt) ->
         options:
           join: true
         files:
-          'src/js/wordlift-tinymce.js': ['src/coffee/wordlift-tinymce.coffee']
+          'src/js/wordlift-tinymce-plugin.js': ['src/coffee/wordlift-tinymce-plugin.coffee']
 
     watch:
       scripts:
