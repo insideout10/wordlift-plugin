@@ -11,10 +11,10 @@ module.exports = (grunt) ->
         files:
           'src/js/wordlift-tinymce-plugin.js': ['src/coffee/wordlift-tinymce-plugin.coffee']
 
-    sass:
-      dist:
+    less:
+      development:
         files:
-          'src/css/wordlift-admin.css': ['src/sass/wordlift-admin.scss']
+          'src/css/wordlift-admin.css': ['src/less/wordlift-admin.less']
 
     watch:
       scripts:
@@ -23,15 +23,15 @@ module.exports = (grunt) ->
         options:
           spawn: false
       styles:
-        files: ['src/sass/*.scss']
-        tasks: ['sass']
+        files: ['src/less/*.less']
+        tasks: ['less']
         options:
           spawn: false,
 
   # Load plugins
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')
-  grunt.loadNpmTasks('grunt-contrib-sass')
+  grunt.loadNpmTasks('grunt-contrib-less')
 
   # Default task(s).
   grunt.registerTask('default', ['coffee'])
