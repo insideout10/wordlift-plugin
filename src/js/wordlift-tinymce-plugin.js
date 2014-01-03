@@ -6,7 +6,7 @@
       onclick: function() {
         var content;
         content = tinyMCE.activeEditor.getContent({
-          format: 'raw'
+          format: 'text'
         });
         return alert(content);
       }
