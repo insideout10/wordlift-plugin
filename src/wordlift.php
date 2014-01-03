@@ -8,3 +8,13 @@ Author: InSideOut10
 Author URI: http://www.insideout.io
 License: APL
 */
+
+function wordlift_mce_buttons($buttons) {	
+	/**
+	 * Add in a core button that's disabled by default
+	 */
+	array_push($buttons, 'charmap');
+
+	return $buttons;
+}
+add_filter('mce_buttons', 'wordlift_mce_buttons');
