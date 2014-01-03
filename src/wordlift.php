@@ -40,3 +40,47 @@ function wordlift_register_tinymce_javascript($plugin_array) {
  
 // init process for button control
 add_action('init', 'wordlift_buttonhooks');
+
+
+
+// Ajax Admin Section
+
+add_action( 'wp_ajax_wordlift_analyze', 'wordlift_ajax_analyze_action' );
+
+// Analyze a text
+function wordlift_ajax_analyze_action() {
+	if ( ( current_user_can('edit_posts') || current_user_can('edit_pages') ) && get_user_option('rich_editing') ) {
+   
+	global $wpdb; // this is how you get access to the database
+/*
+    $api_key = 'XXXXX';
+    $api_analysis_chain = 'YYYY';
+    $api_url = "https://api.redlink.io/1.0-ALPHA/analysis/$api_analysis_chain/enhance?key=$api_key"
+
+	$response = wp_remote_post( $url, array(
+			'method' => 'POST',
+			'timeout' => 45,
+			'redirection' => 5,
+			'httpversion' => '1.0',
+			'blocking' => true,
+			'headers' => array(),
+			'body' => array( 'username' => 'bob', 'password' => '1234xyz' ),
+			'cookies' => array()
+    	)
+	);
+
+if ( is_wp_error( $response ) ) {
+   $error_message = $response->get_error_message();
+   echo "Something went wrong: $error_message";
+} else {
+   echo 'Response:<pre>';
+   print_r( $response );
+   echo '</pre>';
+}
+*/
+    echo 'foo';
+	die(); // this is required to return a proper result
+	
+	
+}
+}

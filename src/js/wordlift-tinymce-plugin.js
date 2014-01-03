@@ -4,11 +4,17 @@
       text: 'WordLift',
       icon: false,
       onclick: function() {
-        var content;
+        var content, data;
         content = tinyMCE.activeEditor.getContent({
           format: 'text'
         });
-        return alert(content);
+        data = {
+          action: 'wordlift_analyze',
+          body: content
+        };
+        return jQuery.post(ajaxurl, data, function(response) {
+          return alert('Risposta del server ' + response);
+        });
       }
     });
   });

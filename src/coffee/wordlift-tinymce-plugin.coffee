@@ -6,4 +6,11 @@ tinymce.PluginManager.add 'wordlift', (editor, url) ->
         icon   : false
         onclick: -> 
             content = tinyMCE.activeEditor.getContent({format : 'text'})
-            alert(content)
+            data = 
+                action: 'wordlift_analyze'
+                body: content      
+
+            jQuery.post(ajaxurl, data, (response) ->
+                alert('Risposta del server ' + response);
+            )
+      
