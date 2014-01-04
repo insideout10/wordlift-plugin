@@ -3,7 +3,16 @@ $ = jQuery
 angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers'])
 
 $(
-  container = $('<div id="wordlift-tinymce-plugin" ng-controller="HelloController">{{hello}}</div>')
+  container = $('''
+    <div id="wordlift-tinymce-plugin" ng-controller="HelloController">{{hello}}
+      <ul>
+        <li ng-repeat="annotation in annotations">
+          <div>annotation</div>
+          <div ng-bind="annotation['@id']"></div>
+        </li>
+      </ul>
+    </div>
+    ''')
     .appendTo('body')
     .width(1000)
     .height(1000)
@@ -16,7 +25,6 @@ $(
     text   : 'WordLift'
     icon   : false
     onclick: ->
-      alert(tinyMCE.activeEditor.getContent({format : 'text'}))
       injector.invoke(['EditorService', (EditorService) ->
         EditorService.analyze tinyMCE.activeEditor.getContent({format : 'text'})
       ])
