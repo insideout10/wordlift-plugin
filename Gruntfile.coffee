@@ -8,6 +8,7 @@ module.exports = (grunt) ->
       compile:
         options:
           join: true
+          sourceMap: true
         files:
           'src/js/wordlift-tinymce-plugin.js': ['src/coffee/wordlift-tinymce-plugin.coffee']
 
@@ -15,6 +16,7 @@ module.exports = (grunt) ->
       'wordlift-tinymce-plugin':
         options:
           sourceMap: 'src/js/wordlift-tinymce-plugin.min.js.map'
+          sourceMapIn: 'src/js/wordlift-tinymce-plugin.js.map'
           sourceMappingURL: 'wordlift-tinymce-plugin.min.js.map'
         files:
           'src/js/wordlift-tinymce-plugin.min.js': ['src/js/wordlift-tinymce-plugin.js']
