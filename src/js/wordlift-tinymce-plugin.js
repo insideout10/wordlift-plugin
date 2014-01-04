@@ -55,3 +55,7 @@
   });
 
 }).call(this);
+
+/*
+//@ sourceMappingURL=wordlift-tinymce-plugin.js.map
+*/
