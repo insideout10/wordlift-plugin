@@ -11,15 +11,25 @@ module.exports = (grunt) ->
         files:
           'src/js/wordlift-tinymce-plugin.js': ['src/coffee/wordlift-tinymce-plugin.coffee']
 
+    uglify:
+      'wordlift-tinymce-plugin':
+        files:
+          'src/js/wordlift-tinymce-plugin.min.js': ['src/js/wordlift-tinymce-plugin.js']
+
     less:
       development:
         files:
-          'src/css/wordlift-admin.css': ['src/less/wordlift-admin.less']
+          'src/css/wordlift-admin.css'    : ['src/less/wordlift-admin.less']
+      production:
+        options:
+          cleancss: true
+        files:
+          'src/css/wordlift-admin.min.css': ['src/less/wordlift-admin.less']
 
     watch:
       scripts:
         files: ['src/coffee/*.coffee']
-        tasks: ['coffee']
+        tasks: ['coffee', 'uglify']
         options:
           spawn: false
       styles:
@@ -32,6 +42,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-watch')
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-contrib-less')
+  grunt.loadNpmTasks('grunt-contrib-uglify')
 
   # Default task(s).
-  grunt.registerTask('default', ['coffee'])
+  grunt.registerTask('default', ['coffee', 'uglify', 'less'])
