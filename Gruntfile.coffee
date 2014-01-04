@@ -10,7 +10,13 @@ module.exports = (grunt) ->
           join: true
           sourceMap: true
         files:
-          'src/js/wordlift-tinymce-plugin.js': ['src/coffee/wordlift-tinymce-plugin.coffee']
+          'src/js/wordlift-tinymce-plugin.js': [
+            'src/coffee/wordlift-tinymce-plugin/app.config.coffee',
+            'src/coffee/wordlift-tinymce-plugin/app.services.coffee',
+            'src/coffee/wordlift-tinymce-plugin/app.controllers.coffee',
+            'src/coffee/wordlift-tinymce-plugin/app.coffee',
+            'src/coffee/wordlift-tinymce-plugin.coffee'
+          ]
 
     uglify:
       'wordlift-tinymce-plugin':
@@ -19,10 +25,7 @@ module.exports = (grunt) ->
           sourceMapIn: 'src/js/wordlift-tinymce-plugin.js.map'
           sourceMappingURL: 'wordlift-tinymce-plugin.min.js.map'
         files:
-          'src/js/wordlift-tinymce-plugin.min.js': ['src/js/wordlift-tinymce-plugin.js']
-      'wordlift-admin': # contains scripts for the administration UI.
-        files:
-          'src/js/wordlift-admin.min.js': []
+          'src/js/wordlift-tinymce-plugin.min.js': ['src/bower_components/angular/angular.js', 'src/js/wordlift-tinymce-plugin.js']
 
     less:
       development:
