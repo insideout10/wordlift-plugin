@@ -19,7 +19,7 @@ module.exports = (grunt) ->
           sourceMapIn: 'src/js/wordlift-tinymce-plugin.js.map'
           sourceMappingURL: 'wordlift-tinymce-plugin.min.js.map'
         files:
-          'src/js/wordlift-admin.min.js': ['src/js/wordlift-tinymce-plugin.js']
+          'src/js/wordlift-tinymce-plugin.min.js': ['src/js/wordlift-tinymce-plugin.js']
       'wordlift-admin': # contains scripts for the administration UI.
         files:
           'src/js/wordlift-admin.min.js': ['src/bower_components/bootstrap/dist/js/bootstrap.js']
