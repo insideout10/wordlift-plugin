@@ -1,0 +1,1 @@
+angular.module('wordlift.tinymce.plugin.config', [])
