@@ -13,6 +13,9 @@ module.exports = (grunt) ->
 
     uglify:
       'wordlift-tinymce-plugin':
+        options:
+          sourceMap: 'src/js/wordlift-tinymce-plugin.map.js'
+          sourceMappingURL: 'wordlift-tinymce-plugin.map.js'
         files:
           'src/js/wordlift-tinymce-plugin.min.js': ['src/js/wordlift-tinymce-plugin.js']
 
@@ -23,6 +26,9 @@ module.exports = (grunt) ->
       production:
         options:
           cleancss: true
+          sourceMap: true
+          sourceMapFilename: 'src/css/wordlift-admin.map.css'
+          sourceMappingURL: 'wordlift-admin.map.css'
         files:
           'src/css/wordlift-admin.min.css': ['src/less/wordlift-admin.less']
 
