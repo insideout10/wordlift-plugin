@@ -42,13 +42,13 @@
     }
   ]).service('AnnotationService', [
     '$rootScope', '$http', function($rootScope, $http) {
-      var currentAnalysis, findEntitiesForAnnotation, notifyAnnotations;
+      var currentAnalysis, findAllAnnotations, findEntitiesForAnnotation;
+      currentAnalysis = {};
       $rootScope.$on('EditorService.annotationClick', function(event, id) {
         console.log("Ops!! Element with id " + id + " was clicked!");
         return findEntitiesForAnnotation(id);
       });
-      currentAnalysis = {};
-      notifyAnnotations = function() {
+      findAllAnnotations = function() {
         var textAnnotations;
         textAnnotations = currentAnalysis['@graph'].filter(function(item) {
           return __indexOf.call(item['@type'], 'enhancer:TextAnnotation') >= 0 && (item['enhancer:selection-prefix'] != null);
@@ -56,12 +56,19 @@
         return $rootScope.$broadcast('AnnotationService.annotations', textAnnotations);
       };
       findEntitiesForAnnotation = function(annotationId) {
-        var entityAnnotations;
+        var entities, entityAnnotations, entityIds;
         console.log("Going to find entities for annotation with ID " + annotationId);
         entityAnnotations = currentAnalysis['@graph'].filter(function(item) {
           return __indexOf.call(item['@type'], 'enhancer:EntityAnnotation') >= 0 && item['dc:relation'] === annotationId;
         });
-        return $rootScope.$broadcast('AnnotationService.entityAnnotations', entityAnnotations);
+        entityIds = entityAnnotations.map(function(entityAnnotation) {
+          return entityAnnotation['enhancer:entity-reference'];
+        });
+        entities = currentAnalysis['@graph'].filter(function(item) {
+          var _ref;
+          return _ref = item['@id'], __indexOf.call(entityIds, _ref) >= 0;
+        });
+        return $rootScope.$broadcast('AnnotationService.entityAnnotations', entities);
       };
       return {
         analyze: function(content) {
@@ -73,8 +80,14 @@
             },
             data: content
           }).success(function(data, status, headers, config) {
+            var i, _i, _len, _ref;
             currentAnalysis = data;
-            return notifyAnnotations();
+            _ref = data['@graph'];
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              i = _ref[_i];
+              console.log("!!! " + i['@id']);
+            }
+            return findAllAnnotations();
           });
           return true;
         }

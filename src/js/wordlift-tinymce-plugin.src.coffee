@@ -37,21 +37,34 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
   ])
   .service('AnnotationService', ['$rootScope', '$http', ($rootScope, $http) ->
     
+    currentAnalysis = {}
+    
     $rootScope.$on 'EditorService.annotationClick', (event, id) ->
       console.log "Ops!! Element with id #{id} was clicked!"
       findEntitiesForAnnotation(id)
-    currentAnalysis = {}
-    notifyAnnotations = () ->
+    
+    # Find all text annotation for the current analyzed text
+    findAllAnnotations = () ->
       textAnnotations = currentAnalysis['@graph'].filter (item) ->
           'enhancer:TextAnnotation' in item['@type'] and item['enhancer:selection-prefix']?
       $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations    
     
+    # Find all Entities for a certain text annotation identified by 'annotationId'
     findEntitiesForAnnotation = (annotationId) ->
       console.log "Going to find entities for annotation with ID #{annotationId}"
+        
       entityAnnotations = currentAnalysis['@graph'].filter (item) ->
           'enhancer:EntityAnnotation' in item['@type'] and item['dc:relation'] == annotationId
-      $rootScope.$broadcast 'AnnotationService.entityAnnotations', entityAnnotations    
+      # Retrieve related entities ids
+      entityIds = entityAnnotations.map (entityAnnotation) ->
+        entityAnnotation['enhancer:entity-reference']
+      # Retrieve related entities 
+      entities = currentAnalysis['@graph'].filter (item) ->
+        item['@id'] in entityIds 
+
+      $rootScope.$broadcast 'AnnotationService.entityAnnotations', entities   
     
+    # Call redlink api trough Wp Ajax bridge in order to perform the semantic analysis
     analyze: (content) ->
       $http
         method: 'POST'
@@ -61,7 +74,9 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         data: content
       .success (data, status, headers, config) -> 
         currentAnalysis = data
-        notifyAnnotations()
+        for i in data['@graph']
+          console.log "!!! #{i['@id']}"
+        findAllAnnotations()
       true
   ])
 angular.module('wordlift.tinymce.plugin.controllers', [
