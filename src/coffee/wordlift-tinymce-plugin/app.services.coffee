@@ -10,7 +10,7 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
       tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemscope', 'itemscope');
       tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemtype',  entity['wordlift:supportedTypes'].join(' '));
       tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemprop', 'name');
-      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemid', entity['dc:relation']);
+      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemid', entity['enhancer:entity-reference']);
 
     $rootScope.$on 'AnnotationService.annotations', (event, annotations) ->
       console.log 'I received some annotations'
@@ -18,7 +18,6 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
       for textAnnotation in annotations
-        console.log(textAnnotation)
         selectionHead = textAnnotation['enhancer:selection-prefix']['@value']
           .replace( '\(', '\\(' )
           .replace( '\)', '\\)' )
@@ -85,6 +84,7 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
           item['wordlift:cssClasses'] = i.map (type) ->
             "#{type.replace(/schema:/,'')}".toLowerCase()
           item['wordlift:cssClasses'] = item['wordlift:cssClasses'].join(' ')
+          console.log item
           item
       # Retrieve related entities ids
       # entityIds = entityAnnotations.map (entityAnnotation) ->
