@@ -90,13 +90,18 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
           'enhancer:EntityAnnotation' in item['@type'] and item['dc:relation'] == annotationId
       # Enhance entity annotations ..
       entityAnnotations = entityAnnotations.map (item) ->
-          i = intersection(supportedTypes, item['enhancer:entity-type'])
-          item['wordlift:supportedTypes'] = i.map (type) ->
-            "http://schema.org/#{type.replace(/schema:/,'')}" 
-          item['wordlift:cssClasses'] = i.map (type) ->
-            "#{type.replace(/schema:/,'')}".toLowerCase()
-          item['wordlift:cssClasses'] = item['wordlift:cssClasses'].join(' ')
-          console.log item
+         
+          if item['enhancer:entity-type']
+            i = intersection(supportedTypes, item['enhancer:entity-type'])
+            item['wordlift:supportedTypes'] = i.map (type) ->
+              "http://schema.org/#{type.replace(/schema:/,'')}" 
+            item['wordlift:cssClasses'] = i.map (type) ->
+              "#{type.replace(/schema:/,'')}".toLowerCase()
+            item['wordlift:cssClasses'] = item['wordlift:cssClasses'].join(' ')
+          else
+            item['wordlift:supportedTypes'] = []
+            item['wordlift:cssClasses'] = ''
+
           item
       # Retrieve related entities ids
       # entityIds = entityAnnotations.map (entityAnnotation) ->
