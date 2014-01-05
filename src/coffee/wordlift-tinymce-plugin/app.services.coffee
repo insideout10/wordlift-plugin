@@ -14,7 +14,8 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         selectionTail = textAnnotation['enhancer:selection-suffix']['@value']
           .replace( '\(', '\\(' )
           .replace( '\)', '\\)' )
-        regexp = new RegExp( "(\\W)(#{textAnnotation['enhancer:selected-text']['@value']})(\\W)(?![^>]*\")" )
+        regexp = new RegExp( "(\\W|^)(#{textAnnotation['enhancer:selected-text']['@value']})(\\W|$)(?![^<]*\">?)" )
+        console.log regexp
         replace = "$1<strong id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</strong>$3"
         currentHtmlContent = currentHtmlContent.replace( regexp, replace )
