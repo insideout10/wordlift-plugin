@@ -123,6 +123,14 @@ function wordlift_ajax_analyze_action()
     }
 }
 
+/**
+ * Register additional scripts for the admin UI.
+ */
+function wordlift_admin_enqueue_scripts() {
+    wp_enqueue_script( 'angularjs', wordlift_get_url('/bower_components/angular/angular.min.js') );
+}
+add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
+
 // add editor related methods.
 require_once('wordlift_editor.php');
 // add configuratiokn-related methods.
