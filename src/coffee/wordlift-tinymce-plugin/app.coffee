@@ -4,19 +4,31 @@ angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers'
 
 $(
   container = $('''
-    <div id="wordlift-tinymce-plugin" ng-controller="HelloController">{{hello}}
-      <h2>Debug</h2>
-      <ul>
-        <li ng-repeat="annotation in annotations">
-          <div>annotation</div>
-          <div ng-bind="annotation['enhancer:entity-reference']"></div>
-        </li>
-      </ul>
+    <div id="wordlift-disambiguation-popover" class="bootstrap" ng-controller="HelloController">
+      <div class="content">
+        <div class="handlediv" title="Click to toggle"></div>
+        <h3 class="hndle"><span>Semantic Web</span></h3>
+        <div class="inside">
+          <form role="form">
+            <div class="form-group">
+              <input type="text" class="form-control" id="search" placeholder="search or create">
+            </div>
+            <ul>
+              <li ng-repeat="annotation in annotations">
+                <div>annotation</div>
+                <div ng-bind="annotation['enhancer:entity-reference']"></div>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+
+      <div class="bubble-arrow-border"></div>
+      <div class="bubble-arrow"></div>
     </div>
     ''')
     .appendTo('body')
-    .width(1000)
-    .height(1000)
+    .draggable()
 
   injector = angular.bootstrap(container, ['wordlift.tinymce.plugin']);
 
