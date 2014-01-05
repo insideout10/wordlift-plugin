@@ -122,3 +122,6 @@ function wordlift_ajax_analyze_action()
 
     }
 }
+
+// add editor related methods.
+require_once('wordlift_editor.php');
