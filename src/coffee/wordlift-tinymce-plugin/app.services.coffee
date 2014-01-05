@@ -25,8 +25,10 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         tinyMCE.get( "content").isNotDirty = 1 if not isDirty
 
       tinyMCE.get( "content").onClick.add (editor, e) ->
-        console.log("Click within the editor on element with id #{e.target.id}")
-        $rootScope.$broadcast 'EditorService.annotationClick', e.target.id
+        $rootScope.$apply(
+          console.log("Click within the editor on element with id #{e.target.id}")
+          $rootScope.$broadcast 'EditorService.annotationClick', e.target.id
+        )
 
     ping: (message)    -> console.log message
     analyze: (content) -> AnnotationService.analyze content
