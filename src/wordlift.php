@@ -125,3 +125,7 @@ function wordlift_ajax_analyze_action()
 
 // add editor related methods.
 require_once('wordlift_editor.php');
+// add configuratiokn-related methods.
+require_once('wordlift_configuration.php');
+// add the WordLift admin bar.
+require_once('wordlift_admin_bar.php');
