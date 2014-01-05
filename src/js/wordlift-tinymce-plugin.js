@@ -17,7 +17,8 @@
           console.log(textAnnotation);
           selectionHead = textAnnotation['enhancer:selection-prefix']['@value'].replace('\(', '\\(').replace('\)', '\\)');
           selectionTail = textAnnotation['enhancer:selection-suffix']['@value'].replace('\(', '\\(').replace('\)', '\\)');
-          regexp = new RegExp("(\\W)(" + textAnnotation['enhancer:selected-text']['@value'] + ")(\\W)(?![^>]*\")");
+          regexp = new RegExp("(\\W|^)(" + textAnnotation['enhancer:selected-text']['@value'] + ")(\\W|$)(?![^<]*\">?)");
+          console.log(regexp);
           replace = "$1<strong id=\"" + textAnnotation['@id'] + "\" class=\"textannotation\"          typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</strong>$3";
           currentHtmlContent = currentHtmlContent.replace(regexp, replace);
           isDirty = tinyMCE.get("content").isDirty();
@@ -27,8 +28,7 @@
           }
         }
         return tinyMCE.get("content").onClick.add(function(editor, e) {
-          console.log("Click within the editor on element with id " + e.target.id);
-          return $rootScope.$broadcast('EditorService.annotationClick', e.target.id);
+          return $rootScope.$apply(console.log("Click within the editor on element with id " + e.target.id), $rootScope.$broadcast('EditorService.annotationClick', e.target.id));
         });
       });
       return {

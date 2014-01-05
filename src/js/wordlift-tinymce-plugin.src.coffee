@@ -15,7 +15,8 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         selectionTail = textAnnotation['enhancer:selection-suffix']['@value']
           .replace( '\(', '\\(' )
           .replace( '\)', '\\)' )
-        regexp = new RegExp( "(\\W)(#{textAnnotation['enhancer:selected-text']['@value']})(\\W)(?![^>]*\")" )
+        regexp = new RegExp( "(\\W|^)(#{textAnnotation['enhancer:selected-text']['@value']})(\\W|$)(?![^<]*\">?)" )
+        console.log regexp
         replace = "$1<strong id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</strong>$3"
         currentHtmlContent = currentHtmlContent.replace( regexp, replace )
@@ -25,8 +26,10 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         tinyMCE.get( "content").isNotDirty = 1 if not isDirty
 
       tinyMCE.get( "content").onClick.add (editor, e) ->
-        console.log("Click within the editor on element with id #{e.target.id}")
-        $rootScope.$broadcast 'EditorService.annotationClick', e.target.id
+        $rootScope.$apply(
+          console.log("Click within the editor on element with id #{e.target.id}")
+          $rootScope.$broadcast 'EditorService.annotationClick', e.target.id
+        )
 
     ping: (message)    -> console.log message
     analyze: (content) -> AnnotationService.analyze content
