@@ -18,13 +18,23 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
       for textAnnotation in annotations
-        selectionHead = textAnnotation['enhancer:selection-prefix']['@value']
-          .replace( '\(', '\\(' )
-          .replace( '\)', '\\)' )
-        selectionTail = textAnnotation['enhancer:selection-suffix']['@value']
-          .replace( '\(', '\\(' )
-          .replace( '\)', '\\)' )
-        regexp = new RegExp( "(\\W|^)(#{textAnnotation['enhancer:selected-text']['@value']})(\\W|$)(?![^<]*\">?)" )
+        # get the selection prefix and suffix for the regexp.
+        selPrefix = textAnnotation['enhancer:selection-prefix']['@value'].replace( '\(', '\\(' ).replace( '\)', '\\)' )
+        selPrefix = '^' if '' is selPrefix
+        selSuffix = textAnnotation['enhancer:selection-suffix']['@value'].replace( '\(', '\\(' ).replace( '\)', '\\)' )
+        selSuffix = '$' if '' is selSuffix
+
+        selText   = textAnnotation['enhancer:selected-text']['@value']
+
+        # this is the old regular expression which is not accurate.
+        # regexp = new RegExp( "(\\W|^)(#{selText})(\\W|$)(?![^<]*\">?)" )
+
+        # the new regular expression, may not match everything.
+        # TODO: enhance the matching.
+        regexp = new RegExp( "(#{selPrefix})(#{selText})(#{selSuffix})(?![^<]*\">?)" )
+
+        console.log regexp
+
         replace = "$1<strong id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</strong>$3"
         currentHtmlContent = currentHtmlContent.replace( regexp, replace )
