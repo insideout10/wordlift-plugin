@@ -5,10 +5,11 @@ angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers'
 $(
   container = $('''
     <div id="wordlift-tinymce-plugin" ng-controller="HelloController">{{hello}}
+      <h2>Debug</h2>
       <ul>
         <li ng-repeat="annotation in annotations">
           <div>annotation</div>
-          <div ng-bind="annotation['@id']"></div>
+          <div ng-bind="annotation['enhancer:entity-reference']"></div>
         </li>
       </ul>
     </div>
