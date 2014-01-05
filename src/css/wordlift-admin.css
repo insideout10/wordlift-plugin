@@ -7,11 +7,34 @@ span.mce_wordlift {
   height: 400px;
   top: 40px;
   right: 10px;
-  background: white;
   z-index: 999;
+}
+#wordlift-disambiguation-popover .content {
+  height: 400px;
+  background: white;
   border: 1px solid darkgray;
   padding: 10px;
   overflow: auto;
+}
+#wordlift-disambiguation-popover .bubble-arrow-border {
+  border-color: #666666 transparent transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+  height: 0;
+  width: 0;
+  position: absolute;
+  bottom: -3px;
+  left: 30px;
+}
+#wordlift-disambiguation-popover .bubble-arrow {
+  border-color: white transparent transparent transparent;
+  border-style: solid;
+  border-width: 10px;
+  height: 0;
+  width: 0;
+  position: absolute;
+  bottom: 0px;
+  left: 30px;
 }
 .bootstrap {
   /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
