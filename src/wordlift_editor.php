@@ -16,3 +16,13 @@ function wordlift_mce_css( $mce_css ) {
 
 // hook the TinyMCE custom styles function.
 add_filter('mce_css', 'wordlift_mce_css');
+
+add_filter('tiny_mce_before_init', 'wordlift_filter_tiny_mce_before_init'); 
+function wordlift_filter_tiny_mce_before_init( $options ) { 
+ 
+    if ( ! isset( $options['extended_valid_elements'] ) ) 
+        $options['extended_valid_elements'] = ''; 
+     
+    $options['extended_valid_elements'] .= ',*[itemscope|itemtype|itemid|itemprop]'; 
+    return $options; 
+}

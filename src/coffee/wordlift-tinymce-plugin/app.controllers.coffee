@@ -7,9 +7,15 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $scope.hello       = 'Ciao Marcello!'
     $scope.annotations = []
 
-    $scope.$on 'AnnotationService.entityAnnotations', (event, annotations) ->
+    $scope.selectedEntity = undefined
+    
+    $scope.onEntityClicked = (entityIndex, entity) ->
+    	$scope.selectedEntity = entityIndex
+    	console.log "Going to update markup for textAnnotation #{entity['dc:relation']}"
+    	$scope.$emit 'DisambiguationWidget.entitySelected', entity
+    
+    $scope.$on 'AnnotationService.entityAnnotations', (event, entities) ->
       console.log 'I received entity annotations too'
-      console.log annotations
-      $scope.annotations = annotations
+      $scope.entities = entities
     
   ])
