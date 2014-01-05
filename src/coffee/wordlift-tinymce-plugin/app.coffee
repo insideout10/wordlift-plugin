@@ -28,10 +28,7 @@ $(
       injector.invoke(['EditorService', (EditorService) ->
         EditorService.analyze tinyMCE.activeEditor.getContent({format : 'text'})
       ])
-#      content = tinyMCE.activeEditor.getContent({format : 'text'})
-#      data =
-#        action: 'wordlift_analyze'
-#        body: content
+
 
 )
 

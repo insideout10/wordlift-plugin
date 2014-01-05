@@ -103,7 +103,7 @@ function wordlift_ajax_analyze_action()
                     	'Accept' => 'application/json',
                     	'Content-type' => 'text/plain',
                     	),
-                    'body' => $_POST['body'],
+                    'body' => file_get_contents("php://input"),
                     'cookies' => array()
                 )
             );
@@ -111,12 +111,13 @@ function wordlift_ajax_analyze_action()
         if ( is_wp_error( $response ) ) {
            $error_message = $response->get_error_message();
            echo "Something went wrong: $error_message";
+           die();
         } else {
-           wp_send_json($response['body']);
-           
+           echo $response['body'];
+           die();
         }
         
-//        die(); // this is required to return a proper result
+
 
 
     }

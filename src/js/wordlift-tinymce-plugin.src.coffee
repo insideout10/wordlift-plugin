@@ -28,27 +28,22 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
     analyze: (content) -> AnnotationService.analyze content
 
   ])
-  .service('AnnotationService', ['$rootScope', ($rootScope) ->
-
+  .service('AnnotationService', ['$rootScope', '$http', ($rootScope, $http) ->
+    
     analyze: (content) ->
-      console.log "ajaxurl: #{ajaxurl}"
-
-      $.ajax
-        type: 'POST'
-        url:  ajaxurl
-        data:
+      $http
+        method: 'POST'
+        url: ajaxurl
+        params:
           action: 'wordlift_analyze'
-          body: content
-        success: (data) ->
-          console.log data
-          r = $.parseJSON(data)
-          textAnnotations = r['@graph'].filter (item) ->
-            'enhancer:TextAnnotation' in item['@type'] and item['enhancer:selection-prefix']?
-          console.log textAnnotations
+        data: content
+      .success (data, status, headers, config) -> 
+        textAnnotations = data['@graph'].filter (item) ->
+          'enhancer:TextAnnotation' in item['@type'] and item['enhancer:selection-prefix']?
+        console.log textAnnotations
 
-          $rootScope.$apply(
-            $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations
-          )
+        $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations
+      true
   ])
 angular.module('wordlift.tinymce.plugin.controllers', ['wordlift.tinymce.plugin.config', 'wordlift.tinymce.plugin.services'])
   .controller('HelloController', ['AnnotationService', '$scope', (AnnotationService, $scope) ->
@@ -91,10 +86,7 @@ $(
       injector.invoke(['EditorService', (EditorService) ->
         EditorService.analyze tinyMCE.activeEditor.getContent({format : 'text'})
       ])
-#      content = tinyMCE.activeEditor.getContent({format : 'text'})
-#      data =
-#        action: 'wordlift_analyze'
-#        body: content
+
 
 )
 

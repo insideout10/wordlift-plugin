@@ -41,28 +41,25 @@
       };
     }
   ]).service('AnnotationService', [
-    '$rootScope', function($rootScope) {
+    '$rootScope', '$http', function($rootScope, $http) {
       return {
         analyze: function(content) {
-          console.log("ajaxurl: " + ajaxurl);
-          return $.ajax({
-            type: 'POST',
+          $http({
+            method: 'POST',
             url: ajaxurl,
-            data: {
-              action: 'wordlift_analyze',
-              body: content
+            params: {
+              action: 'wordlift_analyze'
             },
-            success: function(data) {
-              var r, textAnnotations;
-              console.log(data);
-              r = $.parseJSON(data);
-              textAnnotations = r['@graph'].filter(function(item) {
-                return __indexOf.call(item['@type'], 'enhancer:TextAnnotation') >= 0 && (item['enhancer:selection-prefix'] != null);
-              });
-              console.log(textAnnotations);
-              return $rootScope.$apply($rootScope.$broadcast('AnnotationService.annotations', textAnnotations));
-            }
+            data: content
+          }).success(function(data, status, headers, config) {
+            var textAnnotations;
+            textAnnotations = data['@graph'].filter(function(item) {
+              return __indexOf.call(item['@type'], 'enhancer:TextAnnotation') >= 0 && (item['enhancer:selection-prefix'] != null);
+            });
+            console.log(textAnnotations);
+            return $rootScope.$broadcast('AnnotationService.annotations', textAnnotations);
           });
+          return true;
         }
       };
     }
