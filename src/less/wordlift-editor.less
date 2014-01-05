@@ -1,4 +1,23 @@
+.rounded-corners (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius: @radius;
+  -ms-border-radius: @radius;
+  -o-border-radius: @radius;
+  border-radius: @radius;
+}
 
 .textannotation {
-  background: #8fbc8f;
+  background: #ebebeb;
+  padding: 2px;
+  cursor: hand;
+  .rounded-corners(4px);
+
+  &.disambiguated {
+    background: transparent;
+    border: 1px solid darkseagreen;
+  }
+
+  .textannotation {
+    border: 0;
+  }
 }
