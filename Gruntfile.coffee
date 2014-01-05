@@ -30,15 +30,22 @@ module.exports = (grunt) ->
     less:
       development:
         files:
-          'src/css/wordlift-admin.css'    : ['src/less/wordlift-admin.less']
-      production:
+          'src/css/wordlift-admin.css' : ['src/less/wordlift-admin.less']
+          'src/css/wordlift-editor.css': ['src/less/wordlift-editor.less']
+      'wordlift-admin.min':
         options:
           cleancss: true
           sourceMap: true
           sourceMapFilename: 'src/css/wordlift-admin.min.css.map'
-#          sourceMappingURL: 'wordlift-admin.min.css.map'
         files:
           'src/css/wordlift-admin.min.css': ['src/less/wordlift-admin.less']
+      'wordlift-editor.min':
+        options:
+          cleancss: true
+          sourceMap: true
+          sourceMapFilename: 'src/css/wordlift-editor.min.css.map'
+        files:
+          'src/css/wordlift-editor.min.css': ['src/less/wordlift-editor.less']
 
     watch:
       scripts:
