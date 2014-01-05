@@ -14,9 +14,9 @@ $(
               <input type="text" class="form-control" id="search" placeholder="search or create">
             </div>
             <ul>
-              <li ng-repeat="annotation in annotations">
-                <div>annotation</div>
-                <div ng-bind="annotation['enhancer:entity-reference']"></div>
+              <li ng-repeat="entity in entities" ng-class="{ 'active': $index == selectedEntity }">
+                <strong class="{{entity['wordlift:cssClasses']}}" ng-click="onEntityClicked($index, entity)" ng-bind="entity['enhancer:entity-label']['@value']"></strong><br />
+                <small><a ng-href="{{entity['enhancer:entity-reference']}}" target="blank">{{entity['enhancer:entity-reference']}}</a><small>
               </li>
             </ul>
           </form>
