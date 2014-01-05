@@ -7,8 +7,12 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $scope.hello       = 'Ciao Marcello!'
     $scope.annotations = []
 
+
     $scope.selectedEntity = undefined
     
+    $scope.sortByConfidence = (entity) ->
+    	entity['enhancer:confidence']
+  
     $scope.onEntityClicked = (entityIndex, entity) ->
     	$scope.selectedEntity = entityIndex
     	console.log "Going to update markup for textAnnotation #{entity['dc:relation']}"

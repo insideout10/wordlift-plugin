@@ -34,9 +34,9 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         regexp = new RegExp( "(#{selPrefix})(#{selText})(#{selSuffix})(?![^<]*\">?)" )
 
         console.log regexp
+        replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
+          typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
-        replace = "$1<strong id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
-          typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</strong>$3"
         currentHtmlContent = currentHtmlContent.replace( regexp, replace )
 
         isDirty = tinyMCE.get( "content").isDirty()
