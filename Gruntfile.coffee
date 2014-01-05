@@ -24,8 +24,11 @@ module.exports = (grunt) ->
           sourceMap: 'src/js/wordlift-tinymce-plugin.min.js.map'
           sourceMapIn: 'src/js/wordlift-tinymce-plugin.js.map'
           sourceMappingURL: 'wordlift-tinymce-plugin.min.js.map'
+          compress: false
+          mangle: false
+          beautify: true
         files:
-          'src/js/wordlift-tinymce-plugin.min.js': ['src/bower_components/angular/angular.js', 'src/js/wordlift-tinymce-plugin.js']
+          'src/js/wordlift-tinymce-plugin.min.js': ['src/js/wordlift-tinymce-plugin.js']
 
     less:
       development:
