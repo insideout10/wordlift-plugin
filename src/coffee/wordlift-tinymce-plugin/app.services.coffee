@@ -124,5 +124,4 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
         findAllAnnotations()
       true
   ])
-  .service('DataSetService', ['$rootScope', '$http', ($rootScope, $http) ->
   

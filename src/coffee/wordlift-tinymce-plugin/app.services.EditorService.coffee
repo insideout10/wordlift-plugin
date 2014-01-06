@@ -34,8 +34,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         # the new regular expression, may not match everything.
         # TODO: enhance the matching.
         r = new RegExp("(#{selPrefix})(#{selText})(#{selSuffix})(?![^<]*\">?)")
-        console.log r
-
+        
         replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
                           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
@@ -54,4 +53,4 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
     ping: (message)    -> console.log message
     analyze: (content) -> AnnotationService.analyze content
 
-  ])
+])
