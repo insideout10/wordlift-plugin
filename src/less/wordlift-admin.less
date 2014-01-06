@@ -60,6 +60,25 @@ span.mce_wordlift {
   }
 }
 
+#adminmenu .toplevel_page_wordlift-admin-entities {
+
+  div.wp-menu-image {
+    background: data-uri('../images/blocks-20x20.png') center no-repeat !important;
+    opacity: 1;
+    filter: alpha(opacity=100);
+
+    &:before { content: ''; }
+  }
+
+  &:hover div.wp-menu-image {
+    background: data-uri('../images/blocks-blue-20x20.png') center no-repeat !important;
+  }
+
+  &.current div.wp-menu-image {
+    background: data-uri('../images/blocks-white-20x20.png') center no-repeat !important;
+  }
+}
+
 .bootstrap {
   @import "../bower_components/bootstrap/less/bootstrap.less";
 }
