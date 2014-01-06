@@ -17,13 +17,13 @@ function wordlift_admin_add_entities_meta_box($post_type) {
 function wordlift_entities_box_content($post) {
 
 //    <span class="textannotation person disambiguated" id="urn:enhancement-b5a082da-3301-cb56-1e5c-1b8c3a838a52" itemid="http://dbpedia.org/resource/Mohamed_Morsi" itemprop="name" itemscope="itemscope" itemtype="http://schema.org/Person"
-    $pattern = '/<span class=\"textannotation[^\"]*\" id=\"[^\"]+\" itemid=\"([^\"]+)\"[^>]*>/i';
+    $pattern = '/<span class=\"textannotation[^\"]*\" id=\"[^\"]+\" itemid=\"([^\"]+)\"[^>]*>([^<]+)<\/span>/i';
 
     $matches = array();
     $count   = preg_match_all ($pattern , $post->post_content, $matches, PREG_SET_ORDER);
 
     foreach ($matches as $match) {
-        echo $match[1] . '<br>';
+        echo '<a href="' . $match[1] . '">' . esc_attr($match[2]) . '</a><br>';
     }
 }
 
