@@ -115,6 +115,8 @@ function wordlift_settings_page() {
             <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 
         </form>
+
+        <div>Blocks designed by Lukasz M. Pogoda from the Noun Project</div>
     </div>
 
 <?php
