@@ -87,7 +87,7 @@ function wordlift_entity_url_box_content($post) {
 
     $value = get_post_meta( $post->ID, 'entity_url', true );
 
-    echo '<label for="entity_url"></label>';
+    echo '<label for="entity_url">' . __('entity-url-label', 'wordlift') . '</label>';
     echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
 }
 
