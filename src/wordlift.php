@@ -26,17 +26,6 @@ function wordlift_get_url($file)
     return plugins_url($file, __FILE__);
 }
 
-function wordlift_basename($file) {
-
-    // if WordLift is set into development mode, then provide a static URL, as development is done with symbolic link.
-    if (defined('WORDLIFT_DEVELOPMENT')) {
-        return 'wordlift/wordlift.php';
-    }
-
-    // use standard WP methods in production mode.
-    return plugin_basename($file);
-}
-
 /**
  * Load stylesheets for the administrative interface.
  */
