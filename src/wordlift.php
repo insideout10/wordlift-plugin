@@ -100,35 +100,35 @@ function wordlift_ajax_analyze_action()
     if ((current_user_can('edit_posts') || current_user_can('edit_pages')) && get_user_option('rich_editing')) {
 
         global $wpdb; // this is how you get access to the database
-        
-            $api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
-            $api_analysis_chain = 'wordlift';
-            $api_url = "https://api.redlink.io/1.0-ALPHA/analysis/$api_analysis_chain/enhance?key=$api_key";
 
-            $response = wp_remote_post($api_url, array(
-                    'method' => 'POST',
-                    'timeout' => 45,
-                    'redirection' => 5,
-                    'httpversion' => '1.0',
-                    'blocking' => true,
-                    'headers' => array(
-                    	'Accept' => 'application/json',
-                    	'Content-type' => 'text/plain',
-                    	),
-                    'body' => file_get_contents("php://input"),
-                    'cookies' => array()
-                )
-            );
+        $api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
+        $api_analysis_chain = 'wordlift';
+        $api_url = "https://api.redlink.io/1.0-ALPHA/analysis/$api_analysis_chain/enhance?key=$api_key";
+
+        $response = wp_remote_post($api_url, array(
+                'method' => 'POST',
+                'timeout' => 45,
+                'redirection' => 5,
+                'httpversion' => '1.0',
+                'blocking' => true,
+                'headers' => array(
+                    'Accept' => 'application/json',
+                    'Content-type' => 'text/plain',
+                ),
+                'body' => file_get_contents("php://input"),
+                'cookies' => array()
+            )
+        );
 
         if ( is_wp_error( $response ) ) {
-           $error_message = $response->get_error_message();
-           echo "Something went wrong: $error_message";
-           die();
+            $error_message = $response->get_error_message();
+            echo "Something went wrong: $error_message";
+            die();
         } else {
-           echo $response['body'];
-           die();
+            echo $response['body'];
+            die();
         }
-        
+
 
 
 
@@ -137,8 +137,8 @@ function wordlift_ajax_analyze_action()
 
 
 /**
-* Callback on post save
-*/
+ * Callback on post save
+ */
 
 
 
@@ -147,42 +147,42 @@ add_action('save_post', 'wordlift_on_post_save_callback');
 
 /**
 
-**/
+ **/
 function wordlift_on_post_save_callback($post_id) {
-    
+
     write_log("Going to update post with ID".$post_id);
-    
+
     $client_id = 353;
     $dataset_id = 'wordlift';
-    $post = get_post($post_id); 
-    
-    $sparql  = "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> rdfs:label '".$post->post_title."'."; 
-    $sparql .= "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> a <http://schema.org/BlogPosting>."; 
-    $sparql .= "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> schema:url <".get_permalink($post->ID).">."; 
-    
+    $post = get_post($post_id);
+
+    $sparql  = "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> rdfs:label '".$post->post_title."'.";
+    $sparql .= "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> a <http://schema.org/BlogPosting>.";
+    $sparql .= "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> schema:url <".get_permalink($post->ID).">.";
+
     $doc = new DOMDocument();
     $doc->loadHTML($post->post_content);
     $tags = $doc->getElementsByTagName('span');
     foreach ($tags as $tag) {
-    	if ($tag->attributes->getNamedItem('itemid')) {
-    		
-    		$label = $tag->nodeValue;
-    		$entity_slug = str_replace(' ', '_', $label);
-    		$same_as = $tag->attributes->getNamedItem('itemid')->value;
-    		$type = $tag->attributes->getNamedItem('itemtype')->value;  
+        if ($tag->attributes->getNamedItem('itemid')) {
+
+            $label = $tag->nodeValue;
+            $entity_slug = str_replace(' ', '_', $label);
+            $same_as = $tag->attributes->getNamedItem('itemid')->value;
+            $type = $tag->attributes->getNamedItem('itemtype')->value;
             $toxonomized_type = end(explode('/', $type));
-               
-               // args
-    $args = array(
-        'numberposts' => 1,
-        'post_type' => 'entity',
-        'meta_key' => 'entity_url',
-        'meta_value' => "http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug"
-    );
- 
-    // get results
-    $the_query = new WP_Query( $args );
-    $params = array(
+
+            // args
+            $args = array(
+                'numberposts' => 1,
+                'post_type' => 'entity',
+                'meta_key' => 'entity_url',
+                'meta_value' => "http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug"
+            );
+
+            // get results
+            $the_query = new WP_Query( $args );
+            $params = array(
                 'post_name' => $entity_slug,
                 'post_status' => 'draft',
                 'post_type' => 'entity',
@@ -190,28 +190,28 @@ function wordlift_on_post_save_callback($post_id) {
                 'post_content' => '',
                 'post_excerpt' => '',
                 'entity_url' => '',
-                'tax_input' => array( 'entity_type' => array( $toxonomized_type ) ) , 
-                );
-       
-    if ($the_query->post_count > 0) {
-       $posts = $the_query->get_posts(); 
-       $entity = $posts[0];
-       $params['ID'] = $entity->ID; 
-    }
-               // Push entity on wordpress side as a custom type post
-               $new_post_id = wp_insert_post($params, false);
-               if ($new_post_id > 0) { 
-                    update_post_meta( $new_post_id, 'entity_url', "http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug" );
-                    update_post_meta( $new_post_id, 'entity_sameas', $same_as );
-                } 
+                'tax_input' => array( 'entity_type' => array( $toxonomized_type ) ) ,
+            );
+
+            if ($the_query->post_count > 0) {
+                $posts = $the_query->get_posts();
+                $entity = $posts[0];
+                $params['ID'] = $entity->ID;
+            }
+            // Push entity on wordpress side as a custom type post
+            $new_post_id = wp_insert_post($params, false);
+            if ($new_post_id > 0) {
+                update_post_meta( $new_post_id, 'entity_url', "http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug" );
+                update_post_meta( $new_post_id, 'entity_sameas', $same_as );
+            }
             write_log();
-    		$sparql .= "\n\t";
-    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references <http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug>."; 
-    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> rdfs:label '".$label."'."; 
-    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> a <$type>."; 
-    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> owl:sameAs <$same_as>."; 
-    						
-    	}
+            $sparql .= "\n\t";
+            $sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references <http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug>.";
+            $sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> rdfs:label '".$label."'.";
+            $sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> a <$type>.";
+            $sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> owl:sameAs <$same_as>.";
+
+        }
     }
 
     $sparql_query = <<<EOT
@@ -237,34 +237,34 @@ DELETE WHERE {
     <http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references ?ref
 }
 EOT;
-    wordlift_push_data_triple_store($sparql_delete_query);         
-    wordlift_push_data_triple_store($sparql_query);		
+    wordlift_push_data_triple_store($sparql_delete_query);
+    wordlift_push_data_triple_store($sparql_query);
 
 }
 
 function wordlift_push_data_triple_store($sparql_query) {
-    
+
     $api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
     $api_analysis_chain = 'wordlift';
     $api_url = "https://api.redlink.io/1.0-ALPHA/data/$api_analysis_chain/sparql/update?key=$api_key";
 
     $response = wp_remote_post($api_url, array(
-        'method' => 'POST',
-        'timeout' => 45,
-        'redirection' => 5,
-        'httpversion' => '1.0',
-        'blocking' => true,
-        'headers' => array(
-            'Content-type' => 'application/sparql-update',
+            'method' => 'POST',
+            'timeout' => 45,
+            'redirection' => 5,
+            'httpversion' => '1.0',
+            'blocking' => true,
+            'headers' => array(
+                'Content-type' => 'application/sparql-update',
             ),
-        'body' => $sparql_query,
-        'cookies' => array()
+            'body' => $sparql_query,
+            'cookies' => array()
         )
     );
 
     if ( is_wp_error( $response ) ) {
         write_log("Something went wrong with sparql query\n\n$sparql_query\n\n$error_message");
-        return false;     
+        return false;
     } else {
         write_log("Sparql query done!!");
     }
