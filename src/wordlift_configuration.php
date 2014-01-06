@@ -38,7 +38,7 @@ function wordlift_configuration_admin_notices() {
 
 ?>
     <div class="error">
-            <p>Your WordLift application key is not set.</p>
+            <p><?php _e('application-key-not-set', 'wordlift'); ?></p>
     </div>
 
 <?php
@@ -59,21 +59,21 @@ function wordlift_configuration_register_settings() {
     // 2: the title or name of the section: Main Settings
     // 3: callback to display the section: wordlift_settings_text
     // 4: the page name: wordlift_settings_section_page (matching the value used in *wordlift_settings_page*)
-    add_settings_section($section_id, 'Main Settings', 'wordlift_settings_text', $section_page);
+    add_settings_section($section_id, __('main-settings-title', 'wordlift'), 'wordlift_settings_text', $section_page);
 
     // 1: unique id for the field: application_key
     // 2: title for the field: Application Key
     // 3: function callback, to display the input box: application_key_input_box
     // 4: page name that this is attached to: wordlift_settings_section_page
     // 5: id of the settings section: wordlift_settings_section
-    add_settings_field('application_key', 'Application Key', 'application_key_input_box', $section_page, $section_id);
+    add_settings_field('application_key', __('application-key', 'wordlift'), 'application_key_input_box', $section_page, $section_id);
 }
 
 /**
  * Displays information for the section (as callback set using the *add_settings_section* method).
  */
 function wordlift_settings_text() {
-    echo '<p>Main description of this section here.</p>';
+    echo '<p>' . __('main-settings-description', 'wordlift') . '</p>';
 }
 
 /**
@@ -109,7 +109,6 @@ function wordlift_settings_page() {
     <div>
         <h2>WordLift</h2>
 
-        Options relating to the Custom Plugin.
         <form action="options.php" method="post">
             <?php settings_fields('wordlift_settings'); ?>
             <?php do_settings_sections('wordlift_settings_section_page'); ?>
