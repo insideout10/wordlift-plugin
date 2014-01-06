@@ -60,7 +60,9 @@
   }
 }
 
-#adminmenu .toplevel_page_wordlift-admin-entities {
+ div.wp-menu-image:before
+
+#adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-post {
 
   div.wp-menu-image {
     background: data-uri('../images/blocks-20x20.png') center no-repeat !important;
@@ -74,7 +76,7 @@
     background: data-uri('../images/blocks-blue-20x20.png') center no-repeat !important;
   }
 
-  &.current div.wp-menu-image {
+  &.current div.wp-menu-image, &.wp-menu-open div.wp-menu-image {
     background: data-uri('../images/blocks-white-20x20.png') center no-repeat !important;
   }
 }
