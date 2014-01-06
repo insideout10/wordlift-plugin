@@ -123,11 +123,156 @@ function wordlift_ajax_analyze_action()
     }
 }
 
+
+/**
+* Callback on post save
+*/
+
+
+if (!function_exists('write_log')) {
+    function write_log ( $log )  {
+        if ( true === WP_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( print_r( $log, true ) );
+            } else {
+                error_log( $log );
+            }
+        }
+    }
+}
+
+add_action('save_post', 'wordlift_save_post');
+
+/**
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+
+INSERT DATA
+{ 
+  <http://data.redlink.io/353/wordlift/p:1> rdfs:label 'Power Vacuum in Middle East Lifts Militants';
+  											a <http://schema.org/BlogPosting>;
+  											schema:url <http://wordpress380.localhost/power-vacuum-in-middle-east-lifts-militants>;
+                                            dcterms:references <http://data.redlink.io/353/wordlift/e:Al-Qaeda> 
+                                            .
+  <http://data.redlink.io/353/wordlift/e:Al-Qaeda> rdfs:label 'Al Qaeda';
+                                            a <http://schema.org/Organization>;
+                                            owl:sameAs <http://dbpedia.org/resource/Al-Qaeda>
+}
+**/
+function wordlift_save_post($post_id) {
+    
+    write_log("Going to update post with ID".$post_id);
+    
+    $client_id = 353;
+    $dataset_id = 'wordlift';
+    $post = get_post($post_id); 
+    
+    $sparql  = "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> rdfs:label '".$post->post_title."'."; 
+    $sparql .= "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> a <http://schema.org/BlogPosting>."; 
+    $sparql .= "\n<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> schema:url <".get_permalink($post->ID).">."; 
+    
+    $doc = new DOMDocument();
+    $doc->loadHTML($post->post_content);
+    $tags = $doc->getElementsByTagName('span');
+    foreach ($tags as $tag) {
+    	if ($tag->attributes->getNamedItem('itemid')) {
+    		
+    		$label = $tag->nodeValue;
+    		$entity_slug = str_replace(' ', '_', $label);
+    		$same_as = $tag->attributes->getNamedItem('itemid')->value;
+    		$type = $tag->attributes->getNamedItem('itemtype')->value;  
+
+    		$sparql .= "\n\t";
+    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references <http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug>."; 
+    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> rdfs:label '".$label."'."; 
+    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> a <$type>."; 
+    		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> owl:sameAs <$same_as>."; 
+    						
+    	}
+    }
+
+
+    $sparql_delete_query = <<<EOT
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+
+DELETE WHERE {
+	<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references ?ref
+}
+EOT;
+
+    $sparql_query = <<<EOT
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+
+INSERT DATA
+
+{
+	$sparql
+}
+EOT;
+		
+		    write_log($sparql_query);
+
+		$api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
+            $api_analysis_chain = 'wordlift';
+            $api_url = "https://api.redlink.io/1.0-ALPHA/data/$api_analysis_chain/sparql/update?key=$api_key";
+
+	      $response = wp_remote_post($api_url, array(
+                    'method' => 'POST',
+                    'timeout' => 45,
+                    'redirection' => 5,
+                    'httpversion' => '1.0',
+                    'blocking' => true,
+                    'headers' => array(
+                    	'Content-type' => 'application/sparql-update',
+                    	),
+                    'body' => $sparql_delete_query,
+                    'cookies' => array()
+                )
+            );
+
+	     if ( is_wp_error( $response ) ) {
+           write_log("Something went wrong: $error_message");
+        } else {
+           write_log("Yo");
+        }  
+
+	      $response = wp_remote_post($api_url, array(
+                    'method' => 'POST',
+                    'timeout' => 45,
+                    'redirection' => 5,
+                    'httpversion' => '1.0',
+                    'blocking' => true,
+                    'headers' => array(
+                    	'Content-type' => 'application/sparql-update',
+                    	),
+                    'body' => $sparql_query,
+                    'cookies' => array()
+                )
+            );
+
+	     if ( is_wp_error( $response ) ) {
+           write_log("Something went wrong: $error_message");
+        } else {
+           write_log("Yo");
+        }   
+
+
+}
 /**
  * Register additional scripts for the admin UI.
  */
 function wordlift_admin_enqueue_scripts() {
+    global $post;
     wp_enqueue_script( 'angularjs', wordlift_get_url('/bower_components/angular/angular.min.js') );
+    wp_localize_script('angularjs', 'thePost', get_post($post->id, ARRAY_A));
 }
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
 
@@ -141,3 +286,5 @@ require_once('wordlift_admin_bar.php');
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory.
 load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
+
+
