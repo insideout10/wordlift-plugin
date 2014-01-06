@@ -25,8 +25,8 @@ angular.module('wordlift.tinymce.plugin.services', ['wordlift.tinymce.plugin.con
           .replace( '\(', '\\(' )
           .replace( '\)', '\\)' )
         regexp = new RegExp( "(\\W|^)(#{textAnnotation['enhancer:selected-text']['@value']})(\\W|$)(?![^<]*\">?)" )
-        replace = "$1<strong id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
-          typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</strong>$3"
+        replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
+          typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
         currentHtmlContent = currentHtmlContent.replace( regexp, replace )
 
         isDirty = tinyMCE.get( "content").isDirty()
