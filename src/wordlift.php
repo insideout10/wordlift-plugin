@@ -183,7 +183,41 @@ function wordlift_save_post($post_id) {
     		$entity_slug = str_replace(' ', '_', $label);
     		$same_as = $tag->attributes->getNamedItem('itemid')->value;
     		$type = $tag->attributes->getNamedItem('itemtype')->value;  
-
+            $toxonomized_type = end(explode('/', $type));
+               
+               // args
+    $args = array(
+        'numberposts' => 1,
+        'post_type' => 'entity',
+        'meta_key' => 'entity_url',
+        'meta_value' => "http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug"
+    );
+ 
+    // get results
+    $the_query = new WP_Query( $args );
+    $params = array(
+                'post_name' => $entity_slug,
+                'post_status' => 'draft',
+                'post_type' => 'entity',
+                'post_title' => $label,
+                'post_content' => '',
+                'post_excerpt' => '',
+                'entity_url' => '',
+                'tax_input' => array( 'entity_type' => array( $toxonomized_type ) ) , 
+                );
+       
+    if ($the_query->post_count > 0) {
+       $posts = $the_query->get_posts(); 
+       $entity = $posts[0];
+       $params['ID'] = $entity->ID; 
+    }
+               // Push entity on wordpress side as a custom type post
+               $new_post_id = wp_insert_post($params, false);
+               if ($new_post_id > 0) { 
+                    update_post_meta( $new_post_id, 'entity_url', "http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug" );
+                    update_post_meta( $new_post_id, 'entity_sameas', $same_as );
+                } 
+            write_log();
     		$sparql .= "\n\t";
     		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references <http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug>."; 
     		$sparql .= "\n\t<http://data.redlink.io/$client_id/$dataset_id/resource/$entity_slug> rdfs:label '".$label."'."; 
