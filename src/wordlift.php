@@ -320,6 +320,8 @@ require_once('wordlift_admin_bar.php');
 //require_once('wordlift_admin_menu.php');
 // add the WordLift entity custom type.
 require_once('wordlift_entity_custom_type.php');
+// filters the post content when saving posts.
+require_once('wordlift_content_filter.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
