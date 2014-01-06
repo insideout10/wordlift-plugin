@@ -288,13 +288,6 @@ require_once('wordlift_admin_bar.php');
 require_once('wordlift_entity_custom_type.php');
 
 // load languages.
-<<<<<<< HEAD
-// TODO: the following call gives for granted that the plugin is in the wordlift directory.
-load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
-
-
-=======
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
->>>>>>> b1743c93efe64f5f95c44c2881a7a9a239ba5752
