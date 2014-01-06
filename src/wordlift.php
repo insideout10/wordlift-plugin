@@ -137,8 +137,10 @@ require_once('wordlift_editor.php');
 require_once('wordlift_configuration.php');
 // add the WordLift admin bar.
 require_once('wordlift_admin_bar.php');
-// add the WordLift admin menu.
-require_once('wordlift_admin_menu.php');
+// add the WordLift admin menu. - the entity admin menu is handled as a custom post type.
+//require_once('wordlift_admin_menu.php');
+// add the WordLift entity custom type.
+require_once('wordlift_entity_custom_type.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
