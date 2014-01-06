@@ -19,6 +19,31 @@ function wordlift_configuration_application_key() {
 }
 
 /**
+ * Get the WordLift user id.
+ * @return string The user id.
+ */
+function wordlift_configuration_user_id() {
+
+    // get the plugin options.
+    $wordlift_options = get_option(WORDLIFT_OPTIONS);
+
+    return $wordlift_options['user_id'];
+}
+
+/**
+ * Get the WordLift dataset name.
+ * @return string the dataset name.
+ */
+function wordlift_configuration_dataset_name() {
+
+    // get the plugin options.
+    $wordlift_options = get_option(WORDLIFT_OPTIONS);
+
+    return $wordlift_options['dataset_name'];
+}
+
+
+/**
  * Check WordLift configuration. If something is missing, display an admin notice.
  */
 function wordlift_configuration_check() {
@@ -66,7 +91,12 @@ function wordlift_configuration_register_settings() {
     // 3: function callback, to display the input box: application_key_input_box
     // 4: page name that this is attached to: wordlift_settings_section_page
     // 5: id of the settings section: wordlift_settings_section
-    add_settings_field('application_key', __('application-key', 'wordlift'), 'application_key_input_box', $section_page, $section_id);
+    add_settings_field('application_key', __('application-key', 'wordlift'), 'wordlift_application_key_input_box',
+        $section_page, $section_id);
+    add_settings_field('user_id',         __('user-id', 'wordlift'),         'wordlift_user_id_input_box',
+        $section_page, $section_id);
+    add_settings_field('dataset_name',    __('dataset-name', 'wordlift'),    'wordlift_dataset_name_input_box',
+        $section_page, $section_id);
 }
 
 /**
@@ -79,11 +109,31 @@ function wordlift_settings_text() {
 /**
  * Displays the application key input box (as callback set uting the *add_settings_field* method).
  */
-function application_key_input_box() {
+function wordlift_application_key_input_box() {
 
     // get the existing setting.
     $wordlift_options = get_option(WORDLIFT_OPTIONS);
     echo "<input id='application_key' name='wordlift_options[application_key]' size='40' type='text' value='{$wordlift_options['application_key']}' />";
+}
+
+/**
+ * Displays the user id input box.
+ */
+function wordlift_user_id_input_box() {
+
+    // get the existing setting.
+    $wordlift_options = get_option(WORDLIFT_OPTIONS);
+    echo "<input id='user_id' name='wordlift_options[user_id]' size='40' type='text' value='{$wordlift_options['user_id']}' />";
+}
+
+/**
+ * Displays the dataset name input box.
+ */
+function wordlift_dataset_name_input_box() {
+
+    // get the existing setting.
+    $wordlift_options = get_option(WORDLIFT_OPTIONS);
+    echo "<input id='dataset_name' name='wordlift_options[dataset_name]' size='40' type='text' value='{$wordlift_options['dataset_name']}' />";
 }
 
 /**
@@ -115,6 +165,8 @@ function wordlift_settings_page() {
             <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
 
         </form>
+
+        <div>Blocks designed by Lukasz M. Pogoda from the Noun Project</div>
     </div>
 
 <?php
