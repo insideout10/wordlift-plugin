@@ -4,9 +4,9 @@ angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers'
 
 $(
   container = $('''
-    <div id="wordlift-disambiguation-popover" class="bootstrap" ng-controller="HelloController">
-      <div class="content">
-        <div class="handlediv" title="Click to toggle"></div>
+    <div id="wordlift-disambiguation-popover" class="metabox-holder" ng-controller="HelloController">
+      <div class="postbox">
+        <div class="handlediv" title="Click to toggle"><br></div>
         <h3 class="hndle"><span>Semantic Web</span></h3>
         <div class="inside">
           <form role="form">
@@ -31,6 +31,9 @@ $(
     ''')
     .appendTo('body')
     .draggable()
+
+  # when the user clicks on the handle, hide the popover.
+  $('#wordlift-disambiguation-popover .handlediv').click (e) -> container.hide()
 
   injector = angular.bootstrap(container, ['wordlift.tinymce.plugin']);
 
