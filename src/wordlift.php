@@ -292,6 +292,8 @@ require_once('wordlift_admin_bar.php');
 require_once('wordlift_entity_custom_type.php');
 // filters the post content when saving posts.
 require_once('wordlift_content_filter.php');
+// add the entities meta box.
+require_once('wordlift_admin_meta_box_entities.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
