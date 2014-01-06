@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-01-06 12:30+0200\n"
-"PO-Revision-Date: 2014-01-06 12:30+0200\n"
+"POT-Creation-Date: 2014-01-06 15:11+0200\n"
+"PO-Revision-Date: 2014-01-06 15:11+0200\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -50,6 +50,107 @@ msgstr "Dataset name"
 #: ../wordlift_configuration.php:106
 msgid "main-settings-description"
 msgstr "Configure here the main settings:"
+
+#: ../wordlift_entity_custom_type.php:9
+msgctxt "post type general name"
+msgid "Entities"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:10
+msgctxt "post type singular name"
+msgid "Entity"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:11
+msgctxt "entity"
+msgid "Add New"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:12
+msgid "Add New Entity"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:13
+msgid "Edit Entity"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:14
+msgid "New Entity"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:15
+msgid "All Entities"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:16
+msgid "View Entity"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:17
+msgid "Search Entities"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:18
+msgid "No entities found"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:19
+msgid "No entities found in the Trash"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:46
+msgctxt "taxonomy general name"
+msgid "Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:47
+msgctxt "taxonomy singular name"
+msgid "Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:48
+msgid "Search Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:49
+msgid "All Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:50
+msgid "Parent Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:51
+msgid "Parent Entity Type:"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:52
+msgid "Edit Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:53
+msgid "Update Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:54
+msgid "Add New Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:55
+msgid "New Entity Type"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:56
+msgid "Entity Types"
+msgstr ""
+
+#: ../wordlift_entity_custom_type.php:73
+msgid "Entity URL"
+msgstr "Entity URL"
+
+#: ../wordlift_entity_custom_type.php:90
+msgid "entity-url-label"
+msgstr "The entity URL:"
 
 #~ msgid "WordLift Settings"
 #~ msgstr "WordLift Settings"
