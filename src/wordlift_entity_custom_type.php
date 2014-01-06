@@ -65,13 +65,22 @@ function wordlift_taxonomies_entity() {
 }
 
 /**
- * Adds the Entity URL box (from the hook *add_meta_boxes*).
+ * Adds the Entity URL box and the Entity SameAs box (from the hook *add_meta_boxes*).
  */
 function wordlift_entity_url_box() {
     add_meta_box(
         'wordlift_entity_url_box',
         __( 'Entity URL', 'wordlift' ),
         'wordlift_entity_url_box_content',
+        'entity',
+        'normal',
+        'high'
+    );
+
+    add_meta_box(
+        'wordlift_entity_sameas_box',
+        __( 'Entity Same As', 'wordlift' ),
+        'wordlift_entity_sameas_box_content',
         'entity',
         'normal',
         'high'
@@ -89,6 +98,19 @@ function wordlift_entity_url_box_content($post) {
 
     echo '<label for="entity_url">' . __('entity-url-label', 'wordlift') . '</label>';
     echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
+}
+
+/**
+ * Displays the content of the entity URL box (called from the *entity_url* method).
+ * @param WP_Post $post The post.
+ */
+function wordlift_entity_sameas_box_content($post) {
+    wp_nonce_field('wordlift_entity_sameas_box', 'wordlift_entity_sameas_box_content_nonce');
+
+    $value = get_post_meta( $post->ID, 'entity_sameas', true);
+
+    echo '<label for="entity_sameas">' . __('entity-sameas-label', 'wordlift') . '</label>';
+    echo '<textarea style="width: 100%;" id="entity_sameas" name="entity_sameas" placeholder="Same As URL">' . esc_attr( $value ) . '</textarea>';
 }
 
 /**
@@ -110,8 +132,14 @@ function wordlift_entity_url_box_save($post_id) {
         if ( !current_user_can( 'edit_post', $post_id ) )
             return;
     }
+
+    // save the entity URL.
     $entity_url = $_POST['entity_url'];
     update_post_meta( $post_id, 'entity_url', $entity_url);
+
+    // save the same as values.
+    $entity_sameas = $_POST['entity_sameas'];
+    update_post_meta( $post_id, 'entity_sameas', $entity_sameas);
 }
 
 add_action('init', 'wordlift_register_custom_type_entity');
