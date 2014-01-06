@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-01-05 16:47+0200\n"
-"PO-Revision-Date: 2014-01-05 16:47+0200\n"
+"POT-Creation-Date: 2014-01-06 11:39+0200\n"
+"PO-Revision-Date: 2014-01-06 11:39+0200\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -14,6 +14,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
 "X-Poedit-SearchPath-0: ..\n"
+
+#: ../wordlift_admin_menu.php:17
+msgid "entities-admin-page-title"
+msgstr "Entities"
+
+#: ../wordlift_admin_menu.php:18
+msgid "entities-admin-menu-title"
+msgstr "Entities"
+
+#: ../wordlift_admin_menu.php:31
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
 
 #: ../wordlift_configuration.php:41
 msgid "application-key-not-set"
