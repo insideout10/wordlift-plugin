@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-01-06 11:39+0200\n"
-"PO-Revision-Date: 2014-01-06 11:39+0200\n"
+"POT-Creation-Date: 2014-01-06 12:30+0200\n"
+"PO-Revision-Date: 2014-01-06 12:30+0200\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -15,31 +15,39 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../wordlift_admin_menu.php:17
+#: ../wordlift_admin_menu.php:20
 msgid "entities-admin-page-title"
 msgstr "Entities"
 
-#: ../wordlift_admin_menu.php:18
+#: ../wordlift_admin_menu.php:21
 msgid "entities-admin-menu-title"
 msgstr "Entities"
 
-#: ../wordlift_admin_menu.php:31
+#: ../wordlift_admin_menu.php:35
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: ../wordlift_configuration.php:41
+#: ../wordlift_configuration.php:66
 msgid "application-key-not-set"
 msgstr "WordLift application key is not set."
 
-#: ../wordlift_configuration.php:62
+#: ../wordlift_configuration.php:87
 msgid "main-settings-title"
 msgstr "Main Settings"
 
-#: ../wordlift_configuration.php:69
+#: ../wordlift_configuration.php:94
 msgid "application-key"
 msgstr "Application Key"
 
-#: ../wordlift_configuration.php:76
+#: ../wordlift_configuration.php:96
+msgid "user-id"
+msgstr "User id"
+
+#: ../wordlift_configuration.php:98
+msgid "dataset-name"
+msgstr "Dataset name"
+
+#: ../wordlift_configuration.php:106
 msgid "main-settings-description"
 msgstr "Configure here the main settings:"
 
