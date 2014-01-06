@@ -21,15 +21,11 @@ function wordlift_register_custom_type_entity() {
         'menu_name'          => 'Entities'
     );
 
-    // find a suitable position for the menu.
-    $position = 20; // after the pages menu.
-    while (array_key_exists($position, $GLOBALS['menu'])) { $position++; };
-
     $args = array(
         'labels'        => $labels,
         'description'   => 'Holds our entities and entity specific data',
         'public'        => true,
-        'menu_position' => $position,
+        'menu_position' => 20, // after the pages menu.
         'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
         'has_archive'   => true,
     );
