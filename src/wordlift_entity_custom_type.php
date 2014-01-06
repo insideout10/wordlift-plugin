@@ -64,6 +64,26 @@ function wordlift_taxonomies_entity() {
     register_taxonomy('entity_type', 'entity', $args );
 }
 
+/**
+ * Adds the Entity URL box.
+ */
+function wordlift_entity_url_box() {
+    add_meta_box(
+        'wordlift_entity_url_box',
+        __( 'Entity URL', 'wordlift' ),
+        'wordlift_entity_url_box_content',
+        'entity',
+        'normal',
+        'high'
+    );
+}
+
+function wordlift_entity_url_box_content($post) {
+    wp_nonce_field( wordlift_basename(__FILE__), 'wordlift_entity_url_box_content_nonce' );
+    echo '<label for="entity_url"></label>';
+    echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" style="width: 100%;" />';
+}
+
 add_action('init', 'wordlift_register_custom_type_entity');
 add_action('init', 'wordlift_taxonomies_entity', 0);
-add_action('init', 'my_taxonomies_product', 0 );
+add_action('add_meta_boxes', 'wordlift_entity_url_box');
