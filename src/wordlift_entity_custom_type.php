@@ -37,4 +37,33 @@ function wordlift_register_custom_type_entity() {
     register_post_type('entity', $args);
 }
 
+/**
+ * Add the type taxonomy to the entity.
+ */
+function wordlift_taxonomies_entity() {
+
+    $labels = array(
+        'name'              => _x( 'Entity Types', 'taxonomy general name' ),
+        'singular_name'     => _x( 'Entity Type', 'taxonomy singular name' ),
+        'search_items'      => __( 'Search Entity Types' ),
+        'all_items'         => __( 'All Entity Types' ),
+        'parent_item'       => __( 'Parent Entity Type' ),
+        'parent_item_colon' => __( 'Parent Entity Type:' ),
+        'edit_item'         => __( 'Edit Entity Type' ),
+        'update_item'       => __( 'Update Entity Type' ),
+        'add_new_item'      => __( 'Add New Entity Type' ),
+        'new_item_name'     => __( 'New Entity Type' ),
+        'menu_name'         => __( 'Entity Types' ),
+    );
+
+    $args = array(
+        'labels' => $labels,
+        'hierarchical' => false
+    );
+
+    register_taxonomy('entity_type', 'entity', $args );
+}
+
 add_action('init', 'wordlift_register_custom_type_entity');
+add_action('init', 'wordlift_taxonomies_entity', 0);
+add_action('init', 'my_taxonomies_product', 0 );
