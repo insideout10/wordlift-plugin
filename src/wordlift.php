@@ -137,7 +137,10 @@ require_once('wordlift_editor.php');
 require_once('wordlift_configuration.php');
 // add the WordLift admin bar.
 require_once('wordlift_admin_bar.php');
+// add the WordLift admin menu.
+require_once('wordlift_admin_menu.php');
 
 // load languages.
-// TODO: the following call gives for granted that the plugin is in the wordlift directory.
+// TODO: the following call gives for granted that the plugin is in the wordlift directory,
+//       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
