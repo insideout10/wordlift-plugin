@@ -22,9 +22,12 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $scope.$on 'AnnotationService.entityAnnotations', (event, entities, elem) ->
       # set the entities in the local scope.
       $scope.entities = entities
-      console.log elem
-      console.log EditorService.getWinPos(elem)
+      # get the position of the clicked element.
+      pos = EditorService.getWinPos(elem)
       # show the popover.
-      $('#wordlift-disambiguation-popover').show()
+      $('#wordlift-disambiguation-popover')
+        .css('left', pos.x + 100)
+        .css('top', pos.y - 200)
+        .show()
     
   ])
