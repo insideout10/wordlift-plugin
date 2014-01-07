@@ -59,6 +59,8 @@ function wordlift_update_entity_on_post_save_callback($post_id) {
         }
 EOF;
 
+    // TODO: executing the following two queries sequentially in marmotta may yield to an issue
+    // where the insert has no effect.
 	wordlift_push_data_triple_store($delete);
 	wordlift_push_data_triple_store($insert);
 }
