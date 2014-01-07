@@ -11,27 +11,27 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
       'schema:Organization'
     ]
 
-    $rootScope.$on 'EditorService.annotationClick', (event, id) ->
-      console.log "Ops!! Element with id #{id} was clicked!"
-      findEntitiesForAnnotation(id)
+    # this event is raised when a text annotation is clicked in the editor.
+    # the id parameter contains the text annotation unique id.
+    $rootScope.$on 'EditorService.annotationClick', (event, id) -> findEntitiesForAnnotation id
 
     # Intersection
     intersection = (a, b) ->
       [a, b] = [b, a] if a.length > b.length
       value for value in a when value in b
 
-    # Find all text annotation for the current analyzed text
+    # Find all text annotation for the current analyzed text.
     findAllAnnotations = () ->
       textAnnotations = currentAnalysis['@graph'].filter (item) ->
         'enhancer:TextAnnotation' in item['@type'] and item['enhancer:selection-prefix']?
       $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations
 
     # Find all Entities for a certain text annotation identified by 'annotationId'
+    # @param string annotationId The text annotation id.
     findEntitiesForAnnotation = (annotationId) ->
-      console.log "Going to find entities for annotation with ID #{annotationId}"
-
+      # filter the graph, find all entities related to the specified text annotation id.
       entityAnnotations = currentAnalysis['@graph'].filter (item) ->
-        'enhancer:EntityAnnotation' in item['@type'] and item['dc:relation'] == annotationId
+        'enhancer:EntityAnnotation' in item['@type'] and item['dc:relation'] is annotationId
       # Enhance entity annotations ..
       entityAnnotations = entityAnnotations.map (item) ->
 

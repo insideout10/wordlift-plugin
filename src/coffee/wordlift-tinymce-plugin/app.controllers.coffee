@@ -17,9 +17,12 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     	$scope.selectedEntity = entityIndex
     	console.log "Going to update markup for textAnnotation #{entity['dc:relation']}"
     	$scope.$emit 'DisambiguationWidget.entitySelected', entity
-    
+
+    # this event is fired when entities are found for a selected text annotation.
     $scope.$on 'AnnotationService.entityAnnotations', (event, entities) ->
-      console.log 'I received entity annotations too'
+      # set the entities in the local scope.
       $scope.entities = entities
+      # show the popover.
+      $('#wordlift-disambiguation-popover').show()
     
   ])

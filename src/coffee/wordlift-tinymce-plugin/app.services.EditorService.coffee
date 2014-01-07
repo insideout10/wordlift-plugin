@@ -44,9 +44,11 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         tinyMCE.get( "content").setContent( currentHtmlContent )
         tinyMCE.get( "content").isNotDirty = 1 if not isDirty
 
-      tinyMCE.get( "content").onClick.add (editor, e) ->
+      # this event is raised when a textannotation is selected in the TinyMCE editor.
+      tinyMCE.get('content').onClick.add (editor, e) ->
+        # execute the following commands in the angular js context.
         $rootScope.$apply(
-          console.log("Click within the editor on element with id #{e.target.id}")
+          # send a message about the currently clicked annotation.
           $rootScope.$broadcast 'EditorService.annotationClick', e.target.id
         )
 
