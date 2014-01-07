@@ -7,11 +7,52 @@ add_action('save_post', 'wordlift_update_entity_on_post_save_callback');
 
  **/
 function wordlift_update_entity_on_post_save_callback($post_id) {
+
+	$post = get_post($post_id); 
+
 	// If current post does not stay for an entity, nothing to do!
     if ('entity' != $post->post_type) {
         return true;
     } 
 
+    $title = addslashes($post->post_title);
+    $entity_url = get_post_meta( $post->ID, 'entity_url', true );
+    $entity_sameas = get_post_meta( $post->ID, 'entity_sameas', true );
+    $textual_description = addslashes(strip_tags($post->post_content));
+    $terms = wp_get_post_terms( $post->ID, 'entity_type' );
+
+    $sparql  = "\n<{$entity_url}> rdfs:label '{$title}'."; 
+    foreach ($terms as $term) {
+    	$sparql .= "\n<{$entity_url}> a <http://schema.org/{$term->name}>."; 
+    } 
+    $sparql .= "\n<{$entity_url}> schema:url <".get_permalink($post->ID).">."; 
+ 	$sparql .= "\n<{$entity_url}> schema:description '{$textual_description}'."; 
+    
+    $sparql_query = <<<EOT
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+
+INSERT DATA
+
+{
+	$sparql
+}
+EOT;
+
+    $sparql_delete_query = <<<EOT
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+
+DELETE WHERE {
+    <{$entity_url}> ?a ?b
+}
+EOT;
+	wordlift_push_data_triple_store($sparql_delete_query);
+	wordlift_push_data_triple_store($sparql_query);
 }
 /**
 
@@ -101,6 +142,8 @@ function add_or_update_related_entity_post($attributes) {
     );
     
     // Check if entity exists on wordpress database
+    // Check is on entity url ...
+    // TODO We shoud consider both entity url and entity sameas collection
     $the_query = new WP_Query( array(
         'numberposts' => 1,
         'post_type' => 'entity',
