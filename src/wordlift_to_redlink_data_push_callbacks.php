@@ -46,23 +46,36 @@ function wordlift_update_entity_on_post_save_callback($post_id) {
     // get the ns prefixes.
     $ns     = wordlift_get_ns_prefixes();
 
-    // because of a bug in Marmotta we cannot currently send one query DELETE/INSERT/WHERE.
-    // TODO: as soon as the bug is solved, use the DELETE/INSERT/WHERE query.
-    // create the insert/delete queries.
-    $insert = $ns . "INSERT DATA { $sparql }";
-    $delete = $ns . <<<EOF
-        DELETE WHERE {
-            <{$url}> rdfs:label ?label ;
-                schema:url ?url ;
-                schema:description ?description ;
-                a ?type
-        }
+    $query = $ns . <<<EOF
+    DELETE {
+        <$url> rdfs:label ?o ;
+            schema:url ?o ;
+            schema:description ?o ;
+            a ?o
+     }
+     INSERT { $sparql }
+     WHERE { OPTIONAL { <$url> ?p ?o } }
 EOF;
 
-    // TODO: executing the following two queries sequentially in marmotta may yield to an issue
-    // where the insert has no effect.
-	wordlift_push_data_triple_store($delete);
-	wordlift_push_data_triple_store($insert);
+    wordlift_push_data_triple_store($query);
+
+//    // because of a bug in Marmotta we cannot currently send one query DELETE/INSERT/WHERE.
+//    // TODO: as soon as the bug is solved, use the DELETE/INSERT/WHERE query.
+//    // create the insert/delete queries.
+//    $insert = $ns . "INSERT DATA { $sparql }";
+//    $delete = $ns . <<<EOF
+//        DELETE WHERE {
+//            <{$url}> rdfs:label ?label ;
+//                schema:url ?url ;
+//                schema:description ?description ;
+//                a ?type
+//        }
+//EOF;
+//
+//    // TODO: executing the following two queries sequentially in marmotta may yield to an issue
+//    // where the insert has no effect.
+//	wordlift_push_data_triple_store($delete);
+//	wordlift_push_data_triple_store($insert);
 }
 
 /**
