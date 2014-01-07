@@ -1,16 +1,23 @@
 angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tinymce.plugin.config', 'wordlift.tinymce.plugin.services.AnnotationService'])
   .service('EditorService', ['AnnotationService', '$rootScope', (AnnotationService, $rootScope) ->
 
+    # this event is captured when an entity is selected in the disambiguation popover.
     $rootScope.$on 'DisambiguationWidget.entitySelected', (event, entity) ->
-      console.log "Going to map entity #{entity['@id']} on textAnnotation #{entity['dc:relation']}"
-
       cssClasses = "textannotation #{entity['wordlift:cssClasses']} disambiguated"
 
-      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'class', cssClasses);
-      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemscope', 'itemscope');
-      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemtype',  entity['wordlift:supportedTypes'].join(' '));
-      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemprop', 'name');
-      tinyMCE.get("content").dom.setAttrib(entity['dc:relation'], 'itemid', entity['enhancer:entity-reference']);
+      # create a reference to the TinyMCE editor dom.
+      dom  = tinyMCE.get("content").dom
+      # the element id containing the attributes for the text annotation.
+      id   = entity['dc:relation']
+      elem = dom.get(id)
+
+      dom.setAttrib(id, 'class', cssClasses);
+      dom.setAttrib(id, 'itemscope', 'itemscope');
+      dom.setAttrib(id, 'itemtype',  entity['wordlift:supportedTypes'].join(' '));
+      dom.setAttrib(id, 'itemid', entity['enhancer:entity-reference']);
+
+      # set the itemprop nested inside the itemscope/itemtype.
+      elem.innerHTML = '<span itemprop="name">' + elem.innerHTML + '</span>'
 
     $rootScope.$on 'AnnotationService.annotations', (event, annotations) ->
       console.log 'I received some annotations'

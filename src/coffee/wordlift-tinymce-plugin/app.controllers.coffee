@@ -12,10 +12,10 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     
     $scope.sortByConfidence = (entity) ->
     	entity['enhancer:confidence']
-  
+
+    # this event is raised when an entity is selected from the entities popover.
     $scope.onEntityClicked = (entityIndex, entity) ->
     	$scope.selectedEntity = entityIndex
-    	console.log "Going to update markup for textAnnotation #{entity['dc:relation']}"
     	$scope.$emit 'DisambiguationWidget.entitySelected', entity
 
     # this event is fired when entities are found for a selected text annotation.
