@@ -13,7 +13,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
 
     # this event is raised when a text annotation is clicked in the editor.
     # the id parameter contains the text annotation unique id.
-    $rootScope.$on 'EditorService.annotationClick', (event, id) -> findEntitiesForAnnotation id
+    $rootScope.$on 'EditorService.annotationClick', (event, id, elem) -> findEntitiesForAnnotation id, elem
 
     # Intersection
     intersection = (a, b) ->
@@ -28,7 +28,8 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
 
     # Find all Entities for a certain text annotation identified by 'annotationId'
     # @param string annotationId The text annotation id.
-    findEntitiesForAnnotation = (annotationId) ->
+    # @param element elem The element source of the event.
+    findEntitiesForAnnotation = (annotationId, elem) ->
       # filter the graph, find all entities related to the specified text annotation id.
       entityAnnotations = currentAnalysis['@graph'].filter (item) ->
         'enhancer:EntityAnnotation' in item['@type'] and item['dc:relation'] is annotationId
@@ -54,7 +55,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
       # entities = currentAnalysis['@graph'].filter (item) ->
       #  item['@id'] in entityIds
 
-      $rootScope.$broadcast 'AnnotationService.entityAnnotations', entityAnnotations
+      $rootScope.$broadcast 'AnnotationService.entityAnnotations', entityAnnotations, elem
 
     # Call redlink api trough Wp Ajax bridge in order to perform the semantic analysis
     analyze: (content) ->

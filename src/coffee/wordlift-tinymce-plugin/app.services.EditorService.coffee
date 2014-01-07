@@ -56,10 +56,32 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         # execute the following commands in the angular js context.
         $rootScope.$apply(
           # send a message about the currently clicked annotation.
-          $rootScope.$broadcast 'EditorService.annotationClick', e.target.id
+          $rootScope.$broadcast 'EditorService.annotationClick', e.target.id, e
         )
 
     ping: (message)    -> console.log message
     analyze: (content) -> AnnotationService.analyze content
 
+    # set some predefined variables.
+    getEditor : -> tinyMCE.get('content')
+    getBody   : -> @getEditor().getBody()
+    getDOM    : -> @getEditor().dom
+
+    # get the window position of an element inside the editor.
+    # @param element ellem The element.
+    getWinPos: (elem) ->
+      # get a reference to the editor and its body
+      ed   = @getEditor()
+      body = $(@getBody())
+
+      # get the position of the element inside the body
+      elx = elem.srcElement.offsetLeft
+      ely = elem.srcElement.offsetTop
+      # get the position of the editor container inside the root document.
+      coffset = $(ed.getContainer()).offset()
+      # calculate window coordinates.
+      x = elx + coffset.left - body.scrollTop() - $(window).scrollTop()
+      y = ely + coffset.top - body.scrollLeft() - $(window).scrollLeft()
+      #return the coordinates.
+      {x, y}
 ])
