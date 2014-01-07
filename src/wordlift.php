@@ -9,6 +9,18 @@ Author URI: http://www.insideout.io
 License: APL
 */
 
+
+if (!function_exists('write_log')) {
+    function write_log ( $log )  {
+        if ( true === WP_DEBUG ) {
+            if ( is_array( $log ) || is_object( $log ) ) {
+                error_log( print_r( $log, true ) );
+            } else {
+                error_log( $log );
+            }
+        }
+    }
+}
 /**
  * Get the URL of the specified physical file.
  * @param string $file The path to the file from the plugin root folder.
@@ -129,39 +141,14 @@ function wordlift_ajax_analyze_action()
 */
 
 
-if (!function_exists('write_log')) {
-    function write_log ( $log )  {
-        if ( true === WP_DEBUG ) {
-            if ( is_array( $log ) || is_object( $log ) ) {
-                error_log( print_r( $log, true ) );
-            } else {
-                error_log( $log );
-            }
-        }
-    }
-}
 
-add_action('save_post', 'wordlift_save_post');
+
+add_action('save_post', 'wordlift_on_post_save_callback');
 
 /**
-PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX schema: <http://schema.org/>
 
-INSERT DATA
-{ 
-  <http://data.redlink.io/353/wordlift/p:1> rdfs:label 'Power Vacuum in Middle East Lifts Militants';
-  											a <http://schema.org/BlogPosting>;
-  											schema:url <http://wordpress380.localhost/power-vacuum-in-middle-east-lifts-militants>;
-                                            dcterms:references <http://data.redlink.io/353/wordlift/e:Al-Qaeda> 
-                                            .
-  <http://data.redlink.io/353/wordlift/e:Al-Qaeda> rdfs:label 'Al Qaeda';
-                                            a <http://schema.org/Organization>;
-                                            owl:sameAs <http://dbpedia.org/resource/Al-Qaeda>
-}
 **/
-function wordlift_save_post($post_id) {
+function wordlift_on_post_save_callback($post_id) {
     
     write_log("Going to update post with ID".$post_id);
     
@@ -227,18 +214,6 @@ function wordlift_save_post($post_id) {
     	}
     }
 
-
-    $sparql_delete_query = <<<EOT
-PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX schema: <http://schema.org/>
-
-DELETE WHERE {
-	<http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references ?ref
-}
-EOT;
-
     $sparql_query = <<<EOT
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -251,54 +226,49 @@ INSERT DATA
 	$sparql
 }
 EOT;
-		
-		    write_log($sparql_query);
 
-		$api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
-            $api_analysis_chain = 'wordlift';
-            $api_url = "https://api.redlink.io/1.0-ALPHA/data/$api_analysis_chain/sparql/update?key=$api_key";
+    $sparql_delete_query = <<<EOT
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
 
-	      $response = wp_remote_post($api_url, array(
-                    'method' => 'POST',
-                    'timeout' => 45,
-                    'redirection' => 5,
-                    'httpversion' => '1.0',
-                    'blocking' => true,
-                    'headers' => array(
-                    	'Content-type' => 'application/sparql-update',
-                    	),
-                    'body' => $sparql_delete_query,
-                    'cookies' => array()
-                )
-            );
+DELETE WHERE {
+    <http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references ?ref
+}
+EOT;
+    wordlift_push_data_triple_store($sparql_delete_query);         
+    wordlift_push_data_triple_store($sparql_query);		
 
-	     if ( is_wp_error( $response ) ) {
-           write_log("Something went wrong: $error_message");
-        } else {
-           write_log("Yo");
-        }  
+}
 
-	      $response = wp_remote_post($api_url, array(
-                    'method' => 'POST',
-                    'timeout' => 45,
-                    'redirection' => 5,
-                    'httpversion' => '1.0',
-                    'blocking' => true,
-                    'headers' => array(
-                    	'Content-type' => 'application/sparql-update',
-                    	),
-                    'body' => $sparql_query,
-                    'cookies' => array()
-                )
-            );
+function wordlift_push_data_triple_store($sparql_query) {
+    
+    $api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
+    $api_analysis_chain = 'wordlift';
+    $api_url = "https://api.redlink.io/1.0-ALPHA/data/$api_analysis_chain/sparql/update?key=$api_key";
 
-	     if ( is_wp_error( $response ) ) {
-           write_log("Something went wrong: $error_message");
-        } else {
-           write_log("Yo");
-        }   
+    $response = wp_remote_post($api_url, array(
+        'method' => 'POST',
+        'timeout' => 45,
+        'redirection' => 5,
+        'httpversion' => '1.0',
+        'blocking' => true,
+        'headers' => array(
+            'Content-type' => 'application/sparql-update',
+            ),
+        'body' => $sparql_query,
+        'cookies' => array()
+        )
+    );
 
-
+    if ( is_wp_error( $response ) ) {
+        write_log("Something went wrong with sparql query\n\n$sparql_query\n\n$error_message");
+        return false;     
+    } else {
+        write_log("Sparql query done!!");
+    }
+    return true;
 }
 /**
  * Register additional scripts for the admin UI.
