@@ -140,7 +140,11 @@ function wordlift_ajax_analyze_action()
  * Callback on post save
  */
 
-
+/*
+    if ('entity' == $post->post_type) {
+        return true;
+    } 
+*/
 
 
 add_action('save_post', 'wordlift_on_post_save_callback');
@@ -155,26 +159,26 @@ function wordlift_on_post_save_callback($post_id) {
     $client_id = 353;
     $dataset_id = 'wordlift';
     $post = get_post($post_id); 
-    
-    if ('entity' == $post->post_type) {
-        return true;
-    } 
 
     $redlink_post_url = "http://data.redlink.io/$client_id/$dataset_id/post/$post->ID";
     $sparql  = "\n<$redlink_post_url> rdfs:label '".$post->post_title."'."; 
     $sparql .= "\n<$redlink_post_url> a <http://schema.org/BlogPosting>."; 
     $sparql .= "\n<$redlink_post_url> schema:url <".get_permalink($post->ID).">."; 
     
+    
+
+    $source = ($post->post_content) ? $post->post_content : '';
     $doc = new DOMDocument();
-    $doc->loadHTML($post->post_content);
+    $doc->loadHTML($source);
+    // Find all span tags: a span tag could be a textAnnotation
     $tags = $doc->getElementsByTagName('span');
-
+    // Loops on founded span tags
     foreach ($tags as $tag) {
-
+        // If itemid attribute is set, then the node is a textAnnotation
     	if ($tag->attributes->getNamedItem('itemid')) {
     		
             $entity_attributes = array(
-                'label' => $tag->nodeValue,
+                'label' => addslashes($tag->nodeValue),
                 'sameas' => $tag->attributes->getNamedItem('itemid')->value,
                 'redlink_entity_url' => "http://data.redlink.io/$client_id/$dataset_id/resource/".end(explode('/', $tag->attributes->getNamedItem('itemid')->value)),                
                 );
@@ -182,13 +186,13 @@ function wordlift_on_post_save_callback($post_id) {
                 $entity_attributes['type'] = $tag->attributes->getNamedItem('itemtype')->value;
             }
              
-    		$sparql .= "\n\t<$redlink_post_url> dcterms:references <".$entity_attributes['redlink_entity_url'].">."; 
-    		$sparql .= "\n\t<$redlink_entity_url> rdfs:label '".$entity_attributes['label']."'."; 
+    		$sparql .= "\n\t<$redlink_post_url> dcterms:references <{$entity_attributes['redlink_entity_url']}>."; 
+    		$sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> rdfs:label '{$entity_attributes['label']}."; 
             // Support type are only schema.org ones: it could by null
             if($entity_attributes['type']) {
-                $sparql .= "\n\t<$redlink_entity_url> a <$type>.";  		
+                $sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> a <{$entity_attributes['type']}>.";  		
             }
-            $sparql .= "\n\t<$redlink_entity_url> owl:sameAs <".$entity_attributes['sameas'].">.";
+            $sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> owl:sameAs <{$entity_attributes['sameas']}>.";
 
             add_or_update_related_entity_post($entity_attributes); 
     						
@@ -216,7 +220,7 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX schema: <http://schema.org/>
 
 DELETE WHERE {
-    <http://data.redlink.io/$client_id/$dataset_id/post/$post->ID> dcterms:references ?ref
+    <{$redlink_post_url}> dcterms:references ?ref
 }
 EOT;
     wordlift_push_data_triple_store($sparql_delete_query);
@@ -251,7 +255,7 @@ function add_or_update_related_entity_post($attributes) {
     // If type is defined, specifies entity_type taxonomy for the post
 
     if($attributes['type']) {
-        $toxonomized_type = end(explode($attributes['type'],'/'));
+        $toxonomized_type = end(explode('/', $attributes['type']));
         $params['tax_input'] = array( 
             'entity_type' => array( $toxonomized_type )
             );
@@ -292,7 +296,7 @@ function wordlift_push_data_triple_store($sparql_query) {
         write_log("Something went wrong with sparql query\n\n$sparql_query\n\n$error_message");
         return false;
     } else {
-        write_log("Sparql query done!!");
+        write_log("Sparql query done!!\n\n{$sparql_query}");
     }
     return true;
 }
