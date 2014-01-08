@@ -16,13 +16,13 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     # a reference to the current text annotation span in the editor.
     el     = undefined
     scroll = ->
-      console.log('scrolling')
       return if not el?
       # get the position of the clicked element.
       pos = EditorService.getWinPos(el)
       # set the popover arrow to the element position.
       setArrowTop(pos.top - 50)
 
+    # TODO: move these hooks on the popover, in order to hook/unhook the events.
     $(window).scroll(scroll)
     $('#content_ifr').contents().scroll(scroll)
 
