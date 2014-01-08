@@ -5,6 +5,7 @@ angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers'
 $(
   container = $('''
     <div id="wordlift-disambiguation-popover" class="metabox-holder" ng-controller="HelloController">
+
       <div class="postbox">
         <div class="handlediv" title="Click to toggle"><br></div>
         <h3 class="hndle"><span>Semantic Web</span></h3>
@@ -24,12 +25,14 @@ $(
           </form>
         </div>
       </div>
-
-      <div class="bubble-arrow-border"></div>
-      <div class="bubble-arrow"></div>
     </div>
     ''')
     .appendTo('body')
+    .css(
+      height: $('body').height() - $('#wpadminbar').height() - 10,
+      top: $('#wpadminbar').height() + 10
+      right: 10
+    )
     .draggable()
 
   # when the user clicks on the handle, hide the popover.

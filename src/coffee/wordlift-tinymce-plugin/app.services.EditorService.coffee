@@ -68,11 +68,18 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
     getDOM    : -> @getEditor().dom
 
     # get the window position of an element inside the editor.
-    # @param element ellem The element.
+    # @param element elem The element.
     getWinPos: (elem) ->
       # get a reference to the editor and its body
       ed   = @getEditor()
       body = $(@getBody())
+      el   = elem.target
+
+      top  = $('#content_ifr').offset().top - $('body').scrollTop() +
+             el.offsetTop - $(ed.getBody()).scrollTop()
+
+      left = $('#content_ifr').offset().left - $('body').scrollLeft() +
+             el.offsetLeft - $(ed.getBody()).scrollLeft()
 
       # get the position of the element inside the body
       elx = elem.srcElement.offsetLeft
@@ -83,5 +90,5 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       x = elx + coffset.left - body.scrollTop() - $(window).scrollTop()
       y = ely + coffset.top - body.scrollLeft() - $(window).scrollLeft()
       #return the coordinates.
-      {x, y}
+      {top: top, left: left}
 ])

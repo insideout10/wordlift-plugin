@@ -87,6 +87,35 @@
   top: 50px;
   right: 20px;
 
+  .postbox {
+    border-color: #bbb;
+    box-shadow: 0 0 10em #666;
+    height: 100%;
+    margin-bottom: 0;
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -50px;
+      top: 50px;
+      border: 25px solid;
+      border-color: transparent #bbb transparent transparent;
+    }
+
+    &:after {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -49px;
+      top: 50px;
+      border: 25px solid;
+      border-color: transparent #fff transparent transparent;
+    }
+  }
+
   .handlediv:before {
     content: '\f158';
     right: 12px;
@@ -99,6 +128,15 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-decoration: none!important;
+  }
+
+  .arrow-left {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-right:10px solid blue;
   }
 }
 
