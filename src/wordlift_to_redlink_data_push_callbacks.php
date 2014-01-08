@@ -1,14 +1,11 @@
 <?php
 
-add_action('save_post', 'wordlift_on_post_save_callback');
-add_action('save_post', 'wordlift_update_entity_on_post_save_callback');
-
 /**
  * Create triples about the entity being saved.
  * @param int $post_id The post ID (posts that are not entities are ignored).
  * @return null
  */
-function wordlift_update_entity_on_post_save_callback($post_id) {
+function wordlift_update_entity($post_id) {
 
     // don't do anything if it's an autosave.
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
@@ -16,11 +13,6 @@ function wordlift_update_entity_on_post_save_callback($post_id) {
 
     // get the post.
     $post = get_post($post_id);
-
-	// don't do anything if this is an entity.
-    if ('entity' != $post->post_type) {
-        return true;
-    } 
 
     // get the entity label.
     $title  = addslashes($post->post_title);
@@ -58,24 +50,6 @@ function wordlift_update_entity_on_post_save_callback($post_id) {
 EOF;
 
     wordlift_push_data_triple_store($query);
-
-//    // because of a bug in Marmotta we cannot currently send one query DELETE/INSERT/WHERE.
-//    // TODO: as soon as the bug is solved, use the DELETE/INSERT/WHERE query.
-//    // create the insert/delete queries.
-//    $insert = $ns . "INSERT DATA { $sparql }";
-//    $delete = $ns . <<<EOF
-//        DELETE WHERE {
-//            <{$url}> rdfs:label ?label ;
-//                schema:url ?url ;
-//                schema:description ?description ;
-//                a ?type
-//        }
-//EOF;
-//
-//    // TODO: executing the following two queries sequentially in marmotta may yield to an issue
-//    // where the insert has no effect.
-//	wordlift_push_data_triple_store($delete);
-//	wordlift_push_data_triple_store($insert);
 }
 
 /**
@@ -97,7 +71,7 @@ EOF;
 /**
  * @param $post_id
  */
-function wordlift_on_post_save_callback($post_id) {
+function wordlift_update_post($post_id) {
 
     // ignore autosaves
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
@@ -144,7 +118,7 @@ function wordlift_on_post_save_callback($post_id) {
             }
              
     		$sparql .= "\n\t<$redlink_post_url> dcterms:references <{$entity_attributes['redlink_entity_url']}>."; 
-    		$sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> rdfs:label '{$entity_attributes['label']}."; 
+    		$sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> rdfs:label '{$entity_attributes['label']}'.";
             // Support type are only schema.org ones: it could by null
             if($entity_attributes['type']) {
                 $sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> a <{$entity_attributes['type']}>.";  		
@@ -205,8 +179,7 @@ function add_or_update_related_entity_post($attributes) {
     }
 
     // remove the save post hook to avoid processing for entities being saved (see http://codex.wordpress.org/Plugin_API/Action_Reference/save_post).
-    remove_action('save_post', 'wordlift_on_post_save_callback');
-    remove_action('save_post', 'wordlift_update_entity_on_post_save_callback');
+    remove_action('save_post', 'wordlift_save_post');
 
     // create or update the post.
     $post_id = wp_insert_post($params, false);
@@ -218,8 +191,7 @@ function add_or_update_related_entity_post($attributes) {
     }
 
     // add back the save post hook.
-    add_action('save_post', 'wordlift_on_post_save_callback');
-    add_action('save_post', 'wordlift_update_entity_on_post_save_callback');
+    add_action('save_post', 'wordlift_save_post');
 
     return true;
 }
@@ -258,3 +230,29 @@ function wordlift_push_data_triple_store($query) {
 //    }
     return true;
 }
+
+/**
+ * Receive events from post saves, and split them according to the post type.
+ * @param int $post_id The post id.
+ */
+function wordlift_save_post($post_id) {
+
+    // get the post.
+    $post = get_post($post_id);
+
+    // if it's an entity, raise the *wordlift_save_entity* event.
+    if ('entity' === $post->post_type) {
+        do_action('wordlift_save_entity', $post_id);
+    } else {
+        // raise the *wordlift_save_post* event.
+        do_action('wordlift_save_post', $post_id);
+    }
+
+}
+
+// hook save events.
+add_action('save_post', 'wordlift_save_post');
+add_action('wordlift_save_post', 'wordlift_update_post');
+add_action('wordlift_save_entity', 'wordlift_update_entity');
+
+
