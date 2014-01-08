@@ -77,16 +77,19 @@ function wordlift_update_post($post_id) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return;
 
-    write_log("Going to update post with ID ".$post_id);
-   
+    // TODO: must read these from the options.
     $client_id = 353;
     $dataset_id = 'wordlift';
+
+    // get the current post.
     $post = get_post($post_id); 
 
-    $redlink_post_url = "http://data.redlink.io/$client_id/$dataset_id/post/$post->ID";
-    $sparql  = "\n<$redlink_post_url> rdfs:label '".$post->post_title."'."; 
-    $sparql .= "\n<$redlink_post_url> a <http://schema.org/BlogPosting>."; 
-    $sparql .= "\n<$redlink_post_url> schema:url <".get_permalink($post->ID).">."; 
+    // set the post URI in the triple store.
+    $post_uri = "http://data.redlink.io/$client_id/$dataset_id/post/$post->ID";
+
+    $sparql  = "\n<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "'.";
+    $sparql .= "\n<$post_uri> a <http://schema.org/BlogPosting>.";
+    $sparql .= "\n<$post_uri> schema:url <" . wordlift_esc_sparql(get_permalink($post->ID)) . ">.";
     
     // Retrieve the post content and try to parse it
     $source = ($post->post_content) ? $post->post_content : '';
@@ -117,7 +120,7 @@ function wordlift_update_post($post_id) {
                 $entity_attributes['type'] = $tag->attributes->getNamedItem('itemtype')->value;
             }
              
-    		$sparql .= "\n\t<$redlink_post_url> dcterms:references <{$entity_attributes['redlink_entity_url']}>."; 
+    		$sparql .= "\n\t<$post_uri> dcterms:references <{$entity_attributes['redlink_entity_url']}>.";
     		$sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> rdfs:label '{$entity_attributes['label']}'.";
             // Support type are only schema.org ones: it could by null
             if($entity_attributes['type']) {
@@ -133,13 +136,41 @@ function wordlift_update_post($post_id) {
 
     $ns     = wordlift_get_ns_prefixes();
     $insert = $ns . "INSERT DATA { $sparql }";
-    $delete = $ns . "DELETE WHERE { <{$redlink_post_url}> dcterms:references ?ref }";
+    $delete = $ns . "DELETE WHERE { <{$post_uri}> dcterms:references ?ref }";
 
     write_log('wordlift_on_post_save_callback(' . $post_id . ')/start: committing changes to Redlink');
     wordlift_push_data_triple_store($delete);
     wordlift_push_data_triple_store($insert);
     write_log('wordlift_on_post_save_callback(' . $post_id . ')/end  : committing changes to Redlink');
 
+}
+
+/**
+ * Escape a sparql literal.
+ * @param string $string The string to escape.
+ * @return string The escaped string.
+ */
+function wordlift_esc_sparql($string) {
+    // see http://www.w3.org/TR/rdf-sparql-query/
+    //    '\t'	U+0009 (tab)
+    //    '\n'	U+000A (line feed)
+    //    '\r'	U+000D (carriage return)
+    //    '\b'	U+0008 (backspace)
+    //    '\f'	U+000C (form feed)
+    //    '\"'	U+0022 (quotation mark, double quote mark)
+    //    "\'"	U+0027 (apostrophe-quote, single quote mark)
+    //    '\\'	U+005C (backslash)
+
+    $string = str_replace('\\', '\\\\', $string);
+    $string = str_replace('\'', '\\\'', $string);
+    $string = str_replace('"', '\\"', $string);
+    $string = str_replace('\f', '\\f', $string);
+    $string = str_replace('\b', '\\b', $string);
+    $string = str_replace('\r', '\\r', $string);
+    $string = str_replace('\n', '\\n', $string);
+    $string = str_replace('\t', '\\t', $string);
+
+    return $string;
 }
 
 function add_or_update_related_entity_post($attributes) {
