@@ -23,7 +23,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
     # Find all text annotation for the current analyzed text.
     findAllAnnotations = () ->
       textAnnotations = currentAnalysis['@graph'].filter (item) ->
-        'enhancer:TextAnnotation' in item['@type'] and item['enhancer:selection-prefix']?
+        'TextAnnotation' in item['@type'] and item['selection-prefix']?
       $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations
 
     # Find all Entities for a certain text annotation identified by 'annotationId'
@@ -32,12 +32,12 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
     findEntitiesForAnnotation = (annotationId, elem) ->
       # filter the graph, find all entities related to the specified text annotation id.
       entityAnnotations = currentAnalysis['@graph'].filter (item) ->
-        'enhancer:EntityAnnotation' in item['@type'] and item['dc:relation'] is annotationId
+        'EntityAnnotation' in item['@type'] and item['relation'] is annotationId
       # Enhance entity annotations ..
       entityAnnotations = entityAnnotations.map (item) ->
 
-        if item['enhancer:entity-type']
-          i = intersection(supportedTypes, item['enhancer:entity-type'])
+        if item['entity-type']
+          i = intersection(supportedTypes, item['entity-type'])
           item['wordlift:supportedTypes'] = i.map (type) ->
             "http://schema.org/#{type.replace(/schema:/,'')}"
           item['wordlift:cssClasses'] = i.map (type) ->

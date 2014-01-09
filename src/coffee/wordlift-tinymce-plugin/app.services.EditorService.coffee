@@ -14,26 +14,25 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       dom.setAttrib(id, 'class', cssClasses);
       dom.setAttrib(id, 'itemscope', 'itemscope');
       dom.setAttrib(id, 'itemtype',  entity['wordlift:supportedTypes'].join(' '));
-      dom.setAttrib(id, 'itemid', entity['enhancer:entity-reference']);
+      dom.setAttrib(id, 'itemid', entity['entity-reference']);
 
       # set the itemprop nested inside the itemscope/itemtype.
       elem.innerHTML = '<span itemprop="name">' + elem.innerHTML + '</span>'
 
+    # receive annotations from the analysis.
     $rootScope.$on 'AnnotationService.annotations', (event, annotations) ->
-      console.log 'I received some annotations'
+      console.log "receive #{annotations.length} annotation(s)"
 
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
-      matches = []
-
       for textAnnotation in annotations
         # get the selection prefix and suffix for the regexp.
-        selPrefix = textAnnotation['enhancer:selection-prefix']['@value'].substr(-2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n')
-        selPrefix = '^' if '' is selPrefix
-        selSuffix = textAnnotation['enhancer:selection-suffix']['@value'].substr(0, 2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n')
-        selSuffix = '$' if '' is selSuffix
+        selPrefix = textAnnotation['selection-prefix']['@value'].substr(-2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n')
+        selPrefix = '^|\\W' if '' is selPrefix
+        selSuffix = textAnnotation['selection-suffix']['@value'].substr(0, 2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n')
+        selSuffix = '$|\\W' if '' is selSuffix
 
-        selText   = textAnnotation['enhancer:selected-text']['@value']
+        selText   = textAnnotation['selected-text']['@value']
 
         # this is the old regular expression which is not accurate.
         # regexp = new RegExp( "(\\W|^)(#{selText})(\\W|$)(?![^<]*\">?)" )
@@ -41,7 +40,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         # the new regular expression, may not match everything.
         # TODO: enhance the matching.
         r = new RegExp("(#{selPrefix})(#{selText})(#{selSuffix})(?![^<]*\">?)")
-        
+
         replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
                           typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
