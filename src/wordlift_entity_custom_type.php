@@ -81,6 +81,15 @@ function wordlift_entity_url_box() {
         'normal',
         'high'
     );
+
+    add_meta_box(
+        'wordlift_entity_related_posts_box',
+        __( 'Related Posts', 'wordlift' ),
+        'wordlift_entity_related_posts_box_content',
+        'entity',
+        'normal',
+        'high'
+    );
 }
 
 /**
@@ -110,10 +119,23 @@ function wordlift_entity_sameas_box_content($post) {
 }
 
 /**
+ * Displays the content of the entity URL box (called from the *entity_url* method).
+ * @param WP_Post $post The post.
+ */
+function wordlift_entity_related_posts_box_content($post) {
+    wp_nonce_field('wordlift_entity_related_posts_box', 'wordlift_entity_related_posts_box_content_nonce');
+
+    $value = get_post_meta( $post->ID, 'entity_related_posts', true);
+
+    echo '<label for="entity_related_posts">' . __('entity-related-posts-label', 'wordlift') . '</label>';
+    echo '<textarea style="width: 100%;" id="entity_related_posts" name="entity_related_posts" placeholder="Related Posts">' . esc_attr( $value ) . '</textarea>';
+}
+
+/**
  * Saves the entity URL for the specified post ID (set via the *save_post* hook).
  * @param int $post_id The post ID.
  */
-function wordlift_entity_url_box_save($post_id) {
+function wordlift_save_entity_custom_fields($post_id) {
 
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return;
@@ -144,4 +166,4 @@ function wordlift_entity_url_box_save($post_id) {
 add_action('init', 'wordlift_register_custom_type_entity');
 add_action('init', 'wordlift_taxonomies_entity', 0);
 add_action('add_meta_boxes', 'wordlift_entity_url_box');
-add_action('save_post', 'wordlift_entity_url_box_save');
+add_action('save_post', 'wordlift_save_entity_custom_fields');
