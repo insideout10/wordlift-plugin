@@ -8,7 +8,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       # create a reference to the TinyMCE editor dom.
       dom  = tinyMCE.get("content").dom
       # the element id containing the attributes for the text annotation.
-      id   = entity['dc:relation']
+      id   = entity['relation']
       elem = dom.get(id)
 
       dom.setAttrib(id, 'class', cssClasses);

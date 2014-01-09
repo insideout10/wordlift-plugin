@@ -2,7 +2,7 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 	'wordlift.tinymce.plugin.config', 
 	'wordlift.tinymce.plugin.services'
 	])
-  .controller('HelloController', ['AnnotationService', 'EditorService', '$scope', (AnnotationService, EditorService, $scope) ->
+  .controller('HelloController', ['AnnotationService', 'EditorService', '$log', '$scope', (AnnotationService, EditorService, $log, $scope) ->
 
     $scope.annotations = []
     $scope.selectedEntity = undefined
@@ -33,6 +33,7 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 
     # this event is fired when entities are found for a selected text annotation.
     $scope.$on 'AnnotationService.entityAnnotations', (event, entities, elem) ->
+      $log.info "received #{entities.length} entity/ies"
       # set the entities in the local scope.
       $scope.entities = entities
 
