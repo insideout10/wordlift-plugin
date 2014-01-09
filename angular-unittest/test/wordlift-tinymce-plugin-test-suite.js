@@ -12,8 +12,8 @@
         $scope: scope
       });
     }));
-    return it("Test if hello returns 'Ciao Marcello'", function() {
-      expect(scope.hello).toBe("Ciao Marcello!");
+    return it("Tests if scope.annotations is a blank array", function() {
+      expect(scope.annotations.length).toBe([].length);
     });
   });
 

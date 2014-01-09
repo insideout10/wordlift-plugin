@@ -13,6 +13,6 @@ describe "Test di prova", () ->
 		$controller 'HelloController', { $scope: scope }	
 		return
 
-	it "Test if hello returns 'Ciao Marcello'", () ->
-		expect(scope.hello).toBe "Ciao Marcello!" 
+	it "Tests if scope.annotations is a blank array", () ->
+		expect(scope.annotations.length).toBe [].length 
 		return
