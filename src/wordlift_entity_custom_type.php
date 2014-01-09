@@ -118,8 +118,11 @@ function wordlift_entity_url_box_save($post_id) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return;
 
-    if (!wp_verify_nonce( $_POST['wordlift_entity_url_box_content_nonce'], 'wordlift_entity_url_box'))
+    // check the nonce.
+    if (!isset($_POST['wordlift_entity_url_box_content_nonce'])
+        || !wp_verify_nonce( $_POST['wordlift_entity_url_box_content_nonce'], 'wordlift_entity_url_box')) {
         return;
+    }
 
     if ( 'page' == $_POST['post_type'] ) {
         if ( !current_user_can( 'edit_page', $post_id ) )

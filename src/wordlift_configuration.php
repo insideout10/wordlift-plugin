@@ -34,7 +34,7 @@ function wordlift_configuration_user_id() {
  * Get the WordLift dataset name.
  * @return string the dataset name.
  */
-function wordlift_configuration_dataset_name() {
+function wordlift_configuration_dataset_id() {
 
     // get the plugin options.
     $wordlift_options = get_option(WORDLIFT_OPTIONS);

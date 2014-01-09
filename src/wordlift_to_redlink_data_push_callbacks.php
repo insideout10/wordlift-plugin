@@ -77,26 +77,27 @@ function wordlift_update_post($post_id) {
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return;
 
-    // TODO: must read these from the options.
-    $client_id = 353;
-    $dataset_id = 'wordlift';
+    // read the user id and dataset name from the options.
+    $user_id    = wordlift_configuration_user_id();
+    $dataset_id = wordlift_configuration_dataset_id();
 
     // get the current post.
     $post = get_post($post_id); 
 
     // set the post URI in the triple store.
-    $post_uri = "http://data.redlink.io/$client_id/$dataset_id/post/$post->ID";
+    $post_uri = "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
 
-    $sparql  = "\n<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "'.";
-    $sparql .= "\n<$post_uri> a <http://schema.org/BlogPosting>.";
-    $sparql .= "\n<$post_uri> schema:url <" . wordlift_esc_sparql(get_permalink($post->ID)) . ">.";
+    // create the SPARQL query.
+    $sparql  = "<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "' . ";
+    $sparql .= "<$post_uri> a          <http://schema.org/BlogPosting> . ";
+    $sparql .= "<$post_uri> schema:url <" . wordlift_esc_sparql(get_permalink($post->ID)) . "> . ";
     
     // Retrieve the post content and try to parse it
     $source = ($post->post_content) ? $post->post_content : '';
-    $doc = new DOMDocument();
+    $doc    = new DOMDocument();
     $doc->loadHTML($source);
     // Find all span tags: a span tag could be a textAnnotation
-    $tags = $doc->getElementsByTagName('span');
+    $tags   = $doc->getElementsByTagName('span');
 
     // Loops on founded span tags
     foreach ($tags as $tag) {
@@ -106,27 +107,35 @@ function wordlift_update_post($post_id) {
             // the item id is the URL to the entity in DBpedia or Freebase.
             $item_id   = $tag->attributes->getNamedItem('itemid')->value;
             // the name is the final fragment of the URL.
-            $item_name = end(explode('/', $item_id));
+            $fragments = explode('/', $item_id); // this intermediate line is to avoid a 'Strict Standards' error.
+            $item_name = end($fragments);
 
             $entity_attributes = array(
                 'label' => addslashes($tag->nodeValue),
                 'sameas' => $tag->attributes->getNamedItem('itemid')->value,
-                'redlink_entity_url' => "http://data.redlink.io/$client_id/$dataset_id/resource/$item_name",
+                'redlink_entity_url' => "http://data.redlink.io/$user_id/$dataset_id/resource/$item_name",
             );
 
             // set the type only if available.
     		if ($tag->attributes->getNamedItem('itemtype')) {
-
                 $entity_attributes['type'] = $tag->attributes->getNamedItem('itemtype')->value;
             }
-             
-    		$sparql .= "\n\t<$post_uri> dcterms:references <{$entity_attributes['redlink_entity_url']}>.";
-    		$sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> rdfs:label '{$entity_attributes['label']}'.";
+
+            // create references to the entity data.
+            $entity_uri     = $entity_attributes['redlink_entity_url'];
+            $entity_label   = $entity_attributes['label'];
+            $entity_same_as = $entity_attributes['sameas'];
+            $entity_type    = $entity_attributes['type'];
+
+            // create the sparql query.
+    		$sparql         .= "<$post_uri>   dcterms:references <$entity_uri> . ";
+            $sparql         .= "<$entity_uri> owl:sameAs         <$entity_same_as> . ";
+    		$sparql         .= "<$entity_uri> rdfs:label         '" . wordlift_esc_sparql($entity_label) . "' . ";
+
             // Support type are only schema.org ones: it could by null
-            if($entity_attributes['type']) {
-                $sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> a <{$entity_attributes['type']}>.";  		
+            if(!empty($entity_type)) {
+                $sparql .= "<$entity_uri>     a <$entity_type>.";
             }
-            $sparql .= "\n\t<{$entity_attributes['redlink_entity_url']}> owl:sameAs <{$entity_attributes['sameas']}>.";
 
             add_or_update_related_entity_post($entity_attributes); 
     						
@@ -134,15 +143,22 @@ function wordlift_update_post($post_id) {
 
     }
 
-    $ns     = wordlift_get_ns_prefixes();
-    $insert = $ns . "INSERT DATA { $sparql }";
-    $delete = $ns . "DELETE WHERE { <{$post_uri}> dcterms:references ?ref }";
+    // create the query:
+    //  - remove existing references to entities.
+    //  - set the new post information (including references).
+    $query = wordlift_get_ns_prefixes() . <<<EOF
+            DELETE {
+                <{$post_uri}> dcterms:references ?o .
+                <{$post_uri}> schema:url         ?o .
+                <{$post_uri}> a                  ?o .
+                <{$post_uri}> rdfs:label         ?o .
+            }
+            INSERT { $sparql }
+            WHERE { OPTIONAL { <$post_uri> ?p ?o } }
+EOF;
 
-    write_log('wordlift_on_post_save_callback(' . $post_id . ')/start: committing changes to Redlink');
-    wordlift_push_data_triple_store($delete);
-    wordlift_push_data_triple_store($insert);
-    write_log('wordlift_on_post_save_callback(' . $post_id . ')/end  : committing changes to Redlink');
-
+    // execute the query.
+    wordlift_push_data_triple_store($query);
 }
 
 /**
@@ -176,9 +192,9 @@ function wordlift_esc_sparql($string) {
 function add_or_update_related_entity_post($attributes) {
     write_log($attributes);
     $params = array(
-        'post_status' => 'draft',
-        'post_type' => 'entity',
-        'post_title' => $attributes['label'],
+        'post_status'  => 'draft',
+        'post_type'    => 'entity',
+        'post_title'   => $attributes['label'],
         'post_content' => '',
         'post_excerpt' => '', 
     );
@@ -188,16 +204,16 @@ function add_or_update_related_entity_post($attributes) {
     // TODO We shoud consider both entity url and entity sameas collection
     $the_query = new WP_Query( array(
         'numberposts' => 1,
-        'post_type' => 'entity',
-        'meta_key' => 'entity_url',
-        'meta_value' => $attributes['redlink_entity_url']
+        'post_type'   => 'entity',
+        'meta_key'    => 'entity_url',
+        'meta_value'  => $attributes['redlink_entity_url']
         ) 
     );
     // If entity exists, adds entity ID to params:
     // wp_insert_post try to update an existing post if ID is specified
     if ($the_query->post_count > 0) {
-       $posts = $the_query->get_posts(); 
-       $entity = $posts[0];
+       $posts        = $the_query->get_posts();
+       $entity       = $posts[0];
        $params['ID'] = $entity->ID; 
     }
     // If type is defined, specifies entity_type taxonomy for the post
@@ -227,26 +243,38 @@ function add_or_update_related_entity_post($attributes) {
     return true;
 }
 
+/**
+ * Execute the query against the triple store.
+ * @param string $query A SPARQL query.
+ * @return bool
+ */
 function wordlift_push_data_triple_store($query) {
 
-    $api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
-    $api_analysis_chain = 'wordlift';
-    $api_url = "https://api.redlink.io/1.0-ALPHA/data/$api_analysis_chain/sparql/update?key=$api_key";
+    // get the configuration.
+    $api_version = '1.0-ALPHA';
+    $dataset_id  = wordlift_configuration_dataset_id();
+    $app_key     = wordlift_configuration_application_key();
 
+    // construct the API URL.
+    $api_url = "https://api.redlink.io/$api_version/data/$dataset_id/sparql/update?key=$app_key";
+
+    // post the request.
     $response = wp_remote_post($api_url, array(
-            'method' => 'POST',
-            'timeout' => 45,
+            'method'      => 'POST',
+            'timeout'     => 45,
             'redirection' => 5,
             'httpversion' => '1.0',
-            'blocking' => true,
-            'headers' => array(
+            'blocking'    => true, // do we need blocking?
+            'headers'     => array(
                 'Content-type' => 'application/sparql-update',
             ),
             'body' => $query,
-            'cookies' => array()
+            'cookies'     => array()
         )
     );
 
+    write_log('== API URL      ===============');
+    write_log($api_url);
     write_log('== SPARQL QUERY ===============');
     write_log($query);
     write_log('===============================');
