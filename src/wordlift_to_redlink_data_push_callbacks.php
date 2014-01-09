@@ -85,12 +85,14 @@ function wordlift_update_post($post_id) {
     $post = get_post($post_id); 
 
     // set the post URI in the triple store.
-    $post_uri = "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+    $post_uri   = "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+    $date_published = get_the_time('c', $post);
 
     // create the SPARQL query.
     $sparql  = "<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "' . ";
     $sparql .= "<$post_uri> a          <http://schema.org/BlogPosting> . ";
     $sparql .= "<$post_uri> schema:url <" . wordlift_esc_sparql(get_permalink($post->ID)) . "> . ";
+    $sparql .= "<$post_uri> schema:datePublished '" . wordlift_esc_sparql($date_published) . "' . ";
     
     // Retrieve the post content and try to parse it
     $source = ($post->post_content) ? $post->post_content : '';
@@ -150,6 +152,7 @@ function wordlift_update_post($post_id) {
             DELETE {
                 <{$post_uri}> dcterms:references ?o .
                 <{$post_uri}> schema:url         ?o .
+                <{$post_uri}> schema:datePublished  ?o .
                 <{$post_uri}> a                  ?o .
                 <{$post_uri}> rdfs:label         ?o .
             }
