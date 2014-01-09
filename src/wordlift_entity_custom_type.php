@@ -65,65 +65,58 @@ function wordlift_taxonomies_entity() {
  */
 function wordlift_entity_url_box() {
     add_meta_box(
-        'wordlift_entity_url_box',
+        'wordlift_entity_box',
         __( 'Entity URL', 'wordlift' ),
-        'wordlift_entity_url_box_content',
+        'wordlift_entity_box_content',
         'entity',
         'normal',
         'high'
     );
 
-    add_meta_box(
-        'wordlift_entity_sameas_box',
-        __( 'Entity Same As', 'wordlift' ),
-        'wordlift_entity_sameas_box_content',
-        'entity',
-        'normal',
-        'high'
-    );
-
-    add_meta_box(
-        'wordlift_entity_related_posts_box',
-        __( 'Related Posts', 'wordlift' ),
-        'wordlift_entity_related_posts_box_content',
-        'entity',
-        'normal',
-        'high'
-    );
+//    add_meta_box(
+//        'wordlift_entity_url_box',
+//        __( 'Entity URL', 'wordlift' ),
+//        'wordlift_entity_url_box_content',
+//        'entity',
+//        'normal',
+//        'high'
+//    );
+//
+//    add_meta_box(
+//        'wordlift_entity_sameas_box',
+//        __( 'Entity Same As', 'wordlift' ),
+//        'wordlift_entity_sameas_box_content',
+//        'entity',
+//        'normal',
+//        'high'
+//    );
+//
+//    add_meta_box(
+//        'wordlift_entity_related_posts_box',
+//        __( 'Related Posts', 'wordlift' ),
+//        'wordlift_entity_related_posts_box_content',
+//        'entity',
+//        'normal',
+//        'high'
+//    );
 }
 
 /**
  * Displays the content of the entity URL box (called from the *entity_url* method).
  * @param WP_Post $post The post.
  */
-function wordlift_entity_url_box_content($post) {
-    wp_nonce_field('wordlift_entity_url_box', 'wordlift_entity_url_box_content_nonce');
+function wordlift_entity_box_content($post) {
+    wp_nonce_field('wordlift_entity_box', 'wordlift_entity_box_nonce');
 
     $value = get_post_meta( $post->ID, 'entity_url', true );
 
     echo '<label for="entity_url">' . __('entity-url-label', 'wordlift') . '</label>';
     echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
-}
-
-/**
- * Displays the content of the entity URL box (called from the *entity_url* method).
- * @param WP_Post $post The post.
- */
-function wordlift_entity_sameas_box_content($post) {
-    wp_nonce_field('wordlift_entity_sameas_box', 'wordlift_entity_sameas_box_content_nonce');
 
     $value = get_post_meta( $post->ID, 'entity_sameas', true);
 
     echo '<label for="entity_sameas">' . __('entity-sameas-label', 'wordlift') . '</label>';
     echo '<textarea style="width: 100%;" id="entity_sameas" name="entity_sameas" placeholder="Same As URL">' . esc_attr( $value ) . '</textarea>';
-}
-
-/**
- * Displays the content of the entity URL box (called from the *entity_url* method).
- * @param WP_Post $post The post.
- */
-function wordlift_entity_related_posts_box_content($post) {
-    wp_nonce_field('wordlift_entity_related_posts_box', 'wordlift_entity_related_posts_box_content_nonce');
 
     $value = get_post_meta( $post->ID, 'entity_related_posts', true);
 
@@ -137,21 +130,30 @@ function wordlift_entity_related_posts_box_content($post) {
  */
 function wordlift_save_entity_custom_fields($post_id) {
 
+    // Check if our nonce is set.
+    if ( ! isset( $_POST['wordlift_entity_box_nonce'] ) )
+        return $post_id;
+
+    $nonce = $_POST['wordlift_entity_box_nonce'];
+
+    // Verify that the nonce is valid.
+    if ( ! wp_verify_nonce( $nonce, 'wordlift_entity_box' ) )
+        return $post_id;
+
+    // If this is an autosave, our form has not been submitted, so we don't want to do anything.
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-        return;
+        return $post_id;
 
-    // check the nonce.
-    if (!isset($_POST['wordlift_entity_url_box_content_nonce'])
-        || !wp_verify_nonce( $_POST['wordlift_entity_url_box_content_nonce'], 'wordlift_entity_url_box')) {
-        return;
-    }
-
+    // Check the user's permissions.
     if ( 'page' == $_POST['post_type'] ) {
-        if ( !current_user_can( 'edit_page', $post_id ) )
-            return;
+
+        if ( ! current_user_can( 'edit_page', $post_id ) )
+            return $post_id;
+
     } else {
-        if ( !current_user_can( 'edit_post', $post_id ) )
-            return;
+
+        if ( ! current_user_can( 'edit_post', $post_id ) )
+            return $post_id;
     }
 
     // save the entity URL.
@@ -161,6 +163,11 @@ function wordlift_save_entity_custom_fields($post_id) {
     // save the same as values.
     $entity_sameas = $_POST['entity_sameas'];
     update_post_meta( $post_id, 'entity_sameas', $entity_sameas);
+
+    // save the same as values.
+    $entity_related_posts = $_POST['entity_related_posts'];
+    update_post_meta( $post_id, 'entity_related_posts', $entity_related_posts);
+
 }
 
 add_action('init', 'wordlift_register_custom_type_entity');
