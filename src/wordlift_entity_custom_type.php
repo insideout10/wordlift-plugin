@@ -72,33 +72,6 @@ function wordlift_entity_url_box() {
         'normal',
         'high'
     );
-
-//    add_meta_box(
-//        'wordlift_entity_url_box',
-//        __( 'Entity URL', 'wordlift' ),
-//        'wordlift_entity_url_box_content',
-//        'entity',
-//        'normal',
-//        'high'
-//    );
-//
-//    add_meta_box(
-//        'wordlift_entity_sameas_box',
-//        __( 'Entity Same As', 'wordlift' ),
-//        'wordlift_entity_sameas_box_content',
-//        'entity',
-//        'normal',
-//        'high'
-//    );
-//
-//    add_meta_box(
-//        'wordlift_entity_related_posts_box',
-//        __( 'Related Posts', 'wordlift' ),
-//        'wordlift_entity_related_posts_box_content',
-//        'entity',
-//        'normal',
-//        'high'
-//    );
 }
 
 /**
@@ -113,10 +86,10 @@ function wordlift_entity_box_content($post) {
     echo '<label for="entity_url">' . __('entity-url-label', 'wordlift') . '</label>';
     echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
 
-    $value = get_post_meta( $post->ID, 'entity_sameas', true);
+    $value = get_post_meta( $post->ID, 'entity_same_as', true);
 
-    echo '<label for="entity_sameas">' . __('entity-sameas-label', 'wordlift') . '</label>';
-    echo '<textarea style="width: 100%;" id="entity_sameas" name="entity_sameas" placeholder="Same As URL">' . esc_attr( $value ) . '</textarea>';
+    echo '<label for="entity_same_as">' . __('entity-same-as-label', 'wordlift') . '</label>';
+    echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $value ) . '</textarea>';
 
     $value = get_post_meta( $post->ID, 'entity_related_posts', true);
 
@@ -161,8 +134,8 @@ function wordlift_save_entity_custom_fields($post_id) {
     update_post_meta( $post_id, 'entity_url', $entity_url);
 
     // save the same as values.
-    $entity_sameas = $_POST['entity_sameas'];
-    update_post_meta( $post_id, 'entity_sameas', $entity_sameas);
+    $entity_same_as = $_POST['entity_same_as'];
+    update_post_meta( $post_id, 'entity_same_as', $entity_same_as);
 
     // save the same as values.
     $entity_related_posts = $_POST['entity_related_posts'];
