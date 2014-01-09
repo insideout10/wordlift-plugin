@@ -34,6 +34,9 @@ function wordlift_save_post_and_related_entities($post_id) {
     // Find all span tags: a span tag could be a textAnnotation
     $tags   = $doc->getElementsByTagName('span');
 
+    // this array will hold all the entities found in this post.
+    $entity_post_ids = array();
+
     // Loops on founded span tags
     foreach ($tags as $tag) {
         // If itemid attribute is set, then the node is a textAnnotation
@@ -46,13 +49,24 @@ function wordlift_save_post_and_related_entities($post_id) {
                                 : '');
 
             // create or update the entity in WordPress and get the entity URI.
-            $entity_uri   = wordlift_save_entity_post($entity_id, $entity_label, $entity_type);
+            $entity_posts = wordlift_save_entity_post($entity_id, $entity_label, $entity_type);
 
-            // create the sparql query.
-    		$sparql         .= "<$post_uri>   dcterms:references <$entity_uri> . \n";
+            foreach ($entity_posts as $entity_post) {
+                if (!in_array($entity_post->ID, $entity_post_ids)) {
+                    // add the entity post id to the array.
+                    array_push($entity_post_ids, $entity_post->ID);
+                    // get the entity URI and create a reference.
+                    $entity_uri = get_post_meta($entity_post->ID, 'entity_url', true);
+                    // create the sparql query.
+                    $sparql     .= "<$post_uri>   dcterms:references <$entity_uri> . \n";
+                }
+            }
     	}
-
     }
+
+    // reset the relationships.
+    delete_post_meta($post_id, 'wordlift_related_entities');
+    add_post_meta($post_id, 'wordlift_related_entities', $entity_post_ids, true);
 
     // create the query:
     //  - remove existing references to entities.
@@ -75,8 +89,10 @@ EOF;
 
 /**
  * Save the specified entity to WordPress.
- * @param $attributes
- * @return bool
+ * @param string $uri   The entity URI (local or remote).
+ * @param string $label The entity label.
+ * @param string $type  The entity type.
+ * @return array        An array of posts.
  */
 function wordlift_save_entity_post($uri, $label, $type) {
 
@@ -89,7 +105,7 @@ function wordlift_save_entity_post($uri, $label, $type) {
         write_log("wordlift_add_or_update_related_entity_post: found " . count($entity_posts) . " entity/ies");
         // if there are entities, return the local URI of the first one.
         // TODO: handle more entities.
-        return get_post_meta($entity_posts[0]->ID, 'entity_url', true);
+        return $entity_posts;
     }
 
     // there are no entities, create a new one.
@@ -117,18 +133,19 @@ function wordlift_save_entity_post($uri, $label, $type) {
     // TODO: handle errors.
     if (false === $post_id) {
         // inform an error occurred.
-    } else {
-        update_post_meta( $post_id, 'entity_url'   , $local_uri );
-        // set the same_as uri as the original URI, if it differs from the local uri.
-        if ($local_uri !== $uri) {
-            update_post_meta( $post_id, 'entity_same_as', $uri );
-        }
-        // save the entity in the triple store.
-        wordlift_save_entity_to_triple_store($post_id);
+        return array();
     }
 
-    // finally return the local URI.
-    return $local_uri;
+    update_post_meta( $post_id, 'entity_url'   , $local_uri );
+    // set the same_as uri as the original URI, if it differs from the local uri.
+    if ($local_uri !== $uri) {
+        update_post_meta( $post_id, 'entity_same_as', $uri );
+    }
+    // save the entity in the triple store.
+    wordlift_save_entity_to_triple_store($post_id);
+
+    // finally return the entity post.
+    return array(get_post($post_id));
 }
 
 /**
