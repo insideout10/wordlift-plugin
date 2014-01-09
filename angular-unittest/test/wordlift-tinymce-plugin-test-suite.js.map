@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "wordlift-tinymce-plugin-test-suite.js",
+  "sourceRoot": "../../src/coffee/wordlift-tinymce-plugin/angular-unittest/",
+  "sources": [
+    "foo.coffee"
+  ],
+  "names": [],
+  "mappings": "AAAA;CAAA,CAAA,CAA0B,KAA1B,CAA0B,MAA1B;CAEC,IAAA,GAAA;CAAA,GAAA,EAAW,IAAX,eAAW;CAAX,GACA,EAAW,IAAX,wBAAW;CADX,GAEA,EAAW,IAAX,2BAAW;CAFX,CAI4B,CAAA,CAA5B,IAAA,CAA4B,QAA5B;CAJA,EAMQ,CAAR,CAAA;CANA,CAQgC,CAAd,CAAlB,EAAW,GAAQ,CAAnB,CAAkB;CACjB,EAAQ,CAAA,CAAR,CAAA,IAAkB;CAAlB,CAC+B,IAA/B,KAAA,MAAA;CAA+B,CAAU,GAAV,CAAE,EAAA;CADjC,OACA;CAFU,IAAO;CAKf,CAAH,CAAkD,MAAA,EAAlD,kCAAA;CACC,CAAwC,EAAxC,CAAY,CAAZ,KAAwB;CADzB,IAAkD;CAfnD,EAA0B;CAA1B"
+}
