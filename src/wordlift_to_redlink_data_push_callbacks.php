@@ -263,10 +263,10 @@ function wordlift_push_data_triple_store($query) {
             'method'      => 'POST',
             'timeout'     => 45,
             'redirection' => 5,
-            'httpversion' => '1.0',
+            'httpversion' => '1.1',
             'blocking'    => true, // do we need blocking?
             'headers'     => array(
-                'Content-type' => 'application/sparql-update',
+                'Content-type' => 'application/sparql-update; charset=utf-8',
             ),
             'body' => $query,
             'cookies'     => array()
