@@ -1,4 +1,4 @@
-<a style="float: right" href="https://travis-ci.org/insideout10/wordlift-plugin"><img src="https://travis-ci.org/insideout10/wordlift-plugin.png?branch=wordlift-3.0" /></a>
+<div style="float: right"><a href="https://travis-ci.org/insideout10/wordlift-plugin"><img src="https://travis-ci.org/insideout10/wordlift-plugin.png?branch=wordlift-3.0" /></a></div>
 
 WordLift Plug-in for WordPress
 ==============================
