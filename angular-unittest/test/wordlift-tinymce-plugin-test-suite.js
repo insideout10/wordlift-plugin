@@ -13,7 +13,7 @@
       });
     }));
     return it("Tests if scope.annotations is a blank array", function() {
-      expect(scope.annotations.length).toBe([].length);
+      expect(scope.annotations).toEqual([]);
     });
   });
 

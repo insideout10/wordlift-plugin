@@ -14,5 +14,5 @@ describe "Test di prova", () ->
 		return
 
 	it "Tests if scope.annotations is a blank array", () ->
-		expect(scope.annotations.length).toBe [].length 
+		expect(scope.annotations).toEqual [] 
 		return
