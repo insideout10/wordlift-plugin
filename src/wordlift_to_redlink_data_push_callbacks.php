@@ -34,11 +34,16 @@ function wordlift_save_post_and_related_entities($post_id) {
     // Find all span tags: a span tag could be a textAnnotation
     $tags   = $doc->getElementsByTagName('span');
 
+    write_log("tags [ count :: " . count($tags) . " ]");
+
     // this array will hold all the entities found in this post.
     $entity_post_ids = array();
 
     // Loops on founded span tags
     foreach ($tags as $tag) {
+
+//        write_log($tag->attributes->getNamedItem('itemid'));
+
         // If itemid attribute is set, then the node is a textAnnotation
     	if ($tag->attributes->getNamedItem('itemid')) {
 
@@ -50,6 +55,8 @@ function wordlift_save_post_and_related_entities($post_id) {
 
             // create or update the entity in WordPress and get the entity URI.
             $entity_posts = wordlift_save_entity_post($entity_id, $entity_label, $entity_type);
+
+            write_log('[ entity_posts :: ' . count($entity_posts) . ' ]');
 
             foreach ($entity_posts as $entity_post) {
                 if (!in_array($entity_post->ID, $entity_post_ids)) {
@@ -136,7 +143,9 @@ function wordlift_save_entity_post($uri, $label, $type) {
         return array();
     }
 
-    update_post_meta( $post_id, 'entity_url'   , $local_uri );
+    write_log("update_post_meta( $post_id, 'entity_url', $local_uri )");
+
+    update_post_meta( $post_id, 'entity_url', $local_uri );
     // set the same_as uri as the original URI, if it differs from the local uri.
     if ($local_uri !== $uri) {
         update_post_meta( $post_id, 'entity_same_as', $uri );
@@ -175,8 +184,9 @@ function wordlift_get_custom_dataset_entity_uri($uri) {
 function wordlift_get_entity_posts_by_uri($uri) {
 
     $query = new WP_Query( array(
-            'post_type'  => 'entity',
-            'meta_query' => array(
+            'post_status' => 'any',
+            'post_type'   => 'entity',
+            'meta_query'  => array(
                 'relation' => 'OR',
                 array(
                     'key'     => 'entity_url',
@@ -226,20 +236,20 @@ function wordlift_push_data_triple_store($query) {
         )
     );
 
-    write_log('== API URL      ===============');
-    write_log($api_url);
-    write_log('== SPARQL QUERY ===============');
-    write_log($query);
-    write_log('===============================');
-    write_log(var_export($response, true));
-
     // TODO: handle errors.
-//    if ( is_wp_error( $response ) ) {
-//        write_log("Something went wrong with sparql query\n\n$sparql_query\n\n$error_message");
-//        return false;
-//    } else {
-//        write_log("Sparql query done!!\n\n{$sparql_query}");
-//    }
+    if (is_wp_error( $response ) || 200 !== $response['response']['code']) {
+
+        write_log('== ERROR        =============================================');
+        write_log('The following call to the remote platform returned an error:');
+        write_log("API URL: $api_url");
+        write_log("Query:\n");
+        write_log($query);
+        write_log('=============================================================');
+        write_log(var_export($response, true));
+
+        return false;
+    }
+
     return true;
 }
 
@@ -249,18 +259,14 @@ function wordlift_push_data_triple_store($query) {
  */
 function wordlift_save_post($post_id) {
 
-    write_log("wordlift_save_post($post_id)");
-
     // get the post.
     $post = get_post($post_id);
 
     // if it's an entity, raise the *wordlift_save_entity* event.
     if ('entity' === $post->post_type) {
-        write_log("wordlift_save_post: do_action('wordlift_save_entity')");
         do_action('wordlift_save_entity', $post_id);
     } else {
         // raise the *wordlift_save_post* event.
-        write_log("wordlift_save_post: do_action('wordlift_save_post')");
         do_action('wordlift_save_post', $post_id);
     }
 

@@ -15,8 +15,6 @@ if (!function_exists('write_log')) {
         if ( true === WP_DEBUG ) {
             if ( is_array( $log ) || is_object( $log ) ) {
                 error_log( print_r( $log, true ) );
-            } else {
-                error_log( $log );
             }
         }
     }
@@ -86,8 +84,31 @@ function wordlift_register_tinymce_javascript($plugin_array)
     return $plugin_array;
 }
 
+/**
+ * Enable microdata schema.org tagging.
+ * see http://vip.wordpress.com/documentation/register-additional-html-attributes-for-tinymce-and-wp-kses/
+ */
+function wordlift_allowed_post_tags() {
+    global $allowedposttags;
+
+    $tags = array( 'span' );
+    $new_attributes = array(
+        'itemscope' => array(),
+        'itemtype'  => array(),
+        'itemprop'  => array(),
+        'itemid'    => array()
+    );
+
+    foreach ( $tags as $tag ) {
+        if ( isset( $allowedposttags[ $tag ] ) && is_array( $allowedposttags[ $tag ] ) )
+            $allowedposttags[ $tag ] = array_merge( $allowedposttags[ $tag ], $new_attributes );
+    }
+}
+
 // init process for button control
 add_action('init', 'wordlift_buttonhooks');
+// add allowed post tags.
+add_action('init', 'wordlift_allowed_post_tags');
 
 
 // Ajax Admin Section
