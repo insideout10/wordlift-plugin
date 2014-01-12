@@ -66,7 +66,7 @@ class SampleTest extends WP_UnitTestCase {
         $this->assertEquals( $this->dataset_name, wordlift_configuration_dataset_id() );
     }
 
-	function testSample() {
+	function testSavingAPostWithEntities() {
 
         $content = <<<EOF
 The shift by Mr. Cuomo, a Democrat who had long resisted legalizing medical marijuana, comes as other states are taking increasingly liberal positions on it — most notably <span class="textannotation place disambiguated" id="urn:enhancement-ba2ace0d-2e21-ae84-3a7c-db37206be078" itemid="http://dbpedia.org/resource/Colorado" itemscope="itemscope" itemtype="http://schema.org/Place"><span itemprop="name">Colorado</span></span>, where thousands have flocked to buy the drug for recreational use since it became legal on Jan. 1.
@@ -78,12 +78,24 @@ EOF;
             'post_title'   => 'Hello world!'
         ) );
 
+        // try to get the post using the WordLift method.
+        $posts_using_entity_uri = wordlift_get_entity_posts_by_uri($this->entity_uri);
+
+        // check that an entity is found.
+        $this->assertCount(1, $posts_using_entity_uri);
+
+        // TODO: check that the post_meta/same_as has the same_as value.
 
         // try to get the post using the WordLift method.
-        $posts = wordlift_get_entity_posts_by_uri($this->entity_uri);
+        $posts_using_entity_same_as = wordlift_get_entity_posts_by_uri($this->entity_same_as);
 
-        $this->assertCount(1, $posts);
+        // check that an entity is found.
+        $this->assertCount(1, $posts_using_entity_same_as);
 
-	}
+        // check that the entity URI matches.
+        $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true);
+        $this->assertEquals( $this->entity_uri, $entity_uri_from_post_meta);
+
+    }
 }
 
