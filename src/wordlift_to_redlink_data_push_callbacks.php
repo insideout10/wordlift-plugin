@@ -265,6 +265,7 @@ function wordlift_push_data_triple_store($query) {
                 'Content-type' => 'application/sparql-update; charset=utf-8',
             ),
             'body' => $query,
+            'sslverify'   => false,
             'cookies'     => array()
         )
     );
