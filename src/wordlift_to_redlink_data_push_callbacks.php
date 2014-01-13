@@ -272,10 +272,11 @@ function wordlift_push_data_triple_store($query) {
     echo("API URL: $api_url\n");
     echo("Query:\n");
     echo($query . "\n");
+    var_dump( $response );
 
 
     // TODO: handle errors.
-    if (is_wp_error( $response ) || 200 !== $response['response']['code']) {
+    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
         write_log('== ERROR        =============================================');
         write_log('The following call to the remote platform returned an error:');
