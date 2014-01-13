@@ -178,7 +178,8 @@ EOF;
 
         // check why sometimes we get that this property doesn't exist.
         if ( !property_exists( $graph, 'http://purl.org/dc/terms/references' ) ) {
-            var_dump($graph);
+            echo("Cannot find the dcterms:references property on $post_uri:\n");
+            var_dump($json);
         }
 
         // check that the post references the entity URI.
