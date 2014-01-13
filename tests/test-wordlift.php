@@ -30,6 +30,17 @@ class WordLiftTest extends WP_UnitTestCase {
         return "http://data.redlink.io/$user_id/$dataset_name/resource/$name";
     }
 
+    /**
+     * Get the post URI.
+     * @param int $id The post ID.
+     * @return string The post URI.
+     */
+    function get_post_uri($id) {
+        $user_id      = wordlift_configuration_user_id();
+        $dataset_name = wordlift_configuration_dataset_id();
+        return "http://data.redlink.io/$user_id/$dataset_name/post/$id";
+    }
+
     function add_allowed_post_tags() {
         global $allowedposttags;
 
@@ -123,6 +134,55 @@ EOF;
         $this->assertTrue( in_array( $post_id, $related_posts ) );
 
         // TODO: check that the post is created on Redlink.
+        // check that the post is created on Redlink.
+        $post_uri    = $this->get_post_uri( $post_id );
+        $wp_response = wp_remote_get( $post_uri . '.json' );
+
+        // check that the response is not an error.
+        $this->assertFalse( is_wp_error( $wp_response ) );
+
+        // get the graph instance.
+        $json  = json_decode( $wp_response['body'] );
+        $graph = $json[0]->{'@graph'}[0];
+
+        // check that the id is equal to the post URI.
+        $this->assertEquals( $post_uri, $graph->{'@id'} );
+
+        $this->assertTrue( in_array( 'http://schema.org/BlogPosting', $graph->{'@type'} ) );
+
+        // check that the post references the entity URI.
+        $entity_uri = $this->entity_uri;
+        $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
+            function( $result, $item ) use ( $entity_uri ) {
+                return $result || ( $entity_uri === $item->{'@id'} );
+            } , false
+        ) );
+
+        // check that the post published date is correct.
+        $post_date_published = get_the_time( 'c', $post_id );
+        $this->assertTrue( array_reduce( $graph->{'http://schema.org/datePublished'},
+            function( $result, $item ) use ( $post_date_published ) {
+                return $result || ( $post_date_published === $item->{'@value'} );
+            } , false
+        ) );
+
+        // check that the post published date is correct.
+        $post_permalink = get_permalink( $post_id );
+        $this->assertTrue( array_reduce( $graph->{'http://schema.org/url'},
+            function( $result, $item ) use ( $post_permalink ) {
+                return $result || ( $post_permalink === $item->{'@id'} );
+            } , false
+        ) );
+
+        // check that the post published date is correct.
+        $post_title = get_the_title( $post_id );
+        $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2000/01/rdf-schema#label'},
+            function( $result, $item ) use ( $post_title ) {
+                return $result || ( $post_title === $item->{'@value'} );
+            } , false
+        ) );
+
+
 
         // check that the entity is created on Redlink.
         $wp_response = wp_remote_get( $this->entity_uri . '.json' );
