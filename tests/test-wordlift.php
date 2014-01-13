@@ -9,7 +9,7 @@ class WordLiftTest extends WP_UnitTestCase {
 
     // the configuration parameters for WordLift.
     private $user_id         = 353;
-    private $dataset_name    = 'wordlift';
+    private $dataset_name    = 'wordlift-tests';
     private $application_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
 
     // sample entity data.
