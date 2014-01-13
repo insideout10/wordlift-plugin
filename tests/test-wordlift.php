@@ -137,6 +137,11 @@ EOF;
         // save a reference to the post.
         $entity_post_id = $posts_using_entity_same_as[0]->ID;
 
+        // test the wordlift_get_related_posts function.
+        $related_posts = wordlift_get_related_posts( $entity_post_id, 'any' );
+        $this->assertEquals( 1, count( $related_posts ) );
+
+
         // check that the entity URI matches.
         $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true );
         $this->assertEquals( $entity_uri, $entity_uri_from_post_meta );
@@ -154,7 +159,7 @@ EOF;
 
         // check that the post is created on Redlink.
         $post_uri    = $this->get_post_uri( $post_id );
-        $wp_response = wp_remote_get( $post_uri . '.json' );
+        $wp_response = wp_remote_get( $post_uri . '.json', array( 'sslverify' => false, 'blocking' => true, 'httpversion' => '1.1' ) );
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
@@ -170,6 +175,11 @@ EOF;
         $this->assertEquals( $post_uri, $graph->{'@id'} );
 
         $this->assertTrue( in_array( 'http://schema.org/BlogPosting', $graph->{'@type'} ) );
+
+        // check why sometimes we get that this property doesn't exist.
+        if ( !property_exists( $graph, 'http://purl.org/dc/terms/references' ) ) {
+            var_dump($graph);
+        }
 
         // check that the post references the entity URI.
         $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
@@ -205,7 +215,7 @@ EOF;
 
 
         // check that the entity is created on Redlink.
-        $wp_response = wp_remote_get( $entity_uri . '.json' );
+        $wp_response = wp_remote_get( $entity_uri . '.json', array( 'sslverify' => false, 'blocking' => true, 'httpversion' => '1.1' ) );
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
