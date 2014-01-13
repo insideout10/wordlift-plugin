@@ -79,6 +79,8 @@ class WordLiftTest extends WP_UnitTestCase {
         $this->wp_multisite = getenv('WP_MULTISITE');
         $this->dataset_name = $this->get_dataset_name();
 
+        // TODO: ensure dataset cleanup on Redlink.
+
         $this->add_allowed_post_tags();
 
         // set the WordLift test configuration.
