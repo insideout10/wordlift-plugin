@@ -63,6 +63,8 @@ class WordLiftTest extends WP_UnitTestCase {
      */
     function setUp() {
 
+        echo $_ENV['WP_VERSION'];
+
         parent::setUp();
 
         $this->add_allowed_post_tags();
