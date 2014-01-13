@@ -153,12 +153,12 @@ EOF;
         $this->assertTrue( in_array( 'http://schema.org/BlogPosting', $graph->{'@type'} ) );
 
         // check that the post references the entity URI.
-        $entity_uri = $this->entity_uri;
-        $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
-            function( $result, $item ) use ( $entity_uri ) {
-                return $result || ( $entity_uri === $item->{'@id'} );
-            } , false
-        ) );
+//        $entity_uri = $this->entity_uri;
+//        $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
+//            function( $result, $item ) use ( $entity_uri ) {
+//                return $result || ( $entity_uri === $item->{'@id'} );
+//            } , false
+//        ) );
 
         // check that the post published date is correct.
         $post_date_published = get_the_time( 'c', $post_id );
