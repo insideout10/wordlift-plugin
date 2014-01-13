@@ -7,21 +7,21 @@
  */
 class WordLiftTest extends WP_UnitTestCase {
 
+    // this vars are set during test SetUp.
     private $wp_version;
     private $wp_multisite;
+    private $dataset_name;
+
     private $dataset_name_prefix = "wordlift-tests";
 
     // the configuration parameters for WordLift.
     private $user_id         = 353;
-    private $dataset_name    = 'wordlift';
-    private $application_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
+    private $application_key = 'TIDT902ZPVpSoNa1DWAPWJVbxOQYgYUab0bdb839';
 
     // sample entity data.
     // the dbpedia URI.
     private $entity_same_as = 'http://dbpedia.org/resource/Colorado';
     private $entity_name    = 'Colorado';
-    // the expected entity URI.
-    private $entity_uri     = 'http://data.redlink.io/353/wordlift/resource/Colorado';
 
     function get_dataset_name() {
         $dataset_name = "$this->dataset_name_prefix-php-" . PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "-wp-$this->wp_version-ms-$this->wp_multisite";
@@ -116,8 +116,11 @@ EOF;
             'post_title'   => 'A Sample Post'
         ) );
 
+        // get the entity URI.
+        $entity_uri = $this->get_entity_uri( $this->entity_name );
+
         // try to get the post using the WordLift method.
-        $posts_using_entity_uri = wordlift_get_entity_posts_by_uri( $this->entity_uri );
+        $posts_using_entity_uri = wordlift_get_entity_posts_by_uri( $entity_uri );
 
         // check that an entity is found.
         $this->assertCount( 1, $posts_using_entity_uri );
@@ -135,7 +138,7 @@ EOF;
 
         // check that the entity URI matches.
         $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true );
-        $this->assertEquals( $this->entity_uri, $entity_uri_from_post_meta );
+        $this->assertEquals( $entity_uri, $entity_uri_from_post_meta );
 
         // check in fact that they're the same post.
         $this->assertEquals( $entity_post_id, $posts_using_entity_same_as[0]->ID );
@@ -168,12 +171,11 @@ EOF;
         $this->assertTrue( in_array( 'http://schema.org/BlogPosting', $graph->{'@type'} ) );
 
         // check that the post references the entity URI.
-//        $entity_uri = $this->entity_uri;
-//        $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
-//            function( $result, $item ) use ( $entity_uri ) {
-//                return $result || ( $entity_uri === $item->{'@id'} );
-//            } , false
-//        ) );
+        $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
+            function( $result, $item ) use ( $entity_uri ) {
+                return $result || ( $entity_uri === $item->{'@id'} );
+            } , false
+        ) );
 
         // check that the post published date is correct.
         $post_date_published = get_the_time( 'c', $post_id );
@@ -202,7 +204,7 @@ EOF;
 
 
         // check that the entity is created on Redlink.
-        $wp_response = wp_remote_get( $this->entity_uri . '.json' );
+        $wp_response = wp_remote_get( $entity_uri . '.json' );
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
@@ -215,7 +217,7 @@ EOF;
         $graph = $json[0]->{'@graph'}[0];
 
         // check that the id is equal to the entity URI.
-        $this->assertEquals( $this->entity_uri, $graph->{'@id'} );
+        $this->assertEquals( $entity_uri, $graph->{'@id'} );
 
         // check that the schema:url is equal to the permalink.
         $entity_post_permalink = get_permalink( $entity_post_id );
