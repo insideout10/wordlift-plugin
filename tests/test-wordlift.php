@@ -86,10 +86,6 @@ EOF;
             'post_title'   => 'A Sample Post'
         ) );
 
-
-//        delete_post_meta( $post_id, 'wordlift_related_entities' );
-//        get_post_meta( $post_id, 'wordlift_related_entities');
-
         // try to get the post using the WordLift method.
         $posts_using_entity_uri = wordlift_get_entity_posts_by_uri( $this->entity_uri );
 
@@ -104,14 +100,41 @@ EOF;
         // check that an entity is found.
         $this->assertCount( 1, $posts_using_entity_same_as );
 
+        // save a reference to the post.
+        $entity_post_id = $posts_using_entity_same_as[0]->ID;
+
         // check that the entity URI matches.
         $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true );
         $this->assertEquals( $this->entity_uri, $entity_uri_from_post_meta );
+
+        // check in fact that they're the same post.
+        $this->assertEquals( $entity_post_id, $posts_using_entity_same_as[0]->ID );
+
+        // check that the post relates to the entity.
+        $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
+        $this->assertTrue( in_array( $entity_post_id, $related_entities ) );
 
         // TODO: check that the post is created on Redlink.
 
         // TODO: check that the entities are create on Redlink.
 
+        // set the post content.
+        $content = <<<EOF
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident Colorado, sunt in culpa qui officia deserunt mollit anim id est laborum.
+EOF;
+
+        // update the post removing the reference to the entity.
+        $post_id = wp_insert_post( array(
+            'ID'           => $post_id,
+            'post_type'    => 'post',
+            'post_content' => $content,
+            'post_title'   => 'A Sample Post'
+        ) );
+
+        // check that there are no entities related to the post.
+        $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
+        $this->assertCount( 0, $related_entities );
+        
     }
 
     /**
