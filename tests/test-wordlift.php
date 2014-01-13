@@ -133,13 +133,17 @@ EOF;
         $related_posts = get_post_meta( $entity_post_id, 'wordlift_related_posts', true );
         $this->assertTrue( in_array( $post_id, $related_posts ) );
 
-        // TODO: check that the post is created on Redlink.
         // check that the post is created on Redlink.
         $post_uri    = $this->get_post_uri( $post_id );
         $wp_response = wp_remote_get( $post_uri . '.json' );
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
+
+        var_dump($wp_response);
+        
+        // check that the response code is 200-OK.
+        $this->assertEquals( 200, $wp_response['response']['code'] );
 
         // get the graph instance.
         $json  = json_decode( $wp_response['body'] );
@@ -189,6 +193,9 @@ EOF;
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
+
+        // check that the response code is 200-OK.
+        $this->assertEquals( 200, $wp_response['response']['code'] );
 
         // get the graph instance.
         $json  = json_decode( $wp_response['body'] );
