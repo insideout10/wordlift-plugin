@@ -340,6 +340,8 @@ function wordlift_save_entity_to_triple_store($id) {
 
     // set the label
     $sparql  .= "<$uri> rdfs:label '" . wordlift_esc_sparql($label) . "' . \n";
+    // set the URL
+    $sparql  .= "<$uri> schema:url <" . get_permalink($id) . "> . \n";
 
     // set the description.
     if (!empty($descr)) {
@@ -357,6 +359,7 @@ function wordlift_save_entity_to_triple_store($id) {
         <$uri> rdfs:label ?o ;
                owl:sameAs ?o ;
                schema:description ?o ;
+               schema:url ?o ;
                a ?o
      }
      INSERT { $sparql }

@@ -20,7 +20,14 @@ function wordlift_admin_add_entities_meta_box($post_type) {
  */
 function wordlift_entities_box_content($post) {
 
+    // get the related entities IDs.
     $related_entities_ids = get_post_meta( $post->ID, 'wordlift_related_entities', true );
+
+    // check if there are related entities.
+    if ( !is_array( $related_entities_ids ) || 0 === array_count_values( $related_entities_ids ) ) {
+        _e('No related entities', 'wordlfift');
+        return;
+    }
 
     // The Query
     $args             = array(

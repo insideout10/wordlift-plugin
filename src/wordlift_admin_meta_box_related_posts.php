@@ -19,7 +19,14 @@ function wordlift_admin_add_related_posts_meta_box() {
  */
 function wordlift_admin_related_posts_meta_box_content($post) {
 
+    // get related posts.
     $related_posts_ids = get_post_meta( $post->ID, 'wordlift_related_posts', true );
+
+    // there are no related posts.
+    if ( !is_array( $related_posts_ids ) || 0 === array_count_values( $related_posts_ids ) ) {
+        _e('No related posts', 'wordlfift');
+        return;
+    }
 
     // The Query
     $args             = array(

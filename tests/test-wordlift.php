@@ -15,6 +15,7 @@ class WordLiftTest extends WP_UnitTestCase {
     // sample entity data.
     // the dbpedia URI.
     private $entity_same_as = 'http://dbpedia.org/resource/Colorado';
+    private $entity_name    = 'Colorado';
     // the expected entity URI.
     private $entity_uri     = 'http://data.redlink.io/353/wordlift/resource/Colorado';
 
@@ -123,7 +124,42 @@ EOF;
 
         // TODO: check that the post is created on Redlink.
 
-        // TODO: check that the entities are create on Redlink.
+        // check that the entity is created on Redlink.
+        $wp_response = wp_remote_get( $this->entity_uri . '.json' );
+
+        // check that the response is not an error.
+        $this->assertFalse( is_wp_error( $wp_response ) );
+
+        // get the graph instance.
+        $json  = json_decode( $wp_response['body'] );
+        $graph = $json[0]->{'@graph'}[0];
+
+        // check that the id is equal to the entity URI.
+        $this->assertEquals( $this->entity_uri, $graph->{'@id'} );
+
+        // check that the schema:url is equal to the permalink.
+        $entity_post_permalink = get_permalink( $entity_post_id );
+        $this->assertTrue( array_reduce( $graph->{'http://schema.org/url'},
+            function( $result, $item ) use ( $entity_post_permalink ) {
+                return $result || ( $entity_post_permalink === $item->{'@id'} );
+            } , false
+        ) );
+
+        // check that the label is equal to the entity name.
+        $entity_name = $this->entity_name;
+        $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2000/01/rdf-schema#label'},
+            function( $result, $item ) use ( $entity_name ) {
+                return $result || ( $entity_name === $item->{'@value'} );
+            } , false
+        ) );
+
+        // check that the same as is included.
+        $entity_same_as = $this->entity_same_as;
+        $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2002/07/owl#sameAs'},
+            function( $result, $item ) use ( $entity_same_as ) {
+                return $result || ( $entity_same_as === $item->{'@id'} );
+            } , false
+        ) );
 
         // set the post content.
         $content = <<<EOF
