@@ -7,6 +7,10 @@
  */
 class WordLiftTest extends WP_UnitTestCase {
 
+    private $wp_version;
+    private $wp_multisite;
+    private $dataset_name_prefix = "wordlift-tests";
+
     // the configuration parameters for WordLift.
     private $user_id         = 353;
     private $dataset_name    = 'wordlift';
@@ -18,6 +22,10 @@ class WordLiftTest extends WP_UnitTestCase {
     private $entity_name    = 'Colorado';
     // the expected entity URI.
     private $entity_uri     = 'http://data.redlink.io/353/wordlift/resource/Colorado';
+
+    function get_dataset_name() {
+        return "$this->dataset_name_prefix-$this->wp_version-$this->multisite";
+    }
 
     /**
      * Get the entity URI for the custom dataset. It'll be constructed using the configured user id and the dataset name.
@@ -63,10 +71,13 @@ class WordLiftTest extends WP_UnitTestCase {
      */
     function setUp() {
 
-        echo "WP_VERSION:   " . getenv('WP_VERSION') . "\n";
-        echo "WP_MULTISITE: " . getenv('WP_MULTISITE') . "\n";
-
         parent::setUp();
+
+        // set the dataset name for this test.
+        $this->wp_version   = getenv('WP_VERSION');
+        $this->wp_multisite = getenv('WP_MULTISITE');
+        $this->dataset_name = $this->get_dataset_name();
+        echo("this->dataset_name :: $this->dataset_name\n");
 
         $this->add_allowed_post_tags();
 
