@@ -179,15 +179,15 @@ EOF;
         // check why sometimes we get that this property doesn't exist.
         if ( !property_exists( $graph, 'http://purl.org/dc/terms/references' ) ) {
             echo("Cannot find the dcterms:references property on $post_uri:\n");
-            var_dump($json);
-        }
+            var_dump($graph);
 
-        // check that the post references the entity URI.
-        $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
-            function( $result, $item ) use ( $entity_uri ) {
-                return $result || ( $entity_uri === $item->{'@id'} );
-            } , false
-        ) );
+            // check that the post references the entity URI.
+            $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
+                function( $result, $item ) use ( $entity_uri ) {
+                    return $result || ( $entity_uri === $item->{'@id'} );
+                } , false
+            ) );
+        }
 
         // check that the post published date is correct.
         $post_date_published = get_the_time( 'c', $post_id );
