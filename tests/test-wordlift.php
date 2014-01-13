@@ -1,5 +1,10 @@
 <?php
 
+// TODO: split this class in more focused test classes.
+
+/**
+ * Class WordLiftTest The main test class.
+ */
 class WordLiftTest extends WP_UnitTestCase {
 
     // the configuration parameters for WordLift.
@@ -12,8 +17,6 @@ class WordLiftTest extends WP_UnitTestCase {
     private $entity_same_as = 'http://dbpedia.org/resource/Colorado';
     // the expected entity URI.
     private $entity_uri     = 'http://data.redlink.io/353/wordlift/resource/Colorado';
-
-
 
     /**
      * Get the entity URI for the custom dataset. It'll be constructed using the configured user id and the dataset name.
