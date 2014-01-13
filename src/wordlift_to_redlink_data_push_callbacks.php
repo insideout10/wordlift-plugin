@@ -71,9 +71,42 @@ function wordlift_save_post_and_related_entities($post_id) {
     	}
     }
 
+    // remove the reference to this post from related entities.
+    // get the list of related entities.
+    $existing_related_entities_ids = get_post_meta( $post_id, 'wordlift_related_entities', true );
+    //    echo ("existing_related_entities_ids [ post_id :: $post_id ][ count :: " . count( $existing_related_entities_ids ) . " ][ is_array :: " . is_array( $existing_related_entities_ids ) . " ]\n");
+
+    // for each entity, remove the reference to the post.
+    if ( is_array( $existing_related_entities_ids ) ) {
+        foreach ( $existing_related_entities_ids as $id ) {
+            //            echo( "[ id :: $id ]\n" );
+            $related_posts_ids = get_post_meta( $id, 'wordlift_related_posts', true );
+            $related_posts_ids = array_diff( $related_posts_ids, array( $post_id ) );
+            delete_post_meta( $id, 'wordlift_related_posts' );
+            add_post_meta( $id, 'wordlift_related_posts', $related_posts_ids, true );
+            //            echo "add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n";
+        }
+    }
+
     // reset the relationships.
     delete_post_meta( $post_id, 'wordlift_related_entities' );
-    add_post_meta( $post_id,    'wordlift_related_entities', $entity_post_ids, true );
+    add_post_meta( $post_id, 'wordlift_related_entities', $entity_post_ids, true );
+    //    echo "add_post_meta( $post_id, 'wordlift_related_entities', " . join( ', ', $entity_post_ids ) . ", true )\n";
+
+    // add the relationships to the post from the entities side.
+    // for each entity, remove the reference to the post.
+    if ( is_array( $entity_post_ids ) ) {
+        foreach ( $entity_post_ids as $id ) {
+            $related_posts_ids = get_post_meta( $id, 'wordlift_related_posts', true );
+            if ( !is_array( $related_posts_ids ) ) {
+                $related_posts_ids = array();
+            }
+            array_push( $related_posts_ids, $post_id );
+            delete_post_meta( $id, 'wordlift_related_posts' );
+            add_post_meta( $id, 'wordlift_related_posts', $related_posts_ids, true );
+            //            echo "add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n";
+        }
+    }
 
     // create the query:
     //  - remove existing references to entities.
@@ -258,6 +291,11 @@ function wordlift_push_data_triple_store($query) {
  * @param int $post_id The post id.
  */
 function wordlift_save_post($post_id) {
+
+    // ignore revisions.
+    if ( is_numeric(wp_is_post_revision( $post_id ))) {
+        return;
+    }
 
     // get the post.
     $post = get_post($post_id);

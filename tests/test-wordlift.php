@@ -117,6 +117,10 @@ EOF;
         $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
         $this->assertTrue( in_array( $entity_post_id, $related_entities ) );
 
+        // check that the entity relates to the post.
+        $related_posts = get_post_meta( $entity_post_id, 'wordlift_related_posts', true );
+        $this->assertTrue( in_array( $post_id, $related_posts ) );
+
         // TODO: check that the post is created on Redlink.
 
         // TODO: check that the entities are create on Redlink.
@@ -137,6 +141,11 @@ EOF;
         // check that there are no entities related to the post.
         $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
         $this->assertCount( 0, $related_entities );
+
+        // check that the entity no more relates to the post.
+        $related_posts = get_post_meta( $entity_post_id, 'wordlift_related_posts', true );
+        //        echo "[ entity_post_id :: $entity_post_id ][ related_posts :: " . join( ',', $related_posts ) . " ]\n";
+        $this->assertCount( 0, $related_posts );
 
     }
 
