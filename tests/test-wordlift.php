@@ -141,7 +141,7 @@ EOF;
         $this->assertFalse( is_wp_error( $wp_response ) );
 
         var_dump($wp_response);
-        
+
         // check that the response code is 200-OK.
         $this->assertEquals( 200, $wp_response['response']['code'] );
 

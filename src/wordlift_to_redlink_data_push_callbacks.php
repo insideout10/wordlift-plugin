@@ -269,6 +269,11 @@ function wordlift_push_data_triple_store($query) {
         )
     );
 
+    echo("API URL: $api_url\n");
+    echo("Query:\n");
+    echo($query . "\n");
+
+
     // TODO: handle errors.
     if (is_wp_error( $response ) || 200 !== $response['response']['code']) {
 
