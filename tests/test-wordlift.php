@@ -1,6 +1,6 @@
 <?php
 
-class SampleTest extends WP_UnitTestCase {
+class WordLiftTest extends WP_UnitTestCase {
 
     // the configuration parameters for WordLift.
     private $user_id         = 353;
@@ -43,6 +43,9 @@ class SampleTest extends WP_UnitTestCase {
         }
     }
 
+    /**
+     * Set up the test, allowing the microdata taggings and setting the plugin options.
+     */
     function setUp() {
 
         parent::setUp();
@@ -66,36 +69,71 @@ class SampleTest extends WP_UnitTestCase {
         $this->assertEquals( $this->dataset_name, wordlift_configuration_dataset_id() );
     }
 
-	function testSavingAPostWithEntities() {
+    /**
+     * Test saving a post with entities.
+     */
+    function testSavingAPostWithEntities() {
 
+        // set the post content.
         $content = <<<EOF
-The shift by Mr. Cuomo, a Democrat who had long resisted legalizing medical marijuana, comes as other states are taking increasingly liberal positions on it — most notably <span class="textannotation place disambiguated" id="urn:enhancement-ba2ace0d-2e21-ae84-3a7c-db37206be078" itemid="http://dbpedia.org/resource/Colorado" itemscope="itemscope" itemtype="http://schema.org/Place"><span itemprop="name">Colorado</span></span>, where thousands have flocked to buy the drug for recreational use since it became legal on Jan. 1.
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident <span class="textannotation place disambiguated" id="urn:enhancement-ba2ace0d-2e21-ae84-3a7c-db37206be078" itemid="http://dbpedia.org/resource/Colorado" itemscope="itemscope" itemtype="http://schema.org/Place"><span itemprop="name">Colorado</span></span>, sunt in culpa qui officia deserunt mollit anim id est laborum.
 EOF;
 
+        // create the post.
         $post_id = wp_insert_post( array(
             'post_type'    => 'post',
             'post_content' => $content,
-            'post_title'   => 'Hello world!'
+            'post_title'   => 'A Sample Post'
         ) );
 
+
+//        delete_post_meta( $post_id, 'wordlift_related_entities' );
+//        get_post_meta( $post_id, 'wordlift_related_entities');
+
         // try to get the post using the WordLift method.
-        $posts_using_entity_uri = wordlift_get_entity_posts_by_uri($this->entity_uri);
+        $posts_using_entity_uri = wordlift_get_entity_posts_by_uri( $this->entity_uri );
 
         // check that an entity is found.
-        $this->assertCount(1, $posts_using_entity_uri);
+        $this->assertCount( 1, $posts_using_entity_uri );
 
         // TODO: check that the post_meta/same_as has the same_as value.
 
         // try to get the post using the WordLift method.
-        $posts_using_entity_same_as = wordlift_get_entity_posts_by_uri($this->entity_same_as);
+        $posts_using_entity_same_as = wordlift_get_entity_posts_by_uri( $this->entity_same_as );
 
         // check that an entity is found.
-        $this->assertCount(1, $posts_using_entity_same_as);
+        $this->assertCount( 1, $posts_using_entity_same_as );
 
         // check that the entity URI matches.
-        $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true);
-        $this->assertEquals( $this->entity_uri, $entity_uri_from_post_meta);
+        $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true );
+        $this->assertEquals( $this->entity_uri, $entity_uri_from_post_meta );
+
+        // TODO: check that the post is created on Redlink.
+
+        // TODO: check that the entities are create on Redlink.
 
     }
+
+    /**
+     * Test create an entity.
+     */
+    function testCreateEntity() {}
+
+    /**
+     * Test update an entity.
+     */
+    function testUpdateEntity() {}
+
+    /**
+     * Test an entity which relates to other entities.
+     */
+    function testEntityWithEntities() {}
+
+    /**
+     * Test the relationship between a post and its entities.
+     */
+    function testPostRelationshipWithEntities() {}
+
+
 }
 

@@ -72,8 +72,8 @@ function wordlift_save_post_and_related_entities($post_id) {
     }
 
     // reset the relationships.
-    delete_post_meta($post_id, 'wordlift_related_entities');
-    add_post_meta($post_id, 'wordlift_related_entities', $entity_post_ids, true);
+    delete_post_meta( $post_id, 'wordlift_related_entities' );
+    add_post_meta( $post_id,    'wordlift_related_entities', $entity_post_ids, true );
 
     // create the query:
     //  - remove existing references to entities.
