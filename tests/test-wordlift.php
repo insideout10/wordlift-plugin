@@ -63,8 +63,8 @@ class WordLiftTest extends WP_UnitTestCase {
      */
     function setUp() {
 
-        global $argv, $argc;
-        var_dump($argv);
+        echo "WP_VERSION:   " . getenv('WP_VERSION') . "\n";
+        echo "WP_MULTISITE: " . getenv('WP_MULTISITE') . "\n";
 
         parent::setUp();
 
