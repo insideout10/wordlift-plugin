@@ -78,7 +78,6 @@ class WordLiftTest extends WP_UnitTestCase {
         $this->wp_version   = getenv('WP_VERSION');
         $this->wp_multisite = getenv('WP_MULTISITE');
         $this->dataset_name = $this->get_dataset_name();
-        echo("this->dataset_name :: $this->dataset_name\n");
 
         $this->add_allowed_post_tags();
 
