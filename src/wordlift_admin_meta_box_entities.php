@@ -6,7 +6,7 @@
 function wordlift_admin_add_entities_meta_box($post_type) {
     add_meta_box(
         'wordlift_entitities_box',
-        __( 'Entities', 'wordlift' ),
+        __( 'Related Entities', 'wordlift' ),
         'wordlift_entities_box_content',
         $post_type,
         'side',
@@ -20,14 +20,21 @@ function wordlift_admin_add_entities_meta_box($post_type) {
  */
 function wordlift_entities_box_content($post) {
 
-    $pattern = '/<span class=\"textannotation[^\"]*\" id=\"[^\"]+\" itemid=\"([^\"]+)\"[^>]*><span itemprop=\"name\">([^<]+)<\/span>/i';
+    $related_entities_ids = get_post_meta( $post->ID, 'wordlift_related_entities', true );
 
-    $matches = array();
-    $count   = preg_match_all ($pattern , $post->post_content, $matches, PREG_SET_ORDER);
+    // The Query
+    $args             = array(
+        'post_status' => 'any',
+        'post__in'    => $related_entities_ids,
+        'post_type'   => 'entity'
+    );
+    $query            = new WP_Query( $args );
+    $related_entities = $query->get_posts();
 
-    foreach ($matches as $match) {
-        echo '<a href="' . $match[1] . '">' . esc_attr($match[2]) . '</a><br>';
+    foreach ( $related_entities as $related_entity ) {
+        echo( '<a href="' . get_edit_post_link( $related_entity->ID) . '">' . $related_entity->post_title . '</a><br>');
     }
+
 }
 
 add_action('add_meta_boxes', 'wordlift_admin_add_entities_meta_box');

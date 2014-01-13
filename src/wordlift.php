@@ -180,6 +180,7 @@ require_once('wordlift_entity_custom_type.php');
 require_once('wordlift_content_filter.php');
 // add the entities meta box.
 require_once('wordlift_admin_meta_box_entities.php');
+require_once('wordlift_admin_meta_box_related_posts.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
