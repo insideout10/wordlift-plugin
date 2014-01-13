@@ -134,7 +134,7 @@ EOF;
         // check that there are no entities related to the post.
         $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
         $this->assertCount( 0, $related_entities );
-        
+
     }
 
     /**
