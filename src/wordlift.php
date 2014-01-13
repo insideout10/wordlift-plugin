@@ -184,6 +184,8 @@ require_once('wordlift_admin_meta_box_related_posts.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
+require_once('wordlift_shortcode_related_posts.php');
+
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
