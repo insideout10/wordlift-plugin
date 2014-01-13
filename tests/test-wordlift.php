@@ -24,7 +24,8 @@ class WordLiftTest extends WP_UnitTestCase {
     private $entity_uri     = 'http://data.redlink.io/353/wordlift/resource/Colorado';
 
     function get_dataset_name() {
-        return "$this->dataset_name_prefix-$this->wp_version-$this->wp_multisite";
+        $dataset_name = "$this->dataset_name_prefix-php-" . PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "-wp-$this->wp_version-ms-$this->wp_multisite";
+        return str_replace('.', '-', $dataset_name);
     }
 
     /**
