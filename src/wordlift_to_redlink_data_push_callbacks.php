@@ -119,8 +119,8 @@ function wordlift_save_post_and_related_entities($post_id) {
                 <{$post_uri}> a                  ?o .
                 <{$post_uri}> rdfs:label         ?o .
             }
-            INSERT { $sparql }
-            WHERE { OPTIONAL { <$post_uri> ?p ?o } }
+            WHERE { <$post_uri> ?p ?o };
+            INSERT DATA { $sparql }
 EOF;
 
     // execute the query.
@@ -364,8 +364,8 @@ function wordlift_save_entity_to_triple_store($id) {
                schema:url ?o ;
                a ?o
      }
-     INSERT { $sparql }
-     WHERE { OPTIONAL { <$uri> ?p ?o } }
+     WHERE { <$uri> ?p ?o };
+     INSERT DATA { $sparql }
 EOF;
 
     wordlift_push_data_triple_store($query);
