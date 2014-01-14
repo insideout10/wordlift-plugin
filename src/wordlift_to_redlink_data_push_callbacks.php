@@ -74,7 +74,7 @@ function wordlift_save_post_and_related_entities($post_id) {
     // remove the reference to this post from related entities.
     // get the list of related entities.
     $existing_related_entities_ids = get_post_meta( $post_id, 'wordlift_related_entities', true );
-    //    echo ("existing_related_entities_ids [ post_id :: $post_id ][ count :: " . count( $existing_related_entities_ids ) . " ][ is_array :: " . is_array( $existing_related_entities_ids ) . " ]\n");
+    write_log("existing_related_entities_ids [ post_id :: $post_id ][ count :: " . count( $existing_related_entities_ids ) . " ][ is_array :: " . is_array( $existing_related_entities_ids ) . " ]\n");
 
     // for each entity, remove the reference to the post.
     if ( is_array( $existing_related_entities_ids ) ) {
@@ -84,14 +84,14 @@ function wordlift_save_post_and_related_entities($post_id) {
             $related_posts_ids = array_diff( $related_posts_ids, array( $post_id ) );
             delete_post_meta( $id, 'wordlift_related_posts' );
             add_post_meta( $id, 'wordlift_related_posts', $related_posts_ids, true );
-            //            echo "add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n";
+            write_log("add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n");
         }
     }
 
     // reset the relationships.
     delete_post_meta( $post_id, 'wordlift_related_entities' );
     add_post_meta( $post_id, 'wordlift_related_entities', $entity_post_ids, true );
-    //    echo "add_post_meta( $post_id, 'wordlift_related_entities', " . join( ', ', $entity_post_ids ) . ", true )\n";
+    write_log("add_post_meta( $post_id, 'wordlift_related_entities', " . join( ', ', $entity_post_ids ) . ", true )\n");
 
     // add the relationships to the post from the entities side.
     // for each entity, remove the reference to the post.
@@ -104,7 +104,7 @@ function wordlift_save_post_and_related_entities($post_id) {
             array_push( $related_posts_ids, $post_id );
             delete_post_meta( $id, 'wordlift_related_posts' );
             add_post_meta( $id, 'wordlift_related_posts', $related_posts_ids, true );
-            //            echo "add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n";
+            write_log("add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n");
         }
     }
 
@@ -168,9 +168,9 @@ function wordlift_save_entity_post($uri, $label, $type) {
     }
 
     // create or update the post.
-    remove_action('save_post', 'wordlift_save_post');
+//    remove_action('save_post', 'wordlift_save_post');
     $post_id = wp_insert_post($params, false);
-    add_action('save_post', 'wordlift_save_post');
+//    add_action('save_post', 'wordlift_save_post');
 
     // TODO: handle errors.
     if (false === $post_id) {

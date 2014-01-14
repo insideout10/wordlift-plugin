@@ -51,6 +51,7 @@ function wordlift_get_related_posts( $post_id, $post_status = 'published' ) {
 
     // The Query
     $args             = array(
+        'post_type'   => 'any',
         'post_status' => $post_status,
         'post__in'    => $related_posts_ids
     );

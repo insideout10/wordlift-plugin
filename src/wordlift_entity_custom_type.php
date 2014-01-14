@@ -90,11 +90,6 @@ function wordlift_entity_box_content($post) {
 
     echo '<label for="entity_same_as">' . __('entity-same-as-label', 'wordlift') . '</label>';
     echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $value ) . '</textarea>';
-
-    $value = get_post_meta( $post->ID, 'entity_related_posts', true);
-
-    echo '<label for="entity_related_posts">' . __('entity-related-posts-label', 'wordlift') . '</label>';
-    echo '<textarea style="width: 100%;" id="entity_related_posts" name="entity_related_posts" placeholder="Related Posts">' . esc_attr( $value ) . '</textarea>';
 }
 
 /**
@@ -136,10 +131,6 @@ function wordlift_save_entity_custom_fields($post_id) {
     // save the same as values.
     $entity_same_as = $_POST['entity_same_as'];
     update_post_meta( $post_id, 'entity_same_as', $entity_same_as);
-
-    // save the same as values.
-    $entity_related_posts = $_POST['entity_related_posts'];
-    update_post_meta( $post_id, 'entity_related_posts', $entity_related_posts);
 
 }
 
