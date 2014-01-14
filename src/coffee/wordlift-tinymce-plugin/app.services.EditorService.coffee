@@ -27,28 +27,28 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
       for textAnnotation in annotations
         # get the selection prefix and suffix for the regexp.
-        selPrefix = textAnnotation[Configuration.entityLabels.selectionPrefix]['@value'].substr(-2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n')
+        selPrefix = textAnnotation[Configuration.entityLabels.selectionPrefix]['@value'].substr(-1).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n?').replace('-', '\\-').replace('\x20', '\\s').replace('\xa0', '&nbsp;')
         selPrefix = '^|\\W' if '' is selPrefix
-        selSuffix = textAnnotation[Configuration.entityLabels.selectionSuffix]['@value'].substr(0, 2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n')
+        selSuffix = textAnnotation[Configuration.entityLabels.selectionSuffix]['@value'].substr(0, 1).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n?').replace('-', '\\-').replace('\x20', '\\s').replace('\xa0', '&nbsp;')
         selSuffix = '$|\\W' if '' is selSuffix
 
         selText   = textAnnotation[Configuration.entityLabels.selectedText]['@value']
 
-        # this is the old regular expression which is not accurate.
-        # regexp = new RegExp( "(\\W|^)(#{selText})(\\W|$)(?![^<]*\">?)" )
-
         # the new regular expression, may not match everything.
         # TODO: enhance the matching.
-        r = new RegExp("(#{selPrefix})(#{selText})(#{selSuffix})(?![^<]*\">?)")
+        r = new RegExp("(#{selPrefix}(?:<[^>]+>){0,})(#{selText})((?:<[^>]+>){0,}#{selSuffix})(?![^<]*\"[^<]*>)")
 
-        replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\"
-                          typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
+        if not currentHtmlContent.match(r)?
+          $log.debug r
+          $log.debug currentHtmlContent
+
+        replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
         currentHtmlContent = currentHtmlContent.replace( r, replace )
 
-        isDirty = tinyMCE.get( "content").isDirty()
-        tinyMCE.get( "content").setContent( currentHtmlContent )
-        tinyMCE.get( "content").isNotDirty = 1 if not isDirty
+      isDirty = tinyMCE.get( "content").isDirty()
+      tinyMCE.get( "content").setContent( currentHtmlContent )
+      tinyMCE.get( "content").isNotDirty = 1 if not isDirty
 
       # this event is raised when a textannotation is selected in the TinyMCE editor.
       tinyMCE.get('content').onClick.add (editor, e) ->
