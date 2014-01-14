@@ -168,7 +168,9 @@ function wordlift_save_entity_post($uri, $label, $type) {
     }
 
     // create or update the post.
+    remove_action('save_post', 'wordlift_save_post');
     $post_id = wp_insert_post($params, false);
+    add_action('save_post', 'wordlift_save_post');
 
     // TODO: handle errors.
     if (false === $post_id) {
@@ -304,11 +306,10 @@ function wordlift_save_post($post_id) {
     // if it's an entity, raise the *wordlift_save_entity* event.
     if ('entity' === $post->post_type) {
         do_action('wordlift_save_entity', $post_id);
-    } else {
-        // raise the *wordlift_save_post* event.
-        do_action('wordlift_save_post', $post_id);
     }
 
+    // raise the *wordlift_save_post* event.
+    do_action('wordlift_save_post', $post_id);
 }
 
 function wordlift_save_entity_to_triple_store($id) {
