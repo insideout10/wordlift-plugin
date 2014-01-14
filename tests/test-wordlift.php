@@ -250,27 +250,27 @@ EOF;
             } , false
         ) );
 
-        // set the post content.
-        $content = <<<EOF
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident Colorado, sunt in culpa qui officia deserunt mollit anim id est laborum.
-EOF;
-
-        // update the post removing the reference to the entity.
-        $post_id = wp_insert_post( array(
-            'ID'           => $post_id,
-            'post_type'    => 'post',
-            'post_content' => $content,
-            'post_title'   => 'A Sample Post'
-        ) );
-
-        // check that there are no entities related to the post.
-        $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
-        $this->assertCount( 0, $related_entities );
-
-        // check that the entity no more relates to the post.
-        $related_posts = get_post_meta( $entity_post_id, 'wordlift_related_posts', true );
-        //        echo "[ entity_post_id :: $entity_post_id ][ related_posts :: " . join( ',', $related_posts ) . " ]\n";
-        $this->assertCount( 0, $related_posts );
+//        // set the post content.
+//        $content = <<<EOF
+//Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident Colorado, sunt in culpa qui officia deserunt mollit anim id est laborum.
+//EOF;
+//
+//        // update the post removing the reference to the entity.
+//        $post_id = wp_insert_post( array(
+//            'ID'           => $post_id,
+//            'post_type'    => 'post',
+//            'post_content' => $content,
+//            'post_title'   => 'A Sample Post'
+//        ) );
+//
+//        // check that there are no entities related to the post.
+//        $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
+//        $this->assertCount( 0, $related_entities );
+//
+//        // check that the entity no more relates to the post.
+//        $related_posts = get_post_meta( $entity_post_id, 'wordlift_related_posts', true );
+//        //        echo "[ entity_post_id :: $entity_post_id ][ related_posts :: " . join( ',', $related_posts ) . " ]\n";
+//        $this->assertCount( 0, $related_posts );
 
     }
 
