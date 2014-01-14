@@ -45,7 +45,7 @@ function wordlift_get_related_posts( $post_id, $post_status = 'published' ) {
     $related_posts_ids = get_post_meta( $post_id, 'wordlift_related_posts', true );
 
     // there are no related posts.
-    if ( !is_array( $related_posts_ids ) || 0 === array_count_values( $related_posts_ids ) ) {
+    if ( !is_array( $related_posts_ids ) || 0 === count( $related_posts_ids ) ) {
         return array();
     }
 
