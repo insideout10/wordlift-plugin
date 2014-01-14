@@ -1,15 +1,7 @@
 angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.tinymce.plugin.config'])
-  .service('AnnotationService', ['$rootScope', '$http', ($rootScope, $http) ->
+  .service('AnnotationService', ['$log', '$rootScope', '$http', 'Configuration', ($log, $rootScope, $http, Configuration) ->
 
     currentAnalysis = {}
-    supportedTypes = [
-      'schema:Place'
-      'schema:Event'
-      'schema:CreativeWork'
-      'schema:Product'
-      'schema:Person'
-      'schema:Organization'
-    ]
 
     # this event is raised when a text annotation is clicked in the editor.
     # the id parameter contains the text annotation unique id.
@@ -21,23 +13,31 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
       value for value in a when value in b
 
     # Find all text annotation for the current analyzed text.
+    foo = () ->
+      console.log "foo"
     findAllAnnotations = () ->
+      $log.info "Going to find annotation\s ..."
+
       textAnnotations = currentAnalysis['@graph'].filter (item) ->
-        'TextAnnotation' in item['@type'] and item['selection-prefix']?
+        Configuration.entityLabels.textAnnotation in item['@type'] and item[Configuration.entityLabels.selectionPrefix]?
       $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations
 
     # Find all Entities for a certain text annotation identified by 'annotationId'
     # @param string annotationId The text annotation id.
     # @param element elem The element source of the event.
     findEntitiesForAnnotation = (annotationId, elem) ->
+      $log.debug "Going to find entities for #{annotationId}"
+      
       # filter the graph, find all entities related to the specified text annotation id.
       entityAnnotations = currentAnalysis['@graph'].filter (item) ->
-        'EntityAnnotation' in item['@type'] and item['relation'] is annotationId
+        Configuration.entityLabels.entityAnnotation in item['@type'] and item[Configuration.entityLabels.relation] is annotationId
       # Enhance entity annotations ..
-      entityAnnotations = entityAnnotations.map (item) ->
+      $log.debug "Entity annotation/s before supported types filtering"
+      $log.debug entityAnnotations
 
-        if item['entity-type']
-          i = intersection(supportedTypes, item['entity-type'])
+      entityAnnotations = entityAnnotations.map (item) ->
+        if item[Configuration.entityLabels.entityType]
+          i = intersection(Configuration.supportedTypes, item[Configuration.entityLabels.entityType])
           item['wordlift:supportedTypes'] = i.map (type) ->
             "http://schema.org/#{type.replace(/schema:/,'')}"
           item['wordlift:cssClasses'] = i.map (type) ->
@@ -67,7 +67,10 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
         data: content
       .success (data, status, headers, config) ->
           # Set type
+          $log.debug "Http status: #{status} ..."
+          $log.debug "Received data from analysis service ..."
+          $log.debug data
           currentAnalysis = data
           findAllAnnotations()
-      true
+          true
   ])

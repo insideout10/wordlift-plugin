@@ -1,5 +1,5 @@
 angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tinymce.plugin.config', 'wordlift.tinymce.plugin.services.AnnotationService'])
-  .service('EditorService', ['AnnotationService', '$rootScope', (AnnotationService, $rootScope) ->
+  .service('EditorService', ['AnnotationService', '$rootScope', '$log', 'Configuration', (AnnotationService, $rootScope, $log, Configuration) ->
 
     # this event is captured when an entity is selected in the disambiguation popover.
     $rootScope.$on 'DisambiguationWidget.entitySelected', (event, entity) ->
@@ -8,31 +8,31 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       # create a reference to the TinyMCE editor dom.
       dom  = tinyMCE.get("content").dom
       # the element id containing the attributes for the text annotation.
-      id   = entity['relation']
+      id   = entity[Configuration.entityLabels.relation]
       elem = dom.get(id)
-
+ 
       dom.setAttrib(id, 'class', cssClasses);
       dom.setAttrib(id, 'itemscope', 'itemscope');
       dom.setAttrib(id, 'itemtype',  entity['wordlift:supportedTypes'].join(' '));
-      dom.setAttrib(id, 'itemid', entity['entity-reference']);
+      dom.setAttrib(id, 'itemid', entity[Configuration.entityLabels.entityReference]);
 
       # set the itemprop nested inside the itemscope/itemtype.
       elem.innerHTML = '<span itemprop="name">' + elem.innerHTML + '</span>'
 
     # receive annotations from the analysis.
     $rootScope.$on 'AnnotationService.annotations', (event, annotations) ->
-      console.log "receive #{annotations.length} annotation(s)"
+      $log.debug "receive #{annotations.length} annotation(s)"
 
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
       for textAnnotation in annotations
         # get the selection prefix and suffix for the regexp.
-        selPrefix = textAnnotation['selection-prefix']['@value'].substr(-2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n')
+        selPrefix = textAnnotation[Configuration.entityLabels.selectionPrefix]['@value'].substr(-2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n')
         selPrefix = '^|\\W' if '' is selPrefix
-        selSuffix = textAnnotation['selection-suffix']['@value'].substr(0, 2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n')
+        selSuffix = textAnnotation[Configuration.entityLabels.selectionSuffix]['@value'].substr(0, 2).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n')
         selSuffix = '$|\\W' if '' is selSuffix
 
-        selText   = textAnnotation['selected-text']['@value']
+        selText   = textAnnotation[Configuration.entityLabels.selectedText]['@value']
 
         # this is the old regular expression which is not accurate.
         # regexp = new RegExp( "(\\W|^)(#{selText})(\\W|$)(?![^<]*\">?)" )
@@ -58,7 +58,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
           $rootScope.$broadcast 'EditorService.annotationClick', e.target.id, e
         )
 
-    ping: (message)    -> console.log message
+    ping: (message)    -> $log.debug message
     analyze: (content) -> AnnotationService.analyze content
 
     # set some predefined variables.

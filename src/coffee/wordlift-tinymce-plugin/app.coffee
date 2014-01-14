@@ -16,9 +16,9 @@ $(
             </div>
             <ul>
               <li ng-repeat="entity in entities | orderBy:sortByConfidence:true" ng-class="{ 'active': $index == selectedEntity }">
-                <strong class="{{entity['wordlift:cssClasses']}}" ng-click="onEntityClicked($index, entity)" ng-bind="entity['entity-label']['@value']"></strong><br />
-                <small><a ng-href="{{entity['entity-reference']}}" target="blank">{{entity['entity-reference']}}</a><small><br />
-                <small>[ Confidence Rate: <strong>{{entity['confidence']}}</strong> ]</small>
+                <strong class="{{entity['wordlift:cssClasses']}}" ng-click="onEntityClicked($index, entity)" ng-bind="entity[getLabelFor('entityLabel')]['@value']"></strong><br />
+                <small><a ng-href="{{entity[getLabelFor('entityReference')]}}" target="blank">{{entity[getLabelFor('entityReference')]}}</a><small><br />
+                <small>[ Confidence Rate: <strong>{{entity[getLabelFor('confidence')]}}</strong> ]</small>
 
               </li>
             </ul>

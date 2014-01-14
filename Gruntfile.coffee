@@ -21,7 +21,8 @@ module.exports = (grunt) ->
             'src/coffee/wordlift-tinymce-plugin.coffee'
           ],
           'angular-unittest/test/wordlift-tinymce-plugin-test-suite.js' : [
-             'src/coffee/wordlift-tinymce-plugin/angular-unittest/foo.coffee',
+            'src/coffee/wordlift-tinymce-plugin/angular-unittest/foo.coffee',
+            'src/coffee/wordlift-tinymce-plugin/angular-unittest/test.config.coffee',
           ]
 
     uglify:

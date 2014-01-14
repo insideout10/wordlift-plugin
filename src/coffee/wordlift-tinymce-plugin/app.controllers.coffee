@@ -2,14 +2,16 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 	'wordlift.tinymce.plugin.config', 
 	'wordlift.tinymce.plugin.services'
 	])
-  .controller('HelloController', ['AnnotationService', 'EditorService', '$log', '$scope', (AnnotationService, EditorService, $log, $scope) ->
+  .controller('HelloController', ['AnnotationService', 'EditorService', '$log', '$scope', 'Configuration', (AnnotationService, EditorService, $log, $scope, Configuration) ->
 
     $scope.annotations = []
     $scope.selectedEntity = undefined
     
     $scope.sortByConfidence = (entity) ->
-    	entity['enhancer:confidence']
+    	entity[Configuration.entityLabels.confidence]
 
+    $scope.getLabelFor = (label) ->
+      Configuration.entityLabels[label] 
     setArrowTop = (top) ->
       $('head').append('<style>#wordlift-disambiguation-popover .postbox:before,#wordlift-disambiguation-popover .postbox:after{top:' + top + 'px;}</style>');
 
@@ -29,6 +31,8 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     # this event is raised when an entity is selected from the entities popover.
     $scope.onEntityClicked = (entityIndex, entity) ->
       $scope.selectedEntity = entityIndex
+      $log.debug "Disanbiguated entity!"
+      $log.debug entity
       $scope.$emit 'DisambiguationWidget.entitySelected', entity
 
     # this event is fired when entities are found for a selected text annotation.

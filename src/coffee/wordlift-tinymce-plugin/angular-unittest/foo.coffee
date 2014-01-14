@@ -1,6 +1,7 @@
 describe "Test di prova", () ->    
 
 	beforeEach(module("wordlift.tinymce.plugin"))
+	beforeEach(module("wordlift.tinymce.plugin.config"))	
 	beforeEach(module("wordlift.tinymce.plugin.services"))
 	beforeEach(module("wordlift.tinymce.plugin.controllers"))
 
