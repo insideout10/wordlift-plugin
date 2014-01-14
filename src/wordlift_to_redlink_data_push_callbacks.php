@@ -264,7 +264,7 @@ function wordlift_push_data_triple_store($query) {
             'timeout'     => 45,
             'redirection' => 5,
             'httpversion' => '1.1',
-            'blocking'    => false, // switched to not blocking.
+            'blocking'    => true, // switched to not blocking.
             'headers'     => array(
                 'Content-type' => 'application/sparql-update; charset=utf-8',
             ),
