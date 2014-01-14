@@ -112,14 +112,16 @@ function wordlift_save_post_and_related_entities($post_id) {
     //  - remove existing references to entities.
     //  - set the new post information (including references).
     $query = wordlift_get_ns_prefixes() . <<<EOF
-            DELETE {
-                <{$post_uri}> dcterms:references ?o .
-                <{$post_uri}> schema:url         ?o .
-                <{$post_uri}> schema:datePublished  ?o .
-                <{$post_uri}> a                  ?o .
-                <{$post_uri}> rdfs:label         ?o .
-            }
-            WHERE { <$post_uri> ?p ?o };
+            DELETE { <{$post_uri}> dcterms:references ?o . }
+            WHERE  { <{$post_uri}> dcterms:references ?o . };
+            DELETE { <{$post_uri}> schema:url         ?o . }
+            WHERE  { <{$post_uri}> schema:url         ?o . };
+            DELETE { <{$post_uri}> schema:datePublished  ?o . }
+            WHERE  { <{$post_uri}> schema:datePublished  ?o . };
+            DELETE { <{$post_uri}> a                  ?o . }
+            WHERE  { <{$post_uri}> a                  ?o . };
+            DELETE { <{$post_uri}> rdfs:label         ?o . }
+            WHERE  { <{$post_uri}> rdfs:label         ?o . };
             INSERT DATA { $sparql }
 EOF;
 
@@ -357,15 +359,17 @@ function wordlift_save_entity_to_triple_store($id) {
     }
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
-    DELETE {
-        <$uri> rdfs:label ?o ;
-               owl:sameAs ?o ;
-               schema:description ?o ;
-               schema:url ?o ;
-               a ?o
-     }
-     WHERE { <$uri> ?p ?o };
-     INSERT DATA { $sparql }
+    DELETE { <$uri> rdfs:label ?o }
+    WHERE  { <$uri> rdfs:label ?o };
+    DELETE { <$uri> owl:sameAs ?o . }
+    WHERE  { <$uri> owl:sameAs ?o . };
+    DELETE { <$uri> schema:description ?o . }
+    WHERE  { <$uri> schema:description ?o . };
+    DELETE { <$uri> schema:url ?o . }
+    WHERE  { <$uri> schema:url ?o . };
+    DELETE { <$uri> a ?o . }
+    WHERE  { <$uri> a ?o . };
+    INSERT DATA { $sparql }
 EOF;
 
     wordlift_push_data_triple_store($query);
