@@ -16,7 +16,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
     foo = () ->
       console.log "foo"
     findAllAnnotations = () ->
-      $log.info "Going to find annotation\s ..."
+      $log.info "AnnotationService: finding annotations ..."
 
       textAnnotations = currentAnalysis['@graph'].filter (item) ->
         Configuration.entityLabels.textAnnotation in item['@type'] and item[Configuration.entityLabels.selectionPrefix]?
@@ -67,8 +67,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
         data: content
       .success (data, status, headers, config) ->
           # Set type
-          $log.debug "Http status: #{status} ..."
-          $log.debug "Received data from analysis service ..."
+          $log.debug "AnnotationService: receiving data from analysis service [ http-status-code :: #{status} ] ..."
           $log.debug data
           currentAnalysis = data
           findAllAnnotations()

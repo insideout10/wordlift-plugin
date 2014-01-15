@@ -21,7 +21,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
     # receive annotations from the analysis.
     $rootScope.$on 'AnnotationService.annotations', (event, annotations) ->
-      $log.debug "receive #{annotations.length} annotation(s)"
+      $log.debug "EditorService: receiving #{annotations.length} annotation(s)"
 
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
