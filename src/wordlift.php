@@ -188,6 +188,8 @@ require_once('wordlift_to_redlink_data_push_callbacks.php');
 
 require_once('wordlift_shortcode_related_posts.php');
 
+require_once('wordlift_indepth_articles.php');
+
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.

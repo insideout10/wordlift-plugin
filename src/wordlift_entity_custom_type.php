@@ -28,9 +28,10 @@ function wordlift_register_custom_type_entity() {
         'menu_position' => 20, // after the pages menu.
         'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
         'has_archive'   => true,
+        'taxonomies'    => array('category')
     );
 
-    register_post_type('entity', $args);
+    register_post_type( 'entity', $args );
 }
 
 /**
@@ -57,7 +58,7 @@ function wordlift_taxonomies_entity() {
         'hierarchical' => false
     );
 
-    register_taxonomy('entity_type', 'entity', $args );
+    register_taxonomy( 'entity_type', 'entity', $args );
 }
 
 /**
