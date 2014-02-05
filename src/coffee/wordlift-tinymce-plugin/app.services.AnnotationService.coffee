@@ -19,7 +19,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
       $log.info "AnnotationService: finding annotations ..."
 
       textAnnotations = currentAnalysis['@graph'].filter (item) ->
-        Configuration.entityLabels.textAnnotation in item['@type'] and item[Configuration.entityLabels.selectionPrefix]?
+        item['@type']? and Configuration.entityLabels.textAnnotation in item['@type'] and item[Configuration.entityLabels.selectionPrefix]?
       $rootScope.$broadcast 'AnnotationService.annotations', textAnnotations
 
     # Find all Entities for a certain text annotation identified by 'annotationId'
@@ -30,7 +30,7 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
       
       # filter the graph, find all entities related to the specified text annotation id.
       entityAnnotations = currentAnalysis['@graph'].filter (item) ->
-        Configuration.entityLabels.entityAnnotation in item['@type'] and item[Configuration.entityLabels.relation] is annotationId
+        item['@type']? and Configuration.entityLabels.entityAnnotation in item['@type'] and item[Configuration.entityLabels.relation] is annotationId
       # Enhance entity annotations ..
       $log.debug "Entity annotation/s before supported types filtering"
       $log.debug entityAnnotations
