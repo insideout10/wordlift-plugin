@@ -51,7 +51,11 @@ angular.module( 'AnalysisService', [] )
       createEntity = (item, language) ->
         id         = get('@id', item)
         types      = get('@type', item)
-        thumbnails = get('foaf:depiction', item) # add freebase .concat get('http://rdf.freebase.com/ns/common.topic.image', item)
+        thumbnails = get('foaf:depiction', item)
+        freebaseThumbnails = get('http://rdf.freebase.com/ns/common.topic.image', item)
+        freebaseThumbnails = if angular.isArray freebaseThumbnails then freebaseThumbnails else [ freebaseThumbnails ]
+        freebaseThumbnails = ("admin-ajax.php?action=wordlift_freebase_image&url=#{escape(thumbnail)}" for thumbnail in freebaseThumbnails)
+        thumbnails = thumbnails.concat freebaseThumbnails
 
         # create the entity model.
         entity = {
@@ -70,6 +74,7 @@ angular.module( 'AnalysisService', [] )
 
         # remove not found thumbnails.
         if thumbnails?
+          $log.debug thumbnails
           $q.all(($http.head thumbnail for thumbnail in thumbnails))
             .then (results) ->
               entity.thumbnails = (result.config.url for result in results when 200 is result.status)

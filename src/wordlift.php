@@ -190,6 +190,8 @@ require_once('wordlift_shortcode_related_posts.php');
 
 require_once('wordlift_indepth_articles.php');
 
+require_once('wordlift_freebase_image_proxy.php');
+
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
