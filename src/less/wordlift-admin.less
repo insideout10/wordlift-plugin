@@ -1,6 +1,99 @@
+@import '../bower_components/components-font-awesome/less/font-awesome.less';
+
+@person      : rgb(242,15,98);
+@place       : rgb(255,154,46);
+@thing       : rgb(249,248,30);
+@organization: rgb(143,210,42);
+@event       : rgb(100,41,148);
+@music       : rgb(25,24,24);
+
+.tile(@type, @icon, @hover-color) {
+  border-color: @type;
+  .type {
+    color: @type;
+    &:before { content: @icon; } }
+  &:hover {
+    div { color: @hover-color; }
+    background-color: @type;
+    .type { color: @hover-color; } }
+}
+
 // TinyMCE
 .wp_themeSkin span.mce_wordlift {
   background: data-uri('../images/wordlift-logo-20x20.png');
+}
+
+.entity {
+  width: 100%;
+  border: 1px solid gray;
+  height: 50px;
+  position: relative;
+  cursor: pointer;
+
+  .thumbnail {
+    width: 50px;
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-color: lightgray;
+  }
+
+  .label {
+    top: 0px;
+    position: absolute;
+    left: 50px;
+    margin-left: 4px;
+    font-weight: 600;
+  }
+
+  .confidence {
+    position: absolute;
+    left: 50px;
+    margin-left: 4px;
+    bottom: 0px;
+    font-size: 8px;
+  }
+
+  .type {
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 22px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 22px;
+    padding: 2px 6px;
+  }
+
+
+  &.place {
+    .tile(@place, @fa-var-map-marker, white); }
+
+  &.person {
+    .tile(@person, @fa-var-user, white); }
+
+  &.organization {
+    .tile(@organization, @fa-var-building-o, white); }
+
+  &.event {
+    .tile(@event, @fa-var-calendar, white); }
+
+  &.music {
+    .tile(@music, @fa-var-music, white); }
+
+  &.thing {
+    .tile(@thing, @fa-var-square-o, black); }
+
+  .source {
+    position: absolute;
+    bottom: 0px;
+    right: 40px;
+    font-size: 8px;
+  }
 }
 
 #wordlift-disambiguation-popover {

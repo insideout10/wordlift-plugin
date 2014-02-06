@@ -20,42 +20,47 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       elem.innerHTML = '<span itemprop="name">' + elem.innerHTML + '</span>'
 
     # receive annotations from the analysis.
-    $rootScope.$on 'AnnotationService.annotations', (event, annotations) ->
-      $log.debug "EditorService: receiving #{annotations.length} annotation(s)"
+    $rootScope.$on 'analysisReceived', (event, analysis) ->
+
+      # clean up the selection prefix/suffix text.
+      cleanUp = (text) ->
+        text
+          .replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n?')
+          .replace('-', '\\-').replace('\x20', '\\s').replace('\xa0', '&nbsp;')
 
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
-      for textAnnotation in annotations
+      for id, textAnnotation of analysis.textAnnotations
         # get the selection prefix and suffix for the regexp.
-        selPrefix = textAnnotation[Configuration.entityLabels.selectionPrefix]['@value'].substr(-1).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n?').replace('-', '\\-').replace('\x20', '\\s').replace('\xa0', '&nbsp;')
+        selPrefix = cleanUp(textAnnotation.selectionPrefix.substr(-1))
         selPrefix = '^|\\W' if '' is selPrefix
-        selSuffix = textAnnotation[Configuration.entityLabels.selectionSuffix]['@value'].substr(0, 1).replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)' ).replace('\n', '\\n?').replace('-', '\\-').replace('\x20', '\\s').replace('\xa0', '&nbsp;')
+        selSuffix = cleanUp(textAnnotation.selectionSuffix.substr(0, 1))
         selSuffix = '$|\\W' if '' is selSuffix
 
-        selText   = textAnnotation[Configuration.entityLabels.selectedText]['@value']
+        selText   = textAnnotation.selectedText
 
         # the new regular expression, may not match everything.
         # TODO: enhance the matching.
         r = new RegExp("(#{selPrefix}(?:<[^>]+>){0,})(#{selText})((?:<[^>]+>){0,}#{selSuffix})(?![^<]*\"[^<]*>)")
 
-        if not currentHtmlContent.match(r)?
-          $log.debug r
-          $log.debug currentHtmlContent
-
-        replace = "$1<span id=\"#{textAnnotation['@id']}\" class=\"textannotation\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
+#        if not currentHtmlContent.match(r)?
+#          $log.debug r
+#          $log.debug currentHtmlContent
+#
+        replace = "$1<span id=\"#{id}\" class=\"textannotation\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
         currentHtmlContent = currentHtmlContent.replace( r, replace )
 
-      isDirty = tinyMCE.get( "content").isDirty()
-      tinyMCE.get( "content").setContent( currentHtmlContent )
-      tinyMCE.get( "content").isNotDirty = 1 if not isDirty
+      isDirty = tinyMCE.get('content').isDirty()
+      tinyMCE.get('content').setContent( currentHtmlContent )
+      tinyMCE.get('content').isNotDirty = 1 if not isDirty
 
       # this event is raised when a textannotation is selected in the TinyMCE editor.
       tinyMCE.get('content').onClick.add (editor, e) ->
         # execute the following commands in the angular js context.
         $rootScope.$apply(
           # send a message about the currently clicked annotation.
-          $rootScope.$broadcast 'EditorService.annotationClick', e.target.id, e
+          $rootScope.$broadcast 'textAnnotationClicked', e.target.id, e
         )
 
     ping: (message)    -> $log.debug message

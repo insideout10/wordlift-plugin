@@ -15,11 +15,14 @@ $(
               <input type="text" class="form-control" id="search" placeholder="search or create">
             </div>
             <ul>
-              <li ng-repeat="entity in entities | orderBy:sortByConfidence:true" ng-class="{ 'active': $index == selectedEntity }">
-                <strong class="{{entity['wordlift:cssClasses']}}" ng-click="onEntityClicked($index, entity)" ng-bind="entity[getLabelFor('entityLabel')]['@value']"></strong><br />
-                <small><a ng-href="{{entity[getLabelFor('entityReference')]}}" target="blank">{{entity[getLabelFor('entityReference')]}}</a><small><br />
-                <small>[ Confidence Rate: <strong>{{entity[getLabelFor('confidence')]}}</strong> ]</small>
-
+              <li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true">
+                <div class="entity" ng-show="entityAnnotation.entity.label" ng-class="entityAnnotation.entity.type">
+                  <div class="thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"></div>
+                  <div class="confidence" ng-bind="entityAnnotation.confidence"></div>
+                  <div class="label" ng-bind="entityAnnotation.entity.label"></div>
+                  <div class="type"></div>
+                  <div class="source" ng-class="entityAnnotation.entity.source" ng-bind="entityAnnotation.entity.source"></div>
+                </div>
               </li>
             </ul>
           </form>

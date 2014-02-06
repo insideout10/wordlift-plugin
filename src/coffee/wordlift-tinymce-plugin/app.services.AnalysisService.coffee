@@ -1,5 +1,19 @@
+# The AnalysisService aim is to parse the Analysis response from an analysis process
+# and create a data structure that's is suitable for displaying in the UI.
+# The main method of the AnalysisService is parse. The parse method includes some
+# helpful functions.
+# The return is a structure like this:
+#  - language : the language code for the specified post.
+#  - languages: an array of languages (and related confidence) identified for the provided text.
+#  - entities : the list of entities for the post, each entity provides:
+#     - label      : the label in the post language.
+#     - description: the description in the post language.
+#     - type       : the known type for the entity
+#     - types      : a list of types as provided by the entity
+#     - thumbnails : URL to thumbnail images
+
 angular.module( 'AnalysisService', [] )
-  .service( 'AnalysisService', [ '$log', ($log) ->
+  .service( 'AnalysisService', [ '$http', '$q', '$log', ($http, $q, $log) ->
 
     parse: (data) ->
 
@@ -10,35 +24,90 @@ angular.module( 'AnalysisService', [] )
 
       # support functions:
 
+      # Get the known type given the specified types. Current supported types are:
+      #  * person
+      #  * organization
+      #  * place
+      getKnownType = (types) ->
+        return null if not types?
+        typesArray = if angular.isArray types then types else [ types ]
+        return 'person'       for type in typesArray when 'http://schema.org/Person' is expand(type)
+        return 'person'       for type in typesArray when 'http://rdf.freebase.com/ns/people.person' is expand(type)
+        return 'organization' for type in typesArray when 'http://schema.org/Organization' is expand(type)
+        return 'organization' for type in typesArray when 'http://rdf.freebase.com/ns/government.government' is expand(type)
+        return 'organization' for type in typesArray when 'http://schema.org/Newspaper' is expand(type)
+        return 'place'        for type in typesArray when 'http://schema.org/Place' is expand(type)
+        return 'place'        for type in typesArray when 'http://rdf.freebase.com/ns/location.location' is expand(type)
+        return 'event'        for type in typesArray when 'http://schema.org/Event' is expand(type)
+        return 'event'        for type in typesArray when 'http://dbpedia.org/ontology/Event' is expand(type)
+        return 'music'        for type in typesArray when 'http://rdf.freebase.com/ns/music.artist' is expand(type)
+        return 'music'        for type in typesArray when 'http://schema.org/MusicAlbum' is expand(type)
+        return 'place'        for type in typesArray when 'http://www.opengis.net/gml/_Feature' is expand(type)
+
+#        $log.debug "[ types :: #{typesArray} ]"
+        'thing'
+
+      # create an entity.
       createEntity = (item, language) ->
-        {
-          id          : get('@id', item),
-          types       : get('@type', item),
-          thumbnails  : get('foaf:depiction', item),
-          description : getLanguage('rdfs:comment', item, language),
-          descriptions: get('rdfs:comment', item),
-          label       : getLanguage('rdfs:label', item, language),
-          labels      : get('rdfs:label', item),
+        id         = get('@id', item)
+        types      = get('@type', item)
+        thumbnails = get('foaf:depiction', item) # add freebase .concat get('http://rdf.freebase.com/ns/common.topic.image', item)
+
+        # create the entity model.
+        entity = {
+          id          : id
+          thumbnail   : null
+          thumbnails  : thumbnails
+          type        : getKnownType(types)
+          types       : types
+          description : getLanguage('rdfs:comment', item, language)
+          descriptions: get('rdfs:comment', item)
+          label       : getLanguage('rdfs:label', item, language)
+          labels      : get('rdfs:label', item)
+          source      : if id.match('^http://rdf.freebase.com/.*$') then 'freebase' else 'dbpedia'
           _item       : item
         }
 
+        # remove not found thumbnails.
+        if thumbnails?
+          $q.all(($http.head thumbnail for thumbnail in thumbnails))
+            .then (results) ->
+              entity.thumbnails = (result.config.url for result in results when 200 is result.status)
+              entity.thumbnail  = entity.thumbnails[0] if 0 < entity.thumbnails.length
+
+
+        # return the entity.
+        entity
+
       createEntityAnnotation = (item) ->
-        {
+        # get the related text annotation.
+        textAnnotation = textAnnotations[get('dc:relation', item)]
+
+        entity = {
           id        : get('@id', item),
           label     : get('enhancer:entity-label', item),
           confidence: get('enhancer:confidence', item),
-          _item     : item,
-          entity    : entities[get('enhancer:entity-reference', item)]
+          entity    : entities[get('enhancer:entity-reference', item)],
+          relation  : textAnnotations[get('dc:relation', item)],
+          _item     : item
         }
+
+        # create a binding from the textannotation to the entity.
+        textAnnotation.entityAnnotations[entity.id] = entity if textAnnotation?
+
+        # return the entity.
+        entity
+
 
       createTextAnnotation = (item) ->
         {
-          id             : get('@id', item),
-          selectedText   : get('enhancer:selected-text', item)['@value'],
-          selectionPrefix: get('enhancer:selection-prefix', item)['@value'],
-          selectionSuffix: get('enhancer:selection-suffix', item)['@value'],
-          confidence     : get('enhancer:confidence', item),
-          _item          : item
+          id               : get('@id', item),
+          selectedText     : get('enhancer:selected-text', item)['@value'],
+          selectionPrefix  : get('enhancer:selection-prefix', item)['@value'],
+          selectionSuffix  : get('enhancer:selection-suffix', item)['@value'],
+          confidence       : get('enhancer:confidence', item),
+          entityAnnotations: {},
+          _item            : item
         }
 
       createLanguage = (item) ->
@@ -54,7 +123,7 @@ angular.module( 'AnalysisService', [] )
         whatExp = expand(what)
         # return the value bound to the specified key.
         return value for key, value of container when whatExp is expand(key)
-        null
+        []
 
       # get the value for specified property (what) in the provided container in the specified language.
       # items must conform to {'@language':..., '@value':...} format.
@@ -121,17 +190,17 @@ angular.module( 'AnalysisService', [] )
 
         # TextAnnotation
         else if containsOrEquals('enhancer:TextAnnotation', types)
-          $log.debug "TextAnnotation [ @id :: #{id} ][ types :: #{types} ]"
+#          $log.debug "TextAnnotation [ @id :: #{id} ][ types :: #{types} ]"
           textAnnotations[id] = item
 
         # EntityAnnotation
         else if containsOrEquals('enhancer:EntityAnnotation', types)
-          $log.debug "EntityAnnotation [ @id :: #{id} ][ types :: #{types} ]"
+#          $log.debug "EntityAnnotation [ @id :: #{id} ][ types :: #{types} ]"
           entityAnnotations[id] = item
 
         # Entity
         else
-          $log.debug "Entity [ @id :: #{id} ][ types :: #{types} ]"
+#          $log.debug "Entity [ @id :: #{id} ][ types :: #{types} ]"
           entities[id] = item
 
       # sort the languages by confidence.
@@ -146,15 +215,18 @@ angular.module( 'AnalysisService', [] )
       language = languages[0].code
 
       # create entities instances in the entities array.
-      entities[id] = createEntity(item, language) for id, item of entities
-
-      # create entities instances in the entities array.
-      entityAnnotations[id] = createEntityAnnotation(item) for id, item of entityAnnotations
+      for id, item of entities
+        entity       = createEntity(item, language)
+        entities[id] = entity
 
       # create entities instances in the entities array.
       textAnnotations[id] = createTextAnnotation(item) for id, item of textAnnotations
 
-      analysis = {
+      # create entities instances in the entities array.
+      entityAnnotations[id] = createEntityAnnotation(item) for id, item of entityAnnotations
+
+      # return the analysis result.
+      {
         language         : language,
         entities         : entities,
         entityAnnotations: entityAnnotations,
@@ -162,5 +234,4 @@ angular.module( 'AnalysisService', [] )
         languages        : languages
       }
 
-      $log.debug analysis
   ])

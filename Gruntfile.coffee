@@ -58,6 +58,16 @@ module.exports = (grunt) ->
         files:
           'src/css/wordlift-editor.min.css': ['src/less/wordlift-editor.less']
 
+    copy:
+      main:
+        expand: true
+        cwd: 'src/bower_components/components-font-awesome/fonts/'
+        src: '*'
+        dest: 'src/fonts/'
+        flatten: true
+        filter: 'isFile'
+
+
     watch:
       scripts:
         files: ['src/coffee/**/*.coffee']
@@ -75,6 +85,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-coffee')
   grunt.loadNpmTasks('grunt-contrib-less')
   grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-contrib-copy')
 
   # Default task(s).
-  grunt.registerTask('default', ['coffee', 'uglify', 'less'])
+  grunt.registerTask('default', ['coffee', 'uglify', 'less', 'copy'])
