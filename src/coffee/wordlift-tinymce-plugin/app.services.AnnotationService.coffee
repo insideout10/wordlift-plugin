@@ -1,5 +1,5 @@
 angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.tinymce.plugin.config'])
-  .service('AnnotationService', ['$log', '$rootScope', '$http', 'Configuration', ($log, $rootScope, $http, Configuration) ->
+  .service('AnnotationService', ['$log', '$rootScope', '$http', 'AnalysisService', 'Configuration', ($log, $rootScope, $http, AnalysisService, Configuration) ->
 
     currentAnalysis = {}
 
@@ -61,14 +61,15 @@ angular.module('wordlift.tinymce.plugin.services.AnnotationService', ['wordlift.
     analyze: (content) ->
       $http
         method: 'POST'
-        url: ajaxurl
+        url: '/wp-content/plugins/wordlift/tests/english.json' # ajaxurl
         params:
           action: 'wordlift_analyze'
         data: content
       .success (data, status, headers, config) ->
+
+          AnalysisService.parse data
+
           # Set type
-          $log.debug "AnnotationService: receiving data from analysis service [ http-status-code :: #{status} ] ..."
-          $log.debug data
           currentAnalysis = data
           findAllAnnotations()
           true
