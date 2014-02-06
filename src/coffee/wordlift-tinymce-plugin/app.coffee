@@ -17,7 +17,8 @@ $(
             <ul>
               <li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true">
                 <div class="entity" ng-show="entityAnnotation.entity.label" ng-class="entityAnnotation.entity.type">
-                  <div class="thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"></div>
+                  <div class="thumbnail" ng-show="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"></div>
+                  <div class="thumbnail empty" ng-hide="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}"></div>
                   <div class="confidence" ng-bind="entityAnnotation.confidence"></div>
                   <div class="label" ng-bind="entityAnnotation.entity.label"></div>
                   <div class="type"></div>
