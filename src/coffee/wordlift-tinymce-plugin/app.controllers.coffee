@@ -21,6 +21,9 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 
     # holds a reference to the selected text annotation.
     $scope.textAnnotation = null
+    # holds a reference to the selected text annotation span.
+    $scope.textAnnotationSpan = null
+
 
     $scope.annotations = []
     $scope.selectedEntity = undefined
@@ -47,12 +50,17 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $(window).scroll(scroll)
     $('#content_ifr').contents().scroll(scroll)
 
+    $scope.currentCssClass = (entityIndex, entityAnnotation) ->
+      currentItemId = $scope.textAnnotationSpan.attr("itemid")
+      return "#{entityAnnotation.entity.type} selected" if entityAnnotation.entity.id == currentItemId
+      return "#{entityAnnotation.entity.type} selected" if entityIndex == $scope.selectedEntity
+      return "#{entityAnnotation.entity.type}"
+
     # this event is raised when an entity is selected from the entities popover.
-    $scope.onEntityClicked = (entityIndex, entity) ->
+    $scope.onEntityClicked = (entityIndex, entityAnnotation) ->
       $scope.selectedEntity = entityIndex
-      $log.debug "Disanbiguated entity!"
-      $log.debug entity
-      $scope.$emit 'DisambiguationWidget.entitySelected', entity
+      $log.debug "Going to notify entity selection to EditorService ..."
+      $scope.$emit 'DisambiguationWidget.entitySelected', entityAnnotation
 
     # receive the analysis results and store them in the local scope.
     $scope.$on 'analysisReceived', (event, analysis) ->
@@ -60,9 +68,14 @@ angular.module('wordlift.tinymce.plugin.controllers', [
       $scope.analysis = analysis
 
     $scope.$on 'textAnnotationClicked', (event, id, sourceElement) ->
+      $log.debug "Clicked on annotation with ID #{id} ..."
+
+      # set or reset properly $scope.selectedEntity
       # get the text annotation with the provided id.
+      $scope.selectedEntity = undefined
+      $scope.textAnnotationSpan = angular.element(sourceElement.target)
+      
       $scope.textAnnotation = $scope.analysis.textAnnotations[id]
-      $log.debug $scope.textAnnotation
 
       # hide the popover if there are no entities.
       if 0 is $scope.textAnnotation.entityAnnotations.length

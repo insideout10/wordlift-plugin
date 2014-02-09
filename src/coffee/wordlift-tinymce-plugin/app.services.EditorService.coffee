@@ -2,22 +2,19 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
   .service('EditorService', ['AnnotationService', '$rootScope', '$log', 'Configuration', (AnnotationService, $rootScope, $log, Configuration) ->
 
     # this event is captured when an entity is selected in the disambiguation popover.
-    $rootScope.$on 'DisambiguationWidget.entitySelected', (event, entity) ->
-      cssClasses = "textannotation #{entity['wordlift:cssClasses']} disambiguated"
+    $rootScope.$on 'DisambiguationWidget.entitySelected', (event, obj) ->
+      cssClasses = "textannotation highlight #{obj.entity.type} disambiguated"
 
       # create a reference to the TinyMCE editor dom.
       dom  = tinyMCE.get("content").dom
       # the element id containing the attributes for the text annotation.
-      id   = entity[Configuration.entityLabels.relation]
+      id   = obj.relation.id
       elem = dom.get(id)
  
       dom.setAttrib(id, 'class', cssClasses);
       dom.setAttrib(id, 'itemscope', 'itemscope');
-      dom.setAttrib(id, 'itemtype',  entity['wordlift:supportedTypes'].join(' '));
-      dom.setAttrib(id, 'itemid', entity[Configuration.entityLabels.entityReference]);
-
-      # set the itemprop nested inside the itemscope/itemtype.
-      elem.innerHTML = '<span itemprop="name">' + elem.innerHTML + '</span>'
+      dom.setAttrib(id, 'itemtype',  obj.entity.type);
+      dom.setAttrib(id, 'itemid', obj.entity.id);
 
     # receive annotations from the analysis.
     $rootScope.$on 'analysisReceived', (event, analysis) ->
@@ -59,6 +56,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       tinyMCE.get('content').onClick.add (editor, e) ->
         # execute the following commands in the angular js context.
         $rootScope.$apply(
+          $log.debug "Going to notify click on annotation with id #{e.target.id}"
           # send a message about the currently clicked annotation.
           $rootScope.$broadcast 'textAnnotationClicked', e.target.id, e
         )
