@@ -1,6 +1,6 @@
 $ = jQuery
 
-angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers'])
+angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers','wordlift.tinymce.plugin.directives.EntityTab'])
 
 $(
   container = $('''
@@ -43,7 +43,7 @@ $(
   $('#wordlift-disambiguation-popover .handlediv').click (e) -> container.hide()
 
   injector = angular.bootstrap(container, ['wordlift.tinymce.plugin']);
-
+  
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
     # Add a button that opens a window
     editor.addButton 'wordlift',

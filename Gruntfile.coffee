@@ -12,7 +12,7 @@ module.exports = (grunt) ->
         files:
           'src/js/wordlift-tinymce-plugin.js': [
             'src/coffee/wordlift-tinymce-plugin/app.config.coffee',
-            'src/coffee/wordlift-tinymce-plugin/app.directives.Entity.coffee',
+            'src/coffee/wordlift-tinymce-plugin/app.directives.EntityTab.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.AnalysisService.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.AnnotationService.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.EditorService.coffee',
