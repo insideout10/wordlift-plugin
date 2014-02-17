@@ -1,5 +1,5 @@
-angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tinymce.plugin.config', 'wordlift.tinymce.plugin.services.AnnotationService'])
-  .service('EditorService', ['AnnotationService', '$rootScope', '$log', 'Configuration', (AnnotationService, $rootScope, $log, Configuration) ->
+angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tinymce.plugin.config', 'AnalysisService'])
+  .service('EditorService', ['AnalysisService', '$rootScope', '$log', 'Configuration', (AnalysisService, $rootScope, $log, Configuration) ->
 
     # this event is captured when an entity is selected in the disambiguation popover.
     $rootScope.$on 'DisambiguationWidget.entitySelected', (event, obj) ->
@@ -40,10 +40,6 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         # TODO: enhance the matching.
         r = new RegExp("(#{selPrefix}(?:<[^>]+>){0,})(#{selText})((?:<[^>]+>){0,}#{selSuffix})(?![^<]*\"[^<]*>)")
 
-#        if not currentHtmlContent.match(r)?
-#          $log.debug r
-#          $log.debug currentHtmlContent
-#
         replace = "$1<span id=\"#{id}\" class=\"textannotation\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
         currentHtmlContent = currentHtmlContent.replace( r, replace )
@@ -62,7 +58,10 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         )
 
     ping: (message)    -> $log.debug message
-    analyze: (content) -> AnnotationService.analyze content
+
+    # <a name="analyze"></a>
+    # Send the provided content for analysis using the [AnalysisService.analyze](app.services.AnalysisService.html#analyze) method.
+    analyze: (content) -> AnalysisService.analyze content
 
     # set some predefined variables.
     getEditor : -> tinyMCE.get('content')
@@ -84,4 +83,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
       #return the coordinates.
       {top: top, left: left}
+
+
+    #
 ])

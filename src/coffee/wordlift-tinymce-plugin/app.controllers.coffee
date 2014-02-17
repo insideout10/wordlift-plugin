@@ -14,7 +14,7 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 
       filtered
   )
-  .controller('HelloController', ['AnnotationService', 'EditorService', '$log', '$scope', 'Configuration', (AnnotationService, EditorService, $log, $scope, Configuration) ->
+  .controller('HelloController', ['EditorService', '$log', '$scope', 'Configuration', (EditorService, $log, $scope, Configuration) ->
 
     # holds a reference to the current analysis results.
     $scope.analysis       = null
@@ -99,23 +99,5 @@ angular.module('wordlift.tinymce.plugin.controllers', [
         setArrowTop(pos.top - 50)
         # show the popover.
         $('#wordlift-disambiguation-popover').show()
-
-#    # this event is fired when entities are found for a selected text annotation.
-#    $scope.$on 'AnnotationService.entityAnnotations', (event, entities, elem) ->
-#      $log.info "received #{entities.length} entity/ies"
-#      # set the entities in the local scope.
-#      $scope.entities = entities
-#
-#      if 0 is $scope.entities.length
-#        $('#wordlift-disambiguation-popover').hide()
-#      else
-#        # save a reference to the element.
-#        el = elem
-#        # get the position of the clicked element.
-#        pos = EditorService.getWinPos(elem)
-#        # set the popover arrow to the element position.
-#        setArrowTop(pos.top - 50)
-#        # show the popover.
-#        $('#wordlift-disambiguation-popover').show()
 
   ])

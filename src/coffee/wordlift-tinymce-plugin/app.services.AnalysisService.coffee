@@ -3,18 +3,36 @@
 # The main method of the AnalysisService is parse. The parse method includes some
 # helpful functions.
 # The return is a structure like this:
-#  - language : the language code for the specified post.
-#  - languages: an array of languages (and related confidence) identified for the provided text.
-#  - entities : the list of entities for the post, each entity provides:
-#     - label      : the label in the post language.
-#     - description: the description in the post language.
-#     - type       : the known type for the entity
-#     - types      : a list of types as provided by the entity
-#     - thumbnails : URL to thumbnail images
+#  * language : the language code for the specified post.
+#  * languages: an array of languages (and related confidence) identified for the provided text.
+#  * entities : the list of entities for the post, each entity provides:
+#     * label      : the label in the post language.
+#     * description: the description in the post language.
+#     * type       : the known type for the entity
+#     * types      : a list of types as provided by the entity
+#     * thumbnails : URL to thumbnail images
 
 angular.module( 'AnalysisService', [] )
-  .service( 'AnalysisService', [ '$http', '$q', '$log', ($http, $q, $log) ->
+  .service( 'AnalysisService', [ '$http', '$q', '$rootScope', '$log', ($http, $q, $rootScope, $log) ->
 
+    analyze: (content) ->
+      # Create a reference to the service for use in callbacks.
+      that = @
+      # Alternatively you can fix the URL to a local test json, e.g.:
+      #
+      #     '/wp-content/plugins/wordlift/tests/english.json'
+      $http.post(ajaxurl + '?action=wordlift_analyze',
+        params:
+          data: content
+      )
+      # If successful, broadcast an *analysisReceived* event.
+      .success (data, status, headers, config) ->
+        $rootScope.$broadcast 'analysisReceived', that.parse data
+      # In case of error, we don't do anything (for now).
+      .error  (data, status, headers, config) ->
+          # TODO: implement error handling.
+
+    # Parse the response data from the analysis request (Redlink).
     parse: (data) ->
 
       languages         = []

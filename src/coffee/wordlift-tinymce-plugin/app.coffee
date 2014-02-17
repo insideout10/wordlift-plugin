@@ -1,7 +1,10 @@
+# Set the well-known $ reference to jQuery.
 $ = jQuery
 
+# Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers', 'wordlift.tinymce.plugin.directives'])
 
+# Create the HTML fragment for the disambiguation popover that shows when a user clicks on a text annotation.
 $(
   container = $('''
     <div id="wordlift-disambiguation-popover" class="metabox-holder">
@@ -39,18 +42,22 @@ $(
     )
     .draggable()
 
-  # when the user clicks on the handle, hide the popover.
+  # When the user clicks on the handle, hide the popover.
   $('#wordlift-disambiguation-popover .handlediv').click (e) -> container.hide()
-  # declare ng-controller as main app controller
+
+  # Declare ng-controller as main app controller.
   $('body').attr 'ng-controller', 'HelloController'
-  # declare the whole document as bootstrap scope
+
+  # Declare the whole document as bootstrap scope.
   injector = angular.bootstrap(document, ['wordlift.tinymce.plugin']);
-  
+
+  # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
-    # Add a button that opens a window
+    # Add a button that opens a window.
     editor.addButton 'wordlift',
     text   : 'WordLift'
     icon   : false
+    # When the editor is clicked, the [EditorService.analyze](app.services.EditorService.html#analyze) method is invoked.
     onclick: ->
       injector.invoke(['EditorService', (EditorService) ->
         EditorService.analyze tinyMCE.activeEditor.getContent({format : 'text'})
