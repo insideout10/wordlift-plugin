@@ -65,11 +65,11 @@ $(
 
     # <a name="editor.onChange.add"></a>
     # Map the editor onChange event to the [EditorService.onChange](app.services.EditorService.html#onChange) method.
-    editor.onChange.add (ed, l) ->
-      # The [EditorService](app.services.EditorService.html) is invoked via the AngularJS injector.
-      injector.invoke(['EditorService', (EditorService) ->
-        EditorService.onChange ed, l
-      ])
+#    editor.onChange.add (ed, l) ->
+#      # The [EditorService](app.services.EditorService.html) is invoked via the AngularJS injector.
+#      injector.invoke(['EditorService', (EditorService) ->
+#        EditorService.onChange ed, l
+#      ])
 
 )
 

@@ -243,6 +243,7 @@ TODO: enhance the matching.</p>
 
       isDirty = tinyMCE.get(<span class="hljs-string">'content'</span>).isDirty()
       tinyMCE.get(<span class="hljs-string">'content'</span>).setContent( currentHtmlContent )
+      $(<span class="hljs-string">'#tinymce'</span>).
       tinyMCE.get(<span class="hljs-string">'content'</span>).isNotDirty = <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> isDirty</pre></div></div>
             
         </li>
@@ -390,24 +391,11 @@ Send the provided content for analysis using the <a href="app.services.AnalysisS
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p><a name="onChange"></a>
-Receive onChange events from the editor (this method is hooked in the <a href="app.html#editor.onChange.add">app</a> file.</p>
+Receive onChange events from the editor (this method is hooked in the <a href="app.html#editor.onChange.add">app</a> file.
+   onChange: (editor, l) -&gt;
+     $log.debug l</p>
+<h1 id="-analyze-tinymce-activeeditor-getcontent-format-text-">@analyze tinyMCE.activeEditor.getContent({format : ‘text’})</h1>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-attribute">onChange</span>: <span class="hljs-function"><span class="hljs-params">(editor, l)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <pre><code> $log.debug <span class="hljs-string">'Change detected, analyzing...'</span>
- <span class="hljs-property">@analyze</span> tinyMCE.activeEditor.getContent({format : <span class="hljs-string">'text'</span>})
-</code></pre>
             </div>
             
             <div class="content"><div class='highlight'><pre>

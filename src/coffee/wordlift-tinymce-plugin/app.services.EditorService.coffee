@@ -54,6 +54,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
       isDirty = tinyMCE.get('content').isDirty()
       tinyMCE.get('content').setContent( currentHtmlContent )
+      $('#tinymce').
       tinyMCE.get('content').isNotDirty = 1 if not isDirty
 
       # this event is raised when a textannotation is selected in the TinyMCE editor.
@@ -94,9 +95,9 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
     # <a name="onChange"></a>
     # Receive onChange events from the editor (this method is hooked in the [app](app.html#editor.onChange.add) file.
-    onChange: (editor, l) ->
-#      $log.debug 'Change detected, analyzing...'
-#      @analyze tinyMCE.activeEditor.getContent({format : 'text'})
+#    onChange: (editor, l) ->
+#      $log.debug l
+##      @analyze tinyMCE.activeEditor.getContent({format : 'text'})
 
   ])
 
