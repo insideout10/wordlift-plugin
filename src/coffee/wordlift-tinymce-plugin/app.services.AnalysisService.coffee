@@ -22,8 +22,7 @@ angular.module( 'AnalysisService', [] )
       #
       #     '/wp-content/plugins/wordlift/tests/english.json'
       $http.post(ajaxurl + '?action=wordlift_analyze',
-        params:
-          data: content
+        data: content
       )
       # If successful, broadcast an *analysisReceived* event.
       .success (data, status, headers, config) ->
@@ -90,12 +89,14 @@ angular.module( 'AnalysisService', [] )
           _item       : item
         }
 
-        # remove not found thumbnails.
-        if thumbnails?
-          $log.debug thumbnails
+        # Check if thumbnails exists.
+        if thumbnails? and angular.isArray thumbnails
           $q.all(($http.head thumbnail for thumbnail in thumbnails))
             .then (results) ->
+              # Populate the thumbnails array only with existing images (those that return *status code* 200).
               entity.thumbnails = (result.config.url for result in results when 200 is result.status)
+              # Set the main thumbnail as the first.
+              # TODO: use the lightest image as first.
               entity.thumbnail  = entity.thumbnails[0] if 0 < entity.thumbnails.length
 
 
@@ -189,8 +190,8 @@ angular.module( 'AnalysisService', [] )
         prepend + path
 
       # data is split in a context and a graph.
-      context  = data['@context']
-      graph    = data['@graph']
+      context  = if data['@context']? then data['@context'] else {}
+      graph    = if data['@graph']? then data['@graph'] else {}
 
       # get the prefixes.
       prefixes = []

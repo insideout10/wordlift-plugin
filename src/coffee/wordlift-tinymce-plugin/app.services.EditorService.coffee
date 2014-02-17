@@ -19,13 +19,21 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
     # receive annotations from the analysis.
     $rootScope.$on 'analysisReceived', (event, analysis) ->
 
-      # clean up the selection prefix/suffix text.
+      # Clean up the selection prefix/suffix text.
       cleanUp = (text) ->
         text
           .replace('\\', '\\\\').replace( '\(', '\\(' ).replace( '\)', '\\)').replace('\n', '\\n?')
           .replace('-', '\\-').replace('\x20', '\\s').replace('\xa0', '&nbsp;')
 
+
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
+
+      $log.debug "before: #{currentHtmlContent}"
+      # Remove the existing text annotation spans.
+      spanre = /<span class="textannotation"[^>]*>([^<]*)<\/span>/gi
+      while spanre.test currentHtmlContent
+        currentHtmlContent = currentHtmlContent.replace spanre, '$1'
+      $log.debug "after: #{currentHtmlContent}"
 
       for id, textAnnotation of analysis.textAnnotations
         # get the selection prefix and suffix for the regexp.
@@ -40,7 +48,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         # TODO: enhance the matching.
         r = new RegExp("(#{selPrefix}(?:<[^>]+>){0,})(#{selText})((?:<[^>]+>){0,}#{selSuffix})(?![^<]*\"[^<]*>)")
 
-        replace = "$1<span id=\"#{id}\" class=\"textannotation\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
+        replace = "$1<span class=\"textannotation\" id=\"#{id}\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3"
 
         currentHtmlContent = currentHtmlContent.replace( r, replace )
 
@@ -81,9 +89,14 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       left = $('#content_ifr').offset().left - $('body').scrollLeft() +
              el.offsetLeft - $(ed.getBody()).scrollLeft()
 
-      #return the coordinates.
+      # Return the coordinates.
       {top: top, left: left}
 
+    # <a name="onChange"></a>
+    # Receive onChange events from the editor (this method is hooked in the [app](app.html#editor.onChange.add) file.
+    onChange: (editor, l) ->
+#      $log.debug 'Change detected, analyzing...'
+#      @analyze tinyMCE.activeEditor.getContent({format : 'text'})
 
-    #
-])
+  ])
+

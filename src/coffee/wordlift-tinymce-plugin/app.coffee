@@ -53,16 +53,23 @@ $(
 
   # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
-    # Add a button that opens a window.
+    # Add a WordLift button the TinyMCE editor.
     editor.addButton 'wordlift',
-    text   : 'WordLift'
-    icon   : false
-    # When the editor is clicked, the [EditorService.analyze](app.services.EditorService.html#analyze) method is invoked.
-    onclick: ->
-      injector.invoke(['EditorService', (EditorService) ->
-        EditorService.analyze tinyMCE.activeEditor.getContent({format : 'text'})
-      ])
+      text   : 'WordLift'
+      icon   : false
+      # When the editor is clicked, the [EditorService.analyze](app.services.EditorService.html#analyze) method is invoked.
+      onclick: ->
+        injector.invoke(['EditorService', (EditorService) ->
+          EditorService.analyze tinyMCE.activeEditor.getContent({format : 'text'})
+        ])
 
+    # <a name="editor.onChange.add"></a>
+    # Map the editor onChange event to the [EditorService.onChange](app.services.EditorService.html#onChange) method.
+    editor.onChange.add (ed, l) ->
+      # The [EditorService](app.services.EditorService.html) is invoked via the AngularJS injector.
+      injector.invoke(['EditorService', (EditorService) ->
+        EditorService.onChange ed, l
+      ])
 
 )
 
