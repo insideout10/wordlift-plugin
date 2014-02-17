@@ -17,16 +17,40 @@ function wordlift_save_post_and_related_entities($post_id) {
     // get the current post.
     $post = get_post($post_id); 
 
+    // save the author and get the author URI.
+    $author_uri = wordlift_save_author( $post->post_author );
+
     // set the post URI in the triple store.
     $post_uri   = "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
     $date_published = get_the_time('c', $post);
+    $date_modified  = get_post_modified_time( 'c', true, $post );
+    $user_comments_count = $post->comment_count;
 
     // create the SPARQL query.
     $sparql  = "<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "' . \n";
-    $sparql .= "<$post_uri> a          <http://schema.org/BlogPosting> . \n";
+    $sparql .= "<$post_uri> a <http://schema.org/BlogPosting> . \n";
     $sparql .= "<$post_uri> schema:url <" . wordlift_esc_sparql(get_permalink($post->ID)) . "> . \n";
     $sparql .= "<$post_uri> schema:datePublished '" . wordlift_esc_sparql($date_published) . "' . \n";
-    
+    $sparql .= "<$post_uri> schema:dateModified '" . wordlift_esc_sparql($date_modified) . "' . \n";
+    $sparql .= "<$post_uri> schema:author <$author_uri> . \n";
+    $sparql .= "<$post_uri> schema:interactionCount 'UserComments:$user_comments_count' . \n";
+
+    // get all the images attached to the post.
+    $images = get_children( array (
+        'post_parent'    => $post_id,
+        'post_type'      => 'attachment',
+        'post_mime_type' => 'image'
+    ));
+
+    // if images are found, add them to the triple store.
+    if ( ! empty($images) ) {
+        foreach ( $images as $attachment_id => $attachment ) {
+            $image_attrs = wp_get_attachment_image_src( $attachment_id, 'full' );
+
+            $sparql .= "<$post_uri> schema:image <$image_attrs[0]> . \n";
+        }
+    }
+
     // Retrieve the post content and try to parse it
     $source = ($post->post_content) ? $post->post_content : '';
     $doc    = new DOMDocument();
@@ -114,19 +138,88 @@ function wordlift_save_post_and_related_entities($post_id) {
     $query = wordlift_get_ns_prefixes() . <<<EOF
             DELETE { <{$post_uri}> dcterms:references ?o . }
             WHERE  { <{$post_uri}> dcterms:references ?o . };
-            DELETE { <{$post_uri}> schema:url         ?o . }
-            WHERE  { <{$post_uri}> schema:url         ?o . };
-            DELETE { <{$post_uri}> schema:datePublished  ?o . }
-            WHERE  { <{$post_uri}> schema:datePublished  ?o . };
-            DELETE { <{$post_uri}> a                  ?o . }
-            WHERE  { <{$post_uri}> a                  ?o . };
-            DELETE { <{$post_uri}> rdfs:label         ?o . }
-            WHERE  { <{$post_uri}> rdfs:label         ?o . };
+            DELETE { <{$post_uri}> schema:url ?o . }
+            WHERE  { <{$post_uri}> schema:url ?o . };
+            DELETE { <{$post_uri}> schema:datePublished ?o . }
+            WHERE  { <{$post_uri}> schema:datePublished ?o . };
+            DELETE { <{$post_uri}> schema:dateModified ?o . }
+            WHERE  { <{$post_uri}> schema:dateModified ?o . };
+            DELETE { <{$post_uri}> a ?o . }
+            WHERE  { <{$post_uri}> a ?o . };
+            DELETE { <{$post_uri}> rdfs:label ?o . }
+            WHERE  { <{$post_uri}> rdfs:label ?o . };
+            DELETE { <{$post_uri}> schema:image ?o . }
+            WHERE  { <{$post_uri}> schema:image ?o . };
+            DELETE { <{$post_uri}> schema:interactionCount ?o . }
+            WHERE  { <{$post_uri}> schema:interactionCount ?o . };
             INSERT DATA { $sparql }
 EOF;
 
     // execute the query.
     wordlift_push_data_triple_store($query);
+}
+
+/**
+ * Save the specified author to the triple store.
+ * @param $author_id
+ * @return The author URI.
+ */
+function wordlift_save_author( $author_id ) {
+
+    // read the user id and dataset name from the options.
+    $user_id    = wordlift_configuration_user_id();
+    $dataset_id = wordlift_configuration_dataset_id();
+    $author_uri = "http://data.redlink.io/$user_id/$dataset_id/author/$author_id";
+
+    $name        = wordlift_esc_sparql( get_the_author_meta( 'display_name', $author_id ) );
+    $email       = wordlift_esc_sparql( get_the_author_meta( 'email', $author_id ) );
+    $given_name  = wordlift_esc_sparql( get_the_author_meta( 'first_name', $author_id ) );
+    $family_name = wordlift_esc_sparql( get_the_author_meta( 'last_name', $author_id ) );
+    $description = wordlift_esc_sparql( get_the_author_meta( 'description', $author_id ) );
+    $url         = wordlift_esc_sparql( get_author_posts_url( 'user_url' ) );
+
+    $sparql = "<$author_uri> a <http://schema.org/Person> . ";
+    if ( !empty( $name ) ) {
+        $sparql .= "<$author_uri> schema:name '$name' . ";
+    }
+    if ( !empty( $given_name ) ) {
+        $sparql .= "<$author_uri> schema:givenName '$given_name' . ";
+    }
+    if ( !empty( $family_name ) ) {
+        $sparql .= "<$author_uri> schema:familyName '$family_name' . ";
+    }
+    if ( !empty( $email ) ) {
+        $sparql .= "<$author_uri> schema:email '$email' . ";
+    }
+    if ( !empty( $description ) ) {
+        $sparql .= "<$author_uri> schema:description '$description' . ";
+    }
+    if ( !empty( $url ) ) {
+        $sparql .= "<$author_uri> schema:url <$url> . ";
+    }
+
+    $query = wordlift_get_ns_prefixes() . <<<EOF
+            DELETE { <$author_uri> a ?o . }
+            WHERE  { <$author_uri> a ?o . };
+            DELETE { <$author_uri> schema:name ?o . }
+            WHERE  { <$author_uri> schema:name ?o . };
+            DELETE { <$author_uri> schema:givenName  ?o . }
+            WHERE  { <$author_uri> schema:givenName  ?o . };
+            DELETE { <$author_uri> schema:familyName ?o . }
+            WHERE  { <$author_uri> schema:familyName ?o . };
+            DELETE { <$author_uri> schema:email ?o . }
+            WHERE  { <$author_uri> schema:email ?o . };
+            DELETE { <$author_uri> schema:description ?o . }
+            WHERE  { <$author_uri> schema:description ?o . };
+            DELETE { <$author_uri> schema:url ?o . }
+            WHERE  { <$author_uri> schema:url ?o . };
+            INSERT DATA { $sparql }
+EOF;
+
+    // execute the query.
+    wordlift_push_data_triple_store($query);
+
+    return $author_uri;
 }
 
 /**

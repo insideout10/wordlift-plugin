@@ -61,9 +61,11 @@ function wordlift_configuration_check() {
  */
 function wordlift_configuration_admin_notices() {
 
+    // get the settings URL.
+    $settings_url = get_admin_url(null, 'options-general.php?page=wordlift');
 ?>
     <div class="error">
-            <p><?php _e('application-key-not-set', 'wordlift'); ?></p>
+            <p><?php printf( __('application-key-not-set', 'wordlift'), $settings_url ); ?></p>
     </div>
 
 <?php
@@ -173,8 +175,21 @@ function wordlift_settings_page() {
 
 }
 
-// call hooks.
-add_action('admin_init', 'wordlift_configuration_register_settings');
-add_action('admin_init', 'wordlift_configuration_check');
-add_action('admin_menu', 'wordlift_admin_add_page');
+/**
+ * Create a link to WordLift settings page.
+ * @param $links
+ * @return mixed
+ */
+function wordlift_plugin_settings_link( $links ) {
+    $links[] = '<a href="'. get_admin_url(null, 'options-general.php?page=wordlift') .'">Settings</a>';
+    return $links;
+}
 
+
+// call hooks.
+add_action( 'admin_init', 'wordlift_configuration_register_settings' );
+add_action( 'admin_init', 'wordlift_configuration_check' );
+add_action( 'admin_menu', 'wordlift_admin_add_page' );
+
+// add the settings link for the plugin.
+add_filter( "plugin_action_links_wordlift/wordlift.php", 'wordlift_plugin_settings_link' );

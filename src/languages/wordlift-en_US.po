@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-01-06 15:11+0200\n"
-"PO-Revision-Date: 2014-01-06 15:11+0200\n"
+"POT-Creation-Date: 2014-02-17 11:55+0200\n"
+"PO-Revision-Date: 2014-02-17 13:45+0200\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.3\n"
+"X-Generator: Poedit 1.6.4\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
@@ -27,27 +27,45 @@ msgstr "Entities"
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
-#: ../wordlift_configuration.php:66
-msgid "application-key-not-set"
-msgstr "WordLift application key is not set."
+#: ../wordlift_admin_meta_box_entities.php:9
+msgid "Related Entities"
+msgstr ""
 
-#: ../wordlift_configuration.php:87
+#: ../wordlift_admin_meta_box_entities.php:28
+msgid "No related entities"
+msgstr ""
+
+#: ../wordlift_admin_meta_box_related_posts.php:8
+msgid "Related Posts"
+msgstr ""
+
+#: ../wordlift_admin_meta_box_related_posts.php:27
+msgid "No related posts"
+msgstr ""
+
+#: ../wordlift_configuration.php:68
+msgid "application-key-not-set"
+msgstr ""
+"WordLift application key is not set. Go to the <a href=\"%1$s\">settings "
+"page</a>."
+
+#: ../wordlift_configuration.php:89
 msgid "main-settings-title"
 msgstr "Main Settings"
 
-#: ../wordlift_configuration.php:94
+#: ../wordlift_configuration.php:96
 msgid "application-key"
 msgstr "Application Key"
 
-#: ../wordlift_configuration.php:96
+#: ../wordlift_configuration.php:98
 msgid "user-id"
 msgstr "User id"
 
-#: ../wordlift_configuration.php:98
+#: ../wordlift_configuration.php:100
 msgid "dataset-name"
 msgstr "Dataset name"
 
-#: ../wordlift_configuration.php:106
+#: ../wordlift_configuration.php:108
 msgid "main-settings-description"
 msgstr "Configure here the main settings:"
 
@@ -98,59 +116,69 @@ msgstr ""
 msgid "No entities found in the Trash"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:46
+#: ../wordlift_entity_custom_type.php:43
 msgctxt "taxonomy general name"
 msgid "Entity Types"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:47
+#: ../wordlift_entity_custom_type.php:44
 msgctxt "taxonomy singular name"
 msgid "Entity Type"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:48
+#: ../wordlift_entity_custom_type.php:45
 msgid "Search Entity Types"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:49
+#: ../wordlift_entity_custom_type.php:46
 msgid "All Entity Types"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:50
+#: ../wordlift_entity_custom_type.php:47
 msgid "Parent Entity Type"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:51
+#: ../wordlift_entity_custom_type.php:48
 msgid "Parent Entity Type:"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:52
+#: ../wordlift_entity_custom_type.php:49
 msgid "Edit Entity Type"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:53
+#: ../wordlift_entity_custom_type.php:50
 msgid "Update Entity Type"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:54
+#: ../wordlift_entity_custom_type.php:51
 msgid "Add New Entity Type"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:55
+#: ../wordlift_entity_custom_type.php:52
 msgid "New Entity Type"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:56
+#: ../wordlift_entity_custom_type.php:53
 msgid "Entity Types"
 msgstr ""
 
-#: ../wordlift_entity_custom_type.php:73
+#: ../wordlift_entity_custom_type.php:70
 msgid "Entity URL"
 msgstr "Entity URL"
 
-#: ../wordlift_entity_custom_type.php:90
+#: ../wordlift_entity_custom_type.php:87
 msgid "entity-url-label"
 msgstr "The entity URL:"
+
+#: ../wordlift_entity_custom_type.php:92
+#, fuzzy
+msgid "entity-same-as-label"
+msgstr "The entity URL:"
+
+#: ../wordlift_shortcode_related_posts.php:19
+#, php-format
+msgid "Visit %s&#8217;s website"
+msgstr ""
 
 #~ msgid "WordLift Settings"
 #~ msgstr "WordLift Settings"

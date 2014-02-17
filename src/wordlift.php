@@ -124,9 +124,10 @@ function wordlift_ajax_analyze_action()
 
         global $wpdb; // this is how you get access to the database
 
-        $api_key = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
+        // remove configuration keys from here.
+        $api_key            = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
         $api_analysis_chain = 'wordlift';
-        $api_url = "https://api.redlink.io/1.0-ALPHA/analysis/$api_analysis_chain/enhance?key=$api_key";
+        $api_url            = "https://api.redlink.io/1.0-ALPHA/analysis/$api_analysis_chain/enhance?key=$api_key";
 
         $response = wp_remote_post($api_url, array(
                 'method' => 'POST',
@@ -167,6 +168,7 @@ function wordlift_admin_enqueue_scripts() {
     wp_localize_script('angularjs', 'thePost', get_post($post->id, ARRAY_A));
 }
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
+
 
 // add editor related methods.
 require_once('wordlift_editor.php');
