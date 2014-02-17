@@ -103,7 +103,7 @@ function wordlift_save_post_and_related_entities($post_id) {
     // for each entity, remove the reference to the post.
     if ( is_array( $existing_related_entities_ids ) ) {
         foreach ( $existing_related_entities_ids as $id ) {
-            //            echo( "[ id :: $id ]\n" );
+
             $related_posts_ids = get_post_meta( $id, 'wordlift_related_posts', true );
             $related_posts_ids = array_diff( $related_posts_ids, array( $post_id ) );
             delete_post_meta( $id, 'wordlift_related_posts' );
@@ -236,7 +236,7 @@ function wordlift_save_entity_post($uri, $label, $type) {
     // get the entity posts.
     $entity_posts = wordlift_get_entity_posts_by_uri($uri);
 
-    if (0 < count($entity_posts)) {
+    if ( 0 < count( $entity_posts ) ) {
         write_log("wordlift_add_or_update_related_entity_post: found " . count($entity_posts) . " entity/ies");
         // if there are entities, return the local URI of the first one.
         // TODO: handle more entities.
@@ -410,19 +410,25 @@ function wordlift_save_post($post_id) {
     do_action('wordlift_save_post', $post_id);
 }
 
-function wordlift_save_entity_to_triple_store($id) {
+/**
+ * Save the entity represented by the specified post_id to the Redlink triple-store.
+ * @param $post_id The entity post ID.
+ */
+function wordlift_save_entity_to_triple_store( $post_id ) {
 
-    write_log("wordlift_save_entity_to_triple_store( $id )");
+    write_log("wordlift_save_entity_to_triple_store( $post_id )");
 
-    $post    = get_post($id);
+    // get the post.
+    $post    = get_post( $post_id );
 
+    // get the title and content as label and description.
     $label   = $post->post_title;
     $descr   = $post->post_content;
 
     // get the entity URI.
-    $uri     = get_post_meta($id, 'entity_url', true);
+    $uri     = get_post_meta( $post_id, 'entity_url', true );
     // TODO: raise an error if the URI is not set.
-    if (empty($uri)) {
+    if ( empty( $uri ) ) {
         write_log('The entity URI is missing.');
         return;
     }
@@ -431,9 +437,9 @@ function wordlift_save_entity_to_triple_store($id) {
     $sparql  = '';
 
     // set the same as.
-    $same_as = get_post_meta($id, 'entity_same_as', true);
-    foreach (explode("\r\n", $same_as) as $s) {
-        if (!empty($s)) {
+    $same_as = get_post_meta( $post_id, 'entity_same_as', true );
+    foreach ( explode( "\r\n", $same_as ) as $s ) {
+        if ( !empty($s) ) {
             $sparql  .= "<$uri> owl:sameAs <$s> . \n";
         }
     }
@@ -441,7 +447,7 @@ function wordlift_save_entity_to_triple_store($id) {
     // set the label
     $sparql  .= "<$uri> rdfs:label '" . wordlift_esc_sparql($label) . "' . \n";
     // set the URL
-    $sparql  .= "<$uri> schema:url <" . get_permalink($id) . "> . \n";
+    $sparql  .= "<$uri> schema:url <" . get_permalink( $post_id ) . "> . \n";
 
     // set the description.
     if (!empty($descr)) {
@@ -452,6 +458,15 @@ function wordlift_save_entity_to_triple_store($id) {
     // Support type are only schema.org ones: it could by null
     foreach ($types as $type) {
         $sparql .= "<$uri> a <http://schema.org/$type->name> . \n";
+    }
+
+    // get related entities.
+    $related_entities_ids = get_post_meta( $post_id, 'wordlift_related_entities', true );
+    foreach ( $related_entities_ids as $entity_id ) {
+        $entity_uri = wordlift_esc_sparql( get_post_meta( $entity_id, 'entity_url', true ) );
+        // create a two-way relationship.
+        $sparql .= " <$uri> dct:relation <$entity_uri> . ";
+        $sparql .= " <$entity_uri> dct:relation <$uri> . ";
     }
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
@@ -482,6 +497,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX schema: <http://schema.org/>
+PREFIX dct: <http://purl.org/dc/terms/>
 
 EOF;
 
