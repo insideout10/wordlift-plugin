@@ -1,10 +1,10 @@
 $ = jQuery
 
-angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers','wordlift.tinymce.plugin.directives.EntityTab'])
+angular.module('wordlift.tinymce.plugin', ['wordlift.tinymce.plugin.controllers', 'wordlift.tinymce.plugin.directives'])
 
 $(
   container = $('''
-    <div id="wordlift-disambiguation-popover" class="metabox-holder" ng-controller="HelloController">
+    <div id="wordlift-disambiguation-popover" class="metabox-holder">
 
       <div class="postbox">
         <div class="handlediv" title="Click to toggle"><br></div>
@@ -41,8 +41,10 @@ $(
 
   # when the user clicks on the handle, hide the popover.
   $('#wordlift-disambiguation-popover .handlediv').click (e) -> container.hide()
-
-  injector = angular.bootstrap(container, ['wordlift.tinymce.plugin']);
+  # declare ng-controller as main app controller
+  $('body').attr 'ng-controller', 'HelloController'
+  # declare the whole document as bootstrap scope
+  injector = angular.bootstrap(document, ['wordlift.tinymce.plugin']);
   
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
     # Add a button that opens a window

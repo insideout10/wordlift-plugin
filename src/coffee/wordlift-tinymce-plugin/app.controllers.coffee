@@ -28,6 +28,15 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $scope.annotations = []
     $scope.selectedEntity = undefined
     
+    $scope.selectedEntitiesMapping = {}
+
+
+    $scope.getSelectedEntities = () ->
+      entities = []
+      for key, value of $scope.selectedEntitiesMapping
+        entities.push value
+      entities
+
     $scope.sortByConfidence = (entity) ->
     	entity[Configuration.entityLabels.confidence]
 
@@ -60,6 +69,8 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $scope.onEntityClicked = (entityIndex, entityAnnotation) ->
       $scope.selectedEntity = entityIndex
       $log.debug "Going to notify entity selection to EditorService ..."
+      $scope.selectedEntitiesMapping[entityAnnotation.relation.id] = entityAnnotation.entity
+      $log.debug $scope.selectedEntitiesMapping
       $scope.$emit 'DisambiguationWidget.entitySelected', entityAnnotation
 
     # receive the analysis results and store them in the local scope.
