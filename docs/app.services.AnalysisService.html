@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>app.services.AnalysisService.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="foo.html">
+                foo.coffee
+              </a>
+            
+              
+              <a class="source" href="test.config.html">
+                test.config.coffee
+              </a>
+            
+              
+              <a class="source" href="app.html">
+                app.coffee
+              </a>
+            
+              
+              <a class="source" href="app.config.html">
+                app.config.coffee
+              </a>
+            
+              
+              <a class="source" href="app.controllers.html">
+                app.controllers.coffee
+              </a>
+            
+              
+              <a class="source" href="app.directives.html">
+                app.directives.coffee
+              </a>
+            
+              
+              <a class="source" href="app.services.AnalysisService.html">
+                app.services.AnalysisService.coffee
+              </a>
+            
+              
+              <a class="source" href="app.services.EditorService.html">
+                app.services.EditorService.coffee
+              </a>
+            
+              
+              <a class="source" href="app.services.html">
+                app.services.coffee
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>app.services.AnalysisService.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>The AnalysisService aim is to parse the Analysis response from an analysis process
+and create a data structure that’s is suitable for displaying in the UI.
+The main method of the AnalysisService is parse. The parse method includes some
+helpful functions.
+The return is a structure like this:</p>
+<ul>
+<li>language : the language code for the specified post.</li>
+<li>languages: an array of languages (and related confidence) identified for the provided text.</li>
+<li>entities : the list of entities for the post, each entity provides:<ul>
+<li>label      : the label in the post language.</li>
+<li>description: the description in the post language.</li>
+<li>type       : the known type for the entity</li>
+<li>types      : a list of types as provided by the entity</li>
+<li>thumbnails : URL to thumbnail images</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+angular.<span class="hljs-built_in">module</span>( <span class="hljs-string">'AnalysisService'</span>, [] )
+  .service<span class="hljs-function"><span class="hljs-params">( <span class="hljs-string">'AnalysisService'</span>, [ <span class="hljs-string">'$http'</span>, <span class="hljs-string">'$q'</span>, <span class="hljs-string">'$rootScope'</span>, <span class="hljs-string">'$log'</span>, ($http, $q, $rootScope, $log) -&gt;
+
+    analyze: (content) -&gt;
+</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Create a reference to the service for use in callbacks.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      that = @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Alternatively you can fix the URL to a local test json, e.g.:</p>
+<pre><code><span class="hljs-string">'/wp-content/plugins/wordlift/tests/english.json'</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $http.post(ajaxurl + <span class="hljs-string">'?action=wordlift_analyze'</span>,
+        <span class="hljs-attribute">params</span>:
+          <span class="hljs-attribute">data</span>: content
+      )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>If successful, broadcast an <em>analysisReceived</em> event.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      .success <span class="hljs-function"><span class="hljs-params">(data, status, headers, config)</span> -&gt;</span>
+        $rootScope.$broadcast <span class="hljs-string">'analysisReceived'</span>, that.parse data</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>In case of error, we don’t do anything (for now).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      .error  <span class="hljs-function"><span class="hljs-params">(data, status, headers, config)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>TODO: implement error handling.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Parse the response data from the analysis request (Redlink).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-attribute">parse</span>: <span class="hljs-function"><span class="hljs-params">(data)</span> -&gt;</span>
+
+      languages         = []
+      textAnnotations   = {}
+      entityAnnotations = {}
+      entities          = {}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>support functions:</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Get the known type given the specified types. Current supported types are:</p>
+<ul>
+<li>person</li>
+<li>organization</li>
+<li>place</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-function"><span class="hljs-title">getKnownType</span> = <span class="hljs-params">(types)</span> -&gt;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> types?
+        typesArray = <span class="hljs-keyword">if</span> angular.isArray types <span class="hljs-keyword">then</span> types <span class="hljs-keyword">else</span> [ types ]
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'person'</span>       <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://schema.org/Person'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'person'</span>       <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://rdf.freebase.com/ns/people.person'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'organization'</span> <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://schema.org/Organization'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'organization'</span> <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://rdf.freebase.com/ns/government.government'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'organization'</span> <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://schema.org/Newspaper'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'place'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://schema.org/Place'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'place'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://rdf.freebase.com/ns/location.location'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'event'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://schema.org/Event'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'event'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://dbpedia.org/ontology/Event'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'music'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://rdf.freebase.com/ns/music.artist'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'music'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://schema.org/MusicAlbum'</span> <span class="hljs-keyword">is</span> expand(type)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">'place'</span>        <span class="hljs-keyword">for</span> type <span class="hljs-keyword">in</span> typesArray <span class="hljs-keyword">when</span> <span class="hljs-string">'http://www.opengis.net/gml/_Feature'</span> <span class="hljs-keyword">is</span> expand(type)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <pre><code>   $log.debug <span class="hljs-string">"[ types :: <span class="hljs-subst">#{typesArray}</span> ]"</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-string">'thing'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>create an entity.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-function"><span class="hljs-title">createEntity</span> = <span class="hljs-params">(item, language)</span> -&gt;</span>
+        id         = get(<span class="hljs-string">'@id'</span>, item)
+        types      = get(<span class="hljs-string">'@type'</span>, item)
+        thumbnails = get(<span class="hljs-string">'foaf:depiction'</span>, item)
+        freebaseThumbnails = get(<span class="hljs-string">'http://rdf.freebase.com/ns/common.topic.image'</span>, item)
+        freebaseThumbnails = <span class="hljs-keyword">if</span> angular.isArray freebaseThumbnails <span class="hljs-keyword">then</span> freebaseThumbnails <span class="hljs-keyword">else</span> [ freebaseThumbnails ]
+        freebaseThumbnails = (<span class="hljs-string">"admin-ajax.php?action=wordlift_freebase_image&amp;url=<span class="hljs-subst">#{escape(thumbnail)}</span>"</span> <span class="hljs-keyword">for</span> thumbnail <span class="hljs-keyword">in</span> freebaseThumbnails)
+        thumbnails = thumbnails.concat freebaseThumbnails</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>create the entity model.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        entity = {
+          id          : id
+          thumbnail   : <span class="hljs-literal">null</span>
+          thumbnails  : thumbnails
+          type        : getKnownType(types)
+          types       : types
+          description : getLanguage(<span class="hljs-string">'rdfs:comment'</span>, item, language)
+          <span class="hljs-attribute">descriptions</span>: get(<span class="hljs-string">'rdfs:comment'</span>, item)
+          label       : getLanguage(<span class="hljs-string">'rdfs:label'</span>, item, language)
+          labels      : get(<span class="hljs-string">'rdfs:label'</span>, item)
+          source      : <span class="hljs-keyword">if</span> id.match(<span class="hljs-string">'^http://rdf.freebase.com/.*$'</span>) <span class="hljs-keyword">then</span> <span class="hljs-string">'freebase'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'dbpedia'</span>
+          _item       : item
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>remove not found thumbnails.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> thumbnails?
+          $log.debug thumbnails
+          $q.all(($http.head thumbnail <span class="hljs-keyword">for</span> thumbnail <span class="hljs-keyword">in</span> thumbnails))
+            .<span class="hljs-keyword">then</span> <span class="hljs-function"><span class="hljs-params">(results)</span> -&gt;</span>
+              entity.thumbnails = (result.config.url <span class="hljs-keyword">for</span> result <span class="hljs-keyword">in</span> results <span class="hljs-keyword">when</span> <span class="hljs-number">200</span> <span class="hljs-keyword">is</span> result.status)
+              entity.thumbnail  = entity.thumbnails[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt; entity.thumbnails.length</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>return the entity.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        entity
+
+      <span class="hljs-function"><span class="hljs-title">createEntityAnnotation</span> = <span class="hljs-params">(item)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>get the related text annotation.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        textAnnotation = textAnnotations[get(<span class="hljs-string">'dc:relation'</span>, item)]
+
+        entity = {
+          id        : get(<span class="hljs-string">'@id'</span>, item),
+          label     : get(<span class="hljs-string">'enhancer:entity-label'</span>, item),
+          <span class="hljs-attribute">confidence</span>: get(<span class="hljs-string">'enhancer:confidence'</span>, item),
+          entity    : entities[get(<span class="hljs-string">'enhancer:entity-reference'</span>, item)],
+          relation  : textAnnotations[get(<span class="hljs-string">'dc:relation'</span>, item)],
+          _item     : item
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>create a binding from the textannotation to the entity.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        textAnnotation.entityAnnotations[entity.id] = entity <span class="hljs-keyword">if</span> textAnnotation?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>return the entity.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        entity
+
+
+      <span class="hljs-function"><span class="hljs-title">createTextAnnotation</span> = <span class="hljs-params">(item)</span> -&gt;</span>
+        {
+          id               : get(<span class="hljs-string">'@id'</span>, item),
+          selectedText     : get(<span class="hljs-string">'enhancer:selected-text'</span>, item)[<span class="hljs-string">'@value'</span>],
+          selectionPrefix  : get(<span class="hljs-string">'enhancer:selection-prefix'</span>, item)[<span class="hljs-string">'@value'</span>],
+          selectionSuffix  : get(<span class="hljs-string">'enhancer:selection-suffix'</span>, item)[<span class="hljs-string">'@value'</span>],
+          confidence       : get(<span class="hljs-string">'enhancer:confidence'</span>, item),
+          <span class="hljs-attribute">entityAnnotations</span>: {},
+          _item            : item
+        }
+
+      <span class="hljs-function"><span class="hljs-title">createLanguage</span> = <span class="hljs-params">(item)</span> -&gt;</span>
+        {
+          code      : get(<span class="hljs-string">'dc:language'</span>, item),
+          <span class="hljs-attribute">confidence</span>: get(<span class="hljs-string">'enhancer:confidence'</span>, item)
+          _item     : item
+        }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>get the provided key from the container, expanding the keys when necessary.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-function"><span class="hljs-title">get</span> = <span class="hljs-params">(what, container)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>expand the what key.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        whatExp = expand(what)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>return the value bound to the specified key.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> value <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">of</span> container <span class="hljs-keyword">when</span> whatExp <span class="hljs-keyword">is</span> expand(key)
+        []</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>get the value for specified property (what) in the provided container in the specified language.
+items must conform to {‘@language’:…, ‘@value’:…} format.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-function"><span class="hljs-title">getLanguage</span> =  <span class="hljs-params">(what, container, language)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>if there’s no item return null.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">if</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">is</span> items = get(what, container)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>transform to an array if it’s not already.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        items = <span class="hljs-keyword">if</span> angular.isArray items <span class="hljs-keyword">then</span> items <span class="hljs-keyword">else</span> [ items ]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>cycle through the array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> item[<span class="hljs-string">'@value'</span>] <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items <span class="hljs-keyword">when</span> language <span class="hljs-keyword">is</span> item[<span class="hljs-string">'@language'</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>if not found return null.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-literal">null</span>
+
+      <span class="hljs-function"><span class="hljs-title">containsOrEquals</span> = <span class="hljs-params">(what, where)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>if where is not defined return false.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> where?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>ensure the where argument is an array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        whereArray = <span class="hljs-keyword">if</span> angular.isArray where <span class="hljs-keyword">then</span> where <span class="hljs-keyword">else</span> [ where ]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>expand the what string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        whatExp    = expand(what)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>return true if the string is found.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span> <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> whereArray <span class="hljs-keyword">when</span> whatExp <span class="hljs-keyword">is</span> expand(item)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>otherwise false.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-literal">false</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>expand a string to a full path if it contains a prefix.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-function"><span class="hljs-title">expand</span> = <span class="hljs-params">(content)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>if there’s no prefix, return the original string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">is</span> matches = content.match(<span class="hljs-regexp">/([\w|\d]+):(.*)/</span>)
+          <span class="hljs-keyword">return</span> content</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>get the prefix and the path.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        prefix  = matches[<span class="hljs-number">1</span>]
+        path    = matches[<span class="hljs-number">2</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>if the prefix is unknown, leave it.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        prepend = <span class="hljs-keyword">if</span> prefixes[prefix]? <span class="hljs-keyword">then</span> prefixes[prefix] <span class="hljs-keyword">else</span> <span class="hljs-string">"<span class="hljs-subst">#{prefix}</span>:"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>return the full path.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        prepend + path</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>data is split in a context and a graph.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      context  = data[<span class="hljs-string">'@context'</span>]
+      graph    = data[<span class="hljs-string">'@graph'</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>get the prefixes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      prefixes = []</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>cycle in the context definitions and extract the prefixes.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> key, value <span class="hljs-keyword">of</span> context</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>consider a prefix only keys w/o ‘:’ and the value is string.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">is</span> key.indexOf(<span class="hljs-string">':'</span>) <span class="hljs-keyword">and</span> angular.isString(value)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>add the prefix.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          prefixes[key] = value
+
+      <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> graph
+        id     = item[<span class="hljs-string">'@id'</span>]
+        types  = item[<span class="hljs-string">'@type'</span>]
+        dctype = get(<span class="hljs-string">'dc:type'</span>, item)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>TextAnnotation/LinguisticSystem</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> containsOrEquals(<span class="hljs-string">'enhancer:TextAnnotation'</span>, types) <span class="hljs-keyword">and</span> containsOrEquals(<span class="hljs-string">'dc:LinguisticSystem'</span>, dctype)
+          languages.push createLanguage(item)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>TextAnnotation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> containsOrEquals(<span class="hljs-string">'enhancer:TextAnnotation'</span>, types)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <pre><code>     $log.debug <span class="hljs-string">"TextAnnotation [ @id :: <span class="hljs-subst">#{id}</span> ][ types :: <span class="hljs-subst">#{types}</span> ]"</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          textAnnotations[id] = item</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>EntityAnnotation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> containsOrEquals(<span class="hljs-string">'enhancer:EntityAnnotation'</span>, types)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <pre><code>     $log.debug <span class="hljs-string">"EntityAnnotation [ @id :: <span class="hljs-subst">#{id}</span> ][ types :: <span class="hljs-subst">#{types}</span> ]"</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          entityAnnotations[id] = item</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>Entity</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <pre><code>     $log.debug <span class="hljs-string">"Entity [ @id :: <span class="hljs-subst">#{id}</span> ][ types :: <span class="hljs-subst">#{types}</span> ]"</span>
+</code></pre>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          entities[id] = item</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>sort the languages by confidence.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      languages.sort <span class="hljs-function"><span class="hljs-params">(a, b)</span> -&gt;</span>
+        <span class="hljs-keyword">if</span> a.confidence &lt; b.confidence
+          <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> a.confidence &gt; b.confidence
+          <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+        <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>create a reference to the default language.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      language = languages[<span class="hljs-number">0</span>].code</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>create entities instances in the entities array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> id, item <span class="hljs-keyword">of</span> entities
+        entity       = createEntity(item, language)
+        entities[id] = entity</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>create entities instances in the entities array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      textAnnotations[id] = createTextAnnotation(item) <span class="hljs-keyword">for</span> id, item <span class="hljs-keyword">of</span> textAnnotations</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>create entities instances in the entities array.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      entityAnnotations[id] = createEntityAnnotation(item) <span class="hljs-keyword">for</span> id, item <span class="hljs-keyword">of</span> entityAnnotations</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>return the analysis result.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      {
+        language         : language,
+        entities         : entities,
+        <span class="hljs-attribute">entityAnnotations</span>: entityAnnotations,
+        textAnnotations  : textAnnotations,
+        languages        : languages
+      }
+
+  ])</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

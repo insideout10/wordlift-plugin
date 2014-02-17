@@ -14,7 +14,6 @@ module.exports = (grunt) ->
             'src/coffee/wordlift-tinymce-plugin/app.config.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.directives.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.AnalysisService.coffee',
-            'src/coffee/wordlift-tinymce-plugin/app.services.AnnotationService.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.EditorService.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.controllers.coffee',
@@ -67,18 +66,23 @@ module.exports = (grunt) ->
         flatten: true
         filter: 'isFile'
 
+    docco:
+      doc:
+        src: ['src/coffee/**/*.coffee']
+        options:
+          output: 'docs/'
 
     watch:
       scripts:
         files: ['src/coffee/**/*.coffee']
-        tasks: ['coffee', 'uglify']
+        tasks: ['coffee', 'uglify', 'docco']
         options:
           spawn: false
       styles:
         files: ['src/less/*.less']
         tasks: ['less']
         options:
-          spawn: false,
+          spawn: false
 
   # Load plugins
   grunt.loadNpmTasks('grunt-contrib-watch')
@@ -86,6 +90,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-contrib-less')
   grunt.loadNpmTasks('grunt-contrib-uglify')
   grunt.loadNpmTasks('grunt-contrib-copy')
+  grunt.loadNpmTasks('grunt-docco')
 
-  # Default task(s).
-  grunt.registerTask('default', ['coffee', 'uglify', 'less', 'copy'])
+# Default task(s).
+  grunt.registerTask('default', ['coffee', 'uglify', 'less', 'copy', 'docco'])
