@@ -29,7 +29,7 @@ angular.module( 'AnalysisService', [] )
       # Create a reference to the service for use in callbacks.
       that = @
 
-      ajaxurl = '/wp-content/plugins/wordlift/tests/english.json'
+#      ajaxurl = '/wp-content/plugins/wordlift/tests/english.json'
       # Alternatively you can fix the URL to a local test json, e.g.:
       #
       #     '/wp-content/plugins/wordlift/tests/english.json'
