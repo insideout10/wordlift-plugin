@@ -18,7 +18,7 @@ function wordlift_ajax_search() {
 
         if ( $types_array ) {
             foreach( $types_array as $type ) {
-                $types .= $type->name . (empty($types) ? '' : ' ');
+                $types .= strtolower( $type->name ) . (empty($types) ? '' : ' ');
             }
         }
 
