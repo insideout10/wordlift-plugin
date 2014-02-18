@@ -135,6 +135,16 @@ function wordlift_save_entity_custom_fields($post_id) {
 
 }
 
+/**
+ * Get the entity types associated to the specified post.
+ * @param $post_id The post id.
+ * @return array An array of terms.
+ */
+function wordlift_get_entity_types( $post_id ) {
+
+    return wp_get_post_terms( $post_id, 'entity_type' );
+}
+
 add_action('init', 'wordlift_register_custom_type_entity');
 add_action('init', 'wordlift_taxonomies_entity', 0);
 add_action('add_meta_boxes', 'wordlift_entity_url_box');

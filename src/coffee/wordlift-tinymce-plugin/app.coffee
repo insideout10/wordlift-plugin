@@ -19,18 +19,20 @@ $(
                 <input type="text" class="form-control" id="search" placeholder="search or create">
               </div>
             </div>
-            <ul>
-              <li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true">
-                <div class="entity" ng-class="currentCssClass(id, entityAnnotation)" ng-click="onEntityClicked(id, entityAnnotation)" ng-show="entityAnnotation.entity.label">
-                  <div class="thumbnail" ng-show="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"></div>
-                  <div class="thumbnail empty" ng-hide="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}"></div>
-                  <div class="confidence" ng-bind="entityAnnotation.confidence"></div>
-                  <div class="label" ng-bind="entityAnnotation.entity.label"></div>
-                  <div class="type"></div>
-                  <div class="source" ng-class="entityAnnotation.entity.source" ng-bind="entityAnnotation.entity.source"></div>
-                </div>
-              </li>
-            </ul>
+            <div>
+              <ul>
+                <li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true">
+                  <div class="entity" ng-class="currentCssClass(id, entityAnnotation)" ng-click="onEntityClicked(id, entityAnnotation)" ng-show="entityAnnotation.entity.label">
+                    <div class="thumbnail" ng-show="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"></div>
+                    <div class="thumbnail empty" ng-hide="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}"></div>
+                    <div class="confidence" ng-bind="entityAnnotation.confidence"></div>
+                    <div class="label" ng-bind="entityAnnotation.entity.label"></div>
+                    <div class="type"></div>
+                    <div class="source" ng-class="entityAnnotation.entity.source" ng-bind="entityAnnotation.entity.source"></div>
+                  </div>
+                </li>
+              </ul>
+            </div>
           </form>
         </div>
       </div>
@@ -50,6 +52,22 @@ $(
     select: (event, ui) ->
       console.log event
       console.log ui
+  .data( "ui-autocomplete" )._renderItem = ( ul, item ) ->
+    console.log ul
+    $( "<li>" )
+      .append("""
+        <li>
+          <div class="entity #{item.types}">
+            <!-- div class="thumbnail" style="background-image: url('')"></div -->
+            <div class="thumbnail empty"></div>
+            <div class="confidence"></div>
+            <div class="label">#{item.label}</div>
+            <div class="type"></div>
+            <div class="source"></div>
+          </div>
+        </li>
+    """)
+    .appendTo( ul )
 
   # When the user clicks on the handle, hide the popover.
   $('#wordlift-disambiguation-popover .handlediv').click (e) -> container.hide()

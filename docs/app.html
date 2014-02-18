@@ -131,18 +131,20 @@
                 &lt;input type="text" class="form-control" id="search" placeholder="search or create"&gt;
               &lt;/div&gt;
             &lt;/div&gt;
-            &lt;ul&gt;
-              &lt;li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true"&gt;
-                &lt;div class="entity" ng-class="currentCssClass(id, entityAnnotation)" ng-click="onEntityClicked(id, entityAnnotation)" ng-show="entityAnnotation.entity.label"&gt;
-                  &lt;div class="thumbnail" ng-show="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"&gt;&lt;/div&gt;
-                  &lt;div class="thumbnail empty" ng-hide="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}"&gt;&lt;/div&gt;
-                  &lt;div class="confidence" ng-bind="entityAnnotation.confidence"&gt;&lt;/div&gt;
-                  &lt;div class="label" ng-bind="entityAnnotation.entity.label"&gt;&lt;/div&gt;
-                  &lt;div class="type"&gt;&lt;/div&gt;
-                  &lt;div class="source" ng-class="entityAnnotation.entity.source" ng-bind="entityAnnotation.entity.source"&gt;&lt;/div&gt;
-                &lt;/div&gt;
-              &lt;/li&gt;
-            &lt;/ul&gt;
+            &lt;div&gt;
+              &lt;ul&gt;
+                &lt;li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true"&gt;
+                  &lt;div class="entity" ng-class="currentCssClass(id, entityAnnotation)" ng-click="onEntityClicked(id, entityAnnotation)" ng-show="entityAnnotation.entity.label"&gt;
+                    &lt;div class="thumbnail" ng-show="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"&gt;&lt;/div&gt;
+                    &lt;div class="thumbnail empty" ng-hide="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}"&gt;&lt;/div&gt;
+                    &lt;div class="confidence" ng-bind="entityAnnotation.confidence"&gt;&lt;/div&gt;
+                    &lt;div class="label" ng-bind="entityAnnotation.entity.label"&gt;&lt;/div&gt;
+                    &lt;div class="type"&gt;&lt;/div&gt;
+                    &lt;div class="source" ng-class="entityAnnotation.entity.source" ng-bind="entityAnnotation.entity.source"&gt;&lt;/div&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ul&gt;
+            &lt;/div&gt;
           &lt;/form&gt;
         &lt;/div&gt;
       &lt;/div&gt;
@@ -161,7 +163,23 @@
     <span class="hljs-attribute">minLength</span>: <span class="hljs-number">2</span>,
     <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(event, ui)</span> -&gt;</span>
       <span class="hljs-built_in">console</span>.log event
-      <span class="hljs-built_in">console</span>.log ui</pre></div></div>
+      <span class="hljs-built_in">console</span>.log ui
+  .data<span class="hljs-function"><span class="hljs-params">( <span class="hljs-string">"ui-autocomplete"</span> )</span>.<span class="hljs-title">_renderItem</span> = <span class="hljs-params">( ul, item )</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log ul
+    $( <span class="hljs-string">"&lt;li&gt;"</span> )
+      .append(<span class="hljs-string">"""
+        &lt;li&gt;
+          &lt;div class="entity <span class="hljs-subst">#{item.types}</span>"&gt;
+            &lt;!-- div class="thumbnail" style="background-image: url('')"&gt;&lt;/div --&gt;
+            &lt;div class="thumbnail empty"&gt;&lt;/div&gt;
+            &lt;div class="confidence"&gt;&lt;/div&gt;
+            &lt;div class="label"&gt;<span class="hljs-subst">#{item.label}</span>&lt;/div&gt;
+            &lt;div class="type"&gt;&lt;/div&gt;
+            &lt;div class="source"&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/li&gt;
+    """</span>)
+    .appendTo( ul )</pre></div></div>
             
         </li>
         
