@@ -39,17 +39,6 @@ function wordlift_get_url($file)
 }
 
 /**
- * Load stylesheets for the administrative interface.
- */
-function wordlift_load_admin_css()
-{
-    wp_register_style('wordlift_wp_admin_css', wordlift_get_url('/css/wordlift-admin.min.css'), false, '1.0.0');
-    wp_enqueue_style('wordlift_wp_admin_css');
-}
-
-add_action('admin_enqueue_scripts', 'wordlift_load_admin_css');
-
-/**
  * Add buttons hook for the TinyMCE editor. This method is called by the WP init hook.
  */
 function wordlift_buttonhooks()
@@ -164,6 +153,13 @@ function wordlift_ajax_analyze_action()
  */
 function wordlift_admin_enqueue_scripts() {
     global $post;
+
+    wp_register_style('wordlift_wp_admin_css', wordlift_get_url('/css/wordlift-admin.min.css'), false, '1.0.0');
+    wp_enqueue_style('wordlift_wp_admin_css');
+    wp_enqueue_style('jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position'));
+
+
+    wp_enqueue_script( 'jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position') );
     wp_enqueue_script( 'angularjs', wordlift_get_url('/bower_components/angular/angular.min.js') );
     wp_localize_script('angularjs', 'thePost', get_post($post->id, ARRAY_A));
 }
@@ -194,6 +190,9 @@ require_once('wordlift_indepth_articles.php');
 
 require_once('wordlift_freebase_image_proxy.php');
 require_once('wordlift_selected_entities_meta_box.php');
+
+// add the search entity AJAX.
+require_once('wordlift_ajax_search_entities.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,

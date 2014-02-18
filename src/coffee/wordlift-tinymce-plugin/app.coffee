@@ -15,7 +15,9 @@ $(
         <div class="inside">
           <form role="form">
             <div class="form-group">
-              <input type="text" class="form-control" id="search" placeholder="search or create">
+              <div class="ui-widget">
+                <input type="text" class="form-control" id="search" placeholder="search or create">
+              </div>
             </div>
             <ul>
               <li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true">
@@ -41,6 +43,13 @@ $(
       right: 0
     )
     .draggable()
+
+  $('#search').autocomplete
+    source: ajaxurl + '?action=wordlift_search',
+    minLength: 2,
+    select: (event, ui) ->
+      console.log event
+      console.log ui
 
   # When the user clicks on the handle, hide the popover.
   $('#wordlift-disambiguation-popover .handlediv').click (e) -> container.hide()

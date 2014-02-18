@@ -15,11 +15,21 @@
 angular.module( 'AnalysisService', [] )
   .service( 'AnalysisService', [ '$http', '$q', '$rootScope', '$log', ($http, $q, $rootScope, $log) ->
 
+    # If true, an analysis is running.
+    isRunning: false
+
     # <a name="analyze"></a>
-    # Analyze the provided content.
+    # Analyze the provided content. Only one analysis at a time is run.
     analyze: (content) ->
+      # Exit if an analysis is already running.
+      return if @isRunning
+      # Set that an analysis is running.
+      @isRunning = true
+
       # Create a reference to the service for use in callbacks.
       that = @
+
+      ajaxurl = '/wp-content/plugins/wordlift/tests/english.json'
       # Alternatively you can fix the URL to a local test json, e.g.:
       #
       #     '/wp-content/plugins/wordlift/tests/english.json'
@@ -29,9 +39,13 @@ angular.module( 'AnalysisService', [] )
       # If successful, broadcast an *analysisReceived* event.
       .success (data, status, headers, config) ->
         $rootScope.$broadcast 'analysisReceived', that.parse data
+        # Set that the analysis is complete.
+        @isRunning = false
       # In case of error, we don't do anything (for now).
       .error  (data, status, headers, config) ->
-          # TODO: implement error handling.
+        # TODO: implement error handling.
+        # Set that the analysis is complete.
+        @isRunning = false
 
     # Parse the response data from the analysis request (Redlink).
     parse: (data) ->

@@ -127,7 +127,9 @@
         &lt;div class="inside"&gt;
           &lt;form role="form"&gt;
             &lt;div class="form-group"&gt;
-              &lt;input type="text" class="form-control" id="search" placeholder="search or create"&gt;
+              &lt;div class="ui-widget"&gt;
+                &lt;input type="text" class="form-control" id="search" placeholder="search or create"&gt;
+              &lt;/div&gt;
             &lt;/div&gt;
             &lt;ul&gt;
               &lt;li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true"&gt;
@@ -152,7 +154,14 @@
       <span class="hljs-attribute">top</span>: $(<span class="hljs-string">'#wpadminbar'</span>).height() - <span class="hljs-number">1</span>
       <span class="hljs-attribute">right</span>: <span class="hljs-number">0</span>
     )
-    .draggable()</pre></div></div>
+    .draggable()
+
+  $(<span class="hljs-string">'#search'</span>).autocomplete
+    <span class="hljs-attribute">source</span>: ajaxurl + <span class="hljs-string">'?action=wordlift_search'</span>,
+    <span class="hljs-attribute">minLength</span>: <span class="hljs-number">2</span>,
+    <span class="hljs-attribute">select</span>: <span class="hljs-function"><span class="hljs-params">(event, ui)</span> -&gt;</span>
+      <span class="hljs-built_in">console</span>.log event
+      <span class="hljs-built_in">console</span>.log ui</pre></div></div>
             
         </li>
         
