@@ -15,6 +15,8 @@
 angular.module( 'AnalysisService', [] )
   .service( 'AnalysisService', [ '$http', '$q', '$rootScope', '$log', ($http, $q, $rootScope, $log) ->
 
+    # <a name="analyze"></a>
+    # Analyze the provided content.
     analyze: (content) ->
       # Create a reference to the service for use in callbacks.
       that = @

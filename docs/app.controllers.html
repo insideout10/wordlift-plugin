@@ -276,11 +276,7 @@
             </div>
             
             <div class="content"><div class='highlight'><pre>    $scope.$<span class="hljs-literal">on</span> <span class="hljs-string">'analysisReceived'</span>, <span class="hljs-function"><span class="hljs-params">(event, analysis)</span> -&gt;</span>
-      $log.debug analysis
-      $scope.analysis = analysis
-
-    $scope.$<span class="hljs-literal">on</span> <span class="hljs-string">'textAnnotationClicked'</span>, <span class="hljs-function"><span class="hljs-params">(event, id, sourceElement)</span> -&gt;</span>
-      $log.debug <span class="hljs-string">"Clicked on annotation with ID <span class="hljs-subst">#{id}</span> ..."</span></pre></div></div>
+      $scope.analysis = analysis</pre></div></div>
             
         </li>
         
@@ -291,15 +287,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>set or reset properly $scope.selectedEntity
-get the text annotation with the provided id.</p>
+              <p>When a text annotation is clicked, open the disambiguation popover.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      $scope.selectedEntity = <span class="hljs-literal">undefined</span>
-      $scope.textAnnotationSpan = angular.element(sourceElement.target)
-      
-      $scope.textAnnotation = $scope.analysis.textAnnotations[id]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    $scope.$<span class="hljs-literal">on</span> <span class="hljs-string">'textAnnotationClicked'</span>, <span class="hljs-function"><span class="hljs-params">(event, id, sourceElement)</span> -&gt;</span></pre></div></div>
             
         </li>
         
@@ -310,12 +302,11 @@ get the text annotation with the provided id.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>hide the popover if there are no entities.</p>
+              <p>Set or reset properly $scope.selectedEntity</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> $scope.textAnnotation.entityAnnotations.length
-        $(<span class="hljs-string">'#wordlift-disambiguation-popover'</span>).hide()</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      $scope.selectedEntity = <span class="hljs-literal">undefined</span></pre></div></div>
             
         </li>
         
@@ -326,11 +317,13 @@ get the text annotation with the provided id.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>show the popover.</p>
+              <p>Get the text annotation with the provided id.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>      $scope.textAnnotationSpan = angular.element(sourceElement.target)
+      
+      $scope.textAnnotation = $scope.analysis.textAnnotations[id]</pre></div></div>
             
         </li>
         
@@ -341,11 +334,12 @@ get the text annotation with the provided id.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>get the position of the clicked element.</p>
+              <p>hide the popover if there are no entities.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        pos = EditorService.getWinPos(sourceElement)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> <span class="hljs-keyword">is</span> $scope.textAnnotation?.entityAnnotations?.length
+        $(<span class="hljs-string">'#wordlift-disambiguation-popover'</span>).hide()</pre></div></div>
             
         </li>
         
@@ -356,11 +350,11 @@ get the text annotation with the provided id.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>set the popover arrow to the element position.</p>
+              <p>show the popover.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        setArrowTop(pos.top - <span class="hljs-number">50</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span></pre></div></div>
             
         </li>
         
@@ -370,6 +364,36 @@ get the text annotation with the provided id.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>get the position of the clicked element.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        pos = EditorService.getWinPos(sourceElement)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>set the popover arrow to the element position.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        setArrowTop(pos.top - <span class="hljs-number">50</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>show the popover.</p>
 

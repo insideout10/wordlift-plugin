@@ -75,21 +75,19 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 
     # receive the analysis results and store them in the local scope.
     $scope.$on 'analysisReceived', (event, analysis) ->
-      $log.debug analysis
       $scope.analysis = analysis
 
+    # When a text annotation is clicked, open the disambiguation popover.
     $scope.$on 'textAnnotationClicked', (event, id, sourceElement) ->
-      $log.debug "Clicked on annotation with ID #{id} ..."
-
-      # set or reset properly $scope.selectedEntity
-      # get the text annotation with the provided id.
+      # Set or reset properly $scope.selectedEntity
       $scope.selectedEntity = undefined
+      # Get the text annotation with the provided id.
       $scope.textAnnotationSpan = angular.element(sourceElement.target)
       
       $scope.textAnnotation = $scope.analysis.textAnnotations[id]
 
       # hide the popover if there are no entities.
-      if 0 is $scope.textAnnotation.entityAnnotations.length
+      if 0 is $scope.textAnnotation?.entityAnnotations?.length
         $('#wordlift-disambiguation-popover').hide()
       # show the popover.
       else

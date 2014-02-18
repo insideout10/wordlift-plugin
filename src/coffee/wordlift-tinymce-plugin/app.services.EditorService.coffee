@@ -1,6 +1,14 @@
 angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tinymce.plugin.config', 'AnalysisService'])
   .service('EditorService', ['AnalysisService', '$rootScope', '$log', 'Configuration', (AnalysisService, $rootScope, $log, Configuration) ->
 
+    # When an analysis is completed, remove the *running* class from the WordLift toolbar button.
+    # (The button is set to running when [an analysis is called](#analyze).
+    $rootScope.$on 'analysisReceived', ->
+      # Remove the *running* class.
+      $('.mce_wordlift').removeClass 'running'
+      # Make the editor read/write.
+      tinyMCE.get('content').getBody().setAttribute 'contenteditable', true
+
     # this event is captured when an entity is selected in the disambiguation popover.
     $rootScope.$on 'DisambiguationWidget.entitySelected', (event, obj) ->
       cssClasses = "textannotation highlight #{obj.entity.type} disambiguated"
@@ -28,12 +36,10 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
       currentHtmlContent = tinyMCE.get('content').getContent({format : 'raw'})
 
-      $log.debug "before: #{currentHtmlContent}"
       # Remove the existing text annotation spans.
       spanre = /<span class="textannotation"[^>]*>([^<]*)<\/span>/gi
       while spanre.test currentHtmlContent
         currentHtmlContent = currentHtmlContent.replace spanre, '$1'
-      $log.debug "after: #{currentHtmlContent}"
 
       for id, textAnnotation of analysis.textAnnotations
         # get the selection prefix and suffix for the regexp.
@@ -53,8 +59,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
         currentHtmlContent = currentHtmlContent.replace( r, replace )
 
       isDirty = tinyMCE.get('content').isDirty()
-      tinyMCE.get('content').setContent( currentHtmlContent )
-      $('#tinymce').
+      tinyMCE.get('content').setContent currentHtmlContent
       tinyMCE.get('content').isNotDirty = 1 if not isDirty
 
       # this event is raised when a textannotation is selected in the TinyMCE editor.
@@ -70,7 +75,13 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
 
     # <a name="analyze"></a>
     # Send the provided content for analysis using the [AnalysisService.analyze](app.services.AnalysisService.html#analyze) method.
-    analyze: (content) -> AnalysisService.analyze content
+    analyze: (content) ->
+      # Disable the button and set the spinner while analysis is running.
+      $('.mce_wordlift').addClass 'running'
+      # Make the editor read-obly.
+      tinyMCE.get('content').getBody().setAttribute 'contenteditable', false
+      # Call the [AnalysisService](AnalysisService.html) to analyze the provided content.
+      AnalysisService.analyze content
 
     # set some predefined variables.
     getEditor : -> tinyMCE.get('content')
