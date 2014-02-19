@@ -54,34 +54,30 @@ function wordlift_save_post_and_related_entities($post_id) {
         }
     }
 
-    // Retrieve the post content and try to parse it
-    $source = ($post->post_content) ? $post->post_content : '';
-    $doc    = new DOMDocument();
-    @$doc->loadHTML($source); // ignore warnings from document parsing.
-    // Find all span tags: a span tag could be a textAnnotation
-    $tags   = $doc->getElementsByTagName('span');
-
-    write_log("tags [ count :: " . count($tags) . " ]");
-
+    
     // this array will hold all the entities found in this post.
     $entity_post_ids = array();
+    $entities = isset($_POST['entities']) ? $_POST['entities'] : array(); 
 
+    write_log("Going to loop on related entity/ies ...");
+        
     // Loops on founded span tags
-    foreach ($tags as $tag) {
-
-//        write_log($tag->attributes->getNamedItem('itemid'));
-
+    foreach ($entities as $entity) {
+        write_log("Within the loop on related entity/ies ...");
+        
+         write_log('ok2');
+         write_log($entity["id"]);
         // If itemid attribute is set, then the node is a textAnnotation
-    	if ($tag->attributes->getNamedItem('itemid')) {
+    	// if ($entity['id']) {
 
-            $entity_label = $tag->nodeValue;
-            $entity_id    = $tag->attributes->getNamedItem('itemid')->value;
-            $entity_type  = ($tag->attributes->getNamedItem('itemtype')
-                                ? $tag->attributes->getNamedItem('itemtype')->value
-                                : '');
+            
+            $entity_label = $entity['label'];
+            $entity_id    = $entity['id'];
+            $entity_type  = $entity['type'];
+            $entity_description  = $entity['description'];
 
             // create or update the entity in WordPress and get the entity URI.
-            $entity_posts = wordlift_save_entity_post($entity_id, $entity_label, $entity_type);
+            $entity_posts = wordlift_save_entity_post($entity_id, $entity_label, $entity_type, $entity_description);
 
             write_log('[ entity_posts :: ' . count($entity_posts) . ' ]');
 
@@ -95,7 +91,7 @@ function wordlift_save_post_and_related_entities($post_id) {
                     $sparql     .= "<$post_uri>   dcterms:references <$entity_uri> . \n";
                 }
             }
-    	}
+    	// }
     }
 
     // remove the reference to this post from related entities.
@@ -236,9 +232,10 @@ EOF;
  * @param string $uri   The entity URI (local or remote).
  * @param string $label The entity label.
  * @param string $type  The entity type.
+ * @param string $description  The entity description.
  * @return array        An array of posts.
  */
-function wordlift_save_entity_post($uri, $label, $type) {
+function wordlift_save_entity_post($uri, $label, $type, $description) {
 
     write_log("wordlift_add_or_update_related_entity_post($uri, $label, $type)");
 
@@ -257,7 +254,7 @@ function wordlift_save_entity_post($uri, $label, $type) {
         'post_status'  => 'draft',
         'post_type'    => 'entity',
         'post_title'   => $label,
-        'post_content' => '',
+        'post_content' => $description,
         'post_excerpt' => ''
     );
 

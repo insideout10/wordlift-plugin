@@ -97,10 +97,11 @@
 	<span class="hljs-attribute">template</span>: <span class="hljs-string">"""
 		&lt;span&gt;{{entity.label}} (&lt;small&gt;{{entity.type}}&lt;/span&gt;)\n
 		&lt;br /&gt;&lt;small&gt;{{entity.thumbnail}}&lt;/small&gt;
-		&lt;input type="hidden" name="meta[{{index}}]['label']" value="{{entity.label}}" /&gt;\n
-		&lt;input type="hidden" name="meta[{{index}}]['description']" value="{{entity.description}}" /&gt;\n
-		&lt;input type="hidden" name="meta[{{index}}]['type']" value="{{entity.type}}" /&gt;\n
-		&lt;input type="hidden" name="meta[{{index}}]['thumbnail']" value="{{entity.thumbnail}}" /&gt;\n
+		&lt;input type="hidden" name="entities[{{index}}]['id']" value="{{entity.id}}" /&gt;\n
+		&lt;input type="hidden" name="entities[{{index}}]['label']" value="{{entity.label}}" /&gt;\n
+		&lt;input type="hidden" name="entities[{{index}}]['description']" value="{{entity.description}}" /&gt;\n
+		&lt;input type="hidden" name="entities[{{index}}]['type']" value="{{entity.type}}" /&gt;\n
+		&lt;input type="hidden" name="entities[{{index}}]['thumbnail']" value="{{entity.thumbnail}}" /&gt;\n
 	"""</span></pre></div></div>
             
         </li>
