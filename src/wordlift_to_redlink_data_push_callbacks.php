@@ -197,7 +197,7 @@ function wordlift_save_author( $author_id ) {
         $sparql .= "<$author_uri> schema:email '$email' . ";
     }
     if ( !empty( $description ) ) {
-        $sparql .= "<$author_uri> schema:description '$description'@$site_language . ";
+        $sparql .= "<$author_uri> schema:description \"$description\"@$site_language . ";
     }
     if ( !empty( $url ) ) {
         $sparql .= "<$author_uri> schema:url <$url> . ";
@@ -455,7 +455,7 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
 
     // set the description.
     if (!empty($descr)) {
-        $sparql  .= "<$uri> schema:description '" . wordlift_esc_sparql($descr) . "'@$site_language . \n";
+        $sparql  .= "<$uri> schema:description \"" . wordlift_esc_sparql($descr) . "\"@$site_language . \n";
     }
 
     $types   = wp_get_post_terms( $post->ID, 'entity_type' );
@@ -529,11 +529,11 @@ function wordlift_esc_sparql($string) {
     $string = str_replace('\\', '\\\\', $string);
     $string = str_replace('\'', '\\\'', $string);
     $string = str_replace('"', '\\"', $string);
-    $string = str_replace('\f', '\\f', $string);
-    $string = str_replace('\b', '\\b', $string);
-    $string = str_replace('\r', '\\r', $string);
-    $string = str_replace('\n', '\\n', $string);
-    $string = str_replace('\t', '\\t', $string);
+    $string = str_replace("\f", '\\f', $string);
+    $string = str_replace("\b", '\\b', $string);
+    $string = str_replace("\r", '\\r', $string);
+    $string = str_replace("\n", '\\n', $string);
+    $string = str_replace("\t", '\\t', $string);
 
     return $string;
 }
