@@ -6,6 +6,8 @@
  */
 function wordlift_save_post_and_related_entities($post_id) {
 
+    write_log("Saving post and related entities [ post_id :: $post_id ]");
+
     // ignore autosaves
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
         return;
@@ -27,7 +29,7 @@ function wordlift_save_post_and_related_entities($post_id) {
     $user_comments_count = $post->comment_count;
 
     // Get the site language in order to define the literals language.
-    $site_language = wordlift_configuration_site_language();
+    $site_language  = wordlift_configuration_site_language();
 
     // create the SPARQL query.
     $sparql  = "<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "'@$site_language . \n";
@@ -60,38 +62,34 @@ function wordlift_save_post_and_related_entities($post_id) {
     $entities = isset($_POST['entities']) ? $_POST['entities'] : array(); 
 
     write_log("Going to loop on related entity/ies ...");
-        
+
     // Loops on founded span tags
     foreach ($entities as $entity) {
         write_log("Within the loop on related entity/ies ...");
-        
-         write_log('ok2');
-         write_log($entity["id"]);
-        // If itemid attribute is set, then the node is a textAnnotation
-    	// if ($entity['id']) {
-
+        write_log('ok2');
+        write_log($entity["id"]);
             
-            $entity_label = $entity['label'];
-            $entity_id    = $entity['id'];
-            $entity_type  = $entity['type'];
-            $entity_description  = $entity['description'];
+        $entity_label = $entity['label'];
+        $entity_id    = $entity['id'];
+        $entity_type  = $entity['type'];
+        $entity_description  = $entity['description'];
 
-            // create or update the entity in WordPress and get the entity URI.
-            $entity_posts = wordlift_save_entity_post($entity_id, $entity_label, $entity_type, $entity_description);
+        // create or update the entity in WordPress and get the entity URI.
+        $entity_posts = wordlift_save_entity_post($entity_id, $entity_label, $entity_type, $entity_description);
 
-            write_log('[ entity_posts :: ' . count($entity_posts) . ' ]');
+        write_log('[ entity_posts :: ' . count($entity_posts) . ' ]');
 
-            foreach ($entity_posts as $entity_post) {
-                if (!in_array($entity_post->ID, $entity_post_ids)) {
-                    // add the entity post id to the array.
-                    array_push($entity_post_ids, $entity_post->ID);
-                    // get the entity URI and create a reference.
-                    $entity_uri = get_post_meta($entity_post->ID, 'entity_url', true);
-                    // create the sparql query.
-                    $sparql     .= "<$post_uri>   dcterms:references <$entity_uri> . \n";
-                }
+        foreach ($entity_posts as $entity_post) {
+            if (!in_array($entity_post->ID, $entity_post_ids)) {
+                // add the entity post id to the array.
+                array_push($entity_post_ids, $entity_post->ID);
+                // get the entity URI and create a reference.
+                $entity_uri = get_post_meta($entity_post->ID, 'entity_url', true);
+                // create the sparql query.
+                $sparql     .= "<$post_uri>   dcterms:references <$entity_uri> . \n";
             }
-    	// }
+        }
+
     }
 
     // remove the reference to this post from related entities.
@@ -103,13 +101,26 @@ function wordlift_save_post_and_related_entities($post_id) {
     if ( is_array( $existing_related_entities_ids ) ) {
         foreach ( $existing_related_entities_ids as $id ) {
 
+            // Check that the provided ID is a numeric type.
+            if ( !is_numeric( $id ) ) {
+                continue;
+            }
+
             $related_posts_ids = get_post_meta( $id, 'wordlift_related_posts', true );
-            $related_posts_ids = array_diff( $related_posts_ids, array( $post_id ) );
+            $related_posts_ids = ( is_array( $related_posts_ids )
+                ? array_diff( $related_posts_ids, array( $post_id ) )
+                : array( $post_id ) );
             delete_post_meta( $id, 'wordlift_related_posts' );
             add_post_meta( $id, 'wordlift_related_posts', $related_posts_ids, true );
             write_log("add_post_meta( $id, 'wordlift_related_posts', " . join( ', ', $related_posts_ids ) . ", true )\n");
         }
     }
+
+    // Save entities embedded as spans.
+    // TODO: remove this when the entities will be saved using the new method.
+    $entity_post_ids = array_merge( $entity_post_ids, wordlift_save_entities_embedded_as_spans( $post->post_content ) );
+    $entity_post_ids = array_unique( $entity_post_ids );
+    write_log("[ entities :: " . var_export( $entity_post_ids, true ) . " ]");
 
     // reset the relationships.
     delete_post_meta( $post_id, 'wordlift_related_entities' );
@@ -159,6 +170,40 @@ EOF;
 
     // Reindex Redlink triple store.
     wordlift_reindex_triple_store();
+}
+
+/**
+ * Save entities embedded in the content as spans.
+ * @param $content The content.
+ */
+function wordlift_save_entities_embedded_as_spans( $content ) {
+
+    // Save the post ids.
+    $post_ids = array();
+
+    // Initialize the matches array.
+    $matches  = array();
+
+    // Create the pattern.
+    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)">([^<]+)<\/span>/';
+
+    // Look for the spans and the embedded data.
+    if ( 1 === preg_match ( $pattern , $content, $matches ) ) {
+        $uri   = $matches[1];
+        $type  = $matches[2];
+        $label = $matches[3];
+
+        write_log("[ uri :: $uri ][ type :: $type ][ label :: $label ]");
+
+        // Save the entity in the local storage.
+        foreach ( wordlift_save_entity_post( $uri, $label, $type, '' ) as $post ) {
+            if ( !in_array( $post->ID, $post_ids ) ) {
+                array_push( $post_ids, $post->ID );
+            }
+        }
+    }
+
+    return $post_ids;
 }
 
 /**
@@ -290,7 +335,7 @@ function wordlift_save_entity_post($uri, $label, $type, $description) {
     wordlift_save_entity_to_triple_store($post_id);
 
     // finally return the entity post.
-    return array(get_post($post_id));
+    return array( get_post( $post_id ) );
 }
 
 /**
@@ -392,7 +437,12 @@ function wordlift_push_data_triple_store($query) {
  * Receive events from post saves, and split them according to the post type.
  * @param int $post_id The post id.
  */
-function wordlift_save_post($post_id) {
+function wordlift_save_post( $post_id ) {
+
+    // If it's not numeric exit from here.
+    if ( !is_numeric( $post_id ) ) {
+        return;
+    }
 
     // ignore revisions.
     if ( is_numeric(wp_is_post_revision( $post_id ))) {
@@ -408,7 +458,7 @@ function wordlift_save_post($post_id) {
     }
 
     // raise the *wordlift_save_post* event.
-    do_action('wordlift_save_post', $post_id);
+    do_action( 'wordlift_save_post', $post_id );
 }
 
 /**

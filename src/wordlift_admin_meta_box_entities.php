@@ -23,6 +23,11 @@ function wordlift_entities_box_content($post) {
     // get the related entities IDs.
     $related_entities_ids = get_post_meta( $post->ID, 'wordlift_related_entities', true );
 
+    if ( !is_array( $related_entities_ids ) ) {
+        write_log("related_entities_ids is not of the right type.");
+        return;
+    }
+
     // check if there are related entities.
     if ( !is_array( $related_entities_ids ) || 0 === count( $related_entities_ids ) ) {
         _e('No related entities', 'wordlfift');
