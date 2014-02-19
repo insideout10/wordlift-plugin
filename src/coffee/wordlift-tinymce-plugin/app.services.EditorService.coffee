@@ -76,6 +76,7 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
     # <a name="analyze"></a>
     # Send the provided content for analysis using the [AnalysisService.analyze](app.services.AnalysisService.html#analyze) method.
     analyze: (content) ->
+      return if AnalysisService.isRunning
       # Disable the button and set the spinner while analysis is running.
       $('.mce_wordlift').addClass 'running'
       # Make the editor read-obly.

@@ -183,9 +183,7 @@ Analyze the provided content. Only one analysis at a time is run.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      that = @
-
-      ajaxurl = <span class="hljs-string">'/wp-content/plugins/wordlift/tests/english.json'</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>      that = @</pre></div></div>
             
         </li>
         
@@ -196,7 +194,8 @@ Analyze the provided content. Only one analysis at a time is run.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Alternatively you can fix the URL to a local test json, e.g.:</p>
+              <pre><code> ajaxurl = <span class="hljs-string">'/wp-content/plugins/wordlift/tests/english.json'</span>
+</code></pre><p>Alternatively you can fix the URL to a local test json, e.g.:</p>
 <pre><code><span class="hljs-string">'/wp-content/plugins/wordlift/tests/english.json'</span>
 </code></pre>
             </div>
@@ -234,7 +233,7 @@ Analyze the provided content. Only one analysis at a time is run.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-property">@isRunning</span> = <span class="hljs-literal">false</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>        that.isRunning = <span class="hljs-literal">false</span></pre></div></div>
             
         </li>
         
@@ -265,7 +264,7 @@ Set that the analysis is complete.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-property">@isRunning</span> = <span class="hljs-literal">false</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>        that.isRunning = <span class="hljs-literal">false</span></pre></div></div>
             
         </li>
         
@@ -384,7 +383,7 @@ Set that the analysis is complete.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        entity = {
+            <div class="content"><div class='highlight'><pre>        entity =
           id          : id
           thumbnail   : <span class="hljs-literal">null</span>
           thumbnails  : thumbnails
@@ -394,9 +393,13 @@ Set that the analysis is complete.</p>
           <span class="hljs-attribute">descriptions</span>: get(<span class="hljs-string">'rdfs:comment'</span>, item)
           label       : getLanguage(<span class="hljs-string">'rdfs:label'</span>, item, language)
           labels      : get(<span class="hljs-string">'rdfs:label'</span>, item)
-          source      : <span class="hljs-keyword">if</span> id.match(<span class="hljs-string">'^http://rdf.freebase.com/.*$'</span>) <span class="hljs-keyword">then</span> <span class="hljs-string">'freebase'</span> <span class="hljs-keyword">else</span> <span class="hljs-string">'dbpedia'</span>
-          _item       : item
-        }</pre></div></div>
+          source      : <span class="hljs-keyword">if</span> id.match(<span class="hljs-string">'^http://rdf.freebase.com/.*$'</span>)
+                          <span class="hljs-string">'freebase'</span>
+                        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> id.match(<span class="hljs-string">'^http://dbpedia.org/.*$'</span>)
+                          <span class="hljs-string">'dbpedia'</span>
+                        <span class="hljs-keyword">else</span>
+                          <span class="hljs-string">'wordlift'</span>
+          _item       : item</pre></div></div>
             
         </li>
         

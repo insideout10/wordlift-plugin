@@ -111,12 +111,8 @@ function wordlift_ajax_analyze_action()
 {
     if ((current_user_can('edit_posts') || current_user_can('edit_pages')) && get_user_option('rich_editing')) {
 
-        global $wpdb; // this is how you get access to the database
-
-        // remove configuration keys from here.
-        $api_key            = '5VnRvvkRyWCN5IWUPhrH7ahXfGCBV8N0197dbccf';
-        $api_analysis_chain = 'wordlift';
-        $api_url            = "https://api.redlink.io/1.0-ALPHA/analysis/$api_analysis_chain/enhance?key=$api_key";
+        // Get the Redlink enhance URL.
+        $api_url  = wordlift_redlink_enhance_url();
 
         $response = wp_remote_post($api_url, array(
                 'method' => 'POST',
@@ -138,13 +134,17 @@ function wordlift_ajax_analyze_action()
             echo "Something went wrong: $error_message";
             die();
         } else {
+
+            // Reprint the headers, mostly for debugging purposes.
+            foreach ($response['headers'] as $header => $value) {
+                if ( strpos( strtolower( $header ), 'x-redlink-') === 0 ) {
+                    header( "$header: $value" );
+                }
+            }
+
             echo $response['body'];
             die();
         }
-
-
-
-
     }
 }
 

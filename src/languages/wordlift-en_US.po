@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-02-17 11:55+0200\n"
-"PO-Revision-Date: 2014-02-17 13:45+0200\n"
+"POT-Creation-Date: 2014-02-19 11:29+0100\n"
+"PO-Revision-Date: 2014-02-19 11:29+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -65,7 +65,11 @@ msgstr "User id"
 msgid "dataset-name"
 msgstr "Dataset name"
 
-#: ../wordlift_configuration.php:108
+#: ../wordlift_configuration.php:102
+msgid "site-language"
+msgstr "Site Language (two letters ISO code)"
+
+#: ../wordlift_configuration.php:110
 msgid "main-settings-description"
 msgstr "Configure here the main settings:"
 

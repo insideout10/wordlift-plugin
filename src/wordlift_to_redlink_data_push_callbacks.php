@@ -26,8 +26,11 @@ function wordlift_save_post_and_related_entities($post_id) {
     $date_modified  = get_post_modified_time( 'c', true, $post );
     $user_comments_count = $post->comment_count;
 
+    // Get the site language in order to define the literals language.
+    $site_language = wordlift_configuration_site_language();
+
     // create the SPARQL query.
-    $sparql  = "<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "' . \n";
+    $sparql  = "<$post_uri> rdfs:label '" . wordlift_esc_sparql($post->post_title) . "'@$site_language . \n";
     $sparql .= "<$post_uri> a <http://schema.org/BlogPosting> . \n";
     $sparql .= "<$post_uri> schema:url <" . wordlift_esc_sparql(get_permalink($post->ID)) . "> . \n";
     $sparql .= "<$post_uri> schema:datePublished '" . wordlift_esc_sparql($date_published) . "' . \n";
@@ -157,6 +160,9 @@ EOF;
 
     // execute the query.
     wordlift_push_data_triple_store($query);
+
+    // Reindex Redlink triple store.
+    wordlift_reindex_triple_store();
 }
 
 /**
@@ -178,21 +184,24 @@ function wordlift_save_author( $author_id ) {
     $description = wordlift_esc_sparql( get_the_author_meta( 'description', $author_id ) );
     $url         = wordlift_esc_sparql( get_author_posts_url( 'user_url' ) );
 
+    // Get the site language in order to define the literals language.
+    $site_language = wordlift_configuration_site_language();
+
     $sparql = "<$author_uri> a <http://schema.org/Person> . ";
     if ( !empty( $name ) ) {
-        $sparql .= "<$author_uri> schema:name '$name' . ";
+        $sparql .= "<$author_uri> schema:name '$name'@$site_language . ";
     }
     if ( !empty( $given_name ) ) {
-        $sparql .= "<$author_uri> schema:givenName '$given_name' . ";
+        $sparql .= "<$author_uri> schema:givenName '$given_name'@$site_language . ";
     }
     if ( !empty( $family_name ) ) {
-        $sparql .= "<$author_uri> schema:familyName '$family_name' . ";
+        $sparql .= "<$author_uri> schema:familyName '$family_name'@$site_language . ";
     }
     if ( !empty( $email ) ) {
         $sparql .= "<$author_uri> schema:email '$email' . ";
     }
     if ( !empty( $description ) ) {
-        $sparql .= "<$author_uri> schema:description '$description' . ";
+        $sparql .= "<$author_uri> schema:description '$description'@$site_language . ";
     }
     if ( !empty( $url ) ) {
         $sparql .= "<$author_uri> schema:url <$url> . ";
@@ -343,13 +352,8 @@ function wordlift_get_entity_posts_by_uri($uri) {
  */
 function wordlift_push_data_triple_store($query) {
 
-    // get the configuration.
-    $api_version = '1.0-ALPHA';
-    $dataset_id  = wordlift_configuration_dataset_id();
-    $app_key     = wordlift_configuration_application_key();
-
     // construct the API URL.
-    $api_url = "https://api.redlink.io/$api_version/data/$dataset_id/sparql/update?key=$app_key";
+    $api_url = wordlift_redlink_sparql_update_url();
 
     // post the request.
     $response = wp_remote_post($api_url, array(
@@ -444,20 +448,26 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
         }
     }
 
+    // Get the site language in order to define the literals language.
+    $site_language = wordlift_configuration_site_language();
+
     // set the label
-    $sparql  .= "<$uri> rdfs:label '" . wordlift_esc_sparql($label) . "' . \n";
+    $sparql  .= "<$uri> rdfs:label '" . wordlift_esc_sparql($label) . "'@$site_language . \n";
     // set the URL
     $sparql  .= "<$uri> schema:url <" . get_permalink( $post_id ) . "> . \n";
 
     // set the description.
     if (!empty($descr)) {
-        $sparql  .= "<$uri> schema:description '" . wordlift_esc_sparql($descr) . "' . \n";
+        $sparql  .= "<$uri> schema:description '" . wordlift_esc_sparql($descr) . "'@$site_language . \n";
     }
 
     $types   = wp_get_post_terms( $post->ID, 'entity_type' );
     // Support type are only schema.org ones: it could by null
     foreach ($types as $type) {
-        $sparql .= "<$uri> a <http://schema.org/$type->name> . \n";
+        // Capitalize the first letter.
+        // TODO: we shouldn't do this here, we should take the 'original' type.
+        $type = ucwords($type->name);
+        $sparql .= "<$uri> a <http://schema.org/$type> . \n";
     }
 
     // get related entities.
@@ -529,6 +539,38 @@ function wordlift_esc_sparql($string) {
     $string = str_replace('\t', '\\t', $string);
 
     return $string;
+}
+
+/**
+ * Reindex Redlink triple store, enabling local entities to be found in future analyses.
+ */
+function wordlift_reindex_triple_store() {
+
+    // Get the reindex URL.
+    $url      = wordlift_redlink_reindex_url();
+
+    // Post the request.
+    write_log( "Requesting reindexing of dataset [ url :: $url ]." );
+    $response = wp_remote_get( $url, array(
+            'method'      => 'POST',
+            'timeout'     => 45,
+            'redirection' => 5,
+            'httpversion' => '1.1',
+            'blocking'    => true, // switched to not blocking.
+            'sslverify'   => false,
+            'cookies'     => array()
+        )
+    );
+
+    // TODO: handle errors.
+    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+
+        write_log( "An error occurred while sending a request to Redlink to reindex a dataset. This is the response:" );
+        write_log( var_export( $response, true ) );
+        return false;
+    }
+
+    return true;
 }
 
 // hook save events.

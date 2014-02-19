@@ -40,12 +40,12 @@ angular.module( 'AnalysisService', [] )
       .success (data, status, headers, config) ->
         $rootScope.$broadcast 'analysisReceived', that.parse data
         # Set that the analysis is complete.
-        @isRunning = false
+        that.isRunning = false
       # In case of error, we don't do anything (for now).
       .error  (data, status, headers, config) ->
         # TODO: implement error handling.
         # Set that the analysis is complete.
-        @isRunning = false
+        that.isRunning = false
 
     # Parse the response data from the analysis request (Redlink).
     parse: (data) ->
@@ -91,7 +91,7 @@ angular.module( 'AnalysisService', [] )
         thumbnails = thumbnails.concat freebaseThumbnails
 
         # create the entity model.
-        entity = {
+        entity =
           id          : id
           thumbnail   : null
           thumbnails  : thumbnails
@@ -101,9 +101,13 @@ angular.module( 'AnalysisService', [] )
           descriptions: get('rdfs:comment', item)
           label       : getLanguage('rdfs:label', item, language)
           labels      : get('rdfs:label', item)
-          source      : if id.match('^http://rdf.freebase.com/.*$') then 'freebase' else 'dbpedia'
+          source      : if id.match('^http://rdf.freebase.com/.*$')
+                          'freebase'
+                        else if id.match('^http://dbpedia.org/.*$')
+                          'dbpedia'
+                        else
+                          'wordlift'
           _item       : item
-        }
 
         # Check if thumbnails exists.
         if thumbnails? and angular.isArray thumbnails
