@@ -59,15 +59,17 @@ function wordlift_save_post_and_related_entities($post_id) {
     
     // this array will hold all the entities found in this post.
     $entity_post_ids = array();
-    $entities = isset($_POST['entities']) ? $_POST['entities'] : array(); 
+    $entities        = isset($_POST['entities']) ? $_POST['entities'] : array();
+    $entities_count  = count( $entities );
 
-    write_log("Going to loop on related entity/ies ...");
+    write_log( "Going to loop on related entity/ies... [ entities count :: $entities_count ]" );
 
     // Loops on founded span tags
-    foreach ($entities as $entity) {
-        write_log("Within the loop on related entity/ies ...");
-        write_log('ok2');
-        write_log($entity["id"]);
+    foreach ( $entities as $entity ) {
+        write_log( "Within the loop on related entity/ies..." );
+        write_log( var_export( $entity, true ) );
+        //        write_log('ok2');
+        //        write_log($entity["id"]);
             
         $entity_label = $entity['label'];
         $entity_id    = $entity['id'];
@@ -188,17 +190,19 @@ function wordlift_save_entities_embedded_as_spans( $content ) {
     $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)">([^<]+)<\/span>/';
 
     // Look for the spans and the embedded data.
-    if ( 1 === preg_match ( $pattern , $content, $matches ) ) {
-        $uri   = $matches[1];
-        $type  = $matches[2];
-        $label = $matches[3];
+    if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
+        for ( $i = 0; $i < $count; $i++ ) {
+            $uri   = $matches[1][$i];
+            $type  = $matches[2][$i];
+            $label = $matches[3][$i];
 
-        write_log("[ uri :: $uri ][ type :: $type ][ label :: $label ]");
+            write_log("[ uri :: $uri ][ type :: $type ][ label :: $label ]");
 
-        // Save the entity in the local storage.
-        foreach ( wordlift_save_entity_post( $uri, $label, $type, '' ) as $post ) {
-            if ( !in_array( $post->ID, $post_ids ) ) {
-                array_push( $post_ids, $post->ID );
+            // Save the entity in the local storage.
+            foreach ( wordlift_save_entity_post( $uri, $label, $type, '' ) as $post ) {
+                if ( !in_array( $post->ID, $post_ids ) ) {
+                    array_push( $post_ids, $post->ID );
+                }
             }
         }
     }
