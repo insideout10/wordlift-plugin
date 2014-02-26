@@ -166,6 +166,8 @@ function wordlift_admin_enqueue_scripts() {
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
 
 
+require_once('libs/php-json-ld/jsonld.php');
+
 // add editor related methods.
 require_once('wordlift_editor.php');
 // add configuratiokn-related methods.

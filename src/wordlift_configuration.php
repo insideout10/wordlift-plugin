@@ -79,7 +79,7 @@ function wordlift_configuration_redlink_api_url() {
  */
 function wordlift_redlink_api_version() {
 
-    return '1.0-BETA';
+    return '1.0-ALPHA';
 }
 
 /**

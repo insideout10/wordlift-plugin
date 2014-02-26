@@ -24,7 +24,8 @@ angular.module('wordlift.tinymce.plugin.services.EditorService', ['wordlift.tiny
       dom.setAttrib(id, 'itemtype',  obj.entity.type);
       dom.setAttrib(id, 'itemid', obj.entity.id);
 
-    # receive annotations from the analysis.
+    # Receive annotations from the analysis (there is a mirror method in PHP for testing purposes, please try to keep
+    # the two aligned - tests/functions.php *wl_embed_analysis* )
     $rootScope.$on 'analysisReceived', (event, analysis) ->
 
       # Clean up the selection prefix/suffix text.
