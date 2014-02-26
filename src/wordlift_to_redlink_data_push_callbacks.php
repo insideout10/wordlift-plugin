@@ -129,6 +129,8 @@ function wordlift_save_post_and_related_entities($post_id) {
     add_post_meta( $post_id, 'wordlift_related_entities', $entity_post_ids, true );
     write_log("add_post_meta( $post_id, 'wordlift_related_entities', " . join( ', ', $entity_post_ids ) . ", true )\n");
 
+    // TODO: add management of inverse relationships.
+
     // add the relationships to the post from the entities side.
     // for each entity, remove the reference to the post.
     if ( is_array( $entity_post_ids ) ) {
@@ -526,8 +528,8 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
     foreach ( $related_entities_ids as $entity_id ) {
         $entity_uri = wordlift_esc_sparql( get_post_meta( $entity_id, 'entity_url', true ) );
         // create a two-way relationship.
-        $sparql .= " <$uri> dct:relation <$entity_uri> . ";
-        $sparql .= " <$entity_uri> dct:relation <$uri> . ";
+        $sparql .= " <$uri> dct:relation <$entity_uri> . \n";
+        $sparql .= " <$entity_uri> dct:relation <$uri> . \n";
     }
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
@@ -541,6 +543,8 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
     WHERE  { <$uri> schema:url ?o . };
     DELETE { <$uri> a ?o . }
     WHERE  { <$uri> a ?o . };
+    DELETE { <$uri> dct:relation ?o . }
+    WHERE  { <$uri> dct:relation ?o . };
     INSERT DATA { $sparql }
 EOF;
 
