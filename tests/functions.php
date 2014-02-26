@@ -204,7 +204,7 @@ function wl_embed_entities( $results, $content ) {
         $entity_type_uri = $entity_type['uri'];
 
         // Create the new span with the entity reference.
-        $replace      = '<span class="textannotation ' . $entity_class . '"' .
+        $replace      = '<span class="textannotation ' . $entity_class . '" ' .
             'itemscope="itemscope" ' .
             'itemid="' . $entity_id . '" ' .
             'itemtype="' . $entity_type_uri . '">' .
