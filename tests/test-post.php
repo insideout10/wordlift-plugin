@@ -110,6 +110,8 @@ class PostTest extends WP_UnitTestCase {
         $content_with_entities = wl_embed_entities( $analysis_results, $content_with_text_annotations );
         $this->assertFalse( empty( $content_with_entities ) );
 
+        // TODO: now post the $content_with_entities to test the procedures to save the entity.
+
         // Delete the test post.
         $this->deletePost( $post_id );
 

@@ -177,10 +177,11 @@ function wl_embed_entities( $results, $content ) {
 
     // For each match, embed the related entity.
     foreach ( $matches as $match ) {
+        $full = $match[0];
         $id   = $match[1];
         $text = $match[2];
 
-        echo "[ id :: $id ][ text :: $text ]\n";
+//        echo "[ id :: $id ][ text :: $text ]\n";
 
         $text_annotation = $results['text_annotations'][$id];
         $entities        = $text_annotation['entities'];
@@ -190,25 +191,105 @@ function wl_embed_entities( $results, $content ) {
             if ( $a['confidence'] == $b['confidence']) {
                 return 0;
             }
-            return ($a['confidence'] > $b['confidence']) ? -1 : 1;
+            return ( $a['confidence'] > $b['confidence'] ) ? -1 : 1;
         });
 
 //        echo "[ text annotation :: " . $text_annotation['id'] . "][ entities count :: " . count( $entities ) . " ]\n";
 
+        // Get the entity, its ID and type.
         $entity       = $entities[0]['entity'];
         $entity_id    = $entity->{'@id'};
         $entity_type  = wl_get_entity_type( $entity );
+        $entity_class = $entity_type['class'];
+        $entity_type_uri = $entity_type['uri'];
 
-        echo "[ entity id :: $entity_id ][ entity type :: $entity_type ]\n";
+        // Create the new span with the entity reference.
+        $replace      = '<span class="textannotation ' . $entity_class . '"' .
+            'itemscope="itemscope" ' .
+            'itemid="' . $entity_id . '" ' .
+            'itemtype="' . $entity_type_uri . '">' .
+            '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
+        $content      = str_replace( $full, $replace, $content );
+
+
+//        echo "[ id :: $id ]\n";
+//        echo "[ sel_prefix :: $sel_prefix ]\n";
+//        echo "[ sel_suffix :: $sel_suffix ]\n";
+//        echo "[ sel_text :: $sel_text ]\n";
+//        echo "[ pattern :: $pattern ]\n";
+//        echo "[ replace :: $replace ]\n";
+//        echo "[ content length (before) :: " . strlen( $content ) . " ]\n";
+//        echo "[ entity id :: $entity_id ][ entity type :: $entity_type ]\n";
+
     }
 
-    return null;
+    return $content;
 }
 
+/**
+ * Get the URI and stylesheet class associated with the provided entity.
+ * @param object $entity An entity instance.
+ * @return array An array containing a class and an URI element.
+ */
 function wl_get_entity_type( $entity ) {
 //    var_dump( $entity->{'@type'} );
 
-    return 'unknown';
+    // Prepare the types array.
+    $types = is_array( $entity->{'@type'} ) ? $entity->{'@type'} : array( $entity->{'@type'} );
+
+    if ( in_array( 'http://schema.org/Person', $types )
+        || in_array( 'http://rdf.freebase.com/ns/people.person', $types )) {
+        return array(
+            'class' => 'person',
+            'uri'   => 'http://schema.org/Person'
+        );
+    }
+
+    if ( in_array( 'http://schema.org/Organization', $types )
+        || in_array( 'http://rdf.freebase.com/ns/government.government', $types )
+        || in_array( 'http://schema.org/Newspaper', $types ) ) {
+        return array(
+            'class' => 'organization',
+            'uri'   => 'http://schema.org/Organization'
+        );
+    }
+
+    if ( in_array( 'http://schema.org/Place', $types )
+        || in_array( 'http://rdf.freebase.com/ns/location.location', $types ) ) {
+        return array(
+            'class' => 'place',
+            'uri'   => 'http://schema.org/Place'
+        );
+    }
+
+    if ( in_array( 'http://schema.org/Event', $types )
+        || in_array( 'http://dbpedia.org/ontology/Event', $types ) ) {
+        return array(
+            'class' => 'event',
+            'uri'   => 'http://schema.org/Event'
+        );
+    }
+
+    if ( in_array( 'http://rdf.freebase.com/ns/music.artist', $types )
+        || in_array( 'http://schema.org/MusicAlbum', $types ) ) {
+        return array(
+            'class' => 'event',
+            'uri'   => 'http://schema.org/Event'
+        );
+    }
+
+
+    if ( in_array( 'http://www.opengis.net/gml/_Feature', $types ) ) {
+        return array(
+            'class' => 'place',
+            'uri'   => 'http://schema.org/Place'
+        );
+    }
+
+    return array(
+        'class' => 'thing',
+        'uri'   => 'http://schema.org/Thing'
+    );
 }
 
 /**
