@@ -6,3 +6,4 @@ src/css/
 wp-tests/
 *.sublime-project
 *.sublime-workspace
+*~
