@@ -3,15 +3,6 @@
  * This file contains support functions for the tests.
  */
 
-// Define the basic options for HTTP calls to REDLINK.
-define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
-    'timeout'     => 60,
-    'redirection' => 5,
-    'httpversion' => '1.1',
-    'blocking'    => true,
-    'cookies'     => array()
-) ) );
-
 // Define the JSON-LD contexts.
 define( 'WL_ENHANCER_NAMESPACE',    'a' );
 define( 'WL_DUBLIN_CORE_NAMESPACE', 'b' );
@@ -61,6 +52,24 @@ function wl_delete_post( $post_id ) {
 }
 
 /**
+ * Update the content of the post with the specified ID.
+ * @param int $post_id    The post ID.
+ * @param string $content The post content.
+ * @return int|WP_Error The post ID in case of success, a WP_Error in case of error.
+ */
+function wl_update_post( $post_id, $content ) {
+
+    $wp_error = null;
+    $args = array(
+        'ID'           => $post_id,
+        'post_content' => $content
+    );
+
+    // Return WP_Error in case of errors.
+    return wp_update_post( $args, true );
+}
+
+/**
  * Get a post with the provided ID.
  * @param int $post_id The post ID.
  * @return null|WP_Post Returns a WP_Post object, or null on failure.
@@ -68,6 +77,22 @@ function wl_delete_post( $post_id ) {
 function wl_get_post( $post_id ) {
 
     return get_post( $post_id );
+}
+
+/**
+ * Delete permanently the provided posts.
+ * @param array $posts An array of posts.
+ * @return bool True if successful otherwise false.
+ */
+function wl_delete_posts( $posts ) {
+
+    $success = true;
+
+    foreach ( $posts as $post ) {
+        $success &= wp_delete_post( $post->ID, true );
+    }
+
+    return $success;
 }
 
 /**
@@ -205,8 +230,9 @@ function wl_embed_entities( $results, $content ) {
 
         // Create the new span with the entity reference.
         $replace      = '<span class="textannotation ' . $entity_class . '" ' .
-            'itemscope="itemscope" ' .
+            'id="' . $id . '" ' .
             'itemid="' . $entity_id . '" ' .
+            'itemscope="itemscope" ' .
             'itemtype="' . $entity_type_uri . '">' .
             '<span itemprop="name">' . htmlentities( $text ) . '</span></span>';
         $content      = str_replace( $full, $replace, $content );
@@ -232,10 +258,9 @@ function wl_embed_entities( $results, $content ) {
  * @return array An array containing a class and an URI element.
  */
 function wl_get_entity_type( $entity ) {
-//    var_dump( $entity->{'@type'} );
 
     // Prepare the types array.
-    $types = is_array( $entity->{'@type'} ) ? $entity->{'@type'} : array( $entity->{'@type'} );
+    $types = wl_type_to_types( $entity );
 
     if ( in_array( 'http://schema.org/Person', $types )
         || in_array( 'http://rdf.freebase.com/ns/people.person', $types )) {
@@ -335,7 +360,7 @@ function wl_parse_response( $json ) {
     // Entities are indexed by their ID.
     $entities           = array();
     foreach ( $jsonld->{'@graph'} as $item ) {
-        $types = is_array( $item->{'@type'} ) ? $item->{'@type'} : array( $item->{'@type'} );
+        $types = wl_type_to_types( $item );
         // Entity Annotation.
         if ( in_array( WL_ENHANCER_NAMESPACE . ':EntityAnnotation', $types ) ) {
             array_push( $entity_annotations, $item );
@@ -398,4 +423,16 @@ function wl_parse_response( $json ) {
         'entity_annotations' => $entity_annotations,
         'entities'           => $entities
     );
+}
+
+/**
+ * Get a types array from an item.
+ * @param object $item An item with a '@type' property (if the property doesn't exist, an empty array is returned).
+ * @return array The items array (or an empty array if the '@type' property doesn't exist).
+ */
+function wl_type_to_types( $item ) {
+
+    return !isset( $item->{'@type'} )
+        ? array() // Set an empty array if type is not set on the item.
+        : ( is_array( $item->{'@type'} ) ? $item->{'@type'} : array( $item->{'@type'} ) );
 }

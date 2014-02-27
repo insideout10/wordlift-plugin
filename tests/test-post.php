@@ -19,6 +19,9 @@ class PostTest extends WP_UnitTestCase {
     const SLUG     = 'tests-post';
     const TITLE    = 'Test Post';
 
+    // The number of expected entities (as available in the mock response).
+    const EXPECTED_ENTITIES = 9;
+
     // When true, the remote response is saved locally and kept as a mock-up (be aware that the previous mockup is
     // overwritten).
     const SAVE_REMOTE_RESPONSE = false;
@@ -28,6 +31,25 @@ class PostTest extends WP_UnitTestCase {
      */
     function setUp() {
         parent::setUp();
+
+        // Delete existing posts.
+        $result = wl_delete_posts( get_posts( array(
+            'posts_per_page' => -1,
+            'post_type'      => 'post',
+            'post_status'    => 'any'
+        ) ) );
+        $this->assertTrue( $result );
+
+        // Delete existing entities.
+        $result = wl_delete_posts( get_posts( array(
+            'posts_per_page' => -1,
+            'post_type'      => 'entity',
+            'post_status'    => 'any'
+        ) ) );
+        $this->assertTrue( $result );
+
+        // Empty the remote dataset.
+
 
         // Set the plugin options.
         update_option( WORDLIFT_OPTIONS, array(
@@ -45,6 +67,22 @@ class PostTest extends WP_UnitTestCase {
         $this->assertNotNull( wordlift_configuration_dataset_id() );
         $this->assertNotNull( wordlift_configuration_user_id() );
         $this->assertEquals( 'en', wordlift_configuration_site_language() );
+    }
+
+    /**
+     * Test the method to count the number of triples in the remote datastore.
+     */
+    function testCountTriples() {
+
+        // Get the count of triples.
+        $counts = rl_count_triples();
+
+        $this->assertNotNull( $counts );
+        $this->assertTrue( is_array( $counts ) );
+        $this->assertEquals( 3, count( $counts ) );
+        $this->assertTrue( isset( $counts['subjects'] ) );
+        $this->assertTrue( isset( $counts['predicates'] ) );
+        $this->assertTrue( isset( $counts['objects'] ) );
     }
 
     /**
@@ -110,7 +148,19 @@ class PostTest extends WP_UnitTestCase {
         $content_with_entities = wl_embed_entities( $analysis_results, $content_with_text_annotations );
         $this->assertFalse( empty( $content_with_entities ) );
 
-        // TODO: now post the $content_with_entities to test the procedures to save the entity.
+        // Update the post with the content with entities.
+        $update = wl_update_post( $post_id, $content_with_entities );
+        $this->assertTrue( is_numeric( $update ) );
+
+        echo $content_with_entities;
+
+        // Check that the entities are created in WordPress.
+        $posts = get_posts( array(
+            'posts_per_page' => -1,
+            'post_type'      => 'entity',
+            'post_status'    => 'any'
+        ) );
+        $this->assertEquals( EXPECTED_ENTITIES, count( $posts ) );
 
         // Delete the test post.
         $this->deletePost( $post_id );

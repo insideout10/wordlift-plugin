@@ -4,9 +4,7 @@
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  * @param int $post_id The post id being saved.
  */
-function wordlift_save_post_and_related_entities($post_id) {
-
-    write_log("Saving post and related entities [ post_id :: $post_id ]");
+function wordlift_save_post_and_related_entities( $post_id ) {
 
     // ignore autosaves
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
@@ -17,7 +15,9 @@ function wordlift_save_post_and_related_entities($post_id) {
     $dataset_id = wordlift_configuration_dataset_id();
 
     // get the current post.
-    $post = get_post($post_id); 
+    $post       = get_post( $post_id );
+
+    write_log( "wordlift_save_post_and_related_entities [ post_id :: $post_id ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ]" );
 
     // save the author and get the author URI.
     $author_uri = wordlift_save_author( $post->post_author );
@@ -59,7 +59,7 @@ function wordlift_save_post_and_related_entities($post_id) {
     
     // this array will hold all the entities found in this post.
     $entity_post_ids = array();
-    $entities        = isset($_POST['entities']) ? $_POST['entities'] : array();
+    $entities        = isset( $_POST['entities'] ) ? $_POST['entities'] : array();
     $entities_count  = count( $entities );
 
     write_log( "Going to loop on related entity/ies... [ entities count :: $entities_count ]" );
@@ -189,7 +189,7 @@ function wordlift_save_entities_embedded_as_spans( $content ) {
     $matches  = array();
 
     // Create the pattern.
-    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)">([^<]+)<\/span>/';
+    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)"><span itemprop="name">([^<]+)<\/span><\/span>/im';
 
     // Look for the spans and the embedded data.
     if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
@@ -208,6 +208,8 @@ function wordlift_save_entities_embedded_as_spans( $content ) {
             }
         }
     }
+
+    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]\n" );
 
     return $post_ids;
 }
@@ -321,7 +323,7 @@ function wordlift_save_entity_post($uri, $label, $type, $description) {
 
     // create or update the post.
 //    remove_action('save_post', 'wordlift_save_post');
-    $post_id = wp_insert_post($params, false);
+    $post_id = wp_insert_post( $params, false );
 //    add_action('save_post', 'wordlift_save_post');
 
     // TODO: handle errors.

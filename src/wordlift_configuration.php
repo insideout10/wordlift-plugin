@@ -79,7 +79,7 @@ function wordlift_configuration_redlink_api_url() {
  */
 function wordlift_redlink_api_version() {
 
-    return '1.0-ALPHA';
+    return '1.0-BETA';
 }
 
 /**
@@ -95,6 +95,104 @@ function wordlift_redlink_sparql_update_url() {
 
     // construct the API URL.
     return $api_base_url . $api_version . "/data/" . $dataset_id . "/sparql/update?key=" . $app_key;
+}
+
+/**
+ * Get the Redlink URL to delete a dataset data (doesn't delete the dataset itself).
+ * @return string
+ */
+function wordlift_redlink_empty_dataset_url() {
+
+    // get the configuration.
+    $api_version  = wordlift_redlink_api_version();
+    $dataset_id   = wordlift_configuration_dataset_id();
+    $app_key      = wordlift_configuration_application_key();
+    $api_base_url = wordlift_configuration_redlink_api_url();
+
+    // construct the API URL.
+    $url          = sprintf( '%s%s/data/%s?key=%s', $api_base_url, $api_version, $dataset_id, $app_key );
+    return $url;
+}
+
+function rl_sparql_select_url() {
+
+    // get the configuration.
+    $api_version  = wordlift_redlink_api_version();
+    $dataset_id   = wordlift_configuration_dataset_id();
+    $app_key      = wordlift_configuration_application_key();
+    $api_base_url = wordlift_configuration_redlink_api_url();
+
+    // construct the API URL.
+    $url          = sprintf( '%s%s/data/%s/sparql/select?key=%s', $api_base_url, $api_version, $dataset_id, $app_key );
+    return $url;}
+
+/**
+ * Empty the dataset bound to this WordPress install.
+ * @return WP_Response|WP_Error A WP_Response in case of success, otherwise a WP_Error.
+ */
+function wordlift_redlink_empty_dataset() {
+
+    // Get the empty dataset URL.
+    $url  = wordlift_redlink_empty_dataset_url();
+
+    // Prepare the request.
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+        'method'  => 'DELETE'
+    ));
+
+    // Send the request.
+    return wp_remote_request( $url, $args );
+}
+
+/**
+ * Count the number of triples in the dataset.
+ * @return array|WP_Error|null An array if successful, otherwise WP_Error or NULL.
+ */
+function rl_count_triples() {
+
+    // Get the SPARQL SELECT URL.
+    $url    = rl_sparql_select_url();
+
+    // Set the SPARQL query.
+    $sparql = 'SELECT (COUNT(DISTINCT ?s) AS ?subjects) (COUNT(DISTINCT ?p) AS ?predicates) (COUNT(DISTINCT ?o) AS ?objects) ' .
+        'WHERE { ?s ?p ?o }';
+
+    // Prepare the request.
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+        'method'  => 'POST',
+        'headers' => array(
+            'Accept'       => 'text/csv'
+        ),
+        'body'    => array(
+            'query' => $sparql
+        )
+    ));
+
+    // Send the request.
+    $response = wp_remote_post( $url, $args );
+
+    // Return the error in case of failure.
+    if ( is_wp_error( $response ) ) {
+        return $response;
+    }
+
+    // Get the body.
+    $body    = $response['body'];
+
+    // Get the values.
+    $matches = array();
+    if ( 1 === preg_match( '/(\d+),(\d+),(\d+)/im', $body, $matches ) && 4 === count( $matches ) ) {
+
+        // Return the counts.
+        return array(
+            'subjects'   => (int)$matches[1],
+            'predicates' => (int)$matches[2],
+            'objects'    => (int)$matches[3]
+        );
+    }
+
+    // No digits found in the response, return null.
+    return null;
 }
 
 /**

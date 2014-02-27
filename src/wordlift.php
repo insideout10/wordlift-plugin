@@ -9,7 +9,6 @@ Author URI: http://www.insideout.io
 License: APL
 */
 
-
 if (!function_exists('write_log')) {
     function write_log ( $log )  {
         if ( true === WP_DEBUG ) {
@@ -21,6 +20,17 @@ if (!function_exists('write_log')) {
         }
     }
 }
+
+// Define the basic options for HTTP calls to REDLINK.
+define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
+    'timeout'     => 60,
+    'redirection' => 5,
+    'httpversion' => '1.1',
+    'blocking'    => true,
+    'cookies'     => array()
+) ) );
+
+
 /**
  * Get the URL of the specified physical file.
  * @param string $file The path to the file from the plugin root folder.
@@ -165,6 +175,28 @@ function wordlift_admin_enqueue_scripts() {
 }
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
 
+/**
+ * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
+ * @param array $allowedtags The array with the currently configured elements and attributes.
+ * @param string $context    The context.
+ * @return array An array which contains allowed microdata attributes.
+ */
+function wordlift_allowed_html( $allowedtags, $context ) {
+
+    if ( 'post' !== $context ) {
+        return $allowedtags;
+    }
+
+    return array_merge_recursive( $allowedtags, array(
+        'span' => array(
+            'itemscope' => true,
+            'itemtype'  => true,
+            'itemid'    => true,
+            'itemprop'  => true
+        )
+    ) );
+}
+add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
 
 require_once('libs/php-json-ld/jsonld.php');
 
