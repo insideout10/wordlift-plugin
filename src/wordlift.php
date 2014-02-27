@@ -198,6 +198,27 @@ function wordlift_allowed_html( $allowedtags, $context ) {
 }
 add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
 
+/**
+ * Get the entity URI of the provided post.
+ * @param int $post_id The post ID.
+ * @return string|null The URI of the entity or null if not configured.
+ */
+function wl_get_entity_uri( $post_id ) {
+
+    return get_post_meta( $post_id, 'entity_url', true );
+}
+
+/**
+ * Save the entity URI for the provided post ID.
+ * @param int $post_id The post ID.
+ * @param string $uri The post URI.
+ * @return bool True if successful, otherwise false.
+ */
+function wl_set_entity_uri( $post_id, $uri ) {
+
+    return update_post_meta( $post_id, 'entity_url', $uri );
+}
+
 require_once('libs/php-json-ld/jsonld.php');
 
 // add editor related methods.

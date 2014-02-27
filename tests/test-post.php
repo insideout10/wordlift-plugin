@@ -32,6 +32,14 @@ class PostTest extends WP_UnitTestCase {
     function setUp() {
         parent::setUp();
 
+        // Set the plugin options.
+        update_option( WORDLIFT_OPTIONS, array(
+            'application_key' => '7CzNylwicEourMXznPxRVfgeT9XskdLr45d35ad1',
+            'user_id'         => 353,
+            'dataset_name'    => 'wordlift'
+        ) );
+
+
         // Delete existing posts.
         $result = wl_delete_posts( get_posts( array(
             'posts_per_page' => -1,
@@ -39,6 +47,11 @@ class PostTest extends WP_UnitTestCase {
             'post_status'    => 'any'
         ) ) );
         $this->assertTrue( $result );
+        $this->assertEquals( 0, count( get_posts( array(
+            'posts_per_page' => -1,
+            'post_type'      => 'post',
+            'post_status'    => 'any'
+        ) ) ) );
 
         // Delete existing entities.
         $result = wl_delete_posts( get_posts( array(
@@ -47,23 +60,22 @@ class PostTest extends WP_UnitTestCase {
             'post_status'    => 'any'
         ) ) );
         $this->assertTrue( $result );
+        $this->assertEquals( 0, count( get_posts( array(
+            'posts_per_page' => -1,
+            'post_type'      => 'entity',
+            'post_status'    => 'any'
+        ) ) ) );
 
         // Empty the remote dataset.
         rl_empty_dataset();
 
         // Get the count of triples.
         $counts = rl_count_triples();
+        $this->assertNotNull( $counts );
+        $this->assertFalse( is_wp_error( $counts ) );
         $this->assertEquals( 0, $counts['subjects'] );
         $this->assertEquals( 0, $counts['predicates'] );
         $this->assertEquals( 0, $counts['objects'] );
-
-
-        // Set the plugin options.
-        update_option( WORDLIFT_OPTIONS, array(
-            'application_key' => '7CzNylwicEourMXznPxRVfgeT9XskdLr45d35ad1',
-            'user_id'         => 353,
-            'dataset_name'    => 'wordlift'
-        ) );
     }
 
     /**
@@ -160,14 +172,42 @@ class PostTest extends WP_UnitTestCase {
         $this->assertTrue( is_numeric( $update ) );
 
         // Check that the entities are created in WordPress.
-        $posts = get_posts( array(
+        $entity_posts = get_posts( array(
             'posts_per_page' => -1,
             'post_type'      => 'entity',
             'post_status'    => 'any'
         ) );
-        $this->assertEquals( self::EXPECTED_ENTITIES, count( $posts ) );
+        $this->assertEquals( self::EXPECTED_ENTITIES, count( $entity_posts ) );
 
-        // TODO: check that the entities are bound to the post.
+        // Check that each entity is bound to the post.
+        $entity_ids = array();
+        foreach ( $entity_posts as $post ) {
+            // Store the entity IDs for future checks.
+            array_push( $entity_ids, $post->ID );
+
+            // Get the related posts IDs.
+            $rel_posts = wl_get_related_post_ids( $post->ID );
+            // Must be only one post.
+            $this->assertEquals( 1, count( $rel_posts ) );
+            // The post must be the one the test created.
+            $this->assertEquals( $post_id, $rel_posts[0] );
+        }
+
+        // Check that the post references the entities.
+        $rel_entities = wl_get_related_entities( $post_id );
+        $this->assertEquals( count( $entity_ids ), count( $rel_entities ) );
+        foreach ( $entity_ids as $id ) {
+            $this->assertTrue( in_array( $id, $rel_entities ) );
+        }
+
+        // Check that the locally saved entities and the remotely saved ones match.
+        $this->checkEntities( $entity_posts );
+
+        // Check that the locally saved post data match the ones on Redlink.
+        $this->checkPost( $post_id );
+
+        // Check the post references, that they match between local and remote.
+        $this->checkPostReferences( $post_id );
 
         // Delete the test post.
         $this->deletePost( $post_id );
@@ -202,6 +242,181 @@ class PostTest extends WP_UnitTestCase {
         $result   = wl_delete_post( $post_id );
         $this->assertTrue( false != $result );
 
+    }
+
+    /**
+     * Check the provided entity posts against the remote Redlink datastore.
+     * @param array $posts The array of entity posts.
+     */
+    function checkEntities( $posts ) {
+
+        foreach ( $posts as $post ) {
+            $this->checkEntity( $post );
+        }
+    }
+
+    /**
+     * Check the provided entity post against the remote Redlink datastore.
+     * @param WP_Post $post The post to check.
+     */
+    function checkEntity( $post ) {
+
+        // Get the entity URI.
+        $uri      = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+
+        // Prepare the SPARQL query to select label and URL.
+        $sparql   = <<<EOF
+SELECT DISTINCT ?label ?url ?type
+WHERE {
+    <$uri> rdfs:label ?label ;
+           schema:url ?url ;
+           a ?type .
+}
+EOF;
+
+        // Send the query and get the response.
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+        $this->assertFalse( is_wp_error( $response ) );
+
+        $body     = $response['body'];
+
+        $matches  = array();
+        $count    = preg_match_all( '/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im' , $body, $matches, PREG_SET_ORDER );
+        $this->assertTrue( is_numeric( $count ) );
+
+        // Expect only one match (headers + one row).
+        $this->assertEquals( 2, $count );
+
+        // Focus on the first row.
+        $match    = $matches[1];
+
+        // Get the label and URL from the remote answer.
+        $label    = $match['label'];
+        $url      = $match['url'];
+        $type     = $match['type'];
+
+        // Get the post title and permalink.
+        $title    = '"' . $post->post_title .'"@' . wordlift_configuration_site_language();
+        $permalink = '<' . get_permalink( $post->ID ) . '>';
+
+        // Check for equality.
+        $this->assertEquals( $title, $label );
+        $this->assertEquals( $permalink, $url );
+        $this->assertFalse( empty( $type ) );
+    }
+
+    /**
+     * Check that the local post data and the remote ones match.
+     * @param int $post_id The post ID to check.
+     */
+    function checkPost( $post_id ) {
+
+        // Get the post.
+        $post     = get_post( $post_id );
+        $this->assertNotNull( $post );
+
+        // Get the post Redlink URI.
+        $uri      = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+
+        // Prepare the SPARQL query to select label and URL.
+        $sparql   = <<<EOF
+SELECT DISTINCT ?author ?dateModified ?datePublished ?interactionCount ?url ?type ?label
+WHERE {
+    <$uri> schema:author ?author ;
+           schema:dateModified ?dateModified ;
+           schema:datePublished ?datePublished ;
+           schema:interactionCount ?interactionCount ;
+           schema:url ?url ;
+           a ?type ;
+           rdfs:label ?label .
+}
+EOF;
+
+        // Send the query and get the response.
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+        $this->assertFalse( is_wp_error( $response ) );
+
+        $body     = $response['body'];
+
+        $matches  = array();
+        $count    = preg_match_all( '/^(?P<author>.*)\t(?P<dateModified>.*)\t(?P<datePublished>.*)\t(?P<interactionCount>.*)\t(?P<url>.*)\t(?P<type>.*)\t(?P<label>[^\r]*)/im' , $body, $matches, PREG_SET_ORDER );
+        $this->assertTrue( is_numeric( $count ) );
+
+        // Expect only one match (headers + one row).
+        $this->assertEquals( 2, $count );
+
+        // Focus on the first row.
+        $match    = $matches[1];
+
+        $author   = $match['author'];
+        $date_modified = $match['dateModified'];
+        $date_published = $match['datePublished'];
+        $interaction_count = $match['interactionCount'];
+        $url      = $match['url'];
+        $type     = $match['type'];
+        $label    = $match['label'];
+
+        $permalink = '<' . get_permalink( $post_id ) . '>';
+        $post_author_url = '<' . rl_get_author_url( $post->post_author ) . '>';
+        $post_date_published = get_the_time('c', $post);
+        $post_date_modified  = get_post_modified_time( 'c', true, $post );
+        $post_comment_count = 'UserComments:' . $post->comment_count;
+        $post_entity_type = '<http://schema.org/BlogPosting>';
+        $post_title = '"' . $post->post_title . '"@' . wordlift_configuration_site_language();
+
+        $this->assertEquals( $post_author_url, $author );
+        $this->assertEquals( $post_date_published, $date_modified );
+        $this->assertEquals( $post_date_modified, $date_published );
+        $this->assertEquals( $post_comment_count, $interaction_count );
+        $this->assertEquals( $permalink, $url );
+        $this->assertEquals( $post_entity_type, $type );
+        $this->assertEquals( $post_title, $label );
+    }
+
+    /**
+     * Check that the post is referencing the related entities.
+     * @param int $post_id The post ID.
+     */
+    function checkPostReferences( $post_id ) {
+
+        // Get the post.
+        $post     = get_post( $post_id );
+        $this->assertNotNull( $post );
+
+        // Get the post Redlink URI.
+        $uri      = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+
+        // Prepare the SPARQL query to select label and URL.
+        $sparql   = <<<EOF
+SELECT DISTINCT ?uri
+WHERE {
+    <$uri> dcterms:references ?uri .
+}
+EOF;
+
+        // Send the query and get the response.
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+        $this->assertFalse( is_wp_error( $response ) );
+
+        $body     = $response['body'];
+
+        $matches  = array();
+        $count    = preg_match_all( '/^(?P<uri>[^\r]*)/im' , $body, $matches, PREG_SET_ORDER );
+        $this->assertTrue( is_numeric( $count ) );
+
+        $entity_ids = wl_get_related_entities( $post->ID );
+
+        // Expect only one match (headers + expected entities).
+        $this->assertEquals( count( $entity_ids ) + 1, $count );
+
+        $entity_uris = wl_post_ids_to_entity_uris( $entity_ids );
+        for ( $i = 1; $i < $count; $i++ ) {
+            $entity_uri  = $matches[$i]['uri'];
+            // Remove bounding </>
+            $entity_uri = substr( $entity_uri, 1, strlen( $entity_uri ) -  2 );
+            // Check that the URI is in the array.
+            $this->assertTrue( in_array( $entity_uri , $entity_uris ) );
+        }
     }
 
 }

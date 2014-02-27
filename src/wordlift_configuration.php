@@ -150,29 +150,19 @@ function rl_empty_dataset() {
  */
 function rl_count_triples() {
 
-    // Get the SPARQL SELECT URL.
-    $url    = rl_sparql_select_url();
-
     // Set the SPARQL query.
     $sparql = 'SELECT (COUNT(DISTINCT ?s) AS ?subjects) (COUNT(DISTINCT ?p) AS ?predicates) (COUNT(DISTINCT ?o) AS ?objects) ' .
         'WHERE { ?s ?p ?o }';
 
-    // Prepare the request.
-    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
-        'method'  => 'POST',
-        'headers' => array(
-            'Accept'       => 'text/csv'
-        ),
-        'body'    => array(
-            'query' => $sparql
-        )
-    ));
-
     // Send the request.
-    $response = wp_remote_post( $url, $args );
+    $response = rl_sparql_select( $sparql, 'text/csv' );
 
     // Return the error in case of failure.
     if ( is_wp_error( $response ) ) {
+//        var_dump( $response );
+        $error_code    = $response->get_error_code();
+        $error_message = $response->get_error_message();
+        write_log( "rl_count_triples [ error code :: $error_code ][ error message :: $error_message ]\n" );
         return $response;
     }
 
@@ -193,6 +183,34 @@ function rl_count_triples() {
 
     // No digits found in the response, return null.
     return null;
+}
+
+/**
+ * Execute the provided query against the SPARQL SELECT Redlink end-point and return the response.
+ * @param string $query  A SPARQL query.
+ * @param string $accept The mime type for the response format (default = 'text/csv').
+ * @return WP_Response|WP_Error A WP_Response instance in successful otherwise a WP_Error.
+ */
+function rl_sparql_select( $query, $accept = 'text/csv' ) {
+
+    // Get the SPARQL SELECT URL.
+    $url    = rl_sparql_select_url();
+
+    // Prepare the SPARQL statement by prepending the default namespaces.
+    $sparql = wordlift_get_ns_prefixes() . "\n" . $query;
+
+    // Prepare the request.
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+        'headers' => array(
+            'Accept' => $accept
+        ),
+        'body'    => array(
+            'query'  => $sparql
+        )
+    ));
+
+    // Send the request.
+    return wp_remote_post( $url, $args );
 }
 
 /**

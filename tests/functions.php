@@ -436,3 +436,68 @@ function wl_type_to_types( $item ) {
         ? array() // Set an empty array if type is not set on the item.
         : ( is_array( $item->{'@type'} ) ? $item->{'@type'} : array( $item->{'@type'} ) );
 }
+
+/**
+ * Get the IDs of posts related to the specified post.
+ * @param int $post_id The post ID.
+ * @return array An array of posts related to the one specified.
+ */
+function wl_get_related_post_ids( $post_id ) {
+
+    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+    $related = get_post_meta( $post_id, 'wordlift_related_posts', true );
+
+    // Ensure an array is returned.
+    return ( is_array( $related )
+        ? $related
+        : array( $related ) );
+}
+
+/**
+ * Get the IDs of entities related to the specified post.
+ * @param int $post_id The post ID.
+ * @return array An array of posts related to the one specified.
+ */
+function wl_get_related_entities( $post_id ) {
+
+    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+    $related = get_post_meta( $post_id, 'wordlift_related_entities', true );
+
+    // Ensure an array is returned.
+    return ( is_array( $related )
+        ? $related
+        : array( $related ) );
+}
+
+/**
+ * Get the author URI.
+ * @param int $author_id The author ID.
+ * @return string The author URI.
+ */
+function rl_get_author_url( $author_id ) {
+
+    // Build the entity URI.
+    $url = sprintf(
+        'http://data.redlink.io/%s/%s/author/%s',
+        wordlift_configuration_user_id(),
+        wordlift_configuration_dataset_id(),
+        $author_id
+    );
+
+    return $url;
+}
+
+/**
+ * Get an array of entity URIs given their post IDs.
+ * @param array $post_ids The post IDs.
+ * @return array An array of entity URIs.
+ */
+function wl_post_ids_to_entity_uris( $post_ids ) {
+
+    $uris = array();
+    foreach ( $post_ids as $id ) {
+        array_push( $uris, wl_get_entity_uri( $id ) );
+    }
+
+    return $uris;
+}

@@ -96,8 +96,9 @@ function wordlift_entity_box_content($post) {
 /**
  * Saves the entity URL for the specified post ID (set via the *save_post* hook).
  * @param int $post_id The post ID.
+ * @return int|null
  */
-function wordlift_save_entity_custom_fields($post_id) {
+function wordlift_save_entity_custom_fields( $post_id ) {
 
     // Check if our nonce is set.
     if ( ! isset( $_POST['wordlift_entity_box_nonce'] ) )
@@ -137,7 +138,7 @@ function wordlift_save_entity_custom_fields($post_id) {
 
 /**
  * Get the entity types associated to the specified post.
- * @param $post_id The post id.
+ * @param int $post_id The post ID.
  * @return array An array of terms.
  */
 function wordlift_get_entity_types( $post_id ) {
