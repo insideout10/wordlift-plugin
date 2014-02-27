@@ -101,7 +101,7 @@ function wordlift_redlink_sparql_update_url() {
  * Get the Redlink URL to delete a dataset data (doesn't delete the dataset itself).
  * @return string
  */
-function wordlift_redlink_empty_dataset_url() {
+function rl_empty_dataset_url() {
 
     // get the configuration.
     $api_version  = wordlift_redlink_api_version();
@@ -130,10 +130,10 @@ function rl_sparql_select_url() {
  * Empty the dataset bound to this WordPress install.
  * @return WP_Response|WP_Error A WP_Response in case of success, otherwise a WP_Error.
  */
-function wordlift_redlink_empty_dataset() {
+function rl_empty_dataset() {
 
     // Get the empty dataset URL.
-    $url  = wordlift_redlink_empty_dataset_url();
+    $url  = rl_empty_dataset_url();
 
     // Prepare the request.
     $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(

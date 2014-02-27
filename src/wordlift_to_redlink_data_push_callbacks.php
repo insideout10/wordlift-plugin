@@ -486,11 +486,12 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
 
     // get the entity URI.
     $uri     = get_post_meta( $post_id, 'entity_url', true );
-    // TODO: raise an error if the URI is not set.
-    if ( empty( $uri ) ) {
-        write_log('The entity URI is missing.');
-        return;
+    if ( empty( $uri) ) {
+        // Set the entity URI.
+        $uri = wordlift_build_entity_uri( $post );
     }
+
+    write_log( "wordlift_save_entity_to_triple_store [ post_id :: $post_id ][ label :: $label ][ uri :: $uri ]" );
 
     // create a new empty statement.
     $sparql  = '';
@@ -527,11 +528,13 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
 
     // get related entities.
     $related_entities_ids = get_post_meta( $post_id, 'wordlift_related_entities', true );
-    foreach ( $related_entities_ids as $entity_id ) {
-        $entity_uri = wordlift_esc_sparql( get_post_meta( $entity_id, 'entity_url', true ) );
-        // create a two-way relationship.
-        $sparql .= " <$uri> dct:relation <$entity_uri> . \n";
-        $sparql .= " <$entity_uri> dct:relation <$uri> . \n";
+    if ( is_array( $related_entities_ids ) ) {
+        foreach ( $related_entities_ids as $entity_id ) {
+            $entity_uri = wordlift_esc_sparql( get_post_meta( $entity_id, 'entity_url', true ) );
+            // create a two-way relationship.
+            $sparql .= " <$uri> dct:relation <$entity_uri> . \n";
+            $sparql .= " <$entity_uri> dct:relation <$uri> . \n";
+        }
     }
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
@@ -551,6 +554,29 @@ function wordlift_save_entity_to_triple_store( $post_id ) {
 EOF;
 
     wordlift_push_data_triple_store($query);
+}
+
+/**
+ * Build the entity URI given the entity's post.
+ * @param object $post The entity post.
+ * @return string The URI of the entity.
+ */
+function wordlift_build_entity_uri( $post ) {
+
+    // Create an ID given the title.
+    $id  = preg_replace( '/[^\w|\d]/im', '_', $post->post_title );
+
+
+    // Build the entity URI.
+    $url = sprintf(
+        'http://data.redlink.io/%s/%s/resource/%s',
+        wordlift_configuration_user_id(),
+        wordlift_configuration_dataset_id(),
+        $id
+    );
+
+    return $url;
+
 }
 
 /**

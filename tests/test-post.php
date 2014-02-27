@@ -49,6 +49,13 @@ class PostTest extends WP_UnitTestCase {
         $this->assertTrue( $result );
 
         // Empty the remote dataset.
+        rl_empty_dataset();
+
+        // Get the count of triples.
+        $counts = rl_count_triples();
+        $this->assertEquals( 0, $counts['subjects'] );
+        $this->assertEquals( 0, $counts['predicates'] );
+        $this->assertEquals( 0, $counts['objects'] );
 
 
         // Set the plugin options.
@@ -152,15 +159,15 @@ class PostTest extends WP_UnitTestCase {
         $update = wl_update_post( $post_id, $content_with_entities );
         $this->assertTrue( is_numeric( $update ) );
 
-        echo $content_with_entities;
-
         // Check that the entities are created in WordPress.
         $posts = get_posts( array(
             'posts_per_page' => -1,
             'post_type'      => 'entity',
             'post_status'    => 'any'
         ) );
-        $this->assertEquals( EXPECTED_ENTITIES, count( $posts ) );
+        $this->assertEquals( self::EXPECTED_ENTITIES, count( $posts ) );
+
+        // TODO: check that the entities are bound to the post.
 
         // Delete the test post.
         $this->deletePost( $post_id );
