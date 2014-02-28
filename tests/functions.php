@@ -147,6 +147,8 @@ function wl_analyze_content( $content ) {
         var_dump( $args );
         echo " response: \n";
         var_dump( $response );
+        echo " response body: \n";
+        echo $response['body'];
         echo "=======================================================\n";
 
         return $response;
