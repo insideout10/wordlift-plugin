@@ -142,7 +142,7 @@ function wl_analyze_content( $content ) {
         || 200 !== $response['response']['code'] ) {
 
         echo "wl_analyze_content ====================================\n";
-        echo "[ api url :: $api_url ]\n";
+//        echo "[ api url :: $api_url ]\n"; -- enabling this will print out the key.
         echo " request : \n";
         var_dump( $args );
         echo " response: \n";

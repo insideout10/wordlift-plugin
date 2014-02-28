@@ -34,9 +34,10 @@ class WordLiftTest extends WP_UnitTestCase {
      * @return string The entity URI.
      */
     function get_entity_uri($name) {
+
         $user_id      = wordlift_configuration_user_id();
         $dataset_name = wordlift_configuration_dataset_id();
-        return "http://data.redlink.io/$user_id/$dataset_name/resource/$name";
+        return "http://data.redlink.io/$user_id/$dataset_name/entity/$name";
     }
 
     /**
