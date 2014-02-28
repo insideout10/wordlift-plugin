@@ -391,7 +391,7 @@ function wordlift_get_custom_dataset_entity_uri( $uri ) {
  * @param string $uri The entity URI.
  * @return array mixed An array of posts.
  */
-function wordlift_get_entity_posts_by_uri($uri) {
+function wordlift_get_entity_posts_by_uri( $uri ) {
 
     $query = new WP_Query( array(
             'post_status' => 'any',
@@ -413,7 +413,11 @@ function wordlift_get_entity_posts_by_uri($uri) {
         )
     );
 
-    return $query->get_posts();
+    $posts = $query->get_posts();
+
+    write_log( "wordlift_get_entity_posts_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
+
+    return $posts;
 }
 
 /**
@@ -666,7 +670,7 @@ function wordlift_reindex_triple_store() {
     $url      = wordlift_redlink_reindex_url();
 
     // Post the request.
-    write_log( "Requesting reindexing of dataset [ url :: $url ]." );
+    write_log( "wordlift_reindex_triple_store\n" );
     $response = wp_remote_get( $url, array(
             'method'      => 'POST',
             'timeout'     => 45,

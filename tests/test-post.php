@@ -133,6 +133,12 @@ class PostTest extends WP_UnitTestCase {
         // Check the response.
         $this->assertNotNull( $response );
         $this->assertFalse( is_wp_error( $response ) );
+
+        // Print the response if the status code is not 200.
+        if ( 200 !== $status_code ) {
+            var_dump( $response );
+        }
+
         $this->assertTrue( 200 === $status_code );
 
         // Save the results to a file.
