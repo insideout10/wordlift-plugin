@@ -142,6 +142,7 @@ function wl_analyze_content( $content ) {
         || 200 !== $response['response']['code'] ) {
 
         echo "wl_analyze_content ====================================\n";
+        echo "[ api url :: $api_url ]\n";
         var_dump( $response );
         echo "=======================================================\n";
 
