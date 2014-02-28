@@ -32,13 +32,26 @@ class PostTest extends WP_UnitTestCase {
     function setUp() {
         parent::setUp();
 
+        // Set the dataset name according to environment vars.
+        $dataset_name = str_replace('.', '-',
+            sprintf(
+                '%s-php-%s-%s-wp-%s-ms-%s',
+                'wordlift-tests',
+                PHP_MAJOR_VERSION,
+                PHP_MINOR_VERSION,
+                getenv('WP_VERSION'),
+                getenv('WP_MULTISITE')
+            )
+        );
+
+        echo "setUp [ dataset name :: $dataset_name ]\n";
+
         // Set the plugin options.
         update_option( WORDLIFT_OPTIONS, array(
-            'application_key' => getenv('REDLINK_APP_KEY'), // '7CzNylwicEourMXznPxRVfgeT9XskdLr45d35ad1',
-            'user_id'         => getenv('REDLINK_USER_ID'), // 353,
-            'dataset_name'    => getenv('REDLINK_DATASET_NAME') // 'wordlift'
+            'application_key' => getenv('REDLINK_APP_KEY'),
+            'user_id'         => getenv('REDLINK_USER_ID'),
+            'dataset_name'    => $dataset_name
         ) );
-
 
         // Delete existing posts.
         $result = wl_delete_posts( get_posts( array(
@@ -419,4 +432,9 @@ EOF;
         }
     }
 
+}
+
+function getDatasetName() {
+    $dataset_name = "$this->dataset_name_prefix-php-" . PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION . "-wp-$this->wp_version-ms-$this->wp_multisite";
+    return str_replace('.', '-', $dataset_name);
 }
