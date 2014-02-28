@@ -143,6 +143,9 @@ function wl_analyze_content( $content ) {
 
         echo "wl_analyze_content ====================================\n";
         echo "[ api url :: $api_url ]\n";
+        echo " request : \n";
+        var_dump( $args );
+        echo " response: \n";
         var_dump( $response );
         echo "=======================================================\n";
 
