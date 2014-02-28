@@ -48,7 +48,7 @@ class PostTest extends WP_UnitTestCase {
 
         // Set the plugin options.
         update_option( WORDLIFT_OPTIONS, array(
-            'application_key' => getenv('REDLINK_APP_KEY'),
+            'application_key' => '3NvAwNvOqpmKW0gANmgQwy4klYy11Uy4dfba4d8c', // getenv('REDLINK_APP_KEY'),
             'user_id'         => getenv('REDLINK_USER_ID'),
             'dataset_name'    => $dataset_name
         ) );
