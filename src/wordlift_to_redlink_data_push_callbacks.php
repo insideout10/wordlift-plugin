@@ -442,19 +442,20 @@ function wordlift_push_data_triple_store($query) {
         )
     );
 
-    write_log("=============================================================\n");
-    write_log("API URL: $api_url\n");
-    write_log("Query:\n");
-    write_log("$query\n");
-    write_log("=============================================================\n");
-    write_log(var_export($response, true));
-    write_log("=============================================================\n");
+//    write_log("=============================================================\n");
+//    write_log("API URL: $api_url\n");
+//    write_log("Query:\n");
+//    write_log("$query\n");
+//    write_log("=============================================================\n");
+//    write_log(var_export($response, true));
+//    write_log("=============================================================\n");
 
     // TODO: handle errors.
     if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
-        write_log("== ERROR        =============================================\n");
-        write_log("=============================================================\n");
+        write_log( "== ERROR        =============================================\n" );
+        write_log( var_export( $response, true ) );
+        write_log( "=============================================================\n" );
 
         return false;
     }

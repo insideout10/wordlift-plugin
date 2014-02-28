@@ -15,8 +15,8 @@ class WordLiftTest extends WP_UnitTestCase {
     private $dataset_name_prefix = "wordlift-tests";
 
     // the configuration parameters for WordLift.
-    private $user_id         = 353;
-    private $application_key = 'TIDT902ZPVpSoNa1DWAPWJVbxOQYgYUab0bdb839';
+    private $user_id;
+    private $application_key;
 
     // sample entity data.
     // the dbpedia URI.
@@ -73,6 +73,11 @@ class WordLiftTest extends WP_UnitTestCase {
     function setUp() {
 
         parent::setUp();
+
+        // Set the user ID and the application key.
+        $this->user_id         = getenv('REDLINK_USER_ID');
+        $this->application_key = getenv('REDLINK_APP_KEY');
+
 
         // set the dataset name for this test.
         $this->wp_version   = getenv('WP_VERSION');
