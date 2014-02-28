@@ -138,7 +138,8 @@ function wl_analyze_content( $content ) {
     $response = wp_remote_post( $api_url, $args );
 
     // If an error has been raised, return the error.
-    if ( is_wp_error( $response ) ) {
+    if ( is_wp_error( $response )
+        || 200 !== $response['response']['code'] ) {
 
         echo "wl_analyze_content ====================================\n";
         var_dump( $response );
