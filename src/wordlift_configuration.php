@@ -48,7 +48,8 @@ function wordlift_configuration_dataset_id() {
  */
 function wordlift_configuration_analysis_name() {
 
-    return wordlift_configuration_dataset_id();
+    // TODO: change this as a parameter.
+    return 'wordlift';
 }
 
 

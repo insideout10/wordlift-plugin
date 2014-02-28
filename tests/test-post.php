@@ -44,8 +44,6 @@ class PostTest extends WP_UnitTestCase {
             )
         );
 
-        echo "setUp [ dataset name :: $dataset_name ]\n";
-
         // Set the plugin options.
         update_option( WORDLIFT_OPTIONS, array(
             'application_key' => getenv('REDLINK_APP_KEY'),
