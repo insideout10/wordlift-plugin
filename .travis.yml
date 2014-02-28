@@ -9,8 +9,8 @@ env:
     - WP_MULTISITE=0
   matrix:
     - WP_VERSION=latest
-    - WP_VERSION=3.8
-    - WP_VERSION=3.7.1
+#    - WP_VERSION=3.8
+#    - WP_VERSION=3.7.1
 # - WP_VERSION=3.6.1  WP_MULTISITE=0
 # - WP_VERSION=3.5.2  WP_MULTISITE=0
 # - WP_VERSION=3.4.2  WP_MULTISITE=0
