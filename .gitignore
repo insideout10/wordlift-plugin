@@ -7,3 +7,4 @@ wp-tests/
 *.sublime-project
 *.sublime-workspace
 *~
+run-tests.sh
