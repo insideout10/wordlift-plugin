@@ -139,6 +139,11 @@ function wl_analyze_content( $content ) {
 
     // If an error has been raised, return the error.
     if ( is_wp_error( $response ) ) {
+
+        echo "wl_analyze_content ====================================\n";
+        var_dump( $response );
+        echo "=======================================================\n";
+
         return $response;
     }
 

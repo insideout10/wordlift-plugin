@@ -685,7 +685,7 @@ function wordlift_reindex_triple_store() {
     // TODO: handle errors.
     if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
-        write_log( "An error occurred while sending a request to Redlink to reindex a dataset. This is the response:" );
+        write_log( "wordlift_reindex_triple_store: error\n" );
         write_log( var_export( $response, true ) );
         return false;
     }
