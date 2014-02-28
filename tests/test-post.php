@@ -134,7 +134,7 @@ class PostTest extends WP_UnitTestCase {
         $this->assertTrue( 200 === $status_code );
 
         // Save the results to a file.
-        if ( SAVE_REMOTE_RESPONSE ) {
+        if ( self::SAVE_REMOTE_RESPONSE ) {
             $output   = dirname(__FILE__) . '/' . self::FILENAME . '.json';
             $result   = file_put_contents( $output, $body );
             $this->assertFalse( false === $result );

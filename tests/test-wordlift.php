@@ -46,9 +46,8 @@ class WordLiftTest extends WP_UnitTestCase {
      * @return string The post URI.
      */
     function get_post_uri($id) {
-        $user_id      = wordlift_configuration_user_id();
-        $dataset_name = wordlift_configuration_dataset_id();
-        return "http://data.redlink.io/$user_id/$dataset_name/post/$id";
+
+        return wl_get_entity_uri( $id );
     }
 
     function add_allowed_post_tags() {
@@ -165,7 +164,16 @@ EOF;
 
         // check that the post is created on Redlink.
         $post_uri    = $this->get_post_uri( $post_id );
-        $wp_response = wp_remote_get( $post_uri . '.json', array( 'sslverify' => false, 'blocking' => true, 'httpversion' => '1.1' ) );
+        $wp_response = wp_remote_get( $post_uri . '.json', array(
+            'headers'     => array(
+                'Accept'  => 'application/json'
+            ),
+            'sslverify'   => false,
+            'blocking'    => true,
+            'httpversion' => '1.1'
+        ) );
+
+//        echo "[ post uri :: $post_uri ]\n";
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
@@ -173,20 +181,31 @@ EOF;
         // check that the response code is 200-OK.
         $this->assertEquals( 200, $wp_response['response']['code'] );
 
+        $body = $wp_response['body'];
         // get the graph instance.
-        $json  = json_decode( $wp_response['body'] );
-        $graph = $json[0]->{'@graph'}[0];
+        $this->assertFalse( empty( $body ) );
 
-        // check that the id is equal to the post URI.
-        $this->assertEquals( $post_uri, $graph->{'@id'} );
+//        echo $body;
 
-        $this->assertTrue( in_array( 'http://schema.org/BlogPosting', $graph->{'@type'} ) );
+        $json  = json_decode( $body );
+        $this->assertTrue( is_object( $json ) );
+
+        $this->assertTrue( isset( $json->{$post_uri} ) );
+        $graph = $json->{$post_uri};
+
+        $this->assertTrue( isset( $graph->{'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'} ) );
+        $type  = $graph->{'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'};
+
+        $this->assertTrue( isset( $type[0]->value ) );
+        $this->assertEquals( 'http://schema.org/BlogPosting', $type[0]->value );
 
         // check why sometimes we get that this property doesn't exist.
         // check that the post references the entity URI.
+        $this->assertTrue( isset( $graph->{'http://purl.org/dc/terms/references'} ) );
         $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
             function( $result, $item ) use ( $entity_uri ) {
-                return $result || ( $entity_uri === $item->{'@id'} );
+
+                return $result || ( $entity_uri === $item->value );
             } , false
         ) );
 
@@ -194,7 +213,8 @@ EOF;
         $post_date_published = get_the_time( 'c', $post_id );
         $this->assertTrue( array_reduce( $graph->{'http://schema.org/datePublished'},
             function( $result, $item ) use ( $post_date_published ) {
-                return $result || ( $post_date_published === $item->{'@value'} );
+
+                return $result || ( $post_date_published === $item->value );
             } , false
         ) );
 
@@ -202,7 +222,8 @@ EOF;
         $post_permalink = get_permalink( $post_id );
         $this->assertTrue( array_reduce( $graph->{'http://schema.org/url'},
             function( $result, $item ) use ( $post_permalink ) {
-                return $result || ( $post_permalink === $item->{'@id'} );
+
+                return $result || ( $post_permalink === $item->value );
             } , false
         ) );
 
@@ -210,14 +231,20 @@ EOF;
         $post_title = get_the_title( $post_id );
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2000/01/rdf-schema#label'},
             function( $result, $item ) use ( $post_title ) {
-                return $result || ( $post_title === $item->{'@value'} );
+
+                return $result || ( $post_title === $item->value );
             } , false
         ) );
 
-
-
         // check that the entity is created on Redlink.
-        $wp_response = wp_remote_get( $entity_uri . '.json', array( 'sslverify' => false, 'blocking' => true, 'httpversion' => '1.1' ) );
+        $wp_response = wp_remote_get( $entity_uri . '.json', array(
+            'headers'     => array(
+                'Accept'  => 'application/json'
+            ),
+            'sslverify'   => false,
+            'blocking'    => true,
+            'httpversion' => '1.1'
+        ) );
 
         // check that the response is not an error.
         $this->assertFalse( is_wp_error( $wp_response ) );
@@ -227,16 +254,14 @@ EOF;
 
         // get the graph instance.
         $json  = json_decode( $wp_response['body'] );
-        $graph = $json[0]->{'@graph'}[0];
-
-        // check that the id is equal to the entity URI.
-        $this->assertEquals( $entity_uri, $graph->{'@id'} );
+        $this->assertTrue( isset( $json->{$entity_uri} ) );
+        $graph = $json->{$entity_uri};
 
         // check that the schema:url is equal to the permalink.
         $entity_post_permalink = get_permalink( $entity_post_id );
         $this->assertTrue( array_reduce( $graph->{'http://schema.org/url'},
             function( $result, $item ) use ( $entity_post_permalink ) {
-                return $result || ( $entity_post_permalink === $item->{'@id'} );
+                return $result || ( $entity_post_permalink === $item->value );
             } , false
         ) );
 
@@ -244,7 +269,7 @@ EOF;
         $entity_name = $this->entity_name;
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2000/01/rdf-schema#label'},
             function( $result, $item ) use ( $entity_name ) {
-                return $result || ( $entity_name === $item->{'@value'} );
+                return $result || ( $entity_name === $item->value );
             } , false
         ) );
 
@@ -252,7 +277,7 @@ EOF;
         $entity_same_as = $this->entity_same_as;
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2002/07/owl#sameAs'},
             function( $result, $item ) use ( $entity_same_as ) {
-                return $result || ( $entity_same_as === $item->{'@id'} );
+                return $result || ( $entity_same_as === $item->value );
             } , false
         ) );
 
