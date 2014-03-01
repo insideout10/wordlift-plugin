@@ -224,17 +224,19 @@ function wl_embed_entities( $results, $content ) {
         $entities        = $text_annotation['entities'];
 
         // Sort array by confidence.
-        usort( $entities, function ( $a, $b ) {
-            if ( $a['confidence'] == $b['confidence']) {
-                return 0;
-            }
-            return ( $a['confidence'] > $b['confidence'] ) ? -1 : 1;
-        });
+//        usort( $entities, function ( $a, $b ) {
+//            if ( $a['confidence'] == $b['confidence']) {
+//                return 0;
+//            }
+//            return ( $a['confidence'] > $b['confidence'] ) ? -1 : 1;
+//        });
 
 //        echo "[ text annotation :: " . $text_annotation['id'] . "][ entities count :: " . count( $entities ) . " ]\n";
 
+        $entity_annotation = wl_get_entity_annotation_best_match( $entities );
+
         // Get the entity, its ID and type.
-        $entity       = $entities[0]['entity'];
+        $entity       = $entity_annotation['entity'];
         $entity_id    = $entity->{'@id'};
         $entity_type  = wl_get_entity_type( $entity );
         $entity_class = $entity_type['class'];
@@ -512,4 +514,38 @@ function wl_post_ids_to_entity_uris( $post_ids ) {
     }
 
     return $uris;
+}
+
+/**
+ * Parse the analysis result from a file.
+ * @param string $filename The file containing a JSON-LD analysis response.
+ * @return array|null An array with the analysis result, or null in case of failure.
+ */
+function wl_parse_file( $filename ) {
+
+    $analysis = file_get_contents( $filename );
+
+    // Decode the string response to a JSON.
+    $json     = json_decode( $analysis );
+
+    // Parse the JSON to get the analysis results.
+    return wl_parse_response( $json );
+}
+
+/**
+ * Get the entity annotation with the best match from the provided entity annotations array.
+ * @param array $entity_annotations An array of entity annotations.
+ * @return array An entity annotation array.
+ */
+function wl_get_entity_annotation_best_match( $entity_annotations ) {
+
+    // Sort array by confidence.
+    usort( $entity_annotations, function ( $a, $b ) {
+        if ( $a['confidence'] == $b['confidence']) {
+            return 0;
+        }
+        return ( $a['confidence'] > $b['confidence'] ) ? -1 : 1;
+    });
+
+    return $entity_annotations[0];
 }

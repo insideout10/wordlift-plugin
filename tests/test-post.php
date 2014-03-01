@@ -157,17 +157,18 @@ class PostTest extends WP_UnitTestCase {
         $this->assertNotNull( $post );
 
         // Get the mock-up response.
-        $input    = dirname(__FILE__) . '/' . self::FILENAME . '.json';
-        $analysis = file_get_contents( $input );
-        $this->assertTrue( false != $analysis );
-        $this->assertFalse( empty( $analysis ) );
-
-        // Decode the string response to a JSON.
-        $json     = json_decode( $analysis );
-        $this->assertTrue( is_object( $json ) );
-
-        // Parse the JSON to get the analysis results.
-        $analysis_results = wl_parse_response( $json );
+//        $input    = dirname(__FILE__) . '/' . self::FILENAME . '.json';
+        $analysis_results = wl_parse_file( dirname(__FILE__) . '/' . self::FILENAME . '.json' );
+//        $analysis = file_get_contents( $input );
+//        $this->assertTrue( false != $analysis );
+//        $this->assertFalse( empty( $analysis ) );
+//
+//        // Decode the string response to a JSON.
+//        $json     = json_decode( $analysis );
+//        $this->assertTrue( is_object( $json ) );
+//
+//        // Parse the JSON to get the analysis results.
+//        $analysis_results = wl_parse_response( $json );
         $this->assertTrue( is_array( $analysis_results ) );
 
         // Embed the text annotations in the content.
@@ -223,6 +224,47 @@ class PostTest extends WP_UnitTestCase {
         // Delete the test post.
         $this->deletePost( $post_id );
 
+    }
+
+    /**
+     * Test saving entities passed via a metabox.
+     */
+    function testEntitiesViaMetabox() {
+
+        // Create a post.
+        $post_id    = $this->createPost();
+        $this->assertTrue( is_numeric( $post_id ) );
+
+        $post       = get_post( $post_id );
+        $this->assertNotNull( $post );
+
+        // Read the entities from the mock-up analysis.
+        $analysis_results = wl_parse_file( dirname(__FILE__) . '/' . self::FILENAME . '.json' );
+        $this->assertTrue( is_array( $analysis_results ) );
+
+        // TODO: For each entity get the label, type, description and thumbnails.
+        $this->assertTrue( isset( $analysis_results['entities'] ) );
+
+        // Get a reference to the entities.
+        $entities = $analysis_results['entities'];
+        $this->assertTrue( 0 < count( $entities ) );
+
+        foreach ( $entities as $entity ) {
+            var_dump( $entity );
+        }
+
+        // TODO: Create a mock-up POST request with the entities data.
+
+        // TODO: Check that the entities are created.
+
+        // TODO: Check that the post references the entities.
+
+        // TODO: Check that the entities are related to the post.
+
+        // TODO: Check that the local data matches the remote data (entities and post).
+
+        // Delete the post.
+        $this->deletePost( $post_id );
     }
 
     /**
