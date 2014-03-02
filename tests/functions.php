@@ -267,68 +267,86 @@ function wl_embed_entities( $results, $content ) {
 }
 
 /**
- * Get the URI and stylesheet class associated with the provided entity.
+ * Get the entity description from the available fields.
  * @param object $entity An entity instance.
- * @return array An array containing a class and an URI element.
+ * @return string The entity description.
  */
-function wl_get_entity_type( $entity ) {
+function wl_get_entity_description( $entity ) {
 
-    // Prepare the types array.
-    $types = wl_type_to_types( $entity );
-
-    if ( in_array( 'http://schema.org/Person', $types )
-        || in_array( 'http://rdf.freebase.com/ns/people.person', $types )) {
-        return array(
-            'class' => 'person',
-            'uri'   => 'http://schema.org/Person'
-        );
+    // Return the description from the rdfs:comment field.
+    if ( isset( $entity->{'http://www.w3.org/2000/01/rdf-schema#comment'} ) ) {
+        return $entity->{'http://www.w3.org/2000/01/rdf-schema#comment'}->{'@value'};
     }
 
-    if ( in_array( 'http://schema.org/Organization', $types )
-        || in_array( 'http://rdf.freebase.com/ns/government.government', $types )
-        || in_array( 'http://schema.org/Newspaper', $types ) ) {
-        return array(
-            'class' => 'organization',
-            'uri'   => 'http://schema.org/Organization'
-        );
+    // Return the description from the Freebase common.topic.description field.
+    if ( isset( $entity->{'http://rdf.freebase.com/ns/common.topic.description'} ) ) {
+        return $entity->{'http://rdf.freebase.com/ns/common.topic.description'}->{'@value'};
     }
 
-    if ( in_array( 'http://schema.org/Place', $types )
-        || in_array( 'http://rdf.freebase.com/ns/location.location', $types ) ) {
-        return array(
-            'class' => 'place',
-            'uri'   => 'http://schema.org/Place'
-        );
+    return '';
+}
+
+/**
+ * Get the entity thumbnails as an array of URLs.
+ * @param object $entity An entity instance.
+ * @return array An array of URLs.
+ */
+function wl_get_entity_thumbnails( $entity ) {
+
+    $images = array();
+
+    // Add the images from the foaf:depiction attribute.
+    if ( isset( $entity->{'http://xmlns.com/foaf/0.1/depiction'} ) ) {
+        if ( is_array( $entity->{'http://xmlns.com/foaf/0.1/depiction'} ) ) {
+            foreach ( $entity->{'http://xmlns.com/foaf/0.1/depiction'} as $image ) {
+                array_push( $images, $image->{'http://xmlns.com/foaf/0.1/depiction'}->{'@id'} );
+            }
+        } else {
+            array_push( $images, $entity->{'http://xmlns.com/foaf/0.1/depiction'}->{'@id'} );
+        }
     }
 
-    if ( in_array( 'http://schema.org/Event', $types )
-        || in_array( 'http://dbpedia.org/ontology/Event', $types ) ) {
-        return array(
-            'class' => 'event',
-            'uri'   => 'http://schema.org/Event'
-        );
+    // Convert the URL provided by Freebase to image URLs:
+    // see https://developers.google.com/freebase/v1/topic-response#references-to-image-objects
+    if ( isset( $entity->{'http://rdf.freebase.com/ns/common.topic.image'} ) ) {
+        if ( is_array( $entity->{'http://rdf.freebase.com/ns/common.topic.image'} ) ) {
+            foreach ( $entity->{'http://rdf.freebase.com/ns/common.topic.image'} as $image ) {
+
+                $image_url = wl_freebase_image_url( $image->{'@id'} );
+
+                if ( !empty( $image_url ) ) {
+                    array_push( $images, $image_url );
+                }
+            }
+        } else {
+            $image_url = wl_freebase_image_url( $entity->{'http://rdf.freebase.com/ns/common.topic.image'}->{'@id'} );
+
+            if ( !empty( $image_url ) ) {
+                array_push( $images, $image_url );
+            }
+        }
     }
 
-    if ( in_array( 'http://rdf.freebase.com/ns/music.artist', $types )
-        || in_array( 'http://schema.org/MusicAlbum', $types ) ) {
-        return array(
-            'class' => 'event',
-            'uri'   => 'http://schema.org/Event'
-        );
-    }
+    return $images;
+}
 
+/**
+ * Get an image URL from a link (see https://developers.google.com/freebase/v1/topic-response#references-to-image-objects).
+ * @param string $image_link An image link.
+ * @return string|null The image URL or null in case of failure.
+ */
+function wl_freebase_image_url( $image_link ) {
 
-    if ( in_array( 'http://www.opengis.net/gml/_Feature', $types ) ) {
-        return array(
-            'class' => 'place',
-            'uri'   => 'http://schema.org/Place'
-        );
-    }
+    // http://rdf.freebase.com/ns/m.0kyblb5
+    // https://usercontent.googleapis.com/freebase/v1/image/m/0kyblb5
 
-    return array(
-        'class' => 'thing',
-        'uri'   => 'http://schema.org/Thing'
-    );
+    $matches = array();
+    if ( 1 === preg_match( '/m\.([\w\d]+)$/i', $image_link, $matches ) ) {
+        $id = $matches[1];
+        return "https://usercontent.googleapis.com/freebase/v1/image/m/$id?maxwidth=4096&maxheight=4096";
+    };
+
+    return null;
 }
 
 /**
@@ -437,18 +455,6 @@ function wl_parse_response( $json ) {
         'entity_annotations' => $entity_annotations,
         'entities'           => $entities
     );
-}
-
-/**
- * Get a types array from an item.
- * @param object $item An item with a '@type' property (if the property doesn't exist, an empty array is returned).
- * @return array The items array (or an empty array if the '@type' property doesn't exist).
- */
-function wl_type_to_types( $item ) {
-
-    return !isset( $item->{'@type'} )
-        ? array() // Set an empty array if type is not set on the item.
-        : ( is_array( $item->{'@type'} ) ? $item->{'@type'} : array( $item->{'@type'} ) );
 }
 
 /**

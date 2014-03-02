@@ -89,6 +89,9 @@
     },
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "schema": "http://schema.org/",
+    "schema:author": {
+      "@type": "@id"
+    },
     "schema:url": {
       "@type": "@id"
     },
@@ -96,105 +99,111 @@
   },
   "@graph": [
     {
-      "@id": "http://data.redlink.io/353/wordlift/entity/Andrea_Volpini",
-      "@type": "schema:Person",
-      "owl:sameAs": "http://data.redlink.io/353/wordlift/resource/m.0djtw2h",
+      "@id": "http://data.redlink.io/353/wordlift/post/223",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "WordLift"
+      },
+      "schema:author": "http://data.redlink.io/353/wordlift/author/1",
+      "schema:dateModified": "2014-02-19T17:46:56+00:00",
+      "schema:datePublished": "2014-02-19T15:12:56+00:00",
+      "schema:interactionCount": "UserComments:0",
+      "schema:url": "http://3.wordlift.it/entity/wordlift/"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/26",
+      "@type": "schema:BlogPosting",
       "rdfs:label": {
         "@language": "en",
         "@value": "Andrea Volpini"
       },
-      "schema:url": "http://example.org/?post_type=entity&p=6"
+      "schema:author": "http://data.redlink.io/353/wordlift/author/1",
+      "schema:dateModified": "-001-11-30T00:00:00+00:00",
+      "schema:datePublished": "2014-02-19T16:16:25+00:00",
+      "schema:interactionCount": "UserComments:0",
+      "schema:url": "http://wordpress381.localhost/?post_type=entity&p=26"
     },
     {
-      "@id": "http://data.redlink.io/353/wordlift/entity/Central_Archives_of_the_State",
-      "owl:sameAs": "http://rdf.freebase.com/ns/m.04jk__q",
+      "@id": "http://data.redlink.io/353/wordlift/post/60",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": "Rome",
+      "schema:url": [
+        "http://wordlift.localhost/?entity=rome-3",
+        "http://wordlift.localhost/?post_type=entity&p=60"
+      ]
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/64",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": [
+        "Auto Draft",
+        "Gatti",
+        "Rome"
+      ],
+      "schema:url": [
+        "http://wordlift.localhost/?entity=rome",
+        "http://wordlift.localhost/?post_type=entity&p=64",
+        "http://wordpress380.localhost/?p=64"
+      ]
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/Central_Archives_of_the_State_(Italy)",
+      "@type": "schema:Place",
+      "owl:sameAs": "http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)",
       "rdfs:label": {
         "@language": "en",
         "@value": "Central Archives of the State"
       },
-      "schema:url": "http://example.org/?post_type=entity&p=9"
+      "schema:url": "http://3.wordlift.it/?post_type=entity&p=231"
     },
     {
-      "@id": "http://data.redlink.io/353/wordlift/entity/David_Riccitelli",
-      "@type": "schema:Person",
-      "owl:sameAs": "http://rdf.freebase.com/ns/m.0j2h5nt",
-      "rdfs:label": {
-        "@language": "en",
-        "@value": "David Riccitelli"
-      },
-      "schema:url": "http://example.org/?post_type=entity&p=7"
-    },
-    {
-      "@id": "http://data.redlink.io/353/wordlift/entity/Insideout10",
-      "@type": "schema:Thing",
-      "owl:sameAs": "http://rdf.freebase.com/ns/m.0kybkd_",
-      "rdfs:label": {
-        "@language": "en",
-        "@value": "Insideout10"
-      },
-      "schema:url": "http://example.org/?post_type=entity&p=8"
-    },
-    {
-      "@id": "http://data.redlink.io/353/wordlift/entity/Linked_Open_Data",
+      "@id": "http://data.redlink.io/353/wordlift/resource/Linked_data",
       "@type": "schema:Thing",
       "owl:sameAs": "http://dbpedia.org/resource/Linked_data",
       "rdfs:label": {
         "@language": "en",
         "@value": "Linked Open Data"
       },
-      "schema:url": "http://example.org/?post_type=entity&p=11"
+      "schema:url": "http://3.wordlift.it/?post_type=entity&p=234"
     },
     {
-      "@id": "http://data.redlink.io/353/wordlift/entity/Rome",
+      "@id": "http://data.redlink.io/353/wordlift/resource/m.02kf5d3",
       "@type": "schema:Thing",
-      "owl:sameAs": "http://data.redlink.io/353/wordlift/post/60",
+      "dc:relation": [
+        "http://data.redlink.io/353/wordlift/resource/Al-Kholafaa-Al-Rashedin",
+        "http://data.redlink.io/353/wordlift/resource/David_Riccitelli",
+        "http://data.redlink.io/353/wordlift/resource/Linked_Open_Data_Event",
+        "http://data.redlink.io/353/wordlift/resource/Livia",
+        "http://data.redlink.io/353/wordlift/resource/Mauro_Arte",
+        "http://data.redlink.io/353/wordlift/resource/Phil_Archer",
+        "http://data.redlink.io/353/wordlift/resource/President_Adly_Mansour",
+        "http://data.redlink.io/353/wordlift/resource/Sohag",
+        "http://data.redlink.io/353/wordlift/resource/WordLift",
+        "http://data.redlink.io/353/wordlift/resource/m.02kf5d3"
+      ],
+      "owl:sameAs": "http://rdf.freebase.com/ns/m.02kf5d3",
       "rdfs:label": {
         "@language": "en",
-        "@value": "Rome"
+        "@value": "Web Technologies"
       },
-      "schema:url": "http://example.org/?post_type=entity&p=10"
+      "schema:url": "http://3.wordlift.it/entity/web-technologies/"
     },
     {
-      "@id": "http://data.redlink.io/353/wordlift/entity/Web_technologies",
-      "@type": "schema:Thing",
-      "owl:sameAs": "http://data.redlink.io/353/wordlift/resource/m.02kf5d3",
+      "@id": "http://data.redlink.io/353/wordlift/resource/m.0djtw2h",
+      "@type": "schema:Person",
+      "owl:sameAs": "http://rdf.freebase.com/ns/m.0djtw2h",
       "rdfs:label": {
         "@language": "en",
-        "@value": "Web technologies"
+        "@value": "Andrea Volpini"
       },
-      "schema:url": "http://example.org/?post_type=entity&p=14"
-    },
-    {
-      "@id": "http://data.redlink.io/353/wordlift/entity/WordPress",
-      "@type": "schema:Thing",
-      "owl:sameAs": "http://dbpedia.org/resource/WordPress",
-      "rdfs:label": {
-        "@language": "en",
-        "@value": "WordPress"
-      },
-      "schema:url": "http://example.org/?post_type=entity&p=13"
+      "schema:url": "http://3.wordlift.it/?post_type=entity&p=229"
     },
     {
       "@id": "http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)",
-      "@type": [
-        "http://dbpedia.org/class/yago/Archive102735086",
-        "http://dbpedia.org/class/yago/Artifact100021939",
-        "http://dbpedia.org/class/yago/Depository103177349",
-        "http://dbpedia.org/class/yago/Facility103315023",
-        "http://dbpedia.org/class/yago/NationalArchives",
-        "http://dbpedia.org/class/yago/Object100002684",
-        "http://dbpedia.org/class/yago/PhysicalEntity100001930",
-        "http://dbpedia.org/class/yago/Whole100003553",
-        "http://dbpedia.org/class/yago/YagoGeoEntity",
-        "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
-        "http://www.opengis.net/gml/_Feature"
-      ],
+      "@type": "http://www.opengis.net/gml/_Feature",
       "geo:lat": 41.82861,
       "geo:long": 12.476666,
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.04jk__q",
-        "http://yago-knowledge.org/resource/Central_Archives_of_the_State_(Italy)"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "The Central Archives of the State are the main national archives of Italy. They were created in 1875 under the name of Royal Archives. They took their present name in 1953. They are located in Rome and are put under the responsibility of the Ministry of Culture. However, each of the 103 Italian provinces has its own state archive, keeping the public documents created in that territory and, mainly, the state archives of the Italian historical states."
@@ -206,17 +215,6 @@
     },
     {
       "@id": "http://dbpedia.org/resource/Linked_data",
-      "@type": [
-        "http://dbpedia.org/class/yago/Abstraction100002137",
-        "http://dbpedia.org/class/yago/CloudStandards",
-        "http://dbpedia.org/class/yago/Measure100033615",
-        "http://dbpedia.org/class/yago/Standard107260623",
-        "http://dbpedia.org/class/yago/SystemOfMeasurement113577171"
-      ],
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.02r2kb1",
-        "http://yago-knowledge.org/resource/Linked_data"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "In computing, linked data describes a method of publishing structured data so that it can be interlinked and become more useful. It builds upon standard Web technologies such as HTTP and URIs, but rather than using them to serve web pages for human readers, it extends them to share information in a way that can be read automatically by computers. This enables data from different sources to be connected and queried."
@@ -228,26 +226,9 @@
     },
     {
       "@id": "http://dbpedia.org/resource/National_Archives_of_Albania",
-      "@type": [
-        "http://dbpedia.org/class/yago/Archive102735086",
-        "http://dbpedia.org/class/yago/ArchivesInAlbania",
-        "http://dbpedia.org/class/yago/Artifact100021939",
-        "http://dbpedia.org/class/yago/Depository103177349",
-        "http://dbpedia.org/class/yago/Facility103315023",
-        "http://dbpedia.org/class/yago/NationalArchives",
-        "http://dbpedia.org/class/yago/Object100002684",
-        "http://dbpedia.org/class/yago/PhysicalEntity100001930",
-        "http://dbpedia.org/class/yago/Whole100003553",
-        "http://dbpedia.org/class/yago/YagoGeoEntity",
-        "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
-        "http://www.opengis.net/gml/_Feature"
-      ],
+      "@type": "http://www.opengis.net/gml/_Feature",
       "geo:lat": 41.335556,
       "geo:long": 19.812778,
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.0cm8zth",
-        "http://yago-knowledge.org/resource/National_Archives_of_Albania"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "The National Archives of Albania (Albanian: Arkivi Qëndror i Shtetit or A.Q. SH) is the national archive of the Republic of Albania, located in Tirana. The Archive was created in 1949 with a decree from the Government of Albania dated 6/8/1949, as a centralized state organ. The documentary content withheld in the A.Q. SH. has national and historical values of both national and international importance."
@@ -263,30 +244,6 @@
         "dbp-ont:Place",
         "dbp-ont:PopulatedPlace",
         "dbp-ont:Settlement",
-        "http://dbpedia.org/class/yago/AdministrativeDistrict108491826",
-        "http://dbpedia.org/class/yago/AncientCities",
-        "http://dbpedia.org/class/yago/Area108497294",
-        "http://dbpedia.org/class/yago/Capital108518505",
-        "http://dbpedia.org/class/yago/CapitalsInEurope",
-        "http://dbpedia.org/class/yago/Center108523483",
-        "http://dbpedia.org/class/yago/City108524735",
-        "http://dbpedia.org/class/yago/District108552138",
-        "http://dbpedia.org/class/yago/GeographicalArea108574314",
-        "http://dbpedia.org/class/yago/HolyCities",
-        "http://dbpedia.org/class/yago/HostCitiesOfTheSummerOlympicGames",
-        "http://dbpedia.org/class/yago/Location100027167",
-        "http://dbpedia.org/class/yago/Municipality108626283",
-        "http://dbpedia.org/class/yago/Object100002684",
-        "http://dbpedia.org/class/yago/PhysicalEntity100001930",
-        "http://dbpedia.org/class/yago/PopulatedPlacesEstablishedInThe8thCenturyBC",
-        "http://dbpedia.org/class/yago/Region108630985",
-        "http://dbpedia.org/class/yago/Seat108647945",
-        "http://dbpedia.org/class/yago/Site108651247",
-        "http://dbpedia.org/class/yago/Tract108673395",
-        "http://dbpedia.org/class/yago/UrbanArea108675967",
-        "http://dbpedia.org/class/yago/YagoGeoEntity",
-        "http://dbpedia.org/class/yago/YagoLegalActorGeo",
-        "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
         "http://www.opengis.net/gml/_Feature",
         "owl:Thing",
         "schema:Place"
@@ -295,12 +252,6 @@
       "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg",
       "geo:lat": 41.9,
       "geo:long": 12.5,
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.06c62",
-        "http://sws.geonames.org/3169070/",
-        "http://sws.geonames.org/3169071/",
-        "http://yago-knowledge.org/resource/Rome"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "Rome is a city and special comune (\"Roma Capitale\") in Italy. Rome is the capital of Italy and also of Lazio. With 2.8 million residents in 1,285.3 km, it is also the country's largest and most populated comune and fourth-most populous city in the European Union by population within city limits. Between 3.2 and 3.8 million people live in the Rome urban and metropolitan area."
@@ -317,20 +268,6 @@
         "dbp-ont:PopulatedPlace",
         "dbp-ont:Settlement",
         "dbp-ont:Town",
-        "http://dbpedia.org/class/yago/AdministrativeDistrict108491826",
-        "http://dbpedia.org/class/yago/District108552138",
-        "http://dbpedia.org/class/yago/GeographicalArea108574314",
-        "http://dbpedia.org/class/yago/Location100027167",
-        "http://dbpedia.org/class/yago/Municipality108626283",
-        "http://dbpedia.org/class/yago/Object100002684",
-        "http://dbpedia.org/class/yago/PhysicalEntity100001930",
-        "http://dbpedia.org/class/yago/Region108630985",
-        "http://dbpedia.org/class/yago/Town108665504",
-        "http://dbpedia.org/class/yago/TownsInKennebecCounty,Maine",
-        "http://dbpedia.org/class/yago/UrbanArea108675967",
-        "http://dbpedia.org/class/yago/YagoGeoEntity",
-        "http://dbpedia.org/class/yago/YagoLegalActorGeo",
-        "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
         "http://www.opengis.net/gml/_Feature",
         "owl:Thing",
         "schema:Place"
@@ -344,11 +281,6 @@
       "geo:long": [
         -69.86916,
         -69.88
-      ],
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.0tq9_",
-        "http://sws.geonames.org/4976934/",
-        "http://yago-knowledge.org/resource/Rome,_Maine"
       ],
       "rdfs:comment": {
         "@language": "en",
@@ -366,27 +298,12 @@
         "dbp-ont:PopulatedPlace",
         "dbp-ont:Settlement",
         "dbp-ont:Town",
-        "http://dbpedia.org/class/yago/AdministrativeDistrict108491826",
-        "http://dbpedia.org/class/yago/District108552138",
-        "http://dbpedia.org/class/yago/Location100027167",
-        "http://dbpedia.org/class/yago/Object100002684",
-        "http://dbpedia.org/class/yago/PhysicalEntity100001930",
-        "http://dbpedia.org/class/yago/Region108630985",
-        "http://dbpedia.org/class/yago/Township108672199",
-        "http://dbpedia.org/class/yago/TownshipsInLenaweeCounty,Michigan",
-        "http://dbpedia.org/class/yago/YagoGeoEntity",
-        "http://dbpedia.org/class/yago/YagoLegalActorGeo",
-        "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
         "http://www.opengis.net/gml/_Feature",
         "owl:Thing",
         "schema:Place"
       ],
       "geo:lat": 41.94361,
       "geo:long": -84.186386,
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.0vbt9",
-        "http://yago-knowledge.org/resource/Rome_Township,_Michigan"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "Rome Township is a civil township of Lenawee County in the U.S. state of Michigan. The population was 1,772 at the 2000 census."
@@ -398,28 +315,8 @@
     },
     {
       "@id": "http://dbpedia.org/resource/Semantic_Web",
-      "@type": [
-        "http://dbpedia.org/class/yago/Abstraction100002137",
-        "http://dbpedia.org/class/yago/Act100030358",
-        "http://dbpedia.org/class/yago/Activity100407535",
-        "http://dbpedia.org/class/yago/Buzzword106608277",
-        "http://dbpedia.org/class/yago/Buzzwords",
-        "http://dbpedia.org/class/yago/Communication100033020",
-        "http://dbpedia.org/class/yago/Event100029378",
-        "http://dbpedia.org/class/yago/Message106598915",
-        "http://dbpedia.org/class/yago/Nonsense106607339",
-        "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
-        "http://dbpedia.org/class/yago/Service100577525",
-        "http://dbpedia.org/class/yago/WebServices",
-        "http://dbpedia.org/class/yago/Work100575741",
-        "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
-      ],
       "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Sw-horz-w3c.png/200px-Sw-horz-w3c.png",
       "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/a/a4/Sw-horz-w3c.png",
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.076k0",
-        "http://yago-knowledge.org/resource/Semantic_Web"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "The Semantic Web is a collaborative movement led by the international standards body, the World Wide Web Consortium (W3C). The standard promotes common data formats on the World Wide Web. By encouraging the inclusion of semantic content in web pages, the Semantic Web aims at converting the current web dominated by unstructured and semi-structured documents into a \"web of data\". The Semantic Web stack builds on the W3C's Resource Description Framework (RDF)."
@@ -434,29 +331,11 @@
       "@type": [
         "dbp-ont:Software",
         "dbp-ont:Work",
-        "http://dbpedia.org/class/yago/Article100022903",
-        "http://dbpedia.org/class/yago/Artifact100021939",
-        "http://dbpedia.org/class/yago/ContentManagementSystems",
-        "http://dbpedia.org/class/yago/Cutlery103153375",
-        "http://dbpedia.org/class/yago/Fork103383948",
-        "http://dbpedia.org/class/yago/FreeContentManagementSystems",
-        "http://dbpedia.org/class/yago/Instrumentality103575240",
-        "http://dbpedia.org/class/yago/Object100002684",
-        "http://dbpedia.org/class/yago/PhysicalEntity100001930",
-        "http://dbpedia.org/class/yago/SoftwareForks",
-        "http://dbpedia.org/class/yago/System104377057",
-        "http://dbpedia.org/class/yago/Tableware104381994",
-        "http://dbpedia.org/class/yago/Ware104550840",
-        "http://dbpedia.org/class/yago/Whole100003553",
         "owl:Thing",
         "schema:CreativeWork"
       ],
       "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/2/20/WordPress_logo.svg/200px-WordPress_logo.svg.png",
       "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/2/20/WordPress_logo.svg",
-      "owl:sameAs": [
-        "http://rdf.freebase.com/ns/m.02vtpl",
-        "http://yago-knowledge.org/resource/WordPress"
-      ],
       "rdfs:comment": {
         "@language": "en",
         "@value": "WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL. It has many features including a plug-in architecture and a template system. WordPress is used by over 14.7% of Alexa Internet's \"top 1 million\" websites and as of August 2011 manages 22% of all new websites. WordPress is currently the most popular blogging system in use on the Web, powering over 60 million websites worldwide."
@@ -789,44 +668,40 @@
       }
     },
     {
-      "@id": "urn:enhancement-02dd5ee8-6714-5078-a3ad-0c6aa283f25f",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.024Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "enhancer:confidence": 1.0,
-      "enhancer:end": 223,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Linked Open Data"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": " Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is plugin for WordPress"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": "e for the "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": " Event.\n\nW"
-      },
-      "enhancer:start": 207
-    },
-    {
-      "@id": "urn:enhancement-092f0f42-f2d6-cd77-eeb1-0bd3432bed68",
+      "@id": "urn:enhancement-02f706a6-bdd8-6bd7-3a45-727dc7d6f66d",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:EntityAnnotation"
       ],
-      "dc:created": "2014-03-02T09:44:35.010Z",
+      "dc:created": "2014-02-26T19:08:22.104Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "enhancer:confidence": 0.93333334,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Rome"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Rome_Township,_Michigan",
+      "enhancer:entity-type": [
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "dbp-ont:Settlement",
+        "dbp-ont:Town",
+        "schema:Place",
+        "http://www.opengis.net/gml/_Feature",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-058aaa20-c7d9-c127-a097-fd437b235230",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.144Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
       "enhancer:confidence": 0.93333334,
       "enhancer:entity-label": {
         "@language": "en",
@@ -841,117 +716,14 @@
       "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
     },
     {
-      "@id": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.009Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:type": "dbp-ont:Place",
-      "enhancer:confidence": 1.0,
-      "enhancer:end": 198,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Rome"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": " today at the Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": " State in "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": " for the L"
-      },
-      "enhancer:start": 194
-    },
-    {
-      "@id": "urn:enhancement-128b3eb7-1532-8043-25a9-fda6ee5a0da1",
+      "@id": "urn:enhancement-0eb8de98-11ae-f755-d4ff-9dbf60f8fa2c",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:EntityAnnotation"
       ],
-      "dc:created": "2014-03-02T09:44:35.023Z",
+      "dc:created": "2014-02-26T19:08:22.105Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-e51adc0f-5228-f3aa-b0ce-91684fd9e002",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Central Archives of the State"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/National_Archives_of_Albania",
-      "enhancer:entity-type": "http://www.opengis.net/gml/_Feature",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-12eeba0c-f7f8-5b51-88e3-faa17834f1a0",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.034Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-02dd5ee8-6714-5078-a3ad-0c6aa283f25f",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Linked Open Data"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Linked_Open_Data",
-      "enhancer:entity-type": "schema:Thing",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-14c4bc1d-a994-3e0e-86a7-7050f66e6e57",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.033Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Rome"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Rome",
-      "enhancer:entity-type": "schema:Thing",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-191854ba-f15c-3a76-b544-b9c3bfadd465",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.023Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-e51adc0f-5228-f3aa-b0ce-91684fd9e002",
-      "enhancer:confidence": 0.95,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Central Archives of the State"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)",
-      "enhancer:entity-type": "http://www.opengis.net/gml/_Feature",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-1a6053ed-29ac-399c-473a-9428d3b483f6",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.025Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-5c273519-adcf-8445-890c-64bd4c879b28",
+      "dc:relation": "urn:enhancement-d298082c-271a-7896-f21f-202dba266de6",
       "enhancer:confidence": 1.0,
       "enhancer:entity-label": {
         "@language": "en",
@@ -961,52 +733,12 @@
       "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
     },
     {
-      "@id": "urn:enhancement-1dadca6d-3098-c428-cda3-66193171534e",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.032Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-9e4a7336-2e39-456e-0658-8b565c99026b",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Andrea Volpini"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Andrea_Volpini",
-      "enhancer:entity-type": "schema:Person",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-1f961f10-4389-299f-e201-d437dffe758e",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.010Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
-      "enhancer:confidence": 0.96666664,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Rome"
-      },
-      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0qzlg59",
-      "enhancer:entity-type": [
-        "http://rdf.freebase.com/ns/common.topic",
-        "http://rdf.freebase.com/ns/people.person"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-2f293108-0ded-f45a-7945-e7a52640a500",
+      "@id": "urn:enhancement-0fff3f62-a010-4ed6-3e7a-6af6c18fb5ad",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:TextAnnotation"
       ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.008Z",
+      "dc:created": "2014-02-26T19:08:22.142Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
       "dc:type": "dbp-ont:Person",
       "enhancer:confidence": 1.0,
@@ -1031,524 +763,14 @@
       "enhancer:start": 45
     },
     {
-      "@id": "urn:enhancement-32a9fb7b-fd2f-21b6-fe51-653f4404b911",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.025Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "enhancer:confidence": 1.0,
-      "enhancer:end": 329,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Linked Open Data"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": " demonstrating how Semantic Web technologies and Linked Open Data, can be used in practice to organise your online"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": "ogies and "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": ", can be u"
-      },
-      "enhancer:start": 313
-    },
-    {
-      "@id": "urn:enhancement-3874d9d3-9b0d-07bb-2818-0ff47ad7f227",
+      "@id": "urn:enhancement-1394b381-c910-a481-6c67-3c9dc66357af",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:EntityAnnotation"
       ],
-      "dc:created": "2014-03-02T09:44:35.023Z",
+      "dc:created": "2014-02-26T19:08:22.143Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Rome"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/Rome",
-      "enhancer:entity-type": [
-        "dbp-ont:Place",
-        "dbp-ont:PopulatedPlace",
-        "dbp-ont:Settlement",
-        "schema:Place",
-        "http://www.opengis.net/gml/_Feature",
-        "owl:Thing"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-3a8c7279-881e-c41c-5f37-008074cb55c1",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.011Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-94f37c6f-d600-d939-3625-1d823009eb0d",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Web technologies"
-      },
-      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02kf5d3",
-      "enhancer:entity-type": [
-        "http://rdf.freebase.com/ns/book.book_subject",
-        "http://rdf.freebase.com/ns/common.topic"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-4064d021-3eea-8ca4-404c-53794a27f8c5",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.024Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-02dd5ee8-6714-5078-a3ad-0c6aa283f25f",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Linked Open Data"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/Linked_data",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-505c98e6-17c1-aa71-1aca-42ace2071325",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.009Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-e51adc0f-5228-f3aa-b0ce-91684fd9e002",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Central Archives of the State"
-      },
-      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.04jk__q",
-      "enhancer:entity-type": [
-        "http://rdf.freebase.com/ns/common.topic",
-        "http://rdf.freebase.com/ns/government.government_agency",
-        "http://rdf.freebase.com/ns/organization.organization"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-55198093-c593-a98e-e9cb-e9a76baa3c5e",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.034Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-94f37c6f-d600-d939-3625-1d823009eb0d",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Web technologies"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Web_technologies",
-      "enhancer:entity-type": "schema:Thing",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-5c273519-adcf-8445-890c-64bd4c879b28",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.025Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "enhancer:confidence": 1.0,
-      "enhancer:end": 295,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Semantic Web"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": " is plugin for WordPress demonstrating how Semantic Web technologies and Linked Open Data, can be used in"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": "ating how "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": " technolog"
-      },
-      "enhancer:start": 283
-    },
-    {
-      "@id": "urn:enhancement-5c7a522f-4b53-2e99-9df3-f282d5912c95",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.034Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-d7bad15e-5878-04a1-c5eb-a992c489dfee",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "WordPress"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/WordPress",
-      "enhancer:entity-type": "schema:Thing",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-5fd2928a-6bbb-c3cc-ef95-87a542b71ddb",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.024Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-d7bad15e-5878-04a1-c5eb-a992c489dfee",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "WordPress"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/WordPress",
-      "enhancer:entity-type": [
-        "dbp-ont:Software",
-        "dbp-ont:Work",
-        "schema:CreativeWork",
-        "owl:Thing"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-74c8ad28-0166-7597-e12e-2afd07d5496d",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.009Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-a07e5801-e985-cc37-f6da-d7d754bed1bc",
-      "enhancer:confidence": 0.8181818,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "InSideOut10"
-      },
-      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0kybkd_",
-      "enhancer:entity-type": [
-        "http://rdf.freebase.com/ns/business.employer",
-        "http://rdf.freebase.com/ns/common.topic",
-        "http://rdf.freebase.com/ns/organization.membership_organization",
-        "http://rdf.freebase.com/ns/organization.organization",
-        "http://rdf.freebase.com/ns/organization.organization_founder"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-7cce4b48-adc6-72f2-7cf4-67b4612fc973",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.033Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-a07e5801-e985-cc37-f6da-d7d754bed1bc",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Insideout10"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Insideout10",
-      "enhancer:entity-type": "schema:Thing",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-94146c72-0059-c757-8cdf-83b2bf7b3b0c",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.034Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-32a9fb7b-fd2f-21b6-fe51-653f4404b911",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Linked Open Data"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Linked_Open_Data",
-      "enhancer:entity-type": "schema:Thing",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-94f37c6f-d600-d939-3625-1d823009eb0d",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.011Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "enhancer:confidence": 1.0,
-      "enhancer:end": 308,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Web technologies"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": " plugin for WordPress demonstrating how Semantic Web technologies and Linked Open Data, can be used in practice to"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": " Semantic "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": " and Linke"
-      },
-      "enhancer:start": 292
-    },
-    {
-      "@id": "urn:enhancement-9a1beb26-aa2b-2d43-8d3a-cf4378cbdd41",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:34.950Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
-      "dc:language": "en",
-      "dc:type": "dc:LinguisticSystem",
-      "enhancer:confidence": 0.99999523,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-9e4a7336-2e39-456e-0658-8b565c99026b",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.007Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:type": "dbp-ont:Person",
-      "enhancer:confidence": 1.0,
-      "enhancer:end": 25,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Andrea Volpini"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": "My name is Andrea Volpini and I am here with David Riccitelli.\n\nWe are the"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": "y name is "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": " and I am "
-      },
-      "enhancer:start": 11
-    },
-    {
-      "@id": "urn:enhancement-9fbb26dd-21f1-53d4-d9f0-d69b83867b03",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.033Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-2f293108-0ded-f45a-7945-e7a52640a500",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "David Riccitelli"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/David_Riccitelli",
-      "enhancer:entity-type": "schema:Person",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-a07e5801-e985-cc37-f6da-d7d754bed1bc",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:TextAnnotation"
-      ],
-      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.008Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:type": "dbp-ont:Organisation",
-      "enhancer:confidence": 0.8181818,
-      "enhancer:end": 101,
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
-      "enhancer:selected-text": {
-        "@language": "en",
-        "@value": "Insideout10"
-      },
-      "enhancer:selection-context": {
-        "@language": "en",
-        "@value": " David Riccitelli.\n\nWe are the co-founders of Insideout10 an Italian Startup and we're happy to present"
-      },
-      "enhancer:selection-prefix": {
-        "@language": "en",
-        "@value": "unders of "
-      },
-      "enhancer:selection-suffix": {
-        "@language": "en",
-        "@value": " an Italia"
-      },
-      "enhancer:start": 90
-    },
-    {
-      "@id": "urn:enhancement-a68087bf-4c5d-5708-11eb-eb022f3ce83c",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.033Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-e51adc0f-5228-f3aa-b0ce-91684fd9e002",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Central Archives of the State"
-      },
-      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Central_Archives_of_the_State",
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-a9499083-f15d-2db5-5e49-9d93df34fc6e",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.007Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-9e4a7336-2e39-456e-0658-8b565c99026b",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Andrea Volpini"
-      },
-      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0djtw2h",
-      "enhancer:entity-type": [
-        "http://rdf.freebase.com/ns/base.linkedinbase.linkedin_profile",
-        "http://rdf.freebase.com/ns/base.linkedinbase.topic",
-        "http://rdf.freebase.com/ns/business.board_member",
-        "http://rdf.freebase.com/ns/common.topic",
-        "http://rdf.freebase.com/ns/internet.social_network_user",
-        "http://rdf.freebase.com/ns/internet.website_owner",
-        "http://rdf.freebase.com/ns/organization.organization_founder",
-        "http://rdf.freebase.com/ns/organization.organization_member",
-        "http://rdf.freebase.com/ns/people.person",
-        "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-ab693d80-0406-06b3-f350-2131fe75cf69",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.023Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
-      "enhancer:confidence": 0.96666664,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Rome"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/Rome,_Maine",
-      "enhancer:entity-type": [
-        "dbp-ont:Place",
-        "dbp-ont:PopulatedPlace",
-        "dbp-ont:Settlement",
-        "dbp-ont:Town",
-        "schema:Place",
-        "http://www.opengis.net/gml/_Feature",
-        "owl:Thing"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-b120651e-70dd-b344-2f4e-49300624ab5c",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.024Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
-      "enhancer:confidence": 0.93333334,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "Rome"
-      },
-      "enhancer:entity-reference": "http://dbpedia.org/resource/Rome_Township,_Michigan",
-      "enhancer:entity-type": [
-        "dbp-ont:Place",
-        "dbp-ont:PopulatedPlace",
-        "dbp-ont:Settlement",
-        "dbp-ont:Town",
-        "schema:Place",
-        "http://www.opengis.net/gml/_Feature",
-        "owl:Thing"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-bf74ebad-e1bf-88fb-e88e-edd0aebaf401",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.008Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-2f293108-0ded-f45a-7945-e7a52640a500",
-      "enhancer:confidence": 1.0,
-      "enhancer:entity-label": {
-        "@language": "en",
-        "@value": "David Riccitelli"
-      },
-      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0j2h5nt",
-      "enhancer:entity-type": [
-        "http://rdf.freebase.com/ns/base.linkedinbase.topic",
-        "http://rdf.freebase.com/ns/common.topic",
-        "http://rdf.freebase.com/ns/internet.social_network_user",
-        "http://rdf.freebase.com/ns/organization.organization_founder",
-        "http://rdf.freebase.com/ns/organization.organization_member",
-        "http://rdf.freebase.com/ns/people.person",
-        "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
-      ],
-      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
-    },
-    {
-      "@id": "urn:enhancement-c0b100cf-d83e-8756-32f3-e3898df69525",
-      "@type": [
-        "enhancer:Enhancement",
-        "enhancer:EntityAnnotation"
-      ],
-      "dc:created": "2014-03-02T09:44:35.010Z",
-      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-0bb607cd-b1e8-33fd-5d34-e1a6da9d447a",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
       "enhancer:confidence": 1.0,
       "enhancer:entity-label": {
         "@language": "en",
@@ -1604,14 +826,87 @@
       "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
     },
     {
-      "@id": "urn:enhancement-d277e18f-058d-e7e6-71f7-e7d84148d06f",
+      "@id": "urn:enhancement-158363e1-7ce4-c8eb-c89a-622b1654c352",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-26T19:08:22.145Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 308,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Web technologies"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " plugin for WordPress demonstrating how Semantic Web technologies and Linked Open Data, can be used in practice to"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": " Semantic "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " and Linke"
+      },
+      "enhancer:start": 292
+    },
+    {
+      "@id": "urn:enhancement-1d397bbb-3a9f-36ef-5745-470a611e531b",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:EntityAnnotation"
       ],
-      "dc:created": "2014-03-02T09:44:35.011Z",
+      "dc:created": "2014-02-26T19:08:22.103Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-d7bad15e-5878-04a1-c5eb-a992c489dfee",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Rome"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Rome",
+      "enhancer:entity-type": [
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "dbp-ont:Settlement",
+        "schema:Place",
+        "http://www.opengis.net/gml/_Feature",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-2be2720c-43ee-b3e2-be34-d92579ca13bd",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.103Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a6892a90-c13b-a5e8-bf7b-87a0b4a273ca",
+      "enhancer:confidence": 0.95,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Central Archives of the State"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)",
+      "enhancer:entity-type": "http://www.opengis.net/gml/_Feature",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-2f7b61e7-ed1c-b12d-020b-b1e28ab0f3f9",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.145Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-671e9ff1-3870-9bfc-c236-a57b964b5c1c",
       "enhancer:confidence": 1.0,
       "enhancer:entity-label": {
         "@language": "en",
@@ -1630,13 +925,57 @@
       "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
     },
     {
-      "@id": "urn:enhancement-d7bad15e-5878-04a1-c5eb-a992c489dfee",
+      "@id": "urn:enhancement-395543aa-12db-8511-1cf0-90f4399f1ee3",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:21.938Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+      "dc:language": "en",
+      "dc:type": "dc:LinguisticSystem",
+      "enhancer:confidence": 0.999998,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-4e6b5479-e27c-1ea7-1b0c-6cbab957eb71",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:TextAnnotation"
       ],
       "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.011Z",
+      "dc:created": "2014-02-26T19:08:22.141Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Person",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 25,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Andrea Volpini"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": "My name is Andrea Volpini and I am here with David Riccitelli.\n\nWe are the"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "y name is "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " and I am "
+      },
+      "enhancer:start": 11
+    },
+    {
+      "@id": "urn:enhancement-671e9ff1-3870-9bfc-c236-a57b964b5c1c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-26T19:08:22.104Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
       "dc:type": "dbp-ont:Work",
       "enhancer:confidence": 1.0,
@@ -1661,14 +1000,102 @@
       "enhancer:start": 255
     },
     {
-      "@id": "urn:enhancement-d9668b0c-e84b-f038-7abe-36d65166d4ce",
+      "@id": "urn:enhancement-67618115-1b6a-6ec9-b35f-1627107fb33c",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:EntityAnnotation"
       ],
-      "dc:created": "2014-03-02T09:44:35.025Z",
+      "dc:created": "2014-02-26T19:08:22.202Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:relation": "urn:enhancement-32a9fb7b-fd2f-21b6-fe51-653f4404b911",
+      "dc:relation": "urn:enhancement-fcd7de47-f13c-e62b-938a-6247c59c1268",
+      "enhancer:confidence": 0.72727275,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Linked Open Data"
+      },
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/Linked_data",
+      "enhancer:entity-type": "schema:Thing",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-74371359-5b38-349a-3dc2-519ef594a080",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.103Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "enhancer:confidence": 0.96666664,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Rome"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Rome,_Maine",
+      "enhancer:entity-type": [
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "dbp-ont:Settlement",
+        "dbp-ont:Town",
+        "schema:Place",
+        "http://www.opengis.net/gml/_Feature",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-7b1db0ca-2185-2978-5dfb-1d6b05e6bfdc",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.102Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a6892a90-c13b-a5e8-bf7b-87a0b4a273ca",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Central Archives of the State"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/National_Archives_of_Albania",
+      "enhancer:entity-type": "http://www.opengis.net/gml/_Feature",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-86fa4927-9a0b-6840-7792-8bb17dd4315e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.142Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-0fff3f62-a010-4ed6-3e7a-6af6c18fb5ad",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "David Riccitelli"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0j2h5nt",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/internet.social_network_user",
+        "http://rdf.freebase.com/ns/organization.organization_founder",
+        "http://rdf.freebase.com/ns/organization.organization_member",
+        "http://rdf.freebase.com/ns/people.person",
+        "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-8a28bf99-d6ac-e3d7-893d-2a0f3779edd1",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.104Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-9a2457f6-6815-df86-8c0b-41d4372cc4de",
       "enhancer:confidence": 1.0,
       "enhancer:entity-label": {
         "@language": "en",
@@ -1678,13 +1105,234 @@
       "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
     },
     {
-      "@id": "urn:enhancement-e51adc0f-5228-f3aa-b0ce-91684fd9e002",
+      "@id": "urn:enhancement-8e9db7cf-048f-bed1-1e88-b3886ae47a22",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.199Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a6892a90-c13b-a5e8-bf7b-87a0b4a273ca",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Central Archives of the State"
+      },
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/Central_Archives_of_the_State_(Italy)",
+      "enhancer:entity-type": "schema:Place",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-981e86a9-546b-9e09-9952-bbddb2893ea7",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.145Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-158363e1-7ce4-c8eb-c89a-622b1654c352",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Web technologies"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02kf5d3",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/common.topic"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-982aad5c-c91b-d35f-a5d2-756c52dd37a6",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.141Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-4e6b5479-e27c-1ea7-1b0c-6cbab957eb71",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Andrea Volpini"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0djtw2h",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.linkedinbase.linkedin_profile",
+        "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+        "http://rdf.freebase.com/ns/business.board_member",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/internet.social_network_user",
+        "http://rdf.freebase.com/ns/internet.website_owner",
+        "http://rdf.freebase.com/ns/organization.organization_founder",
+        "http://rdf.freebase.com/ns/organization.organization_member",
+        "http://rdf.freebase.com/ns/people.person",
+        "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-9a2457f6-6815-df86-8c0b-41d4372cc4de",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.104Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 223,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Linked Open Data"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is plugin for WordPress"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "e for the "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " Event.\n\nW"
+      },
+      "enhancer:start": 207
+    },
+    {
+      "@id": "urn:enhancement-a0a1a661-565a-c5dc-8bee-a16362c4be34",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.205Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-158363e1-7ce4-c8eb-c89a-622b1654c352",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Web Technologies"
+      },
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/m.02kf5d3",
+      "enhancer:entity-type": "schema:Thing",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-a0c84138-3312-a19c-3c9a-69fc4d44746c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.142Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Organisation",
+      "enhancer:confidence": 0.8181818,
+      "enhancer:end": 101,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Insideout10"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " David Riccitelli.\n\nWe are the co-founders of Insideout10 an Italian Startup and we're happy to present"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "unders of "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " an Italia"
+      },
+      "enhancer:start": 90
+    },
+    {
+      "@id": "urn:enhancement-a19fbc8b-85f2-80a4-1720-a62473a6afbc",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.105Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 329,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Linked Open Data"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " demonstrating how Semantic Web technologies and Linked Open Data, can be used in practice to organise your online"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "ogies and "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": ", can be u"
+      },
+      "enhancer:start": 313
+    },
+    {
+      "@id": "urn:enhancement-a21fb5a3-ddd9-1f1f-df2e-3231b515b37a",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.105Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-671e9ff1-3870-9bfc-c236-a57b964b5c1c",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "WordPress"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/WordPress",
+      "enhancer:entity-type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "schema:CreativeWork",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-a2317cd2-67ca-4128-e4ca-faa7fafb3efe",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.143Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a0c84138-3312-a19c-3c9a-69fc4d44746c",
+      "enhancer:confidence": 0.8181818,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "InSideOut10"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0kybkd_",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/organization.organization_founder"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-a6892a90-c13b-a5e8-bf7b-87a0b4a273ca",
       "@type": [
         "enhancer:Enhancement",
         "enhancer:TextAnnotation"
       ],
       "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
-      "dc:created": "2014-03-02T09:44:35.009Z",
+      "dc:created": "2014-02-26T19:08:22.102Z",
       "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
       "dc:type": [
         "dbp-ont:Organisation",
@@ -1710,6 +1358,268 @@
         "@value": " in Rome f"
       },
       "enhancer:start": 161
+    },
+    {
+      "@id": "urn:enhancement-ab37feee-8bd4-0e17-a4e6-a5964b4eb57e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.143Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a6892a90-c13b-a5e8-bf7b-87a0b4a273ca",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Central Archives of the State"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.04jk__q",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/government.government_agency",
+        "http://rdf.freebase.com/ns/organization.organization"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-b3f5ef47-feaf-661d-45d2-a5fe1442832e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.199Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-4e6b5479-e27c-1ea7-1b0c-6cbab957eb71",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Andrea Volpini"
+      },
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/26",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-bb8f114d-fbe5-c78b-3e14-00c0cdd91801",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.199Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Rome",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/64",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-c005302f-8c63-6dd9-d3a2-b91a02fdd257",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.200Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Rome",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/60",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-d298082c-271a-7896-f21f-202dba266de6",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.105Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 295,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Semantic Web"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " is plugin for WordPress demonstrating how Semantic Web technologies and Linked Open Data, can be used in"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "ating how "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " technolog"
+      },
+      "enhancer:start": 283
+    },
+    {
+      "@id": "urn:enhancement-d3b69aff-ab0d-949b-0f59-fcb2790ed505",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.144Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "enhancer:confidence": 0.96666664,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Rome"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0qzlg59",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/people.person"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-db992eb2-9f4e-db11-7bef-e34dd05e2c7a",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.198Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-4e6b5479-e27c-1ea7-1b0c-6cbab957eb71",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Andrea Volpini"
+      },
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/m.0djtw2h",
+      "enhancer:entity-type": "schema:Person",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-dcc8c047-4d4e-ce06-3529-f6db59aeccfe",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.203Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 240,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "WordLift"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " State in Rome for the Linked Open Data Event.\n\nWordLift is plugin for WordPress demonstrating how"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "a Event.\n\n"
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " is plugin"
+      },
+      "enhancer:start": 232
+    },
+    {
+      "@id": "urn:enhancement-e58577bc-8eea-f6d1-cf8a-216c110b7eac",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-26T19:08:22.103Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Place",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 198,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Rome"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " today at the Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": " State in "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " for the L"
+      },
+      "enhancer:start": 194
+    },
+    {
+      "@id": "urn:enhancement-f481ab8c-0513-da11-9a4b-b672db41abc1",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.106Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a19fbc8b-85f2-80a4-1720-a62473a6afbc",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Linked Open Data"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Linked_data",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-f95f9082-168a-ffb5-cd50-4137bc826187",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.204Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-dcc8c047-4d4e-ce06-3529-f6db59aeccfe",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "WordLift"
+      },
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/223",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5"
+    },
+    {
+      "@id": "urn:enhancement-fcd7de47-f13c-e62b-938a-6247c59c1268",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-26T19:08:22.201Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 0.72727275,
+      "enhancer:end": 229,
+      "enhancer:extracted-from": "urn:content-item-sha1-d869addba4a8ce9d01acbc714b5681d0e7c94bd5",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Linked Open Data Event"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is plugin for WordPress demonstrating"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "e for the "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": ".\n\nWordLif"
+      },
+      "enhancer:start": 207
     }
   ]
 }

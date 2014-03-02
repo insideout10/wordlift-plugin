@@ -20,7 +20,7 @@ class PostTest extends WP_UnitTestCase {
     const TITLE    = 'Test Post';
 
     // The number of expected entities (as available in the mock response).
-    const EXPECTED_ENTITIES = 9;
+    const EXPECTED_ENTITIES = 8;
 
     // When true, the remote response is saved locally and kept as a mock-up (be aware that the previous mockup is
     // overwritten).
@@ -242,18 +242,49 @@ class PostTest extends WP_UnitTestCase {
         $analysis_results = wl_parse_file( dirname(__FILE__) . '/' . self::FILENAME . '.json' );
         $this->assertTrue( is_array( $analysis_results ) );
 
-        // TODO: For each entity get the label, type, description and thumbnails.
+        // For each entity get the label, type, description and thumbnails.
         $this->assertTrue( isset( $analysis_results['entities'] ) );
 
         // Get a reference to the entities.
-        $entities = $analysis_results['entities'];
-        $this->assertTrue( 0 < count( $entities ) );
+        $entities_from_analysis_results = $analysis_results['entities'];
+        $this->assertTrue( 0 < count( $entities_from_analysis_results ) );
 
-        foreach ( $entities as $entity ) {
-            var_dump( $entity );
+        // Accumulate the entites in an array.
+        $entities = array();
+        foreach ( $entities_from_analysis_results as $entity ) {
+            // URI.
+            $uri   = $entity->{'@id'};
+
+            // Label
+            $this->assertTrue( isset( $entity->{'http://www.w3.org/2000/01/rdf-schema#label'}->{'@value'} ) );
+            $label = $entity->{'http://www.w3.org/2000/01/rdf-schema#label'}->{'@value'};
+            $this->assertFalse( empty( $label ) );
+
+            // Type
+            $type  = wl_get_entity_type( $entity );
+            $this->assertFalse( empty( $type) );
+
+            // Description
+            $description = wl_get_entity_description( $entity );
+            $this->assertNotNull( $description );
+
+            // Images
+            $images = wl_get_entity_thumbnails( $entity );
+            $this->assertTrue( is_array( $images ) );
+
+            // Save the entity to the entities array.
+            $entities = array_merge_recursive( $entities, array(
+               $uri => array(
+                   'label'       => $label,
+                   'type'        => $type,
+                   'description' => $description,
+                   'images'      => $images
+               )
+            ));
         }
 
-        // TODO: Create a mock-up POST request with the entities data.
+        // An entities array.
+        wl_save_entities( $entities );
 
         // TODO: Check that the entities are created.
 
@@ -265,6 +296,14 @@ class PostTest extends WP_UnitTestCase {
 
         // Delete the post.
         $this->deletePost( $post_id );
+    }
+
+    function testSaveImage() {
+
+
+        wl_save_image( 'http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg' );
+
+        wl_save_image( 'https://usercontent.googleapis.com/freebase/v1/image/m/04js6kc?maxwidth=4096&maxheight=4096' );
     }
 
     /**

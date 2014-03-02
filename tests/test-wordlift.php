@@ -126,21 +126,21 @@ EOF;
         $entity_uri = $this->get_entity_uri( $this->entity_name );
 
         // try to get the post using the WordLift method.
-        $posts_using_entity_uri = wordlift_get_entity_posts_by_uri( $entity_uri );
+        $post_using_entity_uri = wordlift_get_entity_post_by_uri( $entity_uri );
 
         // check that an entity is found.
-        $this->assertCount( 1, $posts_using_entity_uri );
+        $this->assertNotNull( $post_using_entity_uri );
 
         // TODO: check that the post_meta/same_as has the same_as value.
 
         // try to get the post using the WordLift method.
-        $posts_using_entity_same_as = wordlift_get_entity_posts_by_uri( $this->entity_same_as );
+        $post_using_entity_same_as = wordlift_get_entity_post_by_uri( $this->entity_same_as );
 
         // check that an entity is found.
-        $this->assertCount( 1, $posts_using_entity_same_as );
+        $this->assertNotNull( $post_using_entity_same_as );
 
         // save a reference to the post.
-        $entity_post_id = $posts_using_entity_same_as[0]->ID;
+        $entity_post_id = $post_using_entity_same_as->ID;
 
         // test the wordlift_get_related_posts function.
         $related_posts = wordlift_get_related_posts( $entity_post_id, 'any' );
@@ -148,11 +148,11 @@ EOF;
 
 
         // check that the entity URI matches.
-        $entity_uri_from_post_meta = get_post_meta( $posts_using_entity_same_as[0]->ID, 'entity_url', true );
+        $entity_uri_from_post_meta = get_post_meta( $post_using_entity_same_as->ID, 'entity_url', true );
         $this->assertEquals( $entity_uri, $entity_uri_from_post_meta );
 
         // check in fact that they're the same post.
-        $this->assertEquals( $entity_post_id, $posts_using_entity_same_as[0]->ID );
+        $this->assertEquals( $entity_post_id, $post_using_entity_same_as->ID );
 
         // check that the post relates to the entity.
         $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
@@ -176,6 +176,11 @@ EOF;
 //        echo "[ post uri :: $post_uri ]\n";
 
         // check that the response is not an error.
+        if ( is_wp_error( $wp_response ) ) {
+            echo "\n============================================================\n";
+            echo var_dump( $wp_response );
+            echo "============================================================\n";
+        }
         $this->assertFalse( is_wp_error( $wp_response ) );
 
         // check that the response code is 200-OK.

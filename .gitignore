@@ -8,3 +8,4 @@ wp-tests/
 *.sublime-workspace
 *~
 run-tests.sh
+wp-tests/wordpress/wp-content/uploads

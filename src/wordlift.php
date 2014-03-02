@@ -219,6 +219,283 @@ function wl_set_entity_uri( $post_id, $uri ) {
     return update_post_meta( $post_id, 'entity_url', $uri );
 }
 
+/**
+ * Save the specified entities to the local storage.
+ * @param array $entities An array of entities.
+ * @return array An array of posts.
+ */
+function wl_save_entities( $entities ) {
+
+    write_log( "wl_save_entities [ entities count :: " . count( $entities ) . " ]\n" );
+
+    // Prepare the return array.
+    $posts = array();
+
+    // Save each entity and store the post id.
+    foreach ( $entities as $uri => $entity ) {
+        $label  = $entity['label'];
+        $type   = $entity['type'];
+        $description = $entity['description'];
+        $images = $entity['images'];
+
+        // Save the entity.
+        $post = wl_save_entity( $uri, $label, $type, $description, $images );
+
+        // Store the post in the return array if successful.
+        if ( null !== $post ) {
+            array_push( $posts, $post );
+        }
+    }
+
+    return $posts;
+}
+
+/**
+ * Save the specified data as an entity in WordPress.
+ * @param string $uri         The entity URI.
+ * @param string $label       The entity label.
+ * @param string $type        The entity type (an array with 'class' and 'url' keys).
+ * @param string $description The entity description.
+ * @param array $images       An array of image URLs.
+ * @return null|WP_Post A post instance or null in case of failure.
+ */
+function wl_save_entity( $uri, $label, $type, $description, $images = array() ) {
+
+    // Check whether an entity already exists with the provided URI.
+    $post = wordlift_get_entity_post_by_uri( $uri );
+
+    // Return the found post, do not overwrite data.
+    if ( null !== $post ) {
+        write_log("wl_save_entity : post exists [ post id :: $post->ID ]\n");
+        return $post;
+    }
+
+    // No post found, create a new one.
+    $params = array(
+        'post_status'  => 'draft',
+        'post_type'    => 'entity',
+        'post_title'   => $label,
+        'post_content' => $description,
+        'post_excerpt' => ''
+    );
+
+    // create or update the post.
+    $post_id = wp_insert_post( $params, true );
+
+    // TODO: handle errors.
+    if ( is_wp_error( $post_id ) ) {
+        write_log("wl_save_entity : error occurred\n");
+        // inform an error occurred.
+        return null;
+    }
+
+    // Set the type.
+    if ( isset( $type['class'] ) ) {
+        wp_set_object_terms( $post_id, $type['class'], 'entity_type' );
+    }
+
+    // Get a dataset URI for the entity.
+    $wl_uri = wordlift_build_entity_uri( $post_id );
+
+    // Save the entity URI.
+    wl_set_entity_uri( $post_id, $wl_uri );
+
+    // Set the same_as uri as the original URI, if it differs from the local uri.
+    if ($wl_uri !== $uri) {
+        update_post_meta( $post_id, 'entity_same_as', $uri );
+    }
+
+    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ]\n");
+
+    foreach ( $images as $image_remote_url ) {
+        // Save the image and get the local path.
+        $image = wl_save_image( $image_remote_url );
+
+        // Get the local URL.
+        $filename = $image['path'];
+        $url      = $image['url'];
+        $content_type = $image['content_type'];
+
+        $attachment = array(
+            'guid' => $url,
+            // post_title, post_content (the value for this key should be the empty string), post_status and post_mime_type
+            'post_title'   => $label, // Set the title to the post title.
+            'post_content' => '',
+            'post_status' => 'inherit',
+            'post_mime_type' => $content_type
+        );
+
+        $attachment_id = wp_insert_attachment( $attachment, $filename, $post_id );
+        $attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+        wp_update_attachment_metadata( $attachment_id, $attachment_data );
+    }
+
+    // save the entity in the triple store.
+    wordlift_save_entity_to_triple_store( $post_id );
+
+    // finally return the entity post.
+    return get_post( $post_id );
+}
+
+/**
+ * Save the image with the specified URL locally.
+ * @param string $url The image remote URL.
+ * @return array An array with information about the saved image (*path*: the local path to the image, *url*: the local
+ * url, *content_type*: the image content type)
+ */
+function wl_save_image( $url ) {
+
+    $parts     = parse_url( $url );
+    $path      = $parts['path'];
+
+    // Get the bare filename (filename w/o the extension).
+    $basename  = pathinfo( $path, PATHINFO_FILENAME );
+
+    // Chunk the bare name to get a subpath.
+    $chunks    = chunk_split( strtolower( $basename ), 3, DIRECTORY_SEPARATOR );
+
+    // Get the base dir.
+    $wp_upload_dir = wp_upload_dir();
+    $base_dir  = $wp_upload_dir['basedir'];
+    $base_url  = $wp_upload_dir['baseurl'];
+
+    // Get the full path to the local filename.
+    $image_path = '/' . $chunks;
+    $image_full_path = $base_dir . $image_path;
+    $image_full_url  = $base_url . $image_path;
+
+    // Create the folders.
+    if ( ! ( file_exists( $image_full_path ) && is_dir( $image_full_path ) ) ) {
+        if ( false === mkdir( $image_full_path, 0777, true ) ) {
+            write_log( "wl_save_image : failed creating dir [ image full path :: $image_full_path ]\n" );
+        }
+    };
+
+    // Request the remote file.
+    $response  = wp_remote_get( $url );
+    $content_type = wp_remote_retrieve_header( $response, 'content-type' );
+
+    switch ( $content_type ) {
+        case 'image/jpeg':
+        case 'image/jpg':
+            $extension = ".jpg";
+            break;
+        case 'image/svg+xml':
+            $extension = ".svg";
+            break;
+        case 'image/gif':
+            $extension = ".gif";
+            break;
+        case 'image/png':
+            $extension = ".png";
+            break;
+        default:
+            $extension = '';
+    }
+
+    // Complete the local filename.
+    $image_full_path .= $basename . $extension;
+    $image_full_url  .= $basename . $extension;
+
+    // Store the data locally.
+    file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
+
+    write_log( "wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n" );
+
+    // Return the path.
+    return array(
+        'path' => $image_full_path,
+        'url'  => $image_full_url,
+        'content_type' => $content_type
+    );
+}
+
+
+/**
+ * Get the URI and stylesheet class associated with the provided entity.
+ * @param object|array|string $entity An entity instance.
+ * @return array An array containing a class and an URI element.
+ */
+function wl_get_entity_type( $entity ) {
+
+    // Prepare the types array.
+    $types = wl_type_to_types( $entity );
+
+    if ( in_array( 'http://schema.org/Person', $types )
+        || in_array( 'http://rdf.freebase.com/ns/people.person', $types )) {
+        return array(
+            'class' => 'person',
+            'uri'   => 'http://schema.org/Person'
+        );
+    }
+
+    if ( in_array( 'http://schema.org/Organization', $types )
+        || in_array( 'http://rdf.freebase.com/ns/government.government', $types )
+        || in_array( 'http://schema.org/Newspaper', $types ) ) {
+        return array(
+            'class' => 'organization',
+            'uri'   => 'http://schema.org/Organization'
+        );
+    }
+
+    if ( in_array( 'http://schema.org/Place', $types )
+        || in_array( 'http://rdf.freebase.com/ns/location.location', $types ) ) {
+        return array(
+            'class' => 'place',
+            'uri'   => 'http://schema.org/Place'
+        );
+    }
+
+    if ( in_array( 'http://schema.org/Event', $types )
+        || in_array( 'http://dbpedia.org/ontology/Event', $types ) ) {
+        return array(
+            'class' => 'event',
+            'uri'   => 'http://schema.org/Event'
+        );
+    }
+
+    if ( in_array( 'http://rdf.freebase.com/ns/music.artist', $types )
+        || in_array( 'http://schema.org/MusicAlbum', $types ) ) {
+        return array(
+            'class' => 'event',
+            'uri'   => 'http://schema.org/Event'
+        );
+    }
+
+
+    if ( in_array( 'http://www.opengis.net/gml/_Feature', $types ) ) {
+        return array(
+            'class' => 'place',
+            'uri'   => 'http://schema.org/Place'
+        );
+    }
+
+    return array(
+        'class' => 'thing',
+        'uri'   => 'http://schema.org/Thing'
+    );
+}
+
+/**
+ * Get a types array from an item.
+ * @param object|array|string $item An item with a '@type' property (if the property doesn't exist, an empty array is returned).
+ * @return array The items array (or an empty array if the '@type' property doesn't exist).
+ */
+function wl_type_to_types( $item ) {
+
+    if ( is_string( $item ) ) {
+        return array( $item );
+    }
+
+    if ( is_array( $item ) ) {
+        return $item;
+    }
+
+    return !isset( $item->{'@type'} )
+        ? array() // Set an empty array if type is not set on the item.
+        : ( is_array( $item->{'@type'} ) ? $item->{'@type'} : array( $item->{'@type'} ) );
+}
+
 require_once('libs/php-json-ld/jsonld.php');
 
 // add editor related methods.

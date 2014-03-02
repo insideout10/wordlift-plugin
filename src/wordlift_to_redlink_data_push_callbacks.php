@@ -13,6 +13,11 @@ function wordlift_save_post_and_related_entities( $post_id ) {
     // get the current post.
     $post       = get_post( $post_id );
 
+    // Do not save entity posts here.
+    if ( 'entity' === $post->post_type ) {
+        return;
+    }
+
     write_log( "wordlift_save_post_and_related_entities [ post_id :: $post_id ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ]" );
 
     // save the author and get the author URI.
@@ -62,37 +67,33 @@ function wordlift_save_post_and_related_entities( $post_id ) {
     
     // this array will hold all the entities found in this post.
     $entity_post_ids = array();
-    $entities        = isset( $_POST['entities'] ) ? $_POST['entities'] : array();
+
+    // Save the entities coming with POST data.
+    if ( isset( $_POST['entities'] ) ) {
+        wl_save_entities( $_POST['entities'] );
+    }
 
     // Loops on founded span tags
-    foreach ( $entities as $entity ) {
-
-        $entity_label = $entity['label'];
-        $entity_id    = $entity['id'];
-        $entity_type  = $entity['type'];
-        $entity_description  = $entity['description'];
-
-        // create or update the entity in WordPress and get the entity URI.
-        $entity_posts = wordlift_save_entity_post( $entity_id, $entity_label, $entity_type, $entity_description );
-
-        write_log( "wordlift_save_post_and_related_entities [ entity_posts :: " . count($entity_posts) . " ]\n");
-
-//        foreach ($entity_posts as $entity_post) {
-//            if (!in_array($entity_post->ID, $entity_post_ids)) {
-//                // add the entity post id to the array.
-//                array_push($entity_post_ids, $entity_post->ID);
-//                // get the entity URI and create a reference.
-//                $entity_uri = get_post_meta($entity_post->ID, 'entity_url', true);
-//                // create the sparql query.
-//                $sparql     .= "<$post_uri>   dcterms:references <$entity_uri> . \n";
-//            }
-//        }
-
-    }
+//    foreach ( $entities as $entity ) {
+//
+//        $entity_label = $entity['label'];
+//        $entity_id    = $entity['id'];
+////        $entity_type  = $entity['type'];
+//        $entity_type  = wl_get_entity_type( $entity['type'] );
+//
+//        $entity_description  = $entity['description'];
+//
+//        // create or update the entity in WordPress and get the entity URI.
+//        // $entity_posts = wordlift_save_entity_post( $entity_id, $entity_label, $entity_type, $entity_description );
+//        $entity_post  = wl_save_entity( $entity_id, $entity_label, $entity_type, $entity_description );
+//
+//        write_log( "wordlift_save_post_and_related_entities [ post id :: $entity_post->ID ][ entity label :: $entity_label ][ entity id :: $entity_label ][ type :: $entity_type->class ][ description :: $entity_description ]\n" );
+//    }
 
     // remove the reference to this post from related entities.
     // get the list of related entities.
     $existing_related_entities_ids = get_post_meta( $post_id, 'wordlift_related_entities', true );
+
     write_log("existing_related_entities_ids [ post_id :: $post_id ][ count :: " . count( $existing_related_entities_ids ) . " ][ is_array :: " . is_array( $existing_related_entities_ids ) . " ]\n");
 
     // for each entity, remove the reference to the post.
@@ -216,16 +217,16 @@ function wordlift_save_entities_embedded_as_spans( $content ) {
     if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
         for ( $i = 0; $i < $count; $i++ ) {
             $uri   = $matches[1][$i];
-            $type  = $matches[2][$i];
+            $type  = wl_get_entity_type( $matches[2][$i] );
             $label = $matches[3][$i];
 
-            write_log("wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: $type ][ label :: $label ]");
+            write_log( "wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: " . $type['class'] . " ][ label :: $label ]" );
 
             // Save the entity in the local storage.
-            foreach ( wordlift_save_entity_post( $uri, $label, $type, '' ) as $post ) {
-                if ( !in_array( $post->ID, $post_ids ) ) {
-                    array_push( $post_ids, $post->ID );
-                }
+//            $post  = wordlift_save_entity_post( $uri, $label, $type, '' );
+            $post  = wl_save_entity( $uri, $label, $type, '' );
+            if ( !in_array( $post->ID, $post_ids ) ) {
+                array_push( $post_ids, $post->ID );
             }
         }
     }
@@ -301,70 +302,67 @@ EOF;
     return $author_uri;
 }
 
-/**
- * Save the specified entity to WordPress.
- * @param string $uri   The entity URI (local or remote).
- * @param string $label The entity label.
- * @param string $type  The entity type.
- * @param string $description  The entity description.
- * @return array        An array of posts.
- */
-function wordlift_save_entity_post($uri, $label, $type, $description) {
-
-    write_log("wordlift_save_entity_post [ uri :: $uri ][ label :: $label ][ type :: $type ]\n");
-
-    // get the entity posts.
-    $entity_posts = wordlift_get_entity_posts_by_uri( $uri );
-
-    if ( 0 < count( $entity_posts ) ) {
-        write_log( "wordlift_save_entity_post [ entities count :: " . count($entity_posts) . "]\n" );
-        // if there are entities, return the local URI of the first one.
-        // TODO: handle more entities.
-        return $entity_posts;
-    }
-
-    // there are no entities, create a new one.
-    $params = array(
-        'post_status'  => 'draft',
-        'post_type'    => 'entity',
-        'post_title'   => $label,
-        'post_content' => $description,
-        'post_excerpt' => ''
-    );
-
-    // create or update the post.
-    $post_id = wp_insert_post( $params, true );
-
-    // TODO: handle errors.
-    if ( is_wp_error( $post_id ) ) {
-        // inform an error occurred.
-        return array();
-    }
-
-    // Save the entity type.
-    if( !empty( $type ) ) {
-        $fragments = explode( '/', $type );
-        $tax_type  = end( $fragments );
-        wp_set_object_terms( $post_id, $tax_type, 'entity_type' );
-    }
-
-    // Get a local URI for the entity.
-    $local_uri = wordlift_build_entity_uri( $post_id );
-    // Save the entity URI.
-    wl_set_entity_uri( $post_id, $local_uri );
-
-    // Set the same_as uri as the original URI, if it differs from the local uri.
-    if ($local_uri !== $uri) {
-        update_post_meta( $post_id, 'entity_same_as', $uri );
-    }
-    // save the entity in the triple store.
-    wordlift_save_entity_to_triple_store( $post_id );
-
-    // finally return the entity post.
-    return array(
-        get_post( $post_id )
-    );
-}
+///**
+// * Save the specified entity to WordPress.
+// * @param string $uri   The entity URI (local or remote).
+// * @param string $label The entity label.
+// * @param string $type  The entity type.
+// * @param string $description  The entity description.
+// * @return array        An array of posts.
+// */
+//function wordlift_save_entity_post($uri, $label, $type, $description) {
+//
+//    write_log("wordlift_save_entity_post [ uri :: $uri ][ label :: $label ][ type :: $type ]\n");
+//
+//    // get the entity posts.
+//    $entity_post = wordlift_get_entity_post_by_uri( $uri );
+//
+//    if ( null != $entity_post ) {
+//        write_log( "wordlift_save_entity_post [ entity post id :: " . $entity_post->ID . " ]\n" );
+//        // if there are entities, return the local URI of the first one.
+//        return $entity_post;
+//    }
+//
+//    // there are no entities, create a new one.
+//    $params = array(
+//        'post_status'  => 'draft',
+//        'post_type'    => 'entity',
+//        'post_title'   => $label,
+//        'post_content' => $description,
+//        'post_excerpt' => ''
+//    );
+//
+//    // create or update the post.
+//    $post_id = wp_insert_post( $params, true );
+//
+//    // TODO: handle errors.
+//    if ( is_wp_error( $post_id ) ) {
+//        // inform an error occurred.
+//        return array();
+//    }
+//
+//    // Save the entity type.
+//    if( !empty( $type ) ) {
+//        $fragments = explode( '/', $type );
+//        $tax_type  = end( $fragments );
+//        wp_set_object_terms( $post_id, $tax_type, 'entity_type' );
+//    }
+//
+//    // Get a local URI for the entity.
+//    $local_uri = wordlift_build_entity_uri( $post_id );
+//    // Save the entity URI.
+//    wl_set_entity_uri( $post_id, $local_uri );
+//
+//    // Set the same_as uri as the original URI, if it differs from the local uri.
+//    if ($local_uri !== $uri) {
+//        update_post_meta( $post_id, 'entity_same_as', $uri );
+//    }
+//    // save the entity in the triple store.
+//    wordlift_save_entity_to_triple_store( $post_id );
+//
+//    // finally return the entity post.
+//    return get_post( $post_id );
+//}
 
 /**
  * Create an URI on the custom dataset based on an existing URI.
@@ -391,9 +389,10 @@ function wordlift_get_custom_dataset_entity_uri( $uri ) {
  * @param string $uri The entity URI.
  * @return array mixed An array of posts.
  */
-function wordlift_get_entity_posts_by_uri( $uri ) {
+function wordlift_get_entity_post_by_uri( $uri ) {
 
     $query = new WP_Query( array(
+            'numberposts' => 1,
             'post_status' => 'any',
             'post_type'   => 'entity',
             'meta_query'  => array(
@@ -413,11 +412,18 @@ function wordlift_get_entity_posts_by_uri( $uri ) {
         )
     );
 
+    // Get the matching eneity posts.
     $posts = $query->get_posts();
 
     write_log( "wordlift_get_entity_posts_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
 
-    return $posts;
+    // Return null if no post is found.
+    if ( 0 === count( $posts ) ) {
+        return null;
+    }
+
+    // Return the found post.
+    return $posts[0];
 }
 
 /**
