@@ -475,6 +475,9 @@ EOF;
         $this->assertTrue( is_numeric( $count ) );
 
         // Expect only one match (headers + one row).
+        if ( 2 !== $count ) {
+            write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]" );
+        }
         $this->assertEquals( 2, $count );
 
         // Focus on the first row.
