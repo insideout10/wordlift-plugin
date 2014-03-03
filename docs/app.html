@@ -139,7 +139,7 @@
             &lt;div&gt;
               &lt;ul&gt;
                 &lt;li ng-repeat="(id, entityAnnotation) in textAnnotation.entityAnnotations | orderObjectBy:'confidence':true"&gt;
-                  &lt;div class="entity" ng-class="currentCssClass(id, entityAnnotation)" ng-click="onEntityClicked(id, entityAnnotation)" ng-show="entityAnnotation.entity.label"&gt;
+                  &lt;div class="entity {{entityAnnotation.entity.type}}" ng-class="{selected: true==entityAnnotation.selected}" ng-click="onEntityClicked(id, entityAnnotation)" ng-show="entityAnnotation.entity.label"&gt;
                     &lt;div class="thumbnail" ng-show="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}" style="background-image: url({{entityAnnotation.entity.thumbnail}})"&gt;&lt;/div&gt;
                     &lt;div class="thumbnail empty" ng-hide="entityAnnotation.entity.thumbnail" title="{{entityAnnotation.entity.id}}"&gt;&lt;/div&gt;
                     &lt;div class="confidence" ng-bind="entityAnnotation.confidence"&gt;&lt;/div&gt;

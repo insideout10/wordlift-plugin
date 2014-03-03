@@ -36,3 +36,11 @@ npm install grunt-contrib-less --save-dev
 npm install grunt-contrib-uglify --save-dev
 npm install clean-css
 ```
+
+## Testing
+
+### Client-side
+
+```
+sudo npm install -g karma
+```

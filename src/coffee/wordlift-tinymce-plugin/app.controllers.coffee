@@ -1,7 +1,4 @@
-angular.module('wordlift.tinymce.plugin.controllers', [
-	'wordlift.tinymce.plugin.config', 
-	'wordlift.tinymce.plugin.services'
-	])
+angular.module('wordlift.tinymce.plugin.controllers', [ 'wordlift.tinymce.plugin.config', 'wordlift.tinymce.plugin.services' ])
   .filter('orderObjectBy', ->
     (items, field, reverse) ->
       filtered = []
@@ -59,19 +56,26 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $(window).scroll(scroll)
     $('#content_ifr').contents().scroll(scroll)
 
-    $scope.currentCssClass = (entityIndex, entityAnnotation) ->
-      currentItemId = $scope.textAnnotationSpan.attr("itemid")
-      return "#{entityAnnotation.entity.type} selected" if entityAnnotation.entity.id == currentItemId
-      return "#{entityAnnotation.entity.type} selected" if entityIndex == $scope.selectedEntity
-      return "#{entityAnnotation.entity.type}"
+#    DEPRECATED: the stylesheet is now applied using in the template. The selection is done using the selected attribute.
+#    $scope.currentCssClass = (entityIndex, entityAnnotation) ->
+#      currentItemId = $scope.textAnnotationSpan.attr("itemid")
+#      return "#{entityAnnotation.entity.type} selected" if entityAnnotation.entity.id == currentItemId
+#      return "#{entityAnnotation.entity.type} selected" if entityIndex == $scope.selectedEntity
+#      return "#{entityAnnotation.entity.type}"
 
     # This event is raised when an entity is selected from the entities popover.
     $scope.onEntityClicked = (entityIndex, entityAnnotation) ->
       $scope.selectedEntity = entityIndex
       $scope.selectedEntitiesMapping[entityAnnotation.relation.id] = entityAnnotation.entity
 
-      # Select the specified entity annotation.
-      EntityService.select entityAnnotation
+      # Set the annotation selected/unselected.
+      entityAnnotation.selected = !entityAnnotation.selected
+
+      # Select (or unselect) the specified entity annotation.
+      if entityAnnotation.selected
+        EntityService.select entityAnnotation
+      else
+        EntityService.deselect entityAnnotation
 
       $scope.$emit 'DisambiguationWidget.entitySelected', entityAnnotation
 

@@ -245,7 +245,11 @@ function wl_save_entities( $entities, $related_post_id = null ) {
         $label  = $entity['label'];
         $type   = $entity['type'];
         $description = $entity['description'];
-        $images = $entity['images'];
+        $images = ( isset( $entity['image'] ) ?
+            ( is_array( $entity['image'] )
+                ? $entity['image']
+                : array( $entity['image'] ) )
+            : array() );
 
         // Save the entity.
         $post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id );
@@ -335,9 +339,13 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
             'post_mime_type' => $content_type
         );
 
+        // Create the attachment in WordPress and generate the related metadata.
         $attachment_id = wp_insert_attachment( $attachment, $filename, $post_id );
         $attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
         wp_update_attachment_metadata( $attachment_id, $attachment_data );
+
+        // Set it as the featured image.
+        set_post_thumbnail( $post_id, $attachment_id );
     }
 
     // Add the related post ID if provided.

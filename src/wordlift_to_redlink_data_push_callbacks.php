@@ -213,18 +213,29 @@ function wordlift_save_post_and_related_entities( $post_id ) {
         return;
     }
 
-    // Save the entities coming with POST data.
-    if ( isset( $_POST['entities'] ) ) {
-        wl_save_entities( $_POST['entities'] );
-    }
-
     // Remove existing bindings between the post and related entities.
     // They will be recreated afterwards.
     wl_unbind_post_from_entities( $post_id );
 
-    // Save entities embedded as spans.
-    // TODO: remove this when the entities will be saved using the new method.
-    $entity_post_ids = wordlift_save_entities_embedded_as_spans( $post->post_content );
+    // Save the entities coming with POST data.
+    $entity_posts_ids = array();
+    if ( isset( $_POST['wl_entities'] ) ) {
+        $entities_via_post = array_values( $_POST['wl_entities'] );
+        write_log( "wordlift_save_post_and_related_entities [ entities_via_post :: " );
+        write_log( $entities_via_post );
+        write_log( "]" );
+
+        $entity_posts = wl_save_entities( $entities_via_post );
+        foreach ( $entity_posts as $entity_post ) {
+            array_push( $entity_posts_ids, $entity_post->ID );
+        }
+    }
+
+    // Save entities coming as embedded in the text.
+    $entity_post_ids = array_unique( array_merge(
+        $entity_posts_ids,
+        wordlift_save_entities_embedded_as_spans( $post->post_content )
+    ) );
 
     // Bind the entities to the post.
     wl_bind_post_to_entities( $post_id, $entity_post_ids );
