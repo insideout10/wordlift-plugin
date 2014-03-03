@@ -515,3 +515,40 @@ function wl_get_entity_annotation_best_match( $entity_annotations ) {
 
     return $entity_annotations[0];
 }
+
+function wl_execute_sparql_query( $query ) {
+
+    // construct the API URL.
+    $url  = wordlift_redlink_sparql_update_url();
+
+    // Prepare the request.
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+        'method'  => 'POST',
+        'headers' => array(
+            'Accept'       => 'application/json',
+            'Content-type' => 'application/sparql-update; charset=utf-8'
+        ),
+        'body'    => $query
+    ));
+
+    // Send the request.
+    $response = wp_remote_post( $url, $args );
+
+    // If an error has been raised, return the error.
+    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+
+        echo "wl_execute_sparql_query ================================\n";
+//        echo "[ api url :: $api_url ]\n"; -- enabling this will print out the key.
+        echo " request : \n";
+        var_dump( $args );
+        echo " response: \n";
+        var_dump( $response );
+        echo " response body: \n";
+        echo $response['body'];
+        echo "=======================================================\n";
+
+        return false;
+    }
+
+    return true;
+}

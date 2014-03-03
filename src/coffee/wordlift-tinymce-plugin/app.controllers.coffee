@@ -65,12 +65,10 @@ angular.module('wordlift.tinymce.plugin.controllers', [
       return "#{entityAnnotation.entity.type} selected" if entityIndex == $scope.selectedEntity
       return "#{entityAnnotation.entity.type}"
 
-    # this event is raised when an entity is selected from the entities popover.
+    # This event is raised when an entity is selected from the entities popover.
     $scope.onEntityClicked = (entityIndex, entityAnnotation) ->
       $scope.selectedEntity = entityIndex
-      $log.debug "Going to notify entity selection to EditorService ..."
       $scope.selectedEntitiesMapping[entityAnnotation.relation.id] = entityAnnotation.entity
-      $log.debug $scope.selectedEntitiesMapping
       $scope.$emit 'DisambiguationWidget.entitySelected', entityAnnotation
 
     # receive the analysis results and store them in the local scope.

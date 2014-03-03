@@ -1,0 +1,23 @@
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+PREFIX dct: <http://purl.org/dc/terms/>
+
+DELETE { <{uri}> rdfs:label ?o }
+WHERE  { <{uri}> rdfs:label ?o };
+DELETE { <{uri}> owl:sameAs ?o . }
+WHERE  { <{uri}> owl:sameAs ?o . };
+DELETE { <{uri}> schema:description ?o . }
+WHERE  { <{uri}> schema:description ?o . };
+DELETE { <{uri}> schema:url ?o . }
+WHERE  { <{uri}> schema:url ?o . };
+DELETE { <{uri}> a ?o . }
+WHERE  { <{uri}> a ?o . };
+DELETE { <{uri}> dct:relation ?o . }
+WHERE  { <{uri}> dct:relation ?o . };
+INSERT DATA { <{uri}> owl:sameAs <http://dbpedia.org/resource/Linked_data> .
+<{uri}> rdfs:label "Linked Open Data"@en .
+<{uri}> schema:url <http://example.org/?post_type=entity&p=1978> .
+<{uri}> a <http://schema.org/Thing> .
+ }

@@ -145,6 +145,32 @@ class PostTest extends WP_UnitTestCase {
     }
 
     /**
+     * Test a simple sparql query against Redlink to check whether SPARQL queries work fine.
+     */
+    function testSPARQLQueries() {
+
+        // Get the SPARQL template from the file.
+        $filename = dirname( __FILE__ ) . '/linked_data.sparql.template';
+        $sparql_template = file_get_contents( $filename );
+
+        // Get the user ID and dataset name.
+        $user_id  = wordlift_configuration_user_id();
+        $dataset_name = wordlift_configuration_dataset_id();
+
+        // Set the entity URI.
+        $uri      = sprintf( "http://data.redlink.io/%s/%s/entity/Linked_Open_Data", $user_id, $dataset_name );
+
+        // Apply the URI to the SPARQL template.
+        $sparql   = str_replace( '{uri}', $uri, $sparql_template );
+
+        // Run the query.
+        $result   = wl_execute_sparql_query( $sparql );
+        $this->assertTrue( $result );
+
+        $this->checkEntityWithData( $uri, '"Linked Open Data"@en', '<http://example.org/?post_type=entity&p=1978>' );
+    }
+
+    /**
      * Test create a post and parse the results (using a mock-up for test results).
      */
     function testEmbedTextAnnotations() {
@@ -462,6 +488,53 @@ EOF;
         // Get the post title and permalink.
         $title    = '"' . $post->post_title .'"@' . wordlift_configuration_site_language();
         $permalink = '<' . get_permalink( $post->ID ) . '>';
+
+        // Check for equality.
+        $this->assertEquals( $title, $label );
+        $this->assertEquals( $permalink, $url );
+        $this->assertFalse( empty( $type ) );
+    }
+
+    /**
+     * Check the provided entity post against the remote Redlink datastore.
+     * @param string $uri       The entity URI.
+     * @param string $title     The entity title.
+     * @param string $permalink The entity permalink.
+     */
+    function checkEntityWithData( $uri, $title, $permalink ) {
+
+        write_log( "checkEntityWithData [ uri :: $uri ]" );
+
+        // Prepare the SPARQL query to select label and URL.
+        $sparql   = <<<EOF
+SELECT DISTINCT ?label ?url ?type
+WHERE {
+    <$uri> rdfs:label ?label ;
+           schema:url ?url ;
+           a ?type .
+}
+EOF;
+
+        // Send the query and get the response.
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+        $this->assertFalse( is_wp_error( $response ) );
+
+        $body     = $response['body'];
+
+        $matches  = array();
+        $count    = preg_match_all( '/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im' , $body, $matches, PREG_SET_ORDER );
+        $this->assertTrue( is_numeric( $count ) );
+
+        // Expect only one match (headers + one row).
+        $this->assertEquals( 2, $count );
+
+        // Focus on the first row.
+        $match    = $matches[1];
+
+        // Get the label and URL from the remote answer.
+        $label    = $match['label'];
+        $url      = $match['url'];
+        $type     = $match['type'];
 
         // Check for equality.
         $this->assertEquals( $title, $label );
