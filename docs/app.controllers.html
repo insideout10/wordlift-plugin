@@ -251,15 +251,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>this event is raised when an entity is selected from the entities popover.</p>
+              <p>This event is raised when an entity is selected from the entities popover.</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    $scope.<span class="hljs-function"><span class="hljs-title">onEntityClicked</span> = <span class="hljs-params">(entityIndex, entityAnnotation)</span> -&gt;</span>
       $scope.selectedEntity = entityIndex
-      $log.debug <span class="hljs-string">"Going to notify entity selection to EditorService ..."</span>
       $scope.selectedEntitiesMapping[entityAnnotation.relation.id] = entityAnnotation.entity
-      $log.debug $scope.selectedEntitiesMapping
+
+      $log.info <span class="hljs-string">"==== entityAnnotation ===="</span>
+      $log.info entityAnnotation
+
       $scope.$emit <span class="hljs-string">'DisambiguationWidget.entitySelected'</span>, entityAnnotation</pre></div></div>
             
         </li>

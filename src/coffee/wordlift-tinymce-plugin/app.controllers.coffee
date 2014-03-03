@@ -69,6 +69,10 @@ angular.module('wordlift.tinymce.plugin.controllers', [
     $scope.onEntityClicked = (entityIndex, entityAnnotation) ->
       $scope.selectedEntity = entityIndex
       $scope.selectedEntitiesMapping[entityAnnotation.relation.id] = entityAnnotation.entity
+
+      $log.info "==== entityAnnotation ===="
+      $log.info entityAnnotation
+
       $scope.$emit 'DisambiguationWidget.entitySelected', entityAnnotation
 
     # receive the analysis results and store them in the local scope.
