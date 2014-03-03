@@ -227,9 +227,34 @@ class PostTest extends WP_UnitTestCase {
     }
 
     /**
+     * Test *related* methods.
+     */
+    function testRelated() {
+
+        $post_id        = $this->createPost();
+        $entity_post_id = $this->createPost();
+
+        $related_entities = wl_get_related_entities( $post_id );
+        $this->assertEquals( 0, count( $related_entities ) );
+
+        $related_posts    = wl_get_related_post_ids( $entity_post_id );
+        $this->assertEquals( 0, count( $related_posts ) );
+
+        wl_bind_post_to_entities( $post_id, array( $entity_post_id ) );
+        $this->assertEquals( 1, count( wl_get_related_entities( $post_id ) ) );
+        $this->assertEquals( 1, count( wl_get_related_post_ids( $entity_post_id ) ) );
+
+        wl_add_related_entities( $post_id, array( $entity_post_id ) );
+        $this->assertEquals( 1, count( wl_get_related_entities( $post_id ) ) );
+
+        wl_add_related_posts( $entity_post_id, array( $post_id ) );
+        $this->assertEquals( 1, count( wl_get_related_post_ids( $entity_post_id ) ) );
+    }
+
+    /**
      * Test saving entities passed via a metabox.
      */
-    function testEntitiesViaMetabox() {
+    function testEntitiesViaArray() {
 
         // Create a post.
         $post_id    = $this->createPost();
@@ -246,16 +271,26 @@ class PostTest extends WP_UnitTestCase {
         $this->assertTrue( isset( $analysis_results['entities'] ) );
 
         // Get a reference to the entities.
-        $entities_from_analysis_results = $analysis_results['entities'];
-        $this->assertTrue( 0 < count( $entities_from_analysis_results ) );
+        $text_annotations = $analysis_results['text_annotations'];
+        $best_entities = array();
+        foreach ( $text_annotations as $id => $text_annotation ) {
+            $entity_annotation = wl_get_entity_annotation_best_match( $text_annotation['entities'] );
+            $entity    = $entity_annotation['entity'];
+            $entity_id = $entity->{'@id'};
 
-        // Accumulate the entites in an array.
+            if ( !array_key_exists( $entity_id, $best_entities) ) {
+                $best_entities[$entity_id] = $entity;
+            }
+        }
+
+        // Accumulate the entities in an array.
         $entities = array();
-        foreach ( $entities_from_analysis_results as $entity ) {
-            // URI.
-            $uri   = $entity->{'@id'};
+        foreach ( $best_entities as $uri => $entity ) {
 
             // Label
+            if ( !isset( $entity->{'http://www.w3.org/2000/01/rdf-schema#label'}->{'@value'} ) ) {
+                var_dump( $entity );
+            }
             $this->assertTrue( isset( $entity->{'http://www.w3.org/2000/01/rdf-schema#label'}->{'@value'} ) );
             $label = $entity->{'http://www.w3.org/2000/01/rdf-schema#label'}->{'@value'};
             $this->assertFalse( empty( $label ) );
@@ -283,16 +318,51 @@ class PostTest extends WP_UnitTestCase {
             ));
         }
 
-        // An entities array.
-        wl_save_entities( $entities );
+        // Save the entities in the array.
+        $entity_posts = wl_save_entities( $entities );
 
-        // TODO: Check that the entities are created.
+        // TODO: need to bind entities with posts.
+        wl_bind_post_to_entities( $post_id, $entity_posts );
 
-        // TODO: Check that the post references the entities.
+        // TODO: synchronize data.
+        wl_push_to_redlink( $post_id );
 
-        // TODO: Check that the entities are related to the post.
+        // Check that the entities are created in WordPress.
+        $this->assertEquals( count( $entities ), count( $entity_posts ) );
 
-        // TODO: Check that the local data matches the remote data (entities and post).
+        // Check that each entity is bound to the post.
+        $entity_ids = array();
+        foreach ( $entity_posts as $post ) {
+            // Store the entity IDs for future checks.
+            array_push( $entity_ids, $post->ID );
+
+            // Get the related posts IDs.
+            $rel_posts = wl_get_related_post_ids( $post->ID );
+
+            // Must be only one post.
+            if ( 1 !== count( $rel_posts ) ) {
+                write_log( "testEntitiesViaArray : wl_get_related_post_ids [ post id :: $post->ID ]" );
+            }
+            $this->assertEquals( 1, count( $rel_posts ) );
+            // The post must be the one the test created.
+            $this->assertEquals( $post_id, $rel_posts[0] );
+        }
+
+        // Check that the post references the entities.
+        $rel_entities = wl_get_related_entities( $post_id );
+        $this->assertEquals( count( $entity_ids ), count( $rel_entities ) );
+        foreach ( $entity_ids as $id ) {
+            $this->assertTrue( in_array( $id, $rel_entities ) );
+        }
+
+        // Check that the locally saved entities and the remotely saved ones match.
+        $this->checkEntities( $entity_posts );
+
+        // Check that the locally saved post data match the ones on Redlink.
+        $this->checkPost( $post_id );
+
+        // Check the post references, that they match between local and remote.
+        $this->checkPostReferences( $post_id );
 
         // Delete the post.
         $this->deletePost( $post_id );
@@ -356,6 +426,8 @@ class PostTest extends WP_UnitTestCase {
         // Get the entity URI.
         $uri      = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
 
+        write_log( "checkEntity [ uri :: $uri ]" );
+
         // Prepare the SPARQL query to select label and URL.
         $sparql   = <<<EOF
 SELECT DISTINCT ?label ?url ?type
@@ -410,6 +482,8 @@ EOF;
         // Get the post Redlink URI.
         $uri      = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
 
+        write_log( "checkPost [ uri :: $uri ]" );
+
         // Prepare the SPARQL query to select label and URL.
         $sparql   = <<<EOF
 SELECT DISTINCT ?author ?dateModified ?datePublished ?interactionCount ?url ?type ?label
@@ -450,15 +524,15 @@ EOF;
 
         $permalink = '<' . get_permalink( $post_id ) . '>';
         $post_author_url = '<' . rl_get_author_url( $post->post_author ) . '>';
-        $post_date_published = get_the_time('c', $post);
-        $post_date_modified  = get_post_modified_time( 'c', true, $post );
+        $post_date_published = wl_get_sparql_time( get_the_time('c', $post) );
+        $post_date_modified  = wl_get_sparql_time( wl_get_post_modified_time( $post ) );
         $post_comment_count = 'UserComments:' . $post->comment_count;
         $post_entity_type = '<http://schema.org/BlogPosting>';
         $post_title = '"' . $post->post_title . '"@' . wordlift_configuration_site_language();
 
         $this->assertEquals( $post_author_url, $author );
-        $this->assertEquals( $post_date_published, $date_modified );
-        $this->assertEquals( $post_date_modified, $date_published );
+        $this->assertEquals( $post_date_published, $date_published );
+        $this->assertEquals( $post_date_modified, $date_modified );
         $this->assertEquals( $post_comment_count, $interaction_count );
         $this->assertEquals( $permalink, $url );
         $this->assertEquals( $post_entity_type, $type );

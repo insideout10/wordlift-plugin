@@ -223,14 +223,6 @@ function wl_embed_entities( $results, $content ) {
         $text_annotation = $results['text_annotations'][$id];
         $entities        = $text_annotation['entities'];
 
-        // Sort array by confidence.
-//        usort( $entities, function ( $a, $b ) {
-//            if ( $a['confidence'] == $b['confidence']) {
-//                return 0;
-//            }
-//            return ( $a['confidence'] > $b['confidence'] ) ? -1 : 1;
-//        });
-
 //        echo "[ text annotation :: " . $text_annotation['id'] . "][ entities count :: " . count( $entities ) . " ]\n";
 
         $entity_annotation = wl_get_entity_annotation_best_match( $entities );
@@ -458,38 +450,6 @@ function wl_parse_response( $json ) {
 }
 
 /**
- * Get the IDs of posts related to the specified post.
- * @param int $post_id The post ID.
- * @return array An array of posts related to the one specified.
- */
-function wl_get_related_post_ids( $post_id ) {
-
-    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-    $related = get_post_meta( $post_id, 'wordlift_related_posts', true );
-
-    // Ensure an array is returned.
-    return ( is_array( $related )
-        ? $related
-        : array( $related ) );
-}
-
-/**
- * Get the IDs of entities related to the specified post.
- * @param int $post_id The post ID.
- * @return array An array of posts related to the one specified.
- */
-function wl_get_related_entities( $post_id ) {
-
-    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-    $related = get_post_meta( $post_id, 'wordlift_related_entities', true );
-
-    // Ensure an array is returned.
-    return ( is_array( $related )
-        ? $related
-        : array( $related ) );
-}
-
-/**
  * Get the author URI.
  * @param int $author_id The author ID.
  * @return string The author URI.
@@ -540,7 +500,7 @@ function wl_parse_file( $filename ) {
 
 /**
  * Get the entity annotation with the best match from the provided entity annotations array.
- * @param array $entity_annotations An array of entity annotations.
+ * @param array $entity_annotations An array of entities.
  * @return array An entity annotation array.
  */
 function wl_get_entity_annotation_best_match( $entity_annotations ) {

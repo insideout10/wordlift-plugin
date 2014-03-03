@@ -205,7 +205,15 @@ add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
  */
 function wl_get_entity_uri( $post_id ) {
 
-    return get_post_meta( $post_id, 'entity_url', true );
+    $uri = get_post_meta( $post_id, 'entity_url', true );
+
+    // Set the URI if it isn't set yet.
+    if ( empty( $uri ) ) {
+        $uri = wordlift_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+        wl_set_entity_uri( $post_id, $uri );
+    }
+
+    return $uri;
 }
 
 /**
@@ -221,10 +229,11 @@ function wl_set_entity_uri( $post_id, $uri ) {
 
 /**
  * Save the specified entities to the local storage.
- * @param array $entities An array of entities.
+ * @param array $entities      An array of entities.
+ * @param int $related_post_id A related post ID.
  * @return array An array of posts.
  */
-function wl_save_entities( $entities ) {
+function wl_save_entities( $entities, $related_post_id = null ) {
 
     write_log( "wl_save_entities [ entities count :: " . count( $entities ) . " ]\n" );
 
@@ -239,7 +248,7 @@ function wl_save_entities( $entities ) {
         $images = $entity['images'];
 
         // Save the entity.
-        $post = wl_save_entity( $uri, $label, $type, $description, $images );
+        $post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id );
 
         // Store the post in the return array if successful.
         if ( null !== $post ) {
@@ -257,16 +266,17 @@ function wl_save_entities( $entities ) {
  * @param string $type        The entity type (an array with 'class' and 'url' keys).
  * @param string $description The entity description.
  * @param array $images       An array of image URLs.
+ * @param int $related_post_id A related post ID.
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity( $uri, $label, $type, $description, $images = array() ) {
+function wl_save_entity( $uri, $label, $type, $description, $images = array(), $related_post_id = null ) {
 
     // Check whether an entity already exists with the provided URI.
     $post = wordlift_get_entity_post_by_uri( $uri );
 
     // Return the found post, do not overwrite data.
     if ( null !== $post ) {
-        write_log("wl_save_entity : post exists [ post id :: $post->ID ]\n");
+        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ label :: $label ]\n");
         return $post;
     }
 
@@ -305,7 +315,7 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array() ) 
         update_post_meta( $post_id, 'entity_same_as', $uri );
     }
 
-    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ]\n");
+    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ]\n");
 
     foreach ( $images as $image_remote_url ) {
         // Save the image and get the local path.
@@ -330,8 +340,13 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array() ) 
         wp_update_attachment_metadata( $attachment_id, $attachment_data );
     }
 
+    // Add the related post ID if provided.
+    if ( null !== $related_post_id ) {
+        wl_add_related_posts( $post_id, array( $related_post_id ) );
+    }
+
     // save the entity in the triple store.
-    wordlift_save_entity_to_triple_store( $post_id );
+    wl_push_to_redlink( $post_id );
 
     // finally return the entity post.
     return get_post( $post_id );
@@ -494,6 +509,176 @@ function wl_type_to_types( $item ) {
     return !isset( $item->{'@type'} )
         ? array() // Set an empty array if type is not set on the item.
         : ( is_array( $item->{'@type'} ) ? $item->{'@type'} : array( $item->{'@type'} ) );
+}
+
+/**
+ * Bind the specified post and entities together.
+ * @param int $post_id        The post ID.
+ * @param array $entity_posts An array of entity posts or post IDs.
+ */
+function wl_bind_post_to_entities( $post_id, $entity_posts ) {
+
+    // Get the entity IDs.
+    $entity_ids = array();
+    foreach ( $entity_posts as $entity_post ) {
+        // Support both an array of posts or an array of post ids.
+        $entity_post_id = ( is_numeric( $entity_post ) ? $entity_post : $entity_post->ID );
+        array_push( $entity_ids, $entity_post_id );
+
+        // Set the related posts.
+        wl_add_related_posts( $entity_post_id, array( $post_id ) );
+    }
+
+    wl_add_related_entities( $post_id, $entity_ids );
+}
+
+/**
+ * Set the related posts IDs for the specified post ID.
+ * @param int $post_id A post ID.
+ * @param array $related_posts An array of related post IDs.
+ */
+function wl_set_related_posts( $post_id, $related_posts ) {
+
+    write_log( "wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join( ',', $related_posts ) . " ]" );
+
+    delete_post_meta( $post_id, 'wordlift_related_posts' );
+    add_post_meta( $post_id, 'wordlift_related_posts', $related_posts, true );
+}
+
+/**
+ * Set the related posts IDs for the specified post ID.
+ * @param int $post_id A post ID.
+ * @param array $new_post_ids An array of related post IDs.
+ */
+function wl_add_related_posts( $post_id, $new_post_ids ) {
+
+    write_log( "wl_add_related_posts [ post id :: $post_id ][ new post ids :: " . join( ',', $new_post_ids ) . " ]" );
+
+    // Get the existing post IDs and merge them together.
+    $related = wl_get_related_post_ids( $post_id );
+    $related = array_unique( array_merge( $related, $new_post_ids ) );
+
+    wl_set_related_posts( $post_id, $related );
+}
+
+
+/**
+ * Set the related entity posts IDs for the specified post ID.
+ * @param int $post_id A post ID.
+ * @param array $related_entities An array of related entity post IDs.
+ */
+function wl_set_related_entities( $post_id, $related_entities ) {
+
+    write_log( "wl_set_related_entities [ post id :: $post_id ][ related entities :: " . join( ',', $related_entities ) . " ]" );
+
+    delete_post_meta( $post_id, 'wordlift_related_entities' );
+    add_post_meta( $post_id, 'wordlift_related_entities', $related_entities, true );
+}
+
+/**
+ * Set the related entity posts IDs for the specified post ID.
+ * @param int $post_id A post ID.
+ * @param array $new_entity_post_ids An array of related entity post IDs.
+ */
+function wl_add_related_entities( $post_id, $new_entity_post_ids ) {
+
+    write_log( "wl_add_related_entities [ post id :: $post_id ][ related entities :: " . join( ',', $new_entity_post_ids ) . " ]" );
+
+    // Get the existing post IDs and merge them together.
+    $related = wl_get_related_entities( $post_id );
+    $related = array_unique( array_merge( $related, $new_entity_post_ids ) );
+
+    wl_set_related_entities( $post_id, $related );
+}
+
+/**
+ * Get the IDs of posts related to the specified post.
+ * @param int $post_id The post ID.
+ * @return array An array of posts related to the one specified.
+ */
+function wl_get_related_post_ids( $post_id ) {
+
+    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+    $related = get_post_meta( $post_id, 'wordlift_related_posts', true );
+
+    write_log( "wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . ( empty( $related ) ? 'true' : 'false' ) . "  ]" );
+
+    if ( empty( $related ) ) {
+        return array();
+    }
+
+    // Ensure an array is returned.
+    return ( is_array( $related )
+        ? $related
+        : array( $related ) );
+}
+
+/**
+ * Get the IDs of entities related to the specified post.
+ * @param int $post_id The post ID.
+ * @return array An array of posts related to the one specified.
+ */
+function wl_get_related_entities( $post_id ) {
+
+    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+    $related = get_post_meta( $post_id, 'wordlift_related_entities', true );
+
+    if ( empty( $related ) ) {
+        return array();
+    }
+
+    // Ensure an array is returned.
+    return ( is_array( $related )
+        ? $related
+        : array( $related ) );
+}
+
+/**
+ * Convert a time string to a SPARQL datetime.
+ * @param string $time The time string (in 2014-03-03T08:15:55+00:00 format).
+ * @return string A sparql dateTime string (e.g. "2014-03-03T08:15:55.000Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>)
+ */
+function wl_get_sparql_time( $time ) {
+
+    return '"' . str_replace( '+00:00', '.000Z', $time ) . '"^^<http://www.w3.org/2001/XMLSchema#dateTime>';
+}
+
+/**
+ * Get the modified time of the provided post. If the time is negative, return the published date.
+ * @param object $post A post instance.
+ * @return string A datetime.
+ */
+function wl_get_post_modified_time( $post ) {
+
+    $date_modified  = get_post_modified_time( 'c', true, $post );
+
+    if ( '-' === substr( $date_modified, 0, 1 ) ) {
+        return get_the_time('c', $post );
+    }
+
+    return $date_modified;
+}
+
+/**
+ * Unbind post and entities.
+ * @param int $post_id The post ID.
+ */
+function wl_unbind_post_from_entities( $post_id ) {
+
+    $entities = wl_get_related_entities( $post_id );
+    foreach ( $entities as $entity_post_id ) {
+
+        // Remove the specified post id from the list of related posts.
+        $related_posts = wl_get_related_post_ids( $entity_post_id );
+        if ( false !== ( $key = array_search( $post_id, $related_posts) ) ) {
+            unset( $related_posts[$key] );
+        }
+
+        wl_set_related_posts( $entity_post_id, $related_posts );
+    }
+
+    // Reset the related entities for the post.
+    wl_set_related_entities( $post_id, array() );
 }
 
 require_once('libs/php-json-ld/jsonld.php');

@@ -193,16 +193,18 @@ EOF;
 //        echo $body;
 
         $json  = json_decode( $body );
-        $this->assertTrue( is_object( $json ) );
+        $this->assertTrue( is_array( $json ) );
+//        $this->assertTrue( is_object( $json ) );
 
-        $this->assertTrue( isset( $json->{$post_uri} ) );
-        $graph = $json->{$post_uri};
+        $this->assertTrue( isset( $json[0]->{'@graph'} ) );
+        $graphs = $json[0]->{'@graph'};
+        $graph  = $graphs[0];
 
-        $this->assertTrue( isset( $graph->{'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'} ) );
-        $type  = $graph->{'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'};
+        $this->assertTrue( isset( $graph->{'@type'} ) );
+        $type  = $graph->{'@type'};
 
-        $this->assertTrue( isset( $type[0]->value ) );
-        $this->assertEquals( 'http://schema.org/BlogPosting', $type[0]->value );
+        $this->assertTrue( isset( $type[0] ) );
+        $this->assertEquals( 'http://schema.org/BlogPosting', $type[0] );
 
         // check why sometimes we get that this property doesn't exist.
         // check that the post references the entity URI.
@@ -210,16 +212,17 @@ EOF;
         $this->assertTrue( array_reduce( $graph->{'http://purl.org/dc/terms/references'},
             function( $result, $item ) use ( $entity_uri ) {
 
-                return $result || ( $entity_uri === $item->value );
+                return $result || ( $entity_uri === $item->{'@id'} );
             } , false
         ) );
 
         // check that the post published date is correct.
-        $post_date_published = get_the_time( 'c', $post_id );
+        $post_date_published = wl_get_sparql_time( get_the_time( 'c', $post_id ) );
+
         $this->assertTrue( array_reduce( $graph->{'http://schema.org/datePublished'},
             function( $result, $item ) use ( $post_date_published ) {
 
-                return $result || ( $post_date_published === $item->value );
+                return $result || ( $post_date_published === '"' . $item->{'@value'} . '"^^<' . $item->{'@type'} . '>' );
             } , false
         ) );
 
@@ -228,7 +231,7 @@ EOF;
         $this->assertTrue( array_reduce( $graph->{'http://schema.org/url'},
             function( $result, $item ) use ( $post_permalink ) {
 
-                return $result || ( $post_permalink === $item->value );
+                return $result || ( $post_permalink === $item->{'@id'} );
             } , false
         ) );
 
@@ -237,7 +240,7 @@ EOF;
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2000/01/rdf-schema#label'},
             function( $result, $item ) use ( $post_title ) {
 
-                return $result || ( $post_title === $item->value );
+                return $result || ( $post_title === $item->{'@value'} );
             } , false
         ) );
 
@@ -259,14 +262,20 @@ EOF;
 
         // get the graph instance.
         $json  = json_decode( $wp_response['body'] );
-        $this->assertTrue( isset( $json->{$entity_uri} ) );
-        $graph = $json->{$entity_uri};
+        $this->assertTrue( isset( $json[0]->{'@graph'} ) );
+        $graphs = $json[0]->{'@graph'};
+        $graph  = $graphs[0];
+
+        $this->assertTrue( isset( $graph->{'@type'} ) );
+        $type  = $graph->{'@type'};
+
+        $this->assertTrue( isset( $type[0] ) );
 
         // check that the schema:url is equal to the permalink.
         $entity_post_permalink = get_permalink( $entity_post_id );
         $this->assertTrue( array_reduce( $graph->{'http://schema.org/url'},
             function( $result, $item ) use ( $entity_post_permalink ) {
-                return $result || ( $entity_post_permalink === $item->value );
+                return $result || ( $entity_post_permalink === $item->{'@id'} );
             } , false
         ) );
 
@@ -274,7 +283,7 @@ EOF;
         $entity_name = $this->entity_name;
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2000/01/rdf-schema#label'},
             function( $result, $item ) use ( $entity_name ) {
-                return $result || ( $entity_name === $item->value );
+                return $result || ( $entity_name === $item->{'@value'} );
             } , false
         ) );
 
@@ -282,7 +291,7 @@ EOF;
         $entity_same_as = $this->entity_same_as;
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2002/07/owl#sameAs'},
             function( $result, $item ) use ( $entity_same_as ) {
-                return $result || ( $entity_same_as === $item->value );
+                return $result || ( $entity_same_as === $item->{'@id'} );
             } , false
         ) );
 
@@ -300,11 +309,11 @@ EOF;
         ) );
 
         // check that there are no entities related to the post.
-        $related_entities = get_post_meta( $post_id, 'wordlift_related_entities', true );
+        $related_entities = wl_get_related_entities( $post_id );
         $this->assertCount( 0, $related_entities );
 
         // check that the entity no more relates to the post.
-        $related_posts = get_post_meta( $entity_post_id, 'wordlift_related_posts', true );
+        $related_posts = wl_get_related_post_ids( $entity_post_id );
         //        echo "[ entity_post_id :: $entity_post_id ][ related_posts :: " . join( ',', $related_posts ) . " ]\n";
         $this->assertCount( 0, $related_posts );
 
