@@ -14,7 +14,7 @@ angular.module('wordlift.tinymce.plugin.controllers', [
 
       filtered
   )
-  .controller('HelloController', ['EditorService', '$log', '$scope', 'Configuration', (EditorService, $log, $scope, Configuration) ->
+  .controller('HelloController', ['EditorService', 'EntityService', '$log', '$scope', 'Configuration', (EditorService, EntityService, $log, $scope, Configuration) ->
 
     # holds a reference to the current analysis results.
     $scope.analysis       = null
@@ -70,8 +70,8 @@ angular.module('wordlift.tinymce.plugin.controllers', [
       $scope.selectedEntity = entityIndex
       $scope.selectedEntitiesMapping[entityAnnotation.relation.id] = entityAnnotation.entity
 
-      $log.info "==== entityAnnotation ===="
-      $log.info entityAnnotation
+      # Select the specified entity annotation.
+      EntityService.select entityAnnotation
 
       $scope.$emit 'DisambiguationWidget.entitySelected', entityAnnotation
 

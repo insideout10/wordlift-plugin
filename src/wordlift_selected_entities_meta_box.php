@@ -1,6 +1,7 @@
 <?php
 
-function wordlift_admin_add_selected_entities_meta_box($post_type) {
+function wordlift_admin_add_selected_entities_meta_box( $post_type ) {
+
     add_meta_box(
         'wordlift_selected_entitities_box',
         'Currently Selected Entities',
@@ -9,7 +10,7 @@ function wordlift_admin_add_selected_entities_meta_box($post_type) {
     );
 }
 
-function wordlift_selected_entities_box_content($post) {
+function wordlift_selected_entities_box_content( $post ) {
 
 echo <<<EOF
 		<div class="wl-entity-tab-wrapper">

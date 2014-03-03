@@ -15,6 +15,7 @@ module.exports = (grunt) ->
             'src/coffee/wordlift-tinymce-plugin/app.directives.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.AnalysisService.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.EditorService.coffee',
+            'src/coffee/wordlift-tinymce-plugin/app.services.EntityService.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.services.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.controllers.coffee',
             'src/coffee/wordlift-tinymce-plugin/app.coffee',
