@@ -115,6 +115,48 @@ class PostTest extends WP_UnitTestCase {
         $this->assertTrue( isset( $counts['objects'] ) );
     }
 
+    function testFindByURI() {
+
+        $entity_post_id = wl_create_post( '', 'test_entity', 'Test Entity', 'draft', 'entity' );
+        $entity_uri     = wl_get_entity_uri( $entity_post_id );
+        wl_set_same_as( $entity_post_id, 'http://example.org/entity/test_entity' );
+
+        $same_as_array = wl_get_same_as( $entity_post_id );
+        $this->assertTrue( is_array( $same_as_array ) );
+        $this->assertEquals( 'http://example.org/entity/test_entity', $same_as_array[0] );
+
+        wl_set_same_as( $entity_post_id, array(
+            'http://example.org/entity/test_entity',
+            'http://data.example.org/entity/test_entity'
+        ) );
+
+        $same_as_array = wl_get_same_as( $entity_post_id );
+        $this->assertTrue( is_array( $same_as_array ) );
+        $this->assertEquals( 'http://example.org/entity/test_entity', $same_as_array[0] );
+        $this->assertEquals( 'http://data.example.org/entity/test_entity', $same_as_array[1] );
+
+        $post = wordlift_get_entity_post_by_uri( 'http://example.org/entity/test_entity' );
+        $this->assertNotNull( $post );
+
+        $post = wordlift_get_entity_post_by_uri( 'http://data.example.org/entity/test_entity' );
+        $this->assertNotNull( $post );
+
+        $same_as_uri = 'http://example.org/entity/test_entity2';
+
+        $entity_post_id = wl_create_post( '', 'test_entity_2', 'Test Entity 2', 'draft', 'entity' );
+        $entity_uri     = wl_get_entity_uri( $entity_post_id );
+        wl_set_same_as( $entity_post_id, $same_as_uri );
+
+        $same_as_array = wl_get_same_as( $entity_post_id );
+        $this->assertTrue( is_array( $same_as_array ) );
+        $this->assertEquals( $same_as_uri, $same_as_array[0] );
+
+        $post = wordlift_get_entity_post_by_uri( 'http://example.org/entity/test_entity' );
+        $this->assertNotNull( $post );
+
+    }
+
+
     /**
      * Test create a post and submit it to Redlink for analysis.
      */
@@ -215,6 +257,19 @@ class PostTest extends WP_UnitTestCase {
             'post_type'      => 'entity',
             'post_status'    => 'any'
         ) );
+
+//        $expected_entities = array();
+//        foreach ( $analysis_results['text_annotations'] as $text_annotation ) {
+//            $entity = wl_get_entity_annotation_best_match( $text_annotation['entities'] );
+//            $entity_id = $entity['entity']->{'@id'};
+//            if ( !in_array( $entity_id, $expected_entities ) ) {
+//                array_push( $expected_entities, $entity_id );
+//            };
+//        }
+//
+//        var_dump( $expected_entities );
+//        var_dump( $entity_posts );
+
         $this->assertEquals( self::EXPECTED_ENTITIES, count( $entity_posts ) );
 
         // Check that each entity is bound to the post.
@@ -336,6 +391,7 @@ class PostTest extends WP_UnitTestCase {
             // Save the entity to the entities array.
             $entities = array_merge_recursive( $entities, array(
                $uri => array(
+                   'uri'         => $uri,
                    'label'       => $label,
                    'type'        => $type,
                    'description' => $description,
@@ -452,7 +508,7 @@ class PostTest extends WP_UnitTestCase {
         // Get the entity URI.
         $uri      = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
 
-        write_log( "checkEntity [ uri :: $uri ]" );
+        write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ]" );
 
         // Prepare the SPARQL query to select label and URL.
         $sparql   = <<<EOF

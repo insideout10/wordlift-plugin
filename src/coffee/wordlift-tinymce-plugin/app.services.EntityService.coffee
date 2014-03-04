@@ -32,6 +32,7 @@ angular.module('wordlift.tinymce.plugin.services.EntityService', ['wordlift.tiny
 
       # Create the entity div.
       entityDiv = $("<div itemid='#{id}'></div>")
+        .append("<input type='text' name='wl_entities[#{id}][uri]' value='#{id}'>")
         .append("<input type='text' name='wl_entities[#{id}][label]' value='#{label}'>")
         .append("<input type='text' name='wl_entities[#{id}][description]' value='#{description}'>")
         .append("<input type='text' name='wl_entities[#{id}][type]' value='#{type}'>")

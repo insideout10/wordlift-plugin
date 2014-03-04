@@ -63,20 +63,9 @@ function wl_push_post_to_redlink( $post ) {
     $sparql .= "<$uri> schema:author <$author_uri> . \n";
     $sparql .= "<$uri> schema:interactionCount 'UserComments:$user_comments_count' . \n";
 
-    // get all the images attached to the post.
-    $images = get_children( array (
-        'post_parent'    => $post->ID,
-        'post_type'      => 'attachment',
-        'post_mime_type' => 'image'
-    ));
 
-    // if images are found, add them to the triple store.
-    if ( ! empty($images) ) {
-        foreach ( $images as $attachment_id => $attachment ) {
-            $image_attrs = wp_get_attachment_image_src( $attachment_id, 'full' );
-            $sparql .= "<$uri> schema:image <$image_attrs[0]> . \n";
-        }
-    }
+    // Add SPARQL stmts to write the schema:image.
+    $sparql .= wl_get_sparql_images( $uri, $post->ID );
 
     // Get the SPARQL fragment with the dcterms:references statement.
     $sparql .= wl_get_sparql_post_references( $post->ID );
@@ -136,11 +125,10 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     $sparql  = '';
 
     // set the same as.
-    $same_as = get_post_meta( $entity_post->ID, 'entity_same_as', true );
-    foreach ( explode( "\r\n", $same_as ) as $s ) {
-        if ( !empty($s) ) {
-            $sparql  .= "<$uri> owl:sameAs <$s> . \n";
-        }
+    $same_as = wl_get_same_as( $entity_post->ID );
+    foreach ( $same_as as $same_as_uri ) {
+        $same_as_uri_esc = wordlift_esc_sparql( $same_as_uri );
+        $sparql  .= "<$uri> owl:sameAs <$same_as_uri_esc> . \n";
     }
 
     // set the label
@@ -169,12 +157,15 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
     if ( is_array( $related_entities_ids ) ) {
         foreach ( $related_entities_ids as $entity_post_id ) {
-            $entity_uri = wordlift_esc_sparql( wl_get_entity_uri( $entity_post_id ) );
+            $entity_uri = wordlift_esc_sparql( wl_get_entity_uri( $entity_post->ID ) );
             // create a two-way relationship.
             $sparql .= " <$uri> dct:relation <$entity_uri> . \n";
             $sparql .= " <$entity_uri> dct:relation <$uri> . \n";
         }
     }
+
+    // Add SPARQL stmts to write the schema:image.
+    $sparql .= wl_get_sparql_images( $uri, $entity_post->ID );
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
     DELETE { <$uri> rdfs:label ?o }
@@ -189,6 +180,8 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     WHERE  { <$uri> a ?o . };
     DELETE { <$uri> dct:relation ?o . }
     WHERE  { <$uri> dct:relation ?o . };
+    DELETE { <$uri> schema:image ?o . }
+    WHERE  { <$uri> schema:image ?o . };
     INSERT DATA { $sparql }
 EOF;
 
@@ -207,6 +200,8 @@ function wordlift_save_post_and_related_entities( $post_id ) {
 
     // get the current post.
     $post       = get_post( $post_id );
+
+    write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
 
     // Do not save entity posts here.
     if ( 'entity' === $post->post_type ) {
@@ -402,19 +397,18 @@ function wordlift_get_custom_dataset_entity_uri( $uri ) {
 function wordlift_get_entity_post_by_uri( $uri ) {
 
     $query = new WP_Query( array(
-            'numberposts' => 1,
+            'posts_per_page' => 1,
             'post_status' => 'any',
             'post_type'   => 'entity',
             'meta_query'  => array(
                 'relation' => 'OR',
                 array(
-                    'key'     => 'entity_url',
+                    'key'     => 'entity_same_as',
                     'value'   => $uri,
                     'compare' => '='
                 ),
-                // TODO: the entity_same_as must be changed to an array.
                 array(
-                    'key'     => 'entity_same_as',
+                    'key'     => 'entity_url',
                     'value'   => $uri,
                     'compare' => '='
                 )

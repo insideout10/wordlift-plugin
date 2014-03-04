@@ -255,6 +255,7 @@ The back-end expects an array of entities each containing the following:</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>      entityDiv = $(<span class="hljs-string">"&lt;div itemid='<span class="hljs-subst">#{id}</span>'&gt;&lt;/div&gt;"</span>)
+        .append(<span class="hljs-string">"&lt;input type='text' name='wl_entities[<span class="hljs-subst">#{id}</span>][uri]' value='<span class="hljs-subst">#{id}</span>'&gt;"</span>)
         .append(<span class="hljs-string">"&lt;input type='text' name='wl_entities[<span class="hljs-subst">#{id}</span>][label]' value='<span class="hljs-subst">#{label}</span>'&gt;"</span>)
         .append(<span class="hljs-string">"&lt;input type='text' name='wl_entities[<span class="hljs-subst">#{id}</span>][description]' value='<span class="hljs-subst">#{description}</span>'&gt;"</span>)
         .append(<span class="hljs-string">"&lt;input type='text' name='wl_entities[<span class="hljs-subst">#{id}</span>][type]' value='<span class="hljs-subst">#{type}</span>'&gt;"</span>)</pre></div></div>

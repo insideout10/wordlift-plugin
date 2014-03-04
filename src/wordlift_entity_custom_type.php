@@ -82,15 +82,15 @@ function wordlift_entity_url_box() {
 function wordlift_entity_box_content($post) {
     wp_nonce_field('wordlift_entity_box', 'wordlift_entity_box_nonce');
 
-    $value = get_post_meta( $post->ID, 'entity_url', true );
+    $value = wl_get_entity_uri( $post->ID );
 
     echo '<label for="entity_url">' . __('entity-url-label', 'wordlift') . '</label>';
     echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
 
-    $value = get_post_meta( $post->ID, 'entity_same_as', true);
+    $same_as = join( "\n", wl_get_same_as( $post->ID ) );
 
     echo '<label for="entity_same_as">' . __('entity-same-as-label', 'wordlift') . '</label>';
-    echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $value ) . '</textarea>';
+    echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $same_as ) . '</textarea>';
 }
 
 /**

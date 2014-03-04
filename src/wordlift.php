@@ -241,7 +241,8 @@ function wl_save_entities( $entities, $related_post_id = null ) {
     $posts = array();
 
     // Save each entity and store the post id.
-    foreach ( $entities as $uri => $entity ) {
+    foreach ( $entities as $entity ) {
+        $uri    = $entity['uri'];
         $label  = $entity['label'];
         $type   = $entity['type'];
         $description = $entity['description'];
@@ -280,7 +281,7 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
 
     // Return the found post, do not overwrite data.
     if ( null !== $post ) {
-        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ label :: $label ]\n");
+        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ]");
         return $post;
     }
 
@@ -298,7 +299,7 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
 
     // TODO: handle errors.
     if ( is_wp_error( $post_id ) ) {
-        write_log("wl_save_entity : error occurred\n");
+        write_log( "wl_save_entity : error occurred" );
         // inform an error occurred.
         return null;
     }
@@ -316,7 +317,7 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
 
     // Set the same_as uri as the original URI, if it differs from the local uri.
     if ($wl_uri !== $uri) {
-        update_post_meta( $post_id, 'entity_same_as', $uri );
+        wl_set_same_as( $post_id, $uri );
     }
 
     write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ]\n");
@@ -584,6 +585,45 @@ function wl_set_related_entities( $post_id, $related_entities ) {
 }
 
 /**
+ * Set the sameAs URIs for the specified post ID.
+ * @param int $post_id A post ID.
+ * @param array|string $same_as An array of same as URIs or a single URI string.
+ */
+function wl_set_same_as( $post_id, $same_as ) {
+
+    // Prepare the same as array.
+    $same_as_array = ( is_array( $same_as ) ? $same_as : array( $same_as ) );
+
+    write_log( "wl_set_same_as [ post id :: $post_id ][ same as :: " . join( ',', $same_as_array ) . " ]" );
+
+    // Replace the existing same as with the new one.
+    delete_post_meta( $post_id, 'entity_same_as' );
+
+    foreach ( $same_as_array as $item ) {
+        add_post_meta( $post_id, 'entity_same_as', $item, false );
+    }
+}
+
+/**
+ * Get the sameAs URIs for the specified post ID.
+ * @param int $post_id A post ID.
+ * @return array An array of sameAs URIs.
+ */
+function wl_get_same_as( $post_id ) {
+
+    // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+    $same_as = get_post_meta( $post_id, 'entity_same_as', false );
+
+    if ( empty( $same_as ) ) {
+        return array();
+    }
+
+    // Ensure an array is returned.
+    return ( is_array( $same_as ) ? $same_as : array( $same_as ) );
+}
+
+
+/**
  * Set the related entity posts IDs for the specified post ID.
  * @param int $post_id A post ID.
  * @param array $new_entity_post_ids An array of related entity post IDs.
@@ -673,6 +713,8 @@ function wl_get_post_modified_time( $post ) {
  */
 function wl_unbind_post_from_entities( $post_id ) {
 
+    write_log( "wl_unbind_post_from_entities [ post id :: $post_id ]" );
+
     $entities = wl_get_related_entities( $post_id );
     foreach ( $entities as $entity_post_id ) {
 
@@ -687,6 +729,58 @@ function wl_unbind_post_from_entities( $post_id ) {
 
     // Reset the related entities for the post.
     wl_set_related_entities( $post_id, array() );
+}
+
+/**
+ * Get all the images bound to a post.
+ * @param int $post_id The post ID.
+ * @return array An array of image URLs.
+ */
+function wl_get_image_urls( $post_id ) {
+
+    write_log( "wl_get_image_urls [ post id :: $post_id ]" );
+
+    $images = get_children( array (
+        'post_parent'    => $post_id,
+        'post_type'      => 'attachment',
+        'post_mime_type' => 'image'
+    ));
+
+    // Return an empty array if no image is found.
+    if ( empty( $images ) ) {
+        return array();
+    }
+
+    // Prepare the return array.
+    $image_urls = array();
+
+    foreach ( $images as $attachment_id => $attachment ) {
+        array_push( $image_urls, wp_get_attachment_url( $attachment_id ) );
+    }
+
+    write_log( "wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count( $image_urls ) . " ]" );
+
+    return $image_urls;
+}
+
+/**
+ * Get a SPARQL fragment with schema:image predicates.
+ * @param string $uri  The URI subject of the statements.
+ * @param int $post_id The post ID.
+ * @return string The SPARQL fragment.
+ */
+function wl_get_sparql_images( $uri, $post_id ) {
+
+    $sparql = '';
+
+    // Add SPARQL stmts to write the schema:image.
+    $image_urls = wl_get_image_urls( $post_id );
+    foreach ( $image_urls as $image_url ) {
+        $image_url_esc = wordlift_esc_sparql( $image_url );
+        $sparql .= " <$uri> schema:image <$image_url_esc> . \n";
+    }
+
+    return $sparql;
 }
 
 require_once('libs/php-json-ld/jsonld.php');
