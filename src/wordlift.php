@@ -81,7 +81,7 @@ function wordlift_register_buttons($buttons)
 function wordlift_register_tinymce_javascript($plugin_array)
 {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = 'https://raw.github.com/insideout10/wordlift-plugin-js/master/dist/wordlift.min.js';
+    $plugin_array['wordlift'] = 'https://raw.github.com/insideout10/wordlift-plugin-js/master/dist/js/wordlift.min.js';
     return $plugin_array;
 }
 
