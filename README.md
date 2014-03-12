@@ -38,9 +38,3 @@ npm install clean-css
 ```
 
 ## Testing
-
-### Client-side
-
-```
-sudo npm install -g karma
-```
