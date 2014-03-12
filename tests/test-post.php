@@ -641,6 +641,11 @@ EOF;
         $this->assertTrue( is_numeric( $count ) );
 
         // Expect only one match (headers + one row).
+        if ( 2 !== $count ) {
+            write_log( "checkPost [ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]" );
+        }
+
+        // Expect only one match (headers + one row).
         $this->assertEquals( 2, $count );
 
         // Focus on the first row.
