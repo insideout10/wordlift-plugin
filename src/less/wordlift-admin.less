@@ -6,21 +6,34 @@
 
   .type {
     color: @type;
-    &:before { content: @icon; } }
-
-  &:hover {
-    div { color: @hover-color; }
-    background-color: @type;
-    .type { color: @hover-color; } 
+    &:before {
+      content: @icon;
     }
-
-  &.selected {
-    div { color: @hover-color; }
-    background-color: @type;
-    .type { color: @hover-color; } 
   }
 
-  .thumbnail { background-color: @type; }
+  &:hover {
+    div {
+      color: @hover-color;
+    }
+    background-color: @type;
+    .type {
+      color: @hover-color;
+    }
+  }
+
+  &.selected {
+    div {
+      color: @hover-color;
+    }
+    background-color: @type;
+    .type {
+      color: @hover-color;
+    }
+  }
+
+  .thumbnail {
+    background-color: @type;
+  }
 }
 
 // TinyMCE
@@ -43,7 +56,7 @@
   .thumbnail {
     width: 50px;
     height: 50px;
-    line-height:50px;
+    line-height: 50px;
     line-height: 50px;
     font-size: 36px;
     text-align: center;
@@ -87,24 +100,29 @@
     padding: 2px 6px;
   }
 
-
   &.place {
-    .tile(@place, @fa-var-map-marker, white); }
+    .tile(@place, @fa-var-map-marker, white);
+  }
 
   &.person {
-    .tile(@person, @fa-var-user, white); }
+    .tile(@person, @fa-var-user, white);
+  }
 
   &.organization {
-    .tile(@organization, @fa-var-building-o, white); }
+    .tile(@organization, @fa-var-building-o, white);
+  }
 
   &.event {
-    .tile(@event, @fa-var-calendar, white); }
+    .tile(@event, @fa-var-calendar, white);
+  }
 
   &.music {
-    .tile(@music, @fa-var-music, white); }
+    .tile(@music, @fa-var-music, white);
+  }
 
   &.thing {
-    .tile(@thing, @fa-var-square-o, black); }
+    .tile(@thing, @fa-var-square-o, black);
+  }
 
   .source {
     position: absolute;
@@ -134,22 +152,22 @@
     border-color: #666666 transparent transparent transparent;
     border-style: solid;
     border-width: 10px;
-    height:0;
-    width:0;
-    position:absolute;
-    bottom:-3px;
-    left:30px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    bottom: -3px;
+    left: 30px;
   }
 
   .bubble-arrow {
     border-color: white transparent transparent transparent;
     border-style: solid;
     border-width: 10px;
-    height:0;
-    width:0;
-    position:absolute;
-    bottom:0px;
-    left:30px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    bottom: 0px;
+    left: 30px;
   }
 
   #search {
@@ -157,7 +175,7 @@
   }
 }
 
-#wpadminbar .ab-top-menu> li#wp-admin-bar-wordlift {
+#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift {
   float: right; // push the WordLift logo to the extreme right.
   cursor: pointer;
 
@@ -176,8 +194,7 @@
   }
 }
 
- div.wp-menu-image:before
-
+div.wp-menu-image:before
 #adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-post {
 
   div.wp-menu-image {
@@ -185,7 +202,9 @@
     opacity: 1;
     filter: alpha(opacity=100);
 
-    &:before { content: ''; }
+    &:before {
+      content: '';
+    }
   }
 
   &:hover div.wp-menu-image {
@@ -243,7 +262,7 @@
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-decoration: none!important;
+    text-decoration: none !important;
   }
 
   .arrow-left {
@@ -252,7 +271,7 @@
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
 
-    border-right:10px solid blue;
+    border-right: 10px solid blue;
   }
 }
 
