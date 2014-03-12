@@ -81,7 +81,7 @@ function wordlift_register_buttons($buttons)
 function wordlift_register_tinymce_javascript($plugin_array)
 {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = 'https://raw.github.com/insideout10/wordlift-plugin-js/master/dist/js/wordlift.min.js';
+    $plugin_array['wordlift'] = 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/js/wordlift.min.js';
     return $plugin_array;
 }
 
@@ -164,7 +164,7 @@ function wordlift_ajax_analyze_action()
 function wordlift_admin_enqueue_scripts() {
     global $post;
 
-    wp_register_style('wordlift_wp_admin_css', 'https://raw.github.com/insideout10/wordlift-plugin-js/master/app/css/wordlift.min.css', false, '3.0.0-SNAPSHOT');
+    wp_register_style('wordlift_wp_admin_css', 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/css/wordlift.min.css' );
 //    wp_register_style('wordlift_wp_admin_css', wordlift_get_url('/css/wordlift-admin.min.css'), false, '1.0.0');
     wp_enqueue_style('wordlift_wp_admin_css');
     wp_enqueue_style('jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position'));

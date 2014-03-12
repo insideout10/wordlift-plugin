@@ -9,7 +9,7 @@ function wordlift_mce_css( $mce_css ) {
     if ( ! empty( $mce_css ) )
         $mce_css .= ',';
 
-    $mce_css .= 'https://raw.github.com/insideout10/wordlift-plugin-js/master/app/css/wordlift.min.css';
+    $mce_css .= 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/css/wordlift.min.css';
     // wordlift_get_url('/css/wordlift-editor.min.css');
 
     return $mce_css;
