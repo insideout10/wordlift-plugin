@@ -809,7 +809,6 @@ require_once('wordlift_shortcode_related_posts.php');
 require_once('wordlift_indepth_articles.php');
 
 require_once('wordlift_freebase_image_proxy.php');
-require_once('wordlift_selected_entities_meta_box.php');
 
 // add the search entity AJAX.
 require_once('wordlift_ajax_search_entities.php');
