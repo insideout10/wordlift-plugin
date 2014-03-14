@@ -252,9 +252,14 @@ function wl_save_entities( $entities, $related_post_id = null ) {
                 ? $entity['image']
                 : array( $entity['image'] ) )
             : array() );
+        $same_as = ( isset( $entity['sameas'] ) ?
+            ( is_array( $entity['sameas'] )
+                ? $entity['sameas']
+                : array( $entity['sameas'] ) )
+            : array() );
 
         // Save the entity.
-        $post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id );
+        $post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id, $same_as );
 
         // Store the post in the return array if successful.
         if ( null !== $post ) {
@@ -273,9 +278,10 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  * @param string $description The entity description.
  * @param array $images       An array of image URLs.
  * @param int $related_post_id A related post ID.
+ * @param array $same_as      An array of sameAs URLs.
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity( $uri, $label, $type, $description, $images = array(), $related_post_id = null ) {
+function wl_save_entity( $uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array() ) {
 
     // Check whether an entity already exists with the provided URI.
     $post = wordlift_get_entity_post_by_uri( $uri );
@@ -316,12 +322,14 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
     // Save the entity URI.
     wl_set_entity_uri( $post_id, $wl_uri );
 
-    // Set the same_as uri as the original URI, if it differs from the local uri.
+    // Add the uri to the sameAs data if it's not a local URI.
     if ($wl_uri !== $uri) {
-        wl_set_same_as( $post_id, $uri );
+        array_push( $same_as, $uri );
     }
+    // Save the sameAs data for the entity.
+    wl_set_same_as( $post_id, $same_as );
 
-    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ]\n");
+    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]\n");
 
     foreach ( $images as $image_remote_url ) {
         // Save the image and get the local path.
