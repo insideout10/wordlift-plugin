@@ -41,14 +41,35 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
 }
 
 /**
- * Delete the post with the specified id.
- * @param int $post_id The post id.
+ * Delete the post and related attachments with the specified id (it's basically a proxy to wp_delete_post).
+ * @param int $post_id       The post id.
+ * @param bool $force_delete Whether to force delete.
  * @return false|WP_Post False on failure and the post object for the deleted post success.
  */
-function wl_delete_post( $post_id ) {
+function wl_delete_post( $post_id, $force_delete = false ) {
 
-    return wp_delete_post( $post_id );
+    // First delete the post attachments.
+    wl_delete_post_attachments( $post_id );
 
+    // Now delete the post and return the result.
+    return wp_delete_post( $post_id, $force_delete );
+}
+
+/**
+ * Delete the attachments related to the specified post.
+ * @param $post_id
+ */
+function wl_delete_post_attachments( $post_id ) {
+
+    // Get all the attachments related to the post.
+    $attachments = wl_get_attachments( $post_id );
+
+    // Delete each attachment.
+    foreach ( $attachments as $attachment ) {
+        if ( false === wp_delete_attachment( $attachment->ID ) ) {
+            write_log( "wl_delete_post_attachments : error [ post id :: $post_id ]" );
+        }
+    }
 }
 
 /**
@@ -89,7 +110,7 @@ function wl_delete_posts( $posts ) {
     $success = true;
 
     foreach ( $posts as $post ) {
-        $success &= wp_delete_post( $post->ID, true );
+        $success &= wl_delete_post( $post->ID, true );
     }
 
     return $success;
@@ -551,4 +572,42 @@ function wl_execute_sparql_query( $query ) {
     }
 
     return true;
+}
+
+/**
+ * Erase all posts and entity posts from the blog.
+ */
+function wl_empty_blog() {
+
+    // TODO: add pages.
+
+    // Delete existing posts.
+    wl_delete_posts( get_posts( array(
+        'posts_per_page' => -1,
+        'post_type'      => 'post',
+        'post_status'    => 'any'
+    ) ) );
+
+    // Delete existing entities.
+    wl_delete_posts( get_posts( array(
+        'posts_per_page' => -1,
+        'post_type'      => 'entity',
+        'post_status'    => 'any'
+    ) ) );
+
+}
+
+/**
+ * Get the attachments for the specified post ID.
+ * @param int $post_id The post ID.
+ * @return array An array of attachments.
+ */
+function wl_get_attachments( $post_id ) {
+
+    return get_posts( array(
+        'post_type'      => 'attachment',
+        'posts_per_page' => -1,
+        'post_status'    => 'any',
+        'post_parent'    => $post_id
+    ) );
 }

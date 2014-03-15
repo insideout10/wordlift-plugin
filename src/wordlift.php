@@ -332,6 +332,15 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
     write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]\n");
 
     foreach ( $images as $image_remote_url ) {
+
+        // Check if there is an existing attachment for this post ID and source URL.
+        $existing_image = wl_get_attachment_for_source_url( $post_id, $image_remote_url );
+        
+        // Skip if an existing image is found.
+        if ( null !== $existing_image ) {
+            continue;
+        }
+
         // Save the image and get the local path.
         $image = wl_save_image( $image_remote_url );
 
@@ -351,6 +360,10 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
 
         // Create the attachment in WordPress and generate the related metadata.
         $attachment_id = wp_insert_attachment( $attachment, $filename, $post_id );
+
+        // Set the source URL for the image.
+        wl_set_source_url( $attachment_id, $image_remote_url );
+
         $attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
         wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
@@ -790,6 +803,45 @@ function wl_get_sparql_images( $uri, $post_id ) {
     }
 
     return $sparql;
+}
+
+/**
+ * Get an attachment with the specified parent post ID and source URL.
+ * @param int $parent_post_id The parent post ID.
+ * @param string $source_url  The source URL.
+ * @return WP_Post|null A post instance or null if not found.
+ */
+function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
+
+    write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
+
+    $posts = get_posts( array(
+        'post_type'      => 'attachment',
+        'posts_per_page' => 1,
+        'post_status'    => 'any',
+        'post_parent'    => $parent_post_id,
+        'meta_key'       => 'wl_source_url',
+        'meta_value'     => $source_url
+    ) );
+
+    // Return the found post.
+    if ( 1 === count( $posts ) ) {
+        return $posts[0];
+    }
+
+    // Return null.
+    return null;
+}
+
+/**
+ * Set the source URL.
+ * @param int $post_id       The post ID.
+ * @param string $source_url The source URL.
+ */
+function wl_set_source_url( $post_id, $source_url ) {
+
+    delete_post_meta( $post_id, 'wl_source_url' );
+    add_post_meta( $post_id, 'wl_source_url', $source_url );
 }
 
 require_once('libs/php-json-ld/jsonld.php');
