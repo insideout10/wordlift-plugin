@@ -893,9 +893,9 @@ function wl_set_source_url( $post_id, $source_url ) {
  * Delete the specified post from relationships and from Redlink.
  * @param int $post_id The post ID.
  */
-function wl_delete_post( $post_id ) {
+function rl_delete_post( $post_id ) {
 
-    write_log( "wl_delete_post [ post id :: $post_id ]" );
+    write_log( "rl_delete_post [ post id :: $post_id ]" );
 
     // Remove all relations.
 
@@ -949,4 +949,4 @@ require_once('wordlift_ajax_search_entities.php');
 //       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
 
-add_action( 'before_delete_post', 'wl_delete_post' );
+add_action( 'before_delete_post', 'rl_delete_post' );

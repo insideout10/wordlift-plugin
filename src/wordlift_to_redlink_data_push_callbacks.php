@@ -208,9 +208,9 @@ function wordlift_save_post_and_related_entities( $post_id ) {
         return;
     }
 
-    // Delete trashed posts/entities.
+    // Delete trashed posts/entities from Redlink.
     if ( 'trash' === $post->post_status ) {
-        wl_delete_post( $post_id );
+        rl_delete_post( $post_id );
         return;
     }
 
