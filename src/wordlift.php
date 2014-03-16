@@ -244,7 +244,10 @@ function wl_save_entities( $entities, $related_post_id = null ) {
     foreach ( $entities as $entity ) {
         $uri    = $entity['uri'];
         $label  = $entity['label'];
-        $type   = array( 'class' => $entity['type'] );
+        $type   = ( isset( $entity['type']['class'] )
+            ? $entity['type']
+            : array( 'class' => $entity['type'] )
+        );
         $description = $entity['description'];
         $images = ( isset( $entity['image'] ) ?
             ( is_array( $entity['image'] )
