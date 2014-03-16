@@ -232,7 +232,7 @@ function wordlift_save_post_and_related_entities( $post_id ) {
         write_log( $entities_via_post );
         write_log( "]" );
 
-        $entity_posts = wl_save_entities( $entities_via_post );
+        $entity_posts = wl_save_entities( $entities_via_post, $post_id );
         foreach ( $entity_posts as $entity_post ) {
             array_push( $entity_posts_ids, $entity_post->ID );
         }
@@ -245,7 +245,7 @@ function wordlift_save_post_and_related_entities( $post_id ) {
     ) );
 
     // Bind the entities to the post.
-    wl_bind_post_to_entities( $post_id, $entity_post_ids );
+//    wl_bind_post_to_entities( $post_id, $entity_post_ids );
 
     // Push the post to Redlink (entities are pushed to redlink by the wl_save_entity method*).
     if ( 'entity' !== $post->post_type ) {

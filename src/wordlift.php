@@ -81,7 +81,7 @@ function wordlift_register_buttons($buttons)
 function wordlift_register_tinymce_javascript($plugin_array)
 {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/js/wordlift.js';
+    $plugin_array['wordlift'] = 'http://localhost:8000/app/js/wordlift.min.js';
     return $plugin_array;
 }
 
@@ -164,7 +164,7 @@ function wordlift_ajax_analyze_action()
 function wordlift_admin_enqueue_scripts() {
     global $post;
 
-    wp_register_style('wordlift_wp_admin_css', 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/css/wordlift.min.css' );
+    wp_register_style('wordlift_wp_admin_css', 'http://localhost:8000/app/css/wordlift.min.css' );
     wp_enqueue_style('wordlift_wp_admin_css');
     wp_enqueue_style('jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position'));
 
@@ -235,7 +235,7 @@ function wl_set_entity_uri( $post_id, $uri ) {
  */
 function wl_save_entities( $entities, $related_post_id = null ) {
 
-    write_log( "wl_save_entities [ entities count :: " . count( $entities ) . " ]\n" );
+    write_log( "wl_save_entities [ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
 
     // Prepare the return array.
     $posts = array();
@@ -282,14 +282,14 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  */
 function wl_save_entity( $uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array() ) {
 
-    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ]");
+    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
 
     // Check whether an entity already exists with the provided URI.
     $post = wordlift_get_entity_post_by_uri( $uri );
 
     // Return the found post, do not overwrite data.
     if ( null !== $post ) {
-        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ]");
+        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
         return $post;
     }
 
