@@ -14,7 +14,7 @@ function wordlift_ajax_search() {
 
     array_walk ( $posts, function( &$post, $key ) {
         $types       = '';
-        $types_array = wordlift_get_entity_types( $post->ID );
+        $types_array = wl_get_entity_types( $post->ID );
 
         if ( $types_array ) {
             foreach( $types_array as $type ) {

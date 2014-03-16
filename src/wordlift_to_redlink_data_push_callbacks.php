@@ -20,7 +20,8 @@ function wl_push_to_redlink( $post_id ) {
             wl_push_post_to_redlink( $post );
     }
 
-    // TODO: reindex.
+    // Reindex Redlink triple store.
+    wordlift_reindex_triple_store();
 }
 
 /**
@@ -52,7 +53,7 @@ function wl_push_post_to_redlink( $post ) {
     $permalink      = wordlift_esc_sparql( get_permalink( $post->ID ) );
     $user_comments_count = $post->comment_count;
 
-    write_log( "wordlift_save_post_and_related_entities [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]" );
+    write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]" );
 
     // create the SPARQL query.
     $sparql  = "<$uri> rdfs:label '$title'@$site_language . \n";
@@ -142,7 +143,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     }
 
     // Get the entity types.
-    $types   = wordlift_get_entity_types( $entity_post->ID );
+    $types   = wl_get_entity_types( $entity_post->ID );
 
     // Support type are only schema.org ones: it could by null
     foreach ($types as $type) {
@@ -157,10 +158,10 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
     if ( is_array( $related_entities_ids ) ) {
         foreach ( $related_entities_ids as $entity_post_id ) {
-            $entity_uri = wordlift_esc_sparql( wl_get_entity_uri( $entity_post->ID ) );
+            $related_entity_uri = wordlift_esc_sparql( wl_get_entity_uri( $entity_post_id ) );
             // create a two-way relationship.
-            $sparql .= " <$uri> dct:relation <$entity_uri> . \n";
-            $sparql .= " <$entity_uri> dct:relation <$uri> . \n";
+            $sparql .= " <$uri> dct:relation <$related_entity_uri> . \n";
+            $sparql .= " <$related_entity_uri> dct:relation <$uri> . \n";
         }
     }
 
@@ -203,10 +204,10 @@ function wordlift_save_post_and_related_entities( $post_id ) {
 
     write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
 
-    // Do not save entity posts here.
-    if ( 'entity' === $post->post_type ) {
-        return;
-    }
+//    // Do not save entity posts here.
+//    if ( 'entity' === $post->post_type ) {
+//        return;
+//    }
 
     // Remove existing bindings between the post and related entities.
     // They will be recreated afterwards.
@@ -235,11 +236,10 @@ function wordlift_save_post_and_related_entities( $post_id ) {
     // Bind the entities to the post.
     wl_bind_post_to_entities( $post_id, $entity_post_ids );
 
-    // Push the post to Redlink.
-    wl_push_post_to_redlink( $post );
-
-    // Reindex Redlink triple store.
-    wordlift_reindex_triple_store();
+    // Push the post to Redlink (entities are pushed to redlink by the wl_save_entity method*).
+    if ( 'entity' !== $post->post_type ) {
+        wl_push_to_redlink( $post->ID );
+    }
 }
 
 /**
@@ -298,7 +298,7 @@ function wordlift_save_entities_embedded_as_spans( $content ) {
         }
     }
 
-    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]\n" );
+    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]" );
 
     return $post_ids;
 }
@@ -489,14 +489,6 @@ function wordlift_save_post( $post_id ) {
     // unhook this function so it doesn't loop infinitely
     remove_action('save_post', 'wordlift_save_post');
 
-    // get the post.
-    $post = get_post( $post_id );
-
-    // if it's an entity, raise the *wordlift_save_entity* event.
-    if ('entity' === $post->post_type) {
-        do_action('wordlift_save_entity', $post_id);
-    }
-
     // raise the *wordlift_save_post* event.
     do_action( 'wordlift_save_post', $post_id );
 
@@ -613,4 +605,3 @@ function wordlift_reindex_triple_store() {
 // hook save events.
 add_action('save_post', 'wordlift_save_post');
 add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
-add_action('wordlift_save_entity', 'wl_push_to_redlink');

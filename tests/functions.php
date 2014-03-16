@@ -611,3 +611,28 @@ function wl_get_attachments( $post_id ) {
         'post_parent'    => $post_id
     ) );
 }
+
+/**
+ * Configure WordPress with the test settings (may vary according to the local PHP and WordPress versions).
+ */
+function wl_configure_wordpress_test() {
+
+    // Set the dataset name according to environment vars.
+    $dataset_name = str_replace('.', '-',
+        sprintf(
+            '%s-php-%s.%s-wp-%s-ms-%s',
+            'wordlift-tests',
+            PHP_MAJOR_VERSION,
+            PHP_MINOR_VERSION,
+            getenv('WP_VERSION'),
+            getenv('WP_MULTISITE')
+        )
+    );
+
+    // Set the plugin options.
+    update_option( WORDLIFT_OPTIONS, array(
+        'application_key' => getenv('REDLINK_APP_KEY'),
+        'user_id'         => getenv('REDLINK_USER_ID'),
+        'dataset_name'    => $dataset_name
+    ) );
+}

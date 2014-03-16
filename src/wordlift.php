@@ -81,7 +81,7 @@ function wordlift_register_buttons($buttons)
 function wordlift_register_tinymce_javascript($plugin_array)
 {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/js/wordlift.min.js';
+    $plugin_array['wordlift'] = 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/js/wordlift.js';
     return $plugin_array;
 }
 
@@ -165,7 +165,6 @@ function wordlift_admin_enqueue_scripts() {
     global $post;
 
     wp_register_style('wordlift_wp_admin_css', 'https://rawgithub.com/insideout10/wordlift-plugin-js/master/dist/css/wordlift.min.css' );
-//    wp_register_style('wordlift_wp_admin_css', wordlift_get_url('/css/wordlift-admin.min.css'), false, '1.0.0');
     wp_enqueue_style('wordlift_wp_admin_css');
     wp_enqueue_style('jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position'));
 
@@ -283,6 +282,8 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  */
 function wl_save_entity( $uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array() ) {
 
+    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ]");
+
     // Check whether an entity already exists with the provided URI.
     $post = wordlift_get_entity_post_by_uri( $uri );
 
@@ -313,7 +314,7 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
 
     // Set the type.
     if ( isset( $type['class'] ) ) {
-        wp_set_object_terms( $post_id, $type['class'], 'entity_type' );
+        wl_set_entity_types( $post_id, $type['class'] );
     }
 
     // Get a dataset URI for the entity.
@@ -329,13 +330,13 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
     // Save the sameAs data for the entity.
     wl_set_same_as( $post_id, $same_as );
 
-    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]\n");
+    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . ( isset( $type['class'] ) ? $type['class'] : 'not set' ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]");
 
     foreach ( $images as $image_remote_url ) {
 
         // Check if there is an existing attachment for this post ID and source URL.
         $existing_image = wl_get_attachment_for_source_url( $post_id, $image_remote_url );
-        
+
         // Skip if an existing image is found.
         if ( null !== $existing_image ) {
             continue;
@@ -373,9 +374,13 @@ function wl_save_entity( $uri, $label, $type, $description, $images = array(), $
 
     // Add the related post ID if provided.
     if ( null !== $related_post_id ) {
-        wl_add_related_posts( $post_id, array( $related_post_id ) );
+        // Add related entities or related posts according to the post type.
+        wl_add_related( $post_id, $related_post_id );
+        // And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
+        wl_add_related( $related_post_id, $post_id );
     }
 
+    // The entity is pushed to Redlink on save by the function hooked to save_post.
     // save the entity in the triple store.
     wl_push_to_redlink( $post_id );
 
@@ -579,9 +584,12 @@ function wl_set_related_posts( $post_id, $related_posts ) {
 /**
  * Set the related posts IDs for the specified post ID.
  * @param int $post_id A post ID.
- * @param array $new_post_ids An array of related post IDs.
+ * @param int|array $new_post_ids An array of related post IDs.
  */
 function wl_add_related_posts( $post_id, $new_post_ids ) {
+
+    // Convert the parameter to an array.
+    $new_post_ids = ( is_array( $new_post_ids ) ? $new_post_ids : array( $new_post_ids ) );
 
     write_log( "wl_add_related_posts [ post id :: $post_id ][ new post ids :: " . join( ',', $new_post_ids ) . " ]" );
 
@@ -648,9 +656,12 @@ function wl_get_same_as( $post_id ) {
 /**
  * Set the related entity posts IDs for the specified post ID.
  * @param int $post_id A post ID.
- * @param array $new_entity_post_ids An array of related entity post IDs.
+ * @param int|array $new_entity_post_ids An array of related entity post IDs.
  */
 function wl_add_related_entities( $post_id, $new_entity_post_ids ) {
+
+    // Convert the parameter to an array.
+    $new_entity_post_ids = ( is_array( $new_entity_post_ids ) ? $new_entity_post_ids : array( $new_entity_post_ids ) );
 
     write_log( "wl_add_related_entities [ post id :: $post_id ][ related entities :: " . join( ',', $new_entity_post_ids ) . " ]" );
 
@@ -659,7 +670,7 @@ function wl_add_related_entities( $post_id, $new_entity_post_ids ) {
     $related = array_unique( array_merge( $related, $new_entity_post_ids ) );
 
     wl_set_related_entities( $post_id, $related );
-}
+ }
 
 /**
  * Get the IDs of posts related to the specified post.
@@ -831,6 +842,40 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 
     // Return null.
     return null;
+}
+
+/**
+ * Add related post IDs to the specified post ID, automatically choosing whether to add the related to entities or to
+ * posts.
+ * @param int $post_id           The post ID.
+ * @param int|array $related_id  A related post/entity ID or an array of posts/entities.
+ */
+function wl_add_related( $post_id, $related_id ) {
+
+    // Ensure we're dealing with an array.
+    $related_id_array = ( is_array( $related_id ) ? $related_id : array( $related_id ) );
+
+    // Prepare the related arrays.
+    $related_entities = array();
+    $related_posts    = array();
+
+    foreach ( $related_id_array as $id ) {
+
+        // If it's an entity add the entity to the related entities.
+        if ( 'entity' === get_post_type( $id ) ) {
+            array_push( $related_entities, $id );
+        } else {
+            // Else add it to the related posts.
+            array_push( $related_posts, $id );
+        }
+    }
+
+    if ( 0 < count ( $related_entities ) ) {
+        wl_add_related_entities( $post_id, $related_entities );
+    }
+    if ( 0 < count ( $related_posts ) ) {
+        wl_add_related_posts( $post_id, $related_posts );
+    }
 }
 
 /**

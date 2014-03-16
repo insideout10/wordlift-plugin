@@ -28,7 +28,7 @@ function wordlift_register_custom_type_entity() {
         'menu_position' => 20, // after the pages menu.
         'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
         'has_archive'   => true,
-        'taxonomies'    => array('category')
+        'taxonomies'    => array( 'category' )
     );
 
     register_post_type( 'entity', $args );
@@ -58,7 +58,7 @@ function wordlift_taxonomies_entity() {
         'hierarchical' => false
     );
 
-    register_taxonomy( 'entity_type', 'entity', $args );
+    register_taxonomy( 'wl_entity_type', 'entity', $args );
 }
 
 /**
@@ -141,9 +141,19 @@ function wordlift_save_entity_custom_fields( $post_id ) {
  * @param int $post_id The post ID.
  * @return array An array of terms.
  */
-function wordlift_get_entity_types( $post_id ) {
+function wl_get_entity_types( $post_id ) {
 
-    return wp_get_post_terms( $post_id, 'entity_type' );
+    return wp_get_post_terms( $post_id, 'wl_entity_type' );
+}
+
+/**
+ * Set the types for the entity with the specified post ID.
+ * @param int $post_id        The entity post ID.
+ * @param array|string $types A type or an array of types.
+ */
+function wl_set_entity_types( $post_id, $types ) {
+
+    wp_set_object_terms( $post_id, $types, 'wl_entity_type' );
 }
 
 add_action('init', 'wordlift_register_custom_type_entity');

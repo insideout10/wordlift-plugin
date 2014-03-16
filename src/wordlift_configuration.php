@@ -183,6 +183,7 @@ function rl_count_triples() {
     }
 
     // No digits found in the response, return null.
+    write_log( "rl_count_triples : unrecognized response [ body :: $body ]" );
     return null;
 }
 
