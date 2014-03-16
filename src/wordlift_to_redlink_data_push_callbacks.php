@@ -196,11 +196,23 @@ EOF;
 function wordlift_save_post_and_related_entities( $post_id ) {
 
     // Ignore auto-saves
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return;
+    }
 
     // get the current post.
     $post       = get_post( $post_id );
+
+    // Don't process auto-drafts.
+    if ( 'auto-draft' === $post->post_status ) {
+        return;
+    }
+
+    // Delete trashed posts/entities.
+    if ( 'trash' === $post->post_status ) {
+        wl_delete_post( $post_id );
+        return;
+    }
 
     write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
 
@@ -210,8 +222,7 @@ function wordlift_save_post_and_related_entities( $post_id ) {
 //    }
 
     // Remove existing bindings between the post and related entities.
-    // They will be recreated afterwards.
-    wl_unbind_post_from_entities( $post_id );
+//    wl_unbind_post_from_entities( $post_id );
 
     // Save the entities coming with POST data.
     $entity_posts_ids = array();

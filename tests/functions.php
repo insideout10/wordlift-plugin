@@ -579,19 +579,14 @@ function wl_execute_sparql_query( $query ) {
  */
 function wl_empty_blog() {
 
-    // TODO: add pages.
-
-    // Delete existing posts.
+    // Delete existing pages, posts and entities.
     wl_delete_posts( get_posts( array(
         'posts_per_page' => -1,
-        'post_type'      => 'post',
-        'post_status'    => 'any'
-    ) ) );
-
-    // Delete existing entities.
-    wl_delete_posts( get_posts( array(
-        'posts_per_page' => -1,
-        'post_type'      => 'entity',
+        'post_type'      => array(
+            'post',
+            'page',
+            'entity'
+        ),
         'post_status'    => 'any'
     ) ) );
 

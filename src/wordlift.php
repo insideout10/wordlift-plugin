@@ -244,7 +244,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
     foreach ( $entities as $entity ) {
         $uri    = $entity['uri'];
         $label  = $entity['label'];
-        $type   = $entity['type'];
+        $type   = array( 'class' => $entity['type'] );
         $description = $entity['description'];
         $images = ( isset( $entity['image'] ) ?
             ( is_array( $entity['image'] )
@@ -889,6 +889,32 @@ function wl_set_source_url( $post_id, $source_url ) {
     add_post_meta( $post_id, 'wl_source_url', $source_url );
 }
 
+/**
+ * Delete the specified post from relationships and from Redlink.
+ * @param int $post_id The post ID.
+ */
+function wl_delete_post( $post_id ) {
+
+    write_log( "wl_delete_post [ post id :: $post_id ]" );
+
+    // Remove all relations.
+
+    // Delete post from RL.
+    // Get the post URI.
+    $uri    =  wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
+
+    // Create the SPARQL query, deleting triples where the URI is either subject or object.
+    $sparql = wordlift_get_ns_prefixes();
+    $sparql .= "DELETE { <$uri> ?p ?o . } WHERE { <$uri> ?p ?o . };";
+    $sparql .= "DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };";
+
+    // Execute the query.
+    wordlift_push_data_triple_store( $sparql );
+
+    // Reindex Redlink triple store.
+    wordlift_reindex_triple_store();
+}
+
 require_once('libs/php-json-ld/jsonld.php');
 
 // add editor related methods.
@@ -922,3 +948,5 @@ require_once('wordlift_ajax_search_entities.php');
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
+
+add_action( 'before_delete_post', 'wl_delete_post' );

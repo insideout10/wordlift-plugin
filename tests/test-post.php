@@ -227,16 +227,6 @@ class PostTest extends WP_UnitTestCase {
         // Get the mock-up response.
 //        $input    = dirname(__FILE__) . '/' . self::FILENAME . '.json';
         $analysis_results = wl_parse_file( dirname(__FILE__) . '/' . self::FILENAME . '.json' );
-//        $analysis = file_get_contents( $input );
-//        $this->assertTrue( false != $analysis );
-//        $this->assertFalse( empty( $analysis ) );
-//
-//        // Decode the string response to a JSON.
-//        $json     = json_decode( $analysis );
-//        $this->assertTrue( is_object( $json ) );
-//
-//        // Parse the JSON to get the analysis results.
-//        $analysis_results = wl_parse_response( $json );
         $this->assertTrue( is_array( $analysis_results ) );
 
         // Embed the text annotations in the content.
@@ -258,17 +248,6 @@ class PostTest extends WP_UnitTestCase {
             'post_status'    => 'any'
         ) );
 
-//        $expected_entities = array();
-//        foreach ( $analysis_results['text_annotations'] as $text_annotation ) {
-//            $entity = wl_get_entity_annotation_best_match( $text_annotation['entities'] );
-//            $entity_id = $entity['entity']->{'@id'};
-//            if ( !in_array( $entity_id, $expected_entities ) ) {
-//                array_push( $expected_entities, $entity_id );
-//            };
-//        }
-//
-//        var_dump( $expected_entities );
-//        var_dump( $entity_posts );
 
         $this->assertEquals( self::EXPECTED_ENTITIES, count( $entity_posts ) );
 
