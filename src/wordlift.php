@@ -162,7 +162,7 @@ function wordlift_ajax_analyze_action()
  * Register additional scripts for the admin UI.
  */
 function wordlift_admin_enqueue_scripts() {
-    global $post;
+//    global $post;
 
     wp_register_style('wordlift_wp_admin_css', 'http://localhost:8000/app/css/wordlift.min.css' );
     wp_enqueue_style('wordlift_wp_admin_css');
@@ -171,7 +171,7 @@ function wordlift_admin_enqueue_scripts() {
 
     wp_enqueue_script( 'jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position') );
     wp_enqueue_script( 'angularjs', wordlift_get_url('/bower_components/angular/angular.min.js') );
-    wp_localize_script('angularjs', 'thePost', get_post( $post->id, ARRAY_A ) );
+    // wp_localize_script('angularjs', 'thePost', get_post( $post->id, ARRAY_A ) );
 }
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
 
@@ -206,6 +206,7 @@ add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
 function wl_get_entity_uri( $post_id ) {
 
     $uri = get_post_meta( $post_id, 'entity_url', true );
+    $uri = utf8_encode( $uri );
 
     // Set the URI if it isn't set yet.
     if ( empty( $uri ) ) {
@@ -224,6 +225,7 @@ function wl_get_entity_uri( $post_id ) {
  */
 function wl_set_entity_uri( $post_id, $uri ) {
 
+    $uri = utf8_decode( $uri );
     return update_post_meta( $post_id, 'entity_url', $uri );
 }
 
@@ -917,12 +919,53 @@ function rl_delete_post( $post_id ) {
     // Reindex Redlink triple store.
     wordlift_reindex_triple_store();
 }
+add_action( 'before_delete_post', 'rl_delete_post' );
+
+function wl_flush_rewrite_rules_hard( $hard ) {
+
+    write_log( "wl_flush_rewrite_rules_hard [ hard :: $hard ]" );
+
+    // Get all published posts.
+    $posts = get_posts( array(
+        'posts_per_page' => -1,
+        'post_type'      => 'any',
+        'post_status'    => 'publish'
+    ) );
+
+    // Holds the delete part of the query.
+    $delete_query = wordlift_get_ns_prefixes();
+    // Holds the insert part of the query.
+    $insert_query = 'INSERT DATA { ';
+
+    // Cycle in each post to build the query.
+    foreach ( $posts as $post ) {
+
+        // Ignore revisions.
+        if ( wp_is_post_revision( $post->ID ) ) {
+            continue;
+        }
+
+        $uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+        $url = wordlift_esc_sparql( get_permalink( $post->ID ) );
+
+        $delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
+        $insert_query .= " <$uri> schema:url <$url> . \n";
+
+        write_log( "wl_flush_rewrite_rules_hard [ uri :: $uri ][ url :: $url ]" );
+    }
+
+    $insert_query .= ' }';
+
+    // Execute the query.
+    wordlift_push_data_triple_store( $delete_query . $insert_query );
+}
+add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 require_once('libs/php-json-ld/jsonld.php');
 
 // add editor related methods.
 require_once('wordlift_editor.php');
-// add configuratiokn-related methods.
+// add configuration-related methods.
 require_once('wordlift_configuration.php');
 // add the WordLift admin bar.
 require_once('wordlift_admin_bar.php');
@@ -952,4 +995,3 @@ require_once('wordlift_ajax_search_entities.php');
 //       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain('wordlift', false, '/wordlift/languages' );
 
-add_action( 'before_delete_post', 'rl_delete_post' );

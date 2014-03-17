@@ -216,36 +216,19 @@ function wordlift_save_post_and_related_entities( $post_id ) {
 
     write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
 
-//    // Do not save entity posts here.
-//    if ( 'entity' === $post->post_type ) {
-//        return;
-//    }
-
-    // Remove existing bindings between the post and related entities.
-//    wl_unbind_post_from_entities( $post_id );
-
     // Save the entities coming with POST data.
-    $entity_posts_ids = array();
     if ( isset( $_POST['wl_entities'] ) ) {
         $entities_via_post = array_values( $_POST['wl_entities'] );
+
         write_log( "wordlift_save_post_and_related_entities [ entities_via_post :: " );
         write_log( $entities_via_post );
         write_log( "]" );
 
-        $entity_posts = wl_save_entities( $entities_via_post, $post_id );
-        foreach ( $entity_posts as $entity_post ) {
-            array_push( $entity_posts_ids, $entity_post->ID );
-        }
+        wl_save_entities( $entities_via_post, $post_id );
     }
 
     // Save entities coming as embedded in the text.
-    $entity_post_ids = array_unique( array_merge(
-        $entity_posts_ids,
-        wordlift_save_entities_embedded_as_spans( $post->post_content )
-    ) );
-
-    // Bind the entities to the post.
-//    wl_bind_post_to_entities( $post_id, $entity_post_ids );
+    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Push the post to Redlink (entities are pushed to redlink by the wl_save_entity method*).
     if ( 'entity' !== $post->post_type ) {
@@ -278,10 +261,11 @@ function wl_get_sparql_post_references( $post_id ) {
 
 /**
  * Save entities embedded in the content as spans.
- * @param string $content The content.
+ * @param string $content      The content.
+ * @param int $related_post_id The post that references (or relates) to these entities.
  * @return array An array with the saved post IDs.
  */
-function wordlift_save_entities_embedded_as_spans( $content ) {
+function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = null ) {
 
     // Save the post ids.
     $post_ids = array();
@@ -302,7 +286,7 @@ function wordlift_save_entities_embedded_as_spans( $content ) {
             write_log( "wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: " . $type['class'] . " ][ label :: $label ]" );
 
             // Save the entity in the local storage.
-            $post  = wl_save_entity( $uri, $label, $type, '' );
+            $post  = wl_save_entity( $uri, $label, $type, '', array(), $related_post_id );
             if ( !in_array( $post->ID, $post_ids ) ) {
                 array_push( $post_ids, $post->ID );
             }
