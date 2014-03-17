@@ -164,12 +164,34 @@ function wordlift_ajax_analyze_action()
 function wordlift_admin_enqueue_scripts() {
 //    global $post;
 
+//    wp_enqueue_style( 'jquery-ui-core' );
+//    wp_enqueue_style( 'jquery-ui-widget' );
+//    wp_enqueue_style( 'jquery-ui-mouse' );
+//    wp_enqueue_style( 'jquery-ui-position' );
+//    wp_enqueue_style( 'jquery-ui-draggable' );
+//    wp_enqueue_style( 'jquery-ui-resizable' );
+//    wp_enqueue_style( 'jquery-ui-button' );
+//    wp_enqueue_style( 'jquery-ui-menu' );
+//    wp_enqueue_style( 'jquery-ui-dialog' );
+//    wp_enqueue_style( 'wp-jquery-ui-dialog' );
+//    wp_enqueue_style( 'jquery-ui-autocomplete' );
+
     wp_register_style('wordlift_wp_admin_css', 'http://localhost:8000/app/css/wordlift.min.css' );
-    wp_enqueue_style('wordlift_wp_admin_css');
-    wp_enqueue_style('jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position'));
+    wp_enqueue_style( 'wordlift_wp_admin_css' );
 
+//    wp_enqueue_script( 'jquery' );
+//    wp_enqueue_script( 'jquery-ui-core' );
+//    wp_enqueue_script( 'jquery-ui-widget' );
+//    wp_enqueue_script( 'jquery-ui-mouse' );
+//    wp_enqueue_script( 'jquery-ui-position' );
+//    wp_enqueue_script( 'jquery-ui-draggable' );
+//    wp_enqueue_script( 'jquery-ui-resizable' );
+//    wp_enqueue_script( 'jquery-ui-button' );
+//    wp_enqueue_script( 'jquery-ui-menu' );
+//    wp_enqueue_script( 'jquery-ui-dialog' );
+    wp_enqueue_script( 'jquery-ui-autocomplete' );
+//    wp_enqueue_script( 'wpdialogs' );
 
-    wp_enqueue_script( 'jquery-ui-autocomplete', '', array('jquery-ui-widget', 'jquery-ui-position') );
     wp_enqueue_script( 'angularjs', wordlift_get_url('/bower_components/angular/angular.min.js') );
     // wp_localize_script('angularjs', 'thePost', get_post( $post->id, ARRAY_A ) );
 }
