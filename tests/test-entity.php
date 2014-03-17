@@ -193,17 +193,17 @@ class EntityTest extends WP_UnitTestCase
 
     function create_World_Wide_Web_Foundation( $related_post_id ) {
 
-        $uri         = 'http://dbpedia.org/resource/World_Wide_Web_Foundation';
+        $uri         = 'http://data.redlink.io/353/wordlift-tests-php-5-4-wp-3-8-ms-0/entity/World_Wide_Web_Foundation';
         $label       = 'World Wide Web Foundation';
         $type        = array(
             'class' => 'organization'
         );
         $description = file_get_contents( dirname(__FILE__) . '/assets/world_wide_web_foundation.txt' );
         $images      = array();
-        $same_as     = array(
-            'http://rdf.freebase.com/ns/m.04myd3k',
-            'http://yago-knowledge.org/resource/World_Wide_Web_Foundation'
-        );
+        $same_as     = array();
+//            'http://rdf.freebase.com/ns/m.04myd3k',
+//            'http://yago-knowledge.org/resource/World_Wide_Web_Foundation'
+//        );
         $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id, $same_as );
 
         $this->assertNotNull( $entity_post );

@@ -205,11 +205,14 @@ function wordlift_save_post_and_related_entities( $post_id ) {
 
     // Don't process auto-drafts.
     if ( 'auto-draft' === $post->post_status ) {
+        write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ auto-draft :: yes ]" );
         return;
     }
 
     // Delete trashed posts/entities from Redlink.
     if ( 'trash' === $post->post_status ) {
+        write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]" );
+
         rl_delete_post( $post_id );
         return;
     }
