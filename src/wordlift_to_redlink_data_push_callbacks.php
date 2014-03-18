@@ -510,8 +510,7 @@ function wordlift_build_entity_uri( $post_id ) {
     $type = $post->post_type;
 
     // Create an ID given the title.
-    $id  = preg_replace( '/[^\w|\d]/im', '_', $post->post_title );
-
+    $id  = wl_sanitize_uri_path( $post->post_title );
 
     // Build the entity URI.
     $url = sprintf(

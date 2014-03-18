@@ -1030,6 +1030,18 @@ function rl_execute_sparql_update_query( $query ) {
     return true;
 }
 
+/**
+ * Sanitizes an URI path by replacing the non allowed characters with an underscore.
+ * @param string $path The path to sanitize.
+ * @param string $char The replacement character (by default an underscore).
+ * @return The sanitized path.
+ */
+function wl_sanitize_uri_path( $path, $char = '_' ) {
+
+    write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
+
+    return preg_replace( '/[^a-z|0-9|(|)]/i', $char, $path );
+}
 
 function wl_shutdown() {
     write_log( "wl_shutdown" );
@@ -1064,6 +1076,8 @@ require_once('wordlift_freebase_image_proxy.php');
 
 // add the search entity AJAX.
 require_once('wordlift_ajax_search_entities.php');
+
+require_once('wordlift_user.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
