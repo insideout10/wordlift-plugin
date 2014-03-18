@@ -14,14 +14,96 @@ class UserTest extends WP_UnitTestCase
         // Configure WordPress with the test settings.
         wl_configure_wordpress_test();
 
+        // Empty the blog.
+        wl_empty_blog();
+
     }
 
-    function testSimple() {
+    function testUserWithFirstAndLastName() {
 
+        $user_id = wp_insert_user( array(
+            'user_login' => 'lorem_ipsum',
+            'user_pass'  => 'tmppass',
+            'first_name' => 'Lorem',
+            'last_name'  => 'Ipsum'
+        ) );
 
-        $this->assertNull( wl_get_user_uri( 0 ) );
-        $this->assertNotNull( wl_get_user_uri( 1 ) );
+        $this->assertEquals(
+            $this->getURI( 'Lorem_Ipsum' ),
+            wl_get_user_uri( $user_id )
+        );
 
+    }
+
+    function testUserWithoutFirstAndLastName() {
+
+        $user_id = wp_insert_user( array(
+            'user_login' => 'lorem_ipsum',
+            'user_pass'  => 'tmppass'
+        ) );
+
+        $this->assertEquals(
+            $this->getURI( $user_id ),
+            wl_get_user_uri( $user_id )
+        );
+
+        $update_user_id = wp_update_user( array(
+            'ID'         => $user_id,
+            'user_login' => 'lorem_ipsum',
+            'user_pass'  => 'tmppass',
+            'first_name' => 'Lorem',
+            'last_name'  => 'Ipsum'
+        ) );
+
+        $this->assertEquals( $update_user_id, $user_id );
+
+        $this->assertEquals(
+            $this->getURI( $user_id ),
+            wl_get_user_uri( $user_id )
+        );
+    }
+
+    function testTwoUsersWithTheSameName() {
+
+        $user_id_1 = wp_insert_user( array(
+            'user_login' => 'mario_rossi',
+            'user_pass'  => 'tmppass',
+            'first_name' => 'Mario',
+            'last_name'  => 'Rossi'
+        ) );
+
+        $this->assertEquals(
+            $this->getURI( 'Mario_Rossi' ),
+            wl_get_user_uri( $user_id_1 )
+        );
+
+        $user_id_2 = wp_insert_user( array(
+            'user_login' => 'mario_rossi_1',
+            'user_pass'  => 'tmppass',
+            'first_name' => 'Mario',
+            'last_name'  => 'Rossi'
+        ) );
+
+        $this->assertEquals(
+            $this->getURI( 'Mario_Rossi_1' ),
+            wl_get_user_uri( $user_id_2 )
+        );
+    }
+
+    /**
+     * Get an URI for testing.
+     * @param $id
+     * @return string
+     */
+    function getURI( $id ) {
+
+        return sprintf(
+            'http://data.redlink.io/%s/%s/%s/%s',
+            wordlift_configuration_user_id(),
+            wordlift_configuration_dataset_id(),
+            'user',
+            $id
+        );
     }
 
 }

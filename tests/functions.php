@@ -592,6 +592,19 @@ function wl_empty_blog() {
         'post_status'    => 'any'
     ) ) );
 
+    wl_delete_users();
+
+}
+
+/**
+ * Delete all the users from the blog.
+ */
+function wl_delete_users() {
+
+    $users = get_users();
+    foreach ( $users as $user ) {
+        wp_delete_user( $user->ID );
+    }
 }
 
 /**
