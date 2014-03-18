@@ -247,6 +247,8 @@ function wl_get_entity_uri( $post_id ) {
  */
 function wl_set_entity_uri( $post_id, $uri ) {
 
+    write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
+
     $uri = utf8_decode( $uri );
     return update_post_meta( $post_id, 'entity_url', $uri );
 }
@@ -657,7 +659,9 @@ function wl_set_same_as( $post_id, $same_as ) {
     delete_post_meta( $post_id, 'entity_same_as' );
 
     foreach ( $same_as_array as $item ) {
-        add_post_meta( $post_id, 'entity_same_as', $item, false );
+        if ( !empty( $item ) ) {
+            add_post_meta( $post_id, 'entity_same_as', $item, false );
+        }
     }
 }
 
@@ -982,6 +986,55 @@ function wl_flush_rewrite_rules_hard( $hard ) {
     wordlift_push_data_triple_store( $delete_query . $insert_query );
 }
 add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
+
+/**
+ * Execute a query on Redlink.
+ * @param string $query The query to execute.
+ * @return bool True if successful otherwise false.
+ */
+function rl_execute_sparql_update_query( $query ) {
+
+    // Get the update end-point.
+    $url  = wordlift_redlink_sparql_update_url();
+
+    // Prepare the request.
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+        'method'  => 'POST',
+        'headers' => array(
+            'Accept'       => 'application/json',
+            'Content-type' => 'application/sparql-update; charset=utf-8'
+        ),
+        'body'    => $query
+    ));
+
+    // Send the request.
+    $response = wp_remote_post( $url, $args );
+
+    // If an error has been raised, return the error.
+    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+
+        write_log ("rl_execute_sparql_query ================================");
+        $scrambled_url = preg_replace( 'key=.*$', 'key=<hidden>', $url );
+        write_log( "[ url :: $scrambled_url ]" );
+        write_log( " request : " );
+        write_log( var_export( $args ) );;
+        write_log( " response: " );
+        write_log( var_export( $response ) );
+        write_log( " response body: " );
+        write_log( $response['body'] );
+        write_log( "=======================================================" );
+
+        return false;
+    }
+
+    return true;
+}
+
+
+function wl_shutdown() {
+    write_log( "wl_shutdown" );
+}
+add_action( 'shutdown', 'wl_shutdown' );
 
 require_once('libs/php-json-ld/jsonld.php');
 

@@ -217,6 +217,8 @@ function wordlift_save_post_and_related_entities( $post_id ) {
         return;
     }
 
+    remove_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
+
     write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
 
     // Save the entities coming with POST data.
@@ -233,10 +235,10 @@ function wordlift_save_post_and_related_entities( $post_id ) {
     // Save entities coming as embedded in the text.
     wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
-    // Push the post to Redlink (entities are pushed to redlink by the wl_save_entity method*).
-    if ( 'entity' !== $post->post_type ) {
-        wl_push_to_redlink( $post->ID );
-    }
+    // Push the post to Redlink.
+    wl_push_to_redlink( $post->ID );
+
+    add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 }
 
 /**
@@ -309,9 +311,9 @@ function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = 
 function wordlift_save_author( $author_id ) {
 
     // read the user id and dataset name from the options.
-    $user_id    = wordlift_configuration_user_id();
-    $dataset_id = wordlift_configuration_dataset_id();
-    $author_uri = "http://data.redlink.io/$user_id/$dataset_id/author/$author_id";
+    $user_id     = wordlift_configuration_user_id();
+    $dataset_id  = wordlift_configuration_dataset_id();
+    $author_uri  = "http://data.redlink.io/$user_id/$dataset_id/author/$author_id";
 
     $name        = wordlift_esc_sparql( get_the_author_meta( 'display_name', $author_id ) );
     $email       = wordlift_esc_sparql( get_the_author_meta( 'email', $author_id ) );
@@ -433,43 +435,45 @@ function wordlift_get_entity_post_by_uri( $uri ) {
  * @param string $query A SPARQL query.
  * @return bool
  */
-function wordlift_push_data_triple_store($query) {
+function wordlift_push_data_triple_store( $query ) {
 
-    // construct the API URL.
-    $api_url = wordlift_redlink_sparql_update_url();
+    return rl_execute_sparql_update_query( $query );
 
-    // post the request.
-    $response = wp_remote_post($api_url, array(
-            'method'      => 'POST',
-            'timeout'     => 45,
-            'redirection' => 5,
-            'httpversion' => '1.1',
-            'blocking'    => true, // switched to not blocking.
-            'headers'     => array(
-                'Content-type' => 'application/sparql-update; charset=utf-8',
-            ),
-            'body' => $query,
-            'sslverify'   => false,
-            'cookies'     => array()
-        )
-    );
-
-    write_log("== QUERY ====================================================\n");
-//    write_log("API URL: $api_url\n");
-    write_log("$query\n");
-    write_log("=============================================================\n");
-
-    // TODO: handle errors.
-    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
-
-        write_log( "== ERROR        =============================================\n" );
-        write_log( var_export( $response, true ) );
-        write_log( "=============================================================\n" );
-
-        return false;
-    }
-
-    return true;
+//    // construct the API URL.
+//    $api_url = wordlift_redlink_sparql_update_url();
+//
+//    // post the request.
+//    $response = wp_remote_post($api_url, array(
+//            'method'      => 'POST',
+//            'timeout'     => 45,
+//            'redirection' => 5,
+//            'httpversion' => '1.1',
+//            'blocking'    => true, // switched to not blocking.
+//            'headers'     => array(
+//                'Content-type' => 'application/sparql-update; charset=utf-8',
+//            ),
+//            'body'        => $query,
+//            'sslverify'   => false,
+//            'cookies'     => array()
+//        )
+//    );
+//
+//    write_log("== QUERY ====================================================\n");
+////    write_log("API URL: $api_url\n");
+//    write_log("$query\n");
+//    write_log("=============================================================\n");
+//
+//    // TODO: handle errors.
+//    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+//
+//        write_log( "== ERROR        =============================================\n" );
+//        write_log( var_export( $response, true ) );
+//        write_log( "=============================================================\n" );
+//
+//        return false;
+//    }
+//
+//    return true;
 }
 
 /**
@@ -518,7 +522,7 @@ function wordlift_build_entity_uri( $post_id ) {
         $id
     );
 
-    write_log( "wordlift_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]\n" );
+    write_log( "wordlift_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
 
     return $url;
 }
@@ -577,7 +581,7 @@ function wordlift_reindex_triple_store() {
     $url      = wordlift_redlink_reindex_url();
 
     // Post the request.
-    write_log( "wordlift_reindex_triple_store\n" );
+    write_log( "wordlift_reindex_triple_store" );
     $response = wp_remote_get( $url, array(
             'method'      => 'POST',
             'timeout'     => 45,
@@ -592,7 +596,7 @@ function wordlift_reindex_triple_store() {
     // TODO: handle errors.
     if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
-        write_log( "wordlift_reindex_triple_store: error\n" );
+        write_log( "wordlift_reindex_triple_store: error" );
         write_log( var_export( $response, true ) );
         return false;
     }

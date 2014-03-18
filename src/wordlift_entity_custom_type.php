@@ -128,11 +128,11 @@ function wordlift_save_entity_custom_fields( $post_id ) {
 
     // save the entity URL.
     $entity_url = $_POST['entity_url'];
-    update_post_meta( $post_id, 'entity_url', $entity_url);
+    wl_set_entity_uri( $post_id, $entity_url );
 
     // save the same as values.
-    $entity_same_as = $_POST['entity_same_as'];
-    update_post_meta( $post_id, 'entity_same_as', $entity_same_as);
+    $entity_same_as = explode( "\r\n", $_POST['entity_same_as'] );
+    wl_set_same_as( $post_id, $entity_same_as );
 
 }
 

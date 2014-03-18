@@ -37,7 +37,7 @@ function wordlift_indepth_article_ob_callback( $content ) {
 
     write_log( 'wordlift_indepth_article_ob_callback' );
 
-    $post_id        = get_the_ID();
+//    $post_id        = get_the_ID();
     $post_permalink = get_permalink();
 
     $content = preg_replace('/<html ([^>]*)>/i',
