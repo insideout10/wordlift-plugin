@@ -14,6 +14,9 @@ class EntityImagesTest extends WP_UnitTestCase
     {
         parent::setUp();
 
+        // Configure WordPress with the test settings.
+        wl_configure_wordpress_test();
+
         // Empty the blog.
         wl_empty_blog();
 

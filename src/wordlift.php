@@ -1010,19 +1010,23 @@ function rl_execute_sparql_update_query( $query ) {
     // Send the request.
     $response = wp_remote_post( $url, $args );
 
+    // Remove the key from the query.
+    $scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
+
+    write_log ( "rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
+    write_log( "\n" . $query );
+    write_log ( "]" );
+
     // If an error has been raised, return the error.
     if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
-        write_log ("rl_execute_sparql_query ================================");
-        $scrambled_url = preg_replace( 'key=.*$', 'key=<hidden>', $url );
-        write_log( "[ url :: $scrambled_url ]" );
-        write_log( " request : " );
-        write_log( var_export( $args ) );;
-        write_log( " response: " );
-        write_log( var_export( $response ) );
-        write_log( " response body: " );
-        write_log( $response['body'] );
-        write_log( "=======================================================" );
+//        write_log( " request : " );
+//        write_log( var_export( $args ) );;
+        write_log( "rl_execute_sparql_query : error [ response :: " );
+        write_log( "\n" . var_export( $response ) );
+        write_log( "][ body :: " );
+        write_log( "\n" . $response['body'] );
+        write_log( "]" );
 
         return false;
     }

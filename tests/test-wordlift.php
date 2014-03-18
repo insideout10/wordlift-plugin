@@ -308,14 +308,14 @@ EOF;
             'post_title'   => 'A Sample Post'
         ) );
 
-        // check that there are no entities related to the post.
+        // The entity relationship shall still exist (they must 'manually' be removed).
         $related_entities = wl_get_related_entities( $post_id );
-        $this->assertCount( 0, $related_entities );
+        $this->assertCount( 1, $related_entities );
 
         // check that the entity no more relates to the post.
         $related_posts = wl_get_related_post_ids( $entity_post_id );
         //        echo "[ entity_post_id :: $entity_post_id ][ related_posts :: " . join( ',', $related_posts ) . " ]\n";
-        $this->assertCount( 0, $related_posts );
+        $this->assertCount( 1, $related_posts );
 
     }
 

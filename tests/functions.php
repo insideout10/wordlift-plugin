@@ -80,6 +80,8 @@ function wl_delete_post_attachments( $post_id ) {
  */
 function wl_update_post( $post_id, $content ) {
 
+    write_log( "wl_update_post [ post id :: $post_id ][ content ::\n $content\n ]" );
+
     $wp_error = null;
     $args = array(
         'ID'           => $post_id,
