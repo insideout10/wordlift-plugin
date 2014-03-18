@@ -112,33 +112,34 @@ function wl_get_user_by_uri( $uri ) {
     return $users[0];
 }
 
-
+/**
+ * Delete a user from the remote triple store (hooked to the *delete_user* hook).
+ * @param int $user_id The user ID.
+ */
 function wl_before_delete_user( $user_id ) {
 
     write_log( "wl_before_delete_user [ user id :: $user_id ]" );
 
+    $uri   = wl_get_user_uri( $user_id );
 
+    $query = wordlift_get_ns_prefixes();
+    $query .= <<<EOF
+            DELETE { <$uri> ?p ?o . } WHERE { <$uri> ?p ?o . };
+            DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };
+EOF;
+
+    rl_execute_sparql_update_query( $query );
 }
 add_action( 'delete_user', 'wl_before_delete_user' );
 
 /**
  * Called when a user is updated.
- * @param $user_id
- * @param $old_user_data
+ * @param int $user_id The user ID.
+ * @return true if successful otherwise false.
  */
-function wl_update_user_profile( $user_id, $old_user_data ) {
+function wl_update_user_profile( $user_id ) {
 
-    write_log( "wl_update_user_profile [ user id :: $user_id ][ old user data :: " . var_export( $old_user_data, true ) . " ]" );
-}
-add_action( 'profile_update', 'wl_update_user_profile', 10, 2 );
-
-/**
- * Called when a user is created.
- * @param $user_id
- */
-function wl_register_user( $user_id ) {
-
-    write_log( "wl_register_user [ user id :: $user_id ]" );
+    write_log( "wl_update_user_profile [ user id :: $user_id ]" );
 
     // Get the site language setting.
     $language   = wordlift_configuration_site_language();
@@ -154,10 +155,11 @@ function wl_register_user( $user_id ) {
     $last_name  = wordlift_esc_sparql( $user->last_name );
     $posts_url  = wordlift_esc_sparql( get_author_posts_url( $user_id ) );
 
-
-
     $query = wordlift_get_ns_prefixes();
     $query .= <<<EOF
+        DELETE { <$uri> schema:givenName ?o } WHERE { <$uri> schema:givenName ?o };
+        DELETE { <$uri> schema:familyName ?o } WHERE { <$uri> schema:familyName ?o };
+        DELETE { <$uri> schema:url ?o } WHERE { <$uri> schema:url ?o };
         INSERT DATA {
             <$uri> schema:givenName '$first_name'@$language .
             <$uri> schema:familyName '$last_name'@$language .
@@ -166,6 +168,19 @@ function wl_register_user( $user_id ) {
 EOF;
 
     // Execute the query.
-    rl_execute_sparql_update_query( $query );
+    return rl_execute_sparql_update_query( $query );
+}
+add_action( 'profile_update', 'wl_update_user_profile', 10, 1 );
+
+/**
+ * Create a user on the remote triple store (hooked to the action *user_register*).
+ * @param int $user_id The user ID.
+ * @return true if successful otherwise false.
+ */
+function wl_register_user( $user_id ) {
+
+    write_log( "wl_register_user [ user id :: $user_id ]" );
+
+    return wl_update_user_profile( $user_id );
 }
 add_action( 'user_register', 'wl_register_user', 10, 1 );
