@@ -289,6 +289,10 @@ EOF;
 
         // check that the same as is included.
         $entity_same_as = $this->entity_same_as;
+
+//        var_dump( $entity_same_as );
+//        var_dump( $graph->{'http://www.w3.org/2002/07/owl#sameAs'} );
+
         $this->assertTrue( array_reduce( $graph->{'http://www.w3.org/2002/07/owl#sameAs'},
             function( $result, $item ) use ( $entity_same_as ) {
                 return $result || ( $entity_same_as === $item->{'@id'} );
