@@ -637,7 +637,7 @@ function wl_configure_wordpress_test() {
 function wl_test_create_user() {
 
     return wp_insert_user( array(
-        'user_login' => 'mario_rossi',
+        'user_login' => uniqid('user-'),
         'user_pass'  => 'tmppass',
         'first_name' => 'Mario',
         'last_name'  => 'Rossi'

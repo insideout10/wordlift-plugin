@@ -51,26 +51,13 @@ class PostTest extends WP_UnitTestCase {
             'dataset_name'    => $dataset_name
         ) );
 
-        // Delete existing posts.
-        $result = wl_delete_posts( get_posts( array(
-            'posts_per_page' => -1,
-            'post_type'      => 'post',
-            'post_status'    => 'any'
-        ) ) );
-        $this->assertTrue( $result );
+
+        wl_empty_blog();
         $this->assertEquals( 0, count( get_posts( array(
             'posts_per_page' => -1,
             'post_type'      => 'post',
             'post_status'    => 'any'
         ) ) ) );
-
-        // Delete existing entities.
-        $result = wl_delete_posts( get_posts( array(
-            'posts_per_page' => -1,
-            'post_type'      => 'entity',
-            'post_status'    => 'any'
-        ) ) );
-        $this->assertTrue( $result );
         $this->assertEquals( 0, count( get_posts( array(
             'posts_per_page' => -1,
             'post_type'      => 'entity',
