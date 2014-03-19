@@ -27,9 +27,10 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
     'redirection' => 5,
     'httpversion' => '1.1',
     'blocking'    => true,
-    'cookies'     => array()
+    'cookies'     => array(),
+    'sslverify'   => true,
+    'sslcertificates' => dirname( __FILE__ ) . '/ssl/ca-bundle.crt'
 ) ) );
-
 
 /**
  * Get the URL of the specified physical file.
@@ -119,43 +120,52 @@ add_action('wp_ajax_wordlift_analyze', 'wordlift_ajax_analyze_action');
 // Analyze a text
 function wordlift_ajax_analyze_action()
 {
-    if ((current_user_can('edit_posts') || current_user_can('edit_pages')) && get_user_option('rich_editing')) {
 
-        // Get the Redlink enhance URL.
-        $api_url  = wordlift_redlink_enhance_url();
+    // Get the Redlink enhance URL.
+    $url  = wordlift_redlink_enhance_url();
 
-        $response = wp_remote_post($api_url, array(
-                'method' => 'POST',
-                'timeout' => 45,
-                'redirection' => 5,
-                'httpversion' => '1.0',
-                'blocking' => true,
-                'headers' => array(
-                    'Accept' => 'application/json',
-                    'Content-type' => 'text/plain',
-                ),
-                'body' => file_get_contents("php://input"),
-                'cookies' => array()
-            )
-        );
+    // Prepare the request.
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+        'method'  => 'POST',
+        'headers' => array(
+            'Accept'       => 'application/json',
+            'Content-type' => 'text/plain'
+        ),
+        'body' => file_get_contents("php://input"),
+    ));
 
-        if ( is_wp_error( $response ) ) {
-            $error_message = $response->get_error_message();
-            echo "Something went wrong: $error_message";
-            die();
-        } else {
+    $response = wp_remote_post( $url, $args );
 
-            // Reprint the headers, mostly for debugging purposes.
-            foreach ($response['headers'] as $header => $value) {
-                if ( strpos( strtolower( $header ), 'x-redlink-') === 0 ) {
-                    header( "$header: $value" );
-                }
-            }
+    // Remove the key from the query.
+    $scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
 
-            echo $response['body'];
-            die();
+    // If an error has been raised, return the error.
+    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+
+        $body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
+
+        write_log( "wordlift_ajax_analyze_action : error [ response :: " );
+        write_log( "\n" . var_export( $response, true ) );
+        write_log( "][ body :: " );
+        write_log( "\n" . $body );
+        write_log( "]" );
+
+        echo 'An error occurred while request an analysis to the remote service. Please try again later.';
+
+        die();
+    }
+
+    write_log ( "wordlift_ajax_analyze_action [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]");
+
+    // Reprint the headers, mostly for debugging purposes.
+    foreach ($response['headers'] as $header => $value) {
+        if ( strpos( strtolower( $header ), 'x-redlink-') === 0 ) {
+            header( "$header: $value" );
         }
     }
+
+    echo $response['body'];
+    die();
 }
 
 /**
@@ -1013,16 +1023,12 @@ function rl_execute_sparql_update_query( $query ) {
     // Remove the key from the query.
     $scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
 
-    write_log ( "rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
-    write_log( "\n" . $query );
-    write_log ( "]" );
-
     // If an error has been raised, return the error.
     if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
 //        write_log( " request : " );
 //        write_log( var_export( $args ) );;
-        write_log( "rl_execute_sparql_query : error [ response :: " );
+        write_log( "rl_execute_sparql_update_query : error [ response :: " );
         write_log( "\n" . var_export( $response ) );
         write_log( "][ body :: " );
         write_log( "\n" . $response['body'] );
@@ -1031,8 +1037,13 @@ function rl_execute_sparql_update_query( $query ) {
         return false;
     }
 
+    write_log ( "rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
+    write_log( "\n" . $query );
+    write_log ( "]" );
+
     return true;
 }
+
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
