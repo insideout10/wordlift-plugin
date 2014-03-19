@@ -44,7 +44,7 @@ function wl_push_post_to_redlink( $post ) {
     $site_language  = wordlift_configuration_site_language();
 
     // save the author and get the author URI.
-    $author_uri     = wordlift_save_author( $post->post_author );
+    $author_uri     = wl_get_user_uri( $post->post_author );
 
     // Get other post properties.
     $date_published = wl_get_sparql_time( get_the_time('c', $post) );
@@ -301,72 +301,6 @@ function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = 
     write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]" );
 
     return $post_ids;
-}
-
-/**
- * Save the specified author to the triple store.
- * @param $author_id
- * @return The author URI.
- */
-function wordlift_save_author( $author_id ) {
-
-    // read the user id and dataset name from the options.
-    $user_id     = wordlift_configuration_user_id();
-    $dataset_id  = wordlift_configuration_dataset_id();
-    $author_uri  = "http://data.redlink.io/$user_id/$dataset_id/author/$author_id";
-
-    $name        = wordlift_esc_sparql( get_the_author_meta( 'display_name', $author_id ) );
-    $email       = wordlift_esc_sparql( get_the_author_meta( 'email', $author_id ) );
-    $given_name  = wordlift_esc_sparql( get_the_author_meta( 'first_name', $author_id ) );
-    $family_name = wordlift_esc_sparql( get_the_author_meta( 'last_name', $author_id ) );
-    $description = wordlift_esc_sparql( get_the_author_meta( 'description', $author_id ) );
-    $url         = wordlift_esc_sparql( get_author_posts_url( 'user_url' ) );
-
-    // Get the site language in order to define the literals language.
-    $site_language = wordlift_configuration_site_language();
-
-    $sparql = "<$author_uri> a <http://schema.org/Person> . ";
-    if ( !empty( $name ) ) {
-        $sparql .= "<$author_uri> schema:name '$name'@$site_language . ";
-    }
-    if ( !empty( $given_name ) ) {
-        $sparql .= "<$author_uri> schema:givenName '$given_name'@$site_language . ";
-    }
-    if ( !empty( $family_name ) ) {
-        $sparql .= "<$author_uri> schema:familyName '$family_name'@$site_language . ";
-    }
-    if ( !empty( $email ) ) {
-        $sparql .= "<$author_uri> schema:email '$email' . ";
-    }
-    if ( !empty( $description ) ) {
-        $sparql .= "<$author_uri> schema:description \"$description\"@$site_language . ";
-    }
-    if ( !empty( $url ) ) {
-        $sparql .= "<$author_uri> schema:url <$url> . ";
-    }
-
-    $query = wordlift_get_ns_prefixes() . <<<EOF
-            DELETE { <$author_uri> a ?o . }
-            WHERE  { <$author_uri> a ?o . };
-            DELETE { <$author_uri> schema:name ?o . }
-            WHERE  { <$author_uri> schema:name ?o . };
-            DELETE { <$author_uri> schema:givenName  ?o . }
-            WHERE  { <$author_uri> schema:givenName  ?o . };
-            DELETE { <$author_uri> schema:familyName ?o . }
-            WHERE  { <$author_uri> schema:familyName ?o . };
-            DELETE { <$author_uri> schema:email ?o . }
-            WHERE  { <$author_uri> schema:email ?o . };
-            DELETE { <$author_uri> schema:description ?o . }
-            WHERE  { <$author_uri> schema:description ?o . };
-            DELETE { <$author_uri> schema:url ?o . }
-            WHERE  { <$author_uri> schema:url ?o . };
-            INSERT DATA { $sparql }
-EOF;
-
-    // execute the query.
-    wordlift_push_data_triple_store($query);
-
-    return $author_uri;
 }
 
 /**
