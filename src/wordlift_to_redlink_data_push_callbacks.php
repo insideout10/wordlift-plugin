@@ -61,7 +61,9 @@ function wl_push_post_to_redlink( $post ) {
     $sparql .= "<$uri> schema:url <$permalink> . \n";
     $sparql .= "<$uri> schema:datePublished $date_published . \n";
     $sparql .= "<$uri> schema:dateModified $date_modified . \n";
-    $sparql .= "<$uri> schema:author <$author_uri> . \n";
+    if ( !empty( $author_uri ) ) {
+        $sparql .= "<$uri> schema:author <$author_uri> . \n";
+    }
     $sparql .= "<$uri> schema:interactionCount 'UserComments:$user_comments_count' . \n";
 
 

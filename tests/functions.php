@@ -27,7 +27,8 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
         'post_name'    => $slug,
         'post_title'   => $title,
         'post_status'  => $status,
-        'post_type'    => $type
+        'post_type'    => $type,
+        'post_author'  => wl_test_create_user()
     );
 
     $wp_error = null;
@@ -473,24 +474,6 @@ function wl_parse_response( $json ) {
 }
 
 /**
- * Get the author URI.
- * @param int $author_id The author ID.
- * @return string The author URI.
- */
-function rl_get_author_url( $author_id ) {
-
-    // Build the entity URI.
-    $url = sprintf(
-        'http://data.redlink.io/%s/%s/author/%s',
-        wordlift_configuration_user_id(),
-        wordlift_configuration_dataset_id(),
-        $author_id
-    );
-
-    return $url;
-}
-
-/**
  * Get an array of entity URIs given their post IDs.
  * @param array $post_ids The post IDs.
  * @return array An array of entity URIs.
@@ -644,5 +627,19 @@ function wl_configure_wordpress_test() {
         'application_key' => getenv('REDLINK_APP_KEY'),
         'user_id'         => getenv('REDLINK_USER_ID'),
         'dataset_name'    => $dataset_name
+    ) );
+}
+
+/**
+ * Create a test user.
+ * @return int|WP_Error
+ */
+function wl_test_create_user() {
+
+    return wp_insert_user( array(
+        'user_login' => 'mario_rossi',
+        'user_pass'  => 'tmppass',
+        'first_name' => 'Mario',
+        'last_name'  => 'Rossi'
     ) );
 }

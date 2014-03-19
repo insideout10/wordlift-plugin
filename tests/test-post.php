@@ -639,7 +639,7 @@ EOF;
         $label    = $match['label'];
 
         $permalink = '<' . get_permalink( $post_id ) . '>';
-        $post_author_url = '<' . rl_get_author_url( $post->post_author ) . '>';
+        $post_author_url = '<' . wl_get_user_uri( $post->post_author ) . '>';
         $post_date_published = wl_get_sparql_time( get_the_time('c', $post) );
         $post_date_modified  = wl_get_sparql_time( wl_get_post_modified_time( $post ) );
         $post_comment_count = 'UserComments:' . $post->comment_count;
