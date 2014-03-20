@@ -93,7 +93,7 @@ function wl_push_post_to_redlink( $post ) {
             WHERE  { <$uri> schema:image ?o . };
             DELETE { <$uri> schema:interactionCount ?o . }
             WHERE  { <$uri> schema:interactionCount ?o . };
-            INSERT DATA { $sparql }
+            INSERT DATA { $sparql };
 EOF;
 
     // execute the query.
@@ -167,25 +167,29 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
         }
     }
 
+    $coordinates = wl_get_coordinates( $entity_post->ID );
+    if ( is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude']) ) {
+        $latitude = wordlift_esc_sparql( $coordinates['latitude'] );
+        $longitude = wordlift_esc_sparql( $coordinates['longitude'] );
+
+        $sparql .= " <$uri> geo:lat '$latitude'^^xsd:double . \n";
+        $sparql .= " <$uri> geo:long '$longitude'^^xsd:double . \n";
+    }
+
     // Add SPARQL stmts to write the schema:image.
     $sparql .= wl_get_sparql_images( $uri, $entity_post->ID );
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
-    DELETE { <$uri> rdfs:label ?o }
-    WHERE  { <$uri> rdfs:label ?o };
-    DELETE { <$uri> owl:sameAs ?o . }
-    WHERE  { <$uri> owl:sameAs ?o . };
-    DELETE { <$uri> schema:description ?o . }
-    WHERE  { <$uri> schema:description ?o . };
-    DELETE { <$uri> schema:url ?o . }
-    WHERE  { <$uri> schema:url ?o . };
-    DELETE { <$uri> a ?o . }
-    WHERE  { <$uri> a ?o . };
-    DELETE { <$uri> dct:relation ?o . }
-    WHERE  { <$uri> dct:relation ?o . };
-    DELETE { <$uri> schema:image ?o . }
-    WHERE  { <$uri> schema:image ?o . };
-    INSERT DATA { $sparql }
+    DELETE { <$uri> rdfs:label ?o } WHERE  { <$uri> rdfs:label ?o };
+    DELETE { <$uri> owl:sameAs ?o . } WHERE  { <$uri> owl:sameAs ?o . };
+    DELETE { <$uri> schema:description ?o . } WHERE  { <$uri> schema:description ?o . };
+    DELETE { <$uri> schema:url ?o . } WHERE  { <$uri> schema:url ?o . };
+    DELETE { <$uri> a ?o . } WHERE  { <$uri> a ?o . };
+    DELETE { <$uri> dct:relation ?o . } WHERE  { <$uri> dct:relation ?o . };
+    DELETE { <$uri> schema:image ?o . } WHERE  { <$uri> schema:image ?o . };
+    DELETE { <$uri> geo:lat ?o . } WHERE  { <$uri> geo:lat ?o . };
+    DELETE { <$uri> geo:long ?o . } WHERE  { <$uri> geo:long ?o . };
+    INSERT DATA { $sparql };
 EOF;
 
     rl_execute_sparql_update_query($query);
@@ -428,6 +432,7 @@ function wordlift_build_entity_uri( $post_id ) {
 function wordlift_get_ns_prefixes() {
 
     return <<<EOF
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>

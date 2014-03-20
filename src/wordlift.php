@@ -50,7 +50,7 @@ function wl_queue_sparql_update_query($query)
 {
 
     $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
-    file_put_contents($filename, $query . ";\n", FILE_APPEND);
+    file_put_contents($filename, $query . "\n", FILE_APPEND);
 
     write_log("wl_queue_sparql_update_query [ filename :: $filename ]");
 }
@@ -499,6 +499,26 @@ function wl_set_coordinates( $post_id, $latitude = null, $longitude = null) {
         add_post_meta( $post_id, 'wl_latitude', $latitude );
         add_post_meta( $post_id, 'wl_longitude', $longitude );
     }
+}
+
+/**
+ * Get the coordinates for the specified post ID.
+ * @param int $post_id The post ID.
+ * @return array|null An array of coordinates or null.
+ */
+function wl_get_coordinates( $post_id ) {
+
+    $latitude  = get_post_meta( $post_id, 'wl_latitude', true );
+    $longitude = get_post_meta( $post_id, 'wl_longitude', true );
+
+    if ( empty($latitude) || empty($longitude) ) {
+        return null;
+    }
+
+    return array(
+        'latitude'  => $latitude,
+        'longitude' => $longitude
+    );
 }
 
 /**
@@ -1089,7 +1109,7 @@ function wl_flush_rewrite_rules_hard($hard)
         write_log("wl_flush_rewrite_rules_hard [ uri :: $uri ][ url :: $url ]");
     }
 
-    $insert_query .= ' }';
+    $insert_query .= ' };';
 
     // Execute the query.
     rl_execute_sparql_update_query($delete_query . $insert_query);
@@ -1173,7 +1193,9 @@ function wl_sanitize_uri_path($path, $char = '_')
 function wl_shutdown()
 {
 
-    if (WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin()) {
+    $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
+
+    if (WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists( $filename )) {
         $args = array(WL_REQUEST_ID);
 
         wp_schedule_single_event(time(), 'wl_execute_saved_sparql_update_query', $args);
