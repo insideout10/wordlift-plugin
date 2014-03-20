@@ -397,6 +397,11 @@ function wordlift_build_entity_uri( $post_id ) {
 
     // Get the post.
     $post = get_post( $post_id );
+    if ( null === $post ) {
+        write_log( "wordlift_build_entity_uri : error [ post id :: $post_id ][ post :: null ]" );
+        return;
+    }
+
     $type = $post->post_type;
 
     // Create an ID given the title.

@@ -40,7 +40,7 @@ define('WL_REQUEST_ID', uniqid());
 define('WL_TEMP_DIR', get_temp_dir());
 
 //write_log( "getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' :: " . ( 'true' !== getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' ) ? 'true' : 'false' ) );
-define('WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING') );
+define('WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING'));
 
 /**
  * Write the query to the buffer file.
@@ -334,8 +334,18 @@ function wl_save_entities($entities, $related_post_id = null)
                 : array($entity['sameas']))
             : array());
 
+        // Set the coordinates.
+        if (isset($entity['latitude']) && isset($entity['longitude'])) {
+            $coordinates = array(
+                'latitude' => $entity['latitude'],
+                'longitude' => $entity['longitude']
+            );
+        } else {
+            $coordinates = array();
+        }
+
         // Save the entity.
-        $post = wl_save_entity($uri, $label, $type, $description, $images, $related_post_id, $same_as);
+        $post = wl_save_entity($uri, $label, $type, $description, $images, $related_post_id, $same_as, $coordinates);
 
         // Store the post in the return array if successful.
         if (null !== $post) {
@@ -357,7 +367,7 @@ function wl_save_entities($entities, $related_post_id = null)
  * @param array $same_as An array of sameAs URLs.
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity($uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array())
+function wl_save_entity($uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array(), $coordinates = array())
 {
 
     write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
@@ -407,6 +417,11 @@ function wl_save_entity($uri, $label, $type, $description, $images = array(), $r
     }
     // Save the sameAs data for the entity.
     wl_set_same_as($post_id, $same_as);
+
+    // If the coordinates are provided, then set them.
+    if ( is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
+        wl_set_coordinates( $post_id, $coordinates['latitude'], $coordinates['longitude']);
+    }
 
     write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . (isset($type['class']) ? $type['class'] : 'not set') . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]");
 
@@ -464,6 +479,26 @@ function wl_save_entity($uri, $label, $type, $description, $images = array(), $r
 
     // finally return the entity post.
     return get_post($post_id);
+}
+
+/**
+ * Save the coordinates for the specified post ID.
+ * @param int $post_id      The post ID.
+ * @param double $latitude  The latitude.
+ * @param double $longitude The longitude.
+ */
+function wl_set_coordinates( $post_id, $latitude = null, $longitude = null) {
+
+    write_log( "wl_set_coordinates [ post id :: $post_id ][ latitude :: $latitude ][ longitude :: $longitude ]" );
+
+    delete_post_meta( $post_id, 'wl_latitude' );
+    delete_post_meta( $post_id, 'wl_longitude' );
+
+    // If the coordinates are not empty, add them.
+    if ( ! ( empty( $latitude ) || empty($longitude) ) ) {
+        add_post_meta( $post_id, 'wl_latitude', $latitude );
+        add_post_meta( $post_id, 'wl_longitude', $longitude );
+    }
 }
 
 /**
