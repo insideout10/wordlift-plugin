@@ -78,6 +78,9 @@ function wl_execute_saved_sparql_update_query($request_id)
     // Execute the SPARQL query.
     rl_execute_sparql_update_query($query, false);
 
+    // Reindex the triple store.
+    wordlift_reindex_triple_store();
+    
     // Delete the temporary file.
     unlink($filename);
 }
@@ -1111,9 +1114,6 @@ function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE
     write_log("rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: ");
     write_log("\n" . $query);
     write_log("]");
-
-    // Reindex the triple store.
-    wordlift_reindex_triple_store();
 
     return true;
 }

@@ -19,6 +19,9 @@ function wl_push_to_redlink( $post_id ) {
         default:
             wl_push_post_to_redlink( $post );
     }
+
+    // Reindex the triple store.
+    wordlift_reindex_triple_store();
 }
 
 /**
