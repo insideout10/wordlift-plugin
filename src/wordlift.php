@@ -1097,12 +1097,12 @@ function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE
     // If an error has been raised, return the error.
     if (is_wp_error($response) || 200 !== $response['response']['code']) {
 
-//        write_log( " request : " );
-//        write_log( var_export( $args ) );;
+        $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
+
         write_log("rl_execute_sparql_update_query : error [ response :: ");
-        write_log("\n" . var_export($response));
+        write_log("\n" . var_export($response, true));
         write_log("][ body :: ");
-        write_log("\n" . $response['body']);
+        write_log("\n" . $body);
         write_log("]");
 
         return false;
