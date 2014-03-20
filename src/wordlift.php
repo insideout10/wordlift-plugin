@@ -80,7 +80,7 @@ function wl_execute_saved_sparql_update_query($request_id)
 
     // Reindex the triple store.
     wordlift_reindex_triple_store();
-    
+
     // Delete the temporary file.
     unlink($filename);
 }
@@ -1102,7 +1102,9 @@ function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE
 
         $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
 
-        write_log("rl_execute_sparql_update_query : error [ response :: ");
+        write_log("rl_execute_sparql_update_query : error [ url :: $scrambled_url ][ args :: ");
+        write_log("\n" . var_export($args, true));
+        write_log("[ response :: ");
         write_log("\n" . var_export($response, true));
         write_log("][ body :: ");
         write_log("\n" . $body);

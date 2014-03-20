@@ -471,22 +471,32 @@ function wordlift_reindex_triple_store() {
 
     // Post the request.
     write_log( "wordlift_reindex_triple_store" );
-    $response = wp_remote_get( $url, array(
-            'method'      => 'POST',
-            'timeout'     => 45,
-            'redirection' => 5,
-            'httpversion' => '1.1',
-            'blocking'    => true, // switched to not blocking.
-            'sslverify'   => false,
-            'cookies'     => array()
-        )
-    );
 
-    // TODO: handle errors.
-    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+    // Prepare the request.
+    $args     = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
+        'method'  => 'GET',
+        'headers' => array(),
+        'body'    => ''
+    ));
 
-        write_log( "wordlift_reindex_triple_store : error" );
-        write_log( var_export( $response, true ) );
+    $response = wp_remote_get( $url, $args );
+
+    // Remove the key from the query.
+    $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);
+
+    // If an error has been raised, return the error.
+    if (is_wp_error($response) || 200 !== $response['response']['code']) {
+
+        $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
+
+        write_log("wordlift_reindex_triple_store : error [ url :: $scrambled_url ][ args :: ");
+        write_log("\n" . var_export($args, true));
+        write_log("[ response :: ");
+        write_log("\n" . var_export($response, true));
+        write_log("][ body :: ");
+        write_log("\n" . $body);
+        write_log("]");
+
         return false;
     }
 
