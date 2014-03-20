@@ -74,6 +74,8 @@ class WordLiftTest extends WP_UnitTestCase {
 
         parent::setUp();
 
+        wl_configure_wordpress_test();
+
         // Set the user ID and the application key.
         $this->user_id         = getenv('REDLINK_USER_ID');
         $this->application_key = getenv('REDLINK_APP_KEY');

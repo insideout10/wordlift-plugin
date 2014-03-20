@@ -34,6 +34,7 @@ class PostTest extends WP_UnitTestCase
     {
         parent::setUp();
 
+        wl_configure_wordpress_test();
 
         // Set the dataset name according to environment vars.
         $dataset_name = str_replace('.', '-',

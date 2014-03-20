@@ -11,6 +11,7 @@ class SanitizeUriPathTest extends WP_UnitTestCase
     {
         parent::setUp();
 
+        wl_configure_wordpress_test();
     }
 
     function testSimple() {
