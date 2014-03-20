@@ -11,6 +11,9 @@ define( 'WL_JSON_LD_CONTEXT', serialize( array(
     WL_DUBLIN_CORE_NAMESPACE => 'http://purl.org/dc/terms/'
 ) ) );
 
+// Disable buffering.
+define( 'WL_BUFFER_SPARQL_UPDATE_QUERIES', false );
+
 /**
  * Create a new post.
  * @param string $content The post content.

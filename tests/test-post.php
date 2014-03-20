@@ -32,25 +32,7 @@ class PostTest extends WP_UnitTestCase {
     function setUp() {
         parent::setUp();
 
-        // Set the dataset name according to environment vars.
-        $dataset_name = str_replace('.', '-',
-            sprintf(
-                '%s-php-%s-%s-wp-%s-ms-%s',
-                'wordlift-tests',
-                PHP_MAJOR_VERSION,
-                PHP_MINOR_VERSION,
-                getenv('WP_VERSION'),
-                getenv('WP_MULTISITE')
-            )
-        );
-
-        // Set the plugin options.
-        update_option( WORDLIFT_OPTIONS, array(
-            'application_key' => getenv('REDLINK_APP_KEY'),
-            'user_id'         => getenv('REDLINK_USER_ID'),
-            'dataset_name'    => $dataset_name
-        ) );
-
+        wl_configure_wordpress_test();
 
         wl_empty_blog();
         $this->assertEquals( 0, count( get_posts( array(

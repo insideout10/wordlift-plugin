@@ -19,9 +19,6 @@ function wl_push_to_redlink( $post_id ) {
         default:
             wl_push_post_to_redlink( $post );
     }
-
-    // Reindex Redlink triple store.
-    wordlift_reindex_triple_store();
 }
 
 /**
@@ -97,7 +94,7 @@ function wl_push_post_to_redlink( $post ) {
 EOF;
 
     // execute the query.
-    wordlift_push_data_triple_store($query);
+    rl_execute_sparql_update_query($query);
 }
 
 /**
@@ -188,7 +185,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     INSERT DATA { $sparql }
 EOF;
 
-    wordlift_push_data_triple_store($query);
+    rl_execute_sparql_update_query($query);
 }
 
 /**
@@ -367,52 +364,6 @@ function wordlift_get_entity_post_by_uri( $uri ) {
 }
 
 /**
- * Execute the query against the triple store.
- * @param string $query A SPARQL query.
- * @return bool
- */
-function wordlift_push_data_triple_store( $query ) {
-
-    return rl_execute_sparql_update_query( $query );
-
-//    // construct the API URL.
-//    $api_url = wordlift_redlink_sparql_update_url();
-//
-//    // post the request.
-//    $response = wp_remote_post($api_url, array(
-//            'method'      => 'POST',
-//            'timeout'     => 45,
-//            'redirection' => 5,
-//            'httpversion' => '1.1',
-//            'blocking'    => true, // switched to not blocking.
-//            'headers'     => array(
-//                'Content-type' => 'application/sparql-update; charset=utf-8',
-//            ),
-//            'body'        => $query,
-//            'sslverify'   => false,
-//            'cookies'     => array()
-//        )
-//    );
-//
-//    write_log("== QUERY ====================================================\n");
-////    write_log("API URL: $api_url\n");
-//    write_log("$query\n");
-//    write_log("=============================================================\n");
-//
-//    // TODO: handle errors.
-//    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
-//
-//        write_log( "== ERROR        =============================================\n" );
-//        write_log( var_export( $response, true ) );
-//        write_log( "=============================================================\n" );
-//
-//        return false;
-//    }
-//
-//    return true;
-}
-
-/**
  * Receive events from post saves, and split them according to the post type.
  * @param int $post_id The post id.
  */
@@ -531,7 +482,7 @@ function wordlift_reindex_triple_store() {
     // TODO: handle errors.
     if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
-        write_log( "wordlift_reindex_triple_store: error" );
+        write_log( "wordlift_reindex_triple_store : error" );
         write_log( var_export( $response, true ) );
         return false;
     }

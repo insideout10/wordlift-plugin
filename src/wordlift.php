@@ -25,12 +25,57 @@ if (!function_exists('write_log')) {
 define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
     'timeout'     => 60,
     'redirection' => 5,
-    'httpversion' => '1.1',
+    'httpversion' => '1.0',
     'blocking'    => true,
     'cookies'     => array(),
     'sslverify'   => true,
     'sslcertificates' => dirname( __FILE__ ) . '/ssl/ca-bundle.crt'
 ) ) );
+
+// Create a unique ID for this request, useful to hook async HTTP requests.
+define( 'WL_REQUEST_ID', uniqid() );
+
+// Set the temporary files folder.
+define( 'WL_TEMP_DIR', get_temp_dir() );
+
+/**
+ * Write the query to the buffer file.
+ * @param string $query A SPARQL query.
+ */
+function wl_queue_sparql_update_query( $query ) {
+
+    $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
+    file_put_contents ( $filename , $query . ";\n", FILE_APPEND );
+
+    write_log( "wl_queue_sparql_update_query [ filename :: $filename ]" );
+}
+
+/**
+ * Execute the SPARQL query from the buffer saved for the specified request id.
+ * @param int $request_id The request ID.
+ */
+function wl_execute_saved_sparql_update_query( $request_id ) {
+
+    $filename = WL_TEMP_DIR . $request_id . '.sparql';
+
+    // If the file doesn't exist, exit.
+    if ( ! file_exists( $filename ) ) {
+        write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
+        return;
+    }
+
+    write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
+
+    // Get the query saved in the file.
+    $query    = file_get_contents( $filename );
+
+    // Execute the SPARQL query.
+    rl_execute_sparql_update_query( $query, false );
+
+    // Delete the temporary file.
+    unlink( $filename );
+}
+add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
 
 /**
  * Get the URL of the specified physical file.
@@ -172,38 +217,13 @@ function wordlift_ajax_analyze_action()
  * Register additional scripts for the admin UI.
  */
 function wordlift_admin_enqueue_scripts() {
-//    global $post;
-
-//    wp_enqueue_style( 'jquery-ui-core' );
-//    wp_enqueue_style( 'jquery-ui-widget' );
-//    wp_enqueue_style( 'jquery-ui-mouse' );
-//    wp_enqueue_style( 'jquery-ui-position' );
-//    wp_enqueue_style( 'jquery-ui-draggable' );
-//    wp_enqueue_style( 'jquery-ui-resizable' );
-//    wp_enqueue_style( 'jquery-ui-button' );
-//    wp_enqueue_style( 'jquery-ui-menu' );
-//    wp_enqueue_style( 'jquery-ui-dialog' );
-//    wp_enqueue_style( 'wp-jquery-ui-dialog' );
-//    wp_enqueue_style( 'jquery-ui-autocomplete' );
 
     wp_register_style('wordlift_wp_admin_css', 'http://localhost:8000/app/css/wordlift.min.css' );
     wp_enqueue_style( 'wordlift_wp_admin_css' );
 
-//    wp_enqueue_script( 'jquery' );
-//    wp_enqueue_script( 'jquery-ui-core' );
-//    wp_enqueue_script( 'jquery-ui-widget' );
-//    wp_enqueue_script( 'jquery-ui-mouse' );
-//    wp_enqueue_script( 'jquery-ui-position' );
-//    wp_enqueue_script( 'jquery-ui-draggable' );
-//    wp_enqueue_script( 'jquery-ui-resizable' );
-//    wp_enqueue_script( 'jquery-ui-button' );
-//    wp_enqueue_script( 'jquery-ui-menu' );
-//    wp_enqueue_script( 'jquery-ui-dialog' );
     wp_enqueue_script( 'jquery-ui-autocomplete' );
-//    wp_enqueue_script( 'wpdialogs' );
-
     wp_enqueue_script( 'angularjs', wordlift_get_url('/bower_components/angular/angular.min.js') );
-    // wp_localize_script('angularjs', 'thePost', get_post( $post->id, ARRAY_A ) );
+
 }
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
 
@@ -950,10 +970,7 @@ function rl_delete_post( $post_id ) {
     $sparql .= "DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };";
 
     // Execute the query.
-    wordlift_push_data_triple_store( $sparql );
-
-    // Reindex Redlink triple store.
-    wordlift_reindex_triple_store();
+    rl_execute_sparql_update_query( $sparql );
 }
 add_action( 'before_delete_post', 'rl_delete_post' );
 
@@ -993,16 +1010,24 @@ function wl_flush_rewrite_rules_hard( $hard ) {
     $insert_query .= ' }';
 
     // Execute the query.
-    wordlift_push_data_triple_store( $delete_query . $insert_query );
+    rl_execute_sparql_update_query( $delete_query . $insert_query );
 }
 add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 /**
  * Execute a query on Redlink.
  * @param string $query The query to execute.
+ * @param bool $queue   Whether to queue the update.
  * @return bool True if successful otherwise false.
  */
-function rl_execute_sparql_update_query( $query ) {
+function rl_execute_sparql_update_query( $query, $queue = false ) {
+
+    write_log( "rl_execute_sparql_update_query [ queue :: " . ( $queue ? 'true' : 'false' ) . " ]" );
+
+    // Queue the update query.
+    if ( $queue ) {
+        return wl_queue_sparql_update_query( $query );
+    }
 
     // Get the update end-point.
     $url  = wordlift_redlink_sparql_update_url();
@@ -1041,6 +1066,9 @@ function rl_execute_sparql_update_query( $query ) {
     write_log( "\n" . $query );
     write_log ( "]" );
 
+    // Reindex the triple store.
+    wordlift_reindex_triple_store();
+
     return true;
 }
 
@@ -1059,7 +1087,15 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 }
 
 function wl_shutdown() {
-    write_log( "wl_shutdown" );
+
+    $args            = array( WL_REQUEST_ID );
+
+    wp_schedule_single_event( time(), 'wl_execute_saved_sparql_update_query', $args );
+    $timestamp       = wp_next_scheduled( 'wl_execute_saved_sparql_update_query', $args );
+
+    spawn_cron();
+
+    write_log( "wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]" );
 }
 add_action( 'shutdown', 'wl_shutdown' );
 
