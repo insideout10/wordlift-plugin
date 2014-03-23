@@ -203,7 +203,8 @@ function wl_embed_text_annotations( $results, $content ) {
         $sel_text   = $item['sel_text'];
 
         $pattern    = "/($sel_prefix(?:<[^>]+>){0,})($sel_text)((?:<[^>]+>){0,}$sel_suffix)(?![^<]*\"[^<]*>)/i";
-        $replace    = "$1<span class=\"textannotation\" id=\"$id\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3";
+        $replace    = "$1<span class=\"textannotation\" id=\"$id\">$2</span>$3";
+//        $replace    = "$1<span class=\"textannotation\" id=\"$id\" typeof=\"http://fise.iks-project.eu/ontology/TextAnnotation\">$2</span>$3";
 
 //        echo "[ id :: $id ]\n";
 //        echo "[ sel_prefix :: $sel_prefix ]\n";
