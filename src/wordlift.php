@@ -365,6 +365,7 @@ function wl_save_entities($entities, $related_post_id = null)
  * @param array $images An array of image URLs.
  * @param int $related_post_id A related post ID.
  * @param array $same_as An array of sameAs URLs.
+ * @param array $coordinates An array of coordinates (with 'latitude' and 'longitude' keys).
  * @return null|WP_Post A post instance or null in case of failure.
  */
 function wl_save_entity($uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array(), $coordinates = array())
@@ -1190,24 +1191,105 @@ function wl_sanitize_uri_path($path, $char = '_')
     return preg_replace('/[^a-z|0-9|(|)]/i', $char, $path);
 }
 
+/**
+ * Schedule the execution of SPARQL Update queries before the WordPress look ends.
+ */
 function wl_shutdown()
 {
 
+    // Get the filename to the temporary SPARQL file.
     $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
 
+    // If WordLift is buffering SPARQL queries, we're admins and a buffer exists, then schedule it.
     if (WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists( $filename )) {
+
+        // The request ID.
         $args = array(WL_REQUEST_ID);
 
+        // Schedule the execution of the SPARQL query with the request ID.
         wp_schedule_single_event(time(), 'wl_execute_saved_sparql_update_query', $args);
+
+        // Check that the request is scheduled.
         $timestamp = wp_next_scheduled('wl_execute_saved_sparql_update_query', $args);
 
+        // Spawn the cron.
         spawn_cron();
 
         write_log("wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]");
     }
 }
-
 add_action('shutdown', 'wl_shutdown');
+
+/**
+ * Lift the post content with the microdata.
+ */
+function wl_embed_microdata( $content ) {
+
+    write_log( "wl_embed_microdata" );
+
+    // Apply microdata only to single pages.
+    if ( !is_single() ) {
+        return $content;
+    }
+
+    global $post;
+
+    $entities = wl_get_related_entities( $post->ID );
+
+    foreach ( $entities as $entity_post_id ) {
+        $entity_uri = wl_get_entity_uri( $entity_post_id );
+//        $content .= "\n$entity_post_id : $entity_uri";
+
+        $regex = "/<[^>]* itemid=\"$entity_uri\"[^>]*>([^<]*)/gi";
+        preg_replace( $regex, "$1 ($entity_uri)", $content );
+    }
+
+    return $content;
+}
+add_filter( 'the_content', 'wl_embed_microdata' );
+
+/**
+ * Replaces the *itemid* attributes URIs with the WordLift URIs.
+ * @param string $content The post content.
+ * @return string The updated post content.
+ */
+function wl_replace_item_id_with_uri( $content ) {
+
+    write_log( "wl_replace_item_id_with_uri" );
+
+    // Strip slashes, see https://core.trac.wordpress.org/ticket/21767
+    $content = stripslashes( $content );
+
+    // If any match are found.
+    $matches = array();
+    if ( 0 < preg_match_all( '/ itemid="([^"]+)"/i', $content, $matches, PREG_SET_ORDER ) ) {
+
+        foreach ( $matches as $match ) {
+
+            // Get the item ID.
+            $item_id = $match[1];
+
+            // Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
+            $post = wordlift_get_entity_post_by_uri( $item_id );
+
+            // Get the URI for that post.
+            $uri  = wl_get_entity_uri( $post->ID );
+
+            write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
+
+            // If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
+            if ( $item_id !== $uri ) {
+                $content = str_replace( " itemid=\"$item_id\"", " itemid=\"$uri\"", $content );
+            }
+        }
+    }
+
+    // Reapply slashes.
+    $content = addslashes( $content );
+
+    return $content;
+}
+add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
 
 require_once('libs/php-json-ld/jsonld.php');
 

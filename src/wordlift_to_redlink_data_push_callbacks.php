@@ -167,6 +167,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
         }
     }
 
+    // Get the coordinates related to the post and save them to the triple store.
     $coordinates = wl_get_coordinates( $entity_post->ID );
     if ( is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude']) ) {
         $latitude = wordlift_esc_sparql( $coordinates['latitude'] );
@@ -219,6 +220,9 @@ function wordlift_save_post_and_related_entities( $post_id ) {
     if ( 'trash' === $post->post_status ) {
         write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]" );
 
+        // TODO: remove related posts and entities.
+
+        // Delete the post from Redlink.
         rl_delete_post( $post_id );
         return;
     }
@@ -356,7 +360,7 @@ function wordlift_get_entity_post_by_uri( $uri ) {
         )
     );
 
-    // Get the matching eneity posts.
+    // Get the matching entity posts.
     $posts = $query->get_posts();
 
     write_log( "wordlift_get_entity_posts_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
