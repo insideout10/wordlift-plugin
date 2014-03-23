@@ -1234,14 +1234,40 @@ function wl_embed_microdata( $content ) {
 
     global $post;
 
+    // Get the related entities.
     $entities = wl_get_related_entities( $post->ID );
 
+    // Embed entity data for each entity found in the content.
     foreach ( $entities as $entity_post_id ) {
-        $entity_uri = wl_get_entity_uri( $entity_post_id );
-//        $content .= "\n$entity_post_id : $entity_uri";
 
-        $regex = "/<[^>]* itemid=\"$entity_uri\"[^>]*>([^<]*)/gi";
-        preg_replace( $regex, "$1 ($entity_uri)", $content );
+        // Get the entity URI and its escaped version for the regex.
+        $entity_uri   = wl_get_entity_uri( $entity_post_id );
+        $entity_uri_esc = str_replace( '/', '\/', $entity_uri );
+
+        // Get the array of sameAs uris.
+        $same_as_uris = wl_get_same_as( $entity_post_id );
+
+        // Prepare the sameAs fragment.
+        $same_as = '';
+        foreach ( $same_as_uris as $same_as_uri ) {
+            $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
+        }
+
+        // Get the entity types.
+        $types = implode( ' ', wl_get_entity_types( $entity_post_id, 'http://schema.org/' ) );
+
+        // Get the entity URL.
+        $url = '<link itemprop="url" href="' . get_permalink( $entity_post_id ) . '" />';
+
+        // Replace the original tagging with the new tagging.
+        $regex = "/<(\\w+)[^<]* itemid=\"$entity_uri_esc\"[^>]*>([^<]*)<\\/\\1>/i";
+        $content = preg_replace( $regex,
+            '<$1 itemscope itemtype="' . $types . '" itemid="' . $entity_uri . '">'
+            . $same_as
+            . $url
+            . '<span itemprop="name">$2</span></$1>',
+            $content
+        );
     }
 
     return $content;

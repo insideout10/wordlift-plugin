@@ -138,12 +138,26 @@ function wordlift_save_entity_custom_fields( $post_id ) {
 
 /**
  * Get the entity types associated to the specified post.
+ *
+ * @since 3.0.0
+ *
+ * @uses wp_get_post_terms()
+ *
  * @param int $post_id The post ID.
+ * @param string $prefix Add a prefix to the types.
  * @return array An array of terms.
  */
-function wl_get_entity_types( $post_id ) {
+function wl_get_entity_types( $post_id, $prefix = '' ) {
 
-    return wp_get_post_terms( $post_id, 'wl_entity_type' );
+    $types = wp_get_post_terms( $post_id, 'wl_entity_type' );
+
+    if ( !empty($prefix) ) {
+        array_walk( $types, function( &$item ) use ( $prefix ) {
+            $item = $prefix . $item->name;
+        } );
+    }
+
+    return $types;
 }
 
 /**
