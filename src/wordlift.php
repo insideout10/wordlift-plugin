@@ -196,7 +196,7 @@ function wordlift_ajax_analyze_action()
     $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);
 
     // If an error has been raised, return the error.
-    if (is_wp_error($response) || 200 !== $response['response']['code']) {
+    if (is_wp_error($response) || 200 !== (int)$response['response']['code']) {
 
         $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
 
