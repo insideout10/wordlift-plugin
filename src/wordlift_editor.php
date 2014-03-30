@@ -9,7 +9,7 @@ function wordlift_mce_css( $mce_css ) {
     if ( ! empty( $mce_css ) )
         $mce_css .= ',';
 
-    $mce_css .= 'http://localhost:8000/app/css/wordlift.min.css';
+    $mce_css .= 'http://localhost:8000/app/css/wordlift.css';
     // wordlift_get_url('/css/wordlift-editor.min.css');
 
     return $mce_css;

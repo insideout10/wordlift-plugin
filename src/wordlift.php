@@ -230,7 +230,7 @@ function wordlift_ajax_analyze_action()
 function wordlift_admin_enqueue_scripts()
 {
 
-    wp_register_style('wordlift_css', 'http://localhost:8000/app/css/wordlift.min.css');
+    wp_register_style('wordlift_css', 'http://localhost:8000/app/css/wordlift.css');
     wp_enqueue_style('wordlift_css');
 
     wp_enqueue_script('jquery-ui-autocomplete');
@@ -1321,6 +1321,92 @@ function wl_replace_item_id_with_uri( $content ) {
     return $content;
 }
 add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
+
+/**
+ * Install known types in WordPress.
+ */
+function wl_install_entity_type_data() {
+
+    write_log( 'wl_install_entity_type_data' );
+
+    // Ensure the custom type and the taxonomy are registered.
+    wordlift_register_custom_type_entity();
+    wordlift_taxonomies_entity();
+
+    // Set the taxonomy data.
+    $terms = array(
+        'creative-work' => array(
+            'label' => 'Creative Work',
+            'description' => 'A creative work (or a Music Album).',
+            'css'   => 'wl-creative-work',
+            'uri'   => 'http://schema.org/CreativeWork',
+            'same_as' => array( 'http://schema.org/MusicAlbum' )
+        ),
+        'event' => array(
+            'label' => 'Event',
+            'description' => 'An event.',
+            'css'   => 'wl-event',
+            'uri'   => 'http://schema.org/Event',
+            'same_as' => array( 'http://dbpedia.org/ontology/Event' )
+        ),
+        'organization' => array(
+            'label' => 'Organization',
+            'description' => 'An organization, including a government or a newspaper.',
+            'css'   => 'wl-organization',
+            'uri'   => 'http://schema.org/Organization',
+            'same_as' => array(
+                'http://rdf.freebase.com/ns/organization.organization',
+                'http://rdf.freebase.com/ns/government.government',
+                'http://schema.org/Newspaper'
+            )
+        ),
+        'person' => array(
+            'label' => 'Person',
+            'description' => 'A person (or a music artist).',
+            'css'   => 'wl-person',
+            'uri'   => 'http://schema.org/Person',
+            'same_as' => array(
+                'http://rdf.freebase.com/ns/people.person',
+                'http://rdf.freebase.com/ns/music.artist'
+            )
+        ),
+        'place' => array(
+            'label' => 'Place',
+            'description' => 'A place.',
+            'css'   => 'wl-place',
+            'uri'   => 'http://schema.org/Place',
+            'same_as' => array(
+                'http://rdf.freebase.com/ns/location.location',
+                'http://www.opengis.net/gml/_Feature'
+            )
+        ),
+        'thing' => array(
+            'label' => 'Thing',
+            'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
+            'css'   => 'wl-thing',
+            'uri'   => 'http://schema.org/Thing',
+            'same_as' => array( '*' ) // set as default.
+        )
+    );
+
+    foreach ($terms as $slug => $term) {
+
+        // Create the term.
+        $result = wp_insert_term( $term['label'], 'wl_entity_type', array(
+            'description'=> $term['description'],
+            'slug' => $slug
+        ) );
+
+        if ( is_wp_error( $result ) ) {
+            write_log( 'wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]');
+            continue;
+        }
+        // Add custom metadata to the term.
+        wl_update_entity_type( $result['term_id'], $term['css'], $term['uri'], $term['same_as'] );
+    }
+}
+add_action( 'activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
+//register_activation_hook(__FILE__, 'wl_install_entity_type_data');
 
 require_once('libs/php-json-ld/jsonld.php');
 
