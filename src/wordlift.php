@@ -137,7 +137,7 @@ function wordlift_register_buttons($buttons)
 function wordlift_register_tinymce_javascript($plugin_array)
 {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = 'http://localhost:8000/app/js/wordlift.min.js';
+    $plugin_array['wordlift'] = 'http://localhost:8000/app/js/wordlift.js';
     return $plugin_array;
 }
 
@@ -230,8 +230,8 @@ function wordlift_ajax_analyze_action()
 function wordlift_admin_enqueue_scripts()
 {
 
-    wp_register_style('wordlift_wp_admin_css', 'http://localhost:8000/app/css/wordlift.min.css');
-    wp_enqueue_style('wordlift_wp_admin_css');
+    wp_register_style('wordlift_css', 'http://localhost:8000/app/css/wordlift.min.css');
+    wp_enqueue_style('wordlift_css');
 
     wp_enqueue_script('jquery-ui-autocomplete');
     wp_enqueue_script('angularjs', wordlift_get_url('/bower_components/angular/angular.min.js'));
@@ -1352,6 +1352,8 @@ require_once('wordlift_freebase_image_proxy.php');
 require_once('wordlift_ajax_search_entities.php');
 
 require_once('wordlift_user.php');
+
+require_once('wordlift_geo_widget.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
