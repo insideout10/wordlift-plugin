@@ -21,8 +21,10 @@ function wl_push_to_redlink($post_id)
             wl_push_post_to_redlink($post);
     }
 
-    // Reindex the triple store.
-    wordlift_reindex_triple_store();
+    // Reindex the triple store if buffering is turned off.
+    if ( false === WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
+        wordlift_reindex_triple_store();
+    }
 }
 
 /**
