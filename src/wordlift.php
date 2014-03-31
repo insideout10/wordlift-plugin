@@ -318,10 +318,13 @@ function wl_save_entities($entities, $related_post_id = null)
     foreach ($entities as $entity) {
         $uri = $entity['uri'];
         $label = $entity['label'];
-        $type = (isset($entity['type']['class'])
-            ? $entity['type']
-            : array('class' => $entity['type'])
-        );
+
+        // This is the main type URI.
+        $main_type_uri = $entity['main_type'];
+
+        // the preferred type.
+        $type_uris = $entity['type'];
+
         $description = $entity['description'];
         $images = (isset($entity['image']) ?
             (is_array($entity['image'])
@@ -345,7 +348,7 @@ function wl_save_entities($entities, $related_post_id = null)
         }
 
         // Save the entity.
-        $post = wl_save_entity($uri, $label, $type, $description, $images, $related_post_id, $same_as, $coordinates);
+        $post = wl_save_entity($uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as, $coordinates);
 
         // Store the post in the return array if successful.
         if (null !== $post) {
@@ -360,18 +363,19 @@ function wl_save_entities($entities, $related_post_id = null)
  * Save the specified data as an entity in WordPress.
  * @param string $uri The entity URI.
  * @param string $label The entity label.
- * @param string $type The entity type (an array with 'class' and 'url' keys).
+ * @param string $type_uri The entity type URI.
  * @param string $description The entity description.
+ * @param array $entity_types An array of entity type URIs.
  * @param array $images An array of image URLs.
  * @param int $related_post_id A related post ID.
  * @param array $same_as An array of sameAs URLs.
  * @param array $coordinates An array of coordinates (with 'latitude' and 'longitude' keys).
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity($uri, $label, $type, $description, $images = array(), $related_post_id = null, $same_as = array(), $coordinates = array())
+function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array(), $coordinates = array())
 {
 
-    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
+    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]");
 
     // Check whether an entity already exists with the provided URI.
     $post = wordlift_get_entity_post_by_uri($uri);
@@ -401,10 +405,10 @@ function wl_save_entity($uri, $label, $type, $description, $images = array(), $r
         return null;
     }
 
-    // Set the type.
-    if (isset($type['class'])) {
-        wl_set_entity_types($post_id, $type['class']);
-    }
+    wl_set_entity_main_type( $post_id, $type_uri );
+
+    // Save the entity types.
+    wl_set_entity_types( $post_id, $entity_types );
 
     // Get a dataset URI for the entity.
     $wl_uri = wordlift_build_entity_uri($post_id);
@@ -424,7 +428,7 @@ function wl_save_entity($uri, $label, $type, $description, $images = array(), $r
         wl_set_coordinates( $post_id, $coordinates['latitude'], $coordinates['longitude']);
     }
 
-    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ type class :: " . (isset($type['class']) ? $type['class'] : 'not set') . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]");
+    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types ) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]");
 
     foreach ($images as $image_remote_url) {
 
@@ -1253,8 +1257,13 @@ function wl_embed_microdata( $content ) {
             $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
         }
 
-        // Get the entity types.
-        $types = implode( ' ', wl_get_entity_types( $entity_post_id, 'http://schema.org/' ) );
+        // Get the main type.
+        $main_type = wl_get_entity_main_type( $entity_post_id );
+        if ( null === $main_type ) {
+            $item_type = '';
+        } else {
+            $item_type = ' itemtype="' . esc_attr( $main_type['uri'] ) . '"';
+        }
 
         // Get the entity URL.
         $url = '<link itemprop="url" href="' . get_permalink( $entity_post_id ) . '" />';
@@ -1262,7 +1271,7 @@ function wl_embed_microdata( $content ) {
         // Replace the original tagging with the new tagging.
         $regex = "/<(\\w+)[^<]* itemid=\"$entity_uri_esc\"[^>]*>([^<]*)<\\/\\1>/i";
         $content = preg_replace( $regex,
-            '<$1 itemscope itemtype="' . $types . '" itemid="' . $entity_uri . '">'
+            '<$1 itemscope' . $item_type . ' itemid="' . $entity_uri . '">'
             . $same_as
             . $url
             . '<span itemprop="name">$2</span></$1>',

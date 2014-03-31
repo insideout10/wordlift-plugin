@@ -4,20 +4,21 @@
  * Push the post with the specified ID to Redlink.
  * @param int $post_id The post ID.
  */
-function wl_push_to_redlink( $post_id ) {
+function wl_push_to_redlink($post_id)
+{
 
     // Get the post.
-    $post = get_post( $post_id );
+    $post = get_post($post_id);
 
-    write_log( "wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
+    write_log("wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]");
 
     // Call the method on behalf of the post type.
-    switch ( $post->post_type ) {
+    switch ($post->post_type) {
         case 'entity':
-            wl_push_entity_post_to_redlink( $post );
+            wl_push_entity_post_to_redlink($post);
             break;
         default:
-            wl_push_post_to_redlink( $post );
+            wl_push_post_to_redlink($post);
     }
 
     // Reindex the triple store.
@@ -28,50 +29,51 @@ function wl_push_to_redlink( $post_id ) {
  * Push the provided post to Redlink (not suitable for entities).
  * @param object $post A post instance.
  */
-function wl_push_post_to_redlink( $post ) {
+function wl_push_post_to_redlink($post)
+{
 
     // Don't deal with entities here.
-    if ( 'entity' === $post->post_type ) {
+    if ('entity' === $post->post_type) {
         return;
     }
 
     // Get the post URI.
-    $uri = wl_get_entity_uri( $post->ID );
+    $uri = wl_get_entity_uri($post->ID);
 
-    write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
+    write_log("wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]");
 
     // Get the site language in order to define the literals language.
-    $site_language  = wordlift_configuration_site_language();
+    $site_language = wordlift_configuration_site_language();
 
     // save the author and get the author URI.
-    $author_uri     = wl_get_user_uri( $post->post_author );
+    $author_uri = wl_get_user_uri($post->post_author);
 
     // Get other post properties.
-    $date_published = wl_get_sparql_time( get_the_time('c', $post) );
-    $date_modified  = wl_get_sparql_time( wl_get_post_modified_time( $post ) );
-    $title          = wordlift_esc_sparql( $post->post_title );
-    $permalink      = wordlift_esc_sparql( get_permalink( $post->ID ) );
+    $date_published = wl_get_sparql_time(get_the_time('c', $post));
+    $date_modified = wl_get_sparql_time(wl_get_post_modified_time($post));
+    $title = wordlift_esc_sparql($post->post_title);
+    $permalink = wordlift_esc_sparql(get_permalink($post->ID));
     $user_comments_count = $post->comment_count;
 
-    write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]" );
+    write_log("wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]");
 
     // create the SPARQL query.
-    $sparql  = "<$uri> rdfs:label '$title'@$site_language . \n";
+    $sparql = "<$uri> rdfs:label '$title'@$site_language . \n";
     $sparql .= "<$uri> a <http://schema.org/BlogPosting> . \n";
     $sparql .= "<$uri> schema:url <$permalink> . \n";
     $sparql .= "<$uri> schema:datePublished $date_published . \n";
     $sparql .= "<$uri> schema:dateModified $date_modified . \n";
-    if ( !empty( $author_uri ) ) {
+    if (!empty($author_uri)) {
         $sparql .= "<$uri> schema:author <$author_uri> . \n";
     }
     $sparql .= "<$uri> schema:interactionCount 'UserComments:$user_comments_count' . \n";
 
 
     // Add SPARQL stmts to write the schema:image.
-    $sparql .= wl_get_sparql_images( $uri, $post->ID );
+    $sparql .= wl_get_sparql_images($uri, $post->ID);
 
     // Get the SPARQL fragment with the dcterms:references statement.
-    $sparql .= wl_get_sparql_post_references( $post->ID );
+    $sparql .= wl_get_sparql_post_references($post->ID);
 
     // create the query:
     //  - remove existing references to entities.
@@ -104,10 +106,11 @@ EOF;
  * Push the provided entity post to Redlink.
  * @param object $entity_post An entity post instance.
  */
-function wl_push_entity_post_to_redlink( $entity_post ) {
+function wl_push_entity_post_to_redlink($entity_post)
+{
 
     // Deal only with entity posts.
-    if ( 'entity' !== $entity_post->post_type ) {
+    if ('entity' !== $entity_post->post_type) {
         return;
     }
 
@@ -115,52 +118,50 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     $site_language = wordlift_configuration_site_language();
 
     // get the title and content as label and description.
-    $label   = wordlift_esc_sparql( $entity_post->post_title );
-    $descr   = wordlift_esc_sparql( $entity_post->post_content );
-    $permalink = wordlift_esc_sparql( get_permalink( $entity_post->ID ) );
+    $label = wordlift_esc_sparql($entity_post->post_title);
+    $descr = wordlift_esc_sparql($entity_post->post_content);
+    $permalink = wordlift_esc_sparql(get_permalink($entity_post->ID));
 
     // get the entity URI.
-    $uri     = wl_get_entity_uri( $entity_post->ID );
+    $uri = wl_get_entity_uri($entity_post->ID);
 
-    write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
+    write_log("wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]");
 
     // create a new empty statement.
-    $sparql  = '';
+    $sparql = '';
 
     // set the same as.
-    $same_as = wl_get_same_as( $entity_post->ID );
-    foreach ( $same_as as $same_as_uri ) {
-        $same_as_uri_esc = wordlift_esc_sparql( $same_as_uri );
-        $sparql  .= "<$uri> owl:sameAs <$same_as_uri_esc> . \n";
+    $same_as = wl_get_same_as($entity_post->ID);
+    foreach ($same_as as $same_as_uri) {
+        $same_as_uri_esc = wordlift_esc_sparql($same_as_uri);
+        $sparql .= "<$uri> owl:sameAs <$same_as_uri_esc> . \n";
     }
 
     // set the label
-    $sparql  .= "<$uri> rdfs:label \"$label\"@$site_language . \n";
+    $sparql .= "<$uri> rdfs:label \"$label\"@$site_language . \n";
     // set the URL
-    $sparql  .= "<$uri> schema:url <$permalink> . \n";
+    $sparql .= "<$uri> schema:url <$permalink> . \n";
 
     // set the description.
     if (!empty($descr)) {
-        $sparql  .= "<$uri> schema:description \"$descr\"@$site_language . \n";
+        $sparql .= "<$uri> schema:description \"$descr\"@$site_language . \n";
     }
 
     // Get the entity types.
-    $types   = wl_get_entity_types( $entity_post->ID );
+    $type_uris = wl_get_entity_types($entity_post->ID);
 
     // Support type are only schema.org ones: it could by null
-    foreach ($types as $type) {
-        // Capitalize the first letter.
-        // TODO: we shouldn't do this here, we should take the 'original' type.
-        $type = ucwords( $type->name );
-        $sparql .= "<$uri> a <http://schema.org/$type> . \n";
+    foreach ($type_uris as $type_uri) {
+        $type_uri = esc_attr($type_uri);
+        $sparql .= "<$uri> a <$type_uri> . \n";
     }
 
     // get related entities.
-    $related_entities_ids = wl_get_related_entities( $entity_post->ID );
+    $related_entities_ids = wl_get_related_entities($entity_post->ID);
 
-    if ( is_array( $related_entities_ids ) ) {
-        foreach ( $related_entities_ids as $entity_post_id ) {
-            $related_entity_uri = wordlift_esc_sparql( wl_get_entity_uri( $entity_post_id ) );
+    if (is_array($related_entities_ids)) {
+        foreach ($related_entities_ids as $entity_post_id) {
+            $related_entity_uri = wordlift_esc_sparql(wl_get_entity_uri($entity_post_id));
             // create a two-way relationship.
             $sparql .= " <$uri> dct:relation <$related_entity_uri> . \n";
             $sparql .= " <$related_entity_uri> dct:relation <$uri> . \n";
@@ -168,17 +169,17 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     }
 
     // Get the coordinates related to the post and save them to the triple store.
-    $coordinates = wl_get_coordinates( $entity_post->ID );
-    if ( is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude']) ) {
-        $latitude = wordlift_esc_sparql( $coordinates['latitude'] );
-        $longitude = wordlift_esc_sparql( $coordinates['longitude'] );
+    $coordinates = wl_get_coordinates($entity_post->ID);
+    if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
+        $latitude = wordlift_esc_sparql($coordinates['latitude']);
+        $longitude = wordlift_esc_sparql($coordinates['longitude']);
 
         $sparql .= " <$uri> geo:lat '$latitude'^^xsd:double . \n";
         $sparql .= " <$uri> geo:long '$longitude'^^xsd:double . \n";
     }
 
     // Add SPARQL stmts to write the schema:image.
-    $sparql .= wl_get_sparql_images( $uri, $entity_post->ID );
+    $sparql .= wl_get_sparql_images($uri, $entity_post->ID);
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
     DELETE { <$uri> rdfs:label ?o } WHERE  { <$uri> rdfs:label ?o };
@@ -200,53 +201,59 @@ EOF;
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  * @param int $post_id The post id being saved.
  */
-function wordlift_save_post_and_related_entities( $post_id ) {
+function wordlift_save_post_and_related_entities($post_id)
+{
 
     // Ignore auto-saves
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
         return;
     }
 
     // get the current post.
-    $post       = get_post( $post_id );
+    $post = get_post($post_id);
 
     // Don't process auto-drafts.
-    if ( 'auto-draft' === $post->post_status ) {
-        write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ auto-draft :: yes ]" );
+    if ('auto-draft' === $post->post_status) {
+        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ auto-draft :: yes ]");
         return;
     }
 
     // Delete trashed posts/entities from Redlink.
-    if ( 'trash' === $post->post_status ) {
-        write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]" );
+    if ('trash' === $post->post_status) {
+        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]");
 
         // TODO: remove related posts and entities.
 
         // Delete the post from Redlink.
-        rl_delete_post( $post_id );
+        rl_delete_post($post_id);
         return;
     }
 
     remove_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 
-    write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
+    write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]");
 
     // Save the entities coming with POST data.
-    if ( isset( $_POST['wl_entities'] ) ) {
-        $entities_via_post = array_values( $_POST['wl_entities'] );
+    if (isset($_POST['wl_entities'])) {
 
-        write_log( "wordlift_save_post_and_related_entities [ entities_via_post :: " );
-        write_log( $entities_via_post );
+        write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ POST(wl_entities) :: ");
+        write_log( var_export( $_POST['wl_entities'], true ) );
         write_log( "]" );
 
-        wl_save_entities( $entities_via_post, $post_id );
+        $entities_via_post = array_values($_POST['wl_entities']);
+
+        write_log("wordlift_save_post_and_related_entities [ entities_via_post :: ");
+        write_log($entities_via_post);
+        write_log("]");
+
+        wl_save_entities($entities_via_post, $post_id);
     }
 
     // Save entities coming as embedded in the text.
-    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
+//    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Push the post to Redlink.
-    wl_push_to_redlink( $post->ID );
+    wl_push_to_redlink($post->ID);
 
     add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 }
@@ -256,78 +263,80 @@ function wordlift_save_post_and_related_entities( $post_id ) {
  * @param int $post_id The post ID.
  * @return string The SPARQL fragment (or an empty string).
  */
-function wl_get_sparql_post_references( $post_id ) {
+function wl_get_sparql_post_references($post_id)
+{
 
     // Get the post URI.
-    $post_uri = wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
+    $post_uri = wordlift_esc_sparql(wl_get_entity_uri($post_id));
 
     // Get the related entities IDs.
-    $related = wl_get_related_entities( $post_id );
+    $related = wl_get_related_entities($post_id);
 
     // Build the SPARQL fragment.
     $sparql = '';
-    foreach ( $related as $id ) {
-        $uri = wordlift_esc_sparql( wl_get_entity_uri( $id ) );
+    foreach ($related as $id) {
+        $uri = wordlift_esc_sparql(wl_get_entity_uri($id));
         $sparql .= "<$post_uri> dcterms:references <$uri> . ";
     }
 
     return $sparql;
 }
 
-/**
- * Save entities embedded in the content as spans.
- * @param string $content      The content.
- * @param int $related_post_id The post that references (or relates) to these entities.
- * @return array An array with the saved post IDs.
- */
-function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = null ) {
-
-    // Save the post ids.
-    $post_ids = array();
-
-    // Initialize the matches array.
-    $matches  = array();
-
-    // Create the pattern.
-    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)"><span itemprop="name">([^<]+)<\/span><\/span>/im';
-
-    // Look for the spans and the embedded data.
-    if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
-        for ( $i = 0; $i < $count; $i++ ) {
-            $uri   = $matches[1][$i];
-            $type  = wl_get_entity_type( $matches[2][$i] );
-            $label = $matches[3][$i];
-
-            write_log( "wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: " . $type['class'] . " ][ label :: $label ]" );
-
-            // Save the entity in the local storage.
-            $post  = wl_save_entity( $uri, $label, $type, '', array(), $related_post_id );
-            if ( !in_array( $post->ID, $post_ids ) ) {
-                array_push( $post_ids, $post->ID );
-            }
-        }
-    }
-
-    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]" );
-
-    return $post_ids;
-}
+///**
+// * Save entities embedded in the content as spans.
+// * @param string $content      The content.
+// * @param int $related_post_id The post that references (or relates) to these entities.
+// * @return array An array with the saved post IDs.
+// */
+//function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = null ) {
+//
+//    // Save the post ids.
+//    $post_ids = array();
+//
+//    // Initialize the matches array.
+//    $matches  = array();
+//
+//    // Create the pattern.
+//    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)"><span itemprop="name">([^<]+)<\/span><\/span>/im';
+//
+//    // Look for the spans and the embedded data.
+//    if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
+//        for ( $i = 0; $i < $count; $i++ ) {
+//            $uri   = $matches[1][$i];
+//            $type  = wl_get_entity_type( $matches[2][$i] );
+//            $label = $matches[3][$i];
+//
+//            write_log( "wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: " . $type['class'] . " ][ label :: $label ]" );
+//
+//            // Save the entity in the local storage.
+//            $post  = wl_save_entity( $uri, $label, $type, '', array(), $related_post_id );
+//            if ( !in_array( $post->ID, $post_ids ) ) {
+//                array_push( $post_ids, $post->ID );
+//            }
+//        }
+//    }
+//
+//    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]" );
+//
+//    return $post_ids;
+//}
 
 /**
  * Create an URI on the custom dataset based on an existing URI.
  * @param string $uri
  * @return string The dataset URI.
  */
-function wordlift_get_custom_dataset_entity_uri( $uri ) {
+function wordlift_get_custom_dataset_entity_uri($uri)
+{
 
     // TODO: check for naming collision.
 
     // read the user id and dataset name from the options.
-    $user_id    = wordlift_configuration_user_id();
+    $user_id = wordlift_configuration_user_id();
     $dataset_id = wordlift_configuration_dataset_id();
 
-    $fragments  = explode('/', $uri);
-    $name       = end($fragments);
+    $fragments = explode('/', $uri);
+    $name = end($fragments);
 
     // set the post URI in the triple store.
     return "http://data.redlink.io/$user_id/$dataset_id/resource/$name";
@@ -338,22 +347,23 @@ function wordlift_get_custom_dataset_entity_uri( $uri ) {
  * @param string $uri The entity URI.
  * @return array mixed An array of posts.
  */
-function wordlift_get_entity_post_by_uri( $uri ) {
+function wordlift_get_entity_post_by_uri($uri)
+{
 
-    $query = new WP_Query( array(
+    $query = new WP_Query(array(
             'posts_per_page' => 1,
             'post_status' => 'any',
-            'post_type'   => 'entity',
-            'meta_query'  => array(
+            'post_type' => 'entity',
+            'meta_query' => array(
                 'relation' => 'OR',
                 array(
-                    'key'     => 'entity_same_as',
-                    'value'   => $uri,
+                    'key' => 'entity_same_as',
+                    'value' => $uri,
                     'compare' => '='
                 ),
                 array(
-                    'key'     => 'entity_url',
-                    'value'   => $uri,
+                    'key' => 'entity_url',
+                    'value' => $uri,
                     'compare' => '='
                 )
             )
@@ -363,10 +373,10 @@ function wordlift_get_entity_post_by_uri( $uri ) {
     // Get the matching entity posts.
     $posts = $query->get_posts();
 
-    write_log( "wordlift_get_entity_posts_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
+    write_log("wordlift_get_entity_posts_by_uri [ uri :: $uri ][ count :: " . count($posts) . " ]\n");
 
     // Return null if no post is found.
-    if ( 0 === count( $posts ) ) {
+    if (0 === count($posts)) {
         return null;
     }
 
@@ -378,11 +388,13 @@ function wordlift_get_entity_post_by_uri( $uri ) {
  * Receive events from post saves, and split them according to the post type.
  * @param int $post_id The post id.
  */
-function wordlift_save_post( $post_id ) {
+function wordlift_save_post($post_id)
+{
 
     // If it's not numeric exit from here.
-    if ( !is_numeric( $post_id )
-        || is_numeric( wp_is_post_revision( $post_id ) ) ) {
+    if (!is_numeric($post_id)
+        || is_numeric(wp_is_post_revision($post_id))
+    ) {
         return;
     }
 
@@ -390,7 +402,7 @@ function wordlift_save_post( $post_id ) {
     remove_action('save_post', 'wordlift_save_post');
 
     // raise the *wordlift_save_post* event.
-    do_action( 'wordlift_save_post', $post_id );
+    do_action('wordlift_save_post', $post_id);
 
     // re-hook this function
     add_action('save_post', 'wordlift_save_post');
@@ -401,19 +413,20 @@ function wordlift_save_post( $post_id ) {
  * @param int $post_id The post ID.
  * @return string The URI of the entity.
  */
-function wordlift_build_entity_uri( $post_id ) {
+function wordlift_build_entity_uri($post_id)
+{
 
     // Get the post.
-    $post = get_post( $post_id );
-    if ( null === $post ) {
-        write_log( "wordlift_build_entity_uri : error [ post id :: $post_id ][ post :: null ]" );
+    $post = get_post($post_id);
+    if (null === $post) {
+        write_log("wordlift_build_entity_uri : error [ post id :: $post_id ][ post :: null ]");
         return;
     }
 
     $type = $post->post_type;
 
     // Create an ID given the title.
-    $id  = wl_sanitize_uri_path( $post->post_title );
+    $id = wl_sanitize_uri_path($post->post_title);
 
     // Build the entity URI.
     $url = sprintf(
@@ -424,7 +437,7 @@ function wordlift_build_entity_uri( $post_id ) {
         $id
     );
 
-    write_log( "wordlift_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
+    write_log("wordlift_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
 
     return $url;
 }
@@ -433,7 +446,8 @@ function wordlift_build_entity_uri( $post_id ) {
  * Get a string representing the NS prefixes for a SPARQL query.
  * @return string The PREFIX lines.
  */
-function wordlift_get_ns_prefixes() {
+function wordlift_get_ns_prefixes()
+{
 
     return <<<EOF
 PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
@@ -452,7 +466,8 @@ EOF;
  * @param string $string The string to escape.
  * @return string The escaped string.
  */
-function wordlift_esc_sparql($string) {
+function wordlift_esc_sparql($string)
+{
     // see http://www.w3.org/TR/rdf-sparql-query/
     //    '\t'	U+0009 (tab)
     //    '\n'	U+000A (line feed)
@@ -478,22 +493,23 @@ function wordlift_esc_sparql($string) {
 /**
  * Reindex Redlink triple store, enabling local entities to be found in future analyses.
  */
-function wordlift_reindex_triple_store() {
+function wordlift_reindex_triple_store()
+{
 
     // Get the reindex URL.
-    $url      = wordlift_redlink_reindex_url();
+    $url = wordlift_redlink_reindex_url();
 
     // Post the request.
-    write_log( "wordlift_reindex_triple_store" );
+    write_log("wordlift_reindex_triple_store");
 
     // Prepare the request.
-    $args     = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
-        'method'  => 'GET',
+    $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
+        'method' => 'GET',
         'headers' => array(),
-        'body'    => ''
+        'body' => ''
     ));
 
-    $response = wp_remote_get( $url, $args );
+    $response = wp_remote_get($url, $args);
 
     // Remove the key from the query.
     $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);

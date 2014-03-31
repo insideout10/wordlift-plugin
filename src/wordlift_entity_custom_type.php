@@ -91,10 +91,15 @@ function wordlift_entity_box_content($post)
     echo '<label for="entity_url">' . __('entity-url-label', 'wordlift') . '</label>';
     echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr($value) . '" style="width: 100%;" />';
 
-    $same_as = join("\n", wl_get_same_as($post->ID));
+    $same_as = implode("\n", wl_get_same_as($post->ID));
 
     echo '<label for="entity_same_as">' . __('entity-same-as-label', 'wordlift') . '</label>';
     echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr($same_as) . '</textarea>';
+
+    $entity_types = implode("\n", wl_get_entity_types($post->ID));
+
+    echo '<label for="entity_types">' . __('entity-types-label', 'wordlift') . '</label>';
+    echo '<textarea style="width: 100%;" id="entity_types" name="entity_types" placeholder="Entity Types URIs">' . esc_attr($entity_types) . '</textarea>';
 }
 
 /**
@@ -132,51 +137,93 @@ function wordlift_save_entity_custom_fields($post_id)
     }
 
     // save the entity URL.
-    $entity_url = $_POST['entity_url'];
-    wl_set_entity_uri($post_id, $entity_url);
+    wl_set_entity_uri(
+        $post_id,
+        $_POST['entity_url']
+    );
 
     // save the same as values.
-    $entity_same_as = explode("\r\n", $_POST['entity_same_as']);
-    wl_set_same_as($post_id, $entity_same_as);
+    wl_set_same_as(
+        $post_id,
+        explode("\r\n", $_POST['entity_same_as'])
+    );
+
+    // save the same as values.
+    wl_set_entity_types(
+        $post_id,
+        explode("\r\n", $_POST['entity_types'])
+    );
 
 }
 
 /**
- * Get the entity types associated to the specified post.
+ * Get the entity type URIs associated to the specified post.
  *
  * @since 3.0.0
  *
- * @uses wp_get_post_terms()
- *
  * @param int $post_id The post ID.
- * @param string $prefix Add a prefix to the types.
  * @return array An array of terms.
  */
-function wl_get_entity_types($post_id, $prefix = '')
+function wl_get_entity_types($post_id)
 {
 
-    $types = wp_get_post_terms($post_id, 'wl_entity_type');
+//    $types = wp_get_post_terms($post_id, 'wl_entity_type');
+//
+//    if (!empty($prefix)) {
+//        array_walk($types, function (&$item) use ($prefix) {
+//            $item = $prefix . $item->name;
+//        });
+//    }
+//
+//    return $types;
 
-    if (!empty($prefix)) {
-        array_walk($types, function (&$item) use ($prefix) {
-            $item = $prefix . $item->name;
-        });
-    }
-
-    return $types;
+    return get_post_meta($post_id, 'wl_entity_type_uri');
 }
 
 /**
  * Set the types for the entity with the specified post ID.
  * @param int $post_id The entity post ID.
- * @param array|string $types A type or an array of types.
+ * @param array $type_uris An array of type URIs.
  */
-function wl_set_entity_types($post_id, $types)
+function wl_set_entity_types($post_id, $type_uris = array())
 {
 
-    wp_set_object_terms($post_id, $types, 'wl_entity_type');
+    write_log( "wl_set_entity_types [ post id :: $post_id ][ type uris :: " . var_export( $type_uris, true ) . " ]");
+
+//    wp_set_object_terms($post_id, $types, 'wl_entity_type');
+    delete_post_meta($post_id, 'wl_entity_type_uri');
+
+    foreach ($type_uris as $type_uri) {
+        if (empty($type_uri)) {
+            continue;
+        }
+        add_post_meta($post_id, 'wl_entity_type_uri', $type_uri);
+    }
 }
 
+/**
+ * Get the entity main type for the specified post ID.
+ * @param int $post_id The post ID.
+ * @return array|null An array of type properties or null if no term is associated.
+ */
+function wl_get_entity_main_type( $post_id ) {
+    $terms = wp_get_object_terms( $post_id, 'wl_entity_type', array(
+        'fields' => 'ids'
+    ) );
+
+    if ( is_wp_error($terms) ) {
+        // TODO: handle error
+        return null;
+    }
+
+    // If there are not terms associated, return null.
+    if ( 0 === count( $terms ) ) {
+        return null;
+    }
+
+    // Return the entity type with the specified id.
+    return wl_load_entity_type($terms[0]);
+}
 
 // Add term page
 function wl_entity_type_add_term_fields()
@@ -233,7 +280,7 @@ function wl_entity_type_edit_term_fields($term)
     $entity_type = wl_load_entity_type($t_id);
     $css_class = esc_attr($entity_type['css_class']);
     $uri = esc_attr($entity_type['uri']);
-    $same_as = (is_array($entity_type['same_as']) ? esc_attr( implode("\n", $entity_type['same_as']) ) : '');
+    $same_as = (is_array($entity_type['same_as']) ? esc_attr(implode("\n", $entity_type['same_as'])) : '');
 
     // retrieve the existing value(s) for this meta field. This returns an array
     ?>
@@ -312,6 +359,40 @@ function wl_update_entity_type($term_id, $css_class, $uri, $same_as = array())
 }
 
 /**
+ * Set the main type for the entity using the related taxonomy.
+ * @param int $post_id The numeric post ID.
+ * @param string $type_uri A type URI.
+ */
+function wl_set_entity_main_type( $post_id, $type_uri ) {
+
+    write_log( "wl_set_entity_main_type [ post id :: $post_id ][ type uri :: $type_uri ]" );
+
+    // If the type URI is empty we remove the type.
+    if ( empty($type_uri) ) {
+        wp_set_object_terms( $post_id, null, 'wl_entity_type');
+        return;
+    }
+
+    // Get all the terms bound to the wl_entity_type taxonomy.
+    $terms = get_terms('wl_entity_type', array(
+        'hide_empty' => false,
+        'fields' => 'ids'
+    ));
+
+    // Check which term matches the specified URI.
+    foreach ( $terms as $term_id ) {
+        // Load the type data.
+        $type = wl_load_entity_type($term_id);
+
+        // Set the related term ID.
+        if ($type_uri === $type['uri']) {
+            wp_set_object_terms( $post_id, (int)$term_id, 'wl_entity_type');
+            return;
+        }
+    }
+}
+
+/**
  * Get the data for the specified entity type (term id).
  * @param int $term_id A numeric term ID.
  * @return mixed|void The entity type data.
@@ -325,12 +406,13 @@ function wl_load_entity_type($term_id)
 /**
  * Prints inline JavaScript with the entity types configuration.
  */
-function wl_print_entity_type_inline_js() {
+function wl_print_entity_type_inline_js()
+{
 
-    $terms = get_terms( 'wl_entity_type', array(
+    $terms = get_terms('wl_entity_type', array(
         'hide_empty' => false,
-        'fields'     => 'ids'
-    ) );
+        'fields' => 'ids'
+    ));
 
     echo <<<EOF
     <script type="text/javascript">
@@ -342,17 +424,17 @@ EOF;
     // Cycle in terms and print them out to the JS.
     foreach ($terms as $term_id) {
         // Load the type data.
-        $type = wl_load_entity_type( $term_id );
+        $type = wl_load_entity_type($term_id);
 
         // Skip types that are not defined.
-        if ( null === $type['uri'] ) {
+        if (null === $type['uri']) {
             continue;
         }
 
         // Assign the data to vars for printing to the JS.
-        $uri = json_encode( $type['uri'] );
-        $css_class = json_encode( $type['css_class'] );
-        $same_as = json_encode( $type['same_as'] );
+        $uri = json_encode($type['uri']);
+        $css_class = json_encode($type['css_class']);
+        $same_as = json_encode($type['same_as']);
 
         echo <<<EOF
             t.push({
@@ -407,7 +489,8 @@ EOF;
     echo '</style>';
 
 }
-add_action( 'admin_print_scripts', 'wl_print_entity_type_inline_js' );
+
+add_action('admin_print_scripts', 'wl_print_entity_type_inline_js');
 
 add_action('init', 'wordlift_register_custom_type_entity');
 add_action('init', 'wordlift_taxonomies_entity', 0);
