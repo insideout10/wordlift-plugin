@@ -190,9 +190,10 @@ function wl_set_entity_types($post_id, $type_uris = array())
 
     write_log( "wl_set_entity_types [ post id :: $post_id ][ type uris :: " . var_export( $type_uris, true ) . " ]");
 
-//    wp_set_object_terms($post_id, $types, 'wl_entity_type');
-    delete_post_meta($post_id, 'wl_entity_type_uri');
+    // Ensure there are no duplicates.
+    $type_uris = array_unique( $type_uris );
 
+    delete_post_meta($post_id, 'wl_entity_type_uri');
     foreach ($type_uris as $type_uri) {
         if (empty($type_uri)) {
             continue;

@@ -773,7 +773,7 @@ function wl_set_same_as($post_id, $same_as)
 {
 
     // Prepare the same as array.
-    $same_as_array = (is_array($same_as) ? $same_as : array($same_as));
+    $same_as_array = array_unique( is_array($same_as) ? $same_as : array($same_as) );
 
     write_log("wl_set_same_as [ post id :: $post_id ][ same as :: " . join(',', $same_as_array) . " ]");
 
