@@ -38,13 +38,13 @@ class EntityImagesTest extends WP_UnitTestCase
 
         $uri         = 'http://example.org/entity';
         $label       = 'Entity';
-        $type        = 'thing';
+        $type        = 'http://schema.org/Thing';
         $description = 'An example entity.';
         $images      = array(
             'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
         );
         $same_as     = array();
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, null, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 
         // Get all the attachments for the entity post.
         $attachments = wl_get_attachments( $entity_post->ID );
@@ -65,7 +65,7 @@ class EntityImagesTest extends WP_UnitTestCase
 
         $uri         = 'http://example.org/entity';
         $label       = 'Entity';
-        $type        = 'thing';
+        $type        = 'http://schema.org/Thing';
         $description = 'An example entity.';
         $images      = array(
             'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
@@ -74,7 +74,7 @@ class EntityImagesTest extends WP_UnitTestCase
         );
         $same_as     = array();
 
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, null, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 
         // Get all the attachments for the entity post.
         $attachments = wl_get_attachments( $entity_post->ID );
@@ -93,7 +93,7 @@ class EntityImagesTest extends WP_UnitTestCase
 
         $uri         = 'http://example.org/entity';
         $label       = 'Entity';
-        $type        = 'thing';
+        $type        = 'http://schema.org/Thing';
         $description = 'An example entity.';
         $images      = array(
             'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
@@ -103,7 +103,7 @@ class EntityImagesTest extends WP_UnitTestCase
         );
         $same_as     = array();
 
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, null, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 
         // Get all the attachments for the entity post.
         $attachments = wl_get_attachments( $entity_post->ID );

@@ -149,13 +149,19 @@ function wl_push_entity_post_to_redlink($entity_post)
         $sparql .= "<$uri> schema:description \"$descr\"@$site_language . \n";
     }
 
+    $main_type = wl_get_entity_main_type( $entity_post->ID );
+    if ( null != $main_type ) {
+        $main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
+        $sparql .= " <$uri> a <$main_type_uri> . \n";
+    }
+
     // Get the entity types.
     $type_uris = wl_get_entity_types($entity_post->ID);
 
     // Support type are only schema.org ones: it could by null
     foreach ($type_uris as $type_uri) {
         $type_uri = esc_attr($type_uri);
-        $sparql .= "<$uri> a <$type_uri> . \n";
+        $sparql .=  "<$uri> a <$type_uri> . \n";
     }
 
     // get related entities.

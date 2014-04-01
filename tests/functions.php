@@ -614,6 +614,8 @@ function wl_get_attachments( $post_id ) {
  */
 function wl_configure_wordpress_test() {
 
+    do_action('activate_wordlift/wordlift.php');
+
     // Set the dataset name according to environment vars.
     $dataset_name = str_replace('.', '-',
         sprintf(

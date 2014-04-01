@@ -48,9 +48,7 @@ class EntityTest extends WP_UnitTestCase
 
         $uri         = 'http://dbpedia.org/resource/Tim_Berners-Lee';
         $label       = 'Tim Berners-Lee';
-        $type        = array(
-            'class' => 'person'
-        );
+        $type        = 'http://schema.org/Person';
         $description = file_get_contents( dirname(__FILE__) . '/assets/tim_berners-lee.txt' );
         $images      = array(
             'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
@@ -161,24 +159,24 @@ class EntityTest extends WP_UnitTestCase
             'http://vo.dbpedia.org/resource/Tim_Berners-Lee',
             'http://zh_min_nan.dbpedia.org/resource/Tim_Berners-Lee'
         );
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, null, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 
         $this->assertNotNull( $entity_post );
 
         // Check that creating a post for the same entity does create a duplicate post.
-        $entity_post_2 = wl_save_entity( $uri, $label, $type, $description, $images, null, $same_as );
+        $entity_post_2 = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
         $this->assertEquals( $entity_post->ID, $entity_post_2->ID );
 
         foreach ( $same_as as $same_as_uri ) {
             // Check that creating a post for the same entity does create a duplicate post.
-            $same_as_entity_post = wl_save_entity( $same_as_uri, $label, $type, $description, $images, null, $same_as );
+            $same_as_entity_post = wl_save_entity( $same_as_uri, $label, $type, $description, array(), $images, null, $same_as );
             $this->assertEquals( $entity_post->ID, $same_as_entity_post->ID );
         }
 
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );
-        $this->assertEquals( 1, count( $types ) );
-        $this->assertEquals( 'person', $types[0]->slug );
+        $this->assertEquals( 0, count( $types ) );
+//        $this->assertEquals( $type, wl_get_entity_main_type( $entity_post->ID ) );
 
         // Create related resources.
         $world_wide_web_id = $this->create_World_Wide_Web_Foundation( $entity_post->ID );
@@ -195,23 +193,21 @@ class EntityTest extends WP_UnitTestCase
 
         $uri         = 'http://data.redlink.io/353/wordlift-tests-php-5-4-wp-3-8-ms-0/entity/World_Wide_Web_Foundation';
         $label       = 'World Wide Web Foundation';
-        $type        = array(
-            'class' => 'organization'
-        );
+        $type        = 'http://schema.org/Organization';
         $description = file_get_contents( dirname(__FILE__) . '/assets/world_wide_web_foundation.txt' );
         $images      = array();
         $same_as     = array();
 //            'http://rdf.freebase.com/ns/m.04myd3k',
 //            'http://yago-knowledge.org/resource/World_Wide_Web_Foundation'
 //        );
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
 
         $this->assertNotNull( $entity_post );
 
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );
-        $this->assertEquals( 1, count( $types ) );
-        $this->assertEquals( 'organization', $types[0]->slug );
+        $this->assertEquals( 0, count( $types ) );
+//        $this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
         $related_entities = wl_get_related_entities( $entity_post->ID );
@@ -225,20 +221,18 @@ class EntityTest extends WP_UnitTestCase
 
         $uri         = 'http://dbpedia.org/resource/MIT_Center_for_Collective_Intelligence';
         $label       = 'MIT Center for Collective Intelligence';
-        $type        = array(
-            'class' => 'organization'
-        );
+        $type        = 'http://schema.org/Organization';
         $description = file_get_contents( dirname(__FILE__) . '/assets/mit_center_for_cognitive_intelligence.txt' );
         $images      = array();
         $same_as     = array(
             'http://rdf.freebase.com/ns/m.04n2n64'
         );
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, $images, $related_post_id, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
 
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );
-        $this->assertEquals( 1, count( $types ) );
-        $this->assertEquals( 'organization', $types[0]->slug );
+        $this->assertEquals( 0, count( $types ) );
+//        $this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
         $related_entities = wl_get_related_entities( $entity_post->ID );
