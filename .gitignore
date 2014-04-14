@@ -9,3 +9,6 @@ wp-tests/
 *~
 run-tests.sh
 wp-tests/wordpress/wp-content/uploads
+composer.phar
+composer.lock
+vendor/
