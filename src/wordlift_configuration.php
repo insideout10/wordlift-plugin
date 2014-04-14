@@ -55,7 +55,7 @@ function wordlift_configuration_analysis_name()
     // get the plugin options.
     $wordlift_options = get_option(WORDLIFT_OPTIONS);
 
-    return $wordlift_options['analysis_name'];
+    return ( isset( $wordlift_options['analysis_name'] ) ? $wordlift_options['analysis_name'] : '' );
 }
 
 

@@ -9,6 +9,12 @@ The official WordLift Web Site: [wordlift.it](http://wordlift.it)
 
 ## Development
 
+bash bin/install-wp-tests.sh wordpress_test root '' localhost 3.8
+
+### About GIT
+
+http://git-scm.com/book
+
 ### Versioning
 
 We use [Semantic Versioning](http://semver.org/). We add the *SNAPSHOT* suffix to releases that are not yet usable.
