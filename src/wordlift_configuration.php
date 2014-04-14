@@ -52,8 +52,10 @@ function wordlift_configuration_dataset_id()
 function wordlift_configuration_analysis_name()
 {
 
-    // TODO: change this as a parameter.
-    return 'wordlift';
+    // get the plugin options.
+    $wordlift_options = get_option(WORDLIFT_OPTIONS);
+
+    return $wordlift_options['analysis_name'];
 }
 
 
@@ -329,6 +331,8 @@ function wordlift_configuration_register_settings()
         $section_page, $section_id);
     add_settings_field('dataset_name', __('dataset-name', 'wordlift'), 'wordlift_dataset_name_input_box',
         $section_page, $section_id);
+    add_settings_field('analysis_name', __('analysis-name', 'wordlift'), 'wordlift_analysis_name_input_box',
+        $section_page, $section_id);
     add_settings_field('site_language', __('site-language', 'wordlift'), 'wordlift_site_language_input_box',
         $section_page, $section_id);
 }
@@ -372,6 +376,17 @@ function wordlift_dataset_name_input_box()
     // get the existing setting.
     $wordlift_options = get_option(WORDLIFT_OPTIONS);
     echo "<input id='dataset_name' name='wordlift_options[dataset_name]' size='40' type='text' value='{$wordlift_options['dataset_name']}' />";
+}
+
+/**
+ * Displays the analysis name input box.
+ */
+function wordlift_analysis_name_input_box()
+{
+
+    // get the existing setting.
+    $wordlift_options = get_option(WORDLIFT_OPTIONS);
+    echo "<input id='analysis_name' name='wordlift_options[analysis_name]' size='40' type='text' value='{$wordlift_options['analysis_name']}' />";
 }
 
 /**

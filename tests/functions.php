@@ -632,7 +632,8 @@ function wl_configure_wordpress_test() {
     update_option( WORDLIFT_OPTIONS, array(
         'application_key' => getenv('REDLINK_APP_KEY'),
         'user_id'         => getenv('REDLINK_USER_ID'),
-        'dataset_name'    => $dataset_name
+        'dataset_name'    => $dataset_name,
+        'analysis_name'   => 'wordlift'
     ) );
 }
 
