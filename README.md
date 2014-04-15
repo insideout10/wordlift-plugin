@@ -56,7 +56,7 @@ define('WORDLIFT_DEVELOPMENT', '');
 
 ### Enable WordPress debug mode
 
-Edit the `wp-config.php` file of your WordPress instance and set the debug mode. We use to write the log to the `wp-content/debug.log` file (see (Example wp-config.php for Debugging)[https://codex.wordpress.org/Debugging_in_WordPress#Example_wp-config.php_for_Debugging]):
+Edit the `wp-config.php` file of your WordPress instance and set the debug mode. We use to write the log to the `wp-content/debug.log` file - see (Example wp-config.php for Debugging)[https://codex.wordpress.org/Debugging_in_WordPress#Example_wp-config.php_for_Debugging]:
 ```php
 // Enable WP_DEBUG mode
 define('WP_DEBUG', true);
