@@ -10,7 +10,6 @@ function wordlift_mce_css( $mce_css ) {
         $mce_css .= ',';
 
     $mce_css .= plugins_url('css/wordlift.css', __FILE__ );
-    // wordlift_get_url('/css/wordlift-editor.min.css');
 
     return $mce_css;
 }

@@ -88,23 +88,6 @@ function wl_execute_saved_sparql_update_query($request_id)
 add_action('wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1);
 
 /**
- * Get the URL of the specified physical file.
- * @param string $file The path to the file from the plugin root folder.
- * @return string The URL to the file.
- */
-function wordlift_get_url($file)
-{
-
-    // if WordLift is set into development mode, then provide a static URL, as development is done with symbolic link.
-    if (defined('WORDLIFT_DEVELOPMENT')) {
-        return '/wp-content/plugins/wordlift' . $file;
-    }
-
-    // use standard WP methods in production mode.
-    return plugins_url($file, __FILE__);
-}
-
-/**
  * Add buttons hook for the TinyMCE editor. This method is called by the WP init hook.
  */
 function wordlift_buttonhooks()
@@ -234,7 +217,7 @@ function wordlift_admin_enqueue_scripts()
     wp_enqueue_style('wordlift_css');
 
     wp_enqueue_script('jquery-ui-autocomplete');
-    wp_enqueue_script('angularjs', wordlift_get_url('/bower_components/angular/angular.min.js'));
+    wp_enqueue_script('angularjs', plugins_url('/bower_components/angular/angular.min.js'));
 
 }
 

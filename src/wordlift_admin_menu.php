@@ -22,7 +22,7 @@ function wordlift_admin_menu_entities() {
         'manage_options',
         'wordlift-admin-entities',
         'wordlift_admin_entities_page',
-        null, // wordlift_get_url('/images/blocks-20x20.png'),
+        null,
         $position
     );
 }
