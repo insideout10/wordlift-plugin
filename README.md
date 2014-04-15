@@ -49,10 +49,6 @@ Get the code and set-up a WordPress instance:
 
  * Clone the code to a folder: ```git clone https://github.com/insideout10/wordlift-plugin.git```
  * from a WordPress instance, create a symbolic link to the plugin *src* folder: ```ln -s wordlift-plugin/src wordpress/wp-content/plugins/wordlift```
- * in the WordPress configuration file `wp-config.php` file, set:
-```php
-define('WORDLIFT_DEVELOPMENT', '');
-```
 
 ### Enable WordPress debug mode
 
@@ -70,6 +66,34 @@ define('WP_DEBUG_DISPLAY', false);
 
 // Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
 define('SCRIPT_DEBUG', true);
+```
+
+### Example Apache configuration
+
+This is an example Apache configuration for a local web site instance pointing at the WordLift JavaScript files:
+
+```
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+	ServerName wordpress.localhost
+
+	RewriteEngine on
+
+	DocumentRoot /var/www
+	DirectoryIndex index.php
+
+	<Location ~ "/wp-content/plugins/wordlift/(css|fonts|js)/(.+)$">
+		ProxyPassMatch http://localhost:8000/app/$1/$2
+	</Location>
+
+	<Directory /var/www>
+		AllowOverride All
+		Order allow,deny
+		Allow from All
+	</Directory>
+
+</VirtualHost>
 ```
 
 ## Testing
