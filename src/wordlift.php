@@ -1423,6 +1423,31 @@ function wl_install_entity_type_data()
     }
 }
 
+/**
+ * Change *plugins_url* response to return the correct path of WordLift files when working in development mode.
+ * @param $url The URL as set by the plugins_url method.
+ * @param $path The request path.
+ * @param $plugin The plugin folder.
+ * @return string The URL.
+ */
+function wl_plugins_url($url, $path, $plugin) {
+
+    write_log( "[ url :: $url ][ path :: $path ][ plugin :: $plugin ]" );
+
+    // Check if it's our pages calling the plugins_url.
+    if ( 1 !== preg_match( '/\/wordlift(_editor)?.php$/i', $plugin ) ) {
+        return $url;
+    };
+
+    // Set the URL to plugins URL + wordlift, in order to support the plugin being symbolic linked.
+    $plugin_url = plugins_url() . '/wordlift/' . $path;
+
+    write_log( "[ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]" );
+
+    return $plugin_url;
+}
+add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
+
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
 //register_activation_hook(__FILE__, 'wl_install_entity_type_data');
 
