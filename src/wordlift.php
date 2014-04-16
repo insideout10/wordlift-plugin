@@ -1438,6 +1438,7 @@ require_once('wordlift_admin_meta_box_related_posts.php');
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
 require_once('wordlift_shortcode_related_posts.php');
+require_once('wordlift_shortcode_chord.php');
 
 require_once('wordlift_indepth_articles.php');
 
