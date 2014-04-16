@@ -261,7 +261,7 @@ function wl_get_entity_uri($post_id)
 
     // Set the URI if it isn't set yet.
     if (empty($uri)) {
-        $uri = wordlift_build_entity_uri($post_id); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+        $uri = wl_build_entity_uri($post_id); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
         wl_set_entity_uri($post_id, $uri);
     }
 
@@ -394,7 +394,7 @@ function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = a
     wl_set_entity_types($post_id, $entity_types);
 
     // Get a dataset URI for the entity.
-    $wl_uri = wordlift_build_entity_uri($post_id);
+    $wl_uri = wl_build_entity_uri($post_id);
 
     // Save the entity URI.
     wl_set_entity_uri($post_id, $wl_uri);
@@ -1177,7 +1177,13 @@ function wl_sanitize_uri_path($path, $char = '_')
 
     write_log("wl_sanitize_uri_path [ path :: $path ][ char :: $char ]");
 
-    return preg_replace('/[^a-z|0-9|(|)]/i', $char, $path);
+    // According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
+    // ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
+    // "$" | ","
+    // Plus the ' ' (space).
+    // TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
+
+    return preg_replace('/[;\/?:@&=+$,\s]/', $char, $path);
 }
 
 /**

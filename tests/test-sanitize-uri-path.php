@@ -32,4 +32,10 @@ class SanitizeUriPathTest extends WP_UnitTestCase
         $this->assertEquals( 'David-(Luigi)-Riccitelli', wl_sanitize_uri_path( 'David (Luigi) Riccitelli', '-' ) );
     }
 
+    function testEkkehardBohmer() {
+
+        $this->assertEquals( 'Ekkehard_Böhmer', wl_sanitize_uri_path( 'Ekkehard Böhmer' ) );
+
+    }
+
 }
