@@ -213,6 +213,10 @@ function wordlift_ajax_analyze_action()
 function wordlift_admin_enqueue_scripts()
 {
 
+    // Added for compatibility with WordPress 3.9 (see http://make.wordpress.org/core/2014/04/16/jquery-ui-and-wpdialogs-in-wordpress-3-9/)
+    wp_enqueue_script('wpdialogs');
+    wp_enqueue_style('wp-jquery-ui-dialog');
+
     wp_register_style('wordlift_css', plugins_url('css/wordlift.css', __FILE__));
     wp_enqueue_style('wordlift_css');
 

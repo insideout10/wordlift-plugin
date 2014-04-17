@@ -290,44 +290,6 @@ function wl_get_sparql_post_references($post_id)
     return $sparql;
 }
 
-///**
-// * Save entities embedded in the content as spans.
-// * @param string $content      The content.
-// * @param int $related_post_id The post that references (or relates) to these entities.
-// * @return array An array with the saved post IDs.
-// */
-//function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = null ) {
-//
-//    // Save the post ids.
-//    $post_ids = array();
-//
-//    // Initialize the matches array.
-//    $matches  = array();
-//
-//    // Create the pattern.
-//    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)"><span itemprop="name">([^<]+)<\/span><\/span>/im';
-//
-//    // Look for the spans and the embedded data.
-//    if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
-//        for ( $i = 0; $i < $count; $i++ ) {
-//            $uri   = $matches[1][$i];
-//            $type  = wl_get_entity_type( $matches[2][$i] );
-//            $label = $matches[3][$i];
-//
-//            write_log( "wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: " . $type['class'] . " ][ label :: $label ]" );
-//
-//            // Save the entity in the local storage.
-//            $post  = wl_save_entity( $uri, $label, $type, '', array(), $related_post_id );
-//            if ( !in_array( $post->ID, $post_ids ) ) {
-//                array_push( $post_ids, $post->ID );
-//            }
-//        }
-//    }
-//
-//    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]" );
-//
-//    return $post_ids;
-//}
 
 /**
  * Create an URI on the custom dataset based on an existing URI.
