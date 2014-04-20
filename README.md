@@ -82,7 +82,7 @@ NameVirtualHost *:80
 
 	RewriteEngine on
 
-	DocumentRoot /Users/david/Developer/wordpress/3.8/var/www
+	DocumentRoot /var/www
 	DirectoryIndex index.php
 
 	# Preferred method, direct linking.
