@@ -20,6 +20,6 @@ function wl_remove_text_annotations($data) {
 
     return $data;
 }
+add_filter('wp_insert_post_data', 'wl_remove_text_annotations', '98', 1);
 
-add_filter('wp_insert_post_data', 'wl_remove_text_annotations', '99', 1);
 

@@ -129,10 +129,10 @@ class PostTest extends WP_UnitTestCase
         $this->assertEquals('http://example.org/entity/test_entity', $same_as_array[0]);
         $this->assertEquals('http://data.example.org/entity/test_entity', $same_as_array[1]);
 
-        $post = wordlift_get_entity_post_by_uri('http://example.org/entity/test_entity');
+        $post = wl_get_entity_post_by_uri('http://example.org/entity/test_entity');
         $this->assertNotNull($post);
 
-        $post = wordlift_get_entity_post_by_uri('http://data.example.org/entity/test_entity');
+        $post = wl_get_entity_post_by_uri('http://data.example.org/entity/test_entity');
         $this->assertNotNull($post);
 
         $same_as_uri = 'http://example.org/entity/test_entity2';
@@ -145,7 +145,7 @@ class PostTest extends WP_UnitTestCase
         $this->assertTrue(is_array($same_as_array));
         $this->assertEquals($same_as_uri, $same_as_array[0]);
 
-        $post = wordlift_get_entity_post_by_uri('http://example.org/entity/test_entity');
+        $post = wl_get_entity_post_by_uri('http://example.org/entity/test_entity');
         $this->assertNotNull($post);
 
     }

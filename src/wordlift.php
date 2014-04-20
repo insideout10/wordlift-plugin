@@ -120,7 +120,7 @@ function wordlift_register_buttons($buttons)
 function wordlift_register_tinymce_javascript($plugin_array)
 {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = plugins_url( 'js/wordlift.js', __FILE__ );
+    $plugin_array['wordlift'] = plugins_url('js/wordlift.js', __FILE__);
     return $plugin_array;
 }
 
@@ -365,7 +365,7 @@ function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = a
     write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]");
 
     // Check whether an entity already exists with the provided URI.
-    $post = wordlift_get_entity_post_by_uri($uri);
+    $post = wl_get_entity_post_by_uri($uri);
 
     // Return the found post, do not overwrite data.
     if (null !== $post) {
@@ -937,8 +937,13 @@ function wl_get_image_urls($post_id)
     // Prepare the return array.
     $image_urls = array();
 
+    // Collect the URLs.
     foreach ($images as $attachment_id => $attachment) {
-        array_push($image_urls, wp_get_attachment_url($attachment_id));
+        $image_url = wp_get_attachment_url($attachment_id);
+        // Ensure the URL isn't collected already.
+        if (!in_array($image_url, $image_urls)) {
+            array_push($image_urls, $image_url);
+        }
     }
 
     write_log("wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count($image_urls) . " ]");
@@ -1304,7 +1309,7 @@ function wl_replace_item_id_with_uri($content)
             $item_id = $match[1];
 
             // Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
-            $post = wordlift_get_entity_post_by_uri($item_id);
+            $post = wl_get_entity_post_by_uri($item_id);
 
             // If no entity is found, continue to the next one.
             if (null === $post) {
@@ -1350,7 +1355,10 @@ function wl_install_entity_type_data()
             'description' => 'A creative work (or a Music Album).',
             'css' => 'wl-creative-work',
             'uri' => 'http://schema.org/CreativeWork',
-            'same_as' => array('http://schema.org/MusicAlbum')
+            'same_as' => array(
+                'http://schema.org/MusicAlbum',
+                'http://schema.org/Product'
+            )
         ),
         'event' => array(
             'label' => 'Event',
@@ -1423,23 +1431,61 @@ function wl_install_entity_type_data()
  * @param $plugin The plugin folder.
  * @return string The URL.
  */
-function wl_plugins_url($url, $path, $plugin) {
+function wl_plugins_url($url, $path, $plugin)
+{
 
-    write_log( "[ url :: $url ][ path :: $path ][ plugin :: $plugin ]" );
+    write_log("[ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
-    if ( 1 !== preg_match( '/\/wordlift(_editor)?.php$/i', $plugin ) ) {
+    if (1 !== preg_match('/\/wordlift(_editor)?.php$/i', $plugin)) {
         return $url;
     };
 
     // Set the URL to plugins URL + wordlift, in order to support the plugin being symbolic linked.
     $plugin_url = plugins_url() . '/wordlift/' . $path;
 
-    write_log( "[ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]" );
+    write_log("[ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     return $plugin_url;
 }
-add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
+
+add_filter('plugins_url', 'wl_plugins_url', 10, 3);
+
+/**
+ * Get an array of entities from the *itemid* attributes embedded in the provided content.
+ * @param string $content The content with itemid attributes.
+ * @return array An array of entity posts.
+ */
+function wl_get_entities_in_content($content)
+{
+
+    // Remove quote escapes.
+    $content = str_replace('\\"', '"', $content);
+
+    // Match all itemid attributes.
+    $pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
+
+    // Remove the pattern while it is found (match nested annotations).
+    $matches = array();
+
+    // In case of errors, return an empty array.
+    if (false === preg_match_all($pattern, $content, $matches)) {
+        return array();
+    }
+
+//    write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
+
+    // Collect the entities.
+    $entities = array();
+    foreach ($matches[1] as $uri) {
+        $entity = wl_get_entity_post_by_uri($uri);
+        if (null !== $entity) {
+            array_push($entities, $entity->ID);
+        }
+    }
+
+    return $entities;
+}
 
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
 //register_activation_hook(__FILE__, 'wl_install_entity_type_data');

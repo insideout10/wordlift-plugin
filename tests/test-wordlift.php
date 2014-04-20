@@ -128,7 +128,7 @@ class WordLiftTest extends WP_UnitTestCase {
 //        $entity_uri = $this->get_entity_uri( $this->entity_name );
 //
 //        // try to get the post using the WordLift method.
-//        $post_using_entity_uri = wordlift_get_entity_post_by_uri( $entity_uri );
+//        $post_using_entity_uri = wl_get_entity_post_by_uri( $entity_uri );
 //
 //        // check that an entity is found.
 //        $this->assertNotNull( $post_using_entity_uri );
@@ -136,7 +136,7 @@ class WordLiftTest extends WP_UnitTestCase {
 //        // TODO: check that the post_meta/same_as has the same_as value.
 //
 //        // try to get the post using the WordLift method.
-//        $post_using_entity_same_as = wordlift_get_entity_post_by_uri( $this->entity_same_as );
+//        $post_using_entity_same_as = wl_get_entity_post_by_uri( $this->entity_same_as );
 //
 //        // check that an entity is found.
 //        $this->assertNotNull( $post_using_entity_same_as );

@@ -260,6 +260,9 @@ function wordlift_save_post_and_related_entities($post_id)
     // Save entities coming as embedded in the text.
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
+    // Update related entities.
+    wl_set_related_entities($post->ID, wl_get_entities_in_content($post->post_content));
+
     // Push the post to Redlink.
     wl_push_to_redlink($post->ID);
 
@@ -317,7 +320,7 @@ function wordlift_get_custom_dataset_entity_uri($uri)
  * @param string $uri The entity URI.
  * @return array mixed An array of posts.
  */
-function wordlift_get_entity_post_by_uri($uri)
+function wl_get_entity_post_by_uri($uri)
 {
 
     $query = new WP_Query(array(
