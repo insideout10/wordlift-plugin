@@ -70,7 +70,42 @@ define('SCRIPT_DEBUG', true);
 
 ### Example Apache configuration
 
-This is an example Apache configuration for a local web site instance pointing at the WordLift JavaScript files:
+As stylesheets and scripts files are part of the [wordlift-plugin-js](http://github.com/insideout10/wordlift-plugin-js) project, you need configure Apache to get these files.
+
+#### 1st method (preferred): AliasMatch
+
+```
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+	ServerName wordpress380.localhost
+
+	RewriteEngine on
+
+	DocumentRoot /Users/david/Developer/wordpress/3.8/var/www
+	DirectoryIndex index.php
+
+	# Preferred method, direct linking.
+	AliasMatch ^/wp-content/plugins/wordlift/(css|fonts|js)/(.*)$ <your-folder>/wordlift-plugin-js/dist/3.0.0-beta/$1/$2
+	<Directory ~ "<your-folder>/wordlift-plugin-js/dist/3.0.0-beta/(css|fonts|js)">
+		Options All
+		AllowOverride All
+		order allow,deny
+		allow from all
+	</Directory>
+
+	<Directory /var/www>
+		AllowOverride All
+		Order allow,deny
+		Allow from All
+	</Directory>
+
+</VirtualHost>
+```
+
+#### 2nd method: Proxy
+
+This is especially useful if the WordLift scripts and stylesheets are hosted elsewhere:
 
 ```
 NameVirtualHost *:80
