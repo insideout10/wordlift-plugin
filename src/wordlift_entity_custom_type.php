@@ -167,16 +167,6 @@ function wordlift_save_entity_custom_fields($post_id)
 function wl_get_entity_types($post_id)
 {
 
-//    $types = wp_get_post_terms($post_id, 'wl_entity_type');
-//
-//    if (!empty($prefix)) {
-//        array_walk($types, function (&$item) use ($prefix) {
-//            $item = $prefix . $item->name;
-//        });
-//    }
-//
-//    return $types;
-
     return get_post_meta($post_id, 'wl_entity_type_uri');
 }
 

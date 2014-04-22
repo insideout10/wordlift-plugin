@@ -260,6 +260,9 @@ function wordlift_save_post_and_related_entities($post_id)
     // Save entities coming as embedded in the text.
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
+    // Update related entities.
+    wl_set_related_entities($post->ID, wl_get_entities_in_content($post->post_content));
+
     // Push the post to Redlink.
     wl_push_to_redlink($post->ID);
 
@@ -290,44 +293,6 @@ function wl_get_sparql_post_references($post_id)
     return $sparql;
 }
 
-///**
-// * Save entities embedded in the content as spans.
-// * @param string $content      The content.
-// * @param int $related_post_id The post that references (or relates) to these entities.
-// * @return array An array with the saved post IDs.
-// */
-//function wordlift_save_entities_embedded_as_spans( $content, $related_post_id = null ) {
-//
-//    // Save the post ids.
-//    $post_ids = array();
-//
-//    // Initialize the matches array.
-//    $matches  = array();
-//
-//    // Create the pattern.
-//    $pattern  = '/<span class="[^"]+" id="[^"]+" itemid="([^\"]+)" itemscope="itemscope" itemtype="([^"]+)"><span itemprop="name">([^<]+)<\/span><\/span>/im';
-//
-//    // Look for the spans and the embedded data.
-//    if ( 0 < ( $count = preg_match_all( $pattern , $content, $matches ) ) ) {
-//        for ( $i = 0; $i < $count; $i++ ) {
-//            $uri   = $matches[1][$i];
-//            $type  = wl_get_entity_type( $matches[2][$i] );
-//            $label = $matches[3][$i];
-//
-//            write_log( "wordlift_save_entities_embedded_as_spans [ uri :: $uri ][ type :: " . $type['class'] . " ][ label :: $label ]" );
-//
-//            // Save the entity in the local storage.
-//            $post  = wl_save_entity( $uri, $label, $type, '', array(), $related_post_id );
-//            if ( !in_array( $post->ID, $post_ids ) ) {
-//                array_push( $post_ids, $post->ID );
-//            }
-//        }
-//    }
-//
-//    write_log( "wordlift_save_entities_embedded_as_spans [ entities count :: $count ]" );
-//
-//    return $post_ids;
-//}
 
 /**
  * Create an URI on the custom dataset based on an existing URI.
@@ -355,7 +320,7 @@ function wordlift_get_custom_dataset_entity_uri($uri)
  * @param string $uri The entity URI.
  * @return array mixed An array of posts.
  */
-function wordlift_get_entity_post_by_uri($uri)
+function wl_get_entity_post_by_uri($uri)
 {
 
     $query = new WP_Query(array(
@@ -421,13 +386,13 @@ function wordlift_save_post($post_id)
  * @param int $post_id The post ID.
  * @return string The URI of the entity.
  */
-function wordlift_build_entity_uri($post_id)
+function wl_build_entity_uri($post_id)
 {
 
     // Get the post.
     $post = get_post($post_id);
     if (null === $post) {
-        write_log("wordlift_build_entity_uri : error [ post id :: $post_id ][ post :: null ]");
+        write_log("wl_build_entity_uri : error [ post id :: $post_id ][ post :: null ]");
         return;
     }
 
@@ -445,7 +410,7 @@ function wordlift_build_entity_uri($post_id)
         $id
     );
 
-    write_log("wordlift_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
+    write_log("wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
 
     return $url;
 }

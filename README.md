@@ -49,9 +49,86 @@ Get the code and set-up a WordPress instance:
 
  * Clone the code to a folder: ```git clone https://github.com/insideout10/wordlift-plugin.git```
  * from a WordPress instance, create a symbolic link to the plugin *src* folder: ```ln -s wordlift-plugin/src wordpress/wp-content/plugins/wordlift```
- * in the WordPress configuration file `wp-config.php` file, set:
+
+### Enable WordPress debug mode
+
+Edit the `wp-config.php` file of your WordPress instance and set the debug mode. We use to write the log to the `wp-content/debug.log` file - see [Example wp-config.php for Debugging](https://codex.wordpress.org/Debugging_in_WordPress#Example_wp-config.php_for_Debugging):
 ```php
-define('WORDLIFT_DEVELOPMENT', '');
+// Enable WP_DEBUG mode
+define('WP_DEBUG', true);
+
+// Enable Debug logging to the /wp-content/debug.log file
+define('WP_DEBUG_LOG', true);
+
+// Disable display of errors and warnings
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors',0);
+
+// Use dev versions of core JS and CSS files (only needed if you are modifying these core files)
+define('SCRIPT_DEBUG', true);
+```
+
+### Example Apache configuration
+
+As stylesheets and scripts files are part of the [wordlift-plugin-js](http://github.com/insideout10/wordlift-plugin-js) project, you need configure Apache to get these files.
+
+#### 1st method (preferred): AliasMatch
+
+```
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+	ServerName wordpress380.localhost
+
+	RewriteEngine on
+
+	DocumentRoot /var/www
+	DirectoryIndex index.php
+
+	# Preferred method, direct linking.
+	AliasMatch ^/wp-content/plugins/wordlift/(css|fonts|js)/(.*)$ <your-folder>/wordlift-plugin-js/dist/3.0.0-beta/$1/$2
+	<Directory ~ "<your-folder>/wordlift-plugin-js/dist/3.0.0-beta/(css|fonts|js)">
+		Options All
+		AllowOverride All
+		order allow,deny
+		allow from all
+	</Directory>
+
+	<Directory /var/www>
+		AllowOverride All
+		Order allow,deny
+		Allow from All
+	</Directory>
+
+</VirtualHost>
+```
+
+#### 2nd method: Proxy
+
+This is especially useful if the WordLift scripts and stylesheets are hosted elsewhere:
+
+```
+NameVirtualHost *:80
+
+<VirtualHost *:80>
+	ServerName wordpress.localhost
+
+	RewriteEngine on
+
+	DocumentRoot /var/www
+	DirectoryIndex index.php
+
+	<Location ~ "/wp-content/plugins/wordlift/(css|fonts|js)/(.+)$">
+		ProxyPassMatch http://localhost:8000/app/$1/$2
+	</Location>
+
+	<Directory /var/www>
+		AllowOverride All
+		Order allow,deny
+		Allow from All
+	</Directory>
+
+</VirtualHost>
 ```
 
 ## Testing
