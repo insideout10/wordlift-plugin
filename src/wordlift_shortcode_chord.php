@@ -4,7 +4,7 @@ function wl_ajax_related_entities($id, $related, $depth) {
 	
 	//get related entities for this entity
 	$rel = wl_get_related_entities($id);
-	array_merge( $rel, wl_get_related_post_ids($id) );
+	$rel += wl_get_related_post_ids($id);
 	
 	foreach ($rel as $e) {
 		if( ! in_array($e, $related) ) {
