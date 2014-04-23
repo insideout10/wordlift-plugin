@@ -45,7 +45,7 @@ function wl_push_post_to_redlink($post)
     write_log("wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]");
 
     // Get the site language in order to define the literals language.
-    $site_language = wordlift_configuration_site_language();
+    $site_language = wl_config_get_site_language();
 
     // save the author and get the author URI.
     $author_uri = wl_get_user_uri($post->post_author);
@@ -117,7 +117,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     }
 
     // Get the site language in order to define the literals language.
-    $site_language = wordlift_configuration_site_language();
+    $site_language = wl_config_get_site_language();
 
     // get the title and content as label and description.
     $label = wordlift_esc_sparql($entity_post->post_title);
@@ -305,8 +305,8 @@ function wordlift_get_custom_dataset_entity_uri($uri)
     // TODO: check for naming collision.
 
     // read the user id and dataset name from the options.
-    $user_id = wordlift_configuration_user_id();
-    $dataset_id = wordlift_configuration_dataset_id();
+    $user_id = wl_config_get_user_id();
+    $dataset_id = wl_config_get_dataset();
 
     $fragments = explode('/', $uri);
     $name = end($fragments);
@@ -379,40 +379,6 @@ function wordlift_save_post($post_id)
 
     // re-hook this function
     add_action('save_post', 'wordlift_save_post');
-}
-
-/**
- * Build the entity URI given the entity's post.
- * @param int $post_id The post ID.
- * @return string The URI of the entity.
- */
-function wl_build_entity_uri($post_id)
-{
-
-    // Get the post.
-    $post = get_post($post_id);
-    if (null === $post) {
-        write_log("wl_build_entity_uri : error [ post id :: $post_id ][ post :: null ]");
-        return;
-    }
-
-    $type = $post->post_type;
-
-    // Create an ID given the title.
-    $id = wl_sanitize_uri_path($post->post_title);
-
-    // Build the entity URI.
-    $url = sprintf(
-        'http://data.redlink.io/%s/%s/%s/%s',
-        wordlift_configuration_user_id(),
-        wordlift_configuration_dataset_id(),
-        $type,
-        $id
-    );
-
-    write_log("wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
-
-    return $url;
 }
 
 /**

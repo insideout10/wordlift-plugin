@@ -60,8 +60,8 @@ function wl_build_user_uri( $user_id ) {
 
     $uri = sprintf(
         'http://data.redlink.io/%s/%s/%s/%s',
-        wordlift_configuration_user_id(),
-        wordlift_configuration_dataset_id(),
+        wl_config_get_user_id(),
+        wl_config_get_dataset(),
         'user',
         $id
     );
@@ -142,7 +142,7 @@ function wl_update_user_profile( $user_id ) {
     write_log( "wl_update_user_profile [ user id :: $user_id ]" );
 
     // Get the site language setting.
-    $language   = wordlift_configuration_site_language();
+    $language   = wl_config_get_site_language();
 
     // Get the user.
     $user       = get_userdata( $user_id );

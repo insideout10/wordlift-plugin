@@ -9,6 +9,10 @@ Author URI: http://www.insideout.io
 License: APL
 */
 
+// Include WordLift constants.
+require_once('wordlift_constants.php');
+
+// Create the *write_log* function to allow logging to the debug.log file.
 if (!function_exists('write_log')) {
     function write_log($log)
     {
@@ -21,26 +25,6 @@ if (!function_exists('write_log')) {
         }
     }
 }
-
-// Define the basic options for HTTP calls to REDLINK.
-define('WL_REDLINK_API_HTTP_OPTIONS', serialize(array(
-    'timeout' => 60,
-    'redirection' => 5,
-    'httpversion' => '1.0',
-    'blocking' => true,
-    'cookies' => array(),
-    'sslverify' => true,
-    'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt'
-)));
-
-// Create a unique ID for this request, useful to hook async HTTP requests.
-define('WL_REQUEST_ID', uniqid());
-
-// Set the temporary files folder.
-define('WL_TEMP_DIR', get_temp_dir());
-
-//write_log( "getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' :: " . ( 'true' !== getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' ) ? 'true' : 'false' ) );
-define('WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv('WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING'));
 
 /**
  * Write the query to the buffer file.
@@ -251,41 +235,6 @@ function wordlift_allowed_html($allowedtags, $context)
 }
 
 add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2);
-
-/**
- * Get the entity URI of the provided post.
- * @param int $post_id The post ID.
- * @return string|null The URI of the entity or null if not configured.
- */
-function wl_get_entity_uri($post_id)
-{
-
-    $uri = get_post_meta($post_id, 'entity_url', true);
-    $uri = utf8_encode($uri);
-
-    // Set the URI if it isn't set yet.
-    if (empty($uri)) {
-        $uri = wl_build_entity_uri($post_id); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
-        wl_set_entity_uri($post_id, $uri);
-    }
-
-    return $uri;
-}
-
-/**
- * Save the entity URI for the provided post ID.
- * @param int $post_id The post ID.
- * @param string $uri The post URI.
- * @return bool True if successful, otherwise false.
- */
-function wl_set_entity_uri($post_id, $uri)
-{
-
-    write_log("wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]");
-
-    $uri = utf8_decode($uri);
-    return update_post_meta($post_id, 'entity_url', $uri);
-}
 
 /**
  * Save the specified entities to the local storage.
@@ -1490,8 +1439,10 @@ function wl_get_entities_in_content($content)
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
 //register_activation_hook(__FILE__, 'wl_install_entity_type_data');
 
+
 require_once('libs/php-json-ld/jsonld.php');
 
+require_once('wordlift_entity_functions.php');
 // add editor related methods.
 require_once('wordlift_editor.php');
 // add configuration-related methods.
@@ -1522,6 +1473,13 @@ require_once('wordlift_ajax_search_entities.php');
 require_once('wordlift_user.php');
 
 require_once('wordlift_geo_widget.php');
+
+require_once('wordlift_redlink_functions.php');
+
+// Add admin functions.
+if (is_admin()) {
+    require_once('admin/wordlift_settings_page.php');
+}
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
