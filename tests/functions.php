@@ -629,11 +629,12 @@ function wl_configure_wordpress_test() {
     );
 
     // Set the plugin options.
-    update_option( WORDLIFT_OPTIONS, array(
+    update_option( WL_OPTIONS_NAME, array(
         'application_key' => getenv('REDLINK_APP_KEY'),
         'user_id'         => getenv('REDLINK_USER_ID'),
         'dataset_name'    => $dataset_name,
-        'analysis_name'   => 'wordlift'
+        'analysis_name'   => 'wordlift',
+        'dataset_base_uri' => 'http://data.redlink.io/' . getenv('REDLINK_USER_ID') . '/' . $dataset_name
     ) );
 }
 

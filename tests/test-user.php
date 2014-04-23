@@ -99,8 +99,8 @@ class UserTest extends WP_UnitTestCase
 
         return sprintf(
             'http://data.redlink.io/%s/%s/%s/%s',
-            wordlift_configuration_user_id(),
-            wordlift_configuration_dataset_id(),
+            wl_config_get_user_id(),
+            wl_config_get_dataset(),
             'user',
             $id
         );

@@ -59,7 +59,7 @@ function wl_config_get_analysis()
  */
 function wl_config_get_site_language()
 {
-    return wl_config_get_setting(WL_CONFIG_SITE_LANGUAGE_NAME);
+    return wl_config_get_setting(WL_CONFIG_SITE_LANGUAGE_NAME, WL_CONFIG_DEFAULT_SITE_LANGUAGE);
 }
 
 /**

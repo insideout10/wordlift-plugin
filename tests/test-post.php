@@ -85,10 +85,11 @@ class PostTest extends WP_UnitTestCase
      */
     function testConfiguration()
     {
-        $this->assertNotNull(wordlift_configuration_application_key());
-        $this->assertNotNull(wordlift_configuration_dataset_id());
-        $this->assertNotNull(wordlift_configuration_user_id());
-        $this->assertEquals('en', wordlift_configuration_site_language());
+        $this->assertNotNull(wl_config_get_application_key());
+        $this->assertNotNull(wl_config_get_dataset());
+        $this->assertNotNull(wl_config_get_user_id());
+        $this->assertNotNull(wl_config_get_dataset_base_uri());
+        $this->assertEquals(WL_CONFIG_DEFAULT_SITE_LANGUAGE, wl_config_get_site_language());
     }
 
     /**
@@ -192,8 +193,8 @@ class PostTest extends WP_UnitTestCase
         $sparql_template = file_get_contents($filename);
 
         // Get the user ID and dataset name.
-        $user_id = wordlift_configuration_user_id();
-        $dataset_name = wordlift_configuration_dataset_id();
+        $user_id = wl_config_get_user_id();
+        $dataset_name = wl_config_get_dataset();
 
         // Set the entity URI.
         $uri = sprintf("http://data.redlink.io/%s/%s/entity/Linked_Open_Data", $user_id, $dataset_name);
@@ -529,7 +530,7 @@ EOF;
         $type = $match['type'];
 
         // Get the post title and permalink.
-        $title = '"' . $post->post_title . '"@' . wordlift_configuration_site_language();
+        $title = '"' . $post->post_title . '"@' . wl_config_get_site_language();
         $permalink = '<' . get_permalink($post->ID) . '>';
 
         // Check for equality.
@@ -651,7 +652,7 @@ EOF;
         $post_date_modified = wl_get_sparql_time(wl_get_post_modified_time($post));
         $post_comment_count = 'UserComments:' . $post->comment_count;
         $post_entity_type = '<http://schema.org/BlogPosting>';
-        $post_title = '"' . $post->post_title . '"@' . wordlift_configuration_site_language();
+        $post_title = '"' . $post->post_title . '"@' . wl_config_get_site_language();
 
         $this->assertEquals($post_author_url, $author);
         $this->assertEquals($post_date_published, $date_published);
