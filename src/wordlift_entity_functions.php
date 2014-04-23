@@ -22,21 +22,16 @@ function wl_build_entity_uri($post_id)
     $path = wl_sanitize_uri_path($post->post_title);
 
     // Build the entity URI.
-    $url = sprintf(
-        'http://data.redlink.io/%s/%s/%s/%s',
-        wl_config_get_user_id(),
-        wl_config_get_dataset(),
-        $post->post_type,
-        $path
-    );
+//    $url = sprintf(
+//        'http://data.redlink.io/%s/%s/%s/%s',
+//        wl_config_get_user_id(),
+//        wl_config_get_dataset(),
+//        $post->post_type,
+//        $path
+//    );
 
-    // Create the URL.
-    $url = sprintf(
-        '%s/%s/%s',
-        wl_config_dataset_base_uri(),
-        $post->post_type,
-        $path
-    );
+    // Create the URL (dataset base URI has a trailing slash).
+    $url = sprintf( '%s/%s/%s', wl_config_get_dataset_base_uri(), $post->post_type, $path );
 
     write_log("wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
 

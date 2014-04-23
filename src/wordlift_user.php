@@ -58,13 +58,16 @@ function wl_build_user_uri( $user_id ) {
         $id = $user_id;
     }
 
-    $uri = sprintf(
-        'http://data.redlink.io/%s/%s/%s/%s',
-        wl_config_get_user_id(),
-        wl_config_get_dataset(),
-        'user',
-        $id
-    );
+//    $uri = sprintf(
+//        'http://data.redlink.io/%s/%s/%s/%s',
+//        wl_config_get_user_id(),
+//        wl_config_get_dataset(),
+//        'user',
+//        $id
+//    );
+
+    // Create the URL (dataset base URI has a trailing slash).
+    $uri = sprintf( '%s/%s/%s', wl_config_get_dataset_base_uri(), 'user', $id );
 
     // Check that the URI doesn't exist already. If it exists, add a numeric suffix.
     $base_uri = $uri;

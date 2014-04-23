@@ -293,28 +293,6 @@ function wl_get_sparql_post_references($post_id)
     return $sparql;
 }
 
-
-/**
- * Create an URI on the custom dataset based on an existing URI.
- * @param string $uri
- * @return string The dataset URI.
- */
-function wordlift_get_custom_dataset_entity_uri($uri)
-{
-
-    // TODO: check for naming collision.
-
-    // read the user id and dataset name from the options.
-    $user_id = wl_config_get_user_id();
-    $dataset_id = wl_config_get_dataset();
-
-    $fragments = explode('/', $uri);
-    $name = end($fragments);
-
-    // set the post URI in the triple store.
-    return "http://data.redlink.io/$user_id/$dataset_id/resource/$name";
-}
-
 /**
  * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
  * @param string $uri The entity URI.

@@ -55,12 +55,11 @@ function rl_empty_dataset_url()
 {
 
     // get the configuration.
-    $api_version = wordlift_redlink_api_version();
     $dataset_id = wl_config_get_dataset();
     $app_key = wl_config_get_application_key();
 
     // construct the API URL.
-    $url = sprintf('%s%s/data/%s?key=%s', WL_REDLINK_API_BASE_URI, $api_version, $dataset_id, $app_key);
+    $url = sprintf('%s%s/data/%s?key=%s', WL_REDLINK_API_BASE_URI, WL_REDLINK_API_VERSION, $dataset_id, $app_key);
     return $url;
 }
 
@@ -68,12 +67,11 @@ function rl_sparql_select_url()
 {
 
     // get the configuration.
-    $api_version = wordlift_redlink_api_version();
     $dataset_id = wl_config_get_dataset();
     $app_key = wl_config_get_application_key();
 
     // construct the API URL.
-    $url = sprintf('%s%s/data/%s/sparql/select?key=%s', WL_REDLINK_API_BASE_URI, $api_version, $dataset_id, $app_key);
+    $url = sprintf('%s%s/data/%s/sparql/select?key=%s', WL_REDLINK_API_BASE_URI, WL_REDLINK_API_VERSION, $dataset_id, $app_key);
     return $url;
 }
 
