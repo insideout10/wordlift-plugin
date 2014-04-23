@@ -50,16 +50,5 @@ class EntityFunctionsTest extends WP_UnitTestCase
 
     }
 
-    /**
-     * Check entity URI building.
-     */
-    function testEntityURIforAnAuthor() {
-
-        $post_id = wl_create_post('', 'test', 'This is a test', 'draft', 'author');
-
-        $expected_uri = wl_config_get_dataset_base_uri() . '/author/This_is_a_test';
-        $this->assertEquals($expected_uri, wl_build_entity_uri( $post_id ) );
-
-    }
 }
 
