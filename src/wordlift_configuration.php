@@ -269,7 +269,7 @@ function wordlift_redlink_enhance_url()
     $api_base_url = wordlift_configuration_redlink_api_url();
     $analysis_name = wordlift_configuration_analysis_name();
 
-    return $api_base_url . $api_version . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key;
+    return $api_base_url . $api_version . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key; # . '&enhancer.engines.dereference.ldpath=' . urlencode('<http://www.w3.org/2002/12/cal#>;');
 }
 
 /**
@@ -473,9 +473,9 @@ function wordlift_settings_page()
  * @param $links
  * @return mixed
  */
-function wordlift_plugin_settings_link($links)
+function wl_plugin_settings_link($links)
 {
-    $links[] = '<a href="' . get_admin_url(null, 'options-general.php?page=wordlift') . '">Settings</a>';
+    array_push($links, '<a href="' . get_admin_url(null, 'options-general.php?page=wordlift') . '">Settings</a>');
     return $links;
 }
 
@@ -486,4 +486,4 @@ add_action('admin_init', 'wordlift_configuration_check');
 add_action('admin_menu', 'wordlift_admin_add_page');
 
 // add the settings link for the plugin.
-add_filter("plugin_action_links_wordlift/wordlift.php", 'wordlift_plugin_settings_link');
+add_filter("plugin_action_links_wordlift/wordlift.php", 'wl_plugin_settings_link');
