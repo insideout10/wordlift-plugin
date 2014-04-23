@@ -1437,7 +1437,7 @@ function wl_plugins_url($url, $path, $plugin)
     write_log("[ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
-    if (1 !== preg_match('/\/wordlift(_editor)?.php$/i', $plugin)) {
+    if (1 !== preg_match('/\/wordlift(_editor|_shortcode_chord)?.php$/i', $plugin)) {
         return $url;
     };
 

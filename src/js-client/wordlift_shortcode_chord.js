@@ -2,6 +2,10 @@
 //CHORD INTRO:
 //http://www.delimited.io/blog/2013/12/8/chord-diagrams-in-d3
 
+
+console.log(wl_chord_params);
+
+
 //JSON MOCK-UP
 var dataMock = [
 
