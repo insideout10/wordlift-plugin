@@ -1460,9 +1460,6 @@ require_once('wordlift_indepth_articles.php');
 
 require_once('wordlift_freebase_image_proxy.php');
 
-// add the search entity AJAX.
-require_once('wordlift_ajax_search_entities.php');
-
 require_once('wordlift_user.php');
 
 require_once('wordlift_geo_widget.php');
@@ -1477,6 +1474,8 @@ if (is_admin()) {
     // add the entities meta box.
     require_once('admin/wordlift_admin_meta_box_entities.php');
     require_once('admin/wordlift_admin_meta_box_related_posts.php');
+    // add the search entity AJAX.
+    require_once('admin/wordlift_admin_ajax_search.php');
 }
 
 // load languages.
