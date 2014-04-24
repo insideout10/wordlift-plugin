@@ -1447,17 +1447,10 @@ require_once('wordlift_entity_functions.php');
 require_once('wordlift_editor.php');
 // add configuration-related methods.
 require_once('wordlift_configuration.php');
-// add the WordLift admin bar.
-require_once('wordlift_admin_bar.php');
-// add the WordLift admin menu. - the entity admin menu is handled as a custom post type.
-//require_once('wordlift_admin_menu.php');
 // add the WordLift entity custom type.
 require_once('wordlift_entity_custom_type.php');
 // filters the post content when saving posts.
 require_once('wordlift_content_filter.php');
-// add the entities meta box.
-require_once('wordlift_admin_meta_box_entities.php');
-require_once('wordlift_admin_meta_box_related_posts.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
@@ -1478,7 +1471,12 @@ require_once('wordlift_redlink_functions.php');
 
 // Add admin functions.
 if (is_admin()) {
+    // add the WordLift admin bar.
+    require_once('admin/wordlift_admin_bar.php');
     require_once('admin/wordlift_settings_page.php');
+    // add the entities meta box.
+    require_once('admin/wordlift_admin_meta_box_entities.php');
+    require_once('admin/wordlift_admin_meta_box_related_posts.php');
 }
 
 // load languages.
