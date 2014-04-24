@@ -1285,6 +1285,7 @@ function wl_replace_item_id_with_uri($content)
 
 add_filter('content_save_pre', 'wl_replace_item_id_with_uri', 1, 1);
 
+
 /**
  * Install known types in WordPress.
  */
@@ -1294,8 +1295,8 @@ function wl_install_entity_type_data()
     write_log('wl_install_entity_type_data');
 
     // Ensure the custom type and the taxonomy are registered.
-    wordlift_register_custom_type_entity();
-    wordlift_taxonomies_entity();
+    wl_entity_type_register();
+    wl_entity_type_taxonomy_register();
 
     // Set the taxonomy data.
     $terms = array(
@@ -1383,7 +1384,7 @@ function wl_install_entity_type_data()
 function wl_plugins_url($url, $path, $plugin)
 {
 
-    write_log("[ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
+    write_log("wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
     if (1 !== preg_match('/\/wordlift(_editor)?.php$/i', $plugin)) {
@@ -1393,7 +1394,7 @@ function wl_plugins_url($url, $path, $plugin)
     // Set the URL to plugins URL + wordlift, in order to support the plugin being symbolic linked.
     $plugin_url = plugins_url() . '/wordlift/' . $path;
 
-    write_log("[ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
+    write_log("wl_plugins_url [ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     return $plugin_url;
 }
@@ -1437,8 +1438,6 @@ function wl_get_entities_in_content($content)
 }
 
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
-//register_activation_hook(__FILE__, 'wl_install_entity_type_data');
-
 
 require_once('libs/php-json-ld/jsonld.php');
 
@@ -1448,7 +1447,8 @@ require_once('wordlift_editor.php');
 // add configuration-related methods.
 require_once('wordlift_configuration.php');
 // add the WordLift entity custom type.
-require_once('wordlift_entity_custom_type.php');
+require_once('wordlift_entity_type.php');
+require_once('wordlift_entity_type_taxonomy.php');
 // filters the post content when saving posts.
 require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
