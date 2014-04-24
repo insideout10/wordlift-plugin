@@ -3,7 +3,7 @@
 function wl_ajax_related_entities($id, $depth, $related=null) {
 	
 	if($related==null) {
-		$related->entities = array();
+		$related->entities = array($id);
 		$related->relations = array();
 	}
 	
@@ -40,6 +40,7 @@ function wl_ajax_related_entities($id, $depth, $related=null) {
 }
 
 function wl_ajax_related_entities_to_json( $data ) {
+
 	for($i=0; $i<sizeof($data->entities); $i++) {
 		$id = $data->entities[$i];
 		$post = get_post($id);
@@ -71,35 +72,50 @@ function wl_ajax_related_entities_to_json( $data ) {
 	return json_encode($data);
 }
 
+
+
+if ( is_admin() ) {
+    add_action( 'wp_ajax_wl_ajax_chord_widget', 'wl_ajax_chord_widget' );
+    add_action( 'wp_ajax_nopriv_wl_ajax_chord_widget', 'wl_ajax_chord_widget' );
+}
+
+function wl_ajax_chord_widget() {
+    ob_clean();  
+	$result = wl_ajax_related_entities($_REQUEST['post_id'], $_REQUEST['depth']);
+	$result = wl_ajax_related_entities_to_json( $result );
+    echo $result;
+    die();
+}
+
 //set up widget
 function wl_chord_widget_func($atts){
+	
+	//extract attributes and set default values
+	extract( shortcode_atts( array(
+								'width' => '200px',
+								'height' =>	'100px',			
+								'main_color' =>	'blue',
+								'depth' => 5
+							), $atts));
+	
+	$post_id = get_the_ID();
+	$widget_id = 'wl_chord_widget_' . $post_id;
 	
 	//adding javascript code
 	wp_enqueue_script( 'd3', plugins_url('bower_components/d3/d3.min.js', __FILE__) );
 	wp_enqueue_script( 'wl_shortcode_chord', plugins_url('js-client/wordlift_shortcode_chord.js', __FILE__) );
 	wp_localize_script('wl_shortcode_chord', 'wl_chord_params', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'post_id' => get_the_ID(),
-			'altro' => 'ula badula ma chi te se incula'
+			'action' => 'wl_ajax_chord_widget',
+			'post_id' => $post_id,
+			'widget_id' => $widget_id,
+			'depth' => $depth
 		)
 	);
 
-	//extract attributes and set default values
-	extract( shortcode_atts( array(
-								'width' => '200px',
-								'height' =>	'100px',			
-								'main_color' =>	'blue'
-							), $atts));
-	
-	
-	//print ajax-url on the page!!!!
 	
 	//returning html tamplate
 	ob_start();
-	$post_id = get_the_ID();
-	$result = wl_ajax_related_entities($post_id, 100);
-	$result = wl_ajax_related_entities_to_json( $result );
-	
     include('wordlift_shortcode_chord_template.php');
     return ob_get_clean();	
 }

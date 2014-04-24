@@ -5,7 +5,7 @@
 <!-- ------------ -->
 
 <!-- container for the widget -->
-<div id="wl_chord_widget" style="width:<?=$width?>;
+<div id="<?=$widget_id?>" style="width:<?=$width?>;
 			height:<?=$height?>;
 			background-color:<?=$main_color?>;">
 	
