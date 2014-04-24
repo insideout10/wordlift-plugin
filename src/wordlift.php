@@ -1370,7 +1370,7 @@ function wl_install_entity_type_data()
             continue;
         }
         // Add custom metadata to the term.
-        wl_update_entity_type($result['term_id'], $term['css'], $term['uri'], $term['same_as']);
+        wl_entity_type_taxonomy_update_term($result['term_id'], $term['css'], $term['uri'], $term['same_as']);
     }
 }
 
@@ -1474,6 +1474,7 @@ if (is_admin()) {
     // add the entities meta box.
     require_once('admin/wordlift_admin_meta_box_entities.php');
     require_once('admin/wordlift_admin_meta_box_related_posts.php');
+    require_once('admin/wordlift_admin_entity_type_taxonomy.php');
     // add the search entity AJAX.
     require_once('admin/wordlift_admin_ajax_search.php');
 }
