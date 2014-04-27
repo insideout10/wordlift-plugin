@@ -898,10 +898,7 @@ function wl_install_entity_type_data()
                 'http://rdf.freebase.com/ns/location.location',
                 'http://www.opengis.net/gml/_Feature'
             ),
-            'custom_fields' => array(
-                WL_CUSTOM_FIELD_GEO_LATITUDE  => 'latitude',
-                WL_CUSTOM_FIELD_GEO_LONGITUDE => 'longitude'
-            )
+            'custom_fields' => array()
         ),
         'thing' => array(
             'label' => 'Thing',
