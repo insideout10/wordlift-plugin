@@ -27,7 +27,11 @@ class EntityPropsTest extends WP_UnitTestCase
         $entity_uri = 'http://rdf.salzburgerland.com/events/fafba0aa-1617-4d18-ba13-081d5965cdf9';
 
         # Create a test entity post.
-        $post_id    = wl_create_post( '', 'test', 'test', 'draft', 'entity' );
+        $content    = <<<EOF
+This October don't miss the <span class="textannotation highlight wl-event" id="urn:enhancement-4f0e0fbc-e981-7852-9521-f4718eafa13f" itemid="http://rdf.salzburgerland.com/magazine/entity/Florianifeier" itemscope="itemscope">Florianifeier</span>, we'll have fun as usual.
+EOF;
+
+        $post_id    = wl_create_post( $content, 'test', 'test', 'draft', 'entity' );
 
         # Set the entity URI.
         wl_set_entity_uri( $post_id, $entity_uri );
@@ -54,6 +58,11 @@ class EntityPropsTest extends WP_UnitTestCase
 
         $this->assertEquals( array('2014-05-04'), get_post_meta( $post_id, WL_CUSTOM_FIELD_CAL_DATE_START ) );
         $this->assertEquals( array('2014-05-05'), get_post_meta( $post_id, WL_CUSTOM_FIELD_CAL_DATE_END ) );
+
+        # Relate the entity to itself.
+        wl_set_related_entities( $post_id, array( $post_id) );
+
+        $content_with_microdata = _wl_content_embed_microdata( $post_id, $content );
     }
 }
 

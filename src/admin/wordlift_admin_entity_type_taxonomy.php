@@ -69,7 +69,7 @@ function wl_entity_type_taxonomy_edit_term_fields($term)
 
     // put the term ID into a variable
     $t_id = $term->term_id;
-    $entity_type = wl_load_entity_type($t_id);
+    $entity_type = wl_entity_type_taxonomy_get_term_options($t_id);
     $css_class = esc_attr($entity_type['css_class']);
     $uri = esc_attr($entity_type['uri']);
     $same_as = (is_array($entity_type['same_as']) ? esc_attr(implode("\n", $entity_type['same_as'])) : '');

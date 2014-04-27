@@ -88,7 +88,7 @@ EOF;
         // types
         $types = json_encode( wl_get_entity_types( $entity->ID ) );
 
-        $type = wl_get_entity_main_type( $entity->ID );
+        $type = wl_entity_type_taxonomy_get_object_terms( $entity->ID );
 
         write_log("wl_entities_box_js [ type :: " . var_export($type, true). " ]");
 

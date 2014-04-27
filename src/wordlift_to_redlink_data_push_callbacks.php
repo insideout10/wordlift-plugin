@@ -149,7 +149,7 @@ function wl_push_entity_post_to_redlink($entity_post)
         $sparql .= "<$uri> schema:description \"$descr\"@$site_language . \n";
     }
 
-    $main_type = wl_get_entity_main_type( $entity_post->ID );
+    $main_type = wl_entity_type_taxonomy_get_object_terms( $entity_post->ID );
     if ( null != $main_type ) {
         $main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
         $sparql .= " <$uri> a <$main_type_uri> . \n";
@@ -268,7 +268,7 @@ function wordlift_save_post_and_related_entities($post_id)
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Update related entities.
-    wl_set_related_entities($post->ID, wl_get_entities_in_content($post->post_content));
+    wl_set_related_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
 
     // Push the post to Redlink.
     wl_push_to_redlink($post->ID);
@@ -331,7 +331,7 @@ function wl_get_entity_post_by_uri($uri)
     // Get the matching entity posts.
     $posts = $query->get_posts();
 
-    write_log("wordlift_get_entity_posts_by_uri [ uri :: $uri ][ count :: " . count($posts) . " ]\n");
+    write_log("wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count($posts) . " ]\n");
 
     // Return null if no post is found.
     if (0 === count($posts)) {

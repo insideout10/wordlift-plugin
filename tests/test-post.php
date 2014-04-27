@@ -299,9 +299,9 @@ class PostTest extends WP_UnitTestCase
         $related_posts = wl_get_related_post_ids($entity_post_id);
         $this->assertEquals(0, count($related_posts));
 
-        wl_bind_post_to_entities($post_id, array($entity_post_id));
-        $this->assertEquals(1, count(wl_get_related_entities($post_id)));
-        $this->assertEquals(1, count(wl_get_related_post_ids($entity_post_id)));
+//        wl_bind_post_to_entities($post_id, array($entity_post_id));
+//        $this->assertEquals(1, count(wl_get_related_entities($post_id)));
+//        $this->assertEquals(1, count(wl_get_related_post_ids($entity_post_id)));
 
         wl_add_related_entities($post_id, array($entity_post_id));
         $this->assertEquals(1, count(wl_get_related_entities($post_id)));

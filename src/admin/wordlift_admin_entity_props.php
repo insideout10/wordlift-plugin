@@ -49,6 +49,12 @@ function wl_entity_props_save_prop( $post_id, $key, $values, $mappings ) {
 
     write_log( "wl_entity_props_save_prop [ post ID :: $post_id ][ custom field name :: $custom_field_name ][ key :: $key ][ values count :: " . count($values) . " ]" );
 
+    // Don't overwrite existing data.
+    $existing = get_post_meta( $post_id, $custom_field_name );
+    if ( ! empty( $existing ) ) {
+        return;
+    }
+
     // Delete existing values for that custom field.
     delete_post_meta( $post_id, $custom_field_name );
 

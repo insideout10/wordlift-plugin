@@ -41,7 +41,8 @@ function wl_get_entity_uri($post_id)
     $uri = utf8_encode($uri);
 
     // Set the URI if it isn't set yet.
-    if (empty($uri) && 'auto-draft' !== get_post_status($post_id)) {
+    $post_status = get_post_status($post_id);
+    if (empty($uri) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
         $uri = wl_build_entity_uri($post_id); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
         wl_set_entity_uri($post_id, $uri);
     }
@@ -99,4 +100,190 @@ function wl_set_entity_types($post_id, $type_uris = array())
         }
         add_post_meta($post_id, 'wl_entity_type_uri', $type_uri);
     }
+}
+
+/**
+ * Save the specified entities to the local storage.
+ * @param array $entities An array of entities.
+ * @param int $related_post_id A related post ID.
+ * @return array An array of posts.
+ */
+function wl_save_entities($entities, $related_post_id = null)
+{
+
+    write_log("wl_save_entities [ entities count :: " . count($entities) . " ][ related post id :: $related_post_id ]");
+
+    // Prepare the return array.
+    $posts = array();
+
+    // Save each entity and store the post id.
+    foreach ($entities as $entity) {
+        $uri = $entity['uri'];
+        $label = $entity['label'];
+
+        // This is the main type URI.
+        $main_type_uri = $entity['main_type'];
+
+        // the preferred type.
+        $type_uris = $entity['type'];
+
+        $description = $entity['description'];
+        $images = (isset($entity['image']) ?
+            (is_array($entity['image'])
+                ? $entity['image']
+                : array($entity['image']))
+            : array());
+        $same_as = (isset($entity['sameas']) ?
+            (is_array($entity['sameas'])
+                ? $entity['sameas']
+                : array($entity['sameas']))
+            : array());
+
+        // Superseeded by the new handling of custom fields (see: wordlift_entity_props.php)
+        // Set the coordinates.
+//        if (isset($entity['latitude']) && isset($entity['longitude'])) {
+//            $coordinates = array(
+//                'latitude' => $entity['latitude'],
+//                'longitude' => $entity['longitude']
+//            );
+//        } else {
+//            $coordinates = array();
+//        }
+
+        // Save the entity.
+        $post = wl_save_entity($uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as);
+
+        // Store the post in the return array if successful.
+        if (null !== $post) {
+            array_push($posts, $post);
+        }
+    }
+
+    return $posts;
+}
+
+/**
+ * Save the specified data as an entity in WordPress.
+ * @param string $uri The entity URI.
+ * @param string $label The entity label.
+ * @param string $type_uri The entity type URI.
+ * @param string $description The entity description.
+ * @param array $entity_types An array of entity type URIs.
+ * @param array $images An array of image URLs.
+ * @param int $related_post_id A related post ID.
+ * @param array $same_as An array of sameAs URLs.
+ * @return null|WP_Post A post instance or null in case of failure.
+ */
+function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array())
+{
+
+    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]");
+
+    // Check whether an entity already exists with the provided URI.
+    $post = wl_get_entity_post_by_uri($uri);
+
+    // Return the found post, do not overwrite data.
+    if (null !== $post) {
+        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
+        return $post;
+    }
+
+    // No post found, create a new one.
+    $params = array(
+        'post_status' => 'draft',
+        'post_type' => 'entity',
+        'post_title' => $label,
+        'post_content' => $description,
+        'post_excerpt' => ''
+    );
+
+    // create or update the post.
+    $post_id = wp_insert_post($params, true);
+
+    // TODO: handle errors.
+    if (is_wp_error($post_id)) {
+        write_log("wl_save_entity : error occurred");
+        // inform an error occurred.
+        return null;
+    }
+
+    wl_set_entity_main_type($post_id, $type_uri);
+
+    // Save the entity types.
+    wl_set_entity_types($post_id, $entity_types);
+
+    // Get a dataset URI for the entity.
+    $wl_uri = wl_build_entity_uri($post_id);
+
+    // Save the entity URI.
+    wl_set_entity_uri($post_id, $wl_uri);
+
+    // Add the uri to the sameAs data if it's not a local URI.
+    if ($wl_uri !== $uri) {
+        array_push($same_as, $uri);
+    }
+    // Save the sameAs data for the entity.
+    wl_set_same_as($post_id, $same_as);
+
+    // If the coordinates are provided, then set them.
+//    if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
+//        wl_set_coordinates($post_id, $coordinates['latitude'], $coordinates['longitude']);
+//    }
+
+    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]");
+
+    foreach ($images as $image_remote_url) {
+
+        // Check if there is an existing attachment for this post ID and source URL.
+        $existing_image = wl_get_attachment_for_source_url($post_id, $image_remote_url);
+
+        // Skip if an existing image is found.
+        if (null !== $existing_image) {
+            continue;
+        }
+
+        // Save the image and get the local path.
+        $image = wl_save_image($image_remote_url);
+
+        // Get the local URL.
+        $filename = $image['path'];
+        $url = $image['url'];
+        $content_type = $image['content_type'];
+
+        $attachment = array(
+            'guid' => $url,
+            // post_title, post_content (the value for this key should be the empty string), post_status and post_mime_type
+            'post_title' => $label, // Set the title to the post title.
+            'post_content' => '',
+            'post_status' => 'inherit',
+            'post_mime_type' => $content_type
+        );
+
+        // Create the attachment in WordPress and generate the related metadata.
+        $attachment_id = wp_insert_attachment($attachment, $filename, $post_id);
+
+        // Set the source URL for the image.
+        wl_set_source_url($attachment_id, $image_remote_url);
+
+        $attachment_data = wp_generate_attachment_metadata($attachment_id, $filename);
+        wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+        // Set it as the featured image.
+        set_post_thumbnail($post_id, $attachment_id);
+    }
+
+    // Add the related post ID if provided.
+    if (null !== $related_post_id) {
+        // Add related entities or related posts according to the post type.
+        wl_add_related($post_id, $related_post_id);
+        // And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
+        wl_add_related($related_post_id, $post_id);
+    }
+
+    // The entity is pushed to Redlink on save by the function hooked to save_post.
+    // save the entity in the triple store.
+    wl_push_to_redlink($post_id);
+
+    // finally return the entity post.
+    return get_post($post_id);
 }

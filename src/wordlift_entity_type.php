@@ -132,32 +132,6 @@ function wl_entity_type_save_custom_fields($post_id)
 }
 add_action('save_post', 'wl_entity_type_save_custom_fields');
 
-
-
-/**
- * Get the entity main type for the specified post ID.
- * @param int $post_id The post ID.
- * @return array|null An array of type properties or null if no term is associated.
- */
-function wl_get_entity_main_type( $post_id ) {
-    $terms = wp_get_object_terms( $post_id, 'wl_entity_type', array(
-        'fields' => 'ids'
-    ) );
-
-    if ( is_wp_error($terms) ) {
-        // TODO: handle error
-        return null;
-    }
-
-    // If there are not terms associated, return null.
-    if ( 0 === count( $terms ) ) {
-        return null;
-    }
-
-    // Return the entity type with the specified id.
-    return wl_load_entity_type($terms[0]);
-}
-
 /**
  * Set the main type for the entity using the related taxonomy.
  * @param int $post_id The numeric post ID.
@@ -169,12 +143,12 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 
     // If the type URI is empty we remove the type.
     if ( empty($type_uri) ) {
-        wp_set_object_terms( $post_id, null, 'wl_entity_type');
+        wp_set_object_terms( $post_id, null, WL_ENTITY_TYPE_TAXONOMY_NAME);
         return;
     }
 
     // Get all the terms bound to the wl_entity_type taxonomy.
-    $terms = get_terms('wl_entity_type', array(
+    $terms = get_terms(WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'hide_empty' => false,
         'fields' => 'ids'
     ));
@@ -182,25 +156,14 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
     // Check which term matches the specified URI.
     foreach ( $terms as $term_id ) {
         // Load the type data.
-        $type = wl_load_entity_type($term_id);
+        $type = wl_entity_type_taxonomy_get_term_options($term_id);
 
         // Set the related term ID.
         if ($type_uri === $type['uri']) {
-            wp_set_object_terms( $post_id, (int)$term_id, 'wl_entity_type');
+            wp_set_object_terms( $post_id, (int)$term_id, WL_ENTITY_TYPE_TAXONOMY_NAME);
             return;
         }
     }
-}
-
-/**
- * Get the data for the specified entity type (term id).
- * @param int $term_id A numeric term ID.
- * @return mixed|void The entity type data.
- */
-function wl_load_entity_type($term_id)
-{
-
-    return get_option("wl_entity_type_${term_id}");
 }
 
 /**
@@ -209,7 +172,7 @@ function wl_load_entity_type($term_id)
 function wl_print_entity_type_inline_js()
 {
 
-    $terms = get_terms('wl_entity_type', array(
+    $terms = get_terms(WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'hide_empty' => false,
         'fields' => 'ids'
     ));
@@ -224,7 +187,7 @@ EOF;
     // Cycle in terms and print them out to the JS.
     foreach ($terms as $term_id) {
         // Load the type data.
-        $type = wl_load_entity_type($term_id);
+        $type = wl_entity_type_taxonomy_get_term_options($term_id);
 
         // Skip types that are not defined.
         if (null === $type['uri']) {

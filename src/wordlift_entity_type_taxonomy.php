@@ -30,7 +30,7 @@ function wl_entity_type_taxonomy_register()
         'hierarchical' => false
     );
 
-    register_taxonomy('wl_entity_type', 'entity', $args);
+    register_taxonomy(WL_ENTITY_TYPE_TAXONOMY_NAME, 'entity', $args);
 }
 
 /**
@@ -39,16 +39,56 @@ function wl_entity_type_taxonomy_register()
  * @param string $css_class The stylesheet class.
  * @param string $uri The URI.
  * @param array $same_as An array of sameAs URIs.
+ * @param array $custom_fields An array of custom fields and their properties mapping.
  * @return True if option value has changed, false if not or if update failed.
  */
-function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array())
+function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array())
 {
     write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
 
-    return update_option("wl_entity_type_${term_id}", array(
-        'css_class' => $css_class,
-        'uri' => $uri,
-        'same_as' => $same_as
-    ));
+    return update_option(WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id", array(
+        'css_class'     => $css_class,
+        'uri'           => $uri,
+        'same_as'       => $same_as,
+        'custom_fields' => $custom_fields
+    ) );
 }
 
+/**
+ * Get the entity main type for the specified post ID.
+ * @param int $post_id The post ID.
+ * @return array|null An array of type properties or null if no term is associated.
+ */
+function wl_entity_type_taxonomy_get_object_terms( $post_id ) {
+
+    write_log( "wl_entity_type_taxonomy_get_object_terms [ post ID :: $post_id ]" );
+
+    $terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+        'fields' => 'ids'
+    ) );
+
+    if ( is_wp_error($terms) ) {
+        // TODO: handle error
+        return null;
+    }
+
+    // If there are not terms associated, return null.
+    if ( 0 === count( $terms ) ) {
+        return null;
+    }
+
+    // Return the entity type with the specified id.
+    return wl_entity_type_taxonomy_get_term_options($terms[0]);
+}
+
+/**
+ * Get the data for the specified entity type (term id).
+ * @param int $term_id A numeric term ID.
+ * @return mixed|void The entity type data.
+ */
+function wl_entity_type_taxonomy_get_term_options($term_id)
+{
+    write_log( "wl_entity_type_taxonomy_get_term_options [ term ID :: $term_id ]" );
+
+    return get_option(WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id");
+}

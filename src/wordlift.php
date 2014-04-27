@@ -236,212 +236,26 @@ function wordlift_allowed_html($allowedtags, $context)
 
 add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2);
 
-/**
- * Save the specified entities to the local storage.
- * @param array $entities An array of entities.
- * @param int $related_post_id A related post ID.
- * @return array An array of posts.
- */
-function wl_save_entities($entities, $related_post_id = null)
-{
-
-    write_log("wl_save_entities [ entities count :: " . count($entities) . " ][ related post id :: $related_post_id ]");
-
-    // Prepare the return array.
-    $posts = array();
-
-    // Save each entity and store the post id.
-    foreach ($entities as $entity) {
-        $uri = $entity['uri'];
-        $label = $entity['label'];
-
-        // This is the main type URI.
-        $main_type_uri = $entity['main_type'];
-
-        // the preferred type.
-        $type_uris = $entity['type'];
-
-        $description = $entity['description'];
-        $images = (isset($entity['image']) ?
-            (is_array($entity['image'])
-                ? $entity['image']
-                : array($entity['image']))
-            : array());
-        $same_as = (isset($entity['sameas']) ?
-            (is_array($entity['sameas'])
-                ? $entity['sameas']
-                : array($entity['sameas']))
-            : array());
-
-        // Set the coordinates.
-        if (isset($entity['latitude']) && isset($entity['longitude'])) {
-            $coordinates = array(
-                'latitude' => $entity['latitude'],
-                'longitude' => $entity['longitude']
-            );
-        } else {
-            $coordinates = array();
-        }
-
-        // Save the entity.
-        $post = wl_save_entity($uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as, $coordinates);
-
-        // Store the post in the return array if successful.
-        if (null !== $post) {
-            array_push($posts, $post);
-        }
-    }
-
-    return $posts;
-}
-
-/**
- * Save the specified data as an entity in WordPress.
- * @param string $uri The entity URI.
- * @param string $label The entity label.
- * @param string $type_uri The entity type URI.
- * @param string $description The entity description.
- * @param array $entity_types An array of entity type URIs.
- * @param array $images An array of image URLs.
- * @param int $related_post_id A related post ID.
- * @param array $same_as An array of sameAs URLs.
- * @param array $coordinates An array of coordinates (with 'latitude' and 'longitude' keys).
- * @return null|WP_Post A post instance or null in case of failure.
- */
-function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array(), $coordinates = array())
-{
-
-    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]");
-
-    // Check whether an entity already exists with the provided URI.
-    $post = wl_get_entity_post_by_uri($uri);
-
-    // Return the found post, do not overwrite data.
-    if (null !== $post) {
-        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
-        return $post;
-    }
-
-    // No post found, create a new one.
-    $params = array(
-        'post_status' => 'draft',
-        'post_type' => 'entity',
-        'post_title' => $label,
-        'post_content' => $description,
-        'post_excerpt' => ''
-    );
-
-    // create or update the post.
-    $post_id = wp_insert_post($params, true);
-
-    // TODO: handle errors.
-    if (is_wp_error($post_id)) {
-        write_log("wl_save_entity : error occurred");
-        // inform an error occurred.
-        return null;
-    }
-
-    wl_set_entity_main_type($post_id, $type_uri);
-
-    // Save the entity types.
-    wl_set_entity_types($post_id, $entity_types);
-
-    // Get a dataset URI for the entity.
-    $wl_uri = wl_build_entity_uri($post_id);
-
-    // Save the entity URI.
-    wl_set_entity_uri($post_id, $wl_uri);
-
-    // Add the uri to the sameAs data if it's not a local URI.
-    if ($wl_uri !== $uri) {
-        array_push($same_as, $uri);
-    }
-    // Save the sameAs data for the entity.
-    wl_set_same_as($post_id, $same_as);
-
-    // If the coordinates are provided, then set them.
-    if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
-        wl_set_coordinates($post_id, $coordinates['latitude'], $coordinates['longitude']);
-    }
-
-    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]");
-
-    foreach ($images as $image_remote_url) {
-
-        // Check if there is an existing attachment for this post ID and source URL.
-        $existing_image = wl_get_attachment_for_source_url($post_id, $image_remote_url);
-
-        // Skip if an existing image is found.
-        if (null !== $existing_image) {
-            continue;
-        }
-
-        // Save the image and get the local path.
-        $image = wl_save_image($image_remote_url);
-
-        // Get the local URL.
-        $filename = $image['path'];
-        $url = $image['url'];
-        $content_type = $image['content_type'];
-
-        $attachment = array(
-            'guid' => $url,
-            // post_title, post_content (the value for this key should be the empty string), post_status and post_mime_type
-            'post_title' => $label, // Set the title to the post title.
-            'post_content' => '',
-            'post_status' => 'inherit',
-            'post_mime_type' => $content_type
-        );
-
-        // Create the attachment in WordPress and generate the related metadata.
-        $attachment_id = wp_insert_attachment($attachment, $filename, $post_id);
-
-        // Set the source URL for the image.
-        wl_set_source_url($attachment_id, $image_remote_url);
-
-        $attachment_data = wp_generate_attachment_metadata($attachment_id, $filename);
-        wp_update_attachment_metadata($attachment_id, $attachment_data);
-
-        // Set it as the featured image.
-        set_post_thumbnail($post_id, $attachment_id);
-    }
-
-    // Add the related post ID if provided.
-    if (null !== $related_post_id) {
-        // Add related entities or related posts according to the post type.
-        wl_add_related($post_id, $related_post_id);
-        // And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
-        wl_add_related($related_post_id, $post_id);
-    }
-
-    // The entity is pushed to Redlink on save by the function hooked to save_post.
-    // save the entity in the triple store.
-    wl_push_to_redlink($post_id);
-
-    // finally return the entity post.
-    return get_post($post_id);
-}
-
-/**
- * Save the coordinates for the specified post ID.
- * @param int $post_id The post ID.
- * @param double $latitude The latitude.
- * @param double $longitude The longitude.
- */
-function wl_set_coordinates($post_id, $latitude = null, $longitude = null)
-{
-
-    write_log("wl_set_coordinates [ post id :: $post_id ][ latitude :: $latitude ][ longitude :: $longitude ]");
-
-    delete_post_meta($post_id, 'wl_latitude');
-    delete_post_meta($post_id, 'wl_longitude');
-
-    // If the coordinates are not empty, add them.
-    if (!(empty($latitude) || empty($longitude))) {
-        add_post_meta($post_id, 'wl_latitude', $latitude);
-        add_post_meta($post_id, 'wl_longitude', $longitude);
-    }
-}
+///**
+// * Save the coordinates for the specified post ID.
+// * @param int $post_id The post ID.
+// * @param double $latitude The latitude.
+// * @param double $longitude The longitude.
+// */
+//function wl_set_coordinates($post_id, $latitude = null, $longitude = null)
+//{
+//
+//    write_log("wl_set_coordinates [ post id :: $post_id ][ latitude :: $latitude ][ longitude :: $longitude ]");
+//
+//    delete_post_meta($post_id, 'wl_latitude');
+//    delete_post_meta($post_id, 'wl_longitude');
+//
+//    // If the coordinates are not empty, add them.
+//    if (!(empty($latitude) || empty($longitude))) {
+//        add_post_meta($post_id, 'wl_latitude', $latitude);
+//        add_post_meta($post_id, 'wl_longitude', $longitude);
+//    }
+//}
 
 /**
  * Get the coordinates for the specified post ID.
@@ -451,8 +265,8 @@ function wl_set_coordinates($post_id, $latitude = null, $longitude = null)
 function wl_get_coordinates($post_id)
 {
 
-    $latitude = get_post_meta($post_id, 'wl_latitude', true);
-    $longitude = get_post_meta($post_id, 'wl_longitude', true);
+    $latitude = get_post_meta($post_id, WL_CUSTOM_FIELD_GEO_LATITUDE, true);
+    $longitude = get_post_meta($post_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, true);
 
     if (empty($latitude) || empty($longitude)) {
         return null;
@@ -538,120 +352,6 @@ function wl_save_image($url)
     );
 }
 
-
-/**
- * Get the URI and stylesheet class associated with the provided entity.
- * @param object|array|string $entity An entity instance.
- * @return array An array containing a class and an URI element.
- */
-function wl_get_entity_type($entity)
-{
-
-    // Prepare the types array.
-    $types = wl_type_to_types($entity);
-
-    if (in_array('http://schema.org/Person', $types)
-        || in_array('http://rdf.freebase.com/ns/people.person', $types)
-    ) {
-        return array(
-            'class' => 'person',
-            'uri' => 'http://schema.org/Person'
-        );
-    }
-
-    if (in_array('http://schema.org/Organization', $types)
-        || in_array('http://rdf.freebase.com/ns/government.government', $types)
-        || in_array('http://schema.org/Newspaper', $types)
-    ) {
-        return array(
-            'class' => 'organization',
-            'uri' => 'http://schema.org/Organization'
-        );
-    }
-
-    if (in_array('http://schema.org/Place', $types)
-        || in_array('http://rdf.freebase.com/ns/location.location', $types)
-    ) {
-        return array(
-            'class' => 'place',
-            'uri' => 'http://schema.org/Place'
-        );
-    }
-
-    if (in_array('http://schema.org/Event', $types)
-        || in_array('http://dbpedia.org/ontology/Event', $types)
-    ) {
-        return array(
-            'class' => 'event',
-            'uri' => 'http://schema.org/Event'
-        );
-    }
-
-    if (in_array('http://rdf.freebase.com/ns/music.artist', $types)
-        || in_array('http://schema.org/MusicAlbum', $types)
-    ) {
-        return array(
-            'class' => 'event',
-            'uri' => 'http://schema.org/Event'
-        );
-    }
-
-
-    if (in_array('http://www.opengis.net/gml/_Feature', $types)) {
-        return array(
-            'class' => 'place',
-            'uri' => 'http://schema.org/Place'
-        );
-    }
-
-    return array(
-        'class' => 'thing',
-        'uri' => 'http://schema.org/Thing'
-    );
-}
-
-/**
- * Get a types array from an item.
- * @param object|array|string $item An item with a '@type' property (if the property doesn't exist, an empty array is returned).
- * @return array The items array (or an empty array if the '@type' property doesn't exist).
- */
-function wl_type_to_types($item)
-{
-
-    if (is_string($item)) {
-        return array($item);
-    }
-
-    if (is_array($item)) {
-        return $item;
-    }
-
-    return !isset($item->{'@type'})
-        ? array() // Set an empty array if type is not set on the item.
-        : (is_array($item->{'@type'}) ? $item->{'@type'} : array($item->{'@type'}));
-}
-
-/**
- * Bind the specified post and entities together.
- * @param int $post_id The post ID.
- * @param array $entity_posts An array of entity posts or post IDs.
- */
-function wl_bind_post_to_entities($post_id, $entity_posts)
-{
-
-    // Get the entity IDs.
-    $entity_ids = array();
-    foreach ($entity_posts as $entity_post) {
-        // Support both an array of posts or an array of post ids.
-        $entity_post_id = (is_numeric($entity_post) ? $entity_post : $entity_post->ID);
-        array_push($entity_ids, $entity_post_id);
-
-        // Set the related posts.
-        wl_add_related_posts($entity_post_id, array($post_id));
-    }
-
-    wl_add_related_entities($post_id, $entity_ids);
-}
 
 /**
  * Set the related posts IDs for the specified post ID.
@@ -807,17 +507,6 @@ function wl_get_related_entities($post_id)
     return (is_array($related)
         ? $related
         : array($related));
-}
-
-/**
- * Convert a time string to a SPARQL datetime.
- * @param string $time The time string (in 2014-03-03T08:15:55+00:00 format).
- * @return string A sparql dateTime string (e.g. "2014-03-03T08:15:55.000Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>)
- */
-function wl_get_sparql_time($time)
-{
-
-    return '"' . str_replace('+00:00', '.000Z', $time) . '"^^<http://www.w3.org/2001/XMLSchema#dateTime>';
 }
 
 /**
@@ -997,31 +686,6 @@ function wl_set_source_url($post_id, $source_url)
     add_post_meta($post_id, 'wl_source_url', $source_url);
 }
 
-/**
- * Delete the specified post from relationships and from Redlink.
- * @param int $post_id The post ID.
- */
-function rl_delete_post($post_id)
-{
-
-    write_log("rl_delete_post [ post id :: $post_id ]");
-
-    // Remove all relations.
-
-    // Delete post from RL.
-    // Get the post URI.
-    $uri = wordlift_esc_sparql(wl_get_entity_uri($post_id));
-
-    // Create the SPARQL query, deleting triples where the URI is either subject or object.
-    $sparql = wordlift_get_ns_prefixes();
-    $sparql .= "DELETE { <$uri> ?p ?o . } WHERE { <$uri> ?p ?o . };";
-    $sparql .= "DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };";
-
-    // Execute the query.
-    rl_execute_sparql_update_query($sparql);
-}
-
-add_action('before_delete_post', 'rl_delete_post');
 
 function wl_flush_rewrite_rules_hard($hard)
 {
@@ -1064,65 +728,6 @@ function wl_flush_rewrite_rules_hard($hard)
 }
 
 add_filter('flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1);
-
-/**
- * Execute a query on Redlink.
- * @param string $query The query to execute.
- * @param bool $queue Whether to queue the update.
- * @return bool True if successful otherwise false.
- */
-function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING)
-{
-
-    write_log("rl_execute_sparql_update_query [ queue :: " . ($queue ? 'true' : 'false') . " ]");
-
-    // Queue the update query.
-    if ($queue) {
-        return wl_queue_sparql_update_query($query);
-    }
-
-    // Get the update end-point.
-    $url = wordlift_redlink_sparql_update_url();
-
-    // Prepare the request.
-    $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
-        'method' => 'POST',
-        'headers' => array(
-            'Accept' => 'application/json',
-            'Content-type' => 'application/sparql-update; charset=utf-8'
-        ),
-        'body' => $query
-    ));
-
-    // Send the request.
-    $response = wp_remote_post($url, $args);
-
-    // Remove the key from the query.
-    $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);
-
-    // If an error has been raised, return the error.
-    if (is_wp_error($response) || 200 !== $response['response']['code']) {
-
-        $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
-
-        write_log("rl_execute_sparql_update_query : error [ url :: $scrambled_url ][ args :: ");
-        write_log("\n" . var_export($args, true));
-        write_log("[ response :: ");
-        write_log("\n" . var_export($response, true));
-        write_log("][ body :: ");
-        write_log("\n" . $body);
-        write_log("]");
-
-        return false;
-    }
-
-    write_log("rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: ");
-    write_log("\n" . $query);
-    write_log("]");
-
-    return true;
-}
-
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
@@ -1173,67 +778,6 @@ function wl_shutdown()
 }
 
 add_action('shutdown', 'wl_shutdown');
-
-/**
- * Lift the post content with the microdata.
- */
-function wl_embed_microdata($content)
-{
-
-    write_log("wl_embed_microdata");
-
-    // Apply microdata only to single pages.
-    if (!is_single()) {
-        return $content;
-    }
-
-    global $post;
-
-    // Get the related entities.
-    $entities = wl_get_related_entities($post->ID);
-
-    // Embed entity data for each entity found in the content.
-    foreach ($entities as $entity_post_id) {
-
-        // Get the entity URI and its escaped version for the regex.
-        $entity_uri = wl_get_entity_uri($entity_post_id);
-        $entity_uri_esc = str_replace('/', '\/', $entity_uri);
-
-        // Get the array of sameAs uris.
-        $same_as_uris = wl_get_same_as($entity_post_id);
-
-        // Prepare the sameAs fragment.
-        $same_as = '';
-        foreach ($same_as_uris as $same_as_uri) {
-            $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
-        }
-
-        // Get the main type.
-        $main_type = wl_get_entity_main_type($entity_post_id);
-        if (null === $main_type) {
-            $item_type = '';
-        } else {
-            $item_type = ' itemtype="' . esc_attr($main_type['uri']) . '"';
-        }
-
-        // Get the entity URL.
-        $url = '<link itemprop="url" href="' . get_permalink($entity_post_id) . '" />';
-
-        // Replace the original tagging with the new tagging.
-        $regex = "/<(\\w+)[^<]* itemid=\"$entity_uri_esc\"[^>]*>([^<]*)<\\/\\1>/i";
-        $content = preg_replace($regex,
-            '<$1 itemscope' . $item_type . ' itemid="' . $entity_uri . '">'
-            . $same_as
-            . $url
-            . '<span itemprop="name">$2</span></$1>',
-            $content
-        );
-    }
-
-    return $content;
-}
-
-add_filter('the_content', 'wl_embed_microdata');
 
 /**
  * Replaces the *itemid* attributes URIs with the WordLift URIs.
@@ -1308,14 +852,19 @@ function wl_install_entity_type_data()
             'same_as' => array(
                 'http://schema.org/MusicAlbum',
                 'http://schema.org/Product'
-            )
+            ),
+            'custom_fields' => array()
         ),
         'event' => array(
             'label' => 'Event',
             'description' => 'An event.',
             'css' => 'wl-event',
             'uri' => 'http://schema.org/Event',
-            'same_as' => array('http://dbpedia.org/ontology/Event')
+            'same_as' => array('http://dbpedia.org/ontology/Event'),
+            'custom_fields' => array(
+                WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
+                WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate'
+            )
         ),
         'organization' => array(
             'label' => 'Organization',
@@ -1326,7 +875,8 @@ function wl_install_entity_type_data()
                 'http://rdf.freebase.com/ns/organization.organization',
                 'http://rdf.freebase.com/ns/government.government',
                 'http://schema.org/Newspaper'
-            )
+            ),
+            'custom_fields' => array()
         ),
         'person' => array(
             'label' => 'Person',
@@ -1336,7 +886,8 @@ function wl_install_entity_type_data()
             'same_as' => array(
                 'http://rdf.freebase.com/ns/people.person',
                 'http://rdf.freebase.com/ns/music.artist'
-            )
+            ),
+            'custom_fields' => array()
         ),
         'place' => array(
             'label' => 'Place',
@@ -1346,6 +897,10 @@ function wl_install_entity_type_data()
             'same_as' => array(
                 'http://rdf.freebase.com/ns/location.location',
                 'http://www.opengis.net/gml/_Feature'
+            ),
+            'custom_fields' => array(
+                WL_CUSTOM_FIELD_GEO_LATITUDE  => 'latitude',
+                WL_CUSTOM_FIELD_GEO_LONGITUDE => 'longitude'
             )
         ),
         'thing' => array(
@@ -1353,14 +908,15 @@ function wl_install_entity_type_data()
             'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
             'css' => 'wl-thing',
             'uri' => 'http://schema.org/Thing',
-            'same_as' => array('*') // set as default.
+            'same_as' => array('*'), // set as default.
+            'custom_fields' => array()
         )
     );
 
     foreach ($terms as $slug => $term) {
 
         // Create the term.
-        $result = wp_insert_term($term['label'], 'wl_entity_type', array(
+        $result = wp_insert_term($term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
             'description' => $term['description'],
             'slug' => $slug
         ));
@@ -1370,7 +926,7 @@ function wl_install_entity_type_data()
             continue;
         }
         // Add custom metadata to the term.
-        wl_entity_type_taxonomy_update_term($result['term_id'], $term['css'], $term['uri'], $term['same_as']);
+        wl_entity_type_taxonomy_update_term($result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields']);
     }
 }
 
@@ -1401,42 +957,6 @@ function wl_plugins_url($url, $path, $plugin)
 
 add_filter('plugins_url', 'wl_plugins_url', 10, 3);
 
-/**
- * Get an array of entities from the *itemid* attributes embedded in the provided content.
- * @param string $content The content with itemid attributes.
- * @return array An array of entity posts.
- */
-function wl_get_entities_in_content($content)
-{
-
-    // Remove quote escapes.
-    $content = str_replace('\\"', '"', $content);
-
-    // Match all itemid attributes.
-    $pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
-
-    // Remove the pattern while it is found (match nested annotations).
-    $matches = array();
-
-    // In case of errors, return an empty array.
-    if (false === preg_match_all($pattern, $content, $matches)) {
-        return array();
-    }
-
-//    write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
-
-    // Collect the entities.
-    $entities = array();
-    foreach ($matches[1] as $uri) {
-        $entity = wl_get_entity_post_by_uri($uri);
-        if (null !== $entity) {
-            array_push($entities, $entity->ID);
-        }
-    }
-
-    return $entities;
-}
-
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
 
 require_once('libs/php-json-ld/jsonld.php');
@@ -1464,12 +984,14 @@ require_once('wordlift_user.php');
 
 require_once('wordlift_geo_widget.php');
 
-require_once('wordlift_redlink_functions.php');
+require_once('wordlift_sparql.php');
+require_once('wordlift_redlink.php');
 
 // Add admin functions.
 // TODO: find a way to make 'admin' tests work.
 //if ( is_admin() ) {
 
+    require_once('admin/wordlift_admin.php');
     // add the WordLift admin bar.
     require_once('admin/wordlift_admin_bar.php');
     require_once('admin/wordlift_settings_page.php');

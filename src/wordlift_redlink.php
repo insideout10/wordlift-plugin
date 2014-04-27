@@ -173,3 +173,87 @@ function rl_sparql_select($query, $accept = 'text/csv')
     // Send the request.
     return wp_remote_post($url, $args);
 }
+
+/**
+ * Execute a query on Redlink.
+ * @param string $query The query to execute.
+ * @param bool $queue Whether to queue the update.
+ * @return bool True if successful otherwise false.
+ */
+function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING)
+{
+
+    write_log("rl_execute_sparql_update_query [ queue :: " . ($queue ? 'true' : 'false') . " ]");
+
+    // Queue the update query.
+    if ($queue) {
+        return wl_queue_sparql_update_query($query);
+    }
+
+    // Get the update end-point.
+    $url = wordlift_redlink_sparql_update_url();
+
+    // Prepare the request.
+    $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
+        'method' => 'POST',
+        'headers' => array(
+            'Accept' => 'application/json',
+            'Content-type' => 'application/sparql-update; charset=utf-8'
+        ),
+        'body' => $query
+    ));
+
+    // Send the request.
+    $response = wp_remote_post($url, $args);
+
+    // Remove the key from the query.
+    $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);
+
+    // If an error has been raised, return the error.
+    if (is_wp_error($response) || 200 !== $response['response']['code']) {
+
+        $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
+
+        write_log("rl_execute_sparql_update_query : error [ url :: $scrambled_url ][ args :: ");
+        write_log("\n" . var_export($args, true));
+        write_log("[ response :: ");
+        write_log("\n" . var_export($response, true));
+        write_log("][ body :: ");
+        write_log("\n" . $body);
+        write_log("]");
+
+        return false;
+    }
+
+    write_log("rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: ");
+    write_log("\n" . $query);
+    write_log("]");
+
+    return true;
+}
+
+/**
+ * Delete the specified post from relationships and from Redlink.
+ * @param int $post_id The post ID.
+ */
+function rl_delete_post($post_id)
+{
+
+    write_log("rl_delete_post [ post id :: $post_id ]");
+
+    // Remove all relations.
+
+    // Delete post from RL.
+    // Get the post URI.
+    $uri = wordlift_esc_sparql(wl_get_entity_uri($post_id));
+
+    // Create the SPARQL query, deleting triples where the URI is either subject or object.
+    $sparql = wordlift_get_ns_prefixes();
+    $sparql .= "DELETE { <$uri> ?p ?o . } WHERE { <$uri> ?p ?o . };";
+    $sparql .= "DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };";
+
+    // Execute the query.
+    rl_execute_sparql_update_query($sparql);
+}
+
+add_action('before_delete_post', 'rl_delete_post');

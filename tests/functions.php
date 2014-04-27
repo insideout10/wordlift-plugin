@@ -387,6 +387,50 @@ function wl_clean_up_regex( $fragment ) {
 }
 
 /**
+ * Get a types array from an item.
+ * @param object|array|string $item An item with a '@type' property (if the property doesn't exist, an empty array is returned).
+ * @return array The items array (or an empty array if the '@type' property doesn't exist).
+ */
+function wl_type_to_types($item)
+{
+
+    if (is_string($item)) {
+        return array($item);
+    }
+
+    if (is_array($item)) {
+        return $item;
+    }
+
+    return !isset($item->{'@type'})
+        ? array() // Set an empty array if type is not set on the item.
+        : (is_array($item->{'@type'}) ? $item->{'@type'} : array($item->{'@type'}));
+}
+
+/**
+ * Bind the specified post and entities together.
+ * @param int $post_id The post ID.
+ * @param array $entity_posts An array of entity posts or post IDs.
+ */
+function wl_bind_post_to_entities($post_id, $entity_posts)
+{
+
+    // Get the entity IDs.
+    $entity_ids = array();
+    foreach ($entity_posts as $entity_post) {
+        // Support both an array of posts or an array of post ids.
+        $entity_post_id = (is_numeric($entity_post) ? $entity_post : $entity_post->ID);
+        array_push($entity_ids, $entity_post_id);
+
+        // Set the related posts.
+        wl_add_related_posts($entity_post_id, array($post_id));
+    }
+
+    wl_add_related_entities($post_id, $entity_ids);
+}
+
+
+/**
  * Parse the string representation of the JSON-LD response from the analysis service.
  * @param string $json A string representation in JSON-LD format.
  * @return array|null Null in case of failure, otherwise an array with Text Annotations, Entity Annotations and
