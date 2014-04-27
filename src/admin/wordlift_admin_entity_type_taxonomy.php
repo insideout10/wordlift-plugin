@@ -21,6 +21,7 @@ function wl_entity_type_taxonomy_save_custom_meta($term_id)
         write_log("wl_entity_type_save_taxonomy_custom_meta [ term id :: $term_id ]");
     }
 }
+
 add_action('edited_wl_entity_type', 'wl_entity_type_taxonomy_save_custom_meta', 10, 2);
 add_action('create_wl_entity_type', 'wl_entity_type_taxonomy_save_custom_meta', 10, 2);
 
@@ -102,27 +103,18 @@ function wl_entity_type_taxonomy_edit_term_fields($term)
             <p class="description"><?php _e('Enter a value for this field', 'wordlift') ?></p>
         </td>
     </tr>
+    <tr class="form-field">
+        <th scope="row" valign="top"><label
+                for="term_meta[additional_properties]"><?php _e('Additional Properties', 'wordlift'); ?></label></th>
+        <td>
+            <textarea name="term_meta[additional_properties]" id="term_meta[additional_properties]"><?php echo ''; ?></textarea>
+
+            <p class="description"><?php _e('Enter a value for this field', 'wordlift') ?></p>
+        </td>
+    </tr>
 <?php
 
 }
+
 add_action('wl_entity_type_edit_form_fields', 'wl_entity_type_taxonomy_edit_term_fields', 10, 2);
 
-
-/**
- * Update an entity type with the provided data.
- * @param int $term_id The numeric term ID.
- * @param string $css_class The stylesheet class.
- * @param string $uri The URI.
- * @param array $same_as An array of sameAs URIs.
- * @return True if option value has changed, false if not or if update failed.
- */
-function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array())
-{
-    write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
-
-    return update_option("wl_entity_type_${term_id}", array(
-        'css_class' => $css_class,
-        'uri' => $uri,
-        'same_as' => $same_as
-    ));
-}

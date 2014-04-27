@@ -33,3 +33,22 @@ function wl_entity_type_taxonomy_register()
     register_taxonomy('wl_entity_type', 'entity', $args);
 }
 
+/**
+ * Update an entity type with the provided data.
+ * @param int $term_id The numeric term ID.
+ * @param string $css_class The stylesheet class.
+ * @param string $uri The URI.
+ * @param array $same_as An array of sameAs URIs.
+ * @return True if option value has changed, false if not or if update failed.
+ */
+function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array())
+{
+    write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
+
+    return update_option("wl_entity_type_${term_id}", array(
+        'css_class' => $css_class,
+        'uri' => $uri,
+        'same_as' => $same_as
+    ));
+}
+

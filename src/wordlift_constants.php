@@ -49,3 +49,11 @@ define('WL_REDLINK_API_BASE_URI', 'https://api.redlink.io/');
 
 // the WordLift options identifier.
 define('WL_OPTIONS_NAME', 'wordlift_options');
+
+// The field name where the properties are hold (from a POST).
+define('WL_POST_ENTITY_PROPS', 'wl_props');
+
+define('WL_CUSTOM_FIELD_GEO_LATITUDE', 'wl_geo_latitude');
+define('WL_CUSTOM_FIELD_GEO_LONGITUDE', 'wl_geo_longitude');
+define('WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start');
+define('WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end');

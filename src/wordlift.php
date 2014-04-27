@@ -1467,7 +1467,9 @@ require_once('wordlift_geo_widget.php');
 require_once('wordlift_redlink_functions.php');
 
 // Add admin functions.
-if (is_admin()) {
+// TODO: find a way to make 'admin' tests work.
+//if ( is_admin() ) {
+
     // add the WordLift admin bar.
     require_once('admin/wordlift_admin_bar.php');
     require_once('admin/wordlift_settings_page.php');
@@ -1475,9 +1477,10 @@ if (is_admin()) {
     require_once('admin/wordlift_admin_meta_box_entities.php');
     require_once('admin/wordlift_admin_meta_box_related_posts.php');
     require_once('admin/wordlift_admin_entity_type_taxonomy.php');
+    require_once('admin/wordlift_admin_entity_props.php');
     // add the search entity AJAX.
     require_once('admin/wordlift_admin_ajax_search.php');
-}
+//}
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,

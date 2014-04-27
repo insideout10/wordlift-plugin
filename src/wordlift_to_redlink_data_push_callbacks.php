@@ -255,6 +255,13 @@ function wordlift_save_post_and_related_entities($post_id)
         write_log("]");
 
         wl_save_entities($entities_via_post, $post_id);
+
+        // If there are props values, save them.
+        if (isset($_POST[WL_POST_ENTITY_PROPS])) {
+            foreach ($_POST[WL_POST_ENTITY_PROPS] as $key => $values) {
+                wl_entity_props_save($key, $values);
+            }
+        }
     }
 
     // Save entities coming as embedded in the text.
@@ -296,7 +303,7 @@ function wl_get_sparql_post_references($post_id)
 /**
  * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
  * @param string $uri The entity URI.
- * @return array mixed An array of posts.
+ * @return WP_Post|null A WP_Post instance or null if not found.
  */
 function wl_get_entity_post_by_uri($uri)
 {
