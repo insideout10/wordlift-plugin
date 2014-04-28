@@ -2,19 +2,23 @@
 //CHORD INTRO:
 //http://www.delimited.io/blog/2013/12/8/chord-diagrams-in-d3
 
-jQuery.post(
-    wl_chord_params.ajax_url, 
-    {
-        action: wl_chord_params.action,
-        post_id: wl_chord_params.post_id,
-        depth: wl_chord_params.depth
-    },
-    function(response){
-    	var data  = JSON.parse(response);
-        console.log( data );
-        buildChord(data);
-    }
-);
+getChordData(wl_chord_params);
+
+function getChordData(wl_chord_params){
+	jQuery.post(
+		wl_chord_params.ajax_url, 
+		{
+		    action: wl_chord_params.action,
+		    post_id: wl_chord_params.post_id,
+		    depth: wl_chord_params.depth
+		},
+		function(response){
+			var data  = JSON.parse(response);
+		    //console.log( data );
+		    buildChord(data, wl_chord_params);
+		}
+	);
+}
 
 /*
 console.log("initiating D3 ajax request");
@@ -28,8 +32,7 @@ d3.json( wl_chord_params.ajax_url )
 	);
 */
 
-function buildChord(dataMock) {
-	
+function buildChord(dataMock, wl_chord_params) {
 	var entities = dataMock.entities;
 	var relations = dataMock.relations;
 	
@@ -49,7 +52,7 @@ function buildChord(dataMock) {
 		matrix[y][x] = 1;
 		//anche la label!!!
 	}
-
+	
 	var viz = d3.select( '#' + wl_chord_params.widget_id ).append('svg');
 	viz.attr('width', '100%').attr('height', '100%');
 

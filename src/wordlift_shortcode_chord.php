@@ -103,8 +103,8 @@ function wl_chord_widget_func($atts){
 	
 	//adding javascript code
 	wp_enqueue_script( 'd3', plugins_url('bower_components/d3/d3.min.js', __FILE__) );
-	wp_enqueue_script( 'wl_shortcode_chord', plugins_url('js-client/wordlift_shortcode_chord.js', __FILE__) );
-	wp_localize_script('wl_shortcode_chord', 'wl_chord_params', array(
+	wp_enqueue_script( $widget_id, plugins_url('js-client/wordlift_shortcode_chord.js', __FILE__) );
+	wp_localize_script($widget_id, 'wl_chord_params', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'action' => 'wl_ajax_chord_widget',
 			'post_id' => $post_id,
