@@ -1,15 +1,38 @@
 <?php
 
+//get posts related to an entity
+function wl_get_entity_related_posts($entity_id){
+	$result  = array();
+	$e =  get_post($entity_id);
+	if($e->post_type == 'entity'){
+		foreach( get_posts() as $post) {
+			$post_id = $post->ID;
+			// Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+			$related = wl_get_related_entities($post_id);
+			$i = array_search($entity_id, $related);
+			if( $i !== false ){
+				$result[] = $post_id;
+			}
+		}
+	}
+	return $result;
+}
+
+//recursive function used to retrieve related content (both posts and entities)
 function wl_ajax_related_entities($id, $depth, $related=null) {
 	
-	if($related==null) {
+	if($related == null) {
 		$related->entities = array($id);
 		$related->relations = array();
 	}
 	
-	//get related entities for this entity
-	$rel = wl_get_related_entities($id);
+	//get related content
+	$rel = wl_get_entity_related_posts($id);
+	$rel += wl_get_related_entities($id);
 	$rel += wl_get_related_post_ids($id);
+	/*echo($id);
+	print_r($rel);
+	echo("<br>");*/
 	
 	//list of entities ($rel) should be ordered by interest factors
 	shuffle($rel);
@@ -39,6 +62,7 @@ function wl_ajax_related_entities($id, $depth, $related=null) {
 	return $related;
 }
 
+//optimize and convert retrieved content to JSON
 function wl_ajax_related_entities_to_json( $data ) {
 
 	for($i=0; $i<sizeof($data->entities); $i++) {
@@ -94,7 +118,7 @@ function wl_chord_widget_func($atts){
 	extract( shortcode_atts( array(
 								'width' => '200px',
 								'height' =>	'100px',			
-								'main_color' =>	'blue',
+								'main_color' =>	'f2d',
 								'depth' => 5
 							), $atts));
 	
@@ -109,13 +133,21 @@ function wl_chord_widget_func($atts){
 			'action' => 'wl_ajax_chord_widget',
 			'post_id' => $post_id,
 			'widget_id' => $widget_id,
-			'depth' => $depth
+			'depth' => $depth,
+			'main_color' => $main_color
 		)
 	);
 
 	
 	//returning html tamplate
 	ob_start();
+	
+	// DEBUGGING
+	/*$result = wl_ajax_related_entities($post_id, 100);
+	echo "<pre>";
+	print_r( $result );
+	echo "</pre>";*/
+	
     include('wordlift_shortcode_chord_template.php');
     return ob_get_clean();	
 }

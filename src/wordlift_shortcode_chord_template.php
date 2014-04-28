@@ -6,8 +6,7 @@
 
 <!-- container for the widget -->
 <div id="<?=$widget_id?>" style="width:<?=$width?>;
-			height:<?=$height?>;
-			background-color:<?=$main_color?>;">
+			height:<?=$height?>;">
 </div>
 
 <!-- ---------------- -->

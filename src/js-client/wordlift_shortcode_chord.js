@@ -92,12 +92,12 @@ function buildChord(dataMock, wl_chord_params) {
 		.attr('d', arc)
 		.attr('transform', translate(0.5, 0.5))
 		.style('fill', function(d){
-				var baseColor = '#f22';
+				var baseColor = wl_chord_params.main_color;
 				var type = entities[d.index].type;
 				if(type == 'post')
 					return baseColor;
 				if(type == 'entity')
-					return colorLuminance( baseColor, -0.3);
+					return colorLuminance( baseColor, -0.5);
 				return colorLuminance( baseColor, 0.5);
 			}
 		);
