@@ -28,7 +28,7 @@ function wl_ajax_related_entities($id, $depth, $related=null) {
 	
 	//get related content
 	$rel = wl_get_entity_related_posts($id);
-	$rel += wl_get_related_entities($id);
+	$rel += wl_get_related_entities($id);	//...should use array_merge instead of +=
 	$rel += wl_get_related_post_ids($id);
 	/*echo($id);
 	print_r($rel);
@@ -70,6 +70,7 @@ function wl_ajax_related_entities_to_json( $data ) {
 		$post = get_post($id);
 		$entity = new stdClass();
 		$entity->uri = wl_get_entity_uri( $id );
+		$entity->url = get_permalink($id);
 		$entity->label = $post->post_title;
 		$entity->type = $post->post_type;
 		$entity->class = $post->post_class;

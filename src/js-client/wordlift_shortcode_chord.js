@@ -58,13 +58,13 @@ function buildChord(dataMock, wl_chord_params) {
 
 	//getting dimensions in pixels
 	var width = parseInt(viz.style('width'));
-	var height = parseInt(viz.style('height'));
+	var height = parseInt(viz.style('width'));
 	var innerRadius = width*0.2;
 	var outerRadius = width*0.25;
 	var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
 	var chord = d3.layout.chord()
-				.padding(0.5)
+				.padding(0.3)
 				.matrix(matrix);
 
 	//draw relations
@@ -107,22 +107,53 @@ function buildChord(dataMock, wl_chord_params) {
 		.data(chord.groups)
 		.enter()
 		.append('text')
+		.attr('class', 'label')
 		.html( function(d){
 			return entities[d.index].label;
 		})
+		.attr('font-size', '12px')
 		.attr('transform', function(d){
 			
-			var alpha = d.startAngle - Math.PI/2 + ((d.endAngle - d.startAngle)/2);
+			var alpha = d.startAngle - Math.PI/2 + Math.abs((d.endAngle - d.startAngle)/2);
+			var labelWidth = 3;
+			var labelAngle;
+			if(alpha > Math.PI/2){
+				labelAngle = alpha - Math.PI;
+				labelWidth += d3.select(this)[0][0].clientWidth;
+			}
+			else {
+				labelAngle = alpha;
+			}
+			labelAngle = rad2deg( labelAngle );
 			
-			var labelWidth = 0.5 * d3.select(this)[0][0].clientWidth / width;
-			
-			var r = outerRadius*1.4/width;
-			var x = -labelWidth + 0.5 + ( r * Math.cos(alpha) );
+			var r = (outerRadius + labelWidth)/width;
+			var x = 0.5 + ( r * Math.cos(alpha) );
 			var y = 0.5 + ( r * Math.sin(alpha) );
 		
-			alpha = rad2deg( alpha ) - 90;
-			return translate(x, y);// + rotate(alpha);
+			
+			return translate(x, y) + rotate( labelAngle );
 		});
+		
+		viz.selectAll('.entity, .label')
+			.on('mouseover', function(c) {
+				d3.select(this).attr('cursor','pointer');
+				viz.selectAll('.relation')
+		            .filter(function(d, i) {
+		            	return d.source.index == c.index || d.target.index == c.index;
+		            })
+		            .style("opacity", 0.8);
+				})
+			.on('mouseout', function(c) {
+				viz.selectAll('.relation')
+		            .filter(function(d, i) {
+		            	return d.source.index == c.index || d.target.index == c.index;
+		            })
+		            .style("opacity", 0.2);
+				})
+			.on('click', function(d){
+				var url = entities[d.index].url;
+				window.location = url;
+			});
 
 	function translate(x, y) {
 		return 'translate(' + x*width + ',' + y*height +')';
