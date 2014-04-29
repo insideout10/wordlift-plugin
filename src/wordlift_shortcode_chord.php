@@ -161,4 +161,53 @@ function wl_register_shortcode_chord_widget(){
 //hook to init to set up shortcode and widget
 add_action( 'init', 'wl_register_shortcode_chord_widget');
 
+
+
+
+
+
+
+
+////////////////////
+// TinyMCE button //
+////////////////////
+function wl_chord_button() {
+   // Only add hooks when the current user has permissions AND is in Rich Text editor mode
+   if ( ( current_user_can('edit_posts') || current_user_can('edit_pages') ) && get_user_option('rich_editing') ) {
+     add_filter("mce_external_plugins", "wl_chord_button_register_tinymce_javascript");
+     add_filter('mce_buttons', 'wl_chord_button_register_button');
+   }
+}
+ 
+function wl_chord_button_register_button($buttons) {
+   array_push($buttons, "wl_chord");
+   return $buttons;
+}
+ 
+// Load the TinyMCE plugin : editor_plugin.js (wp2.5)
+function wl_chord_button_register_tinymce_javascript($plugin_array) {
+   $plugin_array['wl_chord'] = plugins_url('js-client/wordlift_chord_tinymce_plugin.js', __FILE__);
+   return $plugin_array;
+}
+
+// init process for button control
+add_action('init', 'wl_chord_button');
+
+
+//add wp-color-picker
+function wl_enqueue_chord_dialog_tools( $hook_suffix ) {
+    
+	wp_enqueue_script('jquery');
+	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-ui-slider');
+	
+	// first check that $hook_suffix is appropriate for your admin page
+    wp_enqueue_style( 'wp-color-picker' );
+    wp_enqueue_script( 'wl_chord_dialog', plugins_url('js-client/wordlift_chord_tinymce_dialog.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
+}
+add_action( 'admin_enqueue_scripts', 'wl_enqueue_chord_dialog_tools' );
+
+
+
+
 ?>
