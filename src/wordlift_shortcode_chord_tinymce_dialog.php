@@ -1,21 +1,23 @@
-<div>
-	<h3>Please edit the options for your WordLift Chord.</h3>
+<div id="wordlift_chord_dialog">
 	<form>
-		<p>
-			Choose depth: <input>
+		<p>			
+			<input value="7" id="wordlift_chord_depth_field"><br>
+			Depth: how many entities the Graph will display.
 		</p>
 		<p>
-			Choose size: <input>
+			<input value="500" id="wordlift_chord_width_field"><br>
+			Width of the Graph in pixels.
 		</p>
 		<p>
-			Choose main color: <input type="text" value="#bada55" class="my-color-field" />
+			<input value="500" id="wordlift_chord_height_field"><br>
+			Height of the Graph in pixels.
 		</p>
 		<p>
-			<input type="submit" value="Ok" onClick="submitChordParams()">
+			<input type="text" value="#22f" id="wordlift_chord_color_field" /><br>
+			Base to generate the color palette of the Graph.
+		</p>
+		<p>
+			<input id="wordlift_chord_dialog_ok" type="button" value="Ok" onClick="">
 		</p>
 	</form>
 </div>
-
-<script>
-
-</script>

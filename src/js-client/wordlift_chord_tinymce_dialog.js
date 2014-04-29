@@ -1,19 +1,23 @@
 jQuery(document).ready(function($){
-	$('.my-color-field').wpColorPicker();
-	console.log("SIAMO PRONTI");
-});
-
-function submitChordParams(){
-	//console.log(wl_chord_params);
-	//we should get default parameters from the php
-	var width = '500';
-	var height = '400';
-	var main_color = '#f2d';
-	var depth = '5';
-	shortcode_text = '[wl-chord-widget width=' + width + 'px' +
-									  ' height=' + height + 'px' +
-									  ' main_color=' + main_color +
-									  ' depth=' + depth + ']';
-	top.tinymce.activeEditor.execCommand('mceInsertContent', false, shortcode_text);
 	
-}
+	$('#wordlift_chord_color_field').wpColorPicker({
+		hide: true
+	});
+	
+	$('#wordlift_chord_dialog').hide();
+	
+	$('#wordlift_chord_dialog_ok').on('click', function(){
+		
+		//we should get default parameters from the php
+		var width = $('#wordlift_chord_width_field').val();
+		var height = $('#wordlift_chord_height_field').val();
+		var main_color = $('#wordlift_chord_color_field').val();
+		var depth = $('#wordlift_chord_depth_field').val();
+		shortcode_text = '[wl-chord-widget width=' + width + 'px' +
+										  ' height=' + height + 'px' +
+										  ' main_color=' + main_color +
+										  ' depth=' + depth + ']';
+		top.tinymce.activeEditor.execCommand('mceInsertContent', false, shortcode_text);
+		$('#wordlift_chord_dialog').dialog('close');
+	});
+});

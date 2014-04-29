@@ -14,12 +14,19 @@
 			);
 			
 			ed.addCommand('wl_chord', function() {
-				ed.windowManager.open({
+			
+				console.log("AAA");
+				jQuery('#wordlift_chord_dialog').dialog({
+					title: 'Wordlift Chord Graph',
+					width: 400,
+					height: 500
+				});
+				/*ed.windowManager.open({
 					file: 'http://wordlift3.localhost/wp-content/plugins/wordlift/wordlift_shortcode_chord_tinymce_dialog.php',
 					width: 500,
 					height: 300,
 					inline: true
-				});
+				});*/
             });
         },
  
