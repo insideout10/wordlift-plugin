@@ -1,7 +1,4 @@
 
-//CHORD INTRO:
-//http://www.delimited.io/blog/2013/12/8/chord-diagrams-in-d3
-
 getChordData(wl_chord_params);
 
 function getChordData(wl_chord_params){
@@ -20,16 +17,24 @@ function getChordData(wl_chord_params){
 	);
 }
 
+
 /*
-console.log("initiating D3 ajax request");
-d3.json( wl_chord_params.ajax_url )
-	.header("Content-Type", "application/json")
-	.post(
-		JSON.stringify({action:"wl_ajax_chord_widget"}),
-		function(error, response){ 
-			console.log(response);
-		}
-	);
+ * NOT WORKING AND I CAN'T UNDERSTAND WHY
+function getChordData(wl_chord_params) {
+	console.log("initiating D3 ajax request to " + wl_chord_params.ajax_url);
+	d3.xhr( wl_chord_params.ajax_url )
+		.header("Content-Type", "application/json")
+		.post(
+			JSON.stringify({
+				action:wl_chord_params.action,
+				post_id: wl_chord_params.post_id,
+		    	depth: wl_chord_params.depth
+			}),
+			function(error, response){ 
+				console.log(response);
+			}
+		);
+}
 */
 
 function buildChord(dataMock, wl_chord_params) {
@@ -58,9 +63,14 @@ function buildChord(dataMock, wl_chord_params) {
 
 	//getting dimensions in pixels
 	var width = parseInt(viz.style('width'));
-	var height = parseInt(viz.style('width'));
-	var innerRadius = width*0.2;
-	var outerRadius = width*0.25;
+	var height = parseInt(viz.style('height'));
+	var size;
+	if(height < width)
+		size = height;
+	else
+		size = width;
+	var innerRadius = size*0.2;
+	var outerRadius = size*0.25;
 	var arc = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
 	var chord = d3.layout.chord()
@@ -126,7 +136,7 @@ function buildChord(dataMock, wl_chord_params) {
 			}
 			labelAngle = rad2deg( labelAngle );
 			
-			var r = (outerRadius + labelWidth)/width;
+			var r = (outerRadius + labelWidth)/size;
 			var x = 0.5 + ( r * Math.cos(alpha) );
 			var y = 0.5 + ( r * Math.sin(alpha) );
 		
@@ -156,7 +166,7 @@ function buildChord(dataMock, wl_chord_params) {
 			});
 
 	function translate(x, y) {
-		return 'translate(' + x*width + ',' + y*height +')';
+		return 'translate(' + x*size + ',' + y*size +')';
 	}
 
 	function rotate(x) {

@@ -1,7 +1,19 @@
 jQuery(document).ready(function($){
 	
+	//set up color pickker
 	$('#wordlift_chord_color_field').wpColorPicker({
 		hide: true
+	});
+	
+	//set up depth slider
+	$('#wordlift_chord_depth_slider').slider({
+		range: 'max',
+		min: 3,
+		max: 30,
+		value: 7,
+		slide: function( event, ui ) {
+			$( "#wordlift_chord_depth_field" ).val( ui.value );
+		}
 	});
 	
 	$('#wordlift_chord_dialog').hide();
