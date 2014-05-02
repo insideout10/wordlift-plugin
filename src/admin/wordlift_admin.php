@@ -4,6 +4,29 @@
  */
 
 /**
+ * Serialize an entity post.
+ * @param array $entity The entity post.
+ * @return array mixed The entity data array.
+ */
+function wl_serialize_entity($entity){
+        
+        $type = wl_entity_type_taxonomy_get_object_terms( $entity->ID );
+        $images = wl_get_image_urls( $entity->ID );
+        
+        return array(
+            'id'            =>      wl_get_entity_uri( $entity->ID ),
+            'label'         =>      $entity->post_title,
+            'sameAs'        =>      wl_get_same_as( $entity->ID ),
+            'type'          =>      $type['uri'],
+            'css'           =>      $type['css_class'],
+            'types'         =>      wl_get_entity_types( $entity->ID ),
+            'thumbnail'     =>      $images[0],
+            'thumbnails'    =>      $images,
+            'source'        =>      'wordlift',
+            'sources'       =>      array('wordlift')            
+        );
+}
+/**
  * Removes empty text annotations from the post content.
  * @param array $data The post data.
  * @return array mixed The post data array.

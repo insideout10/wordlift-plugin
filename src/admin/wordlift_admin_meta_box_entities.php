@@ -79,45 +79,12 @@ function wl_entities_box_js( $entities ) {
 EOF;
 
     foreach ($entities as $entity) {
-        // label
-        $label = json_encode( $entity->post_title );
         // uri
-        $uri   = json_encode( wl_get_entity_uri( $entity->ID ) );
-        // same_as
-        $same_as = json_encode( wl_get_same_as( $entity->ID ) );
-        // types
-        $types = json_encode( wl_get_entity_types( $entity->ID ) );
-
-        $type = wl_entity_type_taxonomy_get_object_terms( $entity->ID );
-
-        write_log("wl_entities_box_js [ type :: " . var_export($type, true). " ]");
-
-        $type_uri = json_encode( $type['uri'] );
-        $type_css = json_encode( $type['css_class'] );
-
-        // images
-        $images = wl_get_image_urls( $entity->ID );
-        // thumbnail
-        $thumbnail = json_encode( $images[0] );
-        // images
-        $thumbnails = json_encode( $images );
-
-        echo <<<EOF
-        e[$uri] = {
-            id: $uri,
-            label: $label,
-            sameAs: $same_as,
-            type: $type_uri,
-            css: $type_css,
-            types: $types,
-            thumbnail: $thumbnail,
-            thumbnails: $thumbnails,
-            source: 'wordlift',
-            sources: ['wordlift']
-        };
-
-EOF;
-
+        $uri = json_encode( wl_get_entity_uri( $entity->ID ) );
+        // entity object
+        $obj = json_encode( wl_serialize_entity( $entity ) );
+        
+        echo "e[$uri] = $obj;";        
     }
 
     echo <<<EOF
