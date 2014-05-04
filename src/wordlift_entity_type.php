@@ -167,7 +167,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 }
 
 /**
- * Prints inline JavaScript with the entity types configuration.
+ * Prints inline JavaScript with the entity types configuration removing duplicates.
  */
 function wl_print_entity_type_inline_js()
 {
@@ -184,8 +184,7 @@ function wl_print_entity_type_inline_js()
 
 EOF;
 
-    // Cycle in terms and print them out to the JS.
-    foreach ($terms as $term_id) {
+    array_walk ( $terms, function( &$term_id, $key ) {
         // Load the type data.
         $type = wl_entity_type_taxonomy_get_term_options($term_id);
 
@@ -194,19 +193,18 @@ EOF;
             continue;
         }
 
-        // Assign the data to vars for printing to the JS.
-        $uri = json_encode($type['uri']);
-        $css_class = json_encode($type['css_class']);
-        $same_as = json_encode($type['same_as']);
-
-        echo <<<EOF
-            t.push({
-                css: $css_class,
-                uri: $uri,
-                sameAs: $same_as
-            });
-
-EOF;
+        $term_id = json_encode(array(
+            'uri' => $type['uri'],
+            'css' => $type['css_class'], 
+            'sameAs' => $type['same_as'], 
+        ));
+    });
+    
+    // Remove duplicates
+    $terms = array_unique($terms);
+    // Cycle in terms and print them out to the JS.
+    foreach ($terms as $type) {
+        echo "t.push($type);";
     }
 
     echo <<<EOF
