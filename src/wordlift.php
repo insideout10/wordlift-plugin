@@ -999,6 +999,9 @@ require_once('wordlift_redlink.php');
     require_once('admin/wordlift_admin_entity_props.php');
     // add the search entity AJAX.
     require_once('admin/wordlift_admin_ajax_search.php');
+    // add the entity creation AJAX.
+    require_once('admin/wordlift_admin_ajax_add_entity.php');
+
 //}
 
 // load languages.
