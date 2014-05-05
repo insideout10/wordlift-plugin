@@ -174,7 +174,7 @@ function wl_print_entity_type_inline_js()
 
     $terms = get_terms(WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'hide_empty' => false,
-        'fields' => 'ids'
+        'fields' => 'id=>name'
     ));
 
     echo <<<EOF
@@ -184,7 +184,8 @@ function wl_print_entity_type_inline_js()
 
 EOF;
 
-    array_walk ( $terms, function( &$term_id, $key ) {
+    array_walk_recursive ( $terms, function( &$name, $term_id ) {
+
         // Load the type data.
         $type = wl_entity_type_taxonomy_get_term_options($term_id);
 
@@ -193,13 +194,14 @@ EOF;
             continue;
         }
 
-        $term_id = json_encode(array(
-            'uri' => $type['uri'],
-            'css' => $type['css_class'], 
-            'sameAs' => $type['same_as'], 
+        $name = json_encode(array(
+            'label'     =>  $name,
+            'uri'       =>  $type['uri'],
+            'css'       =>  $type['css_class'], 
+            'sameAs'    =>  $type['same_as'], 
         ));
     });
-    
+
     // Remove duplicates
     $terms = array_unique($terms);
     // Cycle in terms and print them out to the JS.
