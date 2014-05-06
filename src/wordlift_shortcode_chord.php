@@ -18,6 +18,7 @@ function wl_get_most_connected_entity() {
 	}
 	
 	$famous_entities = array_count_values($entities);
+	arsort($famous_entities);
 	if(sizeof($famous_entities) >= 1){
 		return key($famous_entities);	
 	} else {
