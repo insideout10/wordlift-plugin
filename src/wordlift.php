@@ -1523,6 +1523,7 @@ require_once('wordlift_ajax_search_entities.php');
 require_once('wordlift_user.php');
 
 require_once('wordlift_geo_widget.php');
+require_once('wordlift_chord_widget.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
