@@ -213,7 +213,6 @@ function buildChord(dataMock, wl_chord_params) {
 		console.log(d);
 	}
 	
-	// thanks to http://www.sitepoint.com/javascript-generate-lighter-darker-color/
 	function colorLuminance(hex, lum) {
 		// validate hex string
 		hex = String(hex).replace(/[^0-9a-f]/gi, '');
