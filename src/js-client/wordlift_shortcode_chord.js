@@ -2,6 +2,7 @@
 getChordData(wl_chord_params);
 
 function getChordData(wl_chord_params){
+	//console.log(wl_chord_params);
 	jQuery.post(
 		wl_chord_params.ajax_url, 
 		{

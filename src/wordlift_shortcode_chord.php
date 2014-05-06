@@ -1,5 +1,31 @@
 <?php
 
+//get entity with more relations (used for the global chord)
+function wl_get_most_connected_entity() {
+	$post_ids = get_posts(array(
+		'numberposts'   => 10,	
+		'fields'        => 'ids', 		//only get post IDs
+		'orderby' 		=> 'post_date',
+		'order' 		=> 'DESC'
+	));
+	
+	$entities = array();
+	foreach($post_ids as $id){
+		$new_entities = wl_get_related_entities($id);
+		foreach($new_entities as $new){
+			$entities[] = $new;
+		}
+	}
+	
+	$famous_entities = array_count_values($entities);
+	if(sizeof($famous_entities) >= 1){
+		return key($famous_entities);	
+	} else {
+		return $post_ids[0];
+	}
+
+}
+
 //get posts related to an entity
 function wl_get_entity_related_posts($entity_id){
 	$result  = array();
@@ -117,14 +143,21 @@ function wl_chord_widget_func($atts){
 	
 	//extract attributes and set default values
 	extract( shortcode_atts( array(
-								'width' => '200px',
-								'height' =>	'100px',			
+								'width' => '100%',
+								'height' =>	'500px',			
 								'main_color' =>	'f2d',
-								'depth' => 5
+								'depth' => 7,
+								'global' => false
 							), $atts));
 	
-	$post_id = get_the_ID();
-	$widget_id = 'wl_chord_widget_' . $post_id;
+	if($global){
+		$post_id = wl_get_most_connected_entity();
+		$widget_id = 'wl_chord_widget_global';
+		$height = '200px';
+	} else {
+		$post_id = get_the_ID();
+		$widget_id = 'wl_chord_widget_' . $post_id;
+	}
 	
 	//adding javascript code
 	wp_enqueue_script( 'd3', plugins_url('bower_components/d3/d3.min.js', __FILE__) );
