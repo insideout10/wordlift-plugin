@@ -122,7 +122,12 @@ function buildChord(dataMock, wl_chord_params) {
 		.html( function(d){
 			return entities[d.index].label;
 		})
-		.attr('font-size', '12px')
+		.attr('font-size', function(){
+			var fontSize = parseInt( size/35 );
+			if(fontSize < 8)
+				fontSize = 8;
+			return fontSize + 'px';
+		})
 		.attr('transform', function(d){
 			
 			var alpha = d.startAngle - Math.PI/2 + Math.abs((d.endAngle - d.startAngle)/2);
