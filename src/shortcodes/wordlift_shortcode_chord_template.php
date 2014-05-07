@@ -1,9 +1,3 @@
-
-
-<!-- ------------ -->
-<!-- CHORD WIDGET -->
-<!-- ------------ -->
-
 <!-- container for the widget -->
 <div id="<?=$widget_id?>" style="width:<?=$width?>;
 			height:<?=$height?>;
@@ -11,10 +5,6 @@
 			margin-top:10px;
 			margin-bottom:10px">
 </div>
-
-<!-- ---------------- -->
-<!-- END CHORD WIDGET -->
-<!-- ---------------- -->
 
 
 
