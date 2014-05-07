@@ -989,7 +989,7 @@ require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
 
 // Add admin functions.
-// TODO: find a way to make 'admin' tests work.
+// TODO: find a way to make 'admin' UI tests work.
 //if ( is_admin() ) {
 
     require_once('admin/wordlift_admin.php');

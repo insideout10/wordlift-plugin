@@ -249,7 +249,7 @@ function wl_shortcode_chord($atts)
 }
 
 /**
- * Registers the *wl-chord-widget* shortcode.
+ * Registers the *wl-chord* shortcode.
  */
 function wl_shortcode_chord_register()
 {
