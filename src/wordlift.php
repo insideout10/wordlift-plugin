@@ -940,7 +940,7 @@ function wl_plugins_url($url, $path, $plugin)
     write_log("wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
-    if (1 !== preg_match('/\/wordlift(_editor)?.php$/i', $plugin)) {
+    if (1 !== preg_match('/\/wordlift(_editor|_shortcode_chord)?.php$/i', $plugin)) {
         return $url;
     };
 
@@ -971,7 +971,10 @@ require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
-require_once('wordlift_shortcode_related_posts.php');
+
+// Shortcodes
+require_once('shortcodes/wordlift_shortcode_related_posts.php');
+require_once('shortcodes/wordlift_shortcode_chord.php');
 
 require_once('wordlift_indepth_articles.php');
 
@@ -980,6 +983,7 @@ require_once('wordlift_freebase_image_proxy.php');
 require_once('wordlift_user.php');
 
 require_once('wordlift_geo_widget.php');
+require_once('wordlift_chord_widget.php');
 
 require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
