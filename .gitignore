@@ -7,7 +7,7 @@ wp-tests/
 *.sublime-project
 *.sublime-workspace
 *~
-run-tests.sh
+setenv.sh
 wp-tests/wordpress/wp-content/uploads
 composer.phar
 composer.lock
