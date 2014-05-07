@@ -940,7 +940,7 @@ function wl_plugins_url($url, $path, $plugin)
     write_log("wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
-    if (1 !== preg_match('/\/wordlift(_editor|_shortcode_chord)?.php$/i', $plugin)) {
+    if (1 !== preg_match('/\/wordlift[^.]*.php$/i', $plugin)) {
         return $url;
     };
 
@@ -1005,6 +1005,9 @@ require_once('wordlift_redlink.php');
     require_once('admin/wordlift_admin_ajax_search.php');
     // add the entity creation AJAX.
     require_once('admin/wordlift_admin_ajax_add_entity.php');
+
+    // Load the wl-chord TinyMCE button and configuration dialog.
+    require_once('admin/wordlift_admin_shortcode_chord.php');
 
 //}
 
