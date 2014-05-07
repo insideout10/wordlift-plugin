@@ -25,6 +25,8 @@ jQuery(document).ready(function($){
 		var height = $('#wordlift_chord_height_field').val();
 		var main_color = $('#wordlift_chord_color_field').val();
 		var depth = $('#wordlift_chord_depth_field').val();
+
+        // TODO: the following variable is undeclared. Fix.
 		shortcode_text = '[wl-chord-widget width=' + width + 'px' +
 										  ' height=' + height + 'px' +
 										  ' main_color=' + main_color +

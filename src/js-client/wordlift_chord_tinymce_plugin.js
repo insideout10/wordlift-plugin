@@ -5,6 +5,7 @@
          * @param {string} url Absolute URL to where the plugin is located.
          */
         init : function(ed, url) {
+            // TODO: embedded URLs are not acceptable. Fix.
 			ed.addButton('wl_chord',
 				{
 					title: 'wl_chord',

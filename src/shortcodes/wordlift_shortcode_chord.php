@@ -36,12 +36,21 @@ function wl_get_most_connected_entity()
 
 }
 
-//get posts related to an entity
+/**
+ * Get the posts that reference the specified entity.
+ *
+ * @used-by wl_ajax_related_entities
+ *
+ * @param int $entity_id The post ID of the entity.
+ * @return array An array of post IDs.
+ */
 function wl_get_entity_related_posts($entity_id)
 {
     $result = array();
-    $e = get_post($entity_id);
-    if ($e->post_type == 'entity') {
+    $entity = get_post($entity_id);
+
+    if ($entity->post_type == 'entity') {
+
         foreach (get_posts() as $post) {
             $post_id = $post->ID;
             // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
@@ -50,16 +59,27 @@ function wl_get_entity_related_posts($entity_id)
             if ($i !== false) {
                 $result[] = $post_id;
             }
+
         }
     }
     return $result;
 }
 
-//recursive function used to retrieve related content (both posts and entities)
+/**
+ * Recursive function used to retrieve related content (both posts and entities)
+ *
+ * @uses wl_get_entity_related_posts to get the list of posts that reference an entity.
+ *
+ * @param int $id The entity ID.
+ * @param $depth
+ * @param $related
+ * @return
+ */
 function wl_ajax_related_entities($id, $depth, $related = null)
 {
 
     if ($related == null) {
+        // TODO: can this actually work? Fix.
         $related->entities = array($id);
         $related->relations = array();
     }
@@ -100,7 +120,14 @@ function wl_ajax_related_entities($id, $depth, $related = null)
     return $related;
 }
 
-//optimize and convert retrieved content to JSON
+/**
+ * Optimize and convert retrieved content to JSON.
+ *
+ * @used-by wl_ajax_chord_widget
+ *
+ * @param $data
+ * @return mixed|string|void
+ */
 function wl_ajax_related_entities_to_json($data)
 {
 
@@ -142,6 +169,9 @@ if (is_admin()) {
     add_action('wp_ajax_nopriv_wl_ajax_chord_widget', 'wl_ajax_chord_widget');
 }
 
+/**
+ * @uses wl_ajax_related_entities_to_json
+ */
 function wl_ajax_chord_widget()
 {
     ob_clean();
