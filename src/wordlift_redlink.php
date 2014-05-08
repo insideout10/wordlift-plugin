@@ -43,7 +43,17 @@ function wordlift_redlink_enhance_url()
     $app_key = wl_config_get_application_key();
     $analysis_name = wl_config_get_analysis();
 
-    return WL_REDLINK_API_BASE_URI . WL_REDLINK_API_VERSION . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key; # . '&enhancer.engines.dereference.ldpath=' . urlencode('<http://www.w3.org/2002/12/cal#>;');
+    $ldpath = <<<EOF
+        @prefix ex: <http://example.org/>;
+        @prefix cal: <http://www.w3.org/2002/12/cal#>;
+        @prefix gn: <http://www.geonames.org/ontology#>;
+        @prefix lode: <http://linkedevents.org/ontology/>;
+        @prefix vcard: <http://www.w3.org/2006/vcard/ns#>;
+        vcard:locality = lode:atPlace/gn:name :: xsd:string;
+EOF;
+
+    return WL_REDLINK_API_BASE_URI . WL_REDLINK_API_VERSION . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key .
+        '&enhancer.engines.dereference.ldpath=' . urlencode($ldpath);
 }
 
 
