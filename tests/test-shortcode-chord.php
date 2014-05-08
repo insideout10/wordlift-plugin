@@ -34,88 +34,53 @@ class ChordShortcodeTest extends WP_UnitTestCase
 
     }
 
-    function testSaveOneImage() {
+    function testChordShortcodeOutput() {
 
-        $uri         = 'http://example.org/entity';
-        $label       = 'Entity';
+		// Creating 4 fake entities 
+		
+        $uri         = 'http://example.org/entity1';
+        $label       = 'Entity1';
         $type        = 'http://schema.org/Thing';
         $description = 'An example entity.';
-        $images      = array(
-            'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
-        );
+        $images      = array();
         $same_as     = array();
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
-
-        // Get all the attachments for the entity post.
-        $attachments = wl_get_attachments( $entity_post->ID );
-
-        // Check that there is one attachment.
-        $this->assertEquals( 1, count( $attachments ) );
-
-        // Check that the attachments are found by source URL.
-        $image_post  = wl_get_attachment_for_source_url( $entity_post->ID, $images[0] );
-        $this->assertNotNull( $image_post );
-
-        // Check that the no attachments are found if the source URL doesn't exist.
-        $image_post  = wl_get_attachment_for_source_url( $entity_post->ID, 'http://example.org/non-existing-image.png' );
-        $this->assertNull( $image_post );
+        wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        
+        $uri         = 'http://example.org/entity2';
+        $label       = 'Entity2';
+        $type        = 'http://schema.org/Thing';
+        $description = 'An example entity.';
+        $images      = array();
+        $same_as     = array();
+        wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        
+        $uri         = 'http://example.org/entity3';
+        $label       = 'Entity3';
+        $type        = 'http://schema.org/Thing';
+        $description = 'An example entity.';
+        $images      = array();
+        $same_as     = array();
+        wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        
+        
+        // Creating a fake post_author
+        
+        $content = "This is a fake post. Ohhh yeah";
+        $slug = "yeah";
+        $title = "Yeah";
+        wl_create_post( $content, $slug, $title);
+        
+        //wl_add_related_entities
+        
+        //write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ]");
     }
-
-    function testSaveMultipleImages() {
-
-        $uri         = 'http://example.org/entity';
-        $label       = 'Entity';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array(
-            'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
-            'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
-            'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg'
-        );
-        $same_as     = array();
-
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
-
-        // Get all the attachments for the entity post.
-        $attachments = wl_get_attachments( $entity_post->ID );
-
-        // Check that there is one attachment.
-        $this->assertEquals( 3, count( $attachments ) );
-
-        // Check that the attachments are found by source URL.
-        foreach ( $images as $image ) {
-            $image_post  = wl_get_attachment_for_source_url( $entity_post->ID, $image );
-            $this->assertNotNull( $image_post );
-        }
+    
+    function testChordShortcodeAJAX() {
+    
     }
-
-    function testSaveExistingImages() {
-
-        $uri         = 'http://example.org/entity';
-        $label       = 'Entity';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array(
-            'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
-            'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
-            'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg',
-            'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg'
-        );
-        $same_as     = array();
-
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
-
-        // Get all the attachments for the entity post.
-        $attachments = wl_get_attachments( $entity_post->ID );
-
-        // Check that there is one attachment.
-        $this->assertEquals( 3, count( $attachments ) );
-
-        // Check that the attachments are found by source URL.
-        foreach ( $images as $image ) {
-            $image_post  = wl_get_attachment_for_source_url( $entity_post->ID, $image );
-            $this->assertNotNull( $image_post );
-        }
+    
+    function testChordShortcodeMostRelatedEntity() {
+    
     }
 
 }

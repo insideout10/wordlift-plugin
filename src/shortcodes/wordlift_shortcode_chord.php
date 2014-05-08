@@ -9,7 +9,6 @@
  */
 function wl_get_most_connected_entity()
 {
-
     $post_ids = get_posts(array(
         'numberposts' => 10,
         'fields' => 'ids', //only get post IDs
@@ -195,20 +194,18 @@ function wl_shortcode_chord($atts)
     // TODO: what should we do when the post has no related entities?
 
     //extract attributes and set default values
-    extract(shortcode_atts(array(
+    $chord_atts = shortcode_atts(array(
         'width' => '100%',
         'height' => '500px',
         'main_color' => 'f2d',
         'depth' => 7,
         'global' => false
-    ), $atts));
+    ), $atts);
 
-    // TODO: what is this $global variable? Fix.
-    if ($global) {
+    if ($chord_atts['global']) {
         $post_id = wl_get_most_connected_entity();
         $widget_id = 'wl_chord_widget_global';
-        // TODO: $height is not used anywhere. Remove.
-        $height = '200px';
+        $chord_atts['height'] = '200px';
     } else {
         $post_id = get_the_ID();
         $widget_id = 'wl_chord_widget_' . $post_id;
@@ -226,15 +223,10 @@ function wl_shortcode_chord($atts)
             'action' => 'wl_ajax_chord_widget',
             'post_id' => $post_id,
             'widget_id' => $widget_id,
-            'depth' => $depth,
-            'main_color' => $main_color
+            'depth' => $chord_atts['depth'],
+            'main_color' => $chord_atts['main_color']
         )
     );
-
-
-    // TODO: the HTML output is small, return it as a string, don't echo it out.
-    // Returning html template.
-    ob_start();
 
     // DEBUGGING
     /*$result = wl_ajax_related_entities($post_id, 100);
@@ -242,10 +234,16 @@ function wl_shortcode_chord($atts)
     print_r( $result );
     echo "</pre>";*/
 
-    // TODO: there's no need to put the HTML in an external file, it's so small it can be embedded here. Fix.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-    include('wordlift_shortcode_chord_template.php');
-    return ob_get_clean();
+    $chord_template = "<!-- container for the widget -->
+						<div id='$widget_id' style='width:$chord_atts['width'];
+								height:$chord_atts['height'];
+								background-color:white;
+								margin-top:10px;
+								margin-bottom:10px'>
+						</div>";
+    
+    return $chord_template;
 }
 
 /**
