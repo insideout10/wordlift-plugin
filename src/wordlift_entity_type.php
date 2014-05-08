@@ -199,6 +199,7 @@ EOF;
             'uri'       =>  $type['uri'],
             'css'       =>  $type['css_class'], 
             'sameAs'    =>  $type['same_as'], 
+            'templates' =>  $type['templates'],
         ));
     });
 

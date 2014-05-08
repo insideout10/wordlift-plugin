@@ -42,7 +42,7 @@ function wl_entity_type_taxonomy_register()
  * @param array $custom_fields An array of custom fields and their properties mapping.
  * @return True if option value has changed, false if not or if update failed.
  */
-function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array())
+function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array())
 {
     write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
 
@@ -50,7 +50,8 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
         'css_class'     => $css_class,
         'uri'           => $uri,
         'same_as'       => $same_as,
-        'custom_fields' => $custom_fields
+        'custom_fields' => $custom_fields,
+        'templates'     => $templates
     ) );
 }
 
