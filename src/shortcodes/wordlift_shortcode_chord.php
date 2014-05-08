@@ -15,6 +15,10 @@ function wl_get_most_connected_entity()
         'orderby' => 'post_date',
         'order' => 'DESC'
     ));
+	
+	if(empty($post_ids)){
+		return null;
+	}
 
     $entities = array();
     foreach ($post_ids as $id) {
@@ -190,9 +194,8 @@ function wl_ajax_chord_widget()
  */
 function wl_shortcode_chord($atts)
 {
-
-    // TODO: what should we do when the post has no related entities?
-
+	// TODO: what happens if there are no related entities?
+	
     //extract attributes and set default values
     $chord_atts = shortcode_atts(array(
         'width' => '100%',
@@ -204,14 +207,17 @@ function wl_shortcode_chord($atts)
 
     if ($chord_atts['global']) {
         $post_id = wl_get_most_connected_entity();
+		if($post_id == null){
+			return "WordLift Chord: no entities found.";
+		}
         $widget_id = 'wl_chord_widget_global';
         $chord_atts['height'] = '200px';
     } else {
         $post_id = get_the_ID();
         $widget_id = 'wl_chord_widget_' . $post_id;
     }
-
-    //adding javascript code
+	
+	//adding javascript code
     wp_enqueue_script('d3', plugins_url('bower_components/d3/d3.min.js', __FILE__));
 
     // TODO: Why are we loading the same JavaScript many times? Fix.
@@ -236,8 +242,8 @@ function wl_shortcode_chord($atts)
 
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
     $chord_template = "<!-- container for the widget -->
-						<div id='$widget_id' style='width:$chord_atts['width'];
-								height:$chord_atts['height'];
+						<div id='$widget_id' style='width:$chord_atts[width];
+								height:$chord_atts[height];
 								background-color:white;
 								margin-top:10px;
 								margin-bottom:10px'>

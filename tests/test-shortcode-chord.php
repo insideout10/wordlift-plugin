@@ -6,6 +6,7 @@ require_once 'functions.php';
  */
 class ChordShortcodeTest extends WP_UnitTestCase
 {
+	private static $FIRST_POST_ID =  0;
 
     /**
      * Set up the test.
@@ -31,12 +32,10 @@ class ChordShortcodeTest extends WP_UnitTestCase
             'post_type'      => 'entity',
             'post_status'    => 'any'
         ) ) ) );
-
-    }
-
-    function testChordShortcodeOutput() {
-
+		
+		
 		// Creating 4 fake entities 
+		$entities = array();
 		
         $uri         = 'http://example.org/entity1';
         $label       = 'Entity1';
@@ -44,7 +43,8 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $description = 'An example entity.';
         $images      = array();
         $same_as     = array();
-        wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+		$entities[] = $ent->ID;
         
         $uri         = 'http://example.org/entity2';
         $label       = 'Entity2';
@@ -52,7 +52,8 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $description = 'An example entity.';
         $images      = array();
         $same_as     = array();
-        wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+		$ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+		$entities[] = $ent->ID;
         
         $uri         = 'http://example.org/entity3';
         $label       = 'Entity3';
@@ -60,27 +61,43 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $description = 'An example entity.';
         $images      = array();
         $same_as     = array();
-        wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+		$entities[] = $ent->ID;
         
         
-        // Creating a fake post_author
-        
+        // Creating a fake post
         $content = "This is a fake post. Ohhh yeah";
         $slug = "yeah";
         $title = "Yeah";
-        wl_create_post( $content, $slug, $title);
+		self::$FIRST_POST_ID = wl_create_post( $content, $slug, $title);
         
-        //wl_add_related_entities
-        
-        //write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ]");
+        wl_add_related_entities( self::$FIRST_POST_ID, $entities );
+		wl_add_related_entities( $entities[0], $entities[1] );
+    }
+
+    function testChordShortcodeOutput() {
+    	$GLOBALS['post'] = self::$FIRST_POST_ID;
+		$markup = wl_shortcode_chord( array() );
+		$this->assertNotNull($markup);
     }
     
     function testChordShortcodeAJAX() {
-    
+		$chord = wl_ajax_related_entities(self::$FIRST_POST_ID, 10);
+		
+		// Check there is a result
+		$this->assertNotEmpty($chord);
+		
+		write_log("chordShortcodeAJAX [ chord markup :: " . print_r($chord, true) . "]");
     }
     
-    function testChordShortcodeMostRelatedEntity() {
-    
+    function testChordShortcodeMostConnectedEntity() {
+    	
+		// Check there is a number
+    	$e = wl_get_most_connected_entity();
+		$this->assertNotNull($e);
+		$this->assertEquals(2222222222222222, $e);
+		
+		write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
     }
 
 }
