@@ -10,7 +10,7 @@
 function wl_get_most_connected_entity()
 {
     $post_ids = get_posts(array(
-        'numberposts' => 10,
+        'numberposts' => 20,
         'fields' => 'ids', //only get post IDs
         'orderby' => 'post_date',
         'order' => 'DESC'

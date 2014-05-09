@@ -6,7 +6,8 @@ require_once 'functions.php';
  */
 class ChordShortcodeTest extends WP_UnitTestCase
 {
-	private static $FIRST_POST_ID =  0;
+	private static $FIRST_POST_ID;
+	private static $MOST_CONNECTED_ENTITY_ID;
 
     /**
      * Set up the test.
@@ -34,7 +35,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
         ) ) ) );
 		
 		
-		// Creating 4 fake entities 
+		// Creating 2 fake entities 
 		$entities = array();
 		
         $uri         = 'http://example.org/entity1';
@@ -54,25 +55,39 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $same_as     = array();
 		$ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 		$entities[] = $ent->ID;
+                
         
-        $uri         = 'http://example.org/entity3';
+        // Creating a fake post
+        $content = 'This is a fake post. Ohhh yeah';
+        $slug = 'yeah';
+        $title = 'Yeah';
+		$status = 'publish';
+		$type = 'post';
+		self::$FIRST_POST_ID = wl_create_post( $content, $slug, $title, $status, $type);
+        
+        wl_add_related_entities( self::$FIRST_POST_ID, $entities );
+		
+		// Creating another fake post and entity (the most connected one)
+		
+		// Creating a fake post
+        $content = 'This is another fake post. Ohhh yeah';
+        $slug = 'yeah';
+        $title = 'Yeah';
+		$status = 'publish';
+		$type = 'post';
+		$new_post = wl_create_post( $content, $slug, $title, $status, $type);
+		
+		$uri         = 'http://example.org/entity3';
         $label       = 'Entity3';
         $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
+        $description = 'Another example entity only related to an entity.';
         $images      = array();
         $same_as     = array();
         $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
-		$entities[] = $ent->ID;
-        
-        
-        // Creating a fake post
-        $content = "This is a fake post. Ohhh yeah";
-        $slug = "yeah";
-        $title = "Yeah";
-		self::$FIRST_POST_ID = wl_create_post( $content, $slug, $title);
-        
-        wl_add_related_entities( self::$FIRST_POST_ID, $entities );
-		wl_add_related_entities( $entities[0], $entities[1] );
+		self::$MOST_CONNECTED_ENTITY_ID = $ent->ID;
+		
+		wl_add_related_entities( $new_post, self::$MOST_CONNECTED_ENTITY_ID );
+		wl_add_related_entities( self::$FIRST_POST_ID, self::$MOST_CONNECTED_ENTITY_ID);
     }
 
     function testChordShortcodeOutput() {
@@ -86,18 +101,20 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		
 		// Check there is a result
 		$this->assertNotEmpty($chord);
+		$this->assertNotEmpty($chord->entities);
+		$this->assertNotEmpty($chord->relations);
 		
-		write_log("chordShortcodeAJAX [ chord markup :: " . print_r($chord, true) . "]");
+		//write_log("chordShortcodeAJAX [ chord data :: " . print_r($chord, true) . "]");
     }
     
     function testChordShortcodeMostConnectedEntity() {
-    	
+    		
 		// Check there is a number
     	$e = wl_get_most_connected_entity();
 		$this->assertNotNull($e);
-		$this->assertEquals(2222222222222222, $e);
+		$this->assertEquals(self::$MOST_CONNECTED_ENTITY_ID, $e);
 		
-		write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
+		//write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
     }
 
 }
