@@ -93,6 +93,9 @@ function wordlift_register_buttons($buttons)
 {
     // push the wordlift button the array.
     array_push($buttons, 'wordlift');
+    // push the create entity wordlift
+    array_push($buttons, 'wordlift_add_entity');
+    
     return $buttons;
 }
 
