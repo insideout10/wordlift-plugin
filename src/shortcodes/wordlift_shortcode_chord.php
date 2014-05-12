@@ -74,28 +74,25 @@ function wl_get_entity_related_posts($entity_id)
  * @uses wl_get_entity_related_posts to get the list of posts that reference an entity.
  *
  * @param int $id The entity ID.
- * @param $depth
- * @param $related
+ * @param int $depth Max number of entities in  output
+ * @param $related Service variable. Do not specify it.
  * @return
  */
 function wl_ajax_related_entities($id, $depth, $related = null)
 {
-
-    if ($related == null) {
-        // TODO: can this actually work? Fix.
+	// Start condition.
+    if ( is_null($related) ) {
         $related->entities = array($id);
         $related->relations = array();
     }
 
-    //get related content
+    // Get related content.
     $rel = wl_get_entity_related_posts($id);
-    $rel += wl_get_related_entities($id); //...should use array_merge instead of +=
-    $rel += wl_get_related_post_ids($id);
-    /*echo($id);
-    print_r($rel);
-    echo("<br>");*/
-
-    //list of entities ($rel) should be ordered by interest factors
+    $rel = array_merge( $rel, wl_get_related_entities($id) );
+    $rel = array_merge( $rel, wl_get_related_post_ids($id) );
+	$rel = array_unique( $rel );
+	
+    // TODO: List of entities ($rel) should be ordered by interest factors.
     shuffle($rel);
 
     foreach ($rel as $e) {
@@ -103,23 +100,26 @@ function wl_ajax_related_entities($id, $depth, $related = null)
         $related->relations[] = array($id, $e);
 
         if (!in_array($e, $related->entities)) {
-            //found new related entity!
+            //Found new related entity!
             $related->entities[] = $e;
-            //$related->relations[] = array($id, $e);
 
-            //end condition 1: obtained enough related entities
+            //End condition 1: obtained enough related entities.
             if (sizeof($related->entities) >= $depth) {
                 return $related;
             } else {
-                //recursive call
-                $new_results = wl_ajax_related_entities($e, $depth, $related);
-                $related->entities += $new_results->entities;
-                $related->relations += $new_results->relations;
+                // Recursive call
+                $related = wl_ajax_related_entities($e, $depth, $related);
+				/*print_r($related->entities);
+				$resss = array_unique( array_merge( $related->entities, $new_results->entities ) );
+                $related->entities = $resss;
+				print_r($related->entities);
+				echo "===========";
+				$related->relations += $new_results->relations;*/
             }
         }
     }
 
-    //end condition 2: no more entities to search for
+    // End condition 2: no more entities to search for.
     return $related;
 }
 
@@ -156,13 +156,12 @@ function wl_ajax_related_entities_to_json($data)
         $data->relations[$i] = $relation;
     }
 
-    /*
-    echo "<pre>";
+    
+    /*echo "<pre>";
     print_r($data);
     print_r( json_encode($data) );
-    echo "</pre>";
-    */
-
+    echo "</pre>"; */
+    
     return json_encode($data);
 }
 
@@ -173,7 +172,12 @@ if (is_admin()) {
 }
 
 /**
+ * 
+ * Retrieve related entities and output them in JSON
+ *
+ * @uses wl_ajax_related_entities
  * @uses wl_ajax_related_entities_to_json
+ * @return json|string
  */
 function wl_ajax_chord_widget()
 {
@@ -194,8 +198,6 @@ function wl_ajax_chord_widget()
  */
 function wl_shortcode_chord($atts)
 {
-	// TODO: what happens if there are no related entities?
-	
     //extract attributes and set default values
     $chord_atts = shortcode_atts(array(
         'width' => '100%',
@@ -223,7 +225,6 @@ function wl_shortcode_chord($atts)
     // TODO: Why are we loading the same JavaScript many times? Fix.
     wp_enqueue_script($widget_id, plugins_url('js-client/wordlift_shortcode_chord.js', __FILE__));
 
-    // TODO: $depth and $main_color do not exist. Check.
     wp_localize_script($widget_id, 'wl_chord_params', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'action' => 'wl_ajax_chord_widget',

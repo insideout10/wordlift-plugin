@@ -63,9 +63,6 @@ function wl_admin_inject_chord_dialog()
     wp_enqueue_script('jquery-ui-slider');
     wp_enqueue_script('wp-color-picker');
     wp_enqueue_script('wl_chord_dialog', plugins_url('js-client/wordlift_chord_tinymce_dialog.js', __FILE__));
-
-    // TODO: move the HTML code in the JavaScript.
-    include('wordlift_admin_shortcode_chord_tinymce_dialog.php');
 }
 
 // init process for button control

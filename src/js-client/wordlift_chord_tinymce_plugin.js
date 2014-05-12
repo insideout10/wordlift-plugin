@@ -15,8 +15,6 @@
 			);
 			
 			ed.addCommand('wl_chord', function() {
-			
-				console.log("AAA");
 				jQuery('#wordlift_chord_dialog').dialog({
 					title: 'Wordlift Chord Graph',
 					width: 400,

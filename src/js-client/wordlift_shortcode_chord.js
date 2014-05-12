@@ -12,8 +12,9 @@ function getChordData(wl_chord_params){
 		    depth: wl_chord_params.depth
 		},
 		function(response){
+			console.log(response);
 			var data  = JSON.parse(response);
-		    //console.log( data );
+			//console.log(data);
 		    buildChord(data, wl_chord_params);
 		}
 	);
@@ -40,10 +41,21 @@ function getChordData(wl_chord_params) {
 */
 
 function buildChord(dataMock, wl_chord_params) {
+	
+	// Manage empty or corrupted data
+	var niceData = 'entities' in dataMock && 'relations' in dataMock;
+	niceData = niceData && (dataMock.entities.length) >= 2 && (dataMock.relations >= 1);
+	if( niceData ) {
+		d3.select( '#' + wl_chord_params.widget_id )
+			.style('height', '50px')
+			.html(' --- WordLift shortcode: No entities found. --- ');
+			return;
+	}
+	
 	var entities = dataMock.entities;
 	var relations = dataMock.relations;
 	
-	//build matrix
+	// Build adiacency matrix.
 	var matrix = [];
 	for(var i=0; i<entities.length; i++) {
 		matrix.push([]);
@@ -57,13 +69,12 @@ function buildChord(dataMock, wl_chord_params) {
 		var y = getEntityIndex( relations[i].o );
 		matrix[x][y] = 1;
 		matrix[y][x] = 1;
-		//anche la label!!!
 	}
 	
 	var viz = d3.select( '#' + wl_chord_params.widget_id ).append('svg');
 	viz.attr('width', '100%').attr('height', '100%');
 
-	//getting dimensions in pixels
+	// Getting dimensions in pixels.
 	var width = parseInt(viz.style('width'));
 	var height = parseInt(viz.style('height'));
 	var size;
@@ -79,7 +90,7 @@ function buildChord(dataMock, wl_chord_params) {
 				.padding(0.3)
 				.matrix(matrix);
 
-	//draw relations
+	// Draw relations.
 	viz.selectAll('chords')
 		.data(chord.chords)
 		.enter()
@@ -95,7 +106,7 @@ function buildChord(dataMock, wl_chord_params) {
 			d3.select(this).style('opacity', 0.2);
 		});
 
-	//draw entities
+	// Draw entities.
 	viz.selectAll('arcs')
 		.data(chord.groups)
 		.enter()
@@ -114,14 +125,15 @@ function buildChord(dataMock, wl_chord_params) {
 			}
 		);
 	
-	//draw entity labels
+	// Draw entity labels.
 	viz.selectAll('arcs_labels')
 		.data(chord.groups)
 		.enter()
 		.append('text')
 		.attr('class', 'label')
 		.html( function(d){
-			return entities[d.index].label;
+			var lab = entities[d.index].label;
+			return beautifyLabel(lab);
 		})
 		.attr('font-size', function(){
 			var fontSize = parseInt( size/35 );
@@ -151,6 +163,16 @@ function buildChord(dataMock, wl_chord_params) {
 			return translate(x, y) + rotate( labelAngle );
 		});
 		
+		
+		// Creating an hidden tooltip.
+		var tooltip = d3.select('body').append('div')
+    		.attr('class', 'tooltip')
+    		.style('background-color', 'white')
+    		.style('opacity', 0.0)
+    		.style('position', 'absolute')
+    		.style('z-index', 100);
+		
+		// Dynamic behavior for entities.
 		viz.selectAll('.entity, .label')
 			.on('mouseover', function(c) {
 				d3.select(this).attr('cursor','pointer');
@@ -159,14 +181,27 @@ function buildChord(dataMock, wl_chord_params) {
 		            	return d.source.index == c.index || d.target.index == c.index;
 		            })
 		            .style("opacity", 0.8);
-				})
+		           
+		        // Show tooltip.
+	            tooltip.text(entities[c.index].label)
+	            	.style('opacity', 1.0);	        			            
+			})
 			.on('mouseout', function(c) {
 				viz.selectAll('.relation')
 		            .filter(function(d, i) {
 		            	return d.source.index == c.index || d.target.index == c.index;
 		            })
 		            .style("opacity", 0.2);
-				})
+		            
+		        // Hide tooltip.
+		        tooltip.style('opacity', 0.0);	
+		        
+			})
+			.on('mousemove', function(){
+				// Change tooltip position.
+				tooltip.style("left", (d3.event.pageX) + "px")
+  					  .style("top", (d3.event.pageY - 30) + "px");
+			})
 			.on('click', function(d){
 				var url = entities[d.index].url;
 				window.location = url;
@@ -190,16 +225,19 @@ function buildChord(dataMock, wl_chord_params) {
 		return -1;
 	}
 	
-	/*
 	function beautifyLabel(txt) {
-		var newtxt = '';
-		var words = txt.split(' ');
+		var newtext = txt;
+		var maxlength = 12;
+		if(newtext.length > maxlength)
+			newtext = newtext.substring(0, maxlength) + '...';
+			
+		/*var words = txt.split(' ');
 		for(var w=0; w<words.length; w++) {
 			newtxt += '<tspan x="0" dy="20">' + words[w] + '</tspan>';
-		}
-		return newtxt;
+		}*/
+		
+		return newtext;
 	}
-	*/
 	
 	function getEntityIndex(uri) {
 		for(var e=0; e<entities.length; e++) {
@@ -215,13 +253,13 @@ function buildChord(dataMock, wl_chord_params) {
 	}
 	
 	function colorLuminance(hex, lum) {
-		// validate hex string
+		// Validate hex string.
 		hex = String(hex).replace(/[^0-9a-f]/gi, '');
 		if (hex.length < 6) {
 			hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
 		}
 		lum = lum || 0;
-		// convert to decimal and change luminosity
+		// Convert to decimal and change luminosity.
 		var rgb = "#", c, i;
 		for (i = 0; i < 3; i++) {
 			c = parseInt(hex.substr(i*2,2), 16);

@@ -53,5 +53,3 @@ function wl_register_chord_widget()
 
 add_action('widgets_init', 'wl_register_chord_widget');
 add_filter( 'widget_text', 'do_shortcode');
-
-?>
