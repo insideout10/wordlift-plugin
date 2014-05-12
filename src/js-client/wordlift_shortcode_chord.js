@@ -12,7 +12,7 @@ function getChordData(wl_chord_params){
 		    depth: wl_chord_params.depth
 		},
 		function(response){
-			console.log(response);
+			//console.log(response);
 			var data  = JSON.parse(response);
 			//console.log(data);
 		    buildChord(data, wl_chord_params);

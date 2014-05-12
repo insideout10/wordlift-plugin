@@ -5,12 +5,11 @@
          * @param {string} url Absolute URL to where the plugin is located.
          */
         init : function(ed, url) {
-            // TODO: embedded URLs are not acceptable. Fix.
 			ed.addButton('wl_chord',
 				{
-					title: 'wl_chord',
+					title: 'Insert Wordlift Chord Graph',
 					cmd: 'wl_chord',
-					image: 'http://wordlift3.localhost/wp-content/plugins/wordlift/images/wordlift-chord-black-20x20.png'
+					image: url + '/../images/wordlift-chord-black-20x20.png'
 				}
 			);
 			
@@ -46,9 +45,9 @@
         getInfo : function() {
             return {
                 longname : 'WordLift Chord Button',
-                author : 'Piero Savastano @ InsideOut10',
-                /*authorurl : 'http://wp.tutsplus.com/author/leepham',
-                infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/example',*/
+                author : 'InsideOut10',
+                /*authorurl : 'http://...',
+                infourl : 'http://...',*/
                 version : "1.0"
             };
         }

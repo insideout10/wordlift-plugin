@@ -261,21 +261,3 @@ function wl_shortcode_chord_register()
     add_shortcode('wl-chord', 'wl_shortcode_chord');
 }
 add_action('init', 'wl_shortcode_chord_register');
-
-
-
-
-/*
-//add wp-color-picker
-function wl_enqueue_chord_dialog_tools( $hook_suffix ) {
-
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('jquery-ui-core');
-	wp_enqueue_script('jquery-ui-slider');
-
-	// first check that $hook_suffix is appropriate for your admin page
-    wp_enqueue_style( 'wp-color-picker' );
-    wp_enqueue_script( 'wl_chord_dialog', plugins_url('js-client/wordlift_chord_tinymce_dialog.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
-}
-add_action( 'admin_enqueue_scripts', 'wl_enqueue_chord_dialog_tools' );
-*/
