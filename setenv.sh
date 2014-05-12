@@ -1,0 +1,9 @@
+export DB_NAME=wordlift3_test
+export DB_USERID=root
+export DB_PASSWORD=root
+export DB_HOST=localhost
+export WP_VERSION=3.8
+export WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
+export REDLINK_APP_KEY=738u7ObWVQQpyVGmu5avK5xR6CRGDf9K117bd40a
+export REDLINK_USER_ID=652
+export WP_MULTISITE=0 

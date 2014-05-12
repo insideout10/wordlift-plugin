@@ -56,6 +56,8 @@ function wl_admin_inject_chord_dialog()
 
     // TODO: load the required styles in WordLift CSS. Fix.
     wp_enqueue_style('wp-jquery-ui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery.ui.all.css');
+    //wp_enqueue_style('wp-jquery-ui-css');//, plugins_url('css-client/my.css', __FILE__));
+	
     wp_enqueue_style('wp-color-picker');
 
     wp_enqueue_script('jquery');
@@ -63,9 +65,6 @@ function wl_admin_inject_chord_dialog()
     wp_enqueue_script('jquery-ui-slider');
     wp_enqueue_script('wp-color-picker');
     wp_enqueue_script('wl_chord_dialog', plugins_url('js-client/wordlift_chord_tinymce_dialog.js', __FILE__));
-
-    // TODO: move the HTML code in the JavaScript.
-    include('wordlift_admin_shortcode_chord_tinymce_dialog.php');
 }
 
 // init process for button control

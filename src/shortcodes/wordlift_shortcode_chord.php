@@ -9,13 +9,16 @@
  */
 function wl_get_most_connected_entity()
 {
-
     $post_ids = get_posts(array(
-        'numberposts' => 10,
+        'numberposts' => 20,
         'fields' => 'ids', //only get post IDs
         'orderby' => 'post_date',
         'order' => 'DESC'
     ));
+	
+	if(empty($post_ids)){
+		return null;
+	}
 
     $entities = array();
     foreach ($post_ids as $id) {
@@ -71,28 +74,25 @@ function wl_get_entity_related_posts($entity_id)
  * @uses wl_get_entity_related_posts to get the list of posts that reference an entity.
  *
  * @param int $id The entity ID.
- * @param $depth
- * @param $related
+ * @param int $depth Max number of entities in  output
+ * @param $related Service variable. Do not specify it.
  * @return
  */
 function wl_ajax_related_entities($id, $depth, $related = null)
 {
-
-    if ($related == null) {
-        // TODO: can this actually work? Fix.
+	// Start condition.
+    if ( is_null($related) ) {
         $related->entities = array($id);
         $related->relations = array();
     }
 
-    //get related content
+    // Get related content.
     $rel = wl_get_entity_related_posts($id);
-    $rel += wl_get_related_entities($id); //...should use array_merge instead of +=
-    $rel += wl_get_related_post_ids($id);
-    /*echo($id);
-    print_r($rel);
-    echo("<br>");*/
-
-    //list of entities ($rel) should be ordered by interest factors
+    $rel = array_merge( $rel, wl_get_related_entities($id) );
+    $rel = array_merge( $rel, wl_get_related_post_ids($id) );
+	$rel = array_unique( $rel );
+	
+    // TODO: List of entities ($rel) should be ordered by interest factors.
     shuffle($rel);
 
     foreach ($rel as $e) {
@@ -100,23 +100,26 @@ function wl_ajax_related_entities($id, $depth, $related = null)
         $related->relations[] = array($id, $e);
 
         if (!in_array($e, $related->entities)) {
-            //found new related entity!
+            //Found new related entity!
             $related->entities[] = $e;
-            //$related->relations[] = array($id, $e);
 
-            //end condition 1: obtained enough related entities
+            //End condition 1: obtained enough related entities.
             if (sizeof($related->entities) >= $depth) {
                 return $related;
             } else {
-                //recursive call
-                $new_results = wl_ajax_related_entities($e, $depth, $related);
-                $related->entities += $new_results->entities;
-                $related->relations += $new_results->relations;
+                // Recursive call
+                $related = wl_ajax_related_entities($e, $depth, $related);
+				/*print_r($related->entities);
+				$resss = array_unique( array_merge( $related->entities, $new_results->entities ) );
+                $related->entities = $resss;
+				print_r($related->entities);
+				echo "===========";
+				$related->relations += $new_results->relations;*/
             }
         }
     }
 
-    //end condition 2: no more entities to search for
+    // End condition 2: no more entities to search for.
     return $related;
 }
 
@@ -153,13 +156,12 @@ function wl_ajax_related_entities_to_json($data)
         $data->relations[$i] = $relation;
     }
 
-    /*
-    echo "<pre>";
+    
+    /*echo "<pre>";
     print_r($data);
     print_r( json_encode($data) );
-    echo "</pre>";
-    */
-
+    echo "</pre>"; */
+    
     return json_encode($data);
 }
 
@@ -170,7 +172,12 @@ if (is_admin()) {
 }
 
 /**
+ * 
+ * Retrieve related entities and output them in JSON
+ *
+ * @uses wl_ajax_related_entities
  * @uses wl_ajax_related_entities_to_json
+ * @return json|string
  */
 function wl_ajax_chord_widget()
 {
@@ -191,50 +198,42 @@ function wl_ajax_chord_widget()
  */
 function wl_shortcode_chord($atts)
 {
-
-    // TODO: what should we do when the post has no related entities?
-
     //extract attributes and set default values
-    extract(shortcode_atts(array(
+    $chord_atts = shortcode_atts(array(
         'width' => '100%',
         'height' => '500px',
         'main_color' => 'f2d',
         'depth' => 7,
         'global' => false
-    ), $atts));
+    ), $atts);
 
-    // TODO: what is this $global variable? Fix.
-    if ($global) {
+    if ($chord_atts['global']) {
         $post_id = wl_get_most_connected_entity();
+		if($post_id == null){
+			return "WordLift Chord: no entities found.";
+		}
         $widget_id = 'wl_chord_widget_global';
-        // TODO: $height is not used anywhere. Remove.
-        $height = '200px';
+        $chord_atts['height'] = '200px';
     } else {
         $post_id = get_the_ID();
         $widget_id = 'wl_chord_widget_' . $post_id;
     }
-
-    //adding javascript code
+	
+	//adding javascript code
     wp_enqueue_script('d3', plugins_url('bower_components/d3/d3.min.js', __FILE__));
 
     // TODO: Why are we loading the same JavaScript many times? Fix.
     wp_enqueue_script($widget_id, plugins_url('js-client/wordlift_shortcode_chord.js', __FILE__));
 
-    // TODO: $depth and $main_color do not exist. Check.
     wp_localize_script($widget_id, 'wl_chord_params', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'action' => 'wl_ajax_chord_widget',
             'post_id' => $post_id,
             'widget_id' => $widget_id,
-            'depth' => $depth,
-            'main_color' => $main_color
+            'depth' => $chord_atts['depth'],
+            'main_color' => $chord_atts['main_color']
         )
     );
-
-
-    // TODO: the HTML output is small, return it as a string, don't echo it out.
-    // Returning html template.
-    ob_start();
 
     // DEBUGGING
     /*$result = wl_ajax_related_entities($post_id, 100);
@@ -242,10 +241,22 @@ function wl_shortcode_chord($atts)
     print_r( $result );
     echo "</pre>";*/
 
-    // TODO: there's no need to put the HTML in an external file, it's so small it can be embedded here. Fix.
+    // Escaping atts.
+    $esc_id = esc_attr($widget_id);
+	$esc_width = esc_attr($chord_atts['width']);
+	$esc_height = esc_attr($chord_atts['height']);
+    
+	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-    include('wordlift_shortcode_chord_template.php');
-    return ob_get_clean();
+    $chord_template = "<!-- container for the widget -->
+						<div id='$esc_id' style='width:$esc_width;
+								height:$esc_height;
+								background-color:white;
+								margin-top:10px;
+								margin-bottom:10px'>
+						</div>";
+    
+    return $chord_template;
 }
 
 /**
@@ -256,21 +267,3 @@ function wl_shortcode_chord_register()
     add_shortcode('wl-chord', 'wl_shortcode_chord');
 }
 add_action('init', 'wl_shortcode_chord_register');
-
-
-
-
-/*
-//add wp-color-picker
-function wl_enqueue_chord_dialog_tools( $hook_suffix ) {
-
-	wp_enqueue_script('jquery');
-	wp_enqueue_script('jquery-ui-core');
-	wp_enqueue_script('jquery-ui-slider');
-
-	// first check that $hook_suffix is appropriate for your admin page
-    wp_enqueue_style( 'wp-color-picker' );
-    wp_enqueue_script( 'wl_chord_dialog', plugins_url('js-client/wordlift_chord_tinymce_dialog.js', __FILE__ ), array( 'wp-color-picker' ), false, true );
-}
-add_action( 'admin_enqueue_scripts', 'wl_enqueue_chord_dialog_tools' );
-*/
