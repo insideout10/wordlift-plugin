@@ -241,10 +241,16 @@ function wl_shortcode_chord($atts)
     print_r( $result );
     echo "</pre>";*/
 
+    // Escaping atts.
+    $esc_id = esc_attr($widget_id);
+	$esc_width = esc_attr($chord_atts['width']);
+	$esc_height = esc_attr($chord_atts['height']);
+    
+	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
     $chord_template = "<!-- container for the widget -->
-						<div id='$widget_id' style='width:$chord_atts[width];
-								height:$chord_atts[height];
+						<div id='$esc_id' style='width:$esc_width;
+								height:$esc_height;
 								background-color:white;
 								margin-top:10px;
 								margin-bottom:10px'>
