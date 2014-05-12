@@ -13,3 +13,4 @@ composer.phar
 composer.lock
 vendor/
 docs/
+setenv.sh
