@@ -110,11 +110,33 @@ class ChordShortcodeTest extends WP_UnitTestCase
     function testChordShortcodeMostConnectedEntity() {
     		
 		// Check there is a number
-    	$e = wl_get_most_connected_entity();
+    	$e = wl_shortcode_chord_most_referenced_entity_id();
 		$this->assertNotNull($e);
 		$this->assertEquals(self::$MOST_CONNECTED_ENTITY_ID, $e);
 		
 		//write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
+    }
+
+    /**
+     * Test the *wl_shortcode_chord_get_relations* method and the depth parameter.
+     */
+    function testGetRelations() {
+        // TODO: finalize the following test
+
+        // Create a couple of sample posts and entities.
+        $post_1   = wl_create_post( '', 'post-1', 'Post 1' );
+        $post_2   = wl_create_post( '', 'post-2', 'Post 2' );
+
+        $entity_1 = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
+        $entity_2 = wl_create_post( '', 'entity-2', 'Entity 2', 'draft', 'entity' );
+
+        // Reference entity 1 and 2 from post 1.
+        wl_add_referenced_entities( $post_1, array( $entity_1, $entity_2 ) );
+
+        // Reference entity 1 from post 2.
+        wl_add_referenced_entities( $post_2, array( $entity_1 ) );
+
+        var_dump( wl_shortcode_chord_get_relations( $post_1, 0 ) );
     }
 
 }

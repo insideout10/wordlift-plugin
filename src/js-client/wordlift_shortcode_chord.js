@@ -1,4 +1,4 @@
-// TODO: review all this code. It could be changed to a jQuery UI component.
+// TODO: all this code needs review. It could be changed to a jQuery UI component.
 
 getChordData(wl_chord_params);
 
