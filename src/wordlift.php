@@ -355,6 +355,7 @@ function wl_save_image($url)
 
 /**
  * Set the related posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param array $related_posts An array of related post IDs.
  */
@@ -369,6 +370,7 @@ function wl_set_related_posts($post_id, $related_posts)
 
 /**
  * Set the related posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param int|array $new_post_ids An array of related post IDs.
  */
@@ -390,6 +392,7 @@ function wl_add_related_posts($post_id, $new_post_ids)
 
 /**
  * Set the related entity posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param array $related_entities An array of related entity post IDs.
  */
@@ -398,8 +401,8 @@ function wl_set_related_entities($post_id, $related_entities)
 
     write_log("wl_set_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
 
-    delete_post_meta($post_id, 'wordlift_related_entities');
-    add_post_meta($post_id, 'wordlift_related_entities', $related_entities, true);
+    delete_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY);
+    add_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, $related_entities, true);
 }
 
 /**
@@ -459,7 +462,7 @@ function wl_add_related_entities($post_id, $new_entity_post_ids)
     write_log("wl_add_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
 
     // Get the existing post IDs and merge them together.
-    $related = wl_get_related_entities($post_id);
+    $related = wl_get_referenced_entities($post_id);
     $related = array_unique(array_merge($related, $new_entity_post_ids));
 
     wl_set_related_entities($post_id, $related);
@@ -493,11 +496,11 @@ function wl_get_related_post_ids($post_id)
  * @param int $post_id The post ID.
  * @return array An array of posts related to the one specified.
  */
-function wl_get_related_entities($post_id)
+function wl_get_referenced_entities($post_id)
 {
 
     // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-    $related = get_post_meta($post_id, 'wordlift_related_entities', true);
+    $related = get_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, true);
 
     if (empty($related)) {
         return array();
@@ -535,7 +538,7 @@ function wl_unbind_post_from_entities($post_id)
 
     write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
 
-    $entities = wl_get_related_entities($post_id);
+    $entities = wl_get_referenced_entities($post_id);
     foreach ($entities as $entity_post_id) {
 
         // Remove the specified post id from the list of related posts.

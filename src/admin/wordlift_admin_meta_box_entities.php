@@ -28,7 +28,8 @@ function wl_entities_box_content($post)
     write_log("wl_entities_box_content [ post id :: $post->ID ]");
 
     // get the related entities IDs.
-    $related_entities_ids = get_post_meta($post->ID, 'wordlift_related_entities', true);
+    // TODO: shouldn't we use wl_get_referenced_entities here?
+    $related_entities_ids = get_post_meta($post->ID, WL_CUSTOM_FIELD_REFERENCED_ENTITY, true);
 
     if (!is_array($related_entities_ids)) {
         write_log("related_entities_ids is not of the right type.");
