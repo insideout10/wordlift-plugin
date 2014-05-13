@@ -76,6 +76,10 @@ install_db() {
 	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
 }
 
-install_wp
-install_test_suite
+if [ ! -d "$WP_CORE_DIR" ]; then
+    install_wp
+fi
+if [ ! -d "$WP_TESTS_DIR" ]; then
+    install_test_suite
+fi
 install_db
