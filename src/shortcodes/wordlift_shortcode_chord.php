@@ -213,7 +213,6 @@ function wl_shortcode_chord( $atts ) {
     wp_enqueue_script('d3', plugins_url('bower_components/d3/d3.min.js', __FILE__));
 
     // TODO: Why are we loading the same JavaScript many times? Fix.
-//    wp_enqueue_script( $widget_id, plugins_url( 'js-client/wordlift_shortcode_chord.js', __FILE__ ) );
     wp_enqueue_script( $widget_id, plugins_url('js/wordlift.ui.js', __FILE__) );
 
 
