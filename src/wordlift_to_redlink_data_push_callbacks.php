@@ -268,7 +268,7 @@ function wordlift_save_post_and_related_entities($post_id)
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Update related entities.
-    wl_set_related_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
+    wl_set_referenced_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
 
     // Push the post to Redlink.
     wl_push_to_redlink($post->ID);

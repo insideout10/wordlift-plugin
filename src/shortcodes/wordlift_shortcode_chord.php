@@ -52,21 +52,18 @@ function wl_get_most_connected_entity()
 function wl_ajax_related_entities( $id, $depth, $related = null )
 {
 	// Create a related array which will hold entities and relations.
-    // TODO: fields should not be declared dynamically, see
-    // http://programmers.stackexchange.com/questions/186439/is-declaring-fields-on-classes-actually-harmful-in-php
     if ( is_null($related) ) {
         $related = array(
             'entities'  => array( $id ),
             'relations' => array()
         );
-//        $related->entities = array($id);
-//        $related->relations = array();
     }
 
     // Get the posts that reference this entity.
     $rel = array_map( function( $post ) {
         return $post->ID;
     }, wl_get_referencing_posts( $id ) );
+
     $rel = array_merge( $rel, wl_get_referenced_entities($id) );
     $rel = array_merge( $rel, wl_get_related_post_ids($id) );
 	$rel = array_unique( $rel );

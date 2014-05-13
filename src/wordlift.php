@@ -396,10 +396,10 @@ function wl_add_related_posts($post_id, $new_post_ids)
  * @param int $post_id A post ID.
  * @param array $related_entities An array of related entity post IDs.
  */
-function wl_set_related_entities($post_id, $related_entities)
+function wl_set_referenced_entities($post_id, $related_entities)
 {
 
-    write_log("wl_set_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
+    write_log("wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
 
     delete_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY);
 
@@ -494,7 +494,7 @@ function wl_add_referenced_entities($post_id, $new_entity_post_ids)
     $related = wl_get_referenced_entities($post_id);
     $related = array_unique(array_merge($related, $new_entity_post_ids));
 
-    wl_set_related_entities($post_id, $related);
+    wl_set_referenced_entities($post_id, $related);
 }
 
 /**
@@ -571,7 +571,7 @@ function wl_unbind_post_from_entities($post_id)
     }
 
     // Reset the related entities for the post.
-    wl_set_related_entities($post_id, array());
+    wl_set_referenced_entities($post_id, array());
 }
 
 /**
