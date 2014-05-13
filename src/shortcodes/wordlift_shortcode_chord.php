@@ -65,7 +65,8 @@ function wl_ajax_related_entities( $id, $depth, $related = null )
     }, wl_get_referencing_posts( $id ) );
 
     $rel = array_merge( $rel, wl_get_referenced_entities($id) );
-    $rel = array_merge( $rel, wl_get_related_post_ids($id) );
+    // TODO: this gets posts related to a post. Do we really need this?
+    // $rel = array_merge( $rel, wl_get_related_post_ids($id) );
 	$rel = array_unique( $rel );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.

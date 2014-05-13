@@ -549,30 +549,30 @@ function wl_get_post_modified_time($post)
     return $date_modified;
 }
 
-/**
- * Unbind post and entities.
- * @param int $post_id The post ID.
- */
-function wl_unbind_post_from_entities($post_id)
-{
-
-    write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
-
-    $entities = wl_get_referenced_entities($post_id);
-    foreach ($entities as $entity_post_id) {
-
-        // Remove the specified post id from the list of related posts.
-        $related_posts = wl_get_related_post_ids($entity_post_id);
-        if (false !== ($key = array_search($post_id, $related_posts))) {
-            unset($related_posts[$key]);
-        }
-
-        wl_set_related_posts($entity_post_id, $related_posts);
-    }
-
-    // Reset the related entities for the post.
-    wl_set_referenced_entities($post_id, array());
-}
+///**
+// * Unbind post and entities.
+// * @param int $post_id The post ID.
+// */
+//function wl_unbind_post_from_entities($post_id)
+//{
+//
+//    write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
+//
+//    $entities = wl_get_referenced_entities($post_id);
+//    foreach ($entities as $entity_post_id) {
+//
+//        // Remove the specified post id from the list of related posts.
+//        $related_posts = wl_get_related_post_ids($entity_post_id);
+//        if (false !== ($key = array_search($post_id, $related_posts))) {
+//            unset($related_posts[$key]);
+//        }
+//
+//        wl_set_related_posts($entity_post_id, $related_posts);
+//    }
+//
+//    // Reset the related entities for the post.
+//    wl_set_referenced_entities($post_id, array());
+//}
 
 /**
  * Get all the images bound to a post.
@@ -692,6 +692,8 @@ function wl_add_related($post_id, $related_id)
     if (0 < count($related_entities)) {
         wl_add_referenced_entities($post_id, $related_entities);
     }
+
+    // TODO: check this, we're adding related posts to a post.
     if (0 < count($related_posts)) {
         wl_add_related_posts($post_id, $related_posts);
     }
