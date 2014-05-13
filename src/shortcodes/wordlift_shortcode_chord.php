@@ -51,7 +51,11 @@ function wl_shortcode_chord_most_referenced_entity_id()
  * @param array $related An existing array of related entities.
  * @return array
  */
-function wl_shortcode_chord_get_relations( $post_id, $depth, $related = null ) {
+function wl_shortcode_chord_get_relations( $post_id, $depth = 3, $related = null ) {
+
+    if ( $depth <= 0 ) {
+        return $related;
+    }
 
     write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
 
@@ -87,15 +91,16 @@ function wl_shortcode_chord_get_relations( $post_id, $depth, $related = null ) {
             //Found new related entity!
             $related['entities'][] = $related_id;
 
-            // TODO: depth is actually a limit here, meaning that no more than $depth posts are gathered.
-            // Depth should be changed to be the *distance* between the initial post and the others.
-            // Eventually we might add a *limit* parameter instead of depth.
-            if ( sizeof( $related['entities'] ) >= $depth ) {
-                return $related;
-            } else {
-                // Recursive call
-                $related = wl_shortcode_chord_get_relations( $related_id, $depth, $related );
-            }
+            $related = wl_shortcode_chord_get_relations( $related_id, ( $depth - 1 ), $related );
+//            // TODO: depth is actually a limit here, meaning that no more than $depth posts are gathered.
+//            // Depth should be changed to be the *distance* between the initial post and the others.
+//            // Eventually we might add a *limit* parameter instead of depth.
+//            if ( sizeof( $related['entities'] ) >= $depth ) {
+//                return $related;
+//            } else {
+//                // Recursive call
+//                $related = wl_shortcode_chord_get_relations( $related_id, $depth, $related );
+//            }
         }
     }
 
@@ -185,11 +190,11 @@ function wl_shortcode_chord( $atts ) {
 
     //extract attributes and set default values
     $chord_atts = shortcode_atts(array(
-        'width' => '100%',
-        'height' => '500px',
+        'width'      => '100%',
+        'height'     => '500px',
         'main_color' => 'f2d',
-        'depth' => 7,
-        'global' => false
+        'depth'      => 3,
+        'global'     => false
     ), $atts);
 
     if ($chord_atts['global']) {
