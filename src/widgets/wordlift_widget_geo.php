@@ -1,5 +1,11 @@
 <?php
+/**
+ * This file contains the Geo Widget class.
+ */
 
+/**
+ * Class WordLift_Geo_Widget
+ */
 class WordLift_Geo_Widget extends WP_Widget
 {
 

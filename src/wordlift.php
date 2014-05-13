@@ -1016,8 +1016,8 @@ require_once('wordlift_freebase_image_proxy.php');
 
 require_once('wordlift_user.php');
 
-require_once('wordlift_geo_widget.php');
-require_once('wordlift_chord_widget.php');
+require_once('widgets/wordlift_widget_geo.php');
+require_once('widgets/wordlift_widget_chord.php');
 
 require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
