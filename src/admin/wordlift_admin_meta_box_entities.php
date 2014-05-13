@@ -1,15 +1,20 @@
 <?php
+/**
+ * This file provides methods and functions for the related entities meta-box in the admin UI.
+ */
 
 /**
  * Adds the entities meta box (called from *add_meta_boxes* hook).
+ *
+ * @param string $post_type The type of the current open post.
  */
-function wl_admin_add_entities_meta_box($post_type)
+function wl_admin_add_entities_meta_box( $post_type )
 {
 
     write_log("wl_admin_add_entities_meta_box [ post type :: $post_type ]");
 
     add_meta_box(
-        'wordlift_entitities_box',
+        'wordlift_entities_box',
         __('Related Entities', 'wordlift'),
         'wl_entities_box_content',
         $post_type,
@@ -20,6 +25,7 @@ function wl_admin_add_entities_meta_box($post_type)
 
 /**
  * Displays the meta box contents (called by *add_meta_box* callback).
+ *
  * @param WP_Post $post The current post.
  */
 function wl_entities_box_content($post)
@@ -28,8 +34,7 @@ function wl_entities_box_content($post)
     write_log("wl_entities_box_content [ post id :: $post->ID ]");
 
     // get the related entities IDs.
-    // TODO: shouldn't we use wl_get_referenced_entities here?
-    $related_entities_ids = get_post_meta($post->ID, WL_CUSTOM_FIELD_REFERENCED_ENTITY, true);
+    $related_entities_ids = wl_get_referenced_entity_ids( $post->ID );
 
     if (!is_array($related_entities_ids)) {
         write_log("related_entities_ids is not of the right type.");

@@ -264,7 +264,7 @@ class PostTest extends WP_UnitTestCase
 //        }
 //
 //        // Check that the post references the entities.
-//        $rel_entities = wl_get_referenced_entities($post_id);
+//        $rel_entities = wl_get_referenced_entity_ids($post_id);
 //        $this->assertEquals(count($entity_ids), count($rel_entities));
 //        foreach ($entity_ids as $id) {
 //            $this->assertTrue(in_array($id, $rel_entities));
@@ -293,18 +293,18 @@ class PostTest extends WP_UnitTestCase
         $post_id = $this->createPost();
         $entity_post_id = $this->createPost();
 
-        $related_entities = wl_get_referenced_entities($post_id);
+        $related_entities = wl_get_referenced_entity_ids($post_id);
         $this->assertEquals(0, count($related_entities));
 
         $related_posts = wl_get_related_post_ids($entity_post_id);
         $this->assertEquals(0, count($related_posts));
 
 //        wl_bind_post_to_entities($post_id, array($entity_post_id));
-//        $this->assertEquals(1, count(wl_get_referenced_entities($post_id)));
+//        $this->assertEquals(1, count(wl_get_referenced_entity_ids($post_id)));
 //        $this->assertEquals(1, count(wl_get_related_post_ids($entity_post_id)));
 
         wl_add_referenced_entities($post_id, array($entity_post_id));
-        $this->assertEquals(1, count(wl_get_referenced_entities($post_id)));
+        $this->assertEquals(1, count(wl_get_referenced_entity_ids($post_id)));
 
         wl_add_related_posts($entity_post_id, array($post_id));
         $this->assertEquals(1, count(wl_get_related_post_ids($entity_post_id)));
@@ -442,7 +442,7 @@ class PostTest extends WP_UnitTestCase
         }
 
         // Check that the post references the entities.
-        $rel_entities = wl_get_referenced_entities($post_id);
+        $rel_entities = wl_get_referenced_entity_ids($post_id);
         $this->assertEquals(count($entity_ids), count($rel_entities));
         foreach ($entity_ids as $id) {
             $this->assertTrue(in_array($id, $rel_entities));
@@ -726,7 +726,7 @@ EOF;
         $count = preg_match_all('/^(?P<uri>[^\r]*)/im', $body, $matches, PREG_SET_ORDER);
         $this->assertTrue(is_numeric($count));
 
-        $entity_ids = wl_get_referenced_entities($post->ID);
+        $entity_ids = wl_get_referenced_entity_ids($post->ID);
 
         // Expect only one match (headers + expected entities).
         $this->assertEquals(count($entity_ids) + 1, $count);

@@ -9,24 +9,23 @@
  */
 function wl_get_most_connected_entity()
 {
-    $post_ids = get_posts(array(
+
+    // Get the last 20 posts by post date.
+    // For each post get the entities they reference.
+    $post_ids = get_posts( array(
         'numberposts' => 20,
-        'fields' => 'ids', //only get post IDs
-        'orderby' => 'post_date',
-        'order' => 'DESC'
-    ));
+        'fields'      => 'ids', //only get post IDs
+        'orderby'     => 'post_date',
+        'order'       => 'DESC'
+    ) );
 	
-	if(empty($post_ids)){
+	if( empty( $post_ids ) ){
 		return null;
 	}
 
     $entities = array();
-    foreach ($post_ids as $id) {
-        $new_entities = wl_get_referenced_entities($id);
-
-        foreach ($new_entities as $new) {
-            $entities[] = $new;
-        }
+    foreach ( $post_ids as $id ) {
+        $entities = array_merge( $entities, wl_get_referenced_entity_ids( $id ) );
     }
 
     $famous_entities = array_count_values($entities);
@@ -44,54 +43,53 @@ function wl_get_most_connected_entity()
  *
  * @uses wl_get_referencing_posts to get the list of posts that reference an entity.
  *
- * @param int $id The entity post ID.
+ * @param int $post_id The entity post ID.
  * @param int $depth Max number of entities in output.
  * @param array $related An existing array of related entities.
  * @return array
  */
-function wl_ajax_related_entities( $id, $depth, $related = null )
-{
+function wl_shortcode_chord_get_relations( $post_id, $depth, $related = null ) {
+
+    write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
+
 	// Create a related array which will hold entities and relations.
     if ( is_null($related) ) {
         $related = array(
-            'entities'  => array( $id ),
+            'entities'  => array( $post_id ),
             'relations' => array()
         );
     }
 
-    // Get the posts that reference this entity.
-    $rel = array_map( function( $post ) {
+    // Get the post IDs that reference this entity.
+    $related_ids = array_map( function( $post ) {
         return $post->ID;
-    }, wl_get_referencing_posts( $id ) );
+    }, wl_get_referencing_posts( $post_id ) );
 
-    $rel = array_merge( $rel, wl_get_referenced_entities($id) );
+    $related_ids = array_merge( $related_ids, wl_get_referenced_entity_ids( $post_id ) );
     // TODO: this gets posts related to a post. Do we really need this?
     // $rel = array_merge( $rel, wl_get_related_post_ids($id) );
-	$rel = array_unique( $rel );
+
+//    write_log( "[ is array :: " . ( is_array( $related_ids ) ? 'yes' : $related_ids ) . " ]" );
+    $related_ids = array_unique( $related_ids );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.
-    shuffle($rel);
+    shuffle( $related_ids );
 
-    foreach ($rel as $e) {
+    // Now we have all the related IDs.
+    foreach ( $related_ids as $related_id ) {
 
-        $related['relations'][] = array($id, $e);
+        $related['relations'][] = array( $post_id, $related_id );
 
-        if (!in_array($e, $related['entities'])) {
+        if ( !in_array( $related_id, $related['entities'] ) ) {
             //Found new related entity!
-            $related['entities'][] = $e;
+            $related['entities'][] = $related_id;
 
             //End condition 1: obtained enough related entities.
             if (sizeof($related['entities']) >= $depth) {
                 return $related;
             } else {
                 // Recursive call
-                $related = wl_ajax_related_entities($e, $depth, $related);
-				/*print_r($related->entities);
-				$resss = array_unique( array_merge( $related->entities, $new_results->entities ) );
-                $related->entities = $resss;
-				print_r($related->entities);
-				echo "===========";
-				$related->relations += $new_results->relations;*/
+                $related = wl_shortcode_chord_get_relations( $related_id, $depth, $related );
             }
         }
     }
@@ -108,27 +106,44 @@ function wl_ajax_related_entities( $id, $depth, $related = null )
  * @param $data
  * @return mixed|string|void
  */
-function wl_ajax_related_entities_to_json($data)
+function wl_shortcode_chord_relations_to_json($data)
 {
 
     for ($i = 0; $i < sizeof($data['entities']); $i++) {
-        $id = $data->entities[$i];
-        $post = get_post($id);
-        $entity = new stdClass();
-        $entity->uri = wl_get_entity_uri($id);
-        $entity->url = get_permalink($id);
-        $entity->label = $post->post_title;
-        $entity->type = $post->post_type;
-        $entity->class = $post->post_class;
+        $id   = $data['entities'][$i];
+        $post = get_post( $id );
+
+        // Skip non-existing posts.
+        if ( is_null( $post ) ) {
+            write_log( "wl_shortcode_chord_relations_to_json : post not found [ post id :: $id ]" );
+            continue;
+        }
+
+        write_log( "wl_shortcode_chord_relations_to_json [ post id :: $post->ID ]" );
+
+        $entity = array(
+            'uri'   => wl_get_entity_uri($id),
+            'url'   => get_permalink($id),
+            'label' => $post->post_title,
+            'type'  => $post->post_type
+        );
+//        $entity = new stdClass();
+//        $entity->uri = wl_get_entity_uri($id);
+//        $entity->url = get_permalink($id);
+//        $entity->label = $post->post_title;
+//        $entity->type = $post->post_type;
+        // TODO: what is post_class?
+//        $entity->class = $post->post_class;
 
         $data['entities'][$i] = $entity;
     }
 
     for ($i = 0; $i < sizeof($data['relations']); $i++) {
-        $relation = new stdClass();
-        $relation->s = wl_get_entity_uri($data['relations'][$i][0]);
-        $relation->p = "dcterms:relates"; //dcterms:references o dcterms:relates
-        $relation->o = wl_get_entity_uri($data['relations'][$i][1]);
+        $relation = array(
+            's' => wl_get_entity_uri($data['relations'][$i][0]),
+            'p' => 'dcterms:relates', //dcterms:references o dcterms:relates
+            'o' => wl_get_entity_uri($data['relations'][$i][1])
+        );
 
         $data['relations'][$i] = $relation;
     }
@@ -150,17 +165,16 @@ if (is_admin()) {
 
 /**
  * 
- * Retrieve related entities and output them in JSON
+ * Retrieve related entities and output them in JSON.
  *
- * @uses wl_ajax_related_entities
- * @uses wl_ajax_related_entities_to_json
- * @return json|string
+ * @uses wl_shortcode_chord_get_relations
+ * @uses wl_shortcode_chord_relations_to_json
  */
 function wl_ajax_chord_widget()
 {
     ob_clean();
-    $result = wl_ajax_related_entities($_REQUEST['post_id'], $_REQUEST['depth']);
-    $result = wl_ajax_related_entities_to_json($result);
+    $result = wl_shortcode_chord_get_relations( $_REQUEST['post_id'], $_REQUEST['depth'] );
+    $result = wl_shortcode_chord_relations_to_json( $result );
     echo $result;
     die();
 }
@@ -213,7 +227,7 @@ function wl_shortcode_chord($atts)
     );
 
     // DEBUGGING
-    /*$result = wl_ajax_related_entities($post_id, 100);
+    /*$result = wl_shortcode_chord_get_relations($post_id, 100);
     echo "<pre>";
     print_r( $result );
     echo "</pre>";*/

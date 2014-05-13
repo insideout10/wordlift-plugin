@@ -411,8 +411,8 @@ function wl_set_referenced_entities($post_id, $related_entities)
 /**
  * Get the posts that reference the specified entity.
  *
- * @uses wl_get_referenced_entities to get entities related to posts.
- * @used-by wl_ajax_related_entities
+ * @uses wl_get_referenced_entity_ids to get entities related to posts.
+ * @used-by wl_shortcode_chord_get_relations
  *
  * @param int $entity_id The post ID of the entity.
  * @return array An array of posts.
@@ -491,7 +491,7 @@ function wl_add_referenced_entities($post_id, $new_entity_post_ids)
     write_log("wl_add_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
 
     // Get the existing post IDs and merge them together.
-    $related = wl_get_referenced_entities($post_id);
+    $related = wl_get_referenced_entity_ids($post_id);
     $related = array_unique(array_merge($related, $new_entity_post_ids));
 
     wl_set_referenced_entities($post_id, $related);
@@ -522,14 +522,23 @@ function wl_get_related_post_ids($post_id)
 
 /**
  * Get the IDs of entities related to the specified post.
+ *
  * @param int $post_id The post ID.
  * @return array An array of posts related to the one specified.
  */
-function wl_get_referenced_entities($post_id)
-{
+function wl_get_referenced_entity_ids( $post_id ) {
 
     // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-    return get_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
+    $result = get_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
+
+    // The following is necessary to maintain compatibility with the previous way of storing this data, i.e. as an
+    // array as single key.
+    if ( isset( $result[0] ) && is_array( $result[0] ) ) {
+        $result = $result[0];
+    }
+
+    write_log( "wl_get_referenced_entity_ids [ post id :: $post_id ][ result :: " . var_export( $result, true ) . " ]" );
+    return $result;
 }
 
 /**
@@ -558,7 +567,7 @@ function wl_get_post_modified_time($post)
 //
 //    write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
 //
-//    $entities = wl_get_referenced_entities($post_id);
+//    $entities = wl_get_referenced_entity_ids($post_id);
 //    foreach ($entities as $entity_post_id) {
 //
 //        // Remove the specified post id from the list of related posts.

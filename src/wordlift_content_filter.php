@@ -90,11 +90,13 @@ function wl_content_embed_item_microdata( $content, $uri ) {
 
     // Get the additional properties.
     $additional_properties = '';
-    foreach ($main_type['custom_fields'] as $key => $prop) {
-        write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
-        $values = get_post_meta( $post->ID, $key );
-        foreach ( $values as $value ) {
-            $additional_properties .= '<meta itemprop="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ). '" />';
+    if ( isset( $main_type['custom_fields'] ) ) {
+        foreach ($main_type['custom_fields'] as $key => $prop) {
+            write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
+            $values = get_post_meta( $post->ID, $key );
+            foreach ( $values as $value ) {
+                $additional_properties .= '<meta itemprop="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ). '" />';
+            }
         }
     }
 

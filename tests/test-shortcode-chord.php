@@ -97,7 +97,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
     }
     
     function testChordShortcodeAJAX() {
-		$chord = wl_ajax_related_entities(self::$FIRST_POST_ID, 10);
+		$chord = wl_shortcode_chord_get_relations(self::$FIRST_POST_ID, 10);
 		
 		// Check there is a result
 		$this->assertNotEmpty($chord);

@@ -165,7 +165,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     }
 
     // get related entities.
-    $related_entities_ids = wl_get_referenced_entities($entity_post->ID);
+    $related_entities_ids = wl_get_referenced_entity_ids($entity_post->ID);
 
     if (is_array($related_entities_ids)) {
         foreach ($related_entities_ids as $entity_post_id) {
@@ -288,7 +288,7 @@ function wl_get_sparql_post_references($post_id)
     $post_uri = wordlift_esc_sparql(wl_get_entity_uri($post_id));
 
     // Get the related entities IDs.
-    $related = wl_get_referenced_entities($post_id);
+    $related = wl_get_referenced_entity_ids($post_id);
 
     // Build the SPARQL fragment.
     $sparql = '';

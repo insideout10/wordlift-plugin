@@ -35,7 +35,7 @@ class WordLift_Geo_Widget extends WP_Widget
 
         // Don't show the widget if it's not an entity.
         if ('entity' !== $post->post_type) {
-            $entity_ids = wl_get_referenced_entities($post->ID);
+            $entity_ids = wl_get_referenced_entity_ids($post->ID);
         } else {
             $entity_ids = array($post->ID);
         }
