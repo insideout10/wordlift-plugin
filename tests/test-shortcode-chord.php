@@ -101,8 +101,8 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		
 		// Check there is a result
 		$this->assertNotEmpty($chord);
-		$this->assertNotEmpty($chord->entities);
-		$this->assertNotEmpty($chord->relations);
+		$this->assertNotEmpty($chord['entities']);
+		$this->assertNotEmpty($chord['relations']);
 		
 		//write_log("chordShortcodeAJAX [ chord data :: " . print_r($chord, true) . "]");
     }

@@ -22,7 +22,7 @@ function wl_get_most_connected_entity()
 
     $entities = array();
     foreach ($post_ids as $id) {
-        $new_entities = wl_get_related_entities($id);
+        $new_entities = wl_get_referenced_entities($id);
 
         foreach ($new_entities as $new) {
             $entities[] = $new;
@@ -42,6 +42,7 @@ function wl_get_most_connected_entity()
 /**
  * Get the posts that reference the specified entity.
  *
+ * @uses wl_get_referenced_entities to get entities related to posts.
  * @used-by wl_ajax_related_entities
  *
  * @param int $entity_id The post ID of the entity.
@@ -52,12 +53,19 @@ function wl_get_entity_related_posts($entity_id)
     $result = array();
     $entity = get_post($entity_id);
 
+//    wl_set_related_entities()
+//        wl_set_related_posts()
+//    $args = array(
+//        'meta_key' =>
+//    );
+
     if ($entity->post_type == 'entity') {
 
+        // TODO: we're processing each and every post in the blog. This is too expensive. Fix.
         foreach (get_posts() as $post) {
             $post_id = $post->ID;
             // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-            $related = wl_get_related_entities($post_id);
+            $related = wl_get_referenced_entities($post_id);
             $i = array_search($entity_id, $related);
             if ($i !== false) {
                 $result[] = $post_id;
@@ -73,22 +81,28 @@ function wl_get_entity_related_posts($entity_id)
  *
  * @uses wl_get_entity_related_posts to get the list of posts that reference an entity.
  *
- * @param int $id The entity ID.
- * @param int $depth Max number of entities in  output
- * @param $related Service variable. Do not specify it.
- * @return
+ * @param int $id The entity post ID.
+ * @param int $depth Max number of entities in output.
+ * @param array $related An existing array of related entities.
+ * @return array
  */
-function wl_ajax_related_entities($id, $depth, $related = null)
+function wl_ajax_related_entities( $id, $depth, $related = null )
 {
-	// Start condition.
+	// Create a related array which will hold entities and relations.
+    // TODO: fields should not be declared dynamically, see
+    // http://programmers.stackexchange.com/questions/186439/is-declaring-fields-on-classes-actually-harmful-in-php
     if ( is_null($related) ) {
-        $related->entities = array($id);
-        $related->relations = array();
+        $related = array(
+            'entities'  => array( $id ),
+            'relations' => array()
+        );
+//        $related->entities = array($id);
+//        $related->relations = array();
     }
 
     // Get related content.
     $rel = wl_get_entity_related_posts($id);
-    $rel = array_merge( $rel, wl_get_related_entities($id) );
+    $rel = array_merge( $rel, wl_get_referenced_entities($id) );
     $rel = array_merge( $rel, wl_get_related_post_ids($id) );
 	$rel = array_unique( $rel );
 	
@@ -97,14 +111,14 @@ function wl_ajax_related_entities($id, $depth, $related = null)
 
     foreach ($rel as $e) {
 
-        $related->relations[] = array($id, $e);
+        $related['relations'][] = array($id, $e);
 
-        if (!in_array($e, $related->entities)) {
+        if (!in_array($e, $related['entities'])) {
             //Found new related entity!
-            $related->entities[] = $e;
+            $related['entities'][] = $e;
 
             //End condition 1: obtained enough related entities.
-            if (sizeof($related->entities) >= $depth) {
+            if (sizeof($related['entities']) >= $depth) {
                 return $related;
             } else {
                 // Recursive call
@@ -134,7 +148,7 @@ function wl_ajax_related_entities($id, $depth, $related = null)
 function wl_ajax_related_entities_to_json($data)
 {
 
-    for ($i = 0; $i < sizeof($data->entities); $i++) {
+    for ($i = 0; $i < sizeof($data['entities']); $i++) {
         $id = $data->entities[$i];
         $post = get_post($id);
         $entity = new stdClass();
@@ -144,16 +158,16 @@ function wl_ajax_related_entities_to_json($data)
         $entity->type = $post->post_type;
         $entity->class = $post->post_class;
 
-        $data->entities[$i] = $entity;
+        $data['entities'][$i] = $entity;
     }
 
-    for ($i = 0; $i < sizeof($data->relations); $i++) {
+    for ($i = 0; $i < sizeof($data['relations']); $i++) {
         $relation = new stdClass();
-        $relation->s = wl_get_entity_uri($data->relations[$i][0]);
+        $relation->s = wl_get_entity_uri($data['relations'][$i][0]);
         $relation->p = "dcterms:relates"; //dcterms:references o dcterms:relates
-        $relation->o = wl_get_entity_uri($data->relations[$i][1]);
+        $relation->o = wl_get_entity_uri($data['relations'][$i][1]);
 
-        $data->relations[$i] = $relation;
+        $data['relations'][$i] = $relation;
     }
 
     
