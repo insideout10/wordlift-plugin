@@ -65,7 +65,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$type = 'post';
 		self::$FIRST_POST_ID = wl_create_post( $content, $slug, $title, $status, $type);
         
-        wl_add_related_entities( self::$FIRST_POST_ID, $entities );
+        wl_add_referenced_entities( self::$FIRST_POST_ID, $entities );
 		
 		// Creating another fake post and entity (the most connected one)
 		
@@ -86,8 +86,8 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 		self::$MOST_CONNECTED_ENTITY_ID = $ent->ID;
 		
-		wl_add_related_entities( $new_post, self::$MOST_CONNECTED_ENTITY_ID );
-		wl_add_related_entities( self::$FIRST_POST_ID, self::$MOST_CONNECTED_ENTITY_ID);
+		wl_add_referenced_entities( $new_post, self::$MOST_CONNECTED_ENTITY_ID );
+		wl_add_referenced_entities( self::$FIRST_POST_ID, self::$MOST_CONNECTED_ENTITY_ID);
     }
 
     function testChordShortcodeOutput() {

@@ -402,7 +402,35 @@ function wl_set_related_entities($post_id, $related_entities)
     write_log("wl_set_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
 
     delete_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY);
-    add_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, $related_entities, true);
+
+    foreach ( $related_entities as $entity_post_id ) {
+        add_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, $entity_post_id );
+    }
+}
+
+/**
+ * Get the posts that reference the specified entity.
+ *
+ * @uses wl_get_referenced_entities to get entities related to posts.
+ * @used-by wl_ajax_related_entities
+ *
+ * @param int $entity_id The post ID of the entity.
+ * @return array An array of posts.
+ */
+function wl_get_referencing_posts($entity_id) {
+
+    $args = array(
+        'posts_per_page' => -1,
+        'post_type'    => 'any',
+        'post_status'  => 'any',
+        'meta_key'     => WL_CUSTOM_FIELD_REFERENCED_ENTITY,
+        'meta_value'   => $entity_id
+    );
+
+    $posts = get_posts( $args );
+    write_log("wl_get_referencing_posts [ entity id :: $entity_id ][ posts count :: " . count($posts) . " ]");
+
+    return $posts;
 }
 
 /**
@@ -450,16 +478,17 @@ function wl_get_same_as($post_id)
 
 /**
  * Set the related entity posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
  */
-function wl_add_related_entities($post_id, $new_entity_post_ids)
+function wl_add_referenced_entities($post_id, $new_entity_post_ids)
 {
 
     // Convert the parameter to an array.
     $new_entity_post_ids = (is_array($new_entity_post_ids) ? $new_entity_post_ids : array($new_entity_post_ids));
 
-    write_log("wl_add_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
+    write_log("wl_add_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
 
     // Get the existing post IDs and merge them together.
     $related = wl_get_referenced_entities($post_id);
@@ -500,16 +529,7 @@ function wl_get_referenced_entities($post_id)
 {
 
     // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-    $related = get_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, true);
-
-    if (empty($related)) {
-        return array();
-    }
-
-    // Ensure an array is returned.
-    return (is_array($related)
-        ? $related
-        : array($related));
+    return get_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
 }
 
 /**
@@ -670,7 +690,7 @@ function wl_add_related($post_id, $related_id)
     }
 
     if (0 < count($related_entities)) {
-        wl_add_related_entities($post_id, $related_entities);
+        wl_add_referenced_entities($post_id, $related_entities);
     }
     if (0 < count($related_posts)) {
         wl_add_related_posts($post_id, $related_posts);

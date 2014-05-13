@@ -40,46 +40,9 @@ function wl_get_most_connected_entity()
 }
 
 /**
- * Get the posts that reference the specified entity.
- *
- * @uses wl_get_referenced_entities to get entities related to posts.
- * @used-by wl_ajax_related_entities
- *
- * @param int $entity_id The post ID of the entity.
- * @return array An array of post IDs.
- */
-function wl_get_entity_related_posts($entity_id)
-{
-    $result = array();
-    $entity = get_post($entity_id);
-
-//    wl_set_related_entities()
-//        wl_set_related_posts()
-//    $args = array(
-//        'meta_key' =>
-//    );
-
-    if ($entity->post_type == 'entity') {
-
-        // TODO: we're processing each and every post in the blog. This is too expensive. Fix.
-        foreach (get_posts() as $post) {
-            $post_id = $post->ID;
-            // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-            $related = wl_get_referenced_entities($post_id);
-            $i = array_search($entity_id, $related);
-            if ($i !== false) {
-                $result[] = $post_id;
-            }
-
-        }
-    }
-    return $result;
-}
-
-/**
  * Recursive function used to retrieve related content (both posts and entities)
  *
- * @uses wl_get_entity_related_posts to get the list of posts that reference an entity.
+ * @uses wl_get_referencing_posts to get the list of posts that reference an entity.
  *
  * @param int $id The entity post ID.
  * @param int $depth Max number of entities in output.
@@ -100,8 +63,10 @@ function wl_ajax_related_entities( $id, $depth, $related = null )
 //        $related->relations = array();
     }
 
-    // Get related content.
-    $rel = wl_get_entity_related_posts($id);
+    // Get the posts that reference this entity.
+    $rel = array_map( function( $post ) {
+        return $post->ID;
+    }, wl_get_referencing_posts( $id ) );
     $rel = array_merge( $rel, wl_get_referenced_entities($id) );
     $rel = array_merge( $rel, wl_get_related_post_ids($id) );
 	$rel = array_unique( $rel );
