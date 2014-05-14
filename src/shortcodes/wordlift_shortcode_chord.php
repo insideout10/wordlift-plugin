@@ -192,7 +192,7 @@ function wl_shortcode_chord( $atts ) {
     $chord_atts = shortcode_atts(array(
         'width'      => '100%',
         'height'     => '500px',
-        'main_color' => 'f2d',
+        'main_color' => '000',
         'depth'      => 3,
         'global'     => false
     ), $atts);
