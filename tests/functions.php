@@ -16,6 +16,7 @@ define( 'WL_BUFFER_SPARQL_UPDATE_QUERIES', false );
 
 /**
  * Create a new post.
+ *
  * @param string $content The post content.
  * @param string $slug    The post slug.
  * @param string $title   The post title.
@@ -426,7 +427,7 @@ function wl_bind_post_to_entities($post_id, $entity_posts)
         wl_add_related_posts($entity_post_id, array($post_id));
     }
 
-    wl_add_related_entities($post_id, $entity_ids);
+    wl_add_referenced_entities($post_id, $entity_ids);
 }
 
 

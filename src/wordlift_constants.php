@@ -60,3 +60,6 @@ define('WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end');
 
 // The name for the entity type taxonomy.
 define('WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type');
+
+// The name of the custom field that stores the IDs of entities referenced by posts.
+define('WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities');

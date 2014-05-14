@@ -358,6 +358,7 @@ function wl_save_image($url)
 
 /**
  * Set the related posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param array $related_posts An array of related post IDs.
  */
@@ -372,6 +373,7 @@ function wl_set_related_posts($post_id, $related_posts)
 
 /**
  * Set the related posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param int|array $new_post_ids An array of related post IDs.
  */
@@ -393,16 +395,45 @@ function wl_add_related_posts($post_id, $new_post_ids)
 
 /**
  * Set the related entity posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param array $related_entities An array of related entity post IDs.
  */
-function wl_set_related_entities($post_id, $related_entities)
+function wl_set_referenced_entities($post_id, $related_entities)
 {
 
-    write_log("wl_set_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
+    write_log("wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
 
-    delete_post_meta($post_id, 'wordlift_related_entities');
-    add_post_meta($post_id, 'wordlift_related_entities', $related_entities, true);
+    delete_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY);
+
+    foreach ( $related_entities as $entity_post_id ) {
+        add_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, $entity_post_id );
+    }
+}
+
+/**
+ * Get the posts that reference the specified entity.
+ *
+ * @uses wl_get_referenced_entity_ids to get entities related to posts.
+ * @used-by wl_shortcode_chord_get_relations
+ *
+ * @param int $entity_id The post ID of the entity.
+ * @return array An array of posts.
+ */
+function wl_get_referencing_posts($entity_id) {
+
+    $args = array(
+        'posts_per_page' => -1,
+        'post_type'    => 'any',
+        'post_status'  => 'any',
+        'meta_key'     => WL_CUSTOM_FIELD_REFERENCED_ENTITY,
+        'meta_value'   => $entity_id
+    );
+
+    $posts = get_posts( $args );
+    write_log("wl_get_referencing_posts [ entity id :: $entity_id ][ posts count :: " . count($posts) . " ]");
+
+    return $posts;
 }
 
 /**
@@ -450,22 +481,23 @@ function wl_get_same_as($post_id)
 
 /**
  * Set the related entity posts IDs for the specified post ID.
+ *
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
  */
-function wl_add_related_entities($post_id, $new_entity_post_ids)
+function wl_add_referenced_entities($post_id, $new_entity_post_ids)
 {
 
     // Convert the parameter to an array.
     $new_entity_post_ids = (is_array($new_entity_post_ids) ? $new_entity_post_ids : array($new_entity_post_ids));
 
-    write_log("wl_add_related_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
+    write_log("wl_add_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
 
     // Get the existing post IDs and merge them together.
-    $related = wl_get_related_entities($post_id);
+    $related = wl_get_referenced_entity_ids($post_id);
     $related = array_unique(array_merge($related, $new_entity_post_ids));
 
-    wl_set_related_entities($post_id, $related);
+    wl_set_referenced_entities($post_id, $related);
 }
 
 /**
@@ -493,23 +525,23 @@ function wl_get_related_post_ids($post_id)
 
 /**
  * Get the IDs of entities related to the specified post.
+ *
  * @param int $post_id The post ID.
  * @return array An array of posts related to the one specified.
  */
-function wl_get_related_entities($post_id)
-{
+function wl_get_referenced_entity_ids( $post_id ) {
 
     // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-    $related = get_post_meta($post_id, 'wordlift_related_entities', true);
+    $result = get_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
 
-    if (empty($related)) {
-        return array();
+    // The following is necessary to maintain compatibility with the previous way of storing this data, i.e. as an
+    // array as single key.
+    if ( isset( $result[0] ) && is_array( $result[0] ) ) {
+        $result = $result[0];
     }
 
-    // Ensure an array is returned.
-    return (is_array($related)
-        ? $related
-        : array($related));
+    write_log( "wl_get_referenced_entity_ids [ post id :: $post_id ][ result :: " . var_export( $result, true ) . " ]" );
+    return $result;
 }
 
 /**
@@ -529,30 +561,30 @@ function wl_get_post_modified_time($post)
     return $date_modified;
 }
 
-/**
- * Unbind post and entities.
- * @param int $post_id The post ID.
- */
-function wl_unbind_post_from_entities($post_id)
-{
-
-    write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
-
-    $entities = wl_get_related_entities($post_id);
-    foreach ($entities as $entity_post_id) {
-
-        // Remove the specified post id from the list of related posts.
-        $related_posts = wl_get_related_post_ids($entity_post_id);
-        if (false !== ($key = array_search($post_id, $related_posts))) {
-            unset($related_posts[$key]);
-        }
-
-        wl_set_related_posts($entity_post_id, $related_posts);
-    }
-
-    // Reset the related entities for the post.
-    wl_set_related_entities($post_id, array());
-}
+///**
+// * Unbind post and entities.
+// * @param int $post_id The post ID.
+// */
+//function wl_unbind_post_from_entities($post_id)
+//{
+//
+//    write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
+//
+//    $entities = wl_get_referenced_entity_ids($post_id);
+//    foreach ($entities as $entity_post_id) {
+//
+//        // Remove the specified post id from the list of related posts.
+//        $related_posts = wl_get_related_post_ids($entity_post_id);
+//        if (false !== ($key = array_search($post_id, $related_posts))) {
+//            unset($related_posts[$key]);
+//        }
+//
+//        wl_set_related_posts($entity_post_id, $related_posts);
+//    }
+//
+//    // Reset the related entities for the post.
+//    wl_set_referenced_entities($post_id, array());
+//}
 
 /**
  * Get all the images bound to a post.
@@ -670,8 +702,10 @@ function wl_add_related($post_id, $related_id)
     }
 
     if (0 < count($related_entities)) {
-        wl_add_related_entities($post_id, $related_entities);
+        wl_add_referenced_entities($post_id, $related_entities);
     }
+
+    // TODO: check this, we're adding related posts to a post.
     if (0 < count($related_posts)) {
         wl_add_related_posts($post_id, $related_posts);
     }
@@ -963,7 +997,7 @@ function wl_plugins_url($url, $path, $plugin)
     write_log("wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
-    if (1 !== preg_match('/\/wordlift(_editor)?.php$/i', $plugin)) {
+    if (1 !== preg_match('/\/wordlift[^.]*.php$/i', $plugin)) {
         return $url;
     };
 
@@ -994,7 +1028,10 @@ require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
-require_once('wordlift_shortcode_related_posts.php');
+
+// Shortcodes
+require_once('shortcodes/wordlift_shortcode_related_posts.php');
+require_once('shortcodes/wordlift_shortcode_chord.php');
 
 require_once('wordlift_indepth_articles.php');
 
@@ -1002,13 +1039,14 @@ require_once('wordlift_freebase_image_proxy.php');
 
 require_once('wordlift_user.php');
 
-require_once('wordlift_geo_widget.php');
+require_once('widgets/wordlift_widget_geo.php');
+require_once('widgets/wordlift_widget_chord.php');
 
 require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
 
 // Add admin functions.
-// TODO: find a way to make 'admin' tests work.
+// TODO: find a way to make 'admin' UI tests work.
 //if ( is_admin() ) {
 
     require_once('admin/wordlift_admin.php');
@@ -1024,6 +1062,9 @@ require_once('wordlift_redlink.php');
     require_once('admin/wordlift_admin_ajax_search.php');
     // add the entity creation AJAX.
     require_once('admin/wordlift_admin_ajax_add_entity.php');
+
+    // Load the wl-chord TinyMCE button and configuration dialog.
+    require_once('admin/wordlift_admin_shortcode_chord.php');
 
 //}
 

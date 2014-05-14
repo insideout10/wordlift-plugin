@@ -1,5 +1,11 @@
 <?php
+/**
+ * This file contains the Geo Widget class.
+ */
 
+/**
+ * Class WordLift_Geo_Widget
+ */
 class WordLift_Geo_Widget extends WP_Widget
 {
 
@@ -35,7 +41,7 @@ class WordLift_Geo_Widget extends WP_Widget
 
         // Don't show the widget if it's not an entity.
         if ('entity' !== $post->post_type) {
-            $entity_ids = wl_get_related_entities($post->ID);
+            $entity_ids = wl_get_referenced_entity_ids($post->ID);
         } else {
             $entity_ids = array($post->ID);
         }

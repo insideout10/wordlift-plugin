@@ -52,9 +52,9 @@ function wl_push_post_to_redlink($post)
 
     // Get other post properties.
     $date_published = wl_get_sparql_time(get_the_time('c', $post));
-    $date_modified = wl_get_sparql_time(wl_get_post_modified_time($post));
-    $title = wordlift_esc_sparql($post->post_title);
-    $permalink = wordlift_esc_sparql(get_permalink($post->ID));
+    $date_modified  = wl_get_sparql_time(wl_get_post_modified_time($post));
+    $title          = wordlift_esc_sparql($post->post_title);
+    $permalink      = wordlift_esc_sparql(get_permalink($post->ID));
     $user_comments_count = $post->comment_count;
 
     write_log("wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]");
@@ -75,7 +75,7 @@ function wl_push_post_to_redlink($post)
     $sparql .= wl_get_sparql_images($uri, $post->ID);
 
     // Get the SPARQL fragment with the dcterms:references statement.
-    $sparql .= wl_get_sparql_post_references($post->ID);
+    $sparql .= wl_get_sparql_post_references( $post->ID );
 
     // create the query:
     //  - remove existing references to entities.
@@ -165,7 +165,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     }
 
     // get related entities.
-    $related_entities_ids = wl_get_related_entities($entity_post->ID);
+    $related_entities_ids = wl_get_referenced_entity_ids($entity_post->ID);
 
     if (is_array($related_entities_ids)) {
         foreach ($related_entities_ids as $entity_post_id) {
@@ -268,7 +268,7 @@ function wordlift_save_post_and_related_entities($post_id)
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Update related entities.
-    wl_set_related_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
+    wl_set_referenced_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
 
     // Push the post to Redlink.
     wl_push_to_redlink($post->ID);
@@ -288,7 +288,7 @@ function wl_get_sparql_post_references($post_id)
     $post_uri = wordlift_esc_sparql(wl_get_entity_uri($post_id));
 
     // Get the related entities IDs.
-    $related = wl_get_related_entities($post_id);
+    $related = wl_get_referenced_entity_ids($post_id);
 
     // Build the SPARQL fragment.
     $sparql = '';
