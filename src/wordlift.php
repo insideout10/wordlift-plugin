@@ -214,6 +214,11 @@ function wordlift_admin_enqueue_scripts()
 
 add_action('admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts');
 
+function wl_enqueue_scripts() {
+    wp_enqueue_style( 'wordlift-ui', plugins_url( 'css/wordlift.ui.css', __FILE__ ) );
+}
+add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
+
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  * @param array $allowedtags The array with the currently configured elements and attributes.
