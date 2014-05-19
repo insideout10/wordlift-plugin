@@ -193,7 +193,7 @@ function wl_shortcode_chord( $atts ) {
         'width'      => '100%',
         'height'     => '500px',
         'main_color' => '000',
-        'depth'      => 3,
+        'depth'      => 5,
         'global'     => false
     ), $atts);
 
@@ -211,37 +211,37 @@ function wl_shortcode_chord( $atts ) {
 	
 	//adding javascript code
     wp_enqueue_script('d3', plugins_url('bower_components/d3/d3.min.js', __FILE__));
-
-    // TODO: Why are we loading the same JavaScript many times? Fix.
     wp_enqueue_script( 'wordlift-ui', plugins_url('js/wordlift.ui.js', __FILE__) );
-
-
-    // TODO: separate global script parameters from single instances.
-    wp_localize_script($widget_id, 'wl_chord_params', array(
-            'ajax_url'   => admin_url('admin-ajax.php'), // global setting
-            'action'     => 'wl_chord',   // global setting
-            // local settings.
-            'post_id'    => $post_id,
-            'widget_id'  => $widget_id,
-            'depth'      => $chord_atts['depth'],
-            'main_color' => $chord_atts['main_color']
+    wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
+            'ajax_url'   => admin_url('admin-ajax.php'),
+            'action'     => 'wl_chord'
         )
     );
 
     // Escaping atts.
+    $esc_class  = esc_attr('wl-chord-widget');
     $esc_id     = esc_attr($widget_id);
 	$esc_width  = esc_attr($chord_atts['width']);
 	$esc_height = esc_attr($chord_atts['height']);
+
+    $esc_post_id 	= esc_attr($post_id);
+    $esc_depth		= esc_attr($chord_atts['depth']);
+    $esc_main_color = esc_attr($chord_atts['main_color']);
     
 	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
     return <<<EOF
-        <div id="$esc_id" style="width:$esc_width;
-            height:$esc_height;
-            background-color:white;
-            margin-top:10px;
-            margin-bottom:10px">
-        </div>
+<div class="$esc_class" 
+	id="$esc_id"
+	data-post_id="$esc_post_id"
+    data-depth="$esc_depth"
+    data-main_color="$esc_main_color"
+	style="width:$esc_width;
+        height:$esc_height;
+        background-color:white;
+        margin-top:10px;
+        margin-bottom:10px">
+</div>
 EOF;
 
 }

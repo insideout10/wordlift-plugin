@@ -28,16 +28,12 @@ add_action('wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax');
  * @return string
  */
 function wl_shortcode_timeline( $atts ) {
-	
-	echo "timeline was shortcoded.";
 
     //extract attributes and set default values
     $timeline_atts = shortcode_atts(array(
         'width'      => '100%',
         'height'     => '500px',
-        'main_color' => '000'/*,
-        'depth'      => 3,
-        'global'     => false*/
+        'main_color' => '000'
     ), $atts);
 	
 	// Add wordlift-ui script.
@@ -62,19 +58,29 @@ function wl_shortcode_timeline( $atts ) {
 	 */
 
     // Escaping atts.
-    $esc_id     = esc_attr(12);
+    $esc_class  = esc_attr('wl-timeline-widget');
+    $esc_id     = esc_attr('wl-timeline-11121221231231');
 	$esc_width  = esc_attr($timeline_atts['width']);
 	$esc_height = esc_attr($timeline_atts['height']);
+
+    $esc_post_id 	= esc_attr(13132412);//$post_id);
+    $esc_depth		= esc_attr(2);//$timeline_atts['depth']);
+    $esc_main_color = esc_attr('#aaa');//$timeline_atts['main_color']);
     
 	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-	return <<<EOF
-		<div id="$esc_id" style="width:$esc_width;
-            height:$esc_height;
-            background-color:#bbb;
-            margin-top:10px;
-            margin-bottom:10px">
-        </div>
+    return <<<EOF
+<div class="$esc_class" 
+	id="$esc_id"
+	data-post_id="$esc_post_id"
+    data-depth="$esc_depth"
+    data-main_color="$esc_main_color"
+	style="width:$esc_width;
+        height:$esc_height;
+        background-color:$esc_main_color;
+        margin-top:10px;
+        margin-bottom:10px">
+</div>
 EOF;
 }
 
