@@ -1037,6 +1037,7 @@ require_once('wordlift_to_redlink_data_push_callbacks.php');
 // Shortcodes
 require_once('shortcodes/wordlift_shortcode_related_posts.php');
 require_once('shortcodes/wordlift_shortcode_chord.php');
+require_once('shortcodes/wordlift_shortcode_timeline.php');
 
 require_once('wordlift_indepth_articles.php');
 

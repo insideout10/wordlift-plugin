@@ -1,0 +1,14 @@
+*.DS_Store
+.DS_Store*
+dev_examples/
+cdn/
+compiled
+*.tmproj
+*.tmproject
+tmtags
+source/gfx/Sprites/
+/node_modules
+*.pyc
+codekit-config.json
+build/website
+
