@@ -896,6 +896,7 @@ function wl_install_entity_type_data()
                 'http://schema.org/Product'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),              
@@ -909,6 +910,16 @@ function wl_install_entity_type_data()
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
                 WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate'
+            ),
+            'export_fields' => array(
+                WL_CUSTOM_FIELD_CAL_DATE_START => array(
+                    'predicate' => 'http://schema.org/startDate',
+                    'type'      => 'xsd:date'
+                ),
+                WL_CUSTOM_FIELD_CAL_DATE_END   => array(
+                    'predicate' => 'http://schema.org/endDate',
+                    'type'      => 'xsd:date'
+                )
             ),
             'templates' => array(
                 'subtitle' => '{{id}}'
@@ -926,6 +937,7 @@ function wl_install_entity_type_data()
                 'http://schema.org/Newspaper'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),             
@@ -940,6 +952,7 @@ function wl_install_entity_type_data()
                 'http://rdf.freebase.com/ns/music.artist'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),             
@@ -955,6 +968,7 @@ function wl_install_entity_type_data()
                 'http://www.opengis.net/gml/_Feature'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),
@@ -966,6 +980,7 @@ function wl_install_entity_type_data()
             'uri' => 'http://schema.org/Thing',
             'same_as' => array('*'), // set as default.
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),
@@ -985,7 +1000,7 @@ function wl_install_entity_type_data()
             continue;
         }
         // Add custom metadata to the term.
-        wl_entity_type_taxonomy_update_term($result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates']);
+        wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'] );
     }
 }
 

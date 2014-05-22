@@ -130,6 +130,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     write_log("wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]");
 
     // create a new empty statement.
+    $delete_stmt = '';
     $sparql = '';
 
     // set the same as.
@@ -150,9 +151,37 @@ function wl_push_entity_post_to_redlink($entity_post)
     }
 
     $main_type = wl_entity_type_taxonomy_get_object_terms( $entity_post->ID );
+
     if ( null != $main_type ) {
         $main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
         $sparql .= " <$uri> a <$main_type_uri> . \n";
+
+        // The type define custom fields that hold additional data about the entity.
+        // For example Events may have start/end dates, Places may have coordinates.
+        // The value in the custom fields must be rewritten as triple predicates, this
+        // is what we're going to do here.
+
+        write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ). ' ]' );
+
+        if ( isset( $main_type['export_fields'] ) ) {
+            foreach ( $main_type['export_fields'] as $field => $settings ) {
+
+                write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
+
+                $predicate = wordlift_esc_sparql( $settings['predicate'] );
+                $type      = $settings['type'];
+
+                // add the delete statement for later execution.
+                $delete_stmt .= "DELETE { <$uri> <$predicate> ?o } WHERE  { <$uri> <$predicate> ?o };\n";
+
+                foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
+                    $sparql .= " <$uri> <$predicate> " .
+                        '"' . wordlift_esc_sparql( $value ) . '"' .
+                        '^^' . wordlift_esc_sparql( $type ) .
+                        " . \n";
+                }
+            }
+        }
     }
 
     // Get the entity types.
@@ -176,6 +205,7 @@ function wl_push_entity_post_to_redlink($entity_post)
         }
     }
 
+    // TODO: this should be removed in light of the new custom fields.
     // Get the coordinates related to the post and save them to the triple store.
     $coordinates = wl_get_coordinates($entity_post->ID);
     if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
@@ -190,6 +220,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     $sparql .= wl_get_sparql_images($uri, $entity_post->ID);
 
     $query = wordlift_get_ns_prefixes() . <<<EOF
+    $delete_stmt
     DELETE { <$uri> rdfs:label ?o } WHERE  { <$uri> rdfs:label ?o };
     DELETE { <$uri> owl:sameAs ?o . } WHERE  { <$uri> owl:sameAs ?o . };
     DELETE { <$uri> schema:description ?o . } WHERE  { <$uri> schema:description ?o . };

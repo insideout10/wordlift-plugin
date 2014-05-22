@@ -40,9 +40,11 @@ function wl_entity_type_taxonomy_register()
  * @param string $uri The URI.
  * @param array $same_as An array of sameAs URIs.
  * @param array $custom_fields An array of custom fields and their properties mapping.
+ * @param array $templates
+ * @param array $export_fields An array of fields to be exported to the triple store.
  * @return True if option value has changed, false if not or if update failed.
  */
-function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array())
+function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $export_fields = array() )
 {
     write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
 
@@ -51,7 +53,8 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
         'uri'           => $uri,
         'same_as'       => $same_as,
         'custom_fields' => $custom_fields,
-        'templates'     => $templates
+        'templates'     => $templates,
+        'export_fields' => $export_fields
     ) );
 }
 

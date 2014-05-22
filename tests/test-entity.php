@@ -189,6 +189,23 @@ class EntityTest extends WP_UnitTestCase
         $this->assertEquals( true, in_array( $mit_id, $related_entities ) );
     }
 
+    function testSaveEventWithStartAndEndDates() {
+
+        $entity_1_id = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
+        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2013-01-02' );
+        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2013-02-03' );
+
+        wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
+
+        wp_update_post( array(
+            'ID'           => $entity_1_id,
+            'post_content' => 'Lorem Ipsum.'
+        ) );
+
+        // TODO: add checks for SPARQL query.
+
+    }
+
     function create_World_Wide_Web_Foundation( $related_post_id ) {
 
         $uri         = 'http://data.redlink.io/353/wordlift-tests-php-5-4-wp-3-8-ms-0/entity/World_Wide_Web_Foundation';

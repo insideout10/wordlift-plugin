@@ -190,17 +190,17 @@ EOF;
         $type = wl_entity_type_taxonomy_get_term_options($term_id);
 
         // Skip types that are not defined.
-        if (null === $type['uri']) {
-            continue;
-        }
+        if (null !== $type['uri']) {
 
-        $name = json_encode(array(
-            'label'     =>  $name,
-            'uri'       =>  $type['uri'],
-            'css'       =>  $type['css_class'], 
-            'sameAs'    =>  $type['same_as'], 
-            'templates' =>  $type['templates'],
-        ));
+            $name = json_encode(array(
+                'label'     =>  $name,
+                'uri'       =>  $type['uri'],
+                'css'       =>  $type['css_class'],
+                'sameAs'    =>  $type['same_as'],
+                'templates' =>  $type['templates'],
+            ));
+
+        }
     });
 
     // Remove duplicates
