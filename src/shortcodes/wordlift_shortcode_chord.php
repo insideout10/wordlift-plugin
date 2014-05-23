@@ -202,11 +202,11 @@ function wl_shortcode_chord( $atts ) {
 		if($post_id == null){
 			return "WordLift Chord: no entities found.";
 		}
-        $widget_id = 'wl_chord_widget_global';
+        $widget_id = 'wl_chord_global';
         $chord_atts['height'] = '200px';
     } else {
         $post_id = get_the_ID();
-        $widget_id = 'wl_chord_widget_' . $post_id;
+        $widget_id = 'wl_chord_' . $post_id;
     }
 	
 	//adding javascript code
@@ -219,7 +219,7 @@ function wl_shortcode_chord( $atts ) {
     );
 
     // Escaping atts.
-    $esc_class  = esc_attr('wl-chord-widget');
+    $esc_class  = esc_attr('wl-chord');
     $esc_id     = esc_attr($widget_id);
 	$esc_width  = esc_attr($chord_atts['width']);
 	$esc_height = esc_attr($chord_atts['height']);
