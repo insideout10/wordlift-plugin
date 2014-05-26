@@ -490,8 +490,7 @@ function wl_get_same_as($post_id)
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
  */
-function wl_add_referenced_entities($post_id, $new_entity_post_ids)
-{
+function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
 
     // Convert the parameter to an array.
     $new_entity_post_ids = (is_array($new_entity_post_ids) ? $new_entity_post_ids : array($new_entity_post_ids));

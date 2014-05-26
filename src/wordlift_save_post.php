@@ -30,7 +30,16 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
         rl_delete_post( $post );
     }
 
+    // when a post is published, then all the referenced entities must be published.
+    if ( 'publish' !== $old_status && 'publish' === $new_status ) {
+        foreach ( wl_get_referenced_entity_ids( $post->ID ) as $entity_id ) {
+            wl_update_post_status( $entity_id, 'publish' );
+        }
+    }
 }
+// hook save events.
+add_action( 'transition_post_status', 'wl_transition_post_status', 10, 3 );
+
 
 /**
  * Delete the specified post from the triple store.
@@ -40,6 +49,27 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 function rl_delete_post( $post ) {
 
     $post_id = ( is_numeric( $post ) ? $post : $post->ID );
+
+    // hide all entities that are not referenced by any published post.
+    foreach ( wl_get_referenced_entity_ids( $post_id ) as $entity_id ) {
+
+        // consider only entities here, because we don't want to hide a post.
+        if ( WL_ENTITY_TYPE_NAME !== get_post_type( $entity_id ) ) {
+            continue;
+        }
+
+        // check if there is at least one referencing post published.
+        $is_published = array_reduce ( wl_get_referencing_posts( $entity_id ), function ( $carry, $item ) {
+            return ( $carry || ( 'publish' === $item->post_status ) );
+        } );
+
+        // set the entity to draft if no referencing posts are published.
+        if ( ! $is_published ) {
+            wl_update_post_status( $entity_id, 'draft' );
+        }
+    }
+
+    // get the entity URI (valid also for posts)
     $uri_esc = wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
 
     write_log( "rl_delete_post [ post id :: $post_id ][ uri esc :: $uri_esc ]" );
@@ -54,16 +84,53 @@ function rl_delete_post( $post ) {
     // if the post is an entity and has exported properties, delete the related predicates.
     if ( WL_ENTITY_TYPE_NAME === $post->post_type ) {
         $type = wl_entity_get_type( $post->ID );
-        foreach ( $type['export_fields'] as $field => $params ) {
-            // TODO: enclose in <> only if predicate starts with http(s)://
-            $predicate = '<' . $params['predicate'] . '>';
-            $stmt .= "DELETE { <$uri_esc> $predicate ?o . } WHERE { <$uri_esc> $predicate ?o . };\n";
-        };
+
+        if ( isset( $type['export_fields'] ) ) {
+            foreach ( $type['export_fields'] as $field => $params ) {
+                // TODO: enclose in <> only if predicate starts with http(s)://
+                $predicate = '<' . $params['predicate'] . '>';
+                $stmt .= "DELETE { <$uri_esc> $predicate ?o . } WHERE { <$uri_esc> $predicate ?o . };\n";
+            };
+        }
     }
 
     // finally execute the query.
     rl_execute_sparql_update_query( $stmt );
 }
 
-// hook save events.
-add_action( 'transition_post_status', 'wl_transition_post_status', 10, 3 );
+/**
+ * Update the status of a post.
+ *
+ * @param int $post_id The post ID
+ * @param string $status The new status
+ */
+function wl_update_post_status( $post_id, $status ) {
+
+    write_log( "wl_update_post_status [ post ID :: $post_id ][ status :: $status ]" );
+
+    global $wpdb;
+
+    if ( ! $post = get_post( $post_id ) )
+        return;
+
+    if ( $status === $post->post_status )
+        return;
+
+    $wpdb->update( $wpdb->posts, array( 'post_status' => $status ), array( 'ID' => $post->ID ) );
+
+    clean_post_cache( $post->ID );
+
+    $old_status = $post->post_status;
+    $post->post_status = $status;
+    wp_transition_post_status( $status, $old_status, $post );
+
+    /** This action is documented in wp-includes/post.php */
+    do_action( 'edit_post', $post->ID, $post );
+    /** This action is documented in wp-includes/post.php */
+    do_action( "save_post_{$post->post_type}", $post->ID, $post, true );
+    /** This action is documented in wp-includes/post.php */
+    do_action( 'wordlift_save_post', $post->ID );
+    /** This action is documented in wp-includes/post.php */
+    do_action( 'wp_insert_post', $post->ID, $post, true );
+}
+

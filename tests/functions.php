@@ -408,27 +408,27 @@ function wl_type_to_types($item)
         : (is_array($item->{'@type'}) ? $item->{'@type'} : array($item->{'@type'}));
 }
 
-/**
- * Bind the specified post and entities together.
- * @param int $post_id The post ID.
- * @param array $entity_posts An array of entity posts or post IDs.
- */
-function wl_bind_post_to_entities($post_id, $entity_posts)
-{
-
-    // Get the entity IDs.
-    $entity_ids = array();
-    foreach ($entity_posts as $entity_post) {
-        // Support both an array of posts or an array of post ids.
-        $entity_post_id = (is_numeric($entity_post) ? $entity_post : $entity_post->ID);
-        array_push($entity_ids, $entity_post_id);
-
-        // Set the related posts.
-        wl_add_related_posts($entity_post_id, array($post_id));
-    }
-
-    wl_add_referenced_entities($post_id, $entity_ids);
-}
+///**
+// * Bind the specified post and entities together.
+// * @param int $post_id The post ID.
+// * @param array $entity_posts An array of entity posts or post IDs.
+// */
+//function wl_bind_post_to_entities($post_id, $entity_posts)
+//{
+//
+//    // Get the entity IDs.
+//    $entity_ids = array();
+//    foreach ($entity_posts as $entity_post) {
+//        // Support both an array of posts or an array of post ids.
+//        $entity_post_id = (is_numeric($entity_post) ? $entity_post : $entity_post->ID);
+//        array_push($entity_ids, $entity_post_id);
+//
+//        // Set the related posts.
+//        wl_add_related_posts($entity_post_id, array($post_id));
+//    }
+//
+//    wl_add_referenced_entities( $post_id, $entity_ids );
+//}
 
 
 /**

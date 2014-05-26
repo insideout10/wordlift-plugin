@@ -111,8 +111,11 @@ EOF;
 function wl_push_entity_post_to_redlink($entity_post)
 {
 
-    // Deal only with entity posts.
-    if ('entity' !== $entity_post->post_type) {
+    // Only handle published entities.
+    if ( 'entity' !== $entity_post->post_type && 'publish' !== $entity_post->post_status ) {
+
+        write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
+
         return;
     }
 
@@ -127,7 +130,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     // get the entity URI.
     $uri = wl_get_entity_uri($entity_post->ID);
 
-    write_log("wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]");
+    write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
 
     // create a new empty statement.
     $delete_stmt = '';
@@ -240,11 +243,11 @@ EOF;
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  * @param int $post_id The post id being saved.
  */
-function wordlift_save_post_and_related_entities($post_id)
+function wordlift_save_post_and_related_entities( $post_id )
 {
 
     // Ignore auto-saves
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
         return;
     }
 
@@ -252,22 +255,10 @@ function wordlift_save_post_and_related_entities($post_id)
     $post = get_post($post_id);
 
     // Only process posts that are published.
-    if ('publish' !== $post->post_status) {
+    if ( 'publish' !== $post->post_status ) {
         write_log("wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]");
         return;
     }
-
-    // This is now handled in the post transition.
-    // Delete trashed posts/entities from Redlink.
-//    if ('trash' === $post->post_status) {
-//        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]");
-//
-//        // TODO: remove related posts and entities.
-//
-//        // Delete the post from Redlink.
-//        rl_delete_post($post_id);
-//        return;
-//    }
 
     remove_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 
@@ -300,10 +291,10 @@ function wordlift_save_post_and_related_entities($post_id)
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Update related entities.
-    wl_set_referenced_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
+    wl_set_referenced_entities( $post->ID, wl_content_get_embedded_entities( $post->post_content ) );
 
     // Push the post to Redlink.
-    wl_push_to_redlink($post->ID);
+    wl_push_to_redlink( $post->ID );
 
     add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 }
@@ -378,13 +369,11 @@ function wl_get_entity_post_by_uri($uri)
  * Receive events from post saves, and split them according to the post type.
  * @param int $post_id The post id.
  */
-function wordlift_save_post($post_id)
+function wordlift_save_post( $post_id )
 {
 
     // If it's not numeric exit from here.
-    if (!is_numeric($post_id)
-        || is_numeric(wp_is_post_revision($post_id))
-    ) {
+    if ( !is_numeric($post_id) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
         return;
     }
 

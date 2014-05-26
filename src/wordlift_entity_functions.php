@@ -5,15 +5,18 @@
 
 /**
  * Build the entity URI given the entity's post.
- * @param int $post_id The post ID.
- * @return string The URI of the entity.
+ *
+ * @param int $post_id The post ID
+ * @return string The URI of the entity
  */
-function wl_build_entity_uri($post_id)
+function wl_build_entity_uri( $post_id )
 {
 
     // Get the post.
-    $post = get_post($post_id);
+    $post = get_post( $post_id );
+
     if (null === $post) {
+
         write_log("wl_build_entity_uri : error [ post id :: $post_id ][ post :: null ]");
         return;
     }
