@@ -709,27 +709,28 @@ EOF;
         $uri = wordlift_esc_sparql(wl_get_entity_uri($post->ID));
 
         // Prepare the SPARQL query to select label and URL.
-        $sparql = <<<EOF
-SELECT DISTINCT ?uri
-WHERE {
-    <$uri> dcterms:references ?uri .
-}
-EOF;
+        $sparql = "SELECT DISTINCT ?uri WHERE { <$uri> dct:references ?uri . }";
 
         // Send the query and get the response.
-        $response = rl_sparql_select($sparql, 'text/tab-separated-values');
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
         $this->assertFalse(is_wp_error($response));
 
         $body = $response['body'];
 
         $matches = array();
         $count = preg_match_all('/^(?P<uri>[^\r]*)/im', $body, $matches, PREG_SET_ORDER);
-        $this->assertTrue(is_numeric($count));
+        $this->assertTrue( is_numeric( $count ) );
 
-        $entity_ids = wl_get_referenced_entity_ids($post->ID);
+        $entity_ids = wl_get_referenced_entity_ids( $post->ID );
+
+//        write_log( "[ entity IDs :: " . join( ', ', $entity_ids ) . " ][ size of entity IDs :: " . sizeof( $entity_ids ) . " ][ count :: $count ][ post ID :: $post->ID ]" );
+//
+//        if ( $count !== ( 1 + sizeof( $entity_ids ) ) ) {
+//            write_log( "[ sparql :: $sparql ][ body :: $body ]" );
+//        }
 
         // Expect only one match (headers + expected entities).
-        $this->assertEquals(count($entity_ids) + 1, $count);
+        $this->assertEquals( $count, sizeof( $entity_ids ) + 1 );
 
         $entity_uris = wl_post_ids_to_entity_uris($entity_ids);
         for ($i = 1; $i < $count; $i++) {
