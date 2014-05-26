@@ -60,12 +60,15 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
 
 /**
  * Get the entity main type for the specified post ID.
- * @param int $post_id The post ID.
- * @return array|null An array of type properties or null if no term is associated.
+ *
+ * @see wl_entity_type_taxonomy_update_term for a list of keys in the returned array.
+ *
+ * @param int $post_id The post ID
+ * @return array|null An array of type properties or null if no term is associated
  */
-function wl_entity_type_taxonomy_get_object_terms( $post_id ) {
+function wl_entity_get_type( $post_id ) {
 
-    write_log( "wl_entity_type_taxonomy_get_object_terms [ post ID :: $post_id ]" );
+    write_log( "wl_entity_get_type [ post ID :: $post_id ]" );
 
     $terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'fields' => 'ids'

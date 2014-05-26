@@ -32,7 +32,7 @@ function wl_entity_type_register()
         'taxonomies' => array('category')
     );
 
-    register_post_type('entity', $args);
+    register_post_type( WL_ENTITY_TYPE_NAME, $args);
 }
 add_action('init', 'wl_entity_type_register');
 
@@ -197,7 +197,7 @@ EOF;
                 'uri'       =>  $type['uri'],
                 'css'       =>  $type['css_class'],
                 'sameAs'    =>  $type['same_as'],
-                'templates' =>  $type['templates'],
+                'templates' =>  ( isset( $type['templates'] ) ? $type['templates'] : array() ),
             ));
 
         }

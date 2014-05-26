@@ -80,9 +80,9 @@ function wl_push_post_to_redlink($post)
     // create the query:
     //  - remove existing references to entities.
     //  - set the new post information (including references).
-    $query = wordlift_get_ns_prefixes() . <<<EOF
-            DELETE { <$uri> dcterms:references ?o . }
-            WHERE  { <$uri> dcterms:references ?o . };
+    $query = rl_sparql_prefixes() . <<<EOF
+            DELETE { <$uri> dct:references ?o . }
+            WHERE  { <$uri> dct:references ?o . };
             DELETE { <$uri> schema:url ?o . }
             WHERE  { <$uri> schema:url ?o . };
             DELETE { <$uri> schema:datePublished ?o . }
@@ -150,7 +150,7 @@ function wl_push_entity_post_to_redlink($entity_post)
         $sparql .= "<$uri> schema:description \"$descr\"@$site_language . \n";
     }
 
-    $main_type = wl_entity_type_taxonomy_get_object_terms( $entity_post->ID );
+    $main_type = wl_entity_get_type( $entity_post->ID );
 
     if ( null != $main_type ) {
         $main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
@@ -219,7 +219,7 @@ function wl_push_entity_post_to_redlink($entity_post)
     // Add SPARQL stmts to write the schema:image.
     $sparql .= wl_get_sparql_images($uri, $entity_post->ID);
 
-    $query = wordlift_get_ns_prefixes() . <<<EOF
+    $query = rl_sparql_prefixes() . <<<EOF
     $delete_stmt
     DELETE { <$uri> rdfs:label ?o } WHERE  { <$uri> rdfs:label ?o };
     DELETE { <$uri> owl:sameAs ?o . } WHERE  { <$uri> owl:sameAs ?o . };
@@ -251,22 +251,23 @@ function wordlift_save_post_and_related_entities($post_id)
     // get the current post.
     $post = get_post($post_id);
 
-    // Don't process auto-drafts.
-    if ('auto-draft' === $post->post_status) {
-        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ auto-draft :: yes ]");
+    // Only process posts that are published.
+    if ('publish' !== $post->post_status) {
+        write_log("wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]");
         return;
     }
 
+    // This is now handled in the post transition.
     // Delete trashed posts/entities from Redlink.
-    if ('trash' === $post->post_status) {
-        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]");
-
-        // TODO: remove related posts and entities.
-
-        // Delete the post from Redlink.
-        rl_delete_post($post_id);
-        return;
-    }
+//    if ('trash' === $post->post_status) {
+//        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]");
+//
+//        // TODO: remove related posts and entities.
+//
+//        // Delete the post from Redlink.
+//        rl_delete_post($post_id);
+//        return;
+//    }
 
     remove_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 
@@ -325,7 +326,7 @@ function wl_get_sparql_post_references($post_id)
     $sparql = '';
     foreach ($related as $id) {
         $uri = wordlift_esc_sparql(wl_get_entity_uri($id));
-        $sparql .= "<$post_uri> dcterms:references <$uri> . ";
+        $sparql .= "<$post_uri> dct:references <$uri> . ";
     }
 
     return $sparql;
@@ -399,21 +400,18 @@ function wordlift_save_post($post_id)
 
 /**
  * Get a string representing the NS prefixes for a SPARQL query.
+ *
  * @return string The PREFIX lines.
  */
-function wordlift_get_ns_prefixes()
+function rl_sparql_prefixes()
 {
 
-    return <<<EOF
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX schema: <http://schema.org/>
-PREFIX dct: <http://purl.org/dc/terms/>
+    $prefixes = '';
+    foreach ( wl_prefixes() as $prefix => $uri ) {
+        $prefixes .= "PREFIX $prefix: <$uri>\n";
+    }
 
-EOF;
-
+    return $prefixes;
 }
 
 /**

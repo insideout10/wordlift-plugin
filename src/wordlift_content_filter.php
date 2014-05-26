@@ -80,7 +80,7 @@ function wl_content_embed_item_microdata( $content, $uri ) {
     }
 
     // Get the main type.
-    $main_type = wl_entity_type_taxonomy_get_object_terms( $post->ID );
+    $main_type = wl_entity_get_type( $post->ID );
 
     if (null === $main_type) {
         $item_type = '';

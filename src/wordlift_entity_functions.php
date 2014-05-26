@@ -31,7 +31,12 @@ function wl_build_entity_uri($post_id)
 
 /**
  * Get the entity URI of the provided post.
+ *
+ * @uses wl_build_entity_uri to create a new URI if the entity doesn't have an URI yet.
+ * @uses wl_set_entity_uri to set a newly create URI.
+ *
  * @param int $post_id The post ID.
+ *
  * @return string|null The URI of the entity or null if not configured.
  */
 function wl_get_entity_uri($post_id)

@@ -10,7 +10,7 @@
  */
 function wl_serialize_entity($entity){
         
-        $type = wl_entity_type_taxonomy_get_object_terms( $entity->ID );
+        $type = wl_entity_get_type( $entity->ID );
         $images = wl_get_image_urls( $entity->ID );
         
         return array(

@@ -742,7 +742,7 @@ function wl_flush_rewrite_rules_hard($hard)
     ));
 
     // Holds the delete part of the query.
-    $delete_query = wordlift_get_ns_prefixes();
+    $delete_query = rl_sparql_prefixes();
     // Holds the insert part of the query.
     $insert_query = 'INSERT DATA { ';
 
@@ -1047,7 +1047,7 @@ require_once('wordlift_entity_type_taxonomy.php');
 require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
-
+require_once('wordlift_save_post.php');
 
 // Shortcodes
 require_once('shortcodes/wordlift_shortcode_related_posts.php');
