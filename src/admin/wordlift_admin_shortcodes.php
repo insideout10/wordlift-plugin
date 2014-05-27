@@ -1,19 +1,19 @@
 <?php
 
 /**
- * This file contains admin methods for the *wl-chord* shortcode.
+ * This file contains admin methods for the *wl-chord* and *wl-timeline* shortcode.
  */
 
 
 /**
- * Loads the *wl-chord* button in TinyMCE.
+ * Loads the buttons in TinyMCE.
  */
-function wl_admin_chord_button()
+function wl_admin_shortcode_buttons()
 {
     // Only add hooks when the current user has permissions AND is in Rich Text editor mode
     if ((current_user_can('edit_posts') || current_user_can('edit_pages')) && get_user_option('rich_editing')) {
-        add_filter('mce_external_plugins', 'wl_admin_chord_button_register_tinymce_javascript');
-        add_filter('mce_buttons', 'wl_admin_chord_register_button');
+        add_filter('mce_external_plugins', 'wl_admin_shortcode_buttons_register_tinymce_javascript');
+        add_filter('mce_buttons', 'wl_admin_shortcode_register_buttons');
         add_action('admin_footer', 'wl_admin_inject_chord_dialog');
     }
 }
@@ -24,24 +24,22 @@ function wl_admin_chord_button()
  * @param $plugin_array
  * @return mixed
  */
-function wl_admin_chord_button_register_tinymce_javascript($plugin_array)
+function wl_admin_shortcode_buttons_register_tinymce_javascript($plugin_array)
 {
 
-    $plugin_array['wl_chord'] = plugins_url('js-client/wordlift_chord_tinymce_plugin.js', __FILE__);
-
+    $plugin_array['wl_shortcodes'] = plugins_url('js-client/wordlift_shortcode_tinymce_plugin.js', __FILE__);
     return $plugin_array;
 }
 
 /**
- * Register the *wl-chord* button.
+ * Register the *wl-chord* and *wl-timeline* button.
  *
  * @param $buttons
  * @return mixed
  */
-function wl_admin_chord_register_button($buttons)
+function wl_admin_shortcode_register_buttons($buttons)
 {
-    array_push($buttons, 'wl_chord');
-
+	array_push($buttons, 'wl_shortcodes_menu');
     return $buttons;
 }
 
@@ -68,4 +66,4 @@ function wl_admin_inject_chord_dialog()
 }
 
 // init process for button control
-add_action('admin_init', 'wl_admin_chord_button');
+add_action('admin_init', 'wl_admin_shortcode_buttons');

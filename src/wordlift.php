@@ -1070,7 +1070,7 @@ require_once('wordlift_redlink.php');
     require_once('admin/wordlift_admin_ajax_add_entity.php');
 
     // Load the wl-chord TinyMCE button and configuration dialog.
-    require_once('admin/wordlift_admin_shortcode_chord.php');
+    require_once('admin/wordlift_admin_shortcodes.php');
 
 //}
 

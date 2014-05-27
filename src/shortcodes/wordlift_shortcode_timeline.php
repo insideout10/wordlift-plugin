@@ -10,19 +10,15 @@ function wl_shortcode_timeline_get_events( $post_id=null ) {
 	// Build list of event-entities.
 	$entities = null;
 	if( is_null($post_id) ) {
-		// Global timeline. Here we search for events that are from today on.
+		// TODO: Global timeline. Here we search for events that are from today on.
 		$entities = '';
 	} else {
 		// Post-specific timeline. Search for event-entities in the post itself.
-		
-		// Get list of referenced entities.
 		$entities = wl_get_referenced_entity_ids($post_id);
 	}
 	
 	$events = array();
-	if( is_null($entities) ) {
-		// PROOOBLEEEEMSSSSZ
-	} else {
+	if( ! is_null($entities) ) {
 		// Only keep the entities that represent an event
 		foreach($entities as $e) {
 			$candidate = get_post_meta( $e );
@@ -72,12 +68,17 @@ function wl_shortcode_timeline_to_json( $events ) {
 		$dateObj = new stdClass();
 		$dateObj->startDate = str_replace('-', ',', $eventMeta[WL_CUSTOM_FIELD_CAL_DATE_START][0]);
 		$dateObj->endDate = str_replace('-', ',', $eventMeta[WL_CUSTOM_FIELD_CAL_DATE_END][0]);
-		$dateObj->headline = $eventObj->post_title;
+		$dateObj->headline = '<a href="' . $eventObj->guid . '">' . $eventObj->post_title . '</a>';
 		$dateObj->text = $eventObj->post_content;
 		$dateObj->asset = new stdClass();
-		$dateObj->asset->media = '';
-		$dateObj->asset->credit = '';
-		$dateObj->asset->caption = '';
+		// Load thumbnail
+		$image_ID = $eventMeta['_thumbnail_id'][0];
+		if( ! is_null($image_ID) ) {
+			$thumb = get_post_field('guid', $image_ID);
+			$dateObj->asset->media = $thumb;
+			$dateObj->asset->credit = '';
+			$dateObj->asset->caption = '';
+		}
 		$timeline->date[] = $dateObj;
 	}
 	
