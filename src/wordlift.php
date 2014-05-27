@@ -1046,7 +1046,6 @@ require_once('wordlift_entity_type_taxonomy.php');
 require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
-require_once('wordlift_save_post.php');
 
 // Shortcodes
 require_once('shortcodes/wordlift_shortcode_related_posts.php');
@@ -1069,6 +1068,9 @@ require_once('wordlift_redlink.php');
 //if ( is_admin() ) {
 
     require_once('admin/wordlift_admin.php');
+    require_once('admin/wordlift_admin_edit_post.php');
+    require_once('admin/wordlift_admin_save_post.php');
+
     // add the WordLift admin bar.
     require_once('admin/wordlift_admin_bar.php');
     require_once('admin/wordlift_settings_page.php');
