@@ -18,13 +18,12 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 
     // If the post is published, add the button view on Redlink.
     if ( 'publish' == get_post_status( $post_id ) ) {
-        $uri      = wl_get_entity_uri( $post_id );
-        $uri_esc  =  esc_attr( $uri );
+        $uri_esc  =  esc_attr( wl_get_entity_uri( $post_id ) );
         $html     .= "<span id='view-post-btn'><a href='$uri_esc' class='button button-small'>" .
             __('View on Redlink', 'wordlift') .
             "</a></span>\n";
         $html     .= "<span id='view-post-btn'><a href='http://www.google.com/webmasters/tools/richsnippets?q=" .
-            urlencode( $uri ) .
+            urlencode( get_permalink( $post_id ) ) .
             "' class='button button-small'>" .
             __('Test Google Rich Snippets', 'wordlift') .
             "</a></span>\n";
