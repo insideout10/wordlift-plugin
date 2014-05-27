@@ -277,7 +277,7 @@ function wordlift_save_post_and_related_entities( $post_id )
         write_log($entities_via_post);
         write_log("]");
 
-        wl_save_entities($entities_via_post, $post_id);
+        wl_save_entities( $entities_via_post, $post_id );
 
         // If there are props values, save them.
         if (isset($_POST[WL_POST_ENTITY_PROPS])) {

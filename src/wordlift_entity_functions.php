@@ -147,19 +147,8 @@ function wl_save_entities($entities, $related_post_id = null)
                 : array($entity['sameas']))
             : array());
 
-        // Superseeded by the new handling of custom fields (see: wordlift_entity_props.php)
-        // Set the coordinates.
-//        if (isset($entity['latitude']) && isset($entity['longitude'])) {
-//            $coordinates = array(
-//                'latitude' => $entity['latitude'],
-//                'longitude' => $entity['longitude']
-//            );
-//        } else {
-//            $coordinates = array();
-//        }
-
         // Save the entity.
-        $post = wl_save_entity($uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as);
+        $post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as );
 
         // Store the post in the return array if successful.
         if (null !== $post) {
@@ -172,6 +161,7 @@ function wl_save_entities($entities, $related_post_id = null)
 
 /**
  * Save the specified data as an entity in WordPress.
+ *
  * @param string $uri The entity URI.
  * @param string $label The entity label.
  * @param string $type_uri The entity type URI.
@@ -180,9 +170,10 @@ function wl_save_entities($entities, $related_post_id = null)
  * @param array $images An array of image URLs.
  * @param int $related_post_id A related post ID.
  * @param array $same_as An array of sameAs URLs.
+ *
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array())
+function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() )
 {
 
     write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]");
@@ -198,7 +189,7 @@ function wl_save_entity($uri, $label, $type_uri, $description, $entity_types = a
 
     // No post found, create a new one.
     $params = array(
-        'post_status' => 'draft',
+        'post_status' => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
         'post_type' => 'entity',
         'post_title' => $label,
         'post_content' => $description,

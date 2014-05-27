@@ -187,7 +187,7 @@ EOF;
     array_walk_recursive ( $terms, function( &$name, $term_id ) {
 
         // Load the type data.
-        $type = wl_entity_type_taxonomy_get_term_options($term_id);
+        $type = wl_entity_type_taxonomy_get_term_options( $term_id );
 
         // Skip types that are not defined.
         if (null !== $type['uri']) {
