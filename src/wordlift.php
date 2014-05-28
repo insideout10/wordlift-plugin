@@ -948,7 +948,8 @@ function wl_install_entity_type_data()
             'uri' => 'http://schema.org/Person',
             'same_as' => array(
                 'http://rdf.freebase.com/ns/people.person',
-                'http://rdf.freebase.com/ns/music.artist'
+                'http://rdf.freebase.com/ns/music.artist',
+                'http://dbpedia.org/class/yago/LivingPeople'
             ),
             'custom_fields' => array(),
             'export_fields' => array(),
