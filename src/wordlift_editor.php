@@ -24,9 +24,10 @@ add_filter('mce_css', 'wordlift_mce_css');
 function wordlift_filter_tiny_mce_before_init( $options ) {
  
     if ( ! isset( $options['extended_valid_elements'] ) ) 
-        $options['extended_valid_elements'] = ''; 
-     
-    $options['extended_valid_elements'] .= ',*[itemscope|itemtype|itemid|itemprop]'; 
+        $options['extended_valid_elements'] = '';
+
+    $options['extended_valid_elements'] .= ",span[*]";
+
     return $options; 
 }
 add_filter('tiny_mce_before_init', 'wordlift_filter_tiny_mce_before_init');
