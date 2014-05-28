@@ -162,14 +162,14 @@ class PostTest extends WP_UnitTestCase
         $post_id = $this->createPost();
 
         // Send the post for analysis.
-        $response = wl_analyze_post($post_id);
+        $response = wl_analyze_post( $post_id );
         $status_code = $response['response']['code'];
         $body = $response['body'];
 
         // Check the response.
-        $this->assertNotNull($response);
-        $this->assertFalse(is_wp_error($response));
-        $this->assertTrue(200 === $status_code);
+        $this->assertNotNull( $response );
+        $this->assertFalse( is_wp_error( $response ) );
+        $this->assertTrue( 200 === $status_code );
 
         // Save the results to a file.
         if (self::SAVE_REMOTE_RESPONSE) {
@@ -349,17 +349,17 @@ class PostTest extends WP_UnitTestCase
 
         // Create a post.
         $post_id = $this->createPost();
-        $this->assertTrue(is_numeric($post_id));
+        $this->assertTrue( is_numeric( $post_id ) );
 
-        $post = get_post($post_id);
-        $this->assertNotNull($post);
+        $post = get_post( $post_id );
+        $this->assertNotNull( $post );
 
         // Read the entities from the mock-up analysis.
-        $analysis_results = wl_parse_file(dirname(__FILE__) . '/' . self::FILENAME . '.json');
-        $this->assertTrue(is_array($analysis_results));
+        $analysis_results = wl_parse_file( dirname(__FILE__) . '/' . self::FILENAME . '.json' );
+        $this->assertTrue( is_array( $analysis_results ) );
 
         // For each entity get the label, type, description and thumbnails.
-        $this->assertTrue(isset($analysis_results['entities']));
+        $this->assertTrue( isset( $analysis_results['entities'] ) );
 
         // Get a reference to the entities.
         $text_annotations = $analysis_results['text_annotations'];
@@ -412,33 +412,37 @@ class PostTest extends WP_UnitTestCase
         }
 
         // Save the entities in the array.
-        $entity_posts = wl_save_entities($entities);
+        $entity_posts = wl_save_entities( $entities );
+        $entity_post_ids = array_map( function ( $item ) {
+            return $item->ID;
+        }, $entity_posts );
 
         // TODO: need to bind entities with posts.
-        wl_bind_post_to_entities($post_id, $entity_posts);
+        wl_add_referenced_entities( $post_id, $entity_post_ids );
+        $this->assertCount( sizeof( $entity_post_ids ), wl_get_referenced_entity_ids( $post_id ) );
 
         // TODO: synchronize data.
-        wl_push_to_redlink($post_id);
+        wl_push_to_redlink( $post_id );
 
         // Check that the entities are created in WordPress.
-        $this->assertEquals(count($entities), count($entity_posts));
+        $this->assertCount( count($entities ), $entity_posts );
 
         // Check that each entity is bound to the post.
         $entity_ids = array();
         foreach ($entity_posts as $post) {
             // Store the entity IDs for future checks.
-            array_push($entity_ids, $post->ID);
+            array_push( $entity_ids, $post->ID );
 
             // Get the related posts IDs.
-            $rel_posts = wl_get_related_post_ids($post->ID);
+            $rel_posts = wl_get_referencing_posts( $post->ID );
 
             // Must be only one post.
-            if (1 !== count($rel_posts)) {
+            if (1 !== count( $rel_posts ) ) {
                 write_log("testEntitiesViaArray : wl_get_related_post_ids [ post id :: $post->ID ]");
             }
-            $this->assertEquals(1, count($rel_posts));
+            $this->assertCount( 1, $rel_posts );
             // The post must be the one the test created.
-            $this->assertEquals($post_id, $rel_posts[0]);
+            $this->assertEquals( $post_id, $rel_posts[0]->ID );
         }
 
         // Check that the post references the entities.
@@ -483,7 +487,7 @@ class PostTest extends WP_UnitTestCase
         $this->assertTrue(false != $content);
 
         // Create the post.
-        $post_id = wl_create_post($content, self::SLUG, self::TITLE);
+        $post_id = wl_create_post( $content, self::SLUG, self::TITLE );
         $this->assertTrue(is_numeric($post_id));
 
         return $post_id;
@@ -709,27 +713,28 @@ EOF;
         $uri = wordlift_esc_sparql(wl_get_entity_uri($post->ID));
 
         // Prepare the SPARQL query to select label and URL.
-        $sparql = <<<EOF
-SELECT DISTINCT ?uri
-WHERE {
-    <$uri> dcterms:references ?uri .
-}
-EOF;
+        $sparql = "SELECT DISTINCT ?uri WHERE { <$uri> dct:references ?uri . }";
 
         // Send the query and get the response.
-        $response = rl_sparql_select($sparql, 'text/tab-separated-values');
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
         $this->assertFalse(is_wp_error($response));
 
         $body = $response['body'];
 
         $matches = array();
         $count = preg_match_all('/^(?P<uri>[^\r]*)/im', $body, $matches, PREG_SET_ORDER);
-        $this->assertTrue(is_numeric($count));
+        $this->assertTrue( is_numeric( $count ) );
 
-        $entity_ids = wl_get_referenced_entity_ids($post->ID);
+        $entity_ids = wl_get_referenced_entity_ids( $post->ID );
+
+//        write_log( "[ entity IDs :: " . join( ', ', $entity_ids ) . " ][ size of entity IDs :: " . sizeof( $entity_ids ) . " ][ count :: $count ][ post ID :: $post->ID ]" );
+//
+//        if ( $count !== ( 1 + sizeof( $entity_ids ) ) ) {
+//            write_log( "[ sparql :: $sparql ][ body :: $body ]" );
+//        }
 
         // Expect only one match (headers + expected entities).
-        $this->assertEquals(count($entity_ids) + 1, $count);
+        $this->assertEquals( $count, sizeof( $entity_ids ) + 1 );
 
         $entity_uris = wl_post_ids_to_entity_uris($entity_ids);
         for ($i = 1; $i < $count; $i++) {

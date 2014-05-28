@@ -490,8 +490,7 @@ function wl_get_same_as($post_id)
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
  */
-function wl_add_referenced_entities($post_id, $new_entity_post_ids)
-{
+function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
 
     // Convert the parameter to an array.
     $new_entity_post_ids = (is_array($new_entity_post_ids) ? $new_entity_post_ids : array($new_entity_post_ids));
@@ -742,7 +741,7 @@ function wl_flush_rewrite_rules_hard($hard)
     ));
 
     // Holds the delete part of the query.
-    $delete_query = wordlift_get_ns_prefixes();
+    $delete_query = rl_sparql_prefixes();
     // Holds the insert part of the query.
     $insert_query = 'INSERT DATA { ';
 
@@ -896,6 +895,7 @@ function wl_install_entity_type_data()
                 'http://schema.org/Product'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),              
@@ -909,6 +909,16 @@ function wl_install_entity_type_data()
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
                 WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate'
+            ),
+            'export_fields' => array(
+                WL_CUSTOM_FIELD_CAL_DATE_START => array(
+                    'predicate' => 'http://schema.org/startDate',
+                    'type'      => 'xsd:date'
+                ),
+                WL_CUSTOM_FIELD_CAL_DATE_END   => array(
+                    'predicate' => 'http://schema.org/endDate',
+                    'type'      => 'xsd:date'
+                )
             ),
             'templates' => array(
                 'subtitle' => '{{id}}'
@@ -926,6 +936,7 @@ function wl_install_entity_type_data()
                 'http://schema.org/Newspaper'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),             
@@ -940,6 +951,7 @@ function wl_install_entity_type_data()
                 'http://rdf.freebase.com/ns/music.artist'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),             
@@ -955,6 +967,7 @@ function wl_install_entity_type_data()
                 'http://www.opengis.net/gml/_Feature'
             ),
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),
@@ -966,6 +979,7 @@ function wl_install_entity_type_data()
             'uri' => 'http://schema.org/Thing',
             'same_as' => array('*'), // set as default.
             'custom_fields' => array(),
+            'export_fields' => array(),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),
@@ -985,7 +999,7 @@ function wl_install_entity_type_data()
             continue;
         }
         // Add custom metadata to the term.
-        wl_entity_type_taxonomy_update_term($result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates']);
+        wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'] );
     }
 }
 
@@ -1033,13 +1047,13 @@ require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
-
 // Shortcodes
 require_once('shortcodes/wordlift_shortcode_related_posts.php');
 require_once('shortcodes/wordlift_shortcode_chord.php');
 require_once('shortcodes/wordlift_shortcode_timeline.php');
 
-require_once('wordlift_indepth_articles.php');
+// disable In-Depth Articles
+//require_once('wordlift_indepth_articles.php');
 
 require_once('wordlift_freebase_image_proxy.php');
 
@@ -1056,6 +1070,9 @@ require_once('wordlift_redlink.php');
 //if ( is_admin() ) {
 
     require_once('admin/wordlift_admin.php');
+    require_once('admin/wordlift_admin_edit_post.php');
+    require_once('admin/wordlift_admin_save_post.php');
+
     // add the WordLift admin bar.
     require_once('admin/wordlift_admin_bar.php');
     require_once('admin/wordlift_settings_page.php');

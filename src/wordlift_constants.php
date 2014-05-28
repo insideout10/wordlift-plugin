@@ -58,8 +58,52 @@ define('WL_CUSTOM_FIELD_GEO_LONGITUDE', 'wl_geo_longitude');
 define('WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start');
 define('WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end');
 
+// The entity type.
+define( 'WL_ENTITY_TYPE_NAME', 'entity' );
+
 // The name for the entity type taxonomy.
 define('WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type');
 
 // The name of the custom field that stores the IDs of entities referenced by posts.
 define('WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities');
+
+/**
+ * Get an array with commonly supported prefixes.
+ *
+ * @return array An array of prefixes and URIs
+ */
+function wl_prefixes() {
+    return array(
+        'geo'    => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
+        'dct'    => 'http://purl.org/dc/terms/',
+        'rdfs'   => 'http://www.w3.org/2000/01/rdf-schema#',
+        'owl'    => 'http://www.w3.org/2002/07/owl#',
+        'schema' => 'http://schema.org/'
+    );
+}
+
+/**
+ * Get an array with commonly used predicates.
+ *
+ * @see wl_prefixes for prefixes used here.
+ *
+ * @return array An array of predicates.
+ */
+function wl_predicates() {
+
+    return array(
+        'a',
+        'dct:references',
+        'dct:relation',
+        'owl:sameAs',
+        'rdfs:label',
+        'schema:author',
+        'schema:dateModified',
+        'schema:datePublished',
+        'schema:description',
+        'schema:image',
+        'schema:interactionCount',
+        'schema:url'
+    );
+
+}

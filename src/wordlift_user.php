@@ -125,7 +125,7 @@ function wl_before_delete_user( $user_id ) {
 
     $uri   = wl_get_user_uri( $user_id );
 
-    $query = wordlift_get_ns_prefixes();
+    $query = rl_sparql_prefixes();
     $query .= <<<EOF
             DELETE { <$uri> ?p ?o . } WHERE { <$uri> ?p ?o . };
             DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };
@@ -158,7 +158,7 @@ function wl_update_user_profile( $user_id ) {
     $last_name  = wordlift_esc_sparql( $user->last_name );
     $posts_url  = wordlift_esc_sparql( get_author_posts_url( $user_id ) );
 
-    $query = wordlift_get_ns_prefixes();
+    $query = rl_sparql_prefixes();
     $query .= <<<EOF
         DELETE { <$uri> schema:givenName ?o } WHERE { <$uri> schema:givenName ?o };
         DELETE { <$uri> schema:familyName ?o } WHERE { <$uri> schema:familyName ?o };

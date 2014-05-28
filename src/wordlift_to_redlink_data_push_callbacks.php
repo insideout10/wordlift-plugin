@@ -80,9 +80,9 @@ function wl_push_post_to_redlink($post)
     // create the query:
     //  - remove existing references to entities.
     //  - set the new post information (including references).
-    $query = wordlift_get_ns_prefixes() . <<<EOF
-            DELETE { <$uri> dcterms:references ?o . }
-            WHERE  { <$uri> dcterms:references ?o . };
+    $query = rl_sparql_prefixes() . <<<EOF
+            DELETE { <$uri> dct:references ?o . }
+            WHERE  { <$uri> dct:references ?o . };
             DELETE { <$uri> schema:url ?o . }
             WHERE  { <$uri> schema:url ?o . };
             DELETE { <$uri> schema:datePublished ?o . }
@@ -111,8 +111,11 @@ EOF;
 function wl_push_entity_post_to_redlink($entity_post)
 {
 
-    // Deal only with entity posts.
-    if ('entity' !== $entity_post->post_type) {
+    // Only handle published entities.
+    if ( 'entity' !== $entity_post->post_type && 'publish' !== $entity_post->post_status ) {
+
+        write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
+
         return;
     }
 
@@ -127,9 +130,10 @@ function wl_push_entity_post_to_redlink($entity_post)
     // get the entity URI.
     $uri = wl_get_entity_uri($entity_post->ID);
 
-    write_log("wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]");
+    write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
 
     // create a new empty statement.
+    $delete_stmt = '';
     $sparql = '';
 
     // set the same as.
@@ -149,10 +153,38 @@ function wl_push_entity_post_to_redlink($entity_post)
         $sparql .= "<$uri> schema:description \"$descr\"@$site_language . \n";
     }
 
-    $main_type = wl_entity_type_taxonomy_get_object_terms( $entity_post->ID );
+    $main_type = wl_entity_get_type( $entity_post->ID );
+
     if ( null != $main_type ) {
         $main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
         $sparql .= " <$uri> a <$main_type_uri> . \n";
+
+        // The type define custom fields that hold additional data about the entity.
+        // For example Events may have start/end dates, Places may have coordinates.
+        // The value in the custom fields must be rewritten as triple predicates, this
+        // is what we're going to do here.
+
+        write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ). ' ]' );
+
+        if ( isset( $main_type['export_fields'] ) ) {
+            foreach ( $main_type['export_fields'] as $field => $settings ) {
+
+                write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
+
+                $predicate = wordlift_esc_sparql( $settings['predicate'] );
+                $type      = $settings['type'];
+
+                // add the delete statement for later execution.
+                $delete_stmt .= "DELETE { <$uri> <$predicate> ?o } WHERE  { <$uri> <$predicate> ?o };\n";
+
+                foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
+                    $sparql .= " <$uri> <$predicate> " .
+                        '"' . wordlift_esc_sparql( $value ) . '"' .
+                        '^^' . wordlift_esc_sparql( $type ) .
+                        " . \n";
+                }
+            }
+        }
     }
 
     // Get the entity types.
@@ -176,6 +208,7 @@ function wl_push_entity_post_to_redlink($entity_post)
         }
     }
 
+    // TODO: this should be removed in light of the new custom fields.
     // Get the coordinates related to the post and save them to the triple store.
     $coordinates = wl_get_coordinates($entity_post->ID);
     if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
@@ -189,7 +222,8 @@ function wl_push_entity_post_to_redlink($entity_post)
     // Add SPARQL stmts to write the schema:image.
     $sparql .= wl_get_sparql_images($uri, $entity_post->ID);
 
-    $query = wordlift_get_ns_prefixes() . <<<EOF
+    $query = rl_sparql_prefixes() . <<<EOF
+    $delete_stmt
     DELETE { <$uri> rdfs:label ?o } WHERE  { <$uri> rdfs:label ?o };
     DELETE { <$uri> owl:sameAs ?o . } WHERE  { <$uri> owl:sameAs ?o . };
     DELETE { <$uri> schema:description ?o . } WHERE  { <$uri> schema:description ?o . };
@@ -209,31 +243,20 @@ EOF;
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  * @param int $post_id The post id being saved.
  */
-function wordlift_save_post_and_related_entities($post_id)
+function wordlift_save_post_and_related_entities( $post_id )
 {
 
     // Ignore auto-saves
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
         return;
     }
 
     // get the current post.
     $post = get_post($post_id);
 
-    // Don't process auto-drafts.
-    if ('auto-draft' === $post->post_status) {
-        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ auto-draft :: yes ]");
-        return;
-    }
-
-    // Delete trashed posts/entities from Redlink.
-    if ('trash' === $post->post_status) {
-        write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ trash :: yes ]");
-
-        // TODO: remove related posts and entities.
-
-        // Delete the post from Redlink.
-        rl_delete_post($post_id);
+    // Only process posts that are published.
+    if ( 'publish' !== $post->post_status ) {
+        write_log("wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]");
         return;
     }
 
@@ -254,7 +277,7 @@ function wordlift_save_post_and_related_entities($post_id)
         write_log($entities_via_post);
         write_log("]");
 
-        wl_save_entities($entities_via_post, $post_id);
+        wl_save_entities( $entities_via_post, $post_id );
 
         // If there are props values, save them.
         if (isset($_POST[WL_POST_ENTITY_PROPS])) {
@@ -268,10 +291,10 @@ function wordlift_save_post_and_related_entities($post_id)
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
     // Update related entities.
-    wl_set_referenced_entities($post->ID, wl_content_get_embedded_entities($post->post_content));
+    wl_set_referenced_entities( $post->ID, wl_content_get_embedded_entities( $post->post_content ) );
 
     // Push the post to Redlink.
-    wl_push_to_redlink($post->ID);
+    wl_push_to_redlink( $post->ID );
 
     add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 }
@@ -294,7 +317,7 @@ function wl_get_sparql_post_references($post_id)
     $sparql = '';
     foreach ($related as $id) {
         $uri = wordlift_esc_sparql(wl_get_entity_uri($id));
-        $sparql .= "<$post_uri> dcterms:references <$uri> . ";
+        $sparql .= "<$post_uri> dct:references <$uri> . ";
     }
 
     return $sparql;
@@ -346,13 +369,11 @@ function wl_get_entity_post_by_uri($uri)
  * Receive events from post saves, and split them according to the post type.
  * @param int $post_id The post id.
  */
-function wordlift_save_post($post_id)
+function wordlift_save_post( $post_id )
 {
 
     // If it's not numeric exit from here.
-    if (!is_numeric($post_id)
-        || is_numeric(wp_is_post_revision($post_id))
-    ) {
+    if ( !is_numeric($post_id) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
         return;
     }
 
@@ -368,21 +389,18 @@ function wordlift_save_post($post_id)
 
 /**
  * Get a string representing the NS prefixes for a SPARQL query.
+ *
  * @return string The PREFIX lines.
  */
-function wordlift_get_ns_prefixes()
+function rl_sparql_prefixes()
 {
 
-    return <<<EOF
-PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
-PREFIX dcterms: <http://purl.org/dc/terms/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
-PREFIX schema: <http://schema.org/>
-PREFIX dct: <http://purl.org/dc/terms/>
+    $prefixes = '';
+    foreach ( wl_prefixes() as $prefix => $uri ) {
+        $prefixes .= "PREFIX $prefix: <$uri>\n";
+    }
 
-EOF;
-
+    return $prefixes;
 }
 
 /**

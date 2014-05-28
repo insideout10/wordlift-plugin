@@ -10,7 +10,7 @@
  */
 function wl_serialize_entity($entity){
         
-        $type = wl_entity_type_taxonomy_get_object_terms( $entity->ID );
+        $type = wl_entity_get_type( $entity->ID );
         $images = wl_get_image_urls( $entity->ID );
         
         return array(
@@ -20,7 +20,7 @@ function wl_serialize_entity($entity){
             'type'          =>      $type['uri'],
             'css'           =>      $type['css_class'],
             'types'         =>      wl_get_entity_types( $entity->ID ),
-            'thumbnail'     =>      ( 0 < count( $images[0] ) ? $images[0] : null ),
+            'thumbnail'     =>      ( isset( $images[0] ) ? $images[0] : null ),
             'thumbnails'    =>      $images,
             'source'        =>      'wordlift',
             'sources'       =>      array('wordlift')            

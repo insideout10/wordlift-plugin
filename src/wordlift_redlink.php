@@ -168,7 +168,7 @@ function rl_sparql_select($query, $accept = 'text/csv')
     $url = rl_sparql_select_url();
 
     // Prepare the SPARQL statement by prepending the default namespaces.
-    $sparql = wordlift_get_ns_prefixes() . "\n" . $query;
+    $sparql = rl_sparql_prefixes() . "\n" . $query;
 
     // Prepare the request.
     $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
@@ -241,29 +241,3 @@ function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE
 
     return true;
 }
-
-/**
- * Delete the specified post from relationships and from Redlink.
- * @param int $post_id The post ID.
- */
-function rl_delete_post($post_id)
-{
-
-    write_log("rl_delete_post [ post id :: $post_id ]");
-
-    // Remove all relations.
-
-    // Delete post from RL.
-    // Get the post URI.
-    $uri = wordlift_esc_sparql(wl_get_entity_uri($post_id));
-
-    // Create the SPARQL query, deleting triples where the URI is either subject or object.
-    $sparql = wordlift_get_ns_prefixes();
-    $sparql .= "DELETE { <$uri> ?p ?o . } WHERE { <$uri> ?p ?o . };";
-    $sparql .= "DELETE { ?s ?p <$uri> . } WHERE { ?s ?p <$uri> . };";
-
-    // Execute the query.
-    rl_execute_sparql_update_query($sparql);
-}
-
-add_action('before_delete_post', 'rl_delete_post');
