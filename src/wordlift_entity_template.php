@@ -16,7 +16,7 @@
 function wl_entity_template( $template ) {
 
     // Return the provided template name if this is not an *entity*.
-    if ( WL_ENTITY_TYPE_NAME !== get_post_type() || false === wl_entity_display_as_index( get_the_ID() ) ) {
+    if ( WL_ENTITY_TYPE_NAME !== get_post_type() || 'index' !== wl_get_entity_display_as( get_the_ID() ) ) {
         return $template;
     }
 
@@ -47,9 +47,26 @@ add_filter( 'single_template', 'wl_entity_template', 10, 1 );
  *
  * @param int $post_id The entity post ID.
  *
- * @return bool True if display as index is on, otherwise false.
+ * @return string The display as code (default: *index*).
  */
-function wl_entity_display_as_index( $post_id ) {
+function wl_get_entity_display_as( $post_id ) {
 
-    return ( '' === get_post_meta( $post_id, WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE, true ) );
+    $display_as = get_post_meta( $post_id, WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE, true );
+
+    // return *index* by default
+    return ( '' === $display_as ? 'index' : $display_as );
+}
+
+/**
+ * Set the entity display mode.
+ *
+ * @param int $post_id The entity post ID.
+ * @param string $display_as The display as value.
+ */
+function wl_set_entity_display_as( $post_id, $display_as ) {
+
+    write_log( "wl_set_entity_display_as [ post ID :: $post_id ][ display as :: $display_as ]" );
+
+    delete_post_meta( $post_id, WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE );
+    add_post_meta( $post_id, WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE, $display_as, true );
 }

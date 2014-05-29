@@ -1073,6 +1073,7 @@ require_once('wordlift_redlink.php');
     require_once('admin/wordlift_admin.php');
     require_once('admin/wordlift_admin_edit_post.php');
     require_once('admin/wordlift_admin_save_post.php');
+    require_once('admin/wordlift_admin_entity_publish.php');
 
     // add the WordLift admin bar.
     require_once('admin/wordlift_admin_bar.php');
