@@ -1043,6 +1043,7 @@ require_once('wordlift_configuration.php');
 // add the WordLift entity custom type.
 require_once('wordlift_entity_type.php');
 require_once('wordlift_entity_type_taxonomy.php');
+require_once('wordlift_entity_template.php');
 // filters the post content when saving posts.
 require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store

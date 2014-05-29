@@ -17,19 +17,19 @@ function wordlift_admin_add_related_posts_meta_box() {
  * Displays the meta box contents (called by *add_meta_box* callback).
  * @param WP_Post $post The current post.
  */
-function wordlift_admin_related_posts_meta_box_content($post) {
+function wordlift_admin_related_posts_meta_box_content( $post ) {
 
     // get related posts.
-    $related_posts = wordlift_get_related_posts( $post->ID );
+    $posts = wl_get_referencing_posts( $post->ID );
 
     // there are no related posts.
-    if ( 0 === count( $related_posts ) ) {
+    if ( 0 === count( $posts ) ) {
         _e('No related posts', 'wordlfift');
         return;
     }
 
-    foreach ($related_posts as $related_post) {
-        echo( '<a href="' . get_edit_post_link( $related_post->ID) . '">' . $related_post->post_title . '</a><br>');
+    foreach ($posts as $referencing_post) {
+        echo( '<a href="' . get_edit_post_link( $referencing_post->ID ) . '">' . $referencing_post->post_title . '</a><br>');
     }
 }
 
