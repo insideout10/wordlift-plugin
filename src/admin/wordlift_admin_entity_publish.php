@@ -35,6 +35,7 @@ function wl_admin_post_publish_meta_box() {
         <a href="#wl_entity_display_as" class="wl-save-entity-display-as hide-if-no-js button"><?php _e('OK'); ?></a>
         <a href="#wl_entity_display_as" class="wl-cancel-entity-display-as hide-if-no-js button-cancel"><?php _e('Cancel'); ?></a>
     </div>
+</div>
 
 <?php
 
