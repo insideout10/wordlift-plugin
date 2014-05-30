@@ -17,8 +17,13 @@ function wl_entity_template( $template ) {
 
     // Return the provided template name if this is not an *entity*.
     if ( WL_ENTITY_TYPE_NAME !== get_post_type() || 'index' !== wl_get_entity_display_as( get_the_ID() ) ) {
+
+        write_log( "wl_entity_template : not processing [ template :: $template ][ post type :: " . get_post_type() . " ]" );
+
         return $template;
     }
+
+    write_log( "wl_entity_template : processing [ template :: $template ]" );
 
     // Get the referencing posts for the query.
     $post_ids = array_map( function ( $item ) {
