@@ -1,36 +1,50 @@
 <?php
 
 /**
+ * This file provides methods for the shortcode *wl_timeline*.
+ */
+
+/**
  * Retrieve timeline events.
  *
- * @used-by wl_shortcode_timeline_ajax
+ * @uses wl_get_referenced_entity_ids to retrieve the entities referenced by the specified post.
+ *
+ * @param int $post_id The post ID.
+ * @return array An array of event posts.
  */
-function wl_shortcode_timeline_get_events( $post_id=null ) {
+function wl_shortcode_timeline_get_events( $post_id = null ) {
 	
 	// Build list of event-entities.
-	$entities = null;
-	if( is_null($post_id) ) {
+	$entity_ids = null;
+	if( is_null( $post_id ) ) {
 		// TODO: Global timeline. Here we search for events that are from today on.
-		$entities = '';
+		return array();
 	} else {
 		// Post-specific timeline. Search for event-entities in the post itself.
-		$entities = wl_get_referenced_entity_ids($post_id);
+		$entity_ids = wl_get_referenced_entity_ids( $post_id );
 	}
-	
-	$events = array();
-	if( ! is_null($entities) ) {
-		// Only keep the entities that represent an event
-		foreach($entities as $e) {
-			$candidate = get_post_meta( $e );
-			// Is it an event?
-			if( isset( $candidate[WL_CUSTOM_FIELD_CAL_DATE_START]) ||
-				isset( $candidate[WL_CUSTOM_FIELD_CAL_DATE_END]) ) {
-				$events[] = $e;
-			}
-		}
-	}
-	
-	return $events;
+
+    write_log( "wl_shortcode_timeline_get_events [ entity IDs :: " . join( ', ', $entity_ids ) . " ]" );
+
+    // Get all the entities that have a meta key with date start and end information.
+    return get_posts( array(
+        'post__in' => $entity_ids,
+        'post_type' => WL_ENTITY_TYPE_NAME,
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            'relation' => 'AND',
+            array(
+                'key' => WL_CUSTOM_FIELD_CAL_DATE_START,
+                'value' => null,
+                'compare' => '!=',
+            ),
+            array(
+                'key' => WL_CUSTOM_FIELD_CAL_DATE_END,
+                'value' => null,
+                'compare' => '!=',
+            )
+        )
+    ) );
 }
 
 /**
@@ -38,52 +52,54 @@ function wl_shortcode_timeline_get_events( $post_id=null ) {
  *
  * @used-by wl_shortcode_timeline_ajax
  */
-function wl_shortcode_timeline_to_json( $events ) {
+function wl_shortcode_timeline_to_json( $posts ) {
 	
 	// If there are no events, return empty JSON
-	if( empty($events) || is_null($events) )
+	if( empty( $posts ) || is_null( $posts ) )
 		return json_encode('');
 	
 	// Model data from:
 	// https://github.com/NUKnightLab/TimelineJS/blob/master/examples/example_json.json
+
+    $timeline = array();
+	$timeline['type'] = 'default';
+    // TODO: check this.
+//	$timeline['startDate'] = date('Y,m,d');	// this param is not working...
+	$timeline['date'] = array();
 	
-	$result = new stdClass();
-	$timeline = new stdClass();
-	
-	$timeline->type = 'default';
-	$timeline->startDate = date('Y,m,d');	// this param is not working...
-	$timeline->date = array();
-	
-	foreach( $events as $ev ) {
+	foreach( $posts as $post ) {
 		// Retrieve event info.
-		$eventObj = get_post($ev);
-		$eventMeta = get_post_meta($ev);
-		
-		/////////// to be deleted ///////////
-		$timeline->debug->eventObj = $eventObj;
-		$timeline->debug->eventMeta = $eventMeta;
-		//////////////////////
-		
+		$event_meta = get_post_meta( $post->ID );
+
+        // Print out debug information only if we're in debug mode.
+        if ( WP_DEBUG ) {
+            $timeline['debug'] = array(
+                'event' => $post,
+                'eventMeta' => $event_meta
+            );
+        }
+
 		// Build date object for the timeline.
-		$dateObj = new stdClass();
-		$dateObj->startDate = str_replace('-', ',', $eventMeta[WL_CUSTOM_FIELD_CAL_DATE_START][0]);
-		$dateObj->endDate = str_replace('-', ',', $eventMeta[WL_CUSTOM_FIELD_CAL_DATE_END][0]);
-		$dateObj->headline = '<a href="' . $eventObj->guid . '">' . $eventObj->post_title . '</a>';
-		$dateObj->text = $eventObj->post_content;
-		$dateObj->asset = new stdClass();
+		$date['startDate'] = str_replace('-', ',', $event_meta[ WL_CUSTOM_FIELD_CAL_DATE_START ][0]);
+        $date['endDate'] = str_replace('-', ',', $event_meta[ WL_CUSTOM_FIELD_CAL_DATE_END ][0]);
+        $date['headline'] = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+        $date['text'] = $post->post_content;
+
 		// Load thumbnail
-		$image_ID = $eventMeta['_thumbnail_id'][0];
-		if( ! is_null($image_ID) ) {
-			$thumb = get_post_field('guid', $image_ID);
-			$dateObj->asset->media = $thumb;
-			$dateObj->asset->credit = '';
-			$dateObj->asset->caption = '';
-		}
-		$timeline->date[] = $dateObj;
+        if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) ) {
+            $attachment = wp_get_attachment_image_src( $thumbnail_id );
+            $date['asset'] = array(
+                'media' => $attachment['url']
+            );
+        }
+		$timeline['date'][] = $date;
 	}
-	
-	$result->timeline = $timeline;
-	return json_encode( $result );	
+
+    // The *timeline* library expects the data to be encapsulated in a *timeline* element, e.g.:
+    //  {timeline: ...}
+	return json_encode( array(
+        'timeline' => $timeline
+    ) );
 }
 
 /**
@@ -95,7 +111,7 @@ function wl_shortcode_timeline_to_json( $events ) {
 function wl_shortcode_timeline_ajax()
 {
 	// Get the ID of the post who requested the timeline.
-	$post_id;
+
 	if(isset($_REQUEST['post_id']))
 		// Build post-specific timeline.
 		$post_id = $_REQUEST['post_id'];
