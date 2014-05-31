@@ -242,11 +242,11 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
         }
 
         // Save the image and get the local path.
-        $image = wl_save_image($image_remote_url);
+        $image = wl_save_image( $image_remote_url );
 
         // Get the local URL.
-        $filename = $image['path'];
-        $url = $image['url'];
+        $filename     = $image['path'];
+        $url          = $image['url'];
         $content_type = $image['content_type'];
 
         $attachment = array(
@@ -262,13 +262,13 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
         $attachment_id = wp_insert_attachment($attachment, $filename, $post_id);
 
         // Set the source URL for the image.
-        wl_set_source_url($attachment_id, $image_remote_url);
+        wl_set_source_url( $attachment_id, $image_remote_url );
 
-        $attachment_data = wp_generate_attachment_metadata($attachment_id, $filename);
-        wp_update_attachment_metadata($attachment_id, $attachment_data);
+        $attachment_data = wp_generate_attachment_metadata( $attachment_id, $filename );
+        wp_update_attachment_metadata( $attachment_id, $attachment_data );
 
         // Set it as the featured image.
-        set_post_thumbnail($post_id, $attachment_id);
+        set_post_thumbnail( $post_id, $attachment_id );
     }
 
     // Add the related post ID if provided.

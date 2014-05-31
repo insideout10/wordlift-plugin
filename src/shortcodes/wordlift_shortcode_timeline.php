@@ -80,16 +80,20 @@ function wl_shortcode_timeline_to_json( $posts ) {
         }
 
 		// Build date object for the timeline.
-		$date['startDate'] = str_replace('-', ',', $event_meta[ WL_CUSTOM_FIELD_CAL_DATE_START ][0]);
-        $date['endDate'] = str_replace('-', ',', $event_meta[ WL_CUSTOM_FIELD_CAL_DATE_END ][0]);
-        $date['headline'] = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-        $date['text'] = $post->post_content;
+        $start_date = get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true );
+        $end_date   = get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true );
+
+		$date['startDate'] = str_replace('-', ',', $start_date );
+        $date['endDate']   = str_replace('-', ',', $end_date );
+        $date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
+        $date['text']      = $post->post_content;
 
 		// Load thumbnail
-        if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) ) {
-            $attachment = wp_get_attachment_image_src( $thumbnail_id );
+        if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
+            false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) ) ) {
+
             $date['asset'] = array(
-                'media' => $attachment['url']
+                'media' => $attachment[0]
             );
         }
 		$timeline['date'][] = $date;
