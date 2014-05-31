@@ -109,36 +109,26 @@ function wl_shortcode_timeline_to_json( $posts ) {
 /**
  * Retrieve timeline events and output them in JSON.
  *
- * @uses wl_shortcode_timeline_get_events
- * @uses wl_shortcode_timeline_to_json
+ * @uses wl_shortcode_timeline_get_events to retrieve the list of events referenced by the specified Post ID.
+ * @uses wl_shortcode_timeline_to_json to convert the result to JSON.
  */
 function wl_shortcode_timeline_ajax()
 {
 	// Get the ID of the post who requested the timeline.
+    $post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
 
-	if(isset($_REQUEST['post_id']))
-		// Build post-specific timeline.
-		$post_id = $_REQUEST['post_id'];
-	else {
-		// Build global timeline.
-		$post_id = null;
-	}
-	
     ob_clean();
     $result = wl_shortcode_timeline_get_events( $post_id );
     $result = wl_shortcode_timeline_to_json( $result );
     echo $result;
     die();
 }
-
 add_action('wp_ajax_wl_timeline', 'wl_shortcode_timeline_ajax');
 add_action('wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax');
 
 
 /**
  * Sets-up the widget. This is called by WordPress when the shortcode is inserted in the body.
- *
- * @uses AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
  * 
  * @param array $atts An array of parameters set by the editor to customize the shortcode behaviour.
  * @return string
@@ -153,28 +143,34 @@ function wl_shortcode_timeline( $atts ) {
     ), $atts);
 	
 	// Add timeline library.
-	wp_enqueue_script('timelinejs', plugins_url('bower_components/NUKnightLab-TimelineJS/build/js/storyjs-embed.js', __FILE__));
-	wp_enqueue_script('timelinejs2', plugins_url('bower_components/NUKnightLab-TimelineJS/build/js/timeline.js', __FILE__));
+	wp_enqueue_script(
+        'timelinejs-storyjs-embed',
+        plugins_url( 'bower_components/TimelineJS.build/build/js/storyjs-embed.js', __FILE__ )
+    );
+	wp_enqueue_script(
+        'timelinejs',
+        plugins_url( 'bower_components/TimelineJS.build/build/js/timeline-min.js', __FILE__ )
+    );
 
 	// Add wordlift-ui script.
-	wp_enqueue_script( 'wordlift-ui', plugins_url('js/wordlift.ui.js', __FILE__) );
+	wp_enqueue_script( 'wordlift-ui', plugins_url( 'js/wordlift.ui.js', __FILE__ ) );
 	wp_localize_script( 'wordlift-ui', 'wl_timeline_params', array(
-            'ajax_url'   => admin_url('admin-ajax.php'),	// Global param
-            'action'     => 'wl_timeline'					// Global param
-        )
-    );
+        'ajax_url' => admin_url('admin-ajax.php'),	// Global param
+        'action'   => 'wl_timeline'					// Global param
+    ) );
 	 
 	$post_id = get_the_ID();
 
     // Escaping atts.
-    $esc_class  = esc_attr('wl-timeline');
-    $esc_id     = esc_attr('wl-timeline-' . $post_id);
-	$esc_width  = esc_attr($timeline_atts['width']);
-	$esc_height = esc_attr($timeline_atts['height']);
+    $esc_class      = esc_attr( 'wl-timeline' );
+    $esc_id         = esc_attr( 'wl-timeline-' . $post_id );
+	$esc_width      = esc_attr( $timeline_atts['width'] );
+	$esc_height     = esc_attr( $timeline_atts['height'] );
+    $esc_post_id 	= esc_attr( $post_id );
 
-    $esc_post_id 	= esc_attr($post_id);
-    $esc_depth		= esc_attr(2);//$timeline_atts['depth']);
-    $esc_main_color = esc_attr('#aaa');//$timeline_atts['main_color']);
+    // TODO: check this, are they parameters or constants?
+    $esc_depth		= esc_attr( 2 ); //$timeline_atts['depth']);
+    $esc_main_color = esc_attr( '#aaa' ); //$timeline_atts['main_color']);
     
 	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
@@ -196,8 +192,7 @@ EOF;
 /**
  * Registers the *wl-timeline* shortcode.
  */
-function wl_shortcode_timeline_register()
-{
-    add_shortcode('wl-timeline', 'wl_shortcode_timeline');
+function wl_shortcode_timeline_register() {
+    add_shortcode( 'wl-timeline', 'wl_shortcode_timeline' );
 }
-add_action('init', 'wl_shortcode_timeline_register');
+add_action( 'init', 'wl_shortcode_timeline_register' );
