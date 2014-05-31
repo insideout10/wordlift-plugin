@@ -123,8 +123,8 @@ function wl_shortcode_timeline_ajax()
     echo $result;
     die();
 }
-add_action('wp_ajax_wl_timeline', 'wl_shortcode_timeline_ajax');
-add_action('wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax');
+add_action( 'wp_ajax_wl_timeline', 'wl_shortcode_timeline_ajax' );
+add_action( 'wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax' );
 
 
 /**
@@ -136,11 +136,11 @@ add_action('wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax');
 function wl_shortcode_timeline( $atts ) {
 
     //extract attributes and set default values
-    $timeline_atts = shortcode_atts(array(
+    $timeline_atts = shortcode_atts( array(
         'width'      => '100%',
         'height'     => '600px',
         'main_color' => '#ddd'
-    ), $atts);
+    ), $atts );
 	
 	// Add timeline library.
 	wp_enqueue_script(
@@ -175,11 +175,8 @@ function wl_shortcode_timeline( $atts ) {
 	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
     return <<<EOF
-<div class="$esc_class" 
-	id="$esc_id"
-	data-post_id="$esc_post_id"
-    data-depth="$esc_depth"
-    data-main_color="$esc_main_color"
+<div class="$esc_class" id="$esc_id" data-post-id="$esc_post_id" data-depth="$esc_depth"
+    data-main-color="$esc_main_color"
 	style="width:$esc_width;
         height:$esc_height;
         background-color:$esc_main_color;
