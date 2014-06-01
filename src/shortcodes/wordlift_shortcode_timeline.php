@@ -63,46 +63,56 @@ function wl_shortcode_timeline_to_json( $posts ) {
 
     $timeline = array();
 	$timeline['type'] = 'default';
-    // TODO: check this.
-//	$timeline['startDate'] = date('Y,m,d');	// this param is not working...
-	$timeline['date'] = array();
-	
-	foreach( $posts as $post ) {
-		// Retrieve event info.
-		$event_meta = get_post_meta( $post->ID );
 
-        // Print out debug information only if we're in debug mode.
-        if ( WP_DEBUG ) {
-            $timeline['debug'] = array(
-                'event' => $post,
-                'eventMeta' => $event_meta
-            );
+    // Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
+    $start_at_slide = 0;
+    $event_index = -1;
+    $now = date_create();
+
+    $timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ){
+
+        $start_date = date_create_from_format( 'Y-m-d', get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
+        $end_date = date_create_from_format( 'Y-m-d', get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
+
+        // Set the starting slide.
+        $event_index++;
+        if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
+            $start_at_slide = $event_index;
         }
 
-		// Build date object for the timeline.
-        $start_date = get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true );
-        $end_date   = get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true );
-
-		$date['startDate'] = str_replace('-', ',', $start_date );
-        $date['endDate']   = str_replace('-', ',', $end_date );
+        $date['startDate'] = date_format( $start_date, 'Y,m,d' );
+        $date['endDate']   = date_format( $end_date, 'Y,m,d' );
         $date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
         $date['text']      = $post->post_content;
 
-		// Load thumbnail
+        // Load thumbnail
         if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
             false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) ) ) {
 
             $date['asset'] = array(
                 'media' => $attachment[0]
             );
+
+            // Add debug data.
+            if ( WP_DEBUG ) {
+                $date['debug'] = array(
+                    'post' => $post,
+                    'thumbnailId' => $thumbnail_id,
+                    'attachment' => $attachment
+                );
+            }
         }
-		$timeline['date'][] = $date;
-	}
+
+        return $date;
+
+    }, $posts );
+
 
     // The *timeline* library expects the data to be encapsulated in a *timeline* element, e.g.:
     //  {timeline: ...}
 	return json_encode( array(
-        'timeline' => $timeline
+        'timeline' => $timeline,
+        'startAtSlide' => $start_at_slide
     ) );
 }
 
@@ -118,8 +128,11 @@ function wl_shortcode_timeline_ajax()
     $post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
 
     ob_clean();
+    header( "Content-Type: application/json" );
+
     $result = wl_shortcode_timeline_get_events( $post_id );
     $result = wl_shortcode_timeline_to_json( $result );
+
     echo $result;
     die();
 }
@@ -153,7 +166,7 @@ function wl_shortcode_timeline( $atts ) {
     );
 
 	// Add wordlift-ui script.
-	wp_enqueue_script( 'wordlift-ui', plugins_url( 'js/wordlift.ui.js', __FILE__ ) );
+	wp_enqueue_script( 'wordlift-ui', plugins_url( 'js/wordlift.ui.js', __FILE__ ), array( 'jquery' ) );
 	wp_localize_script( 'wordlift-ui', 'wl_timeline_params', array(
         'ajax_url' => admin_url('admin-ajax.php'),	// Global param
         'action'   => 'wl_timeline'					// Global param

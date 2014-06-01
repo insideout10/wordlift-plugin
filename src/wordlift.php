@@ -287,22 +287,23 @@ function wl_get_coordinates($post_id)
 }
 
 /**
- * Save the image with the specified URL locally.
+ * Save the image with the specified URL locally. To the local filename a uniqe serial is appended to ensure its uniqueness.
+ *
  * @param string $url The image remote URL.
  * @return array An array with information about the saved image (*path*: the local path to the image, *url*: the local
  * url, *content_type*: the image content type)
  */
-function wl_save_image($url)
+function wl_save_image( $url )
 {
 
-    $parts = parse_url($url);
+    $parts = parse_url( $url );
     $path = $parts['path'];
 
     // Get the bare filename (filename w/o the extension).
-    $basename = pathinfo($path, PATHINFO_FILENAME);
+    $basename = pathinfo( $path, PATHINFO_FILENAME ) . '-' . uniqid( date( 'YmdH-' ) );
 
     // Chunk the bare name to get a subpath.
-    $chunks = chunk_split(strtolower($basename), 3, DIRECTORY_SEPARATOR);
+    $chunks = chunk_split( strtolower( $basename ), 3, DIRECTORY_SEPARATOR );
 
     // Get the base dir.
     $wp_upload_dir = wp_upload_dir();
@@ -315,7 +316,7 @@ function wl_save_image($url)
     $image_full_url = $base_url . $image_path;
 
     // Create the folders.
-    if (!(file_exists($image_full_path) && is_dir($image_full_path))) {
+    if ( ! ( file_exists( $image_full_path ) && is_dir( $image_full_path ) ) ) {
         if (false === mkdir($image_full_path, 0777, true)) {
             write_log("wl_save_image : failed creating dir [ image full path :: $image_full_path ]\n");
         }
@@ -348,7 +349,7 @@ function wl_save_image($url)
     $image_full_url .= $basename . $extension;
 
     // Store the data locally.
-    file_put_contents($image_full_path, wp_remote_retrieve_body($response));
+    file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
 
     write_log("wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n");
 
