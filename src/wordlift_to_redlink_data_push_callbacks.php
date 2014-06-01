@@ -445,8 +445,8 @@ function wordlift_reindex_triple_store()
     write_log("wordlift_reindex_triple_store");
 
     // Prepare the request.
-    $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
-        'method' => 'GET',
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+        'method' => 'POST',
         'headers' => array(),
         'body' => ''
     ));
