@@ -451,7 +451,7 @@ function wordlift_reindex_triple_store()
         'body' => ''
     ));
 
-    $response = wp_remote_get($url, $args);
+    $response = wp_remote_request( $url, $args );
 
     // Remove the key from the query.
     $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);
