@@ -168,6 +168,8 @@ function wl_shortcode_chord_relations_to_json( $data )
 function wl_shortcode_chord_ajax()
 {
     ob_clean();
+    header('application/json');
+
     $result = wl_shortcode_chord_get_relations( $_REQUEST['post_id'], $_REQUEST['depth'] );
     $result = wl_shortcode_chord_relations_to_json( $result );
     echo $result;
@@ -233,9 +235,9 @@ function wl_shortcode_chord( $atts ) {
     return <<<EOF
 <div class="$esc_class" 
 	id="$esc_id"
-	data-post_id="$esc_post_id"
+	data-post-id="$esc_post_id"
     data-depth="$esc_depth"
-    data-main_color="$esc_main_color"
+    data-main-color="$esc_main_color"
 	style="width:$esc_width;
         height:$esc_height;
         background-color:white;
