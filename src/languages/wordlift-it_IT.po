@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-05-27 11:47+0200\n"
-"PO-Revision-Date: 2014-05-27 11:48+0200\n"
+"POT-Creation-Date: 2014-06-02 16:59+0200\n"
+"PO-Revision-Date: 2014-06-02 17:01+0200\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -15,13 +15,43 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../admin/wordlift_admin_edit_post.php:24
+#: ../admin/wordlift_admin_edit_post.php:23
 msgid "View on Redlink"
 msgstr "Apri su Redlink"
 
-#: ../admin/wordlift_admin_edit_post.php:29
+#: ../admin/wordlift_admin_edit_post.php:28
 msgid "Test Google Rich Snippets"
 msgstr "Verifica Google Rich Snippets"
+
+#: ../admin/wordlift_admin_entity_publish.php:20
+msgid "Display as:"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_publish.php:23
+msgid "index"
+msgstr "indice"
+
+#: ../admin/wordlift_admin_entity_publish.php:27
+msgid "Edit"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_publish.php:32
+#: ../admin/wordlift_admin_settings_page.php:69
+msgid "Index"
+msgstr "Indice"
+
+#: ../admin/wordlift_admin_entity_publish.php:33
+#: ../admin/wordlift_admin_settings_page.php:70
+msgid "Page"
+msgstr "Pagina"
+
+#: ../admin/wordlift_admin_entity_publish.php:35
+msgid "OK"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_publish.php:36
+msgid "Cancel"
+msgstr ""
 
 #: ../admin/wordlift_admin_entity_type_taxonomy.php:36
 #: ../admin/wordlift_admin_entity_type_taxonomy.php:81
@@ -61,44 +91,60 @@ msgid "No related entities"
 msgstr ""
 
 #: ../admin/wordlift_admin_meta_box_related_posts.php:8
-msgid "Related Posts"
+msgid "Referencing Posts"
 msgstr ""
 
 #: ../admin/wordlift_admin_meta_box_related_posts.php:27
-msgid "No related posts"
+msgid "No referencing posts"
 msgstr ""
 
-#: ../admin/wordlift_settings_page.php:21
+#: ../admin/wordlift_admin_settings_page.php:21
 msgid "main-settings-title"
 msgstr "Impostazioni principali"
 
-#: ../admin/wordlift_settings_page.php:28
+#: ../admin/wordlift_admin_settings_page.php:26
+msgid "New Entity Posts are displayed as:"
+msgstr "I nuovi post Entità sono mostrati come:"
+
+#: ../admin/wordlift_admin_settings_page.php:35
+msgid "Enable color coding of Entities"
+msgstr "Abilita i colori delle entità sul sito"
+
+#: ../admin/wordlift_admin_settings_page.php:46
 msgid "application-key"
 msgstr "Chiave dell'applicazione"
 
-#: ../admin/wordlift_settings_page.php:29
+#: ../admin/wordlift_admin_settings_page.php:47
 msgid "user-id"
-msgstr ""
+msgstr "Nome utente (es: 123):"
 
-#: ../admin/wordlift_settings_page.php:30
+#: ../admin/wordlift_admin_settings_page.php:48
 msgid "dataset-name"
-msgstr ""
+msgstr "Nome del dataset:"
 
-#: ../admin/wordlift_settings_page.php:31
+#: ../admin/wordlift_admin_settings_page.php:49
 msgid "dataset-base-uri"
-msgstr ""
+msgstr "URI del dataset (es: http://data.redlink.io/123/dataset):"
 
-#: ../admin/wordlift_settings_page.php:32
+#: ../admin/wordlift_admin_settings_page.php:50
 msgid "analysis-name"
-msgstr ""
+msgstr "Nome dell'analisi:"
 
-#: ../admin/wordlift_settings_page.php:33
+#: ../admin/wordlift_admin_settings_page.php:51
 msgid "site-language"
-msgstr ""
+msgstr "Lingua del sito:"
 
-#: ../admin/wordlift_settings_page.php:42
+#: ../admin/wordlift_admin_settings_page.php:60
 msgid "main-settings-description"
 msgstr "Configura le impostazioni principali:"
+
+#: ../admin/wordlift_admin_settings_page.php:82
+msgid "Yes"
+msgstr ""
+
+#: ../admin/wordlift_admin_settings_page.php:83
+msgid "No"
+msgstr ""
 
 #: ../shortcodes/wordlift_shortcode_related_posts.php:19
 #, php-format
@@ -129,7 +175,7 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: ../wordlift_configuration.php:137
+#: ../wordlift_configuration.php:157
 msgid "application-key-not-set"
 msgstr "La chiave dell'applicazione non é impostata."
 
