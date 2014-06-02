@@ -244,44 +244,24 @@ function wordlift_allowed_html($allowedtags, $context)
 
 add_filter('wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2);
 
-///**
-// * Save the coordinates for the specified post ID.
-// * @param int $post_id The post ID.
-// * @param double $latitude The latitude.
-// * @param double $longitude The longitude.
-// */
-//function wl_set_coordinates($post_id, $latitude = null, $longitude = null)
-//{
-//
-//    write_log("wl_set_coordinates [ post id :: $post_id ][ latitude :: $latitude ][ longitude :: $longitude ]");
-//
-//    delete_post_meta($post_id, 'wl_latitude');
-//    delete_post_meta($post_id, 'wl_longitude');
-//
-//    // If the coordinates are not empty, add them.
-//    if (!(empty($latitude) || empty($longitude))) {
-//        add_post_meta($post_id, 'wl_latitude', $latitude);
-//        add_post_meta($post_id, 'wl_longitude', $longitude);
-//    }
-//}
-
 /**
  * Get the coordinates for the specified post ID.
+ *
  * @param int $post_id The post ID.
  * @return array|null An array of coordinates or null.
  */
-function wl_get_coordinates($post_id)
+function wl_get_coordinates( $post_id )
 {
 
-    $latitude = get_post_meta($post_id, WL_CUSTOM_FIELD_GEO_LATITUDE, true);
-    $longitude = get_post_meta($post_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, true);
+    $latitude  = get_post_meta( $post_id, WL_CUSTOM_FIELD_GEO_LATITUDE, true );
+    $longitude = get_post_meta( $post_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, true );
 
-    if (empty($latitude) || empty($longitude)) {
+    if ( empty( $latitude ) || empty( $longitude ) ) {
         return null;
     }
 
     return array(
-        'latitude' => $latitude,
+        'latitude'  => $latitude,
         'longitude' => $longitude
     );
 }
@@ -426,7 +406,7 @@ function wl_set_referenced_entities($post_id, $related_entities)
  * @param int $entity_id The post ID of the entity.
  * @return array An array of posts.
  */
-function wl_get_referencing_posts($entity_id) {
+function wl_get_referencing_posts( $entity_id ) {
 
     $args = array(
         'posts_per_page' => -1,
@@ -436,8 +416,11 @@ function wl_get_referencing_posts($entity_id) {
         'meta_value'   => $entity_id
     );
 
-    $posts = get_posts( $args );
-    write_log("wl_get_referencing_posts [ entity id :: $entity_id ][ posts count :: " . count($posts) . " ]");
+    $posts = array_filter( get_posts( $args ), function ( $item ) {
+        return ( WL_ENTITY_TYPE_NAME !== $item->post_type );
+    } );
+
+    write_log("wl_get_referencing_posts [ entity id :: $entity_id ][ posts count :: " . count( $posts ) . " ]");
 
     return $posts;
 }
@@ -685,8 +668,7 @@ function wl_get_attachment_for_source_url($parent_post_id, $source_url)
  * @param int $post_id The post ID.
  * @param int|array $related_id A related post/entity ID or an array of posts/entities.
  */
-function wl_add_related($post_id, $related_id)
-{
+function wl_add_related( $post_id, $related_id ) {
 
     // Ensure we're dealing with an array.
     $related_id_array = (is_array($related_id) ? $related_id : array($related_id));

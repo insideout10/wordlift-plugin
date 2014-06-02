@@ -5,6 +5,9 @@
 
 /**
  * Save the entity properties.
+ *
+ * @uses wl_entity_props_save_prop to save a specific property.
+ *
  * @param string An entity URI.
  * @param array $props An array of entity properties.
  */
@@ -13,7 +16,7 @@ function wl_entity_props_save( $entity_uri, $props ) {
     $mappings = wl_entity_props_get_mappings();
 
     // Get the post by the URI.
-    $post = wl_get_entity_post_by_uri( $entity_uri );
+    $post     = wl_get_entity_post_by_uri( $entity_uri );
 
     // Return if there's no post.
     if ( null === $post ) {
@@ -25,7 +28,6 @@ function wl_entity_props_save( $entity_uri, $props ) {
     foreach ( $props as $key => $values ) {
         wl_entity_props_save_prop( $post->ID, $key, $values, $mappings );
     }
-
 }
 
 /**

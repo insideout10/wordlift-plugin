@@ -12,7 +12,7 @@ function wl_content_embed_microdata( $content )
 {
 
     // Apply microdata only to single pages.
-    if (!is_single()) {
+    if ( ! is_single() ) {
         write_log( "wl_content_embed_microdata : is not single" );
         return $content;
     }
@@ -24,11 +24,12 @@ function wl_content_embed_microdata( $content )
 
 /**
  * Lift the post content with the microdata (skipping the is_single check).
+ *
  * @param int $post_id The post ID.
  * @param string $content The post content.
  * @return string The updated post content.
  */
-function _wl_content_embed_microdata($post_id, $content) {
+function _wl_content_embed_microdata( $post_id , $content) {
 
     $regex   = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
 
@@ -62,8 +63,8 @@ function wl_content_embed_item_microdata( $content, $uri ) {
 
     // Entity not found.
     if ( null === $post ) {
-        write_log( "wl_content_embed_item_microdata : post not found [ uri :: $uri ]" );
 
+        write_log( "wl_content_embed_item_microdata : post not found [ uri :: $uri ]" );
         return $content;
     }
 
@@ -86,6 +87,11 @@ function wl_content_embed_item_microdata( $content, $uri ) {
         $item_type = '';
     } else {
         $item_type = ' itemtype="' . esc_attr($main_type['uri']) . '"';
+
+        // Append the stylesheet if the enable color coding flag is set to true.
+        if ( wl_config_get_enable_color_coding_of_entities_on_frontend() ) {
+            $item_type .= ' class="' . esc_attr( $main_type['css_class'] ) . '"';
+        }
     }
 
     // Get the additional properties.
@@ -118,6 +124,5 @@ function wl_content_embed_item_microdata( $content, $uri ) {
 
     return $content;
 }
-
 add_filter('the_content', 'wl_content_embed_microdata');
 

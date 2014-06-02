@@ -5,8 +5,8 @@
 function wordlift_admin_add_related_posts_meta_box() {
     add_meta_box(
         'wordlift_related_posts_box',
-        __( 'Related Posts', 'wordlift' ),
-        'wordlift_admin_related_posts_meta_box_content',
+        __( 'Referencing Posts', 'wordlift' ),
+        'wordlift_admin_referencing_posts_meta_box_content',
         'entity',
         'side',
         'high'
@@ -17,19 +17,19 @@ function wordlift_admin_add_related_posts_meta_box() {
  * Displays the meta box contents (called by *add_meta_box* callback).
  * @param WP_Post $post The current post.
  */
-function wordlift_admin_related_posts_meta_box_content( $post ) {
+function wordlift_admin_referencing_posts_meta_box_content( $post ) {
 
     // get related posts.
     $posts = wl_get_referencing_posts( $post->ID );
 
     // there are no related posts.
     if ( 0 === count( $posts ) ) {
-        _e('No related posts', 'wordlfift');
+        _e( 'No referencing posts', 'wordlift' );
         return;
     }
 
-    foreach ($posts as $referencing_post) {
-        echo( '<a href="' . get_edit_post_link( $referencing_post->ID ) . '">' . $referencing_post->post_title . '</a><br>');
+    foreach ( $posts as $referencing_post ) {
+        echo( '<a href="' . get_edit_post_link( $referencing_post->ID ) . '">' . $referencing_post->post_title . '</a><br>' );
     }
 }
 
