@@ -13,8 +13,8 @@
 function wl_config_get_setting($name, $default_value = '') {
 
     // get the plugin options.
-    $options = get_option(WL_OPTIONS_NAME);
-    return (isset($options[$name]) ? $options[$name] : $default_value);
+    $options = get_option( WL_OPTIONS_NAME );
+    return ( isset( $options[$name] ) ? $options[$name] : $default_value );
 }
 
 /**
@@ -81,6 +81,15 @@ function wl_config_get_dataset_base_uri()
     return $value;
 }
 
+/**
+ * Get the default *entity display as* setting.
+ *
+ * @return string The default setting.
+ */
+function wl_config_get_entity_display_as_default() {
+
+    return wl_config_get_setting( WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME, 'index' );
+}
 
 /**
  * Check WordLift configuration. If something is missing, display an admin notice.

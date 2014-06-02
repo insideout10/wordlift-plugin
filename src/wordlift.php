@@ -1079,7 +1079,9 @@ require_once('wordlift_redlink.php');
 
     // add the WordLift admin bar.
     require_once('admin/wordlift_admin_bar.php');
-    require_once('admin/wordlift_settings_page.php');
+
+    // add the WordLift Settings page.
+    require_once('admin/wordlift_admin_settings_page.php');
     // add the entities meta box.
     require_once('admin/wordlift_admin_meta_box_entities.php');
     require_once('admin/wordlift_admin_meta_box_related_posts.php');

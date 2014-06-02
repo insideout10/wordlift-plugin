@@ -160,7 +160,8 @@ function wl_save_entities($entities, $related_post_id = null)
 }
 
 /**
- * Save the specified data as an entity in WordPress.
+ * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
+ * found (by its URI), then the original post is returned.
  *
  * @param string $uri The entity URI.
  * @param string $label The entity label.
@@ -176,68 +177,71 @@ function wl_save_entities($entities, $related_post_id = null)
 function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() )
 {
 
-    write_log("wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]");
+    write_log( "wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]" );
 
     // Check whether an entity already exists with the provided URI.
-    $post = wl_get_entity_post_by_uri($uri);
+    $post = wl_get_entity_post_by_uri( $uri );
 
     // Return the found post, do not overwrite data.
     if (null !== $post) {
-        write_log("wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]");
+        write_log( "wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]" );
         return $post;
     }
 
     // No post found, create a new one.
     $params = array(
-        'post_status' => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
-        'post_type' => 'entity',
-        'post_title' => $label,
+        'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
+        'post_type'    => 'entity',
+        'post_title'   => $label,
         'post_content' => $description,
         'post_excerpt' => ''
     );
 
     // create or update the post.
-    $post_id = wp_insert_post($params, true);
+    $post_id = wp_insert_post( $params, true );
 
     // TODO: handle errors.
-    if (is_wp_error($post_id)) {
-        write_log("wl_save_entity : error occurred");
+    if ( is_wp_error( $post_id ) ) {
+        write_log( 'wl_save_entity : error occurred' );
         // inform an error occurred.
         return null;
     }
 
-    wl_set_entity_main_type($post_id, $type_uri);
+    wl_set_entity_main_type( $post_id, $type_uri );
 
     // Save the entity types.
-    wl_set_entity_types($post_id, $entity_types);
+    wl_set_entity_types( $post_id, $entity_types );
 
     // Get a dataset URI for the entity.
     $wl_uri = wl_build_entity_uri($post_id);
 
     // Save the entity URI.
-    wl_set_entity_uri($post_id, $wl_uri);
+    wl_set_entity_uri( $post_id, $wl_uri );
 
     // Add the uri to the sameAs data if it's not a local URI.
-    if ($wl_uri !== $uri) {
-        array_push($same_as, $uri);
+    if ( $wl_uri !== $uri ) {
+        array_push( $same_as, $uri );
     }
     // Save the sameAs data for the entity.
-    wl_set_same_as($post_id, $same_as);
+    wl_set_same_as( $post_id, $same_as );
+
+    // Call hooks.
+    do_action( 'wl_save_entity', $post_id );
 
     // If the coordinates are provided, then set them.
 //    if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
 //        wl_set_coordinates($post_id, $coordinates['latitude'], $coordinates['longitude']);
 //    }
 
-    write_log("wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]");
+    write_log( "wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]" );
 
-    foreach ($images as $image_remote_url) {
+    foreach ( $images as $image_remote_url ) {
 
         // Check if there is an existing attachment for this post ID and source URL.
-        $existing_image = wl_get_attachment_for_source_url($post_id, $image_remote_url);
+        $existing_image = wl_get_attachment_for_source_url( $post_id, $image_remote_url );
 
         // Skip if an existing image is found.
-        if (null !== $existing_image) {
+        if ( null !== $existing_image ) {
             continue;
         }
 
@@ -250,16 +254,16 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
         $content_type = $image['content_type'];
 
         $attachment = array(
-            'guid' => $url,
+            'guid'           => $url,
             // post_title, post_content (the value for this key should be the empty string), post_status and post_mime_type
-            'post_title' => $label, // Set the title to the post title.
-            'post_content' => '',
-            'post_status' => 'inherit',
+            'post_title'     => $label, // Set the title to the post title.
+            'post_content'   => '',
+            'post_status'    => 'inherit',
             'post_mime_type' => $content_type
         );
 
         // Create the attachment in WordPress and generate the related metadata.
-        $attachment_id = wp_insert_attachment($attachment, $filename, $post_id);
+        $attachment_id = wp_insert_attachment( $attachment, $filename, $post_id );
 
         // Set the source URL for the image.
         wl_set_source_url( $attachment_id, $image_remote_url );
@@ -274,15 +278,15 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
     // Add the related post ID if provided.
     if (null !== $related_post_id) {
         // Add related entities or related posts according to the post type.
-        wl_add_related($post_id, $related_post_id);
+        wl_add_related( $post_id, $related_post_id );
         // And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
-        wl_add_related($related_post_id, $post_id);
+        wl_add_related( $related_post_id, $post_id );
     }
 
     // The entity is pushed to Redlink on save by the function hooked to save_post.
     // save the entity in the triple store.
-    wl_push_to_redlink($post_id);
+    wl_push_to_redlink( $post_id );
 
     // finally return the entity post.
-    return get_post($post_id);
+    return get_post( $post_id );
 }

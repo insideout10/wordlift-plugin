@@ -41,6 +41,9 @@ define('WL_CONFIG_SITE_LANGUAGE_NAME', 'site_language');
 
 define('WL_CONFIG_DEFAULT_SITE_LANGUAGE', 'en');
 
+// The parameter name for the default *entity display as* setting.
+define( 'WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME', 'wl_config_entity_display_as' );
+
 // Define the Redlink API version (it is used to build API URLs).
 define('WL_REDLINK_API_VERSION', '1.0-BETA');
 

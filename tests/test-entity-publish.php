@@ -48,4 +48,33 @@ class EntityPublishTest extends WP_UnitTestCase
 
     }
 
+    /**
+     * Test the default *display as* assignment and subsequent assignments.
+     */
+    function testDisplayAsDefault() {
+
+        $this->setDisplayAsDefault( 'page' );
+        $entity_1 = wl_save_entity( 'http://example.org/entity_1', 'Entity 1', 'http://schema.org/Thing', 'Sample Entity 1' );
+        $this->assertEquals( 'page', wl_get_entity_display_as( $entity_1->ID ) );
+
+        wl_set_entity_display_as( $entity_1->ID, 'index' );
+        $this->assertEquals( 'index', wl_get_entity_display_as( $entity_1->ID ) );
+
+        $this->setDisplayAsDefault( 'index' );
+        $entity_2 = wl_save_entity( 'http://example.org/entity_2', 'Entity 2', 'http://schema.org/Thing', 'Sample Entity 2' );
+        $this->assertEquals( 'index', wl_get_entity_display_as( $entity_2->ID ) );
+
+        wl_set_entity_display_as( $entity_1->ID, 'page' );
+        $this->assertEquals( 'page', wl_get_entity_display_as( $entity_1->ID ) );
+
+    }
+
+    function setDisplayAsDefault( $value ) {
+
+        // Set the default as index.
+        $options = get_option( WL_OPTIONS_NAME );
+        $options[WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME] = $value;
+        update_option( WL_OPTIONS_NAME, $options );
+    }
+
 }

@@ -11,26 +11,35 @@ function wl_settings_register()
 
     register_setting('wordlift_settings', WL_OPTIONS_NAME);
 
-    $section_id = 'wordlift_settings_section';
+    $section_id   = 'wordlift_settings_section';
     $section_page = 'wordlift_settings_section_page';
 
     // 1: the unique id for the section: wordlift_settings_section
     // 2: the title or name of the section: Main Settings
     // 3: callback to display the section: wordlift_settings_text
     // 4: the page name: wordlift_settings_section_page (matching the value used in *wordlift_settings_page*)
-    add_settings_section($section_id, __('main-settings-title', 'wordlift'), 'wl_settings_text', $section_page);
+    add_settings_section( $section_id, __('main-settings-title', 'wordlift'), 'wl_settings_text', $section_page);
+
+    // Add the setting field for the display as default.
+    add_settings_field(
+        WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME,
+        __( 'New Entity Posts are displayed as:', 'wordlift' ),
+        'wl_settings_entity_display_as_select',
+        $section_page,
+        $section_id
+    );
 
     // 1: unique id for the field: application_key
     // 2: title for the field: Application Key
     // 3: function callback, to display the input box: application_key_input_box
     // 4: page name that this is attached to: wordlift_settings_section_page
     // 5: id of the settings section: wordlift_settings_section
-    add_settings_field(WL_CONFIG_APPLICATION_KEY_NAME, __('application-key', 'wordlift'), 'wl_settings_application_key_input_box', $section_page, $section_id);
-    add_settings_field(WL_CONFIG_USER_ID_NAME, __('user-id', 'wordlift'), 'wl_settings_user_id_input_box', $section_page, $section_id);
-    add_settings_field(WL_CONFIG_DATASET_NAME, __('dataset-name', 'wordlift'), 'wl_settings_dataset_input_box', $section_page, $section_id);
-    add_settings_field(WL_CONFIG_DATASET_BASE_URI_NAME, __('dataset-base-uri', 'wordlift'), 'wl_settings_dataset_base_uri_input_box', $section_page, $section_id);
-    add_settings_field(WL_CONFIG_ANALYSIS_NAME, __('analysis-name', 'wordlift'), 'wl_settings_analysis_input_box', $section_page, $section_id);
-    add_settings_field(WL_CONFIG_SITE_LANGUAGE_NAME, __('site-language', 'wordlift'), 'wl_settings_site_language_input_box', $section_page, $section_id);
+    add_settings_field( WL_CONFIG_APPLICATION_KEY_NAME, __('application-key', 'wordlift'), 'wl_settings_application_key_input_box', $section_page, $section_id);
+    add_settings_field( WL_CONFIG_USER_ID_NAME, __('user-id', 'wordlift'), 'wl_settings_user_id_input_box', $section_page, $section_id);
+    add_settings_field( WL_CONFIG_DATASET_NAME, __('dataset-name', 'wordlift'), 'wl_settings_dataset_input_box', $section_page, $section_id);
+    add_settings_field( WL_CONFIG_DATASET_BASE_URI_NAME, __('dataset-base-uri', 'wordlift'), 'wl_settings_dataset_base_uri_input_box', $section_page, $section_id);
+    add_settings_field( WL_CONFIG_ANALYSIS_NAME, __('analysis-name', 'wordlift'), 'wl_settings_analysis_input_box', $section_page, $section_id);
+    add_settings_field( WL_CONFIG_SITE_LANGUAGE_NAME, __('site-language', 'wordlift'), 'wl_settings_site_language_input_box', $section_page, $section_id);
 }
 add_action('admin_init', 'wl_settings_register');
 
@@ -43,6 +52,19 @@ function wl_settings_text()
 }
 
 /**
+ * Prints out the *entity display as* Select element.
+ */
+function wl_settings_entity_display_as_select() {
+
+    $options = array(
+        'index' => __( 'Index', 'wordlift' ),
+        'page'  => __( 'Page', 'wordlift')
+    );
+
+    wl_settings_select( WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME, $options, wl_config_get_entity_display_as_default() );
+}
+
+/**
  * Displays the application key input box (as callback set uting the *add_settings_field* method).
  */
 function wl_settings_application_key_input_box()
@@ -52,7 +74,7 @@ function wl_settings_application_key_input_box()
     $value = wl_config_get_application_key();
 
     // Call the helper function.
-    wl_settings_input_box(WL_CONFIG_APPLICATION_KEY_NAME, $value);
+    wl_settings_input_box( WL_CONFIG_APPLICATION_KEY_NAME, $value );
 }
 
 /**
@@ -110,41 +132,33 @@ function wl_settings_dataset_base_uri_input_box()
 function wl_settings_site_language_input_box()
 {
 
-    // get the existing setting.
-    $site_lang = wl_config_get_site_language();
-
     // prepare the language array.
     $langs = array();
 
     // set the path to the language file.
-    $filename = dirname(__FILE__) . '/ISO-639-2_utf-8.txt';
+    $filename = dirname( __FILE__ ) . '/ISO-639-2_utf-8.txt';
 
-    if (($handle = fopen($filename, 'r')) !== false) {
-        while (($data = fgetcsv($handle, 1000, '|')) !== false) {
-            if (!empty($data[2])) {
-                $code = $data[2];
-                $label = htmlentities($data[3]);
-
+    if ( ( $handle = fopen( $filename, 'r' ) ) !== false ) {
+        while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== false ) {
+            if ( ! empty( $data[2] ) ) {
+                $code  = $data[2];
+                $label = htmlentities( $data[3] );
                 $langs[$code] = $label;
-
             }
         }
-        fclose($handle);
+        fclose( $handle );
     }
 
     // sort the languages;
     asort($langs);
-    echo "<select id='site_language' name='wordlift_options[site_language]' >";
-    foreach ($langs as $code => $label) {
-        $selected = ($site_lang === $code ? 'selected' : '');
-        echo "<option $selected value=\"$code\">$label</option>";
-    }
-    echo "</select>";
+
+    wl_settings_select( 'site_language', $langs, wl_config_get_site_language() );
 }
 
 
 /**
  * Create an input box for the specified field.
+ *
  * @param string $field_name The setting field name.
  * @param string $value The setting value.
  */
@@ -154,6 +168,26 @@ function wl_settings_input_box($field_name, $value)
     // get the existing setting.
     $value_e = esc_html($value);
     echo "<input id='$field_name' name='wordlift_options[$field_name]' size='60' type='text' value='$value_e' />";
+}
+
+/**
+ * Prints out a Select element with the provided parameters.
+ *
+ * @param string $field_name The field name.
+ * @param array $options A hash of option values/texts.
+ * @param string $current The current selected value.
+ */
+function wl_settings_select( $field_name, $options, $current ) {
+
+    echo "<select id='$field_name' name='wordlift_options[$field_name]' >";
+    foreach ( $options as $value => $text ) {
+        $selected = ( $current === $value ? 'selected' : '');
+
+        $value_e = esc_attr( $value );
+        $text_e  = esc_html( $text );
+        echo "<option $selected value=\"$value_e\">$text_e</option>";
+    }
+    echo '</select>';
 }
 
 /**
