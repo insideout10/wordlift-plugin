@@ -29,11 +29,14 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
     $args = array(
         'post_content' => $content,
         'post_name'    => $slug,
-        'post_title'   => $title,
         'post_status'  => $status,
         'post_type'    => $type,
         'post_author'  => wl_test_create_user()
     );
+
+    if ( ! empty( $title) ) {
+        $args['post_title'] = $title;
+    }
 
     $wp_error = null;
     $post_id  = wp_insert_post( $args, $wp_error );

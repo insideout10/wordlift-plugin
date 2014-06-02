@@ -199,4 +199,16 @@ EOF;
         return $lines;
 
     }
+
+    /**
+     * Test saving a post without a title. Check the URI.
+     */
+    function testSavePostWithoutTitle() {
+
+        $post_id = wl_create_post( 'Sample Post', 'post-1', '', 'publish' );
+        $uri     = wl_get_entity_uri( $post_id );
+        $expected_uri = wl_config_get_dataset_base_uri() . "/post/id/$post_id";
+
+        $this->assertEquals( $expected_uri, $uri );
+    }
 }

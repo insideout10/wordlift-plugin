@@ -31,18 +31,25 @@ function wl_push_to_redlink($post_id)
  * Push the provided post to Redlink (not suitable for entities).
  * @param object $post A post instance.
  */
-function wl_push_post_to_redlink($post)
+function wl_push_post_to_redlink( $post )
 {
 
     // Don't deal with entities here.
-    if ('entity' === $post->post_type) {
+    if ('entity' === $post->post_type ) {
         return;
     }
 
     // Get the post URI.
-    $uri = wl_get_entity_uri($post->ID);
+    $uri = wl_get_entity_uri( $post->ID );
 
-    write_log("wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]");
+    // If the URI ends with a trailing slash, then we have a problem.
+    if ( '/' === substr( $uri, -1, 1 ) ) {
+
+        write_log( "wl_push_post_to_redlink : the URI is invalid [ post ID :: $post->ID ][ URI :: $uri ]" );
+        return;
+    }
+
+    write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
 
     // Get the site language in order to define the literals language.
     $site_language = wl_config_get_site_language();
@@ -51,16 +58,20 @@ function wl_push_post_to_redlink($post)
     $author_uri = wl_get_user_uri($post->post_author);
 
     // Get other post properties.
-    $date_published = wl_get_sparql_time(get_the_time('c', $post));
-    $date_modified  = wl_get_sparql_time(wl_get_post_modified_time($post));
-    $title          = wordlift_esc_sparql($post->post_title);
-    $permalink      = wordlift_esc_sparql(get_permalink($post->ID));
+    $date_published = wl_get_sparql_time( get_the_time( 'c', $post ) );
+    $date_modified  = wl_get_sparql_time( wl_get_post_modified_time( $post ) );
+    $title          = wordlift_esc_sparql( $post->post_title );
+    $permalink      = wordlift_esc_sparql( get_permalink( $post->ID ) );
     $user_comments_count = $post->comment_count;
 
     write_log("wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]");
 
     // create the SPARQL query.
-    $sparql = "<$uri> rdfs:label '$title'@$site_language . \n";
+    $sparql = '';
+    if ( ! empty( $title ) ) {
+        $sparql .= "<$uri> rdfs:label '$title'@$site_language . \n";
+    }
+
     $sparql .= "<$uri> a <http://schema.org/BlogPosting> . \n";
     $sparql .= "<$uri> schema:url <$permalink> . \n";
     $sparql .= "<$uri> schema:datePublished $date_published . \n";
@@ -106,16 +117,26 @@ EOF;
 
 /**
  * Push the provided entity post to Redlink.
+ *
  * @param object $entity_post An entity post instance.
  */
-function wl_push_entity_post_to_redlink($entity_post)
+function wl_push_entity_post_to_redlink( $entity_post )
 {
 
     // Only handle published entities.
     if ( 'entity' !== $entity_post->post_type && 'publish' !== $entity_post->post_status ) {
 
         write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
+        return;
+    }
 
+    // get the entity URI.
+    $uri = wl_get_entity_uri( $entity_post->ID );
+
+    // If the URI ends with a trailing slash, then we have a problem.
+    if ( '/' === substr( $uri, -1, 1 ) ) {
+
+        write_log( "wl_push_entity_post_to_redlink : the URI is invalid [ post ID :: $entity_post->ID ][ URI :: $uri ]" );
         return;
     }
 
@@ -123,12 +144,9 @@ function wl_push_entity_post_to_redlink($entity_post)
     $site_language = wl_config_get_site_language();
 
     // get the title and content as label and description.
-    $label = wordlift_esc_sparql($entity_post->post_title);
-    $descr = wordlift_esc_sparql($entity_post->post_content);
-    $permalink = wordlift_esc_sparql(get_permalink($entity_post->ID));
-
-    // get the entity URI.
-    $uri = wl_get_entity_uri($entity_post->ID);
+    $label     = wordlift_esc_sparql( $entity_post->post_title );
+    $descr     = wordlift_esc_sparql( $entity_post->post_content );
+    $permalink = wordlift_esc_sparql( get_permalink( $entity_post->ID ) );
 
     write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
 
@@ -304,7 +322,7 @@ function wordlift_save_post_and_related_entities( $post_id )
  * @param int $post_id The post ID.
  * @return string The SPARQL fragment (or an empty string).
  */
-function wl_get_sparql_post_references($post_id)
+function wl_get_sparql_post_references( $post_id )
 {
 
     // Get the post URI.
@@ -328,7 +346,7 @@ function wl_get_sparql_post_references($post_id)
  * @param string $uri The entity URI.
  * @return WP_Post|null A WP_Post instance or null if not found.
  */
-function wl_get_entity_post_by_uri($uri)
+function wl_get_entity_post_by_uri( $uri )
 {
 
     $query = new WP_Query(array(
@@ -373,7 +391,7 @@ function wordlift_save_post( $post_id )
 {
 
     // If it's not numeric exit from here.
-    if ( !is_numeric($post_id) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
+    if ( !is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
         return;
     }
 

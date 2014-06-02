@@ -70,4 +70,4 @@ function wl_admin_set_entity_display_as_default( $post_id ) {
 
     wl_set_entity_display_as( $post_id, wl_config_get_entity_display_as_default() );
 }
-add_action( 'wl_save_entity', wl_admin_set_entity_display_as_default, 10, 1 );
+add_action( 'wl_save_entity', 'wl_admin_set_entity_display_as_default', 10, 1 );

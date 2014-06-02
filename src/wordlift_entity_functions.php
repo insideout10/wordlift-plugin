@@ -6,7 +6,11 @@
 /**
  * Build the entity URI given the entity's post.
  *
+ * @uses wl_sanitize_uri_path to sanitize the post title.
+ * @uses wl_config_get_dataset_base_uri to get the dataset base URI.
+ *
  * @param int $post_id The post ID
+ *
  * @return string The URI of the entity
  */
 function wl_build_entity_uri( $post_id )
@@ -17,12 +21,17 @@ function wl_build_entity_uri( $post_id )
 
     if (null === $post) {
 
-        write_log("wl_build_entity_uri : error [ post id :: $post_id ][ post :: null ]");
+        write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
         return;
     }
 
     // Create an ID given the title.
-    $path = wl_sanitize_uri_path($post->post_title);
+    $path = wl_sanitize_uri_path( $post->post_title );
+
+    // If the path is empty, i.e. there's no title, use the post ID as path.
+    if ( empty( $path ) ) {
+        $path = "id/$post->ID";
+    }
 
     // Create the URL (dataset base URI has a trailing slash).
     $url = sprintf( '%s/%s/%s', wl_config_get_dataset_base_uri(), $post->post_type, $path );
@@ -42,17 +51,17 @@ function wl_build_entity_uri( $post_id )
  *
  * @return string|null The URI of the entity or null if not configured.
  */
-function wl_get_entity_uri($post_id)
+function wl_get_entity_uri( $post_id )
 {
 
-    $uri = get_post_meta($post_id, WL_ENTITY_URL_META_NAME, true);
-    $uri = utf8_encode($uri);
+    $uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
+    $uri = utf8_encode( $uri );
 
     // Set the URI if it isn't set yet.
-    $post_status = get_post_status($post_id);
-    if (empty($uri) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
-        $uri = wl_build_entity_uri($post_id); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
-        wl_set_entity_uri($post_id, $uri);
+    $post_status = get_post_status( $post_id );
+    if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
+        $uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+        wl_set_entity_uri( $post_id, $uri );
     }
 
     return $uri;

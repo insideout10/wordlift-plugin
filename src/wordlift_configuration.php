@@ -92,6 +92,17 @@ function wl_config_get_entity_display_as_default() {
 }
 
 /**
+ * Get the value for the *enable color coding of entities on front-end* setting.
+ *
+ * @return boolean True if enabled, otherwise false.
+ */
+function wl_config_get_enable_color_coding_of_entities_on_frontend( ) {
+
+    return ( 'yes' === wl_config_get_setting( WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME, 'yes' ) );
+}
+
+
+/**
  * Check WordLift configuration. If something is missing, display an admin notice.
  *
  * @uses wl_config_validate()

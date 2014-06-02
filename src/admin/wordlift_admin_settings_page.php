@@ -29,6 +29,15 @@ function wl_settings_register()
         $section_id
     );
 
+    // Add the setting field for the color coding of entities.
+    add_settings_field(
+        WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME,
+        __( 'Enable color coding of Entities', 'wordlift' ),
+        'wl_settings_enable_color_coding_of_entities_select',
+        $section_page,
+        $section_id
+    );
+
     // 1: unique id for the field: application_key
     // 2: title for the field: Application Key
     // 3: function callback, to display the input box: application_key_input_box
@@ -62,6 +71,23 @@ function wl_settings_entity_display_as_select() {
     );
 
     wl_settings_select( WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME, $options, wl_config_get_entity_display_as_default() );
+}
+
+/**
+ * Prints out the *enable color coding of entities* Select element.
+ */
+function wl_settings_enable_color_coding_of_entities_select() {
+
+    $options = array(
+        'yes' => __( 'Yes', 'wordlift' ),
+        'no'  => __( 'No', 'wordlift')
+    );
+
+    wl_settings_select(
+        WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME,
+        $options,
+        ( wl_config_get_enable_color_coding_of_entities_on_frontend() ? 'yes' : 'no' )
+    );
 }
 
 /**
