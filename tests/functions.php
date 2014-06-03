@@ -75,7 +75,7 @@ function wl_delete_post_attachments( $post_id ) {
     // Delete each attachment.
     foreach ( $attachments as $attachment ) {
         if ( false === wp_delete_attachment( $attachment->ID ) ) {
-            write_log( "wl_delete_post_attachments : error [ post id :: $post_id ]" );
+            wl_write_log( "wl_delete_post_attachments : error [ post id :: $post_id ]" );
         }
     }
 }
@@ -88,7 +88,7 @@ function wl_delete_post_attachments( $post_id ) {
  */
 function wl_update_post( $post_id, $content ) {
 
-    write_log( "wl_update_post [ post id :: $post_id ][ content ::\n $content\n ]" );
+    wl_write_log( "wl_update_post [ post id :: $post_id ][ content ::\n $content\n ]" );
 
     $wp_error = null;
     $args = array(

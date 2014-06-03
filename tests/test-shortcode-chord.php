@@ -104,7 +104,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$this->assertNotEmpty($chord['entities']);
 		$this->assertNotEmpty($chord['relations']);
 		
-		//write_log("chordShortcodeAJAX [ chord data :: " . print_r($chord, true) . "]");
+		//wl_write_log("chordShortcodeAJAX [ chord data :: " . print_r($chord, true) . "]");
     }
     
     function testChordShortcodeMostConnectedEntity() {
@@ -114,7 +114,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$this->assertNotNull($e);
 		$this->assertEquals(self::$MOST_CONNECTED_ENTITY_ID, $e);
 		
-		//write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
+		//wl_write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
     }
 
     /**

@@ -126,11 +126,11 @@ function rl_count_triples()
 
         $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
 
-        write_log("rl_count_triples : error [ url :: $scrambled_url ][ response :: ");
-        write_log("\n" . var_export($response, true));
-        write_log("][ body :: ");
-        write_log("\n" . $body);
-        write_log("]");
+        wl_write_log("rl_count_triples : error [ url :: $scrambled_url ][ response :: ");
+        wl_write_log("\n" . var_export($response, true));
+        wl_write_log("][ body :: ");
+        wl_write_log("\n" . $body);
+        wl_write_log("]");
 
         return $response;
     }
@@ -151,7 +151,7 @@ function rl_count_triples()
     }
 
     // No digits found in the response, return null.
-    write_log("rl_count_triples : unrecognized response [ body :: $body ]");
+    wl_write_log("rl_count_triples : unrecognized response [ body :: $body ]");
     return null;
 }
 
@@ -193,7 +193,7 @@ function rl_sparql_select($query, $accept = 'text/csv')
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING )
 {
 
-    write_log("rl_execute_sparql_update_query [ queue :: " . ($queue ? 'true' : 'false') . " ]");
+    wl_write_log("rl_execute_sparql_update_query [ queue :: " . ($queue ? 'true' : 'false') . " ]");
 
     // Queue the update query.
     if ( $queue ) {
@@ -224,20 +224,20 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 
         $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
 
-        write_log("rl_execute_sparql_update_query : error [ url :: $scrambled_url ][ args :: ");
-        write_log("\n" . var_export($args, true));
-        write_log("[ response :: ");
-        write_log("\n" . var_export($response, true));
-        write_log("][ body :: ");
-        write_log("\n" . $body);
-        write_log("]");
+        wl_write_log("rl_execute_sparql_update_query : error [ url :: $scrambled_url ][ args :: ");
+        wl_write_log("\n" . var_export($args, true));
+        wl_write_log("[ response :: ");
+        wl_write_log("\n" . var_export($response, true));
+        wl_write_log("][ body :: ");
+        wl_write_log("\n" . $body);
+        wl_write_log("]");
 
         return false;
     }
 
-    write_log("rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: ");
-    write_log("\n" . $query);
-    write_log("]");
+    wl_write_log("rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: ");
+    wl_write_log("\n" . $query);
+    wl_write_log("]");
 
     return true;
 }

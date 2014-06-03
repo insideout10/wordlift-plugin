@@ -24,23 +24,23 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 		$entity_ids = wl_get_referenced_entity_ids( $post_id );
 	}
 
-    write_log( "wl_shortcode_timeline_get_events [ entity IDs :: " . join( ', ', $entity_ids ) . " ]" );
+    wl_write_log( "wl_shortcode_timeline_get_events [ entity IDs :: " . join( ', ', $entity_ids ) . " ]" );
 
     // Get all the entities that have a meta key with date start and end information.
     return get_posts( array(
-        'post__in' => $entity_ids,
-        'post_type' => WL_ENTITY_TYPE_NAME,
-        'posts_per_page' => -1,
-        'meta_query' => array(
-            'relation' => 'AND',
+        'post__in'        => $entity_ids,
+        'post_type'       => WL_ENTITY_TYPE_NAME,
+        'posts_per_page'  => -1,
+        'meta_query'      => array(
+            'relation'    => 'AND',
             array(
-                'key' => WL_CUSTOM_FIELD_CAL_DATE_START,
-                'value' => null,
+                'key'     => WL_CUSTOM_FIELD_CAL_DATE_START,
+                'value'   => null,
                 'compare' => '!=',
             ),
             array(
-                'key' => WL_CUSTOM_FIELD_CAL_DATE_END,
-                'value' => null,
+                'key'     => WL_CUSTOM_FIELD_CAL_DATE_END,
+                'value'   => null,
                 'compare' => '!=',
             )
         )
@@ -134,7 +134,8 @@ function wl_shortcode_timeline_ajax()
     $result = wl_shortcode_timeline_to_json( $result );
 
     echo $result;
-    die();
+
+    wp_die();
 }
 add_action( 'wp_ajax_wl_timeline', 'wl_shortcode_timeline_ajax' );
 add_action( 'wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax' );

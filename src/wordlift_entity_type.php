@@ -139,7 +139,7 @@ add_action('save_post', 'wl_entity_type_save_custom_fields');
  */
 function wl_set_entity_main_type( $post_id, $type_uri ) {
 
-    write_log( "wl_set_entity_main_type [ post id :: $post_id ][ type uri :: $type_uri ]" );
+    wl_write_log( "wl_set_entity_main_type [ post id :: $post_id ][ type uri :: $type_uri ]" );
 
     // If the type URI is empty we remove the type.
     if ( empty($type_uri) ) {

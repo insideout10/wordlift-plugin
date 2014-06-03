@@ -14,7 +14,7 @@ function wl_admin_sync_to_redlink() {
         'posts_per_page' => -1
     ) );
 
-    write_log( "wl_admin_sync_to_redlink [ post count :: " . sizeof( $posts ). " ]" );
+    wl_write_log( "wl_admin_sync_to_redlink [ post count :: " . sizeof( $posts ). " ]" );
 
     foreach ( $posts as $post ) {
         echo esc_html( $post->post_title ) . '<br/>';

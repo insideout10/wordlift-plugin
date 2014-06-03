@@ -10,7 +10,7 @@ function wl_push_to_redlink( $post_id )
     // Get the post.
     $post = get_post( $post_id );
 
-    write_log("wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]");
+    wl_write_log("wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]");
 
     // Call the method on behalf of the post type.
     switch ( $post->post_type ) {
@@ -45,11 +45,11 @@ function wl_push_post_to_redlink( $post )
     // If the URI ends with a trailing slash, then we have a problem.
     if ( '/' === substr( $uri, -1, 1 ) ) {
 
-        write_log( "wl_push_post_to_redlink : the URI is invalid [ post ID :: $post->ID ][ URI :: $uri ]" );
+        wl_write_log( "wl_push_post_to_redlink : the URI is invalid [ post ID :: $post->ID ][ URI :: $uri ]" );
         return;
     }
 
-    write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
+    wl_write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
 
     // Get the site language in order to define the literals language.
     $site_language = wl_config_get_site_language();
@@ -64,7 +64,7 @@ function wl_push_post_to_redlink( $post )
     $permalink      = wordlift_esc_sparql( get_permalink( $post->ID ) );
     $user_comments_count = $post->comment_count;
 
-    write_log("wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]");
+    wl_write_log("wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]");
 
     // create the SPARQL query.
     $sparql = '';
@@ -126,7 +126,7 @@ function wl_push_entity_post_to_redlink( $entity_post )
     // Only handle published entities.
     if ( 'entity' !== $entity_post->post_type && 'publish' !== $entity_post->post_status ) {
 
-        write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
+        wl_write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
         return;
     }
 
@@ -136,7 +136,7 @@ function wl_push_entity_post_to_redlink( $entity_post )
     // If the URI ends with a trailing slash, then we have a problem.
     if ( '/' === substr( $uri, -1, 1 ) ) {
 
-        write_log( "wl_push_entity_post_to_redlink : the URI is invalid [ post ID :: $entity_post->ID ][ URI :: $uri ]" );
+        wl_write_log( "wl_push_entity_post_to_redlink : the URI is invalid [ post ID :: $entity_post->ID ][ URI :: $uri ]" );
         return;
     }
 
@@ -148,7 +148,7 @@ function wl_push_entity_post_to_redlink( $entity_post )
     $descr     = wordlift_esc_sparql( $entity_post->post_content );
     $permalink = wordlift_esc_sparql( get_permalink( $entity_post->ID ) );
 
-    write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
+    wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
 
     // create a new empty statement.
     $delete_stmt = '';
@@ -182,12 +182,12 @@ function wl_push_entity_post_to_redlink( $entity_post )
         // The value in the custom fields must be rewritten as triple predicates, this
         // is what we're going to do here.
 
-        write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ). ' ]' );
+        wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ). ' ]' );
 
         if ( isset( $main_type['export_fields'] ) ) {
             foreach ( $main_type['export_fields'] as $field => $settings ) {
 
-                write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
+                wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
 
                 $predicate = wordlift_esc_sparql( $settings['predicate'] );
                 $type      = $settings['type'];
@@ -274,26 +274,26 @@ function wordlift_save_post_and_related_entities( $post_id )
 
     // Only process posts that are published.
     if ( 'publish' !== $post->post_status ) {
-        write_log( "wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]" );
+        wl_write_log( "wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]" );
         return;
     }
 
     remove_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
 
-    write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]");
+    wl_write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]");
 
     // Save the entities coming with POST data.
     if (isset($_POST['wl_entities'])) {
 
-        write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ POST(wl_entities) :: ");
-        write_log( var_export( $_POST['wl_entities'], true ) );
-        write_log( "]" );
+        wl_write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ POST(wl_entities) :: ");
+        wl_write_log( var_export( $_POST['wl_entities'], true ) );
+        wl_write_log( "]" );
 
         $entities_via_post = array_values($_POST['wl_entities']);
 
-        write_log("wordlift_save_post_and_related_entities [ entities_via_post :: ");
-        write_log($entities_via_post);
-        write_log("]");
+        wl_write_log("wordlift_save_post_and_related_entities [ entities_via_post :: ");
+        wl_write_log($entities_via_post);
+        wl_write_log("]");
 
         wl_save_entities( $entities_via_post, $post_id );
 
@@ -372,7 +372,7 @@ function wl_get_entity_post_by_uri( $uri )
     // Get the matching entity posts.
     $posts = $query->get_posts();
 
-    write_log("wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count($posts) . " ]\n");
+    wl_write_log("wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count($posts) . " ]\n");
 
     // Return null if no post is found.
     if (0 === count($posts)) {
@@ -460,7 +460,7 @@ function wordlift_reindex_triple_store()
     $url = wordlift_redlink_reindex_url();
 
     // Post the request.
-    write_log("wordlift_reindex_triple_store");
+    wl_write_log("wordlift_reindex_triple_store");
 
     // Prepare the request.
     $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
@@ -479,13 +479,13 @@ function wordlift_reindex_triple_store()
 
         $body = ( is_wp_error($response) ? $response->get_error_message() : $response['body'] );
 
-        write_log( "wordlift_reindex_triple_store : error [ url :: $scrambled_url ][ args :: " );
-        write_log( "\n" . var_export($args, true) );
-        write_log( "[ response :: " );
-        write_log( "\n" . var_export($response, true) );
-        write_log( "][ body :: " );
-        write_log( "\n" . $body );
-        write_log( "]" );
+        wl_write_log( "wordlift_reindex_triple_store : error [ url :: $scrambled_url ][ args :: " );
+        wl_write_log( "\n" . var_export($args, true) );
+        wl_write_log( "[ response :: " );
+        wl_write_log( "\n" . var_export($response, true) );
+        wl_write_log( "][ body :: " );
+        wl_write_log( "\n" . $body );
+        wl_write_log( "]" );
 
         return false;
     }

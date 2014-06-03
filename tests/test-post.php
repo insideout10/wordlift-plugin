@@ -438,7 +438,7 @@ class PostTest extends WP_UnitTestCase
 
             // Must be only one post.
             if (1 !== count( $rel_posts ) ) {
-                write_log("testEntitiesViaArray : wl_get_related_post_ids [ post id :: $post->ID ]");
+                wl_write_log("testEntitiesViaArray : wl_get_related_post_ids [ post id :: $post->ID ]");
             }
             $this->assertCount( 1, $rel_posts );
             // The post must be the one the test created.
@@ -528,7 +528,7 @@ class PostTest extends WP_UnitTestCase
         // Get the entity URI.
         $uri = wordlift_esc_sparql(wl_get_entity_uri($post->ID));
 
-        write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ]");
+        wl_write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ]");
 
         // Prepare the SPARQL query to select label and URL.
         $sparql = <<<EOF
@@ -552,7 +552,7 @@ EOF;
 
         // Expect only one match (headers + one row).
         if (2 !== $count) {
-            write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]");
+            wl_write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]");
         }
         $this->assertEquals(2, $count);
 
@@ -583,7 +583,7 @@ EOF;
     function checkEntityWithData($uri, $title, $permalink)
     {
 
-        write_log("checkEntityWithData [ uri :: $uri ]");
+        wl_write_log("checkEntityWithData [ uri :: $uri ]");
 
         // Prepare the SPARQL query to select label and URL.
         $sparql = <<<EOF
@@ -636,7 +636,7 @@ EOF;
         // Get the post Redlink URI.
         $uri = wordlift_esc_sparql(wl_get_entity_uri($post->ID));
 
-        write_log("checkPost [ uri :: $uri ]");
+        wl_write_log("checkPost [ uri :: $uri ]");
 
         // Prepare the SPARQL query to select label and URL.
         $sparql = <<<EOF
@@ -664,7 +664,7 @@ EOF;
 
         // Expect only one match (headers + one row).
         if (2 !== $count) {
-            write_log("checkPost [ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]");
+            wl_write_log("checkPost [ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]");
         }
 
         // Expect only one match (headers + one row).
@@ -727,10 +727,10 @@ EOF;
 
         $entity_ids = wl_get_referenced_entity_ids( $post->ID );
 
-//        write_log( "[ entity IDs :: " . join( ', ', $entity_ids ) . " ][ size of entity IDs :: " . sizeof( $entity_ids ) . " ][ count :: $count ][ post ID :: $post->ID ]" );
+//        wl_write_log( "[ entity IDs :: " . join( ', ', $entity_ids ) . " ][ size of entity IDs :: " . sizeof( $entity_ids ) . " ][ count :: $count ][ post ID :: $post->ID ]" );
 //
 //        if ( $count !== ( 1 + sizeof( $entity_ids ) ) ) {
-//            write_log( "[ sparql :: $sparql ][ body :: $body ]" );
+//            wl_write_log( "[ sparql :: $sparql ][ body :: $body ]" );
 //        }
 
         // Expect only one match (headers + expected entities).

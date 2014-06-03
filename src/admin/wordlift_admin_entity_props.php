@@ -20,7 +20,7 @@ function wl_entity_props_save( $entity_uri, $props ) {
 
     // Return if there's no post.
     if ( null === $post ) {
-        write_log( "wl_entity_props_save : no post found [ entity uri :: $entity_uri ]" );
+        wl_write_log( "wl_entity_props_save : no post found [ entity uri :: $entity_uri ]" );
         return;
     }
 
@@ -41,7 +41,7 @@ function wl_entity_props_save_prop( $post_id, $key, $values, $mappings ) {
 
     // The property is not found in mappings, then exit.
     if ( ! isset( $mappings[$key] ) ) {
-        write_log( "wl_entity_props_save_prop : property not found in mappings [ post ID :: $post_id ][ key :: $key ][ values count :: " . count($values) . " ]" );
+        wl_write_log( "wl_entity_props_save_prop : property not found in mappings [ post ID :: $post_id ][ key :: $key ][ values count :: " . count($values) . " ]" );
 
         return;
     }
@@ -49,7 +49,7 @@ function wl_entity_props_save_prop( $post_id, $key, $values, $mappings ) {
     // Get the custom field name.
     $custom_field_name = $mappings[$key];
 
-    write_log( "wl_entity_props_save_prop [ post ID :: $post_id ][ custom field name :: $custom_field_name ][ key :: $key ][ values count :: " . count($values) . " ]" );
+    wl_write_log( "wl_entity_props_save_prop [ post ID :: $post_id ][ custom field name :: $custom_field_name ][ key :: $key ][ values count :: " . count($values) . " ]" );
 
     // Don't overwrite existing data.
     $existing = get_post_meta( $post_id, $custom_field_name );
@@ -71,7 +71,7 @@ function wl_entity_props_save_prop( $post_id, $key, $values, $mappings ) {
  */
 function wl_entity_props_get_mappings() {
 
-    write_log( "wl_entity_props_get_mappings");
+    wl_write_log( "wl_entity_props_get_mappings");
 
     return array(
         'http://www.w3.org/2002/12/cal#dtstart'        => WL_CUSTOM_FIELD_CAL_DATE_START,

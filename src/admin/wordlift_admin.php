@@ -33,7 +33,7 @@ function wl_serialize_entity($entity){
  */
 function wl_remove_text_annotations($data) {
 
-    write_log("wl_remove_text_annotations [ data content :: ${data['post_content']} ]");
+    wl_write_log("wl_remove_text_annotations [ data content :: ${data['post_content']} ]");
 
     //    <span class="textannotation" id="urn:enhancement-777cbed4-b131-00fb-54a4-ed9b26ae57ea">
     //    $pattern = '/<span class=\\\"textannotation\\\" id=\\\"[^\"]+\\\">([^<]+)<\/span>/i';
@@ -70,7 +70,7 @@ function wl_content_get_embedded_entities($content)
         return array();
     }
 
-//    write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
+//    wl_write_log("wl_update_related_entities [ content :: $content ][ data :: " . var_export($data, true). " ][ matches :: " . var_export($matches, true) . " ]");
 
     // Collect the entities.
     $entities = array();

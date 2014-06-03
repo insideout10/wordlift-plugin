@@ -18,12 +18,12 @@ function wl_entity_template( $template ) {
     // Return the provided template name if this is not an *entity*.
     if ( WL_ENTITY_TYPE_NAME !== get_post_type() || 'index' !== wl_get_entity_display_as( get_the_ID() ) ) {
 
-        write_log( "wl_entity_template : not processing [ template :: $template ][ post type :: " . get_post_type() . " ]" );
+        wl_write_log( "wl_entity_template : not processing [ template :: $template ][ post type :: " . get_post_type() . " ]" );
 
         return $template;
     }
 
-    write_log( "wl_entity_template : processing [ template :: $template ]" );
+    wl_write_log( "wl_entity_template : processing [ template :: $template ]" );
 
     // Get the referencing posts for the query.
     $post_ids = array_map( function ( $item ) {
@@ -70,7 +70,7 @@ function wl_get_entity_display_as( $post_id ) {
  */
 function wl_set_entity_display_as( $post_id, $display_as ) {
 
-    write_log( "wl_set_entity_display_as [ post ID :: $post_id ][ display as :: $display_as ]" );
+    wl_write_log( "wl_set_entity_display_as [ post ID :: $post_id ][ display as :: $display_as ]" );
 
     delete_post_meta( $post_id, WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE );
     add_post_meta( $post_id, WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE, $display_as, true );

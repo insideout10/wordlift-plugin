@@ -21,7 +21,7 @@ function wl_build_entity_uri( $post_id )
 
     if (null === $post) {
 
-        write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
+        wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
         return;
     }
 
@@ -36,7 +36,7 @@ function wl_build_entity_uri( $post_id )
     // Create the URL (dataset base URI has a trailing slash).
     $url = sprintf( '%s/%s/%s', wl_config_get_dataset_base_uri(), $post->post_type, $path );
 
-    write_log("wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
+    wl_write_log("wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]");
 
     return $url;
 }
@@ -76,7 +76,7 @@ function wl_get_entity_uri( $post_id )
 function wl_set_entity_uri($post_id, $uri)
 {
 
-    write_log("wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]");
+    wl_write_log("wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]");
 
     $uri = utf8_decode($uri);
     return update_post_meta($post_id, WL_ENTITY_URL_META_NAME, $uri);
@@ -109,7 +109,7 @@ function wl_set_entity_types( $post_id, $type_uris = array() ) {
         $type_uris = array();
     }
 
-    write_log( "wl_set_entity_types [ post id :: $post_id ][ type uris :: " . var_export( $type_uris, true ) . " ]");
+    wl_write_log( "wl_set_entity_types [ post id :: $post_id ][ type uris :: " . var_export( $type_uris, true ) . " ]");
 
     // Ensure there are no duplicates.
     $type_uris = array_unique( $type_uris );
@@ -132,7 +132,7 @@ function wl_set_entity_types( $post_id, $type_uris = array() ) {
 function wl_save_entities($entities, $related_post_id = null)
 {
 
-    write_log("wl_save_entities [ entities count :: " . count($entities) . " ][ related post id :: $related_post_id ]");
+    wl_write_log("wl_save_entities [ entities count :: " . count($entities) . " ][ related post id :: $related_post_id ]");
 
     // Prepare the return array.
     $posts = array();
@@ -194,14 +194,14 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
         $entity_types = array();
     }
 
-    write_log( "wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]" );
+    wl_write_log( "wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]" );
 
     // Check whether an entity already exists with the provided URI.
     $post = wl_get_entity_post_by_uri( $uri );
 
     // Return the found post, do not overwrite data.
     if (null !== $post) {
-        write_log( "wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]" );
+        wl_write_log( "wl_save_entity : post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]" );
         return $post;
     }
 
@@ -219,7 +219,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 
     // TODO: handle errors.
     if ( is_wp_error( $post_id ) ) {
-        write_log( 'wl_save_entity : error occurred' );
+        wl_write_log( 'wl_save_entity : error occurred' );
         // inform an error occurred.
         return null;
     }
@@ -250,7 +250,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 //        wl_set_coordinates($post_id, $coordinates['latitude'], $coordinates['longitude']);
 //    }
 
-    write_log( "wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]" );
+    wl_write_log( "wl_save_entity [ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode(',', $entity_types) . " ][ images count :: " . count($images) . " ][ same_as count :: " . count($same_as) . " ]" );
 
     foreach ( $images as $image_remote_url ) {
 
