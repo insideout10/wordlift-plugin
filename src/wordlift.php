@@ -30,13 +30,13 @@ if (!function_exists('write_log')) {
  * Write the query to the buffer file.
  * @param string $query A SPARQL query.
  */
-function wl_queue_sparql_update_query($query)
+function wl_queue_sparql_update_query( $query )
 {
 
     $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
-    file_put_contents($filename, $query . "\n", FILE_APPEND);
+    file_put_contents( $filename, $query . "\n", FILE_APPEND );
 
-    write_log("wl_queue_sparql_update_query [ filename :: $filename ]");
+    write_log( "wl_queue_sparql_update_query [ filename :: $filename ]" );
 }
 
 /**
@@ -49,27 +49,27 @@ function wl_execute_saved_sparql_update_query($request_id)
     $filename = WL_TEMP_DIR . $request_id . '.sparql';
 
     // If the file doesn't exist, exit.
-    if (!file_exists($filename)) {
-        write_log("wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]");
+    if ( ! file_exists( $filename ) ) {
+        write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
         return;
     }
 
-    write_log("wl_execute_saved_sparql_update_query [ filename :: $filename ]");
+    write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
 
     // Get the query saved in the file.
-    $query = file_get_contents($filename);
+    $query = file_get_contents( $filename );
 
     // Execute the SPARQL query.
-    rl_execute_sparql_update_query($query, false);
+    rl_execute_sparql_update_query( $query, false );
 
     // Reindex the triple store.
     wordlift_reindex_triple_store();
 
     // Delete the temporary file.
-    unlink($filename);
+    unlink( $filename );
 }
 
-add_action('wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1);
+add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
 
 /**
  * Add buttons hook for the TinyMCE editor. This method is called by the WP init hook.
@@ -78,9 +78,9 @@ function wordlift_buttonhooks()
 {
 
     // Only add hooks when the current user has permissions AND is in Rich Text editor mode
-    if ((current_user_can('edit_posts') || current_user_can('edit_pages')) && get_user_option('rich_editing')) {
-        add_filter('mce_external_plugins', 'wordlift_register_tinymce_javascript');
-        add_filter('mce_buttons', 'wordlift_register_buttons');
+    if ( ( current_user_can('edit_posts') || current_user_can('edit_pages') ) && get_user_option('rich_editing') ) {
+        add_filter( 'mce_external_plugins', 'wordlift_register_tinymce_javascript' );
+        add_filter( 'mce_buttons', 'wordlift_register_buttons' );
     }
 }
 
@@ -89,8 +89,7 @@ function wordlift_buttonhooks()
  * @param array $buttons The existing buttons array.
  * @return array The modified buttons array.
  */
-function wordlift_register_buttons($buttons)
-{
+function wordlift_register_buttons( $buttons ) {
     // push the wordlift button the array.
     array_push($buttons, 'wordlift');
     // push the create entity wordlift
@@ -104,10 +103,9 @@ function wordlift_register_buttons($buttons)
  * @param array $plugin_array The existing plugins array.
  * @return array The modified plugins array.
  */
-function wordlift_register_tinymce_javascript($plugin_array)
-{
+function wordlift_register_tinymce_javascript($plugin_array) {
     // add the wordlift plugin.
-    $plugin_array['wordlift'] = plugins_url('js/wordlift.js', __FILE__);
+    $plugin_array['wordlift'] = plugins_url( 'js/wordlift.js', __FILE__ );
     return $plugin_array;
 }
 
@@ -119,17 +117,17 @@ function wordlift_allowed_post_tags()
 {
     global $allowedposttags;
 
-    $tags = array('span');
+    $tags = array( 'span' );
     $new_attributes = array(
         'itemscope' => array(),
-        'itemtype' => array(),
-        'itemprop' => array(),
-        'itemid' => array()
+        'itemtype'  => array(),
+        'itemprop'  => array(),
+        'itemid'    => array()
     );
 
     foreach ($tags as $tag) {
-        if (isset($allowedposttags[$tag]) && is_array($allowedposttags[$tag]))
-            $allowedposttags[$tag] = array_merge($allowedposttags[$tag], $new_attributes);
+        if ( isset( $allowedposttags[$tag]) && is_array($allowedposttags[$tag] ) )
+            $allowedposttags[$tag] = array_merge( $allowedposttags[$tag], $new_attributes );
     }
 }
 
@@ -783,16 +781,16 @@ function wl_shutdown()
     $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
 
     // If WordLift is buffering SPARQL queries, we're admins and a buffer exists, then schedule it.
-    if (WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists($filename)) {
+    if ( WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists($filename) ) {
 
         // The request ID.
-        $args = array(WL_REQUEST_ID);
+        $args = array( WL_REQUEST_ID );
 
         // Schedule the execution of the SPARQL query with the request ID.
-        wp_schedule_single_event(time(), 'wl_execute_saved_sparql_update_query', $args);
+        wp_schedule_single_event( time(), 'wl_execute_saved_sparql_update_query', $args );
 
         // Check that the request is scheduled.
-        $timestamp = wp_next_scheduled('wl_execute_saved_sparql_update_query', $args);
+        $timestamp = wp_next_scheduled( 'wl_execute_saved_sparql_update_query', $args );
 
         // Spawn the cron.
         spawn_cron();
@@ -1077,6 +1075,8 @@ require_once('wordlift_redlink.php');
     // Load the wl-chord TinyMCE button and configuration dialog.
     require_once('admin/wordlift_admin_shortcodes.php');
 
+    // Provide syncing features.
+    require_once( 'admin/wordlift_admin_sync.php' );
 //}
 
 // load languages.

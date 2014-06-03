@@ -190,28 +190,28 @@ function rl_sparql_select($query, $accept = 'text/csv')
  * @param bool $queue Whether to queue the update.
  * @return bool True if successful otherwise false.
  */
-function rl_execute_sparql_update_query($query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING)
+function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING )
 {
 
     write_log("rl_execute_sparql_update_query [ queue :: " . ($queue ? 'true' : 'false') . " ]");
 
     // Queue the update query.
-    if ($queue) {
-        return wl_queue_sparql_update_query($query);
+    if ( $queue ) {
+        return wl_queue_sparql_update_query( $query );
     }
 
     // Get the update end-point.
     $url = wordlift_redlink_sparql_update_url();
 
     // Prepare the request.
-    $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
-        'method' => 'POST',
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+        'method'  => 'POST',
         'headers' => array(
-            'Accept' => 'application/json',
+            'Accept'       => 'application/json',
             'Content-type' => 'application/sparql-update; charset=utf-8'
         ),
-        'body' => $query
-    ));
+        'body'    => $query
+    ) );
 
     // Send the request.
     $response = wp_remote_post($url, $args);

@@ -4,21 +4,21 @@
  * Push the post with the specified ID to Redlink.
  * @param int $post_id The post ID.
  */
-function wl_push_to_redlink($post_id)
+function wl_push_to_redlink( $post_id )
 {
 
     // Get the post.
-    $post = get_post($post_id);
+    $post = get_post( $post_id );
 
     write_log("wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]");
 
     // Call the method on behalf of the post type.
-    switch ($post->post_type) {
+    switch ( $post->post_type ) {
         case 'entity':
-            wl_push_entity_post_to_redlink($post);
+            wl_push_entity_post_to_redlink( $post );
             break;
         default:
-            wl_push_post_to_redlink($post);
+            wl_push_post_to_redlink( $post );
     }
 
     // Reindex the triple store if buffering is turned off.
@@ -270,11 +270,11 @@ function wordlift_save_post_and_related_entities( $post_id )
     }
 
     // get the current post.
-    $post = get_post($post_id);
+    $post = get_post( $post_id );
 
     // Only process posts that are published.
     if ( 'publish' !== $post->post_status ) {
-        write_log("wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]");
+        write_log( "wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]" );
         return;
     }
 
@@ -399,10 +399,10 @@ function wordlift_save_post( $post_id )
     remove_action('save_post', 'wordlift_save_post');
 
     // raise the *wordlift_save_post* event.
-    do_action('wordlift_save_post', $post_id);
+    do_action( 'wordlift_save_post', $post_id );
 
     // re-hook this function
-    add_action('save_post', 'wordlift_save_post');
+    add_action( 'save_post', 'wordlift_save_post' );
 }
 
 /**
@@ -477,15 +477,15 @@ function wordlift_reindex_triple_store()
     // If an error has been raised, return the error.
     if (is_wp_error($response) || 200 !== $response['response']['code']) {
 
-        $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
+        $body = ( is_wp_error($response) ? $response->get_error_message() : $response['body'] );
 
-        write_log("wordlift_reindex_triple_store : error [ url :: $scrambled_url ][ args :: ");
-        write_log("\n" . var_export($args, true));
-        write_log("[ response :: ");
-        write_log("\n" . var_export($response, true));
-        write_log("][ body :: ");
-        write_log("\n" . $body);
-        write_log("]");
+        write_log( "wordlift_reindex_triple_store : error [ url :: $scrambled_url ][ args :: " );
+        write_log( "\n" . var_export($args, true) );
+        write_log( "[ response :: " );
+        write_log( "\n" . var_export($response, true) );
+        write_log( "][ body :: " );
+        write_log( "\n" . $body );
+        write_log( "]" );
 
         return false;
     }
