@@ -8,7 +8,6 @@
  */
 class WordLift_Geo_Widget extends WP_Widget
 {
-
     /**
      * Sets up the widgets name etc
      */
@@ -30,7 +29,6 @@ class WordLift_Geo_Widget extends WP_Widget
      */
     public function widget($args, $instance)
     {
-
         // Don't show the widget if it's not a single post.
         if (!is_single()) {
             return;
@@ -115,7 +113,7 @@ class WordLift_Geo_Widget extends WP_Widget
         // From here on, start printing the Widget output.
 
         // Enqueue the required scripts/stylesheets.
-        wp_enqueue_style('wordlift_css', 'http://localhost:8000/app/css/wordlift.min.css');;
+        //wp_enqueue_style('wordlift_css', 'http://localhost:8000/app/css/wordlift.min.css');
         wp_enqueue_style('leaflet_css', '//cdn.leafletjs.com/leaflet-0.7.2/leaflet.css');
         wp_enqueue_script('leaflet_js', '//cdn.leafletjs.com/leaflet-0.7.2/leaflet.js');
 

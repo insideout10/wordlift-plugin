@@ -134,7 +134,7 @@ function wl_shortcode_timeline_ajax()
     $result = wl_shortcode_timeline_to_json( $result );
 
     echo $result;
-    die();
+    wp_die();
 }
 add_action( 'wp_ajax_wl_timeline', 'wl_shortcode_timeline_ajax' );
 add_action( 'wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax' );
