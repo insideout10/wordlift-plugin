@@ -102,8 +102,12 @@ function wl_get_entity_types($post_id)
  * @param int $post_id The entity post ID.
  * @param array $type_uris An array of type URIs.
  */
-function wl_set_entity_types($post_id, $type_uris = array())
-{
+function wl_set_entity_types( $post_id, $type_uris = array() ) {
+
+    // Avoid errors because of null values.
+    if ( is_null( $type_uris ) ) {
+        $type_uris = array();
+    }
 
     write_log( "wl_set_entity_types [ post id :: $post_id ][ type uris :: " . var_export( $type_uris, true ) . " ]");
 
@@ -185,6 +189,10 @@ function wl_save_entities($entities, $related_post_id = null)
  */
 function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() )
 {
+    // Avoid errors due to null.
+    if ( is_null( $entity_types ) ) {
+        $entity_types = array();
+    }
 
     write_log( "wl_save_entity [ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]" );
 
@@ -222,7 +230,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
     wl_set_entity_types( $post_id, $entity_types );
 
     // Get a dataset URI for the entity.
-    $wl_uri = wl_build_entity_uri($post_id);
+    $wl_uri = wl_build_entity_uri( $post_id );
 
     // Save the entity URI.
     wl_set_entity_uri( $post_id, $wl_uri );
