@@ -5,9 +5,24 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 	// Are we in a post?
     if ( is_null( $post_id ) ) {
         // Global GeoMap
-        // TODO: Instead of returning it empty, we have to fill the array $entity_ids
-        //		 with (blog wide) interesting places
-        return array();
+        // We fill the array $entity_ids with (blog wide) interesting places
+        $post_ids = get_posts( array(
+	        'numberposts' => 20,
+	        'fields'      => 'ids', //only get post IDs
+	        'orderby'     => 'post_date',
+	        'order'       => 'DESC'
+	    ) );
+		
+		if( empty( $post_ids ) ){
+			return array();
+		}
+		
+		// Retrieve referenced entities
+	    $entity_ids = array();
+	    foreach ( $post_ids as $id ) {
+	        $entity_ids = array_merge( $entity_ids, wl_get_referenced_entity_ids( $id ) );
+	    }
+		
     } else {
     	// Post-specific GeoMap
      	$entity_ids = wl_get_referenced_entity_ids( $post_id );
@@ -15,11 +30,11 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 
     // If there are no entity IDs, we don't show the map.
     if (0 === count($entity_ids)) {
-        return;
+        return array();
     }
 	
-	// Get all the entities that have a meta key with date start and end information.
-    $res = get_posts( array(
+	// Get entities that have coordinates.
+    $places = get_posts( array(
         'post__in' => $entity_ids,
         'post_type' => WL_ENTITY_TYPE_NAME,
         'posts_per_page' => -1,
@@ -37,10 +52,13 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
             )
         )
     ) );
-	
-	print_r( $res );
 
-    // Prepare for min/max lat/long in case we need to define a view boundary for the client JavaScript.
+	return $places;
+}
+
+function wl_shortcode_geomap_to_json( $places ) {
+		
+	// Prepare for min/max lat/long in case we need to define a view boundary for the client JavaScript.
     $min_latitude  = PHP_INT_MAX;
     $min_longitude = PHP_INT_MAX;
     $max_latitude  = ~PHP_INT_MAX;
@@ -50,17 +68,15 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
     $pois = array();
 
     // Add a POI for each entity that has coordinates.
-    foreach ($entity_ids as $entity_id) {
+    foreach ($places as $entity) {
 
         // Get the coordinates.
-        $coordinates = wl_get_coordinates($entity_id);
+        $coordinates = wl_get_coordinates( $entity->ID );
 
         // Don't show the widget if the coordinates aren't set.
         if (!is_array($coordinates) || !is_numeric($coordinates['latitude']) || !is_numeric($coordinates['longitude'])) {
             continue;
         }
-
-        $entity = get_post($entity_id);
 
         // Ignore entities that are not published.
         if ('publish' !== $entity->post_status) {
@@ -68,15 +84,25 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
         }
 
         // Get the title of the entity.
-        $title   = htmlentities( $entity->post_title );
-        $link    = htmlentities( get_permalink( $entity->ID ) );
-        $content = json_encode( "<a href=\"$link\">$title</a>" );
-
-        array_push( $pois, array(
-            'latitude'     => $coordinates['latitude'],
-            'longitude'    => $coordinates['longitude'],
-            'popupContent' => $content
-        ) );
+        $title   = esc_attr( $entity->post_title );
+        $link    = esc_attr( get_permalink( $entity->ID ) );
+        $content = "<a href=$link>$title</a>";
+		
+		// Formatting POI in geoJSON.
+		// http://leafletjs.com/examples/geojson.html
+		$poi = array(
+			'type'			=> 'Feature',
+			'properties'	=> array( 'popupContent' => $content ),
+			'geometry'		=> array(
+										'type' => 'Point',
+										'coordinates' => array(
+															$coordinates['longitude'],
+															$coordinates['latitude']
+														)
+									)
+		);
+		
+		$pois[] = $poi;
 
         // TODO: calculate the type to choose a marker of the appropriate color.
 
@@ -97,12 +123,18 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
         }
     }
 
-    return $pois;
-}
+	// Formatting boundaries in a Leaflet-like format (see LatLngBounds).
+	// http://leafletjs.com/reference.html#latlngbounds
+	$boundaries = array(
+						array( $min_latitude, $min_longitude ),
+						array( $max_latitude, $max_longitude )
+					);
 
-function wl_shortcode_geomap_to_json() {
-	$arr = array( 1,2,3,4,5 );
-	return json_encode( $arr );
+	$jsondata = array();
+	$jsondata['features'] = $pois;
+	$jsondata['boundaries'] = $boundaries;
+    	
+	return json_encode( $jsondata );
 }
 
 function wl_shortcode_geomap_ajax()
@@ -113,10 +145,9 @@ function wl_shortcode_geomap_ajax()
     ob_clean();
     header( "Content-Type: application/json" );
 
-    //$result = wl_shortcode_geomap_get_places( $post_id );
+    $result = wl_shortcode_geomap_get_places( $post_id );
     $result = wl_shortcode_geomap_to_json( $result );
 	
-	write_log( var_export($result, true) );
     echo $result;
     wp_die();
 }
@@ -139,6 +170,7 @@ function wl_shortcode_geomap( $atts ) {
 	if ( $geomap_atts['global'] || is_null( $post_id ) ) {
 		// Global geomap
         $geomap_id = 'wl_geomap_global';
+		$post_id = null;
     } else {
     	// Post-specific geomap
         $geomap_id = 'wl_geomap_' . $post_id;
@@ -162,101 +194,14 @@ function wl_shortcode_geomap( $atts ) {
         'action'   => 'wl_geomap'					// Global param
     ) );
 
-	/*
-	
-    // Print out the header.
-    echo <<<EOF
-    <script type="text/javascript">
-        jQuery( function() {
-
-            // Initialize the features array.
-            var features = [], bounds = [];
-
-EOF;
-
-    // Print out each POI.
-    foreach ($pois as $poi) {
-        $popupContent = & $poi['popupContent'];
-        $latitude     = & $poi['latitude'];
-        $longitude    = & $poi['longitude'];
-
-        // Print each feature.
-        echo <<<EOF
-                features.push({
-                    "type": "Feature",
-                    "properties": {
-                        "popupContent": $popupContent
-                    },
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [$longitude, $latitude]
-                    }
-                });
-
-EOF;
-
-    }
-
-    // The element id for the map.
-    $element_id = uniqid('map-');
-
-    // Print the remainder of the JavaScript including the initialization stuff.
-    echo <<<EOF
-
-                    // create a map in the "map" div, set the view to a given place and zoom
-                    var map = L.map('$element_id');
-
-                    // Set the bounds of the map or the center, according on how many features we have on the map.
-                    if (1 === features.length) {
-                        map.setView([$latitude, $longitude], 13);
-                    } else {
-                        map.fitBounds([
-                            [$min_latitude, $min_longitude],
-                            [$max_latitude, $max_longitude]
-                        ]);
-                    }
-
-                    // add an OpenStreetMap tile layer
-                    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    }).addTo(map);
-
-                    L.geoJson(features, {
-                        pointToLayer: function (feature, latlng) {
-                            return L.marker(latlng, {});
-                        },
-                        onEachFeature: function onEachFeature(feature, layer) {
-                            // does this feature have a property named popupContent?
-                            if (feature.properties && feature.properties.popupContent) {
-                                layer.bindPopup(feature.properties.popupContent);
-                            }
-                        }
-                    }).addTo(map);
-
-                } );
-            </script>
-EOF;
-
-    // Get the widget's title.
-    $title = apply_filters('widget_title', $instance['title']);
-
-    // Print the HTML output.
-    echo $args['before_widget'];
-    if (!empty($title)) {
-        echo $args['before_title'] . $title . $args['after_title'];
-    }
-*/
-	
-	
-	
 	// Escaping atts.
     $esc_class  = esc_attr('wl-geomap');
     $esc_id     = esc_attr($geomap_id);
 	$esc_width  = esc_attr($geomap_atts['width']);
 	$esc_height = esc_attr($geomap_atts['height']);
-
     $esc_post_id 	= esc_attr($post_id);
 	
+	// Return HTML template.
     return <<<EOF
 <div class="$esc_class" 
 	id="$esc_id"
@@ -267,8 +212,6 @@ EOF;
         ">
 </div>
 EOF;
-
-    //echo $args['after_widget'];
 
 }
 
