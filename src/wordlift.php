@@ -12,19 +12,28 @@ License: APL
 // Include WordLift constants.
 require_once('wordlift_constants.php');
 
-// Create the *write_log* function to allow logging to the debug.log file.
-if (!function_exists('write_log')) {
-    function write_log($log)
-    {
-        if (true === WP_DEBUG) {
-            if (is_array($log) || is_object($log)) {
-                error_log(print_r($log, true));
-            } else {
-                error_log($log);
-            }
+// Create the *wl_write_log* function to allow logging to the debug.log file.
+function wl_write_log( $log )
+{
+    $handler = apply_filters( 'wl_write_log_handler', null );
+
+    if ( is_null( $handler ) ) {
+        return wl_write_log_handler( $log );
+    }
+
+    call_user_func( $handler, $log );
+}
+
+function wl_write_log_handler( $log ) {
+    if ( true === WP_DEBUG ) {
+        if ( is_array( $log ) || is_object( $log ) ) {
+            error_log( print_r( $log, true ) );
+        } else {
+            error_log( $log );
         }
     }
 }
+
 
 /**
  * Write the query to the buffer file.
@@ -36,7 +45,7 @@ function wl_queue_sparql_update_query( $query )
     $filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
     file_put_contents( $filename, $query . "\n", FILE_APPEND );
 
-    write_log( "wl_queue_sparql_update_query [ filename :: $filename ]" );
+    wl_write_log( "wl_queue_sparql_update_query [ filename :: $filename ]" );
 }
 
 /**
@@ -50,11 +59,11 @@ function wl_execute_saved_sparql_update_query($request_id)
 
     // If the file doesn't exist, exit.
     if ( ! file_exists( $filename ) ) {
-        write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
+        wl_write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
         return;
     }
 
-    write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
+    wl_write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
 
     // Get the query saved in the file.
     $query = file_get_contents( $filename );
@@ -168,18 +177,18 @@ function wordlift_ajax_analyze_action()
 
         $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
 
-        write_log("wordlift_ajax_analyze_action : error [ response :: ");
-        write_log("\n" . var_export($response, true));
-        write_log("][ body :: ");
-        write_log("\n" . $body);
-        write_log("]");
+        wl_write_log("wordlift_ajax_analyze_action : error [ response :: ");
+        wl_write_log("\n" . var_export($response, true));
+        wl_write_log("][ body :: ");
+        wl_write_log("\n" . $body);
+        wl_write_log("]");
 
         echo 'An error occurred while request an analysis to the remote service. Please try again later.';
 
         die();
     }
 
-    write_log("wordlift_ajax_analyze_action [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]");
+    wl_write_log("wordlift_ajax_analyze_action [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]");
 
     // Reprint the headers, mostly for debugging purposes.
     foreach ($response['headers'] as $header => $value) {
@@ -296,7 +305,7 @@ function wl_save_image( $url )
     // Create the folders.
     if ( ! ( file_exists( $image_full_path ) && is_dir( $image_full_path ) ) ) {
         if (false === mkdir($image_full_path, 0777, true)) {
-            write_log("wl_save_image : failed creating dir [ image full path :: $image_full_path ]\n");
+            wl_write_log("wl_save_image : failed creating dir [ image full path :: $image_full_path ]\n");
         }
     };
 
@@ -329,7 +338,7 @@ function wl_save_image( $url )
     // Store the data locally.
     file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
 
-    write_log("wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n");
+    wl_write_log("wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n");
 
     // Return the path.
     return array(
@@ -349,7 +358,7 @@ function wl_save_image( $url )
 function wl_set_related_posts($post_id, $related_posts)
 {
 
-    write_log("wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join(',', $related_posts) . " ]");
+    wl_write_log("wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join(',', $related_posts) . " ]");
 
     delete_post_meta($post_id, 'wordlift_related_posts');
     add_post_meta($post_id, 'wordlift_related_posts', $related_posts, true);
@@ -367,7 +376,7 @@ function wl_add_related_posts($post_id, $new_post_ids)
     // Convert the parameter to an array.
     $new_post_ids = (is_array($new_post_ids) ? $new_post_ids : array($new_post_ids));
 
-    write_log("wl_add_related_posts [ post id :: $post_id ][ new post ids :: " . join(',', $new_post_ids) . " ]");
+    wl_write_log("wl_add_related_posts [ post id :: $post_id ][ new post ids :: " . join(',', $new_post_ids) . " ]");
 
     // Get the existing post IDs and merge them together.
     $related = wl_get_related_post_ids($post_id);
@@ -386,7 +395,7 @@ function wl_add_related_posts($post_id, $new_post_ids)
 function wl_set_referenced_entities($post_id, $related_entities)
 {
 
-    write_log("wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
+    wl_write_log("wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $related_entities) . " ]");
 
     delete_post_meta($post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY);
 
@@ -418,7 +427,7 @@ function wl_get_referencing_posts( $entity_id ) {
         return ( WL_ENTITY_TYPE_NAME !== $item->post_type );
     } );
 
-    write_log("wl_get_referencing_posts [ entity id :: $entity_id ][ posts count :: " . count( $posts ) . " ]");
+    wl_write_log("wl_get_referencing_posts [ entity id :: $entity_id ][ posts count :: " . count( $posts ) . " ]");
 
     return $posts;
 }
@@ -434,7 +443,7 @@ function wl_set_same_as($post_id, $same_as)
     // Prepare the same as array.
     $same_as_array = array_unique(is_array($same_as) ? $same_as : array($same_as));
 
-    write_log("wl_set_same_as [ post id :: $post_id ][ same as :: " . join(',', $same_as_array) . " ]");
+    wl_write_log("wl_set_same_as [ post id :: $post_id ][ same as :: " . join(',', $same_as_array) . " ]");
 
     // Replace the existing same as with the new one.
     delete_post_meta($post_id, 'entity_same_as');
@@ -477,7 +486,7 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
     // Convert the parameter to an array.
     $new_entity_post_ids = (is_array($new_entity_post_ids) ? $new_entity_post_ids : array($new_entity_post_ids));
 
-    write_log("wl_add_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
+    wl_write_log("wl_add_referenced_entities [ post id :: $post_id ][ related entities :: " . join(',', $new_entity_post_ids) . " ]");
 
     // Get the existing post IDs and merge them together.
     $related = wl_get_referenced_entity_ids($post_id);
@@ -497,7 +506,7 @@ function wl_get_related_post_ids($post_id)
     // Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
     $related = get_post_meta($post_id, 'wordlift_related_posts', true);
 
-    write_log("wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . (empty($related) ? 'true' : 'false') . "  ]");
+    wl_write_log("wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . (empty($related) ? 'true' : 'false') . "  ]");
 
     if (empty($related)) {
         return array();
@@ -526,7 +535,7 @@ function wl_get_referenced_entity_ids( $post_id ) {
         $result = $result[0];
     }
 
-    write_log( "wl_get_referenced_entity_ids [ post id :: $post_id ][ result :: " . var_export( $result, true ) . " ]" );
+    wl_write_log( "wl_get_referenced_entity_ids [ post id :: $post_id ][ result :: " . var_export( $result, true ) . " ]" );
     return $result;
 }
 
@@ -554,7 +563,7 @@ function wl_get_post_modified_time($post)
 //function wl_unbind_post_from_entities($post_id)
 //{
 //
-//    write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
+//    wl_write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
 //
 //    $entities = wl_get_referenced_entity_ids($post_id);
 //    foreach ($entities as $entity_post_id) {
@@ -580,7 +589,7 @@ function wl_get_post_modified_time($post)
 function wl_get_image_urls($post_id)
 {
 
-    write_log("wl_get_image_urls [ post id :: $post_id ]");
+    wl_write_log("wl_get_image_urls [ post id :: $post_id ]");
 
     $images = get_children(array(
         'post_parent' => $post_id,
@@ -605,7 +614,7 @@ function wl_get_image_urls($post_id)
         }
     }
 
-    write_log("wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count($image_urls) . " ]");
+    wl_write_log("wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count($image_urls) . " ]");
 
     return $image_urls;
 }
@@ -640,7 +649,7 @@ function wl_get_sparql_images($uri, $post_id)
 function wl_get_attachment_for_source_url($parent_post_id, $source_url)
 {
 
-    write_log("wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]");
+    wl_write_log("wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]");
 
     $posts = get_posts(array(
         'post_type' => 'attachment',
@@ -712,7 +721,7 @@ function wl_set_source_url($post_id, $source_url)
 function wl_flush_rewrite_rules_hard($hard)
 {
 
-    write_log("wl_flush_rewrite_rules_hard [ hard :: $hard ]");
+    wl_write_log("wl_flush_rewrite_rules_hard [ hard :: $hard ]");
 
     // Get all published posts.
     $posts = get_posts(array(
@@ -740,7 +749,7 @@ function wl_flush_rewrite_rules_hard($hard)
         $delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
         $insert_query .= " <$uri> schema:url <$url> . \n";
 
-        write_log("wl_flush_rewrite_rules_hard [ uri :: $uri ][ url :: $url ]");
+        wl_write_log("wl_flush_rewrite_rules_hard [ uri :: $uri ][ url :: $url ]");
     }
 
     $insert_query .= ' };';
@@ -760,7 +769,7 @@ add_filter('flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1);
 function wl_sanitize_uri_path($path, $char = '_')
 {
 
-    write_log("wl_sanitize_uri_path [ path :: $path ][ char :: $char ]");
+    wl_write_log("wl_sanitize_uri_path [ path :: $path ][ char :: $char ]");
 
     // According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
     // ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
@@ -795,7 +804,7 @@ function wl_shutdown()
         // Spawn the cron.
         spawn_cron();
 
-        write_log("wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]");
+        wl_write_log("wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]");
     }
 }
 
@@ -809,7 +818,7 @@ add_action('shutdown', 'wl_shutdown');
 function wl_replace_item_id_with_uri($content)
 {
 
-    write_log("wl_replace_item_id_with_uri");
+    wl_write_log("wl_replace_item_id_with_uri");
 
     // Strip slashes, see https://core.trac.wordpress.org/ticket/21767
     $content = stripslashes($content);
@@ -834,7 +843,7 @@ function wl_replace_item_id_with_uri($content)
             // Get the URI for that post.
             $uri = wl_get_entity_uri($post->ID);
 
-            write_log("wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]");
+            wl_write_log("wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]");
 
             // If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
             if ($item_id !== $uri) {
@@ -858,7 +867,7 @@ add_filter('content_save_pre', 'wl_replace_item_id_with_uri', 1, 1);
 function wl_install_entity_type_data()
 {
 
-    write_log('wl_install_entity_type_data');
+    wl_write_log('wl_install_entity_type_data');
 
     // Ensure the custom type and the taxonomy are registered.
     wl_entity_type_register();
@@ -977,7 +986,7 @@ function wl_install_entity_type_data()
         ));
 
         if (is_wp_error($result)) {
-            write_log('wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]');
+            wl_write_log('wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]');
             continue;
         }
         // Add custom metadata to the term.
@@ -995,7 +1004,7 @@ function wl_install_entity_type_data()
 function wl_plugins_url($url, $path, $plugin)
 {
 
-    write_log("wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
+    wl_write_log("wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     // Check if it's our pages calling the plugins_url.
     if (1 !== preg_match('/\/wordlift[^.]*.php$/i', $plugin)) {
@@ -1005,7 +1014,7 @@ function wl_plugins_url($url, $path, $plugin)
     // Set the URL to plugins URL + wordlift, in order to support the plugin being symbolic linked.
     $plugin_url = plugins_url() . '/wordlift/' . $path;
 
-    write_log("wl_plugins_url [ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
+    wl_write_log("wl_plugins_url [ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]");
 
     return $plugin_url;
 }

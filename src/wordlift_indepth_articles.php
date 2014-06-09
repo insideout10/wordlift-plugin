@@ -8,11 +8,11 @@ function wordlift_indepth_article_is_single() {
 
 function wordlift_indepth_article_init() {
 
-    write_log( 'wordlift_indepth_article_init' );
+    wl_write_log( 'wordlift_indepth_article_init' );
 
     if ( ! wordlift_indepth_article_is_single() ) {
 
-        write_log( 'wordlift_indepth_article_init: not single, skip processing.' );
+        wl_write_log( 'wordlift_indepth_article_init: not single, skip processing.' );
 
         // flush.
         wordlift_indepth_end_buffering();
@@ -35,7 +35,7 @@ function wordlift_indepth_article_start() {
 
 function wordlift_indepth_article_ob_callback( $content ) {
 
-    write_log( 'wordlift_indepth_article_ob_callback' );
+    wl_write_log( 'wordlift_indepth_article_ob_callback' );
 
 //    $post_id        = get_the_ID();
     $post_permalink = get_permalink();
@@ -117,7 +117,7 @@ function wordlift_indepth_start_buffering( $type ) {
 
     $wordlift_indepth_buffering_started = true;
 
-    write_log( 'wordlift_indepth_start_buffering' );
+    wl_write_log( 'wordlift_indepth_start_buffering' );
 
     ob_start( 'wordlift_indepth_article_ob_callback' );
 
@@ -126,7 +126,7 @@ function wordlift_indepth_start_buffering( $type ) {
 
 function wordlift_indepth_end_buffering() {
 
-    write_log( 'wordlift_indepth_end_buffering' );
+    wl_write_log( 'wordlift_indepth_end_buffering' );
 
     ob_end_flush();
 }
@@ -150,7 +150,7 @@ function wordlift_indepth_article_head() {
     // get the excerpt or the content.
     $post_excerpt = esc_attr( wp_strip_all_tags( $post->post_excerpt, true ) );
     if ( empty( $post_excerpt ) ) {
-        write_log( 'wordlift_indepth_article_head: using content as excerpt' );
+        wl_write_log( 'wordlift_indepth_article_head: using content as excerpt' );
         $post_excerpt = esc_attr( wp_trim_words( wp_strip_all_tags( $post->post_content, true ), 55, ' [...]') );
     }
 
@@ -166,7 +166,7 @@ function wordlift_indepth_article_head() {
     $post_thumbnail_urls = wp_get_attachment_image_src( $post_thumbnail_id, 'thumbnail' );
     $post_image     = esc_attr( $post_image_urls[0] );
     $post_thumbnail = esc_attr( $post_thumbnail_urls[0] );
-    write_log( "[ post_thumbnail_id :: $post_thumbnail_id ][ post_image :: $post_image ]" );
+    wl_write_log( "[ post_thumbnail_id :: $post_thumbnail_id ][ post_image :: $post_image ]" );
 
     $post_published = esc_attr( get_post_time( 'c', true, $post ) );
     $post_modified  = esc_attr( get_post_modified_time( 'c', true, $post ) );

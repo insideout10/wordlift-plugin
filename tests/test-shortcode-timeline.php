@@ -59,7 +59,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase
         $entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
         wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
 
-        write_log( "[ entity 1 ID :: $entity_1_id ][ entity 2 ID :: $entity_2_id ][ entity 3 ID :: $entity_3_id ][ entity 4 ID :: $entity_4_id ]" );
+        wl_write_log( "[ entity 1 ID :: $entity_1_id ][ entity 2 ID :: $entity_2_id ][ entity 3 ID :: $entity_3_id ][ entity 4 ID :: $entity_4_id ]" );
 
         wl_set_referenced_entities( $post_id, array(
             $entity_1_id,
@@ -128,8 +128,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase
 
         // Create the attachment in WordPress and generate the related metadata.
         $attachment_id = wp_insert_attachment( $attachment, $file, $post_id );
-        write_log( "createPostThumbnail [ attachment ID :: $attachment_id ]" );
-        write_log( "createPostThumbnail [ " . wp_get_attachment_image( $attachment_id, 'thumbnail' ) . " ]" );
+        wl_write_log( "createPostThumbnail [ attachment ID :: $attachment_id ]" );
+        wl_write_log( "createPostThumbnail [ " . wp_get_attachment_image( $attachment_id, 'thumbnail' ) . " ]" );
 
         // Set it as the featured image.
         $this->assertTrue( false !== set_post_thumbnail( $post_id, $attachment_id ) );

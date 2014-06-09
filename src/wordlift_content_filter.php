@@ -13,7 +13,7 @@ function wl_content_embed_microdata( $content )
 
     // Apply microdata only to single pages.
     if ( ! is_single() ) {
-        write_log( "wl_content_embed_microdata : is not single" );
+        wl_write_log( "wl_content_embed_microdata : is not single" );
         return $content;
     }
 
@@ -43,7 +43,7 @@ function _wl_content_embed_microdata( $post_id , $content) {
     foreach ( $matches as $match ) {
         $item_id = $match[2];
 
-        write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
+        wl_write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
 
         $content = wl_content_embed_item_microdata( $content, $item_id );
     }
@@ -64,7 +64,7 @@ function wl_content_embed_item_microdata( $content, $uri ) {
     // Entity not found.
     if ( null === $post ) {
 
-        write_log( "wl_content_embed_item_microdata : post not found [ uri :: $uri ]" );
+        wl_write_log( "wl_content_embed_item_microdata : post not found [ uri :: $uri ]" );
         return $content;
     }
 
@@ -98,7 +98,7 @@ function wl_content_embed_item_microdata( $content, $uri ) {
     $additional_properties = '';
     if ( isset( $main_type['custom_fields'] ) ) {
         foreach ($main_type['custom_fields'] as $key => $prop) {
-            write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
+            wl_write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
             $values = get_post_meta( $post->ID, $key );
             foreach ( $values as $value ) {
                 $additional_properties .= '<meta itemprop="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ). '" />';
@@ -120,7 +120,7 @@ function wl_content_embed_item_microdata( $content, $uri ) {
         $content
     );
 
-    write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
+    wl_write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
 
     return $content;
 }

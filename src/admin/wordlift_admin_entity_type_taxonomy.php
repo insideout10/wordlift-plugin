@@ -18,7 +18,7 @@ function wl_entity_type_taxonomy_save_custom_meta($term_id)
         // Update the term data.
         wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as);
 
-        write_log("wl_entity_type_save_taxonomy_custom_meta [ term id :: $term_id ]");
+        wl_write_log("wl_entity_type_save_taxonomy_custom_meta [ term id :: $term_id ]");
     }
 }
 

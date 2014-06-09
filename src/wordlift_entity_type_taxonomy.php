@@ -46,7 +46,7 @@ function wl_entity_type_taxonomy_register()
  */
 function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $export_fields = array() )
 {
-    write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
+    wl_write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
 
     return update_option(WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id", array(
         'css_class'     => $css_class,
@@ -68,7 +68,7 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
  */
 function wl_entity_get_type( $post_id ) {
 
-    write_log( "wl_entity_get_type [ post ID :: $post_id ]" );
+    wl_write_log( "wl_entity_get_type [ post ID :: $post_id ]" );
 
     $terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'fields' => 'ids'
@@ -98,7 +98,7 @@ function wl_entity_type_taxonomy_get_term_options($term_id)
 
     $term = get_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id" );
 
-    write_log( "wl_entity_type_taxonomy_get_term_options [ term :: " . var_export( $term , true ) . " ]" );
+    wl_write_log( "wl_entity_type_taxonomy_get_term_options [ term :: " . var_export( $term , true ) . " ]" );
 
     return $term;
 }

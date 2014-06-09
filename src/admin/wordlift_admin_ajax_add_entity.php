@@ -10,7 +10,7 @@ function wordlift_ajax_add_entity() {
     $type =  $entity['type'];
     // Get the uri for this entity
     $uri = ''; // wl_sanitize_uri_path($label);
-    write_log( "wordlift_ajax_add_entity : go to create entity [ entity uri :: $uri ]" );
+    wl_write_log( "wordlift_ajax_add_entity : go to create entity [ entity uri :: $uri ]" );
         
     // Set a blank description
     $description = '';

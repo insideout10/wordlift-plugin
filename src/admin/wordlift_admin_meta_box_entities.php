@@ -11,7 +11,7 @@
 function wl_admin_add_entities_meta_box( $post_type )
 {
 
-    write_log("wl_admin_add_entities_meta_box [ post type :: $post_type ]");
+    wl_write_log("wl_admin_add_entities_meta_box [ post type :: $post_type ]");
 
     add_meta_box(
         'wordlift_entities_box',
@@ -31,13 +31,13 @@ function wl_admin_add_entities_meta_box( $post_type )
 function wl_entities_box_content($post)
 {
 
-    write_log("wl_entities_box_content [ post id :: $post->ID ]");
+    wl_write_log("wl_entities_box_content [ post id :: $post->ID ]");
 
     // get the related entities IDs.
     $related_entities_ids = wl_get_referenced_entity_ids( $post->ID );
 
     if (!is_array($related_entities_ids)) {
-        write_log("related_entities_ids is not of the right type.");
+        wl_write_log("related_entities_ids is not of the right type.");
 
         // print an empty entities array.
         wl_entities_box_js(array());

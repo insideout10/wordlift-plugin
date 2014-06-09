@@ -23,7 +23,7 @@
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
-    write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
+    wl_write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
 
     // transition from *published* to any other status: delete the post.
     if ( 'publish' === $old_status && 'publish' !== $new_status ) {
@@ -72,7 +72,7 @@ function rl_delete_post( $post ) {
     // get the entity URI (valid also for posts)
     $uri_esc = wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
 
-    write_log( "rl_delete_post [ post id :: $post_id ][ uri esc :: $uri_esc ]" );
+    wl_write_log( "rl_delete_post [ post id :: $post_id ][ uri esc :: $uri_esc ]" );
 
     // create the SPARQL statement by joining the SPARQL prefixes and deleting any known predicate.
     $stmt = rl_sparql_prefixes();
@@ -106,7 +106,7 @@ function rl_delete_post( $post ) {
  */
 function wl_update_post_status( $post_id, $status ) {
 
-    write_log( "wl_update_post_status [ post ID :: $post_id ][ status :: $status ]" );
+    wl_write_log( "wl_update_post_status [ post ID :: $post_id ][ status :: $status ]" );
 
     global $wpdb;
 

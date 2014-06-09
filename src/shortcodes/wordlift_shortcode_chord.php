@@ -57,10 +57,10 @@ function wl_shortcode_chord_get_relations( $post_id, $depth = 3, $related = null
         return $related;
     }
 
-    write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
+    wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
 
 	// Create a related array which will hold entities and relations.
-    if ( is_null($related) ) {
+    if ( is_null( $related ) ) {
         $related = array(
             'entities'  => array( $post_id ),
             'relations' => array()
@@ -125,14 +125,14 @@ function wl_shortcode_chord_relations_to_json( $data )
 
         // Skip non-existing posts.
         if ( is_null( $post ) ) {
-            write_log( "wl_shortcode_chord_relations_to_json : post not found [ post id :: $item ]" );
+            wl_write_log( "wl_shortcode_chord_relations_to_json : post not found [ post id :: $item ]" );
             return $item;
         }
 
         // Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
         $term = wl_entity_get_type( $item );
 
-        write_log( "wl_shortcode_chord_relations_to_json [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
+        wl_write_log( "wl_shortcode_chord_relations_to_json [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
 
         $entity = array(
             'uri'   => wl_get_entity_uri( $item ),
@@ -167,13 +167,20 @@ function wl_shortcode_chord_relations_to_json( $data )
  */
 function wl_shortcode_chord_ajax()
 {
-    ob_clean();
-    header( "Content-Type: application/json" );
 
-    $result = wl_shortcode_chord_get_relations( $_REQUEST['post_id'], $_REQUEST['depth'] );
+    $post_id = $_REQUEST['post_id'];
+    $depth   = $_REQUEST['depth'];
+
+    ob_clean();
+    header( 'Content-Type: application/json' );
+
+    $result = wl_shortcode_chord_get_relations( $post_id, $depth );
     $result = wl_shortcode_chord_relations_to_json( $result );
 
+    wl_write_log( "wl_shortcode_chord_relations_to_json : sending output" );
+
     echo $result;
+
     wp_die();
 }
 
