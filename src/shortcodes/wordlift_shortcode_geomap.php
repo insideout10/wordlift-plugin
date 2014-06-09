@@ -96,6 +96,7 @@ function wl_shortcode_geomap_to_json( $places ) {
 			'geometry'		=> array(
 										'type' => 'Point',
 										'coordinates' => array(
+															// Leaflet geoJSON wants them swapped
 															$coordinates['longitude'],
 															$coordinates['latitude']
 														)
