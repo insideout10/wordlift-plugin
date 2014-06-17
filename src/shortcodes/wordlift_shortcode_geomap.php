@@ -1,5 +1,16 @@
 <?php
+/**
+ * This file provides methods for the shortcode *wl_geomap*.
+ */
 
+/**
+ * Retrieve geomap places. If $post_id is null the return places blog wide
+ *
+ * @uses wl_get_referenced_entity_ids to retrieve the entities referenced by the specified post.
+ *
+ * @param int $post_id The post ID.
+ * @return array An array of place posts.
+ */
 function wl_shortcode_geomap_get_places( $post_id = null ) {
 		
 	// Are we in a post?
@@ -55,7 +66,15 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 
 	return $places;
 }
-
+/**
+ * Encode places array in geojson compliant format 
+ * (refer to http://leafletjs.com/examples/geojson.html)
+ * Define geomap boundaries according to $places
+ * Default boundaries are defined using PHP_INT_MAX value
+ *
+ * @param array $places An array of place posts.
+ * @return array An array of place posts.
+ */
 function wl_shortcode_geomap_to_json( $places ) {
 		
 	// Prepare for min/max lat/long in case we need to define a view boundary for the client JavaScript.
@@ -137,7 +156,15 @@ function wl_shortcode_geomap_to_json( $places ) {
     	
 	return json_encode( $jsondata );
 }
-
+/**
+ * Print both global or post related places in json. It's executed via Ajax
+ *
+ * @uses wl_shortcode_geomap_get_places in order to retrieve places
+ * @uses wl_shortcode_geomap_to_json in order to encode retireved places as json object
+ *
+ * @param array $places An array of place posts.
+ * @return array An array of place posts.
+ */
 function wl_shortcode_geomap_ajax()
 {
 	// Get the ID of the post who requested the timeline.
@@ -146,16 +173,21 @@ function wl_shortcode_geomap_ajax()
     ob_clean();
     header( "Content-Type: application/json" );
 
-    $result = wl_shortcode_geomap_get_places( $post_id );
-    $result = wl_shortcode_geomap_to_json( $result );
+    $places = wl_shortcode_geomap_get_places( $post_id );
+    echo wl_shortcode_geomap_to_json( $places );
 	
-    echo $result;
     wp_die();
 }
+
 add_action( 'wp_ajax_wl_geomap', 'wl_shortcode_geomap_ajax' );
 add_action( 'wp_ajax_nopriv_wl_geomap', 'wl_shortcode_geomap_ajax' );
 
-
+/**
+ * Print geomap shortcode
+ *
+ * @param array $atts An array of shortcode attributes.
+ * @return string A dom element represneting a geomap.
+ */
 function wl_shortcode_geomap( $atts ) {
 	
     // Extract attributes and set default values.
