@@ -13,7 +13,6 @@ composer.phar
 composer.lock
 vendor/
 docs/
-dist/
 /src/css/
 /src/js/
 /src/fonts/
