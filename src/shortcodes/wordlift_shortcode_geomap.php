@@ -12,43 +12,28 @@
  * @return array An array of place posts.
  */
 function wl_shortcode_geomap_get_places( $post_id = null ) {
-		
-	// Are we in a post?
-    if ( is_null( $post_id ) ) {
-        // Global GeoMap
-        // We fill the array $entity_ids with (blog wide) interesting places
-        $post_ids = get_posts( array(
-	        'numberposts' => 20,
-	        'fields'      => 'ids', //only get post IDs
-	        'orderby'     => 'post_date',
-	        'order'       => 'DESC'
-	    ) );
-		
-		if( empty( $post_ids ) ){
-			return array();
-		}
-		
-		// Retrieve referenced entities
-	    $entity_ids = array();
-	    foreach ( $post_ids as $id ) {
-	        $entity_ids = array_merge( $entity_ids, wl_get_referenced_entity_ids( $id ) );
-	    }
-		
-    } else {
-    	// Post-specific GeoMap
-     	$entity_ids = wl_get_referenced_entity_ids( $post_id );
-    }
 
-    // If there are no entity IDs, we don't show the map.
-    if (0 === count($entity_ids)) {
+    // If $post_id is null or is not numeric it means this is a global geomap	
+	$is_global = ( is_null( $post_id ) ? true : false );
+    $is_global = ( !is_numeric($post_id) ? true : $is_global );
+
+    // If the current one is not a global geomap, retrieve related post / place ids
+    $place_ids = $is_global ? array() : wl_get_referenced_entity_ids( $post_id );
+    
+    // If is not a global geomap, an empty $place_ids means that no place is related to the post
+    // An empty array can be returned in this case
+    if( !$is_global && empty($place_ids) ) {
         return array();
     }
-	
-	// Get entities that have coordinates.
+
+	// Retrieve all 'published' places with geo coordinates defined 
+    // If $place_ids is not empty, it's used to limit query results to the current post related places
+    // Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query
     $places = get_posts( array(
-        'post__in' => $entity_ids,
+        'post__in' => $place_ids,
         'post_type' => WL_ENTITY_TYPE_NAME,
-        'posts_per_page' => -1,
+        'nopaging' => true,
+        'post_status' => 'published',
         'meta_query' => array(
             'relation' => 'AND',
             array(
@@ -97,10 +82,8 @@ function wl_shortcode_geomap_to_json( $places ) {
             continue;
         }
 
-        // Ignore entities that are not published.
-        if ('publish' !== $entity->post_status) {
-            continue;
-        }
+        // TODO Map html rendering should be delegated to the wordlift js ui layer
+        // This function should be focused on returning pure data instead
 
         // Get the title of the entity.
         $title   = esc_attr( $entity->post_title );
@@ -143,6 +126,8 @@ function wl_shortcode_geomap_to_json( $places ) {
         }
     }
 
+    // TODO Baundaries management could be delegated to the wordlift js ui layer
+        
 	// Formatting boundaries in a Leaflet-like format (see LatLngBounds).
 	// http://leafletjs.com/reference.html#latlngbounds
 	$boundaries = array(
@@ -167,7 +152,7 @@ function wl_shortcode_geomap_to_json( $places ) {
  */
 function wl_shortcode_geomap_ajax()
 {
-	// Get the ID of the post who requested the timeline.
+	// Get the post Id.
     $post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
 
     ob_clean();
