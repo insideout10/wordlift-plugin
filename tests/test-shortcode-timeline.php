@@ -57,7 +57,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase
         add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-09', true );
 
         $entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
-        wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Person' );
+        wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
 
         wl_write_log( "[ entity 1 ID :: $entity_1_id ][ entity 2 ID :: $entity_2_id ][ entity 3 ID :: $entity_3_id ][ entity 4 ID :: $entity_4_id ]" );
 

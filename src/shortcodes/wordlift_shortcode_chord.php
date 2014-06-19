@@ -219,9 +219,12 @@ function wl_shortcode_chord( $atts ) {
         $widget_id = 'wl_chord_' . $post_id;
     }
 	
-	//adding javascript code
+	// Adding css
+	wp_enqueue_style( 'wordlift-ui-css', plugins_url( 'css/wordlift.ui.min.css', __FILE__ ) );
+	
+	// Adding javascript code
     wp_enqueue_script('d3', plugins_url('bower_components/d3/d3.min.js', __FILE__));
-    wp_enqueue_script( 'wordlift-ui', plugins_url('js/wordlift.ui.js', __FILE__) );
+    wp_enqueue_script( 'wordlift-ui', plugins_url('js/wordlift.ui.min.js', __FILE__) );
     wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
             'ajax_url'   => admin_url('admin-ajax.php'),
             'action'     => 'wl_chord'

@@ -23,6 +23,11 @@
 			top.tinymce.activeEditor.execCommand('mceInsertContent', false, timeline_shortcode_text);
     	},
     	
+    	geomapClick : function(){
+    		var geomap_shortcode_text = '[wl-geomap]';
+			top.tinymce.activeEditor.execCommand('mceInsertContent', false, geomap_shortcode_text);
+    	},
+    	
         /**
          * @param {tinymce.Editor} ed Editor instance that the plugin is initialized in.
          * @param {string} url Absolute URL to where the plugin is located.
@@ -54,6 +59,10 @@
 			            {
 			            	text: 'Related Posts',
 			            	onclick: this.relatedPostsClick
+			            },
+			            {
+			            	text: 'GeoMap',
+			            	onclick: this.geomapClick
 			            }
 			        ]
 			    });
@@ -104,6 +113,12 @@
                     	title: 'Related Posts',
                     	onclick: pluginRef.relatedPostsClick
                     });
+                    
+                    m.add({
+                    	title: 'GeoMap',
+                    	onclick: pluginRef.geomapClick
+                    });
+                    
             	});
 
               // Return the new menubutton instance
