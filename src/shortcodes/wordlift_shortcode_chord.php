@@ -9,10 +9,6 @@
  */
 function wl_shortcode_chord_most_referenced_entity_id()
 {
-    // TODO: this is used to get the post to display for the *global chord*.
-    // Does it actually make sense to have a global chord that selects one post?
-    // It would be better to show the last X posts and the referenced entities.
-
     // Get the last 20 posts by post date.
     // For each post get the entities they reference.
     $post_ids = get_posts( array(
@@ -51,10 +47,13 @@ function wl_shortcode_chord_most_referenced_entity_id()
  * @param array $related An existing array of related entities.
  * @return array
  */
-function wl_shortcode_chord_get_relations( $post_id, $depth = 3, $related = null ) {
-
-    if ( $depth <= 0 ) {
-        return $related;
+function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null ) {
+	
+	// Search for more entities only if we did not exceed $depth or $max_size
+	$max_size = 50;
+	if( ! is_null($related) )
+		if( count($related['entities']) > $max_size || $depth <= 0 ) {
+        	return $related;
     }
 
     wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
@@ -90,17 +89,8 @@ function wl_shortcode_chord_get_relations( $post_id, $depth = 3, $related = null
         if ( !in_array( $related_id, $related['entities'] ) ) {
             //Found new related entity!
             $related['entities'][] = $related_id;
-
+			
             $related = wl_shortcode_chord_get_relations( $related_id, ( $depth - 1 ), $related );
-//            // TODO: depth is actually a limit here, meaning that no more than $depth posts are gathered.
-//            // Depth should be changed to be the *distance* between the initial post and the others.
-//            // Eventually we might add a *limit* parameter instead of depth.
-//            if ( sizeof( $related['entities'] ) >= $depth ) {
-//                return $related;
-//            } else {
-//                // Recursive call
-//                $related = wl_shortcode_chord_get_relations( $related_id, $depth, $related );
-//            }
         }
     }
 
@@ -203,7 +193,7 @@ function wl_shortcode_chord( $atts ) {
         'width'      => '100%',
         'height'     => '500px',
         'main_color' => '000',
-        'depth'      => 5,
+        'depth'      => 2,
         'global'     => false
     ), $atts);
 

@@ -85,10 +85,28 @@ function wl_shortcode_geomap_to_json( $places ) {
         // TODO Map html rendering should be delegated to the wordlift js ui layer
         // This function should be focused on returning pure data instead
 
-        // Get the title of the entity.
+        // Get the title, URL and thumb of the entity.
         $title   = esc_attr( $entity->post_title );
         $link    = esc_attr( get_permalink( $entity->ID ) );
-        $content = "<a href=$link>$title</a>";
+		if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $entity->ID ) ) &&
+            false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) ) ) {
+			$img_src = esc_attr( $attachment[0] );
+		}
+		
+		// Build HTML popup. TODO: move thumb width in css
+        $content = "<a href=$link>
+        				<h6>$title</h6>
+        				<img src=$img_src style='width:100%'/>
+        			</a><ul>";
+		// Get the related posts (published) and print them in the popup.
+    	$related_posts = wl_get_referencing_posts( $entity->ID );
+      	foreach ( $related_posts as $rp ) {
+      		wl_write_log("piero: " . $rp->post_title);
+        	$title   = esc_attr( $rp->post_title );
+        	$link    = esc_attr( get_permalink( $rp->ID ) );
+			$content = $content . "<li><a href=$link>$title</a></li>";
+		}
+		$content = $content . "</ul>";
 		
 		// Formatting POI in geoJSON.
 		// http://leafletjs.com/examples/geojson.html

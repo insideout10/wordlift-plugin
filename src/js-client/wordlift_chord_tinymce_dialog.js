@@ -3,8 +3,8 @@ jQuery(document).ready(function($){
 		'<div id="wordlift_chord_dialog">' +
 			'<form>' +
 				'<p>' +		
-					'<input value="7" id="wordlift_chord_depth_field" readonly size="3">' +
-					'Depth: how many entities the Graph will display.' +
+					'<input value="2" id="wordlift_chord_depth_field" readonly size="3">' +
+					'Depth: Max degree of separtation between entities.' +
 					'<div id="wordlift_chord_depth_slider"></div>' +
 				'</p><br>' +
 				'<p>' +
@@ -34,9 +34,9 @@ jQuery(document).ready(function($){
 	//set up depth slider
 	$('#wordlift_chord_depth_slider').slider({
 		range: 'max',
-		min: 3,
-		max: 30,
-		value: 7,
+		min: 1,
+		max: 5,
+		value: 2,
 		slide: function( event, ui ) {
 			$( "#wordlift_chord_depth_field" ).val( ui.value );
 		}
