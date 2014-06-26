@@ -110,4 +110,53 @@ class GeomapShortcodeTest extends WP_UnitTestCase
 			$i++;
 		}
     }
+
+    /**
+     * Create:
+     *  * 2 Posts
+     *  * 1 Place entity referenced by both posts
+     *
+     * Check that the geomap popup of the place contains a link to the two posts.
+     */
+    function testPlacePopupRelatedPosts() {
+		
+		// Create two posts.
+        $post_id_1 = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
+		$post_id_2 = wl_create_post( '', 'post-2', 'Post 2', 'publich', 'post');
+
+		// Create a place-
+        $place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+
+		// Reference place from both posts-
+        wl_set_referenced_entities( $post_id_1, array( $place_id ) );
+		wl_set_referenced_entities( $post_id_2, array( $place_id ) );
+
+		// Check referencing.
+        $places = wl_shortcode_geomap_get_places( $post_id_1 );
+        $this->assertCount( 1, $places );
+		$this->assertEquals( $places[0]->ID, $place_id );
+
+        // Check json formatted data.
+        $json = wl_shortcode_geomap_to_json( $places );
+        $response = json_decode( $json );
+	
+		// Check object attributes
+		$poi = $response->features[0];
+		$this->assertTrue( isset( $poi ) );
+		$this->assertTrue( isset( $poi->properties ) );
+		$this->assertTrue( isset( $poi->properties->popupContent ) );
+		
+		// Check if popup contains links to the two posts
+		$popup = $poi->properties->popupContent;
+		$link1 = esc_attr( get_permalink($post_id_1) );
+		$this->assertContains( $link1, $popup );
+		$link2 = esc_attr( get_permalink($post_id_2) );
+		$this->assertContains( $link2, $popup );
+		
+		// Check no thumbnail has been echoed
+		$this->assertNotContains( '<img', $popup );
+    }
 }

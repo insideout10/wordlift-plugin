@@ -95,13 +95,14 @@ function wl_shortcode_geomap_to_json( $places ) {
 		
 		// Build HTML popup. TODO: move thumb width in css
         $content = "<a href=$link>
-        				<h6>$title</h6>
-        				<img src=$img_src style='width:100%'/>
-        			</a><ul>";
+        				<h6>$title</h6>";
+		if( isset( $img_src ) ) {
+        	$content = $content . "<img src=$img_src style='width:100%'/>";
+		}
+        $content = $content . "</a><ul>";
 		// Get the related posts (published) and print them in the popup.
     	$related_posts = wl_get_referencing_posts( $entity->ID );
       	foreach ( $related_posts as $rp ) {
-      		wl_write_log("piero: " . $rp->post_title);
         	$title   = esc_attr( $rp->post_title );
         	$link    = esc_attr( get_permalink( $rp->ID ) );
 			$content = $content . "<li><a href=$link>$title</a></li>";
