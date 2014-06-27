@@ -152,8 +152,7 @@ function wl_shortcode_timeline( $atts ) {
     //extract attributes and set default values
     $timeline_atts = shortcode_atts( array(
         'width'      => '100%',
-        'height'     => '600px',
-        'main_color' => '#ddd'
+        'height'     => '600px'
     ), $atts );
 	
 	// Add timeline library.
@@ -182,18 +181,13 @@ function wl_shortcode_timeline( $atts ) {
 	$esc_height     = esc_attr( $timeline_atts['height'] );
     $esc_post_id 	= esc_attr( $post_id );
 
-    // TODO: check this, are they parameters or constants?
-    $esc_depth		= esc_attr( 2 ); //$timeline_atts['depth']);
-    $esc_main_color = esc_attr( '#aaa' ); //$timeline_atts['main_color']);
     
 	// Building template.
     // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
     return <<<EOF
-<div class="$esc_class" id="$esc_id" data-post-id="$esc_post_id" data-depth="$esc_depth"
-    data-main-color="$esc_main_color"
+<div class="$esc_class" id="$esc_id" data-post-id="$esc_post_id"
 	style="width:$esc_width;
         height:$esc_height;
-        background-color:$esc_main_color;
         margin-top:10px;
         margin-bottom:10px">
 </div>
