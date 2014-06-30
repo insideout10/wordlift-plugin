@@ -63,6 +63,4 @@ function wl_admin_inject_chord_dialog()
     wp_enqueue_script('jquery-ui-core');
     wp_enqueue_script('jquery-ui-slider');
     wp_enqueue_script('wp-color-picker');
-
-    wp_enqueue_script( 'wl_chord_dialog', plugins_url( 'js-client/wordlift_chord_tinymce_dialog.js', __FILE__ ) );
 }
