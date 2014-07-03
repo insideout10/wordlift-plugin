@@ -15,18 +15,36 @@
 function wl_shortcode_timeline_get_events( $post_id = null ) {
 	
 	// Build list of event-entities.
-	$entity_ids = null;
-	if( is_null( $post_id ) ) {
-		// TODO: Global timeline. Here we search for events that are from today on.
-		return array();
+	if( is_null( $post_id ) || ( !is_numeric( $post_id ) ) ) {
+		// Global timeline. Get entities from the latest posts.
+		$latest_posts_ids = get_posts( array(
+	        'numberposts' => 50,
+	        'fields'      => 'ids', //only get post IDs
+	        'post_type'	  => 'post',
+	        'post_status' => 'publish'
+	    ) );
+	
+		if( empty( $latest_posts_ids ) ){
+			// There are no posts.
+			return array();
+		}
+		
+		// Collect entities related to latest posts
+	    $entity_ids = array();
+	    foreach ( $latest_posts_ids as $id ) {
+	        $entity_ids = array_merge( $entity_ids, wl_get_referenced_entity_ids( $id ) );
+	    }
+		
+		if( empty($entity_ids) )
+			return array();
+		
 	} else {
-		// Post-specific timeline. Search for event-entities in the post itself.
+		// Post-specific timeline. Search for entities in the post itself.
 		$entity_ids = wl_get_referenced_entity_ids( $post_id );
 	}
 
     wl_write_log( "wl_shortcode_timeline_get_events [ entity IDs :: " . join( ', ', $entity_ids ) . " ]" );
 
-    // Get all the entities that have a meta key with date start and end information.
     return get_posts( array(
         'post__in'        => $entity_ids,
         'post_type'       => WL_ENTITY_TYPE_NAME,
@@ -152,7 +170,8 @@ function wl_shortcode_timeline( $atts ) {
     //extract attributes and set default values
     $timeline_atts = shortcode_atts( array(
         'width'      => '100%',
-        'height'     => '600px'
+        'height'     => '600px',
+        'global'     => false
     ), $atts );
 	
 	// Add timeline library.
@@ -173,10 +192,19 @@ function wl_shortcode_timeline( $atts ) {
     ) );
 	 
 	$post_id = get_the_ID();
+	
+	if ( $timeline_atts['global'] || is_null( $post_id ) ) {
+		// Global timeline
+        $timeline_id = 'wl_timeline_global';
+		$post_id = null;
+    } else {
+    	// Post-specific geomap
+        $timeline_id = 'wl_timeline_' . $post_id;
+    }	
 
     // Escaping atts.
     $esc_class      = esc_attr( 'wl-timeline' );
-    $esc_id         = esc_attr( 'wl-timeline-' . $post_id );
+    $esc_id         = esc_attr( $timeline_id );
 	$esc_width      = esc_attr( $timeline_atts['width'] );
 	$esc_height     = esc_attr( $timeline_atts['height'] );
     $esc_post_id 	= esc_attr( $post_id );

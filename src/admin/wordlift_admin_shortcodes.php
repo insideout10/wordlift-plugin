@@ -14,7 +14,7 @@ function wl_admin_shortcode_buttons()
     if ( (current_user_can('edit_posts') || current_user_can('edit_pages') ) && get_user_option('rich_editing') ) {
         add_filter( 'mce_external_plugins', 'wl_admin_shortcode_buttons_register_tinymce_javascript' );
         add_filter( 'mce_buttons', 'wl_admin_shortcode_register_buttons' );
-        add_action( 'admin_footer', 'wl_admin_inject_chord_dialog' );
+        add_action( 'admin_footer', 'wl_admin_inject_chord_dialog_dependencies' );
     }
 }
 
@@ -32,7 +32,7 @@ function wl_admin_shortcode_buttons_register_tinymce_javascript( $plugin_array )
 }
 
 /**
- * Register the *wl-chord* and *wl-timeline* button.
+ * Register shortcodes menu.
  *
  * @param array $buttons An array of buttons.
  * @return array The buttons array including the *wl_shortcodes_menu*.
@@ -51,7 +51,7 @@ add_action( 'admin_init', 'wl_admin_shortcode_buttons' );
  *
  * This method is called by the *admin_footer* hook.
  */
-function wl_admin_inject_chord_dialog()
+function wl_admin_inject_chord_dialog_dependencies()
 {
 
     // TODO: load the required styles in WordLift CSS. Fix.

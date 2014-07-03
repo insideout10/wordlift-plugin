@@ -33,7 +33,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase
      *
      * Check that only the first 2 Event entities are returned when calling *wl_set_referenced_entities*.
      *
-     * @uses wl_set_referenced_entities to retrieve the events referenced by a post.
+     * @uses wl_set_referenced_entities to assign the events referenced by a post.
+	 * @uses wl_shortcode_timeline_get_events to retrieve events
      */
     function testGetEvents() {
 
@@ -136,4 +137,54 @@ class TimelineShortcodeTest extends WP_UnitTestCase
 
         return $attachment_id;
     }
+	
+	/**
+     * Create:
+     *  * 2 Post
+     *  * 2 Event entities referenced, one per Post
+     *  * 1 Place entity as a distractor
+     * Check that the 2 events are retrieved from the global timeline (no post specified).
+     *
+	 * @uses wl_shortcode_timeline_get_events to retrieve events
+     */
+	function testGlobalTimeline() {
+		
+		// Create posts
+		$post_1_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
+		$post_2_id = wl_create_post( '', 'post-2', 'Post 2', 'publish', 'post' );
+
+		// Create entities (2 events and one place)
+		
+        $entity_1_id = wl_create_post( "Entity 1's Text", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
+        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-01', true );
+        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-07', true );
+
+        $entity_2_id = wl_create_post( "Entity 2's Text", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
+        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-02', true );
+        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-08', true );
+
+        $entity_3_id = wl_create_post( 'Entity 3 Text', 'entity-3', 'Entity 3 Title', 'publish', 'entity' );
+        wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
+        add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 45.12, true );
+        add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 90.3, true );
+
+        wl_set_referenced_entities( $post_1_id, array(
+            $entity_1_id,
+            $entity_3_id
+        ) );
+		
+		wl_set_referenced_entities( $post_2_id, array(
+            $entity_2_id
+        ) );
+		
+		// Call retrieving function with null argument (i.e. global timeline)
+        $events = wl_shortcode_timeline_get_events( null );
+        $this->assertCount( 2, $events );
+
+        $event_ids = array_map( function ( $item ) { return $item->ID; }, $events );
+        $this->assertContains( $entity_1_id, $event_ids );
+        $this->assertContains( $entity_2_id, $event_ids );
+	}
 }
