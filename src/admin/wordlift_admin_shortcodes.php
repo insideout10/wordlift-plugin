@@ -53,14 +53,14 @@ add_action( 'admin_init', 'wl_admin_shortcode_buttons' );
  */
 function wl_admin_inject_chord_dialog_dependencies()
 {
-
-    // TODO: load the required styles in WordLift CSS. Fix.
-    wp_enqueue_style('wp-jquery-ui-css', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery.ui.all.css');
-
     wp_enqueue_style('wp-color-picker');
+	wp_enqueue_script('wp-color-picker');
 
+    // Not included by default :|
+	wp_enqueue_style('jquery-ui-css', plugins_url( 'css/jquery-ui/jquery-ui.min.css', __FILE__ ) );
+    
     wp_enqueue_script('jquery');
     wp_enqueue_script('jquery-ui-core');
     wp_enqueue_script('jquery-ui-slider');
-    wp_enqueue_script('wp-color-picker');
+
 }
