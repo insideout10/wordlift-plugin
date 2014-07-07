@@ -27,7 +27,8 @@ function wl_entity_type_taxonomy_register()
 
     $args = array(
         'labels' => $labels,
-        'hierarchical' => false
+        'hierarchical' => false,
+        'show_admin_column' => true
     );
 
     register_taxonomy(WL_ENTITY_TYPE_TAXONOMY_NAME, 'entity', $args);
