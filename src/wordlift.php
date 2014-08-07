@@ -158,34 +158,37 @@ function wordlift_ajax_analyze_action()
     $url = wordlift_redlink_enhance_url();
 
     // Prepare the request.
-    $args = array_merge_recursive(unserialize(WL_REDLINK_API_HTTP_OPTIONS), array(
+    $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
         'method' => 'POST',
         'headers' => array(
             'Accept' => 'application/json',
             'Content-type' => 'text/plain'
         ),
         'body' => file_get_contents("php://input"),
-    ));
+    ) );
 
-    $response = wp_remote_post($url, $args);
+    $response = wp_remote_post( $url, $args );
 
     // Remove the key from the query.
-    $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', $url);
+    $scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
 
     // If an error has been raised, return the error.
-    if (is_wp_error($response) || 200 !== (int)$response['response']['code']) {
+    if ( is_wp_error( $response ) || 200 !== (int)$response['response']['code'] ) {
 
-        $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
+        $body = ( is_wp_error($response) ? $response->get_error_message() : $response['body'] );
 
-        wl_write_log("wordlift_ajax_analyze_action : error [ response :: ");
-        wl_write_log("\n" . var_export($response, true));
-        wl_write_log("][ body :: ");
-        wl_write_log("\n" . $body);
-        wl_write_log("]");
+        wl_write_log( "wordlift_ajax_analyze_action : error [ url :: $url ][ args :: " );
+        wl_write_log( var_export( $args, true ) );
+        wl_write_log( '][ response :: ' );
+        wl_write_log( "\n" . var_export( $response, true ) );
+        wl_write_log( "][ body :: " );
+        wl_write_log( "\n" . $body );
+        wl_write_log( "]" );
 
         echo 'An error occurred while request an analysis to the remote service. Please try again later.';
 
-        die();
+        wp_die();
+
     }
 
     wl_write_log("wordlift_ajax_analyze_action [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]");

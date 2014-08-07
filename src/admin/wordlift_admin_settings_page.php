@@ -91,7 +91,7 @@ function wl_settings_enable_color_coding_of_entities_select() {
 }
 
 /**
- * Displays the application key input box (as callback set uting the *add_settings_field* method).
+ * Displays the application key input box (as callback set using the *add_settings_field* method).
  */
 function wl_settings_application_key_input_box()
 {
@@ -101,6 +101,7 @@ function wl_settings_application_key_input_box()
 
     // Call the helper function.
     wl_settings_input_box( WL_CONFIG_APPLICATION_KEY_NAME, $value );
+
 }
 
 /**
