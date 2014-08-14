@@ -79,6 +79,7 @@ class EventEntityCustomFieldsTest extends WP_UnitTestCase
         $savedStart = get_post_meta( $event_entity_id, WL_CUSTOM_FIELD_CAL_DATE_START, true );
         $savedEnd = get_post_meta( $event_entity_id, WL_CUSTOM_FIELD_CAL_DATE_END, true );
         
+        // Dates ahould not have been changed
         $this->assertNotEquals( $start, $savedStart);
         $this->assertNotEquals( $end, $savedEnd );
     }
@@ -102,6 +103,7 @@ class EventEntityCustomFieldsTest extends WP_UnitTestCase
         $savedStart = get_post_meta( $event_entity_id, WL_CUSTOM_FIELD_CAL_DATE_START, true );
         $savedEnd = get_post_meta( $event_entity_id, WL_CUSTOM_FIELD_CAL_DATE_END, true );
         
+        // Dates should have been changed
         $this->assertEquals( $start, $savedStart);
         $this->assertEquals( $end, $savedEnd );
     }
