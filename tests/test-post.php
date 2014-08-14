@@ -36,17 +36,19 @@ class PostTest extends WP_UnitTestCase
 
         wl_configure_wordpress_test();
 
+// by Piero: the $dataset variable is not used below (the second commented block was already commented).
+// the same computation happens inside the wl_configure_test() call above.
         // Set the dataset name according to environment vars.
-        $dataset_name = str_replace('.', '-',
-            sprintf(
-                '%s-php-%s-%s-wp-%s-ms-%s',
-                'wordlift-tests',
-                PHP_MAJOR_VERSION,
-                PHP_MINOR_VERSION,
-                getenv('WP_VERSION'),
-                getenv('WP_MULTISITE')
-            )
-        );
+//        $dataset_name = str_replace('.', '-',
+//            sprintf(
+//                '%s-php-%s-%s-wp-%s-ms-%s',
+//                'wordlift-tests',
+//                PHP_MAJOR_VERSION,
+//                PHP_MINOR_VERSION,
+//                getenv('WP_VERSION'),
+//                getenv('WP_MULTISITE')
+//            )
+//        );
 
 //        // Set the plugin options.
 //        update_option(WORDLIFT_OPTIONS, array(
