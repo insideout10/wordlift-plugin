@@ -200,7 +200,7 @@ function wl_place_entities_box_content($post) {
     );
     
     // Security.
-    wp_nonce_field('wordlift_event_entity_box', 'wordlift_event_entity_box_nonce');
+    wp_nonce_field('wordlift_place_entity_box', 'wordlift_place_entity_box_nonce');
     
     // Get coordinates
     $coords = wl_get_coordinates($post->ID);
@@ -222,10 +222,10 @@ function wl_place_entities_box_content($post) {
     
     // Print input fields
     echo '<label for="wl_place_lat">' . __('Latitude', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_place_lat" class="XXXXX" name="wl_place_lat" value="' . $latitude . '" style="width:100%" />';
+    echo '<input type="text" id="wl_place_lat" name="wl_place_lat" value="' . $latitude . '" style="width:100%" />';
 
     echo '<label for="wl_place_lon">' . __('Longitude', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_place_lon" class="XXXXX" name="wl_place_lon" value="' . $longitude . '" style="width:100%" />';
+    echo '<input type="text" id="wl_place_lon" name="wl_place_lon" value="' . $longitude . '" style="width:100%" />';
 
     // Show Leaflet map to pick coordinates
     echo "<div id='wl_place_coords_map'></div>";
@@ -255,27 +255,26 @@ function wl_place_entities_box_content($post) {
 /**
  * Saves the Place coordinates from entity editor page
  */
-function wl_place_entity_type_save_coordinates($post_id) {/*
-  // Check if our nonce is set.
-  if ( !isset($_POST['wordlift_event_entity_box_nonce']) )
-  return $post_id;
-  $nonce = $_POST['wordlift_event_entity_box_nonce'];
+function wl_place_entity_type_save_coordinates($post_id) {
+    // Check if our nonce is set.
+    if ( !isset($_POST['wordlift_place_entity_box_nonce']) )
+        return $post_id;
+    $nonce = $_POST['wordlift_place_entity_box_nonce'];
 
-  // Verify that the nonce is valid.
-  if ( !wp_verify_nonce($nonce, 'wordlift_event_entity_box') )
-  return $post_id;
+    // Verify that the nonce is valid.
+    if ( !wp_verify_nonce($nonce, 'wordlift_place_entity_box') )
+        return $post_id;
 
-  // save the Event start and end date
-  if( isset( $_POST['wl_event_start'] ) && isset( $_POST['wl_event_end'] ) ) {
-  $start = $_POST['wl_event_start'];
-  $end = $_POST['wl_event_end'];
-  }
-  if( isset( $start ) && strtotime( $start ) ) {
-  update_post_meta($post_id, WL_CUSTOM_FIELD_CAL_DATE_START, $start);
-  }
-  if( isset( $end ) && strtotime( $end ) ) {
-  update_post_meta($post_id, WL_CUSTOM_FIELD_CAL_DATE_END, $end);
-  } */
+    // save the Place start and end date
+    if( isset( $_POST['wl_place_lat'] ) && isset( $_POST['wl_place_lon'] ) ) {
+        $latitude = $_POST['wl_place_lat'];
+        $longitude = $_POST['wl_place_lon'];
+    }
+    if( isset( $latitude ) && is_numeric( $latitude ) ) {
+        update_post_meta($post_id, WL_CUSTOM_FIELD_GEO_LATITUDE, $latitude);
+    }
+    if( isset( $longitude ) && is_numeric( $longitude ) ) {
+        update_post_meta($post_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, $longitude);
+    }
 }
-
 add_action('wordlift_save_post', 'wl_place_entity_type_save_coordinates');
