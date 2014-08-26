@@ -35,8 +35,9 @@ class EventEntityCustomFieldsTest extends WP_UnitTestCase
         add_post_meta( $event_entity_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-01', true );
         add_post_meta( $event_entity_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-07', true );
         
-        // Reference to WP meta box register
+        // Get eference to WP meta box register and empty it.
         global $wp_meta_boxes;
+        $wp_meta_boxes = null;
         
         // Meta box should not be added for a place
         $GLOBALS['post'] = $place_entity_id;
