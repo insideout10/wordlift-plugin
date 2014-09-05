@@ -15,16 +15,20 @@ require_once('wordlift_constants.php');
 // Create the *wl_write_log* function to allow logging to the debug.log file.
 function wl_write_log( $log )
 {
+
     $handler = apply_filters( 'wl_write_log_handler', null );
 
     if ( is_null( $handler ) ) {
-        return wl_write_log_handler( $log );
+        wl_write_log_handler( $log );
+        return;
     }
 
     call_user_func( $handler, $log );
+
 }
 
 function wl_write_log_handler( $log ) {
+
     if ( true === WP_DEBUG ) {
         if ( is_array( $log ) || is_object( $log ) ) {
             error_log( print_r( $log, true ) );
@@ -32,6 +36,7 @@ function wl_write_log_handler( $log ) {
             error_log( $log );
         }
     }
+
 }
 
 
