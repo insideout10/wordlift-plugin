@@ -24,13 +24,15 @@ class EntityPublishTest extends WP_UnitTestCase
 
         global $wp_query, $post;
 
-        $post_id = wl_create_post( '', 'entity-1', 'Entity 1', 'publish', 'entity' );
+        $post_id  = wl_create_post( '', 'entity-1', 'Entity 1', 'publish', 'entity' );
         wl_set_entity_display_as( $post_id, 'index' );
 
         $wp_query = new WP_Query( 'post_in=' . $post_id );
-        $post = get_post( $post_id );
+        $post     = get_post( $post_id );
 
-        $this->assertEquals( '/tmp/wordpress/wp-content/themes/twentyfourteen/index.php', get_single_template() );
+        // Check that the template is the index.
+        $template_name = '/themes/twentyfourteen/index.php';
+        $this->assertTrue( substr( get_single_template(), -strlen( $template_name ) ) === $template_name );
 
     }
 
@@ -44,7 +46,9 @@ class EntityPublishTest extends WP_UnitTestCase
         $wp_query = new WP_Query( 'post_in=' . $post_id );
         $post = get_post( $post_id );
 
-        $this->assertEquals( '/tmp/wordpress/wp-content/themes/twentyfourteen/single.php', get_single_template() );
+        // Check that the template is the single.
+        $template_name = '/themes/twentyfourteen/single.php';
+        $this->assertTrue( substr( get_single_template(), -strlen( $template_name ) ) === $template_name );
 
     }
 
