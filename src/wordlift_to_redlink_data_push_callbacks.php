@@ -460,7 +460,7 @@ function wordlift_reindex_triple_store()
     $url = wordlift_redlink_reindex_url();
 
     // Post the request.
-    wl_write_log("wordlift_reindex_triple_store");
+    wl_write_log( "wordlift_reindex_triple_store" );
 
     // Prepare the request.
     $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
