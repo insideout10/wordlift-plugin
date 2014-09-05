@@ -75,11 +75,11 @@ class PostTest extends WP_UnitTestCase
 
         // Get the count of triples.
         $counts = rl_count_triples();
-        $this->assertNotNull($counts);
-        $this->assertFalse(is_wp_error($counts));
-        $this->assertEquals(0, $counts['subjects']);
-        $this->assertEquals(0, $counts['predicates']);
-        $this->assertEquals(0, $counts['objects']);
+        $this->assertNotNull( $counts );
+        $this->assertFalse( is_wp_error( $counts ) );
+        $this->assertEquals( 0, $counts['subjects'] );
+        $this->assertEquals( 0, $counts['predicates'] );
+        $this->assertEquals( 0, $counts['objects'] );
     }
 
     /**
