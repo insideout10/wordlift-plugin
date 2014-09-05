@@ -116,21 +116,21 @@ function rl_count_triples()
         'WHERE { ?s ?p ?o }';
 
     // Send the request.
-    $response = rl_sparql_select($sparql, 'text/csv');
+    $response = rl_sparql_select( $sparql, 'text/csv' );
 
     // Remove the key from the query.
-    $scrambled_url = preg_replace('/key=.*$/i', 'key=<hidden>', rl_sparql_select_url());
+    $scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', rl_sparql_select_url() );
 
     // Return the error in case of failure.
-    if (is_wp_error($response) || 200 !== $response['response']['code']) {
+    if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
         $body = (is_wp_error($response) ? $response->get_error_message() : $response['body']);
 
-        wl_write_log("rl_count_triples : error [ url :: $scrambled_url ][ response :: ");
-        wl_write_log("\n" . var_export($response, true));
-        wl_write_log("][ body :: ");
-        wl_write_log("\n" . $body);
-        wl_write_log("]");
+        wl_write_log( "rl_count_triples : error [ url :: $scrambled_url ][ response :: " );
+        wl_write_log( "\n" . var_export( $response, true ) );
+        wl_write_log( "][ body :: " );
+        wl_write_log( "\n" . $body );
+        wl_write_log( "]" );
 
         return $response;
     }
@@ -140,18 +140,18 @@ function rl_count_triples()
 
     // Get the values.
     $matches = array();
-    if (1 === preg_match('/(\d+),(\d+),(\d+)/im', $body, $matches) && 4 === count($matches)) {
+    if ( 1 === preg_match( '/(\d+),(\d+),(\d+)/im', $body, $matches ) && 4 === count( $matches ) ) {
 
         // Return the counts.
         return array(
-            'subjects' => (int)$matches[1],
+            'subjects'   => (int)$matches[1],
             'predicates' => (int)$matches[2],
-            'objects' => (int)$matches[3]
+            'objects'    => (int)$matches[3]
         );
     }
 
     // No digits found in the response, return null.
-    wl_write_log("rl_count_triples : unrecognized response [ body :: $body ]");
+    wl_write_log( "rl_count_triples : unrecognized response [ body :: $body ]" );
     return null;
 }
 
