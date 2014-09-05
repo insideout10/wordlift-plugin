@@ -658,22 +658,45 @@ function wl_get_attachments( $post_id ) {
 }
 
 /**
+ * Echo the log data to the terminal.
+ *
+ * @param $log The log data.
+ */
+function wl_test_write_log_handler( $log ) {
+
+    if ( is_array( $log ) || is_object( $log ) ) {
+        echo( print_r( $log, true ) . "\n");
+    } else {
+        echo( $log . "\n" );
+    }
+
+}
+
+/**
+ * Set the log handler function name.
+ *
+ * @return string
+ */
+function wl_test_get_write_log_handler() {
+
+    return 'wl_test_write_log_handler';
+
+}
+
+/**
  * Configure WordPress with the test settings (may vary according to the local PHP and WordPress versions).
  */
 function wl_configure_wordpress_test() {
 
-    do_action('activate_wordlift/wordlift.php');
+    add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
-    // Set the dataset name according to environment vars.
-    $dataset_name = str_replace('.', '-',
-        sprintf(
-            '%s-php-%s.%s-wp-%s-ms-%s',
-            'wordlift-tests',
-            PHP_MAJOR_VERSION,
-            PHP_MINOR_VERSION,
-            getenv('WP_VERSION'),
-            getenv('WP_MULTISITE')
-        )
+    do_action( 'activate_wordlift/wordlift.php' );
+
+    // Set the dataset name to the specified dataset or define it based on the current environment.
+    $dataset_name = ( false !== getenv('REDLINK_DATASET_NAME') ? getenv('REDLINK_DATASET_NAME')
+        : str_replace('.', '-',
+            sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
+                getenv('WP_VERSION'), getenv('WP_MULTISITE') ) )
     );
 
     // Set the plugin options.
