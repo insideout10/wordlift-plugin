@@ -164,10 +164,8 @@ function wl_shortcode_chord_ajax()
     ob_clean();
     header( 'Content-Type: application/json' );
 
-    $result = wl_shortcode_chord_get_relations( $post_id, $depth );
-    $result = wl_shortcode_chord_relations_to_json( $result );
-
-    wl_write_log( "wl_shortcode_chord_relations_to_json : sending output" );
+    $result  = wl_shortcode_chord_get_relations( $post_id, $depth );
+    $result  = wl_shortcode_chord_relations_to_json( $result );
 
     echo $result;
 
