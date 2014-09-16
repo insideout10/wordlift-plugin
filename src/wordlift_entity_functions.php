@@ -307,3 +307,34 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
     // finally return the entity post.
     return get_post( $post_id );
 }
+
+/**
+ * Retrieve entity property (post meta) starting from the property's 
+ * This function will be used mostly in theme development as a way to
+ *  achieve dynamic semantic publishing
+ * @param $property_name as defined by schema.org
+ * @param (optional) $entity_id, the function will try to retrieve it automatically
+ * @return property value(s)
+ */
+function wl_get_schema_property( $property_name, $entity_id=null ) {
+    
+    // Property name must be defined.
+    if( !isset( $property_name ) || is_null( $property_name ) ){
+        return null;
+    }
+    
+    // Establish entity id.
+    if( is_null( $entity_id ) ) {
+        $entity_id = get_the_ID();
+        if( is_null( $entity_id ) || !is_numeric( $entity_id ) ) {
+            return null;
+        }
+    }
+    
+    $terms = wp_get_object_terms( $entity_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+    if( count($terms) == 0 ) {
+        return null;
+    } else {
+        return wl_entity_type_taxonomy_get_term_options( $terms[0]->term_id );
+    }
+}
