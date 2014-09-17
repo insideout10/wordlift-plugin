@@ -79,9 +79,7 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $value = wl_get_meta_value( null, $place_id );
         $this->assertEquals( null, $value );
         $value = wl_get_meta_value( 'latitude', $event_id );
-        $this->assertEquals( null, $value );
-        $this->assertEquals( null, $value );
-        
+        $this->assertEquals( null, $value );        
     }
 }
 
