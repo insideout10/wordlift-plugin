@@ -309,14 +309,14 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 }
 
 /**
- * Retrieve entity property (post meta) starting from the property's 
+ * Retrieve entity property (post meta) starting from the schema.org's property name 
  * This function will be used mostly in theme development as a way to
  *  achieve dynamic semantic publishing
  * @param $property_name as defined by schema.org
  * @param (optional) $entity_id, the function will try to retrieve it automatically
- * @return property value(s)
+ * @return array containing value(s) or null (in case of error or no values).
  */
-function wl_get_schema_property( $property_name, $entity_id=null ) {
+function wl_get_meta_value( $property_name, $entity_id=null ) {
     
     // Property name must be defined.
     if( !isset( $property_name ) || is_null( $property_name ) ){
@@ -331,10 +331,19 @@ function wl_get_schema_property( $property_name, $entity_id=null ) {
         }
     }
     
+    // Get info on the entity relatively to the WL taxonomy
     $terms = wp_get_object_terms( $entity_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
     if( count($terms) == 0 ) {
         return null;
-    } else {
-        return wl_entity_type_taxonomy_get_term_options( $terms[0]->term_id );
+    }
+    
+    // Get mapping between WL constants and schema.org properties
+    $term_info = wl_entity_type_taxonomy_get_term_options( $terms[0]->term_id );
+    $term_mapping =  $term_info['custom_fields'];
+    
+    foreach( $term_mapping as $wl_constant => $schema_name) {
+        if( $schema_name == $property_name ) {
+            return get_post_meta( $entity_id, $wl_constant );
+        }
     }
 }
