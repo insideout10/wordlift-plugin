@@ -49,6 +49,39 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals($expected_uri, wl_build_entity_uri( $post_id ) );
 
     }
+    
+    /**
+     * Tests the *wl_get_meta_value* function
+     */
+    function testEntityGetMetaValue() {
 
+        $place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+
+        $event_id = wl_create_post( "Entity 2 Text", 'entity-2', "Entity 2 Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-21', true );
+        
+        // Positive tests
+        $value = wl_get_meta_value( 'latitude', $place_id );
+        $this->assertEquals( 40.12, $value[0] );
+        $value = wl_get_meta_value( 'longitude', $place_id );
+        $this->assertEquals( 72.3, $value[0] );
+        $value = wl_get_meta_value( 'startDate', $event_id );
+        $this->assertEquals( '2014-10-21', $value[0] );
+        $value = wl_get_meta_value( 'endDate', $event_id );
+        $this->assertEquals( '2015-10-21', $value[0] );
+        
+        // Negative tests
+        $value = wl_get_meta_value( null, $place_id );
+        $this->assertEquals( null, $value );
+        $value = wl_get_meta_value( 'latitude', $event_id );
+        $this->assertEquals( null, $value );
+        $this->assertEquals( null, $value );
+        
+    }
 }
 
