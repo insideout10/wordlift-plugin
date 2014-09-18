@@ -15,6 +15,7 @@ require_once('wordlift_constants.php');
 // Create the *wl_write_log* function to allow logging to the debug.log file.
 function wl_write_log( $log )
 {
+
     $handler = apply_filters( 'wl_write_log_handler', null );
 
     if ( is_null( $handler ) ) {
@@ -1061,6 +1062,8 @@ require_once('widgets/wordlift_widget_timeline.php');
 
 require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
+
+require_once( 'sparql/wordlift_ajax_sparql.php' );
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.
