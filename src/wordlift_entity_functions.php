@@ -324,7 +324,7 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
     }
     
     // Establish entity id.
-    if( is_null( $entity_id ) ) {
+    if( is_null( $entity_id ) || !is_numeric( $entity_id ) ) {
         $entity_id = get_the_ID();
         if( is_null( $entity_id ) || !is_numeric( $entity_id ) ) {
             return null;

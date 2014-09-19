@@ -23,14 +23,17 @@ function wl_shortcode_field( $atts ) {
         $entity_id = get_the_ID();
     }
 
-    // TODO: Escaping?
     $property_name = $field_atts['name'];
     if( !is_null( $property_name ) ) {
         $values = wl_get_meta_value( $property_name, $entity_id );
     }
     
-    // TODO: return
-    return implode( ', ', $values );
+    // Return
+    if( is_array( $values ) ) {
+        return implode( ', ', $values );
+    } else {
+        return null;
+    }
 }
 
 function wl_register_shortcode_field() {
