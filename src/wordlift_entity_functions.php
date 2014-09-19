@@ -310,7 +310,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 
 /**
  * Retrieve entity property (post meta) starting from the schema.org's property name 
- * This function will be used mostly in theme development as a way to
+ * This function will be used mostly in theme development and entity editing as a way to
  *  achieve dynamic semantic publishing
  * @param $property_name as defined by schema.org
  * @param (optional) $entity_id, the function will try to retrieve it automatically
