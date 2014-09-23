@@ -901,7 +901,8 @@ function wl_install_entity_type_data()
             'same_as' => array('http://dbpedia.org/ontology/Event'),
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
-                WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate'
+                WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate',
+                WL_CUSTOM_FIELD_LOCATION       => 'location'
             ),
             'export_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => array(
@@ -911,6 +912,10 @@ function wl_install_entity_type_data()
                 WL_CUSTOM_FIELD_CAL_DATE_END   => array(
                     'predicate' => 'http://schema.org/endDate',
                     'type'      => 'xsd:date'
+                ),
+                WL_CUSTOM_FIELD_LOCATION => array(
+                    'predicate' => 'http://schema.org/location',
+                    'type'      => 'http://schema.org/Place'
                 )
             ),
             'templates' => array(
