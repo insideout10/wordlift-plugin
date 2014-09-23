@@ -906,7 +906,8 @@ function wl_install_entity_type_data()
             'same_as' => array('http://dbpedia.org/ontology/Event'),
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
-                WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate'
+                WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate',
+                WL_CUSTOM_FIELD_LOCATION       => 'location'
             ),
             'export_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => array(
@@ -916,6 +917,10 @@ function wl_install_entity_type_data()
                 WL_CUSTOM_FIELD_CAL_DATE_END   => array(
                     'predicate' => 'http://schema.org/endDate',
                     'type'      => 'xsd:date'
+                ),
+                WL_CUSTOM_FIELD_LOCATION => array(
+                    'predicate' => 'http://schema.org/location',
+                    'type'      => 'http://schema.org/Place'
                 )
             ),
             'templates' => array(
@@ -965,8 +970,20 @@ function wl_install_entity_type_data()
                 'http://rdf.freebase.com/ns/location.location',
                 'http://www.opengis.net/gml/_Feature'
             ),
-            'custom_fields' => array(),
-            'export_fields' => array(),
+            'custom_fields' => array(
+                WL_CUSTOM_FIELD_GEO_LATITUDE => 'latitude',
+                WL_CUSTOM_FIELD_GEO_LONGITUDE   => 'longitude'
+            ),
+            'export_fields' => array(
+                WL_CUSTOM_FIELD_GEO_LATITUDE => array(
+                    'predicate' => 'http://schema.org/latitude',
+                    'type'      => 'xsd:double'
+                ),
+                WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
+                    'predicate' => 'http://schema.org/longitude',
+                    'type'      => 'xsd:double'
+                )
+            ),
             'templates' => array(
                 'subtitle' => '{{id}}'
                 ),
@@ -1052,6 +1069,7 @@ require_once('shortcodes/wordlift_shortcode_related_posts.php');
 require_once('shortcodes/wordlift_shortcode_chord.php');
 require_once('shortcodes/wordlift_shortcode_timeline.php');
 require_once('shortcodes/wordlift_shortcode_geomap.php');
+require_once('shortcodes/wordlift_shortcode_field.php');
 
 // disable In-Depth Articles
 //require_once('wordlift_indepth_articles.php');

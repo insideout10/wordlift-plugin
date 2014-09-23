@@ -63,6 +63,7 @@ define('WL_CUSTOM_FIELD_GEO_LATITUDE', 'wl_geo_latitude');
 define('WL_CUSTOM_FIELD_GEO_LONGITUDE', 'wl_geo_longitude');
 define('WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start');
 define('WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end');
+define('WL_CUSTOM_FIELD_LOCATION', 'wl_location');
 
 // The entity type.
 define( 'WL_ENTITY_TYPE_NAME', 'entity' );
