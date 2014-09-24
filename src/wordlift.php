@@ -1063,7 +1063,7 @@ require_once('widgets/wordlift_widget_timeline.php');
 require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
 
-require_once( 'sparql/wordlift_ajax_sparql.php' );
+require_once('sparql/wordlift_sparql.php');
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.
