@@ -18,6 +18,10 @@ function wl_ajax_sparql() {
 	// Get the query.
 	$query   = wl_sparql_get_query_by_slug( $slug );
 
+    if ( empty( $query ) ) {
+        wp_die( "Cannot find a SPARQL query [ slug :: $slug ]" );
+    }
+
 	$url     = WL_REDLINK_API_BASE_URI . WL_REDLINK_API_VERSION . "/data/$dataset/sparql/select?key=$key&out=$output";
 
 	// Prepare the request.

@@ -252,8 +252,12 @@ EOF;
 
 }
 
-function wl_register_shortcode_geomap() {
-    add_shortcode('wl-geomap', 'wl_shortcode_geomap');
-}
 
-add_action( 'init', 'wl_register_shortcode_geomap');
+add_shortcode('wl-geomap', 'wl_shortcode_geomap');
+add_shortcode('wl_geomap', 'wl_shortcode_geomap');
+
+//function wl_register_shortcode_geomap() {
+//  add_shortcode('wl-geomap', 'wl_shortcode_geomap');
+//}
+//
+//add_action( 'init', 'wl_register_shortcode_geomap');
