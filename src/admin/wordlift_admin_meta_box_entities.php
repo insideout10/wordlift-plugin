@@ -29,6 +29,9 @@ function wl_admin_add_entities_meta_box($post_type) {
             add_meta_box(
                     'wordlift_event_entities_box', __('Event duration', 'wordlift'), 'wl_event_entities_box_content', $post_type, 'side', 'default'
             );
+            add_meta_box(
+                    'wordlift_event_entities_location_box', __('Event location', 'wordlift'), 'wl_event_entities_location_box_content', $post_type, 'side', 'default'
+            );
         }
 
         if ($is_place) {
@@ -183,6 +186,113 @@ function wl_event_entity_type_save_start_and_end_date($post_id) {
 }
 
 add_action('wordlift_save_post', 'wl_event_entity_type_save_start_and_end_date');
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * Displays the event duration meta box contents (called by *add_meta_box* callback).
+ *
+ * @param WP_Post $post The current post.
+ */
+function wl_event_entities_location_box_content( $post ) {
+
+    wp_nonce_field( 'wordlift_event_location_entity_box', 'wordlift_event_location_entity_box_nonce' );
+    
+    // Get default value, if any
+    $defaultPlace = get_post_meta( $post->ID, WL_CUSTOM_FIELD_LOCATION, true );
+    if( $defaultPlace !== '' && is_numeric( $defaultPlace ) )
+        $defaultPlace = get_post( $defaultPlace );
+
+    // Search entities tagged as Places
+    $args = array(
+        'posts_per_page'                => -1,
+        'orderby'                       => 'RECENCYYYYYYYY',
+        'post_type'                     => WL_ENTITY_TYPE_NAME,
+        WL_ENTITY_TYPE_TAXONOMY_NAME    => 'Place'
+    ); 
+    $places = get_posts( $args );
+    
+    // Write HTML <select>
+    if( count( $places ) > 0 ) {
+        echo '<label for="' . WL_CUSTOM_FIELD_LOCATION . '">' . __('Location', 'wordlift') . '</label>';
+        echo '<select name="' . WL_CUSTOM_FIELD_LOCATION . '" style="width:100%" />';
+        
+        // Default value
+        echo '<option value="' . $defaultPlace->ID . '">' . $defaultPlace->post_title . '</option>';
+        foreach( $places as $place ) {
+            // Loop over options
+            echo '<option value="' . $place->ID . '">' . $place->post_title . '</option>';
+        }
+        
+        echo '</select>';
+    }
+    
+    
+    echo "<script type='text/javascript'>
+    $ = jQuery;
+    $(document).ready(function() {
+        console.log('yeah');
+    });
+    </script>";
+}
+
+/**
+ * Saves the Event start and end date from entity editor page
+ */
+function wl_event_entity_type_save_location($post_id) {
+    // Check if our nonce is set.
+    if ( !isset( $_POST['wordlift_event_location_entity_box_nonce'] ) )
+        return $post_id;
+    $nonce = $_POST['wordlift_event_location_entity_box_nonce'];
+
+    // Verify that the nonce is valid.
+    if ( !wp_verify_nonce( $nonce, 'wordlift_event_location_entity_box' ) )
+        return $post_id;
+
+    // save the Event start and end date
+    if ( isset( $_POST[WL_CUSTOM_FIELD_LOCATION] ) ) {
+        $location = $_POST[WL_CUSTOM_FIELD_LOCATION];
+    }
+    if ( isset( $location ) && is_numeric( $location ) ) {
+        update_post_meta( $post_id, WL_CUSTOM_FIELD_LOCATION, $location );
+    }
+}
+
+add_action( 'wordlift_save_post', 'wl_event_entity_type_save_location' );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * Displays the place meta box contents (called by *add_meta_box* callback).
