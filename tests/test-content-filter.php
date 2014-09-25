@@ -51,13 +51,13 @@ EOF;
 
         $this->setColorCode( 'no' );
         $this->assertEquals(
-            'This post is referencing the sample <span itemscope itemtype="http://schema.org/Event" itemid="http://data.redlink.io/353/wordlift-tests-php-5-4-wp-3-8-ms-0/entity/Entity_1"><link itemprop="url" href="http://example.org/?post_type=entity&p=' . $entity_id . '" /><span itemprop="name">Entity 1</span></span>.',
+            'This post is referencing the sample <span itemscope itemtype="http://schema.org/Event" itemid="' . $entity_uri . '"><link itemprop="url" href="http://example.org/?post_type=entity&p=' . $entity_id . '" /><span itemprop="name">Entity 1</span></span>.',
             wl_content_embed_item_microdata( $post->post_content, $entity_uri )
         );
 
         $this->setColorCode( 'yes' );
         $this->assertEquals(
-            'This post is referencing the sample <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="http://data.redlink.io/353/wordlift-tests-php-5-4-wp-3-8-ms-0/entity/Entity_1"><link itemprop="url" href="http://example.org/?post_type=entity&p=' . $entity_id . '" /><span itemprop="name">Entity 1</span></span>.',
+            'This post is referencing the sample <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="' . $entity_uri . '"><link itemprop="url" href="http://example.org/?post_type=entity&p=' . $entity_id . '" /><span itemprop="name">Entity 1</span></span>.',
             wl_content_embed_item_microdata( $post->post_content, $entity_uri )
         );
 

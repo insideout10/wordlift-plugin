@@ -36,17 +36,19 @@ class PostTest extends WP_UnitTestCase
 
         wl_configure_wordpress_test();
 
+// by Piero: the $dataset variable is not used below (the second commented block was already commented).
+// the same computation happens inside the wl_configure_test() call above.
         // Set the dataset name according to environment vars.
-        $dataset_name = str_replace('.', '-',
-            sprintf(
-                '%s-php-%s-%s-wp-%s-ms-%s',
-                'wordlift-tests',
-                PHP_MAJOR_VERSION,
-                PHP_MINOR_VERSION,
-                getenv('WP_VERSION'),
-                getenv('WP_MULTISITE')
-            )
-        );
+//        $dataset_name = str_replace('.', '-',
+//            sprintf(
+//                '%s-php-%s-%s-wp-%s-ms-%s',
+//                'wordlift-tests',
+//                PHP_MAJOR_VERSION,
+//                PHP_MINOR_VERSION,
+//                getenv('WP_VERSION'),
+//                getenv('WP_MULTISITE')
+//            )
+//        );
 
 //        // Set the plugin options.
 //        update_option(WORDLIFT_OPTIONS, array(
@@ -73,11 +75,11 @@ class PostTest extends WP_UnitTestCase
 
         // Get the count of triples.
         $counts = rl_count_triples();
-        $this->assertNotNull($counts);
-        $this->assertFalse(is_wp_error($counts));
-        $this->assertEquals(0, $counts['subjects']);
-        $this->assertEquals(0, $counts['predicates']);
-        $this->assertEquals(0, $counts['objects']);
+        $this->assertNotNull( $counts );
+        $this->assertFalse( is_wp_error( $counts ) );
+        $this->assertEquals( 0, $counts['subjects'] );
+        $this->assertEquals( 0, $counts['predicates'] );
+        $this->assertEquals( 0, $counts['objects'] );
     }
 
     /**
@@ -446,14 +448,14 @@ class PostTest extends WP_UnitTestCase
         }
 
         // Check that the post references the entities.
-        $rel_entities = wl_get_referenced_entity_ids($post_id);
-        $this->assertEquals(count($entity_ids), count($rel_entities));
+        $rel_entities = wl_get_referenced_entity_ids( $post_id );
+        $this->assertEquals( count( $entity_ids ), count( $rel_entities ) );
         foreach ($entity_ids as $id) {
             $this->assertTrue(in_array($id, $rel_entities));
         }
 
         // Check that the locally saved entities and the remotely saved ones match.
-        $this->checkEntities($entity_posts);
+        $this->checkEntities( $entity_posts );
 
         // Check that the locally saved post data match the ones on Redlink.
         $this->checkPost($post_id);
@@ -510,11 +512,11 @@ class PostTest extends WP_UnitTestCase
      * Check the provided entity posts against the remote Redlink datastore.
      * @param array $posts The array of entity posts.
      */
-    function checkEntities($posts)
+    function checkEntities( $posts )
     {
 
-        foreach ($posts as $post) {
-            $this->checkEntity($post);
+        foreach ( $posts as $post ) {
+            $this->checkEntity( $post );
         }
     }
 
@@ -522,13 +524,13 @@ class PostTest extends WP_UnitTestCase
      * Check the provided entity post against the remote Redlink datastore.
      * @param WP_Post $post The post to check.
      */
-    function checkEntity($post)
+    function checkEntity( $post )
     {
 
         // Get the entity URI.
-        $uri = wordlift_esc_sparql(wl_get_entity_uri($post->ID));
+        $uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
 
-        wl_write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ]");
+        wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ]" );
 
         // Prepare the SPARQL query to select label and URL.
         $sparql = <<<EOF
@@ -541,31 +543,31 @@ WHERE {
 EOF;
 
         // Send the query and get the response.
-        $response = rl_sparql_select($sparql, 'text/tab-separated-values');
-        $this->assertFalse(is_wp_error($response));
+        $response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+        $this->assertFalse( is_wp_error( $response ) );
 
-        $body = $response['body'];
+        $body     = $response['body'];
 
-        $matches = array();
-        $count = preg_match_all('/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER);
-        $this->assertTrue(is_numeric($count));
+        $matches  = array();
+        $count    = preg_match_all( '/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
+        $this->assertTrue( is_numeric( $count ) );
 
         // Expect only one match (headers + one row).
-        if (2 !== $count) {
-            wl_write_log("checkEntity [ post id :: $post->ID ][ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]");
+        if ( 2 !== $count ) {
+            wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]" );
         }
-        $this->assertEquals(2, $count);
+        $this->assertEquals( 2, $count );
 
         // Focus on the first row.
         $match = $matches[1];
 
         // Get the label and URL from the remote answer.
-        $label = $match['label'];
-        $url = $match['url'];
-        $type = $match['type'];
+        $label     = $match['label'];
+        $url       = $match['url'];
+        $type      = $match['type'];
 
         // Get the post title and permalink.
-        $title = '"' . $post->post_title . '"@' . wl_config_get_site_language();
+        $title     = '"' . $post->post_title . '"@' . wl_config_get_site_language();
         $permalink = '<' . get_permalink($post->ID) . '>';
 
         // Check for equality.

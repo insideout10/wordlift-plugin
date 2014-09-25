@@ -5,7 +5,7 @@
     	// Custom function for the Chord
     	chordClick : function(){
     		jQuery('#wordlift_chord_dialog').dialog({
-				title: 'Wordlift Chord Graph',
+				title: 'Wordlift Chord Widget',
 				width: 400,
 				height: 500
 			});
@@ -42,8 +42,8 @@
         	if( tinymce.majorVersion==4 ) {
         		var btn = ed.addButton('wl_shortcodes_menu', {
 			        type: 'menubutton',
-			        title: 'WordLift graphs',
-			        text: 'WordLift graphs',
+			        title: 'WordLift Widgets',
+			        text: 'WordLift Widgets',
 			        image: url + '/../images/wordlift-logo-20x20.png',
 			        // Must define onclick to avoid error
 			        onclick: function(){ /* OPEN YOURSELF ?? */ },
@@ -89,7 +89,7 @@
 
 				//var c = cm.createSplitButton('wl_shortcodes_menu', {	//split button not working properly
                 var c = cm.createMenuButton('wl_shortcodes_menu', {
-                    title : 'WordLift graphs',
+                    title : 'WordLift Widgets',
                     image : tinymce.plugins.wl_shortcodes.pluginUrl + '/../images/wordlift-logo-20x20.png',
                 	// If SplitButton, must define onclick to avoid error
                 	//onclick: function(){ /* OPEN YOURSELF ?? */  }
