@@ -32,25 +32,33 @@ function wl_geo_widget_layer_shortcode( $atts ) {
 
     // Extract attributes and set default values.
     $params = shortcode_atts( array(
-        'name' => ''
+        'name'  => '',
+        'label' => ''
     ), $atts );
 
+    // Return if a SPARQL Query name hasn't been provided.
+    if ( empty( $params['name'] ) ) {
+        return;
+    }
+
+    // Set the layer label.
+    $label_j  = json_encode( empty( $params['label'] ) ? $params['name'] : $params['label'] );
+
     // Define the AJAX Url.
-    $ajax_url = admin_url( 'admin-ajax.php?action=wl_sparql&slug=' . $params['name'] );
-    $name_j   = json_encode( $params['name'] );
+    $ajax_url = admin_url( 'admin-ajax.php?action=wl_sparql&format=geojson&slug=' . urlencode( $params['name'] ) );
 
     echo <<<EOF
         $.ajax( '$ajax_url', {
             success: function( data ) {
 
-                L.geoJson( data, {
+                controlLayer.addOverlay( L.geoJson( data, {
                     onEachFeature: function (feature, layer) {
                         // does this feature have a property named popupContent?
                         if (feature.properties && feature.properties.popupContent) {
                             layer.bindPopup(feature.properties.popupContent);
                         }
                     }
-                } ).addTo(map);
+                } ).addTo(map), $label_j);
 
             }
 
@@ -71,10 +79,14 @@ function wordlift_geo_widget_html( $width, $height, $latitude, $longitude, $zoom
 <script type="text/javascript">
     jQuery( function( $ ) {
 
+        // Create the map.
         var map = L.map( '$div_id', {
             center: [$latitude, $longitude],
             zoom: $zoom
         } );
+
+        // Create an instance of the control layer.
+        var controlLayer = L.control.layers(null, null).addTo(map);
 
         L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
             maxZoom: 18,
