@@ -204,13 +204,15 @@ add_action('wordlift_save_post', 'wl_event_entity_type_save_start_and_end_date')
  * @param WP_Post $post The current post.
  */
 function wl_event_entities_location_box_content( $post ) {
-
+    
+    // Set Nonce
     wp_nonce_field( 'wordlift_event_location_entity_box', 'wordlift_event_location_entity_box_nonce' );
     
     // Get default value, if any
     $defaultPlace = get_post_meta( $post->ID, WL_CUSTOM_FIELD_LOCATION, true );
-    if( $defaultPlace !== '' && is_numeric( $defaultPlace ) )
+    if( $defaultPlace !== '' && is_numeric( $defaultPlace ) ) {
         $defaultPlace = get_post( $defaultPlace );
+    }
 
     // Search entities tagged as Places
     $args = array(
@@ -221,28 +223,81 @@ function wl_event_entities_location_box_content( $post ) {
     ); 
     $places = get_posts( $args );
     
-    // Write HTML <select>
+//    // Write HTML <select>
+//    if( count( $places ) > 0 ) {
+//        echo '<label for="' . WL_CUSTOM_FIELD_LOCATION . '">' . __('Location', 'wordlift') . '</label>';
+//        echo '<select name="' . WL_CUSTOM_FIELD_LOCATION . '" style="width:100%" />';
+//        
+//        // Default value
+//        echo '<option value="' . $defaultPlace->ID . '">' . $defaultPlace->post_title . '</option>';
+//        foreach( $places as $place ) {
+//            // Loop over options
+//            echo '<option value="' . $place->ID . '">' . $place->post_title . '</option>';
+//        }
+//        
+//        echo '</select>';
+//    }
+    
+    // Write HTML
     if( count( $places ) > 0 ) {
-        echo '<label for="' . WL_CUSTOM_FIELD_LOCATION . '">' . __('Location', 'wordlift') . '</label>';
-        echo '<select name="' . WL_CUSTOM_FIELD_LOCATION . '" style="width:100%" />';
+        // Input to show the options
+        echo '<input id="autocompleteLocation" style="width:100%" >';
+        // Input to store the actual chosen values ( autocomplete quirks... )
+        echo '<input type="hidden" id="autocompleteLocationHidden" name="' . WL_CUSTOM_FIELD_LOCATION . '">';
+
+        // Add jQuery Autocomplete
+        wp_enqueue_script( 'jquery-ui-autocomplete' );
+ 
+        // Filter $places to only contain id and name
+        $simplePlaces = array_map(function($p) {
+            return array( 'value' => $p->ID, 'label' => $p->post_title ); 
+        }, $places);
         
-        // Default value
-        echo '<option value="' . $defaultPlace->ID . '">' . $defaultPlace->post_title . '</option>';
-        foreach( $places as $place ) {
-            // Loop over options
-            echo '<option value="' . $place->ID . '">' . $place->post_title . '</option>';
-        }
+        // Add null value (to delete location)
+        $nullPlace = array( 'value' => '', 'label' => __('<no location>', 'wordlift') );
+        array_unshift( $simplePlaces, $nullPlace );
         
-        echo '</select>';
+        // Add to Autocomplete available place
+        wp_localize_script( 'jquery-ui-autocomplete', 'availablePlaces',
+            array(
+                'list'      => $simplePlaces,
+                'default'   => $defaultPlace
+            )
+        );
+
+        echo "<script type='text/javascript'>
+        $ = jQuery;
+        $(document).ready(function() {
+            var selector = '#autocompleteLocation';
+            var hiddenSelector = '#autocompleteLocationHidden';
+            
+            // Default label and value
+            if( availablePlaces.default.hasOwnProperty( 'ID' ) ){
+                $(selector).val( availablePlaces.default.post_title );
+                $(hiddenSelector).val( availablePlaces.default.ID );
+            }
+            
+            // Init autocomplete
+            $(selector).autocomplete({
+                minLength: 0,
+                source: availablePlaces.list,
+                select: function( event, ui ){
+                    // Display label but store value in the hidden <input>
+                    event.preventDefault();
+                    $(selector).val( ui.item.label );
+                    $(hiddenSelector).val( ui.item.value );
+                },
+                focus: function( event, ui ) {
+                    // Do not show values instead of the label
+                    event.preventDefault();
+                    $(selector).val(ui.item.label);
+                }
+            });
+        });
+        </script>";
+    } else {
+        echo __('No Place entities found.', 'wordlift');
     }
-    
-    
-    echo "<script type='text/javascript'>
-    $ = jQuery;
-    $(document).ready(function() {
-        console.log('yeah');
-    });
-    </script>";
 }
 
 /**
@@ -257,16 +312,17 @@ function wl_event_entity_type_save_location($post_id) {
     // Verify that the nonce is valid.
     if ( !wp_verify_nonce( $nonce, 'wordlift_event_location_entity_box' ) )
         return $post_id;
-
+    
     // save the Event start and end date
     if ( isset( $_POST[WL_CUSTOM_FIELD_LOCATION] ) ) {
         $location = $_POST[WL_CUSTOM_FIELD_LOCATION];
     }
     if ( isset( $location ) && is_numeric( $location ) ) {
         update_post_meta( $post_id, WL_CUSTOM_FIELD_LOCATION, $location );
+    } else {
+        delete_post_meta( $post_id, WL_CUSTOM_FIELD_LOCATION );
     }
 }
-
 add_action( 'wordlift_save_post', 'wl_event_entity_type_save_location' );
 
 
