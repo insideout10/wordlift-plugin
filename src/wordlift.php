@@ -925,13 +925,7 @@ function wl_install_entity_type_data()
             'microdata_template' =>
                 '<span itemprop="startDate" content="{{startDate}}"></span>
                 <span itemprop="endDate" content="{{endDate}}"></span>
-                <span itemprop="location" itemscope itemtype="http://schema.org/Place">
-                    <span itemprop="address" itemtype="http://schema.org/PostalAddress" content="Via del Pino, 12"></span>
-                    <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-                        <span itemprop="latitude" content="{{latitude}}"></span>
-                        <span itemprop="longitude" content="{{longitude}}"></span>
-                    </span>
-                </span>',
+                "{{location}}"',
             'templates' => array(
                 'subtitle' => '{{id}}'
             )

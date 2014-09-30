@@ -150,6 +150,8 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
         $value = wl_get_meta_value( $match[1], $id );
         
         if( !is_null( $value ) ) {
+            // What kind of value is it? simple --> write it; entity --> recursion
+            
             // TODO: Could be more than one...
             $value = $value[0];
             $template = str_replace( $match[0], $value, $template );
