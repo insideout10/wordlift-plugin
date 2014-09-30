@@ -48,7 +48,7 @@ function wl_entity_type_taxonomy_register()
 function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $export_fields = array() )
 {
     wl_write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
-
+    
     return update_option(WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id", array(
         'css_class'     => $css_class,
         'uri'           => $uri,

@@ -874,13 +874,19 @@ add_filter('content_save_pre', 'wl_replace_item_id_with_uri', 1, 1);
  */
 function wl_install_entity_type_data()
 {
-
-    wl_write_log('wl_install_entity_type_data');
-
+    
     // Ensure the custom type and the taxonomy are registered.
     wl_entity_type_register();
     wl_entity_type_taxonomy_register();
-
+    
+    // Delete all custom terms for this taxonomy
+    //$terms = get_terms(WL_ENTITY_TYPE_TAXONOMY_NAME);
+    //wl_write_log( 'piedo' . var_dump($terms));
+    //foreach ($terms as $term) {
+    //    wl_write_log( 'piedo' . $term );
+    //    wp_delete_term( $term->term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+    //}
+    
     // Set the taxonomy data.
     $terms = array(
         'creative-work' => array(
@@ -907,7 +913,8 @@ function wl_install_entity_type_data()
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
                 WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate',
-                WL_CUSTOM_FIELD_LOCATION       => 'location'
+                WL_CUSTOM_FIELD_LOCATION       => 'location',
+                'wl_ciao'       => 'ciaoooo'
             ),
             'export_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => array(
@@ -925,8 +932,8 @@ function wl_install_entity_type_data()
             ),
             'templates' => array(
                 'subtitle' => '{{id}}'
-                ),              
-    
+            ),              
+            'microdata_template' => 'template'
         ),
         'organization' => array(
             'label' => 'Organization',
@@ -1001,20 +1008,28 @@ function wl_install_entity_type_data()
                 ),
         )
     );
-
+    
     foreach ($terms as $slug => $term) {
-
-        // Create the term.
-        $result = wp_insert_term($term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
-            'description' => $term['description'],
-            'slug' => $slug
-        ));
-
+        
+        // Create the term if it does not exist.
+        $term_id = term_exists( $term['label'] );
+        if( $term_id == 0 || is_null( $term_id ) ) {
+            $result = wp_insert_term( $term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+                'description' => $term['description'],
+                'slug' => $slug
+            ));
+        } else {
+            $result = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
+        }
+        
+        // Check for errors.
         if (is_wp_error($result)) {
             wl_write_log('wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]');
             continue;
         }
+
         // Add custom metadata to the term.
+        wl_write_log( $term['custom_fields'] );
         wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'] );
     }
 }
@@ -1047,6 +1062,7 @@ function wl_plugins_url($url, $path, $plugin)
 add_filter('plugins_url', 'wl_plugins_url', 10, 3);
 
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
+add_action('init', 'wl_install_entity_type_data');
 
 require_once('libs/php-json-ld/jsonld.php');
 
