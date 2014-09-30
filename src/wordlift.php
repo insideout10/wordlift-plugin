@@ -879,14 +879,6 @@ function wl_install_entity_type_data()
     wl_entity_type_register();
     wl_entity_type_taxonomy_register();
     
-    // Delete all custom terms for this taxonomy
-    //$terms = get_terms(WL_ENTITY_TYPE_TAXONOMY_NAME);
-    //wl_write_log( 'piedo' . var_dump($terms));
-    //foreach ($terms as $term) {
-    //    wl_write_log( 'piedo' . $term );
-    //    wp_delete_term( $term->term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
-    //}
-    
     // Set the taxonomy data.
     $terms = array(
         'creative-work' => array(
@@ -913,8 +905,7 @@ function wl_install_entity_type_data()
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
                 WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate',
-                WL_CUSTOM_FIELD_LOCATION       => 'location',
-                'wl_ciao'       => 'ciaoooo'
+                WL_CUSTOM_FIELD_LOCATION       => 'location'
             ),
             'export_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => array(
@@ -1029,7 +1020,6 @@ function wl_install_entity_type_data()
         }
 
         // Add custom metadata to the term.
-        wl_write_log( $term['custom_fields'] );
         wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'] );
     }
 }

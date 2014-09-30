@@ -223,21 +223,6 @@ function wl_event_entities_location_box_content( $post ) {
     ); 
     $places = get_posts( $args );
     
-//    // Write HTML <select>
-//    if( count( $places ) > 0 ) {
-//        echo '<label for="' . WL_CUSTOM_FIELD_LOCATION . '">' . __('Location', 'wordlift') . '</label>';
-//        echo '<select name="' . WL_CUSTOM_FIELD_LOCATION . '" style="width:100%" />';
-//        
-//        // Default value
-//        echo '<option value="' . $defaultPlace->ID . '">' . $defaultPlace->post_title . '</option>';
-//        foreach( $places as $place ) {
-//            // Loop over options
-//            echo '<option value="' . $place->ID . '">' . $place->post_title . '</option>';
-//        }
-//        
-//        echo '</select>';
-//    }
-    
     // Write HTML
     if( count( $places ) > 0 ) {
         // Input to show the options
@@ -298,6 +283,13 @@ function wl_event_entities_location_box_content( $post ) {
     } else {
         echo __('No Place entities found.', 'wordlift');
     }
+    
+    
+    $terms = wp_get_object_terms( $post->ID, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+        'fields' => 'ids'
+    ) );
+    // Return the entity type with the specified id.
+    var_dump( wl_entity_type_taxonomy_get_term_options($terms[0] ));
 }
 
 /**

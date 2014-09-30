@@ -95,6 +95,7 @@ function wl_content_embed_item_microdata( $content, $uri ) {
     }
 
     // Get the additional properties.
+    // TODO: this part shoud be templated
     $additional_properties = '';
     if ( isset( $main_type['custom_fields'] ) ) {
         foreach ($main_type['custom_fields'] as $key => $prop) {
