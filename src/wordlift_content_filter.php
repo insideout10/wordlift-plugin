@@ -97,15 +97,16 @@ function wl_content_embed_item_microdata( $content, $uri ) {
     // Get the additional properties.
     // TODO: this part shoud be templated
     $additional_properties = '';
-    if ( isset( $main_type['custom_fields'] ) ) {
-        foreach ($main_type['custom_fields'] as $key => $prop) {
-            wl_write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
-            $values = get_post_meta( $post->ID, $key );
-            foreach ( $values as $value ) {
-                $additional_properties .= '<meta itemprop="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ). '" />';
-            }
-        }
-    }
+//    if ( isset( $main_type['custom_fields'] ) ) {
+//        foreach ($main_type['custom_fields'] as $key => $prop) {
+//            wl_write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
+//            $values = get_post_meta( $post->ID, $key );
+//            foreach ( $values as $value ) {
+//                $additional_properties .= '<meta itemprop="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ). '" />';
+//            }
+//        }
+//    }
+    $additional_properties .= wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );
 
     // Get the entity URL.
     $url = '<link itemprop="url" href="' . get_permalink( $post->ID ) . '" />';
@@ -126,4 +127,35 @@ function wl_content_embed_item_microdata( $content, $uri ) {
     return $content;
 }
 add_filter('the_content', 'wl_content_embed_microdata');
+
+/**
+ * Fills up the microdata_template with entity's values.
+ * @param string $id An entity ID.
+ * @param string $template Microdata template.
+ * @return string The content with embedded microdata.
+ */
+function wl_content_embed_compile_microdata_template( $id, $template ) {
+
+    $regex   = '/"{{(.*)}}"/';
+    $matches = array();
+
+    // Return empty string if template fields have not been found.
+    if ( false === preg_match_all( $regex, $template, $matches, PREG_SET_ORDER ) ) {
+        return '';
+    }
+
+    foreach ( $matches as $match ) {
+        
+        // Get property value.
+        $value = wl_get_meta_value( $match[1], $id );
+        
+        if( !is_null( $value ) ) {
+            // TODO: Could be more than one...
+            $value = $value[0];
+            $template = str_replace( $match[0], $value, $template );
+        }
+    }
+    
+    return $template;
+}
 

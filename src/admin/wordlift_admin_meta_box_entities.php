@@ -283,13 +283,6 @@ function wl_event_entities_location_box_content( $post ) {
     } else {
         echo __('No Place entities found.', 'wordlift');
     }
-    
-    
-    $terms = wp_get_object_terms( $post->ID, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
-        'fields' => 'ids'
-    ) );
-    // Return the entity type with the specified id.
-    var_dump( wl_entity_type_taxonomy_get_term_options($terms[0] ));
 }
 
 /**

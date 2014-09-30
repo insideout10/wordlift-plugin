@@ -892,9 +892,10 @@ function wl_install_entity_type_data()
             ),
             'custom_fields' => array(),
             'export_fields' => array(),
+            'microdata_template' => '',
             'templates' => array(
                 'subtitle' => '{{id}}'
-                ),              
+            )              
         ),
         'event' => array(
             'label' => 'Event',
@@ -921,10 +922,19 @@ function wl_install_entity_type_data()
                     'type'      => 'http://schema.org/Place'
                 )
             ),
+            'microdata_template' =>
+                '<span itemprop="startDate" content="{{startDate}}"></span>
+                <span itemprop="endDate" content="{{endDate}}"></span>
+                <span itemprop="location" itemscope itemtype="http://schema.org/Place">
+                    <span itemprop="address" itemtype="http://schema.org/PostalAddress" content="Via del Pino, 12"></span>
+                    <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                        <span itemprop="latitude" content="{{latitude}}"></span>
+                        <span itemprop="longitude" content="{{longitude}}"></span>
+                    </span>
+                </span>',
             'templates' => array(
                 'subtitle' => '{{id}}'
-            ),              
-            'microdata_template' => 'template'
+            )
         ),
         'organization' => array(
             'label' => 'Organization',
@@ -938,9 +948,10 @@ function wl_install_entity_type_data()
             ),
             'custom_fields' => array(),
             'export_fields' => array(),
+            'microdata_template' => '',
             'templates' => array(
                 'subtitle' => '{{id}}'
-                ),             
+            )            
         ),
         'person' => array(
             'label' => 'Person',
@@ -954,10 +965,10 @@ function wl_install_entity_type_data()
             ),
             'custom_fields' => array(),
             'export_fields' => array(),
+            'microdata_template' => '',
             'templates' => array(
                 'subtitle' => '{{id}}'
-                ),             
-    
+            )
         ),
         'place' => array(
             'label' => 'Place',
@@ -982,9 +993,14 @@ function wl_install_entity_type_data()
                     'type'      => 'xsd:double'
                 )
             ),
+            'microdata_template' =>
+                '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                    <span itemprop="latitude" content="{{latitude}}"></span>
+                    <span itemprop="longitude" content="{{longitude}}"></span>
+                </span>',
             'templates' => array(
                 'subtitle' => '{{id}}'
-                ),
+            )
         ),
         'thing' => array(
             'label' => 'Thing',
@@ -994,9 +1010,10 @@ function wl_install_entity_type_data()
             'same_as' => array('*'), // set as default.
             'custom_fields' => array(),
             'export_fields' => array(),
+            'microdata_template' => '',
             'templates' => array(
                 'subtitle' => '{{id}}'
-                ),
+            )
         )
     );
     
@@ -1020,7 +1037,7 @@ function wl_install_entity_type_data()
         }
 
         // Add custom metadata to the term.
-        wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'] );
+        wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'], $term['microdata_template'] );
     }
 }
 

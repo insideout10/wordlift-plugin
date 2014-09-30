@@ -43,9 +43,10 @@ function wl_entity_type_taxonomy_register()
  * @param array $custom_fields An array of custom fields and their properties mapping.
  * @param array $templates
  * @param array $export_fields An array of fields to be exported to the triple store.
+ * @param array $microdata_template A template string to print microdata on the frontend.
  * @return True if option value has changed, false if not or if update failed.
  */
-function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $export_fields = array() )
+function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $export_fields = array(), $microdata_template = array() )
 {
     wl_write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
     
@@ -55,7 +56,8 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
         'same_as'       => $same_as,
         'custom_fields' => $custom_fields,
         'templates'     => $templates,
-        'export_fields' => $export_fields
+        'export_fields' => $export_fields,
+        'microdata_template' => $microdata_template
     ) );
 }
 
