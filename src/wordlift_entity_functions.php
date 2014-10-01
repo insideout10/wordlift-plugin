@@ -347,3 +347,27 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
         }
     }
 }
+
+/**
+ * Retrieve entity property type, starting from the schema.org's property name 
+ * This function is used to compile microdata templates.
+ * @param $property_name as defined by schema.org
+ * @return array containing type(s) or null (in case of error or no types).
+ */
+function wl_get_meta_type( $property_name ) {
+    
+    // Property name must be defined.
+    if( !isset( $property_name ) || is_null( $property_name ) ){
+        return null;
+    }
+    
+    $terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME );
+    foreach( $terms as $term ) {
+        $terms_opstions = wl_entity_type_taxonomy_get_term_options( $term->term_id );
+        $fields = $terms_opstions['custom_fields'];
+        foreach( $fields as $field ) {
+            var_dump($field);
+        }
+    }
+    return 'a';
+}

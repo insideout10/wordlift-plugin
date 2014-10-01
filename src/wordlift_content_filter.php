@@ -151,6 +151,8 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
         
         if( !is_null( $value ) ) {
             // What kind of value is it? simple --> write it; entity --> recursion
+            // First, get 
+            echo wl_get_meta_type('zuuu');
             
             // TODO: Could be more than one...
             $value = $value[0];
@@ -160,4 +162,3 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
     
     return $template;
 }
-
