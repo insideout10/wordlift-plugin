@@ -149,7 +149,7 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
         // Get property value.
         $value = wl_get_meta_value( $match[1], $id );
         
-        if( !is_null( $value ) ) {
+        if( !is_null( $value ) && !empty( $value ) ) {
             // What kind of value is it? simple --> write it; entity --> recursion
             // First, get 
             echo wl_get_meta_type('zuuu');

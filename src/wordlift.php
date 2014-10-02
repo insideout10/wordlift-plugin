@@ -904,9 +904,21 @@ function wl_install_entity_type_data()
             'uri' => 'http://schema.org/Event',
             'same_as' => array('http://dbpedia.org/ontology/Event'),
             'custom_fields' => array(
-                WL_CUSTOM_FIELD_CAL_DATE_START => 'startDate',
-                WL_CUSTOM_FIELD_CAL_DATE_END   => 'endDate',
-                WL_CUSTOM_FIELD_LOCATION       => 'location'
+                WL_CUSTOM_FIELD_CAL_DATE_START => array(
+                    'predicate'     => 'startDate',
+                    'type'          => 'date',
+                    'constraints'   => ''
+                ),
+                WL_CUSTOM_FIELD_CAL_DATE_END   => array(
+                    'predicate'     => 'endDate',
+                    'type'          => 'date',
+                    'constraints'   => ''
+                ),
+                WL_CUSTOM_FIELD_LOCATION       => array(
+                    'predicate'     => 'location',
+                    'type'          => 'uri',
+                    'constraints'   => ''
+                )
             ),
             'export_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => array(
@@ -974,8 +986,16 @@ function wl_install_entity_type_data()
                 'http://www.opengis.net/gml/_Feature'
             ),
             'custom_fields' => array(
-                WL_CUSTOM_FIELD_GEO_LATITUDE => 'latitude',
-                WL_CUSTOM_FIELD_GEO_LONGITUDE   => 'longitude'
+                WL_CUSTOM_FIELD_GEO_LATITUDE    => array(
+                    'predicate'     => 'latitude',
+                    'type'          => 'double',
+                    'constraints'   => ''
+                ),
+                WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
+                    'predicate'     => 'longitude',
+                    'type'          => 'double',
+                    'constraints'   => ''
+                )
             ),
             'export_fields' => array(
                 WL_CUSTOM_FIELD_GEO_LATITUDE => array(

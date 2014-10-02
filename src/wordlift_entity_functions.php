@@ -341,11 +341,12 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
     $term_info = wl_entity_type_taxonomy_get_term_options( $terms[0]->term_id );
     $term_mapping =  $term_info['custom_fields'];
     
-    foreach( $term_mapping as $wl_constant => $schema_name) {
-        if( $schema_name == $property_name ) {
+    foreach( $term_mapping as $wl_constant => $property_info) {
+        if( isset( $property_info['predicate'] ) && $property_info['predicate'] == $property_name ) {
             return get_post_meta( $entity_id, $wl_constant );
         }
     }
+    return null;
 }
 
 /**
