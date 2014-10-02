@@ -3,6 +3,9 @@
  * This file contains miscellaneous admin-functions.
  */
 
+// Add the Admin menu.
+require_once( 'wordlift_admin_menu.php' );
+
 /**
  * Serialize an entity post.
  * @param array $entity The entity post.

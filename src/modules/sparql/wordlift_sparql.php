@@ -11,16 +11,16 @@ License: APL
 */
 
 // Include constants.
-require_once( 'wordlift_sparql_constants.php' );
+require_once('wordlift_sparql_constants.php');
 
 // Include the SPARQL Query entity type.
-require_once( 'wordlift_sparql_entity_type.php' );
+require_once('wordlift_sparql_entity_type.php');
 
 // Include the SPARQL Query metabox.
-require_once( 'wordlift_sparql_meta_box.php' );
+require_once('wordlift_sparql_meta_box.php');
 
 // Include the SPARQL Ajax.
-require_once( 'wordlift_sparql_ajax.php' );
+require_once('wordlift_sparql_ajax.php');
 
 
 /**

@@ -4,7 +4,7 @@
  * For more information, see http://codex.wordpress.org/Class_Reference/WP_Rewrite
  */
 
-define( 'WL_REWRITE_RULE_PATTERN', '_/([^/]+)/[^/]+/([^/]+)' );
+define( 'WL_REWRITE_RULE_PATTERN', '_/([^/]+)/[^/]+/(.+)$' );
 
 /**
  * Flush the rules if our own rules is not there yet.

@@ -1043,9 +1043,11 @@ require_once('wordlift_content_filter.php');
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
+require_once('modules/prefixes/wordlift_prefixes.php');
+
 // Shortcodes
-require_once( 'entity_view/wordlift_entity_view.php' );
-require_once( 'geo_widget/wordlift_geo_widget.php' );
+require_once('modules/entity_view/wordlift_entity_view.php');
+require_once('modules/geo_widget/wordlift_geo_widget.php');
 require_once('shortcodes/wordlift_shortcode_related_posts.php');
 require_once('shortcodes/wordlift_shortcode_chord.php');
 require_once('shortcodes/wordlift_shortcode_timeline.php');
@@ -1065,7 +1067,7 @@ require_once('widgets/wordlift_widget_timeline.php');
 require_once('wordlift_sparql.php');
 require_once('wordlift_redlink.php');
 
-require_once('sparql/wordlift_sparql.php');
+require_once('modules/sparql/wordlift_sparql.php');
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.
