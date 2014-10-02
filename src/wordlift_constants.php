@@ -82,13 +82,15 @@ define( 'WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE', 'wl_entity_display_as_s
  * @return array An array of prefixes and URIs
  */
 function wl_prefixes() {
-    return array(
-        'geo'    => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
-        'dct'    => 'http://purl.org/dc/terms/',
-        'rdfs'   => 'http://www.w3.org/2000/01/rdf-schema#',
-        'owl'    => 'http://www.w3.org/2002/07/owl#',
-        'schema' => 'http://schema.org/'
-    );
+
+    $items    = wl_prefixes_list();
+    $prefixes = array();
+
+    foreach ( $items as $item ) {
+        $prefixes[$item['prefix']] = $item['namespace'];
+    }
+
+    return $prefixes;
 }
 
 /**

@@ -124,7 +124,8 @@ function wl_jsonld_get_property( $graph, $name, $language = null )
             $graph = wl_jsonld_load_remote( $value );
         }
 
-        $value = wl_jsonld_get_property_value( $graph, $key, $language );
+        $key_exp = wl_prefixes_expand( $key );
+        $value   = wl_jsonld_get_property_value( $graph, $key_exp, $language );
 
 //        echo $key . '@' . $language . ' = ' . $value . '<br />';
 
