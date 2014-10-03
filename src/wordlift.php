@@ -935,9 +935,9 @@ function wl_install_entity_type_data()
                 )
             ),
             'microdata_template' =>
-                '<span itemprop="startDate" content="{{startDate}}"></span>
-                <span itemprop="endDate" content="{{endDate}}"></span>
-                "{{location}}"',
+                '{{startDate}}
+                {{endDate}}
+                {{location}}',
             'templates' => array(
                 'subtitle' => '{{id}}'
             )
@@ -1009,8 +1009,8 @@ function wl_install_entity_type_data()
             ),
             'microdata_template' =>
                 '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-                    <span itemprop="latitude" content="{{latitude}}"></span>
-                    <span itemprop="longitude" content="{{longitude}}"></span>
+                    {{latitude}}
+                    {{longitude}}
                 </span>',
             'templates' => array(
                 'subtitle' => '{{id}}'

@@ -131,7 +131,7 @@ add_filter('the_content', 'wl_content_embed_microdata');
  */
 function wl_content_embed_compile_microdata_template( $id, $template ) {
 
-    $regex   = '/"{{(.*)}}"/';
+    $regex   = '/{{(.*)}}/';
     $matches = array();
 
     // Return empty string if template fields have not been found.
@@ -169,11 +169,11 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
                 $nested_entity_name = wl_get_entity_post_by_uri( $nested_entity_uri )->post_title;
                 
                 $sub_content = '<span itemid="' . esc_attr( $nested_entity_uri ) . '">' . esc_attr( $nested_entity_name ) . '</span>';
-                $compiled_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $match[1] );
-                $template = str_replace( $match[0], $compiled_template, $template );
+                $sub_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $match[1] );
+                $template = str_replace( $match[0], $sub_template, $template );
             } else {
                 // Field contains a raw value
-                $value = $value[0];
+                $value = '<span itemprop="' . esc_attr( $match[1] ) . '" content="' . esc_attr( $value[0] ) . '"></span>';
                 $template = str_replace( $match[0], $value, $template );
             }
         }
