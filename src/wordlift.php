@@ -1044,6 +1044,7 @@ require_once('wordlift_content_filter.php');
 require_once('wordlift_to_redlink_data_push_callbacks.php');
 
 require_once('modules/prefixes/wordlift_prefixes.php');
+require_once('modules/caching/wordlift_caching.php');
 
 // Shortcodes
 require_once('modules/entity_view/wordlift_entity_view.php');

@@ -40,7 +40,8 @@ function wl_ajax_sparql() {
 	));
 
 	// Send the request.
-	$response = wp_remote_post( $url, $args );
+//	$response = wp_remote_post( $url, $args );
+    $response = wl_caching_remote_request( $url, $args );
 
 	// If an error has been raised, return the error.
 	if ( is_wp_error( $response ) || 200 !== (int)$response['response']['code'] ) {
