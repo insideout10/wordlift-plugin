@@ -55,9 +55,10 @@ function _wl_content_embed_microdata( $post_id , $content) {
  * Embed the entity properties as microdata in the content.
  * @param string $content A content.
  * @param string $uri An entity URI.
+ * @param (optional) string $itemprop Specifies which property this entity is for another entity. Useful for recursive markup. 
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_item_microdata( $content, $uri ) {
+function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
 
     $post = wl_get_entity_post_by_uri( $uri );
 
@@ -89,36 +90,30 @@ function wl_content_embed_item_microdata( $content, $uri ) {
         $item_type = ' itemtype="' . esc_attr($main_type['uri']) . '"';
 
         // Append the stylesheet if the enable color coding flag is set to true.
-        if ( wl_config_get_enable_color_coding_of_entities_on_frontend() ) {
+        if ( wl_config_get_enable_color_coding_of_entities_on_frontend() && is_null( $itemprop ) ) {
             $item_type .= ' class="' . esc_attr( $main_type['css_class'] ) . '"';
         }
     }
 
-    // Get the additional properties.
-    // TODO: this part shoud be templated
-    $additional_properties = '';
-//    if ( isset( $main_type['custom_fields'] ) ) {
-//        foreach ($main_type['custom_fields'] as $key => $prop) {
-//            wl_write_log( "_wl_content_embed_microdata [ key :: $key ][ prop :: $prop ]" );
-//            $values = get_post_meta( $post->ID, $key );
-//            foreach ( $values as $value ) {
-//                $additional_properties .= '<meta itemprop="' . esc_attr( $prop ) . '" content="' . esc_attr( $value ). '" />';
-//            }
-//        }
-//    }
-    $additional_properties .= wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );
+    // Get the additional properties (this may imply a recursion of this method on a sub-entity).
+    $additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );
 
     // Get the entity URL.
     $url = '<link itemprop="url" href="' . get_permalink( $post->ID ) . '" />';
-
+    
+    // Define attribute itemprop if this entity is nested.
+    if( !is_null( $itemprop ) ) {
+        $itemprop = ' itemprop="' . $itemprop . '"';
+    }
+    
     // Replace the original tagging with the new tagging.
     $regex = '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';
     $content = preg_replace($regex,
-        '<$1 itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
+        '<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
         . $same_as
         . $additional_properties
         . $url
-        . '<span itemprop="name">$2</span></$1>',
+        . '<span itemprop="name" content=$2>' . ( is_null( $itemprop )? '$2':'' ) . '</span></$1>',    //Only print name inside <span> for top-level entities
         $content
     );
 
@@ -150,13 +145,37 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
         $value = wl_get_meta_value( $match[1], $id );
         
         if( !is_null( $value ) && !empty( $value ) ) {
-            // What kind of value is it? simple --> write it; entity --> recursion
-            // First, get 
-            echo wl_get_meta_type('zuuu');
+            // What kind of value is it?
+            $expected_type = wl_get_meta_type( $match[1] );
             
-            // TODO: Could be more than one...
-            $value = $value[0];
-            $template = str_replace( $match[0], $value, $template );
+            if( $expected_type == 'uri' ) {
+                // Field contains a reference to other entities.
+                // TODO: Could be more than one...
+                $value = $value[0];
+                
+                // We expect value to be a uri or an entity ID.
+                if( !is_numeric( $value ) ) {
+                    // Found uri.
+                    $nested_entity_uri = $value;
+                    
+                    // TODO: Is the uri local?
+                    // TODO: manage external entities.
+                } else {
+                    // Found id, get uri.
+                    $nested_entity_uri = wl_get_entity_uri( $value );
+                }
+                
+                // TODO: check for errors
+                $nested_entity_name = wl_get_entity_post_by_uri( $nested_entity_uri )->post_title;
+                
+                $sub_content = '<span itemid="' . esc_attr( $nested_entity_uri ) . '">' . esc_attr( $nested_entity_name ) . '</span>';
+                $compiled_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $match[1] );
+                $template = str_replace( $match[0], $compiled_template, $template );
+            } else {
+                // Field contains a raw value
+                $value = $value[0];
+                $template = str_replace( $match[0], $value, $template );
+            }
         }
     }
     

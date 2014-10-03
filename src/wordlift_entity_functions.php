@@ -362,13 +362,32 @@ function wl_get_meta_type( $property_name ) {
         return null;
     }
     
+    // Get taxonomy terms
     $terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME );
     foreach( $terms as $term ) {
+        
+        // Get custom_fields
         $terms_opstions = wl_entity_type_taxonomy_get_term_options( $term->term_id );
         $fields = $terms_opstions['custom_fields'];
+        
+        // Loop over custom_fields
         foreach( $fields as $field ) {
-            var_dump($field);
+            // Is this the predicate we are searching for?
+            if( isset( $field['type'] ) && isset( $field['predicate'] ) && $field['predicate'] == $property_name ) {
+                return $field['type'];
+            }
         }
     }
-    return 'a';
+    return null;
+}
+
+/**
+ * Retrieve entity property constraints, starting from the schema.org's property name 
+ * This function is used to build editor metaboxes for entities.
+ * @param $property_name as defined by schema.org
+ * @return array containing constraint(s) or null (in case of error or no constraint).
+ */
+function wl_get_meta_constraints( ) {
+    // TODO.
+    return 'TODO: write wl_get_meta_constraints()';
 }
