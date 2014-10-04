@@ -13,7 +13,8 @@ function wl_entity_view_flush_rules() {
 
     $rules = get_option( 'rewrite_rules' );
 
-    if ( WP_DEBUG || ! isset( $rules[WL_REWRITE_RULE_PATTERN] ) ) {
+    // TODO: manage rules update.
+    if ( ! isset( $rules[WL_REWRITE_RULE_PATTERN] ) ) {
         global $wp_rewrite;
         $wp_rewrite->flush_rules();
     }

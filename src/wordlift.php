@@ -12,32 +12,57 @@ License: APL
 // Include WordLift constants.
 require_once('wordlift_constants.php');
 
-// Create the *wl_write_log* function to allow logging to the debug.log file.
+/**
+ * Log to the debug.log file.
+ *
+ * @since 3.0.0
+ *
+ * @uses wl_write_log_handler to write the log output.
+ *
+ * @param string|mixed $log The log data.
+ */
 function wl_write_log( $log )
 {
 
-    $handler = apply_filters( 'wl_write_log_handler', null );
+    $handler          = apply_filters( 'wl_write_log_handler', null );
+
+    $callers          = debug_backtrace();
+    $caller_function  = $callers[1]['function'];
 
     if ( is_null( $handler ) ) {
-        return wl_write_log_handler( $log );
+        wl_write_log_handler( $log, $caller_function );
+        return;
     }
 
-    call_user_func( $handler, $log );
+    call_user_func( $handler, $log, $caller_function );
 }
 
-function wl_write_log_handler( $log ) {
+/**
+ * The default log handler prints out the log.
+ *
+ * @since 3.0.0
+ *
+ * @param string|array $log The log data.
+ * @param string $caller    The calling function.
+ */
+function wl_write_log_handler( $log, $caller = null ) {
+
     if ( true === WP_DEBUG ) {
         if ( is_array( $log ) || is_object( $log ) ) {
-            error_log( print_r( $log, true ) );
+            error_log( "[ $caller ] " . print_r( $log, true ) );
         } else {
-            error_log( $log );
+            error_log( "[ $caller ] " . $log );
         }
     }
+
 }
 
 
 /**
  * Write the query to the buffer file.
+ *
+ * @since 3.0.0
+ *
  * @param string $query A SPARQL query.
  */
 function wl_queue_sparql_update_query( $query )
@@ -722,17 +747,27 @@ function wl_set_source_url($post_id, $source_url)
 }
 
 
-function wl_flush_rewrite_rules_hard($hard)
+/**
+ * This function is called by the *flush_rewrite_rules_hard* hook. It recalculates the URI for all the posts.
+ *
+ * @since 3.0.0
+ *
+ * @uses rl_sparql_prefixes to get the SPARQL prefixes.
+ * @uses wordlift_esc_sparql to escape the SPARQL query.
+ * @uses wl_get_entity_uri to get an entity URI.
+ * @uses rl_execute_sparql_update_query to post the DELETE and INSERT queries.
+ *
+ * @param bool $hard True if the rewrite involves configuration updates in Apache/IIS.
+ */
+function wl_flush_rewrite_rules_hard( $hard )
 {
 
-    wl_write_log("wl_flush_rewrite_rules_hard [ hard :: $hard ]");
-
     // Get all published posts.
-    $posts = get_posts(array(
+    $posts = get_posts( array(
         'posts_per_page' => -1,
-        'post_type' => 'any',
-        'post_status' => 'publish'
-    ));
+        'post_type'      => 'any',
+        'post_status'    => 'publish'
+    ) );
 
     // Holds the delete part of the query.
     $delete_query = rl_sparql_prefixes();
@@ -740,29 +775,32 @@ function wl_flush_rewrite_rules_hard($hard)
     $insert_query = 'INSERT DATA { ';
 
     // Cycle in each post to build the query.
-    foreach ($posts as $post) {
+    foreach ( $posts as $post ) {
 
         // Ignore revisions.
-        if (wp_is_post_revision($post->ID)) {
+        if ( wp_is_post_revision( $post->ID ) ) {
             continue;
         }
 
-        $uri = wordlift_esc_sparql(wl_get_entity_uri($post->ID));
-        $url = wordlift_esc_sparql(get_permalink($post->ID));
+        // Get the entity URI.
+        $uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
 
+        // Get the post URL.
+        $url = wordlift_esc_sparql( get_permalink( $post->ID ) );
+
+        // Prepare the DELETE and INSERT commands.
         $delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
         $insert_query .= " <$uri> schema:url <$url> . \n";
 
-        wl_write_log("wl_flush_rewrite_rules_hard [ uri :: $uri ][ url :: $url ]");
+        // wl_write_log( "[ uri :: $uri ][ url :: $url ]" );
     }
 
     $insert_query .= ' };';
 
     // Execute the query.
-    rl_execute_sparql_update_query($delete_query . $insert_query);
+    rl_execute_sparql_update_query( $delete_query . $insert_query );
 }
-
-add_filter('flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1);
+add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
@@ -1045,6 +1083,7 @@ require_once('wordlift_to_redlink_data_push_callbacks.php');
 
 require_once('modules/prefixes/wordlift_prefixes.php');
 require_once('modules/caching/wordlift_caching.php');
+require_once('modules/profiling/wordlift_profiling.php');
 
 // Shortcodes
 require_once('modules/entity_view/wordlift_entity_view.php');

@@ -234,3 +234,18 @@ function wl_caching_delete_file( $filename ) {
     }
 
 }
+
+
+/**
+ * Determines whether a response is cached.
+ *
+ * @since 3.0.0
+ *
+ * @param array $response The response structure.
+ * @return bool True if cached otherwise false.
+ */
+function wl_caching_response_is_cached( $response ) {
+
+    return ( is_array( $response ) && isset( $response['wl_cached'] ) && true === $response['wl_cached'] );
+
+}

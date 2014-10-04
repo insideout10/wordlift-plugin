@@ -22,7 +22,7 @@ function wl_ajax_sparql() {
 	$query   = wl_sparql_replace_params( wl_sparql_get_query_by_slug( $slug ), $_GET );
 
     // Print out the query if the debug flag is set.
-    if ( 1 == $_GET['_debug'] ) {
+    if ( isset( $_GET['_debug'] ) && 1 == $_GET['_debug'] ) {
         wp_die( $query );
     }
 
@@ -39,9 +39,15 @@ function wl_ajax_sparql() {
 		'body'    => array( 'query'  => $query )
 	));
 
-	// Send the request.
-//	$response = wp_remote_post( $url, $args );
-    $response = wl_caching_remote_request( $url, $args );
+	// Send the request. Raise actions before and after the request is being sent.
+    do_action( 'wl_sparql_pre_request', $url, $args );
+
+    // Send the request via caching if the module is available.
+    $response = ( function_exists( 'wl_caching_remote_request' )
+        ? wl_caching_remote_request( $url, $args )
+        : wp_remote_post( $url, $args ) );
+
+    do_action( 'wl_sparql_post_request', $url, $args, $response );
 
 	// If an error has been raised, return the error.
 	if ( is_wp_error( $response ) || 200 !== (int)$response['response']['code'] ) {

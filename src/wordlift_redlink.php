@@ -186,6 +186,11 @@ function rl_sparql_select($query, $accept = 'text/csv')
 
 /**
  * Execute a query on Redlink.
+ *
+ * @since 3.0.0
+ *
+ * @uses wl_queue_sparql_update_query to queue a query if query buffering is on.
+ *
  * @param string $query The query to execute.
  * @param bool $queue Whether to queue the update.
  * @return bool True if successful otherwise false.
@@ -193,11 +198,15 @@ function rl_sparql_select($query, $accept = 'text/csv')
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING )
 {
 
-    wl_write_log("rl_execute_sparql_update_query [ queue :: " . ($queue ? 'true' : 'false') . " ]");
+    // Get the calling function for debug purposes.
+    $callers          = debug_backtrace();
+    $calling_function = $callers[1]['function'];
+    wl_write_log( "[ calling function :: $calling_function ][ queue :: " . ( $queue ? 'true' : 'false' ) . ' ]' );
 
     // Queue the update query.
     if ( $queue ) {
-        return wl_queue_sparql_update_query( $query );
+        wl_queue_sparql_update_query( $query );
+        return true;
     }
 
     // Get the update end-point.

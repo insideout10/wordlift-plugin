@@ -45,22 +45,22 @@ class PrefixesTest extends WP_UnitTestCase
         wl_caching_delete( $hash_3 );
 
         $response_0 = wl_caching_remote_request( $url, $args );
-        $this->assertArrayNotHasKey( 'wl_cached', $response_0 );
+        $this->assertFalse( wl_caching_response_is_cached( $response_0 ) );
 
         $response_1 = wl_caching_remote_request( $url, $args );
-        $this->assertArrayHasKey( 'wl_cached', $response_1 );
+        $this->assertTrue( wl_caching_response_is_cached( $response_1 ) );
 
         // Force refreshing the cache.
         $response_refresh = wl_caching_remote_request( $url, $args, true );
-        $this->assertArrayNotHasKey( 'wl_cached', $response_refresh );
+        $this->assertFalse( wl_caching_response_is_cached( $response_refresh ) );
 
         // Try another request and see that the response is not cached.
         $response_2 = wl_caching_remote_request( 'http://example.org/2', $args );
-        $this->assertArrayNotHasKey( 'wl_cached', $response_2 );
+        $this->assertFalse( wl_caching_response_is_cached( $response_2 ) );
 
         // Try another request same URL but different method and see that the response is not cached.
         $response_3 = wl_caching_remote_request( $url, array( 'method' => 'POST' ) );
-        $this->assertArrayNotHasKey( 'wl_cached', $response_3 );
+        $this->assertFalse( wl_caching_response_is_cached( $response_3 ) );
 
     }
 
@@ -75,16 +75,16 @@ class PrefixesTest extends WP_UnitTestCase
 
         // Cache for 5 seconds.
         $response_0 = wl_caching_remote_request( $url, $args, false, 5 );
-        $this->assertArrayNotHasKey( 'wl_cached', $response_0 );
+        $this->assertFalse( wl_caching_response_is_cached( $response_0 ) );
 
         // Check that the first request is still cached.
         $response_1 = wl_caching_remote_request( $url, $args );
-        $this->assertArrayHasKey( 'wl_cached', $response_1 );
+        $this->assertTrue( wl_caching_response_is_cached( $response_1 ) );
 
         // Wait 5 seconds and check that another request is not cached.
         sleep( 5 );
         $response_2 = wl_caching_remote_request( $url, $args );
-        $this->assertArrayNotHasKey( 'wl_cached', $response_2 );
+        $this->assertFalse( wl_caching_response_is_cached( $response_2 ) );
 
     }
 
