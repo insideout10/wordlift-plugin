@@ -14,7 +14,7 @@ function wl_sparql_query_add_meta_box() {
         'wl_sparql_query',
         __( 'SPARQL Query', 'wordlift' ),
         'wl_sparql_query_meta_box_callback',
-        WL_SPARQL_QUERY_ENTITY_TYPE,
+        WL_SPARQL_QUERY_POST_TYPE,
         'normal', // The part of the page where the edit screen section should be shown.
         'high'    // The priority within the context where the boxes should show.
     );

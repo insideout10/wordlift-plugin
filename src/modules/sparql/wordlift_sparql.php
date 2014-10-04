@@ -14,7 +14,7 @@ License: APL
 require_once('wordlift_sparql_constants.php');
 
 // Include the SPARQL Query entity type.
-require_once('wordlift_sparql_entity_type.php');
+require_once('wordlift_sparql_query_post_type.php');
 
 // Include the SPARQL Query metabox.
 require_once('wordlift_sparql_meta_box.php');
@@ -33,7 +33,7 @@ function wl_sparql_get_query_by_slug( $slug ) {
 
     $posts = get_posts( array(
         'name'        => $slug,
-        'post_type'   => WL_SPARQL_QUERY_ENTITY_TYPE,
+        'post_type'   => WL_SPARQL_QUERY_POST_TYPE,
         'post_status' => 'any',
         'numberposts' => 1
     ) );

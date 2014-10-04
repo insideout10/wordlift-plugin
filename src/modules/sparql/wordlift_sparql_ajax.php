@@ -37,17 +37,17 @@ function wl_ajax_sparql() {
 		'method'  => 'POST',
 		'headers' => array( 'Accept' => $accept ),
 		'body'    => array( 'query'  => $query )
-	));
+	) );
 
 	// Send the request. Raise actions before and after the request is being sent.
-    do_action( 'wl_sparql_pre_request', $url, $args );
+    do_action( 'wl_sparql_pre_request', $url, $args, $query );
 
     // Send the request via caching if the module is available.
     $response = ( function_exists( 'wl_caching_remote_request' )
         ? wl_caching_remote_request( $url, $args )
         : wp_remote_post( $url, $args ) );
 
-    do_action( 'wl_sparql_post_request', $url, $args, $response );
+    do_action( 'wl_sparql_post_request', $url, $args, $query, $response );
 
 	// If an error has been raised, return the error.
 	if ( is_wp_error( $response ) || 200 !== (int)$response['response']['code'] ) {
