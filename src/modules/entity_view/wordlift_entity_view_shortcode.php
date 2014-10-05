@@ -1,20 +1,66 @@
 <?php
 
+function wl_entity_view_before_header() {
+
+	// If there is a post
+	if ( is_single() || ( is_home() && !is_front_page() ) || ( is_page() && !is_front_page() ) ) {
+
+		$_post = get_queried_object();
+
+		if ( !isset($_post->post_content) || -1 === stripos( $_post->post_content, '[wl_entity_view ' ) )
+			return;
+
+		ob_start( 'wl_entity_view_change_title' );
+	}
+
+}
+add_action( 'template_redirect', 'wl_entity_view_before_header', 0 );
+
+/**
+ * Replaces the title.
+ *
+ * @since 3.0.0
+ *
+ * @param string $content The buffered content.
+ *
+ * @return string The updated content.
+ */
+function wl_entity_view_change_title( $content ) {
+
+	global $wl_entity_view_title;
+
+	$matches = array();
+	if ( 1 !== preg_match( '/<title>([^<]*)<\/title>/i', $content, $matches ) ) {
+		return $content;
+	}
+
+
+	return preg_replace('/<title>[^<]*<\/title>/i', "<title>$wl_entity_view_title " . $matches[1] . '</title>', $content);
+}
+
+
+
 function wl_entity_view_shortcode( $atts, $content = null ) {
 
     // Extract attributes and set default values.
     $params = shortcode_atts( array(
-        'uri'    => wl_config_get_dataset_base_uri(), // The dataset base URI is the WordLift local dataset.
-        'suffix' => '.json' // The suffix to add for remote queries.
+        'uri'      => wl_config_get_dataset_base_uri(), // The dataset base URI is the WordLift local dataset.
+        'suffix'   => '.json', // The suffix to add for remote queries.
+	    'title'    => 'rdfs:label',
+	    'language' => 'en'
     ), $atts );
 
-    global $graph, $wl_entity_view_suffix;
+	global $graph, $wl_entity_view_suffix, $wl_entity_view_title;
     $wl_entity_view_suffix = $params['suffix'];
 
-    $url = $params['uri'] . get_query_var( WL_ENTITY_VIEW_ENTITY_ID_QUERY_VAR );
+	$url = $params['uri'] . get_query_var( WL_ENTITY_VIEW_ENTITY_ID_QUERY_VAR );
 
     // Load the graph.
     $graph = wl_jsonld_load_remote( $url );
+
+	// Get the title.
+	$wl_entity_view_title  = wl_jsonld_get_property( $graph, $params['title'], $params['language'] );
+	ob_end_flush();
 
     return do_shortcode( $content );
 
@@ -182,6 +228,8 @@ function wl_jsonld_get_property_value( $graph, $key, $language = null ) {
 /**
  * Load a remote graph. A suffix is added automatically to the URL using the $wl_entity_view_suffix.
  *
+ * @since 3.0.0
+ *
  * @param string $url The URL.
  * @return null|object A graph instance or null if the JSON is invalid.
  */
@@ -191,7 +239,13 @@ function wl_jsonld_load_remote( $url ) {
 
     // TODO: validate the URI.
 
-    $response = wp_remote_get( $url . $wl_entity_view_suffix );
+	// Use the caching method if it's loaded.
+	if ( function_exists( 'wl_caching_remote_request' ) ) {
+		$response = wl_caching_remote_request( $url . $wl_entity_view_suffix, array( 'method' => 'GET' ) );
+	} else {
+		$response = wp_remote_get( $url . $wl_entity_view_suffix );
+	}
+
     $json     = json_decode( $response['body'] );
 
     // The json is invalid.

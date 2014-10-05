@@ -13,6 +13,7 @@ License: APL
 // The profiling custom post type.
 define( 'WL_PROFILING_POST_TYPE', 'wl_profiling' );
 define( 'WL_PROFILING_DURATION_META_KEY', 'wl_profiling_duration' );
+define( 'WL_PROFILING_SPARQL_QUERY_META_KEY', 'wl_profiling_sparql_query' );
 
 // Load the profiling custom post type.
 require_once( 'wordlift_profiling_post_type.php' );
@@ -51,7 +52,7 @@ function wl_profiling_sparql_post_request( $url, $args, $query, $response ) {
     global $wl_profiling_started_at;
 
     // Ignore cached calls.
-    if ( function_exists( 'wl_caching_is_response_cached' ) && wl_caching_is_response_cached( $response ) ) {
+    if ( function_exists( 'wl_caching_response_is_cached' ) && wl_caching_response_is_cached( $response ) ) {
         return;
     }
 

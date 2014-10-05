@@ -29,6 +29,7 @@ function wl_sparql_query_post_type_register() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => false,
 		'menu_position'       => 20, // after the pages menu.
+		'menu_icon'           => WP_CONTENT_URL . '/plugins/wordlift/images/sparql-20x20.png',  // icon URL 20x20 px
 		'supports'            => array( 'title', 'excerpt', 'comments' ),
 		'has_archive'         => true/*,
         'taxonomies' => array('category')*/

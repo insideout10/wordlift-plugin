@@ -31,7 +31,7 @@ function wl_profiling_post_type_register() {
 		'exclude_from_search' => false,
 		'publicly_queryable'  => false,
 		'menu_position'       => 20, // after the pages menu.
-		'supports'            => array( 'title', 'editor', 'custom-fields', 'comments' ),
+		'supports'            => array( 'title', 'comments' ),
 		'has_archive'         => true
 	);
 
@@ -54,9 +54,13 @@ add_action( 'init', 'wl_profiling_post_type_register' );
 function wl_profiling_posts_columns( $columns ) {
 
 	unset( $columns['author'] );
+	unset( $columns['comments'] );
+	unset( $columns['date'] );
 
 	return array_merge( $columns, array(
-		'duration' => __( 'Duration', 'wordlift ' )
+		'duration' => __( 'Duration', 'wordlift ' ),
+		'comments' => __( 'Comments', 'wordlift ' ),
+		'date'     => __( 'Date', 'wordlift ' )
 	) );
 
 }
@@ -99,13 +103,15 @@ function wl_profiling_insert( $query, $duration ) {
 
 	// Create the post and check success (0 means failure).
 	if ( 0 === ( $post_id = wp_insert_post( array(
-			'post_content' => $query,
 			'post_status'  => 'private',
 			'post_type'    => WL_PROFILING_POST_TYPE
 		) ) )
 	) {
 		return false; // return false in case of error.
 	};
+
+	// Add the query.
+	add_post_meta( $post_id, WL_PROFILING_SPARQL_QUERY_META_KEY, $query);
 
 	// Add the duration.
 	add_post_meta( $post_id, WL_PROFILING_DURATION_META_KEY, $duration );
@@ -128,3 +134,76 @@ function wl_profiling_get_duration( $post_id ) {
 	return get_post_meta( $post_id, WL_PROFILING_DURATION_META_KEY, true );
 
 }
+
+
+/**
+ * Get the *SPARQL query* for the profiling analysis with the specified post Id.
+ *
+ * @since 3.0.0
+ *
+ * @param int $post_id The post Id.
+ * @return string The SPARQL query.
+ */
+function wl_profiling_get_sparql_query( $post_id ) {
+
+	return get_post_meta( $post_id, WL_PROFILING_SPARQL_QUERY_META_KEY, true );
+
+}
+
+
+/**
+ * Adds a box to the profiling analysis custom post type to display the SPARQL Query. This function is called by the
+ * *add_meta_boxes* hook. It calls the *wl_profiling_sparql_query_meta_box_callback* function to display the box
+ * contents.
+ *
+ * @since 3.0.0
+ */
+function wl_profiling_add_meta_box() {
+
+	add_meta_box(
+		'wl_profiling_sparql_query',
+		__( 'SPARQL Query', 'wordlift' ),
+		'wl_profiling_meta_box_callback',
+		WL_PROFILING_POST_TYPE,
+		'normal', // The part of the page where the edit screen section should be shown.
+		'high'    // The priority within the context where the boxes should show.
+	);
+
+}
+
+add_action( 'add_meta_boxes', 'wl_profiling_add_meta_box' );
+
+
+/**
+ * Echoes the SPARQL query for the provided post.
+ *
+ * @param object $post The post.
+ */
+function wl_profiling_meta_box_callback( $post ) {
+
+	$formatted_duration = number_format( wl_profiling_get_duration( $post->ID ) / 1000, 2 );
+	$query_h            = esc_html( wl_profiling_get_sparql_query( $post->ID ) );
+
+	printf( __( 'The following query took %s s.', 'wordlift'), $formatted_duration );
+
+?>
+	<div>
+		<pre><?php echo $query_h; ?></pre>
+	</div>
+<?php
+}
+
+
+/**
+ * Removes unnecessary metaboxes from the profiling post type edit screen. This function is called by the *admin_menu*
+ * hook.
+ *
+ * @since 3.0.0
+ */
+function wl_profiling_remove_meta_boxes() {
+
+	// See http://codex.wordpress.org/Function_Reference/remove_meta_box
+	remove_meta_box( 'commentstatusdiv', WL_PROFILING_POST_TYPE, 'normal' );
+
+}
+add_action( 'admin_menu', 'wl_profiling_remove_meta_boxes' );
