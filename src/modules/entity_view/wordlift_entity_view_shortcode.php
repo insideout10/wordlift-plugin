@@ -59,7 +59,7 @@ function wl_entity_view_shortcode( $atts, $content = null ) {
     $graph = wl_jsonld_load_remote( $url );
 
 	// Get the title.
-	$wl_entity_view_title  = wl_jsonld_get_property( $graph, $params['title'], $params['language'] );
+	$wl_entity_view_title = wl_jsonld_get_property( $graph, $params['title'], $params['language'] );
 	ob_end_flush();
 
     return do_shortcode( $content );
@@ -158,7 +158,7 @@ add_shortcode( 'wl_entity_duration', 'wl_entity_duration_shortcode' );
  * @param null|string $language If provided, a two-characters language code.
  * @return null|string The value or null if not found.
  */
-function wl_jsonld_get_property( $graph, $name, $language = null )
+function wl_jsonld_get_property( $graph, $name, $language = null, $suffix = '' )
 {
 
     $keys  = explode( '>', html_entity_decode( $name ) );
@@ -167,7 +167,7 @@ function wl_jsonld_get_property( $graph, $name, $language = null )
     foreach ( $keys as $key ) {
 
         if ( null !== $value ) {
-            $graph = wl_jsonld_load_remote( $value );
+            $graph = wl_jsonld_load_remote( $value . $suffix );
         }
 
         $key_exp = wl_prefixes_expand( $key );
@@ -244,6 +244,10 @@ function wl_jsonld_load_remote( $url ) {
 		$response = wl_caching_remote_request( $url . $wl_entity_view_suffix, array( 'method' => 'GET' ) );
 	} else {
 		$response = wp_remote_get( $url . $wl_entity_view_suffix );
+	}
+
+	if ( is_wp_error( $response ) ) {
+		wp_die( var_export( $response, true ) );
 	}
 
     $json     = json_decode( $response['body'] );
