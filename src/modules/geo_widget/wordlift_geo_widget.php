@@ -16,6 +16,7 @@ function wordlift_geo_widget_shortcode( $atts, $content = null ) {
     wp_enqueue_style( 'leaflet_css', plugins_url( 'bower_components/leaflet/dist/leaflet.css', __FILE__ ) );
     wp_enqueue_script( 'leaflet_js', plugins_url( 'bower_components/leaflet/dist/leaflet.js', __FILE__ ) );
 
+	ob_start(); // Collect the buffer.
     wordlift_geo_widget_html(
         $params['width'],
         $params['height'],
@@ -24,6 +25,9 @@ function wordlift_geo_widget_shortcode( $atts, $content = null ) {
         $params['zoom'],
         $content
     );
+
+	// Return the accumulated buffer.
+	return ob_get_clean();
 
 }
 add_shortcode( 'wl_geo', 'wordlift_geo_widget_shortcode' );
@@ -48,6 +52,7 @@ function wl_geo_widget_layer_shortcode( $atts ) {
     $ajax_url = admin_url( 'admin-ajax.php?action=wl_sparql&format=geojson&slug=' . urlencode( $params['name'] ) );
 
     echo <<<EOF
+
         $.ajax( '$ajax_url', {
             success: function( data ) {
 
@@ -60,6 +65,11 @@ function wl_geo_widget_layer_shortcode( $atts ) {
                     }
                 } ).addTo(map), $label_j);
 
+            },
+            error: function( xhr, status, error ) {
+                console.log( xhr );
+                console.log( status );
+                console.log( error );
             }
 
         } );
@@ -102,8 +112,9 @@ EOF;
     do_shortcode( $content );
 
     echo <<<EOF
+
     } );
-</script>';
+</script>
 EOF;
 
 }

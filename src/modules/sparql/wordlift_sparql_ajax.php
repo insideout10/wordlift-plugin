@@ -33,11 +33,11 @@ function wl_ajax_sparql() {
 	$url     = WL_REDLINK_API_BASE_URI . WL_REDLINK_API_VERSION . "/data/$dataset/sparql/select?key=$key&out=$output";
 
 	// Prepare the request.
-	$args    = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ) , array(
+	$args    = array(
 		'method'  => 'POST',
 		'headers' => array( 'Accept' => $accept ),
 		'body'    => array( 'query'  => $query )
-	) );
+	);
 
 	// Send the request. Raise actions before and after the request is being sent.
     do_action( 'wl_sparql_pre_request', $url, $args, $query );
@@ -200,8 +200,8 @@ function wl_csv_to_geojson_parse_body( $body ) {
         // Get the fields.
         $fields    = str_getcsv( $line );
         $label_e   = json_encode( $fields[0] );
-        $latitude  = floatval( $fields[1] );
-        $longitude = floatval( $fields[2] );
+        $latitude  = json_encode( floatval( $fields[1] ) );
+        $longitude = json_encode( floatval( $fields[2] ) );
 
         echo <<<EOF
 {

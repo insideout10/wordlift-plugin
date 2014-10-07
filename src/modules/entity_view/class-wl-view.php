@@ -13,6 +13,8 @@ class WL_View {
 
 		$id = get_query_var( WL_ENTITY_VIEW_ENTITY_ID_QUERY_VAR );
 
+//		wp_die( $this->base_uri . '/' . $id . $this->suffix );
+
 		$this->graph = wl_jsonld_load_remote( $this->base_uri . '/' . $id . $this->suffix );
 	}
 
@@ -20,8 +22,14 @@ class WL_View {
 	function get_property( $name, $language = null ) {
 
 		$value = wl_jsonld_get_property( $this->graph, $name, $language, $this->suffix );
-		$value = str_ireplace( "\n", "<br/>", $value );
+//		$value = str_ireplace( "\n", "<br/>", $value );
 		return $value;
+
+	}
+
+	function get_property_html( $name, $language = null ) {
+
+		return esc_html( $this->get_property( $name, $language ) );
 
 	}
 
