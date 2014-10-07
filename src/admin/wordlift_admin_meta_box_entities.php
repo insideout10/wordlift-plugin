@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file provides methods and functions for the related entities meta-box in the admin UI.
+ * This file provides methods and functions to generate entities meta-boxes in the admin UI.
  */
 
 /**
@@ -9,37 +9,99 @@
  *
  * @param string $post_type The type of the current open post.
  */
-function wl_admin_add_entities_meta_box($post_type) {
+function wl_admin_add_entities_meta_box( $post_type ) {
     wl_write_log("wl_admin_add_entities_meta_box [ post type :: $post_type ]");
-
+    
+    // Add meta box for related entities
     add_meta_box(
             'wordlift_entities_box', __('Related Entities', 'wordlift'), 'wl_entities_box_content', $post_type, 'side', 'high'
     );
 
-    // Add meta box for Event and Place entities
+    // Add meta box for specific type of entities
     $entity_id = get_the_ID();
     $entity_type = wl_entity_get_type($entity_id);
 
-    if (isset($entity_id) && is_numeric($entity_id) && !is_null($entity_type)) {
+    if ( isset($entity_id) && is_numeric($entity_id) && isset( $entity_type['custom_fields'] ) ) {
+        
+        // In some special case, properties must be grouped in one metabox (e.g. coordinates)
+        $metaboxes = wl_entities_group_properties_by_input_field( $entity_type['custom_fields'] );
+        var_dump( $metaboxes );
+        
+        // Loop over possible entity properties
+        foreach( $metaboxes as $property ) {
 
-        $is_event = strpos($entity_type['uri'], 'Event') !== False;
-        $is_place = strpos($entity_type['uri'], 'Place') !== False;
+            // Metabox title
+            $title = __( 'Edit', 'wordlift' ) . ' ' . __( $property['predicate'], 'wordlift' );
 
-        if ($is_event) {
-            add_meta_box(
-                    'wordlift_event_entities_box', __('Event duration', 'wordlift'), 'wl_event_entities_box_content', $post_type, 'side', 'default'
-            );
-            add_meta_box(
-                    'wordlift_event_entities_location_box', __('Event location', 'wordlift'), 'wl_event_entities_location_box_content', $post_type, 'side', 'default'
-            );
-        }
-
-        if ($is_place) {
-            add_meta_box(
-                    'wordlift_place_entities_box', __('Coordinates', 'wordlift'), 'wl_place_entities_box_content', $post_type, 'side', 'default'
-            );
+            switch( $property['type'] ) {
+                case WL_DATA_TYPE_URI:
+                    add_meta_box(
+                        'wordlift_uri_entities_box', $title, 'wl_entities_uri_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+                case WL_DATA_TYPE_DATE:
+                    add_meta_box(
+                        'wordlift_date_entities_box', $title, 'wl_entities_date_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+                case WL_DATA_TYPE_INTEGER:
+                    add_meta_box(
+                        'wordlift_int_entities_box', $title, 'wl_entities_int_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+                case WL_DATA_TYPE_DOUBLE:
+                    add_meta_box(
+                        'wordlift_double_entities_box', $title, 'wl_entities_double_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+                case WL_DATA_TYPE_BOOLEAN:
+                    add_meta_box(
+                        'wordlift_bool_entities_box', $title, 'wl_entities_bool_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+                case WL_DATA_TYPE_STRING:
+                    add_meta_box(
+                        'wordlift_string_entities_box', $title, 'wl_entities_string_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+            }
         }
     }
+}
+
+function wl_entities_group_properties_by_input_field( $custom_fields ) {
+    
+    $metaboxes = array();
+    $grouped_properties = array();
+    
+    // Loop over possible entity properties
+    foreach( $custom_fields as $key => $property ) {
+        
+        // Check presence of predicate and type
+        if( isset( $property['predicate'] ) && isset( $property['type'] ) ) {
+            
+            // Check if input_field is defined
+            if( isset( $property['input_field'] ) && $property['input_field'] !== '' ) {
+                
+                $grouped_key = $property['input_field'];
+                
+                // Update list of grouped properties
+                $grouped_properties[$grouped_key][$key] = $property;
+       
+            } else {
+                
+                // input_field not defined, just add metabox
+                $metaboxes[$key] = $property;
+            }
+        }
+    }
+    
+    // Add grouped properties, each as one metabox
+    foreach( $grouped_properties as $key => $group ) {
+        $metaboxes[$key] = $group;
+    }
+    
+    return $metaboxes;
 }
 
 add_action('add_meta_boxes', 'wl_admin_add_entities_meta_box');

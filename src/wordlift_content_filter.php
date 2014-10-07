@@ -148,7 +148,7 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
             // What kind of value is it?
             $expected_type = wl_get_meta_type( $match[1] );
             
-            if( $expected_type == 'uri' ) {
+            if( $expected_type == WL_DATA_TYPE_URI ) {
                 // Field contains a reference to other entities.
                 // TODO: Could be more than one...
                 $value = $value[0];

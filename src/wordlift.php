@@ -989,12 +989,14 @@ function wl_install_entity_type_data()
                 WL_CUSTOM_FIELD_GEO_LATITUDE    => array(
                     'predicate'     => 'latitude',
                     'type'          => 'double',
-                    'constraints'   => ''
+                    'constraints'   => '',
+                    'input_field'   => 'coordinates'
                 ),
                 WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
                     'predicate'     => 'longitude',
                     'type'          => 'double',
-                    'constraints'   => ''
+                    'constraints'   => '',
+                    'input_field'   => 'coordinates'
                 )
             ),
             'export_fields' => array(
