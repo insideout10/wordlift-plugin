@@ -12,7 +12,7 @@
 function wl_admin_add_entities_meta_box( $post_type ) {
     wl_write_log("wl_admin_add_entities_meta_box [ post type :: $post_type ]");
     
-    // Add meta box for related entities
+    // Add meta box for related entities (separated from the others for historical reasons)
     add_meta_box(
             'wordlift_entities_box', __('Related Entities', 'wordlift'), 'wl_entities_box_content', $post_type, 'side', 'high'
     );
@@ -24,19 +24,24 @@ function wl_admin_add_entities_meta_box( $post_type ) {
     if ( isset($entity_id) && is_numeric($entity_id) && isset( $entity_type['custom_fields'] ) ) {
         
         // In some special case, properties must be grouped in one metabox (e.g. coordinates)
-        $metaboxes = wl_entities_group_properties_by_input_field( $entity_type['custom_fields'] );
-        var_dump( $metaboxes );
+        $metaboxes = wl_entities_metaboxes_group_properties_by_input_field( $entity_type['custom_fields'] );
+        $simple_metaboxes = $metaboxes[0];
+        $grouped_metaboxes = $metaboxes[1];
         
-        // Loop over possible entity properties
-        foreach( $metaboxes as $property ) {
+        // Loop over simple entity properties
+        foreach( $simple_metaboxes as $key => $property ) {
 
             // Metabox title
             $title = __( 'Edit', 'wordlift' ) . ' ' . __( $property['predicate'], 'wordlift' );
+            
+            // Info passed to the metabox
+            $info = array();
+            $info[ $key ] = $property;
 
             switch( $property['type'] ) {
                 case WL_DATA_TYPE_URI:
                     add_meta_box(
-                        'wordlift_uri_entities_box', $title, 'wl_entities_uri_box_content', $post_type, 'side', 'high'
+                        'wordlift_uri_entities_box', $title, 'wl_entities_uri_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
                 case WL_DATA_TYPE_DATE:
@@ -66,12 +71,27 @@ function wl_admin_add_entities_meta_box( $post_type ) {
                     break;
             }
         }
+        
+        // Loop over grouped properties
+        foreach( $grouped_metaboxes as $key => $property ) {
+            
+            // Metabox title
+            $title = __( 'Edit', 'wordlift' ) . ' ' . __( $key, 'wordlift' );
+
+            switch( $key ) {
+                case 'coordinates':
+                    add_meta_box(
+                        'wordlift_coordinates_entities_box', $title, 'wl_entities_coordinates_box_content', $post_type, 'side', 'high'
+                    );
+                    break;
+            }
+        }
     }
 }
 
-function wl_entities_group_properties_by_input_field( $custom_fields ) {
+function wl_entities_metaboxes_group_properties_by_input_field( $custom_fields ) {
     
-    $metaboxes = array();
+    $simple_properties = array();
     $grouped_properties = array();
     
     // Loop over possible entity properties
@@ -90,18 +110,13 @@ function wl_entities_group_properties_by_input_field( $custom_fields ) {
        
             } else {
                 
-                // input_field not defined, just add metabox
-                $metaboxes[$key] = $property;
+                // input_field not defined, add simple metabox
+                $simple_properties[$key] = $property;
             }
         }
     }
     
-    // Add grouped properties, each as one metabox
-    foreach( $grouped_properties as $key => $group ) {
-        $metaboxes[$key] = $group;
-    }
-    
-    return $metaboxes;
+    return array( $simple_properties, $grouped_properties );
 }
 
 add_action('add_meta_boxes', 'wl_admin_add_entities_meta_box');
@@ -191,7 +206,7 @@ EOF;
  *
  * @param WP_Post $post The current post.
  */
-function wl_event_entities_box_content($post) {
+function wl_entities_date_box_content($post) {
 
     wp_enqueue_script('jquery-ui-datepicker');
 
@@ -261,73 +276,84 @@ add_action('wordlift_save_post', 'wl_event_entity_type_save_start_and_end_date')
 
 
 /**
- * Displays the event duration meta box contents (called by *add_meta_box* callback).
+ * Displays jQuery autocomplete in a meta box, to assign an entity as property value (e.g. location of an Event).
  *
  * @param WP_Post $post The current post.
+ * @param $custom_fields Array The custom field the method must manage.
  */
-function wl_event_entities_location_box_content( $post ) {
+function wl_entities_uri_box_content( $post, $args ) {
+    
+    // Which meta/custom_field are we managing?
+    $custom_field = $args['args'];
+    $meta_name = ( array_keys( $custom_field ) );
+    $meta_name = $meta_name[0];
+    
+    // Which type of entity is object?
+    $expected_type = $custom_field[$meta_name]['constraints'];
     
     // Set Nonce
-    wp_nonce_field( 'wordlift_event_location_entity_box', 'wordlift_event_location_entity_box_nonce' );
+    wp_nonce_field( 'wordlift_uri_entity_box', 'wordlift_uri_entity_box_nonce' );
     
     // Get default value, if any
-    $defaultPlace = get_post_meta( $post->ID, WL_CUSTOM_FIELD_LOCATION, true );
-    if( $defaultPlace !== '' && is_numeric( $defaultPlace ) ) {
-        $defaultPlace = get_post( $defaultPlace );
+    $defaultEntity = get_post_meta( $post->ID, $meta_name, true );
+    if( $defaultEntity !== '' && is_numeric( $defaultEntity ) ) {
+        $defaultEntity = get_post( $defaultEntity );
     }
 
-    // Search entities tagged as Places
+    // Search entities of the expected type
     $args = array(
         'posts_per_page'                => -1,
         'orderby'                       => 'RECENCYYYYYYYY',
         'post_type'                     => WL_ENTITY_TYPE_NAME,
-        WL_ENTITY_TYPE_TAXONOMY_NAME    => 'Place'
+        WL_ENTITY_TYPE_TAXONOMY_NAME    => $expected_type
     ); 
-    $places = get_posts( $args );
+    $candidates = get_posts( $args );
     
     // Write HTML
-    if( count( $places ) > 0 ) {
+    if( count( $candidates ) > 0 ) {
         // Input to show the options
-        echo '<input id="autocompleteLocation" style="width:100%" >';
+        echo '<input id="autocompleteEntity" style="width:100%" >';
         // Input to store the actual chosen values ( autocomplete quirks... )
-        echo '<input type="hidden" id="autocompleteLocationHidden" name="' . WL_CUSTOM_FIELD_LOCATION . '">';
+        echo '<input type="hidden" id="autocompleteEntityHidden" name="' . $meta_name . '">';
 
         // Add jQuery Autocomplete
         wp_enqueue_script( 'jquery-ui-autocomplete' );
  
-        // Filter $places to only contain id and name
-        $simplePlaces = array_map(function($p) {
+        // Filter $candidates to only contain id and name
+        $simpleCandidates = array_map(function($p) {
             return array( 'value' => $p->ID, 'label' => $p->post_title ); 
-        }, $places);
+        }, $candidates);
         
         // Add null value (to delete location)
-        $nullPlace = array( 'value' => '', 'label' => __('<no location>', 'wordlift') );
-        array_unshift( $simplePlaces, $nullPlace );
+        $nullCandidate = array( 'value' => '', 'label' => __('<no location>', 'wordlift') );
+        array_unshift( $simpleCandidates, $nullCandidate );
         
         // Add to Autocomplete available place
-        wp_localize_script( 'jquery-ui-autocomplete', 'availablePlaces',
+        wp_localize_script( 'jquery-ui-autocomplete', 'availableEntities',
             array(
-                'list'      => $simplePlaces,
-                'default'   => $defaultPlace
+                'list'      => $simpleCandidates,
+                'default'   => $defaultEntity
             )
         );
+        
+        var_dump('TODO: - insert uri insted of id in the postmeta. - adjust saving method');
 
         echo "<script type='text/javascript'>
         $ = jQuery;
         $(document).ready(function() {
-            var selector = '#autocompleteLocation';
-            var hiddenSelector = '#autocompleteLocationHidden';
+            var selector = '#autocompleteEntity';
+            var hiddenSelector = '#autocompleteEntityHidden';
             
             // Default label and value
-            if( availablePlaces.default.hasOwnProperty( 'ID' ) ){
-                $(selector).val( availablePlaces.default.post_title );
-                $(hiddenSelector).val( availablePlaces.default.ID );
+            if( availableEntities.default.hasOwnProperty( 'ID' ) ){
+                $(selector).val( availableEntities.default.post_title );
+                $(hiddenSelector).val( availableEntities.default.ID );
             }
             
             // Init autocomplete
             $(selector).autocomplete({
                 minLength: 0,
-                source: availablePlaces.list,
+                source: availableEntities.list,
                 select: function( event, ui ){
                     // Display label but store value in the hidden <input>
                     event.preventDefault();
@@ -343,24 +369,24 @@ function wl_event_entities_location_box_content( $post ) {
         });
         </script>";
     } else {
-        echo __('No Place entities found.', 'wordlift');
+        echo __('No entities of the right type found.', 'wordlift');
     }
 }
 
 /**
- * Saves the Event start and end date from entity editor page
+ * Saves the entity chosen from the entity metabox in the entity editor page
  */
-function wl_event_entity_type_save_location($post_id) {
+function wl_entity_uri_metabox_save($post_id) {
     // Check if our nonce is set.
-    if ( !isset( $_POST['wordlift_event_location_entity_box_nonce'] ) )
+    if ( !isset( $_POST['wordlift_uri_entity_box_nonce'] ) )
         return $post_id;
-    $nonce = $_POST['wordlift_event_location_entity_box_nonce'];
+    $nonce = $_POST['wordlift_uri_entity_box_nonce'];
 
     // Verify that the nonce is valid.
-    if ( !wp_verify_nonce( $nonce, 'wordlift_event_location_entity_box' ) )
+    if ( !wp_verify_nonce( $nonce, 'wordlift_uri_entity_box' ) )
         return $post_id;
     
-    // save the Event start and end date
+    // Save the property value for this entity
     if ( isset( $_POST[WL_CUSTOM_FIELD_LOCATION] ) ) {
         $location = $_POST[WL_CUSTOM_FIELD_LOCATION];
     }
@@ -370,7 +396,7 @@ function wl_event_entity_type_save_location($post_id) {
         delete_post_meta( $post_id, WL_CUSTOM_FIELD_LOCATION );
     }
 }
-add_action( 'wordlift_save_post', 'wl_event_entity_type_save_location' );
+add_action( 'wordlift_save_post', 'wl_entity_uri_metabox_save' );
 
 
 
@@ -379,14 +405,11 @@ add_action( 'wordlift_save_post', 'wl_event_entity_type_save_location' );
 
 
 
-
-
-
-
-
-
-
-
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+/////////////////// General metaboxes /////////////////////////
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 
 
 
@@ -402,8 +425,8 @@ add_action( 'wordlift_save_post', 'wl_event_entity_type_save_location' );
  *
  * @param WP_Post $post The current post.
  */
-function wl_place_entities_box_content($post) {
-
+function wl_entities_coordinates_box_content($post) {
+    
     // Add leaflet css and library.
     wp_enqueue_style(
             'leaflet_css', plugins_url('bower_components/leaflet/dist/leaflet.css', __FILE__)
@@ -491,12 +514,3 @@ function wl_place_entity_type_save_coordinates($post_id) {
     }
 }
 add_action('wordlift_save_post', 'wl_place_entity_type_save_coordinates');
-
-
-
-
-///////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
-/////////////////// General metaboxes /////////////////////////
-///////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////
