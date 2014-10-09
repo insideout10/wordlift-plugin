@@ -37,36 +37,38 @@ function wl_admin_add_entities_meta_box( $post_type ) {
             // Info passed to the metabox
             $info = array();
             $info[ $key ] = $property;
+            
+            $unique_metabox_name = uniqid('wl_metabox_');
 
             switch( $property['type'] ) {
                 case WL_DATA_TYPE_URI:
                     add_meta_box(
-                        'wordlift_uri_entities_box', $title, 'wl_entities_uri_box_content', $post_type, 'side', 'high', $info
+                        $unique_metabox_name, $title, 'wl_entities_uri_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
                 case WL_DATA_TYPE_DATE:
                     add_meta_box(
-                        'wordlift_date_entities_box', $title, 'wl_entities_date_box_content', $post_type, 'side', 'high'
+                        $unique_metabox_name, $title, 'wl_entities_date_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
                 case WL_DATA_TYPE_INTEGER:
                     add_meta_box(
-                        'wordlift_int_entities_box', $title, 'wl_entities_int_box_content', $post_type, 'side', 'high'
+                        $unique_metabox_name, $title, 'wl_entities_int_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
                 case WL_DATA_TYPE_DOUBLE:
                     add_meta_box(
-                        'wordlift_double_entities_box', $title, 'wl_entities_double_box_content', $post_type, 'side', 'high'
+                        $unique_metabox_name, $title, 'wl_entities_double_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
                 case WL_DATA_TYPE_BOOLEAN:
                     add_meta_box(
-                        'wordlift_bool_entities_box', $title, 'wl_entities_bool_box_content', $post_type, 'side', 'high'
+                        $unique_metabox_name, $title, 'wl_entities_bool_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
                 case WL_DATA_TYPE_STRING:
                     add_meta_box(
-                        'wordlift_string_entities_box', $title, 'wl_entities_string_box_content', $post_type, 'side', 'high'
+                        $unique_metabox_name, $title, 'wl_entities_string_box_content', $post_type, 'side', 'high', $info
                     );
                     break;
             }
@@ -205,24 +207,26 @@ EOF;
  * Displays the event meta box contents (called by *add_meta_box* callback).
  *
  * @param WP_Post $post The current post.
+ * @param $info Array The custom_field the method must manage.
  */
-function wl_entities_date_box_content($post) {
+function wl_entities_date_box_content( $post, $info ) {
 
+    // Which meta/custom_field are we managing?
+    $custom_field = $info['args'];
+    $meta_name = ( array_keys( $custom_field ) );
+    $meta_name = $meta_name[0];
+    
+    // Include datePicker on page
     wp_enqueue_script('jquery-ui-datepicker');
 
-    wl_echo_nonce( WL_CUSTOM_FIELD_CAL_DATE_START );
-    wl_echo_nonce( WL_CUSTOM_FIELD_CAL_DATE_END );
+    // Set nonce
+    wl_echo_nonce( $meta_name );
     
-    $start_date = get_post_meta($post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true);
-    $start_date = esc_attr($start_date);
+    $date = get_post_meta($post->ID, $meta_name, true);
+    $date = esc_attr($date);
 
     echo '<label for="wl_event_start">' . __('Start date', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_event_start" class="wl_datepicker" name="wl_metaboxes[' . WL_CUSTOM_FIELD_CAL_DATE_START . ']" value="' . $start_date . '" style="width:100%" />';
-
-    $end_date = get_post_meta($post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true);
-    $end_date = esc_attr($end_date);
-    echo '<label for="wl_event_end">' . __('End date', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_event_end" class="wl_datepicker" name="wl_metaboxes[' . WL_CUSTOM_FIELD_CAL_DATE_END . ']" value="' . $end_date . '" style="width:100%" />';
+    echo '<input type="text" class="wl_datepicker" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
 
     echo "<script type='text/javascript'>
     $ = jQuery;
@@ -310,12 +314,12 @@ function wl_entities_coordinates_box_content($post) {
  * Displays jQuery autocomplete in a meta box, to assign an entity as property value (e.g. location of an Event).
  *
  * @param WP_Post $post The current post.
- * @param $custom_fields Array The custom field the method must manage.
+ * @param $info Array The custom_field the method must manage.
  */
-function wl_entities_uri_box_content( $post, $args ) {
+function wl_entities_uri_box_content( $post, $info ) {
     
     // Which meta/custom_field are we managing?
-    $custom_field = $args['args'];
+    $custom_field = $info['args'];
     $meta_name = ( array_keys( $custom_field ) );
     $meta_name = $meta_name[0];
     
@@ -327,7 +331,6 @@ function wl_entities_uri_box_content( $post, $args ) {
     
     // Get default value, if any
     $defaultEntity = get_post_meta( $post->ID, $meta_name, true );
-    var_dump( $defaultEntity );
     if( $defaultEntity !== '' ) {
         // Is the value an ID or a uri? 
         if( is_numeric( $defaultEntity ) ) {
@@ -378,8 +381,6 @@ function wl_entities_uri_box_content( $post, $args ) {
                 'default'   => $defaultEntity
             )
         );
-        
-        var_dump('TODO: - insert uri instead of id in the postmeta. - adjust saving method');
 
         echo "<script type='text/javascript'>
         $ = jQuery;
