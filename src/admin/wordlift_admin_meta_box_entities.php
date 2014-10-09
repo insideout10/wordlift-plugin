@@ -296,8 +296,16 @@ function wl_entities_uri_box_content( $post, $args ) {
     
     // Get default value, if any
     $defaultEntity = get_post_meta( $post->ID, $meta_name, true );
-    if( $defaultEntity !== '' && is_numeric( $defaultEntity ) ) {
-        $defaultEntity = get_post( $defaultEntity );
+    var_dump( $defaultEntity );
+    if( $defaultEntity !== '' ) {
+        // Is the value an ID or a uri? 
+        if( is_numeric( $defaultEntity ) ) {
+            $defaultEntity = get_post( $defaultEntity );
+        } else {
+            $defaultEntity = wl_get_entity_post_by_uri( $defaultEntity );
+        }
+        // Store also the uri
+        $defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
     }
 
     // Search entities of the expected type
@@ -314,18 +322,22 @@ function wl_entities_uri_box_content( $post, $args ) {
         // Input to show the options
         echo '<input id="autocompleteEntity" style="width:100%" >';
         // Input to store the actual chosen values ( autocomplete quirks... )
-        echo '<input type="hidden" id="autocompleteEntityHidden" name="' . $meta_name . '">';
+        echo '<input type="hidden" id="autocompleteEntityHidden" name="wl_metaboxes[' . $meta_name . ']">';
 
         // Add jQuery Autocomplete
         wp_enqueue_script( 'jquery-ui-autocomplete' );
  
-        // Filter $candidates to only contain id and name
+        // Filter $candidates to only contain id, name and uri
         $simpleCandidates = array_map(function($p) {
-            return array( 'value' => $p->ID, 'label' => $p->post_title ); 
+            return array(
+                'value' => wl_get_entity_uri( $p->ID ),
+                'label' => $p->post_title ); 
         }, $candidates);
         
         // Add null value (to delete location)
-        $nullCandidate = array( 'value' => '', 'label' => __('<no location>', 'wordlift') );
+        $nullCandidate = array(
+            'value' => '',
+            'label' => __('<no location>', 'wordlift') );
         array_unshift( $simpleCandidates, $nullCandidate );
         
         // Add to Autocomplete available place
@@ -336,18 +348,19 @@ function wl_entities_uri_box_content( $post, $args ) {
             )
         );
         
-        var_dump('TODO: - insert uri insted of id in the postmeta. - adjust saving method');
+        var_dump('TODO: - insert uri instead of id in the postmeta. - adjust saving method');
 
         echo "<script type='text/javascript'>
         $ = jQuery;
         $(document).ready(function() {
             var selector = '#autocompleteEntity';
             var hiddenSelector = '#autocompleteEntityHidden';
-            
+
             // Default label and value
-            if( availableEntities.default.hasOwnProperty( 'ID' ) ){
+            console.log(availableEntities.default);
+            if( availableEntities.default.hasOwnProperty( 'uri' ) ){
                 $(selector).val( availableEntities.default.post_title );
-                $(hiddenSelector).val( availableEntities.default.ID );
+                $(hiddenSelector).val( availableEntities.default.uri );
             }
             
             // Init autocomplete
@@ -377,26 +390,30 @@ function wl_entities_uri_box_content( $post, $args ) {
  * Saves the entity chosen from the entity metabox in the entity editor page
  */
 function wl_entity_uri_metabox_save($post_id) {
+    
     // Check if our nonce is set.
-    if ( !isset( $_POST['wordlift_uri_entity_box_nonce'] ) )
-        return $post_id;
-    $nonce = $_POST['wordlift_uri_entity_box_nonce'];
+//    if ( !isset( $_POST['wordlift_uri_entity_box_nonce'] ) )
+//        return $post_id;
+//    $nonce = $_POST['wordlift_uri_entity_box_nonce'];
 
     // Verify that the nonce is valid.
-    if ( !wp_verify_nonce( $nonce, 'wordlift_uri_entity_box' ) )
-        return $post_id;
+//    if ( !wp_verify_nonce( $nonce, 'wordlift_uri_entity_box' ) )
+//        return $post_id;
     
-    // Save the property value for this entity
-    if ( isset( $_POST[WL_CUSTOM_FIELD_LOCATION] ) ) {
-        $location = $_POST[WL_CUSTOM_FIELD_LOCATION];
-    }
-    if ( isset( $location ) && is_numeric( $location ) ) {
-        update_post_meta( $post_id, WL_CUSTOM_FIELD_LOCATION, $location );
-    } else {
-        delete_post_meta( $post_id, WL_CUSTOM_FIELD_LOCATION );
+    wl_write_log( 'piedo ' . serialize($_POST['wl_metaboxes'] ));
+    
+    // Loop over the wl_metaboxes array and save property values
+    foreach( $_POST['wl_metaboxes'] as $meta_name => $meta_value ) {
+        // Save the property value
+        wl_write_log( 'piedo salva ' . $meta_name . ' ' . $meta_value );
+        if ( isset( $meta_name ) && isset( $meta_value ) ) {
+            update_post_meta( $post_id, $meta_name, $meta_value );  
+        } else {
+            delete_post_meta( $post_id, $meta_name );
+        }
     }
 }
-add_action( 'wordlift_save_post', 'wl_entity_uri_metabox_save' );
+add_action( 'save_post', 'wl_entity_uri_metabox_save' );
 
 
 
