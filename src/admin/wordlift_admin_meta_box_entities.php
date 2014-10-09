@@ -237,7 +237,74 @@ function wl_entities_date_box_content($post) {
     </script>";
 }
 
+/**
+ * Displays the coordinates meta box contents (called by *add_meta_box* callback).
+ *
+ * @param WP_Post $post The current post.
+ */
+function wl_entities_coordinates_box_content($post) {
+    
+    // Add leaflet css and library.
+    wp_enqueue_style(
+            'leaflet_css', plugins_url('bower_components/leaflet/dist/leaflet.css', __FILE__)
+    );
+    wp_enqueue_script(
+            'leaflet_js', plugins_url('bower_components/leaflet/dist/leaflet.js', __FILE__)
+    );
+    
+    // Set nonce for both meta (latitude and longitude)
+    wl_echo_nonce( WL_CUSTOM_FIELD_GEO_LATITUDE );
+    wl_echo_nonce( WL_CUSTOM_FIELD_GEO_LONGITUDE );
+    
+    // Get coordinates
+    $coords = wl_get_coordinates($post->ID);
+    $latitude = $coords['latitude'];
+    $longitude = $coords['longitude'];
+    
+    // Default coords values [0, 0]
+    if( !isset( $longitude ) || !is_numeric( $longitude ))
+        $longitude = 0.0;
+    if( !isset( $latitude ) || !is_numeric( $latitude ))
+        $latitude = 0.0;
+    
+    // Default zoom value
+    if( $latitude==0.0 || $longitude==0.0 ) {
+        $zoom = 1;  // Choose from a world panoramic
+    } else {
+        $zoom = 9;  // Close up view
+    }
+    
+    // Print input fields
+    echo '<label for="wl_place_lat">' . __('Latitude', 'wordlift') . '</label>';
+    echo '<input type="text" id="wl_place_lat" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LATITUDE . ']" value="' . $latitude . '" style="width:100%" />';
 
+    echo '<label for="wl_place_lon">' . __('Longitude', 'wordlift') . '</label>';
+    echo '<input type="text" id="wl_place_lon" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LONGITUDE . ']" value="' . $longitude . '" style="width:100%" />';
+
+    // Show Leaflet map to pick coordinates
+    echo "<div id='wl_place_coords_map'></div>";
+    echo "<script type='text/javascript'>
+    $ = jQuery;
+    $(document).ready(function(){
+        $('#wl_place_coords_map').width('100%').height('200px');
+        var wlMap = L.map('wl_place_coords_map').setView([$latitude, $longitude], $zoom);
+    
+        L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+            { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
+        ).addTo( wlMap );
+        
+        var marker = L.marker([$latitude, $longitude]).addTo( wlMap );
+    
+        function refreshCoords(e) {
+            $('#wl_place_lat').val( e.latlng.lat );
+            $('#wl_place_lon').val( e.latlng.lng );
+            marker.setLatLng( e.latlng )
+        }
+
+        wlMap.on('click', refreshCoords);
+    });
+    </script>";
+}
 
 /**
  * Displays jQuery autocomplete in a meta box, to assign an entity as property value (e.g. location of an Event).
@@ -378,74 +445,6 @@ function wl_entity_metabox_save($post_id) {
 }
 add_action( 'save_post', 'wl_entity_metabox_save' );
 
-/**
- * Displays the place meta box contents (called by *add_meta_box* callback).
- *
- * @param WP_Post $post The current post.
- */
-function wl_entities_coordinates_box_content($post) {
-    
-    // Add leaflet css and library.
-    wp_enqueue_style(
-            'leaflet_css', plugins_url('bower_components/leaflet/dist/leaflet.css', __FILE__)
-    );
-    wp_enqueue_script(
-            'leaflet_js', plugins_url('bower_components/leaflet/dist/leaflet.js', __FILE__)
-    );
-    
-    // Set nonce for both meta (latitude and longitude)
-    wl_echo_nonce( WL_CUSTOM_FIELD_GEO_LATITUDE );
-    wl_echo_nonce( WL_CUSTOM_FIELD_GEO_LONGITUDE );
-    
-    // Get coordinates
-    $coords = wl_get_coordinates($post->ID);
-    $latitude = $coords['latitude'];
-    $longitude = $coords['longitude'];
-    
-    // Default coords values [0, 0]
-    if( !isset( $longitude ) || !is_numeric( $longitude ))
-        $longitude = 0.0;
-    if( !isset( $latitude ) || !is_numeric( $latitude ))
-        $latitude = 0.0;
-    
-    // Default zoom value
-    if( $latitude==0.0 || $longitude==0.0 ) {
-        $zoom = 1;  // Choose from a world panoramic
-    } else {
-        $zoom = 9;  // Close up view
-    }
-    
-    // Print input fields
-    echo '<label for="wl_place_lat">' . __('Latitude', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_place_lat" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LATITUDE . ']" value="' . $latitude . '" style="width:100%" />';
-
-    echo '<label for="wl_place_lon">' . __('Longitude', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_place_lon" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LONGITUDE . ']" value="' . $longitude . '" style="width:100%" />';
-
-    // Show Leaflet map to pick coordinates
-    echo "<div id='wl_place_coords_map'></div>";
-    echo "<script type='text/javascript'>
-    $ = jQuery;
-    $(document).ready(function(){
-        $('#wl_place_coords_map').width('100%').height('200px');
-        var wlMap = L.map('wl_place_coords_map').setView([$latitude, $longitude], $zoom);
-    
-        L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-            { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
-        ).addTo( wlMap );
-        
-        var marker = L.marker([$latitude, $longitude]).addTo( wlMap );
-    
-        function refreshCoords(e) {
-            $('#wl_place_lat').val( e.latlng.lat );
-            $('#wl_place_lon').val( e.latlng.lng );
-            marker.setLatLng( e.latlng )
-        }
-
-        wlMap.on('click', refreshCoords);
-    });
-    </script>";
-}
 
 function wl_echo_nonce( $meta_name ) {
     wp_nonce_field( 'wordlift_' . $meta_name . '_entity_box', 'wordlift_' . $meta_name . '_entity_box_nonce' );
