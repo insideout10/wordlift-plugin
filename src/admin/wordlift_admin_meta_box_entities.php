@@ -210,18 +210,20 @@ function wl_entities_date_box_content($post) {
 
     wp_enqueue_script('jquery-ui-datepicker');
 
-    wp_nonce_field('wordlift_event_entity_box', 'wordlift_event_entity_box_nonce');
+    wp_nonce_field('wordlift_' . WL_CUSTOM_FIELD_CAL_DATE_START . '_entity_box', 'wordlift_' . WL_CUSTOM_FIELD_CAL_DATE_START . '_entity_box_nonce');
+    wp_nonce_field('wordlift_' . WL_CUSTOM_FIELD_CAL_DATE_END . '_entity_box', 'wordlift_' . WL_CUSTOM_FIELD_CAL_DATE_END . '_entity_box_nonce');
 
+    
     $start_date = get_post_meta($post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true);
     $start_date = esc_attr($start_date);
 
     echo '<label for="wl_event_start">' . __('Start date', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_event_start" class="wl_datepicker" name="wl_event_start" value="' . $start_date . '" style="width:100%" />';
+    echo '<input type="text" id="wl_event_start" class="wl_datepicker" name="wl_metaboxes[' . WL_CUSTOM_FIELD_CAL_DATE_START . ']" value="' . $start_date . '" style="width:100%" />';
 
     $end_date = get_post_meta($post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true);
     $end_date = esc_attr($end_date);
     echo '<label for="wl_event_end">' . __('End date', 'wordlift') . '</label>';
-    echo '<input type="text" id="wl_event_end" class="wl_datepicker" name="wl_event_end" value="' . $end_date . '" style="width:100%" />';
+    echo '<input type="text" id="wl_event_end" class="wl_datepicker" name="wl_metaboxes[' . WL_CUSTOM_FIELD_CAL_DATE_END . ']" value="' . $end_date . '" style="width:100%" />';
 
     echo "<script type='text/javascript'>
     $ = jQuery;
@@ -239,30 +241,30 @@ function wl_entities_date_box_content($post) {
 /**
  * Saves the Event start and end date from entity editor page
  */
-function wl_event_entity_type_save_start_and_end_date($post_id) {
-    // Check if our nonce is set.
-    if (!isset($_POST['wordlift_event_entity_box_nonce']))
-        return $post_id;
-    $nonce = $_POST['wordlift_event_entity_box_nonce'];
+//function wl_event_entity_type_save_start_and_end_date($post_id) {
+//    // Check if our nonce is set.
+//    if (!isset($_POST['wordlift_event_entity_box_nonce']))
+//        return $post_id;
+//    $nonce = $_POST['wordlift_event_entity_box_nonce'];
+//
+//    // Verify that the nonce is valid.
+//    if (!wp_verify_nonce($nonce, 'wordlift_event_entity_box'))
+//        return $post_id;
+//
+//    // save the Event start and end date
+//    if (isset($_POST['wl_event_start']) && isset($_POST['wl_event_end'])) {
+//        $start = $_POST['wl_event_start'];
+//        $end = $_POST['wl_event_end'];
+//    }
+//    if (isset($start) && strtotime($start)) {
+//        update_post_meta($post_id, WL_CUSTOM_FIELD_CAL_DATE_START, $start);
+//    }
+//    if (isset($end) && strtotime($end)) {
+//        update_post_meta($post_id, WL_CUSTOM_FIELD_CAL_DATE_END, $end);
+//    }
+//}
 
-    // Verify that the nonce is valid.
-    if (!wp_verify_nonce($nonce, 'wordlift_event_entity_box'))
-        return $post_id;
-
-    // save the Event start and end date
-    if (isset($_POST['wl_event_start']) && isset($_POST['wl_event_end'])) {
-        $start = $_POST['wl_event_start'];
-        $end = $_POST['wl_event_end'];
-    }
-    if (isset($start) && strtotime($start)) {
-        update_post_meta($post_id, WL_CUSTOM_FIELD_CAL_DATE_START, $start);
-    }
-    if (isset($end) && strtotime($end)) {
-        update_post_meta($post_id, WL_CUSTOM_FIELD_CAL_DATE_END, $end);
-    }
-}
-
-add_action('wordlift_save_post', 'wl_event_entity_type_save_start_and_end_date');
+//add_action('wordlift_save_post', 'wl_event_entity_type_save_start_and_end_date');
 
 
 
@@ -292,7 +294,7 @@ function wl_entities_uri_box_content( $post, $args ) {
     $expected_type = $custom_field[$meta_name]['constraints'];
     
     // Set Nonce
-    wp_nonce_field( 'wordlift_uri_entity_box', 'wordlift_uri_entity_box_nonce' );
+    wp_nonce_field( 'wordlift_' . $meta_name . '_entity_box', 'wordlift_' . $meta_name . '_entity_box_nonce' );
     
     // Get default value, if any
     $defaultEntity = get_post_meta( $post->ID, $meta_name, true );
@@ -387,25 +389,24 @@ function wl_entities_uri_box_content( $post, $args ) {
 }
 
 /**
- * Saves the entity chosen from the entity metabox in the entity editor page
+ * Saves the values of wordlift metaboxes set in the entity editor page
  */
-function wl_entity_uri_metabox_save($post_id) {
+function wl_entity_metabox_save($post_id) {
     
-    // Check if our nonce is set.
-//    if ( !isset( $_POST['wordlift_uri_entity_box_nonce'] ) )
-//        return $post_id;
-//    $nonce = $_POST['wordlift_uri_entity_box_nonce'];
-
-    // Verify that the nonce is valid.
-//    if ( !wp_verify_nonce( $nonce, 'wordlift_uri_entity_box' ) )
-//        return $post_id;
-    
-    wl_write_log( 'piedo ' . serialize($_POST['wl_metaboxes'] ));
-    
-    // Loop over the wl_metaboxes array and save property values
+    // Loop over the wl_metaboxes array and save metaboxes values
     foreach( $_POST['wl_metaboxes'] as $meta_name => $meta_value ) {
+        
+        // First, verify nonce is set for this meta
+        $nonce_name = 'wordlift_' . $meta_name . '_entity_box_nonce';
+        $nonce_verify = 'wordlift_' . $meta_name . '_entity_box';
+        if ( !isset( $_POST[$nonce_name] ) )
+            return $post_id;
+        
+        // Verify that the nonce is valid.
+        if ( !wp_verify_nonce( $_POST[$nonce_name], $nonce_verify ) )
+            return $post_id;
+        
         // Save the property value
-        wl_write_log( 'piedo salva ' . $meta_name . ' ' . $meta_value );
         if ( isset( $meta_name ) && isset( $meta_value ) ) {
             update_post_meta( $post_id, $meta_name, $meta_value );  
         } else {
@@ -413,7 +414,7 @@ function wl_entity_uri_metabox_save($post_id) {
         }
     }
 }
-add_action( 'save_post', 'wl_entity_uri_metabox_save' );
+add_action( 'save_post', 'wl_entity_metabox_save' );
 
 
 
