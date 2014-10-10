@@ -91,7 +91,8 @@ function wl_shortcode_timeline_to_json( $posts ) {
 
         $start_date = date_create_from_format( 'Y-m-d', get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
         $end_date = date_create_from_format( 'Y-m-d', get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
-
+        wl_write_log('piedo ' . $start_date);
+        
         // Set the starting slide.
         $event_index++;
         if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {

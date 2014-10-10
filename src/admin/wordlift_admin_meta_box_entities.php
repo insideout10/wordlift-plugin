@@ -237,10 +237,7 @@ function wl_entities_date_box_content( $post, $info ) {
     echo "<script type='text/javascript'>
     $ = jQuery;
     $(document).ready(function() {
-        $('#" . $meta_name . "').datetimepicker({
-                dateFormat: 'yy-mm-dd',
-                defaultDate: $(this).val()
-        });
+        $('#" . $meta_name . "').datetimepicker();
     });
     </script>";
 }
