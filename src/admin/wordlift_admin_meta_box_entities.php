@@ -216,8 +216,14 @@ function wl_entities_date_box_content( $post, $info ) {
     $meta_name = ( array_keys( $custom_field ) );
     $meta_name = $meta_name[0];
     
-    // Include datePicker on page
-    wp_enqueue_script('jquery-ui-datepicker');
+    // Include datePicker and timePicker on page
+    //wp_enqueue_script('jquery-ui-datepicker');    // Only let us choose date; we need date and time
+    wp_enqueue_style(
+            'datetimepickercss', plugins_url('js-client/datetimepicker/jquery.datetimepicker.css', __FILE__)
+    );
+    wp_enqueue_script(
+            'datetimepickerjs', plugins_url('js-client/datetimepicker/jquery.datetimepicker.js', __FILE__)
+    );
 
     // Set nonce
     wl_echo_nonce( $meta_name );
@@ -225,17 +231,15 @@ function wl_entities_date_box_content( $post, $info ) {
     $date = get_post_meta($post->ID, $meta_name, true);
     $date = esc_attr($date);
 
-    echo '<label for="wl_event_start">' . __('Start date', 'wordlift') . '</label>';
-    echo '<input type="text" class="wl_datepicker" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
+    echo '<label>' . __('Start date', 'wordlift') . '</label>';
+    echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
 
     echo "<script type='text/javascript'>
     $ = jQuery;
     $(document).ready(function() {
-        $('.wl_datepicker').each( function() {
-            $(this).datepicker({
+        $('#" . $meta_name . "').datetimepicker({
                 dateFormat: 'yy-mm-dd',
                 defaultDate: $(this).val()
-            });
         });
     });
     </script>";
