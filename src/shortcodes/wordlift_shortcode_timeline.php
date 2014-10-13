@@ -72,15 +72,15 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
  */
 function wl_shortcode_timeline_to_json( $posts ) {
 	
-	// If there are no events, return empty JSON
-	if( empty( $posts ) || is_null( $posts ) )
-		return json_encode('');
-	
-	// Model data from:
-	// https://github.com/NUKnightLab/TimelineJS/blob/master/examples/example_json.json
+    // If there are no events, return empty JSON
+    if( empty( $posts ) || is_null( $posts ) )
+            return json_encode('');
+
+    // Model data from:
+    // https://github.com/NUKnightLab/TimelineJS/blob/master/examples/example_json.json
 
     $timeline = array();
-	$timeline['type'] = 'default';
+    $timeline['type'] = 'default';
 
     // Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
     $start_at_slide = 0;
@@ -89,18 +89,17 @@ function wl_shortcode_timeline_to_json( $posts ) {
 
     $timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ){
 
-        $start_date = date_create_from_format( 'Y-m-d', get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
-        $end_date = date_create_from_format( 'Y-m-d', get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
-        wl_write_log('piedo ' . $start_date);
-        
+        $start_date = strtotime( get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
+        $end_date = strtotime( get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
+           
         // Set the starting slide.
         $event_index++;
         if ( 0 === $start_at_slide && $now >= $start_date && $now <= $end_date ) {
             $start_at_slide = $event_index;
         }
 
-        $date['startDate'] = date_format( $start_date, 'Y,m,d' );
-        $date['endDate']   = date_format( $end_date, 'Y,m,d' );
+        $date['startDate'] = date( 'Y,m,d', $start_date );
+        $date['endDate']   = date( 'Y,m,d', $end_date );
         $date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
         $date['text']      = $post->post_content;
 

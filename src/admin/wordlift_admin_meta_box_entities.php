@@ -91,6 +91,11 @@ function wl_admin_add_entities_meta_box( $post_type ) {
     }
 }
 
+/**
+ * Separes metaboxes in simple and grouped (called from *wl_admin_add_entities_meta_box*).
+ *
+ * @param array $custom_fields Information on the entity type.
+ */
 function wl_entities_metaboxes_group_properties_by_input_field( $custom_fields ) {
     
     $simple_properties = array();
@@ -204,7 +209,7 @@ EOF;
 }
 
 /**
- * Displays the event meta box contents (called by *add_meta_box* callback).
+ * Displays the date meta box contents (called by *add_meta_box* callback).
  *
  * @param WP_Post $post The current post.
  * @param $info Array The custom_field the method must manage.
@@ -231,7 +236,6 @@ function wl_entities_date_box_content( $post, $info ) {
     $date = get_post_meta($post->ID, $meta_name, true);
     $date = esc_attr($date);
 
-    echo '<label>' . __('Start date', 'wordlift') . '</label>';
     echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
 
     echo "<script type='text/javascript'>
@@ -240,6 +244,27 @@ function wl_entities_date_box_content( $post, $info ) {
         $('#" . $meta_name . "').datetimepicker();
     });
     </script>";
+}
+
+/**
+ * Displays the string meta box contents (called by *add_meta_box* callback).
+ *
+ * @param WP_Post $post The current post.
+ * @param $info Array The custom_field the method must manage.
+ */
+function wl_entities_string_box_content( $post, $info ) {
+
+    // Which meta/custom_field are we managing?
+    $custom_field = $info['args'];
+    $meta_name = ( array_keys( $custom_field ) );
+    $meta_name = $meta_name[0];
+
+    // Set nonce
+    wl_echo_nonce( $meta_name );
+    
+    $default = get_post_meta($post->ID, $meta_name, true);
+
+    echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $default . '" style="width:100%" />';
 }
 
 /**

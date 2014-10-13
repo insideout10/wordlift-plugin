@@ -113,7 +113,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
         . $same_as
         . $additional_properties
         . $url
-        . '<span itemprop="name" content=$2>' . ( is_null( $itemprop )? '$2':'' ) . '</span></$1>',    //Only print name inside <span> for top-level entities
+        . '<span itemprop="name" content="$2">' . ( is_null( $itemprop )? '$2':'' ) . '</span></$1>',    //Only print name inside <span> for top-level entities
         $content
     );
 
@@ -143,39 +143,37 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
         
         // Get property value.
         $value = wl_get_meta_value( $match[1], $id );
-        
-        if( !is_null( $value ) && !empty( $value ) ) {
-            // What kind of value is it?
-            $expected_type = wl_get_meta_type( $match[1] );
             
-            if( $expected_type == WL_DATA_TYPE_URI ) {
-                // Field contains a reference to other entities.
-                // TODO: Could be more than one...
-                $value = $value[0];
-                
-                // We expect value to be a uri or an entity ID.
-                if( !is_numeric( $value ) ) {
-                    // Found uri.
-                    $nested_entity_uri = $value;
-                    
-                    // TODO: Is the uri local?
-                    // TODO: manage external entities.
-                } else {
-                    // Found id, get uri.
-                    $nested_entity_uri = wl_get_entity_uri( $value );
-                }
-                
-                // TODO: check for errors
-                $nested_entity_name = wl_get_entity_post_by_uri( $nested_entity_uri )->post_title;
-                
-                $sub_content = '<span itemid="' . esc_attr( $nested_entity_uri ) . '">' . esc_attr( $nested_entity_name ) . '</span>';
-                $sub_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $match[1] );
-                $template = str_replace( $match[0], $sub_template, $template );
+        // What kind of value is it?
+        $expected_type = wl_get_meta_type( $match[1] );
+
+        if( $expected_type == WL_DATA_TYPE_URI ) {
+            // Field contains a reference to other entities.
+            // TODO: Could be more than one...
+            $value = $value[0];
+
+            // We expect value to be a uri or an entity ID.
+            if( !is_numeric( $value ) ) {
+                // Found uri.
+                $nested_entity_uri = $value;
+
+                // TODO: Is the uri local?
+                // TODO: manage external entities.
             } else {
-                // Field contains a raw value
-                $value = '<span itemprop="' . esc_attr( $match[1] ) . '" content="' . esc_attr( $value[0] ) . '"></span>';
-                $template = str_replace( $match[0], $value, $template );
+                // Found id, get uri.
+                $nested_entity_uri = wl_get_entity_uri( $value );
             }
+
+            // TODO: check for errors
+            $nested_entity_name = wl_get_entity_post_by_uri( $nested_entity_uri )->post_title;
+
+            $sub_content = '<span itemid="' . esc_attr( $nested_entity_uri ) . '">' . esc_attr( $nested_entity_name ) . '</span>';
+            $sub_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $match[1] );
+            $template = str_replace( $match[0], $sub_template, $template );
+        } else {
+            // Field contains a raw value
+            $value = '<span itemprop="' . esc_attr( $match[1] ) . '" content="' . esc_attr( $value[0] ) . '"></span>';
+            $template = str_replace( $match[0], $value, $template );
         }
     }
     

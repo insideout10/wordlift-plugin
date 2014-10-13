@@ -906,17 +906,17 @@ function wl_install_entity_type_data()
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_CAL_DATE_START => array(
                     'predicate'     => 'startDate',
-                    'type'          => 'date',
+                    'type'          => WL_DATA_TYPE_DATE,
                     'constraints'   => ''
                 ),
                 WL_CUSTOM_FIELD_CAL_DATE_END   => array(
                     'predicate'     => 'endDate',
-                    'type'          => 'date',
+                    'type'          => WL_DATA_TYPE_DATE,
                     'constraints'   => ''
                 ),
                 WL_CUSTOM_FIELD_LOCATION       => array(
                     'predicate'     => 'location',
-                    'type'          => 'uri',
+                    'type'          => WL_DATA_TYPE_URI,
                     'constraints'   => 'Place'
                 )
             ),
@@ -988,15 +988,20 @@ function wl_install_entity_type_data()
             'custom_fields' => array(
                 WL_CUSTOM_FIELD_GEO_LATITUDE    => array(
                     'predicate'     => 'latitude',
-                    'type'          => 'double',
+                    'type'          => WL_DATA_TYPE_DOUBLE,
                     'constraints'   => '',
                     'input_field'   => 'coordinates'
                 ),
                 WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
                     'predicate'     => 'longitude',
-                    'type'          => 'double',
+                    'type'          => WL_DATA_TYPE_DOUBLE,
                     'constraints'   => '',
                     'input_field'   => 'coordinates'
+                ),
+                WL_CUSTOM_FIELD_ADDRESS   => array(
+                    'predicate'     => 'address',
+                    'type'          => WL_DATA_TYPE_STRING,
+                    'constraints'   => ''
                 )
             ),
             'export_fields' => array(
@@ -1007,13 +1012,18 @@ function wl_install_entity_type_data()
                 WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
                     'predicate' => 'http://schema.org/longitude',
                     'type'      => 'xsd:double'
+                ),
+                WL_CUSTOM_FIELD_ADDRESS   => array(
+                    'predicate' => 'http://schema.org/address',
+                    'type'      => 'http://schema.org/PostalAddress'
                 )
             ),
             'microdata_template' =>
                 '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
                     {{latitude}}
                     {{longitude}}
-                </span>',
+                </span>
+                {{address}}',
             'templates' => array(
                 'subtitle' => '{{id}}'
             )
