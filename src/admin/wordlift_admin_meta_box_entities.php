@@ -338,6 +338,7 @@ function wl_entities_coordinates_box_content($post) {
 
 /**
  * Displays jQuery autocomplete in a meta box, to assign an entity as property value (e.g. location of an Event).
+ * The assigned entity can also be created on the fly.
  *
  * @param WP_Post $post The current post.
  * @param $info Array The custom_field the method must manage.
