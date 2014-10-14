@@ -309,10 +309,9 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 }
 
 /**
- * Retrieve entity property (post meta) starting from the schema.org's property name 
- * This function will be used mostly in theme development and entity editing as a way to
- *  achieve dynamic semantic publishing
- * @param $property_name as defined by schema.org
+ * Retrieve entity property value (post meta) starting from the schema.org's property name
+ * or from the WL_CUSTOM_FIELD_xxx name.
+ * @param $property_name as defined by schema.org or by WL internal constants
  * @param (optional) $entity_id, the function will try to retrieve it automatically
  * @return array containing value(s) or null (in case of error or no values).
  */
@@ -342,7 +341,9 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
     $term_mapping =  $term_info['custom_fields'];
     
     foreach( $term_mapping as $wl_constant => $property_info) {
-        if( isset( $property_info['predicate'] ) && $property_info['predicate'] == $property_name ) {
+        $found_constant = ( $wl_constant == $property_name );
+        $found_predicate = ( isset( $property_info['predicate'] ) && $property_info['predicate'] == $property_name );
+        if( $found_constant || $found_predicate ) {
             return get_post_meta( $entity_id, $wl_constant );
         }
     }
@@ -350,9 +351,9 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
 }
 
 /**
- * Retrieve entity property type, starting from the schema.org's property name 
- * This function is used to compile microdata templates.
- * @param $property_name as defined by schema.org
+ * Retrieve entity property type, starting from the schema.org's property name
+ * or from the WL_CUSTOM_FIELD_xxx name.
+ * @param $property_name as defined by schema.org or WL internal constants
  * @return array containing type(s) or null (in case of error or no types).
  */
 function wl_get_meta_type( $property_name ) {
@@ -371,10 +372,14 @@ function wl_get_meta_type( $property_name ) {
         $fields = $terms_opstions['custom_fields'];
         
         // Loop over custom_fields
-        foreach( $fields as $field ) {
+        foreach( $fields as $constant => $field ) {
             // Is this the predicate we are searching for?
-            if( isset( $field['type'] ) && isset( $field['predicate'] ) && $field['predicate'] == $property_name ) {
-                return $field['type'];
+            if( isset( $field['type'] ) ){
+                $found_predicate = isset( $field['predicate'] ) && ( $field['predicate'] == $property_name );
+                $found_constant = ( $constant == $property_name );
+                if( $found_predicate || $found_constant ) {
+                    return $field['type'];
+                }
             }
         }
     }
@@ -383,8 +388,8 @@ function wl_get_meta_type( $property_name ) {
 
 /**
  * Retrieve entity property constraints, starting from the schema.org's property name 
- * This function is used to build editor metaboxes for entities.
- * @param $property_name as defined by schema.org
+ * or from the WL_CUSTOM_FIELD_xxx name.
+ * @param $property_name as defined by schema.org or WL internal constants
  * @return array containing constraint(s) or null (in case of error or no constraint).
  */
 function wl_get_meta_constraints( ) {

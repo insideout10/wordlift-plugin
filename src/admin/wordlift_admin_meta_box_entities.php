@@ -358,15 +358,24 @@ function wl_entities_uri_box_content( $post, $info ) {
     
     // Get default value, if any
     $defaultEntity = get_post_meta( $post->ID, $meta_name, true );
+    
+    // Is there a value?
     if( $defaultEntity !== '' ) {
-        // Is the value an ID or a uri? 
+        // Is the value an ID or a string? 
         if( is_numeric( $defaultEntity ) ) {
             $defaultEntity = get_post( $defaultEntity );
+            $defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
         } else {
-            $defaultEntity = wl_get_entity_post_by_uri( $defaultEntity );
+            // Is the entity external or internal?
+            $defaultEntityTmp = wl_get_entity_post_by_uri( $defaultEntity );
+            if( is_null( $defaultEntityTmp ) ) {
+                // external entity
+                $defaultEntity->uri = $defaultEntity;
+            } else {
+                $defaultEntity = $defaultEntityTmp;
+                $defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
+            }
         }
-        // Store also the uri
-        $defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
     }
 
     // Search entities of the expected type
@@ -378,13 +387,17 @@ function wl_entities_uri_box_content( $post, $info ) {
     ); 
     $candidates = get_posts( $args );
     
-    // Write HTML
+    // Write Autocomplete selection
     if( count( $candidates ) > 0 ) {
-        // Input to show the options
+        // Input to show the autocomplete options
         echo '<input id="autocompleteEntity" style="width:100%" >';
         // Input to store the actual chosen values ( autocomplete quirks... )
         echo '<input type="hidden" id="autocompleteEntityHidden" name="wl_metaboxes[' . $meta_name . ']">';
-
+        // Input to create new entity (insert uri or just give a name)
+        $placeholder = __('Insert uri or just a name', 'wordlift');
+        echo '<input id="autocompleteCreateNew" placeholder="' . $placeholder . '" style="width:100%" >';
+        
+        
         // Add jQuery Autocomplete
         wp_enqueue_script( 'jquery-ui-autocomplete' );
  
@@ -398,8 +411,14 @@ function wl_entities_uri_box_content( $post, $info ) {
         // Add null value (to delete location)
         $nullCandidate = array(
             'value' => '',
-            'label' => __('<no location>', 'wordlift') );
+            'label' => __('< no location >', 'wordlift') );
         array_unshift( $simpleCandidates, $nullCandidate );
+        
+        // Add null value (to delete location)
+        $newCandidate = array(
+            'value' => '§',
+            'label' => __('< create new >', 'wordlift') );
+        array_unshift( $simpleCandidates, $newCandidate );
         
         // Add to Autocomplete available place
         wp_localize_script( 'jquery-ui-autocomplete', 'availableEntities',
@@ -412,11 +431,17 @@ function wl_entities_uri_box_content( $post, $info ) {
         echo "<script type='text/javascript'>
         $ = jQuery;
         $(document).ready(function() {
-            var selector = '#autocompleteEntity';
-            var hiddenSelector = '#autocompleteEntityHidden';
-
+            var selector = '#autocompleteEntity';               // to display labels
+            var createNewSelector = '#autocompleteCreateNew';   // to insert new entitiy
+            var hiddenSelector = '#autocompleteEntityHidden';   // to contain the value to be saved
+            
+            // 'create new' input
+            $(createNewSelector).hide()     // Starts hidden
+                .change( function(){        // keyboard event
+                    $(hiddenSelector).val( $(this).val() );
+                });
+                
             // Default label and value
-            console.log(availableEntities.default);
             if( availableEntities.default.hasOwnProperty( 'uri' ) ){
                 $(selector).val( availableEntities.default.post_title );
                 $(hiddenSelector).val( availableEntities.default.uri );
@@ -431,6 +456,14 @@ function wl_entities_uri_box_content( $post, $info ) {
                     event.preventDefault();
                     $(selector).val( ui.item.label );
                     $(hiddenSelector).val( ui.item.value );
+
+                    if( $(hiddenSelector).val() === '§' ){
+                        $(createNewSelector).show();
+                        $(createNewSelector).focus();
+                        $(hiddenSelector).val('');
+                    } else {
+                        $(createNewSelector).hide();
+                    }
                 },
                 focus: function( event, ui ) {
                     // Do not show values instead of the label
@@ -438,6 +471,7 @@ function wl_entities_uri_box_content( $post, $info ) {
                     $(selector).val(ui.item.label);
                 }
             });
+            
         });
         </script>";
     } else {
@@ -465,6 +499,25 @@ function wl_entity_metabox_save($post_id) {
         
         // Save the property value
         if ( isset( $meta_name ) && isset( $meta_value ) ) {
+            wl_write_log('piedo ' . $meta_name . ' ' . $meta_value);
+            // If the meta expects an entity...
+            $expecting_uri = wl_get_meta_type( $meta_name ) == WL_DATA_TYPE_URI;
+            // ...and contains an entity that is not present in the db...
+            $absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );
+            // ...but is not an external uri
+            $external_uri = strpos( $meta_value, 'http') === 0;
+            if( $expecting_uri && $absent_from_db && !$external_uri ) {
+                // ...we create a new entity!
+                $name = esc_attr( $meta_value );
+                //$new_entity_id = wl_create_post('', $meta_value, $meta_value, 'publish', 'entity');
+                
+                // Assign type
+                //wl_set_entity_main_type( $new_entity_id, 'http://schema.org/Place' );
+                
+                // Rewrite meta value in the new version
+                //$meta_value = wl_get_entity_uri( $new_entity_id );
+            }
+            
             update_post_meta( $post_id, $meta_name, $meta_value );  
         } else {
             delete_post_meta( $post_id, $meta_name );
