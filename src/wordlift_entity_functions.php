@@ -357,7 +357,7 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
  * @return array containing type(s) or null (in case of error or no types).
  */
 function wl_get_meta_type( $property_name ) {
-    
+
     // Property name must be defined.
     if( !isset( $property_name ) || is_null( $property_name ) ){
         return null;
@@ -365,7 +365,9 @@ function wl_get_meta_type( $property_name ) {
     
     // Get taxonomy terms
     $terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME );
+    //wl_write_log(' piedo ' . WL_ENTITY_TYPE_TAXONOMY_NAME . json_encode($terms));
     foreach( $terms as $term ) {
+        wl_write_log(' piedo ');
         
         // Get custom_fields
         $terms_opstions = wl_entity_type_taxonomy_get_term_options( $term->term_id );
@@ -373,6 +375,7 @@ function wl_get_meta_type( $property_name ) {
         
         // Loop over custom_fields
         foreach( $fields as $constant => $field ) {
+        
             // Is this the predicate we are searching for?
             if( isset( $field['type'] ) ){
                 $found_predicate = isset( $field['predicate'] ) && ( $field['predicate'] == $property_name );

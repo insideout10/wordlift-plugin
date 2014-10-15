@@ -484,6 +484,10 @@ function wl_entities_uri_box_content( $post, $info ) {
  */
 function wl_entity_metabox_save($post_id) {
     
+    if( !isset( $_POST['wl_metaboxes'] ) ) {
+        return;
+    }
+    
     // Loop over the wl_metaboxes array and save metaboxes values
     foreach( $_POST['wl_metaboxes'] as $meta_name => $meta_value ) {
         
@@ -512,6 +516,7 @@ function wl_entity_metabox_save($post_id) {
                 //$new_entity_id = wl_create_post('', $meta_value, $meta_value, 'publish', 'entity');
                 
                 // Assign type
+                // TODO: Where do I get the type without the schema address ?
                 //wl_set_entity_main_type( $new_entity_id, 'http://schema.org/Place' );
                 
                 // Rewrite meta value in the new version

@@ -85,7 +85,7 @@ function wl_shortcode_timeline_to_json( $posts ) {
     // Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
     $start_at_slide = 0;
     $event_index = -1;
-    $now = date_create();
+    $now = time();
 
     $timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ){
 

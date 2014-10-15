@@ -70,9 +70,17 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals( 40.12, $value[0] );
         $value = wl_get_meta_value( 'longitude', $place_id );
         $this->assertEquals( 72.3, $value[0] );
+        $value = wl_get_meta_value( WL_CUSTOM_FIELD_GEO_LATITUDE, $place_id );
+        $this->assertEquals( 40.12, $value[0] );
+        $value = wl_get_meta_value( WL_CUSTOM_FIELD_GEO_LONGITUDE, $place_id );
+        $this->assertEquals( 72.3, $value[0] );
         $value = wl_get_meta_value( 'startDate', $event_id );
         $this->assertEquals( '2014-10-21', $value[0] );
         $value = wl_get_meta_value( 'endDate', $event_id );
+        $this->assertEquals( '2015-10-21', $value[0] );
+        $value = wl_get_meta_value( WL_CUSTOM_FIELD_CAL_DATE_START, $event_id );
+        $this->assertEquals( '2014-10-21', $value[0] );
+        $value = wl_get_meta_value( WL_CUSTOM_FIELD_CAL_DATE_END, $event_id );
         $this->assertEquals( '2015-10-21', $value[0] );
         
         // Negative tests
@@ -80,6 +88,34 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals( null, $value );
         $value = wl_get_meta_value( 'latitude', $event_id );
         $this->assertEquals( null, $value );        
+    }
+    
+    /**
+     * Tests the *wl_get_meta_type* function
+     */
+    function testEntityGetMetaType() {
+        
+        $type = wl_get_meta_type( WL_CUSTOM_FIELD_GEO_LATITUDE );
+        $this->assertEquals( 'double', $type );
+        $type = wl_get_meta_type( 'latitude' );
+        $this->assertEquals( 'double', $type );
+        
+        $type = wl_get_meta_type( WL_CUSTOM_FIELD_CAL_DATE_START );
+        $this->assertEquals( 'double', $type );
+        $type = wl_get_meta_type( 'startDate' );
+        $this->assertEquals( 'double', $type );        
+
+        $type = wl_get_meta_type( WL_CUSTOM_FIELD_LOCATION );
+        $this->assertEquals( 'uri', $type );
+        $type = wl_get_meta_type( 'location' );
+        $this->assertEquals( 'uri', $type );
+    }
+    
+    /**
+     * Tests the *wl_get_meta_constraints* function
+     */
+    function testEntityGetMetaConstraints() {
+   
     }
 }
 
