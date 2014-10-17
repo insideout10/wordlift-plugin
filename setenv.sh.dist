@@ -4,12 +4,9 @@ export DB_PASSWORD=<database-password>
 export DB_HOST=<database-host>
 export WP_VERSION=<wordpress-version>
 export WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=<true|false> # use true for unit tests.
+export REDLINK_DATASET_NAME=<redlink-dataset-name>             # create one on my.redlink.io.
 export REDLINK_APP_KEY=<redlink-app-key>                       # get one on my.redlink.io.
-export REDLINK_USER_ID=<redlink-user-id>                       # check in my.redlink.io / Datasets / Dataset page.
+export REDLINK_APP_NAME=<redlink-app-name>                     # create one on my.redlink.io.
+export REDLINK_USER_ID=<redlink-user-id>                       # check in your my.redlink.io profile.
 export WP_MULTISITE=<0|1>                                      # whether multisite, use 0 if unsure.
-
-# You need to have dataset on my.redlink.io with the following name:
-#  wordlift-tests-php-{PHP_MAJOR_VERSION}.{PHP_MINOR_VERSION}-wp-{WP_VERSION}-ms-{WP_MULTISITE}
-#
-#  e.g. wordlift-tests-php-5.3-wp-3.8-ms-0
 

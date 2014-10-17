@@ -700,13 +700,15 @@ function wl_configure_wordpress_test() {
             sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
                 getenv('WP_VERSION'), getenv('WP_MULTISITE') ) )
     );
+    
+    $app_name = ( false !== getenv('REDLINK_APP_NAME') ? getenv('REDLINK_APP_NAME') : 'wordlift' );
 
     // Set the plugin options.
     update_option( WL_OPTIONS_NAME, array(
         'application_key' => getenv('REDLINK_APP_KEY'),
         'user_id'         => getenv('REDLINK_USER_ID'),
         'dataset_name'    => $dataset_name,
-        'analysis_name'   => 'wordlift',
+        'analysis_name'   => $app_name,
         'dataset_base_uri' => 'http://data.redlink.io/' . getenv('REDLINK_USER_ID') . '/' . $dataset_name
     ) );
 }
