@@ -116,16 +116,38 @@ class EntityFunctionsTest extends WP_UnitTestCase
      * Tests the *wl_get_meta_constraints* function
      */
     function testWlEntityTaxonomyGetCustomFields() {
-        // Get by id
+        // Create entity and get custom_fields by id
+        $place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
         
-        // Get all
+        $custom_fields = wl_entity_taxonomy_get_custom_fields( $place_id );
+        $custom_fields = json_encode( $custom_fields );
+        
+        $this->assertContains( 'predicate', $custom_fields );
+        $this->assertContains( 'type', $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
+        
+        // Get all custom_fileds
+        $custom_fields = wl_entity_taxonomy_get_custom_fields();
+        $custom_fields = json_encode( $custom_fields );
+        
+        $this->assertContains( 'predicate', $custom_fields );
+        $this->assertContains( 'type', $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_CAL_DATE_START, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_CAL_DATE_END, $custom_fields );
+        $this->assertContains( WL_CUSTOM_FIELD_LOCATION, $custom_fields );
     }
     
     /**
      * Tests the *wl_get_meta_constraints* function
      */
     function testEntityGetMetaConstraints() {
-   
+        //TODO
     }
 }
 
