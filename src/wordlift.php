@@ -917,7 +917,9 @@ function wl_install_entity_type_data()
                 WL_CUSTOM_FIELD_LOCATION       => array(
                     'predicate'     => 'location',
                     'type'          => WL_DATA_TYPE_URI,
-                    'constraints'   => 'Place'
+                    'constraints'   => array(
+                        'uri_type'  => 'Place'
+                    )
                 )
             ),
             'export_fields' => array(

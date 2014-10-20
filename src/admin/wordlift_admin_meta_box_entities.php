@@ -351,7 +351,11 @@ function wl_entities_uri_box_content( $post, $info ) {
     $meta_name = $meta_name[0];
     
     // Which type of entity is object?
-    $expected_type = $custom_field[$meta_name]['constraints'];
+    if( isset( $custom_field[$meta_name]['constraints']['uri_type'] ) ) {
+        $expected_type = $custom_field[$meta_name]['constraints']['uri_type'];
+    } else {
+        $expected_type = null;
+    }
     
     // Set Nonce
     wl_echo_nonce( $meta_name );
