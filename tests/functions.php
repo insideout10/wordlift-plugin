@@ -168,8 +168,6 @@ function wl_analyze_content( $content ) {
     // Send the request.
     $response = wp_remote_post( $api_url, $args );
     
-    echo 'piedo ' . $api_url;
-    
     // If an error has been raised, return the error.
     if ( is_wp_error( $response )
         || 200 !== $response['response']['code'] ) {

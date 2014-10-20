@@ -101,14 +101,24 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals( 'double', $type );
         
         $type = wl_get_meta_type( WL_CUSTOM_FIELD_CAL_DATE_START );
-        $this->assertEquals( 'double', $type );
+        $this->assertEquals( 'date', $type );
         $type = wl_get_meta_type( 'startDate' );
-        $this->assertEquals( 'double', $type );        
+        $this->assertEquals( 'date', $type );        
 
         $type = wl_get_meta_type( WL_CUSTOM_FIELD_LOCATION );
         $this->assertEquals( 'uri', $type );
         $type = wl_get_meta_type( 'location' );
         $this->assertEquals( 'uri', $type );
+    }
+    
+    
+    /**
+     * Tests the *wl_get_meta_constraints* function
+     */
+    function testWlEntityTaxonomyGetCustomFields() {
+        // Get by id
+        
+        // Get all
     }
     
     /**

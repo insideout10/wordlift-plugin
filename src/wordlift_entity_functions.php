@@ -330,15 +330,7 @@ function wl_get_meta_value( $property_name, $entity_id=null ) {
         }
     }
     
-    // Get info on the entity relatively to the WL taxonomy
-    $terms = wp_get_object_terms( $entity_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
-    if( count($terms) == 0 ) {
-        return null;
-    }
-    
-    // Get mapping between WL constants and schema.org properties
-    $term_info = wl_entity_type_taxonomy_get_term_options( $terms[0]->term_id );
-    $term_mapping =  $term_info['custom_fields'];
+    $term_mapping = wl_entity_taxonomy_get_custom_fields( $entity_id );
     
     foreach( $term_mapping as $wl_constant => $property_info) {
         $found_constant = ( $wl_constant == $property_name );
@@ -362,25 +354,16 @@ function wl_get_meta_type( $property_name ) {
     if( !isset( $property_name ) || is_null( $property_name ) ){
         return null;
     }
-    
-    // Get taxonomy terms
-    $terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME );
-    //wl_write_log(' piedo ' . WL_ENTITY_TYPE_TAXONOMY_NAME . json_encode($terms));
-    foreach( $terms as $term ) {
-        wl_write_log(' piedo ');
-        //var_dump($term);
-        
-        // Get custom_fields
-        $terms_opstions = wl_entity_type_taxonomy_get_term_options( $term->term_id );
-        $fields = $terms_opstions['custom_fields'];
-        
-        // Loop over custom_fields
-        foreach( $fields as $constant => $field ) {
-        
+      
+    // Loop over custom_fields
+    $entity_terms = wl_entity_taxonomy_get_custom_fields();
+
+    foreach( $entity_terms as $term ) {
+        foreach( $term as $wl_constant => $field ) {
             // Is this the predicate we are searching for?
             if( isset( $field['type'] ) ){
                 $found_predicate = isset( $field['predicate'] ) && ( $field['predicate'] == $property_name );
-                $found_constant = ( $constant == $property_name );
+                $found_constant = ( $wl_constant == $property_name );
                 if( $found_predicate || $found_constant ) {
                     return $field['type'];
                 }
@@ -399,4 +382,41 @@ function wl_get_meta_type( $property_name ) {
 function wl_get_meta_constraints( ) {
     // TODO.
     return 'TODO: write wl_get_meta_constraints()';
+}
+
+/**
+ * Retrieve entity type custom fields
+ * @entity_id id of the entity, if any
+ * @return if $entity_id was specified, return custom_fields for that entity's type.
+ * Otherwise returns all custom_fields
+ */
+function wl_entity_taxonomy_get_custom_fields( $entity_id=null ) {
+    
+    if( is_null( $entity_id ) ) {
+        // Return all custom fields.
+        // Get taxonomy terms
+        $terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array('hide_empty' => 0) );
+        if( is_wp_error( $terms ) )
+            return null;
+        
+        $custom_fields = array();
+        foreach( $terms as $term ) {
+            // Get custom_fields
+            $terms_options = wl_entity_type_taxonomy_get_term_options( $term->term_id );
+            $custom_fields[ $term->name ] = $terms_options['custom_fields'];
+        }
+
+        return $custom_fields;
+    } else {
+        // Return custom fields for the entity type.
+        // Get info on the entity relatively to the WL taxonomy
+        $terms = wp_get_object_terms( $entity_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+        if( count($terms) == 0 ) {
+            return null;
+        }
+
+        // Get custom_fields
+        $term_info = wl_entity_type_taxonomy_get_term_options( $terms[0]->term_id );
+        return $term_info['custom_fields'];
+    }
 }
