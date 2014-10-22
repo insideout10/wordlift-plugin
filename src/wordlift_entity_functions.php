@@ -354,12 +354,13 @@ function wl_get_meta_type( $property_name ) {
     if( !isset( $property_name ) || is_null( $property_name ) ){
         return null;
     }
-      
+          
     // Loop over custom_fields
     $entity_terms = wl_entity_taxonomy_get_custom_fields();
-
+    wl_write_log('  piedo ' . json_encode($entity_terms) );
     foreach( $entity_terms as $term ) {
         foreach( $term as $wl_constant => $field ) {
+
             // Is this the predicate we are searching for?
             if( isset( $field['type'] ) ){
                 $found_predicate = isset( $field['predicate'] ) && ( $field['predicate'] == $property_name );

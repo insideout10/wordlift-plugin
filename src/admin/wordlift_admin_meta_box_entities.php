@@ -352,8 +352,10 @@ function wl_entities_uri_box_content( $post, $info ) {
     
     // Which type of entity is object?
     if( isset( $custom_field[$meta_name]['constraints']['uri_type'] ) ) {
+        // Specific type (e.g. Place, Event, ecc.)
         $expected_type = $custom_field[$meta_name]['constraints']['uri_type'];
     } else {
+        // Any entity
         $expected_type = null;
     }
     
@@ -507,13 +509,17 @@ function wl_entity_metabox_save($post_id) {
         
         // Save the property value
         if ( isset( $meta_name ) && isset( $meta_value ) ) {
+            wl_write_log('piedo ');
             wl_write_log('piedo ' . $meta_name . ' ' . $meta_value);
             // If the meta expects an entity...
-            $expecting_uri = wl_get_meta_type( $meta_name ) == WL_DATA_TYPE_URI;
+            $expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
+            wl_write_log(' piedo expecting uri: ' . $expecting_uri);
             // ...and contains an entity that is not present in the db...
             $absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );
+            wl_write_log(' piedo absent from db: ' . $absent_from_db);
             // ...but is not an external uri
             $external_uri = strpos( $meta_value, 'http') === 0;
+            wl_write_log(' piedo external uri: ' . $external_uri);
             if( $expecting_uri && $absent_from_db && !$external_uri ) {
                 // ...we create a new entity!
                 $name = esc_attr( $meta_value );
