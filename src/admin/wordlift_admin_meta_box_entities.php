@@ -376,8 +376,12 @@ function wl_entities_uri_box_content( $post, $info ) {
             $defaultEntityTmp = wl_get_entity_post_by_uri( $defaultEntity );
             if( is_null( $defaultEntityTmp ) ) {
                 // external entity
-                $defaultEntity->uri = $defaultEntity;
+                $defaultEntity = array(
+                    'uri'           => $defaultEntity,
+                    'post_title'    => $defaultEntity
+                );
             } else {
+                // internal entity
                 $defaultEntity = $defaultEntityTmp;
                 $defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
             }
@@ -508,29 +512,34 @@ function wl_entity_metabox_save($post_id) {
             return $post_id;
         
         // Save the property value
-        if ( isset( $meta_name ) && isset( $meta_value ) ) {
+        if ( isset( $meta_name ) && isset( $meta_value ) && $meta_value !== '' ) {
             wl_write_log('piedo ');
             wl_write_log('piedo ' . $meta_name . ' ' . $meta_value);
             // If the meta expects an entity...
             $expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
             wl_write_log(' piedo expecting uri: ' . $expecting_uri);
-            // ...and contains an entity that is not present in the db...
+            // ...and the user inputs an entity that is not present in the db...
             $absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );
             wl_write_log(' piedo absent from db: ' . $absent_from_db);
-            // ...but is not an external uri
-            $external_uri = strpos( $meta_value, 'http') === 0;
-            wl_write_log(' piedo external uri: ' . $external_uri);
-            if( $expecting_uri && $absent_from_db && !$external_uri ) {
+            
+            // ...and that is not a external uri
+            $name_is_uri = strpos( $meta_value, 'http') === 0;
+            wl_write_log(' piedo name is uri: ' . $name_is_uri );
+            
+            if( $expecting_uri && $absent_from_db && !$name_is_uri ) {
+                
                 // ...we create a new entity!
-                $name = esc_attr( $meta_value );
-                //$new_entity_id = wl_create_post('', $meta_value, $meta_value, 'publish', 'entity');
+                $slug = preg_replace('/[^A-Za-z0-9]/', '', $meta_value);
+                wl_write_log(' piedo creates entity ' . $slug );
+                $new_entity_id = wl_create_post( '', $slug, $meta_value, 'publish', 'entity' );
+                wl_write_log(' piedo creates entity ' . $new_entity_id );
                 
                 // Assign type
                 // TODO: Where do I get the type without the schema address ?
-                //wl_set_entity_main_type( $new_entity_id, 'http://schema.org/Place' );
+                wl_set_entity_main_type( $new_entity_id, 'http://schema.org/Place' );
                 
                 // Rewrite meta value in the new version
-                //$meta_value = wl_get_entity_uri( $new_entity_id );
+                $meta_value = wl_get_entity_uri( $new_entity_id );
             }
             
             update_post_meta( $post_id, $meta_name, $meta_value );  

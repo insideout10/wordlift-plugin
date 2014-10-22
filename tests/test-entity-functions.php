@@ -109,6 +109,9 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals( 'uri', $type );
         $type = wl_get_meta_type( 'location' );
         $this->assertEquals( 'uri', $type );
+        
+        $type = wl_get_meta_type( 'random_silly_name' );
+        $this->assertEquals( null, $type );
     }
     
     

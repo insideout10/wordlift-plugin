@@ -932,8 +932,7 @@ function wl_install_entity_type_data()
                     'type'      => 'xsd:date'
                 ),
                 WL_CUSTOM_FIELD_LOCATION => array(
-                    'predicate' => 'http://schema.org/location',
-                    'type'      => 'http://schema.org/Place'
+                    'predicate' => 'http://schema.org/location'
                 )
             ),
             'microdata_template' =>
@@ -1063,7 +1062,7 @@ function wl_install_entity_type_data()
             wl_write_log('wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]');
             continue;
         }
-
+      
         // Add custom metadata to the term.
         wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'], $term['microdata_template'] );
     }

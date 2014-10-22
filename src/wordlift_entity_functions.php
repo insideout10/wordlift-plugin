@@ -357,7 +357,7 @@ function wl_get_meta_type( $property_name ) {
           
     // Loop over custom_fields
     $entity_terms = wl_entity_taxonomy_get_custom_fields();
-    wl_write_log('  piedo ' . json_encode($entity_terms) );
+
     foreach( $entity_terms as $term ) {
         foreach( $term as $wl_constant => $field ) {
 
