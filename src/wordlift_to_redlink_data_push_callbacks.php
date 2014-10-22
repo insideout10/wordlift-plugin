@@ -177,9 +177,9 @@ function wl_push_entity_post_to_redlink( $entity_post )
         $main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
         $sparql .= " <$uri> a <$main_type_uri> . \n";
 
-        // The type define custom fields that hold additional data about the entity.
+        // The type define export fields that hold additional data about the entity.
         // For example Events may have start/end dates, Places may have coordinates.
-        // The value in the custom fields must be rewritten as triple predicates, this
+        // The value in the export fields must be rewritten as triple predicates, this
         // is what we're going to do here.
 
         wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ). ' ]' );
@@ -190,16 +190,25 @@ function wl_push_entity_post_to_redlink( $entity_post )
                 wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
 
                 $predicate = wordlift_esc_sparql( $settings['predicate'] );
-                $type      = $settings['type'];
+                if( !isset( $settings['type'] ) || empty( $settings['type'] ) ) {
+                    $type = null;
+                } else {
+                    $type = $settings['type'];
+                }
 
                 // add the delete statement for later execution.
                 $delete_stmt .= "DELETE { <$uri> <$predicate> ?o } WHERE  { <$uri> <$predicate> ?o };\n";
 
                 foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
-                    $sparql .= " <$uri> <$predicate> " .
-                        '"' . wordlift_esc_sparql( $value ) . '"' .
-                        '^^' . wordlift_esc_sparql( $type ) .
-                        " . \n";
+                    $sparql .= " <$uri> <$predicate> ";
+                    
+                    if(is_null( $type ) ) {
+                        $sparql .= '<' . wordlift_esc_sparql( $value ) . '>';
+                    } else {
+                        $sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
+                    }
+                    
+                    $sparql .= " . \n";
                 }
             }
         }
@@ -232,7 +241,7 @@ function wl_push_entity_post_to_redlink( $entity_post )
     if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
         $latitude = wordlift_esc_sparql($coordinates['latitude']);
         $longitude = wordlift_esc_sparql($coordinates['longitude']);
-
+    
         $sparql .= " <$uri> geo:lat '$latitude'^^xsd:double . \n";
         $sparql .= " <$uri> geo:long '$longitude'^^xsd:double . \n";
     }

@@ -98,7 +98,8 @@ function wl_prefixes() {
         'dct'    => 'http://purl.org/dc/terms/',
         'rdfs'   => 'http://www.w3.org/2000/01/rdf-schema#',
         'owl'    => 'http://www.w3.org/2002/07/owl#',
-        'schema' => 'http://schema.org/'
+        'schema' => 'http://schema.org/',
+        'xsd'    => 'http://www.w3.org/2001/XMLSchema#'
     );
 }
 
