@@ -421,13 +421,13 @@ function wl_entities_uri_box_content( $post, $info ) {
         // Add null value (to delete location)
         $nullCandidate = array(
             'value' => '',
-            'label' => __('< no location >', 'wordlift') );
+            'label' => __('< no entity >', 'wordlift') );
         array_unshift( $simpleCandidates, $nullCandidate );
         
         // Add null value (to delete location)
         $newCandidate = array(
             'value' => '§',
-            'label' => __('< create new >', 'wordlift') );
+            'label' => __('< add new entity >', 'wordlift') );
         array_unshift( $simpleCandidates, $newCandidate );
         
         // Add to Autocomplete available place
@@ -528,18 +528,25 @@ function wl_entity_metabox_save($post_id) {
             
             if( $expecting_uri && $absent_from_db && !$name_is_uri ) {
                 
-                // ...we create a new entity!
-                $slug = preg_replace('/[^A-Za-z0-9]/', '', $meta_value);
-                wl_write_log(' piedo creates entity ' . $slug );
-                $new_entity_id = wl_create_post( '', $slug, $meta_value, 'publish', 'entity' );
+                // ...we create a new entity!                
+                $params = array(
+                    'post_status'  => 'publish',
+                    'post_type'    => WL_ENTITY_TYPE_NAME,
+                    'post_title'   => $meta_value,
+                    'post_content' => '...'
+                );
+                wl_write_log(' piedo got new entity ' . $meta_value );
+                $new_entity_id = wp_insert_post( $params, true );
                 wl_write_log(' piedo creates entity ' . $new_entity_id );
+                
+                // Rewrite meta value in the new version (uri is built if there is not yet one)
+                $meta_value = wl_get_entity_uri( $new_entity_id );
                 
                 // Assign type
                 // TODO: Where do I get the type without the schema address ?
                 wl_set_entity_main_type( $new_entity_id, 'http://schema.org/Place' );
                 
-                // Rewrite meta value in the new version
-                $meta_value = wl_get_entity_uri( $new_entity_id );
+                wl_write_log(' piedo creates entity ' . $meta_value );
             }
             
             update_post_meta( $post_id, $meta_name, $meta_value );  
@@ -548,7 +555,7 @@ function wl_entity_metabox_save($post_id) {
         }
     }
 }
-add_action( 'save_post', 'wl_entity_metabox_save' );
+add_action( 'wordlift_save_post', 'wl_entity_metabox_save' );
 
 
 function wl_echo_nonce( $meta_name ) {
