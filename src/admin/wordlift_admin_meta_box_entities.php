@@ -513,18 +513,13 @@ function wl_entity_metabox_save($post_id) {
         
         // Save the property value
         if ( isset( $meta_name ) && isset( $meta_value ) && $meta_value !== '' ) {
-            wl_write_log('piedo ');
-            wl_write_log('piedo ' . $meta_name . ' ' . $meta_value);
+            
             // If the meta expects an entity...
             $expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
-            wl_write_log(' piedo expecting uri: ' . $expecting_uri);
             // ...and the user inputs an entity that is not present in the db...
-            $absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );
-            wl_write_log(' piedo absent from db: ' . $absent_from_db);
-            
+            $absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );            
             // ...and that is not a external uri
             $name_is_uri = strpos( $meta_value, 'http') === 0;
-            wl_write_log(' piedo name is uri: ' . $name_is_uri );
             
             if( $expecting_uri && $absent_from_db && !$name_is_uri ) {
                 
@@ -535,21 +530,26 @@ function wl_entity_metabox_save($post_id) {
                     'post_title'   => $meta_value,
                     'post_content' => '...'
                 );
-                wl_write_log(' piedo got new entity ' . $meta_value );
                 $new_entity_id = wp_insert_post( $params, true );
-                wl_write_log(' piedo creates entity ' . $new_entity_id );
                 
-                // Rewrite meta value in the new version (uri is built if there is not yet one)
-                $meta_value = wl_get_entity_uri( $new_entity_id );
+                // Assign new uri (using directly *wl_get_uri* is not working)
+                $uri = wl_build_entity_uri( $new_entity_id );
+                wl_set_entity_uri( $new_entity_id, $uri );
                 
                 // Assign type
-                // TODO: Where do I get the type without the schema address ?
-                wl_set_entity_main_type( $new_entity_id, 'http://schema.org/Place' );
+                $constraints = wl_get_meta_constraints( $meta_name );
+                $type = 'http://schema.org/' . $constraints['uri_type'];
+                wl_write_log('piedo type: ' . $type);
+                wl_set_entity_main_type( $new_entity_id, $type );
                 
-                wl_write_log(' piedo creates entity ' . $meta_value );
+                // Update triple store
+                wl_push_to_redlink( $new_entity_id );
+                
+                // Update the value that will be saved as meta
+                $meta_value = $uri;
             }
             
-            update_post_meta( $post_id, $meta_name, $meta_value );  
+            update_post_meta( $post_id, $meta_name, $meta_value );
         } else {
             delete_post_meta( $post_id, $meta_name );
         }

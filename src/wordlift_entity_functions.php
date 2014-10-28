@@ -53,7 +53,6 @@ function wl_build_entity_uri( $post_id )
  */
 function wl_get_entity_uri( $post_id )
 {
-
     $uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
     $uri = utf8_encode( $uri );
 
@@ -312,7 +311,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
  * Retrieve entity property value (post meta) starting from the schema.org's property name
  * or from the WL_CUSTOM_FIELD_xxx name.
  * @param $property_name as defined by schema.org or by WL internal constants
- * @param (optional) $entity_id, the function will try to retrieve it automatically
+ * @param $entity_id (optional), the function will try to retrieve it automatically
  * @return array containing value(s) or null (in case of error or no values).
  */
 function wl_get_meta_value( $property_name, $entity_id=null ) {
@@ -380,9 +379,19 @@ function wl_get_meta_type( $property_name ) {
  * @param $property_name as defined by schema.org or WL internal constants
  * @return array containing constraint(s) or null (in case of error or no constraint).
  */
-function wl_get_meta_constraints( ) {
-    // TODO.
-    return 'TODO: write wl_get_meta_constraints()';
+function wl_get_meta_constraints( $property_name ) {
+    
+    $fields = wl_entity_taxonomy_get_custom_fields();
+    wl_write_log('piedo fields ' . $property_name . ' ' . json_encode($fields));
+    foreach( $fields as $property => $field ) {
+        if( isset( $field['constraints'] ) && !empty( $field['constraints'] ) ) {
+            wl_write_log('piedo ' . json_encode($field));
+            if( ( $property === $property_name ) || ( $field['predicate'] === $property_name ) ) {
+                return $field['constraints'];
+            }
+        }
+    }
+    return null;
 }
 
 /**
