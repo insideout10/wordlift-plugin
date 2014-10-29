@@ -244,23 +244,38 @@ function wl_jsonld_load_remote( $url ) {
 
     // TODO: validate the URI.
 
+	// Build the full URI.
+	$url_with_suffix = $url . $wl_entity_view_suffix;
+
+	wl_write_log( "Loading URL [ url :: $url_with_suffix ]" );
+
 	// Use the caching method if it's loaded.
 	if ( function_exists( 'wl_caching_remote_request' ) ) {
-		$response = wl_caching_remote_request( $url . $wl_entity_view_suffix, array( 'method' => 'GET' ) );
+		$response = wl_caching_remote_request( $url_with_suffix, array( 'method' => 'GET' ) );
 	} else {
-		$response = wp_remote_get( $url . $wl_entity_view_suffix );
+		$response = wp_remote_get( $url_with_suffix );
 	}
 
+	// TODO: handle errors.
 	if ( is_wp_error( $response ) ) {
+		wl_write_log( "An error occurred loading URL [ url :: $url_with_suffix ]" );
 		wp_die( var_export( $response, true ) );
 	}
 
+	// Decode the JSON and return it.
     $json = json_decode( $response['body'], true );
 
     // The json is invalid.
     if ( null === $json ) {
+	    wl_write_log( "Cannot decode the JSON [ url :: $url_with_suffix ]" );
         return null;
     }
+
+	// The JSON doesn't have a graph.
+	if (! isset( $json[0]['@graph'][0] ) ) {
+		wl_write_log( "Cannot locate the graph [ url :: $url_with_suffix ]" );
+		return null;
+	}
 
     return $json[0]['@graph'][0];
 

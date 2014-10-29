@@ -18,21 +18,52 @@ if ( ! class_exists( 'JSONPath' ) ) {
 
 use Flow\JSONPath\JSONPath;
 
+/**
+ * The WL_View class provides access to remote JSON-LD resources.
+ *
+ * @since 3.0.0
+ */
 class WL_View {
 
-	var $base_uri, $suffix, $title, $language, $graph;
+	var $base_uri, $suffix, $title, $language, $graph, $url;
 
 	var $json_path;
 
+	/**
+	 * Create an instance of WL_View.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @uses wl_config_get_dataset_base_uri to get the default dataset URI.
+	 *
+	 * @param string $base_uri The base URI for resources, default the WordLift dataset.
+	 * @param string $suffix The suffix to append to URI in order to load the JSON-LD file, default *.json*.
+	 * @param string $title The predicate used to set the title of the page, default *rdfs:label*.
+	 * @param string $language The language for values, default *en*.
+	 */
 	function __construct( $base_uri = null, $suffix = '.json', $title = 'rdfs:label', $language = 'en' ) {
 
+		// Set the instance variables.
 		$this->base_uri = ( null === $base_uri ? wl_config_get_dataset_base_uri() : $base_uri );
 		$this->suffix   = $suffix;
 		$this->title    = $title;
 		$this->language = $language;
 
+		wl_write_log( "[ base URI :: $this->base_uri ][ suffix :: $this->suffix ][ title :: $this->title ][ language :: $this->language ]" );
+
 	}
 
+	/**
+	 * Load the JSON-LD at the specified path (the path is appended to the *base_uri*). If the path is empty or null
+	 * it is loaded from the query variables (via WordPress).
+	 *
+	 * @since 3.0.0
+	 *
+	 * @uses wl_config_get_dataset_base_uri to get the default dataset URI.
+	 * @uses wl_jsonld_load_remote to load a remote JSON-LD file.
+	 *
+	 * @param string $path The entity path.
+	 */
 	function load( $path = null ) {
 
 		// If the path is empty, load the resource from the query string variable.
@@ -41,22 +72,36 @@ class WL_View {
 		}
 
 		// If a base URI has been set, append the path, otherwise use the path.
-		$url = ( ! empty( $this->base_uri ) ? $this->base_uri . '/' . $path : $path );
+		$this->url = ( ! empty( $this->base_uri )
+			? $this->base_uri . ( '/' !== substr( $this->base_uri, - 1, 1 ) ? '/' : '' ) . $path
+			: $path );
 
-//		wp_die( $this->base_uri . '/' . $id . $this->suffix );
-
-//		wp_die( $url );
-		$this->graph     = wl_jsonld_load_remote( $url . $this->suffix );
+		$this->graph     = wl_jsonld_load_remote( $this->url . $this->suffix );
 		$this->json_path = new JSONPath( $this->graph );
 
 	}
 
-	function get_property( $name, $language = null, $index = 0 ) {
+	/**
+	 * Get the property with the specified name. The value at the specified index will be returned.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @uses expand to expand the property name.
+	 *
+	 * @param string $name          The property name.
+	 * @param int $index            The value index (default 0).
+	 *
+	 * @return string The property value.
+	 */
+	function get_property( $name, $index = 0 ) {
 
 
-//		echo( "name: $name\n" );
 		$values = $this->json_path->find( $this->expand( $name ) );
-		return $values[$index];
+
+		wl_write_log( "[ name :: $name ][ index :: $index ][ value :: " . var_export( $values, true ) . " ]" );
+
+
+		return $values[ $index ];
 
 //		$value = wl_jsonld_get_property( $this->graph, $name, $language, $this->suffix, $index );
 //		return $value;
@@ -76,21 +121,50 @@ class WL_View {
 		return $expr;
 	}
 
-	function get_property_html( $name, $language = null, $index = 0 ) {
+	function get_property_html( $name, $index = 0 ) {
 
-		return esc_html( $this->get_property( $name, $language, $index ) );
+		return esc_html( $this->get_property( $name, $index ) );
 
 	}
 
+	/**
+	 * Gets the first property with the provided name.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @uses get_first_property to get the first property value.
+	 *
+	 * @param string $name The predicate name.
+	 *
+	 * @return string The value.
+	 */
 	function get_first_property_html( $name ) {
 
-		return esc_html( $this->get_property( $name, null, 0 ) );
+		return esc_html( $this->get_first_property( $name ) );
 
 	}
 
-	function echo_property( $name, $language = null, $index = 0 ) {
+	/**
+	 * Gets the first property with the provided name and returns it HTML escaped.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @uses get_property to get the property value.
+	 *
+	 * @param string $name The predicate name.
+	 *
+	 * @return string The value.
+	 */
+	function get_first_property( $name ) {
 
-		echo $this->get_property( $name, $language, $index );
+		return $this->get_property( $name, 0 );
+
+	}
+
+
+	function echo_property( $name, $index = 0 ) {
+
+		echo $this->get_property( $name, $index );
 
 	}
 
