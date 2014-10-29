@@ -15,11 +15,12 @@ function wl_ajax_sparql() {
 	$accept  = 'text/csv';
 
 	// TODO: Get the dataset and the key to build the API URL.
-	$dataset = wl_config_get_dataset();
+//	$dataset = wl_config_get_dataset();
 	$key     = wl_config_get_application_key();
 
 	// Get the query.
 	$query   = wl_sparql_replace_params( wl_sparql_get_query_by_slug( $slug ), $_GET );
+	$dataset = wl_sparql_get_query_dataset_by_slug( $slug );
 
     // Print out the query if the debug flag is set.
     if ( isset( $_GET['_debug'] ) && 1 == $_GET['_debug'] ) {
@@ -30,14 +31,18 @@ function wl_ajax_sparql() {
         wp_die( "Cannot find a SPARQL query [ slug :: $slug ]" );
     }
 
-	$url     = WL_REDLINK_API_BASE_URI . WL_REDLINK_API_VERSION . "/data/$dataset/sparql/select?key=$key&out=$output";
+	$url     = wl_config_get_api_url() . "/data/$dataset/sparql/select?key=$key&out=$output";
 
 	// Prepare the request.
 	$args    = array(
 		'method'  => 'POST',
-		'headers' => array( 'Accept' => $accept ),
-		'body'    => array( 'query'  => $query )
+		'headers' => array(
+			'Accept'       => $accept,
+			'Content-Type' => 'text/plain'
+		),
+		'body'    => $query
 	);
+
 
 	// Send the request. Raise actions before and after the request is being sent.
     do_action( 'wl_sparql_pre_request', $url, $args, $query );
@@ -53,13 +58,16 @@ function wl_ajax_sparql() {
 	if ( is_wp_error( $response ) || 200 !== (int)$response['response']['code'] ) {
 
 		echo "wl_execute_sparql_query ================================\n";
-        // echo "[ api url :: $api_url ]\n"; -- enabling this will print out the key.
-		echo " request : \n";
-		var_dump( $args );
-		echo " response: \n";
-		var_dump( $response );
-		echo " response body: \n";
-		echo $response['body'];
+		if ( is_wp_error( $response ) ) {
+			var_dump( $response );
+		} else {
+			echo " request : \n";
+			var_dump( $args );
+			echo " response: \n";
+			var_dump( $response );
+			echo " response body: \n";
+			echo $response['body'];
+		}
 		echo "=======================================================\n";
 
 		return false;

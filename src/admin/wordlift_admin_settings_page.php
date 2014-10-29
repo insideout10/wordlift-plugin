@@ -43,6 +43,7 @@ function wl_settings_register()
     // 3: function callback, to display the input box: application_key_input_box
     // 4: page name that this is attached to: wordlift_settings_section_page
     // 5: id of the settings section: wordlift_settings_section
+	add_settings_field( WL_CONFIG_API_URL, __('API URL', 'wordlift'), 'wl_settings_api_url_input_box', $section_page, $section_id);
     add_settings_field( WL_CONFIG_APPLICATION_KEY_NAME, __('application-key', 'wordlift'), 'wl_settings_application_key_input_box', $section_page, $section_id);
     add_settings_field( WL_CONFIG_USER_ID_NAME, __('user-id', 'wordlift'), 'wl_settings_user_id_input_box', $section_page, $section_id);
     add_settings_field( WL_CONFIG_DATASET_NAME, __('dataset-name', 'wordlift'), 'wl_settings_dataset_input_box', $section_page, $section_id);
@@ -89,6 +90,21 @@ function wl_settings_enable_color_coding_of_entities_select() {
         ( wl_config_get_enable_color_coding_of_entities_on_frontend() ? 'yes' : 'no' )
     );
 }
+
+/**
+ * Displays the API URL input box
+ */
+function wl_settings_api_url_input_box()
+{
+
+	// Get the setting value.
+	$value = wl_config_get_api_url();
+
+	// Call the helper function.
+	wl_settings_input_box( WL_CONFIG_API_URL, $value );
+
+}
+
 
 /**
  * Displays the application key input box (as callback set using the *add_settings_field* method).

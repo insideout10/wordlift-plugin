@@ -31,6 +31,9 @@ function wl_caching_remote_request( $url, $args, $refresh = false, $expires_in_s
 	// Merge the default settings for remote queries.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), $args );
 
+//	echo $url . "\n";
+//	print_r( $args );
+
     // Create an hash of the request.
     $hash = wl_caching_hash( $url, $args );
 

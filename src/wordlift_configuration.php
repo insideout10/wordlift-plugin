@@ -18,6 +18,14 @@ function wl_config_get_setting($name, $default_value = '') {
 }
 
 /**
+ * Get the API URL.
+ */
+function wl_config_get_api_url()
+{
+	return wl_config_get_setting(WL_CONFIG_API_URL);
+}
+
+/**
  * Get the WordLift application key.
  */
 function wl_config_get_application_key()

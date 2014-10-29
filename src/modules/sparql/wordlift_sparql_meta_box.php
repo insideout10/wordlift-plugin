@@ -4,6 +4,7 @@
 define( 'WL_SPARQL_QUERY_META_BOX_NONCE_ACTION', 'wl_sparql_query_meta_box' );
 define( 'WL_SPARQL_QUERY_META_BOX_NONCE_NAME', 'wl_sparql_query_meta_box_nonce' );
 define( 'WL_SPARQL_QUERY_META_BOX_FIELD_NAME', 'wl_sparql_query' );
+define( 'WL_SPARQL_QUERY_DATASET_META_BOX_FIELD_NAME', 'wl_sparql_query_dataset' );
 
 /**
  * Adds a box to the SPARQL Query entity type.
@@ -42,9 +43,14 @@ function wl_sparql_query_meta_box_callback( $post ) {
 	 * Use get_post_meta() to retrieve an existing value
 	 * from the database and use the value for the form.
 	 */
-	$value   = get_post_meta( $post->ID, WL_SPARQL_QUERY_META_KEY, true );
-	$value_j = json_encode( $value );
-	$value_h = esc_html( $value );
+	$sparql    = get_post_meta( $post->ID, WL_SPARQL_QUERY_META_KEY, true );
+	$sparql_j  = json_encode( $sparql );
+	$sparql_h  = esc_html( $sparql );
+
+	$dataset   = get_post_meta( $post->ID, WL_SPARQL_QUERY_DATASET_META_KEY, true );
+	// Set the default dataset if the value isn't yet set.
+	$dataset   = ( empty( $dataset ) ? wl_config_get_dataset() : $dataset );
+	$dataset_h = esc_html( $dataset );
 
 	// TODO: see if we can use Squebi
 //    echo<<<EOF
@@ -74,10 +80,24 @@ function wl_sparql_query_meta_box_callback( $post ) {
 //    </div>
 //EOF;
 
-	echo '<label for="wl_sparql_query">';
-	_e( 'Edit the SPARQL Query', 'wordlift' );
-	echo '</label><br/>';
-	echo '<textarea style="width: 100%; height: 200px;" id="' . WL_SPARQL_QUERY_META_BOX_FIELD_NAME . '" name="' . WL_SPARQL_QUERY_META_BOX_FIELD_NAME . '" ng-model="query">' . $value_h . '</textarea>';
+?>
+
+	<label for="wl_sparql_query_dataset">
+	<?php _e( 'Dataset', 'wordlift' ); ?>
+	</label><br/>
+	<input style="width: 100%;" type="text"
+	       id="<?php echo WL_SPARQL_QUERY_DATASET_META_BOX_FIELD_NAME; ?>"
+	       name="<?php echo WL_SPARQL_QUERY_DATASET_META_BOX_FIELD_NAME; ?>" value="<?php echo $dataset_h; ?>" /><br />
+
+	<label for="wl_sparql_query">
+	<?php _e( 'Edit the SPARQL Query', 'wordlift' ); ?>
+	</label><br/>
+	<textarea style="width: 100%; height: 200px;"
+	          id="<?php echo WL_SPARQL_QUERY_META_BOX_FIELD_NAME; ?>"
+	          name="<?php echo WL_SPARQL_QUERY_META_BOX_FIELD_NAME; ?>"><?php echo $sparql_h; ?></textarea>
+
+<?php
+
 //    echo '<input type="text" id="myplugin_new_field" name="myplugin_new_field" value="' . esc_attr( $value ) . '" size="25" />';
 
 //    add_action( 'wp_print_scripts', 'wl_sparql_meta_box_print_scripts' );
@@ -124,13 +144,15 @@ function wl_sparql_query_save_meta_box_data( $post_id ) {
 
 	/* OK, it's safe for us to save the data now. */
 
+
 	// Make sure that it is set.
-	if ( ! isset( $_POST[ WL_SPARQL_QUERY_META_BOX_FIELD_NAME ] ) ) {
-		return;
-	}
+//	if ( ! isset( $_POST[ WL_SPARQL_QUERY_META_BOX_FIELD_NAME ] ) ) {
+//		return;
+//	}
 
 	// Update the meta field in the database.
 	update_post_meta( $post_id, WL_SPARQL_QUERY_META_KEY, $_POST[ WL_SPARQL_QUERY_META_BOX_FIELD_NAME ] );
+	update_post_meta( $post_id, WL_SPARQL_QUERY_DATASET_META_KEY, $_POST[ WL_SPARQL_QUERY_DATASET_META_BOX_FIELD_NAME ] );
 
 }
 

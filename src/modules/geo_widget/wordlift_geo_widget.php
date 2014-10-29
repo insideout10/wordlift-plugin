@@ -78,6 +78,32 @@ EOF;
 }
 add_shortcode( 'wl_geo_layer', 'wl_geo_widget_layer_shortcode' );
 
+
+function wl_geo_widget_marker_shortcode( $atts ) {
+
+	// Extract attributes and set default values.
+	$params = shortcode_atts( array(
+		'latitude'  => null,
+		'longitude' => null
+	), $atts );
+
+	// Return if either latitude or longitude haven't been provided.
+	if ( empty( $params['latitude'] ) || empty( $params['longitude'] ) ) {
+		return;
+	}
+
+	$latitude_j  = json_encode( $params['latitude'] );
+	$longitude_j = json_encode( $params['longitude'] );
+
+	echo <<<EOF
+
+		L.marker([$latitude_j, $longitude_j]).addTo(map);
+EOF;
+
+}
+add_shortcode( 'wl_geo_marker', 'wl_geo_widget_marker_shortcode' );
+
+
 function wordlift_geo_widget_html( $width, $height, $latitude, $longitude, $zoom, $content ) {
 
     // Create a unique Id for this widget.

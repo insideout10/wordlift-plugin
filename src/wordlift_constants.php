@@ -10,7 +10,7 @@ define('WL_REDLINK_API_HTTP_OPTIONS', serialize(array(
     'httpversion' => '1.0',
     'blocking' => true,
     'cookies' => array(),
-    'sslverify' => false,
+    'sslverify' => true,
     'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt'
 )));
 
@@ -29,6 +29,7 @@ define('WL_ENTITY_URL_META_NAME', 'entity_url');
 // Define the field name for the dataset base URI.
 define('WL_CONFIG_DATASET_BASE_URI_NAME', 'dataset_base_uri');
 
+define('WL_CONFIG_API_URL', 'api_url');
 define('WL_CONFIG_APPLICATION_KEY_NAME', 'application_key');
 
 define('WL_CONFIG_USER_ID_NAME', 'user_id');
@@ -51,7 +52,7 @@ define( 'WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME', 'wl_config_enable_colo
 define('WL_REDLINK_API_VERSION', '1.0-BETA');
 
 // Define the Redlink API base URI (with end slash).
-define('WL_REDLINK_API_BASE_URI', 'https://api.staging.redlink.io/');
+// define('WL_REDLINK_API_BASE_URI', 'https://api.staging.redlink.io/');
 
 // the WordLift options identifier.
 define('WL_OPTIONS_NAME', 'wordlift_options');

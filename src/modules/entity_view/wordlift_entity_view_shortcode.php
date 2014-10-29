@@ -156,9 +156,10 @@ add_shortcode( 'wl_entity_duration', 'wl_entity_duration_shortcode' );
  * @param object $graph The graph.
  * @param string $name  The property tree.
  * @param null|string $language If provided, a two-characters language code.
+ * @param string $suffix The suffix for remote requests (empty if not provided).
  * @return null|string The value or null if not found.
  */
-function wl_jsonld_get_property( $graph, $name, $language = null, $suffix = '' )
+function wl_jsonld_get_property( $graph, $name, $language = null, $suffix = '', $index = 0 )
 {
 
     $keys  = explode( '>', html_entity_decode( $name ) );
@@ -171,9 +172,7 @@ function wl_jsonld_get_property( $graph, $name, $language = null, $suffix = '' )
         }
 
         $key_exp = wl_prefixes_expand( $key );
-        $value   = wl_jsonld_get_property_value( $graph, $key_exp, $language );
-
-//        echo $key . '@' . $language . ' = ' . $value . '<br />';
+        $value   = wl_jsonld_get_property_value( $graph, $key_exp, $language, $index );
 
     }
 
@@ -190,7 +189,7 @@ function wl_jsonld_get_property( $graph, $name, $language = null, $suffix = '' )
  * @param string|null $language The desired language (if null, the value with no language set).
  * @return object|string A new graph if the property is a reference, or a value.
  */
-function wl_jsonld_get_property_value( $graph, $key, $language = null ) {
+function wl_jsonld_get_property_value( $graph, $key, $language = null, $index = 0 ) {
 
     // If the property is not found, return null.
     if ( ! isset( $graph->{ $key } ) ) {
@@ -201,21 +200,27 @@ function wl_jsonld_get_property_value( $graph, $key, $language = null ) {
     $values = $graph->{ $key };
 
     // It's a reference to another entity.
-    if ( isset( $values[0]->{ '@id' } ) ) {
-        return $values[0]->{ '@id' };
+    if ( isset( $values[ $index ]->{ '@id' } ) ) {
+        return $values[ $index ]->{ '@id' };
     }
 
     // Get the value.
+	$i = 0;
     foreach ( $values as $value ) {
 
         // Get the value for an empty language.
         if ( empty( $language ) && ! isset( $value->{ '@language' } ) ) {
-            return $value->{ '@value' };
+
+	        if ( $index === $i++ ) {
+		        return $value->{'@value'};
+	        }
         }
 
         // Get the value for the specified language.
         if ( ! empty( $language ) && isset( $value->{ '@language' } ) && $language === $value->{ '@language' } ) {
-            return $value->{ '@value' };
+	        if ( $index === $i++ ) {
+		        return $value->{'@value'};
+	        }
         }
 
     }
@@ -250,13 +255,13 @@ function wl_jsonld_load_remote( $url ) {
 		wp_die( var_export( $response, true ) );
 	}
 
-    $json     = json_decode( $response['body'] );
+    $json = json_decode( $response['body'], true );
 
     // The json is invalid.
     if ( null === $json ) {
         return null;
     }
 
-    return $json[0]->{ '@graph' }[0];
+    return $json[0]['@graph'][0];
 
 }
