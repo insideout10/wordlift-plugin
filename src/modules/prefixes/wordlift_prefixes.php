@@ -156,6 +156,9 @@ function wl_prefixes_get( $prefix ) {
  * This function is called by the *wl_admin_menu* hook which is raised when WordLift builds the admin_menu.
  *
  * @since 3.0.0
+ *
+ * @param string $parent_slug The parent slug for the menu.
+ * @param string $capability  The required capability to access the page.
  */
 function wl_prefixes_admin_menu( $parent_slug, $capability ) {
 
