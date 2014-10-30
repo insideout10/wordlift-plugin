@@ -381,13 +381,18 @@ function wl_get_meta_type( $property_name ) {
  */
 function wl_get_meta_constraints( $property_name ) {
     
-    $fields = wl_entity_taxonomy_get_custom_fields();
-    wl_write_log('piedo fields ' . $property_name . ' ' . json_encode($fields));
-    foreach( $fields as $property => $field ) {
-        if( isset( $field['constraints'] ) && !empty( $field['constraints'] ) ) {
-            wl_write_log('piedo ' . json_encode($field));
-            if( ( $property === $property_name ) || ( $field['predicate'] === $property_name ) ) {
-                return $field['constraints'];
+    // Get WL taxonomy mapping.
+    $types = wl_entity_taxonomy_get_custom_fields();
+    
+    // Loop over types
+    foreach( $types as $type ) {
+        // Loop over custom fields of this type
+        foreach( $type as $property => $field ) {
+            if( isset( $field['constraints'] ) && !empty( $field['constraints'] ) ) {
+                // Is this the property we are searhing for?
+                if( ( $property === $property_name ) || ( $field['predicate'] === $property_name ) ) {
+                    return $field['constraints'];
+                }
             }
         }
     }

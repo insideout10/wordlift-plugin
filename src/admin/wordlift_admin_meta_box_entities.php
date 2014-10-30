@@ -539,7 +539,6 @@ function wl_entity_metabox_save($post_id) {
                 // Assign type
                 $constraints = wl_get_meta_constraints( $meta_name );
                 $type = 'http://schema.org/' . $constraints['uri_type'];
-                wl_write_log('piedo type: ' . $type);
                 wl_set_entity_main_type( $new_entity_id, $type );
                 
                 // Update triple store
