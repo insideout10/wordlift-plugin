@@ -80,9 +80,6 @@ class AjaxTest extends WP_UnitTestCase
     {
     }
 
-    /**
-     * @runInSeparateProcess
-     */
     public function test_shortcode_chord_ajax()
     {
 
@@ -115,9 +112,6 @@ class AjaxTest extends WP_UnitTestCase
         $this->assertTrue( in_array( 'Content-Type: application/json', $headers ) );
     }
 
-    /**
-     * @runInSeparateProcess
-     */
     public function test_shortcode_timeline_ajax()
     {
 
@@ -150,9 +144,6 @@ class AjaxTest extends WP_UnitTestCase
         $this->assertTrue(in_array('Content-Type: application/json', $headers));
     }
 
-	/**
-     * @runInSeparateProcess
-     */
     public function test_shortcode_geomap_ajax()
     {
 
