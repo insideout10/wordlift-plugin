@@ -40,6 +40,7 @@ function _wl_content_embed_microdata( $post_id , $content) {
         return $content;
     };
 
+    // TODO: Retrieve here just one time entities type structure to avoid multiple queries. 
     foreach ( $matches as $match ) {
         $item_id = $match[2];
 
@@ -141,11 +142,20 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
 
     foreach ( $matches as $match ) {
         
+        $placeholder = $match[0];
+        $field_name = $match[1];
+        
         // Get property value.
-        $value = wl_get_meta_value( $match[1], $id );
-            
+        $value = wl_get_meta_value( $field_name, $id );
+        
+        // If no value is given, just remove the placeholder from the template 
+        if (null == $value) {
+            $template = str_replace( $placeholder, '', $template );
+            continue;
+        }
         // What kind of value is it?
-        $expected_type = wl_get_meta_type( $match[1] );
+        // TODO: Performance issue here: meta type retrieving should be centralized
+        $expected_type = wl_get_meta_type( $field_name );
 
         if( $expected_type == WL_DATA_TYPE_URI ) {
             // Field contains a reference to other entities.
@@ -153,6 +163,7 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
             $value = $value[0];
 
             // We expect value to be a uri or an entity ID.
+            // TODO: Replace with a ternary
             if( !is_numeric( $value ) ) {
                 // Found uri.
                 $nested_entity_uri = $value;
@@ -168,13 +179,16 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
             $nested_entity_name = wl_get_entity_post_by_uri( $nested_entity_uri )->post_title;
 
             $sub_content = '<span itemid="' . esc_attr( $nested_entity_uri ) . '">' . esc_attr( $nested_entity_name ) . '</span>';
-            $sub_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $match[1] );
-            $template = str_replace( $match[0], $sub_template, $template );
-        } else {
-            // Field contains a raw value
-            $value = '<span itemprop="' . esc_attr( $match[1] ) . '" content="' . esc_attr( $value[0] ) . '"></span>';
-            $template = str_replace( $match[0], $value, $template );
+            // TODO: add recursivity limitation
+            $sub_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $field_name );
+            $template = str_replace( $placeholder, $sub_template, $template );
+            continue;
         }
+
+        // Standard condition: field containing a raw value
+        $value = '<span itemprop="' . esc_attr( $field_name ) . '" content="' . esc_attr( $value[0] ) . '"></span>';
+        $template = str_replace( $placeholder, $value, $template );
+        
     }
     
     return $template;

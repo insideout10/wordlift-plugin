@@ -49,9 +49,8 @@ EOF;
         $post_id    = wl_create_post( $content, 'post-1', 'Post 1', 'publish', 'post' );
         $post       = get_post( $post_id );
 
-        $this->setColorCode( 'no' );
+        $this->setColorCode( 'no' );        
         $this->assertNotContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
-
         $this->setColorCode( 'yes' );
         $this->assertContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
 

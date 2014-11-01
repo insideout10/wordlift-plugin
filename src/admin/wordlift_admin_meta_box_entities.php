@@ -40,38 +40,9 @@ function wl_admin_add_entities_meta_box( $post_type ) {
             
             $unique_metabox_name = uniqid('wl_metabox_');
 
-            switch( $property['type'] ) {
-                case WL_DATA_TYPE_URI:
-                    add_meta_box(
-                        $unique_metabox_name, $title, 'wl_entities_uri_box_content', $post_type, 'side', 'high', $info
-                    );
-                    break;
-                case WL_DATA_TYPE_DATE:
-                    add_meta_box(
-                        $unique_metabox_name, $title, 'wl_entities_date_box_content', $post_type, 'side', 'high', $info
-                    );
-                    break;
-                case WL_DATA_TYPE_INTEGER:
-                    add_meta_box(
-                        $unique_metabox_name, $title, 'wl_entities_int_box_content', $post_type, 'side', 'high', $info
-                    );
-                    break;
-                case WL_DATA_TYPE_DOUBLE:
-                    add_meta_box(
-                        $unique_metabox_name, $title, 'wl_entities_double_box_content', $post_type, 'side', 'high', $info
-                    );
-                    break;
-                case WL_DATA_TYPE_BOOLEAN:
-                    add_meta_box(
-                        $unique_metabox_name, $title, 'wl_entities_bool_box_content', $post_type, 'side', 'high', $info
-                    );
-                    break;
-                case WL_DATA_TYPE_STRING:
-                    add_meta_box(
-                        $unique_metabox_name, $title, 'wl_entities_string_box_content', $post_type, 'side', 'high', $info
-                    );
-                    break;
-            }
+            add_meta_box(
+                $unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'side', 'high', $info
+            );
         }
         
         // Loop over grouped properties
@@ -79,14 +50,13 @@ function wl_admin_add_entities_meta_box( $post_type ) {
             
             // Metabox title
             $title = __( 'Edit', 'wordlift' ) . ' ' . __( $key, 'wordlift' );
+            
+            $unique_metabox_name = uniqid('wl_metabox_');
 
-            switch( $key ) {
-                case 'coordinates':
-                    add_meta_box(
-                        'wordlift_coordinates_entities_box', $title, 'wl_entities_coordinates_box_content', $post_type, 'side', 'high'
-                    );
-                    break;
-            }
+            add_meta_box(
+                $unique_metabox_name, $title, 'wl_entities_' . $key . '_box_content', $post_type, 'side', 'high'
+            );
+
         }
     }
 }
