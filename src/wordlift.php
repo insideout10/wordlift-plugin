@@ -880,6 +880,9 @@ function wl_install_entity_type_data()
     wl_entity_type_taxonomy_register();
     
     // Set the taxonomy data.
+    // TODO: Add inheritance
+    // TODO: Manage both generic and custom fields as fields
+    // TODO: Merge export fields configuration with standard fields
     $terms = array(
         'creative-work' => array(
             'label' => 'Creative Work',
@@ -1095,6 +1098,8 @@ function wl_plugins_url($url, $path, $plugin)
 
 add_filter('plugins_url', 'wl_plugins_url', 10, 3);
 
+
+// TODO - Check installation
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
 add_action('init', 'wl_install_entity_type_data');
 

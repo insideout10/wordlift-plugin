@@ -211,7 +211,7 @@ function wl_entities_date_box_content( $post, $info ) {
     echo "<script type='text/javascript'>
     $ = jQuery;
     $(document).ready(function() {
-        $('#" . $meta_name . "').datetimepicker();
+        $('#" . $meta_name . "').datetimepicker({ format: 'Y-m-d' });
     });
     </script>";
 }
@@ -493,29 +493,18 @@ function wl_entity_metabox_save($post_id) {
             
             if( $expecting_uri && $absent_from_db && !$name_is_uri ) {
                 
-                // ...we create a new entity!                
-                $params = array(
-                    'post_status'  => 'publish',
-                    'post_type'    => WL_ENTITY_TYPE_NAME,
-                    'post_title'   => $meta_value,
-                    'post_content' => '...'
-                );
-                $new_entity_id = wp_insert_post( $params, true );
-                
-                // Assign new uri (using directly *wl_get_uri* is not working)
-                $uri = wl_build_entity_uri( $new_entity_id );
-                wl_set_entity_uri( $new_entity_id, $uri );
-                
+              // ...we create a new entity!
+                $new_entity = wl_save_entity( '', $meta_value, WL_ENTITY_TYPE_NAME, '' );
+
                 // Assign type
                 $constraints = wl_get_meta_constraints( $meta_name );
                 $type = 'http://schema.org/' . $constraints['uri_type'];
-                wl_set_entity_main_type( $new_entity_id, $type );
+                wl_set_entity_main_type( $new_entity->ID, $type );
                 
-                // Update triple store
-                wl_push_to_redlink( $new_entity_id );
-                
+                // TODO: directly publish the new entity
+
                 // Update the value that will be saved as meta
-                $meta_value = $uri;
+                $meta_value = wl_get_entity_uri( $new_entity->ID );
             }
             
             update_post_meta( $post_id, $meta_name, $meta_value );
@@ -523,6 +512,8 @@ function wl_entity_metabox_save($post_id) {
             delete_post_meta( $post_id, $meta_name );
         }
     }
+    // Push changes on RedLink
+    wl_push_to_redlink( $post_id );
 }
 add_action( 'wordlift_save_post', 'wl_entity_metabox_save' );
 
