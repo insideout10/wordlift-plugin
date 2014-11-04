@@ -191,8 +191,7 @@ function wl_entities_date_box_content( $post, $info ) {
     $meta_name = ( array_keys( $custom_field ) );
     $meta_name = $meta_name[0];
     
-    // Include datePicker and timePicker on page
-    //wp_enqueue_script('jquery-ui-datepicker');    // Only let us choose date; we need date and time
+    // Include dateTimePicker on page
     wp_enqueue_style(
             'datetimepickercss', plugins_url('js-client/datetimepicker/jquery.datetimepicker.css', __FILE__)
     );
@@ -205,13 +204,35 @@ function wl_entities_date_box_content( $post, $info ) {
     
     $date = get_post_meta($post->ID, $meta_name, true);
     $date = esc_attr($date);
-
-    echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
+    
+    // Give the timepicker the date in its favourite format.
+    if( !empty( $date ) ){
+        $pickerDate = date('Y/m/d H:i', strtotime($date));
+    }
+    
+    // Two input fields, one for the datetimepicker and another to store the time in the required format
+    echo '<input type="text" id="' . $meta_name . '" value="' . $pickerDate . '" style="width:100%" />';
+    echo '<input type="hidden" id="' . $meta_name . '_hidden" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
 
     echo "<script type='text/javascript'>
     $ = jQuery;
     $(document).ready(function() {
-        $('#" . $meta_name . "').datetimepicker({ format: 'Y-m-d' });
+    
+        var lastDateTimePickerClicked;
+
+        $('#" . $meta_name . "').datetimepicker({
+            onChangeDateTime:function(dp, input){
+                // format must be: 'YYYY-MM-DDTHH:MM:SSZ'
+                var newDate = input.val();
+                if( newDate !== null && newDate !== '' ) {
+                    newDate = newDate.replace(' ', 'T');
+                    newDate = newDate.split('/').join('-'); //because replace() only works for the first occurrence
+                    newDate += ':00Z';
+                }
+                // store value to save in the hidden input field
+                $('#" . $meta_name . "_hidden').val( newDate );
+            }
+        });
     });
     </script>";
 }
