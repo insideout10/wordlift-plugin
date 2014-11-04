@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file covers tests related to the save-post related routines.
+ * This file covers tests related to the microdata printing routines.
  */
 
 require_once 'functions.php';
@@ -63,6 +63,54 @@ EOF;
         $options[WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME] = $value;
         update_option( WL_OPTIONS_NAME, $options );
     }
-
+    
+    /*
+     * Test the high-level function in charge of printing schema.org microdata
+     */
+    function testContentEmbedMicrodata() {
+        
+        // Step 1: Create entities and add properties
+        $entities = $this->create_dummy_entities();
+        wl_write_log('piedo ' . json_encode($entities));
+        // Step 2: Create an annotated post containing the entities
+        // Step 3: Verify correct markup
+    }
+    
+    /*
+     * Function to collect the microdata regarding a single entity
+     * Used by *wl_content_embed_microdata*
+     */
+    function testContentEmbedItemMicrodata() {
+        // Create entity and add properties
+        // Verify correct markup
+        
+    }
+    
+    /*
+     * Function to compile the microdata_template with the entity properties' values
+     * Used by *wl_content_embed_item_microdata*
+     */
+    function testContentEmbedCompileMicrodataTemplate() {
+        // Create entity and properties
+        // Verify microdata_template compiling
+    }
+    
+    function create_dummy_entities() {
+                
+        // A place
+        $place_id = wl_create_post( 'Place', 'place', 'Place', 'publish', 'entity' );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        
+        // An Event having as location the place above
+        $event_id = wl_create_post( 'Event', 'event', 'Event', 'publish', 'entity' );
+        wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-21', true );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
+        
+        return array( $place_id, $event_id );
+    }
 }
 
