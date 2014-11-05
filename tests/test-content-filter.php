@@ -69,11 +69,49 @@ EOF;
      */
     function testContentEmbedMicrodata() {
         
-        // Step 1: Create entities and add properties
+        // Create entities and add properties
         $entities = $this->create_dummy_entities();
-        wl_write_log('piedo ' . json_encode($entities));
-        // Step 2: Create an annotated post containing the entities
-        // Step 3: Verify correct markup
+        
+        $place_uri = wl_get_entity_uri( $entities[0] );
+        $event_uri = wl_get_entity_uri( $entities[1] );
+        wl_write_log('piedo ' . $place_uri . ' ' . $event_uri);
+        
+        
+        
+        // Create an annotated post containing the entities
+        $place_annotation = '<span itemscope itemid="' . $place_uri . '">Velletri</span>';
+        $event_annotation = '<span itemscope itemid="' . $event_uri . '">Sagra delle cipolle</span>';
+        $content = 'We are going to ' . $place_annotation . ', where we will attend the ' . $event_annotation;
+        $post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+
+        // Obtain markup
+        $markup = _wl_content_embed_microdata( $post_id, $content );
+        $right_markup = 'We are going to <span itemscope itemtype="http://schema.org/Place" class="wl-place" itemid="' . $place_uri . '">'
+                    . '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">'
+                        . '<span itemprop="latitude" content="40.12"></span>'
+                        . '<span itemprop="longitude" content="72.3"></span>'
+                    . '</span>'
+                    . '<link itemprop="url" href="http://example.org/?entity=place" />'
+                    . '<span itemprop="name" content="Velletri">Velletri</span>'
+                . '</span>'
+                . ', where we will attend the <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="' . $event_uri . '">'
+                        . '<span itemprop="startDate" content="2014-10-21"></span>'
+                        . '<span itemprop="endDate" content="2015-10-26"></span>'
+                        . '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place"><span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">'
+                            . '<span itemprop="latitude" content="40.12"></span>'
+                            . '<span itemprop="longitude" content="72.3"></span>'
+                        . '</span>'
+                        . '<link itemprop="url" href="http://example.org/?entity=place" />'
+                        . '<span itemprop="name" content="Place"></span>'
+                    . '</span>'
+                    . '<link itemprop="url" href="http://example.org/?entity=event" />'
+                    . '<span itemprop="name" content="Sagra delle cipolle">Sagra delle cipolle</span>'
+                . '</span>';
+        
+        // Verify correct markup
+        wl_write_log('piedo ' . $markup );
+        $this->assertEquals( $markup, $right_markup );
+        $this->assertContains('<spaaaaaan>', $markup);
     }
     
     /*
@@ -92,7 +130,33 @@ EOF;
      */
     function testContentEmbedCompileMicrodataTemplate() {
         // Create entity and properties
+        $entities = $this->create_dummy_entities();
+        
+        // Take away one property value to check for nulls
+        update_post_meta( $entities[1], WL_CUSTOM_FIELD_CAL_DATE_END, null );
+        
+        $template_place = wl_entity_get_type( $entities[0] );
+        $template_place = $template_place['microdata_template'];
+        $template_event = wl_entity_get_type( $entities[1] );
+        $template_event = $template_event['microdata_template'];
+        
+        // Compile microdata_template
+        $compiled_template_place = wl_content_embed_compile_microdata_template( $entities[0], $template_place );
+        $compiled_template_event = wl_content_embed_compile_microdata_template($entities[1], $template_event);
+        
         // Verify microdata_template compiling
+        $this->assertContains( '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">', $compiled_template_place );
+        $this->assertContains( '<span itemprop="latitude" content="40.12"></span>', $compiled_template_place );
+        $this->assertContains( '<span itemprop="longitude" content="72.3"></span>', $compiled_template_place );
+
+        $this->assertNotContains( '<span itemprop="endDate" content="2015-10-26"></span>', $compiled_template_event );
+        $this->assertContains( '<span itemprop="startDate" content="2014-10-21"></span>', $compiled_template_event );
+        $this->assertContains( '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place">', $compiled_template_event );
+        $this->assertContains( '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">', $compiled_template_event );
+        $this->assertContains( '<span itemprop="latitude" content="40.12"></span>', $compiled_template_event );
+        $this->assertContains( '<span itemprop="longitude" content="72.3"></span>', $compiled_template_event );
+        $this->assertContains( '<link itemprop="url" href="http://example.org/?entity=place" />', $compiled_template_event );
+        $this->assertContains( '<span itemprop="name" content="Place"></span></span>', $compiled_template_event );
     }
     
     function create_dummy_entities() {
@@ -107,7 +171,7 @@ EOF;
         $event_id = wl_create_post( 'Event', 'event', 'Event', 'publish', 'entity' );
         wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
         add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
-        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-21', true );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
         add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
         
         return array( $place_id, $event_id );
