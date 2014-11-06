@@ -29,7 +29,7 @@ function wl_content_embed_microdata( $content )
  * @param string $content The post content.
  * @return string The updated post content.
  */
-function _wl_content_embed_microdata( $post_id , $content) {
+function _wl_content_embed_microdata( $post_id , $content ) {
 
     $regex   = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
 
@@ -61,6 +61,25 @@ function _wl_content_embed_microdata( $post_id , $content) {
  */
 function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
 
+    /* *
+     * When $itemprop=null it means that we are at top level.
+     * When $itemprop has a value, recursions count goes on.
+     */
+    $stop_recursion = false;
+    if( is_null( $itemprop ) ) {
+        // We are starting to print a top level entity
+        $GLOBALS['wl_content_embed_item_microdata_recursion_count'] = 0;
+    } else {
+        if( $GLOBALS['wl_content_embed_item_microdata_recursion_count'] >= WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA ) {
+            // Max number of recursions reached: stop.
+            $stop_recursion = true;
+        } else {
+            // Increment recursions count
+            $GLOBALS['wl_content_embed_item_microdata_recursion_count'] += 1;
+        }
+    }
+        
+    
     $post = wl_get_entity_post_by_uri( $uri );
 
     // Entity not found.
@@ -95,17 +114,20 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
             $item_type .= ' class="' . esc_attr( $main_type['css_class'] ) . '"';
         }
     }
-
-    // Get the additional properties (this may imply a recursion of this method on a sub-entity).
-    $additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );
-
-    // Get the entity URL.
-    $url = '<link itemprop="url" href="' . get_permalink( $post->ID ) . '" />';
     
     // Define attribute itemprop if this entity is nested.
     if( !is_null( $itemprop ) ) {
         $itemprop = ' itemprop="' . $itemprop . '"';
     }
+
+    // Get the additional properties (this may imply a recursion of this method on a sub-entity).
+    $additional_properties = '';
+    if( ! $stop_recursion ) {
+        $additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );   
+    }
+
+    // Get the entity URL.
+    $url = '<link itemprop="url" href="' . get_permalink( $post->ID ) . '" />';
     
     // Replace the original tagging with the new tagging.
     $regex = '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';

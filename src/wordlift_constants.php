@@ -75,6 +75,9 @@ define('WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end');
 define('WL_CUSTOM_FIELD_LOCATION', 'wl_location');
 define('WL_CUSTOM_FIELD_ADDRESS', 'wl_address');
 
+// Max number of recursions when printing microdata
+define('WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA', 5);
+
 // The entity type.
 define( 'WL_ENTITY_TYPE_NAME', 'entity' );
 

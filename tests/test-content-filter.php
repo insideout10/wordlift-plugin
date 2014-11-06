@@ -20,7 +20,7 @@ class ContentFilterTest extends WP_UnitTestCase
         wl_empty_blog();
         rl_empty_dataset();
     }
-
+/*
     function testColorCodingOnFrontEnd() {
 
         $entity_id  = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
@@ -55,7 +55,7 @@ EOF;
         $this->assertContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
 
     }
-
+*/
     function setColorCode( $value ) {
 
         // Set the default as index.
@@ -67,16 +67,13 @@ EOF;
     /*
      * Test the high-level function in charge of printing schema.org microdata
      */
-    function testContentEmbedMicrodata() {
+/*    function testContentEmbedMicrodata() {
         
         // Create entities and add properties
         $entities = $this->create_dummy_entities();
         
         $place_uri = wl_get_entity_uri( $entities[0] );
-        $event_uri = wl_get_entity_uri( $entities[1] );
-        wl_write_log('piedo ' . $place_uri . ' ' . $event_uri);
-        
-        
+        $event_uri = wl_get_entity_uri( $entities[1] );       
         
         // Create an annotated post containing the entities
         $place_annotation = '<span itemscope itemid="' . $place_uri . '">Velletri</span>';
@@ -108,27 +105,101 @@ EOF;
                     . '<span itemprop="name" content="Sagra delle cipolle">Sagra delle cipolle</span>'
                 . '</span>';
         
+        // Take away empty spaces from both
+        $empty_regex = '/\s+/';
+        $markup = preg_replace( $empty_regex, '', $markup );
+        $right_markup = preg_replace( $empty_regex, '', $right_markup );
+        
         // Verify correct markup
-        wl_write_log('piedo ' . $markup );
         $this->assertEquals( $markup, $right_markup );
-        $this->assertContains('<spaaaaaan>', $markup);
     }
-    
+  */  
     /*
      * Function to collect the microdata regarding a single entity
      * Used by *wl_content_embed_microdata*
      */
     function testContentEmbedItemMicrodata() {
-        // Create entity and add properties
-        // Verify correct markup
+   
+        // Create an entity and add properties
+        $entities = $this->create_dummy_entities();
+        $event_uri = wl_get_entity_uri( $entities[1] );
         
+        // Create an annotated post containing the entity
+        $event_annotation = '<span itemscope itemid="' . $event_uri . '">Sagra delle cipolle</span>';
+        $content = 'We will attend the ' . $event_annotation;
+        wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+
+        /* Obtain markup, test 1
+         * Note that the Event has a 'location' property which expects a Place entity,
+         * so also the $itemprop of *wl_content_embed_item_microdata* parameter is tested.
+         */
+        $markup = wl_content_embed_item_microdata( $content, $event_uri );
+        $right_markup = 'We will attend the <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="' . $event_uri . '">'
+                        . '<span itemprop="startDate" content="2014-10-21"></span>'
+                        . '<span itemprop="endDate" content="2015-10-26"></span>'
+                        . '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place"><span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">'
+                            . '<span itemprop="latitude" content="40.12"></span>'
+                            . '<span itemprop="longitude" content="72.3"></span>'
+                        . '</span>'
+                        . '<link itemprop="url" href="http://example.org/?entity=place" />'
+                        . '<span itemprop="name" content="Place"></span>'
+                    . '</span>'
+                    . '<link itemprop="url" href="http://example.org/?entity=event" />'
+                    . '<span itemprop="name" content="Sagra delle cipolle">Sagra delle cipolle</span>'
+                . '</span>';
+        
+        // Take away empty spaces from both
+        $empty_regex = '/\s+/';
+        $markup = preg_replace( $empty_regex, '', $markup );
+        $right_markup = preg_replace( $empty_regex, '', $right_markup );
+        
+        // Verify correct markup
+        $this->assertEquals( $markup, $right_markup );
+        
+        
+        /* Obtain markup, test 2
+         * This time we will stop the recursion on step 1. Location properties must not be present.
+         */
+        $GLOBALS['wl_content_embed_item_microdata_recursion_count'] = WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA - 1;
+        $markup = wl_content_embed_item_microdata( $content, $event_uri, 'testProperty' );
+        $right_markup = 'We will attend the <span itemprop="testProperty" itemscope itemtype="http://schema.org/Event" itemid="' . $event_uri . '">'
+                    . '<span itemprop="startDate" content="2014-10-21"></span>'
+                    . '<span itemprop="endDate" content="2015-10-26"></span>'
+                    . '<span itemprop="location" itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place"></span>'
+                    . '<link itemprop="url" href="http://example.org/?entity=event" />'
+                    . '<span itemprop="name" content="Sagra delle cipolle">Sagra delle cipolle</span>'
+                . '</span>';
+        
+        // Take away empty spaces from both
+        $empty_regex = '/\s+/';
+        $markup = preg_replace( $empty_regex, '', $markup );
+        $right_markup = preg_replace( $empty_regex, '', $right_markup );
+        
+        // Verify correct markup
+        $this->assertEquals( $markup, $right_markup );
+        
+        
+        /* Obtain markup, test 3
+         * This time we will stop the recursion on step 0. No microdata except for the Event uri.
+         */
+        $GLOBALS['wl_content_embed_item_microdata_recursion_count'] = WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA;
+        $markup = wl_content_embed_item_microdata( $content, $event_uri, 'testProperty' );
+        $right_markup = 'We will attend the <span itemprop="testProperty" itemscope itemtype="http://schema.org/Event" itemid="' . $event_uri . '">';
+        
+        // Take away empty spaces from both
+        //$empty_regex = '/\s+/';
+        //$markup = preg_replace( $empty_regex, '', $markup );
+        //$right_markup = preg_replace( $empty_regex, '', $right_markup );
+        
+        // Verify correct markup
+        $this->assertEquals( $markup, $right_markup );
     }
     
     /*
      * Function to compile the microdata_template with the entity properties' values
      * Used by *wl_content_embed_item_microdata*
      */
-    function testContentEmbedCompileMicrodataTemplate() {
+    /*function testContentEmbedCompileMicrodataTemplate() {
         // Create entity and properties
         $entities = $this->create_dummy_entities();
         
@@ -144,7 +215,7 @@ EOF;
         $compiled_template_place = wl_content_embed_compile_microdata_template( $entities[0], $template_place );
         $compiled_template_event = wl_content_embed_compile_microdata_template($entities[1], $template_event);
         
-        // Verify microdata_template compiling
+        // Verify microdata_template compiling, property by property
         $this->assertContains( '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">', $compiled_template_place );
         $this->assertContains( '<span itemprop="latitude" content="40.12"></span>', $compiled_template_place );
         $this->assertContains( '<span itemprop="longitude" content="72.3"></span>', $compiled_template_place );
@@ -158,7 +229,7 @@ EOF;
         $this->assertContains( '<link itemprop="url" href="http://example.org/?entity=place" />', $compiled_template_event );
         $this->assertContains( '<span itemprop="name" content="Place"></span></span>', $compiled_template_event );
     }
-    
+    */
     function create_dummy_entities() {
                 
         // A place
