@@ -92,15 +92,6 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
     // Get the entity URI and its escaped version for the regex.
     $entity_uri = wl_get_entity_uri( $post->ID );
 
-    // Get the array of sameAs uris.
-    $same_as_uris = wl_get_same_as( $post->ID );
-
-    // Prepare the sameAs fragment.
-    $same_as = '';
-    foreach ($same_as_uris as $same_as_uri) {
-        $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
-    }
-
     // Get the main type.
     $main_type = wl_entity_get_type( $post->ID );
 
@@ -122,8 +113,19 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
 
     // Get the additional properties (this may imply a recursion of this method on a sub-entity).
     $additional_properties = '';
+    $same_as = '';
     if( ! $stop_recursion ) {
+        
+        // Get custom properties
         $additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );   
+        
+        // Get the array of sameAs uris.
+        $same_as_uris = wl_get_same_as( $post->ID );
+        // Prepare the sameAs fragment.
+        foreach ($same_as_uris as $same_as_uri) {
+            $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
+        }
+        
     }
 
     // Get the entity URL.
