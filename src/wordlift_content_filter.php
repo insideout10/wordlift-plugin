@@ -59,39 +59,23 @@ function _wl_content_embed_microdata( $post_id , $content ) {
  * @param (optional) string $itemprop Specifies which property this entity is for another entity. Useful for recursive markup. 
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
+function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $recursion_level = 0 ) {
 
-    /* *
-     * When $itemprop=null it means that we are at top level.
-     * When $itemprop has a value, recursions count goes on.
-     */
-    $stop_recursion = false;
-    if( is_null( $itemprop ) ) {
-        // We are starting to print a top level entity
-        $GLOBALS['wl_content_embed_item_microdata_recursion_count'] = 0;
-    } else {
-        if( $GLOBALS['wl_content_embed_item_microdata_recursion_count'] >= WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA ) {
-            // Max number of recursions reached: stop.
-            $stop_recursion = true;
-        } else {
-            // Increment recursions count
-            $GLOBALS['wl_content_embed_item_microdata_recursion_count'] += 1;
-        }
+    if ($recursion_level > wl_config_get_recursion_depth()) {
+        wl_write_log( "wl_content_embed_item_microdata : recursion depth limit exceeded" );        
+        return '';
     }
-        
-    
+     
     $post = wl_get_entity_post_by_uri( $uri );
 
     // Entity not found.
     if ( null === $post ) {
-
         wl_write_log( "wl_content_embed_item_microdata : post not found [ uri :: $uri ]" );
         return $content;
     }
 
     // Get the entity URI and its escaped version for the regex.
     $entity_uri = wl_get_entity_uri( $post->ID );
-
     // Get the main type.
     $main_type = wl_entity_get_type( $post->ID );
 
@@ -110,22 +94,16 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop=null ) {
     if( !is_null( $itemprop ) ) {
         $itemprop = ' itemprop="' . $itemprop . '"';
     }
-
-    // Get the additional properties (this may imply a recursion of this method on a sub-entity).
-    $additional_properties = '';
-    $same_as = '';
-    if( ! $stop_recursion ) {
-        
-        // Get custom properties
-        $additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type['microdata_template'] );   
-        
-        // Get the array of sameAs uris.
-        $same_as_uris = wl_get_same_as( $post->ID );
-        // Prepare the sameAs fragment.
-        foreach ($same_as_uris as $same_as_uri) {
-            $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
-        }
-        
+    
+    // Get additional properties (this may imply a recursion of this method on a sub-entity).
+    $additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type, $recursion_level );   
+    
+    $same_as = '';    
+    // Get the array of sameAs uris.
+    $same_as_uris = wl_get_same_as( $post->ID );
+    // Prepare the sameAs fragment.
+    foreach ($same_as_uris as $same_as_uri) {
+        $same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";
     }
 
     // Get the entity URL.
@@ -150,15 +128,21 @@ add_filter('the_content', 'wl_content_embed_microdata');
 
 /**
  * Fills up the microdata_template with entity's values.
- * @param string $id An entity ID.
- * @param string $template Microdata template.
+ * @param string $entity_id An entity ID.
+ * @param string $entity_type Entity type stracture.
+ * @param integer $recursion_level Recursion depth level in microdata compiling. Recursion depth limit is defined by WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA constant.
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_compile_microdata_template( $id, $template ) {
+function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $recursion_level = 0 ) {
 
     $regex   = '/{{(.*)}}/';
     $matches = array();
 
+    if (null === $entity_type) {
+        return '';  
+    }
+
+    $template = $entity_type['microdata_template'];
     // Return empty string if template fields have not been found.
     if ( false === preg_match_all( $regex, $template, $matches, PREG_SET_ORDER ) ) {
         return '';
@@ -170,49 +154,40 @@ function wl_content_embed_compile_microdata_template( $id, $template ) {
         $field_name = $match[1];
         
         // Get property value.
-        $value = wl_get_meta_value( $field_name, $id );
-        
+        $meta_collection = wl_get_meta_value( $field_name, $entity_id );
         // If no value is given, just remove the placeholder from the template 
-        if (null == $value) {
+        if (null == $meta_collection) {
             $template = str_replace( $placeholder, '', $template );
             continue;
         }
+
         // What kind of value is it?
         // TODO: Performance issue here: meta type retrieving should be centralized
         $expected_type = wl_get_meta_type( $field_name );
 
-        if( $expected_type == WL_DATA_TYPE_URI ) {
-            // Field contains a reference to other entities.
-            // TODO: Could be more than one...
-            $value = $value[0];
+        foreach ($meta_collection as $field_value) {
 
-            // We expect value to be a uri or an entity ID.
-            // TODO: Replace with a ternary
-            if( !is_numeric( $value ) ) {
-                // Found uri.
-                $nested_entity_uri = $value;
-
-                // TODO: Is the uri local?
-                // TODO: manage external entities.
-            } else {
-                // Found id, get uri.
-                $nested_entity_uri = wl_get_entity_uri( $value );
+            if( WL_DATA_TYPE_URI == $expected_type ) {        
+                // If is a numeric value we assume it is an ID referencing for an internal entity.
+                if( is_numeric( $field_value ) ) {
+                    // Found id, get uri.
+                    $field_value = wl_get_entity_uri( $field_value );
+                }
+                // Just if the linked entity does exist I can go further with template compiling
+                if ($nested_entity = wl_get_entity_post_by_uri( $field_value )) {
+                    $content = '<span itemid="' . esc_attr( $field_value ) . '">'. $nested_entity->post_title .'</span>';
+                    $compiled_template = wl_content_embed_item_microdata( $content, $field_value, $field_name, ++$recursion_level );
+                    $template = str_replace( $placeholder, $compiled_template, $template );
+                } else  {
+                    $template = str_replace( $placeholder, '', $template );
+                } 
+                continue;
             }
 
-            // TODO: check for errors
-            $nested_entity_name = wl_get_entity_post_by_uri( $nested_entity_uri )->post_title;
-
-            $sub_content = '<span itemid="' . esc_attr( $nested_entity_uri ) . '">' . esc_attr( $nested_entity_name ) . '</span>';
-            // TODO: add recursivity limitation
-            $sub_template = wl_content_embed_item_microdata( $sub_content, $nested_entity_uri, $field_name );
-            $template = str_replace( $placeholder, $sub_template, $template );
-            continue;
+            // Standard condition: field containing a raw value
+            $value = '<span itemprop="' . esc_attr( $field_name ) . '" content="' . esc_attr( $field_value ) . '"></span>';
+            $template = str_replace( $placeholder, $value, $template );
         }
-
-        // Standard condition: field containing a raw value
-        $value = '<span itemprop="' . esc_attr( $field_name ) . '" content="' . esc_attr( $value[0] ) . '"></span>';
-        $template = str_replace( $placeholder, $value, $template );
-        
     }
     
     return $template;

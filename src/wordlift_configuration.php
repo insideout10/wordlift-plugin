@@ -92,6 +92,16 @@ function wl_config_get_entity_display_as_default() {
 }
 
 /**
+ * Get the default recursion depth limitation on *entity metadata rendering*.
+ *
+ * @return string The default setting.
+ */
+function wl_config_get_recursion_depth() {
+
+    return wl_config_get_setting( WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING, WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING );
+}
+
+/**
  * Get the value for the *enable color coding of entities on front-end* setting.
  *
  * @return boolean True if enabled, otherwise false.

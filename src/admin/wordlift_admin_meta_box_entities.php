@@ -222,15 +222,11 @@ function wl_entities_date_box_content( $post, $info ) {
 
         $('#" . $meta_name . "').datetimepicker({
             onChangeDateTime:function(dp, input){
-                // format must be: 'YYYY-MM-DDTHH:MM:SSZ'
-                var newDate = input.val();
-                if( newDate !== null && newDate !== '' ) {
-                    newDate = newDate.replace(' ', 'T');
-                    newDate = newDate.split('/').join('-'); //because replace() only works for the first occurrence
-                    newDate += ':00Z';
-                }
+                // format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
+                var currentDate = input.val();
+                currentDate = currentDate.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z')
                 // store value to save in the hidden input field
-                $('#" . $meta_name . "_hidden').val( newDate );
+                $('#" . $meta_name . "_hidden').val( currentDate );
             }
         });
     });

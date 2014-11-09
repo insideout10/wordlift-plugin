@@ -1,0 +1,5 @@
+<span itemscope itemtype="http://schema.org/Place" class="wl-place" itemid="{{REDLINK_ENDPOINT}}/entity/MyPlace">
+    <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates"></span>
+    <link itemprop="url" href="http://example.org/?entity=my-place"/>
+    <span itemprop="name" content="MyPlace">MyPlace</span>
+</span>

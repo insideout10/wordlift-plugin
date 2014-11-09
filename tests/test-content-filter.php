@@ -27,20 +27,6 @@ class ContentFilterTest extends WP_UnitTestCase
         $entity_uri = wl_get_entity_uri( $entity_id );
         wl_set_entity_main_type( $entity_id, 'http://schema.org/Event' );
 
-//        # Prepare the props array simulating what a $_POST would give us.
-//        $props = array(
-//            '@id'                                      => array( $entity_uri ),
-//            'http://linkedevents.org/ontology/atPlace' => array( 'http://example.org/a-place' ),
-//            'http://linkedevents.org/ontology/atTime'  => array( 'http://example.org/a-time' ),
-//            'http://schema.org/image'                  => array( 'http://example.org/an-image' ),
-//            'http://www.w3.org/2002/12/cal#dtend'      => array( '2014-05-05' ),
-//            'http://www.w3.org/2002/12/cal#dtstart'    => array( '2014-05-04' ),
-//            'http://www.w3.org/2002/12/cal#uid'        => array( 'fafba0aa-1617-4d18-ba13-081d5965cdf9' )
-//        );
-//
-//        # Save the props.
-//        wl_entity_props_save( $entity_uri,  $props );
-
         # Create a test entity post.
         $content    = <<<EOF
 This post is referencing the sample <span id="urn:enhancement-4f0e0fbc-e981-7852-9521-f4718eafa13f" class="textannotation highlight wl-event" itemid="$entity_uri">Entity 1</span>.
@@ -55,197 +41,265 @@ EOF;
         $this->assertContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
 
     }
-
-    function setColorCode( $value ) {
-
-        // Set the default as index.
-        $options = get_option( WL_OPTIONS_NAME );
-        $options[WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME] = $value;
-        update_option( WL_OPTIONS_NAME, $options );
-    }
     
-    /*
-     * Function to compile the microdata_template with the entity properties' values
-     * Used by *wl_content_embed_item_microdata*
-     */
-    function testContentEmbedCompileMicrodataTemplate() {
-        // Create entity and properties
-        $entities = $this->create_dummy_entities();
-        
-        // Take away one property value to check for nulls
-        update_post_meta( $entities[1], WL_CUSTOM_FIELD_CAL_DATE_END, null );
-        
-        $template_place = wl_entity_get_type( $entities[0] );
-        $template_place = $template_place['microdata_template'];
-        $template_event = wl_entity_get_type( $entities[1] );
-        $template_event = $template_event['microdata_template'];
-        
-        // Compile microdata_template
-        $compiled_template_place = wl_content_embed_compile_microdata_template( $entities[0], $template_place );
-        $compiled_template_event = wl_content_embed_compile_microdata_template($entities[1], $template_event);
-        
-        // Verify microdata_template compiling, property by property
-        $this->assertContains( '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">', $compiled_template_place );
-        $this->assertContains( '<span itemprop="latitude" content="40.12"></span>', $compiled_template_place );
-        $this->assertContains( '<span itemprop="longitude" content="72.3"></span>', $compiled_template_place );
+    // Test if the microdata compiling does not fail on an entity with an undefined schema.org type
+    function testMicrodataCompilingForAnEntityWithUndefinedType() {
+        // Create an entity without defining the schema.org type properly
+        $entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+        $entity_uri = wl_get_entity_uri( $entity_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+        // Create a post referincing to the created entity
+        $post_id = wl_create_post( $content, 'my-post', 'A post' );
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        // Expected markup 
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_with_undefined_type.txt' );
 
-        $this->assertNotContains( '<span itemprop="endDate" content="2015-10-26"></span>', $compiled_template_event );
-        $this->assertContains( '<span itemprop="startDate" content="2014-10-21"></span>', $compiled_template_event );
-        $this->assertContains( '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place">', $compiled_template_event );
-        $this->assertContains( '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">', $compiled_template_event );
-        $this->assertContains( '<span itemprop="latitude" content="40.12"></span>', $compiled_template_event );
-        $this->assertContains( '<span itemprop="longitude" content="72.3"></span>', $compiled_template_event );
-        $this->assertContains( '<link itemprop="url" href="http://example.org/?entity=place" />', $compiled_template_event );
-        $this->assertContains( '<span itemprop="name" content="Place"></span></span>', $compiled_template_event );
-    }
-    
-    /*
-     * Test the high-level function in charge of printing schema.org microdata
-     */
-    function testContentEmbedMicrodata() {
-        
-        // Create entities and add properties
-        $entities = $this->create_dummy_entities();
-        
-        $place_uri = wl_get_entity_uri( $entities[0] );
-        $event_uri = wl_get_entity_uri( $entities[1] );       
-        
-        // Create an annotated post containing the entities
-        $place_annotation = '<span itemscope itemid="' . $place_uri . '">Velletri</span>';
-        $event_annotation = '<span itemscope itemid="' . $event_uri . '">Sagra delle cipolle</span>';
-        $content = 'We are going to ' . $place_annotation . ', where we will attend the ' . $event_annotation;
-        $post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+        // Verify correct markup
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );
+    }    
 
-        // Obtain markup
-        $markup = _wl_content_embed_microdata( $post_id, $content );
-        $right_markup = 'We are going to <span itemscope itemtype="http://schema.org/Place" class="wl-place" itemid="' . $place_uri . '">'
-                    . '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">'
-                        . '<span itemprop="latitude" content="40.12"></span>'
-                        . '<span itemprop="longitude" content="72.3"></span>'
-                    . '</span>'
-                    . '<link itemprop="url" href="http://example.org/?entity=place" />'
-                    . '<span itemprop="name" content="Velletri">Velletri</span>'
-                . '</span>'
-                . ', where we will attend the <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="' . $event_uri . '">'
-                        . '<span itemprop="startDate" content="2014-10-21"></span>'
-                        . '<span itemprop="endDate" content="2015-10-26"></span>'
-                        . '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place">'
-                           . '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">'
-                                . '<span itemprop="latitude" content="40.12"></span>'
-                                . '<span itemprop="longitude" content="72.3"></span>'
-                            . '</span>'
-                        . '<link itemprop="url" href="http://example.org/?entity=place" />'
-                        . '<span itemprop="name" content="Place"></span>'
-                    . '</span>'
-                    . '<link itemprop="url" href="http://example.org/?entity=event" />'
-                    . '<span itemprop="name" content="Sagra delle cipolle">Sagra delle cipolle</span>'
-                . '</span>';
-        
-        // Take away empty spaces from both
-        $empty_regex = '/\s+/';
-        $markup = preg_replace( $empty_regex, '', $markup );
-        $right_markup = preg_replace( $empty_regex, '', $right_markup );
-        
-        // Verify correct markup
-        $this->assertEquals( $markup, $right_markup );
-    }
-    
-    /*
-     * Function to collect the microdata regarding a single entity
-     * Used by *wl_content_embed_microdata*
-     */
-    function testContentEmbedItemMicrodata() {
-   
-        // Create an entity and add properties
-        $entities = $this->create_dummy_entities();
-        $event_uri = wl_get_entity_uri( $entities[1] );
-        
-        // Create an annotated post containing the entity
-        $event_annotation = '<span itemscope itemid="' . $event_uri . '">Sagra delle cipolle</span>';
-        $content = 'We will attend the ' . $event_annotation;
-        wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+    // Test if the microdata compiling does not fail on an entity with defined type and undefined custom fields
+    function testMicrodataCompilingForAnEntityWithDefinedTypeAndUndefinedCustomFields() {
+        // Create an entity without defining the schema.org type properly
+        $entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+        wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+        $entity_uri = wl_get_entity_uri( $entity_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+        // Create a post referincing to the created entity
+        $post_id = wl_create_post( $content, 'my-post', 'A post' );
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        // Expected markup 
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_with_defined_type_and_undefined_custom_fields.txt' );
 
-        /* Obtain markup, test 1
-         * Note that the Event has a 'location' property which expects a Place entity,
-         * so also the $itemprop of *wl_content_embed_item_microdata* parameter is tested.
-         */
-        $markup = wl_content_embed_item_microdata( $content, $event_uri );
-        $right_markup = 'We will attend the <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="' . $event_uri . '">'
-                        . '<span itemprop="startDate" content="2014-10-21"></span>'
-                        . '<span itemprop="endDate" content="2015-10-26"></span>'
-                        . '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place">'
-                            .'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">'
-                                . '<span itemprop="latitude" content="40.12"></span>'
-                                . '<span itemprop="longitude" content="72.3"></span>'
-                            . '</span>'
-                            . '<link itemprop="url" href="http://example.org/?entity=place" />'
-                            . '<span itemprop="name" content="Place"></span>'
-                        . '</span>'
-                    . '<link itemprop="url" href="http://example.org/?entity=event" />'
-                    . '<span itemprop="name" content="Sagra delle cipolle">Sagra delle cipolle</span>'
-                . '</span>';
-        
-        // Take away empty spaces from both
-        $empty_regex = '/\s+/';
-        $markup = preg_replace( $empty_regex, '', $markup );
-        $right_markup = preg_replace( $empty_regex, '', $right_markup );
-        
         // Verify correct markup
-        $this->assertEquals( $markup, $right_markup );
-        
-        
-        /* Obtain markup, test 2
-         * This time we will stop the recursion on step 1. Location custom properties must not be present.
-         */
-        $GLOBALS['wl_content_embed_item_microdata_recursion_count'] = WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA - 1;
-        $markup = wl_content_embed_item_microdata( $content, $event_uri, 'testProperty' );
-        $right_markup = 'We will attend the <span itemprop="testProperty" itemscope itemtype="http://schema.org/Event" itemid="' . $event_uri . '">'
-                    . '<span itemprop="startDate" content="2014-10-21"></span>'
-                    . '<span itemprop="endDate" content="2015-10-26"></span>'
-                    . '<span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/161/test/entity/Place">'
-                        . '<link itemprop="url" href="http://example.org/?entity=place"/>'
-                        . '<span itemprop="name" content="Place"></span>'   
-                    . '</span>'
-                    . '<link itemprop="url" href="http://example.org/?entity=event" />'
-                    . '<span itemprop="name" content="Sagra delle cipolle"></span>'
-                . '</span>';
-        
-        // Take away empty spaces from both
-        $empty_regex = '/\s+/';
-        $markup = preg_replace( $empty_regex, '', $markup );
-        $right_markup = preg_replace( $empty_regex, '', $right_markup );
-        
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );
+    }  
+
+    // Test if the microdata compiling does not fail on an entity with an unexpected custom field
+    function testMicrodataCompilingForAnEntityWithUnexpectedCustomField() {
+        // Create an entity without defining the schema.org type properly
+        $entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+        wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+        // The field 'foo' is not included in the 'Place' type definition
+        add_post_meta( $entity_id, "foo", "bar", true );  
+        $entity_uri = wl_get_entity_uri( $entity_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+        // Create a post referincing to the created entity
+        $post_id = wl_create_post( $content, 'my-post', 'A post' );
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        // Expected markup 
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_with_unexpected_custom_fields.txt' );
+
         // Verify correct markup
-        $this->assertEquals( $markup, $right_markup );
-        
-        
-        /* Obtain markup, test 3
-         * This time we will stop the recursion on step 0. No microdata except for the Event uri and name.
-         */
-        $GLOBALS['wl_content_embed_item_microdata_recursion_count'] = WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA;
-        $markup = wl_content_embed_item_microdata( $content, $event_uri, 'testProperty' );
-        $right_markup = 'We will attend the <span itemprop="testProperty" itemscope itemtype="http://schema.org/Event" itemid="' . $event_uri . '"><link itemprop="url" href="http://example.org/?entity=event" /><span itemprop="name" content="Sagra delle cipolle"></span></span>';
-        
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );
+    }  
+
+    // Test microdata compiling on a well-formed entity without a nested entity
+    function testMicrodataCompilingProperlyForAnEntityWithoutNestedEntities() {
+        // Create an entity without defining the schema.org type properly
+        $entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+        wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+        add_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        $entity_uri = wl_get_entity_uri( $entity_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+        // Create a post referincing to the created entity
+        $post_id = wl_create_post( $content, 'my-post', 'A post' );
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        // Expected markup 
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_without_nested_entities.txt' );
+
         // Verify correct markup
-        $this->assertEquals( $markup, $right_markup );
-    }
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );
+    }  
     
-    function create_dummy_entities() {
-                
+    // Check if nested entities microdata compiling works on nested entities
+    function testMicrodataCompilingProperlyForAnEntityWithNestedEntities() {
+        
         // A place
-        $place_id = wl_create_post( 'Place', 'place', 'Place', 'publish', 'entity' );
+        $place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
         wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
         add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
         add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
         
         // An Event having as location the place above
-        $event_id = wl_create_post( 'Event', 'event', 'Event', 'publish', 'entity' );
+        $event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
+        wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
+        
+        // Create an annotated post containing the entities
+        $entity_uri = wl_get_entity_uri( $event_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyEvent</span>
+EOF;
+        $post_id = wl_create_post( $content, 'post', 'A post' );
+
+        // Case 1 - Nested entity is referenced trough the wordpress entity ID
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
+
+        // Verify correct markup
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ), 
+            "Error on comparing markup when the entity type is not defined" 
+        );
+
+        delete_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION );
+        // Check if meta were deleted properly
+        $this->assertEquals( array(), get_post_meta($event_id, WL_CUSTOM_FIELD_LOCATION) );
+        // Case 2 - Nested entity is referenced trough the an uri 
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, wl_get_entity_uri( $place_id ), true );
+        
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
+
+        // Verify correct markup
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );
+   
+    }
+
+    // Check if nested entities microdata compiling works on nested entities
+    function testMicrodataCompilingForAnEntityWithNestedBrokenEntities() {
+        
+        // An Event having as location the place above
+        $event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
+        wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
+        // Set a fake uri ad entity reference
+        add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, 'http://my.fake.uri/broken/entity/linking', true );
+        
+        // Create an annotated post containing the entities
+        $entity_uri = wl_get_entity_uri( $event_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyEvent</span>
+EOF;
+        $post_id = wl_create_post( $content, 'post', 'A post' );
+
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_bad_referenced_entities.txt' );
+
+        // Verify correct markup
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup )
+        );
+   
+    }
+
+    // Check recursivity limitation feature
+    function testMicrodataCompilingRecursivityLimitation() {
+        
+        // A place
+        $place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        
+        // An Event having as location the place above
+        $event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
         wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
         add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
         add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
         add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
         
-        return array( $place_id, $event_id );
+        // Create an annotated post containing the entities
+        $entity_uri = wl_get_entity_uri( $event_id );
+        $content = <<<EOF
+    <span itemid="$entity_uri">MyEvent</span>
+EOF;
+        $post_id = wl_create_post( $content, 'post', 'A post' );
+        
+        // Set to 0 the recursivity limitation on entity metadata compiling
+        $this->setRecursionDepthLimit(0);
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_recursivity_limitation.txt' );
+
+        // Verify correct markup
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );
+
+        $this->setRecursionDepthLimit(1);
+        
+        // Compile markup for the given content
+        $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+        $expected_markup = file_get_contents( dirname(__FILE__) . 
+            '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
+
+        // Verify correct markup
+        $this->assertEquals( 
+            $this->prepareMarkup( $expected_markup ), 
+            $this->prepareMarkup( $compiled_markup ) 
+        );   
     }
+
+    function setColorCode( $value ) {
+        // Set the default as index.
+        $options = get_option( WL_OPTIONS_NAME );
+        $options[WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME] = $value;
+        update_option( WL_OPTIONS_NAME, $options );
+    }
+
+    function setRecursionDepthLimit( $value ) {
+        // Set the default as index.
+        $options = get_option( WL_OPTIONS_NAME );
+        $options[WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING] = $value;
+        update_option( WL_OPTIONS_NAME, $options );
+    }
+
+    function prepareMarkup( $markup ) {
+        $markup = preg_replace( '/\s+/', '', $markup );
+        $markup = preg_replace( 
+            '/{{REDLINK_ENDPOINT}}/', 
+            wl_config_get_dataset_base_uri(), 
+            $markup);
+
+        return $markup;
+    }
+
+
+   
 }
 

@@ -41,6 +41,8 @@ define('WL_CONFIG_SITE_LANGUAGE_NAME', 'site_language');
 
 define('WL_CONFIG_DEFAULT_SITE_LANGUAGE', 'en');
 
+define('WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 'recursion_depth_on_metadata_printing');
+
 // The parameter name for the default *entity display as* setting.
 define( 'WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME', 'wl_config_entity_display_as' );
 
@@ -67,7 +69,7 @@ define('WL_DATA_TYPE_DOUBLE', 'double');
 define('WL_DATA_TYPE_BOOLEAN', 'bool');
 define('WL_DATA_TYPE_STRING', 'string');
 
-// Entities' post-meta names
+// Entities post-meta names
 define('WL_CUSTOM_FIELD_GEO_LATITUDE', 'wl_geo_latitude');
 define('WL_CUSTOM_FIELD_GEO_LONGITUDE', 'wl_geo_longitude');
 define('WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start');
@@ -76,7 +78,7 @@ define('WL_CUSTOM_FIELD_LOCATION', 'wl_location');
 define('WL_CUSTOM_FIELD_ADDRESS', 'wl_address');
 
 // Max number of recursions when printing microdata
-define('WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA', 5);
+define('WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3);
 
 // The entity type.
 define( 'WL_ENTITY_TYPE_NAME', 'entity' );

@@ -1,0 +1,4 @@
+<span itemscope itemid="{{REDLINK_ENDPOINT}}/entity/MyPlace">
+    <link itemprop="url" href="http://example.org/?entity=my-place"/>
+    <span itemprop="name" content="MyPlace">MyPlace</span>
+</span>
