@@ -89,11 +89,11 @@ class WL_View {
 	 * @uses expand to expand the property name.
 	 *
 	 * @param string $name          The property name.
-	 * @param int $index            The value index (default 0).
+	 * @param int $index            The value index (default NULL, returns an array of properties).
 	 *
 	 * @return string The property value.
 	 */
-	function get_property( $name, $index = 0 ) {
+	function get_property( $name, $index = NULL ) {
 
 
 		$values = $this->json_path->find( $this->expand( $name ) );
@@ -101,7 +101,7 @@ class WL_View {
 		wl_write_log( "[ name :: $name ][ index :: $index ][ value :: " . var_export( $values, true ) . " ]" );
 
 
-		return $values[ $index ];
+		return ( NULL !== $index ? $values[ $index ] : $values );
 
 //		$value = wl_jsonld_get_property( $this->graph, $name, $language, $this->suffix, $index );
 //		return $value;
