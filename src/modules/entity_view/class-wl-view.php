@@ -51,6 +51,30 @@ class WL_View {
 
 		wl_write_log( "[ base URI :: $this->base_uri ][ suffix :: $this->suffix ][ title :: $this->title ][ language :: $this->language ]" );
 
+		add_filter( 'wp_title', array( $this, 'filter_page_title' ), 10, 2 );
+	}
+
+
+
+	/**
+	 * Set the page title using the provided title.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @see wp_title the WordPress filter that calls this method.
+	 * @see http://codex.wordpress.org/Plugin_API/Filter_Reference/wp_title
+	 *
+	 * @param string $title The existing title.
+	 * @param string $sep   The title separator.
+	 * @return string The new title.
+	 */
+	function filter_page_title( $title, $sep ) {
+
+		$expr       = "$['$this->title'][?(@.@language=='$this->language')].@value";
+		$view_title = $this->get_first_property_html( $expr );
+
+		return $view_title . " $sep $title";
+
 	}
 
 	/**
@@ -91,7 +115,7 @@ class WL_View {
 	 * @param string $name          The property name.
 	 * @param int $index            The value index (default NULL, returns an array of properties).
 	 *
-	 * @return string The property value.
+	 * @return string|array The property value.
 	 */
 	function get_property( $name, $index = NULL ) {
 
@@ -167,5 +191,53 @@ class WL_View {
 		echo $this->get_property( $name, $index );
 
 	}
+
+	/**
+	 * @since 3.0.0
+	 *
+	 * @param $name
+	 *
+	 * @return string
+	 */
+	function get_property_localized( $name ) {
+
+		return $this->get_property( $this->localize_expression( $name ) );
+
+	}
+
+	function get_first_property_localized( $name ) {
+
+		return $this->get_first_property( $this->localize_expression( $name ) );
+
+	}
+
+	/**
+	 * @since 3.0.0
+	 *
+	 * @param $name
+	 *
+	 * @return string
+	 */
+	function get_first_property_html_localized( $name ) {
+
+		return esc_html( $this->get_first_property_localized( $name ) );
+
+	}
+
+	/**
+	 * Localizes the expression using the language set when creating the view instance.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $name The expression to localize.
+	 *
+	 * @return string The localized expression.
+	 */
+	function localize_expression( $name ) {
+
+		return $name . "[?(@.@language=='$this->language')].@value";
+
+	}
+
 
 } 
