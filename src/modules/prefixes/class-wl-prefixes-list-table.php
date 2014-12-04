@@ -86,7 +86,7 @@ class WL_Prefixes_List_Table extends WP_List_Table {
 
     function get_bulk_actions() {
         $actions = array(
-            'delete' => __( 'Delete', 'wordlift' )
+//            'delete' => __( 'Delete', 'wordlift' )
         );
         return $actions;
     }
