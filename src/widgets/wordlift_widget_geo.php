@@ -27,7 +27,7 @@ class WordLift_Geo_Widget extends WP_Widget
      * @param array $args
      * @param array $instance
      */
-    public function widget($args, $instance)
+    public function widget( $args, $instance )
     {
         // Get the widget's title.
         $title = apply_filters('widget_title', $instance['title']);
@@ -38,9 +38,9 @@ class WordLift_Geo_Widget extends WP_Widget
             echo $args['before_title'] . $title . $args['after_title'];
         }
 
-		// Print the geomap shortcode
-		// ( global = true - because it is not post-specific)	
-		echo do_shortcode( '[wl-geomap global=true]' );
+        // Print the geomap shortcode
+        // ( global = true - because it is not post-specific)
+        echo do_shortcode('[wl-geomap global=true]');
 
         echo $args['after_widget'];
     }

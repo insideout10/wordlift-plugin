@@ -29,6 +29,7 @@ define('WL_ENTITY_URL_META_NAME', 'entity_url');
 // Define the field name for the dataset base URI.
 define('WL_CONFIG_DATASET_BASE_URI_NAME', 'dataset_base_uri');
 
+define('WL_CONFIG_API_URL', 'api_url');
 define('WL_CONFIG_APPLICATION_KEY_NAME', 'application_key');
 
 define('WL_CONFIG_USER_ID_NAME', 'user_id');
@@ -53,7 +54,7 @@ define( 'WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME', 'wl_config_enable_colo
 define('WL_REDLINK_API_VERSION', '1.0-BETA');
 
 // Define the Redlink API base URI (with end slash).
-define('WL_REDLINK_API_BASE_URI', 'https://api.redlink.io/');
+// define('WL_REDLINK_API_BASE_URI', 'https://api.staging.redlink.io/');
 
 // the WordLift options identifier.
 define('WL_OPTIONS_NAME', 'wordlift_options');
@@ -98,14 +99,16 @@ define( 'WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE', 'wl_entity_display_as_s
  * @return array An array of prefixes and URIs
  */
 function wl_prefixes() {
-    return array(
-        'geo'    => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
-        'dct'    => 'http://purl.org/dc/terms/',
-        'rdfs'   => 'http://www.w3.org/2000/01/rdf-schema#',
-        'owl'    => 'http://www.w3.org/2002/07/owl#',
-        'schema' => 'http://schema.org/',
-        'xsd'    => 'http://www.w3.org/2001/XMLSchema#'
-    );
+
+    $items    = wl_prefixes_list();
+    $prefixes = array();
+
+    foreach ( $items as $item ) {
+        $prefixes[$item['prefix']] = $item['namespace'];
+    }
+
+    return $prefixes;
+
 }
 
 /**
