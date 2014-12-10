@@ -4,8 +4,8 @@ php:
   - 5.4
 env:
   global:
-    - secure: "MgExodyS3dH59Gj/ALRcci5oUL/a5sBmCyNOljoZU9u0jxKc1FiDFQbty60dDQQNjkY/4GpM8iKqxbjS1q2BN1GY4YZvi4xsFRsOZY3mhbTdNFtW1QoVuDIgj+qMOaOJwHoTtgOiXD+956oosASdYJvsKwXgpkN0Vm4Zw4mv5nY="
-    - secure: "EUzIzRiLAp0W2Ycd4L0eXSj18wen59PRASqot4lVpZhYFccY7ejpAJc4B3Qx9M3o2vQFQPvXwyfnbE90WvjgE08CIMn3b04j2qZ+VdUzf3V9ErdOGldd+oujJxyCBoXQP30WSlsI45eoiYXApi5RTc/d9P2mY3ZfOkSHQW6jRdo="
+    - secure: "m6fJTyozSFwsXBwoGvrK+V0XrCBMf4O/Bg4SqI2YEvbXZxlUWF3QMcHezY40/BEuf/vgX0hVtnE9GjetPJfNRFziVrUSJDgIvzFxtMRbLurucCM+w8fI3BJymZ+5vWVoPzWOpdW8MqhH2ZBp7v1yLFfE9bxSqeVXTPLv/FEIJ0U="
+    - secure: "bgUVRtraxHcj8WzIAqh9z6ZcEy8nmKd+jaQKNiy0qQEPAK850Itspbq2GWzaEBm2r5pAykNkhyvBk7SrTUnAA8ReJXxHzRzjfJSqdEded/exRzDHU2gtB6AMsm2PafdgQZqp15nH6EsBvjNFlZl8CGAgLR8wqf0w3u9GXB0B32g="
     - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
     - API_URL=https://api.redlink.io/1.0-BETA 
   matrix:
