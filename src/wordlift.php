@@ -1169,10 +1169,12 @@ require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
 require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/profiling/wordlift_profiling.php' );
+require_once( 'modules/redirector/wordlift_redirector.php' );
 
 // Shortcodes
 require_once( 'modules/entity_view/wordlift_entity_view.php' );
 require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
+require_once( 'modules/timeline_widget/wordlift_timeline_widget.php' );
 require_once( 'shortcodes/wordlift_shortcode_related_posts.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_timeline.php' );
