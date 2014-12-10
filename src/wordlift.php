@@ -1172,7 +1172,12 @@ require_once( 'modules/profiling/wordlift_profiling.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
 
 // Shortcodes
-require_once( 'modules/entity_view/wordlift_entity_view.php' );
+
+// Entity view shortcode just with php >= 5.4
+if (version_compare(phpversion(), '5.4.0', '>=')) {
+	require_once( 'modules/entity_view/wordlift_entity_view.php' );
+}
+
 require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
 require_once( 'modules/timeline_widget/wordlift_timeline_widget.php' );
 require_once( 'shortcodes/wordlift_shortcode_related_posts.php' );

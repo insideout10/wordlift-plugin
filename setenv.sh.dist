@@ -9,4 +9,4 @@ export REDLINK_APP_KEY=<redlink-app-key>                       # get one on my.r
 export REDLINK_APP_NAME=<redlink-app-name>                     # create one on my.redlink.io.
 export REDLINK_USER_ID=<redlink-user-id>                       # check in your my.redlink.io profile.
 export WP_MULTISITE=<0|1>                                      # whether multisite, use 0 if unsure.
-
+export API_URL=<redlink-api-url>                               # check in your my.redlink.io profile.
