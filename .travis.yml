@@ -10,7 +10,9 @@ env:
     - API_URL=https://api.redlink.io/1.0-BETA 
   matrix:
 #    - WP_VERSION=latest
-    - WP_VERSION=3.8.1  WP_MULTISITE=0
+     - WP_VERSION=3.9.1  WP_MULTISITE=0
+
+#    - WP_VERSION=3.8.1  WP_MULTISITE=0
 #    - WP_VERSION=3.7.1  WP_MULTISITE=0
 #    - WP_VERSION=3.8.1  WP_MULTISITE=1
 #    - WP_VERSION=3.7.1  WP_MULTISITE=1
