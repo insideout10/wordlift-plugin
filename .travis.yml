@@ -25,7 +25,7 @@ env:
 #    - WP_VERSION=3.5.2  WP_MULTISITE=1
 #    - WP_VERSION=3.4.2  WP_MULTISITE=1
 #    - WP_VERSION=3.3.3  WP_MULTISITE=1
-#
+
 before_install:
   - sudo apt-get -y -qq update
   - sudo apt-get -y -qq install curl libcurl3-gnutls libgnutls26
