@@ -1109,6 +1109,7 @@ require_once( 'wordlift_content_filter.php' );
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 
+require_once( 'modules/configuration/wordlift_configuration.php' );
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
@@ -1159,8 +1160,6 @@ require_once( 'admin/wordlift_admin_entity_publish.php' );
 // add the WordLift admin bar.
 require_once( 'admin/wordlift_admin_bar.php' );
 
-// add the WordLift Settings page.
-require_once( 'admin/wordlift_admin_settings_page.php' );
 // add the entities meta box.
 require_once( 'admin/wordlift_admin_meta_box_entities.php' );
 require_once( 'admin/wordlift_admin_meta_box_related_posts.php' );

@@ -26,7 +26,7 @@ function wl_admin_bar($wp_admin_bar)
         'parent' => 'wordlift',
         'id' => 'wordlift-settings',
         'title' => 'Settings',
-        'href' => get_admin_url(null, 'options-general.php?page=wordlift')
+        'href' => get_admin_url(null, 'admin.php?page=wl_configuration_admin_menu')
     ));
 
     // Add a link to the WordLift web site.
