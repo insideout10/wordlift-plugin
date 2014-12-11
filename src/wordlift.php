@@ -1098,8 +1098,7 @@ require_once( 'libs/php-json-ld/jsonld.php' );
 require_once( 'wordlift_entity_functions.php' );
 // add editor related methods.
 require_once( 'wordlift_editor.php' );
-// add configuration-related methods.
-require_once( 'wordlift_configuration.php' );
+
 // add the WordLift entity custom type.
 require_once( 'wordlift_entity_type.php' );
 require_once( 'wordlift_entity_type_taxonomy.php' );
