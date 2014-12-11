@@ -1110,6 +1110,7 @@ require_once( 'wordlift_content_filter.php' );
 require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
+require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
 require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/profiling/wordlift_profiling.php' );

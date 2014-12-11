@@ -1,33 +1,6 @@
 <?php
 
 /**
- * Push the post with the specified ID to Redlink.
- * @param int $post_id The post ID.
- */
-function wl_push_to_redlink( $post_id )
-{
-
-    // Get the post.
-    $post = get_post( $post_id );
-
-    wl_write_log("wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]");
-
-    // Call the method on behalf of the post type.
-    switch ( $post->post_type ) {
-        case 'entity':
-            wl_push_entity_post_to_redlink( $post );
-            break;
-        default:
-            wl_push_post_to_redlink( $post );
-    }
-
-    // Reindex the triple store if buffering is turned off.
-    if ( false === WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
-        wordlift_reindex_triple_store();
-    }
-}
-
-/**
  * Push the provided post to Redlink (not suitable for entities).
  * @param object $post A post instance.
  */
@@ -267,66 +240,6 @@ EOF;
 }
 
 /**
- * Save the post to the triple store. Also saves the entities locally and on the triple store.
- * @param int $post_id The post id being saved.
- */
-function wordlift_save_post_and_related_entities( $post_id )
-{
-
-    // Ignore auto-saves
-    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) {
-        return;
-    }
-
-    // get the current post.
-    $post = get_post( $post_id );
-
-    // Only process posts that are published.
-    if ( 'publish' !== $post->post_status ) {
-        wl_write_log( "wordlift_save_post_and_related_entities : post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]" );
-        return;
-    }
-
-    remove_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
-
-    wl_write_log("wordlift_save_post_and_related_entities [ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]");
-
-    // Save the entities coming with POST data.
-    if (isset($_POST['wl_entities'])) {
-
-        wl_write_log( "wordlift_save_post_and_related_entities [ post id :: $post_id ][ POST(wl_entities) :: ");
-        wl_write_log( var_export( $_POST['wl_entities'], true ) );
-        wl_write_log( "]" );
-
-        $entities_via_post = array_values($_POST['wl_entities']);
-
-        wl_write_log("wordlift_save_post_and_related_entities [ entities_via_post :: ");
-        wl_write_log($entities_via_post);
-        wl_write_log("]");
-
-        wl_save_entities( $entities_via_post, $post_id );
-
-        // If there are props values, save them.
-        if (isset($_POST[WL_POST_ENTITY_PROPS])) {
-            foreach ($_POST[WL_POST_ENTITY_PROPS] as $key => $values) {
-                wl_entity_props_save($key, $values);
-            }
-        }
-    }
-
-    // Save entities coming as embedded in the text.
-//    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
-
-    // Update related entities.
-    wl_set_referenced_entities( $post->ID, wl_content_get_embedded_entities( $post->post_content ) );
-
-    // Push the post to Redlink.
-    wl_push_to_redlink( $post->ID );
-
-    add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
-}
-
-/**
  * Get the SPARQL fragment to set the dc:references statements.
  * @param int $post_id The post ID.
  * @return string The SPARQL fragment (or an empty string).
@@ -392,27 +305,6 @@ function wl_get_entity_post_by_uri( $uri )
     return $posts[0];
 }
 
-/**
- * Receive events from post saves, and split them according to the post type.
- * @param int $post_id The post id.
- */
-function wordlift_save_post( $post_id )
-{
-
-    // If it's not numeric exit from here.
-    if ( !is_numeric( $post_id ) || is_numeric( wp_is_post_revision( $post_id ) ) ) {
-        return;
-    }
-
-    // unhook this function so it doesn't loop infinitely
-    remove_action('save_post', 'wordlift_save_post');
-
-    // raise the *wordlift_save_post* event.
-    do_action( 'wordlift_save_post', $post_id );
-
-    // re-hook this function
-    add_action( 'save_post', 'wordlift_save_post' );
-}
 
 /**
  * Get a string representing the NS prefixes for a SPARQL query.
@@ -503,5 +395,5 @@ function wordlift_reindex_triple_store()
 }
 
 // hook save events.
-add_action('save_post', 'wordlift_save_post');
-add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
+// moved to the Linked Data module: add_action('save_post', 'wordlift_save_post');
+// moved to the Linked Data module: add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');
