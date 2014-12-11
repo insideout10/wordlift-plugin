@@ -176,63 +176,6 @@ add_action( 'init', 'wordlift_buttonhooks' );
 add_action( 'init', 'wordlift_allowed_post_tags' );
 
 
-// Ajax Admin Section
-
-add_action( 'wp_ajax_wordlift_analyze', 'wordlift_ajax_analyze_action' );
-
-// Analyze a text
-function wordlift_ajax_analyze_action() {
-
-	// Get the Redlink enhance URL.
-	$url = wordlift_redlink_enhance_url();
-
-	// Prepare the request.
-	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method'  => 'POST',
-		'headers' => array(
-			'Accept'       => 'application/json',
-			'Content-type' => 'text/plain'
-		),
-		'body'    => file_get_contents( "php://input" ),
-	) );
-
-	$response = wp_remote_post( $url, $args );
-
-	// Remove the key from the query.
-	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
-
-	// If an error has been raised, return the error.
-	if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
-
-		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
-
-		wl_write_log( "error [ url :: $url ][ args :: " );
-		wl_write_log( var_export( $args, true ) );
-		wl_write_log( '][ response :: ' );
-		wl_write_log( "\n" . var_export( $response, true ) );
-		wl_write_log( "][ body :: " );
-		wl_write_log( "\n" . $body );
-		wl_write_log( "]" );
-
-		echo 'An error occurred while request an analysis to the remote service. Please try again later.';
-
-		wp_die();
-
-	}
-
-	wl_write_log( "wordlift_ajax_analyze_action [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]" );
-
-	// Reprint the headers, mostly for debugging purposes.
-	foreach ( $response['headers'] as $header => $value ) {
-		if ( strpos( strtolower( $header ), 'x-redlink-' ) === 0 ) {
-			header( "$header: $value" );
-		}
-	}
-
-	echo $response['body'];
-	die();
-}
-
 /**
  * Register additional scripts for the admin UI.
  */
@@ -1166,6 +1109,7 @@ require_once( 'wordlift_content_filter.php' );
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 
+require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
 require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/profiling/wordlift_profiling.php' );

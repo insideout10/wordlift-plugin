@@ -31,30 +31,6 @@ function wordlift_redlink_reindex_url() {
 }
 
 /**
- * Get the Redlink API enhance URL.
- * @return string The Redlink API enhance URL.
- */
-function wordlift_redlink_enhance_url() {
-
-	// remove configuration keys from here.
-	$app_key       = wl_config_get_application_key();
-	$analysis_name = wl_config_get_analysis();
-
-	$ldpath = <<<EOF
-        @prefix ex: <http://example.org/>;
-        @prefix cal: <http://www.w3.org/2002/12/cal#>;
-        @prefix gn: <http://www.geonames.org/ontology#>;
-        @prefix lode: <http://linkedevents.org/ontology/>;
-        @prefix vcard: <http://www.w3.org/2006/vcard/ns#>;
-        vcard:locality = lode:atPlace/gn:name :: xsd:string;
-EOF;
-
-	return wl_config_get_api_url() . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key .
-	       '&enhancer.engines.dereference.ldpath=' . urlencode( $ldpath );
-}
-
-
-/**
  * Get the Redlink URL to delete a dataset data (doesn't delete the dataset itself).
  * @return string
  */
