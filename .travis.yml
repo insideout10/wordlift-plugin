@@ -4,15 +4,18 @@ php:
   - 5.4
 env:
   global:
-    - secure: "lEE2wcDzFRlf6sXFe0F5kjVJbS+sNGLsU+7r+YtbhI45WqptPG62u4bUFkI1TuWr1QFttJX/AkIYewkOLC2UAXuNIszIAlpAqEw7OSyH4wYJJchiFsq5eQ/26yvLWAlKkt0ff6Uhz2g9UVLeJn7LN4ibOzQibnCMV9apmjLifMA="
-    - secure: "cLCvnSlneDWytunNCR6CzElmdMTQxwh98L6LxUCI/2UUapm/SKGccp5mFGldLxTWy/drdQjvooB3g9SZVChxy8akt6chy5BDlR2Rc4qRJiG9X2pOgqQqR/8x7t20CabJAmpbTnpzGA0vQLDIbqAYGBGWn3loXl8WZN6vk2Bu/Oo="
+    - secure: "m6fJTyozSFwsXBwoGvrK+V0XrCBMf4O/Bg4SqI2YEvbXZxlUWF3QMcHezY40/BEuf/vgX0hVtnE9GjetPJfNRFziVrUSJDgIvzFxtMRbLurucCM+w8fI3BJymZ+5vWVoPzWOpdW8MqhH2ZBp7v1yLFfE9bxSqeVXTPLv/FEIJ0U="
+    - secure: "bgUVRtraxHcj8WzIAqh9z6ZcEy8nmKd+jaQKNiy0qQEPAK850Itspbq2GWzaEBm2r5pAykNkhyvBk7SrTUnAA8ReJXxHzRzjfJSqdEded/exRzDHU2gtB6AMsm2PafdgQZqp15nH6EsBvjNFlZl8CGAgLR8wqf0w3u9GXB0B32g="
     - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
+    - API_URL=https://api.redlink.io/1.0-BETA 
   matrix:
 #    - WP_VERSION=latest
-    - WP_VERSION=3.8.1  WP_MULTISITE=0
-    - WP_VERSION=3.7.1  WP_MULTISITE=0
-    - WP_VERSION=3.8.1  WP_MULTISITE=1
-    - WP_VERSION=3.7.1  WP_MULTISITE=1
+     - WP_VERSION=3.9.1  WP_MULTISITE=0
+
+#    - WP_VERSION=3.8.1  WP_MULTISITE=0
+#    - WP_VERSION=3.7.1  WP_MULTISITE=0
+#    - WP_VERSION=3.8.1  WP_MULTISITE=1
+#    - WP_VERSION=3.7.1  WP_MULTISITE=1
 #    - WP_VERSION=3.8    WP_MULTISITE=0
 #    - WP_VERSION=3.6.1  WP_MULTISITE=0
 #    - WP_VERSION=3.5.2  WP_MULTISITE=0
@@ -24,7 +27,7 @@ env:
 #    - WP_VERSION=3.5.2  WP_MULTISITE=1
 #    - WP_VERSION=3.4.2  WP_MULTISITE=1
 #    - WP_VERSION=3.3.3  WP_MULTISITE=1
-
+#
 before_install:
   - sudo apt-get -y -qq update
   - sudo apt-get -y -qq install curl libcurl3-gnutls libgnutls26

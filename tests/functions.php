@@ -677,27 +677,30 @@ function wl_test_get_write_log_handler() {
  */
 function wl_configure_wordpress_test() {
 
-	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
+    add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
-	do_action( 'activate_wordlift/wordlift.php' );
+    do_action( 'activate_wordlift/wordlift.php' );
 
-	// Set the dataset name to the specified dataset or define it based on the current environment.
-	$dataset_name = ( false !== getenv( 'REDLINK_DATASET_NAME' ) ? getenv( 'REDLINK_DATASET_NAME' )
-		: str_replace( '.', '-',
-			sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
-				getenv( 'WP_VERSION' ), getenv( 'WP_MULTISITE' ) ) )
-	);
+    // Set the dataset name to the specified dataset or define it based on the current environment.
+    $dataset_name = ( false !== getenv('REDLINK_DATASET_NAME') ? getenv('REDLINK_DATASET_NAME')
+        : str_replace('.', '-',
+            sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
+                getenv('WP_VERSION'), getenv('WP_MULTISITE') ) )
+    );
+    
+    $app_name = ( false !== getenv('REDLINK_APP_NAME') ? getenv('REDLINK_APP_NAME') : 'wordlift' );
 
-	$app_name = ( false !== getenv( 'REDLINK_APP_NAME' ) ? getenv( 'REDLINK_APP_NAME' ) : 'wordlift' );
+    $options = array(
+        'application_key' => getenv('REDLINK_APP_KEY'),
+        'user_id'         => getenv('REDLINK_USER_ID'),
+        'api_url'         => getenv('API_URL'),
+        'dataset_name'    => $dataset_name,
+        'analysis_name'   => $app_name,
+        'dataset_base_uri' => 'http://data.redlink.io/' . getenv('REDLINK_USER_ID') . '/' . $dataset_name
+    );
 
-	// Set the plugin options.
-	update_option( WL_OPTIONS_NAME, array(
-		'application_key'  => getenv( 'REDLINK_APP_KEY' ),
-		'user_id'          => getenv( 'REDLINK_USER_ID' ),
-		'dataset_name'     => $dataset_name,
-		'analysis_name'    => $app_name,
-		'dataset_base_uri' => 'http://data.redlink.io/' . getenv( 'REDLINK_USER_ID' ) . '/' . $dataset_name
-	) );
+    // Set the plugin options.
+    update_option( WL_OPTIONS_NAME,  $options);
 }
 
 /**

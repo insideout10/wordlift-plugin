@@ -19,37 +19,13 @@ class JsonPathTest extends WP_UnitTestCase
 		parent::setUp();
 
 		// Configure WordPress with the test settings.
-//		wl_configure_wordpress_test();
+		wl_configure_wordpress_test();
 
 		// Empty the blog.
-//		wl_empty_blog();
+		wl_empty_blog();
 
 	}
 
-
-	/**
-	 * Test the caching of a URL.
-	 */
-	function test_json_path()
-	{
-
-		echo( 'testing' );
-
-		$wl_view = new WL_View( 'http://localhost:8000/jsons/' );
-		$wl_view->load( '1' );
-
-		$result_1 = $wl_view->get_property( '$[0]["http://example.org/title"][?(@.@language == "en")].@value' );
-//		var_dump( $result_1 );
-
-//		$result_2 = $wl_view->get_property( '$[0]["http://example.org/image"][!(@id)]" .
-//			"[?(@.@type == "http://example.org/thumbnail")]["http://example.org/title"][?(@.@language == "en")].@value' );
-//		var_dump( $result_2 );
-
-		$result_3 = $wl_view->get_property( $this->expand( '$[0].example:image.[!(@id)]' .
-			'[?(@.@type == "example:thumbnail")].example:title.[?(@.@language == "en")].@value' ) );
-		var_dump( $result_3 );
-
-	}
 
 	function test_expand() {
 
