@@ -92,160 +92,11 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 
 
 /**
- * Displays the API URL input box
+ * Configure all the configuration parameters. The configuration parameters are grouped in two tabs:
+ *  * General
+ *  * Advanced
  *
- * @since 3.0.0
- */
-function wl_settings_api_url_input_box() {
-
-	// Get the setting value.
-	$value = wl_configuration_get_api_url();
-
-	// Call the helper function.
-	wl_settings_input_box( WL_CONFIG_API_URL, $value );
-
-}
-
-
-/**
- * Displays the application key input box (as callback set using the *add_settings_field* method).
- *
- * @since 3.0.0
- */
-function wl_settings_application_key_input_box() {
-
-	// Get the setting value.
-	$value = wl_configuration_get_redlink_key();
-
-	// Call the helper function.
-	wl_settings_input_box( WL_CONFIG_APPLICATION_KEY_NAME, $value );
-
-}
-
-/**
- * Displays the user id input box.
- *
- * @since 3.0.0
- */
-function wl_settings_user_id_input_box() {
-
-	// Get the setting value.
-	$value = wl_configuration_get_redlink_user_id();
-
-	// Call the helper function.
-	wl_settings_input_box( WL_CONFIG_USER_ID_NAME, $value );
-}
-
-/**
- * Displays the dataset name input box.
- *
- * @since 3.0.0
- */
-function wl_settings_dataset_input_box() {
-	// Get the setting value.
-	$value = wl_configuration_get_redlink_dataset_name();
-
-	// Call the helper function.
-	wl_settings_input_box( WL_CONFIG_DATASET_NAME, $value );
-}
-
-/**
- * Displays the analysis name input box.
- *
- * @since 3.0.0
- */
-function wl_settings_analysis_input_box() {
-	// Get the setting value.
-	$value = wl_configuration_get_redlink_application_name();
-
-	// Call the helper function.
-	wl_settings_input_box( WL_CONFIG_ANALYSIS_NAME, $value );
-}
-
-/**
- * Displays the dataset name input box.
- *
- * @since 3.0.0
- */
-function wl_settings_dataset_base_uri_input_box() {
-	// Get the setting value.
-	$value = wl_configuration_get_redlink_dataset_uri();
-
-	// Call the helper function.
-	wl_settings_input_box( WL_CONFIG_DATASET_BASE_URI_NAME, $value );
-}
-
-/**
- * Displays the default language input box.
- *
- * @since 3.0.0
- */
-function wl_settings_site_language_input_box() {
-
-	// prepare the language array.
-	$langs = array();
-
-	// set the path to the language file.
-	$filename = dirname( __FILE__ ) . '/ISO-639-2_utf-8.txt';
-
-	if ( ( $handle = fopen( $filename, 'r' ) ) !== false ) {
-		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== false ) {
-			if ( ! empty( $data[2] ) ) {
-				$code           = $data[2];
-				$label          = htmlentities( $data[3] );
-				$langs[ $code ] = $label;
-			}
-		}
-		fclose( $handle );
-	}
-
-	// sort the languages;
-	asort( $langs );
-
-	wl_settings_select( 'site_language', $langs, wl_configuration_get_site_language() );
-}
-
-
-/**
- * Create an input box for the specified field.
- *
- * @since 3.0.0
- *
- * @param string $field_name The setting field name.
- * @param string $value The setting value.
- */
-function wl_settings_input_box( $field_name, $value ) {
-
-	// get the existing setting.
-	$value_e = esc_html( $value );
-	echo "<input id='$field_name' name='wordlift_options[$field_name]' size='60' type='text' value='$value_e' />";
-}
-
-/**
- * Prints out a Select element with the provided parameters.
- *
- * @since 3.0.0
- *
- * @param string $field_name The field name.
- * @param array $options A hash of option values/texts.
- * @param string $current The current selected value.
- */
-function wl_settings_select( $field_name, $options, $current ) {
-
-	echo "<select id='$field_name' name='wordlift_options[$field_name]' >";
-	foreach ( $options as $value => $text ) {
-		$selected = ( $current === $value ? 'selected' : '' );
-
-		$value_e = esc_attr( $value );
-		$text_e  = esc_html( $text );
-		echo "<option $selected value=\"$value_e\">$text_e</option>";
-	}
-	echo '</select>';
-}
-
-
-/**
- * Called by *wl_configuration_settings_page*.
+ * Called by the *admin_init* hook.
  *
  * @since 3.0.0
  */
@@ -435,6 +286,8 @@ add_action( 'admin_init', 'wl_configuration_settings' );
  * @since 3.0.0
  */
 function wl_configuration_general_settings_section_callback() {
+
+	// TODO: set the following text.
 	?>
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 <?php
@@ -446,6 +299,8 @@ function wl_configuration_general_settings_section_callback() {
  * @since 3.0.0
  */
 function wl_configuration_advanced_settings_section_callback() {
+
+	// TODO: set the following text.
 	?>
 	Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 <?php
@@ -462,6 +317,7 @@ function wl_configuration_advanced_settings_section_callback() {
  */
 function wl_configuration_sanitize_settings( $input ) {
 
+	// TODO: add sanitization checks.
 	return apply_filters( 'wl_configuration_sanitize_settings', $input, $input );
 
 }
@@ -603,7 +459,7 @@ function wl_config_get_recursion_depth() {
  */
 function wl_configuration_validate() {
 
-	return ( !( '' === wl_configuration_get_key() || '' === wl_configuration_get_redlink_key() ) );
+	return ( ! ( '' === wl_configuration_get_key() || '' === wl_configuration_get_redlink_key() ) );
 }
 
 /**
