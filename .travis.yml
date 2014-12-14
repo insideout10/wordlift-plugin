@@ -1,6 +1,6 @@
 language: php
 php:
-- 5.3
+- 5.3.3
 env:
   global:
   - secure: GzkZ3894GE+iqp73JPq/XJAj+WvozYvgf+Q6NVtaFpnguYxpL2g0evlIbohefwCdV8VwyxsLl/44a8Di4smdGXoSTT4JXokIhIEqKBuC1nTd2Q2TdN8noI8Mc0CI1Wlz37MTXNON4UgqgdA429P1FH2b06XVbnQXiX3HyKZGB/E=
