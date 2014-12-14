@@ -1093,8 +1093,6 @@ add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
 add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
 add_action('init', 'wl_install_entity_type_data');
 
-require_once( 'libs/php-json-ld/jsonld.php' );
-
 require_once( 'wordlift_entity_functions.php' );
 // add editor related methods.
 require_once( 'wordlift_editor.php' );
@@ -1180,4 +1178,3 @@ require_once( 'admin/wordlift_admin_sync.php' );
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
-
