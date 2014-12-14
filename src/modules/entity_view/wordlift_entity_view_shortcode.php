@@ -44,7 +44,7 @@ function wl_entity_view_shortcode( $atts, $content = null ) {
 
     // Extract attributes and set default values.
     $params = shortcode_atts( array(
-        'uri'      => wl_config_get_dataset_base_uri(), // The dataset base URI is the WordLift local dataset.
+        'uri'      => wl_configuration_get_redlink_dataset_uri(), // The dataset base URI is the WordLift local dataset.
         'suffix'   => '.json', // The suffix to add for remote queries.
 	    'title'    => 'rdfs:label',
 	    'language' => 'en'

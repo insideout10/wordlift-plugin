@@ -68,6 +68,6 @@ add_action( 'pre_post_update', 'wl_admin_pre_post_update', 10, 1 );
  */
 function wl_admin_set_entity_display_as_default( $post_id ) {
 
-    wl_set_entity_display_as( $post_id, wl_config_get_entity_display_as_default() );
+    wl_set_entity_display_as( $post_id, wl_configuration_get_entity_display_as() );
 }
 add_action( 'wl_save_entity', 'wl_admin_set_entity_display_as_default', 10, 1 );

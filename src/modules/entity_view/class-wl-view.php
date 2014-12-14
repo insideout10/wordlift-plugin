@@ -34,7 +34,7 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses wl_config_get_dataset_base_uri to get the default dataset URI.
+	 * @uses wl_configuration_get_redlink_dataset_uri to get the default dataset URI.
 	 *
 	 * @param string $base_uri The base URI for resources, default the WordLift dataset.
 	 * @param string $suffix The suffix to append to URI in order to load the JSON-LD file, default *.json*.
@@ -44,7 +44,7 @@ class WL_View {
 	function __construct( $base_uri = null, $suffix = '.json', $title = 'rdfs:label', $language = 'en' ) {
 
 		// Set the instance variables.
-		$this->base_uri = ( null === $base_uri ? wl_config_get_dataset_base_uri() : $base_uri );
+		$this->base_uri = ( null === $base_uri ? wl_configuration_get_redlink_dataset_uri() : $base_uri );
 		$this->suffix   = $suffix;
 		$this->title    = $title;
 		$this->language = $language;
@@ -83,7 +83,7 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses wl_config_get_dataset_base_uri to get the default dataset URI.
+	 * @uses wl_configuration_get_redlink_dataset_uri to get the default dataset URI.
 	 * @uses wl_jsonld_load_remote to load a remote JSON-LD file.
 	 *
 	 * @param string $path The entity path.

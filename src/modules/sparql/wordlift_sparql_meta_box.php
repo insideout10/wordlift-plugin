@@ -49,7 +49,7 @@ function wl_sparql_query_meta_box_callback( $post ) {
 
 	$dataset   = get_post_meta( $post->ID, WL_SPARQL_QUERY_DATASET_META_KEY, true );
 	// Set the default dataset if the value isn't yet set.
-	$dataset   = ( empty( $dataset ) ? wl_config_get_dataset() : $dataset );
+	$dataset   = ( empty( $dataset ) ? wl_configuration_get_redlink_dataset_name() : $dataset );
 	$dataset_h = esc_html( $dataset );
 
 	// TODO: see if we can use Squebi

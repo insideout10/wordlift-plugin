@@ -2,6 +2,9 @@
 // the WordLift options identifier.
 define( 'WL_OPTIONS_NAME', 'wordlift_options' );
 
+// The WordLift key.
+define( 'WL_CONFIG_WORDLIFT_KEY', 'wl_key' );
+
 // Define the field name for the dataset base URI.
 define( 'WL_CONFIG_DATASET_BASE_URI_NAME', 'dataset_base_uri' );
 

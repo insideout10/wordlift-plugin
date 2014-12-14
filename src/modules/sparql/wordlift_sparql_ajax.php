@@ -15,8 +15,8 @@ function wl_ajax_sparql() {
 	$accept  = 'text/csv';
 
 	// TODO: Get the dataset and the key to build the API URL.
-//	$dataset = wl_config_get_dataset();
-	$key     = wl_config_get_application_key();
+//	$dataset = wl_configuration_get_redlink_dataset_name();
+	$key     = wl_configuration_get_redlink_key();
 
 	// Get the query.
 	$query   = wl_sparql_replace_params( wl_sparql_get_query_by_slug( $slug ), $_GET );
@@ -31,7 +31,7 @@ function wl_ajax_sparql() {
         wp_die( "Cannot find a SPARQL query [ slug :: $slug ]" );
     }
 
-	$url     = wl_config_get_api_url() . "/data/$dataset/sparql/select?key=$key&out=$output";
+	$url     = wl_configuration_get_api_url() . "/data/$dataset/sparql/select?key=$key&out=$output";
 
 	// Prepare the request.
 	$args    = array(

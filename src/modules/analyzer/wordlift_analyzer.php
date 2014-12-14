@@ -75,8 +75,8 @@ function wl_analyze_content( $content ) {
  *
  * @since 1.0.0
  *
- * @uses wl_config_get_application_key to get the application key.
- * @uses wl_config_get_analysis to get the analysis name.
+ * @uses wl_configuration_get_redlink_key to get the application key.
+ * @uses wl_configuration_get_redlink_application_name to get the analysis name.
  *
  * @return string The Redlink API enhance URL.
  */
@@ -90,8 +90,8 @@ function wl_redlink_enhance_url() {
 	}
 
 	// remove configuration keys from here.
-	$app_key       = wl_config_get_application_key();
-	$analysis_name = wl_config_get_analysis();
+	$app_key       = wl_configuration_get_redlink_key();
+	$analysis_name = wl_configuration_get_redlink_application_name();
 
 	$ldpath = <<<EOF
         @prefix ex: <http://example.org/>;
@@ -102,7 +102,7 @@ function wl_redlink_enhance_url() {
         vcard:locality = lode:atPlace/gn:name :: xsd:string;
 EOF;
 
-	return wl_config_get_api_url() . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key .
+	return wl_configuration_get_api_url() . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key .
 	       '&enhancer.engines.dereference.ldpath=' . urlencode( $ldpath );
 }
 

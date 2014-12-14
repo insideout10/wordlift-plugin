@@ -99,8 +99,8 @@ class UserTest extends WP_UnitTestCase
 
         return sprintf(
             'http://data.redlink.io/%s/%s/%s/%s',
-            wl_config_get_user_id(),
-            wl_config_get_dataset(),
+            wl_configuration_get_redlink_user_id(),
+            wl_configuration_get_redlink_dataset_name(),
             'user',
             $id
         );

@@ -7,7 +7,7 @@
  * Build the entity URI given the entity's post.
  *
  * @uses wl_sanitize_uri_path to sanitize the post title.
- * @uses wl_config_get_dataset_base_uri to get the dataset base URI.
+ * @uses wl_configuration_get_redlink_dataset_uri to get the dataset base URI.
  *
  * @param int $post_id The post ID
  *
@@ -34,7 +34,7 @@ function wl_build_entity_uri( $post_id ) {
 	}
 
 	// Create the URL (dataset base URI has a trailing slash).
-	$url = sprintf( '%s/%s/%s', wl_config_get_dataset_base_uri(), $post->post_type, $path );
+	$url = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), $post->post_type, $path );
 
 	wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
 
@@ -172,6 +172,8 @@ function wl_get_meta_value( $property_name, $entity_id = null ) {
  */
 function wl_get_meta_type( $property_name ) {
 
+	wl_write_log( "[ property name :: $property_name ]" );
+
 	// Property name must be defined.
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
 		return null;
@@ -228,9 +230,10 @@ function wl_get_meta_constraints( $property_name ) {
 
 /**
  * Retrieve entity type custom fields
- * @entity_id id of the entity, if any
- * @return if $entity_id was specified, return custom_fields for that entity's type.
- * Otherwise returns all custom_fields
+ *
+ * @param int $entity_id id of the entity, if any
+ *
+ * @return mixed if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
  */
 function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 

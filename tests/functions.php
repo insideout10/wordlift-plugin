@@ -140,9 +140,11 @@ function wl_delete_posts( $posts ) {
  * Analyze the post with the specified ID. The analysis will make use of the method *wl_ajax_analyze_action*
  * provided by the WordLift plugin.
  *
+ * @since 3.0.0
+ *
  * @param int $post_id The post ID to analyze.
  *
- * @return null|WP_Error|WP_Response Returns null on failure, or the WP_Error, or a WP_Response with the response.
+ * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
  */
 function wl_analyze_post( $post_id ) {
 
@@ -677,30 +679,31 @@ function wl_test_get_write_log_handler() {
  */
 function wl_configure_wordpress_test() {
 
-    add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
+	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
-    do_action( 'activate_wordlift/wordlift.php' );
+	do_action( 'activate_wordlift/wordlift.php' );
 
-    // Set the dataset name to the specified dataset or define it based on the current environment.
-    $dataset_name = ( false !== getenv('REDLINK_DATASET_NAME') ? getenv('REDLINK_DATASET_NAME')
-        : str_replace('.', '-',
-            sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
-                getenv('WP_VERSION'), getenv('WP_MULTISITE') ) )
-    );
-    
-    $app_name = ( false !== getenv('REDLINK_APP_NAME') ? getenv('REDLINK_APP_NAME') : 'wordlift' );
+	// Set the dataset name to the specified dataset or define it based on the current environment.
+	$dataset_name = ( false !== getenv( 'REDLINK_DATASET_NAME' ) ? getenv( 'REDLINK_DATASET_NAME' )
+		: str_replace( '.', '-',
+			sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
+				getenv( 'WP_VERSION' ), getenv( 'WP_MULTISITE' ) ) )
+	);
 
-    $options = array(
-        'application_key' => getenv('REDLINK_APP_KEY'),
-        'user_id'         => getenv('REDLINK_USER_ID'),
-        'api_url'         => getenv('API_URL'),
-        'dataset_name'    => $dataset_name,
-        'analysis_name'   => $app_name,
-        'dataset_base_uri' => 'http://data.redlink.io/' . getenv('REDLINK_USER_ID') . '/' . $dataset_name
-    );
+	$app_name = ( false !== getenv( 'REDLINK_APP_NAME' ) ? getenv( 'REDLINK_APP_NAME' ) : 'wordlift' );
 
-    // Set the plugin options.
-    update_option( WL_OPTIONS_NAME,  $options);
+	// Check that the API_URL env is set.
+	if ( false === getenv( 'API_URL' ) ) {
+		die( 'The API_URL environment variable is not set.' );
+	}
+
+	wl_configuration_set_redlink_key( getenv( 'REDLINK_APP_KEY' ) );
+	wl_configuration_set_redlink_user_id( getenv( 'REDLINK_USER_ID' ) );
+	wl_configuration_set_api_url( getenv( 'API_URL' ) );
+	wl_configuration_set_redlink_dataset_name( $dataset_name );
+	wl_configuration_set_redlink_application_name( $app_name );
+	wl_configuration_set_redlink_dataset_uri( 'http://data.redlink.io/' . getenv( 'REDLINK_USER_ID' ) . '/' . $dataset_name );
+
 }
 
 /**

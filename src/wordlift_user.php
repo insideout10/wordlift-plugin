@@ -60,14 +60,14 @@ function wl_build_user_uri( $user_id ) {
 
 //    $uri = sprintf(
 //        'http://data.redlink.io/%s/%s/%s/%s',
-//        wl_config_get_user_id(),
-//        wl_config_get_dataset(),
+//        wl_configuration_get_redlink_user_id(),
+//        wl_configuration_get_redlink_dataset_name(),
 //        'user',
 //        $id
 //    );
 
     // Create the URL (dataset base URI has a trailing slash).
-    $uri = sprintf( '%s/%s/%s', wl_config_get_dataset_base_uri(), 'user', $id );
+    $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'user', $id );
 
     // Check that the URI doesn't exist already. If it exists, add a numeric suffix.
     $base_uri = $uri;
@@ -145,7 +145,7 @@ function wl_update_user_profile( $user_id ) {
     wl_write_log( "wl_update_user_profile [ user id :: $user_id ]" );
 
     // Get the site language setting.
-    $language   = wl_config_get_site_language();
+    $language   = wl_configuration_get_site_language();
 
     // Get the user.
     $user       = get_userdata( $user_id );

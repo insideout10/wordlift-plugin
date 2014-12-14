@@ -136,4 +136,15 @@ NameVirtualHost *:80
 
 Before being able to run tests, you need to copy the file `setenv.sh.dist` to `setenv.sh` and set all the required parameters.
 
-Run tests by executing the command `./run-tests.sh`.
+Run the test using the following command line:
+
+
+	WP_TESTS_DIR=wp-tests WP_VERSION=3.9.2 WP_MULTISITE=0 \
+		API_URL=https://api.redlink.io/1.0-BETA \
+		REDLINK_APP_KEY=<your-redlink-application-key> \
+		REDLINK_USER_ID=<your-redlink-user-id> \
+		REDLINK_APP_NAME=<your-redlink-application-name> \
+		REDLINK_DATASET_NAME=<your-redlink-dataset-name> \
+		WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true \
+		php -d xdebug.profiler_enable=1 vendor/bin/phpunit
+

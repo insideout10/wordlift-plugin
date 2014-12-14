@@ -25,7 +25,7 @@ function wl_push_post_to_redlink( $post )
     wl_write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
 
     // Get the site language in order to define the literals language.
-    $site_language = wl_config_get_site_language();
+    $site_language = wl_configuration_get_site_language();
 
     // save the author and get the author URI.
     $author_uri = wl_get_user_uri($post->post_author);
@@ -114,7 +114,7 @@ function wl_push_entity_post_to_redlink( $entity_post )
     }
 
     // Get the site language in order to define the literals language.
-    $site_language = wl_config_get_site_language();
+    $site_language = wl_configuration_get_site_language();
 
     // get the title and content as label and description.
     $label     = wordlift_esc_sparql( $entity_post->post_title );
@@ -366,8 +366,7 @@ function wordlift_reindex_triple_store()
     // Prepare the request.
     $args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
         'method' => 'POST',
-        'headers' => array(),
-        'body' => ''
+        'headers' => array()
     ));
 
     $response = wp_remote_request( $url, $args );

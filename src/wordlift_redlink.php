@@ -9,11 +9,11 @@
 function wordlift_redlink_sparql_update_url() {
 
 	// get the configuration.
-	$dataset_id = wl_config_get_dataset();
-	$app_key    = wl_config_get_application_key();
+	$dataset_id = wl_configuration_get_redlink_dataset_name();
+	$app_key    = wl_configuration_get_redlink_key();
 
 	// construct the API URL.
-	return wl_config_get_api_url() . "/data/" . $dataset_id . "/sparql/update?key=" . $app_key;
+	return wl_configuration_get_api_url() . "/data/" . $dataset_id . "/sparql/update?key=" . $app_key;
 }
 
 /**
@@ -23,11 +23,11 @@ function wordlift_redlink_sparql_update_url() {
 function wordlift_redlink_reindex_url() {
 
 	// get the configuration.
-	$dataset_id = wl_config_get_dataset();
-	$app_key    = wl_config_get_application_key();
+	$dataset_id = wl_configuration_get_redlink_dataset_name();
+	$app_key    = wl_configuration_get_redlink_key();
 
 	// construct the API URL.
-	return wl_config_get_api_url() . "/data/" . $dataset_id . "/release?key=" . $app_key;
+	return wl_configuration_get_api_url() . "/data/" . $dataset_id . "/release?key=" . $app_key;
 }
 
 /**
@@ -37,11 +37,11 @@ function wordlift_redlink_reindex_url() {
 function rl_empty_dataset_url() {
 
 	// get the configuration.
-	$dataset_id = wl_config_get_dataset();
-	$app_key    = wl_config_get_application_key();
+	$dataset_id = wl_configuration_get_redlink_dataset_name();
+	$app_key    = wl_configuration_get_redlink_key();
 
 	// construct the API URL.
-	$url = sprintf( '%s/data/%s?key=%s', wl_config_get_api_url(), $dataset_id, $app_key );
+	$url = sprintf( '%s/data/%s?key=%s', wl_configuration_get_api_url(), $dataset_id, $app_key );
 
 	return $url;
 }
@@ -49,11 +49,11 @@ function rl_empty_dataset_url() {
 function rl_sparql_select_url() {
 
 	// get the configuration.
-	$dataset_id = wl_config_get_dataset();
-	$app_key    = wl_config_get_application_key();
+	$dataset_id = wl_configuration_get_redlink_dataset_name();
+	$app_key    = wl_configuration_get_redlink_key();
 
 	// construct the API URL.
-	$url = sprintf( '%s/data/%s/sparql/select?key=%s', wl_config_get_api_url(), $dataset_id, $app_key );
+	$url = sprintf( '%s/data/%s/sparql/select?key=%s', wl_configuration_get_api_url(), $dataset_id, $app_key );
 
 	return $url;
 }
@@ -63,6 +63,9 @@ function rl_sparql_select_url() {
  * @return WP_Response|WP_Error A WP_Response in case of success, otherwise a WP_Error.
  */
 function rl_empty_dataset() {
+
+	// TODO: re-enable, but as of Dec 2014 the call is too slow.
+	return;
 
 	// Get the empty dataset URL.
 	$url = rl_empty_dataset_url();
