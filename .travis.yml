@@ -1,40 +1,21 @@
 language: php
 php:
-  - 5.3
-  - 5.4
+- 5.3
 env:
   global:
-    - secure: "m6fJTyozSFwsXBwoGvrK+V0XrCBMf4O/Bg4SqI2YEvbXZxlUWF3QMcHezY40/BEuf/vgX0hVtnE9GjetPJfNRFziVrUSJDgIvzFxtMRbLurucCM+w8fI3BJymZ+5vWVoPzWOpdW8MqhH2ZBp7v1yLFfE9bxSqeVXTPLv/FEIJ0U="
-    - secure: "bgUVRtraxHcj8WzIAqh9z6ZcEy8nmKd+jaQKNiy0qQEPAK850Itspbq2GWzaEBm2r5pAykNkhyvBk7SrTUnAA8ReJXxHzRzjfJSqdEded/exRzDHU2gtB6AMsm2PafdgQZqp15nH6EsBvjNFlZl8CGAgLR8wqf0w3u9GXB0B32g="
-    - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
-    - API_URL=https://api.redlink.io/1.0-BETA 
+  - secure: GzkZ3894GE+iqp73JPq/XJAj+WvozYvgf+Q6NVtaFpnguYxpL2g0evlIbohefwCdV8VwyxsLl/44a8Di4smdGXoSTT4JXokIhIEqKBuC1nTd2Q2TdN8noI8Mc0CI1Wlz37MTXNON4UgqgdA429P1FH2b06XVbnQXiX3HyKZGB/E=
+  - secure: O1egBXlawQSuaJbUvoEh7HOWPyJxaoFdRo2Z89Iti1F/yZaKdxo4MwU9oUXevh5xLmWTTFVp1tSjypxurPxQ9WPkaFC5uxXgDe+MIBRQUlDoHEhMK7lAg9nwhhw1dRpb61O248Mw1EKr7SsofRdUob9GTeNBSTSPsZiYtKrVhTA=
+  - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
+  - API_URL=https://api.redlink.io/1.0-BETA
+  - secure: kDMI8mRggBmnB/uDSW7bpUOJnRPrUhksCfkPmtI40DoiUL1qOo19SXmeyvJhvRAvRpPKMHhwYdXaPRTU3ehrpPuak4QMAI69189xzDv0YzLHph1q/ESvUjnzgJPL2S8dTSKwjhKgOfvntzb8sEkHlhS/GVsPPfA5o1hXs3xzYaM=
+  - secure: atgLztwWoQACiMH6M07hZauVcvyzslSfkMZSodPZFnwm+TxjJVNggqpApuJapoZFsJpXpji13vShvZKzynoomxx4uzU7HDZvs5mhUG6qeY2AyFOZ4Au5HyA6HoXPKiRhrMIjMmZvG5ExyOFnCHv7Q8wRsjarURQJV6pLUAdXa+s=
   matrix:
-#    - WP_VERSION=latest
-     - WP_VERSION=3.9.1  WP_MULTISITE=0
-
-#    - WP_VERSION=3.8.1  WP_MULTISITE=0
-#    - WP_VERSION=3.7.1  WP_MULTISITE=0
-#    - WP_VERSION=3.8.1  WP_MULTISITE=1
-#    - WP_VERSION=3.7.1  WP_MULTISITE=1
-#    - WP_VERSION=3.8    WP_MULTISITE=0
-#    - WP_VERSION=3.6.1  WP_MULTISITE=0
-#    - WP_VERSION=3.5.2  WP_MULTISITE=0
-#    - WP_VERSION=3.4.2  WP_MULTISITE=0
-#    - WP_VERSION=3.3.3  WP_MULTISITE=0
-#    - WP_VERSION=3.8    WP_MULTISITE=1
-#    - WP_VERSION=3.7.1  WP_MULTISITE=1
-#    - WP_VERSION=3.6.1  WP_MULTISITE=1
-#    - WP_VERSION=3.5.2  WP_MULTISITE=1
-#    - WP_VERSION=3.4.2  WP_MULTISITE=1
-#    - WP_VERSION=3.3.3  WP_MULTISITE=1
-#
+  - WP_VERSION=3.9.1  WP_MULTISITE=0
 before_install:
-  - sudo apt-get -y -qq update
-  - sudo apt-get -y -qq install curl libcurl3-gnutls libgnutls26
-
+- sudo apt-get -y -qq update
+- sudo apt-get -y -qq install curl libcurl3-gnutls libgnutls26
 before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+- bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 script: phpunit
-
 notifications:
   slack: insideout10:NcslbQWVmD4YPInDq8TpBIno
