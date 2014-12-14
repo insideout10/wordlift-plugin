@@ -14,6 +14,8 @@ define( 'WL_JSON_LD_CONTEXT', serialize( array(
 // Disable buffering.
 define( 'WL_BUFFER_SPARQL_UPDATE_QUERIES', false );
 
+require_once( 'jsonld.php' );
+
 /**
  * Create a new post.
  *
