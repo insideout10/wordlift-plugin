@@ -494,3 +494,40 @@ function wl_configuration_check() {
 }
 
 add_action( 'admin_init', 'wl_configuration_check' );
+
+
+/**
+ * Intercept the change of the WordLift key in order to set the dataset URI.
+ *
+ * @since 3.0.0
+ *
+ * @param array $old_value The old settings.
+ * @param array $new_value The new settings.
+ */
+function wl_configuration_update_key( $old_value, $new_value ) {
+
+	// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
+	$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
+	$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
+
+	// If the key hasn't changed, don't do anything.
+	if ( $old_key === $new_key ) {
+		return;
+	}
+
+	// If the key is empty, empty the dataset URI.
+	if ( '' === $new_key ) {
+		wl_configuration_set_redlink_dataset_uri( '' );
+	}
+
+	// Request the dataset URI.
+	$response = wp_remote_get( wl_configuration_get_accounts_by_key_dataset_uri( $new_key ) );
+
+	// If the response is valid, then set the value.
+	if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+		wl_configuration_set_redlink_dataset_uri( $response['body'] );
+	}
+
+}
+
+add_action( 'update_option_wl_general_settings', 'wl_configuration_update_key', 10, 2 );
