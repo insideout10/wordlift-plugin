@@ -28,3 +28,5 @@ define( 'WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME', 'wl_config_entity_display_as
 
 // The parameter name for the *enable color coding on front-end* setting.
 define( 'WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME', 'wl_config_enable_color_coding_on_frontend' );
+
+define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', 'http://localhost:8080/' );

@@ -104,4 +104,23 @@ class ConfigurationTest extends WP_UnitTestCase {
 		$this->assertEquals( $value, wl_configuration_get_redlink_application_name() );
 	}
 
+	function test_wl_configuration_analyzer_url() {
+
+		// Set the WordLift Key.
+		$wordlift_key = uniqid();
+		wl_configuration_set_key( $wordlift_key );
+
+		$this->assertEquals( WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "analyses?key=$wordlift_key", wl_configuration_get_analyzer_url() );
+
+		// Set the Redlink Key.
+		$redlink_key              = uniqid();
+		$redlink_application_name = uniqid();
+		$redlink_api_url          = uniqid();
+		wl_configuration_set_key( '' );
+		wl_configuration_set_redlink_key( $redlink_key );
+		wl_configuration_set_redlink_application_name( $redlink_application_name );
+		wl_configuration_set_api_url( $redlink_api_url );
+
+		$this->assertStringStartsWith( "$redlink_api_url/analysis/$redlink_application_name/enhance?key=$redlink_key", wl_configuration_get_analyzer_url() );
+	}
 }

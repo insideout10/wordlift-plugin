@@ -286,3 +286,41 @@ function wl_configuration_set_redlink_application_name( $value ) {
 
 	wl_configuration_set( 'wl_advanced_settings', 'redlink_application_name', $value );
 }
+
+/**
+ * Get the URL to use for running analyses. If a WordLift key is set, then a WordLift Server URL is returned, otherwise
+ * a Redlink URL.
+ *
+ * @since 3.0.0
+ *
+ * @uses wl_configuration_get_key to get the WordLift key.
+ * @uses wl_configuration_get_redlink_key to get the application key.
+ * @uses wl_configuration_get_redlink_application_name to get the analysis name.
+ *
+ * @return string The analysis URL.
+ */
+function wl_configuration_get_analyzer_url() {
+
+	// If the WordLift Key is set, we use WordLift.
+	$key = wl_configuration_get_key();
+	if ( ! empty( $key ) ) {
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "analyses?key=$key";
+	}
+
+	// Otherwise use Redlink.
+	$app_key       = wl_configuration_get_redlink_key();
+	$analysis_name = wl_configuration_get_redlink_application_name();
+
+	$ldpath = <<<EOF
+        @prefix ex: <http://example.org/>;
+        @prefix cal: <http://www.w3.org/2002/12/cal#>;
+        @prefix gn: <http://www.geonames.org/ontology#>;
+        @prefix lode: <http://linkedevents.org/ontology/>;
+        @prefix vcard: <http://www.w3.org/2006/vcard/ns#>;
+        vcard:locality = lode:atPlace/gn:name :: xsd:string;
+EOF;
+
+	return wl_configuration_get_api_url() . "/analysis/$analysis_name/enhance?key=$app_key" .
+	       '&enhancer.engines.dereference.ldpath=' . urlencode( $ldpath );
+
+}

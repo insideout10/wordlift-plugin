@@ -23,7 +23,7 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  *
  * @since 1.0.0
  *
- * @uses wl_redlink_enhance_url to get the API for the analysis.
+ * @uses wl_configuration_get_analyzer_url to get the API for the analysis.
  *
  * @param string $content The content to analyze.
  *
@@ -31,8 +31,8 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  */
 function wl_analyze_content( $content ) {
 
-	// Get the Redlink enhance URL.
-	$url = wl_redlink_enhance_url();
+	// Get the analyzer URL.
+	$url = wl_configuration_get_analyzer_url();
 
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
@@ -69,40 +69,3 @@ function wl_analyze_content( $content ) {
 
 	return $response['body'];
 }
-
-/**
- * Get the Redlink API enhance URL.
- *
- * @since 1.0.0
- *
- * @uses wl_configuration_get_redlink_key to get the application key.
- * @uses wl_configuration_get_redlink_application_name to get the analysis name.
- *
- * @return string The Redlink API enhance URL.
- */
-function wl_redlink_enhance_url() {
-
-	$wordlift_key = '';
-
-	// If the WordLift Key is set, run the analysis on WordLift, otherwise use Redlink.
-	if ( ! empty( $wordlift_key ) ) {
-		return 'http://localhost:8080/analyses?key=' . $wordlift_key;
-	}
-
-	// remove configuration keys from here.
-	$app_key       = wl_configuration_get_redlink_key();
-	$analysis_name = wl_configuration_get_redlink_application_name();
-
-	$ldpath = <<<EOF
-        @prefix ex: <http://example.org/>;
-        @prefix cal: <http://www.w3.org/2002/12/cal#>;
-        @prefix gn: <http://www.geonames.org/ontology#>;
-        @prefix lode: <http://linkedevents.org/ontology/>;
-        @prefix vcard: <http://www.w3.org/2006/vcard/ns#>;
-        vcard:locality = lode:atPlace/gn:name :: xsd:string;
-EOF;
-
-	return wl_configuration_get_api_url() . '/analysis/' . $analysis_name . '/enhance?key=' . $app_key .
-	       '&enhancer.engines.dereference.ldpath=' . urlencode( $ldpath );
-}
-
