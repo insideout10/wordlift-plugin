@@ -459,7 +459,7 @@ function wl_config_get_recursion_depth() {
  */
 function wl_configuration_validate() {
 
-	return ( ! ( '' === wl_configuration_get_key() || '' === wl_configuration_get_redlink_key() ) );
+	return ( ! ( '' === wl_configuration_get_key() && '' === wl_configuration_get_redlink_key() ) );
 }
 
 /**
