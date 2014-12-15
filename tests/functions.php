@@ -568,7 +568,7 @@ function wl_get_entity_annotation_best_match( $entity_annotations ) {
 function wl_execute_sparql_query( $query ) {
 
 	// construct the API URL.
-	$url = wordlift_redlink_sparql_update_url();
+	$url = wl_configuration_get_query_update_url();
 
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
@@ -685,26 +685,35 @@ function wl_configure_wordpress_test() {
 
 	do_action( 'activate_wordlift/wordlift.php' );
 
-	// Set the dataset name to the specified dataset or define it based on the current environment.
-	$dataset_name = ( false !== getenv( 'REDLINK_DATASET_NAME' ) ? getenv( 'REDLINK_DATASET_NAME' )
-		: str_replace( '.', '-',
-			sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
-				getenv( 'WP_VERSION' ), getenv( 'WP_MULTISITE' ) ) )
-	);
+	// If the WordLift key is set, then we'll configure it, otherwise we configure Redlink.
+	if ( false !== getenv( 'WORDLIFT_KEY' ) ) {
+		// Use WordLift.
+		wl_configuration_set_key( getenv( 'WORDLIFT_KEY' ) );
+		wl_configuration_set_redlink_dataset_uri( getenv( 'DATASET_URI' ) );
+	} else {
+		// or use Redlink.
 
-	$app_name = ( false !== getenv( 'REDLINK_APP_NAME' ) ? getenv( 'REDLINK_APP_NAME' ) : 'wordlift' );
+		// Set the dataset name to the specified dataset or define it based on the current environment.
+		$dataset_name = ( false !== getenv( 'REDLINK_DATASET_NAME' ) ? getenv( 'REDLINK_DATASET_NAME' )
+			: str_replace( '.', '-',
+				sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
+					getenv( 'WP_VERSION' ), getenv( 'WP_MULTISITE' ) ) )
+		);
 
-	// Check that the API_URL env is set.
-	if ( false === getenv( 'API_URL' ) ) {
-		die( 'The API_URL environment variable is not set.' );
+		$app_name = ( false !== getenv( 'REDLINK_APP_NAME' ) ? getenv( 'REDLINK_APP_NAME' ) : 'wordlift' );
+
+		// Check that the API_URL env is set.
+		if ( false === getenv( 'API_URL' ) ) {
+			die( 'The API_URL environment variable is not set.' );
+		}
+
+		wl_configuration_set_redlink_key( getenv( 'REDLINK_APP_KEY' ) );
+		wl_configuration_set_redlink_user_id( getenv( 'REDLINK_USER_ID' ) );
+		wl_configuration_set_api_url( getenv( 'API_URL' ) );
+		wl_configuration_set_redlink_dataset_name( $dataset_name );
+		wl_configuration_set_redlink_application_name( $app_name );
+		wl_configuration_set_redlink_dataset_uri( 'http://data.redlink.io/' . getenv( 'REDLINK_USER_ID' ) . '/' . $dataset_name );
 	}
-
-	wl_configuration_set_redlink_key( getenv( 'REDLINK_APP_KEY' ) );
-	wl_configuration_set_redlink_user_id( getenv( 'REDLINK_USER_ID' ) );
-	wl_configuration_set_api_url( getenv( 'API_URL' ) );
-	wl_configuration_set_redlink_dataset_name( $dataset_name );
-	wl_configuration_set_redlink_application_name( $app_name );
-	wl_configuration_set_redlink_dataset_uri( 'http://data.redlink.io/' . getenv( 'REDLINK_USER_ID' ) . '/' . $dataset_name );
 
 }
 
@@ -720,4 +729,124 @@ function wl_test_create_user() {
 		'first_name' => 'Mario',
 		'last_name'  => 'Rossi'
 	) );
+}
+
+
+/**
+ * Count the number of triples in the dataset.
+ * @return array|WP_Error|null An array if successful, otherwise WP_Error or NULL.
+ */
+function rl_count_triples() {
+
+	// Set the SPARQL query.
+	$sparql = 'SELECT (COUNT(DISTINCT ?s) AS ?subjects) (COUNT(DISTINCT ?p) AS ?predicates) (COUNT(DISTINCT ?o) AS ?objects) ' .
+	          'WHERE { ?s ?p ?o }';
+
+	// Send the request.
+	$response = rl_sparql_select( $sparql, 'text/csv' );
+
+	// Remove the key from the query.
+	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', wl_configuration_get_query_select_url( 'csv' ) );
+
+	// Return the error in case of failure.
+	if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
+
+		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
+
+		wl_write_log( "rl_count_triples : error [ url :: $scrambled_url ][ response :: " );
+		wl_write_log( "\n" . var_export( $response, true ) );
+		wl_write_log( "][ body :: " );
+		wl_write_log( "\n" . $body );
+		wl_write_log( "]" );
+
+		return $response;
+	}
+
+	// Get the body.
+	$body = $response['body'];
+
+	// Get the values.
+	$matches = array();
+	if ( 1 === preg_match( '/(\d+),(\d+),(\d+)/im', $body, $matches ) && 4 === count( $matches ) ) {
+
+		// Return the counts.
+		return array(
+			'subjects'   => (int) $matches[1],
+			'predicates' => (int) $matches[2],
+			'objects'    => (int) $matches[3]
+		);
+	}
+
+	// No digits found in the response, return null.
+	wl_write_log( "rl_count_triples : unrecognized response [ body :: $body ]" );
+
+	return null;
+}
+
+
+/**
+ * Execute the provided query against the SPARQL SELECT Redlink end-point and return the response.
+ *
+ * @param string $query A SPARQL query.
+ * @param string $accept The mime type for the response format (default = 'text/csv').
+ *
+ * @return WP_Response|WP_Error A WP_Response instance in successful otherwise a WP_Error.
+ */
+function rl_sparql_select( $query, $accept = 'text/csv' ) {
+
+	// Prepare the SPARQL statement by prepending the default namespaces.
+	$sparql = rl_sparql_prefixes() . "\n" . $query;
+
+	// Get the SPARQL SELECT URL.
+	$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
+
+	// Prepare the request.
+	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+		'headers' => array(
+			'Accept' => $accept
+		)
+	) );
+
+	// Send the request.
+	return wp_remote_get( $url, $args );
+}
+
+
+/**
+ * Empty the dataset bound to this WordPress install.
+ * @return WP_Response|WP_Error A WP_Response in case of success, otherwise a WP_Error.
+ */
+function rl_empty_dataset() {
+
+	// TODO: re-enable, but as of Dec 2014 the call is too slow.
+	return;
+
+	// Get the empty dataset URL.
+	$url = rl_empty_dataset_url();
+
+	// Prepare the request.
+	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+		'method' => 'DELETE'
+	) );
+
+	// Send the request.
+	return wp_remote_request( $url, $args );
+}
+
+
+
+/**
+ * Get the Redlink URL to delete a dataset data (doesn't delete the dataset itself).
+ * @return string
+ */
+function rl_empty_dataset_url() {
+
+	// get the configuration.
+	$dataset_id = wl_configuration_get_redlink_dataset_name();
+	$app_key    = wl_configuration_get_redlink_key();
+
+	// construct the API URL.
+	$url = sprintf( '%s/data/%s?key=%s', wl_configuration_get_api_url(), $dataset_id, $app_key );
+
+	return $url;
 }

@@ -358,7 +358,7 @@ function wordlift_reindex_triple_store()
 {
 
     // Get the reindex URL.
-    $url = wordlift_redlink_reindex_url();
+    $url = wl_configuration_get_dataset_index_url();
 
     // Post the request.
     wl_write_log( "wordlift_reindex_triple_store" );

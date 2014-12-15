@@ -250,82 +250,6 @@ function wl_get_coordinates( $post_id ) {
 }
 
 /**
- * Save the image with the specified URL locally. To the local filename a uniqe serial is appended to ensure its uniqueness.
- *
- * @param string $url The image remote URL.
- *
- * @return array An array with information about the saved image (*path*: the local path to the image, *url*: the local
- * url, *content_type*: the image content type)
- */
-function wl_save_image( $url ) {
-
-	$parts = parse_url( $url );
-	$path  = $parts['path'];
-
-	// Get the bare filename (filename w/o the extension).
-	$basename = pathinfo( $path, PATHINFO_FILENAME ) . '-' . uniqid( date( 'YmdH-' ) );
-
-	// Chunk the bare name to get a subpath.
-	$chunks = chunk_split( strtolower( $basename ), 3, DIRECTORY_SEPARATOR );
-
-	// Get the base dir.
-	$wp_upload_dir = wp_upload_dir();
-	$base_dir      = $wp_upload_dir['basedir'];
-	$base_url      = $wp_upload_dir['baseurl'];
-
-	// Get the full path to the local filename.
-	$image_path      = '/' . $chunks;
-	$image_full_path = $base_dir . $image_path;
-	$image_full_url  = $base_url . $image_path;
-
-	// Create the folders.
-	if ( ! ( file_exists( $image_full_path ) && is_dir( $image_full_path ) ) ) {
-		if ( false === mkdir( $image_full_path, 0777, true ) ) {
-			wl_write_log( "wl_save_image : failed creating dir [ image full path :: $image_full_path ]\n" );
-		}
-	};
-
-	// Request the remote file.
-	$response     = wp_remote_get( $url );
-	$content_type = wp_remote_retrieve_header( $response, 'content-type' );
-
-	switch ( $content_type ) {
-		case 'image/jpeg':
-		case 'image/jpg':
-			$extension = ".jpg";
-			break;
-		case 'image/svg+xml':
-			$extension = ".svg";
-			break;
-		case 'image/gif':
-			$extension = ".gif";
-			break;
-		case 'image/png':
-			$extension = ".png";
-			break;
-		default:
-			$extension = '';
-	}
-
-	// Complete the local filename.
-	$image_full_path .= $basename . $extension;
-	$image_full_url .= $basename . $extension;
-
-	// Store the data locally.
-	file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
-
-	wl_write_log( "wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n" );
-
-	// Return the path.
-	return array(
-		'path'         => $image_full_path,
-		'url'          => $image_full_url,
-		'content_type' => $content_type
-	);
-}
-
-
-/**
  * Set the related posts IDs for the specified post ID.
  *
  * @param int $post_id A post ID.
@@ -861,203 +785,202 @@ add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
 /**
  * Install known types in WordPress.
  */
-function wl_install_entity_type_data()
-{
-    
-    // Ensure the custom type and the taxonomy are registered.
-    wl_entity_type_register();
-    wl_entity_type_taxonomy_register();
-    
-    // Set the taxonomy data.
-    // TODO: Add inheritance
-    // TODO: Manage both generic and custom fields as fields
-    // TODO: Merge export fields configuration with standard fields
-    $terms = array(
-        'creative-work' => array(
-            'label' => 'Creative Work',
-            'description' => 'A creative work (or a Music Album).',
-            'css' => 'wl-creative-work',
-            'uri' => 'http://schema.org/CreativeWork',
-            'same_as' => array(
-                'http://schema.org/MusicAlbum',
-                'http://schema.org/Product'
-            ),
-            'custom_fields' => array(),
-            'export_fields' => array(),
-            'microdata_template' => '',
-            'templates' => array(
-                'subtitle' => '{{id}}'
-            )              
-        ),
-        'event' => array(
-            'label' => 'Event',
-            'description' => 'An event.',
-            'css' => 'wl-event',
-            'uri' => 'http://schema.org/Event',
-            'same_as' => array('http://dbpedia.org/ontology/Event'),
-            'custom_fields' => array(
-                WL_CUSTOM_FIELD_CAL_DATE_START => array(
-                    'predicate'     => 'startDate',
-                    'type'          => WL_DATA_TYPE_DATE,
-                    'constraints'   => ''
-                ),
-                WL_CUSTOM_FIELD_CAL_DATE_END   => array(
-                    'predicate'     => 'endDate',
-                    'type'          => WL_DATA_TYPE_DATE,
-                    'constraints'   => ''
-                ),
-                WL_CUSTOM_FIELD_LOCATION       => array(
-                    'predicate'     => 'location',
-                    'type'          => WL_DATA_TYPE_URI,
-                    'constraints'   => array(
-                        'uri_type'  => 'Place'
-                    )
-                )
-            ),
-            'export_fields' => array(
-                WL_CUSTOM_FIELD_CAL_DATE_START => array(
-                    'predicate' => 'http://schema.org/startDate',
-                    'type'      => 'xsd:date'
-                ),
-                WL_CUSTOM_FIELD_CAL_DATE_END   => array(
-                    'predicate' => 'http://schema.org/endDate',
-                    'type'      => 'xsd:date'
-                ),
-                WL_CUSTOM_FIELD_LOCATION => array(
-                    'predicate' => 'http://schema.org/location'
-                )
-            ),
-            'microdata_template' =>
-                '{{startDate}}
+function wl_install_entity_type_data() {
+
+	// Ensure the custom type and the taxonomy are registered.
+	wl_entity_type_register();
+	wl_entity_type_taxonomy_register();
+
+	// Set the taxonomy data.
+	// TODO: Add inheritance
+	// TODO: Manage both generic and custom fields as fields
+	// TODO: Merge export fields configuration with standard fields
+	$terms = array(
+		'creative-work' => array(
+			'label'              => 'Creative Work',
+			'description'        => 'A creative work (or a Music Album).',
+			'css'                => 'wl-creative-work',
+			'uri'                => 'http://schema.org/CreativeWork',
+			'same_as'            => array(
+				'http://schema.org/MusicAlbum',
+				'http://schema.org/Product'
+			),
+			'custom_fields'      => array(),
+			'export_fields'      => array(),
+			'microdata_template' => '',
+			'templates'          => array(
+				'subtitle' => '{{id}}'
+			)
+		),
+		'event'         => array(
+			'label'              => 'Event',
+			'description'        => 'An event.',
+			'css'                => 'wl-event',
+			'uri'                => 'http://schema.org/Event',
+			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
+			'custom_fields'      => array(
+				WL_CUSTOM_FIELD_CAL_DATE_START => array(
+					'predicate'   => 'startDate',
+					'type'        => WL_DATA_TYPE_DATE,
+					'constraints' => ''
+				),
+				WL_CUSTOM_FIELD_CAL_DATE_END   => array(
+					'predicate'   => 'endDate',
+					'type'        => WL_DATA_TYPE_DATE,
+					'constraints' => ''
+				),
+				WL_CUSTOM_FIELD_LOCATION       => array(
+					'predicate'   => 'location',
+					'type'        => WL_DATA_TYPE_URI,
+					'constraints' => array(
+						'uri_type' => 'Place'
+					)
+				)
+			),
+			'export_fields'      => array(
+				WL_CUSTOM_FIELD_CAL_DATE_START => array(
+					'predicate' => 'http://schema.org/startDate',
+					'type'      => 'xsd:date'
+				),
+				WL_CUSTOM_FIELD_CAL_DATE_END   => array(
+					'predicate' => 'http://schema.org/endDate',
+					'type'      => 'xsd:date'
+				),
+				WL_CUSTOM_FIELD_LOCATION       => array(
+					'predicate' => 'http://schema.org/location'
+				)
+			),
+			'microdata_template' =>
+				'{{startDate}}
                 {{endDate}}
                 {{location}}',
-            'templates' => array(
-                'subtitle' => '{{id}}'
-            )
-        ),
-        'organization' => array(
-            'label' => 'Organization',
-            'description' => 'An organization, including a government or a newspaper.',
-            'css' => 'wl-organization',
-            'uri' => 'http://schema.org/Organization',
-            'same_as' => array(
-                'http://rdf.freebase.com/ns/organization.organization',
-                'http://rdf.freebase.com/ns/government.government',
-                'http://schema.org/Newspaper'
-            ),
-            'custom_fields' => array(),
-            'export_fields' => array(),
-            'microdata_template' => '',
-            'templates' => array(
-                'subtitle' => '{{id}}'
-            )            
-        ),
-        'person' => array(
-            'label' => 'Person',
-            'description' => 'A person (or a music artist).',
-            'css' => 'wl-person',
-            'uri' => 'http://schema.org/Person',
-            'same_as' => array(
-                'http://rdf.freebase.com/ns/people.person',
-                'http://rdf.freebase.com/ns/music.artist',
-                'http://dbpedia.org/class/yago/LivingPeople'
-            ),
-            'custom_fields' => array(),
-            'export_fields' => array(),
-            'microdata_template' => '',
-            'templates' => array(
-                'subtitle' => '{{id}}'
-            )
-        ),
-        'place' => array(
-            'label' => 'Place',
-            'description' => 'A place.',
-            'css' => 'wl-place',
-            'uri' => 'http://schema.org/Place',
-            'same_as' => array(
-                'http://rdf.freebase.com/ns/location.location',
-                'http://www.opengis.net/gml/_Feature'
-            ),
-            'custom_fields' => array(
-                WL_CUSTOM_FIELD_GEO_LATITUDE    => array(
-                    'predicate'     => 'latitude',
-                    'type'          => WL_DATA_TYPE_DOUBLE,
-                    'constraints'   => '',
-                    'input_field'   => 'coordinates'
-                ),
-                WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
-                    'predicate'     => 'longitude',
-                    'type'          => WL_DATA_TYPE_DOUBLE,
-                    'constraints'   => '',
-                    'input_field'   => 'coordinates'
-                ),
-                WL_CUSTOM_FIELD_ADDRESS   => array(
-                    'predicate'     => 'address',
-                    'type'          => WL_DATA_TYPE_STRING,
-                    'constraints'   => ''
-                )
-            ),
-            'export_fields' => array(
-                WL_CUSTOM_FIELD_GEO_LATITUDE => array(
-                    'predicate' => 'http://schema.org/latitude',
-                    'type'      => 'xsd:double'
-                ),
-                WL_CUSTOM_FIELD_GEO_LONGITUDE   => array(
-                    'predicate' => 'http://schema.org/longitude',
-                    'type'      => 'xsd:double'
-                ),
-                WL_CUSTOM_FIELD_ADDRESS   => array(
-                    'predicate' => 'http://schema.org/address',
-                    'type'      => 'http://schema.org/PostalAddress'
-                )
-            ),
-            'microdata_template' =>
-                '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+			'templates'          => array(
+				'subtitle' => '{{id}}'
+			)
+		),
+		'organization'  => array(
+			'label'              => 'Organization',
+			'description'        => 'An organization, including a government or a newspaper.',
+			'css'                => 'wl-organization',
+			'uri'                => 'http://schema.org/Organization',
+			'same_as'            => array(
+				'http://rdf.freebase.com/ns/organization.organization',
+				'http://rdf.freebase.com/ns/government.government',
+				'http://schema.org/Newspaper'
+			),
+			'custom_fields'      => array(),
+			'export_fields'      => array(),
+			'microdata_template' => '',
+			'templates'          => array(
+				'subtitle' => '{{id}}'
+			)
+		),
+		'person'        => array(
+			'label'              => 'Person',
+			'description'        => 'A person (or a music artist).',
+			'css'                => 'wl-person',
+			'uri'                => 'http://schema.org/Person',
+			'same_as'            => array(
+				'http://rdf.freebase.com/ns/people.person',
+				'http://rdf.freebase.com/ns/music.artist',
+				'http://dbpedia.org/class/yago/LivingPeople'
+			),
+			'custom_fields'      => array(),
+			'export_fields'      => array(),
+			'microdata_template' => '',
+			'templates'          => array(
+				'subtitle' => '{{id}}'
+			)
+		),
+		'place'         => array(
+			'label'              => 'Place',
+			'description'        => 'A place.',
+			'css'                => 'wl-place',
+			'uri'                => 'http://schema.org/Place',
+			'same_as'            => array(
+				'http://rdf.freebase.com/ns/location.location',
+				'http://www.opengis.net/gml/_Feature'
+			),
+			'custom_fields'      => array(
+				WL_CUSTOM_FIELD_GEO_LATITUDE  => array(
+					'predicate'   => 'latitude',
+					'type'        => WL_DATA_TYPE_DOUBLE,
+					'constraints' => '',
+					'input_field' => 'coordinates'
+				),
+				WL_CUSTOM_FIELD_GEO_LONGITUDE => array(
+					'predicate'   => 'longitude',
+					'type'        => WL_DATA_TYPE_DOUBLE,
+					'constraints' => '',
+					'input_field' => 'coordinates'
+				),
+				WL_CUSTOM_FIELD_ADDRESS       => array(
+					'predicate'   => 'address',
+					'type'        => WL_DATA_TYPE_STRING,
+					'constraints' => ''
+				)
+			),
+			'export_fields'      => array(
+				WL_CUSTOM_FIELD_GEO_LATITUDE  => array(
+					'predicate' => 'http://schema.org/latitude',
+					'type'      => 'xsd:double'
+				),
+				WL_CUSTOM_FIELD_GEO_LONGITUDE => array(
+					'predicate' => 'http://schema.org/longitude',
+					'type'      => 'xsd:double'
+				),
+				WL_CUSTOM_FIELD_ADDRESS       => array(
+					'predicate' => 'http://schema.org/address',
+					'type'      => 'http://schema.org/PostalAddress'
+				)
+			),
+			'microdata_template' =>
+				'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
                     {{latitude}}
                     {{longitude}}
                 </span>
                 {{address}}',
-            'templates' => array(
-                'subtitle' => '{{id}}'
-            )
-        ),
-        'thing' => array(
-            'label' => 'Thing',
-            'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
-            'css' => 'wl-thing',
-            'uri' => 'http://schema.org/Thing',
-            'same_as' => array('*'), // set as default.
-            'custom_fields' => array(),
-            'export_fields' => array(),
-            'microdata_template' => '',
-            'templates' => array(
-                'subtitle' => '{{id}}'
-            )
-        )
-    );
-    
-    foreach ($terms as $slug => $term) {
-        
-        // Create the term if it does not exist.
-        $term_id = term_exists( $term['label'] );
-        if( $term_id == 0 || is_null( $term_id ) ) {
-            $result = wp_insert_term( $term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
-                'description' => $term['description'],
-                'slug' => $slug
-            ));
-        } else {
-            $result = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
-        }
-        
-        // Check for errors.
-        if (is_wp_error($result)) {
-            wl_write_log('wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]');
-            continue;
-        }
-      
-        // Add custom metadata to the term.
-        wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'], $term['microdata_template'] );
-    }
+			'templates'          => array(
+				'subtitle' => '{{id}}'
+			)
+		),
+		'thing'         => array(
+			'label'              => 'Thing',
+			'description'        => 'A generic thing (something that doesn\'t fit in the previous definitions.',
+			'css'                => 'wl-thing',
+			'uri'                => 'http://schema.org/Thing',
+			'same_as'            => array( '*' ), // set as default.
+			'custom_fields'      => array(),
+			'export_fields'      => array(),
+			'microdata_template' => '',
+			'templates'          => array(
+				'subtitle' => '{{id}}'
+			)
+		)
+	);
+
+	foreach ( $terms as $slug => $term ) {
+
+		// Create the term if it does not exist.
+		$term_id = term_exists( $term['label'] );
+		if ( $term_id == 0 || is_null( $term_id ) ) {
+			$result = wp_insert_term( $term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+				'description' => $term['description'],
+				'slug'        => $slug
+			) );
+		} else {
+			$result = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
+		}
+
+		// Check for errors.
+		if ( is_wp_error( $result ) ) {
+			wl_write_log( 'wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]' );
+			continue;
+		}
+
+		// Add custom metadata to the term.
+		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'], $term['microdata_template'] );
+	}
 
 }
 
@@ -1090,8 +1013,8 @@ function wl_plugins_url( $url, $path, $plugin ) {
 add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
 
 // TODO - Check installation
-add_action('activate_wordlift/wordlift.php', 'wl_install_entity_type_data');
-add_action('init', 'wl_install_entity_type_data');
+add_action( 'activate_wordlift/wordlift.php', 'wl_install_entity_type_data' );
+add_action( 'init', 'wl_install_entity_type_data' );
 
 require_once( 'wordlift_entity_functions.php' );
 // add editor related methods.
@@ -1113,11 +1036,12 @@ require_once( 'modules/prefixes/wordlift_prefixes.php' );
 require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/profiling/wordlift_profiling.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
+require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' );
 
 // Shortcodes
 
 // Entity view shortcode just with php >= 5.4
-if (version_compare(phpversion(), '5.4.0', '>=')) {
+if ( version_compare( phpversion(), '5.4.0', '>=' ) ) {
 	require_once( 'modules/entity_view/wordlift_entity_view.php' );
 }
 
@@ -1127,12 +1051,10 @@ require_once( 'shortcodes/wordlift_shortcode_related_posts.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_timeline.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
-require_once('shortcodes/wordlift_shortcode_field.php');
+require_once( 'shortcodes/wordlift_shortcode_field.php' );
 
 // disable In-Depth Articles
 //require_once('wordlift_indepth_articles.php');
-
-require_once( 'wordlift_freebase_image_proxy.php' );
 
 require_once( 'wordlift_user.php' );
 

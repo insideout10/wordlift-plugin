@@ -3,6 +3,8 @@
  * The Linked Data module provides synchronization of local WordPress data with the remote Linked Data store.
  */
 
+require_once( 'wordlift_linked_data_images.php' );
+
 // TODO: remove this method.
 function wordlift_save_post( $post_id ) {
 	wl_linked_data_save_post( $post_id );

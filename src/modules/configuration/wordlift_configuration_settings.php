@@ -331,9 +331,88 @@ EOF;
  * @since 3.0.0
  *
  * @param string $key The WordLift key to use.
+ *
  * @return string The API URI.
  */
 function wl_configuration_get_accounts_by_key_dataset_uri( $key ) {
 
 	return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
+}
+
+
+/**
+ * Get the URL to perform SELECT queries.
+ *
+ * @since 3.0.0
+ *
+ * @param string $output The output format, either 'json', 'xml', 'tabs' or 'csv'.
+ * @param string|null $dataset The dataset to use for the query. Only valid for queries straight to Redlink.
+ *
+ * @return string The URL to call to perform the SELECT query.
+ */
+function wl_configuration_get_query_select_url( $output, $dataset = null ) {
+
+	// If the WordLift Key is set, we use WordLift.
+	$key = wl_configuration_get_key();
+	if ( ! empty( $key ) ) {
+		// TODO: handle the output format for WordLift.
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/queries?q=";
+	}
+
+	// If no dataset has been specified then use the default configured, otherwise use the one provided.
+	$redlink_dataset = ( empty( $dataset ) ? wl_configuration_get_redlink_dataset_name() : $dataset );
+	$redlink_key     = wl_configuration_get_redlink_key();
+
+	// construct the API URL.
+	return wl_configuration_get_api_url() . "/data/$redlink_dataset/sparql/select?key=$redlink_key&out=$output&query=";
+
+}
+
+/**
+ * Get the URL to perform UPDATE queries.
+ *
+ * @since 3.0.0
+ *
+ * @return string The URL to call to perform the UPDATE query.
+ */
+function wl_configuration_get_query_update_url() {
+
+	// If the WordLift Key is set, we use WordLift.
+	$key = wl_configuration_get_key();
+	if ( ! empty( $key ) ) {
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/queries";
+	}
+
+	// get the configuration.
+	$redlink_dataset = wl_configuration_get_redlink_dataset_name();
+	$redlink_key     = wl_configuration_get_redlink_key();
+
+	// construct the API URL.
+	return wl_configuration_get_api_url() . "/data/$redlink_dataset/sparql/update?key=$redlink_key";
+
+}
+
+
+/**
+ * Get the URL to perform indexing operations.
+ *
+ * @since 3.0.0
+ *
+ * @return string The URL to call to perform the indexing operation.
+ */
+function wl_configuration_get_dataset_index_url() {
+
+	// If the WordLift Key is set, we use WordLift.
+	$key = wl_configuration_get_key();
+	if ( ! empty( $key ) ) {
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "datasets/key=$key/index";
+	}
+
+	// get the configuration.
+	$redlink_dataset = wl_configuration_get_redlink_dataset_name();
+	$redlink_key     = wl_configuration_get_redlink_key();
+
+	// construct the API URL.
+	return wl_configuration_get_api_url() . "/data/$redlink_dataset/release?key=$redlink_key";
+
 }

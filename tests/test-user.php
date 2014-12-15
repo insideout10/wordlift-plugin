@@ -97,13 +97,8 @@ class UserTest extends WP_UnitTestCase
      */
     function getURI( $id ) {
 
-        return sprintf(
-            'http://data.redlink.io/%s/%s/%s/%s',
-            wl_configuration_get_redlink_user_id(),
-            wl_configuration_get_redlink_dataset_name(),
-            'user',
-            $id
-        );
+        return wl_configuration_get_redlink_dataset_uri() . "/user/$id";
+
     }
 
 }
