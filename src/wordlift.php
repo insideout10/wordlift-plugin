@@ -535,11 +535,14 @@ function wl_get_sparql_images( $uri, $post_id ) {
 
 	$sparql = '';
 
+	// Get the escaped URI.
+	$uri_e = esc_html( $uri );
+
 	// Add SPARQL stmts to write the schema:image.
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
 		$image_url_esc = wordlift_esc_sparql( $image_url );
-		$sparql .= " <$uri> schema:image <$image_url_esc> . \n";
+		$sparql .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}
 
 	return $sparql;
@@ -768,7 +771,8 @@ function wl_replace_item_id_with_uri( $content ) {
 
 			// If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
 			if ( $item_id !== $uri ) {
-				$content = str_replace( " itemid=\"$item_id\"", " itemid=\"$uri\"", $content );
+				$uri_e = esc_html( $uri );
+				$content = str_replace( " itemid=\"$item_id\"", " itemid=\"$uri_e\"", $content );
 			}
 		}
 	}

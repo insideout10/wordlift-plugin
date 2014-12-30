@@ -4,7 +4,6 @@
  */
 
 
-
 /**
  * Execute a query on Redlink.
  *
@@ -55,7 +54,7 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	}
 
 	// If an error has been raised, return the error.
-	if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
+	if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 

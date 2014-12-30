@@ -114,7 +114,8 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	}
 
 	// Get the entity URL.
-	$url = '<link itemprop="url" href="' . get_permalink( $post->ID ) . '" />';
+	$permalink = get_permalink( $post->ID );
+	$url = '<link itemprop="url" href="' . $permalink . '" />';
 
 	// Replace the original tagging with the new tagging.
 	$regex   = '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';
@@ -123,7 +124,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		. $same_as
 		. $additional_properties
 		. $url
-		. '<span itemprop="name" content="$2">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</span></$1>',    //Only print name inside <span> for top-level entities
+		. '<a href="' . $permalink .'" itemprop="name" content="$2">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
 		$content
 	);
 
