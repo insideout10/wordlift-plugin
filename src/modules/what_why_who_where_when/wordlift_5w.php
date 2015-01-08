@@ -8,15 +8,15 @@
  *
  * @param int $post_id The post ID.
  *
- * @return array Dictionary containing the 5W.
+ * @return array Dictionary containing the 5W uris.
  */
-function wl_5w_get_all_article_5w( $post_id ) {
+function wl_5w_get_all_article_Ws( $post_id ) {
     
     $w5 = array(WL_5W_WHAT, WL_5W_WHY, WL_5W_WHO, WL_5W_WHERE, WL_5W_WHEN);
     $result = array();
     
     foreach ( $w5 as $w ) {
-        $result[$w] = wl_w5_get_article_w( $post_id, $w );
+        $result[$w] = wl_5w_get_article_w( $post_id, $w );
     }
     
     return $result;
@@ -31,7 +31,17 @@ function wl_5w_get_all_article_5w( $post_id ) {
  * @return string The uri of the entity which corresponds to the W.
  */
 function wl_5w_get_article_w( $post_id, $w ) {
-    return get_post_meta( $post_id, $w );
+    $values = get_post_meta( $post_id, $w );
+    $uris = array();
+    
+    foreach( $values as $value ) {
+        if( is_numeric( $value ) ) {
+            $uris[] = wl_get_entity_uri( $value );
+        } else {
+            $uris[] = $value;
+        }
+    }
+    return $uris;
 }
 
 /**
@@ -43,13 +53,22 @@ function wl_5w_get_article_w( $post_id, $w ) {
  *
  * @return boolean True if everything went right, False otherwise.
  */
-function wl_5w_set_article_w( $post_id, $w, $value ) {
+function wl_5w_set_article_w( $post_id, $w, $values ) {
     
-    // Check if entity and article exists
-    //if( wl_get )
-    //    return false;
+    // Check that post exists.
+    if( get_post_status( $post_id ) == false ) {
+        return false;
+    }
     
-    add_post_meta( $post_id, $w, $value );
+    // In case of single value, force it into an array.
+    if( !is_array( $values ) ) {
+        $values = array( $values );
+    }
+    
+    // save metas
+    foreach( $values as $value ) {
+        add_post_meta( $post_id, $w, $value );
+    }
     
     return true;
 }
