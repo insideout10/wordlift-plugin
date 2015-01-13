@@ -51,12 +51,11 @@ define( 'WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end' );
 define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 
-// Post meta for the 5W in journalism
-define( 'WL_5W_WHAT', 'wl_5w_what');
-define( 'WL_5W_WHY', 'wl_5w_why');
-define( 'WL_5W_WHO', 'wl_5w_who');
-define( 'WL_5W_WHERE', 'wl_5w_where');
-define( 'WL_5W_WHEN', 'wl_5w_when');
+// Post meta for the 4W in journalism (we don't have a Why)
+define( 'WL_4W_WHAT', 'wl_4w_what');
+define( 'WL_4W_WHO', 'wl_4w_who');
+define( 'WL_4W_WHERE', 'wl_4w_where');
+define( 'WL_4W_WHEN', 'wl_4w_when');
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
