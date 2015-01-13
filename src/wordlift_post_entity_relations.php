@@ -1,6 +1,30 @@
 <?php
 
 /**
+ * Get the IDs of posts related to the specified post.
+ *
+ * @param int $post_id The post ID.
+ *
+ * @return array An array of posts related to the one specified.
+ */
+function wl_get_related_post_ids( $post_id ) {
+
+	// Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+	$related = get_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST, true );
+
+	wl_write_log( "wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . ( empty( $related ) ? 'true' : 'false' ) . "  ]" );
+
+	if ( empty( $related ) ) {
+		return array();
+	}
+
+	// Ensure an array is returned.
+	return ( is_array( $related )
+		? $related
+		: array( $related ) );
+}
+
+/**
  * Set the related posts IDs for the specified post ID.
  *
  * @param int $post_id A post ID.
@@ -10,8 +34,8 @@ function wl_set_related_posts( $post_id, $related_posts ) {
 
 	wl_write_log( "wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join( ',', $related_posts ) . " ]" );
 
-	delete_post_meta( $post_id, 'wordlift_related_posts' );
-	add_post_meta( $post_id, 'wordlift_related_posts', $related_posts, true );
+	delete_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST );
+	add_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST, $related_posts, true );
 }
 
 /**
@@ -99,30 +123,6 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
 	$related = array_unique( array_merge( $related, $new_entity_post_ids ) );
 
 	wl_set_referenced_entities( $post_id, $related );
-}
-
-/**
- * Get the IDs of posts related to the specified post.
- *
- * @param int $post_id The post ID.
- *
- * @return array An array of posts related to the one specified.
- */
-function wl_get_related_post_ids( $post_id ) {
-
-	// Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-	$related = get_post_meta( $post_id, 'wordlift_related_posts', true );
-
-	wl_write_log( "wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . ( empty( $related ) ? 'true' : 'false' ) . "  ]" );
-
-	if ( empty( $related ) ) {
-		return array();
-	}
-
-	// Ensure an array is returned.
-	return ( is_array( $related )
-		? $related
-		: array( $related ) );
 }
 
 /**

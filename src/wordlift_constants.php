@@ -53,10 +53,10 @@ define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 
 // Post meta for the 4W in journalism (we don't have a Why)
 // post metas linking a post to the entity
-define( 'WL_WHAT_ENTITIES', 'wl_what_entities');
-define( 'WL_WHO_ENTITIES', 'wl_who_entities');
-define( 'WL_WHERE_ENTITIES', 'wl_where_entities');
-define( 'WL_WHEN_ENTITIES', 'wl_when_entities');
+define( 'WL_CUSTOM_FIELD_WHAT_ENTITIES', 'wl_what_entities');
+define( 'WL_CUSTOM_FIELD_WHO_ENTITIES', 'wl_who_entities');
+define( 'WL_CUSTOM_FIELD_WHERE_ENTITIES', 'wl_where_entities');
+define( 'WL_CUSTOM_FIELD_WHEN_ENTITIES', 'wl_when_entities');
 // entity metas linking an entity to the post
 define( 'WL_IS_WHAT_FOR_POSTS', 'wl_is_what_for_posts');
 define( 'WL_IS_WHO_FOR_POSTS', 'wl_is_who_for_posts');
@@ -65,6 +65,9 @@ define( 'WL_IS_WHEN_FOR_POSTS', 'wl_is_when_for_posts');
 
 // The name of the custom field that stores the IDs of entities referenced by posts.
 define( 'WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities' );
+// The name of the custom field that stores the IDs of posts referenced by posts/entities
+define( 'WL_CUSTOM_FIELD_RELATED_POST', 'wordlift_related_posts' );
+
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
