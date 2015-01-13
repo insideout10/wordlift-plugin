@@ -33,38 +33,4 @@ function wordlift_admin_referencing_posts_meta_box_content( $post ) {
     }
 }
 
-/**
- * Get an array of posts related to the specified post id.
- * @param int    $post_id     The post ID.
- * @param string $post_status The post status, by default 'published'.
- * @return array An array of related posts (or an empty array).
- */
-function wordlift_get_related_posts( $post_id, $post_status = 'published' ) {
-
-    // get related posts.
-    $related_posts_ids = get_post_meta( $post_id, 'wordlift_related_posts', true );
-
-    // there are no related posts.
-    if ( !is_array( $related_posts_ids ) || 0 === count( $related_posts_ids ) ) {
-        return array();
-    }
-
-    // remove the requested post.
-    $related_posts_ids = array_diff( $related_posts_ids, array( $post_id ) );
-
-    // there are no related posts.
-    if ( !is_array( $related_posts_ids ) || 0 === count( $related_posts_ids ) ) {
-        return array();
-    }
-
-    // The Query
-    $args             = array(
-        'post_type'   => 'any',
-        'post_status' => $post_status,
-        'post__in'    => $related_posts_ids
-    );
-    $query         = new WP_Query( $args );
-    return $query->get_posts();
-}
-
 add_action('add_meta_boxes', 'wordlift_admin_add_related_posts_meta_box');

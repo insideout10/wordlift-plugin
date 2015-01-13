@@ -209,3 +209,27 @@ function wl_add_related( $post_id, $related_id ) {
 //    // Reset the related entities for the post.
 //    wl_set_referenced_entities($post_id, array());
 //}
+
+
+/**
+ * Get 5w values via AJAX
+ *
+ */
+/*function wl_5w_get_article_Ws_ajax()
+{
+    // Get the post Id.
+    if( isset( $_REQUEST['post_id'] ) ) {
+        $post_id = $_REQUEST['post_id'];
+    } else {
+        wp_die();
+    }
+
+    ob_clean();
+    header( "Content-Type: application/json" );
+
+    echo json_encode( wl_5w_get_all_article_Ws( $post_id ) );
+    wp_die();
+}
+add_action( 'wp_ajax_wl_5w', 'wl_5w_get_article_Ws_ajax' );
+add_action( 'wp_ajax_nopriv_wl_5w', 'wl_5w_get_article_Ws_ajax' );
+ */
