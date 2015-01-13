@@ -52,10 +52,19 @@ define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 
 // Post meta for the 4W in journalism (we don't have a Why)
-define( 'WL_4W_WHAT', 'wl_4w_what');
-define( 'WL_4W_WHO', 'wl_4w_who');
-define( 'WL_4W_WHERE', 'wl_4w_where');
-define( 'WL_4W_WHEN', 'wl_4w_when');
+// post metas linking a post to the entity
+define( 'WL_WHAT_ENTITIES', 'wl_what_entities');
+define( 'WL_WHO_ENTITIES', 'wl_who_entities');
+define( 'WL_WHERE_ENTITIES', 'wl_where_entities');
+define( 'WL_WHEN_ENTITIES', 'wl_when_entities');
+// entity metas linking an entity to the post
+define( 'WL_IS_WHAT_FOR_POSTS', 'wl_is_what_for_posts');
+define( 'WL_IS_WHO_FOR_POSTS', 'wl_is_who_for_posts');
+define( 'WL_IS_WHERE_FOR_POSTS', 'wl_is_where_for_posts');
+define( 'WL_IS_WHEN_FOR_POSTS', 'wl_is_when_for_posts');
+
+// The name of the custom field that stores the IDs of entities referenced by posts.
+define( 'WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities' );
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
@@ -65,9 +74,6 @@ define( 'WL_ENTITY_TYPE_NAME', 'entity' );
 
 // The name for the entity type taxonomy.
 define( 'WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type' );
-
-// The name of the custom field that stores the IDs of entities referenced by posts.
-define( 'WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities' );
 
 // The custom field name to store whether the entity must be displayed as single page.
 define( 'WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE', 'wl_entity_display_as_single_page' );

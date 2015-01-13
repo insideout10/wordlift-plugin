@@ -12,10 +12,10 @@
  */
 function wl_5w_get_all_article_Ws( $post_id ) {
     
-    $w5 = array(WL_5W_WHAT, WL_5W_WHY, WL_5W_WHO, WL_5W_WHERE, WL_5W_WHEN);
+    $w4 = array(WL_4W_WHAT, WL_4W_WHO, WL_4W_WHERE, WL_4W_WHEN);
     $result = array();
     
-    foreach ( $w5 as $w ) {
+    foreach ( $w4 as $w ) {
         $result[$w] = wl_5w_get_article_w( $post_id, $w );
     }
     
