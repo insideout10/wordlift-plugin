@@ -4,6 +4,7 @@
  * Get the IDs of posts related to the specified post.
  *
  * @param int $post_id The post ID.
+ * @param string $field_name Name of the meta (used for the 4W)
  *
  * @return array An array of posts related to the one specified.
  */
@@ -29,6 +30,7 @@ function wl_get_related_post_ids( $post_id, $field_name=WL_CUSTOM_FIELD_RELATED_
  *
  * @param int $post_id A post ID.
  * @param array $related_posts An array of related post IDs.
+ * @param string $field_name Name of the meta (used for the 4W)
  */
 function wl_set_related_posts( $post_id, $related_posts, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
 
@@ -43,6 +45,7 @@ function wl_set_related_posts( $post_id, $related_posts, $field_name=WL_CUSTOM_F
  *
  * @param int $post_id A post ID.
  * @param int|array $new_post_ids An array of related post IDs.
+ * @param string $field_name Name of the meta (used for the 4W)
  */
 function wl_add_related_posts( $post_id, $new_post_ids, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
 
@@ -64,6 +67,7 @@ function wl_add_related_posts( $post_id, $new_post_ids, $field_name=WL_CUSTOM_FI
  *
  * @param int $post_id A post ID.
  * @param array $related_entities An array of related entity post IDs.
+ * @param string $field_name Name of the meta (used for the 4W)
  */
 function wl_set_referenced_entities( $post_id, $related_entities, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
 
@@ -83,6 +87,7 @@ function wl_set_referenced_entities( $post_id, $related_entities, $field_name=WL
  * @used-by wl_shortcode_chord_get_relations
  *
  * @param int $entity_id The post ID of the entity.
+ * @param string $field_name Name of the meta (used for the 4W)
  *
  * @return array An array of posts.
  */
@@ -110,6 +115,7 @@ function wl_get_referencing_posts( $entity_id, $field_name=WL_CUSTOM_FIELD_REFER
  *
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
+ * @param string $field_name Name of the meta (used for the 4W)
  */
 function wl_add_referenced_entities( $post_id, $new_entity_post_ids, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
 
@@ -129,6 +135,7 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids, $field_name
  * Get the IDs of entities related to the specified post.
  *
  * @param int $post_id The post ID.
+ * @param string $field_name Name of the meta (used for the 4W)
  *
  * @return array An array of posts related to the one specified.
  */
