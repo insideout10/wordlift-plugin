@@ -197,7 +197,7 @@ function wl_add_related( $post_id, $related_id ) {
  *
  * @param int $post_id The post ID.
  *
- * @return array An array containing the 4W entitities. In case of non existent post, an empty array is returned.
+ * @return array An array containing the 4W entitities ids. In case of non existent post, an empty array is returned.
  */
 function wl_get_post_4w_entities( $post_id ) {
         
@@ -219,7 +219,7 @@ function wl_get_post_4w_entities( $post_id ) {
  *
  * @param int $entity_id The entity ID.
  *
- * @return array An array containing the posts. In case of non existent entity, an empty array is returned.
+ * @return array An array containing the posts ids. In case of non existent entity, an empty array is returned.
  */
 function wl_get_entity_is_4w_for_posts( $entity_id ) {
         
