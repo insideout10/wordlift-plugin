@@ -58,10 +58,10 @@ define( 'WL_CUSTOM_FIELD_WHO_ENTITIES', 'wl_who_entities');
 define( 'WL_CUSTOM_FIELD_WHERE_ENTITIES', 'wl_where_entities');
 define( 'WL_CUSTOM_FIELD_WHEN_ENTITIES', 'wl_when_entities');
 // entity metas linking an entity to the post
-define( 'WL_IS_WHAT_FOR_POSTS', 'wl_is_what_for_posts');
-define( 'WL_IS_WHO_FOR_POSTS', 'wl_is_who_for_posts');
-define( 'WL_IS_WHERE_FOR_POSTS', 'wl_is_where_for_posts');
-define( 'WL_IS_WHEN_FOR_POSTS', 'wl_is_when_for_posts');
+define( 'WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS', 'wl_is_what_for_posts');
+define( 'WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS', 'wl_is_who_for_posts');
+define( 'WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS', 'wl_is_where_for_posts');
+define( 'WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS', 'wl_is_when_for_posts');
 
 // The name of the custom field that stores the IDs of entities referenced by posts.
 define( 'WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities' );

@@ -7,10 +7,10 @@
  *
  * @return array An array of posts related to the one specified.
  */
-function wl_get_related_post_ids( $post_id ) {
+function wl_get_related_post_ids( $post_id, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
 
 	// Get the related array ( the field was serialized before WL3 ).
-	$related = get_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST );
+	$related = get_post_meta( $post_id, $field_name );
 
 	wl_write_log( "wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . ( empty( $related ) ? 'true' : 'false' ) . "  ]" );
 
@@ -30,12 +30,12 @@ function wl_get_related_post_ids( $post_id ) {
  * @param int $post_id A post ID.
  * @param array $related_posts An array of related post IDs.
  */
-function wl_set_related_posts( $post_id, $related_posts ) {
+function wl_set_related_posts( $post_id, $related_posts, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
 
 	wl_write_log( "wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join( ',', $related_posts ) . " ]" );
 
-	delete_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST );
-	add_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST, $related_posts );
+	delete_post_meta( $post_id, $field_name );
+	add_post_meta( $post_id, $field_name, $related_posts );
 }
 
 /**
@@ -44,7 +44,7 @@ function wl_set_related_posts( $post_id, $related_posts ) {
  * @param int $post_id A post ID.
  * @param int|array $new_post_ids An array of related post IDs.
  */
-function wl_add_related_posts( $post_id, $new_post_ids ) {
+function wl_add_related_posts( $post_id, $new_post_ids, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
 
 	// Convert the parameter to an array.
 	$new_post_ids = ( is_array( $new_post_ids ) ? $new_post_ids : array( $new_post_ids ) );
@@ -52,10 +52,10 @@ function wl_add_related_posts( $post_id, $new_post_ids ) {
 	wl_write_log( "wl_add_related_posts [ post id :: $post_id ][ new post ids :: " . join( ',', $new_post_ids ) . " ]" );
 
 	// Get the existing post IDs and merge them together.
-	$related = wl_get_related_post_ids( $post_id );
+	$related = wl_get_related_post_ids( $post_id, $field_name );
 	$related = array_unique( array_merge( $related, $new_post_ids ) );
 
-	wl_set_related_posts( $post_id, $related );
+	wl_set_related_posts( $post_id, $related, $field_name );
 }
 
 
@@ -65,14 +65,14 @@ function wl_add_related_posts( $post_id, $new_post_ids ) {
  * @param int $post_id A post ID.
  * @param array $related_entities An array of related entity post IDs.
  */
-function wl_set_referenced_entities( $post_id, $related_entities ) {
+function wl_set_referenced_entities( $post_id, $related_entities, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
 
-	wl_write_log( "wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . join( ',', $related_entities ) . " ]" );
+	wl_write_log( "wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . var_export( $related_entities, true ) . " ]" );
 
-	delete_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
+	delete_post_meta( $post_id, $field_name );
 
 	foreach ( $related_entities as $entity_post_id ) {
-		add_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY, $entity_post_id );
+		add_post_meta( $post_id, $field_name, $entity_post_id );
 	}
 }
 
@@ -86,13 +86,13 @@ function wl_set_referenced_entities( $post_id, $related_entities ) {
  *
  * @return array An array of posts.
  */
-function wl_get_referencing_posts( $entity_id ) {
+function wl_get_referencing_posts( $entity_id, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
 
 	$args = array(
 		'posts_per_page' => - 1,
 		'post_type'      => 'any',
 		'post_status'    => 'any',
-		'meta_key'       => WL_CUSTOM_FIELD_REFERENCED_ENTITY,
+		'meta_key'       => $field_name,
 		'meta_value'     => $entity_id
 	);
 
@@ -111,7 +111,7 @@ function wl_get_referencing_posts( $entity_id ) {
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
  */
-function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
+function wl_add_referenced_entities( $post_id, $new_entity_post_ids, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
 
 	// Convert the parameter to an array.
 	$new_entity_post_ids = ( is_array( $new_entity_post_ids ) ? $new_entity_post_ids : array( $new_entity_post_ids ) );
@@ -119,10 +119,10 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
 	wl_write_log( "wl_add_referenced_entities [ post id :: $post_id ][ related entities :: " . join( ',', $new_entity_post_ids ) . " ]" );
 
 	// Get the existing post IDs and merge them together.
-	$related = wl_get_referenced_entity_ids( $post_id );
+	$related = wl_get_referenced_entity_ids( $post_id, $field_name );
 	$related = array_unique( array_merge( $related, $new_entity_post_ids ) );
 
-	wl_set_referenced_entities( $post_id, $related );
+	wl_set_referenced_entities( $post_id, $related, $field_name );
 }
 
 /**
@@ -132,10 +132,10 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
  *
  * @return array An array of posts related to the one specified.
  */
-function wl_get_referenced_entity_ids( $post_id ) {
+function wl_get_referenced_entity_ids( $post_id, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
 
 	// Get the related array.
-	$result = get_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
+	$result = get_post_meta( $post_id, $field_name );
 
 	// The following is necessary to maintain compatibility with the previous way of storing this data, i.e. as an
 	// array as single key.
@@ -185,6 +185,50 @@ function wl_add_related( $post_id, $related_id ) {
 	}
 }
 
+/**
+ * Get the IDs of 4W related to the specified post.
+ *
+ * @param int $post_id The post ID.
+ *
+ * @return array An array containing the 4W entitities. In case of non existent post, an empty array is returned.
+ */
+function wl_get_post_4w_entities( $post_id ) {
+        
+        // Return if post does not exists
+        if( get_post_status( $post_id ) == False ) {
+            return array();
+        }
+    
+        return array(
+            WL_CUSTOM_FIELD_WHAT_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES ),
+            WL_CUSTOM_FIELD_WHERE_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES ),
+            WL_CUSTOM_FIELD_WHEN_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES ),
+            WL_CUSTOM_FIELD_WHO_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES )
+        );
+}
+
+/**
+ * Get the IDs of posts for which an entity is a 4W.
+ *
+ * @param int $entity_id The entity ID.
+ *
+ * @return array An array containing the posts. In case of non existent entity, an empty array is returned.
+ */
+function wl_get_entity_is_4w_for_posts( $entity_id ) {
+        
+        // Return if entity does not exists
+        if( get_post_status( $entity_id ) == False ) {
+            return array();
+        }
+    
+        return array(
+            WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS => wl_get_related_post_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS ),
+            WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS => wl_get_related_post_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS ),
+            WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS => wl_get_related_post_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS ),
+            WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_related_post_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS )
+        );
+}
+            
 ///**
 // * Unbind post and entities.
 // * @param int $post_id The post ID.

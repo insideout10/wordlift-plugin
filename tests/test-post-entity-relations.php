@@ -109,19 +109,15 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
 	}
         
-   
-  /*      function test4W() {
+        function testPost4W() {
             
             // Create a post.
             $post_id = wl_create_post( '', 'post', 'post', 'publish', 'post' );
 
-            // Create the 5W entities.
+            // Create the 4W entities.
             // WHAT
             $what_id = wl_create_post( '', 'what', 'Entity What', 'publish', 'entity' );
             $what_uri = wl_get_entity_uri( $what_id );
-            // WHY
-            $why_id = wl_create_post( '', 'why', 'Entity Why', 'publish', 'entity' );
-            $why_uri = wl_get_entity_uri( $why_id );
             // WHO
             $who_id = wl_create_post( '', 'who', 'Entity Who', 'publish', 'entity' );
             $who_uri = wl_get_entity_uri( $who_id );
@@ -131,21 +127,40 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             // WHERE
             $where_id = wl_create_post( '', 'where', 'Entity Where', 'publish', 'entity' );
             $where_uri = wl_get_entity_uri( $where_id );
+            
+            // TODO: check also this is working with uris, and avoid duplications.
 
-            // Bind the all 5W to the post (can be passed by both id or uri).
-            wl_5w_set_article_w( $post_id, WL_4W_WHAT, $what_id );
-            wl_5w_set_article_w( $post_id, WL_4W_WHAT, $when_id );  // another entity on the same W
-            wl_5w_set_article_w( $post_id, WL_4W_WHO, array( $who_id, $what_uri) );    // assign more than one
-            wl_5w_set_article_w( $post_id, WL_4W_WHEN, $when_uri );   // assign by uri
-            wl_5w_set_article_w( $post_id, WL_4W_WHERE, $where_id );
+            // Bind the 4W to the post.
+            wl_add_referenced_entities( $post_id, $what_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );
+            wl_add_referenced_entities( $post_id, $when_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );  // another entity on the same W
+            wl_add_referenced_entities( $post_id, array( $who_id, $what_id), WL_CUSTOM_FIELD_WHO_ENTITIES );    // assign more than one at the same time
+            wl_add_referenced_entities( $post_id, $where_id, WL_CUSTOM_FIELD_WHERE_ENTITIES );
+            wl_add_referenced_entities( $post_id, $when_id, WL_CUSTOM_FIELD_WHEN_ENTITIES );
 
             // Check associations.
-            $w5 = wl_5w_get_all_article_Ws( $post_id );
-            $this->assertEquals( array( $what_uri, $when_uri ), $w5[WL_4W_WHAT] );
-            $this->assertEquals( array( $where_uri ), $w5[WL_4W_WHERE] );
-            $this->assertEquals( array( $when_uri ), $w5[WL_4W_WHEN] );
-            $this->assertEquals( array( $what_uri, $when_uri ), wl_5w_get_article_w( $post_id, WL_4W_WHAT ) );
-            $this->assertEquals( array( $where_uri ), wl_5w_get_article_w( $post_id, WL_4W_WHERE ) );
-            $this->assertEquals( array( $who_uri, $what_uri ), wl_5w_get_article_w( $post_id, WL_4W_WHO ) );
-    }*/
+            
+            // The 4W in an associative array, handcoded
+            $w4ByHand = array(
+                WL_CUSTOM_FIELD_WHAT_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES ),
+                WL_CUSTOM_FIELD_WHERE_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES ),
+                WL_CUSTOM_FIELD_WHEN_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES ),
+                WL_CUSTOM_FIELD_WHO_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES )
+            );
+            
+            // Test WL-generated 4W's associative array
+            $w4 = wl_get_post_4w_entities( 279469238 );  // non existent post
+            $this->assertEquals( $w4, array() );
+            
+            $w4 = wl_get_post_4w_entities( $post_id );   // real post
+            $this->assertEquals( $w4ByHand, $w4 );
+            
+            $this->assertEquals( array( $what_id, $when_id ), $w4[WL_CUSTOM_FIELD_WHAT_ENTITIES] );
+            $this->assertEquals( array( $who_id, $what_id ), $w4[WL_CUSTOM_FIELD_WHO_ENTITIES] );
+            $this->assertEquals( array( $where_id ), $w4[WL_CUSTOM_FIELD_WHERE_ENTITIES] );
+            $this->assertEquals( array( $when_id ), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );
+            
+            // Delete one and check actual deletion
+            wl_set_referenced_entities( $post_id, array(), WL_CUSTOM_FIELD_WHO_ENTITIES);
+            $this->assertEquals( array(), wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES ) );
+    }   
 }
