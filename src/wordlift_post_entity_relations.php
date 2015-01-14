@@ -9,8 +9,8 @@
  */
 function wl_get_related_post_ids( $post_id ) {
 
-	// Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-	$related = get_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST, true );
+	// Get the related array ( the field was serialized before WL3 ).
+	$related = get_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST );
 
 	wl_write_log( "wl_get_related_post_ids [ post id :: $post_id ][ empty related :: " . ( empty( $related ) ? 'true' : 'false' ) . "  ]" );
 
@@ -35,7 +35,7 @@ function wl_set_related_posts( $post_id, $related_posts ) {
 	wl_write_log( "wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join( ',', $related_posts ) . " ]" );
 
 	delete_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST );
-	add_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST, $related_posts, true );
+	add_post_meta( $post_id, WL_CUSTOM_FIELD_RELATED_POST, $related_posts );
 }
 
 /**
@@ -134,7 +134,7 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids ) {
  */
 function wl_get_referenced_entity_ids( $post_id ) {
 
-	// Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
+	// Get the related array.
 	$result = get_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITY );
 
 	// The following is necessary to maintain compatibility with the previous way of storing this data, i.e. as an
