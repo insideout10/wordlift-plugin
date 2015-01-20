@@ -52,8 +52,6 @@ define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 
 
-
-
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
