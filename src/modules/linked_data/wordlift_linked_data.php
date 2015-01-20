@@ -106,11 +106,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
 
-// TODO: remove this method.
-function wl_save_entities( $entities, $related_post_id = null ) {
-	return wl_linked_data_save_entities( $entities, $related_post_id );
-}
-
 /**
  * Save the specified entities to the local storage.
  *
@@ -119,7 +114,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  *
  * @return array An array of posts.
  */
-function wl_linked_data_save_entities( $entities, $related_post_id = null ) {
+function wl_save_entities( $entities, $related_post_id = null ) {
 
 	wl_write_log( "[ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
 
@@ -150,14 +145,14 @@ function wl_linked_data_save_entities( $entities, $related_post_id = null ) {
 			: array() );
                 
 		// Save the entity.
-		$entity_post = wl_linked_data_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $same_as );
+		$entity_post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $same_as );
                 
                 // TODO: not only the related, but also the 4W (with bidirectionality)
                 // Add the related post ID if provided.
                 if ( null !== $related_post_id ) {
                         // Add related entities or related posts according to the post type.
                         wl_add_related( $entity_post->ID, $related_post_id );
-                        // And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
+                        // And vice-versa.
                         wl_add_related( $related_post_id, $entity_post->ID );
                 }
 
@@ -170,7 +165,7 @@ function wl_linked_data_save_entities( $entities, $related_post_id = null ) {
 			array_push( $posts, $entity_post->ID );
 		}
 	}
-
+        
 	return $posts;
 }
 
@@ -189,27 +184,27 @@ function wl_linked_data_save_entities( $entities, $related_post_id = null ) {
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_linked_data_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $same_as = array() ) {
+function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $same_as = array() ) {
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
 		$entity_types = array();
 	}
 
-	wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]" );
+	wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
 
 	// Check whether an entity already exists with the provided URI.
 	$post = wl_get_entity_post_by_uri( $uri );
 
 	// Return the found post, do not overwrite data.
 	if ( null !== $post ) {
-		wl_write_log( ": post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]" );
+		wl_write_log( ": post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ]" );
 
 		return $post;
 	}
 
 	// No post found, create a new one.
 	$params = array(
-		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
+		'post_status'  => 'publish', //( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
 		'post_type'    => 'entity',
 		'post_title'   => $label,
 		'post_content' => $description,
@@ -247,11 +242,6 @@ function wl_linked_data_save_entity( $uri, $label, $type_uri, $description, $ent
 
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );
-
-	// If the coordinates are provided, then set them.
-//    if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
-//        wl_set_coordinates($post_id, $coordinates['latitude'], $coordinates['longitude']);
-//    }
 
 	wl_write_log( "[ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode( ',', $entity_types ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]" );
 
