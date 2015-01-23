@@ -220,9 +220,12 @@ class EntityTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
         
         // Assign related entity
-        wl_add_related( $entity_post->ID, $related_post_id );
-        wl_add_related( $related_post_id, $entity_post->ID );
+        wl_add_referenced_entities( $related_post_id, $entity_post->ID );
+        
         // Redlink?
+        // TODO: solve issue wl_save_entity vs. wl_save_entity_linked_data
+        $this->assertEquals(2, 3);
+        // do the related gets saved on redlink?
 
         $this->assertNotNull( $entity_post );
 
@@ -232,9 +235,9 @@ class EntityTest extends WP_UnitTestCase
         //$this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
-        $related_entities = wl_get_referenced_entity_ids( $entity_post->ID );
+        $related_entities = wl_get_referencing_posts( $entity_post->ID );
         $this->assertEquals( 1, count( $related_entities ) );
-        $this->assertEquals( $related_post_id, $related_entities[0] );
+        $this->assertEquals( $related_post_id, $related_entities[0]->ID );
 
         return $entity_post->ID;
     }
@@ -252,8 +255,7 @@ class EntityTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
         
         // Assign related entity (bidirectional)
-        wl_add_related( $entity_post->ID, $related_post_id );
-        wl_add_related( $related_post_id, $entity_post->ID );
+        wl_add_referenced_entities( $related_post_id, $entity_post->ID );
 
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );
@@ -261,9 +263,9 @@ class EntityTest extends WP_UnitTestCase
 //        $this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
-        $related_entities = wl_get_referenced_entity_ids( $entity_post->ID );
+        $related_entities = wl_get_referencing_posts( $entity_post->ID );
         $this->assertEquals( 1, count( $related_entities ) );
-        $this->assertEquals( $related_post_id, $related_entities[0] );
+        $this->assertEquals( $related_post_id, $related_entities[0]->ID );
 
         return $entity_post->ID;
     }

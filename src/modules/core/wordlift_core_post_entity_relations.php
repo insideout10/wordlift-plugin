@@ -1,7 +1,14 @@
 <?php
 
-// TODO: docs
-function wl_core_get_complementary_relation($meta_name) {
+/**
+ * Get the name of the post meta complementary to the one given as parameter.
+ * See *wordlift_core_constants.php* for more details.
+ *
+ * @param string $meta_name Name of the meta
+ *
+ * @return string The complementary meta, if any, otherwise null.
+ */
+function wl_core_get_complementary_relation( $meta_name ) {
 
     $mapping = unserialize(WL_CORE_POST_ENTITY_RELATIONS_MAPPING);
     if (isset($mapping[$meta_name])) {
@@ -11,7 +18,15 @@ function wl_core_get_complementary_relation($meta_name) {
     return null;
 }
 
-// TODO: docs
+/**
+ * Add a relation between a post/entity and another ( A --> B ).
+ * The complmentary relation is also added ( B --> A ).
+ *
+ * @param int $subject_id The post ID.
+ * @param string $relation Name of the relation.
+ * @param array $object_ids Ids of the related posts.
+ *
+ */
 function wl_core_add_relation_between_posts_and_entities( $subject_id, $relation, $object_ids ) {
     
     // Return if parameters are not set
@@ -39,7 +54,16 @@ function wl_core_add_relation_between_posts_and_entities( $subject_id, $relation
     }
 }
 
-// TODO docs
+/**
+ * Update post meta with new related ids.
+ * 
+ * @used by *wl_core_add_relation_between_posts_and_entities*
+ *
+ * @param int $subject_id The post ID.
+ * @param string $relation Name of the relation.
+ * @param array $new_related_ids Ids of the related posts to add.
+ * 
+ */
 function wl_core_merge_old_related_with_new( $subject_id, $relation, $new_related_ids ) {
     
     // Ensure the argument is an array.
@@ -70,10 +94,18 @@ function wl_core_merge_old_related_with_new( $subject_id, $relation, $new_relate
     }
 }
 
-// TODO docs
+/**
+ * Get a post/entity related ids.
+ *
+ * @param int $subject_id The post ID.
+ * @param string $relation Name of the relation.
+ * 
+ * @return array Ids of the related posts/entities.
+ * 
+ */
 function wl_core_get_related_post_and_entities( $subject_id, $relation ) {
     
-    // TODO: add some checks on the arguments
+    // TODO: add some checks on the arguments, for example the existence of the relation.
     
     $objects_ids = get_post_meta( $subject_id, $relation ); 
     // get_post_meta returns an array in any case, so no need to check
@@ -89,25 +121,10 @@ function wl_core_get_related_post_and_entities( $subject_id, $relation ) {
  *
  * @return array An array of posts related to the one specified.
  */
-function wl_get_related_post_ids($post_id, $field_name=WL_CUSTOM_FIELD_RELATED_POST) {
+function wl_get_related_post_ids( $post_id, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
 
-    return wl_core_get_related_post_and_entities($post_id, WL_CUSTOM_FIELD_RELATED_POST);
+    return wl_core_get_related_post_and_entities( $post_id, $field_name );
 }
-
-/**
- * Set the related posts IDs for the specified post ID.
- *
- * @param int $post_id A post ID.
- * @param array $related_posts An array of related post IDs.
- * @param string $field_name Name of the meta (used for the 4W)
- */
-/*function wl_set_related_posts($post_id, $related_posts, $field_name = WL_CUSTOM_FIELD_RELATED_POST) {
-
-    wl_write_log("wl_set_related_posts [ post id :: $post_id ][ related posts :: " . join(',', $related_posts) . " ]");
-
-    delete_post_meta($post_id, $field_name);
-    add_post_meta($post_id, $field_name, $related_posts);
-}*/
 
 /**
  * Set the related posts IDs for the specified post ID.
@@ -118,26 +135,8 @@ function wl_get_related_post_ids($post_id, $field_name=WL_CUSTOM_FIELD_RELATED_P
  */
 function wl_add_related_posts($post_id, $new_post_ids, $field_name = WL_CUSTOM_FIELD_RELATED_POST) {
 
-    wl_core_add_relation_between_posts_and_entities($post_id, WL_CUSTOM_FIELD_RELATED_POST, $new_post_ids);
+    wl_core_add_relation_between_posts_and_entities($post_id, $field_name, $new_post_ids);
 }
-
-/**
- * Set the related entity posts IDs for the specified post ID.
- *
- * @param int $post_id A post ID.
- * @param array $related_entities An array of related entity post IDs.
- * @param string $field_name Name of the meta (used for the 4W)
- */
-/*function wl_set_referenced_entities($post_id, $related_entities, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITY) {
-
-    wl_write_log("wl_set_referenced_entities [ post id :: $post_id ][ related entities :: " . var_export($related_entities, true) . " ]");
-
-    delete_post_meta($post_id, $field_name);
-
-    foreach ($related_entities as $entity_post_id) {
-        add_post_meta($post_id, $field_name, $entity_post_id);
-    }
-}*/
 
 /**
  * Get the posts that reference the specified entity.
@@ -266,52 +265,3 @@ function wl_get_entity_is_4w_for_posts($entity_id) {
         WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_related_post_ids($entity_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS)
     );
 }
-
-///**
-// * Unbind post and entities.
-// * @param int $post_id The post ID.
-// */
-//function wl_unbind_post_from_entities($post_id)
-//{
-//
-//    wl_write_log("wl_unbind_post_from_entities [ post id :: $post_id ]");
-//
-//    $entities = wl_get_referenced_entity_ids($post_id);
-//    foreach ($entities as $entity_post_id) {
-//
-//        // Remove the specified post id from the list of related posts.
-//        $related_posts = wl_get_related_post_ids($entity_post_id);
-//        if (false !== ($key = array_search($post_id, $related_posts))) {
-//            unset($related_posts[$key]);
-//        }
-//
-//        wl_set_related_posts($entity_post_id, $related_posts);
-//    }
-//
-//    // Reset the related entities for the post.
-//    wl_set_referenced_entities($post_id, array());
-//}
-
-
-/**
- * Get 5w values via AJAX
- *
- */
-/*function wl_5w_get_article_Ws_ajax()
-{
-    // Get the post Id.
-    if( isset( $_REQUEST['post_id'] ) ) {
-        $post_id = $_REQUEST['post_id'];
-    } else {
-        wp_die();
-    }
-
-    ob_clean();
-    header( "Content-Type: application/json" );
-
-    echo json_encode( wl_5w_get_all_article_Ws( $post_id ) );
-    wp_die();
-}
-add_action( 'wp_ajax_wl_5w', 'wl_5w_get_article_Ws_ajax' );
-add_action( 'wp_ajax_nopriv_wl_5w', 'wl_5w_get_article_Ws_ajax' );
- */
