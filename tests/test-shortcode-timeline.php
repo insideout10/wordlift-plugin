@@ -31,9 +31,9 @@ class TimelineShortcodeTest extends WP_UnitTestCase
      *  * 3 Event entities of which 2 referenced by the Post
      *  * 1 Person entity reference by the Post
      *
-     * Check that only the first 2 Event entities are returned when calling *wl_set_referenced_entities*.
+     * Check that only the first 2 Event entities are returned when calling *wl_get_referenced_entities*.
      *
-     * @uses wl_set_referenced_entities to assign the events referenced by a post.
+     * @uses wl_add_referenced_entities to assign the events referenced by a post.
 	 * @uses wl_shortcode_timeline_get_events to retrieve events
      */
     function testGetEvents() {
@@ -62,7 +62,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase
 
         wl_write_log( "[ entity 1 ID :: $entity_1_id ][ entity 2 ID :: $entity_2_id ][ entity 3 ID :: $entity_3_id ][ entity 4 ID :: $entity_4_id ]" );
 
-        wl_set_referenced_entities( $post_id, array(
+        wl_add_referenced_entities( $post_id, array(
             $entity_1_id,
             $entity_2_id,
             $entity_4_id
@@ -170,12 +170,12 @@ class TimelineShortcodeTest extends WP_UnitTestCase
         add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 45.12, true );
         add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 90.3, true );
 
-        wl_set_referenced_entities( $post_1_id, array(
+        wl_add_referenced_entities( $post_1_id, array(
             $entity_1_id,
             $entity_3_id
         ) );
 		
-		wl_set_referenced_entities( $post_2_id, array(
+	wl_add_referenced_entities( $post_2_id, array(
             $entity_2_id
         ) );
 		

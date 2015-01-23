@@ -179,7 +179,6 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             $this->assertEquals( array( $what_id, $when_id ), $w4[WL_CUSTOM_FIELD_WHAT_ENTITIES] );
             $this->assertEquals( array( $who_id, $what_id ), $w4[WL_CUSTOM_FIELD_WHO_ENTITIES] );
             $this->assertEquals( array( $where_id ), $w4[WL_CUSTOM_FIELD_WHERE_ENTITIES] );
-            $this->assertEquals( array( $when_id ), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );
-            
+            $this->assertEquals( array( $when_id ), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );         
     }   
 }

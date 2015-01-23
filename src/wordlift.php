@@ -810,7 +810,6 @@ add_action( 'activate_wordlift/wordlift.php', 'wl_install_entity_type_data' );
 add_action( 'init', 'wl_install_entity_type_data' );
 
 require_once( 'wordlift_entity_functions.php' );
-require_once( 'wordlift_post_entity_relations.php' );
 
 // add editor related methods.
 require_once( 'wordlift_editor.php' );
@@ -824,6 +823,8 @@ require_once( 'wordlift_content_filter.php' );
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 
+// Load modules
+require_once( 'modules/core/wordlift_core.php' );
 require_once( 'modules/configuration/wordlift_configuration.php' );
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
