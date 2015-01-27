@@ -218,14 +218,6 @@ class EntityTest extends WP_UnitTestCase
 //            'http://yago-knowledge.org/resource/World_Wide_Web_Foundation'
 //        );
         $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
-        
-        // Assign related entity
-        wl_add_referenced_entities( $related_post_id, $entity_post->ID );
-        
-        // Redlink?
-        // TODO: solve issue wl_save_entity vs. wl_save_entity_linked_data
-        $this->assertEquals(2, 3);
-        // do the related gets saved on redlink?
 
         $this->assertNotNull( $entity_post );
 
@@ -253,9 +245,6 @@ class EntityTest extends WP_UnitTestCase
             'http://rdf.freebase.com/ns/m.04n2n64'
         );
         $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
-        
-        // Assign related entity (bidirectional)
-        //wl_add_referenced_entities( $related_post_id, $entity_post->ID );
 
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );
