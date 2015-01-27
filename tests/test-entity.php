@@ -159,17 +159,17 @@ class EntityTest extends WP_UnitTestCase
             'http://vo.dbpedia.org/resource/Tim_Berners-Lee',
             'http://zh_min_nan.dbpedia.org/resource/Tim_Berners-Lee'
         );
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 
         $this->assertNotNull( $entity_post );
 
         // Check that creating a post for the same entity does create a duplicate post.
-        $entity_post_2 = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
+        $entity_post_2 = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
         $this->assertEquals( $entity_post->ID, $entity_post_2->ID );
 
         foreach ( $same_as as $same_as_uri ) {
             // Check that creating a post for the same entity does create a duplicate post.
-            $same_as_entity_post = wl_save_entity( $same_as_uri, $label, $type, $description, array(), $images, $same_as );
+            $same_as_entity_post = wl_save_entity( $same_as_uri, $label, $type, $description, array(), $images, null, $same_as );
             $this->assertEquals( $entity_post->ID, $same_as_entity_post->ID );
         }
 
@@ -217,7 +217,7 @@ class EntityTest extends WP_UnitTestCase
 //            'http://rdf.freebase.com/ns/m.04myd3k',
 //            'http://yago-knowledge.org/resource/World_Wide_Web_Foundation'
 //        );
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
         
         // Assign related entity
         wl_add_referenced_entities( $related_post_id, $entity_post->ID );
@@ -252,10 +252,10 @@ class EntityTest extends WP_UnitTestCase
         $same_as     = array(
             'http://rdf.freebase.com/ns/m.04n2n64'
         );
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
+        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
         
         // Assign related entity (bidirectional)
-        wl_add_referenced_entities( $related_post_id, $entity_post->ID );
+        //wl_add_referenced_entities( $related_post_id, $entity_post->ID );
 
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );

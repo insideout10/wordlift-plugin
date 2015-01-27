@@ -145,24 +145,11 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 			: array() );
                 
 		// Save the entity.
-		$entity_post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $same_as );
-                
-                // TODO: not only the related, but also the 4W (with bidirectionality)
-                // Add the related post ID if provided.
-                if ( null !== $related_post_id ) {
-                        // Add related entities or related posts according to the post type.
-                        wl_add_related( $entity_post->ID, $related_post_id );
-                        // And vice-versa.
-                        wl_add_related( $related_post_id, $entity_post->ID );
-                }
-
-                // The entity is pushed to Redlink on save by the function hooked to save_post.
-                // save the entity in the triple store.
-                wl_push_to_redlink( $entity_post->ID );
+		$entity_post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as );
                 
 		// Store the post in the return array if successful.
 		if ( null !== $entity_post ) {
-			array_push( $posts, $entity_post->ID );
+			array_push( $posts, $entity_post );
 		}
 	}
         
@@ -184,7 +171,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $same_as = array() ) {
+function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() ) {
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
 		$entity_types = array();
@@ -285,6 +272,18 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 		// Set it as the featured image.
 		set_post_thumbnail( $post_id, $attachment_id );
 	}
+        
+        // Add the related post ID if provided.
+	if ( null !== $related_post_id ) {
+		// Add related entities or related posts according to the post type.
+		wl_add_related( $post_id, $related_post_id );
+		// And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
+		wl_add_related( $related_post_id, $post_id );
+	}
+        
+	// The entity is pushed to Redlink on save by the function hooked to save_post.
+	// save the entity in the triple store.
+	wl_push_to_redlink( $post_id );
 
 	// finally return the entity post.
 	return get_post( $post_id );

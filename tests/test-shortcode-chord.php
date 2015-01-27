@@ -53,7 +53,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $description = 'An example entity.';
         $images      = array();
         $same_as     = array();
-		$ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
+		$ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 		$entities[] = $ent->ID;
                 
         
@@ -83,7 +83,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $description = 'Another example entity only related to an entity.';
         $images      = array();
         $same_as     = array();
-        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
+        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 		self::$MOST_CONNECTED_ENTITY_ID = $ent->ID;
 		
 		wl_add_referenced_entities( $new_post, self::$MOST_CONNECTED_ENTITY_ID );

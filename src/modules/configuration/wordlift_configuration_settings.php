@@ -27,7 +27,11 @@ function wl_configuration_get_key() {
 
 	$options = get_option( 'wl_general_settings' );
 
-	return $options['key'];
+	if( isset( $options['key'] ) ) {
+            return $options['key'];
+        } else {
+            return '';
+        }
 }
 
 
