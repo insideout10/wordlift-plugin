@@ -58,7 +58,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 	/**
 	 * Test *related* methods.
 	 */
-	function testRelated() {
+	function testRelatedAndReferencing() {
 
 		$post_id        = wl_create_post( '', 'post-1', 'Post 1' );
 		$entity_post_id = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
@@ -68,18 +68,26 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
 		$related_posts = wl_get_related_post_ids( $entity_post_id );
 		$this->assertEquals( 0, count( $related_posts ) );
-
+                
+                // reference is a directed relation: A --> B
 		wl_add_referenced_entities( $post_id, $entity_post_id );
 		$this->assertEquals( 1, count( wl_get_referenced_entity_ids( $post_id ) ) );
+                $this->assertEquals( 1, count( wl_get_referencing_posts( $entity_post_id ) ) );
+                $this->assertEquals( $entity_post_id, wl_get_referenced_entity_ids( $post_id )[0] );
+                $this->assertEquals( $post_id, wl_get_referencing_posts( $entity_post_id )[0]->ID );
 
+                // related is a simmetric relation: A <--> B
 		wl_add_related_posts( $entity_post_id, $post_id );
 		$this->assertEquals( 1, count( wl_get_related_post_ids( $entity_post_id ) ) );
+                $this->assertEquals( 1, count( wl_get_related_post_ids( $post_id ) ) );
+                $this->assertEquals( $entity_post_id, wl_get_related_post_ids( $post_id )[0] );
+                $this->assertEquals( $post_id, wl_get_related_post_ids( $entity_post_id )[0] );
 	}
 
 	/**
 	 * Test the wl_get_referencing_posts method.
 	 */
-	function testReferencingPosts() {
+	function testReferencingInDetail() {
 
 		// Create a couple of sample posts and entities.
 		$post_1   = wl_create_post( '', 'post-1', 'Post 1' );
@@ -92,20 +100,20 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
 		// Reference entity 1 from post 2.
 		wl_add_referenced_entities( $post_2, $entity_1 );
+                
+                // Check that references are returned correctly.
+                $this->assertEquals( array( $entity_1, $entity_2 ), wl_get_referenced_entity_ids( $post_1 ) );
+                $this->assertEquals( array( $entity_1 ), wl_get_referenced_entity_ids( $post_2 ) );
 
-		// Check that references are returned correctly.
-		$posts_referencing_entity_1 = wl_get_referencing_posts( $entity_1 );
-		$this->assertCount( 2, $posts_referencing_entity_1 );
-		$post_ids = array_map( function ( $post ) {
-			return $post->ID;
-		}, $posts_referencing_entity_1 );
-		$this->assertTrue( in_array( $post_1, $post_ids ) );
-		$this->assertTrue( in_array( $post_2, $post_ids ) );
+                // Check the complementary relations ( 'is referenced by' )
+		$posts_referencing_entity_1 = wl_get_referencing_posts_ids( $entity_1 );
+		$this->assertTrue( in_array( $post_1, $posts_referencing_entity_1 ) );
+		$this->assertTrue( in_array( $post_2, $posts_referencing_entity_1 ) );
 
-		// Check that references are returned correctly.
-		$posts_referencing_entity_2 = wl_get_referencing_posts( $entity_2 );
+                // Check the complementary relations ( 'is referenced by' )
+		$posts_referencing_entity_2 = wl_get_referencing_posts_ids( $entity_2 );
 		$this->assertCount( 1, $posts_referencing_entity_2 );
-		$this->assertEquals( $post_1, $posts_referencing_entity_2[0]->ID );
+		$this->assertEquals( $post_1, $posts_referencing_entity_2[0] );
                 
 	}
         
@@ -132,53 +140,66 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             wl_add_referenced_entities( $post_id, $when_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );  // another entity on the same W
             wl_add_referenced_entities( $post_id, array( $who_id, $what_id), WL_CUSTOM_FIELD_WHO_ENTITIES );    // assign more than one at the same time
             wl_add_referenced_entities( $post_id, $where_id, WL_CUSTOM_FIELD_WHERE_ENTITIES );
-            wl_add_referenced_entities( $post_id, $when_id, WL_CUSTOM_FIELD_WHEN_ENTITIES );
+            // Note: no entities added as WHEN
 
             // Check associations.
             
             // The 4W in an associative array, handcoded
-            $w4ByHand = array(
+            $w4_by_hand = array(
+                WL_CUSTOM_FIELD_WHAT_ENTITIES => array( $what_id, $when_id ),
+                WL_CUSTOM_FIELD_WHERE_ENTITIES => array( $where_id ),
+                WL_CUSTOM_FIELD_WHEN_ENTITIES => array(),
+                WL_CUSTOM_FIELD_WHO_ENTITIES => array( $who_id, $what_id )
+            );
+            
+            // Check associations for the single W
+            $this->assertEquals( $w4_by_hand, array(
                 WL_CUSTOM_FIELD_WHAT_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES ),
                 WL_CUSTOM_FIELD_WHERE_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES ),
                 WL_CUSTOM_FIELD_WHEN_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES ),
                 WL_CUSTOM_FIELD_WHO_ENTITIES => wl_get_referenced_entity_ids( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES )
-            );
+            ));
             
             // Test WL-generated 4W's associative array
             $w4 = wl_get_post_4w_entities( 279469238 );  // non existent post
             $this->assertEquals( $w4, array() );
             
             $w4 = wl_get_post_4w_entities( $post_id );   // real post
-            $this->assertEquals( $w4ByHand, $w4 );
+            $this->assertEquals( $w4_by_hand, $w4 );
             
             $this->assertEquals( array( $what_id, $when_id ), $w4[WL_CUSTOM_FIELD_WHAT_ENTITIES] );
             $this->assertEquals( array( $who_id, $what_id ), $w4[WL_CUSTOM_FIELD_WHO_ENTITIES] );
             $this->assertEquals( array( $where_id ), $w4[WL_CUSTOM_FIELD_WHERE_ENTITIES] );
-            $this->assertEquals( array( $when_id ), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );
+            $this->assertEquals( array(), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );
+            
             
             
             // Check complmentary associations
             
-            // The posts referenced by the 4W in an associative array, handcoded
-            /*$w4ByHand = array(
-                WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS => wl_get_related_post_ids( $post_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS),
-                WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS => wl_get_related_post_ids( $post_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS),
-                WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS => wl_get_related_post_ids( $post_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS),
-                WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_related_post_ids( $post_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS)
-            );*/
+            // Test WL-generated WHAT associative array
+            $w4_is_for = wl_get_entity_is_4w_for_posts( 279469238 );  // non existent entity
+            $this->assertEquals( array(), $w4_is_for );
             
-            // Test WL-generated 4W's associative array
-            $w4 = wl_get_entity_is_4w_for_posts( 279469238 );  // non existent post
-            $this->assertEquals( $w4, array() );
+            // Check complmentary associations for each of the 4Ws
+            foreach( array( $what_id, $when_id, $where_id, $who_id ) as $entity_id ) {
+                // The posts referenced by the WHAT in an associative array, handcoded
+                $w4_is_for_by_hand = array(
+                    WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS => wl_get_referencing_posts_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS),
+                    WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS => wl_get_referencing_posts_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS),
+                    WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS => wl_get_referencing_posts_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS),
+                    WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_referencing_posts_ids( $entity_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS)
+                );
+
+                $w4_is_for = wl_get_entity_is_4w_for_posts( $entity_id );   // real post
+                $this->assertEquals( $w4_is_for_by_hand, $w4_is_for );
+            }
             
-            wl_write_log( 'piedo 4w ' . var_export( wl_get_entity_is_4w_for_posts( $what_id ), true));
+            // Specific complementary associations
+            $this->assertEquals( array( $post_id ), wl_get_referencing_posts_ids( $what_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS) );
+            $this->assertEquals( array( $post_id ), wl_get_referencing_posts_ids( $where_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS) );
+            $this->assertEquals( array( $post_id ), wl_get_referencing_posts_ids( $who_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS) );
+            $this->assertEquals( array(), wl_get_referencing_posts_ids( $when_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS) );
+
             
-            $w4 = wl_get_entity_is_4w_for_posts( $post_id );   // real post
-            $this->assertEquals( $w4ByHand, $w4 );
-            
-            $this->assertEquals( array( $what_id, $when_id ), $w4[WL_CUSTOM_FIELD_WHAT_ENTITIES] );
-            $this->assertEquals( array( $who_id, $what_id ), $w4[WL_CUSTOM_FIELD_WHO_ENTITIES] );
-            $this->assertEquals( array( $where_id ), $w4[WL_CUSTOM_FIELD_WHERE_ENTITIES] );
-            $this->assertEquals( array( $when_id ), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );         
-    }   
+    }
 }

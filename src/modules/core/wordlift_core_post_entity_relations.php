@@ -117,11 +117,11 @@ function wl_core_get_related_post_and_entities( $subject_id, $relation ) {
  * Get the IDs of posts related to the specified post.
  *
  * @param int $post_id The post ID.
- * @param string $field_name Name of the meta (used for the 4W)
+ * @param string $field_name Name of the meta
  *
  * @return array An array of posts related to the one specified.
  */
-function wl_get_related_post_ids( $post_id, $field_name=WL_CUSTOM_FIELD_RELATED_POST ) {
+function wl_get_related_post_ids( $post_id, $field_name = WL_CUSTOM_FIELD_RELATED_POST ) {
 
     return wl_core_get_related_post_and_entities( $post_id, $field_name );
 }
@@ -131,7 +131,7 @@ function wl_get_related_post_ids( $post_id, $field_name=WL_CUSTOM_FIELD_RELATED_
  *
  * @param int $post_id A post ID.
  * @param int|array $new_post_ids An array of related post IDs.
- * @param string $field_name Name of the meta (used for the 4W)
+ * @param string $field_name Name of the meta
  */
 function wl_add_related_posts($post_id, $new_post_ids, $field_name = WL_CUSTOM_FIELD_RELATED_POST) {
 
@@ -148,7 +148,7 @@ function wl_add_related_posts($post_id, $new_post_ids, $field_name = WL_CUSTOM_F
  *
  * @return array An array of posts.
  */
-function wl_get_referencing_posts($entity_id, $field_name=WL_CUSTOM_FIELD_IS_REFERENCED_BY) {
+function wl_get_referencing_posts($entity_id, $field_name = WL_CUSTOM_FIELD_IS_REFERENCED_BY) {
     
     $post_ids = wl_core_get_related_post_and_entities( $entity_id, $field_name );
     
@@ -161,13 +161,28 @@ function wl_get_referencing_posts($entity_id, $field_name=WL_CUSTOM_FIELD_IS_REF
 }
 
 /**
+ * Get the posts ids that reference the specified entity.
+ *
+ * @uses    wl_core_get_related_post_and_entities to get entities related to posts.
+ *
+ * @param int $entity_id The post ID of the entity.
+ * @param string $field_name Name of the meta (used for the 4W)
+ *
+ * @return array An array of posts.
+ */
+function wl_get_referencing_posts_ids($entity_id, $field_name = WL_CUSTOM_FIELD_IS_REFERENCED_BY) {
+    
+    return wl_core_get_related_post_and_entities( $entity_id, $field_name );
+}
+
+/**
  * Set the related entity posts IDs for the specified post ID.
  *
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
  * @param string $field_name Name of the meta (used for the 4W)
  */
-function wl_add_referenced_entities( $post_id, $new_entity_post_ids, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
+function wl_add_referenced_entities( $post_id, $new_entity_post_ids, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
     
     wl_core_add_relation_between_posts_and_entities( $post_id, $field_name, $new_entity_post_ids );
 }
@@ -180,7 +195,7 @@ function wl_add_referenced_entities( $post_id, $new_entity_post_ids, $field_name
  *
  * @return array An array of posts related to the one specified.
  */
-function wl_get_referenced_entity_ids($post_id, $field_name=WL_CUSTOM_FIELD_REFERENCED_ENTITY) {
+function wl_get_referenced_entity_ids($post_id, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITY) {
 
     return wl_core_get_related_post_and_entities( $post_id, $field_name );
 }
@@ -259,9 +274,9 @@ function wl_get_entity_is_4w_for_posts($entity_id) {
     }
 
     return array(
-        WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS => wl_get_related_post_ids($entity_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS),
-        WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS => wl_get_related_post_ids($entity_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS),
-        WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS => wl_get_related_post_ids($entity_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS),
-        WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_related_post_ids($entity_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS)
+        WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS => wl_get_referencing_posts_ids($entity_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS),
+        WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS => wl_get_referencing_posts_ids($entity_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS),
+        WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS => wl_get_referencing_posts_ids($entity_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS),
+        WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_referencing_posts_ids($entity_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS)
     );
 }
