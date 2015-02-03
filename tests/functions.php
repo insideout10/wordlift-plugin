@@ -796,16 +796,19 @@ function rl_sparql_select( $query, $accept = 'text/csv' ) {
 
 	// Prepare the SPARQL statement by prepending the default namespaces.
 	$sparql = rl_sparql_prefixes() . "\n" . $query;
-
-	// Get the SPARQL SELECT URL.
-	$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
+        
+        // select output format from MIME type
+        if( $accept == 'text/csv' ) {
+            $format = 'csv';
+        } else if( $accept == 'text/tab-separated-values' ) {
+            $format = 'tabs';
+        }
+        
+        // Get the SPARQL SELECT URL.
+	$url = wl_configuration_get_query_select_url( $format ) . urlencode( $sparql );
 
 	// Prepare the request.
-	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'headers' => array(
-			'Accept' => $accept
-		)
-	) );
+        $args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
 
 	// Send the request.
 	return wp_remote_get( $url, $args );

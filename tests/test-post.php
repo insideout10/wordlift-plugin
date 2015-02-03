@@ -110,9 +110,7 @@ class PostTest extends WP_UnitTestCase {
      * Test a simple sparql query against Redlink to check whether SPARQL queries work fine.
      */
     function testSPARQLQueries() {
-        
-        wl_write_log('piedo init testSPARQLQueries');
-        
+                
         // Get the SPARQL template from the file.
         $filename = dirname(__FILE__) . '/linked_data.sparql.template';
         $sparql_template = file_get_contents($filename);
@@ -129,11 +127,10 @@ class PostTest extends WP_UnitTestCase {
 
         // Run the query.
         $result = wl_execute_sparql_query($sparql);
-        wl_write_log('piedo sparql ' . var_export($sparql, true));
-        wl_write_log('piedo sparql result' . var_export($sparql, true));
+
         $this->assertTrue($result);
 
-        $this->checkEntityWithData($uri, '"Linked_Open_Data"@en', '<http://example.org/?post_type=entity&p=1978>');
+        $this->checkEntityWithData($uri, '"Linked Open Data"@en', '<http://example.org/?post_type=entity&p=1978>');
     }
 
 //    /**
@@ -459,24 +456,16 @@ WHERE {
            a ?type .
 }
 EOF;
-        
-        wl_write_log('piedo select: ' . var_export($sparql, true));
-        
+                
         // Send the query and get the response.
         $response = rl_sparql_select($sparql, 'text/tab-separated-values');
         $this->assertFalse(is_wp_error($response));
 
         $body = $response['body'];
-        
-        wl_write_log('piedo body: ' . print_r($body, true));
-        
+                
         $matches = array();
         $count = preg_match_all('/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER);
         $this->assertTrue(is_numeric($count));
-        wl_write_log('piedo count: ' . var_export($count, true));
-        wl_write_log('piedo matches: ' . var_export($matches, true));
-        wl_write_log('piedo matches contents: ' . $title . ' ' . $permalink  );
-
 
         // Expect only one match (headers + one row).
         $this->assertEquals(2, $count);
