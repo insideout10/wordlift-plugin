@@ -73,15 +73,20 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 		wl_add_referenced_entities( $post_id, $entity_post_id );
 		$this->assertEquals( 1, count( wl_get_referenced_entity_ids( $post_id ) ) );
                 $this->assertEquals( 1, count( wl_get_referencing_posts( $entity_post_id ) ) );
-                $this->assertEquals( $entity_post_id, wl_get_referenced_entity_ids( $post_id )[0] );
-                $this->assertEquals( $post_id, wl_get_referencing_posts( $entity_post_id )[0]->ID );
+                $results = wl_get_referenced_entity_ids( $post_id );
+                $this->assertEquals( $entity_post_id, $results[0] );
+                $results = wl_get_referencing_posts( $entity_post_id );
+                $results = $results[0];
+                $this->assertEquals( $post_id, $results->ID );
 
                 // related is a simmetric relation: A <--> B
 		wl_add_related_posts( $entity_post_id, $post_id );
 		$this->assertEquals( 1, count( wl_get_related_post_ids( $entity_post_id ) ) );
                 $this->assertEquals( 1, count( wl_get_related_post_ids( $post_id ) ) );
-                $this->assertEquals( $entity_post_id, wl_get_related_post_ids( $post_id )[0] );
-                $this->assertEquals( $post_id, wl_get_related_post_ids( $entity_post_id )[0] );
+                $results = wl_get_related_post_ids( $post_id );
+                $this->assertEquals( $entity_post_id, $results[0] );
+                $results = wl_get_related_post_ids( $entity_post_id );
+                $this->assertEquals( $post_id, $results[0] );
 	}
 
 	/**
