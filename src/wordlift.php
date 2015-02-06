@@ -660,8 +660,8 @@ function wl_install_entity_type_data() {
 			),
 			'microdata_template' =>
 				'{{startDate}}
-                {{endDate}}
-                {{location}}',
+                                {{endDate}}
+                                {{location}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -747,10 +747,10 @@ function wl_install_entity_type_data() {
 			),
 			'microdata_template' =>
 				'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-                    {{latitude}}
-                    {{longitude}}
-                </span>
-                {{address}}',
+                                    {{latitude}}
+                                    {{longitude}}
+                                </span>
+                                {{address}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -773,8 +773,12 @@ function wl_install_entity_type_data() {
 			continue;
                 }
                 
-                // Check if 'parent' corresponds to an actual term and get its ID.           
+                // Check if 'parent' corresponds to an actual term and get its ID.
+                if( !isset( $term['parent'] ) ) {
+                    $term['parent'] = 0;
+                }
                 $parent_id = get_term_by( 'slug', $term['parent'], WL_ENTITY_TYPE_TAXONOMY_NAME );
+                
                 if( $parent_id == false ) {
                     // No parent
                     $parent_id = 0;
@@ -812,7 +816,7 @@ function wl_plugins_url( $url, $path, $plugin ) {
 	// Check if it's our pages calling the plugins_url.
 	if ( 1 !== preg_match( '/\/wordlift[^.]*.php$/i', $plugin ) ) {
 		return $url;
-	};
+	}
 
 	// Set the URL to plugins URL + wordlift, in order to support the plugin being symbolic linked.
 	$plugin_url = plugins_url() . '/wordlift/' . $path;
