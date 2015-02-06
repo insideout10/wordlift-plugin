@@ -589,9 +589,23 @@ function wl_install_entity_type_data() {
 	// TODO: Manage both generic and custom fields as fields
 	// TODO: Merge export fields configuration with standard fields
 	$terms = array(
+                'thing'         => array(
+                        'label'              => 'Thing',
+                        'description'        => 'A generic thing (something that doesn\'t fit in the previous definitions.',
+                        'css'                => 'wl-thing',
+                        'uri'                => 'http://schema.org/Thing',
+                        'same_as'            => array( '*' ), // set as default.
+                        'custom_fields'      => array(),
+                        'export_fields'      => array(),
+                        'microdata_template' => '',
+                        'templates'          => array(
+                                'subtitle' => '{{id}}'
+                        )
+		),
 		'creative-work' => array(
 			'label'              => 'Creative Work',
 			'description'        => 'A creative work (or a Music Album).',
+                        'parent'             => 'thing',
 			'css'                => 'wl-creative-work',
 			'uri'                => 'http://schema.org/CreativeWork',
 			'same_as'            => array(
@@ -608,6 +622,7 @@ function wl_install_entity_type_data() {
 		'event'         => array(
 			'label'              => 'Event',
 			'description'        => 'An event.',
+                        'parent'             => 'thing',
 			'css'                => 'wl-event',
 			'uri'                => 'http://schema.org/Event',
 			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
@@ -654,6 +669,7 @@ function wl_install_entity_type_data() {
 		'organization'  => array(
 			'label'              => 'Organization',
 			'description'        => 'An organization, including a government or a newspaper.',
+                        'parent'             => 'thing',
 			'css'                => 'wl-organization',
 			'uri'                => 'http://schema.org/Organization',
 			'same_as'            => array(
@@ -671,6 +687,7 @@ function wl_install_entity_type_data() {
 		'person'        => array(
 			'label'              => 'Person',
 			'description'        => 'A person (or a music artist).',
+                        'parent'             => 'thing',
 			'css'                => 'wl-person',
 			'uri'                => 'http://schema.org/Person',
 			'same_as'            => array(
@@ -688,6 +705,7 @@ function wl_install_entity_type_data() {
 		'place'         => array(
 			'label'              => 'Place',
 			'description'        => 'A place.',
+                        'parent'             => 'thing',
 			'css'                => 'wl-place',
 			'uri'                => 'http://schema.org/Place',
 			'same_as'            => array(
@@ -736,40 +754,41 @@ function wl_install_entity_type_data() {
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
-		),
-		'thing'         => array(
-			'label'              => 'Thing',
-			'description'        => 'A generic thing (something that doesn\'t fit in the previous definitions.',
-			'css'                => 'wl-thing',
-			'uri'                => 'http://schema.org/Thing',
-			'same_as'            => array( '*' ), // set as default.
-			'custom_fields'      => array(),
-			'export_fields'      => array(),
-			'microdata_template' => '',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
 		)
 	);
-
+        
 	foreach ( $terms as $slug => $term ) {
-
-		// Create the term if it does not exist.
-		$term_id = term_exists( $term['label'] );
-		if ( $term_id == 0 || is_null( $term_id ) ) {
-			$result = wp_insert_term( $term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
-				'description' => $term['description'],
-				'slug'        => $slug
-			) );
-		} else {
-			$result = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
-		}
+		
+                // Create the term if it does not exist, then get its ID
+                $term_id = term_exists( $term['label'] );
+                if( $term_id == 0 || is_null( $term_id ) ) {
+                    $result = wp_insert_term( $term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME );
+                } else {
+                    $result = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
+                }
 
 		// Check for errors.
 		if ( is_wp_error( $result ) ) {
 			wl_write_log( 'wl_install_entity_type_data [ ' . $result->get_error_message() . ' ]' );
 			continue;
-		}
+                }
+                
+                // Check if 'parent' corresponds to an actual term and get its ID.           
+                $parent_id = get_term_by( 'slug', $term['parent'], WL_ENTITY_TYPE_TAXONOMY_NAME );
+                if( $parent_id == false ) {
+                    // No parent
+                    $parent_id = 0;
+                } else {
+                    // Get parent id
+                    $parent_id = intval( $parent_id->term_id );  // Note: int casting is suggested by Codex: http://codex.wordpress.org/Function_Reference/get_term_by
+                }
+                
+                // Update term with description, slug and parent    
+                wp_update_term( $result['term_id'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+                    'description'   => $term['description'],
+                    'slug'          => $slug,
+                    'parent'        => $parent_id
+                ));
 
 		// Add custom metadata to the term.
 		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'], $term['microdata_template'] );
