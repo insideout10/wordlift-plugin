@@ -7,6 +7,7 @@ env:
   - secure: O1egBXlawQSuaJbUvoEh7HOWPyJxaoFdRo2Z89Iti1F/yZaKdxo4MwU9oUXevh5xLmWTTFVp1tSjypxurPxQ9WPkaFC5uxXgDe+MIBRQUlDoHEhMK7lAg9nwhhw1dRpb61O248Mw1EKr7SsofRdUob9GTeNBSTSPsZiYtKrVhTA=
   - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
   - API_URL=https://api.redlink.io/1.0-BETA
+  - WL_SSL_VERIFY_ENABLED=false
   - secure: kDMI8mRggBmnB/uDSW7bpUOJnRPrUhksCfkPmtI40DoiUL1qOo19SXmeyvJhvRAvRpPKMHhwYdXaPRTU3ehrpPuak4QMAI69189xzDv0YzLHph1q/ESvUjnzgJPL2S8dTSKwjhKgOfvntzb8sEkHlhS/GVsPPfA5o1hXs3xzYaM=
   - secure: atgLztwWoQACiMH6M07hZauVcvyzslSfkMZSodPZFnwm+TxjJVNggqpApuJapoZFsJpXpji13vShvZKzynoomxx4uzU7HDZvs5mhUG6qeY2AyFOZ4Au5HyA6HoXPKiRhrMIjMmZvG5ExyOFnCHv7Q8wRsjarURQJV6pLUAdXa+s=
   matrix:

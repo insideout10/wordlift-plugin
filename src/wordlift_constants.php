@@ -10,7 +10,7 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 	'httpversion' => '1.0',
 	'blocking'    => true,
 	'cookies'     => array(),
-	'sslverify'   => true,
+	'sslverify'   => ( 'false' === getenv( 'WL_SSL_VERIFY_ENABLED' )) ? false : true,
     'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt'
 ) ) );
 
