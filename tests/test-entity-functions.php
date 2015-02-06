@@ -150,7 +150,9 @@ class EntityFunctionsTest extends WP_UnitTestCase
      * Tests the *wl_get_meta_constraints* function
      */
     function testEntityGetMetaConstraints() {
-        //TODO
+        
+        $fields = wl_entity_taxonomy_get_custom_fields();
+        wl_write_log( 'piedo ' . print_r( $fields ) );
     }
 }
 
