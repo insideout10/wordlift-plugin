@@ -44,7 +44,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $description = 'An example entity.';
         $images      = array();
         $same_as     = array();
-        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
 		$entities[] = $ent->ID;
         
         $uri         = 'http://example.org/entity2';

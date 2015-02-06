@@ -60,7 +60,7 @@ EOF;
         $this->assertEquals( array('2014-05-05'), get_post_meta( $post_id, WL_CUSTOM_FIELD_CAL_DATE_END ) );
 
         # Relate the entity to itself.
-        wl_set_referenced_entities( $post_id, array( $post_id) );
+        wl_add_referenced_entities( $post_id, array( $post_id) );
 
         $content_with_microdata = _wl_content_embed_microdata( $post_id, $content );
     }

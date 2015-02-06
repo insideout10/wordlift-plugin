@@ -146,7 +146,7 @@ add_filter( 'the_content', 'wl_content_embed_microdata' );
  */
 function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $recursion_level = 0 ) {
 
-	wl_write_log( "[ entity id :: $entity_id ][ entity type :: $entity_type ][ recursion level :: $recursion_level ]" );
+	wl_write_log( "[ entity id :: $entity_id ][ entity type :: " . var_export( $entity_type, true ) . " ][ recursion level :: $recursion_level ]" );
 
 	$regex   = '/{{(.*)}}/';
 	$matches = array();

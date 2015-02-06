@@ -29,9 +29,9 @@ class GeomapShortcodeTest extends WP_UnitTestCase
      *  * 3 Place entities referenced by the Post
      *  * 1 Person entity reference by the Post
      *
-     * Check that only the first 2 entities are returned when calling *wl_set_referenced_entities*.
+     * Check that only the first 2 entities are returned when calling *wl_get_referenced_entities*.
      *
-     * @uses wl_set_referenced_entities to retrieve the entities referenced by a post.
+     * @uses wl_get_referenced_entities to retrieve the entities referenced by a post.
      */
     function testGetPlaces() {
 
@@ -55,7 +55,7 @@ class GeomapShortcodeTest extends WP_UnitTestCase
         $entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
         wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
 
-        wl_set_referenced_entities( $post_id, array(
+        wl_add_referenced_entities( $post_id, array(
             $entity_1_id,
             $entity_2_id,
             $entity_4_id
@@ -131,8 +131,8 @@ class GeomapShortcodeTest extends WP_UnitTestCase
         add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// Reference place from both posts-
-        wl_set_referenced_entities( $post_id_1, array( $place_id ) );
-		wl_set_referenced_entities( $post_id_2, array( $place_id ) );
+        wl_add_referenced_entities( $post_id_1, array( $place_id ) );
+	wl_add_referenced_entities( $post_id_2, array( $place_id ) );
 
 		// Check referencing.
         $places = wl_shortcode_geomap_get_places( $post_id_1 );

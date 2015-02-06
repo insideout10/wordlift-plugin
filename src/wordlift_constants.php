@@ -51,6 +51,7 @@ define( 'WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end' );
 define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 
+
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
@@ -59,9 +60,6 @@ define( 'WL_ENTITY_TYPE_NAME', 'entity' );
 
 // The name for the entity type taxonomy.
 define( 'WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type' );
-
-// The name of the custom field that stores the IDs of entities referenced by posts.
-define( 'WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities' );
 
 // The custom field name to store whether the entity must be displayed as single page.
 define( 'WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE', 'wl_entity_display_as_single_page' );

@@ -224,12 +224,12 @@ class EntityTest extends WP_UnitTestCase
         // Check that the type is set correctly.
         $types = wl_get_entity_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
-//        $this->assertEquals( 'organization', $types[0]->slug );
+        //$this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
-        $related_entities = wl_get_referenced_entity_ids( $entity_post->ID );
+        $related_entities = wl_get_referencing_posts( $entity_post->ID );
         $this->assertEquals( 1, count( $related_entities ) );
-        $this->assertEquals( $related_post_id, $related_entities[0] );
+        $this->assertEquals( $related_post_id, $related_entities[0]->ID );
 
         return $entity_post->ID;
     }
@@ -252,9 +252,9 @@ class EntityTest extends WP_UnitTestCase
 //        $this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
-        $related_entities = wl_get_referenced_entity_ids( $entity_post->ID );
+        $related_entities = wl_get_referencing_posts( $entity_post->ID );
         $this->assertEquals( 1, count( $related_entities ) );
-        $this->assertEquals( $related_post_id, $related_entities[0] );
+        $this->assertEquals( $related_post_id, $related_entities[0]->ID );
 
         return $entity_post->ID;
     }

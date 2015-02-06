@@ -96,7 +96,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 
 	// Update related entities.
-	wl_set_referenced_entities( $post->ID, wl_linked_data_content_get_embedded_entities( $post->post_content ) );
+	wl_add_referenced_entities( $post->ID, wl_linked_data_content_get_embedded_entities( $post->post_content ) );
 
 	// Push the post to Redlink.
 	wl_push_to_redlink( $post->ID );
@@ -106,11 +106,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
 
-// TODO: remove this method.
-function wl_save_entities( $entities, $related_post_id = null ) {
-	return wl_linked_data_save_entities( $entities, $related_post_id );
-}
-
 /**
  * Save the specified entities to the local storage.
  *
@@ -119,7 +114,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  *
  * @return array An array of posts.
  */
-function wl_linked_data_save_entities( $entities, $related_post_id = null ) {
+function wl_save_entities( $entities, $related_post_id = null ) {
 
 	wl_write_log( "[ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
 
@@ -148,22 +143,17 @@ function wl_linked_data_save_entities( $entities, $related_post_id = null ) {
 				? $entity['sameas']
 				: array( $entity['sameas'] ) )
 			: array() );
-
+                
 		// Save the entity.
-		$post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as );
-
+		$entity_post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as );
+                
 		// Store the post in the return array if successful.
-		if ( null !== $post ) {
-			array_push( $posts, $post );
+		if ( null !== $entity_post ) {
+			array_push( $posts, $entity_post );
 		}
 	}
-
+        
 	return $posts;
-}
-
-// TODO: remove this function.
-function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() ) {
-	return wl_linked_data_save_entity( $uri, $label, $type_uri, $description, $entity_types, $images, $related_post_id, $same_as );
 }
 
 /**
@@ -181,27 +171,27 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_linked_data_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() ) {
+function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() ) {
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
 		$entity_types = array();
 	}
 
-	wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ][ related post id :: $related_post_id ]" );
+	wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
 
 	// Check whether an entity already exists with the provided URI.
 	$post = wl_get_entity_post_by_uri( $uri );
 
 	// Return the found post, do not overwrite data.
 	if ( null !== $post ) {
-		wl_write_log( ": post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ][ related post id :: $related_post_id ]" );
+		wl_write_log( ": post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ]" );
 
 		return $post;
 	}
 
 	// No post found, create a new one.
 	$params = array(
-		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
+		'post_status'  => 'publish', //( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
 		'post_type'    => 'entity',
 		'post_title'   => $label,
 		'post_content' => $description,
@@ -239,11 +229,6 @@ function wl_linked_data_save_entity( $uri, $label, $type_uri, $description, $ent
 
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );
-
-	// If the coordinates are provided, then set them.
-//    if (is_array($coordinates) && isset($coordinates['latitude']) && isset($coordinates['longitude'])) {
-//        wl_set_coordinates($post_id, $coordinates['latitude'], $coordinates['longitude']);
-//    }
 
 	wl_write_log( "[ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode( ',', $entity_types ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]" );
 
@@ -287,15 +272,15 @@ function wl_linked_data_save_entity( $uri, $label, $type_uri, $description, $ent
 		// Set it as the featured image.
 		set_post_thumbnail( $post_id, $attachment_id );
 	}
-
-	// Add the related post ID if provided.
+        
+        // Add the related post ID if provided.
 	if ( null !== $related_post_id ) {
 		// Add related entities or related posts according to the post type.
 		wl_add_related( $post_id, $related_post_id );
 		// And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
 		wl_add_related( $related_post_id, $post_id );
 	}
-
+        
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.
 	wl_push_to_redlink( $post_id );
