@@ -14,10 +14,10 @@ define( 'WL_JSON_LD_CONTEXT', serialize( array(
 // Disable buffering.
 define( 'WL_BUFFER_SPARQL_UPDATE_QUERIES', false );
 
-if ( 'true' === getenv( 'WL_SSL_V3_FORCED' )) { 
-	add_action( 'http_api_curl', 'force_curl_ssl_v3' );
-	function force_curl_ssl_v3( $handle ) {
-    	curl_setopt($handle, CURLOPT_SSLVERSION, 3);
+if ( 'true' === getenv( 'WL_SSL_V1_FORCED' )) { 
+	add_action( 'http_api_curl', 'force_curl_ssl_v1' );
+	function force_curl_ssl_v1( $handle ) {
+    	curl_setopt($handle, CURLOPT_SSLVERSION, 1);
 	}
 }
 
