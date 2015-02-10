@@ -585,9 +585,7 @@ function wl_install_entity_type_data() {
 	wl_entity_type_taxonomy_register();
 
 	// Set the taxonomy data.
-	// TODO: Add inheritance
 	// TODO: Manage both generic and custom fields as fields
-	// TODO: Merge export fields configuration with standard fields
 	$terms = array(
                 'thing'         => array(
                         'label'              => 'Thing',
@@ -596,7 +594,6 @@ function wl_install_entity_type_data() {
                         'uri'                => 'http://schema.org/Thing',
                         'same_as'            => array( '*' ), // set as default.
                         'custom_fields'      => array(),
-                        'export_fields'      => array(),
                         'microdata_template' => '',
                         'templates'          => array(
                                 'subtitle' => '{{id}}'
@@ -613,7 +610,6 @@ function wl_install_entity_type_data() {
 				'http://schema.org/Product'
 			),
 			'custom_fields'      => array(),
-			'export_fields'      => array(),
 			'microdata_template' => '',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
@@ -628,34 +624,24 @@ function wl_install_entity_type_data() {
 			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
 			'custom_fields'      => array(
 				WL_CUSTOM_FIELD_CAL_DATE_START => array(
-					'predicate'   => 'startDate',
+					'predicate'   => 'http://schema.org/startDate',
 					'type'        => WL_DATA_TYPE_DATE,
+                                        'export_type' => 'xsd:date',
 					'constraints' => ''
 				),
 				WL_CUSTOM_FIELD_CAL_DATE_END   => array(
-					'predicate'   => 'endDate',
+					'predicate'   => 'http://schema.org/endDate',
 					'type'        => WL_DATA_TYPE_DATE,
+                                        'export_type' => 'xsd:date',
 					'constraints' => ''
 				),
 				WL_CUSTOM_FIELD_LOCATION       => array(
-					'predicate'   => 'location',
+					'predicate'   => 'http://schema.org/location',
 					'type'        => WL_DATA_TYPE_URI,
+                                        'export_type' => 'http://schema.org/PostalAddress',
 					'constraints' => array(
 						'uri_type' => 'Place'
 					)
-				)
-			),
-			'export_fields'      => array(
-				WL_CUSTOM_FIELD_CAL_DATE_START => array(
-					'predicate' => 'http://schema.org/startDate',
-					'type'      => 'xsd:date'
-				),
-				WL_CUSTOM_FIELD_CAL_DATE_END   => array(
-					'predicate' => 'http://schema.org/endDate',
-					'type'      => 'xsd:date'
-				),
-				WL_CUSTOM_FIELD_LOCATION       => array(
-					'predicate' => 'http://schema.org/location'
 				)
 			),
 			'microdata_template' =>
@@ -678,7 +664,6 @@ function wl_install_entity_type_data() {
 				'http://schema.org/Newspaper'
 			),
 			'custom_fields'      => array(),
-			'export_fields'      => array(),
 			'microdata_template' => '',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
@@ -696,7 +681,6 @@ function wl_install_entity_type_data() {
 				'http://dbpedia.org/class/yago/LivingPeople'
 			),
 			'custom_fields'      => array(),
-			'export_fields'      => array(),
 			'microdata_template' => '',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
@@ -714,35 +698,24 @@ function wl_install_entity_type_data() {
 			),
 			'custom_fields'      => array(
 				WL_CUSTOM_FIELD_GEO_LATITUDE  => array(
-					'predicate'   => 'latitude',
-					'type'        => WL_DATA_TYPE_DOUBLE,
+                                        'predicate'        => 'http://schema.org/latitude',
+					'type'             => WL_DATA_TYPE_DOUBLE,
+                                        'export_type'      => 'xsd:double',
 					'constraints' => '',
 					'input_field' => 'coordinates'
 				),
 				WL_CUSTOM_FIELD_GEO_LONGITUDE => array(
-					'predicate'   => 'longitude',
+					'predicate'   => 'http://schema.org/longitude',
 					'type'        => WL_DATA_TYPE_DOUBLE,
+                                        'export_type'      => 'xsd:double',
 					'constraints' => '',
 					'input_field' => 'coordinates'
-				),
-				WL_CUSTOM_FIELD_ADDRESS       => array(
-					'predicate'   => 'address',
-					'type'        => WL_DATA_TYPE_STRING,
-					'constraints' => ''
-				)
-			),
-			'export_fields'      => array(
-				WL_CUSTOM_FIELD_GEO_LATITUDE  => array(
-					'predicate' => 'http://schema.org/latitude',
-					'type'      => 'xsd:double'
-				),
-				WL_CUSTOM_FIELD_GEO_LONGITUDE => array(
-					'predicate' => 'http://schema.org/longitude',
-					'type'      => 'xsd:double'
 				),
 				WL_CUSTOM_FIELD_ADDRESS       => array(
 					'predicate' => 'http://schema.org/address',
-					'type'      => 'http://schema.org/PostalAddress'
+					'type'        => WL_DATA_TYPE_STRING,
+                                        'export_type'      => 'http://schema.org/PostalAddress',
+					'constraints' => ''
 				)
 			),
 			'microdata_template' =>
@@ -795,7 +768,7 @@ function wl_install_entity_type_data() {
                 ));
 
 		// Add custom metadata to the term.
-		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['export_fields'], $term['microdata_template'] );
+		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['microdata_template'] );
 	}
 
 }

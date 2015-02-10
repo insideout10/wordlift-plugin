@@ -153,23 +153,23 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		$main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
 		$sparql .= " <$uri_e> a <$main_type_uri> . \n";
 
-		// The type define export fields that hold additional data about the entity.
+		// The type define custom fields that hold additional data about the entity.
 		// For example Events may have start/end dates, Places may have coordinates.
 		// The value in the export fields must be rewritten as triple predicates, this
 		// is what we're going to do here.
 
 		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
 
-		if ( isset( $main_type['export_fields'] ) ) {
-			foreach ( $main_type['export_fields'] as $field => $settings ) {
+		if ( isset( $main_type['custom_fields'] ) ) {
+			foreach ( $main_type['custom_fields'] as $field => $settings ) {
 
 				wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
 
 				$predicate = wordlift_esc_sparql( $settings['predicate'] );
-				if ( ! isset( $settings['type'] ) || empty( $settings['type'] ) ) {
+				if ( ! isset( $settings['export_type'] ) || empty( $settings['export_type'] ) ) {
 					$type = null;
 				} else {
-					$type = $settings['type'];
+					$type = $settings['export_type'];
 				}
 
 				// add the delete statement for later execution.

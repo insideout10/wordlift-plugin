@@ -30,9 +30,13 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 
 		// Loop over simple entity properties
 		foreach ( $simple_metaboxes as $key => $property ) {
-
+                        
+                        // Don't present to the user the full schema name, just the slug
+                        $property_slug_name = split( '/', $property['predicate'] );
+                        $property_slug_name = end( $property_slug_name );
+                        
 			// Metabox title
-			$title = __( 'Edit', 'wordlift' ) . ' ' . __( $property['predicate'], 'wordlift' );
+			$title = __( 'Edit', 'wordlift' ) . ' ' . __( $property_slug_name, 'wordlift' );
 
 			// Info passed to the metabox
 			$info         = array();

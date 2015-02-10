@@ -86,12 +86,12 @@ function rl_delete_post( $post ) {
 	if ( WL_ENTITY_TYPE_NAME === $post->post_type ) {
 		$type = wl_entity_get_type( $post->ID );
 
-		if ( isset( $type['export_fields'] ) ) {
-			foreach ( $type['export_fields'] as $field => $params ) {
+		if ( isset( $type['custom_fields'] ) ) {
+			foreach ( $type['custom_fields'] as $field => $params ) {
 				// TODO: enclose in <> only if predicate starts with http(s)://
 				$predicate = '<' . $params['predicate'] . '>';
 				$stmt .= "DELETE { <$uri_esc> $predicate ?o . } WHERE { <$uri_esc> $predicate ?o . };\n";
-			};
+			}
 		}
 	}
 

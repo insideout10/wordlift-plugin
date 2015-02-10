@@ -70,13 +70,22 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals( 40.12, $value[0] );
         $value = wl_get_meta_value( 'longitude', $place_id );
         $this->assertEquals( 72.3, $value[0] );
+        $value = wl_get_meta_value( 'http://schema.org/latitude', $place_id );
+        $this->assertEquals( 40.12, $value[0] );
+        $value = wl_get_meta_value( 'http://schema.org/longitude', $place_id );
+        $this->assertEquals( 72.3, $value[0] );
         $value = wl_get_meta_value( WL_CUSTOM_FIELD_GEO_LATITUDE, $place_id );
         $this->assertEquals( 40.12, $value[0] );
         $value = wl_get_meta_value( WL_CUSTOM_FIELD_GEO_LONGITUDE, $place_id );
         $this->assertEquals( 72.3, $value[0] );
+        
         $value = wl_get_meta_value( 'startDate', $event_id );
         $this->assertEquals( '2014-10-21', $value[0] );
         $value = wl_get_meta_value( 'endDate', $event_id );
+        $this->assertEquals( '2015-10-21', $value[0] );
+        $value = wl_get_meta_value( 'http://schema.org/startDate', $event_id );
+        $this->assertEquals( '2014-10-21', $value[0] );
+        $value = wl_get_meta_value( 'http://schema.org/endDate', $event_id );
         $this->assertEquals( '2015-10-21', $value[0] );
         $value = wl_get_meta_value( WL_CUSTOM_FIELD_CAL_DATE_START, $event_id );
         $this->assertEquals( '2014-10-21', $value[0] );
@@ -87,7 +96,9 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $value = wl_get_meta_value( null, $place_id );
         $this->assertEquals( null, $value );
         $value = wl_get_meta_value( 'latitude', $event_id );
-        $this->assertEquals( null, $value );              
+        $this->assertEquals( null, $value ); 
+        $value = wl_get_meta_value( 'http://invented_url/endDate', $event_id );
+        $this->assertEquals( null, $value );
     }
     
     /**
@@ -99,16 +110,19 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertEquals( 'double', $type );
         $type = wl_get_meta_type( 'latitude' );
         $this->assertEquals( 'double', $type );
+        $this->assertEquals( WL_DATA_TYPE_DOUBLE, $type );
         
         $type = wl_get_meta_type( WL_CUSTOM_FIELD_CAL_DATE_START );
         $this->assertEquals( 'date', $type );
         $type = wl_get_meta_type( 'startDate' );
-        $this->assertEquals( 'date', $type );        
+        $this->assertEquals( 'date', $type );
+        $this->assertEquals( WL_DATA_TYPE_DATE, $type );
 
         $type = wl_get_meta_type( WL_CUSTOM_FIELD_LOCATION );
         $this->assertEquals( 'uri', $type );
         $type = wl_get_meta_type( 'location' );
         $this->assertEquals( 'uri', $type );
+        $this->assertEquals( WL_DATA_TYPE_URI, $type );
         
         $type = wl_get_meta_type( 'random_silly_name' );
         $this->assertEquals( null, $type );
@@ -124,20 +138,19 @@ class EntityFunctionsTest extends WP_UnitTestCase
         wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
         
         $custom_fields = wl_entity_taxonomy_get_custom_fields( $place_id );
-        $custom_fields = json_encode( $custom_fields );
         
-        $this->assertContains( 'predicate', $custom_fields );
-        $this->assertContains( 'type', $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
+        $this->assertArrayNotHasKey( WL_CUSTOM_FIELD_LOCATION, $custom_fields );    // Negative test
+        $this->assertArrayHasKey( 'predicate', $custom_fields[WL_CUSTOM_FIELD_GEO_LATITUDE] );
+        $this->assertArrayHasKey( 'type', $custom_fields[WL_CUSTOM_FIELD_GEO_LATITUDE] );
+        $this->assertArrayHasKey( 'export_type', $custom_fields[WL_CUSTOM_FIELD_GEO_LATITUDE] );
         
         // Get all custom_fileds
         $custom_fields = wl_entity_taxonomy_get_custom_fields();
-        $custom_fields = json_encode( $custom_fields );
+        $custom_fields = json_encode( $custom_fields ); // Stringify for brevity
         
-        $this->assertContains( 'predicate', $custom_fields );
-        $this->assertContains( 'type', $custom_fields );
         $this->assertContains( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
         $this->assertContains( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
         $this->assertContains( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
@@ -151,8 +164,8 @@ class EntityFunctionsTest extends WP_UnitTestCase
      */
     function testEntityGetMetaConstraints() {
         
+        // TODO: complete this test
         $fields = wl_entity_taxonomy_get_custom_fields();
-        wl_write_log( 'piedo ' . print_r( $fields ) );
     }
 }
 
