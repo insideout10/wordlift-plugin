@@ -159,7 +159,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		// is what we're going to do here.
 
 		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
-
+                
 		if ( isset( $main_type['custom_fields'] ) ) {
 			foreach ( $main_type['custom_fields'] as $field => $settings ) {
 
@@ -177,11 +177,20 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
-
+                                        
+                                        // Establish triple's <object> type
 					if ( is_null( $type ) ) {
+                                                // No type
 						$sparql .= '<' . wordlift_esc_sparql( $value ) . '>';
 					} else {
-						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
+						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^';
+                                                if( substr( $type, 0, 4 ) == 'http' ) {
+                                                    // Type is defined by a raw uri (es. http://schema.org/PostalAddress)
+                                                    $sparql .= '<' . wordlift_esc_sparql( $type ) . '>';
+                                                } else {
+                                                    // Type is defined in another way (es. xsd:double)
+                                                    $sparql .= wordlift_esc_sparql( $type );
+                                                }
 					}
 
 					$sparql .= " . \n";
@@ -209,17 +218,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 			$sparql .= " <$uri_e> dct:relation <$related_entity_uri> . \n";
 			$sparql .= " <$related_entity_uri> dct:relation <$uri_e> . \n";
 		}
-	}
-
-	// TODO: this should be removed in light of the new custom fields.
-	// Get the coordinates related to the post and save them to the triple store.
-	$coordinates = wl_get_coordinates( $entity_post->ID );
-	if ( is_array( $coordinates ) && isset( $coordinates['latitude'] ) && isset( $coordinates['longitude'] ) ) {
-		$latitude  = wordlift_esc_sparql( $coordinates['latitude'] );
-		$longitude = wordlift_esc_sparql( $coordinates['longitude'] );
-
-		$sparql .= " <$uri_e> geo:lat '$latitude'^^xsd:double . \n";
-		$sparql .= " <$uri_e> geo:long '$longitude'^^xsd:double . \n";
 	}
 
 	// Add SPARQL stmts to write the schema:image.
