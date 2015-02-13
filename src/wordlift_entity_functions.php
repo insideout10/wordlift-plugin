@@ -287,7 +287,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		return $custom_fields;
 	} else {
 		// Return custom fields for this specific entity's type.
-		$type = wl_entity_get_type($entity_id);
+		$type = wl_entity_get_type( $entity_id );
 
 		return $type['custom_fields'];
 	}

@@ -585,7 +585,9 @@ function wl_install_entity_type_data() {
 	wl_entity_type_taxonomy_register();
 
 	// Set the taxonomy data.
+        // Note: parent types must be defined before child types.
 	// TODO: Manage both generic and custom fields as fields
+        // TODO: inherit on microdata template also
 	$terms = array(
                 'thing'         => array(
                         'label'              => 'Thing',
@@ -593,7 +595,14 @@ function wl_install_entity_type_data() {
                         'css'                => 'wl-thing',
                         'uri'                => 'http://schema.org/Thing',
                         'same_as'            => array( '*' ), // set as default.
-                        'custom_fields'      => array(),
+                        'custom_fields'      => array(
+				WL_CUSTOM_FIELD_SAME_AS => array(
+					'predicate'   => 'http://schema.org/sameAs',
+					'type'        => WL_DATA_TYPE_URI,
+                                        'export_type' => 'http://schema.org/Thing',
+					'constraints' => '' // TODO: define uri type (inheritance may cause problems)
+				)
+			),
                         'microdata_template' => '',
                         'templates'          => array(
                                 'subtitle' => '{{id}}'
@@ -602,12 +611,12 @@ function wl_install_entity_type_data() {
 		'creative-work' => array(
 			'label'              => 'Creative Work',
 			'description'        => 'A creative work (or a Music Album).',
-                        'parent'             => 'thing',
+                        'parents'             => array( 'thing' ),
 			'css'                => 'wl-creative-work',
 			'uri'                => 'http://schema.org/CreativeWork',
 			'same_as'            => array(
-				'http://schema.org/MusicAlbum',
-				'http://schema.org/Product'
+				'http://schema.org/MusicAlbum', // TODO: not correct
+				'http://schema.org/Product'     // TODO: not correct
 			),
 			'custom_fields'      => array(),
 			'microdata_template' => '',
@@ -618,7 +627,7 @@ function wl_install_entity_type_data() {
 		'event'         => array(
 			'label'              => 'Event',
 			'description'        => 'An event.',
-                        'parent'             => 'thing',
+                        'parents'             => array( 'thing' ),
 			'css'                => 'wl-event',
 			'uri'                => 'http://schema.org/Event',
 			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
@@ -655,7 +664,7 @@ function wl_install_entity_type_data() {
 		'organization'  => array(
 			'label'              => 'Organization',
 			'description'        => 'An organization, including a government or a newspaper.',
-                        'parent'             => 'thing',
+                        'parents'             => array( 'thing' ),
 			'css'                => 'wl-organization',
 			'uri'                => 'http://schema.org/Organization',
 			'same_as'            => array(
@@ -672,7 +681,7 @@ function wl_install_entity_type_data() {
 		'person'        => array(
 			'label'              => 'Person',
 			'description'        => 'A person (or a music artist).',
-                        'parent'             => 'thing',
+                        'parents'             => array( 'thing' ),
 			'css'                => 'wl-person',
 			'uri'                => 'http://schema.org/Person',
 			'same_as'            => array(
@@ -689,7 +698,7 @@ function wl_install_entity_type_data() {
 		'place'         => array(
 			'label'              => 'Place',
 			'description'        => 'A place.',
-                        'parent'             => 'thing',
+                        'parents'             => array( 'thing' ),
 			'css'                => 'wl-place',
 			'uri'                => 'http://schema.org/Place',
 			'same_as'            => array(
@@ -727,7 +736,28 @@ function wl_install_entity_type_data() {
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
-		)
+		),
+
+                'localbusiness'         => array(
+                    'label'              => 'LocalBusiness',
+                    'description'        => 'A local business.',
+                    'parents'             => array( 'place', 'organization' ),
+                    'css'                => 'wl-organization',
+                    'uri'                => 'http://schema.org/LocalBusiness',
+                    'same_as'            => array(
+                            /*'http://rdf.freebase.com/ns/location.location',
+                            'http://www.opengis.net/gml/_Feature'*/ // TODO: find same as for this type
+                    ),
+                    'custom_fields'      => array(
+                            
+                    ),
+                    'microdata_template' =>
+                            '', // TODO: define microdata template for this type
+                    'templates'          => array(
+                            'subtitle' => '{{id}}'
+                    )
+                )           
+            
 	);
         
 	foreach ( $terms as $slug => $term ) {
@@ -747,30 +777,62 @@ function wl_install_entity_type_data() {
                 }
                 
                 // Check if 'parent' corresponds to an actual term and get its ID.
-                if( !isset( $term['parent'] ) ) {
-                    $term['parent'] = 0;
+                if( !isset( $term['parents'] ) ) {
+                    $term['parents'] = array();
                 }
-                $parent_id = get_term_by( 'slug', $term['parent'], WL_ENTITY_TYPE_TAXONOMY_NAME );
                 
-                if( $parent_id == false ) {
+                $parent_ids = array();
+                foreach( $term['parents'] as $parent_slug ) {
+                    $parent_id = get_term_by( 'slug', $parent_slug, WL_ENTITY_TYPE_TAXONOMY_NAME );
+                    $parent_ids[] = intval( $parent_id->term_id );  // Note: int casting is suggested by Codex: http://codex.wordpress.org/Function_Reference/get_term_by
+                }
+                
+                // Define a parent in the WP taxonomy style (not important for WL)
+                if( empty( $parent_ids ) ) {
                     // No parent
                     $parent_id = 0;
                 } else {
-                    // Get parent id
-                    $parent_id = intval( $parent_id->term_id );  // Note: int casting is suggested by Codex: http://codex.wordpress.org/Function_Reference/get_term_by
+                    // Get first parent
+                    $parent_id = $parent_ids[0];
                 }
                 
                 // Update term with description, slug and parent    
                 wp_update_term( $result['term_id'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
                     'description'   => $term['description'],
                     'slug'          => $slug,
-                    'parent'        => $parent_id
+                    'parent'        => $parent_id   // We give to WP taxonomy just one parent. TODO: see if can give more than one
                 ));
-
+                
+                // Inherit custom fields and microdata template from parent.
+                $term['custom_fields'] = wl_entity_type_taxonomy_type_inheritage( $term['custom_fields'], $parent_ids );
+                
 		// Add custom metadata to the term.
 		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['microdata_template'] );
-	}
+        }
 
+}
+
+/**
+ * Insert into an entity type data-structure the custom fields inherited from parent.
+ * 
+ */
+function wl_entity_type_taxonomy_type_inheritage( $child_term_custom_fields, $parent_term_ids ) {
+        
+    // If we re at the top of hierarchy ...
+    if( empty( $parent_term_ids ) || $parent_term_ids[0] == 0 ) {
+        // ... return custom fields as they are.
+        return $child_term_custom_fields;
+    }
+    
+    // WOOOOOOOOOOOOOOOOO
+    foreach( $parent_term_ids as $parent_term_id ) {
+        $parent_term = wl_entity_type_taxonomy_get_term_options( $parent_term_id );
+        $parent_term_custom_fields = $parent_term['custom_fields'];
+    
+        $merged_custom_fileds = array_merge_recursive( $child_term_custom_fields, $parent_term_custom_fields );    
+    }
+        
+    return $merged_custom_fileds;
 }
 
 /**
