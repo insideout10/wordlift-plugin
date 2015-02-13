@@ -600,7 +600,9 @@ function wl_install_entity_type_data() {
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Thing',
-					'constraints' => '' // TODO: define uri type (inheritance may cause problems)
+					'constraints' => array(
+						'uri_type' => 'Thing'
+					)
 				)
 			),
                         'microdata_template' => '',
@@ -672,7 +674,16 @@ function wl_install_entity_type_data() {
 				'http://rdf.freebase.com/ns/government.government',
 				'http://schema.org/Newspaper'
 			),
-			'custom_fields'      => array(),
+			'custom_fields'      => array(
+                            WL_CUSTOM_FIELD_FOUNDER  => array(
+                                        'predicate'        => 'http://schema.org/founder',
+					'type'        => WL_DATA_TYPE_URI,
+                                        'export_type' => 'http://schema.org/Person',
+					'constraints' => array(
+						'uri_type' => 'Person'
+					)
+				),
+                        ),
 			'microdata_template' => '',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
@@ -806,6 +817,10 @@ function wl_install_entity_type_data() {
                 // Inherit custom fields and microdata template from parent.
                 $term['custom_fields'] = wl_entity_type_taxonomy_type_inheritage( $term['custom_fields'], $parent_ids );
                 
+                /*echo $term['uri'];
+                var_dump( $term['custom_fields'] );
+                echo '</br>';
+                */
 		// Add custom metadata to the term.
 		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['microdata_template'] );
         }
@@ -825,11 +840,12 @@ function wl_entity_type_taxonomy_type_inheritage( $child_term_custom_fields, $pa
     }
     
     // WOOOOOOOOOOOOOOOOO
+    $merged_custom_fileds = $child_term_custom_fields;
     foreach( $parent_term_ids as $parent_term_id ) {
         $parent_term = wl_entity_type_taxonomy_get_term_options( $parent_term_id );
         $parent_term_custom_fields = $parent_term['custom_fields'];
     
-        $merged_custom_fileds = array_merge_recursive( $child_term_custom_fields, $parent_term_custom_fields );    
+        $merged_custom_fileds = array_merge( $merged_custom_fileds, $parent_term_custom_fields );    
     }
         
     return $merged_custom_fileds;

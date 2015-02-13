@@ -20,7 +20,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 	// Add meta box for specific type of entities
 	$entity_id   = get_the_ID();
 	$entity_type = wl_entity_get_type( $entity_id );
-
+        
 	if ( isset( $entity_id ) && is_numeric( $entity_id ) && isset( $entity_type['custom_fields'] ) ) {
 
 		// In some special case, properties must be grouped in one metabox (e.g. coordinates)
@@ -354,7 +354,7 @@ function wl_entities_uri_box_content( $post, $info ) {
 		// Any entity
 		$expected_type = null;
 	}
-
+        
 	// Set Nonce
 	wl_echo_nonce( $meta_name );
 
@@ -391,17 +391,23 @@ function wl_entities_uri_box_content( $post, $info ) {
 		'post_type'                  => WL_ENTITY_TYPE_NAME,
 		WL_ENTITY_TYPE_TAXONOMY_NAME => $expected_type
 	);
-	$candidates = get_posts( $args );
+
+        $candidates = get_posts( $args );
 
 	// Write Autocomplete selection
 	if ( count( $candidates ) > 0 ) {
+            
+                $autocomplete_visible_input_id = 'autocompleteEntity-' . $meta_name;
+                $autocomplete_hidden_input_id = 'autocompleteEntityHidden-' . $meta_name;
+                $autocomplete_create_new_input_id = 'autocompleteCreateNew-' . $meta_name;
+            
 		// Input to show the autocomplete options
-		echo '<input id="autocompleteEntity" style="width:100%" >';
+		echo '<input id="' . $autocomplete_visible_input_id . '" style="width:100%" >';
 		// Input to store the actual chosen values ( autocomplete quirks... )
-		echo '<input type="hidden" id="autocompleteEntityHidden" name="wl_metaboxes[' . $meta_name . ']">';
+		echo '<input type="hidden" id="' . $autocomplete_hidden_input_id . '" name="wl_metaboxes[' . $meta_name . ']">';
 		// Input to create new entity (insert uri or just give a name)
 		$placeholder = __( 'Insert uri or just a name', 'wordlift' );
-		echo '<input id="autocompleteCreateNew" placeholder="' . $placeholder . '" style="width:100%" >';
+		echo '<input id="' . $autocomplete_create_new_input_id . '" placeholder="' . $placeholder . '" style="width:100%" >';
 
 
 		// Add jQuery Autocomplete
@@ -430,19 +436,22 @@ function wl_entities_uri_box_content( $post, $info ) {
 		array_unshift( $simpleCandidates, $newCandidate );
 
 		// Add to Autocomplete available place
-		wp_localize_script( 'jquery-ui-autocomplete', 'availableEntities',
+                $entities_list_name = 'availableEntities' . $meta_name;
+		wp_localize_script( 'jquery-ui-autocomplete', $entities_list_name,
 			array(
 				'list'    => $simpleCandidates,
 				'default' => $defaultEntity
 			)
 		);
-
+                
 		echo "<script type='text/javascript'>
         $ = jQuery;
         $(document).ready(function() {
-            var selector = '#autocompleteEntity';               // to display labels
-            var createNewSelector = '#autocompleteCreateNew';   // to insert new entitiy
-            var hiddenSelector = '#autocompleteEntityHidden';   // to contain the value to be saved
+            var availableEntities = " . $entities_list_name . "
+            console.log(availableEntities);
+            var selector = '#" . $autocomplete_visible_input_id . "';               // to display labels
+            var createNewSelector = '#" . $autocomplete_create_new_input_id . "';   // to insert new entitiy
+            var hiddenSelector = '#" . $autocomplete_hidden_input_id . "';   // to contain the value to be saved
             
             // 'create new' input
             $(createNewSelector).hide()     // Starts hidden

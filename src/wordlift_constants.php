@@ -51,7 +51,7 @@ define( 'WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start' );
 define( 'WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end' );
 define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
-
+define( 'WL_CUSTOM_FIELD_FOUNDER', 'wl_founder');
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
