@@ -19,6 +19,38 @@ function wl_core_get_complementary_relation( $meta_name ) {
 }
 
 /**
+ * Reset relations between a post/entity and another ( A --> B ).
+ * The complmentary relation is reset too ( B --> A ).
+ *
+ * @param int $subject_id The post ID.
+ * @param string $relation Name of the relation.
+ *
+ */
+function wl_core_reset_relation_between_posts_and_entities( $subject_id, $relation ) {
+    
+    // Return if parameters are not set
+    if( empty( $subject_id ) || empty( $relation ) ) {
+        return;
+    }
+    
+    // Get related
+    $related = wl_core_get_related_post_and_entities( $subject_id, $relation );
+    
+    // Reset all related
+    delete_post_meta( $subject_id, $relation );
+    
+    // Get the complementary relation, if exists
+    $inverseRelation = wl_core_get_complementary_relation( $relation );
+    // Add the complementary relation: B1 --> A, B2 --> A, ... , BN --> A
+    if ( !is_null( $inverseRelation ) && !empty( $inverseRelation ) ) {           
+        foreach( $related as $rel_id ) {
+            wl_write_log("Delete relation $inverseRelation from $rel_id to $subject_id");
+            delete_post_meta( (int) $rel_id, $inverseRelation, $subject_id );
+        }
+    }
+}
+
+/**
  * Add a relation between a post/entity and another ( A --> B ).
  * The complmentary relation is also added ( B --> A ).
  *
@@ -42,7 +74,7 @@ function wl_core_add_relation_between_posts_and_entities( $subject_id, $relation
     // Add relation between subject and objects: A --> B1, A-->B2, ... , A -->BN
     wl_core_merge_old_related_with_new( $subject_id, $relation, $object_ids );
 
-    // Get the complmeentary relation, if exists
+    // Get the complementary relation, if exists
     $inverseRelation = wl_core_get_complementary_relation( $relation );
 
     // Add the complementary relation: B1 --> A, B2 --> A, ... , BN --> A
@@ -177,6 +209,19 @@ function wl_get_referencing_posts_ids($entity_id, $field_name = WL_CUSTOM_FIELD_
 
 /**
  * Set the related entity posts IDs for the specified post ID.
+ *
+ * @param int $post_id A post ID.
+ * @param int|array $new_entity_post_ids An array of related entity post IDs.
+ * @param string $field_name Name of the meta (used for the 4W)
+ */
+function wl_set_referenced_entities( $post_id, $new_entity_post_ids, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
+    
+    wl_core_reset_relation_between_posts_and_entities($new_entity_post_ids, $field_name);
+    wl_core_add_relation_between_posts_and_entities( $post_id, $field_name, $new_entity_post_ids );
+}
+
+/**
+ * Add the related entity posts IDs for the specified post ID.
  *
  * @param int $post_id A post ID.
  * @param int|array $new_entity_post_ids An array of related entity post IDs.
