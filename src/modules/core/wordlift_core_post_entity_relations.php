@@ -216,7 +216,7 @@ function wl_get_referencing_posts_ids($entity_id, $field_name = WL_CUSTOM_FIELD_
  */
 function wl_set_referenced_entities( $post_id, $new_entity_post_ids, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
     
-    wl_core_reset_relation_between_posts_and_entities($new_entity_post_ids, $field_name);
+    wl_core_reset_relation_between_posts_and_entities( $post_id, $field_name );
     wl_core_add_relation_between_posts_and_entities( $post_id, $field_name, $new_entity_post_ids );
 }
 
