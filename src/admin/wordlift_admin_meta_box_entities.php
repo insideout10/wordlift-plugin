@@ -448,7 +448,6 @@ function wl_entities_uri_box_content( $post, $info ) {
         $ = jQuery;
         $(document).ready(function() {
             var availableEntities = " . $entities_list_name . "
-            console.log(availableEntities);
             var selector = '#" . $autocomplete_visible_input_id . "';               // to display labels
             var createNewSelector = '#" . $autocomplete_create_new_input_id . "';   // to insert new entitiy
             var hiddenSelector = '#" . $autocomplete_hidden_input_id . "';   // to contain the value to be saved
