@@ -159,6 +159,26 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertContains( WL_CUSTOM_FIELD_LOCATION, $custom_fields );
     }
     
+    function testWlEntityTaxonomyCustomFieldsInheritance() {
+        
+        // Create entity and set type
+        $business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+        wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
+        
+        // Get custom fields
+        $custom_fields = wl_entity_taxonomy_get_custom_fields( $business_id );
+        
+        // Check inherited custom fields:
+        // sameAs from Thing
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_SAME_AS, $custom_fields );
+        // latitude from Place
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
+        // founder from Organization
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_FOUNDER, $custom_fields );
+        // negative test
+        $this->assertArrayNotHasKey( WL_CUSTOM_FIELD_CAL_DATE_START, $custom_fields ); 
+    }
+    
     /**
      * Tests the *wl_get_meta_constraints* function
      */
