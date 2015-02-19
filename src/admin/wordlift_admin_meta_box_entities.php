@@ -112,7 +112,13 @@ function wl_entities_box_content( $post ) {
 	wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
 
 	// get the related entities IDs.
-	$related_entities_ids = wl_get_referenced_entity_ids( $post->ID );
+        if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
+            // If we edit an entity, we deal with related entities
+            $related_entities_ids = wl_get_related_entities( $post->ID );
+        } else {
+            // If we edit a post, we deal with referenced entities
+            $related_entities_ids = wl_get_referenced_entities( $post->ID );
+        }
 
 	if ( ! is_array( $related_entities_ids ) ) {
 		wl_write_log( "related_entities_ids is not of the right type." );
@@ -125,7 +131,7 @@ function wl_entities_box_content( $post ) {
 
 	// check if there are related entities.
 	if ( ! is_array( $related_entities_ids ) || 0 === count( $related_entities_ids ) ) {
-		_e( 'No related entities', 'wordlift' );
+		_e( 'No entities', 'wordlift' );
 
 		// print an empty entities array.
 		wl_entities_box_js( array() );

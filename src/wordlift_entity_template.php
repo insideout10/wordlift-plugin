@@ -26,9 +26,7 @@ function wl_entity_template( $template ) {
     wl_write_log( "wl_entity_template : processing [ template :: $template ]" );
 
     // Get the referencing posts for the query.
-    $post_ids = array_map( function ( $item ) {
-        return $item->ID;
-    }, wl_get_referencing_posts( get_the_ID() ) );
+    $post_ids = wl_get_referencing_posts( get_the_ID() );
 
     // Query for the referencing posts. The number of displayed posts should be limited by WordPress automatically.
     query_posts( array(

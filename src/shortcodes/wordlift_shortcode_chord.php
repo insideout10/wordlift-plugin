@@ -24,7 +24,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
     
     $entities = array();
     foreach ( $post_ids as $id ) {
-        $entities = array_merge( $entities, wl_get_referenced_entity_ids( $id ) );
+        $entities = array_merge( $entities, wl_get_referenced_entities( $id ) );
     }
 
     $famous_entities = array_count_values($entities);
@@ -67,12 +67,11 @@ function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null
     }
 
     // Get the post IDs that reference this entity.
-    $related_ids = array_map( function( $post ) {
-        return $post->ID;
-    }, wl_get_referencing_posts( $post_id ) );
-
-    // Get the post IDs referenced by this entity/post.
-    $related_ids = array_merge( $related_ids, wl_get_referenced_entity_ids( $post_id ) );
+    $related_ids = wl_get_referencing_posts( $post_id );
+    
+    // Get the post IDs referenced  or related by this entity/post.
+    $related_ids = array_merge( $related_ids, wl_get_referenced_entities( $post_id ) );
+    $related_ids = array_merge( $related_ids, wl_get_related_entities( $post_id ) );
     $related_ids = array_unique( $related_ids );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.

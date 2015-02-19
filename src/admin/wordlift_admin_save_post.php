@@ -32,7 +32,7 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 
 	// when a post is published, then all the referenced entities must be published.
 	if ( 'publish' !== $old_status && 'publish' === $new_status ) {
-		foreach ( wl_get_referenced_entity_ids( $post->ID ) as $entity_id ) {
+		foreach ( wl_get_referenced_entities( $post->ID ) as $entity_id ) {
 			wl_update_post_status( $entity_id, 'publish' );
 		}
 	}
@@ -52,7 +52,7 @@ function rl_delete_post( $post ) {
 	$post_id = ( is_numeric( $post ) ? $post : $post->ID );
 
 	// hide all entities that are not referenced by any published post.
-	foreach ( wl_get_referenced_entity_ids( $post_id ) as $entity_id ) {
+	foreach ( wl_get_referenced_entities( $post_id ) as $entity_id ) {
 
 		// consider only entities here, because we don't want to hide a post.
 		if ( WL_ENTITY_TYPE_NAME !== get_post_type( $entity_id ) ) {
@@ -61,7 +61,8 @@ function rl_delete_post( $post ) {
 
 		// check if there is at least one referencing post published.
 		$is_published = array_reduce( wl_get_referencing_posts( $entity_id ), function ( $carry, $item ) {
-			return ( $carry || ( 'publish' === $item->post_status ) );
+                    $post = get_post( $item );
+                    return ( $carry || ( 'publish' === $post->post_status ) );
 		} );
 
 		// set the entity to draft if no referencing posts are published.

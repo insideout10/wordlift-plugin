@@ -229,46 +229,9 @@ function wl_add_referenced_entities( $post_id, $new_entity_ids, $field_name = WL
  * @param int $post_id A post ID.
  * @param string $field_name Name of the meta (used for the 4W)
  */
-function wl_get_referenced_entity( $post_id, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITIES ) {
+function wl_get_referenced_entities( $post_id, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITIES ) {
 
     return wl_core_get_related_post_and_entities( $post_id, $field_name );
-}
-
-/**
- * Add related post IDs to the specified post ID, automatically choosing whether to add the related to entities or to
- * posts.
- *
- * @param int $post_id The post ID.
- * @param int|array $related_id A related post/entity ID or an array of posts/entities.
- */
-function wl_add_related($post_id, $related_id) {
-
-    // Ensure we're dealing with an array.
-    $related_id_array = ( is_array($related_id) ? $related_id : array($related_id) );
-
-    // Prepare the related arrays.
-    $related_entities = array();
-    $related_posts = array();
-
-    foreach ($related_id_array as $id) {
-
-        // If it's an entity add the entity to the related entities.
-        if ('entity' === get_post_type($id)) {
-            array_push($related_entities, $id);
-        } else {
-            // Else add it to the related posts.
-            array_push($related_posts, $id);
-        }
-    }
-
-    if (0 < count($related_entities)) {
-        wl_add_referenced_entities($post_id, $related_entities);
-    }
-
-    // TODO: check this, we're adding related posts to a post.
-    if (0 < count($related_posts)) {
-        wl_add_related_posts($post_id, $related_posts);
-    }
 }
 
 /**
@@ -286,10 +249,10 @@ function wl_get_post_4w_entities($post_id) {
     }
 
     return array(
-        WL_CUSTOM_FIELD_WHAT_ENTITIES => wl_get_referenced_entity($post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES),
-        WL_CUSTOM_FIELD_WHERE_ENTITIES => wl_get_referenced_entity($post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES),
-        WL_CUSTOM_FIELD_WHEN_ENTITIES => wl_get_referenced_entity($post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES),
-        WL_CUSTOM_FIELD_WHO_ENTITIES => wl_get_referenced_entity($post_id, WL_CUSTOM_FIELD_WHO_ENTITIES)
+        WL_CUSTOM_FIELD_WHAT_ENTITIES => wl_get_referenced_entities($post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES),
+        WL_CUSTOM_FIELD_WHERE_ENTITIES => wl_get_referenced_entities($post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES),
+        WL_CUSTOM_FIELD_WHEN_ENTITIES => wl_get_referenced_entities($post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES),
+        WL_CUSTOM_FIELD_WHO_ENTITIES => wl_get_referenced_entities($post_id, WL_CUSTOM_FIELD_WHO_ENTITIES)
     );
 }
 

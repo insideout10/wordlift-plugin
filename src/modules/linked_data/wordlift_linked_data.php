@@ -92,12 +92,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		}
 	}
 
-	// Save entities coming as embedded in the text.
-//    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
-
-	// Update related entities.
-	wl_add_referenced_entities( $post->ID, wl_linked_data_content_get_embedded_entities( $post->post_content ) );
-
 	// Push the post to Redlink.
 	wl_push_to_redlink( $post->ID );
 
@@ -192,7 +186,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 	// No post found, create a new one.
 	$params = array(
 		'post_status'  => 'publish', //( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
-		'post_type'    => 'entity',
+		'post_type'    => WL_ENTITY_TYPE_NAME,
 		'post_title'   => $label,
 		'post_content' => $description,
 		'post_excerpt' => ''
@@ -273,13 +267,17 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 		set_post_thumbnail( $post_id, $attachment_id );
 	}
         
-        // Add the related post ID if provided.
+        // Add the related and referenced entities if provided.
+        // NOTE: related !== referenced. See wordlift core methods.
 	if ( null !== $related_post_id ) {
-		// Add related entities or related posts according to the post type.
-		wl_add_related( $post_id, $related_post_id );
-		// And vice-versa (be aware that relations are pushed to Redlink with wl_push_to_redlink).
-		wl_add_related( $related_post_id, $post_id );
-	}
+                if( get_post_type( $related_post_id ) == WL_ENTITY_TYPE_NAME ) {
+                    // Adding related entitity to an entity
+                    wl_add_related_entities( $post_id, $related_post_id );
+                } else {
+                    // Adding this entity as referenced by a post
+                    wl_add_referenced_entities( $related_post_id, $post_id );
+                }
+        }
         
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.

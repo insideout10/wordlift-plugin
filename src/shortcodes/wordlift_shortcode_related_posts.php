@@ -40,7 +40,8 @@ add_action( 'init', 'wordlift_register_shortcode_related_posts');
 function wordlift_shortcode_get_related_posts( $post_id, $post_status = 'published' ) {
 
     // get related posts.
-    $related_posts_ids = get_post_meta( $post_id, 'wordlift_related_posts', true );
+    // TODO: implement graph navigation to find related *posts*
+    $related_posts_ids = wl_get_related_entities( $post_id );
 
     // there are no related posts.
     if ( !is_array( $related_posts_ids ) || 0 === count( $related_posts_ids ) ) {

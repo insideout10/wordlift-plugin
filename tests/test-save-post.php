@@ -41,12 +41,12 @@ EOF;
 
         // bind the entities
         wl_add_referenced_entities( $post_1_id, array( $entity_1_id, $entity_2_id ) );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         wordlift_save_post_and_related_entities( $post_1_id );
 
         // bind the entities
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
     }
 
     function testReferencedEntities() {
@@ -76,11 +76,11 @@ EOF;
 
         // bind the entities
         wl_add_referenced_entities( $post_1_id, array( $entity_1_id, $entity_2_id ) );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // publish post 1
         wl_update_post_status( $post_1_id, 'publish' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
     }
 
@@ -111,7 +111,7 @@ EOF;
 
         // publish the post.
         wl_update_post_status( $post_1_id, 'publish' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check the post is published on Redlink.
         $lines = $this->getPostTriples( $post_1_id );
@@ -119,7 +119,7 @@ EOF;
 
         // unpublish the post.
         wl_update_post_status( $post_1_id, 'draft' );
-//        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+//        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check the post is not published on Redlink.
         $lines = $this->getPostTriples( $post_1_id );
@@ -138,7 +138,7 @@ EOF;
 
         // publish post 2
         wl_update_post_status( $post_2_id, 'publish' );
-//        $this->assertCount( 1, wl_get_referenced_entity_ids( $post_2_id ) );
+//        $this->assertCount( 1, wl_get_referenced_entities( $post_2_id ) );
 
         // check post 2 published
         $lines = $this->getPostTriples( $post_2_id );
@@ -146,7 +146,7 @@ EOF;
 
         // publish post
         wl_update_post_status( $post_1_id, 'publish' );
-//        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+//        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check post 2 published
         $lines = $this->getPostTriples( $post_1_id );
@@ -160,7 +160,7 @@ EOF;
 
         // unpublish post 1
         wl_update_post_status( $post_1_id, 'draft' );
-//        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+//        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         $lines = $this->getPostTriples( $post_1_id );
 //        $this->assertCount( 1, $lines );
