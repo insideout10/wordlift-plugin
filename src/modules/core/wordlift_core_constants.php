@@ -13,12 +13,12 @@ define('WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS', 'wl_is_where_for_posts');
 define('WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS', 'wl_is_when_for_posts');
 
 // The name of the custom field that stores the IDs of entities referenced by posts.
-define('WL_CUSTOM_FIELD_REFERENCED_ENTITY', 'wordlift_related_entities');
+define('WL_CUSTOM_FIELD_REFERENCED_ENTITIES', 'wl_referenced_entities');
 // ... and viceversa.
-define('WL_CUSTOM_FIELD_IS_REFERENCED_BY', 'wordlift_is_related_entity_for');
+define('WL_CUSTOM_FIELD_IS_REFERENCED_BY_POSTS', 'wl_is_referenced_by_posts');
 
 // The name of the custom field that stores the IDs of posts referenced by posts/entities
-define('WL_CUSTOM_FIELD_RELATED_POST', 'wordlift_related_posts');
+define('WL_CUSTOM_FIELD_RELATED_ENTITIES', 'wl_related_entity');
 
 // Mapping between a post/entity relation and its complementary relation.
 // The array is serialized because array constants are only from php 5.6 on.
@@ -27,6 +27,6 @@ define('WL_CORE_POST_ENTITY_RELATIONS_MAPPING', serialize(array(
     WL_CUSTOM_FIELD_WHERE_ENTITIES => WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS,
     WL_CUSTOM_FIELD_WHEN_ENTITIES => WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS,
     WL_CUSTOM_FIELD_WHO_ENTITIES => WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS,
-    WL_CUSTOM_FIELD_REFERENCED_ENTITY => WL_CUSTOM_FIELD_IS_REFERENCED_BY,
-    WL_CUSTOM_FIELD_RELATED_POST => WL_CUSTOM_FIELD_RELATED_POST,
+    WL_CUSTOM_FIELD_REFERENCED_ENTITIES => WL_CUSTOM_FIELD_IS_REFERENCED_BY_POSTS,  // a POST references an ENTITY
+    WL_CUSTOM_FIELD_RELATED_ENTITIES => WL_CUSTOM_FIELD_RELATED_ENTITIES,       // an ENTITY is related to an ENTITY
 )));
