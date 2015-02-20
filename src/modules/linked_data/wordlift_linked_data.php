@@ -99,8 +99,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $post->post_content );
         
         // Delete previously saved related/referenced
-        wl_set_referenced_entities( $post_id, array() );
-        wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
+        if( get_post_type( $post->post_type ) == WL_ENTITY_TYPE_NAME ) {
+            wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
+        } else {
+            wl_set_referenced_entities( $post_id, array() );
+        }
         
         // Add the related/referenced entities if provided.
         // NOTE: related !== referenced. See wordlift core methods.
