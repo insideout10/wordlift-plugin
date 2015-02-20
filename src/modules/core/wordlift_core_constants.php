@@ -18,7 +18,7 @@ define('WL_CUSTOM_FIELD_REFERENCED_ENTITIES', 'wl_referenced_entities');
 define('WL_CUSTOM_FIELD_IS_REFERENCED_BY_POSTS', 'wl_is_referenced_by_posts');
 
 // The name of the custom field that stores the IDs of posts referenced by posts/entities
-define('WL_CUSTOM_FIELD_RELATED_ENTITIES', 'wl_related_entity');
+define('WL_CUSTOM_FIELD_RELATED_ENTITIES', 'wl_related_entities');
 
 // Mapping between a post/entity relation and its complementary relation.
 // The array is serialized because array constants are only from php 5.6 on.
