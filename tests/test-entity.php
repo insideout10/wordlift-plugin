@@ -178,6 +178,9 @@ class EntityTest extends WP_UnitTestCase
         $this->assertEquals( 0, count( $types ) );
 //        $this->assertEquals( $type, wl_get_entity_main_type( $entity_post->ID ) );
 
+/*
+ *  TODO: tests canceled after modifying *wl_save_entity*, which doen no more set related/referenced posts
+ * 
         // Create related resources.
         $world_wide_web_id = $this->create_World_Wide_Web_Foundation( $entity_post->ID );
         $mit_id            = $this->create_MIT_Center_for_Collective_Intelligence( $entity_post->ID );
@@ -187,6 +190,7 @@ class EntityTest extends WP_UnitTestCase
         $this->assertEquals( 2, count( $related_entities ) );
         $this->assertEquals( true, in_array( $world_wide_web_id, $related_entities ) );
         $this->assertEquals( true, in_array( $mit_id, $related_entities ) );
+ */
     }
 
     function testSaveEventWithStartAndEndDates() {
