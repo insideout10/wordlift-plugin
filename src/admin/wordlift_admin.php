@@ -19,16 +19,14 @@ function wl_serialize_entity( $entity ) {
 	$images = wl_get_image_urls( $entity->ID );
 
 	return array(
-		'id'         => wl_get_entity_uri( $entity->ID ),
-		'label'      => $entity->post_title,
-		'sameAs'     => wl_get_same_as( $entity->ID ),
-		'type'       => $type['uri'],
-		'css'        => $type['css_class'],
-		'types'      => wl_get_entity_types( $entity->ID ),
-		'thumbnail'  => ( isset( $images[0] ) ? $images[0] : null ),
-		'thumbnails' => $images,
-		'source'     => 'wordlift',
-		'sources'    => array( 'wordlift' )
+		'id'         	=> wl_get_entity_uri( $entity->ID ),
+		'label'      	=> $entity->post_title,
+		'description'	=> wp_strip_all_tags( $entity->post_content ),
+		'sameAs'     	=> wl_get_same_as( $entity->ID ),
+		'mainType'      => str_replace( 'wl-', '', $type['css_class'] ),
+		'types'      	=> wl_get_entity_types( $entity->ID ),
+		'images' 		=> $images,
+
 	);
 }
 
@@ -47,7 +45,7 @@ function wl_remove_text_annotations( $data ) {
 	//    $pattern = '/<span class=\\\"textannotation\\\" id=\\\"[^\"]+\\\">([^<]+)<\/span>/i';
 	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation\\\"[^>]*>([^<]+)<\/\1>/im';
 
-	wl_write_log( "Removing text annotations [ pattern :: $pattern ][ data content :: ${data['post_content']} ]" );
+	wl_write_log( "Removing text annotations [ pattern :: $pattern ]" );
 
 	// Remove the pattern while it is found (match nested annotations).
 	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {

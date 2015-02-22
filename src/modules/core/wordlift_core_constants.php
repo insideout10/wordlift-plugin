@@ -30,3 +30,38 @@ define('WL_CORE_POST_ENTITY_RELATIONS_MAPPING', serialize(array(
     WL_CUSTOM_FIELD_REFERENCED_ENTITY => WL_CUSTOM_FIELD_IS_REFERENCED_BY,
     WL_CUSTOM_FIELD_RELATED_POST => WL_CUSTOM_FIELD_RELATED_POST,
 )));
+
+// Classification boxes configuration for angularjs edit-post widget
+// The array is serialized because array constants are only from php 5.6 on.
+define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize(array(
+    array(
+    	'id' 				=> WL_CUSTOM_FIELD_WHAT_ENTITIES,
+    	'label' 			=> 'What',
+    	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing'),
+        'registeredWidgets' => array('ImageSuggestor'),
+        'selectedEntities' 	=> array()
+    	),
+    array(
+    	'id' 				=> WL_CUSTOM_FIELD_WHO_ENTITIES,
+    	'label' 			=> 'Who',
+    	'registeredTypes' 	=> array('organization', 'person'),
+        'registeredWidgets' => array('ImageSuggestor'),
+        'selectedEntities' 	=> array()
+    	),
+    array(
+    	'id' 				=> WL_CUSTOM_FIELD_WHERE_ENTITIES,
+    	'label' 			=> 'Where',
+    	'registeredTypes' 	=> array('place'),
+        'registeredWidgets' => array('ImageSuggestor'),
+        'selectedEntities' 	=> array()
+    	),
+    array(
+    	'id' 				=> WL_CUSTOM_FIELD_WHEN_ENTITIES,
+    	'label' 			=> 'When',
+    	'registeredTypes' 	=> array('event'),
+        'registeredWidgets' => array('ImageSuggestor'),
+        'selectedEntities' 	=> array()
+    	),
+)));
+
+

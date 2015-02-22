@@ -143,7 +143,7 @@ function wordlift_register_buttons( $buttons ) {
  */
 function wordlift_register_tinymce_javascript( $plugin_array ) {
 	// add the wordlift plugin.
-	$plugin_array['wordlift'] = plugins_url( 'js/wordlift.js', __FILE__ );
+	$plugin_array['wordlift'] = plugins_url( 'js/wordlift-reloaded.js', __FILE__ );
 
 	return $plugin_array;
 }
@@ -185,7 +185,7 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_script( 'wpdialogs' );
 	wp_enqueue_style( 'wp-jquery-ui-dialog' );
 
-	wp_register_style( 'wordlift_css', plugins_url( 'css/wordlift.css', __FILE__ ) );
+	wp_register_style( 'wordlift_css', plugins_url( 'css/wordlift-reloaded.css', __FILE__ ) );
 	wp_enqueue_style( 'wordlift_css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
@@ -807,7 +807,7 @@ add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
 
 // TODO - Check installation
 add_action( 'activate_wordlift/wordlift.php', 'wl_install_entity_type_data' );
-add_action( 'init', 'wl_install_entity_type_data' );
+// add_action( 'init', 'wl_install_entity_type_data' );
 
 require_once( 'wordlift_entity_functions.php' );
 

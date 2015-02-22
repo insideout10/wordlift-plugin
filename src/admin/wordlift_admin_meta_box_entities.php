@@ -105,78 +105,70 @@ add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
  */
 function wl_entities_box_content( $post ) {
 
+	// Store referenced entity ids
+	$referenced_entity_ids = array();
+
 	wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
+	// Angularjs edit-post widget wrapper
+	echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
+	// Angularjs edit-post widget classification boxes configuration
+	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
+	// Add selected entities to classification_boxes
+	foreach ( $classification_boxes as $i => $box ) {
+		// Build the proper relation name
+		$relation_name = $box['id'];
+		
+		wl_write_log( "Going to related of $relation_name" );
+    
+		// Get entity ids related to the current post for the given relation name
+		$entity_ids = wl_core_get_related_post_and_entities( $post->ID, $relation_name );
+		// Add as referenced entities
+		$referenced_entity_ids = array_merge( $referenced_entity_ids, $entity_ids);
 
-	// get the related entities IDs.
-	$related_entities_ids = wl_get_referenced_entity_ids( $post->ID );
-
-	if ( ! is_array( $related_entities_ids ) ) {
-		wl_write_log( "related_entities_ids is not of the right type." );
-
-		// print an empty entities array.
-		wl_entities_box_js( array() );
-
-		return;
+		// Transform entity ids array in entity uris array
+		array_walk($entity_ids, function(&$entity_id) {
+    		// Retrieve the entity uri for the given entity id
+    		$entity_id = wl_get_entity_uri( $entity_id );
+		});
+		
+		// Enhance current box selected entities
+		$classification_boxes[ $i ]['selectedEntities'] = $entity_ids;
 	}
-
-	// check if there are related entities.
-	if ( ! is_array( $related_entities_ids ) || 0 === count( $related_entities_ids ) ) {
-		_e( 'No related entities', 'wordlift' );
-
-		// print an empty entities array.
-		wl_entities_box_js( array() );
-
-		return;
+	// Json encoding for classification boxes structure
+	$classification_boxes = json_encode( $classification_boxes );
+	// Retrievies all referenced entities performing a Wp_Query 
+	// if there is at least one referenced entity id
+    $referenced_entities = array();
+    if ( !empty( $referenced_entity_ids ) ){
+    	$args = array(
+    		'post_status' => 'any',
+    		'post__in'    => array_unique( $referenced_entity_ids ),
+    		'post_type'   => 'entity'
+		);
+		$query            = new WP_Query( $args );
+		$referenced_entities = $query->get_posts();
 	}
+	// Build the entity storage object
+    $referenced_entities_obj = array();
+    foreach ( $referenced_entities as $related_entity ) {
+    	$entity = wl_serialize_entity( $related_entity );
+    	$referenced_entities_obj[ $entity['id'] ] = $entity;
+    }
 
-	// The Query
-	$args             = array(
-		'post_status' => 'any',
-		'post__in'    => $related_entities_ids,
-		'post_type'   => 'entity'
-	);
-	$query            = new WP_Query( $args );
-	$related_entities = $query->get_posts();
-
-	// Print out each entity.
-	foreach ( $related_entities as $related_entity ) {
-		echo( '<a href="' . get_edit_post_link( $related_entity->ID ) . '">' . $related_entity->post_title . '</a><br>' );
-	}
-
-	// Print the JavaScript representation of the entities.
-	wl_entities_box_js( $related_entities );
-}
-
-/**
- * Print out a javascript representation of the provided entities collection.
- *
- * @param array $entities An array of entities.
- */
-function wl_entities_box_js( $entities ) {
-
+    $referenced_entities_obj = empty($referenced_entities_obj) ? 
+    	'{}' : json_encode( $referenced_entities_obj );
+	
 	echo <<<EOF
     <script type="text/javascript">
         jQuery( function() {
-            var e = {};
+        	if ('undefined' == typeof window.wordlift) {
+            	window.wordlift = {}
+            	window.wordlift.entities = {}  		
+        	}
 
-EOF;
-
-	foreach ( $entities as $entity ) {
-		// uri
-		$uri = json_encode( wl_get_entity_uri( $entity->ID ) );
-		// entity object
-		$obj = json_encode( wl_serialize_entity( $entity ) );
-
-		echo "e[$uri] = $obj;";
-	}
-
-	echo <<<EOF
-        if ('undefined' == typeof window.wordlift) {
-            window.wordlift = {}
-        }
-        window.wordlift.entities = e;
-
-        } );
+        	window.wordlift.classificationBoxes = $classification_boxes;
+        	window.wordlift.entities = $referenced_entities_obj;
+        });
     </script>
 EOF;
 }

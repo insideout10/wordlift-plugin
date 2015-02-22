@@ -19,6 +19,34 @@ function wl_core_get_complementary_relation( $meta_name ) {
 }
 
 /**
+ * Reset relations between a post/entity and another ( A --> B ).
+ * The complmentary relation is reset too ( B --> A ).
+ *
+ * @param int $subject_id The post ID.
+ * @param string $relation Name of the relation.
+ *
+ */
+function wl_core_reset_relation_between_posts_and_entities( $subject_id, $relation = WL_CUSTOM_FIELD_REFERENCED_ENTITY ) {
+    
+    // Return if parameters are not set
+    if( empty( $subject_id ) || empty( $relation ) ) {
+        return;
+    }
+    // Get related
+    $related = wl_core_get_related_post_and_entities( $subject_id, $relation );
+    // Reset all related
+    delete_post_meta( $subject_id, $relation );
+    // Get the complmeentary relation, if exists
+    $inverseRelation = wl_core_get_complementary_relation( $relation );
+    // Add the complementary relation: B1 --> A, B2 --> A, ... , BN --> A
+    if ( !is_null( $inverseRelation ) && !empty( $inverseRelation ) ) {           
+        foreach( $related as $rel_id ) {
+            wl_write_log("Delete relation $inverseRelation from $rel_id to $subject_id");
+            delete_post_meta( (int) $rel_id, $inverseRelation, $subject_id );
+        }
+    }
+}
+/**
  * Add a relation between a post/entity and another ( A --> B ).
  * The complmentary relation is also added ( B --> A ).
  *
@@ -90,7 +118,8 @@ function wl_core_merge_old_related_with_new( $subject_id, $relation, $new_relate
     // Add new values (combined with old ones)
     foreach( $related as $rel_id ) {
         // Add meta value (convert to int if the id is a string)
-        add_post_meta( $subject_id, $relation, (int)$rel_id );
+        // WARN if a string is given an invalid value 0 is saved
+        add_post_meta( $subject_id, $relation, (int) $rel_id );
     }
 }
 
@@ -154,7 +183,9 @@ function wl_get_referencing_posts($entity_id, $field_name = WL_CUSTOM_FIELD_IS_R
     
     $posts = array();
     foreach( $post_ids as $post_id ) {
-        $posts[] = get_post( $post_id );
+        if ( $post = get_post( $post_id ) ) {
+          $posts[] = $post;  
+        }
     }
     
     return $posts;

@@ -24,7 +24,6 @@ function wl_configuration_set( $settings, $key, $value ) {
  * @return string The configured WordLift key or an empty string.
  */
 function wl_configuration_get_key() {
-
 	$options = get_option( 'wl_general_settings' );
         
 	if( isset( $options['key'] ) ) {
