@@ -207,10 +207,6 @@ EOF;
         $lines = $this->getPostTriples( $entity_1_id );
         $this->assertCount( 1, $lines );
 
-        $lines = $this->getPostTriples( $entity_2_id );
-        $this->assertCount( 1, $lines );
-
-
         // publish post 2
         wl_update_post_status( $post_2_id, 'publish' );
 
