@@ -92,6 +92,39 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		}
 	}
         
+        
+        // Retrieve box classification 
+	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
+	// Loop trough boxes
+	foreach ( $classification_boxes as $box) {
+		// Box id matchs related relation name
+		$relation = $box['id'];
+		
+		wl_write_log( "Going to reset relation instances of type $relation for post $post_id ..." );
+		// Reset previous existing instnaces		
+		wl_core_reset_relation_between_posts_and_entities( $post_id, $relation );
+		
+		// Check if other relations instances has to be added
+		if ( isset( $_POST['wl_boxes'] ) ) {			
+			
+			$boxes_via_post = $_POST['wl_boxes'] ;
+			$entity_ids = array();
+
+			if ( isset( $boxes_via_post[ $relation ] ))  {	
+				foreach ( $boxes_via_post[ $relation ] as $uri ) {
+					if ( $entity_post = wl_get_entity_post_by_uri( $uri ) ) {
+						array_push( $entity_ids, $entity_post->ID );	
+						wl_write_log( "Going to relate entity {$entity_post->ID} to post $post_id trough $relation relation ..." );
+					};
+				}
+			}
+
+			// Finally add relation instances
+			wl_core_add_relation_between_posts_and_entities( $post_id, $relation, $entity_ids);
+	
+		}
+	}
+        
         // Save entities coming as embedded in the text.
 //    wordlift_save_entities_embedded_as_spans( $post->post_content, $post_id );
 	
@@ -212,7 +245,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 
 	// No post found, create a new one.
 	$params = array(
-		'post_status'  => 'publish', //( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
+		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
 		'post_type'    => WL_ENTITY_TYPE_NAME,
 		'post_title'   => $label,
 		'post_content' => $description,
@@ -386,7 +419,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	// Match all itemid attributes.
 	$pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
 
-	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ][ content :: $content ]" );
+	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ]" );
 
 	// Remove the pattern while it is found (match nested annotations).
 	$matches = array();

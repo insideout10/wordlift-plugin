@@ -9,7 +9,7 @@ function wordlift_mce_css( $mce_css ) {
     if ( ! empty( $mce_css ) )
         $mce_css .= ',';
 
-    $mce_css .= plugins_url('css/wordlift.css', __FILE__ );
+    $mce_css .= plugins_url('css/wordlift-reloaded.css', __FILE__ );
 
     return $mce_css;
 }

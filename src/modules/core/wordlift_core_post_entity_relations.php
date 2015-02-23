@@ -40,6 +40,7 @@ function wl_core_reset_relation_between_posts_and_entities( $subject_id, $relati
     delete_post_meta( $subject_id, $relation );
     
     // Get the complementary relation, if exists
+
     $inverseRelation = wl_core_get_complementary_relation( $relation );
     // Add the complementary relation: B1 --> A, B2 --> A, ... , BN --> A
     if ( !is_null( $inverseRelation ) && !empty( $inverseRelation ) ) {           
@@ -122,7 +123,8 @@ function wl_core_merge_old_related_with_new( $subject_id, $relation, $new_relate
     // Add new values (combined with old ones)
     foreach( $related as $rel_id ) {
         // Add meta value (convert to int if the id is a string)
-        add_post_meta( $subject_id, $relation, (int)$rel_id );
+        // WARN if a string is given an invalid value 0 is saved
+        add_post_meta( $subject_id, $relation, (int) $rel_id );
     }
 }
 
