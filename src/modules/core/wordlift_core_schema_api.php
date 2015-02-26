@@ -73,17 +73,19 @@ function wl_schema_get_type_properties( $type_name ) {
  * @return array of allowed types or NULL in case of property not found.
  * 
  * The following types are supported (defined as constants):
- * WL_DATA_TYPE_URI
- * WL_DATA_TYPE_DATE
- * WL_DATA_TYPE_INTEGER
- * WL_DATA_TYPE_DOUBLE
- * WL_DATA_TYPE_BOOLEAN
- * WL_DATA_TYPE_STRING,
- * or a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
+ * - WL_DATA_TYPE_URI
+ * - WL_DATA_TYPE_DATE
+ * - WL_DATA_TYPE_INTEGER
+ * - WL_DATA_TYPE_DOUBLE
+ * - WL_DATA_TYPE_BOOLEAN
+ * - WL_DATA_TYPE_STRING
+ * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
  */
 function wl_schema_get_property_expected_type( $property_name ) {
-    
+    return null;
 }
 
 
 
+
+// TODO: move here methods from wordlift_entity_functions.php
