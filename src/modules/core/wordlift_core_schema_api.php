@@ -13,7 +13,8 @@
  * @return array An array of values or NULL in case of no values (or error).
  */
 function wl_schema_get_value( $post_id, $property_name ) {
-    return null;
+    
+    return wl_get_meta_value( $property_name, $post_id );
 }
 
 /**
@@ -27,6 +28,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
  */
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     
+    return true;
 }
 
 
@@ -59,7 +61,8 @@ function wl_schema_set_types( $post_id, $type_names ) {
  * 
  * @param $type_name string Name of the type (e.g. Type, for the http://schema.org/Type)
  * 
- * @return array The method returns an array of supported properties for the type, e.g. (‘startDate’, ‘endDate’) for an Event. You can call wl_schema_get_property_expected_type on each to know which data type they expect.
+ * @return array The method returns an array of supported properties for the type, e.g. (‘startDate’, ‘endDate’) for an Event.
+ * You can call wl_schema_get_property_expected_type on each to know which data type they expect.
  */
 function wl_schema_get_type_properties( $type_name ) {
     return array();

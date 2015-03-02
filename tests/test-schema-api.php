@@ -28,50 +28,27 @@ class SchemaApiTest extends WP_UnitTestCase {
      */
     function testSchemaProperty() {
 
-        $place_id = wl_create_post("Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity');
-        wl_set_entity_main_type($place_id, 'http://schema.org/Place');
-        add_post_meta($place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true);
-        add_post_meta($place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true);
+        $place_id = wl_create_post( 'Entity 1 Text', 'entity-1', 'Entity 1 Title', 'publish', 'entity' );
+        wl_schema_set_types( $place_id, 'Place');
+        wl_schema_set_value( $place_id, 'latitude', 40.12 );
 
         $event_id = wl_create_post("Entity 2 Text", 'entity-2', "Entity 2 Title", 'publish', 'entity');
-        wl_set_entity_main_type($event_id, 'http://schema.org/Event');
-        add_post_meta($event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true);
-        add_post_meta($event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-21', true);
+        wl_schema_set_types( $event_id, 'Event' );       
+        wl_schema_set_value( $event_id, 'startDate', '2014-10-21');
 
         // Positive tests
-        $value = wl_get_meta_value('latitude', $place_id);
-        $this->assertEquals(40.12, $value[0]);
-        $value = wl_get_meta_value('longitude', $place_id);
-        $this->assertEquals(72.3, $value[0]);
-        $value = wl_get_meta_value('http://schema.org/latitude', $place_id);
-        $this->assertEquals(40.12, $value[0]);
-        $value = wl_get_meta_value('http://schema.org/longitude', $place_id);
-        $this->assertEquals(72.3, $value[0]);
-        $value = wl_get_meta_value(WL_CUSTOM_FIELD_GEO_LATITUDE, $place_id);
-        $this->assertEquals(40.12, $value[0]);
-        $value = wl_get_meta_value(WL_CUSTOM_FIELD_GEO_LONGITUDE, $place_id);
-        $this->assertEquals(72.3, $value[0]);
-
-        $value = wl_get_meta_value('startDate', $event_id);
-        $this->assertEquals('2014-10-21', $value[0]);
-        $value = wl_get_meta_value('endDate', $event_id);
-        $this->assertEquals('2015-10-21', $value[0]);
-        $value = wl_get_meta_value('http://schema.org/startDate', $event_id);
-        $this->assertEquals('2014-10-21', $value[0]);
-        $value = wl_get_meta_value('http://schema.org/endDate', $event_id);
-        $this->assertEquals('2015-10-21', $value[0]);
-        $value = wl_get_meta_value(WL_CUSTOM_FIELD_CAL_DATE_START, $event_id);
-        $this->assertEquals('2014-10-21', $value[0]);
-        $value = wl_get_meta_value(WL_CUSTOM_FIELD_CAL_DATE_END, $event_id);
-        $this->assertEquals('2015-10-21', $value[0]);
+        $value = wl_schema_get_value( $place_id, 'latitude' );
+        $this->assertEquals( array( 40.12 ) , $value );
+        $value = wl_schema_get_value( $event_id, 'startDate' );
+        $this->assertEquals( array( '2014-10-21' ) , $value );
 
         // Negative tests
-        $value = wl_get_meta_value(null, $place_id);
-        $this->assertEquals(null, $value);
-        $value = wl_get_meta_value('latitude', $event_id);
-        $this->assertEquals(null, $value);
-        $value = wl_get_meta_value('http://invented_url/endDate', $event_id);
-        $this->assertEquals(null, $value);
+        $value = wl_schema_get_value( $place_id, null );
+        $this->assertEquals( null, $value );
+        $value = wl_schema_get_value( $place_id, 'startDate' );
+        $this->assertEquals( null, $value );
+        $value = wl_schema_get_value( $place_id, 'http://invented_url/something' );
+        $this->assertEquals( null, $value );
     }
 
     /**
@@ -85,8 +62,7 @@ class SchemaApiTest extends WP_UnitTestCase {
         // Since it has no specified type, it is a Thing
         $type = wl_schema_get_types( $place_id );
         $this->assertEquals( 1, count($type) );
-        $type = $type[0];
-        $this->assertEquals( 'Thing', $type );
+        $this->assertEquals( array( 'Thing' ), $type );
         
         // Assign a non supported type
         wl_schema_set_types( $place_id, 'Ulabadoola' );
@@ -94,30 +70,64 @@ class SchemaApiTest extends WP_UnitTestCase {
         // Verify it is still a Thing
         $type = wl_schema_get_types( $place_id );
         $this->assertEquals( 1, count($type) );
-        $type = $type[0];
-        $this->assertEquals( 'Thing', $type );
+        $this->assertEquals( array( 'Thing' ), $type );
         
         // Assign supported type
         wl_schema_set_types( $place_id, 'Place' );
         
         // Verify it is now a Place
         $type = wl_schema_get_types( $place_id );
-        $type = $type[0];
-        $this->assertEquals( 'Place', $type );
+        $this->assertEquals( array( 'Place' ), $type );
     }
 
     /**
      * Tests the *wl_schema_get_type_properties* method
      */
-    function testSchemaTypeProperties() {
+    function testSchemaTypeProperties() {      
         
+        // Invalid calls
+        $properties = wl_schema_get_type_properties( 'Yuuuuuuppidooo' );
+        $this->assertEquals( array(), $properties );
+        $properties = wl_schema_get_type_properties( '' );
+        $this->assertEquals( array(), $properties );
+        $properties = wl_schema_get_type_properties();
+        $this->assertEquals( array(), $properties );
+        $properties = wl_schema_get_type_properties( null );
+        $this->assertEquals( array(), $properties );
+        
+        // Valid call
+        $properties = wl_schema_get_type_properties( 'LocalBusiness' );
+        
+        // Check properties for LocalBusiness ( as a side effect we also test inheritance! )
+        $this->assertContains( 'sameAs', $properties );
+        $this->assertContains( 'address', $properties );
+        $this->assertContains( 'latitude', $properties );
+        $this->assertContains( 'founder', $properties );
+        $this->assertNotContains( 'startDate', $properties );
     }
 
     /**
      * Tests the *wl_schema_get_property_expected_type* method
      */
     function testSchemaExpectedType() {
-        
-    }
 
+        // Test properties expecting a simple tye
+        // TODO: add tests for integer and boolean types (we have no examples right now)
+        $this->assertEquals( array( WL_DATA_TYPE_URI ), wl_schema_get_property_expected_type( 'sameAs' ) );
+        $this->assertEquals( array( WL_DATA_TYPE_DATE ), wl_schema_get_property_expected_type( 'endDate' ) );
+        //$this->assertEquals( WL_DATA_TYPE_INTEGER, wl_schema_get_property_expected_type( 'xxxxxx' ) );
+        $this->assertEquals( array( WL_DATA_TYPE_DOUBLE ), wl_schema_get_property_expected_type( 'latitude' ) );
+        //$this->assertEquals( WL_DATA_TYPE_BOOLEAN, wl_schema_get_property_expected_type( 'xxxxxx' ) );
+        $this->assertEquals( WL_DATA_TYPE_STRING, wl_schema_get_property_expected_type( 'address' ) );
+        
+        // Test properties expecting a schema type
+        $this->assertEquals( array( 'http://schema.org/Person' ), wl_schema_get_property_expected_type( 'founder' ) );
+        $this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_property_expected_type( 'location' ) );
+        
+        // Negative tests
+        $this->assertEquals( null, wl_schema_get_property_expected_type( 'Yuppidoooo' ) );
+        $this->assertEquals( null, wl_schema_get_property_expected_type( array() ) );
+        $this->assertEquals( null, wl_schema_get_property_expected_type( null ) );
+        $this->assertEquals( null, wl_schema_get_property_expected_type() );
+    }
 }
