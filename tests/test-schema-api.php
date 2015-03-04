@@ -54,32 +54,32 @@ class SchemaApiTest extends WP_UnitTestCase {
     /**
      * Test set- and get- methods for schema types
      */
-    /*function testSchemaType() {
+    function testSchemaType() {
         
         // Create entity
         $place_id = wl_create_post("Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity');
 
-        // Since it has no specified type, it is a Thing
+        // It has no specified type
         $type = wl_schema_get_types( $place_id );
-        $this->assertEquals( 1, count($type) );
-        $this->assertEquals( array( 'Thing' ), $type );
+        $this->assertEquals( 0, count($type) );
+        $this->assertEquals( null, $type );
         
         // Assign a non supported type
         wl_schema_set_types( $place_id, 'Ulabadoola' );
         
-        // Verify it is still a Thing
+        // Verify still no type
         $type = wl_schema_get_types( $place_id );
-        $this->assertEquals( 1, count($type) );
-        $this->assertEquals( array( 'Thing' ), $type );
+        $this->assertEquals( 0, count($type) );
+        $this->assertEquals( null, $type );
         
         // Assign supported type
         wl_schema_set_types( $place_id, 'Place' );
         
         // Verify it is now a Place
         $type = wl_schema_get_types( $place_id );
-        $this->assertEquals( array( 'Place' ), $type );
+        $this->assertEquals( array( 'http://schema.org/Place' ), $type );
     }
-*/
+
     /**
      * Tests the *wl_schema_get_type_properties* method
      */

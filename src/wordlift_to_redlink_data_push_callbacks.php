@@ -200,7 +200,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// Get the entity types.
-	$type_uris = wl_get_entity_types( $entity_post->ID );
+	$type_uris = wl_get_entity_rdf_types( $entity_post->ID );
 
 	// Support type are only schema.org ones: it could by null
 	foreach ( $type_uris as $type_uri ) {

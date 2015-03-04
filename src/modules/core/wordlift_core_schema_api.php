@@ -57,7 +57,29 @@ function wl_schema_get_value( $post_id, $property_name ) {
  */
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     
-    return true;
+    // Some checks on the parameters
+    if ( !is_numeric( $post_id ) || is_null( $property_name ) ||empty( $property_value ) || is_null( $property_value ) ) {
+            return false;
+    }
+    
+    // Build full schema uri if necessary
+    $property_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+    
+    // Get accepted properties
+    $accepted_fields = wl_entity_taxonomy_get_custom_fields( $post_id );
+    
+    // Find the name of the custom-field managing the schema property
+    foreach( $accepted_fields as $wl_constant => $field ) {
+        if( $field['predicate'] == $property_name ) {
+            
+            add_post_meta( $post_id, $field['predicate'], $property_value );
+            // TODO: manage complementary relation as made for posts           
+         
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 
@@ -70,11 +92,23 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
  * or NULL in case of no values (or error).
  */
  function wl_schema_get_types( $post_id ) {
-     return null;
+     
+    // Some checks on the parameters
+    if ( !is_numeric( $post_id ) ) {
+            return null;
+    }
+    
+    $type = wl_entity_type_taxonomy_get_type( $post_id );
+    
+    if( isset( $type['uri'] ) ) {
+        return array( $type['uri'] );
+    }
+    
+    return null;
  }
 
 /**
- * Sets the entity type(s) for the specified post ID, where
+ * Sets the entity type(s) for the specified post ID. Support is now for only one type per entity.
  * 
  * @param $post_id numeric The numeric post ID
  * @param $type_names array An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
@@ -82,7 +116,22 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
  * @return boolean True if everything went ok, an error string otherwise.
  */
 function wl_schema_set_types( $post_id, $type_names ) {
-    wl_set_entity_main_type($post_id, $type_uri);
+    
+    // Some checks on the parameters
+    if ( !is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
+            return null;
+    }
+    
+    // TODO: support more than one type
+    if( is_array( $type_names ) ) {
+        $type_names = $type_names[0];
+    }
+    
+    // Build full schema uri if necessary
+    $type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
+    
+    // Actually sets the taxonomy type
+    wl_set_entity_main_type( $post_id, $type_names );
 }
 
 /**
@@ -134,7 +183,6 @@ function wl_schema_get_type_properties( $type_name ) {
  * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
  */
 function wl_schema_get_property_expected_type( $property_name ) {
-    //wl_write_log( 'piedo fields ' . var_export( $type_properties, true ) );
     
     // This is the actual structure of a custom_field.
     /*
@@ -207,7 +255,3 @@ function wl_build_full_schema_uri_from_schema_slug( $schema_name ) {
         
         return $schema_name;
 }
-
-
-
-// TODO: move here methods from wordlift_entity_functions.php

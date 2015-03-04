@@ -92,8 +92,7 @@ function wl_set_entity_uri( $post_id, $uri ) {
  *
  * @return array An array of terms.
  */
-function wl_get_entity_types( $post_id ) {
-
+function wl_get_entity_rdf_types( $post_id ) {
 	return get_post_meta( $post_id, 'wl_entity_type_uri' );
 }
 
@@ -103,14 +102,12 @@ function wl_get_entity_types( $post_id ) {
  * @param int $post_id The entity post ID.
  * @param array $type_uris An array of type URIs.
  */
-function wl_set_entity_types( $post_id, $type_uris = array() ) {
+function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 
 	// Avoid errors because of null values.
 	if ( is_null( $type_uris ) ) {
 		$type_uris = array();
 	}
-
-	wl_write_log( "wl_set_entity_types [ post id :: $post_id ][ type uris :: " . var_export( $type_uris, true ) . " ]" );
 
 	// Ensure there are no duplicates.
 	$type_uris = array_unique( $type_uris );

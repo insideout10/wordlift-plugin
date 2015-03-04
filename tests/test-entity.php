@@ -174,7 +174,7 @@ class EntityTest extends WP_UnitTestCase
         }
 
         // Check that the type is set correctly.
-        $types = wl_get_entity_types( $entity_post->ID );
+        $types = wl_get_entity_rdf_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
 //        $this->assertEquals( $type, wl_get_entity_main_type( $entity_post->ID ) );
 
@@ -226,7 +226,7 @@ class EntityTest extends WP_UnitTestCase
         $this->assertNotNull( $entity_post );
 
         // Check that the type is set correctly.
-        $types = wl_get_entity_types( $entity_post->ID );
+        $types = wl_get_entity_rdf_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
         //$this->assertEquals( 'organization', $types[0]->slug );
 
@@ -251,7 +251,7 @@ class EntityTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
 
         // Check that the type is set correctly.
-        $types = wl_get_entity_types( $entity_post->ID );
+        $types = wl_get_entity_rdf_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
 //        $this->assertEquals( 'organization', $types[0]->slug );
 

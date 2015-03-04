@@ -266,7 +266,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 	wl_set_entity_main_type( $post_id, $type_uri );
 
 	// Save the entity types.
-	wl_set_entity_types( $post_id, $entity_types );
+	wl_set_entity_rdf_types( $post_id, $entity_types );
 
 	// Get a dataset URI for the entity.
 	$wl_uri = wl_build_entity_uri( $post_id );
