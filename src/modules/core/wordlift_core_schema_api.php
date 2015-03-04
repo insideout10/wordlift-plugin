@@ -72,7 +72,7 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     foreach( $accepted_fields as $wl_constant => $field ) {
         if( $field['predicate'] == $property_name ) {
             
-            add_post_meta( $post_id, $field['predicate'], $property_value );
+            add_post_meta( $post_id, $wl_constant, $property_value );
             // TODO: manage complementary relation as made for posts           
          
             return true;
