@@ -15,7 +15,7 @@ require_once( 'wordlift_admin_menu.php' );
  */
 function wl_serialize_entity( $entity ) {
 
-	$type   = wl_entity_get_type( $entity->ID );
+	$type   = wl_entity_type_taxonomy_get_type( $entity->ID );
 	$images = wl_get_image_urls( $entity->ID );
 
 	return array(

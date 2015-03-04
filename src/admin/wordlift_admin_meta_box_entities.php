@@ -19,7 +19,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 
 	// Add meta box for specific type of entities
 	$entity_id   = get_the_ID();
-	$entity_type = wl_entity_get_type( $entity_id );
+	$entity_type = wl_entity_type_taxonomy_get_type( $entity_id );
         
 	if ( isset( $entity_id ) && is_numeric( $entity_id ) && isset( $entity_type['custom_fields'] ) ) {
 

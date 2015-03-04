@@ -119,7 +119,7 @@ function wl_shortcode_chord_relations_to_json( $data )
         }
 
         // Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
-        $term = wl_entity_get_type( $item );
+        $term = wl_entity_type_taxonomy_get_type( $item );
 
         wl_write_log( "wl_shortcode_chord_relations_to_json [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
 

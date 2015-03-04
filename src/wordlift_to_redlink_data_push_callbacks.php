@@ -147,7 +147,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		$sparql .= "<$uri_e> schema:description \"$descr\"@$site_language . \n";
 	}
 
-	$main_type = wl_entity_get_type( $entity_post->ID );
+	$main_type = wl_entity_type_taxonomy_get_type( $entity_post->ID );
 
 	if ( null != $main_type ) {
 		$main_type_uri = wordlift_esc_sparql( $main_type['uri'] );

@@ -67,9 +67,7 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
  * @param int $post_id The post ID
  * @return array|null An array of type properties or null if no term is associated
  */
-function wl_entity_get_type( $post_id ) {
-
-    wl_write_log( "wl_entity_get_type [ post ID :: $post_id ]" );
+function wl_entity_type_taxonomy_get_type( $post_id ) {
 
     $terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'fields' => 'ids'

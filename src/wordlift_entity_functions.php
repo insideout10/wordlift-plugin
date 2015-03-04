@@ -124,67 +124,7 @@ function wl_set_entity_types( $post_id, $type_uris = array() ) {
 	}
 }
 
-
-/**
- * Build full schema uri starting from a slug. If the uri is already correct, nothing is done.
- * 
- * @param string $property_name Slug or full uri of a schema property or type (es. 'location' or 'http://schema.org/location')
- * 
- * @return string The full schema uri (es. 'latitude' returns 'http://schema.org/latitude')
- */
-function wl_build_full_schema_uri_from_schema_slug( $property_name ) {
-        
-        $schema_root_address = 'http://schema.org/';
-        
-        if ( strpos( $property_name, $schema_root_address ) === false ) {   // === necessary
-            $property_name = $schema_root_address . $property_name;
-        }
-        
-        return $property_name;
-}
-
-/**
- * Retrieve entity property value (post meta) starting from the schema.org's property name
- * or from the WL_CUSTOM_FIELD_xxx name.
- *
- * @param $property_name as defined by schema.org or by WL internal constants
- * @param $entity_id (optional), the function will try to retrieve it automatically
- *
- * @return array containing value(s) or null (in case of error or no values).
- */
-function wl_get_meta_value( $property_name, $entity_id = null ) {
-
-	// Property name must be defined.
-	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
-		return null;
-	}
-        
-        // store eventual schema name in  different variable
-        $property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-
-	// Establish entity id.
-	if ( is_null( $entity_id ) || ! is_numeric( $entity_id ) ) {
-		$entity_id = get_the_ID();
-		if ( is_null( $entity_id ) || ! is_numeric( $entity_id ) ) {
-			return null;
-		}
-	}
-        
-        // Get custom fields.
-	$term_mapping = wl_entity_taxonomy_get_custom_fields( $entity_id );
-
-        // Search for the required meta value (by constant name or schema name)
-	foreach ( $term_mapping as $wl_constant => $property_info ) {
-		$found_constant  = ( $wl_constant == $property_name );
-		$found_predicate = ( isset( $property_info['predicate'] ) && $property_info['predicate'] == $property_schema_name );
-		if ( $found_constant || $found_predicate ) {
-			return get_post_meta( $entity_id, $wl_constant );
-		}
-	}
-
-	return null;
-}
-
+// TODO: this method must be eliminated in favor of the new *wl_schema_get_property_expected_type*
 /**
  * Retrieve entity property type, starting from the schema.org's property name
  * or from the WL_CUSTOM_FIELD_xxx name.
@@ -280,14 +220,14 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		$custom_fields = array();
 		foreach ( $terms as $term ) {
 			// Get custom_fields
-			$terms_options                = wl_entity_type_taxonomy_get_term_options( $term->term_id );
-			$custom_fields[ $term->name ] = $terms_options['custom_fields'];
+			$term_options = wl_entity_type_taxonomy_get_term_options( $term->term_id );
+			$custom_fields[ $term_options['uri'] ] = $term_options['custom_fields'];
 		}
 
 		return $custom_fields;
 	} else {
 		// Return custom fields for this specific entity's type.
-		$type = wl_entity_get_type( $entity_id );
+		$type = wl_entity_type_taxonomy_get_type( $entity_id );
 
 		return $type['custom_fields'];
 	}

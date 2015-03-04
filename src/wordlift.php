@@ -600,9 +600,7 @@ function wl_install_entity_type_data() {
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Thing',
-					'constraints' => array(
-						'uri_type' => 'Thing'
-					)
+					'constraints' => ''
 				)
 			),
                         'microdata_template' => '',
