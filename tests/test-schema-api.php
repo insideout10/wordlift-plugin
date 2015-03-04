@@ -49,6 +49,8 @@ class SchemaApiTest extends WP_UnitTestCase {
         $this->assertEquals( null, $value );
         $value = wl_schema_get_value( $place_id, 'http://invented_url/something' );
         $this->assertEquals( null, $value );
+        
+        //TODO: manage case of multiple values per property.
     }
 
     /**

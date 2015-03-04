@@ -57,6 +57,8 @@ function wl_schema_get_value( $post_id, $property_name ) {
  */
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     
+    // TODO: what if $property_value is an array?
+    
     // Some checks on the parameters
     if ( !is_numeric( $post_id ) || is_null( $property_name ) ||empty( $property_value ) || is_null( $property_value ) ) {
             return false;
