@@ -32,7 +32,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		foreach ( $simple_metaboxes as $key => $property ) {
                         
                         // Don't present to the user the full schema name, just the slug
-                        $property_slug_name = split( '/', $property['predicate'] );
+                        $property_slug_name = explode( '/', $property['predicate'] );
                         $property_slug_name = end( $property_slug_name );
                         
 			// Metabox title
@@ -108,22 +108,9 @@ add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
  * @param WP_Post $post The current post.
  */
 function wl_entities_box_content( $post ) {
-
-	wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
-
-	// get the related entities IDs.
-        if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
-            // If we edit an entity, we deal with related entities
-            $referenced_entity_ids = wl_get_related_entities( $post->ID );
-        } else {
-            // If we edit a post, we deal with referenced entities
-            $referenced_entity_ids = wl_get_referenced_entities( $post->ID );
-        }
-
-	// check if there are related entities.
-	if ( ! is_array( $referenced_entity_ids ) || 0 === count( $referenced_entity_ids ) ) {
-		_e( 'No entities', 'wordlift' );
-        }
+    
+        // Store referenced entity ids
+	$referenced_entity_ids = array();
 
 	wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
 	// Angularjs edit-post widget wrapper
@@ -550,9 +537,11 @@ function wl_entity_metabox_save( $post_id ) {
 				// Update the value that will be saved as meta
 				$meta_value = wl_get_entity_uri( $new_entity->ID );
 			}
-
+                        
+                        // TODO: use WL methods
 			update_post_meta( $post_id, $meta_name, $meta_value );
 		} else {
+                        // TODO: use WL methods
 			delete_post_meta( $post_id, $meta_name );
 		}
 	}
