@@ -131,9 +131,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	
         // Extract related/referenced entities from text.
         $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $post->post_content );
-        
+        echo "mar";
         // Delete previously saved related/referenced
         if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
+            echo "mar Eccoci";
             wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
         } else {
             wl_set_referenced_entities( $post_id, array() );

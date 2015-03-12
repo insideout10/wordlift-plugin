@@ -79,7 +79,6 @@ EOF;
         $this->assertCount( 2, wl_get_related_entities( $entity_3_id ) );
         // Entity post published: should be pushed on Redlink 
         $lines = $this->getPostTriples( $entity_3_id );
-        wl_write_log('piedo ' . var_export( $lines, true ) );
         $this->assertCount( 6, $lines );
         // Check entity 1 and 2 are properly related to entity 3 on Redlink side
         $this->assertTrue( in_array("<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines) );
@@ -94,7 +93,7 @@ EOF;
             <span itemid="$entity_1_uri">Entity 1</span>
 EOF;
         wp_update_post( array( 'ID' => $entity_3_id, 'post_content' => $body_1 ));
-        $this->assertCount( 1, wl_get_referenced_entities( $entity_3_id ) );
+        $this->assertCount( 1, wl_get_related_entities( $entity_3_id ) );
         $lines = $this->getPostTriples( $entity_3_id );
         $this->assertCount( 5, $lines );
         // Check just entity 1 is properly related to entity 3 on Redlink side
