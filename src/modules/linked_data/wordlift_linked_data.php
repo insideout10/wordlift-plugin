@@ -50,7 +50,7 @@ function wordlift_save_post_and_related_entities( $post_id ) {
  */
 function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
-	// Ignore auto-saves
+    // Ignore auto-saves
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return;
 	}
@@ -68,7 +68,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	remove_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
 
 	wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
-
+        
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) ) {
 
@@ -87,11 +87,12 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		// If there are props values, save them.
 		if ( isset( $_POST[ WL_POST_ENTITY_PROPS ] ) ) {
 			foreach ( $_POST[ WL_POST_ENTITY_PROPS ] as $key => $values ) {
-				wl_entity_props_save( $key, $values );
+				// TODO: use new methods to set the meta
+                                // and delete *wl_entity_props_save* and related methods
+                                wl_entity_props_save( $key, $values );
 			}
 		}
 	}
-        
         
         // Retrieve box classification 
 	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
@@ -115,7 +116,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 					if ( $entity_post = wl_get_entity_post_by_uri( $uri ) ) {
 						array_push( $entity_ids, $entity_post->ID );	
 						wl_write_log( "Going to relate entity {$entity_post->ID} to post $post_id trough $relation relation ..." );
-					};
+					}
 				}
 			}
 
@@ -132,16 +133,17 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $post->post_content );
         
         // Delete previously saved related/referenced
-        if( get_post_type( $post->post_type ) == WL_ENTITY_TYPE_NAME ) {
+        if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
             wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
         } else {
             wl_set_referenced_entities( $post_id, array() );
         }
-        
+
         // Add the related/referenced entities if provided.
         // NOTE: related !== referenced. See wordlift core methods.
         foreach( $disambiguated_entities as $rel_entity_id ) {
-            if( get_post_type( $post->post_type ) == WL_ENTITY_TYPE_NAME ) {
+                        
+            if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
                 // Adding related entitity to an entity
                 wl_add_related_entities( $post_id, $rel_entity_id );
             } else {

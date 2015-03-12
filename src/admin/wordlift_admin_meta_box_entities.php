@@ -45,7 +45,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 			$unique_metabox_name = uniqid( 'wl_metabox_' );
 
 			add_meta_box(
-				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'side', 'high', $info
+				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'side', 'default', $info
 			);
 		}
 
@@ -58,7 +58,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 			$unique_metabox_name = uniqid( 'wl_metabox_' );
 
 			add_meta_box(
-				$unique_metabox_name, $title, 'wl_entities_' . $key . '_box_content', $post_type, 'side', 'high'
+				$unique_metabox_name, $title, 'wl_entities_' . $key . '_box_content', $post_type, 'side', 'default'
 			);
 
 		}

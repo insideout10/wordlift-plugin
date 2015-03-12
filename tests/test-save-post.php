@@ -72,13 +72,14 @@ EOF;
         // Just 1 line returned means the entity was not found on Redlink
         $this->assertCount( 1, $lines );
         // Check that no entity is referenced
-        $this->assertCount( 0, wl_get_referenced_entities( $entity_3_id) );
+        $this->assertCount( 0, wl_get_related_entities( $entity_3_id) );
         // Force entity post status to publish: this triggers the save_post hook
         wl_update_post_status( $entity_3_id, 'publish' );
         // Check entities are properly related once the post is published
-        $this->assertCount( 2, wl_get_referenced_entities( $entity_3_id ) );
+        $this->assertCount( 2, wl_get_related_entities( $entity_3_id ) );
         // Entity post published: should be pushed on Redlink 
         $lines = $this->getPostTriples( $entity_3_id );
+        wl_write_log('piedo ' . var_export( $lines, true ) );
         $this->assertCount( 6, $lines );
         // Check entity 1 and 2 are properly related to entity 3 on Redlink side
         $this->assertTrue( in_array("<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines) );
