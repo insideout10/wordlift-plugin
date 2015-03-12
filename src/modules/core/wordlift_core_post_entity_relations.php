@@ -181,7 +181,7 @@ function wl_add_related_entities($entity_id, $new_entities_ids, $field_name = WL
  * @param int|array $new_entities_ids An array of related entity IDs.
  * @param string $field_name Name of the meta
  */
-function wl_set_related_entities( $entity_id, $new_entities_ids, $field_name = WL_CUSTOM_FIELD_REFERENCED_ENTITIES ) {
+function wl_set_related_entities( $entity_id, $new_entities_ids, $field_name = WL_CUSTOM_FIELD_RELATED_ENTITIES ) {
     
     wl_core_reset_relation_between_posts_and_entities( $entity_id, $field_name );
     wl_add_related_entities( $entity_id, $new_entities_ids, $field_name );

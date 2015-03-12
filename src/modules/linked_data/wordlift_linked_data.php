@@ -131,14 +131,15 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	
         // Extract related/referenced entities from text.
         $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $post->post_content );
-        echo "mar";
+        echo "mar deleting relations of " . $post->post_name;
         // Delete previously saved related/referenced
         if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
-            echo "mar Eccoci";
             wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
         } else {
             wl_set_referenced_entities( $post_id, array() );
         }
+        echo "mar related of " . $post->ID . " are " . var_export(  wl_get_related_entities( $post->ID ), true );
+        echo "mar referenced of " . $post->ID . " are " . var_export( wl_get_referenced_entities( $post->ID ), true );
 
         // Add the related/referenced entities if provided.
         // NOTE: related !== referenced. See wordlift core methods.

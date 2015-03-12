@@ -205,6 +205,7 @@ EOF;
 
         // check all entities published
         $lines = $this->getPostTriples( $entity_1_id );
+        echo "mar lines " . var_export($lines, true);
         $this->assertCount( 1, $lines );
 
         // publish post 2
