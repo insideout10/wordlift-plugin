@@ -126,6 +126,7 @@ function wl_update_post_status( $post_id, $status ) {
 
 	$old_status        = $post->post_status;
 	$post->post_status = $status;
+
 	wp_transition_post_status( $status, $old_status, $post );
 
 	/** This action is documented in wp-includes/post.php */

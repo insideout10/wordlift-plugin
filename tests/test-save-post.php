@@ -183,17 +183,33 @@ EOF;
         $lines = $this->getPostTriples( $post_1_id );
         $this->assertEquals( 1, sizeof( $lines ) );
 
-        // publish the post.
+        $this->assertCount( 0, wl_get_referenced_entities( $post_1_id ) );
+
+        // TODO tmp assertions: check callback order
         wl_update_post_status( $post_1_id, 'publish' );
+        wl_update_post_status( $post_1_id, 'draft' );
+
+        $this->assertEquals( 'draft', get_post_status( $entity_1_id ) );
+        
+        // publish the post.
+        wp_publish_post( $post_1_id );
+        // wl_update_post_status( $post_1_id, 'publish' );
         $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check the post is published on Redlink.
         $lines = $this->getPostTriples( $post_1_id );
         $this->assertCount( 10, $lines );
+        // check all entities published
+        $lines = $this->getPostTriples( $entity_1_id );
+        $this->assertCount( 3, $lines );
+        $this->assertEquals( 'publish', get_post_status( $entity_1_id ) );
+        
+        $lines = $this->getPostTriples( $entity_2_id );
+        $this->assertCount( 3, $lines );
+        $this->assertEquals( 'publish', get_post_status( $entity_2_id ) );
 
         // unpublish the post.
         wl_update_post_status( $post_1_id, 'draft' );
-
         $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check the post is not published on Redlink.
@@ -205,7 +221,6 @@ EOF;
 
         // check all entities published
         $lines = $this->getPostTriples( $entity_1_id );
-        echo "mar lines " . var_export($lines, true);
         $this->assertCount( 1, $lines );
 
         // publish post 2
