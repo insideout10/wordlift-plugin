@@ -924,6 +924,7 @@ require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_timeline.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
+require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 
 // disable In-Depth Articles
 //require_once('wordlift_indepth_articles.php');
