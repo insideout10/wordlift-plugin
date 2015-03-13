@@ -54,7 +54,10 @@ function wl_shortcode_faceted_search_ajax()
 
     if( $required_type == 'posts' ) {
         foreach ( $referencing_post_ids as $referencing_post_id ) {
-            $result[] = get_post( $referencing_post_id );
+            $post_obj = get_post( $referencing_post_id );
+            $post_obj->thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
+            
+            $result[] = $post_obj;
         }
     } else {
         foreach( $referencing_post_ids as $referencing_post_id ) {
