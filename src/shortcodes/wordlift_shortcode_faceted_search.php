@@ -6,8 +6,10 @@
 function wl_shortcode_faceted_search( $atts ) {
     
     $div_id = 'wordlift-faceted-entity-search-widget';
+
+    wp_enqueue_style( 'wordlift-faceted-search-css', plugins_url('css/wordlift-faceted-entity-search-widget.css', __FILE__) );
     
-    wp_enqueue_script( 'wordlift-faceted-search', plugins_url('js/wordlift.ui.min.js', __FILE__) );
+    wp_enqueue_script( 'wordlift-faceted-search', plugins_url('js/wordlift-faceted-entity-search-widget.js', __FILE__) );
     wp_localize_script( 'wordlift-faceted-search', 'wl_faceted_search_params', array(
             'ajax_url'   => admin_url('admin-ajax.php'),
             'action'     => 'wl_faceted_search',
