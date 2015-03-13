@@ -20,9 +20,7 @@ function wl_shortcode_faceted_search( $atts ) {
         )
     );
     
-    return '<div id="' . $div_id . '" style="width:100%">
-        Ciao Marcyyyyyyyyyy
-    </div>';  
+    return '<div id="' . $div_id . '" style="width:100%"></div>';  
 }
 add_shortcode( 'wl-faceted-search', 'wl_shortcode_faceted_search' );
 
@@ -32,34 +30,74 @@ add_shortcode( 'wl-faceted-search', 'wl_shortcode_faceted_search' );
  */
 function wl_shortcode_faceted_search_ajax()
 {
-
+    // Entity ID must be defined
     if( ! isset( $_REQUEST['entity_id'] ) ) {
         echo 'No entity_id given';
         return;
     }
-    
     $entity_id = $_REQUEST['entity_id'];
     
+    // Which type was requested?
     if( isset( $_REQUEST['type'] ) ) {
         $required_type = $_REQUEST['type'];
     } else {
         $required_type = null;
     }
+    
+    // Extract filtering conditions
+    $request_body = file_get_contents('php://input');
+    $filtering_entity_uris = json_decode( $request_body );    
 
+    // Set up data structures
     $referencing_post_ids  = wl_get_referencing_posts( $entity_id );
     $second_degree_entities = array();
     $result = array();
     
+    // Get ready to fire a JSON
     header( 'Content-Type: application/json' );
 
     if( $required_type == 'posts' ) {
-        foreach ( $referencing_post_ids as $referencing_post_id ) {
-            $post_obj = get_post( $referencing_post_id );
-            $post_obj->thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
+        // Required filtered posts.
+        
+        if( empty( $filtering_entity_uris ) ) {
+            // No filter, just get referencing posts
+            foreach ( $referencing_post_ids as $referencing_post_id ) {
+                $post_obj = get_post( $referencing_post_id );
+                $post_obj->thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
+
+                $result[] = $post_obj;
+            }
+        } else {
+            // Search posts that reference all the filtering entities.
             
-            $result[] = $post_obj;
+            $meta_query = array( 'relation' => 'AND' );
+               
+            foreach( $filtering_entity_uris as $uri) {
+                
+                $id = wl_get_entity_post_by_uri( $uri );
+                $id = $id->ID;
+                
+                $meta_query[] = array(
+                    'key' => WL_CUSTOM_FIELD_REFERENCED_ENTITIES,
+                    'value' => $id,
+                    'compare' => '=='
+                );
+            }
+
+            $query = new WP_Query();
+            $filtered_posts = $query->query(
+                array(
+                    'post_type' => 'post',
+                    'posts_per_page' =>-1,
+                    'meta_query' => $meta_query
+                )
+            );
+            
+            $result = $filtered_posts;
         }
+        
     } else {
+        // Required second degree entities (i.e. e1 --> p2 --> e4)
         foreach( $referencing_post_ids as $referencing_post_id ) {
             $referenced = wl_get_referenced_entities( $referencing_post_id );
             $second_degree_entities = array_merge( $second_degree_entities, $referenced );
@@ -67,10 +105,13 @@ function wl_shortcode_faceted_search_ajax()
         
         $second_degree_entities = array_unique( $second_degree_entities );
         foreach( $second_degree_entities as $second_degree_entity ) {
-            $result[] = wl_serialize_entity( get_post( $second_degree_entity ) );
+            if( intval( $second_degree_entity ) !== intval( $entity_id ) ) {
+                $result[] = wl_serialize_entity( get_post( $second_degree_entity ) );
+            }
         }
     }
     
+    // Output JSON and exit
     echo json_encode( $result );
     wp_die();
 }
