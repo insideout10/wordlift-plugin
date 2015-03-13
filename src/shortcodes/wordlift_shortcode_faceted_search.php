@@ -48,20 +48,27 @@ function wl_shortcode_faceted_search_ajax()
 
     $referencing_post_ids  = wl_get_referencing_posts( $entity_id );
     $second_degree_entities = array();
+    $result = array();
     
     header( 'Content-Type: application/json' );
 
     if( $required_type == 'posts' ) {
-        echo json_encode( $referencing_post_ids );
+        foreach ( $referencing_post_ids as $referencing_post_id ) {
+            $result[] = get_post( $referencing_post_id );
+        }
     } else {
         foreach( $referencing_post_ids as $referencing_post_id ) {
             $referenced = wl_get_referenced_entities( $referencing_post_id );
             $second_degree_entities = array_merge( $second_degree_entities, $referenced );
         }
         
-        echo json_encode( array_unique( $second_degree_entities ) );
+        $second_degree_entities = array_unique( $second_degree_entities );
+        foreach( $second_degree_entities as $second_degree_entity ) {
+            $result[] = wl_serialize_entity( get_post( $second_degree_entity ) );
+        }
     }
     
+    echo json_encode( $result );
     wp_die();
 }
 add_action('wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');
