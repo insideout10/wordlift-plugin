@@ -33,15 +33,35 @@ add_shortcode( 'wl-faceted-search', 'wl_shortcode_faceted_search' );
 function wl_shortcode_faceted_search_ajax()
 {
 
+    if( ! isset( $_REQUEST['entity_id'] ) ) {
+        echo 'No entity_id given';
+        return;
+    }
+    
     $entity_id = $_REQUEST['entity_id'];
-    //$depth   = $_REQUEST['depth'];
+    
+    if( isset( $_REQUEST['type'] ) ) {
+        $required_type = $_REQUEST['type'];
+    } else {
+        $required_type = null;
+    }
 
+    $referencing_post_ids  = wl_get_referencing_posts( $entity_id );
+    $second_degree_entities = array();
+    
     header( 'Content-Type: application/json' );
 
-    $result  = wl_get_referencing_posts( $entity_id );
-
-    echo json_encode( $result );
-
+    if( $required_type == 'posts' ) {
+        echo json_encode( $referencing_post_ids );
+    } else {
+        foreach( $referencing_post_ids as $referencing_post_id ) {
+            $referenced = wl_get_referenced_entities( $referencing_post_id );
+            $second_degree_entities = array_merge( $second_degree_entities, $referenced );
+        }
+        
+        echo json_encode( array_unique( $second_degree_entities ) );
+    }
+    
     wp_die();
 }
 add_action('wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');
