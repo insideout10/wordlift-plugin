@@ -36,7 +36,6 @@ function wl_shortcode_faceted_search_ajax()
     $entity_id = $_REQUEST['entity_id'];
     //$depth   = $_REQUEST['depth'];
 
-    ob_clean();
     header( 'Content-Type: application/json' );
 
     $result  = wl_get_referencing_posts( $entity_id );
