@@ -18,7 +18,7 @@ function wl_shortcode_faceted_search( $atts ) {
         )
     );
     
-    echo '<div id="' . $div_id . '" style="width:100%">
+    return '<div id="' . $div_id . '" style="width:100%">
         Ciao Marcyyyyyyyyyy
     </div>';  
 }
