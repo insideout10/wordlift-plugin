@@ -26,3 +26,25 @@ function wl_shortcode_faceted_search( $atts ) {
 }
 add_shortcode( 'wl-faceted-search', 'wl_shortcode_faceted_search' );
 
+
+/*
+ * Ajax call for the faceted search widget
+ */
+function wl_shortcode_faceted_search_ajax()
+{
+
+    $entity_id = $_REQUEST['entity_id'];
+    //$depth   = $_REQUEST['depth'];
+
+    ob_clean();
+    header( 'Content-Type: application/json' );
+
+    $result  = wl_get_referencing_posts( $entity_id );
+
+    echo json_encode( $result );
+
+    wp_die();
+}
+add_action('wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');
+add_action('wp_ajax_nopriv_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');
+
