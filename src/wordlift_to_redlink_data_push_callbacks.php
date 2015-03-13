@@ -147,29 +147,29 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		$sparql .= "<$uri_e> schema:description \"$descr\"@$site_language . \n";
 	}
 
-	$main_type = wl_entity_get_type( $entity_post->ID );
+	$main_type = wl_entity_type_taxonomy_get_type( $entity_post->ID );
 
 	if ( null != $main_type ) {
 		$main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
 		$sparql .= " <$uri_e> a <$main_type_uri> . \n";
 
-		// The type define export fields that hold additional data about the entity.
+		// The type define custom fields that hold additional data about the entity.
 		// For example Events may have start/end dates, Places may have coordinates.
 		// The value in the export fields must be rewritten as triple predicates, this
 		// is what we're going to do here.
 
 		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
-
-		if ( isset( $main_type['export_fields'] ) ) {
-			foreach ( $main_type['export_fields'] as $field => $settings ) {
+                
+		if ( isset( $main_type['custom_fields'] ) ) {
+			foreach ( $main_type['custom_fields'] as $field => $settings ) {
 
 				wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
 
 				$predicate = wordlift_esc_sparql( $settings['predicate'] );
-				if ( ! isset( $settings['type'] ) || empty( $settings['type'] ) ) {
+				if ( ! isset( $settings['export_type'] ) || empty( $settings['export_type'] ) ) {
 					$type = null;
 				} else {
-					$type = $settings['type'];
+					$type = $settings['export_type'];
 				}
 
 				// add the delete statement for later execution.
@@ -177,11 +177,20 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
-
+                                        
+                                        // Establish triple's <object> type
 					if ( is_null( $type ) ) {
+                                                // No type
 						$sparql .= '<' . wordlift_esc_sparql( $value ) . '>';
 					} else {
-						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
+						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^';
+                                                if( substr( $type, 0, 4 ) == 'http' ) {
+                                                    // Type is defined by a raw uri (es. http://schema.org/PostalAddress)
+                                                    $sparql .= '<' . wordlift_esc_sparql( $type ) . '>';
+                                                } else {
+                                                    // Type is defined in another way (es. xsd:double)
+                                                    $sparql .= wordlift_esc_sparql( $type );
+                                                }
 					}
 
 					$sparql .= " . \n";
@@ -191,7 +200,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// Get the entity types.
-	$type_uris = wl_get_entity_types( $entity_post->ID );
+	$type_uris = wl_get_entity_rdf_types( $entity_post->ID );
 
 	// Support type are only schema.org ones: it could by null
 	foreach ( $type_uris as $type_uri ) {
@@ -200,7 +209,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// get related entities.
-	$related_entities_ids = wl_get_referenced_entity_ids( $entity_post->ID );
+	$related_entities_ids = wl_get_related_entities( $entity_post->ID );
 
 	if ( is_array( $related_entities_ids ) ) {
 		foreach ( $related_entities_ids as $entity_post_id ) {
@@ -209,17 +218,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 			$sparql .= " <$uri_e> dct:relation <$related_entity_uri> . \n";
 			$sparql .= " <$related_entity_uri> dct:relation <$uri_e> . \n";
 		}
-	}
-
-	// TODO: this should be removed in light of the new custom fields.
-	// Get the coordinates related to the post and save them to the triple store.
-	$coordinates = wl_get_coordinates( $entity_post->ID );
-	if ( is_array( $coordinates ) && isset( $coordinates['latitude'] ) && isset( $coordinates['longitude'] ) ) {
-		$latitude  = wordlift_esc_sparql( $coordinates['latitude'] );
-		$longitude = wordlift_esc_sparql( $coordinates['longitude'] );
-
-		$sparql .= " <$uri_e> geo:lat '$latitude'^^xsd:double . \n";
-		$sparql .= " <$uri_e> geo:long '$longitude'^^xsd:double . \n";
 	}
 
 	// Add SPARQL stmts to write the schema:image.
@@ -255,7 +253,7 @@ function wl_get_sparql_post_references( $post_id ) {
 	$post_uri = wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
 
 	// Get the related entities IDs.
-	$related = wl_get_referenced_entity_ids( $post_id );
+	$related = wl_get_referenced_entities( $post_id );
 
 	// Build the SPARQL fragment.
 	$sparql = '';

@@ -180,7 +180,7 @@ class PostTest extends WP_UnitTestCase {
 //            array_push($entity_ids, $post->ID);
 //
 //            // Get the related posts IDs.
-//            $rel_posts = wl_get_related_post_ids($post->ID);
+//            $rel_posts = wl_get_related_entities($post->ID);
 //            // Must be only one post.
 //            $this->assertEquals(1, count($rel_posts));
 //            // The post must be the one the test created.
@@ -188,7 +188,7 @@ class PostTest extends WP_UnitTestCase {
 //        }
 //
 //        // Check that the post references the entities.
-//        $rel_entities = wl_get_referenced_entity_ids($post_id);
+//        $rel_entities = wl_get_referenced_entities($post_id);
 //        $this->assertEquals(count($entity_ids), count($rel_entities));
 //        foreach ($entity_ids as $id) {
 //            $this->assertTrue(in_array($id, $rel_entities));
@@ -284,7 +284,7 @@ class PostTest extends WP_UnitTestCase {
 
         // TODO: need to bind entities with posts.
         wl_add_referenced_entities($post_id, $entity_post_ids);
-        $this->assertCount(sizeof($entity_post_ids), wl_get_referenced_entity_ids($post_id));
+        $this->assertCount(sizeof($entity_post_ids), wl_get_referenced_entities($post_id));
 
         // TODO: synchronize data.
         wl_push_to_redlink($post_id);
@@ -303,15 +303,15 @@ class PostTest extends WP_UnitTestCase {
 
             // Must be only one post.
             if (1 !== count($rel_posts)) {
-                wl_write_log("testEntitiesViaArray : wl_get_related_post_ids [ post id :: $post->ID ]");
+                wl_write_log("testEntitiesViaArray : wl_get_referencing_posts [ post id :: $post->ID ]");
             }
             $this->assertCount(1, $rel_posts);
             // The post must be the one the test created.
-            $this->assertEquals($post_id, $rel_posts[0]->ID);
+            $this->assertEquals($post_id, $rel_posts[0]);
         }
 
         // Check that the post references the entities.
-        $rel_entities = wl_get_referenced_entity_ids($post_id);
+        $rel_entities = wl_get_referenced_entities($post_id);
         $this->assertEquals(count($entity_ids), count($rel_entities));
         foreach ($entity_ids as $id) {
             $this->assertTrue(in_array($id, $rel_entities));
@@ -587,7 +587,7 @@ EOF;
         $count = preg_match_all('/^(?P<uri>[^\r]*)/im', $body, $matches, PREG_SET_ORDER);
         $this->assertTrue(is_numeric($count));
 
-        $entity_ids = wl_get_referenced_entity_ids($post->ID);
+        $entity_ids = wl_get_referenced_entities($post->ID);
 
 //        wl_write_log( "[ entity IDs :: " . join( ', ', $entity_ids ) . " ][ size of entity IDs :: " . sizeof( $entity_ids ) . " ][ count :: $count ][ post ID :: $post->ID ]" );
 //

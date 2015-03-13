@@ -59,6 +59,7 @@ add_action( 'add_meta_boxes', 'wl_entity_type_meta_boxes' );
  * @param WP_Post $post The post.
  */
 function wl_entity_type_meta_boxes_content( $post ) {
+    
 	wp_nonce_field( 'wordlift_entity_box', 'wordlift_entity_box_nonce' );
 
 	$value = wl_get_entity_uri( $post->ID );
@@ -71,7 +72,7 @@ function wl_entity_type_meta_boxes_content( $post ) {
 	echo '<label for="entity_same_as">' . __( 'entity-same-as-label', 'wordlift' ) . '</label>';
 	echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $same_as ) . '</textarea>';
 
-	$entity_types = implode( "\n", wl_get_entity_types( $post->ID ) );
+	$entity_types = implode( "\n", wl_get_entity_rdf_types( $post->ID ) );
 
 	echo '<label for="entity_types">' . __( 'entity-types-label', 'wordlift' ) . '</label>';
 	echo '<textarea style="width: 100%;" id="entity_types" name="entity_types" placeholder="Entity Types URIs">' . esc_attr( $entity_types ) . '</textarea>';
@@ -129,8 +130,8 @@ function wl_entity_type_save_custom_fields( $post_id ) {
 		explode( "\r\n", $_POST['entity_same_as'] )
 	);
 
-	// save the same as values.
-	wl_set_entity_types(
+	// save the rdf:type values.
+	wl_set_entity_rdf_types(
 		$post_id,
 		explode( "\r\n", $_POST['entity_types'] )
 	);

@@ -84,7 +84,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	// Get the entity URI and its escaped version for the regex.
 	$entity_uri = wl_get_entity_uri( $post->ID );
 	// Get the main type.
-	$main_type = wl_entity_get_type( $post->ID );
+	$main_type = wl_entity_type_taxonomy_get_type( $post->ID );
 
 	if ( null === $main_type ) {
 		$item_type = '';
@@ -167,7 +167,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		$field_name  = $match[1];
 
 		// Get property value.
-		$meta_collection = wl_get_meta_value( $field_name, $entity_id );
+		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
 		// If no value is given, just remove the placeholder from the template
 		if ( null == $meta_collection ) {
 			$template = str_replace( $placeholder, '', $template );

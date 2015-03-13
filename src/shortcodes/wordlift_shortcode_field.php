@@ -25,7 +25,7 @@ function wl_shortcode_field( $atts ) {
 
     $property_name = $field_atts['name'];
     if( !is_null( $property_name ) ) {
-        $values = wl_get_meta_value( $property_name, $entity_id );
+        $values = wl_schema_get_value( $entity_id, $property_name );
     }
     
     // Return

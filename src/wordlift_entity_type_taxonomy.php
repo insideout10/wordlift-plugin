@@ -27,7 +27,7 @@ function wl_entity_type_taxonomy_register()
 
     $args = array(
         'labels' => $labels,
-        'hierarchical' => false,
+        'hierarchical' => true,
         'show_admin_column' => true
     );
 
@@ -40,13 +40,12 @@ function wl_entity_type_taxonomy_register()
  * @param string $css_class The stylesheet class.
  * @param string $uri The URI.
  * @param array $same_as An array of sameAs URIs.
- * @param array $custom_fields An array of custom fields and their properties mapping.
+ * @param array $custom_fields An array of custom fields and their properties mapping (with info on how to export them to the triple store).
  * @param array $templates
- * @param array $export_fields An array of fields to be exported to the triple store.
  * @param array $microdata_template A template string to print microdata on the frontend.
  * @return True if option value has changed, false if not or if update failed.
  */
-function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $export_fields = array(), $microdata_template = array() )
+function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $microdata_template = array() )
 {
     wl_write_log("wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode(',', $same_as) . " ]");
     
@@ -56,7 +55,6 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
         'same_as'       => $same_as,
         'custom_fields' => $custom_fields,
         'templates'     => $templates,
-        'export_fields' => $export_fields,
         'microdata_template' => $microdata_template
     ) );
 }
@@ -69,9 +67,7 @@ function wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_a
  * @param int $post_id The post ID
  * @return array|null An array of type properties or null if no term is associated
  */
-function wl_entity_get_type( $post_id ) {
-
-    wl_write_log( "wl_entity_get_type [ post ID :: $post_id ]" );
+function wl_entity_type_taxonomy_get_type( $post_id ) {
 
     $terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
         'fields' => 'ids'

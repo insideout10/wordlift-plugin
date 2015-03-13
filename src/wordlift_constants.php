@@ -44,13 +44,14 @@ define( 'WL_DATA_TYPE_BOOLEAN', 'bool' );
 define( 'WL_DATA_TYPE_STRING', 'string' );
 
 // Entities post-meta names
+define( 'WL_CUSTOM_FIELD_SAME_AS', 'wl_same_as' );
 define( 'WL_CUSTOM_FIELD_GEO_LATITUDE', 'wl_geo_latitude' );
 define( 'WL_CUSTOM_FIELD_GEO_LONGITUDE', 'wl_geo_longitude' );
 define( 'WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start' );
 define( 'WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end' );
 define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
-
+define( 'WL_CUSTOM_FIELD_FOUNDER', 'wl_founder');
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );

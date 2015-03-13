@@ -28,7 +28,8 @@ function wordlift_admin_referencing_posts_meta_box_content( $post ) {
         return;
     }
 
-    foreach ( $posts as $referencing_post ) {
+    foreach ( $posts as $post_id ) {
+        $referencing_post = get_post( $post_id );
         echo( '<a href="' . get_edit_post_link( $referencing_post->ID ) . '">' . $referencing_post->post_title . '</a><br>' );
     }
 }

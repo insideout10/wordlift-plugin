@@ -6,7 +6,7 @@
 /**
  * Retrieve geomap places. If $post_id is null the return places blog wide
  *
- * @uses wl_get_referenced_entity_ids to retrieve the entities referenced by the specified post.
+ * @uses wl_get_referenced_entities to retrieve the entities referenced by the specified post.
  *
  * @param int $post_id The post ID.
  * @return array An array of place posts.
@@ -18,7 +18,7 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
     $is_global = ( !is_numeric($post_id) ? true : $is_global );
 
     // If the current one is not a global geomap, retrieve related post / place ids
-    $place_ids = $is_global ? array() : wl_get_referenced_entity_ids( $post_id );
+    $place_ids = $is_global ? array() : wl_get_referenced_entities( $post_id );
     
     // If is not a global geomap, an empty $place_ids means that no place is related to the post
     // An empty array can be returned in this case
@@ -102,7 +102,8 @@ function wl_shortcode_geomap_to_json( $places ) {
         $content = $content . "</a><ul>";
 		// Get the related posts (published) and print them in the popup.
     	$related_posts = wl_get_referencing_posts( $entity->ID );
-      	foreach ( $related_posts as $rp ) {
+      	foreach ( $related_posts as $rp_id ) {
+                $rp = get_post( $rp_id );
         	$title   = esc_attr( $rp->post_title );
         	$link    = esc_attr( get_permalink( $rp->ID ) );
 			$content = $content . "<li><a href=$link>$title</a></li>";

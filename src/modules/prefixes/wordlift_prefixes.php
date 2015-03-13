@@ -77,10 +77,11 @@ function wl_prefixes_list() {
 			array( 'prefix' => 'dct', 'namespace' => 'http://purl.org/dc/terms/' ),
 			array( 'prefix' => 'rdfs', 'namespace' => 'http://www.w3.org/2000/01/rdf-schema#' ),
 			array( 'prefix' => 'owl', 'namespace' => 'http://www.w3.org/2002/07/owl#' ),
-			array( 'prefix' => 'schema', 'namespace' => 'http://schema.org/' )
+			array( 'prefix' => 'schema', 'namespace' => 'http://schema.org/' ),
+                        array( 'prefix' => 'xsd', 'namespace' => 'http://www.w3.org/2001/XMLSchema#' )
 		);
 		add_option( 'wl_option_prefixes', $prefixes );
-	};
+	}
 
 	return $prefixes;
 

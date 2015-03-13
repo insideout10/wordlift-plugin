@@ -38,14 +38,15 @@ EOF;
         $post_1_id = wl_create_post( $body_1, 'post-1', uniqid('post', true), 'draft', 'post' );
         // Post in draft: should be not pushed on Redlink 
         $lines = $this->getPostTriples( $post_1_id );
+
         // Just 1 line returned means the entity was not found on Redlink
         $this->assertCount( 1, $lines );
         // Check that no entity is referenced
-        $this->assertCount( 0, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 0, wl_get_referenced_entities( $post_1_id ) );
         // Force post status to publish: this triggers the save_post hook
         wl_update_post_status( $post_1_id, 'publish' );
         // Check entities are properly related once the post is published
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
     }
 
     function testSaveEntityPostAndRelatedEntities() {
@@ -71,11 +72,11 @@ EOF;
         // Just 1 line returned means the entity was not found on Redlink
         $this->assertCount( 1, $lines );
         // Check that no entity is referenced
-        $this->assertCount( 0, wl_get_referenced_entity_ids( $entity_3_id) );
+        $this->assertCount( 0, wl_get_related_entities( $entity_3_id) );
         // Force entity post status to publish: this triggers the save_post hook
         wl_update_post_status( $entity_3_id, 'publish' );
         // Check entities are properly related once the post is published
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $entity_3_id ) );
+        $this->assertCount( 2, wl_get_related_entities( $entity_3_id ) );
         // Entity post published: should be pushed on Redlink 
         $lines = $this->getPostTriples( $entity_3_id );
         $this->assertCount( 6, $lines );
@@ -92,7 +93,7 @@ EOF;
             <span itemid="$entity_1_uri">Entity 1</span>
 EOF;
         wp_update_post( array( 'ID' => $entity_3_id, 'post_content' => $body_1 ));
-        $this->assertCount( 1, wl_get_referenced_entity_ids( $entity_3_id ) );
+        $this->assertCount( 1, wl_get_related_entities( $entity_3_id ) );
         $lines = $this->getPostTriples( $entity_3_id );
         $this->assertCount( 5, $lines );
         // Check just entity 1 is properly related to entity 3 on Redlink side
@@ -111,7 +112,7 @@ EOF;
         
         // Check that Entity 3 is no more related to Entity 1 on WP
         // TODO Fix the bug and uncomment the test
-        // $this->assertCount( 0, wl_get_referenced_entity_ids( $entity_3_id ) );
+        // $this->assertCount( 0, wl_get_referenced_entities( $entity_3_id ) );
         
         // Check that Entity 1 is no more on Redlink
         $lines = $this->getPostTriples( $entity_1_id );
@@ -148,11 +149,12 @@ EOF;
         $this->assertCount( 1, $lines );
 
         $lines = $this->getPostTriples( $entity_2_id );
+
         $this->assertCount( 1, $lines );
 
         // publish post 1
         wl_update_post_status( $post_1_id, 'publish' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
     }
 
@@ -181,17 +183,34 @@ EOF;
         $lines = $this->getPostTriples( $post_1_id );
         $this->assertEquals( 1, sizeof( $lines ) );
 
-        // publish the post.
+        $this->assertCount( 0, wl_get_referenced_entities( $post_1_id ) );
+
+        // TODO tmp assertions: check callback order
         wl_update_post_status( $post_1_id, 'publish' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        wl_update_post_status( $post_1_id, 'draft' );
+
+        $this->assertEquals( 'draft', get_post_status( $entity_1_id ) );
+        
+        // publish the post.
+        wp_publish_post( $post_1_id );
+        // wl_update_post_status( $post_1_id, 'publish' );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check the post is published on Redlink.
         $lines = $this->getPostTriples( $post_1_id );
         $this->assertCount( 10, $lines );
+        // check all entities published
+        $lines = $this->getPostTriples( $entity_1_id );
+        $this->assertCount( 3, $lines );
+        $this->assertEquals( 'publish', get_post_status( $entity_1_id ) );
+        
+        $lines = $this->getPostTriples( $entity_2_id );
+        $this->assertCount( 3, $lines );
+        $this->assertEquals( 'publish', get_post_status( $entity_2_id ) );
 
         // unpublish the post.
         wl_update_post_status( $post_1_id, 'draft' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check the post is not published on Redlink.
         $lines = $this->getPostTriples( $post_1_id );
@@ -204,13 +223,10 @@ EOF;
         $lines = $this->getPostTriples( $entity_1_id );
         $this->assertCount( 1, $lines );
 
-        $lines = $this->getPostTriples( $entity_2_id );
-        $this->assertCount( 1, $lines );
-
-
         // publish post 2
         wl_update_post_status( $post_2_id, 'publish' );
-        $this->assertCount( 1, wl_get_referenced_entity_ids( $post_2_id ) );
+
+        $this->assertCount( 1, wl_get_referenced_entities( $post_2_id ) );
 
         // check post 2 is published on Redlink
         $lines = $this->getPostTriples( $post_2_id );
@@ -218,7 +234,8 @@ EOF;
 
         // publish post 1
         wl_update_post_status( $post_1_id, 'publish' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // check post 1 is published on Redlink
         $lines = $this->getPostTriples( $post_1_id );
@@ -232,7 +249,8 @@ EOF;
 
         // unpublish post 1
         wl_update_post_status( $post_1_id, 'draft' );
-        $this->assertCount( 2, wl_get_referenced_entity_ids( $post_1_id ) );
+
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         $lines = $this->getPostTriples( $post_1_id );
         $this->assertCount( 1, $lines );

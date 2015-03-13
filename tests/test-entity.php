@@ -174,19 +174,23 @@ class EntityTest extends WP_UnitTestCase
         }
 
         // Check that the type is set correctly.
-        $types = wl_get_entity_types( $entity_post->ID );
+        $types = wl_get_entity_rdf_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
 //        $this->assertEquals( $type, wl_get_entity_main_type( $entity_post->ID ) );
 
+/*
+ *  TODO: tests canceled after modifying *wl_save_entity*, which doen no more set related/referenced posts
+ * 
         // Create related resources.
         $world_wide_web_id = $this->create_World_Wide_Web_Foundation( $entity_post->ID );
         $mit_id            = $this->create_MIT_Center_for_Collective_Intelligence( $entity_post->ID );
 
         // Check that entities are related to this resource.
-        $related_entities = wl_get_referenced_entity_ids( $entity_post->ID );
+        $related_entities = wl_get_related_entities( $entity_post->ID );
         $this->assertEquals( 2, count( $related_entities ) );
         $this->assertEquals( true, in_array( $world_wide_web_id, $related_entities ) );
         $this->assertEquals( true, in_array( $mit_id, $related_entities ) );
+ */
     }
 
     function testSaveEventWithStartAndEndDates() {
@@ -222,14 +226,14 @@ class EntityTest extends WP_UnitTestCase
         $this->assertNotNull( $entity_post );
 
         // Check that the type is set correctly.
-        $types = wl_get_entity_types( $entity_post->ID );
+        $types = wl_get_entity_rdf_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
         //$this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
-        $related_entities = wl_get_referencing_posts( $entity_post->ID );
+        $related_entities = wl_get_related_entities( $entity_post->ID );
         $this->assertEquals( 1, count( $related_entities ) );
-        $this->assertEquals( $related_post_id, $related_entities[0]->ID );
+        $this->assertEquals( $related_post_id, $related_entities[0] );
 
         return $entity_post->ID;
     }
@@ -247,14 +251,14 @@ class EntityTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, $related_post_id, $same_as );
 
         // Check that the type is set correctly.
-        $types = wl_get_entity_types( $entity_post->ID );
+        $types = wl_get_entity_rdf_types( $entity_post->ID );
         $this->assertEquals( 0, count( $types ) );
 //        $this->assertEquals( 'organization', $types[0]->slug );
 
         // Check that Tim Berners-Lee is related to this resource.
-        $related_entities = wl_get_referencing_posts( $entity_post->ID );
+        $related_entities = wl_get_related_entities( $entity_post->ID );
         $this->assertEquals( 1, count( $related_entities ) );
-        $this->assertEquals( $related_post_id, $related_entities[0]->ID );
+        $this->assertEquals( $related_post_id, $related_entities[0] );
 
         return $entity_post->ID;
     }
