@@ -16,6 +16,7 @@ function wl_shortcode_faceted_search( $atts ) {
             'ajax_url'   => admin_url('admin-ajax.php'),
             'action'     => 'wl_faceted_search',
             'entity_id'  => get_the_ID(),
+            'entity_uri'  => wl_get_entity_uri( get_the_ID() ),
             'div_id'     => $div_id
         )
     );
@@ -108,9 +109,7 @@ function wl_shortcode_faceted_search_ajax()
         
         $second_degree_entities = array_unique( $second_degree_entities );
         foreach( $second_degree_entities as $second_degree_entity ) {
-            if( intval( $second_degree_entity ) !== intval( $entity_id ) ) {
-                $result[] = wl_serialize_entity( get_post( $second_degree_entity ) );
-            }
+            $result[] = wl_serialize_entity( get_post( $second_degree_entity ) );
         }
     }
     
