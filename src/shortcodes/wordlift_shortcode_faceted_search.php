@@ -68,6 +68,9 @@ function wl_shortcode_faceted_search_ajax()
                 $result[] = $post_obj;
             }
         } else {
+
+            // Add the current post as default condition
+            array_push( $filtering_entity_uris, wl_get_entity_uri( $entity_id ) );
             // Search posts that reference all the filtering entities.
             
             $meta_query = array( 'relation' => 'AND' );

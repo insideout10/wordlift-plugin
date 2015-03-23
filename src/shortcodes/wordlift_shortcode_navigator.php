@@ -138,10 +138,12 @@ function wordlift_shortcode_navigator() {
         $num_cards_on_front = 3;   
     }
     // add js
-    $content .= '<script>$=jQuery; $(document).ready(function(){
+    $content .= '<script>
+        $=jQuery; 
+        $(document).ready(function(){
             // Launch navigator
             $("#wl-navigator-widget").slick({
-                dots: true,
+                dots: false,
                 infinite: true,
                 slidesToShow: ' . $num_cards_on_front . ',
                 slidesToScroll: 1
