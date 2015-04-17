@@ -32,15 +32,15 @@ add_shortcode( 'wl-faceted-search', 'wl_shortcode_faceted_search' );
 function wl_shortcode_faceted_search_ajax()
 {
     // Entity ID must be defined
-    if( ! isset( $_REQUEST['entity_id'] ) ) {
+    if( ! isset( $_GET['entity_id'] ) ) {
         echo 'No entity_id given';
         return;
     }
-    $entity_id = $_REQUEST['entity_id'];
+    $entity_id = $_GET['entity_id'];
     
     // Which type was requested?
-    if( isset( $_REQUEST['type'] ) ) {
-        $required_type = $_REQUEST['type'];
+    if( isset( $_GET['type'] ) ) {
+        $required_type = $_GET['type'];
     } else {
         $required_type = null;
     }
@@ -51,16 +51,15 @@ function wl_shortcode_faceted_search_ajax()
 
     // Set up data structures
     $referencing_post_ids  = wl_get_referencing_posts( $entity_id );
-    $second_degree_entities = array();
     $result = array();
     
     // Get ready to fire a JSON
     header( 'Content-Type: application/json' );
 
-    if( $required_type == 'posts' ) {
+    if ( 'posts' == $required_type ) {
         // Required filtered posts.
         
-        if( empty( $filtering_entity_uris ) ) {
+        if ( empty( $filtering_entity_uris ) ) {
             // No filter, just get referencing posts
             foreach ( $referencing_post_ids as $referencing_post_id ) {
                 $post_obj = get_post( $referencing_post_id );
@@ -101,16 +100,29 @@ function wl_shortcode_faceted_search_ajax()
         }
         
     } else {
-        // Required second degree entities (i.e. e1 --> p2 --> e4)
-        foreach( $referencing_post_ids as $referencing_post_id ) {
-            $referenced = wl_get_referenced_entities( $referencing_post_id );
-            $second_degree_entities = array_merge( $second_degree_entities, $referenced );
-        }
         
-        $second_degree_entities = array_unique( $second_degree_entities );
-        foreach( $second_degree_entities as $second_degree_entity ) {
-            $result[] = wl_serialize_entity( get_post( $second_degree_entity ) );
+        global $wpdb;
+
+        $meta_key_name = 'wordlift_related_entities';
+        $ids = implode(',', $referencing_post_ids);
+
+        $query = $wpdb->prepare("
+            SELECT meta_value as ID, count(meta_value) as counter FROM $wpdb->postmeta 
+                where meta_key = %s 
+                and post_id IN ($ids) 
+                group by meta_value;", $meta_key_name );
+
+        $entities = $wpdb->get_results( $query, OBJECT );
+
+        foreach( $entities as $obj ) {
+            
+            $entity = get_post( $obj->ID );
+            $entity = wl_serialize_entity( $entity );
+            $entity['counter'] = $obj->counter;
+            $result[] = $entity;
+
         }
+
     }
     
     // Output JSON and exit
