@@ -883,7 +883,6 @@ add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
 
 // TODO - Check installation
 add_action( 'activate_wordlift/wordlift.php', 'wl_install_entity_type_data' );
-// add_action( 'init', 'wl_install_entity_type_data' );
 
 require_once( 'wordlift_entity_functions.php' );
 
