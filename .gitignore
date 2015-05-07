@@ -10,7 +10,6 @@ wp-tests/wordpress/wp-content/uploads
 composer.phar
 composer.lock
 vendor/
-docs/
 src/js
 src/css
 src/fonts
