@@ -7,8 +7,10 @@
  */
 function wl_push_post_to_redlink( $post ) {
 
-	// Don't deal with entities here.
-	if ( 'entity' === $post->post_type ) {
+
+	// Only handle published posts.
+	if ( 'post' !== $post->post_type or 'publish' !== $post->post_status ) {
+		wl_write_log( "wl_push_post_to_redlink : not a post or not published [ post type :: $post->post_type ][ post status :: $post->post_status ]" );
 		return;
 	}
 
@@ -97,7 +99,7 @@ EOF;
 function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	// Only handle published entities.
-	if ( 'entity' !== $entity_post->post_type && 'publish' !== $entity_post->post_status ) {
+	if ( 'entity' !== $entity_post->post_type or 'publish' !== $entity_post->post_status ) {
 
 		wl_write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
 

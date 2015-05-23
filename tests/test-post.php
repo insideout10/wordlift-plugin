@@ -287,6 +287,7 @@ class PostTest extends WP_UnitTestCase {
         $this->assertCount(sizeof($entity_post_ids), wl_get_referenced_entities($post_id));
 
         // TODO: synchronize data.
+        // NOTICE: this requires a published post!
         wl_push_to_redlink($post_id);
 
         // Check that the entities are created in WordPress.
@@ -350,7 +351,7 @@ class PostTest extends WP_UnitTestCase {
         $this->assertTrue(false != $content);
 
         // Create the post.
-        $post_id = wl_create_post($content, self::SLUG, self::TITLE);
+        $post_id = wl_create_post($content, self::SLUG, self::TITLE, 'publish');
         $this->assertTrue(is_numeric($post_id));
 
         return $post_id;
@@ -545,7 +546,7 @@ EOF;
 
         $permalink = '<' . get_permalink($post_id) . '>';
         $post_author_url = '<' . wl_get_user_uri($post->post_author) . '>';
-        $post_date_published = wl_get_sparql_time(get_the_time('c', $post));
+        $post_date_published = wl_get_sparql_time(get_post_time( 'c', false, $post ));
         $post_date_modified = wl_get_sparql_time(wl_get_post_modified_time($post));
         $post_comment_count = 'UserComments:' . $post->comment_count;
         $post_entity_type = '<http://schema.org/BlogPosting>';

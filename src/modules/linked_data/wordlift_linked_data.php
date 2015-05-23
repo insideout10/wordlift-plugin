@@ -58,13 +58,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// get the current post.
 	$post = get_post( $post_id );
 
-	// Only process posts that are published or scheduled to be published.
-	if ( 'publish' !== $post->post_status && 'future' !== $post->post_status ) {
-		wl_write_log( "post is not publish [ post id :: $post_id ][ post status :: $post->post_status ]" );
-
-		return;
-	}
-
 	remove_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
 
 	wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );

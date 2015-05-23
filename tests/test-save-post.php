@@ -41,11 +41,11 @@ EOF;
 
         // Just 1 line returned means the entity was not found on Redlink
         $this->assertCount( 1, $lines );
-        // Check that no entity is referenced
-        $this->assertCount( 0, wl_get_referenced_entities( $post_1_id ) );
+        // Check if 2 entities are locally referenced
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
         // Force post status to publish: this triggers the save_post hook
         wl_update_post_status( $post_1_id, 'publish' );
-        // Check entities are properly related once the post is published
+        // Check entities are still related once the post is published
         $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
     }
 
@@ -72,7 +72,7 @@ EOF;
         // Just 1 line returned means the entity was not found on Redlink
         $this->assertCount( 1, $lines );
         // Check that no entity is referenced
-        $this->assertCount( 0, wl_get_related_entities( $entity_3_id) );
+        $this->assertCount( 2, wl_get_related_entities( $entity_3_id) );
         // Force entity post status to publish: this triggers the save_post hook
         wl_update_post_status( $entity_3_id, 'publish' );
         // Check entities are properly related once the post is published
@@ -183,7 +183,7 @@ EOF;
         $lines = $this->getPostTriples( $post_1_id );
         $this->assertEquals( 1, sizeof( $lines ) );
 
-        $this->assertCount( 0, wl_get_referenced_entities( $post_1_id ) );
+        $this->assertCount( 2, wl_get_referenced_entities( $post_1_id ) );
 
         // TODO tmp assertions: check callback order
         wl_update_post_status( $post_1_id, 'publish' );
