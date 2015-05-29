@@ -278,9 +278,14 @@ class PostTest extends WP_UnitTestCase {
 
         // Save the entities in the array.
         $entity_posts = wl_save_entities($entities);
+        // Publish
         $entity_post_ids = array_map(function ( $item ) {
             return $item->ID;
         }, $entity_posts);
+
+        foreach ( $entity_post_ids as $entity_id ) {
+            wp_publish_post( $entity_id );
+        }
 
         // TODO: need to bind entities with posts.
         wl_add_referenced_entities($post_id, $entity_post_ids);
@@ -433,6 +438,7 @@ EOF;
 
         // Check for equality.
         $this->assertEquals($title, $label);
+
         $this->assertEquals($permalink, $url);
         $this->assertFalse(empty($type));
     }
