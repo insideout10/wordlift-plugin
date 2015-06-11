@@ -82,7 +82,7 @@ foreach( $referencing_posts_ids as $post_id ) {
     var_dump( $post->post_content );
     wp_update_post( array(
         'ID' => $post_id,
-        'post_content' => 'A_' . $post->post_content
+        'post_content' => 'A_' . $post->post_content    // call here the cleaning function
     ));
     
     
@@ -114,5 +114,3 @@ delete_option( 'wl_option_prefixes' );
 delete_option( 'wl_general_settings' );
 delete_option( 'wl_advanced_settings' );
 echo 'Done.</br>';
-
-//exit('... blocking execution ...');

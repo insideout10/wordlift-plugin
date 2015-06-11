@@ -32,7 +32,6 @@ function wl_schema_get_value( $post_id, $property_name ) {
         
         // Get custom fields.
 	$term_mapping = wl_entity_taxonomy_get_custom_fields( $post_id );
-        wl_write_log('piedo term'. var_export( $term_mapping, true) );
 
         // Search for the required meta value (by constant name or schema name)
 	foreach ( $term_mapping as $wl_constant => $property_info ) {
