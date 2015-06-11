@@ -23,7 +23,7 @@ function wl_shortcode_faceted_search( $atts ) {
     
     return '<div id="' . $div_id . '" style="width:100%"></div>';  
 }
-add_shortcode( 'wl-faceted-search', 'wl_shortcode_faceted_search' );
+add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
 
 
 /*
@@ -58,12 +58,17 @@ function wl_shortcode_faceted_search_ajax()
 
     if ( 'posts' == $required_type ) {
         // Required filtered posts.
-        
+        wl_write_log( "Going to find related posts for the current entity [ entity ID :: $entity_id ]" );
+
         if ( empty( $filtering_entity_uris ) ) {
             // No filter, just get referencing posts
             foreach ( $referencing_post_ids as $referencing_post_id ) {
+                
                 $post_obj = get_post( $referencing_post_id );
-                $post_obj->thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
+                
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
+                $post_obj->thumbnail = ( $thumbnail ) ? 
+                    $thumbnail : plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ );
 
                 $result[] = $post_obj;
             }
@@ -96,6 +101,14 @@ function wl_shortcode_faceted_search_ajax()
                 )
             );
             
+            foreach ( $filtered_posts as $post_obj ) {
+                
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+                $post_obj->thumbnail = ( $thumbnail ) ? 
+                    $thumbnail : plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ );
+
+                $result[] = $post_obj;
+            }
             $result = $filtered_posts;
         }
         
@@ -103,16 +116,23 @@ function wl_shortcode_faceted_search_ajax()
         
         global $wpdb;
 
+        wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ]" );
+
         $meta_key_name = 'wordlift_related_entities';
         $ids = implode(',', $referencing_post_ids);
 
-        $query = $wpdb->prepare("
+        $query = <<<EOF
             SELECT meta_value as ID, count(meta_value) as counter FROM $wpdb->postmeta 
                 where meta_key = %s 
                 and post_id IN ($ids) 
-                group by meta_value;", $meta_key_name );
+                group by meta_value;
+EOF;
+        wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ] [ query :: $query ]" );        
 
+        $query = $wpdb->prepare( $query, $meta_key_name );
         $entities = $wpdb->get_results( $query, OBJECT );
+
+        wl_write_log( "Entities found " . count( $entities ) );        
 
         foreach( $entities as $obj ) {
             
