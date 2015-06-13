@@ -14,7 +14,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 
 	// Add meta box for related entities (separated from the others for historical reasons)
 	add_meta_box(
-		'wordlift_entities_box', __( 'Related Entities', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
+		'wordlift_entities_box', __( 'Wordlift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 	);
 
 	// Add meta box for specific type of entities
