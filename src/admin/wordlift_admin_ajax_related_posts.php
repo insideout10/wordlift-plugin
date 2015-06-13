@@ -9,15 +9,18 @@ function wordlift_ajax_related_posts() {
     $related_posts = array();
                    
     foreach( $filtering_entity_uris as $uri) {
-               
+        wl_write_log( "Find entity with uri $uri ..." );
+                   
         if ( $entity = wl_get_entity_post_by_uri( $uri ) ) {
+            $entity = wl_get_entity_post_by_uri( $uri );
             array_push( $filtering_entity_ids, $entity->ID );
         }
     }
 
-    wl_write_log( "Going to find posts related to the following entities ...", $filtering_entity_ids );
-
+    wl_write_log( "Going to find posts related to the following entities ..." );
+    
     if ( !empty( $filtering_entity_ids ) ) {
+    
         // TODO - Exclude the corrent post from $related_posts
         $query = new WP_Query();
         $related_posts = $query->query(
@@ -25,10 +28,12 @@ function wordlift_ajax_related_posts() {
                 'post_type' => 'post',
                 'posts_per_page' =>-1,
                 'meta_query' => array(
-                'key' => WL_CUSTOM_FIELD_REFERENCED_ENTITIES,
-                'value' => $filtering_entity_ids,
-                'compare' => 'IN'
-            )
+                    array(
+                        'key' => WL_CUSTOM_FIELD_REFERENCED_ENTITIES,
+                        'value' => $filtering_entity_ids,
+                        'compare' => 'IN'
+                    )
+                )
             )
         );
         
