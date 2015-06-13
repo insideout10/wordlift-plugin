@@ -3,7 +3,7 @@
  * Shortcode to print the in-post navigator
  */
 function wordlift_register_shortcode_navigator() {
-    add_shortcode('wl-navigator', 'wordlift_shortcode_navigator');
+    add_shortcode('wl_navigator', 'wordlift_shortcode_navigator');
 }
 /**
  * Get list of posts that will populate the navigator.
