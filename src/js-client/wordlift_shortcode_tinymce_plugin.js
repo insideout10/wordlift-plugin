@@ -3,29 +3,45 @@
     tinymce.create('tinymce.plugins.wl_shortcodes', {
     	
     	// Custom function for the Chord
-    	chordClick : function(){
+    	/*chordClick : function(){
     		jQuery('#wordlift_chord_dialog').dialog({
 				title: 'Wordlift Chord Widget',
 				width: 400,
 				height: 500
 			});
-    	},
+    	},*/
     	
+        // Custom function for the Chord
+    	chordClick : function(){
+	    	var chord_shortcode_text = '[wl_chord]';
+			top.tinymce.activeEditor.execCommand('mceInsertContent', false, chord_shortcode_text);
+    	},
+        
     	// Custom function for the Timeline
     	timelineClick : function(){
-	    	var timeline_shortcode_text = '[wl-timeline]';
+	    	var timeline_shortcode_text = '[wl_timeline]';
 			top.tinymce.activeEditor.execCommand('mceInsertContent', false, timeline_shortcode_text);
     	},
     	
     	// Custom function for the Related Posts
     	relatedPostsClick : function(){
-	    	var timeline_shortcode_text = '[wl-related-posts]';
-			top.tinymce.activeEditor.execCommand('mceInsertContent', false, timeline_shortcode_text);
+	    	var related_posts_shortcode_text = '[wl_related_posts]';
+			top.tinymce.activeEditor.execCommand('mceInsertContent', false, related_posts_shortcode_text);
     	},
     	
     	geomapClick : function(){
-    		var geomap_shortcode_text = '[wl-geomap]';
+    		var geomap_shortcode_text = '[wl_geomap]';
 			top.tinymce.activeEditor.execCommand('mceInsertContent', false, geomap_shortcode_text);
+    	},
+        
+    	navigatorClick : function(){
+    		var navigator_shortcode_text = '[wl_navigator]';
+			top.tinymce.activeEditor.execCommand('mceInsertContent', false, navigator_shortcode_text);
+    	},
+        
+    	facetedSearchClick : function(){
+    		var faceted_search_shortcode_text = '[wl_faceted_search]';
+			top.tinymce.activeEditor.execCommand('mceInsertContent', false, faceted_search_shortcode_text);
     	},
     	
         /**
@@ -63,6 +79,14 @@
 			            {
 			            	text: 'GeoMap',
 			            	onclick: this.geomapClick
+			            },
+			            {
+			            	text: 'Navigator',
+			            	onclick: this.navigatorClick
+			            },
+			            {
+			            	text: 'FacetedSearch',
+			            	onclick: this.facetedSearchClick
 			            }
 			        ]
 			    });
@@ -117,6 +141,16 @@
                     m.add({
                     	title: 'GeoMap',
                     	onclick: pluginRef.geomapClick
+                    });
+                    
+                    m.add({
+                    	title: 'Navigator',
+                    	onclick: pluginRef.navigatorClick
+                    });
+                    
+                    m.add({
+                    	title: 'FacetedSearch',
+                    	onclick: pluginRef.facetedSearchClick
                     });
                     
             	});
