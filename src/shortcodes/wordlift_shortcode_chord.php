@@ -247,10 +247,10 @@ EOF;
 }
 
 /**
- * Registers the *wl-chord* shortcode.
+ * Registers the *wl_chord* shortcode.
  */
 function wl_shortcode_chord_register()
 {
-    add_shortcode('wl-chord', 'wl_shortcode_chord');
+    add_shortcode('wl_chord', 'wl_shortcode_chord');
 }
 add_action('init', 'wl_shortcode_chord_register');

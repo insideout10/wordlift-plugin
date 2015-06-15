@@ -22,7 +22,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 		// outputs the content of the widget	
-		echo do_shortcode( '[wl-timeline global=true]' );
+		echo do_shortcode( '[wl_timeline global=true]' );
 	}
 
 	/**

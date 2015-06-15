@@ -40,7 +40,7 @@ class WordLift_Geo_Widget extends WP_Widget
 
         // Print the geomap shortcode
         // ( global = true - because it is not post-specific)
-        echo do_shortcode('[wl-geomap global=true]');
+        echo do_shortcode('[wl_geomap global=true]');
 
         echo $args['after_widget'];
     }

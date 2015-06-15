@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file contains admin methods for the *wl-chord* and *wl-timeline* shortcode.
+ * This file contains admin methods for the *wl_chord* and *wl_timeline* shortcode.
  */
 
 

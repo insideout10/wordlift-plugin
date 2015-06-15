@@ -963,7 +963,7 @@ require_once( 'admin/wordlift_admin_ajax_add_entity.php' );
 // add the entity creation AJAX.
 require_once( 'admin/wordlift_admin_ajax_related_posts.php' );
 
-// Load the wl-chord TinyMCE button and configuration dialog.
+// Load the wl_chord TinyMCE button and configuration dialog.
 require_once( 'admin/wordlift_admin_shortcodes.php' );
 
 // Provide syncing features.

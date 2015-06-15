@@ -183,7 +183,7 @@ function wordlift_indepth_article_head() {
 //    <meta name="twitter:site" content="@..." />
 //    <meta name="twitter:creator" content="@..." />
 
-    // TODO: set these according to the wl-related-articles shortcode.
+    // TODO: set these according to the wl_related_articles shortcode.
 //    <link rel="next" href="http://.../2" />
 //    <link rel="prev" href="http://..." />
 

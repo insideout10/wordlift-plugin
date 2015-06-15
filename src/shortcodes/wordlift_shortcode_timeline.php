@@ -223,9 +223,9 @@ EOF;
 }
 
 /**
- * Registers the *wl-timeline* shortcode.
+ * Registers the *wl_timeline* shortcode.
  */
 function wl_shortcode_timeline_register() {
-    add_shortcode( 'wl-timeline', 'wl_shortcode_timeline' );
+    add_shortcode( 'wl_timeline', 'wl_shortcode_timeline' );
 }
 add_action( 'init', 'wl_shortcode_timeline_register' );

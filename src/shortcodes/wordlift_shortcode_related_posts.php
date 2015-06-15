@@ -3,7 +3,7 @@
  */
 
 function wordlift_register_shortcode_related_posts() {
-    add_shortcode('wl-related-posts', 'wordlift_shortcode_related_posts');
+    add_shortcode('wl_related_posts', 'wordlift_shortcode_related_posts');
 }
 
 function wordlift_shortcode_related_posts() {
