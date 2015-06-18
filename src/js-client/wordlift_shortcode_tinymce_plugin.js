@@ -23,12 +23,6 @@
 			top.tinymce.activeEditor.execCommand('mceInsertContent', false, timeline_shortcode_text);
     	},
     	
-    	// Custom function for the Related Posts
-    	relatedPostsClick : function(){
-	    	var related_posts_shortcode_text = '[wl_related_posts]';
-			top.tinymce.activeEditor.execCommand('mceInsertContent', false, related_posts_shortcode_text);
-    	},
-    	
     	geomapClick : function(){
     		var geomap_shortcode_text = '[wl_geomap]';
 			top.tinymce.activeEditor.execCommand('mceInsertContent', false, geomap_shortcode_text);
@@ -71,10 +65,6 @@
 			            {
 			            	text: 'Timeline',
 			            	onclick: this.timelineClick
-			            },
-			            {
-			            	text: 'Related Posts',
-			            	onclick: this.relatedPostsClick
 			            },
 			            {
 			            	text: 'GeoMap',
@@ -131,11 +121,6 @@
                     m.add({
                     	title: 'Timeline',
                     	onclick: pluginRef.timelineClick
-                    });
-                    
-                    m.add({
-                    	title: 'Related Posts',
-                    	onclick: pluginRef.relatedPostsClick
                     });
                     
                     m.add({
