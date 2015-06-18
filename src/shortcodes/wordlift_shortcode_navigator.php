@@ -98,7 +98,7 @@ function wordlift_shortcode_navigator() {
         
         $thumb = wl_get_the_post_thumbnail_src( get_the_post_thumbnail( $related_post_id, 'medium' ) );
         if( empty( $thumb ) ) {
-            $thumb = plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ );
+            $thumb = WL_DEFAULT_THUMBNAIL_PATH;
         }
         
         /*

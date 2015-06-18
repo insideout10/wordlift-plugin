@@ -1,5 +1,7 @@
 <?php
 
+define('WL_DEFAULT_THUMBNAIL_PATH', plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ ) );
+        
 // Post meta for the 4W in journalism (we don't have a Why)
 // post metas linking a post to the entity
 define('WL_CUSTOM_FIELD_WHAT_ENTITIES', 'wl_what_entities');

@@ -41,11 +41,10 @@ function wordlift_ajax_related_posts() {
             )
         );
         
-        $default_thumbnail = plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ );
         foreach ( $related_posts as $post_obj ) {
                 
             $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
-            $post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : $default_thumbnail;    
+            $post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;    
         }
     }
 

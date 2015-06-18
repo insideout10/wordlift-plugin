@@ -68,7 +68,7 @@ function wl_shortcode_faceted_search_ajax()
                 
                 $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
                 $post_obj->thumbnail = ( $thumbnail ) ? 
-                    $thumbnail : plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ );
+                    $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
                 $result[] = $post_obj;
             }
@@ -105,7 +105,7 @@ function wl_shortcode_faceted_search_ajax()
                 
                 $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
                 $post_obj->thumbnail = ( $thumbnail ) ? 
-                    $thumbnail : plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ );
+                    $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
                 $result[] = $post_obj;
             }

@@ -161,7 +161,9 @@ function wl_entities_box_content( $post ) {
 
         $referenced_entities_obj = empty($referenced_entities_obj) ? 
             '{}' : json_encode( $referenced_entities_obj );
-	
+		
+		$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
+
 	echo <<<EOF
     <script type="text/javascript">
         jQuery( function() {
@@ -173,6 +175,9 @@ function wl_entities_box_content( $post ) {
         	window.wordlift.classificationBoxes = $classification_boxes;
         	window.wordlift.entities = $referenced_entities_obj;
         	window.wordlift.currentPostId = $post->ID;
+			window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
+
+
         });
     </script>
 EOF;
