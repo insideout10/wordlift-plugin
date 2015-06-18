@@ -172,6 +172,7 @@ function wl_entities_box_content( $post ) {
 
         	window.wordlift.classificationBoxes = $classification_boxes;
         	window.wordlift.entities = $referenced_entities_obj;
+        	window.wordlift.currentPostId = $post->ID;
         });
     </script>
 EOF;

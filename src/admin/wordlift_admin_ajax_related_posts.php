@@ -3,11 +3,14 @@
 function wordlift_ajax_related_posts() {
     
     // Extract filtering conditions
+    $post_id = isset( $_GET["post_id"] ) ? intval( $_GET["post_id"] ) : 0;
+    wl_write_log( "Going to find posts related to current with post id: $post_id ..." );
+    
     $request_body = file_get_contents('php://input');
     $filtering_entity_uris = json_decode( $request_body );    
     $filtering_entity_ids = array();
     $related_posts = array();
-                   
+                       
     foreach( $filtering_entity_uris as $uri) {
         wl_write_log( "Find entity with uri $uri ..." );
                    
@@ -26,6 +29,7 @@ function wordlift_ajax_related_posts() {
         $related_posts = $query->query(
             array(
                 'post_type' => 'post',
+                'post__not_in' => array( $post_id ),
                 'posts_per_page' =>-1,
                 'meta_query' => array(
                     array(
