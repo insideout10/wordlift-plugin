@@ -918,7 +918,6 @@ if ( version_compare( phpversion(), '5.4.0', '>=' ) ) {
 
 require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
 require_once( 'modules/timeline_widget/wordlift_timeline_widget.php' );
-require_once( 'shortcodes/wordlift_shortcode_related_posts.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_timeline.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
