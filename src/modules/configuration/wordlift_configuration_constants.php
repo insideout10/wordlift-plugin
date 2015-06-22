@@ -23,9 +23,6 @@ define( 'WL_CONFIG_DEFAULT_SITE_LANGUAGE', 'en' );
 
 define( 'WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 'recursion_depth_on_metadata_printing' );
 
-// The parameter name for the default *entity display as* setting.
-define( 'WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME', 'wl_config_entity_display_as' );
-
 // The parameter name for the *enable color coding on front-end* setting.
 define( 'WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME', 'wl_config_enable_color_coding_on_frontend' );
 

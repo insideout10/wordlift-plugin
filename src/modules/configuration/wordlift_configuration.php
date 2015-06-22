@@ -135,26 +135,6 @@ function wl_configuration_settings() {
 		)
 	);
 
-	// Add the setting field for the display as default.
-	add_settings_field(
-		WL_CONFIG_ENTITY_DISPLAY_AS_DEFAULT_NAME,
-		__( 'New Entity Posts are displayed as', 'wordlift' ),
-		'wl_configuration_select',
-		'wl_general_settings',
-		'wl_general_settings_section',
-		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			'id'          => 'wl-entity-display-as',
-			'name'        => 'wl_general_settings[entity_display_as]',
-			'value'       => wl_configuration_get_entity_display_as(),
-			'description' => __( 'By default the entity page is displayed as', 'wordlift' ),
-			'options'     => array(
-				'index' => __( 'Index', 'wordlift' ),
-				'page'  => __( 'Page', 'wordlift' )
-			)
-
-		)
-	);
-
 	add_settings_field(
 		WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME,
 		__( 'Enable color coding on front-end', 'wordlift' ),

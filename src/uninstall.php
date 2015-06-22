@@ -113,4 +113,4 @@ echo 'Cleaning WordLift options... ';
 delete_option( 'wl_option_prefixes' );
 delete_option( 'wl_general_settings' );
 delete_option( 'wl_advanced_settings' );
-echo 'Done.</br>';
+echo 'Done. WordLift successfully uninstalled.</br>';
