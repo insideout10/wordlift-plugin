@@ -23,15 +23,6 @@ class ConfigurationTest extends WP_UnitTestCase {
 	}
 
 
-	function test_wl_configuration_entity_display_as() {
-
-		$value = uniqid();
-		wl_configuration_set_entity_display_as( $value );
-
-		$this->assertEquals( $value, wl_configuration_get_entity_display_as() );
-	}
-
-
 	function test_wl_configuration_enable_color_coding() {
 
 		wl_configuration_set_enable_color_coding( false );
