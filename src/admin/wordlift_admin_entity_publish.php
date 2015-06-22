@@ -15,9 +15,9 @@ function wl_admin_post_publish_meta_box() {
     // Get the current post.
     $post = get_post();
     $display_as = wl_get_entity_display_as( $post->ID );
-
+    //echo('piedo ' . $display_as);
 ?>
-    <div class="misc-pub-section wl-pub-entity-display-as"><label for="wl_entity_display_as"><?php _e('Display as:', 'wordlift') ?></label>
+<div class="misc-pub-section wl-pub-entity-display-as"><label for="wl_entity_display_as"><?php _e('Display as:', 'wordlift') ?></label>
 <span id="wl-entity-display-as">
 <?php
     _e( 'index' === $display_as ? 'Index' : 'Page', 'wordlift' );
