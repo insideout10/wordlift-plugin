@@ -892,7 +892,7 @@ require_once( 'wordlift_editor.php' );
 // add the WordLift entity custom type.
 require_once( 'wordlift_entity_type.php' );
 require_once( 'wordlift_entity_type_taxonomy.php' );
-require_once( 'wordlift_entity_template.php' );
+
 // filters the post content when saving posts.
 require_once( 'wordlift_content_filter.php' );
 // add callbacks on post save to notify data changes from wp to redlink triple store
@@ -946,7 +946,6 @@ require_once( 'modules/sparql/wordlift_sparql.php' );
 require_once( 'admin/wordlift_admin.php' );
 require_once( 'admin/wordlift_admin_edit_post.php' );
 require_once( 'admin/wordlift_admin_save_post.php' );
-require_once( 'admin/wordlift_admin_entity_publish.php' );
 
 // add the WordLift admin bar.
 require_once( 'admin/wordlift_admin_bar.php' );
