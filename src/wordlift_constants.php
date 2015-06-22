@@ -62,8 +62,6 @@ define( 'WL_ENTITY_TYPE_NAME', 'entity' );
 // The name for the entity type taxonomy.
 define( 'WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type' );
 
-// The custom field name to store whether the entity must be displayed as single page.
-define( 'WL_CUSTOM_FIELD_ENTITY_DISPLAY_AS_SINGLE_PAGE', 'wl_entity_display_as_single_page' );
 
 /**
  * Get an array with commonly supported prefixes.

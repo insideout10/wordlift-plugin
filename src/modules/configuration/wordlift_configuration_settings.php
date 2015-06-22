@@ -48,33 +48,6 @@ function wl_configuration_set_key( $value ) {
 }
 
 /**
- * Get the *Entity Display As* configuration setting.
- *
- * @since 3.0.0
- *
- * @return string It returns 'index' to display pages as indexes or 'page' to display them as pages.
- */
-function wl_configuration_get_entity_display_as() {
-
-	$options = get_option( 'wl_general_settings' );
-
-	return ( empty( $options['entity_display_as'] ) ? 'index' : $options['entity_display_as'] );
-}
-
-/**
- * Set the *Entity Display As* setting.
- *
- * @since 3.0.0
- *
- * @param string $value Either *index* to display the entities as a list of links or *page* to display the entity page.
- */
-function wl_configuration_set_entity_display_as( $value ) {
-
-	wl_configuration_set( 'wl_general_settings', 'entity_display_as', $value );
-
-}
-
-/**
  * Get the *Enable Color Coding* configuration setting.
  *
  * @since 3.0.0
