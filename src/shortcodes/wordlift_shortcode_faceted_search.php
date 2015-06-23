@@ -17,7 +17,8 @@ function wl_shortcode_faceted_search( $atts ) {
             'action'     => 'wl_faceted_search',
             'entity_id'  => get_the_ID(),
             'entity_uri'  => wl_get_entity_uri( get_the_ID() ),
-            'div_id'     => $div_id
+            'div_id'     => $div_id, 
+            'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH 
         )
     );
     
