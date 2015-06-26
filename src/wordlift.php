@@ -584,6 +584,9 @@ function wl_install_entity_type_data() {
 	wl_entity_type_register();
 	wl_entity_type_taxonomy_register();
 
+	// Create a blank application key
+	wl_configuration_set_key('');
+
 	// Set the taxonomy data.
         // Note: parent types must be defined before child types.
 	// TODO: Manage both generic and custom fields as fields
