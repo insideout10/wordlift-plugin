@@ -124,6 +124,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			if ( isset( $boxes_via_post[ $relation ] ))  {	
 				foreach ( $boxes_via_post[ $relation ] as $entity_id ) {
 
+					$uri = $entity_id;
+					
 					if ( array_key_exists( $entity_id, $entities_uri_mapping ) ) {
 						$uri = $entities_uri_mapping[ $entity_id ];
 					}
