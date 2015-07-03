@@ -749,26 +749,24 @@ function wl_install_entity_type_data() {
 				'subtitle' => '{{id}}'
 			)
 		),
-
                 'localbusiness'         => array(
-                    'label'              => 'LocalBusiness',
-                    'description'        => 'A local business.',
-                    'parents'             => array( 'place', 'organization' ),
-                    'css'                => 'wl-organization',
-                    'uri'                => 'http://schema.org/LocalBusiness',
-                    'same_as'            => array(
-                            /*'http://rdf.freebase.com/ns/location.location',
-                            'http://www.opengis.net/gml/_Feature'*/ // TODO: find same as for this type
-                    ),
-                    'custom_fields'      => array(
-                            
-                    ),
-                    'microdata_template' =>
-                            '', // TODO: define microdata template for this type
-                    'templates'          => array(
-                            'subtitle' => '{{id}}'
-                    )
-                )           
+                        'label'              => 'LocalBusiness',
+                        'description'        => 'A local business.',
+                        'parents'            => array( 'place', 'organization' ),
+                        'css'                => 'wl-organization',
+                        'uri'                => 'http://schema.org/LocalBusiness',
+                        'same_as'            => array(
+                                'http://rdf.freebase.com/ns/business/business_location',
+                                'https://schema.org/Store'
+                        ),
+                        'custom_fields'      => array(
+                                
+                        ),
+                        'microdata_template' => '',
+                        'templates'          => array(
+                                'subtitle' => '{{id}}'
+                        )
+                ),
             
 	);
         
@@ -816,6 +814,7 @@ function wl_install_entity_type_data() {
                 ));
                 
                 // Inherit custom fields and microdata template from parent.
+                // TODO: inherit also microdata templates
                 $term['custom_fields'] = wl_entity_type_taxonomy_type_inheritage( $term['custom_fields'], $parent_ids );
                 
 		// Add custom metadata to the term.
