@@ -22,7 +22,7 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
         $html     .= "<span id='view-post-btn'><a href='$uri_esc' class='button button-small'>" .
             __('View on Redlink', 'wordlift') .
             "</a></span>\n";
-        $html     .= "<span id='view-post-btn'><a href='http://www.google.com/webmasters/tools/richsnippets?q=" .
+        $html     .= "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
             urlencode( get_permalink( $post_id ) ) .
             "' class='button button-small'>" .
             __('Test Google Rich Snippets', 'wordlift') .

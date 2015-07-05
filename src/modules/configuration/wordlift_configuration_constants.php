@@ -27,3 +27,5 @@ define( 'WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 'recursion_dept
 define( 'WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME', 'wl_config_enable_color_coding_on_frontend' );
 
 define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', 'http://store-test.wordlift.it:8080/' );
+
+define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://developers.google.com/structured-data/testing-tool/?url=' );
