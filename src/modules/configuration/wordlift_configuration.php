@@ -433,7 +433,8 @@ function wl_config_get_recursion_depth() {
 	// get the plugin options.
 	$options = get_option( WL_OPTIONS_NAME );
 
-	return ( is_numeric( $options[ WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING ] )
+	return ( isset( $options[ WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING ] )
+                    && is_numeric( $options[ WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING ] )
 		? $options[ WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING ]
 		: WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING );
 }
