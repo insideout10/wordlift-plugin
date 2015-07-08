@@ -9,6 +9,8 @@
         <link itemprop="url" href="http://example.org/?entity=my-place" />
         <a href="http://example.org/?entity=my-place"itemprop="name"content="MyPlace"></a>
     </span>
+    <link itemprop="sameAs" href="http://rdf.freebase.com/my-event">
+    <link itemprop="sameAs" href="http://dbpedia.org/resource/my-event">
     <link itemprop="url" href="http://example.org/?entity=my-event" />
     <a href="http://example.org/?entity=my-event" itemprop="name" content="MyEvent">MyEvent</a>
 </span>
