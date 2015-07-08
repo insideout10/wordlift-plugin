@@ -606,7 +606,7 @@ function wl_install_entity_type_data() {
 					'constraints' => ''
 				)
 			),
-                        'microdata_template' => '',
+                        'microdata_template' => '{{sameAs}}',
                         'templates'          => array(
                                 'subtitle' => '{{id}}'
                         )
@@ -685,7 +685,7 @@ function wl_install_entity_type_data() {
 					)
 				),
                         ),
-			'microdata_template' => '',
+			'microdata_template' => '{{founder}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -814,8 +814,7 @@ function wl_install_entity_type_data() {
                 ));
                 
                 // Inherit custom fields and microdata template from parent.
-                // TODO: inherit also microdata templates
-                $term['custom_fields'] = wl_entity_type_taxonomy_type_inheritage( $term['custom_fields'], $parent_ids );
+                $term = wl_entity_type_taxonomy_type_inheritage( $term, $parent_ids );
                 
 		// Add custom metadata to the term.
 		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['microdata_template'] );
@@ -824,35 +823,49 @@ function wl_install_entity_type_data() {
 }
 
 /**
- * Merge the custom fields of an entity types with the custom fields inherited from parents.
+ * Merge the custom_fields and microdata_templates of an entity type with the ones from parents.
  * This function is used by *wl_install_entity_type_data* at installation time.
  * 
- * @param $child_term_custom_fields Custom fields of the child entity type.
+ * @param $child_term Array Child entity type (expanded as array).
  * @param $parent_term_ids Array containing the ids of the parent types.
  *
- * @return array Merged custom fields.
+ * @return Array $child_term enriched with parents' custom_fields and microdata_template
  */
-function wl_entity_type_taxonomy_type_inheritage( $child_term_custom_fields, $parent_term_ids ) {
-        
+function wl_entity_type_taxonomy_type_inheritage( $child_term, $parent_term_ids ) {
+    
     // If we re at the top of hierarchy ...
     if( empty( $parent_term_ids ) || $parent_term_ids[0] == 0 ) {
-        // ... return custom fields as they are.
-        return $child_term_custom_fields;
+        // ... return term as it is.
+        return $child_term;
     }
     
     // Loop over parents
-    $merged_custom_fileds = $child_term_custom_fields;
+    $merged_custom_fields = $child_term['custom_fields'];
+    $merged_microdata_template = $child_term['microdata_template'];
     foreach( $parent_term_ids as $parent_term_id ) {
         
         // Get a parent's custom fields
         $parent_term = wl_entity_type_taxonomy_get_term_options( $parent_term_id );
         $parent_term_custom_fields = $parent_term['custom_fields'];
+        $parent_term_microdata_template = $parent_term['microdata_template'];
         
-        // Merge custom fields
-        $merged_custom_fileds = array_merge( $merged_custom_fileds, $parent_term_custom_fields );    
+        // Merge custom fields (array)
+        $merged_custom_fields = array_merge( $merged_custom_fields, $parent_term_custom_fields );
+        // Merge microdata templates (string)
+        $merged_microdata_template = $merged_microdata_template . $parent_term_microdata_template;
     }
-        
-    return $merged_custom_fileds;
+    
+    // Ensure there are no duplications in microdata_templates
+    $exploded_microdata_template = explode( '}}' , $merged_microdata_template );
+    $unique_microdata_template = array_unique( $exploded_microdata_template );
+    $merged_microdata_template = implode( '}}' , $unique_microdata_template );
+    
+    // Update child_term with inherited structures
+    $child_term['custom_fields'] = $merged_custom_fields;
+    $child_term['microdata_template'] = $merged_microdata_template;
+    
+    // Return new version of the term
+    return $child_term;
 }
 
 /**
