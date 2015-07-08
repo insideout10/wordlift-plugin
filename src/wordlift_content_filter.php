@@ -161,10 +161,6 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		return '';
 	}
         
-        wl_write_log('piedo start compiling');
-        wl_write_log($template);
-        wl_write_log($matches);
-        
 	foreach ( $matches as $match ) {
 
 		$placeholder = $match[0];
@@ -177,9 +173,6 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 			$template = str_replace( $placeholder, '', $template );
 			continue;
 		}
-                
-                wl_write_log('piedo compiling ' . $field_name);
-                wl_write_log($meta_collection);
 
 		// What kind of value is it?
 		// TODO: Performance issue here: meta type retrieving should be centralized
@@ -210,7 +203,5 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		}
 	}
         
-        wl_write_log('piedo end compiling');
-        wl_write_log($template);
 	return $template;
 }
