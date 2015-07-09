@@ -606,7 +606,9 @@ function wl_install_entity_type_data() {
 					'constraints' => ''
 				)
 			),
-                        'microdata_template' => '{{sameAs}}',
+                        // {{sameAs}} not present in the microdata template,
+                        // because it is treated separately in *wl_content_embed_item_microdata*
+                        'microdata_template' => '',
                         'templates'          => array(
                                 'subtitle' => '{{id}}'
                         )

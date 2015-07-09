@@ -56,8 +56,6 @@ function wl_schema_get_value( $post_id, $property_name ) {
  */
 function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     
-    // TODO: what if $property_value is an array?
-    
     // Some checks on the parameters
     if ( !is_numeric( $post_id ) || is_null( $property_name ) ||empty( $property_value ) || is_null( $property_value ) ) {
             return false;
@@ -73,8 +71,15 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     foreach( $accepted_fields as $wl_constant => $field ) {
         if( $field['predicate'] == $property_name ) {
             
-            add_post_meta( $post_id, $wl_constant, $property_value );
-            // TODO: manage complementary relation as made for posts           
+            // Deal with single values
+            if( !is_array( $property_value ) ) {
+                $property_value = array( $property_value );
+            }
+            
+            foreach( $property_value as $value ) {
+                add_post_meta( $post_id, $wl_constant, $value );
+                // TODO: manage complementary relation as made for posts
+            }
          
             return true;
         }

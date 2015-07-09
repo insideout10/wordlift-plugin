@@ -1,4 +1,6 @@
 <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="{{REDLINK_ENDPOINT}}/entity/MyEvent">
+    <link itemprop="sameAs" href="http://rdf.freebase.com/my-event">
+    <link itemprop="sameAs" href="http://dbpedia.org/resource/my-event">
     <span itemprop="startDate" content="2014-10-21"></span>
     <span itemprop="endDate" content="2015-10-26"></span>
     <span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="{{REDLINK_ENDPOINT}}/entity/MyPlace">
@@ -9,8 +11,6 @@
         <link itemprop="url" href="http://example.org/?entity=my-place" />
         <a href="http://example.org/?entity=my-place"itemprop="name"content="MyPlace"></a>
     </span>
-    <link itemprop="sameAs" href="http://rdf.freebase.com/my-event">
-    <link itemprop="sameAs" href="http://dbpedia.org/resource/my-event">
     <link itemprop="url" href="http://example.org/?entity=my-event" />
     <a href="http://example.org/?entity=my-event" itemprop="name" content="MyEvent">MyEvent</a>
 </span>

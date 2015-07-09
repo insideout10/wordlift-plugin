@@ -165,7 +165,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 
 		$placeholder = $match[0];
 		$field_name  = $match[1];
-
+                
 		// Get property value.
 		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
 		// If no value is given, just remove the placeholder from the template

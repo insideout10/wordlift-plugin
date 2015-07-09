@@ -172,10 +172,13 @@ EOF;
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
-                wl_set_same_as($event_id, 'http://rdf.freebase.com/my-event');
-                wl_set_same_as($event_id, 'http://dbpedia.org/resource/my-event');
+		
+                // Trying out both the schema API and the classic WP method
+                add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
+		wl_schema_set_value( $event_id, 'endDate', '2015-10-26' );
+                
+                wl_schema_set_value($event_id, 'sameAs', 'http://rdf.freebase.com/my-event');
+                wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
@@ -262,7 +265,9 @@ EOF;
 		// A place
 		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-		add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+		
+                // Trying out both the schema API and the classic WP method
+                wl_schema_set_value( $place_id, 'latitude', 40.12 );
 		add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// An Event having as location the place above
@@ -270,7 +275,14 @@ EOF;
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
 		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
 		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
+                
+                wl_schema_set_value($event_id, 'sameAs', array(
+                    'http://rdf.freebase.com/my-event',
+                    'http://dbpedia.org/resource/my-event'
+                ));
+                //wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
+		
+                add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );

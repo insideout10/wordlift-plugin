@@ -30,15 +30,26 @@ class SchemaApiTest extends WP_UnitTestCase {
 
         $place_id = wl_create_post( 'Entity 1 Text', 'entity-1', 'Entity 1 Title', 'publish', 'entity' );
         wl_schema_set_types( $place_id, 'Place');
+        wl_schema_set_value( $place_id, 'sameAs', 'http://rdf.freebase.com/my-place' );
+        wl_schema_set_value( $place_id, 'sameAs', 'http://dbpedia.org/resource/my-place' );
         wl_schema_set_value( $place_id, 'latitude', 40.12 );
 
         $event_id = wl_create_post("Entity 2 Text", 'entity-2', "Entity 2 Title", 'publish', 'entity');
-        wl_schema_set_types( $event_id, 'Event' );       
+        wl_schema_set_types( $event_id, 'Event' );
+        wl_schema_set_value( $event_id, 'sameAs', array(
+            'http://rdf.freebase.com/my-event',
+            'http://dbpedia.org/resource/my-event'
+        ));
         wl_schema_set_value( $event_id, 'startDate', '2014-10-21');
 
         // Positive tests
+        $value = wl_schema_get_value( $place_id, 'sameAs' );
+        $this->assertEquals( array('http://rdf.freebase.com/my-place', 'http://dbpedia.org/resource/my-place') , $value );
         $value = wl_schema_get_value( $place_id, 'latitude' );
         $this->assertEquals( array( 40.12 ) , $value );
+        
+        $value = wl_schema_get_value( $event_id, 'sameAs' );
+        $this->assertEquals( array('http://rdf.freebase.com/my-event', 'http://dbpedia.org/resource/my-event') , $value );
         $value = wl_schema_get_value( $event_id, 'startDate' );
         $this->assertEquals( array( '2014-10-21' ) , $value );
 

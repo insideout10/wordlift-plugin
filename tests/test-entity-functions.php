@@ -141,8 +141,6 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $microdata_template = $entity_type_details['microdata_template'];
         
         // Check inherited microdata templates:
-        // sameAs from Thing
-        $this->assertContains( '{{sameAs}}', $microdata_template );
         // latitude from Place with 'itemtype="http://schema.org/GeoCoordinates"' markup
         $this->assertContains( 'itemtype="http://schema.org/GeoCoordinates"', $microdata_template );
         $this->assertContains( '{{latitude}}', $microdata_template );
