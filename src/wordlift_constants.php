@@ -44,7 +44,7 @@ define( 'WL_DATA_TYPE_BOOLEAN', 'bool' );
 define( 'WL_DATA_TYPE_STRING', 'string' );
 
 // Entities post-meta names
-define( 'WL_CUSTOM_FIELD_SAME_AS', 'wl_same_as' );
+define( 'WL_CUSTOM_FIELD_SAME_AS', 'entity_same_as' );
 define( 'WL_CUSTOM_FIELD_GEO_LATITUDE', 'wl_geo_latitude' );
 define( 'WL_CUSTOM_FIELD_GEO_LONGITUDE', 'wl_geo_longitude' );
 define( 'WL_CUSTOM_FIELD_CAL_DATE_START', 'wl_cal_date_start' );

@@ -263,11 +263,11 @@ function wl_set_same_as( $post_id, $same_as ) {
 	wl_write_log( "wl_set_same_as [ post id :: $post_id ][ same as :: " . join( ',', $same_as_array ) . " ]" );
 
 	// Replace the existing same as with the new one.
-	delete_post_meta( $post_id, 'entity_same_as' );
+	delete_post_meta( $post_id, WL_CUSTOM_FIELD_SAME_AS );
 
 	foreach ( $same_as_array as $item ) {
 		if ( ! empty( $item ) ) {
-			add_post_meta( $post_id, 'entity_same_as', $item, false );
+			add_post_meta( $post_id, WL_CUSTOM_FIELD_SAME_AS, $item, false );
 		}
 	}
 }
@@ -282,7 +282,7 @@ function wl_set_same_as( $post_id, $same_as ) {
 function wl_get_same_as( $post_id ) {
 
 	// Get the related array (single _must_ be true, refer to http://codex.wordpress.org/Function_Reference/get_post_meta)
-	$same_as = get_post_meta( $post_id, 'entity_same_as', false );
+	$same_as = get_post_meta( $post_id, WL_CUSTOM_FIELD_SAME_AS, false );
 
 	if ( empty( $same_as ) ) {
 		return array();

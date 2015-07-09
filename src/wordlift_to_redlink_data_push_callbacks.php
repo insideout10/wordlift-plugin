@@ -279,11 +279,11 @@ function wl_get_entity_post_by_uri( $uri ) {
 	$query = new WP_Query( array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => 'entity',
+			'post_type'      => WL_ENTITY_TYPE_NAME,
 			'meta_query'     => array(
 				'relation' => 'OR',
 				array(
-					'key'     => 'entity_same_as',
+					'key'     => WL_CUSTOM_FIELD_SAME_AS,
 					'value'   => $uri,
 					'compare' => '='
 				),
