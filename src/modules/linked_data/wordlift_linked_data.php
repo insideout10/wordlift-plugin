@@ -188,6 +188,20 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
 
 /**
+ * Adds default schema type "Thing" as soon as an entity is created.
+ */
+function wordlift_save_post_add_default_schema_type( $entity_id ) {
+    
+    $entity = get_post( $entity_id );
+    if( $entity->post_type == WL_ENTITY_TYPE_NAME ) {
+        
+        wl_schema_set_types($entity_id, 'Thing');
+    }
+}
+// Priority 1 (default is 10) because we want the default type to be set as soon as possible
+add_action( 'wordlift_save_post', 'wordlift_save_post_add_default_schema_type', 1);
+
+/**
  * Save the specified entities to the local storage.
  *
  * @param array $entities An array of entities.
@@ -307,7 +321,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
 		array_push( $same_as, $uri );
 	}
 	// Save the sameAs data for the entity.
-	wl_set_same_as( $post_id, $same_as );
+	wl_schema_set_value( $post_id, 'sameAs', $same_as );
 
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );

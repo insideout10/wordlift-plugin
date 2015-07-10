@@ -45,7 +45,7 @@ EOF;
 
 	// Test if the microdata compiling does not fail on an entity with an undefined schema.org type
 	function testMicrodataCompilingForAnEntityWithUndefinedType() {
-		// Create an entity without defining the schema.org type properly
+		// Create an entity without defining the schema.org type. WordLift will assume it is a Thing
 		$entity_id  = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		$entity_uri = wl_get_entity_uri( $entity_id );
 		$content    = <<<EOF
@@ -177,8 +177,8 @@ EOF;
                 add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
 		wl_schema_set_value( $event_id, 'endDate', '2015-10-26' );
                 
-                wl_schema_set_value($event_id, 'sameAs', 'http://rdf.freebase.com/my-event');
                 wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
+                wl_schema_add_value($event_id, 'sameAs', 'http://rdf.freebase.com/my-event');
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );

@@ -133,7 +133,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	$sparql      = '';
 
 	// set the same as.
-	$same_as = wl_get_same_as( $entity_post->ID );
+	$same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' );
 	foreach ( $same_as as $same_as_uri ) {
 		$same_as_uri_esc = wordlift_esc_sparql( $same_as_uri );
 		$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";

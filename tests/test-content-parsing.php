@@ -21,7 +21,7 @@ class ContentParsingTest extends WP_UnitTestCase
 
     function createSampleEntity() {
         $entity_post_id = wl_create_post( 'Lorem Ipsum', 'honda', 'Honda', 'publish', 'entity' );
-        wl_set_same_as( $entity_post_id, 'http://dbpedia.org/resource/Honda' );
+        wl_schema_set_value( $entity_post_id, 'sameAs', 'http://dbpedia.org/resource/Honda' );
     }
 
     function testContentParsing() {

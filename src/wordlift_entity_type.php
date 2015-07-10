@@ -67,7 +67,7 @@ function wl_entity_type_meta_boxes_content( $post ) {
 	echo '<label for="entity_url">' . __( 'entity-url-label', 'wordlift' ) . '</label>';
 	echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
 
-	$same_as = implode( "\n", wl_get_same_as( $post->ID ) );
+	$same_as = implode( "\n", wl_schema_get_value( $post->ID, 'sameAs' ) );
 
 	echo '<label for="entity_same_as">' . __( 'entity-same-as-label', 'wordlift' ) . '</label>';
 	echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $same_as ) . '</textarea>';
@@ -125,8 +125,9 @@ function wl_entity_type_save_custom_fields( $post_id ) {
 	);
 
 	// save the same as values.
-	wl_set_same_as(
+	wl_schema_set_value(
 		$post_id,
+                'sameAs',
 		explode( "\r\n", $_POST['entity_same_as'] )
 	);
 

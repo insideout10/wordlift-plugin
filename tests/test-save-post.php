@@ -79,7 +79,7 @@ EOF;
         $this->assertCount( 2, wl_get_related_entities( $entity_3_id ) );
         // Entity post published: should be pushed on Redlink 
         $lines = $this->getPostTriples( $entity_3_id );
-        $this->assertCount( 6, $lines );
+        $this->assertCount( 7, $lines );
         // Check entity 1 and 2 are properly related to entity 3 on Redlink side
         $this->assertTrue( in_array("<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines) );
         $this->assertTrue( in_array("<http://purl.org/dc/terms/relation><$entity_2_uri>", $lines) );
@@ -95,7 +95,7 @@ EOF;
         wp_update_post( array( 'ID' => $entity_3_id, 'post_content' => $body_1 ));
         $this->assertCount( 1, wl_get_related_entities( $entity_3_id ) );
         $lines = $this->getPostTriples( $entity_3_id );
-        $this->assertCount( 5, $lines );
+        $this->assertCount( 6, $lines );
         // Check just entity 1 is properly related to entity 3 on Redlink side
         $this->assertTrue( in_array("<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines) );
         $this->assertFalse( in_array("<http://purl.org/dc/terms/relation><$entity_2_uri>", $lines) );
@@ -201,11 +201,11 @@ EOF;
         $this->assertCount( 10, $lines );
         // check all entities published
         $lines = $this->getPostTriples( $entity_1_id );
-        $this->assertCount( 3, $lines );
+        $this->assertCount( 4, $lines );
         $this->assertEquals( 'publish', get_post_status( $entity_1_id ) );
         
         $lines = $this->getPostTriples( $entity_2_id );
-        $this->assertCount( 3, $lines );
+        $this->assertCount( 4, $lines );
         $this->assertEquals( 'publish', get_post_status( $entity_2_id ) );
 
         // unpublish the post.
@@ -242,10 +242,10 @@ EOF;
         $this->assertCount( 10, $lines );
 
         $lines = $this->getPostTriples( $entity_1_id );
-        $this->assertCount( 3, $lines );
+        $this->assertCount( 4, $lines );
 
         $lines = $this->getPostTriples( $entity_2_id );
-        $this->assertCount( 3, $lines );
+        $this->assertCount( 4, $lines );
 
         // unpublish post 1
         wl_update_post_status( $post_1_id, 'draft' );
@@ -260,7 +260,7 @@ EOF;
         $this->assertCount( 1, $lines );
 
         $lines = $this->getPostTriples( $entity_2_id );
-        $this->assertCount( 3, $lines );
+        $this->assertCount( 4, $lines );
 
     }
 

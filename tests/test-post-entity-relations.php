@@ -18,19 +18,21 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
 		$entity_post_id = wl_create_post( '', 'test_entity', 'Test Entity', 'draft', 'entity' );
 		$entity_uri     = wl_get_entity_uri( $entity_post_id );
-		wl_set_same_as( $entity_post_id, 'http://example.org/entity/test_entity' );
+		wl_schema_set_value( $entity_post_id, 'sameAs', 'http://example.org/entity/test_entity' );
 
-		$same_as_array = wl_get_same_as( $entity_post_id );
+		$same_as_array = wl_schema_get_value( $entity_post_id, 'sameAs' );
 		$this->assertTrue( is_array( $same_as_array ) );
 		$this->assertEquals( 'http://example.org/entity/test_entity', $same_as_array[0] );
 
-		wl_set_same_as( $entity_post_id, array(
+		wl_schema_set_value( $entity_post_id, 'sameAs', array(
 			'http://example.org/entity/test_entity',
 			'http://data.example.org/entity/test_entity'
 		) );
 
-		$same_as_array = wl_get_same_as( $entity_post_id );
+		$same_as_array = wl_schema_get_value( $entity_post_id, 'sameAs' );
 		$this->assertTrue( is_array( $same_as_array ) );
+                wl_write_log('piedo test');
+                wl_write_log($same_as_array);
 		$this->assertEquals( 'http://example.org/entity/test_entity', $same_as_array[0] );
 		$this->assertEquals( 'http://data.example.org/entity/test_entity', $same_as_array[1] );
 
@@ -44,9 +46,9 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
 		$entity_post_id = wl_create_post( '', 'test_entity_2', 'Test Entity 2', 'draft', 'entity' );
 		$entity_uri     = wl_get_entity_uri( $entity_post_id );
-		wl_set_same_as( $entity_post_id, $same_as_uri );
+		wl_schema_set_value( $entity_post_id, 'sameAs', $same_as_uri );
 
-		$same_as_array = wl_get_same_as( $entity_post_id );
+		$same_as_array = wl_schema_get_value( $entity_post_id, 'sameAs' );
 		$this->assertTrue( is_array( $same_as_array ) );
 		$this->assertEquals( $same_as_uri, $same_as_array[0] );
 

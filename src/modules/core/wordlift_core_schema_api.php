@@ -1,8 +1,38 @@
 <?php
 
-
-//TODO: move here the function converting schema slug <--> schema URI
-
+/**
+ * Deletes the values for the specified property and post ID, where
+ * 
+ * @param $post_id numeric The numeric post ID.
+ * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
+ *
+ * @return boolean The method returns true if everything went ok, false otherwise.  
+ */
+function wl_schema_reset_value( $post_id, $property_name ) {
+    
+    // Some checks on the parameters
+    if ( !is_numeric( $post_id ) || is_null( $property_name ) ) {
+            return false;
+    }
+    
+    // Build full schema uri if necessary
+    $property_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+    
+    // Get accepted properties
+    $accepted_fields = wl_entity_taxonomy_get_custom_fields( $post_id );
+    
+    // Find the name of the custom-field managing the schema property
+    foreach( $accepted_fields as $wl_constant => $field ) {
+        if( $field['predicate'] == $property_name ) {
+            
+            delete_post_meta( $post_id, $wl_constant );
+         
+            return true;
+        }
+    }
+    
+    return false;
+}
 
 /**
  * Retrieves the value of the specified property for the entity, where
@@ -21,7 +51,6 @@ function wl_schema_get_value( $post_id, $property_name ) {
         
         // store eventual schema name in  different variable
         $property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-
 	// Establish entity id.
 	if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
 		$post_id = get_the_ID();
@@ -32,7 +61,6 @@ function wl_schema_get_value( $post_id, $property_name ) {
         
         // Get custom fields.
 	$term_mapping = wl_entity_taxonomy_get_custom_fields( $post_id );
-
         // Search for the required meta value (by constant name or schema name)
 	foreach ( $term_mapping as $wl_constant => $property_info ) {
 		$found_constant  = ( $wl_constant == $property_name );
@@ -41,12 +69,33 @@ function wl_schema_get_value( $post_id, $property_name ) {
 			return get_post_meta( $post_id, $wl_constant );
 		}
 	}
-
 	return null;
 }
 
 /**
- * Set the value for the specified property and post ID, where
+ * Add a value of the specified property for the entity, where
+ * 
+ * @param $post_id numeric The numeric post ID.
+ * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param $property_value mixed Value to save into the property (adding to already saved).
+ * 
+ * @return array An array of values or NULL in case of no values (or error).
+ */
+function wl_schema_add_value( $post_id, $property_name, $property_value ) {
+    
+    if( !is_array( $property_value ) ) {
+        $property_value = array( $property_value );
+    }
+    
+    $old_values = wl_schema_get_value( $post_id, $property_name );
+    
+    $merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
+    
+    wl_schema_set_value($post_id, $property_name, $merged_property_value);
+}
+
+/**
+ * Set the value for the specified property and post ID, deleting what was there before.
  * 
  * @param $post_id numeric The numeric post ID.
  * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
@@ -76,9 +125,11 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
                 $property_value = array( $property_value );
             }
             
+            // Delete present meta
+            delete_post_meta( $post_id, $wl_constant );
+            
             foreach( $property_value as $value ) {
                 add_post_meta( $post_id, $wl_constant, $value );
-                // TODO: manage complementary relation as made for posts
             }
          
             return true;
@@ -122,7 +173,7 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
  * @return boolean True if everything went ok, an error string otherwise.
  */
 function wl_schema_set_types( $post_id, $type_names ) {
-    
+
     // Some checks on the parameters
     if ( !is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
             return null;

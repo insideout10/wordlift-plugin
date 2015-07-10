@@ -107,7 +107,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 
 	$same_as = '';
 	// Get the array of sameAs uris.
-	$same_as_uris = wl_get_same_as( $post->ID );
+	$same_as_uris = wl_schema_get_value( $post->ID, 'sameAs' );
 	// Prepare the sameAs fragment.
 	foreach ( $same_as_uris as $same_as_uri ) {
 		$same_as .= "<link itemprop=\"sameAs\" href=\"$same_as_uri\">";

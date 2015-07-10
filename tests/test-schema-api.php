@@ -30,8 +30,8 @@ class SchemaApiTest extends WP_UnitTestCase {
 
         $place_id = wl_create_post( 'Entity 1 Text', 'entity-1', 'Entity 1 Title', 'publish', 'entity' );
         wl_schema_set_types( $place_id, 'Place');
-        wl_schema_set_value( $place_id, 'sameAs', 'http://rdf.freebase.com/my-place' );
-        wl_schema_set_value( $place_id, 'sameAs', 'http://dbpedia.org/resource/my-place' );
+        wl_schema_add_value( $place_id, 'sameAs', 'http://dbpedia.org/resource/my-place' );
+        wl_schema_add_value( $place_id, 'sameAs', 'http://rdf.freebase.com/my-place' );
         wl_schema_set_value( $place_id, 'latitude', 40.12 );
 
         $event_id = wl_create_post("Entity 2 Text", 'entity-2', "Entity 2 Title", 'publish', 'entity');
@@ -72,18 +72,18 @@ class SchemaApiTest extends WP_UnitTestCase {
         // Create entity
         $place_id = wl_create_post("Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity');
 
-        // It has no specified type
+        // Type not specified, so it must be a schema.org/Thing
         $type = wl_schema_get_types( $place_id );
-        $this->assertEquals( 0, count($type) );
-        $this->assertEquals( null, $type );
+        $this->assertEquals( 1, count($type) );
+        $this->assertEquals( 'http://schema.org/Thing', $type[0] );
         
         // Assign a non supported type
         wl_schema_set_types( $place_id, 'Ulabadoola' );
         
-        // Verify still no type
+        // Verify still a Thing
         $type = wl_schema_get_types( $place_id );
-        $this->assertEquals( 0, count($type) );
-        $this->assertEquals( null, $type );
+        $this->assertEquals( 1, count($type) );
+        $this->assertEquals( 'http://schema.org/Thing', $type[0] );
         
         // Assign supported type
         wl_schema_set_types( $place_id, 'Place' );
