@@ -23,7 +23,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
         
 	if ( isset( $entity_id ) && is_numeric( $entity_id ) && isset( $entity_type['custom_fields'] ) ) {
 
-		// In some special case, properties must be grouped in one metabox (e.g. coordinates)
+		// In some special case, properties must be grouped in one metabox (e.g. coordinates) or dealed with custom methods.
 		$metaboxes         = wl_entities_metaboxes_group_properties_by_input_field( $entity_type['custom_fields'] );
 		$simple_metaboxes  = $metaboxes[0];
 		$grouped_metaboxes = $metaboxes[1];
@@ -36,7 +36,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
                         $property_slug_name = end( $property_slug_name );
                         
 			// Metabox title
-			$title = __( 'Edit', 'wordlift' ) . ' ' . __( $property_slug_name, 'wordlift' );
+			$title = __( 'Edit', 'wordlift' ) . ' ' . get_the_title() . ' ' . __( $property_slug_name, 'wordlift' );
 
 			// Info passed to the metabox
 			$info         = array();
@@ -45,20 +45,20 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 			$unique_metabox_name = uniqid( 'wl_metabox_' );
 
 			add_meta_box(
-				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'side', 'default', $info
+				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'normal', 'high', $info
 			);
 		}
-
+                
 		// Loop over grouped properties
 		foreach ( $grouped_metaboxes as $key => $property ) {
 
 			// Metabox title
-			$title = __( 'Edit', 'wordlift' ) . ' ' . __( $key, 'wordlift' );
+			$title = __( 'Edit', 'wordlift' ) . ' ' . get_the_title() . ' ' . __( $key, 'wordlift' );
 
 			$unique_metabox_name = uniqid( 'wl_metabox_' );
-
+                        
 			add_meta_box(
-				$unique_metabox_name, $title, 'wl_entities_' . $key . '_box_content', $post_type, 'side', 'default'
+				$unique_metabox_name, $title, 'wl_entities_' . $key . '_box_content', $post_type, 'normal', 'high'
 			);
 
 		}
@@ -83,7 +83,7 @@ function wl_entities_metaboxes_group_properties_by_input_field( $custom_fields )
 
 			// Check if input_field is defined
 			if ( isset( $property['input_field'] ) && $property['input_field'] !== '' ) {
-
+                                
 				$grouped_key = $property['input_field'];
 
 				// Update list of grouped properties
@@ -209,7 +209,8 @@ function wl_entities_date_box_content( $post, $info ) {
 
 	$date = get_post_meta( $post->ID, $meta_name, true );
 	$date = esc_attr( $date );
-
+        
+        $pickerDate  = '';
 	// Give the timepicker the date in its favourite format.
 	if ( ! empty( $date ) ) {
 		$pickerDate = date( 'Y/m/d H:i', strtotime( $date ) );
@@ -257,6 +258,57 @@ function wl_entities_string_box_content( $post, $info ) {
 	$default = get_post_meta( $post->ID, $meta_name, true );
 
 	echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $default . '" style="width:100%" />';
+}
+
+/**
+ * Displays the sameAs meta box contents (called by *add_meta_box* callback).
+ *
+ * @param WP_Post $post The current post.
+ */
+function wl_entities_sameas_box_content( $post ) {
+
+	// Set nonce for both meta (latitude and longitude)
+	wl_echo_nonce( WL_CUSTOM_FIELD_SAME_AS );
+
+	// Get sameAs
+        $sameAs = implode( "\n", wl_schema_get_value( $post->ID, 'sameAs' ) );
+        
+        // Print input textarea. The user writes here the sameAs URIs, separated by \n.
+	echo '<textarea style="width: 100%;" id="wl_same_as" placeholder="Same As URLs, one per row">' . esc_attr( $sameAs ) . '</textarea>';
+        echo '<div id="wl_same_as_list"></div>';
+
+        // Input tags are updated at each change to contain the rows typed in the textarea
+        echo <<<EOF
+        <script>
+            $ = jQuery;
+            $(document).ready(function(){
+        
+                refreshSameAsList();    // refresh now and at every change event
+                $("#wl_same_as").on("change keyup paste", function(){
+                    refreshSameAsList();
+                });
+                
+                function refreshSameAsList() {
+                    $("#wl_same_as_list").empty();
+
+                    var sameAsList = $("#wl_same_as").val();
+                    sameAsList = sameAsList.split('\\n');
+                    console.log(sameAsList);
+                    
+                    for(var i=0; i<sameAsList.length; i++){
+                        // some validation
+                        if(sameAsList[i].indexOf("http") == 0){
+        
+                            // Refresh input tags
+                            $("#wl_same_as_list").append(
+                                '<input type="hidden" name="wl_metaboxes[entity_same_as][' + i + ']" value="' + sameAsList[i] + '" />'
+                            );
+                        }
+                    }
+                }
+            });
+        </script>
+EOF;
 }
 
 /**
@@ -504,8 +556,8 @@ function wl_entity_metabox_save( $post_id ) {
 	}
 
 	// Loop over the wl_metaboxes array and save metaboxes values
-	foreach ( $_POST['wl_metaboxes'] as $meta_name => $meta_value ) {
-
+	foreach ( $_POST['wl_metaboxes'] as $meta_name => $meta_values ) {
+            
 		// First, verify nonce is set for this meta
 		$nonce_name   = 'wordlift_' . $meta_name . '_entity_box_nonce';
 		$nonce_verify = 'wordlift_' . $meta_name . '_entity_box';
@@ -517,10 +569,20 @@ function wl_entity_metabox_save( $post_id ) {
 		if ( ! wp_verify_nonce( $_POST[ $nonce_name ], $nonce_verify ) ) {
 			return $post_id;
 		}
+                
+                // Delete values before updating
+                delete_post_meta( $post_id, $meta_name );
+                
+		// Save the property value(s)
+		if ( isset( $meta_name ) && isset( $meta_values ) && $meta_values !== '' ) {
 
-		// Save the property value
-		if ( isset( $meta_name ) && isset( $meta_value ) && $meta_value !== '' ) {
-
+                    // There can be one or more property values, so we force to array:
+                    if( !is_array( $meta_values ) ) {
+                        $meta_values = array( $meta_values );
+                    }
+                        
+                    foreach( $meta_values as $meta_value ) { 
+                
 			// If the meta expects an entity...
 			$expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
 			// ...and the user inputs an entity that is not present in the db...
@@ -545,10 +607,8 @@ function wl_entity_metabox_save( $post_id ) {
 			}
                         
                         // TODO: use WL methods
-			update_post_meta( $post_id, $meta_name, $meta_value );
-		} else {
-                        // TODO: use WL methods
-			delete_post_meta( $post_id, $meta_name );
+			add_post_meta( $post_id, $meta_name, $meta_value );
+                    }
 		}
 	}
 	// Push changes on RedLink

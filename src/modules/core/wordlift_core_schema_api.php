@@ -115,7 +115,7 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
     
     // Get accepted properties
     $accepted_fields = wl_entity_taxonomy_get_custom_fields( $post_id );
-    
+
     // Find the name of the custom-field managing the schema property
     foreach( $accepted_fields as $wl_constant => $field ) {
         if( $field['predicate'] == $property_name ) {

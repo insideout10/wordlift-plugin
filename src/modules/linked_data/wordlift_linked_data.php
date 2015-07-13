@@ -193,13 +193,17 @@ add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
 function wordlift_save_post_add_default_schema_type( $entity_id ) {
     
     $entity = get_post( $entity_id );
-    if( $entity->post_type == WL_ENTITY_TYPE_NAME ) {
+    $entity_type = wl_schema_get_types( $entity_id );
+    
+    // Assign type 'Thing' if we are dealing with an entity without type
+    if( $entity->post_type == WL_ENTITY_TYPE_NAME && is_null( $entity_type ) ) {
         
-        wl_schema_set_types($entity_id, 'Thing');
+        wl_schema_set_types( $entity_id, 'Thing' );
     }
 }
 // Priority 1 (default is 10) because we want the default type to be set as soon as possible
-add_action( 'wordlift_save_post', 'wordlift_save_post_add_default_schema_type', 1);
+// Attatched to save_post because wordlift_save_post does not always fire
+add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1);
 
 /**
  * Save the specified entities to the local storage.

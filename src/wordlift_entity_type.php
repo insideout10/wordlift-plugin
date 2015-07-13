@@ -67,11 +67,6 @@ function wl_entity_type_meta_boxes_content( $post ) {
 	echo '<label for="entity_url">' . __( 'entity-url-label', 'wordlift' ) . '</label>';
 	echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
 
-	$same_as = implode( "\n", wl_schema_get_value( $post->ID, 'sameAs' ) );
-
-	echo '<label for="entity_same_as">' . __( 'entity-same-as-label', 'wordlift' ) . '</label>';
-	echo '<textarea style="width: 100%;" id="entity_same_as" name="entity_same_as" placeholder="Same As URL">' . esc_attr( $same_as ) . '</textarea>';
-
 	$entity_types = implode( "\n", wl_get_entity_rdf_types( $post->ID ) );
 
 	echo '<label for="entity_types">' . __( 'entity-types-label', 'wordlift' ) . '</label>';
@@ -122,13 +117,6 @@ function wl_entity_type_save_custom_fields( $post_id ) {
 	wl_set_entity_uri(
 		$post_id,
 		$_POST['entity_url']
-	);
-
-	// save the same as values.
-	wl_schema_set_value(
-		$post_id,
-                'sameAs',
-		explode( "\r\n", $_POST['entity_same_as'] )
 	);
 
 	// save the rdf:type values.
@@ -228,39 +216,7 @@ EOF;
 
         })();
     </script>
-    <style>
-
 EOF;
-
-	// Stylesheets are defined in the wordlift.css file.
-//    // Cycle in terms and print them out to the JS.
-//    foreach ($terms as $term_id) {
-//        // Load the type data.
-//        $type = wl_load_entity_type( $term_id );
-//
-//        // Skip types that are not defined.
-//        if ( null === $type['css_class'] ) {
-//            continue;
-//        }
-//
-//        // Assign the data to vars for printing to the JS.
-//        $css_class = esc_attr( $type['css_class'] );
-//        $color = esc_attr( $type['color'] );
-//        $contrast_color = 'black';
-//
-//        echo <<<EOF
-//            .$css_class { border-color: $color; }
-//            .$css_class .type { color: $color; }
-//            .$css_class .type:before { content: ''; }
-//            .$css_class:hover, .$css_class.selected { background-color: $color; }
-//            .$css_class:hover div, .$css_class.selected div { color: $contrast_color; }
-//            .$css_class:hover .type, .$css_class.selected .type { color: $contrast_color; }
-//            .$css_class .thumbnail { background-color: $color; }
-//
-//EOF;
-//    }
-
-	echo '</style>';
 
 }
 

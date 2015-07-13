@@ -546,8 +546,7 @@ function wl_install_entity_type_data() {
 
 	// Set the taxonomy data.
         // Note: parent types must be defined before child types.
-	// TODO: Manage both generic and custom fields as fields
-        // TODO: inherit on microdata template also
+	// TODO: Manage both generic and custom fields as fields.
 	$terms = array(
                 'thing'         => array(
                         'label'              => 'Thing',
@@ -560,7 +559,8 @@ function wl_install_entity_type_data() {
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Thing',
-					'constraints' => ''
+					'constraints' => '',
+                                        'input_field' => 'sameas'   // to build custom metabox
 				)
 			),
                         // {{sameAs}} not present in the microdata template,
@@ -682,14 +682,14 @@ function wl_install_entity_type_data() {
 					'type'             => WL_DATA_TYPE_DOUBLE,
                                         'export_type'      => 'xsd:double',
 					'constraints' => '',
-					'input_field' => 'coordinates'
+					'input_field' => 'coordinates'   // to build custom metabox
 				),
 				WL_CUSTOM_FIELD_GEO_LONGITUDE => array(
 					'predicate'   => 'http://schema.org/longitude',
 					'type'        => WL_DATA_TYPE_DOUBLE,
                                         'export_type'      => 'xsd:double',
 					'constraints' => '',
-					'input_field' => 'coordinates'
+					'input_field' => 'coordinates'   // to build custom metabox
 				),
 				WL_CUSTOM_FIELD_ADDRESS       => array(
 					'predicate' => 'http://schema.org/address',
