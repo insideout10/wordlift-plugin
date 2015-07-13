@@ -577,8 +577,8 @@ function wl_install_entity_type_data() {
 			'css'                => 'wl-creative-work',
 			'uri'                => 'http://schema.org/CreativeWork',
 			'same_as'            => array(
-				'http://schema.org/MusicAlbum', // TODO: not correct
-				'http://schema.org/Product'     // TODO: not correct
+				'http://schema.org/MusicAlbum',
+				'http://schema.org/Product'
 			),
 			'custom_fields'      => array(),
 			'microdata_template' => '',
