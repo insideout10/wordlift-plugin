@@ -254,7 +254,7 @@ function wordlift_core_install_create_relation_instance_table() {
 	$installed_version = get_option( "wl_db_version" );
 
 	if ( $installed_version != WL_DB_VERSION ) {
-		$table_name = $wpdb->prefix . 'wl_relation_instances';
+		$table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
 
 		// Sql statement for the relation instances custom table

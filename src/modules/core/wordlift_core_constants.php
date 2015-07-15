@@ -4,6 +4,8 @@ define('WL_DEFAULT_THUMBNAIL_PATH', plugins_url( 'js-client/slick/missing-image-
 
 // Database version 
 define('WL_DB_VERSION', '1.0');
+// Custom table name
+define('WL_DB_RELATION_INSTANCES_TABLE_NAME', 'wl_relation_instances');
 
 define('WL_WHAT_RELATION', 'what');
 define('WL_WHO_RELATION', 'who');

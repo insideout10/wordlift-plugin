@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Checks if a relation is supported
+ * 
+ * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
+ * 
+ * @return boolean Return true if supported, false otherwise
+ */
+function wl_core_check_relation_predicate_is_supported( $predicate ) {
+    
+    return in_array( $predicate, array(
+        WL_WHAT_RELATION, WL_WHEN_RELATION, WL_WHERE_RELATION, WL_WHO_RELATION
+    ) );
+}
+
+/**
 * Create a single relation instance if the given instance does not exist on the table
 *
 * @param int $subject_id The post ID | The entity post ID.
@@ -10,7 +24,33 @@
 * @return (integer|boolean) Return then relation instance ID or false
 */
 function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
+    
+    // Checks on subject and object
+    if( !is_numeric( $subject_id ) || !is_numeric( $object_id ) ) {
+        return false;
+    }
+    
+    // Checks on the given relation
+    if( !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+        return false;
+    }
+    
+    // Prepare interaction with db
+    global $wpdb;
+    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 
+    
+    // Checks passed. Add relation if not exists
+    // See https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
+    $wpdb->replace( 
+	$table_name, 
+	array( 
+                'subject_id' => $subject_id,
+		'predicate' => $predicate, 
+		'object_id' => $object_id 
+	), 
+	array( '%d', '%s', '%d'	) 
+    );
 }
 
 /**
@@ -23,7 +63,7 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 * @return (boolean) False for failure. True for success.
 */
 function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
-
+    
 }
 
 /**
@@ -34,10 +74,33 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
 * @param array $object_ids The entity post IDs collection.
 *
-* @return (integer|boolean) Return then relation instance ID or false
+* @return (integer|boolean) Return the relation instances IDs or false
 */
 function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) {
-
+    
+    // Checks on subject and object
+    if( !is_numeric( $subject_id ) ) {
+        return false;
+    }
+    
+    // Checks on the given relation
+    if( !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+        return false;
+    }
+    
+    // Check $object_ids is an array
+    if( !is_array( $object_ids ) || empty( $object_ids ) ) {
+        return false;
+    }
+    
+    // Call method to check and add each single relation
+    $inserted_records_ids = array();
+    foreach ( $object_ids as $object_id ) {
+        $new_record_id = wl_core_add_relation_instance( $subject_id, $predicate, $object_id );
+        $inserted_records_ids[] = $new_record_id;
+    }
+    
+    return $inserted_records_ids;
 }
 
 /**
@@ -76,7 +139,24 @@ function wl_core_get_related_entities( $subject_id, $predicate = null ) {
 * @return (array) Array of object ids.
 */
 function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
-
+    
+    // Check $subject_id
+    if( !is_numeric( $subject_id ) ) {
+        return array();
+    }
+    
+    // Check valid $predicate (must be null or one of the 4W)
+    if( !is_null( $predicate ) && !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+        return array(); 
+    }
+    
+    // Prepare interaction with db
+    global $wpdb;
+    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
+    
+    // Retrieve data
+    $query = 'SELECT object_id FROM ' . $table_name;
+    return $wpdb->get_results( $query, ARRAY_N );
 }
 
 /**
