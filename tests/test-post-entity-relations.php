@@ -58,6 +58,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
         /*
          * Test *related* methods
          */
+        
         function testAddRelationInstance() {
             
             // Create a post and an entity
@@ -115,6 +116,43 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             $this->assertCount( 2, $result );
             $result = wl_core_get_related_entity_ids( $post_1_id );
             $this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
+        }
+        
+        function testGetRelatedEntitiesIds() {
+            
+            // Create a post and 2 entities
+            $post_1_id = wl_create_post( '', 'post1', 'A post');
+            $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            $entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
+            
+            // Stress method with strange parmeters
+            $result = wl_core_get_related_entity_ids( '' );
+            $this->assertFalse( $result );
+            $result = wl_core_get_related_entity_ids( null );
+            $this->assertFalse( $result );
+            $result = wl_core_get_related_entity_ids( $post_1_id, 'ulabadula' );
+            $this->assertFalse( $result );
+            
+            // Nothing has been inserted as relation so far.
+            $result = wl_core_get_related_entity_ids( $post_1_id );
+            $this->assertTrue( is_array( $result ) );
+            $this->assertEmpty( $result );
+            
+            // Insert relations
+            $result = wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
+            $result = wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
+            $result = wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
+            
+            
+            // TODO:
+            $result = wl_core_get_related_entity_ids( $post_1_id );
+            //$this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
+            
+            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHERE_RELATION );
+            //$this->assertEquals( array( $entity_1_id ), $result );
+            
+            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHO_RELATION );
+            //$this->assertEquals( array( $entity_2_id ), $result );
         }
 
     

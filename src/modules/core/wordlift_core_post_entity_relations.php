@@ -139,7 +139,7 @@ function wl_core_get_related_entities( $subject_id, $predicate = null ) {
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
-* @return (array) Array of object ids.
+* @return (array) Array of ids.
 */
 function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
     
@@ -170,7 +170,7 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
         $ids[] = $res->object_id;
     }
     
-    return $ids;
+    return array_unique( $ids );
 }
 
 /**
@@ -224,7 +224,7 @@ function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
         $ids[] = $res->suject_id;
     }
     
-    return $ids;
+    return array_unique( $ids );
 }
 
 /**
