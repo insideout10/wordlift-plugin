@@ -3,7 +3,15 @@
 define('WL_DEFAULT_THUMBNAIL_PATH', plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ ) );
 
 // Database version 
-define('WL_DB_VERSION', '1.0');        
+define('WL_DB_VERSION', '1.0');
+
+define('WL_WHAT_RELATION', 'what');
+define('WL_WHO_RELATION', 'who');
+define('WL_WHERE_RELATION', 'where');
+define('WL_WHEN_RELATION', 'when');
+
+// OLD THINGS
+
 // Post meta for the 4W in journalism (we don't have a Why)
 // post metas linking a post to the entity
 define('WL_CUSTOM_FIELD_WHAT_ENTITIES', 'wl_what_entities');
@@ -42,28 +50,24 @@ define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize(array(
     	'id' 				=> WL_CUSTOM_FIELD_WHAT_ENTITIES,
     	'label' 			=> 'What',
     	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing'),
-        'registeredWidgets' => array('ImageSuggestor'),
         'selectedEntities' 	=> array()
     	),
     array(
     	'id' 				=> WL_CUSTOM_FIELD_WHO_ENTITIES,
     	'label' 			=> 'Who',
     	'registeredTypes' 	=> array('organization', 'person'),
-        'registeredWidgets' => array('ImageSuggestor'),
         'selectedEntities' 	=> array()
     	),
     array(
     	'id' 				=> WL_CUSTOM_FIELD_WHERE_ENTITIES,
     	'label' 			=> 'Where',
     	'registeredTypes' 	=> array('place'),
-        'registeredWidgets' => array('ImageSuggestor'),
         'selectedEntities' 	=> array()
     	),
     array(
     	'id' 				=> WL_CUSTOM_FIELD_WHEN_ENTITIES,
     	'label' 			=> 'When',
     	'registeredTypes' 	=> array('event'),
-        'registeredWidgets' => array('ImageSuggestor'),
         'selectedEntities' 	=> array()
     	),
 )));

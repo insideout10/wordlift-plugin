@@ -1,5 +1,117 @@
 <?php
 
+define('WL_WHAT_RELATION', 'what');
+define('WL_WHO_RELATION', 'who');
+define('WL_WHERE_RELATION', 'where');
+define('WL_WHEN_RELATION', 'when');
+
+/**
+* Create a single relation instance if the given instance does not exist on the table
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
+* @param int $object_id The entity post ID.
+*
+* @return (integer|boolean) Return then relation instance ID or false
+*/
+function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
+
+}
+
+/**
+* Remove a given relation instance 
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
+* @param int $object_id The entity post ID.
+*
+* @return (boolean) False for failure. True for success.
+*/
+function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
+
+}
+
+/**
+* Create multiple relation instances 
+* @uses wl_add_relation_instance to create each single instance
+* 
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
+* @param array $object_ids The entity post IDs collection.
+*
+* @return (integer|boolean) Return then relation instance ID or false
+*/
+function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) {
+
+}
+
+/**
+* Remove all relation instances for a given $subject_id and $predicate
+* If $predicate is omitted, $predicate filter is not applied
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (boolean) False for failure. True for success.
+*/
+function wl_core_delete_relation_instances( $subject_id, $predicate = null ) {
+
+}
+
+/**
+* Find all entities related to a given $subject_id
+* If $predicate is omitted, $predicate filter is not applied 
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of objects.
+*/
+function wl_core_get_related_entities( $subject_id, $predicate = null ) {
+
+}
+
+/**
+* Find all entity ids related to a given $subject_id
+* If $predicate is omitted, $predicate filter is not applied 
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of object ids.
+*/
+function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
+
+}
+
+/**
+* Find all entities related to a given $subject_id
+* If $predicate is omitted, $predicate filter is not applied 
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of objects.
+*/
+function wl_core_get_related_posts( $subject_id, $predicate = null ) {
+
+}
+
+/**
+* Find all entity ids related to a given $subject_id
+* If $predicate is omitted, $predicate filter is not applied 
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of object ids.
+*/
+function wl_core_get_related_post_ids( $subject_id, $predicate = null ) {
+
+}
+
+/* OLD METHODS */
+
 /**
  * Get the name of the post meta complementary to the one given as parameter.
  * See *wordlift_core_constants.php* for more details.
