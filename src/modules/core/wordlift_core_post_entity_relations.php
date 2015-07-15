@@ -174,31 +174,31 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 }
 
 /**
-* Find all entities related to a given $subject_id
+* Find all posts related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
 *
-* @param int $subject_id The post ID | The entity post ID.
+* @param int $object_id The entity ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
 * @return (array) Array of objects.
 */
-function wl_core_get_related_posts( $subject_id, $predicate = null ) {
+function wl_core_get_related_posts( $object_id, $predicate = null ) {
 
 }
 
 /**
-* Find all post ids related to a given $entity_id
+* Find all post ids related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
 *
-* @param int $entity_id The entity ID.
+* @param int $object_id The entity ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
 * @return (array) Array of post ids.
 */
-function wl_core_get_related_post_ids( $entity_id, $predicate = null ) {
+function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
     
     // Check $subject_id
-    if( !is_numeric( $entity_id ) ) {
+    if( !is_numeric( $object_id ) ) {
         return array();
     }
     
@@ -216,7 +216,7 @@ function wl_core_get_related_post_ids( $entity_id, $predicate = null ) {
     if( !is_null( $predicate ) ) {
         $query .= 'predicate=' . $predicate . ' AND ';
     }    
-    $query .= 'object_id=' . $subject_id;
+    $query .= 'object_id=' . $object_id;
     $results = $wpdb->get_results( $query );
     
     $ids = array();
