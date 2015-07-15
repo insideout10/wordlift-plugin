@@ -1,10 +1,5 @@
 <?php
 
-define('WL_WHAT_RELATION', 'what');
-define('WL_WHO_RELATION', 'who');
-define('WL_WHERE_RELATION', 'where');
-define('WL_WHEN_RELATION', 'when');
-
 /**
 * Create a single relation instance if the given instance does not exist on the table
 *
@@ -65,7 +60,7 @@ function wl_core_delete_relation_instances( $subject_id, $predicate = null ) {
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
-* @return (array) Array of objects.
+* @return (array) Array of post entity objects.
 */
 function wl_core_get_related_entities( $subject_id, $predicate = null ) {
 
@@ -107,6 +102,57 @@ function wl_core_get_related_posts( $subject_id, $predicate = null ) {
 * @return (array) Array of object ids.
 */
 function wl_core_get_related_post_ids( $subject_id, $predicate = null ) {
+
+}
+
+/**
+* Find all relation instances for a given $subject_id
+* If $predicate is omitted, $predicate filter is not applied 
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of relation instance objects.
+*/
+function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
+
+}
+
+/**
+* Define a sql statement between wp_posts and wp_wl_relation_instances tables  
+* It's used by wl_get_posts. Implements a subset of WpQuery object 
+* @see https://codex.wordpress.org/Class_Reference/WP_Query
+*
+* Form the array like this:
+* <code>
+* $args = array(
+*   'id'      => 'foo',          // the id
+*   'predicate'   => [ what | where | when | who | null ],
+*   'predicate_scope'   => [ subject_id | object_id ],
+*   'post_type' => [ post | entity ] 
+*   'numberposts' => n,   
+* );
+* </code>
+*
+* @param array args Arguments to be used in the query builder.
+*
+* @return string String representing a sql statement 
+*/
+function wl_core_sql_query_builder( $args ) {
+
+}
+
+/**
+* Define a sql statement between wp_posts and wp_wl_relation_instances tables  
+* It's used by wl_get_posts. Implements a subset of WpQuery object 
+* @uses wl_core_sql_query_builder to compose the sql statement
+* @uses WP_Query object to perform the query
+*
+* @param array args Arguments to be used in the query builder.
+*
+* @return (array) List of WP_Post objects or list of WP_Post ids. 
+*/
+function wl_core_get_posts( $args ) {
 
 }
 
