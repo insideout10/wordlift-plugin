@@ -51,6 +51,9 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 	), 
 	array( '%d', '%s', '%d'	) 
     );
+    
+    // Return record id
+    return $wpdb->insert_id;
 }
 
 /**
@@ -155,8 +158,19 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
     $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
     
     // Retrieve data
-    $query = 'SELECT object_id FROM ' . $table_name;
-    return $wpdb->get_results( $query, ARRAY_N );
+    $query = 'SELECT object_id FROM ' . $table_name . ' WHERE ';
+    if( !is_null( $predicate ) ) {
+        $query .= 'predicate=' . $predicate . ' AND ';
+    }    
+    $query .= 'subject_id=' . $subject_id;
+    $results = $wpdb->get_results( $query );
+    
+    $ids = array();
+    foreach( $results as $res ) {
+        $ids[] = $res->object_id;
+    }
+    
+    return $ids;
 }
 
 /**
@@ -173,16 +187,44 @@ function wl_core_get_related_posts( $subject_id, $predicate = null ) {
 }
 
 /**
-* Find all entity ids related to a given $subject_id
+* Find all post ids related to a given $entity_id
 * If $predicate is omitted, $predicate filter is not applied 
 *
-* @param int $subject_id The post ID | The entity post ID.
+* @param int $entity_id The entity ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
-* @return (array) Array of object ids.
+* @return (array) Array of post ids.
 */
-function wl_core_get_related_post_ids( $subject_id, $predicate = null ) {
-
+function wl_core_get_related_post_ids( $entity_id, $predicate = null ) {
+    
+    // Check $subject_id
+    if( !is_numeric( $entity_id ) ) {
+        return array();
+    }
+    
+    // Check valid $predicate (must be null or one of the 4W)
+    if( !is_null( $predicate ) && !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+        return array(); 
+    }
+    
+    // Prepare interaction with db
+    global $wpdb;
+    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
+    
+    // Retrieve data
+    $query = 'SELECT subject_id FROM ' . $table_name . ' WHERE ';
+    if( !is_null( $predicate ) ) {
+        $query .= 'predicate=' . $predicate . ' AND ';
+    }    
+    $query .= 'object_id=' . $subject_id;
+    $results = $wpdb->get_results( $query );
+    
+    $ids = array();
+    foreach( $results as $res ) {
+        $ids[] = $res->suject_id;
+    }
+    
+    return $ids;
 }
 
 /**

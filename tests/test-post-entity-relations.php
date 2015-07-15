@@ -31,8 +31,6 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
 		$same_as_array = wl_schema_get_value( $entity_post_id, 'sameAs' );
 		$this->assertTrue( is_array( $same_as_array ) );
-                wl_write_log('piedo test');
-                wl_write_log($same_as_array);
 		$this->assertEquals( 'http://example.org/entity/test_entity', $same_as_array[0] );
 		$this->assertEquals( 'http://data.example.org/entity/test_entity', $same_as_array[1] );
 
@@ -81,9 +79,8 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             
             // Insert relation and verify it
             $result = wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
+            $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
             $result = wl_core_get_related_entity_ids( $post_id );
-            wl_write_log('piedo');
-            wl_write_log($result);
             $this->assertEquals( array( $entity_id ), $result );
         }
         
@@ -113,9 +110,11 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             
             // Insert relation and verify it
             $result = wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
-            $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
+            $this->assertTrue( is_numeric( $result[0] ) ); // The methods return an array of record ids
+            $this->assertTrue( is_numeric( $result[1] ) ); // The methods return an array of record ids
+            $this->assertCount( 2, $result );
             $result = wl_core_get_related_entity_ids( $post_1_id );
-            $this->assertEquals( $result, array( $entity_1_id, $entity_2_id ) );
+            $this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
         }
 
     
