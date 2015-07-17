@@ -127,11 +127,11 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             
             // Stress method with strange parmeters
             $result = wl_core_get_related_entity_ids( '' );
-            $this->assertFalse( $result );
+            $this->assertEmpty( $result );
             $result = wl_core_get_related_entity_ids( null );
-            $this->assertFalse( $result );
+            $this->assertEmpty( $result );
             $result = wl_core_get_related_entity_ids( $post_1_id, 'ulabadula' );
-            $this->assertFalse( $result );
+            $this->assertEmpty( $result );
             
             // Nothing has been inserted as relation so far.
             $result = wl_core_get_related_entity_ids( $post_1_id );

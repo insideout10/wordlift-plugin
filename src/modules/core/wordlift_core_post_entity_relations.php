@@ -15,6 +15,20 @@ function wl_core_check_relation_predicate_is_supported( $predicate ) {
 }
 
 /**
+ * Return the wordlift relation instances table name
+ * 
+ * @return string Return the wordlift relation instances table name
+ */
+function wl_core_get_relation_instances_table_name() { 
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
+    return $table_name;
+}
+
+
+
+/**
 * Create a single relation instance if the given instance does not exist on the table
 *
 * @param int $subject_id The post ID | The entity post ID.
@@ -37,19 +51,18 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
     
     // Prepare interaction with db
     global $wpdb;
-    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 
     
     // Checks passed. Add relation if not exists
     // See https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
     $wpdb->replace( 
-	$table_name, 
-	array( 
-                'subject_id' => $subject_id,
+	   wl_core_get_relation_instances_table_name(), 
+	   array( 
+        'subject_id' => $subject_id,
 		'predicate' => $predicate, 
 		'object_id' => $object_id 
-	), 
-	array( '%d', '%s', '%d'	) 
+	   ), 
+	   array( '%d', '%s', '%d'	) 
     );
     
     // Return record id
@@ -155,10 +168,9 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
     
     // Prepare interaction with db
     global $wpdb;
-    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
     
     // Retrieve data
-    $query = 'SELECT object_id FROM ' . $table_name . ' WHERE ';
+    $query = 'SELECT object_id FROM ' . wl_core_get_relation_instances_table_name() . ' WHERE ';
     if( !is_null( $predicate ) ) {
         $query .= 'predicate=' . $predicate . ' AND ';
     }    
@@ -209,10 +221,9 @@ function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
     
     // Prepare interaction with db
     global $wpdb;
-    $table_name = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
     
     // Retrieve data
-    $query = 'SELECT subject_id FROM ' . $table_name . ' WHERE ';
+    $query = 'SELECT subject_id FROM ' . wl_core_get_relation_instances_table_name() . ' WHERE ';
     if( !is_null( $predicate ) ) {
         $query .= 'predicate=' . $predicate . ' AND ';
     }    
@@ -251,8 +262,9 @@ function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 *   'id'      => 'foo',          // the id
 *   'predicate'   => [ what | where | when | who | null ],
 *   'predicate_scope'   => [ subject_id | object_id ],
-*   'post_type' => [ post | entity ] 
-*   'numberposts' => n,   
+*   'post_type' => [ posts | entities ] 
+*   'numberposts' => n,
+*   'fields' => 'ids'   
 * );
 * </code>
 *
@@ -261,6 +273,9 @@ function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 * @return string String representing a sql statement 
 */
 function wl_core_sql_query_builder( $args ) {
+
+    // Prepare interaction with db
+    global $wpdb;
 
 }
 
