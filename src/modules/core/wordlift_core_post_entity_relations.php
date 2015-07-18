@@ -26,8 +26,6 @@ function wl_core_get_relation_instances_table_name() {
     return $table_name;
 }
 
-
-
 /**
 * Create a single relation instance if the given instance does not exist on the table
 *
@@ -143,6 +141,17 @@ function wl_core_delete_relation_instances( $subject_id, $predicate = null ) {
 */
 function wl_core_get_related_entities( $subject_id, $predicate = null ) {
 
+    if ( $posts = wl_core_get_posts( array(
+        'get'               =>  'posts',
+        'post_type'         =>  'entity',
+        'related_to'        =>  $subject_id, 
+        'as'                =>  'object',
+        'with_predicate'    =>  $predicate,
+        ) ) ) {
+        return $post_ids;
+    }
+    // If wl_core_get_posts return false then an empty array is returned
+    return array();
 }
 
 /**
@@ -156,33 +165,17 @@ function wl_core_get_related_entities( $subject_id, $predicate = null ) {
 */
 function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
     
-    // Check $subject_id
-    if( !is_numeric( $subject_id ) ) {
-        return array();
+    if ( $post_ids = wl_core_get_posts( array(
+        'get'               =>  'post_ids',
+        'post_type'         =>  'entity',
+        'related_to'        =>  $subject_id, 
+        'as'                =>  'object',
+        'with_predicate'    =>  $predicate,
+        ) ) ) {
+        return $post_ids;
     }
-    
-    // Check valid $predicate (must be null or one of the 4W)
-    if( !is_null( $predicate ) && !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
-        return array(); 
-    }
-    
-    // Prepare interaction with db
-    global $wpdb;
-    
-    // Retrieve data
-    $query = 'SELECT object_id FROM ' . wl_core_get_relation_instances_table_name() . ' WHERE ';
-    if( !is_null( $predicate ) ) {
-        $query .= "predicate='" . $predicate . "' AND ";
-    }    
-    $query .= 'subject_id=' . $subject_id;
-    $results = $wpdb->get_results( $query );
-    
-    $ids = array();
-    foreach( $results as $res ) {
-        $ids[] = $res->object_id;
-    }
-    
-    return array_unique( $ids );
+    // If wl_core_get_posts return false then an empty array is returned
+    return array();
 }
 
 /**
@@ -195,6 +188,18 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 * @return (array) Array of objects.
 */
 function wl_core_get_related_posts( $object_id, $predicate = null ) {
+
+    if ( $posts = wl_core_get_posts( array(
+        'get'               =>  'posts',
+        'post_type'         =>  'post',
+        'related_to'        =>  $object_id, 
+        'as'                =>  'subject',
+        'with_predicate'    =>  $predicate,
+        ) ) ) {
+        return $post_ids;
+    }
+    // If wl_core_get_posts return false then an empty array is returned
+    return array();
 
 }
 
@@ -209,33 +214,17 @@ function wl_core_get_related_posts( $object_id, $predicate = null ) {
 */
 function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
     
-    // Check $subject_id
-    if( !is_numeric( $object_id ) ) {
-        return array();
+    if ( $post_ids = wl_core_get_posts( array(
+        'get'               =>  'post_ids',
+        'post_type'         =>  'post',
+        'related_to'        =>  $object_id, 
+        'as'                =>  'subject',
+        'with_predicate'    =>  $predicate,
+        ) ) ) {
+        return $post_ids;
     }
-    
-    // Check valid $predicate (must be null or one of the 4W)
-    if( !is_null( $predicate ) && !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
-        return array(); 
-    }
-    
-    // Prepare interaction with db
-    global $wpdb;
-    
-    // Retrieve data
-    $query = 'SELECT subject_id FROM ' . wl_core_get_relation_instances_table_name() . ' WHERE ';
-    if( !is_null( $predicate ) ) {
-        $query .= 'predicate=' . $predicate . ' AND ';
-    }    
-    $query .= 'object_id=' . $object_id;
-    $results = $wpdb->get_results( $query );
-    
-    $ids = array();
-    foreach( $results as $res ) {
-        $ids[] = $res->suject_id;
-    }
-    
-    return array_unique( $ids );
+    // If wl_core_get_posts return false then an empty array is returned
+    return array();
 }
 
 /**
@@ -356,8 +345,6 @@ function wl_core_sql_query_builder( $args ) {
     // Close sql statement
     $sql .= ";";
 
-    wl_write_log( "Going to return sql statement: $sql " );
-    
     return $sql;
 
 }
@@ -366,13 +353,37 @@ function wl_core_sql_query_builder( $args ) {
 * Define a sql statement between wp_posts and wp_wl_relation_instances tables  
 * It's used by wl_get_posts. Implements a subset of WpQuery object 
 * @uses wl_core_sql_query_builder to compose the sql statement
-* @uses WP_Query object to perform the query
+* @uses $wpdb instance to perform the query
 *
 * @param array args Arguments to be used in the query builder.
 *
-* @return (array) List of WP_Post objects or list of WP_Post ids. 
+* @return (array) List of WP_Post objects or list of WP_Post ids. False in case of error
 */
 function wl_core_get_posts( $args ) {
+    // Prepare interaction with db
+    global $wpdb;
+
+    if ( $sql_statement = wl_core_sql_query_builder( $args ) ) {
+
+        wl_write_log( "Going to execute sql statement: $sql_statement " );
+
+        $results = array();
+
+        if ( in_array( $args[ 'get' ], array( 'post_ids', 'relation_ids') ) ) {
+            # See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
+            $results = $wpdb->get_col( $sql_statement );
+        } else {
+            $results = $wpdb->get_results( $sql_statement, ARRAY_A );
+        }
+
+        if ( !empty( $wpdb->last_error ) ) {
+            return false;
+        }
+
+        return $results;
+    } else  {
+        return false;
+    }
 
 }
 
