@@ -73,29 +73,53 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
             // Case 2 - :related_to not numeric
             $args = array(
-                'related_to' => 'not-numeric-value'
+                'get' => 'posts',  
+                'related_to' => 'not-a-numeric-value',
+                'as' => 'subject',
+                'post_type' => 'post', 
                 );
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 3 - invalid :get 
             $args = array(
-                'get' => 'pippo'
+                'get' => 'pippo',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post', 
                 );
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 4 - invalid :as 
             $args = array(
-                'as' => 'pippo'
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'pippo',
+                'post_type' => 'post', 
                 );
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 5 - invalid :post_type 
             $args = array(
-                'post_type' => 'pippo'
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'pippo', 
                 );
+            $result = wl_core_get_posts( $args );
+            $this->assertFalse( $result );
+
+            // Case 6 - invalid :with_predicate 
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'pippo' 
+                );
+
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
@@ -206,6 +230,23 @@ EOF;
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
 
+            // Case 12 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object with predicate what
+            $args = array(
+                'first' => 10,
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'object',
+                'post_type' => 'post', 
+                'with_predicate' => 'what'  
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.predicate = 'what' LIMIT 10;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
         }
 
         function testWlCoreAddRelationInstance() {
