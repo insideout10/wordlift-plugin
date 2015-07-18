@@ -59,7 +59,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
          * Test *related* methods
          */
 
-        function testWlCoreSqlQueryBuilder() {
+        function testWlCoreGetPosts() {
 
             // Prepare interaction with db
             global $wpdb;
@@ -68,36 +68,45 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
             // Case 1 - :related_to missing
             $args = array();
-            $result = wl_core_sql_query_builder( $args );
+            $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 2 - :related_to not numeric
             $args = array(
                 'related_to' => 'not-numeric-value'
                 );
-            $result = wl_core_sql_query_builder( $args );
+            $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 3 - invalid :get 
             $args = array(
                 'get' => 'pippo'
                 );
-            $result = wl_core_sql_query_builder( $args );
+            $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 4 - invalid :as 
             $args = array(
                 'as' => 'pippo'
                 );
-            $result = wl_core_sql_query_builder( $args );
+            $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
             // Case 5 - invalid :post_type 
             $args = array(
                 'post_type' => 'pippo'
                 );
-            $result = wl_core_sql_query_builder( $args );
+            $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
+
+        }
+
+        function testWlCoreSqlQueryBuilder() {
+
+            // Prepare interaction with db
+            global $wpdb;
+
+            $wl_table_name = wl_core_get_relation_instances_table_name();
 
             // Case 6 - Find all posts of type 'post' related to post / entity with ID 3 as subject
             $args = array(
@@ -199,7 +208,7 @@ EOF;
 
         }
 
-        function testAddRelationInstance() {
+        function testWlCoreAddRelationInstance() {
             
             // Create a post and an entity
             $post_id = wl_create_post( '', 'post1', 'A post');
@@ -225,7 +234,7 @@ EOF;
             $this->assertEquals( array( $entity_id ), $result );
         }
         
-        function testAddRelationInstances() {
+        function testWlCoreAddRelationInstances() {
             
             // Create a post and 2 entities
             $post_1_id = wl_create_post( '', 'post1', 'A post');
@@ -258,7 +267,7 @@ EOF;
             $this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
         }
         
-        function testGetRelatedEntitiesIds() {
+        function testWlCoreGetRelatedEntitiesIds() {
             
             // Create a post and 2 entities
             $post_1_id = wl_create_post( '', 'post1', 'A post');

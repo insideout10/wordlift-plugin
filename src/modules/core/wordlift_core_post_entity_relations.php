@@ -242,9 +242,9 @@ function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 
 /**
 * Define a sql statement between wp_posts and wp_wl_relation_instances tables  
-* It's used by wl_get_posts. Implements a subset of WpQuery object 
+* It's used by wl_core_get_posts. Implements a subset of WpQuery object 
 * @see https://codex.wordpress.org/Class_Reference/WP_Query
-*
+* Arguments validation is delegated to wl_core_get_posts method.
 * Form the array like this:
 * <code>
 * $args = array(
@@ -262,28 +262,6 @@ function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 * @return string | false String representing a sql statement, or false in case of error 
 */
 function wl_core_sql_query_builder( $args ) {
-
-    // Merge given args with defaults args value
-    $args = array_merge( array(
-        'with_predicate' => null,
-        'as' => 'subject',
-        'post_type' => 'post',
-        'get' => 'posts'
-    ), $args);
-
-    // Arguments validation rules
-    if ( !isset( $args['related_to'] ) || !is_integer( $args['related_to'] ) ) {
-        return false;
-    }
-    if ( !in_array( $args['get'], array( 'posts', 'post_ids', 'relations', 'relation_ids' ) ) )  {
-        return false;
-    }
-    if ( !in_array( $args['as'], array( 'object', 'subject' ) ) )  {
-        return false;
-    }
-    if ( !in_array( $args['post_type'], array( 'post', 'entity' ) ) )  {
-        return false;
-    }
 
     // Prepare interaction with db
     global $wpdb;
@@ -334,7 +312,7 @@ function wl_core_sql_query_builder( $args ) {
     $sql .= $wpdb->prepare( " r.$filtering_column = %d", $args[ 'related_to' ] );
 
     // Add predicate filter if required
-    if ( wl_core_check_relation_predicate_is_supported( $args[ 'with_predicate' ] ) ) {
+    if ( isset( $args[ 'with_predicate' ] ) ) {
         // Sql Inner Join clausole 
         $sql .= $wpdb->prepare( " AND r.predicate = %s", $args[ 'with_predicate' ] );
     }
@@ -350,41 +328,64 @@ function wl_core_sql_query_builder( $args ) {
 }
 
 /**
-* Define a sql statement between wp_posts and wp_wl_relation_instances tables  
-* It's used by wl_get_posts. Implements a subset of WpQuery object 
+* Perform a query on db depending on args
+* It's responsible for argument validations  
 * @uses wl_core_sql_query_builder to compose the sql statement
 * @uses $wpdb instance to perform the query
 *
 * @param array args Arguments to be used in the query builder.
 *
-* @return (array) List of WP_Post objects or list of WP_Post ids. False in case of error
+* @return (array) List of WP_Post objects or list of WP_Post ids. False in case of error or invalid params
 */
 function wl_core_get_posts( $args ) {
-    // Prepare interaction with db
-    global $wpdb;
 
-    if ( $sql_statement = wl_core_sql_query_builder( $args ) ) {
+    // Merge given args with defaults args value
+    $args = array_merge( array(
+        'with_predicate' => null,
+        'as' => 'subject',
+        'post_type' => 'post',
+        'get' => 'posts'
+    ), $args);
 
-        wl_write_log( "Going to execute sql statement: $sql_statement " );
-
-        $results = array();
-
-        if ( in_array( $args[ 'get' ], array( 'post_ids', 'relation_ids') ) ) {
-            # See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
-            $results = $wpdb->get_col( $sql_statement );
-        } else {
-            $results = $wpdb->get_results( $sql_statement, ARRAY_A );
-        }
-
-        if ( !empty( $wpdb->last_error ) ) {
-            return false;
-        }
-
-        return $results;
-    } else  {
+    // Arguments validation rules
+    if ( !isset( $args[ 'related_to' ] ) || !is_integer( $args['related_to'] ) ) {
         return false;
     }
+    if ( !in_array( $args[ 'get' ], array( 'posts', 'post_ids', 'relations', 'relation_ids' ) ) )  {
+        return false;
+    }
+    if ( !in_array( $args[ 'as' ], array( 'object', 'subject' ) ) )  {
+        return false;
+    }
+    if ( !in_array( $args[ 'post_type' ], array( 'post', 'entity' ) ) )  {
+        return false;
+    }
+    if ( null != $args[ 'with_predicate' ] )  {
+        if ( !wl_core_check_relation_predicate_is_supported( $args[ 'with_predicate' ] ) ) {
+            return false;
+        } 
+    }
+    // Prepare interaction with db
+    global $wpdb;
+    // Build sql statement with given arguments
+    $sql_statement = wl_core_sql_query_builder( $args ); 
+    wl_write_log( "Going to execute sql statement: $sql_statement " );
 
+    $results = array();
+    // If ids are required, returns a one-dimensional array containing ids.
+    // Otherwise an array of associative arrays representing the post | relation object
+    if ( in_array( $args[ 'get' ], array( 'post_ids', 'relation_ids') ) ) {
+        # See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
+        $results = $wpdb->get_col( $sql_statement );
+    } else {
+        $results = $wpdb->get_results( $sql_statement, ARRAY_A );
+    }
+    // If there were an error performing the query then false is returned
+    if ( !empty( $wpdb->last_error ) ) {
+        return false;
+    }
+    // Finally
+    return $results;
 }
 
 /* OLD METHODS */
