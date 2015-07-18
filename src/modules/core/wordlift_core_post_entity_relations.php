@@ -316,6 +316,10 @@ function wl_core_sql_query_builder( $args ) {
         // Sql Inner Join clausole 
         $sql .= $wpdb->prepare( " AND r.predicate = %s", $args[ 'with_predicate' ] );
     }
+    // Add a group by clousole to avoid duplicated rows
+    if ( in_array( $args[ 'get' ], array( 'posts', 'post_ids') ) ) {
+        $sql .= " GROUP BY p.id";
+    }
     if ( isset( $args[ 'first' ] ) && is_integer( $args[ 'first' ] ) ) {
         // Sql Inner Join clausole 
         $sql .= $wpdb->prepare( " LIMIT %d", $args[ 'first'] );

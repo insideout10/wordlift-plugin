@@ -140,7 +140,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
                 'post_type' => 'post',   
                 );
             $expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3;
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -156,7 +156,7 @@ EOF;
                 'post_type' => 'post',   
                 );
             $expected_sql = <<<EOF
-SELECT p.id FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3;
+SELECT p.id FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -205,7 +205,7 @@ EOF;
                 'post_type' => 'post',   
                 );
             $expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 LIMIT 10;
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id LIMIT 10;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -222,7 +222,7 @@ EOF;
                 'post_type' => 'post',   
                 );
             $expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 LIMIT 10;
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 GROUP BY p.id LIMIT 10;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -240,7 +240,7 @@ EOF;
                 'with_predicate' => 'what'  
                 );
             $expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.predicate = 'what' LIMIT 10;
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.predicate = 'what' GROUP BY p.id LIMIT 10;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -329,176 +329,27 @@ EOF;
             $this->assertEmpty( $result );
             
             // Insert relations
-            $result = wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
-            $result = wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
-            $result = wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
+            wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
+            wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
             
-            
-            // TODO:
+            // Check relation are retrieved as expected
             $result = wl_core_get_related_entity_ids( $post_1_id );
-            //$this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
-            
+            $this->assertCount( 2, $result );
+            $this->assertTrue( in_array( $entity_1_id, $result ) );
+            $this->assertTrue( in_array( $entity_2_id, $result ) );
+
+            // Check relation are retrieved as expected also using predicates
             $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHERE_RELATION );
-            //$this->assertEquals( array( $entity_1_id ), $result );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $entity_1_id, $result ) );
             
             $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHO_RELATION );
-            //$this->assertEquals( array( $entity_2_id ), $result );
-        }
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $entity_2_id, $result ) );
 
-    
-////////////////////////////////////////////////////////
-//////////////////// OLD TESTS /////////////////////////
-////////////////////////////////////////////////////////        
-        
-//	/**
-//	 * Test *related* methods.
-//	 */
-//	function testRelatedAndReferencing() {
-//
-//		$post_id        = wl_create_post( '', 'post-1', 'Post 1' );
-//		$entity_post_id = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
-//
-//		$related_entities = wl_get_referenced_entities( $post_id );
-//		$this->assertEquals( 0, count( $related_entities ) );
-//
-//		$related_posts = wl_get_related_entities( $entity_post_id );
-//		$this->assertEquals( 0, count( $related_posts ) );
-//                
-//                // reference is a directed relation: A --> B
-//		wl_add_referenced_entities( $post_id, $entity_post_id );
-//		$this->assertEquals( 1, count( wl_get_referenced_entities( $post_id ) ) );
-//                $this->assertEquals( 1, count( wl_get_referencing_posts( $entity_post_id ) ) );
-//                $results = wl_get_referenced_entities( $post_id );
-//                $this->assertEquals( $entity_post_id, $results[0] );
-//                $results = wl_get_referencing_posts( $entity_post_id );
-//                $this->assertEquals( $post_id, $results[0] );
-//
-//                // related is a simmetric relation: A <--> B
-//		wl_add_related_entities( $entity_post_id, $post_id );
-//		$this->assertEquals( 1, count( wl_get_related_entities( $entity_post_id ) ) );
-//                $this->assertEquals( 1, count( wl_get_related_entities( $post_id ) ) );
-//                $results = wl_get_related_entities( $post_id );
-//                $this->assertEquals( $entity_post_id, $results[0] );
-//                $results = wl_get_related_entities( $entity_post_id );
-//                $this->assertEquals( $post_id, $results[0] );
-//	}
-//
-//	/**
-//	 * Test the wl_get_referencing_posts method.
-//	 */
-//	function testReferencingInDetail() {
-//
-//		// Create a couple of sample posts and entities.
-//		$post_1   = wl_create_post( '', 'post-1', 'Post 1' );
-//		$post_2   = wl_create_post( '', 'post-2', 'Post 2' );
-//		$entity_1 = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
-//		$entity_2 = wl_create_post( '', 'entity-2', 'Entity 2', 'draft', 'entity' );
-//
-//		// Reference entity 1 and 2 from post 1.
-//		wl_add_referenced_entities( $post_1, array( $entity_1, $entity_2 ) );
-//
-//		// Reference entity 1 from post 2.
-//		wl_add_referenced_entities( $post_2, $entity_1 );
-//                
-//                // Check that references are returned correctly.
-//                $this->assertEquals( array( $entity_1, $entity_2 ), wl_get_referenced_entities( $post_1 ) );
-//                $this->assertEquals( array( $entity_1 ), wl_get_referenced_entities( $post_2 ) );
-//
-//                // Check the complementary relations ( 'is referenced by' )
-//		$posts_referencing_entity_1 = wl_get_referencing_posts( $entity_1 );
-//		$this->assertTrue( in_array( $post_1, $posts_referencing_entity_1 ) );
-//		$this->assertTrue( in_array( $post_2, $posts_referencing_entity_1 ) );
-//
-//                // Check the complementary relations ( 'is referenced by' )
-//		$posts_referencing_entity_2 = wl_get_referencing_posts( $entity_2 );
-//		$this->assertCount( 1, $posts_referencing_entity_2 );
-//		$this->assertEquals( $post_1, $posts_referencing_entity_2[0] );
-//                
-//	}
-//        
-//        function testPost4W() {
-//            
-//            // Create a post.
-//            $post_id = wl_create_post( '', 'post', 'post', 'draft', 'post' );
-//
-//            // Create the 4W entities.
-//            // WHAT
-//            $what_id = wl_create_post( '', 'what', 'Entity What', 'draft', 'entity' );
-//            
-//            // WHO
-//            $who_id = wl_create_post( '', 'who', 'Entity Who', 'draft', 'entity' );
-//            
-//            // WHEN
-//            $when_id = wl_create_post( '', 'when', 'Entity When', 'draft', 'entity' );
-//            
-//            // WHERE
-//            $where_id = wl_create_post( '', 'where', 'Entity Where', 'draft', 'entity' );
-//                        
-//            // Bind the 4W to the post.
-//            wl_add_referenced_entities( $post_id, $what_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );
-//            wl_add_referenced_entities( $post_id, $when_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );  // another entity on the same W
-//            wl_add_referenced_entities( $post_id, array( $who_id, $what_id), WL_CUSTOM_FIELD_WHO_ENTITIES );    // assign more than one at the same time
-//            wl_add_referenced_entities( $post_id, $where_id, WL_CUSTOM_FIELD_WHERE_ENTITIES );
-//            // Note: no entities added as WHEN
-//
-//            // Check associations.
-//            
-//            // The 4W in an associative array, handcoded
-//            $w4_by_hand = array(
-//                WL_CUSTOM_FIELD_WHAT_ENTITIES => array( $what_id, $when_id ),
-//                WL_CUSTOM_FIELD_WHERE_ENTITIES => array( $where_id ),
-//                WL_CUSTOM_FIELD_WHEN_ENTITIES => array(),
-//                WL_CUSTOM_FIELD_WHO_ENTITIES => array( $who_id, $what_id )
-//            );
-//            
-//            // Check associations for the single W
-//            $this->assertEquals( $w4_by_hand, array(
-//                WL_CUSTOM_FIELD_WHAT_ENTITIES => wl_get_referenced_entities( $post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES ),
-//                WL_CUSTOM_FIELD_WHERE_ENTITIES => wl_get_referenced_entities( $post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES ),
-//                WL_CUSTOM_FIELD_WHEN_ENTITIES => wl_get_referenced_entities( $post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES ),
-//                WL_CUSTOM_FIELD_WHO_ENTITIES => wl_get_referenced_entities( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES )
-//            ));
-//            
-//            // Test WL-generated 4W's associative array
-//            $w4 = wl_get_post_4w_entities( 279469238 );  // non existent post
-//            $this->assertEquals( $w4, array() );
-//            
-//            $w4 = wl_get_post_4w_entities( $post_id );   // real post
-//            $this->assertEquals( $w4_by_hand, $w4 );
-//            
-//            $this->assertEquals( array( $what_id, $when_id ), $w4[WL_CUSTOM_FIELD_WHAT_ENTITIES] );
-//            $this->assertEquals( array( $who_id, $what_id ), $w4[WL_CUSTOM_FIELD_WHO_ENTITIES] );
-//            $this->assertEquals( array( $where_id ), $w4[WL_CUSTOM_FIELD_WHERE_ENTITIES] );
-//            $this->assertEquals( array(), $w4[WL_CUSTOM_FIELD_WHEN_ENTITIES] );
-//            
-//            
-//            
-//            // Check complmentary associations
-//            
-//            // Test WL-generated WHAT associative array
-//            $w4_is_for = wl_get_entity_is_4w_for_posts( 279469238 );  // non existent entity
-//            $this->assertEquals( array(), $w4_is_for );
-//            
-//            // Check complmentary associations for each of the 4Ws
-//            foreach( array( $what_id, $when_id, $where_id, $who_id ) as $entity_id ) {
-//                // The posts referenced by the WHAT in an associative array, handcoded
-//                $w4_is_for_by_hand = array(
-//                    WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS => wl_get_referencing_posts( $entity_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS),
-//                    WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS => wl_get_referencing_posts( $entity_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS),
-//                    WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS => wl_get_referencing_posts( $entity_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS),
-//                    WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS => wl_get_referencing_posts( $entity_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS)
-//                );
-//
-//                $w4_is_for = wl_get_entity_is_4w_for_posts( $entity_id );   // real post
-//                $this->assertEquals( $w4_is_for_by_hand, $w4_is_for );
-//            }
-//            
-//            // Specific complementary associations
-//            $this->assertEquals( array( $post_id ), wl_get_referencing_posts( $what_id, WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS) );
-//            $this->assertEquals( array( $post_id ), wl_get_referencing_posts( $where_id, WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS) );
-//            $this->assertEquals( array( $post_id ), wl_get_referencing_posts( $who_id, WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS) );
-//            $this->assertEquals( array(), wl_get_referencing_posts( $when_id, WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS) );
-//
-//            
-//    }
+            // Here I don't expect to find any relation instance
+            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHEN_RELATION );
+            $this->assertCount( 0, $result );
+        }
 }
