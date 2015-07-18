@@ -172,7 +172,7 @@ EOF;
                 'post_type' => 'post',   
                 );
             $expected_sql = <<<EOF
-SELECT r.* FROM $wl_table_name as r WHERE r.object_id = 3;
+SELECT r.* FROM $wl_table_name as r WHERE r.subject_id = 3;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -188,7 +188,7 @@ EOF;
                 'post_type' => 'post',   
                 );
             $expected_sql = <<<EOF
-SELECT r.id FROM $wl_table_name as r WHERE r.object_id = 3;
+SELECT r.id FROM $wl_table_name as r WHERE r.subject_id = 3;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -307,7 +307,79 @@ EOF;
             $result = wl_core_get_related_entity_ids( $post_1_id );
             $this->assertEquals( array( $entity_1_id, $entity_2_id ), $result );
         }
-        
+
+        function testWlCoreDeleteRelationInstance(){
+
+            // Create a post and an entity
+            $post_id = wl_create_post( '', 'post1', 'A post');
+            $entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            
+            // No relations at this point
+            $result = wl_core_get_relation_instances_for( $post_id );
+            $this->assertCount( 0, $result );
+            // Insert relation and verify it
+            $result = wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
+            $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
+            $result = wl_core_get_relation_instances_for( $post_id );
+            $this->assertCount( 1, $result );
+
+            $result = wl_core_delete_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
+            $this->assertTrue( $result );
+            $result = wl_core_get_relation_instances_for( $post_id );
+            $this->assertCount( 0, $result );
+
+        }
+
+        function testWlCoreDeleteRelationInstances(){
+
+            // Create a post and an entity
+            $post_id = wl_create_post( '', 'post1', 'A post');
+            $entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            
+            // No relations at this point
+            $result = wl_core_get_relation_instances_for( $post_id );
+            $this->assertCount( 0, $result );
+            // Insert relation and verify it
+            $result = wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
+            $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
+            $result = wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $entity_id );
+            $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
+
+            $result = wl_core_get_relation_instances_for( $post_id );
+            $this->assertCount( 2, $result );
+
+            $result = wl_core_delete_relation_instances( $post_id );
+            $this->assertTrue( $result );
+            $result = wl_core_get_relation_instances_for( $post_id );
+            $this->assertCount( 0, $result );
+
+        }
+
+        function testWlCoreGetRelationInstancesFor() {
+            // Create a post and 2 entities
+            $post_1_id = wl_create_post( '', 'post1', 'A post');
+            $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            $entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
+
+            // Insert relations
+            wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
+            wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
+            
+            // Check relation are retrieved as expected
+            $result = wl_core_get_relation_instances_for( $post_1_id );
+            $this->assertCount( 4, $result );
+
+            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHAT_RELATION );
+            $this->assertCount( 2, $result );
+            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHERE_RELATION );
+            $this->assertCount( 1, $result );
+            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHO_RELATION );
+            $this->assertCount( 1, $result );
+            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHEN_RELATION );
+            $this->assertCount( 0, $result );
+        }
+
         function testWlCoreGetRelatedEntitiesIds() {
             
             // Create a post and 2 entities

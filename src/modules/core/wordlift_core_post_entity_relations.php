@@ -33,6 +33,7 @@ function wl_core_get_relation_instances_table_name() {
 * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
 * @param int $object_id The entity post ID.
 *
+* @uses $wpdb->replace() to perform the query
 * @return (integer|boolean) Return then relation instance ID or false
 */
 function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
@@ -49,7 +50,6 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
     
     // Prepare interaction with db
     global $wpdb;
-
     
     // Checks passed. Add relation if not exists
     // See https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
@@ -69,6 +69,7 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 
 /**
 * Remove a given relation instance 
+* @uses $wpdb->delete() to perform the query
 *
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
@@ -77,7 +78,34 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 * @return (boolean) False for failure. True for success.
 */
 function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id ) {
+
+    // Checks on subject and object
+    if( !is_numeric( $subject_id ) || !is_numeric( $object_id ) ) {
+        return false;
+    }
     
+    // Checks on the given relation
+    if( !wl_core_check_relation_predicate_is_supported( $predicate ) ) {
+        return false;
+    }
+    
+    // Prepare interaction with db
+    global $wpdb;
+
+    wl_write_log( "Going to delete relation instace [ subject_id :: $subject_id ] [ object_id :: $object_id ] [ predicate :: $predicate ]"); 
+    
+    // @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
+    $wpdb->delete(
+       wl_core_get_relation_instances_table_name(), 
+       array( 
+        'subject_id' => $subject_id,
+        'predicate' => $predicate, 
+        'object_id' => $object_id 
+       ), 
+       array( '%d', '%s', '%d'  ) 
+    );
+
+    return true;    
 }
 
 /**
@@ -122,11 +150,31 @@ function wl_core_add_relation_instances( $subject_id, $predicate, $object_ids ) 
 * If $predicate is omitted, $predicate filter is not applied
 *
 * @param int $subject_id The post ID | The entity post ID.
-* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
 * @return (boolean) False for failure. True for success.
 */
-function wl_core_delete_relation_instances( $subject_id, $predicate = null ) {
+function wl_core_delete_relation_instances( $subject_id ) {
+
+    // Checks on subject and object
+    if( !is_numeric( $subject_id ) ) {
+        return false;
+    }
+    
+    // Prepare interaction with db
+    global $wpdb;
+
+    wl_write_log( "Going to delete relation instances [ subject_id :: $subject_id ]"); 
+    
+    // @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
+    $wpdb->delete(
+       wl_core_get_relation_instances_table_name(), 
+       array( 
+        'subject_id' => $subject_id,
+       ), 
+       array( '%d' ) 
+    );
+
+    return true;
 
 }
 
@@ -218,7 +266,7 @@ function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
         'get'               =>  'post_ids',
         'post_type'         =>  'post',
         'related_to'        =>  $object_id, 
-        'as'                =>  'subject',
+        'as'                =>  'object',
         'with_predicate'    =>  $predicate,
         ) ) ) {
         return $post_ids;
@@ -238,6 +286,16 @@ function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
 */
 function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 
+    if ( $relation_instances = wl_core_get_posts( array(
+        'get'               =>  'relations',
+        'related_to'        =>  $subject_id, 
+        'as'                =>  'subject',
+        'with_predicate'    =>  $predicate,
+        ) ) ) {
+        return $relation_instances;
+    }
+    // If wl_core_get_posts return false then an empty array is returned
+    return array();
 }
 
 /**
@@ -268,7 +326,7 @@ function wl_core_sql_query_builder( $args ) {
     // Retrieve Wordlift relation instances table name
     $table_name = wl_core_get_relation_instances_table_name();
     // Sql Join with posts table is required only if 'get' is 'posts' or 'post_ids'
-    $is_join_required = ( in_array( $args[ 'get' ], array( 'posts', 'post_ids') ) );
+    $is_looking_for_posts = ( in_array( $args[ 'get' ], array( 'posts', 'post_ids') ) );
 
     // Sql Action
     $sql = "SELECT ";
@@ -289,7 +347,7 @@ function wl_core_sql_query_builder( $args ) {
     }
 
     // Sql Inner Join if needed 
-    if ( $is_join_required ) {
+    if ( $is_looking_for_posts ) {
         // If we look for posts related as objects the JOIN has to be done with the object_id column and viceversa
         $join_column = $args[ 'as' ] . "_id"; 
         
@@ -308,8 +366,12 @@ function wl_core_sql_query_builder( $args ) {
     // related_to is reference for an object: object_id is the filtering column
     
     // TODO implement also array, not only single integer
-    $filtering_column = ( 'object' == $args[ 'as' ] ) ? "subject_id" : "object_id";
-    $sql .= $wpdb->prepare( " r.$filtering_column = %d", $args[ 'related_to' ] );
+    if ( $is_looking_for_posts ) {  
+        $filtering_column = ( 'object' == $args[ 'as' ] ) ? "subject_id" : "object_id";
+        $sql .= $wpdb->prepare( " r.$filtering_column = %d", $args[ 'related_to' ] );
+    } else {
+        $sql .= $wpdb->prepare( " r." . $args[ 'as' ] . "_id = %d", $args[ 'related_to' ] );
+    }
 
     // Add predicate filter if required
     if ( isset( $args[ 'with_predicate' ] ) ) {
@@ -317,7 +379,7 @@ function wl_core_sql_query_builder( $args ) {
         $sql .= $wpdb->prepare( " AND r.predicate = %s", $args[ 'with_predicate' ] );
     }
     // Add a group by clousole to avoid duplicated rows
-    if ( in_array( $args[ 'get' ], array( 'posts', 'post_ids') ) ) {
+    if ( $is_looking_for_posts ) {
         $sql .= " GROUP BY p.id";
     }
     if ( isset( $args[ 'first' ] ) && is_integer( $args[ 'first' ] ) ) {
