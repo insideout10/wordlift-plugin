@@ -172,7 +172,7 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
     // Retrieve data
     $query = 'SELECT object_id FROM ' . wl_core_get_relation_instances_table_name() . ' WHERE ';
     if( !is_null( $predicate ) ) {
-        $query .= 'predicate=' . $predicate . ' AND ';
+        $query .= "predicate='" . $predicate . "' AND ";
     }    
     $query .= 'subject_id=' . $subject_id;
     $results = $wpdb->get_results( $query );
@@ -259,23 +259,106 @@ function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 * Form the array like this:
 * <code>
 * $args = array(
-*   'id'      => 'foo',          // the id
-*   'predicate'   => [ what | where | when | who | null ],
-*   'predicate_scope'   => [ subject_id | object_id ],
-*   'post_type' => [ posts | entities ] 
-*   'numberposts' => n,
-*   'fields' => 'ids'   
+*   'get' => 'posts', // posts, post_ids, relations, relation_ids 
+*   'first' => n,
+*   'related_to'      => 10,          // the post/s / entity/ies id / ids
+*   'as'   => [ subject | object ],
+*   'with_predicate'   => [ what | where | when | who ], // null as default value
+*   'post_type' => [ post | entity ] 
 * );
 * </code>
 *
 * @param array args Arguments to be used in the query builder.
 *
-* @return string String representing a sql statement 
+* @return string | false String representing a sql statement, or false in case of error 
 */
 function wl_core_sql_query_builder( $args ) {
 
+    // Merge given args with defaults args value
+    $args = array_merge( array(
+        'with_predicate' => null,
+        'as' => 'subject',
+        'post_type' => 'post',
+        'get' => 'posts'
+    ), $args);
+
+    // Arguments validation rules
+    if ( !isset( $args['related_to'] ) || !is_integer( $args['related_to'] ) ) {
+        return false;
+    }
+    if ( !in_array( $args['get'], array( 'posts', 'post_ids', 'relations', 'relation_ids' ) ) )  {
+        return false;
+    }
+    if ( !in_array( $args['as'], array( 'object', 'subject' ) ) )  {
+        return false;
+    }
+    if ( !in_array( $args['post_type'], array( 'post', 'entity' ) ) )  {
+        return false;
+    }
+
     // Prepare interaction with db
     global $wpdb;
+    // Retrieve Wordlift relation instances table name
+    $table_name = wl_core_get_relation_instances_table_name();
+    // Sql Join with posts table is required only if 'get' is 'posts' or 'post_ids'
+    $is_join_required = ( in_array( $args[ 'get' ], array( 'posts', 'post_ids') ) );
+
+    // Sql Action
+    $sql = "SELECT ";
+    // Determine what has to be returned depending on 'get' argument value
+    switch ( $args[ 'get' ] ) {
+        case 'posts':
+            $sql .= "p.*";
+            break;
+        case 'post_ids':
+            $sql .= "p.id";
+            break;
+        case 'relations':
+            $sql .= "r.*";
+            break;
+        case 'relation_ids':
+            $sql .= "r.id";
+            break;
+    }
+
+    // Sql Inner Join if needed 
+    if ( $is_join_required ) {
+        // If we look for posts related as objects the JOIN has to be done with the object_id column and viceversa
+        $join_column = $args[ 'as' ] . "_id"; 
+        
+        $sql .= " FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.$join_column";
+        // Sql add post type filter
+        $sql .= $wpdb->prepare( " AND p.post_type = %s AND", $args[ 'post_type' ] );
+
+    } else {
+        $sql .= " FROM $table_name as r WHERE";    
+    }
+    
+    // Add filtering condition
+    // If we look for posts related as objects this means that 
+    // related_to is a reference for a subject: subject_id is the filtering column
+    // If we look for posts related as subject this means that 
+    // related_to is reference for an object: object_id is the filtering column
+    
+    // TODO implement also array, not only single integer
+    $filtering_column = ( 'object' == $args[ 'as' ] ) ? "subject_id" : "object_id";
+    $sql .= $wpdb->prepare( " r.$filtering_column = %d", $args[ 'related_to' ] );
+
+    // Add predicate filter if required
+    if ( wl_core_check_relation_predicate_is_supported( $args[ 'with_predicate' ] ) ) {
+        // Sql Inner Join clausole 
+        $sql .= $wpdb->prepare( " AND r.predicate = %s", $args[ 'with_predicate' ] );
+    }
+    if ( isset( $args[ 'first' ] ) && is_integer( $args[ 'first' ] ) ) {
+        // Sql Inner Join clausole 
+        $sql .= $wpdb->prepare( " LIMIT %d", $args[ 'first'] );
+    }
+    // Close sql statement
+    $sql .= ";";
+
+    wl_write_log( "Going to return sql statement: $sql " );
+    
+    return $sql;
 
 }
 

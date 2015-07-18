@@ -2,7 +2,7 @@
 /**
  * Install known types in WordPress.
  */
-function wordlift_core_install_entity_type_data() {
+function wl_core_install_entity_type_data() {
 
 	// Ensure the custom type and the taxonomy are registered.
 	wl_entity_type_register();
@@ -247,7 +247,7 @@ function wordlift_core_install_entity_type_data() {
 /**
  * Install known types in WordPress.
  */
-function wordlift_core_install_create_relation_instance_table() {
+function wl_core_install_create_relation_instance_table() {
 
 	global $wpdb;
 	// global $wl_db_version;
@@ -284,23 +284,23 @@ EOF;
 /**
  * Install Wordlift in WordPress.
  */
-function wordlift_core_install() {
+function wl_core_install() {
 
 	// Create a blank application key
 	wl_configuration_set_key('');
 	
-	wordlift_core_install_entity_type_data();
-	wordlift_core_install_create_relation_instance_table();
+	wl_core_install_entity_type_data();
+	wl_core_install_create_relation_instance_table();
 
 }
 
 // Installation Hook
-add_action( 'activate_wordlift/wordlift.php', 'wordlift_core_install' );
+add_action( 'activate_wordlift/wordlift.php', 'wl_core_install' );
 
 // Check db status on automated plugins updates
-function wl_update_db_check() {
+function wl_core_update_db_check() {
     if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
-        wordlift_core_install_create_relation_instance_table();
+        wl_core_install_create_relation_instance_table();
     }
 }
-add_action( 'plugins_loaded', 'wl_update_db_check' );
+add_action( 'plugins_loaded', 'wl_core_update_db_check' );

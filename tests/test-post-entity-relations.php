@@ -58,7 +58,147 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
         /*
          * Test *related* methods
          */
-        
+
+        function testWlCoreSqlQueryBuilder() {
+
+            // Prepare interaction with db
+            global $wpdb;
+
+            $wl_table_name = wl_core_get_relation_instances_table_name();
+
+            // Case 1 - :related_to missing
+            $args = array();
+            $result = wl_core_sql_query_builder( $args );
+            $this->assertFalse( $result );
+
+            // Case 2 - :related_to not numeric
+            $args = array(
+                'related_to' => 'not-numeric-value'
+                );
+            $result = wl_core_sql_query_builder( $args );
+            $this->assertFalse( $result );
+
+            // Case 3 - invalid :get 
+            $args = array(
+                'get' => 'pippo'
+                );
+            $result = wl_core_sql_query_builder( $args );
+            $this->assertFalse( $result );
+
+            // Case 4 - invalid :as 
+            $args = array(
+                'as' => 'pippo'
+                );
+            $result = wl_core_sql_query_builder( $args );
+            $this->assertFalse( $result );
+
+            // Case 5 - invalid :post_type 
+            $args = array(
+                'post_type' => 'pippo'
+                );
+            $result = wl_core_sql_query_builder( $args );
+            $this->assertFalse( $result );
+
+            // Case 6 - Find all posts of type 'post' related to post / entity with ID 3 as subject
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post',   
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 7 - Find all post ids of type 'post' related to post / entity with ID 3 as subject
+            $args = array(
+                'get' => 'post_ids',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post',   
+                );
+            $expected_sql = <<<EOF
+SELECT p.id FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 8 - Find all relations of type 'post' related to post / entity with ID 3 as subject
+            $args = array(
+                'get' => 'relations',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post',   
+                );
+            $expected_sql = <<<EOF
+SELECT r.* FROM $wl_table_name as r WHERE r.object_id = 3;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 9 - Find all relation ids of type 'post' related to post / entity with ID 3 as subject
+            $args = array(
+                'get' => 'relation_ids',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post',   
+                );
+            $expected_sql = <<<EOF
+SELECT r.id FROM $wl_table_name as r WHERE r.object_id = 3;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 10 - Find first ten post ids of type 'post' related to post / entity with ID 3 as subject
+            $args = array(
+                'first' => 10,
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'subject',
+                'post_type' => 'post',   
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 LIMIT 10;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 11 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object
+            $args = array(
+                'first' => 10,
+                'get' => 'posts',  
+                'related_to' => 3,
+                'as' => 'object',
+                'post_type' => 'post',   
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 LIMIT 10;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+        }
+
         function testAddRelationInstance() {
             
             // Create a post and an entity
