@@ -9,12 +9,14 @@ require_once( 'wordlift_admin_menu.php' );
 /**
  * Serialize an entity post.
  *
- * @param array $entity The entity post.
+ * @param array $entity The entity post or the entity post id.
  *
  * @return array mixed The entity data array.
  */
 function wl_serialize_entity( $entity ) {
 
+	$entity = ( is_numeric( $entity ) ) ? get_post( $entity ) : $entity;
+	
 	$type   = wl_entity_type_taxonomy_get_type( $entity->ID );
 	$images = wl_get_image_urls( $entity->ID );
 

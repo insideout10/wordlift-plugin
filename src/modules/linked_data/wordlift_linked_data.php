@@ -64,16 +64,19 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
     
     // Store mapping between tmp new entities uris and real new entities uri
     $entities_uri_mapping = array();
+    // Store classification box mapping
+    $entities_predicates_mapping = null;
 
 	// Save the entities coming with POST data.
-	if ( isset( $_POST['wl_entities'] ) ) {
+	if ( isset( $_POST['wl_entities'] ) &&  isset( $_POST['wl_boxes'] ) ) {
 
 		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
 		wl_write_log( var_export( $_POST['wl_entities'], true ) );
 		wl_write_log( "]" );
 
 		$entities_via_post = array_values( $_POST['wl_entities'] );
-
+		$boxes_via_post = $_POST['wl_boxes'] ;
+			
 		// Save each entity and store the post id.
 		foreach ( $entities_via_post as $index => $entity ) {
 
@@ -87,6 +90,18 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			} 
 		
 		}
+
+		// Populate the $entities_predicates_mapping
+		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
+			foreach ( $entity_uris as $entity_uri ) {
+				$uri = $entity_uri;
+				if ( array_key_exists( $entity_uri, $entities_uri_mapping ) ) {
+					$uri = $entities_uri_mapping[ $entity_uri ];
+				}
+				$entities_predicates_mapping[ $uri ][] = $predicate; 
+			}	
+		}
+
 
 		wl_write_log( "[ entities_via_post :: " );
 		wl_write_log( $entities_via_post );
@@ -103,45 +118,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 		}
 	}
-        
-    // Retrieve box classification 
-	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
-
-	wl_core_delete_relation_instances( $post_id );        
     
-	// Loop trough boxes
-	foreach ( $classification_boxes as $box) {
-		// Box id matchs related relation name
-		$relation = $box['id'];
-		
-		wl_write_log( "Going to reset relation instances of type $relation for post $post_id ..." );
-		
-		// Check if other relations instances has to be added
-		if ( isset( $_POST['wl_boxes'] ) ) {			
-			
-			$boxes_via_post = $_POST['wl_boxes'] ;
-			$entity_ids = array();
-
-			if ( isset( $boxes_via_post[ $relation ] ))  {	
-				foreach ( $boxes_via_post[ $relation ] as $entity_id ) {
-
-					$uri = $entity_id;
-					
-					if ( array_key_exists( $entity_id, $entities_uri_mapping ) ) {
-						$uri = $entities_uri_mapping[ $entity_id ];
-					}
-
-					if ( $entity_post = wl_get_entity_post_by_uri( $uri ) ) {
-						array_push( $entity_ids, $entity_post->ID );	
-						wl_write_log( "Going to relate entity {$entity_post->ID} to post $post_id trough $relation relation ..." );
-					}
-				}
-			}
-
-			// Finally add relation instances
-			wl_core_add_relation_instances( $post_id, $relation, $entity_ids );
-		}
-	}
 	
 	$updated_post_content = $post->post_content;
     // Save each entity and store the post id.
@@ -159,12 +136,20 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
     $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
     // Reset previously save instances
 	wl_core_delete_relation_instances( $post_id );        
-    foreach( $disambiguated_entities as $rel_entity_id ) {
-        
-        // TODO Manage predicate accordingly to $_POST['wl_boxes']
-        wl_core_add_relation_instance( $post_id, 'what', $rel_entity_id );
+    foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
+        wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
+        if( $entities_predicates_mapping ) {
+        	$referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
+        	foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
+				wl_write_log(" Going to add relation with predicate $predicate");
+				wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
+	    	}
+        } else {
+        	// Just for unit tests
+        	wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
+        }
 		
-		wl_push_to_redlink( $rel_entity_id );
+		wl_push_to_redlink( $referenced_entity_id );
     }
         
 	// Push the post to Redlink.
