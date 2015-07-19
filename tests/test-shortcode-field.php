@@ -23,9 +23,6 @@ class FieldShortcodeTest extends WP_UnitTestCase
      *  * 3 Place entities referenced by the Post
      *  * 1 Person entity reference by the Post
      *
-     * Check that only the first 2 entities are returned when calling *wl_set_referenced_entities*.
-     *
-     * @uses wl_set_referenced_entities to retrieve the entities referenced by a post.
      */
     function testFieldShortcode() {
 

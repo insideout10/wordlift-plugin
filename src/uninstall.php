@@ -25,13 +25,8 @@ $entities_array = get_posts( $args );
 
 // We will keep track of ordinary posts that reference entities.
 $referencing_posts_ids = array();
-$referenced_metas = array(
-    WL_CUSTOM_FIELD_IS_REFERENCED_BY_POSTS,
-    WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS,
-    WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS,
-    WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS,
-    WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS
-);
+
+$referenced_metas = array();
 
 // Loop over entities and delete their meta.
 // TODO: thumbnails?
@@ -70,11 +65,6 @@ $referencing_posts_ids = array_unique( $referencing_posts_ids );
  */
 echo 'Cleaning ordinary posts from entities metadata... ';
 foreach( $referencing_posts_ids as $post_id ) {
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES );
     
     // TODO: clean post content... this is the major performance point.
     /*

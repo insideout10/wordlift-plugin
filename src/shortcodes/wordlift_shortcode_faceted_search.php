@@ -51,7 +51,7 @@ function wl_shortcode_faceted_search_ajax()
     $filtering_entity_uris = json_decode( $request_body );    
 
     // Set up data structures
-    $referencing_post_ids  = wl_get_referencing_posts( $entity_id );
+    $referencing_post_ids  = wl_core_get_related_post_ids( $entity_id );
     $result = array();
     
     // Get ready to fire a JSON
@@ -87,7 +87,7 @@ function wl_shortcode_faceted_search_ajax()
                 $id = $id->ID;
                 
                 $meta_query[] = array(
-                    'key' => WL_CUSTOM_FIELD_REFERENCED_ENTITIES,
+                    'key' => 'TODO',
                     'value' => $id,
                     'compare' => '=='
                 );

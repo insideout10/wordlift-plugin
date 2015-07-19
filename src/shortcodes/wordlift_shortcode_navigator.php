@@ -31,7 +31,7 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
     */
 
     // get the related entities, and for each one retrieve the most recent post regarding it.
-    $related_entities = wl_get_referenced_entities( $post_id );
+    $related_entities = wl_core_get_related_entity_ids( $post_id );
     
     wl_write_log("Entities related to post $post_id");
     wl_write_log( $related_entities );
@@ -41,7 +41,7 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
         wl_write_log("Looking for posts related to entity $rel_entity");
        
         // take the id of posts referencing the entity
-        $referencing_posts_ids = wl_get_referencing_posts( $rel_entity );
+        $referencing_posts_ids = wl_core_get_related_post_ids( $rel_entity );
         
         // loop over them and take the first one which is not already in the $related_posts
         foreach ( $referencing_posts_ids as $referencing_post_id ) {

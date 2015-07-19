@@ -7,7 +7,7 @@
 /**
  * Retrieve timeline events.
  *
- * @uses wl_get_referenced_entities to retrieve the entities referenced by the specified post.
+ * @uses wl_core_get_related_entity_ids to retrieve the entities referenced by the specified post.
  *
  * @param int $post_id The post ID.
  * @return array An array of event posts.
@@ -32,7 +32,7 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 		// Collect entities related to latest posts
 	    $entity_ids = array();
 	    foreach ( $latest_posts_ids as $id ) {
-	        $entity_ids = array_merge( $entity_ids, wl_get_referenced_entities( $id ) );
+	        $entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id ) );
 	    }
 		
 		if( empty($entity_ids) )
@@ -40,7 +40,7 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 		
 	} else {
 		// Post-specific timeline. Search for entities in the post itself.
-		$entity_ids = wl_get_referenced_entities( $post_id );
+		$entity_ids = wl_core_get_related_entity_ids( $post_id );
 	}
 
     wl_write_log( "wl_shortcode_timeline_get_events [ entity IDs :: " . join( ', ', $entity_ids ) . " ]" );

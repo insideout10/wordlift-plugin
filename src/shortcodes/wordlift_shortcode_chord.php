@@ -24,7 +24,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
     
     $entities = array();
     foreach ( $post_ids as $id ) {
-        $entities = array_merge( $entities, wl_get_referenced_entities( $id ) );
+        $entities = array_merge( $entities, wl_core_get_related_entity_ids( $id ) );
     }
 
     $famous_entities = array_count_values($entities);
@@ -40,7 +40,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
 /**
  * Recursive function used to retrieve related content starting from a post ID.
  *
- * @uses wl_get_referencing_posts to get the list of posts that reference an entity.
+ * @uses wl_core_get_related_post_ids to get the list of post ids that reference an entity.
  *
  * @param int $post_id The entity post ID.
  * @param int $depth Max number of entities in output.
@@ -49,6 +49,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
  */
 function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null ) {
 	
+    // TODO Check Data Selection
 	// Search for more entities only if we did not exceed $depth or $max_size
 	$max_size = 50;
 	if( ! is_null($related) )
@@ -67,11 +68,12 @@ function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null
     }
 
     // Get the post IDs that reference this entity.
-    $related_ids = wl_get_referencing_posts( $post_id );
+    $related_ids = wl_core_get_related_post_ids( $post_id );
     
     // Get the post IDs referenced  or related by this entity/post.
-    $related_ids = array_merge( $related_ids, wl_get_referenced_entities( $post_id ) );
-    $related_ids = array_merge( $related_ids, wl_get_related_entities( $post_id ) );
+    // Here all relations are needed CHECK
+    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $post_id ) );
+    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $post_id ) );
     $related_ids = array_unique( $related_ids );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.

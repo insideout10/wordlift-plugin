@@ -71,7 +71,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
-            // Case 2 - :related_to not numeric
+            // Case 2a - :related_to not numeric
             $args = array(
                 'get' => 'posts',  
                 'related_to' => 'not-a-numeric-value',
@@ -80,6 +80,16 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
                 );
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
+
+            // Case 2b - :related_to string representing a number
+            $args = array(
+                'get' => 'post_ids',  
+                'related_to' => '23',
+                'as' => 'subject',
+                'post_type' => 'post', 
+                );
+            $result = wl_core_get_posts( $args );
+            $this->assertInternalType( 'array', $result );
 
             // Case 3 - invalid :get 
             $args = array(
@@ -380,48 +390,34 @@ EOF;
             $this->assertCount( 0, $result );
         }
 
-        function testWlCoreGetRelatedEntitiesIds() {
+        function testWlCoreGetRelatedPostIds() {
             
-            // Create a post and 2 entities
+            // Create 2 posts and 1 entities
             $post_1_id = wl_create_post( '', 'post1', 'A post');
+            $post_2_id = wl_create_post( '', 'post2', 'A post');            
             $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
-            $entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
-            
-            // Stress method with strange parmeters
-            $result = wl_core_get_related_entity_ids( '' );
-            $this->assertEmpty( $result );
-            $result = wl_core_get_related_entity_ids( null );
-            $this->assertEmpty( $result );
-            $result = wl_core_get_related_entity_ids( $post_1_id, 'ulabadula' );
-            $this->assertEmpty( $result );
-            
-            // Nothing has been inserted as relation so far.
-            $result = wl_core_get_related_entity_ids( $post_1_id );
-            $this->assertTrue( is_array( $result ) );
-            $this->assertEmpty( $result );
             
             // Insert relations
-            wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
             wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
-            wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
+            wl_core_add_relation_instance( $post_2_id, WL_WHO_RELATION, $entity_1_id );
             
             // Check relation are retrieved as expected
-            $result = wl_core_get_related_entity_ids( $post_1_id );
+            $result = wl_core_get_related_post_ids( $entity_1_id );
             $this->assertCount( 2, $result );
-            $this->assertTrue( in_array( $entity_1_id, $result ) );
-            $this->assertTrue( in_array( $entity_2_id, $result ) );
-
-            // Check relation are retrieved as expected also using predicates
-            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHERE_RELATION );
-            $this->assertCount( 1, $result );
-            $this->assertTrue( in_array( $entity_1_id, $result ) );
+            $this->assertTrue( in_array( $post_1_id, $result ) );
+            $this->assertTrue( in_array( $post_2_id, $result ) );
             
-            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHO_RELATION );
+            $result = wl_core_get_related_post_ids( $entity_1_id, WL_WHERE_RELATION );
             $this->assertCount( 1, $result );
-            $this->assertTrue( in_array( $entity_2_id, $result ) );
+            $this->assertTrue( in_array( $post_1_id, $result ) );
 
-            // Here I don't expect to find any relation instance
-            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHEN_RELATION );
+            $result = wl_core_get_related_post_ids( $entity_1_id, WL_WHO_RELATION );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $post_2_id, $result ) );
+
+            $result = wl_core_get_related_post_ids( $entity_1_id, WL_WHAT_RELATION );
             $this->assertCount( 0, $result );
+
         }
+
 }

@@ -106,14 +106,15 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         
     // Retrieve box classification 
 	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
+
+	wl_core_delete_relation_instances( $post_id );        
+    
 	// Loop trough boxes
 	foreach ( $classification_boxes as $box) {
 		// Box id matchs related relation name
 		$relation = $box['id'];
 		
 		wl_write_log( "Going to reset relation instances of type $relation for post $post_id ..." );
-		// Reset previous existing instnaces		
-		wl_core_reset_relation_between_posts_and_entities( $post_id, $relation );
 		
 		// Check if other relations instances has to be added
 		if ( isset( $_POST['wl_boxes'] ) ) {			
@@ -138,7 +139,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 
 			// Finally add relation instances
-			wl_core_add_relation_between_posts_and_entities( $post_id, $relation, $entity_ids);
+			wl_core_add_relation_instances( $post_id, $relation, $entity_ids );
 		}
 	}
 	
@@ -156,25 +157,12 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
     // Extract related/referenced entities from text.
     $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-    
-    // Delete previously saved related/referenced
-    if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
-        wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
-    } else {
-        wl_set_referenced_entities( $post_id, array() );
-    }
-        
-    // Add the related/referenced entities if provided.
-    // NOTE: related !== referenced. See wordlift core methods.
+    // Reset previously save instances
+	wl_core_delete_relation_instances( $post_id );        
     foreach( $disambiguated_entities as $rel_entity_id ) {
-                        
-    	if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
-            // Adding related entitity to an entity
-            wl_add_related_entities( $post_id, $rel_entity_id );
-        } else {
-            // Adding this entity as referenced by a post
-            wl_add_referenced_entities( $post_id, $rel_entity_id );
-        }        
+        
+        // TODO Manage predicate accordingly to $_POST['wl_boxes']
+        wl_core_add_relation_instance( $post_id, 'what', $rel_entity_id );
 		
 		wl_push_to_redlink( $rel_entity_id );
     }

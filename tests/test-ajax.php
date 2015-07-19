@@ -98,7 +98,7 @@ class AjaxTest extends WP_UnitTestCase
         $entity_2_id = wl_create_post('This is Entity 2', 'entity-2', 'Entity 2', 'publish', 'entity');
         wl_set_entity_main_type($entity_2_id, 'http://schema.org/Thing');
 
-        wl_add_referenced_entities($post_id, array($entity_1_id, $entity_2_id));
+        wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
 
         $_REQUEST['post_id'] = $post_id;
         $_REQUEST['depth'] = 3;
@@ -134,7 +134,7 @@ class AjaxTest extends WP_UnitTestCase
         add_post_meta($entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-03', true);
         add_post_meta($entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-04', true);
 
-        wl_add_referenced_entities($post_id, array($entity_1_id, $entity_2_id));
+        wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
 
         $_REQUEST['post_id'] = $post_id;
 
@@ -166,7 +166,7 @@ class AjaxTest extends WP_UnitTestCase
         add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 41.20, true );
         add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 78.2, true );
 
-        wl_add_referenced_entities($post_id, array($entity_1_id, $entity_2_id));
+        wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
 
         $_REQUEST['post_id'] = $post_id;
 

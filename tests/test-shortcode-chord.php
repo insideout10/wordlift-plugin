@@ -65,7 +65,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$type = 'post';
 		self::$FIRST_POST_ID = wl_create_post( $content, $slug, $title, $status, $type);
         
-        wl_add_referenced_entities( self::$FIRST_POST_ID, $entities );
+        wl_core_add_relation_instances( self::$FIRST_POST_ID, WL_WHAT_RELATION, $entities );
 		
 		// Creating another fake post and entity (the most connected one)
 		
@@ -86,8 +86,8 @@ class ChordShortcodeTest extends WP_UnitTestCase
         $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
 		self::$MOST_CONNECTED_ENTITY_ID = $ent->ID;
 		
-		wl_add_referenced_entities( $new_post, self::$MOST_CONNECTED_ENTITY_ID );
-		wl_add_referenced_entities( self::$FIRST_POST_ID, self::$MOST_CONNECTED_ENTITY_ID);
+		wl_core_add_relation_instance( $new_post, WL_WHAT_RELATION, self::$MOST_CONNECTED_ENTITY_ID );
+		wl_core_add_relation_instance( self::$FIRST_POST_ID, WL_WHAT_RELATION, self::$MOST_CONNECTED_ENTITY_ID );
     }
 
     function testChordShortcodeOutput() {
@@ -104,7 +104,6 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$this->assertNotEmpty($chord['entities']);
 		$this->assertNotEmpty($chord['relations']);
 		
-		//wl_write_log("chordShortcodeAJAX [ chord data :: " . print_r($chord, true) . "]");
     }
     
     function testChordShortcodeMostConnectedEntity() {
@@ -114,29 +113,6 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$this->assertNotNull($e);
 		$this->assertEquals(self::$MOST_CONNECTED_ENTITY_ID, $e);
 		
-		//wl_write_log("chordShortcodeMostConnectedEntity [ post id :: $e ]");
-    }
-
-    /**
-     * Test the *wl_shortcode_chord_get_relations* method and the depth parameter.
-     */
-    function testGetRelations() {
-        // TODO: finalize the following test
-
-        // Create a couple of sample posts and entities.
-        $post_1   = wl_create_post( '', 'post-1', 'Post 1' );
-        $post_2   = wl_create_post( '', 'post-2', 'Post 2' );
-
-        $entity_1 = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
-        $entity_2 = wl_create_post( '', 'entity-2', 'Entity 2', 'draft', 'entity' );
-
-        // Reference entity 1 and 2 from post 1.
-        wl_add_referenced_entities( $post_1, array( $entity_1, $entity_2 ) );
-
-        // Reference entity 1 from post 2.
-        wl_add_referenced_entities( $post_2, array( $entity_1 ) );
-
-        var_dump( wl_shortcode_chord_get_relations( $post_1, 0 ) );
     }
 
 }

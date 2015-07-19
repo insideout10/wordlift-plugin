@@ -25,6 +25,7 @@ function wordlift_ajax_related_posts() {
     if ( !empty( $filtering_entity_ids ) ) {
     
         // TODO - Exclude the corrent post from $related_posts
+        // Implement this WITH new methods
         $query = new WP_Query();
         $related_posts = $query->query(
             array(
@@ -33,7 +34,7 @@ function wordlift_ajax_related_posts() {
                 'posts_per_page' =>-1,
                 'meta_query' => array(
                     array(
-                        'key' => WL_CUSTOM_FIELD_REFERENCED_ENTITIES,
+                        'key' => 'TODO',
                         'value' => $filtering_entity_ids,
                         'compare' => 'IN'
                     )
