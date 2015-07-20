@@ -413,35 +413,35 @@ EOF;
 
         function testWlCoreDeleteRelationInstance(){
 
-/*
+
             // Create a post and an entity
             $post_id = wl_create_post( '', 'post1', 'A post');
             $entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
             
             // No relations at this point
-            $result = wl_core_get_relation_instances_for( $post_id );
+            $result = $this->wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 0, $result );
             // Insert relation and verify it
             $result = wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
             $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
-            $result = wl_core_get_relation_instances_for( $post_id );
+            $result = $this->wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 1, $result );
 
             $result = wl_core_delete_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
             $this->assertTrue( $result );
-            $result = wl_core_get_relation_instances_for( $post_id );
+            $result = $this->wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 0, $result );
-*/
+
         }
 
         function testWlCoreDeleteRelationInstances(){
-/*
+
             // Create a post and an entity
             $post_id = wl_create_post( '', 'post1', 'A post');
             $entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
             
             // No relations at this point
-            $result = wl_core_get_relation_instances_for( $post_id );
+            $result = $this->wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 0, $result );
             // Insert relation and verify it
             $result = wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
@@ -449,14 +449,14 @@ EOF;
             $result = wl_core_add_relation_instance( $post_id, WL_WHO_RELATION, $entity_id );
             $this->assertTrue( is_numeric( $result ) ); // The methods return a record id
 
-            $result = wl_core_get_relation_instances_for( $post_id );
+            $result = $this->wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 2, $result );
 
             $result = wl_core_delete_relation_instances( $post_id );
             $this->assertTrue( $result );
-            $result = wl_core_get_relation_instances_for( $post_id );
+            $result = $this->wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 0, $result );
-*/
+
         }
 
         function testWlCoreGetRelatedPostIdsForAnEntity() {
@@ -511,6 +511,22 @@ EOF;
             $result = wl_core_get_related_post_ids( $post_1_id, WL_WHO_RELATION );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $post_2_id, $result ) );
+
+        }
+
+        function wl_core_get_relation_instances_for( $post_id, $predicate = null ) {
+
+            // Prepare interaction with db
+            global $wpdb;
+            // Retrieve Wordlift relation instances table name
+            $table_name = wl_core_get_relation_instances_table_name();
+            // Sql Action
+            $sql_statement = $wpdb->prepare( "SELECT * FROM $table_name WHERE subject_id = %d", $post_id );
+            if ( null != $predicate ) {
+                $sql_statement .= $wpdb->prepare( " AND predicate = %s", $predicate );     
+            }
+            $results = $wpdb->get_results( $sql_statement );
+            return $results;
 
         }
 }
