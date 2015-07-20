@@ -218,31 +218,14 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 */
 function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null ) {
     
-    // Retrieve the post object
-    $post = get_post( $item_id );
-    if ( null === $post ) {
-        return array();
-    }
-    if ( "entity" === $post->post_type ) {
-        if ( $results = wl_core_get_posts( array(
-            'get'               =>  $get,
-            'post_type'         =>  'entity',
-            'related_to'        =>  $item_id, 
-            'as'                =>  'subject',
-            'with_predicate'    =>  $predicate,
-            ) ) ) {
-                return $results;
-        }
-    } else {
-        if ( $results = wl_core_get_posts( array(
-            'get'               =>  $get,
-            'post_type'         =>  'entity',
-            'related_to'        =>  $item_id, 
-            'as'                =>  'object',
-            'with_predicate'    =>  $predicate,
-            ) ) ) {
-                return $results;
-        }
+    if ( $results = wl_core_get_posts( array(
+        'get'               =>  $get,
+        'post_type'         =>  'entity',
+        'related_to'        =>  $item_id, 
+        'as'                =>  'object',
+        'with_predicate'    =>  $predicate,
+        ) ) ) {
+            return $results;
     }
     // If wl_core_get_posts return false then an empty array is returned
     return array();
@@ -452,7 +435,7 @@ function wl_core_get_posts( $args, $returned_type = ARRAY_A ) {
         // Sanitize related_to__in  value removing non numeric values from the array
         $args[ 'related_to__in' ] = array_filter( $args[ 'related_to__in' ], "is_numeric" );
     }
-    if ( !in_array( $args[ 'get' ], array( 'posts', 'post_ids', 'relations', 'relation_ids' ) ) )  {
+    if ( !in_array( $args[ 'get' ], array( 'posts', 'post_ids' ) ) )  {
         return false;
     }
     if ( !in_array( $args[ 'as' ], array( 'object', 'subject' ) ) )  {
@@ -475,7 +458,7 @@ function wl_core_get_posts( $args, $returned_type = ARRAY_A ) {
     $results = array();
     // If ids are required, returns a one-dimensional array containing ids.
     // Otherwise an array of associative arrays representing the post | relation object
-    if ( in_array( $args[ 'get' ], array( 'post_ids', 'relation_ids') ) ) {
+    if ( in_array( $args[ 'get' ], array( 'post_ids' ) ) ) {
         # See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
         $results = $wpdb->get_col( $sql_statement );
     } else {

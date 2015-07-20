@@ -514,6 +514,59 @@ EOF;
 
         }
 
+        function testWlCoreGetRelatedEntityIdsForAPost() {
+            
+            // Create 2 posts and 1 entities
+            $post_1_id = wl_create_post( '', 'post1', 'A post');
+            $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            $entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
+            
+            // Insert relations
+            wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
+            
+            // Check relation are retrieved as expected
+            $result = wl_core_get_related_entity_ids( $post_1_id );
+            $this->assertCount( 2, $result );
+            $this->assertTrue( in_array( $entity_1_id, $result ) );
+            $this->assertTrue( in_array( $entity_2_id, $result ) );
+            
+            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHERE_RELATION );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $entity_1_id, $result ) );
+            
+            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHO_RELATION );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $entity_2_id, $result ) );
+
+        }
+
+        function testWlCoreGetRelatedEntityIdsForAnEntity() {
+            
+            // Create 2 posts and 1 entities
+            $entity_0_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
+            $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            $entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
+            
+            // Insert relations
+            wl_core_add_relation_instance( $entity_0_id, WL_WHERE_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $entity_0_id, WL_WHO_RELATION, $entity_2_id );
+            
+            // Check relation are retrieved as expected
+            $result = wl_core_get_related_entity_ids( $entity_0_id );
+            $this->assertCount( 2, $result );
+            $this->assertTrue( in_array( $entity_1_id, $result ) );
+            $this->assertTrue( in_array( $entity_2_id, $result ) );
+            
+            $result = wl_core_get_related_entity_ids( $entity_0_id, WL_WHERE_RELATION );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $entity_1_id, $result ) );
+            
+            $result = wl_core_get_related_entity_ids( $entity_0_id, WL_WHO_RELATION );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $entity_2_id, $result ) );
+
+        }
         function wl_core_get_relation_instances_for( $post_id, $predicate = null ) {
 
             // Prepare interaction with db
