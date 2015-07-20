@@ -133,6 +133,79 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
             $result = wl_core_get_posts( $args );
             $this->assertFalse( $result );
 
+            // Case 7 - invalid :related_to__in -> empty array
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 6,
+                'related_to__in' => array(),
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'what' 
+                );
+
+            $result = wl_core_get_posts( $args );
+            $this->assertFalse( $result );
+
+            // Case 8 - invalid :related_to__in 
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 5,
+                'related_to__in' => array('not-numeric-value'),
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'what' 
+                );
+
+            $result = wl_core_get_posts( $args );
+            $this->assertFalse( $result );   
+
+            // Case 9 - invalid :related_to__in 
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 4,
+                'related_to__in' => array('not-numeric-value','13'),
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'what' 
+                );
+
+            $result = wl_core_get_posts( $args );
+            $this->assertInternalType( "array", $result ); 
+
+            // Case 10 - missing both :related_to and :related_to__in 
+            $args = array(
+                'get' => 'posts',  
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'what' 
+                );
+
+            $result = wl_core_get_posts( $args );
+            $this->assertFalse( $result );               
+
+            // Case 11 - just :related_to is set: it should be valid 
+            $args = array(
+                'get' => 'posts',  
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'what', 
+                'related_to' => 4,
+                );
+
+            $result = wl_core_get_posts( $args );
+            $this->assertInternalType( "array", $result ); 
+
+            // Case 12 - just :related_to__in is set: it should be valid 
+            $args = array(
+                'get' => 'posts',  
+                'as' => 'subject',
+                'post_type' => 'post',
+                'with_predicate' => 'what', 
+                'related_to__in' => array(1,2),
+                );
+
+            $result = wl_core_get_posts( $args );
+            $this->assertInternalType( "array", $result ); 
         }
 
         function testWlCoreSqlQueryBuilder() {
@@ -174,39 +247,7 @@ EOF;
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
 
-            // Case 8 - Find all relations of type 'post' related to post / entity with ID 3 as subject
-            $args = array(
-                'get' => 'relations',  
-                'related_to' => 3,
-                'as' => 'subject',
-                'post_type' => 'post',   
-                );
-            $expected_sql = <<<EOF
-SELECT r.* FROM $wl_table_name as r WHERE r.subject_id = 3;
-EOF;
-            $actual_sql = wl_core_sql_query_builder( $args );
-            $this->assertEquals( $expected_sql, $actual_sql );
-            // Try to perform query in order to see if there are errors on db side
-            $wpdb->get_results( $actual_sql );
-            $this->assertEmpty( $wpdb->last_error );
-
-            // Case 9 - Find all relation ids of type 'post' related to post / entity with ID 3 as subject
-            $args = array(
-                'get' => 'relation_ids',  
-                'related_to' => 3,
-                'as' => 'subject',
-                'post_type' => 'post',   
-                );
-            $expected_sql = <<<EOF
-SELECT r.id FROM $wl_table_name as r WHERE r.subject_id = 3;
-EOF;
-            $actual_sql = wl_core_sql_query_builder( $args );
-            $this->assertEquals( $expected_sql, $actual_sql );
-            // Try to perform query in order to see if there are errors on db side
-            $wpdb->get_results( $actual_sql );
-            $this->assertEmpty( $wpdb->last_error );
-
-            // Case 10 - Find first ten post ids of type 'post' related to post / entity with ID 3 as subject
+            // Case 8 - Find first ten post ids of type 'post' related to post / entity with ID 3 as subject
             $args = array(
                 'first' => 10,
                 'get' => 'posts',  
@@ -223,7 +264,7 @@ EOF;
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
 
-            // Case 11 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object
+            // Case 9 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object
             $args = array(
                 'first' => 10,
                 'get' => 'posts',  
@@ -240,7 +281,7 @@ EOF;
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
 
-            // Case 12 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object with predicate what
+            // Case 10 - Find first ten post ids of type 'post' related to post / entity with ID 3 as object with predicate what
             $args = array(
                 'first' => 10,
                 'get' => 'posts',  
@@ -251,6 +292,58 @@ EOF;
                 );
             $expected_sql = <<<EOF
 SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.predicate = 'what' GROUP BY p.id LIMIT 10;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 11 - Find first ten post ids of type 'post' related to post / entity with ID 3 and IN (4,5) as object with predicate what
+            $args = array(
+                'first' => 10,
+                'get' => 'posts',  
+                'related_to' => 3,
+                'related_to__in' => array('4','5'),
+                'post_type' => 'post', 
+                'as' => 'object',
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 3 AND r.subject_id IN (4,5) GROUP BY p.id LIMIT 10;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 12 - Find first ten post ids of type 'post' related to post / entity id IN (3, 4) as object with predicate what
+            $args = array(
+                'first' => 10,
+                'get' => 'posts',  
+                'related_to__in' => array('4','5'),
+                'post_type' => 'post', 
+                'as' => 'object',
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) GROUP BY p.id LIMIT 10;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+
+            // Case 13 - Find post ids of type 'post' related to post / entity id IN (3, 4) as object with predicate what
+            $args = array(
+                'get' => 'posts',  
+                'related_to__in' => array('4','5'),
+                'related_to__not' => 6,
+                'post_type' => 'post', 
+                'as' => 'object',
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) AND r.object_id != 6 GROUP BY p.id;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -320,6 +413,7 @@ EOF;
 
         function testWlCoreDeleteRelationInstance(){
 
+/*
             // Create a post and an entity
             $post_id = wl_create_post( '', 'post1', 'A post');
             $entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
@@ -337,11 +431,11 @@ EOF;
             $this->assertTrue( $result );
             $result = wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 0, $result );
-
+*/
         }
 
         function testWlCoreDeleteRelationInstances(){
-
+/*
             // Create a post and an entity
             $post_id = wl_create_post( '', 'post1', 'A post');
             $entity_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
@@ -362,35 +456,10 @@ EOF;
             $this->assertTrue( $result );
             $result = wl_core_get_relation_instances_for( $post_id );
             $this->assertCount( 0, $result );
-
+*/
         }
 
-        function testWlCoreGetRelationInstancesFor() {
-            // Create a post and 2 entities
-            $post_1_id = wl_create_post( '', 'post1', 'A post');
-            $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
-            $entity_2_id = wl_create_post( '', 'entity2', 'An Entity', 'draft', 'entity' );
-
-            // Insert relations
-            wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
-            wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
-            wl_core_add_relation_instance( $post_1_id, WL_WHO_RELATION, $entity_2_id );
-            
-            // Check relation are retrieved as expected
-            $result = wl_core_get_relation_instances_for( $post_1_id );
-            $this->assertCount( 4, $result );
-
-            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHAT_RELATION );
-            $this->assertCount( 2, $result );
-            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHERE_RELATION );
-            $this->assertCount( 1, $result );
-            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHO_RELATION );
-            $this->assertCount( 1, $result );
-            $result = wl_core_get_relation_instances_for( $post_1_id, WL_WHEN_RELATION );
-            $this->assertCount( 0, $result );
-        }
-
-        function testWlCoreGetRelatedPostIds() {
+        function testWlCoreGetRelatedPostIdsForAnEntity() {
             
             // Create 2 posts and 1 entities
             $post_1_id = wl_create_post( '', 'post1', 'A post');
@@ -420,4 +489,28 @@ EOF;
 
         }
 
+        function testWlCoreGetRelatedPostIdsForAPost() {
+            
+            // Create 2 posts and 1 entities
+            $post_1_id = wl_create_post( '', 'post1', 'A post');
+            $post_2_id = wl_create_post( '', 'post2', 'A post');            
+            $entity_1_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            
+            // Insert relations
+            wl_core_add_relation_instance( $post_1_id, WL_WHERE_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $post_2_id, WL_WHO_RELATION, $entity_1_id );
+            
+            // Check relation are retrieved as expected
+            $result = wl_core_get_related_post_ids( $post_1_id );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $post_2_id, $result ) );
+            
+            $result = wl_core_get_related_post_ids( $post_1_id, WL_WHERE_RELATION );
+            $this->assertCount( 0, $result );
+            
+            $result = wl_core_get_related_post_ids( $post_1_id, WL_WHO_RELATION );
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $post_2_id, $result ) );
+
+        }
 }

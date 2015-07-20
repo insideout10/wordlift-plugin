@@ -230,25 +230,43 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 * Find all posts related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
 *
-* @param int $object_id The entity ID.
+* @param int $object_id The entity ID or the post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
 * @return (array) Array of objects.
 */
 function wl_core_get_related_posts( $object_id, $predicate = null ) {
 
-    if ( $posts = wl_core_get_posts( array(
-        'get'               =>  'posts',
-        'post_type'         =>  'post',
-        'related_to'        =>  $object_id, 
-        'as'                =>  'subject',
-        'with_predicate'    =>  $predicate,
+    // Retrieve the post object
+    $post = get_post( $object_id );
+    if ( null === $post ) {
+        return array();
+    }
+
+    if ( "entity" === $post->post_type ) {
+        if ( $posts = wl_core_get_posts( array(
+            'get'               =>  'posts',
+            'post_type'         =>  'post',
+            'related_to'        =>  $object_id, 
+            'as'                =>  'subject',
+            'with_predicate'    =>  $predicate,
         ) ) ) {
-        return $post_ids;
+            return $post_ids;
+        }
+    } else {
+        if ( $posts = wl_core_get_posts( array(
+            'get'               =>  'posts',
+            'post_type'         =>  'post',
+            'related_to__not'    =>  $post->ID, 
+            'related_to__in'    =>  wl_core_get_related_entity_ids( $post->ID ), 
+            'as'                =>  'subject',
+            'with_predicate'    =>  $predicate,
+        ) ) ) {
+            return $post_ids;
+        }
     }
     // If wl_core_get_posts return false then an empty array is returned
     return array();
-
 }
 
 /**
@@ -262,38 +280,33 @@ function wl_core_get_related_posts( $object_id, $predicate = null ) {
 */
 function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
     
-    if ( $post_ids = wl_core_get_posts( array(
-        'get'               =>  'post_ids',
-        'post_type'         =>  'post',
-        'related_to'        =>  $object_id, 
-        'as'                =>  'subject',
-        'with_predicate'    =>  $predicate,
-        ) ) ) {
-        return $post_ids;
+    // Retrieve the post object
+    $post = get_post( $object_id );
+    if ( null === $post ) {
+        return array();
     }
-    wl_write_log("debug Abbiamo un problema");
-    // If wl_core_get_posts return false then an empty array is returned
-    return array();
-}
 
-/**
-* Find all relation instances for a given $subject_id
-* If $predicate is omitted, $predicate filter is not applied 
-*
-* @param int $subject_id The post ID | The entity post ID.
-* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
-*
-* @return (array) Array of relation instance objects.
-*/
-function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
-
-    if ( $relation_instances = wl_core_get_posts( array(
-        'get'               =>  'relations',
-        'related_to'        =>  $subject_id, 
-        'as'                =>  'subject',
-        'with_predicate'    =>  $predicate,
+    if ( "entity" === $post->post_type ) {
+        if ( $post_ids = wl_core_get_posts( array(
+            'get'               =>  'post_ids',
+            'post_type'         =>  'post',
+            'related_to'        =>  $object_id, 
+            'as'                =>  'subject',
+            'with_predicate'    =>  $predicate,
         ) ) ) {
-        return $relation_instances;
+            return $post_ids;
+        }
+    } else {
+        if ( $post_ids = wl_core_get_posts( array(
+            'get'               =>  'post_ids',
+            'post_type'         =>  'post',
+            'related_to__not'    =>  $post->ID, 
+            'related_to__in'    =>  wl_core_get_related_entity_ids( $post->ID ), 
+            'as'                =>  'subject',
+            'with_predicate'    =>  $predicate,
+        ) ) ) {
+            return $post_ids;
+        }
     }
     // If wl_core_get_posts return false then an empty array is returned
     return array();
@@ -310,6 +323,7 @@ function wl_core_get_relation_instances_for( $subject_id, $predicate = null ) {
 *   'get' => 'posts', // posts, post_ids, relations, relation_ids 
 *   'first' => n,
 *   'related_to'      => 10,          // the post/s / entity/ies id / ids
+*   'related_to__in' => array(10,20,30)
 *   'as'   => [ subject | object ],
 *   'with_predicate'   => [ what | where | when | who ], // null as default value
 *   'post_type' => [ post | entity ] 
@@ -326,9 +340,7 @@ function wl_core_sql_query_builder( $args ) {
     global $wpdb;
     // Retrieve Wordlift relation instances table name
     $table_name = wl_core_get_relation_instances_table_name();
-    // Sql Join with posts table is required only if 'get' is 'posts' or 'post_ids'
-    $is_looking_for_posts = ( in_array( $args[ 'get' ], array( 'posts', 'post_ids') ) );
-
+    
     // Sql Action
     $sql = "SELECT ";
     // Determine what has to be returned depending on 'get' argument value
@@ -339,39 +351,38 @@ function wl_core_sql_query_builder( $args ) {
         case 'post_ids':
             $sql .= "p.id";
             break;
-        case 'relations':
-            $sql .= "r.*";
-            break;
-        case 'relation_ids':
-            $sql .= "r.id";
-            break;
     }
 
-    // Sql Inner Join if needed 
-    if ( $is_looking_for_posts ) {
-        // If we look for posts related as objects the JOIN has to be done with the object_id column and viceversa
-        $join_column = $args[ 'as' ] . "_id"; 
+    // If we look for posts related as objects the JOIN has to be done with the object_id column and viceversa
+    $join_column = $args[ 'as' ] . "_id"; 
         
-        $sql .= " FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.$join_column";
-        // Sql add post type filter
-        $sql .= $wpdb->prepare( " AND p.post_type = %s AND", $args[ 'post_type' ] );
+    $sql .= " FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.$join_column";
+    // Sql add post type filter
+    $sql .= $wpdb->prepare( " AND p.post_type = %s AND", $args[ 'post_type' ] );
 
-    } else {
-        $sql .= " FROM $table_name as r WHERE";    
-    }
     
-    // Add filtering condition
+    // Add filtering conditions
     // If we look for posts related as objects this means that 
     // related_to is a reference for a subject: subject_id is the filtering column
     // If we look for posts related as subject this means that 
     // related_to is reference for an object: object_id is the filtering column
     
     // TODO implement also array, not only single integer
-    if ( $is_looking_for_posts ) {  
-        $filtering_column = ( 'object' == $args[ 'as' ] ) ? "subject_id" : "object_id";
+        
+    $filtering_column = ( 'object' == $args[ 'as' ] ) ? "subject_id" : "object_id";
+        
+    if( isset( $args[ 'related_to' ] ) ) {
         $sql .= $wpdb->prepare( " r.$filtering_column = %d", $args[ 'related_to' ] );
-    } else {
-        $sql .= $wpdb->prepare( " r." . $args[ 'as' ] . "_id = %d", $args[ 'related_to' ] );
+    }
+    if( isset( $args[ 'related_to' ] ) && isset($args[ 'related_to__in' ] ) ) {
+        $sql .= " AND";
+    }
+    if( isset($args[ 'related_to__in' ] ) ) {
+        $sql .= " r.$filtering_column IN (" . implode(",", $args[ 'related_to__in' ] ) . ")";
+    }
+
+    if( isset( $args[ 'related_to__not' ] ) ) {
+        $sql .= $wpdb->prepare( " AND r." . $args[ 'as' ] . "_id != %d", $args[ 'related_to__not' ] );
     }
 
     // Add predicate filter if required
@@ -380,9 +391,8 @@ function wl_core_sql_query_builder( $args ) {
         $sql .= $wpdb->prepare( " AND r.predicate = %s", $args[ 'with_predicate' ] );
     }
     // Add a group by clousole to avoid duplicated rows
-    if ( $is_looking_for_posts ) {
-        $sql .= " GROUP BY p.id";
-    }
+    $sql .= " GROUP BY p.id";
+    
     if ( isset( $args[ 'first' ] ) && is_numeric( $args[ 'first' ] ) ) {
         // Sql Inner Join clausole 
         $sql .= $wpdb->prepare( " LIMIT %d", $args[ 'first'] );
@@ -415,8 +425,24 @@ function wl_core_get_posts( $args ) {
     ), $args);
 
     // Arguments validation rules
-    if ( !isset( $args[ 'related_to' ] ) || !is_numeric( $args['related_to'] ) ) {
+    // At least one between related_to and related_to__in has to be set
+    if ( !isset( $args[ 'related_to' ] ) && !isset( $args[ 'related_to__in' ] ) ) {
         return false;
+    }
+    if ( isset( $args[ 'related_to' ] ) && !is_numeric( $args[ 'related_to' ] ) ) {
+        return false;
+    }
+    // Check related_to__not
+    if ( isset( $args[ 'related_to__not' ] ) && !is_numeric( $args[ 'related_to__not' ] ) ) {
+        return false;
+    }
+    // Check related_to__in if present and validate it
+    if ( isset( $args[ 'related_to__in' ] ) ) {
+        if ( !is_array( $args[ 'related_to__in' ] ) || 0 == count( array_filter( $args[ 'related_to__in' ], "is_numeric" ) ) ) {
+            return false;
+        }
+        // Sanitize related_to__in  value removing non numeric values from the array
+        $args[ 'related_to__in' ] = array_filter( $args[ 'related_to__in' ], "is_numeric" );
     }
     if ( !in_array( $args[ 'get' ], array( 'posts', 'post_ids', 'relations', 'relation_ids' ) ) )  {
         return false;
