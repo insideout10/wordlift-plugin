@@ -181,6 +181,7 @@ function wl_core_delete_relation_instances( $subject_id ) {
 /**
 * Find all entities related to a given $subject_id
 * If $predicate is omitted, $predicate filter is not applied 
+* @uses wl_core_inner_get_related_entities to perform the action
 *
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
@@ -188,39 +189,60 @@ function wl_core_delete_relation_instances( $subject_id ) {
 * @return (array) Array of post entity objects.
 */
 function wl_core_get_related_entities( $subject_id, $predicate = null ) {
-
-    if ( $posts = wl_core_get_posts( array(
-        'get'               =>  'posts',
-        'post_type'         =>  'entity',
-        'related_to'        =>  $subject_id, 
-        'as'                =>  'object',
-        'with_predicate'    =>  $predicate,
-        ) ) ) {
-        return $post_ids;
-    }
-    // If wl_core_get_posts return false then an empty array is returned
-    return array();
+    return wl_core_inner_get_related_entities( "posts", $subject_id, $predicate );
 }
 
 /**
 * Find all entity ids related to a given $subject_id
 * If $predicate is omitted, $predicate filter is not applied 
+* @uses wl_core_inner_get_related_entities to perform the action
+*
+* @param int $subject_id The post ID | The entity post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of post entity objects.
+*/
+function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
+    return wl_core_inner_get_related_entities( "post_ids", $subject_id, $predicate );
+}
+
+/**
+* Find all entity ids related to a given $subject_id
+* If $predicate is omitted, $predicate filter is not applied
+* Not use it directly. Use wl_core_get_related_entities or wl_core_get_related_entity_ids instead.
 *
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
 * @return (array) Array of ids.
 */
-function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
+function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null ) {
     
-    if ( $post_ids = wl_core_get_posts( array(
-        'get'               =>  'post_ids',
-        'post_type'         =>  'entity',
-        'related_to'        =>  $subject_id, 
-        'as'                =>  'object',
-        'with_predicate'    =>  $predicate,
-        ) ) ) {
-        return $post_ids;
+    // Retrieve the post object
+    $post = get_post( $item_id );
+    if ( null === $post ) {
+        return array();
+    }
+    if ( "entity" === $post->post_type ) {
+        if ( $results = wl_core_get_posts( array(
+            'get'               =>  $get,
+            'post_type'         =>  'entity',
+            'related_to'        =>  $item_id, 
+            'as'                =>  'subject',
+            'with_predicate'    =>  $predicate,
+            ) ) ) {
+                return $results;
+        }
+    } else {
+        if ( $results = wl_core_get_posts( array(
+            'get'               =>  $get,
+            'post_type'         =>  'entity',
+            'related_to'        =>  $item_id, 
+            'as'                =>  'object',
+            'with_predicate'    =>  $predicate,
+            ) ) ) {
+                return $results;
+        }
     }
     // If wl_core_get_posts return false then an empty array is returned
     return array();
@@ -229,6 +251,7 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 /**
 * Find all posts related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
+* @uses wl_core_get_related_posts to perform the action 
 *
 * @param int $object_id The entity ID or the post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
@@ -236,76 +259,60 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 * @return (array) Array of objects.
 */
 function wl_core_get_related_posts( $object_id, $predicate = null ) {
-
-    // Retrieve the post object
-    $post = get_post( $object_id );
-    if ( null === $post ) {
-        return array();
-    }
-
-    if ( "entity" === $post->post_type ) {
-        if ( $posts = wl_core_get_posts( array(
-            'get'               =>  'posts',
-            'post_type'         =>  'post',
-            'related_to'        =>  $object_id, 
-            'as'                =>  'subject',
-            'with_predicate'    =>  $predicate,
-        ) ) ) {
-            return $post_ids;
-        }
-    } else {
-        if ( $posts = wl_core_get_posts( array(
-            'get'               =>  'posts',
-            'post_type'         =>  'post',
-            'related_to__not'    =>  $post->ID, 
-            'related_to__in'    =>  wl_core_get_related_entity_ids( $post->ID ), 
-            'as'                =>  'subject',
-            'with_predicate'    =>  $predicate,
-        ) ) ) {
-            return $post_ids;
-        }
-    }
-    // If wl_core_get_posts return false then an empty array is returned
-    return array();
+    return wl_core_inner_get_related_posts( "posts", $object_id, $predicate );
 }
-
 /**
 * Find all post ids related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
+* @uses wl_core_get_related_posts to perform the action 
 *
-* @param int $object_id The entity ID.
+* @param int $object_id The entity ID or the post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
 *
-* @return (array) Array of post ids.
+* @return (array) Array of objects.
 */
 function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
-    
+    return wl_core_inner_get_related_posts( "post_ids", $object_id, $predicate );
+}
+
+/**
+* Find all posts related to a given $object_id
+* If $predicate is omitted, $predicate filter is not applied 
+* Not use it directly. Use wl_core_get_related_posts or wl_core_get_related_posts_ids instead.
+*
+* @param int $object_id The entity ID or the post ID.
+* @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
+*
+* @return (array) Array of objects.
+*/
+function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null ) {
+
     // Retrieve the post object
-    $post = get_post( $object_id );
+    $post = get_post( $item_id );
     if ( null === $post ) {
         return array();
     }
 
     if ( "entity" === $post->post_type ) {
-        if ( $post_ids = wl_core_get_posts( array(
-            'get'               =>  'post_ids',
+        if ( $results = wl_core_get_posts( array(
+            'get'               =>  $get,
             'post_type'         =>  'post',
-            'related_to'        =>  $object_id, 
+            'related_to'        =>  $item_id, 
             'as'                =>  'subject',
             'with_predicate'    =>  $predicate,
         ) ) ) {
-            return $post_ids;
+            return $results;
         }
     } else {
-        if ( $post_ids = wl_core_get_posts( array(
-            'get'               =>  'post_ids',
+        if ( $results = wl_core_get_posts( array(
+            'get'               =>  $get,
             'post_type'         =>  'post',
-            'related_to__not'    =>  $post->ID, 
+            'related_to__not'   =>  $item_id, 
             'related_to__in'    =>  wl_core_get_related_entity_ids( $post->ID ), 
             'as'                =>  'subject',
             'with_predicate'    =>  $predicate,
         ) ) ) {
-            return $post_ids;
+            return $results;
         }
     }
     // If wl_core_get_posts return false then an empty array is returned
@@ -323,6 +330,7 @@ function wl_core_get_related_post_ids( $object_id, $predicate = null ) {
 *   'get' => 'posts', // posts, post_ids, relations, relation_ids 
 *   'first' => n,
 *   'related_to'      => 10,          // the post/s / entity/ies id / ids
+*   'related_to__not'      => 10,          // the post/s / entity/ies id / ids
 *   'related_to__in' => array(10,20,30)
 *   'as'   => [ subject | object ],
 *   'with_predicate'   => [ what | where | when | who ], // null as default value
@@ -414,7 +422,7 @@ function wl_core_sql_query_builder( $args ) {
 *
 * @return (array) List of WP_Post objects or list of WP_Post ids. False in case of error or invalid params
 */
-function wl_core_get_posts( $args ) {
+function wl_core_get_posts( $args, $returned_type = ARRAY_A ) {
 
     // Merge given args with defaults args value
     $args = array_merge( array(
@@ -471,7 +479,7 @@ function wl_core_get_posts( $args ) {
         # See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
         $results = $wpdb->get_col( $sql_statement );
     } else {
-        $results = $wpdb->get_results( $sql_statement, ARRAY_A );
+        $results = $wpdb->get_results( $sql_statement, $returned_type );
     }
     // If there were an error performing the query then false is returned
     if ( !empty( $wpdb->last_error ) ) {
