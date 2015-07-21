@@ -24,28 +24,18 @@ function wordlift_ajax_related_posts() {
     
     if ( !empty( $filtering_entity_ids ) ) {
     
-        // TODO - Exclude the corrent post from $related_posts
-        // Implement this WITH new methods
-        $query = new WP_Query();
-        $related_posts = $query->query(
-            array(
-                'post_type' => 'post',
-                'post__not_in' => array( $post_id ),
-                'posts_per_page' =>-1,
-                'meta_query' => array(
-                    array(
-                        'key' => 'TODO',
-                        'value' => $filtering_entity_ids,
-                        'compare' => 'IN'
-                    )
-                )
-            )
-        );
+        $related_posts = wl_core_get_posts( array(
+            'get'             =>    'posts',  
+            'related_to__in'  =>    $filtering_entity_ids,
+            'related_to__not' =>    $post_id,
+            'post_type'       =>    'post', 
+            'as'              =>    'object',
+        ) );
         
         foreach ( $related_posts as $post_obj ) {
                 
-            $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
-            $post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;    
+            $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj[ 'ID' ], 'thumbnail' ) );
+            $post_obj[ 'thumbnail' ] = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;    
         }
     }
 

@@ -49,7 +49,6 @@ function wl_shortcode_faceted_search_ajax()
     // Extract filtering conditions
     $request_body = file_get_contents('php://input');
     $filtering_entity_uris = json_decode( $request_body );    
-
     // Set up data structures
     $referencing_post_ids  = wl_core_get_related_post_ids( $entity_id );
     $result = array();
@@ -63,49 +62,35 @@ function wl_shortcode_faceted_search_ajax()
 
         if ( empty( $filtering_entity_uris ) ) {
             // No filter, just get referencing posts
-            foreach ( $referencing_post_ids as $referencing_post_id ) {
-                
-                $post_obj = get_post( $referencing_post_id );
-                
-                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );
-                $post_obj->thumbnail = ( $thumbnail ) ? 
+            foreach ( $referencing_post_ids as $post_obj_id ) {
+                $post_obj = get_post( $post_obj_id );                
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj[ 'ID' ], 'thumbnail' ) );
+                $post_obj[ 'thumbnail' ] = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
                 $result[] = $post_obj;
             }
         } else {
 
-            // Add the current post as default condition
-            array_push( $filtering_entity_uris, wl_get_entity_uri( $entity_id ) );
-            // Search posts that reference all the filtering entities.
-            
-            $meta_query = array( 'relation' => 'AND' );
-               
-            foreach( $filtering_entity_uris as $uri) {
-                
-                $id = wl_get_entity_post_by_uri( $uri );
-                $id = $id->ID;
-                
-                $meta_query[] = array(
-                    'key' => 'TODO',
-                    'value' => $id,
-                    'compare' => '=='
-                );
-            }
+            $filtering_entity_ids = array();
 
-            $query = new WP_Query();
-            $filtered_posts = $query->query(
-                array(
-                    'post_type' => 'post',
-                    'posts_per_page' =>-1,
-                    'meta_query' => $meta_query
-                )
-            );
+            foreach ( $filtering_entity_uris as $entity_uri ) {
+                $entity = wl_get_entity_post_by_uri( $entity_uri );
+                array_push( $filtering_entity_ids, $entity->ID );
+            }
+            // Search posts that reference all the filtering entities.               
+            $related_posts = wl_core_get_posts( array(
+                'get'             =>    'posts',  
+                'related_to__in'  =>    $filtering_entity_ids,
+                'related_to'      =>    $entity_id,
+                'post_type'       =>    'post', 
+                'as'              =>    'object',
+            ) );
             
             foreach ( $filtered_posts as $post_obj ) {
                 
-                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
-                $post_obj->thumbnail = ( $thumbnail ) ? 
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj[ 'ID' ], 'thumbnail' ) );
+                $post_obj[ 'thumbnail' ] = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
                 $result[] = $post_obj;
@@ -119,18 +104,19 @@ function wl_shortcode_faceted_search_ajax()
 
         wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ]" );
 
-        $meta_key_name = 'wordlift_related_entities';
+        // Retrieve Wordlift relation instances table name
+        $table_name = wl_core_get_relation_instances_table_name();
+    
         $ids = implode(',', $referencing_post_ids);
 
         $query = <<<EOF
-            SELECT meta_value as ID, count(meta_value) as counter FROM $wpdb->postmeta 
-                where meta_key = %s 
-                and post_id IN ($ids) 
-                group by meta_value;
+            SELECT object_id as ID, count( object_id ) as counter 
+            FROM $table_name 
+            WHERE subject_id = IN ($ids) 
+            GROUP BY object_id;
 EOF;
         wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ] [ query :: $query ]" );        
 
-        $query = $wpdb->prepare( $query, $meta_key_name );
         $entities = $wpdb->get_results( $query, OBJECT );
 
         wl_write_log( "Entities found " . count( $entities ) );        

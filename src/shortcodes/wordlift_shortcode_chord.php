@@ -14,8 +14,9 @@ function wl_shortcode_chord_most_referenced_entity_id()
     $post_ids = get_posts( array(
         'numberposts' => 20,
         'fields'      => 'ids', //only get post IDs
+        'post_status' => 'published',
         'orderby'     => 'post_date',
-        'order'       => 'DESC'
+        'order'       => 'DESC',
     ) );
 	
     if( empty( $post_ids ) ){
@@ -42,12 +43,12 @@ function wl_shortcode_chord_most_referenced_entity_id()
  *
  * @uses wl_core_get_related_post_ids to get the list of post ids that reference an entity.
  *
- * @param int $post_id The entity post ID.
+ * @param int $entity_id The entity post ID.
  * @param int $depth Max number of entities in output.
  * @param array $related An existing array of related entities.
  * @return array
  */
-function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null ) {
+function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
 	
     // TODO Check Data Selection
 	// Search for more entities only if we did not exceed $depth or $max_size
@@ -62,18 +63,18 @@ function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null
 	// Create a related array which will hold entities and relations.
     if ( is_null( $related ) ) {
         $related = array(
-            'entities'  => array( $post_id ),
+            'entities'  => array( $entity_id ),
             'relations' => array()
         );
     }
 
     // Get the post IDs that reference this entity.
-    $related_ids = wl_core_get_related_post_ids( $post_id );
+    $related_ids = wl_core_get_related_post_ids( $entity_id );
     
-    // Get the post IDs referenced  or related by this entity/post.
-    // Here all relations are needed CHECK
-    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $post_id ) );
-    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $post_id ) );
+    // Get the post IDs referenced  or related by this entity/post. CHECK
+    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $entity_id ) );
+    $related_ids = array_merge( $related_ids, wl_core_get_related_post_ids( $entity_id ) );
+
     $related_ids = array_unique( $related_ids );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.
