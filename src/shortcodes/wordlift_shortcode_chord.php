@@ -58,7 +58,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
         	return $related;
     }
 
-    wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
+    wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
 
 	// Create a related array which will hold entities and relations.
     if ( is_null( $related ) ) {
@@ -86,7 +86,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
         // TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_relations_to_json*
         // method is going anyway to *refactor* the data structure. So here the structure may be optimized in terms
         // of readability and performance.
-        $related['relations'][] = array( $post_id, $related_id );
+        $related['relations'][] = array( $entity_id, $related_id );
 
         if ( !in_array( $related_id, $related['entities'] ) ) {
             //Found new related entity!
