@@ -50,17 +50,17 @@ function wl_shortcode_chord_most_referenced_entity_id()
  */
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
 	
-    // TODO Check Data Selection
-	// Search for more entities only if we did not exceed $depth or $max_size
-	$max_size = 50;
-	if( ! is_null($related) )
-		if( count($related['entities']) > $max_size || $depth <= 0 ) {
-        	return $related;
+    // Search for more entities only if we did not exceed $depth or $max_size
+    $max_size = 50;
+    if( ! is_null($related) ) {
+            if( count($related['entities']) > $max_size || $depth <= 0 ) {
+            return $related;
+        }
     }
 
     wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
 
-	// Create a related array which will hold entities and relations.
+    // Create a related array which will hold entities and relations.
     if ( is_null( $related ) ) {
         $related = array(
             'entities'  => array( $entity_id ),
@@ -71,7 +71,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
     // Get the post IDs that reference this entity.
     $related_ids = wl_core_get_related_post_ids( $entity_id );
     
-    // Get the post IDs referenced  or related by this entity/post. CHECK
+    // Get the post IDs referenced  or related by this entity/post.
     $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $entity_id ) );
     $related_ids = array_merge( $related_ids, wl_core_get_related_post_ids( $entity_id ) );
 
