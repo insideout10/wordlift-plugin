@@ -19,13 +19,15 @@ global $wpdb;
 $args = array(
 	'posts_per_page'   => -1,
 	'post_type'        => WL_ENTITY_TYPE_NAME,
-        'fields' => 'ids'
+        'post_status'      => 'any',
+        'fields'           => 'ids'
 );
 $entities_array = get_posts( $args );
 
 // Loop over entities and delete them.
 // TODO: thumbnails?
 wl_write_log('Deleting entities and their meta... ');
+wl_write_log( $entities_array );
 foreach( $entities_array as $entity_id ) {    
     // Delete the whole entity and its metas.
     wp_delete_post( $entity_id, true);
@@ -36,7 +38,7 @@ wl_write_log('Done.');
  * Delete post-entity relationships
  */
 wl_write_log('Deleting post-entity relationships... ');
-$sql = 'DROP TABLE IF_EXISTS ' . wl_core_get_relation_instances_table_name() . ';';
+$sql = 'DROP TABLE IF EXISTS ' . wl_core_get_relation_instances_table_name() . ';';
 $wpdb->query( $sql );
 delete_option( 'wl_db_version' );
 wl_write_log('Done.');
@@ -48,7 +50,7 @@ wl_write_log( 'Cleaning entities taxonomy... ');
 // Delte custom taxonomy terms.
 // We loop over terms in this rude way because in the uninstall script
 // is not possible to call WP custom taxonomy functions.
-foreach ( range(0, 20) as $index ) {
+foreach ( range(0, 100) as $index ) {
     delete_option( WL_ENTITY_TYPE_TAXONOMY_NAME . '_' . $index );
     wp_delete_term( $index, WL_ENTITY_TYPE_TAXONOMY_NAME );
 }
