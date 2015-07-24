@@ -23,63 +23,22 @@ $args = array(
 );
 $entities_array = get_posts( $args );
 
-// We will keep track of ordinary posts that reference entities.
-$referencing_posts_ids = array();
-
-$referenced_metas = array();
-
-// Loop over entities and delete their meta.
+// Loop over entities and delete them.
 // TODO: thumbnails?
 echo 'Deleting entities and their meta... ';
-foreach( $entities_array as $entity_id ) {
-    
-    // Get metas defined for this entity
-    $entity_metas = array_keys( get_post_meta( $entity_id ) );
-    
-    // Loop over metas.
-    foreach( $entity_metas as $meta_name ) {
-        
-        // Keep track of referencing posts.
-        if( in_array( $meta_name, $referenced_metas ) ) {
-            $involved_posts = get_post_meta( $entity_id, $meta_name );
-            if( is_array( $involved_posts ) && !empty( $involved_posts ) ){
-                $referencing_posts_ids = array_merge( $referencing_posts_ids, $involved_posts );
-            }
-        }
-        
-        // Actually delete the meta.
-        delete_post_meta( $entity_id, $meta_name );
-    }
-    
-    // Delete the whole entity.
+foreach( $entities_array as $entity_id ) {    
+    // Delete the whole entity and its metas.
     wp_delete_post( $entity_id, true);
 }
 echo 'Done.</br>';
 
-$referencing_posts_ids = array_unique( $referencing_posts_ids );
-//var_dump($referencing_posts_ids);
-
 /*
- * Delete ordinary posts' meta related to entities.
- * Clean also their content from annotations.
+ * Delete post-entity relationships
  */
-echo 'Cleaning ordinary posts from entities metadata... ';
-foreach( $referencing_posts_ids as $post_id ) {
-    
-    // TODO: clean post content... this is the major performance point.
-    /*
-    $post = get_post( $post_id );
-    var_dump( $post->post_content );
-    wp_update_post( array(
-        'ID' => $post_id,
-        'post_content' => 'A_' . $post->post_content    // call here the cleaning function
-    ));
-    
-    
-    $post = get_post( $post_id );
-    var_dump( $post->post_content );
-     */
-}
+echo 'Deleting post-entity relationships... ';
+$sql = 'DROP TABLE IF_EXISTS ' . wl_core_get_relation_instances_table_name() . ';';
+$wpdb->query( $sql );
+delete_option( 'wl_db_version' );
 echo 'Done.</br>';
 
 /*
@@ -100,6 +59,7 @@ echo 'Done.</br>';
  * Delete options
  */
 echo 'Cleaning WordLift options... ';
+delete_option( WL_OPTIONS_NAME );
 delete_option( 'wl_option_prefixes' );
 delete_option( 'wl_general_settings' );
 delete_option( 'wl_advanced_settings' );
