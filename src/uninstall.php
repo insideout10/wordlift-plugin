@@ -19,7 +19,7 @@ global $wpdb;
 $args = array(
 	'posts_per_page'   => -1,
 	'post_type'        => WL_ENTITY_TYPE_NAME,
-        'post_status'      => 'any',
+        'post_status'      => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
         'fields'           => 'ids'
 );
 $entities_array = get_posts( $args );
