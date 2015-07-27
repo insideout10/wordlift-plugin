@@ -396,7 +396,3 @@ function wordlift_reindex_triple_store() {
 
 	return true;
 }
-
-// hook save events.
-// moved to the Linked Data module: add_action('save_post', 'wordlift_save_post');
-// moved to the Linked Data module: add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');

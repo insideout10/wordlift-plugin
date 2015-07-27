@@ -599,7 +599,7 @@ function wl_entity_metabox_save( $post_id ) {
 	wl_push_to_redlink( $post_id );
 }
 
-add_action( 'wordlift_save_post', 'wl_entity_metabox_save' );
+add_action( 'wl_linked_data_save_post', 'wl_entity_metabox_save' );
 
 
 function wl_echo_nonce( $meta_name ) {

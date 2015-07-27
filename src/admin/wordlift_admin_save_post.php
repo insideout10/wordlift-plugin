@@ -128,7 +128,7 @@ function wl_update_post_status( $post_id, $status ) {
 	/** This action is documented in wp-includes/post.php */
 	do_action( "save_post_{$post->post_type}", $post->ID, $post, true );
 	/** This action is documented in wp-includes/post.php */
-	do_action( 'wordlift_save_post', $post->ID );
+	do_action( 'wl_linked_data_save_post', $post->ID );
 	/** This action is documented in wp-includes/post.php */
 	do_action( 'wp_insert_post', $post->ID, $post, true );
 }
