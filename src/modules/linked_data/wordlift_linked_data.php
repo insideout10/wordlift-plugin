@@ -36,11 +36,6 @@ function wl_linked_data_save_post( $post_id ) {
 
 add_action( 'save_post', 'wl_linked_data_save_post' );
 
-// TODO: remove this function.
-function wordlift_save_post_and_related_entities( $post_id ) {
-	wl_linked_data_save_post_and_related_entities( $post_id );
-}
-
 /**
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
  *
@@ -58,7 +53,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// get the current post.
 	$post = get_post( $post_id );
 
-	remove_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
+	remove_action( 'wordlift_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 	wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
     
@@ -155,10 +150,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Push the post to Redlink.
 	wl_push_to_redlink( $post->ID );
 
-	add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
+	add_action( 'wordlift_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
 
-add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
+add_action( 'wordlift_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 /**
  * Adds default schema type "Thing" as soon as an entity is created.
