@@ -175,7 +175,6 @@ function wl_core_delete_relation_instances( $subject_id ) {
     );
 
     return true;
-
 }
 
 /**
@@ -209,7 +208,7 @@ function wl_core_get_related_entity_ids( $subject_id, $predicate = null ) {
 /**
 * Find all entity ids related to a given $subject_id
 * If $predicate is omitted, $predicate filter is not applied
-* Not use it directly. Use wl_core_get_related_entities or wl_core_get_related_entity_ids instead.
+* Do not use it directly. Use wl_core_get_related_entities or wl_core_get_related_entity_ids instead.
 *
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: null | 'what' | 'where' | 'when' | 'who'
