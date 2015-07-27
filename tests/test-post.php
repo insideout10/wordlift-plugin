@@ -219,7 +219,7 @@ class PostTest extends WP_UnitTestCase {
 
         // TODO: synchronize data.
         // NOTICE: this requires a published post!
-        wl_push_to_redlink($post_id);
+        wl_linked_data_push_to_redlink($post_id);
 
         // Check that the entities are created in WordPress.
         $this->assertCount(count($entities), $entity_posts);
