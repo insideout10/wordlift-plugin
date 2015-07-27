@@ -596,7 +596,7 @@ function wl_entity_metabox_save( $post_id ) {
 		}
 	}
 	// Push changes on RedLink
-	wl_push_to_redlink( $post_id );
+	wl_linked_data_push_to_redlink( $post_id );
 }
 
 add_action( 'wl_linked_data_save_post', 'wl_entity_metabox_save' );

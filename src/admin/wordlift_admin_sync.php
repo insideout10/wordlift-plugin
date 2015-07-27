@@ -18,7 +18,7 @@ function wl_admin_sync_to_redlink() {
 
 	foreach ( $posts as $post ) {
 		echo esc_html( $post->post_title ) . '<br/>';
-		wl_push_to_redlink( $post->ID );
+		wl_linked_data_push_to_redlink( $post->ID );
 	}
 
 	// Schedule the execution of SPARQL.

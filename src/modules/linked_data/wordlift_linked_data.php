@@ -139,11 +139,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         	wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
         }
 		
-		wl_push_to_redlink( $referenced_entity_id );
+		wl_linked_data_push_to_redlink( $referenced_entity_id );
     }
         
 	// Push the post to Redlink.
-	wl_push_to_redlink( $post->ID );
+	wl_linked_data_push_to_redlink( $post->ID );
 
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
@@ -338,7 +338,7 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
         
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.
-	wl_push_to_redlink( $post_id );
+	wl_linked_data_push_to_redlink( $post_id );
 
 	// finally return the entity post.
 	return get_post( $post_id );
@@ -473,12 +473,6 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	return $entities;
 }
 
-
-// TODO: remove this function.
-function wl_push_to_redlink( $post_id ) {
-	wl_linked_data_push_to_redlink( $post_id );
-}
-
 /**
  * Push the post with the specified ID to Redlink.
  *
@@ -491,7 +485,7 @@ function wl_linked_data_push_to_redlink( $post_id ) {
 	// Get the post.
 	$post = get_post( $post_id );
 
-	wl_write_log( "wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
+	wl_write_log( "wl_linked_data_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
 
 	// Call the method on behalf of the post type.
 	switch ( $post->post_type ) {
