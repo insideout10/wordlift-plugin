@@ -35,26 +35,31 @@ class ChordShortcodeTest extends WP_UnitTestCase
         ) ) ) );
 		
 		
-		// Creating 2 fake entities 
-		$entities = array();
-		
-        $uri         = 'http://example.org/entity1';
-        $label       = 'Entity1';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array();
-        $same_as     = array();
-        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, $same_as );
-		$entities[] = $ent->ID;
+        // Creating 2 fake entities 
+        $entities = array();
+        $ent = wl_save_entity( array(
+            'uri'               => 'http://example.org/entity1',
+            'label'             => 'Entity1',
+            'main_type_uri'     => 'http://schema.org/Thing',
+            'description'       => 'An example entity.',
+            'type_uris'         => array(),
+            'related_post_id'   => null,
+            'images'            => array(),
+            'same_as'           => array()
+        ));
+	$entities[] = $ent->ID;
         
-        $uri         = 'http://example.org/entity2';
-        $label       = 'Entity2';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array();
-        $same_as     = array();
-		$ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
-		$entities[] = $ent->ID;
+        $ent = wl_save_entity( array(
+            'uri'               => 'http://example.org/entity2',
+            'label'             => 'Entity2',
+            'main_type_uri'     => 'http://schema.org/Thing',
+            'description'       => 'An example entity.',
+            'type_uris'         => array(),
+            'related_post_id'   => null,
+            'images'            => array(),
+            'same_as'           => array()
+        ));
+	$entities[] = $ent->ID;
                 
         
         // Creating a fake post
@@ -69,7 +74,7 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		
 		// Creating another fake post and entity (the most connected one)
 		
-		// Creating a fake post
+	// Creating a fake post
         $content = 'This is another fake post. Ohhh yeah';
         $slug = 'yeah';
         $title = 'Yeah';
@@ -77,17 +82,21 @@ class ChordShortcodeTest extends WP_UnitTestCase
 		$type = 'post';
 		$new_post = wl_create_post( $content, $slug, $title, $status, $type);
 		
-		$uri         = 'http://example.org/entity3';
-        $label       = 'Entity3';
-        $type        = 'http://schema.org/Thing';
-        $description = 'Another example entity only related to an entity.';
-        $images      = array();
-        $same_as     = array();
-        $ent = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
-		self::$MOST_CONNECTED_ENTITY_ID = $ent->ID;
-		
-		wl_core_add_relation_instance( $new_post, WL_WHAT_RELATION, self::$MOST_CONNECTED_ENTITY_ID );
-		wl_core_add_relation_instance( self::$FIRST_POST_ID, WL_WHAT_RELATION, self::$MOST_CONNECTED_ENTITY_ID );
+        $ent = wl_save_entity( array(
+            'uri'               => 'http://example.org/entity3',
+            'label'             => 'Entity3',
+            'main_type_uri'     => 'http://schema.org/Thing',
+            'description'       => 'Another example entity only related to an entity.',
+            'type_uris'         => array(),
+            'related_post_id'   => null,
+            'images'            => array(),
+            'same_as'           => array()
+        ));    
+           
+        self::$MOST_CONNECTED_ENTITY_ID = $ent->ID;
+
+        wl_core_add_relation_instance( $new_post, WL_WHAT_RELATION, self::$MOST_CONNECTED_ENTITY_ID );
+        wl_core_add_relation_instance( self::$FIRST_POST_ID, WL_WHAT_RELATION, self::$MOST_CONNECTED_ENTITY_ID );
     }
 
     function testChordShortcodeOutput() {
