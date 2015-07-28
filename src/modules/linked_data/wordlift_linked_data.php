@@ -70,14 +70,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
             // Save each entity and store the post id.
             foreach ( $entities_via_post as $index => $entity ) {
 
-                    if ( preg_match( '/^local-entity-.+/', $entity['uri'] ) > 0 ) {
+                    //if ( preg_match( '/^local-entity-.+/', $entity['uri'] ) > 0 ) {
                             // Build the proper uri 
                             $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
                             // Populate the mapping
                             $entities_uri_mapping[ $entity['uri'] ] = $uri;
                             // Override the entity obj
                             $entities_via_post[ $index ]['uri'] = $uri;
-                    }
+                    //}
             }
 
             // Populate the $entities_predicates_mapping
