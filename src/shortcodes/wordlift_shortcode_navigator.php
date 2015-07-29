@@ -133,7 +133,7 @@ function wordlift_shortcode_navigator() {
             // Launch navigator
             $("#wl-navigator-widget").slick({
                 dots: false,
-                arrows: false, 
+                arrows: true, 
                 infinite: true,
                 slidesToShow: ' . $num_cards_on_front . ',
                 slidesToScroll: 1
