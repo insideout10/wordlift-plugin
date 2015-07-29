@@ -31,7 +31,7 @@ add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
  * Ajax call for the faceted search widget
  */
 function wl_shortcode_faceted_search_ajax()
-{
+{    
     // Entity ID must be defined
     if( ! isset( $_GET['entity_id'] ) ) {
         echo 'No entity_id given';
@@ -48,7 +48,12 @@ function wl_shortcode_faceted_search_ajax()
     
     // Extract filtering conditions
     $request_body = file_get_contents('php://input');
-    $filtering_entity_uris = json_decode( $request_body );    
+    $filtering_entity_uris = json_decode( $request_body );
+    
+    wl_write_log('piedo faceted GET');
+    wl_write_log($_GET);
+    wl_write_log($filtering_entity_uris);
+    
     // Set up data structures
     $referencing_post_ids  = wl_core_get_related_post_ids( $entity_id );
     $result = array();
@@ -64,22 +69,22 @@ function wl_shortcode_faceted_search_ajax()
             // No filter, just get referencing posts
             foreach ( $referencing_post_ids as $post_obj_id ) {
                 $post_obj = get_post( $post_obj_id );                
-                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj[ 'ID' ], 'thumbnail' ) );
-                $post_obj[ 'thumbnail' ] = ( $thumbnail ) ? 
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+                $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
                 $result[] = $post_obj;
             }
         } else {
 
-            $filtering_entity_ids = array();
+            $filtering_entity_ids = array( $entity_id );  // the current entity is included in the filter
 
             foreach ( $filtering_entity_uris as $entity_uri ) {
                 $entity = wl_get_entity_post_by_uri( $entity_uri );
                 array_push( $filtering_entity_ids, $entity->ID );
             }
             // Search posts that reference all the filtering entities.               
-            $related_posts = wl_core_get_posts( array(
+            $filtered_posts = wl_core_get_posts( array(
                 'get'             =>    'posts',  
                 'related_to__in'  =>    $filtering_entity_ids,
                 'related_to'      =>    $entity_id,
@@ -89,8 +94,8 @@ function wl_shortcode_faceted_search_ajax()
             
             foreach ( $filtered_posts as $post_obj ) {
                 
-                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj[ 'ID' ], 'thumbnail' ) );
-                $post_obj[ 'thumbnail' ] = ( $thumbnail ) ? 
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj['ID'], 'thumbnail' ) );
+                $post_obj['thumbnail'] = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
                 $result[] = $post_obj;
@@ -112,7 +117,7 @@ function wl_shortcode_faceted_search_ajax()
         $query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
             FROM $table_name 
-            WHERE subject_id = IN ($ids) 
+            WHERE subject_id IN ($ids) 
             GROUP BY object_id;
 EOF;
         wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ] [ query :: $query ]" );        
@@ -131,6 +136,9 @@ EOF;
         }
 
     }
+    
+    wl_write_log('piedo faceted result');
+    wl_write_log($result);
     
     // Output JSON and exit
     echo json_encode( $result );
