@@ -13,6 +13,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
     // For each post get the entities they reference.
     $post_ids = get_posts( array(
         'numberposts' => 20,
+        'post_type'   => 'post',
         'fields'      => 'ids', //only get post IDs
         'post_status' => 'published',
         'orderby'     => 'post_date',
