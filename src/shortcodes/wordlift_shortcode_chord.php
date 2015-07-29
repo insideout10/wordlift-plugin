@@ -52,7 +52,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
 	
     // Search for more entities only if we did not exceed $depth or $max_size
-    $max_size = 50;
+    $max_size = 30;
     if( ! is_null($related) ) {
             if( count($related['entities']) > $max_size || $depth <= 0 ) {
             return $related;
@@ -72,9 +72,8 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
     // Get the post IDs that reference this entity.
     $related_ids = wl_core_get_related_post_ids( $entity_id );
     
-    // Get the post IDs referenced  or related by this entity/post.
+    // Get the entities referenced by this entity.
     $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $entity_id ) );
-    $related_ids = array_merge( $related_ids, wl_core_get_related_post_ids( $entity_id ) );
 
     $related_ids = array_unique( $related_ids );
 	

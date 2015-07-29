@@ -30,7 +30,8 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
     }
     */
 
-    // get the related entities, and for each one retrieve the most recent post regarding it.
+    // get the related entities
+    // TODO: ordered by WHO-WHAT-WHERE-WHEN (as established the 29/7/2015 12:45 in the grottino)
     $related_entities = wl_core_get_related_entity_ids( $post_id );
     
     wl_write_log("Entities related to post $post_id");
@@ -42,13 +43,13 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
        
         // take the id of posts referencing the entity
         $referencing_posts_ids = wl_core_get_related_post_ids( $rel_entity );
+        wl_write_log($referencing_posts_ids);
         
         // loop over them and take the first one which is not already in the $related_posts
         foreach ( $referencing_posts_ids as $referencing_post_id ) {
             if( !in_array( $referencing_post_id, $related_posts_ids ) && $referencing_post_id != $post_id ) {
                 $related_posts_ids[] = $referencing_post_id;
                 $related_posts[] = array( $referencing_post_id, $rel_entity );
-                break;
             }
         }
     }
@@ -100,18 +101,6 @@ function wordlift_shortcode_navigator() {
         if( empty( $thumb ) ) {
             $thumb = WL_DEFAULT_THUMBNAIL_PATH;
         }
-        
-        /*
-        if( $counter == 0 ) {
-            // the first card is a post suggested by category
-            $context_link = get_iptc_category_links( $related_post_id, true );
-            $context_name = get_iptc_category_names( $related_post_id, true );
-        } else {
-            // the other cards are suggested by entities
-            $context_link = get_permalink( $related_post_entity[1] );
-            $context_name = get_post( $related_post_entity[1] )->post_title;
-        }
-        */
 
         $context_link = get_permalink( $related_post_entity[1] );
         $context_name = get_post( $related_post_entity[1] )->post_title;
