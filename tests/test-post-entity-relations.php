@@ -567,19 +567,33 @@ EOF;
             $this->assertTrue( in_array( $entity_2_id, $result ) );
 
         }
+        
+        /**
+         * Get relations for a given $subject_id as an associative array.
+         * 
+         * @global type $wpdb
+         * @param type $post_id
+         * @param type $predicate
+         * @return array in the following format:
+         *              Array (
+         *                  [0] => stdClass Object ( [id] => 140 [subject_id] => 17 [predicate] => what [object_id] => 47 ),
+         *                  [1] => stdClass Object ( [id] => 141 [subject_id] => 17 [predicate] => what [object_id] => 14 ),
+         *                  [2] => stdClass Object ( [id] => 142 [subject_id] => 17 [predicate] => where [object_id] => 16 ),
+         *                  ...
+         */
         function wl_core_get_relation_instances_for( $post_id, $predicate = null ) {
 
-            // Prepare interaction with db
-            global $wpdb;
-            // Retrieve Wordlift relation instances table name
-            $table_name = wl_core_get_relation_instances_table_name();
-            // Sql Action
-            $sql_statement = $wpdb->prepare( "SELECT * FROM $table_name WHERE subject_id = %d", $post_id );
-            if ( null != $predicate ) {
-                $sql_statement .= $wpdb->prepare( " AND predicate = %s", $predicate );     
-            }
-            $results = $wpdb->get_results( $sql_statement );
-            return $results;
+           // Prepare interaction with db
+           global $wpdb;
+           // Retrieve Wordlift relation instances table name
+           $table_name = wl_core_get_relation_instances_table_name();
+           // Sql Action
+           $sql_statement = $wpdb->prepare( "SELECT * FROM $table_name WHERE subject_id = %d", $post_id );
+           if ( null != $predicate ) {
+               $sql_statement .= $wpdb->prepare( " AND predicate = %s", $predicate );     
+           }
+           $results = $wpdb->get_results( $sql_statement );
+           return $results;
 
         }
 }
