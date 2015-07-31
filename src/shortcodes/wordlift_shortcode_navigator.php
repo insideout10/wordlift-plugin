@@ -80,10 +80,11 @@ function wordlift_shortcode_navigator() {
         return;
     }
     
-    // include mobifyjs on page
-    wp_enqueue_script( 'slick-js', plugins_url( 'js-client/slick/slick.min.js', __FILE__ ) );
+    // include slick on page
     wp_enqueue_style( 'slick-css', plugins_url( 'js-client/slick/slick.css', __FILE__ ) );
-    wp_enqueue_style( 'wordlift-slick-css', plugins_url( 'js-client/slick/wordliftslick.css', __FILE__ ) );
+    //wp_enqueue_style( 'wordlift-slick-css', plugins_url( 'js-client/slick/wordliftslick.css', __FILE__ ) );
+    wp_enqueue_script( 'slick-js', plugins_url( 'js-client/slick/slick.min.js', __FILE__ ) );
+    
     
     // get posts that will populate the navigator (criteria may vary, see function *wordlift_shortcode_navigator_populate*)
     $related_posts_and_entities = wordlift_shortcode_navigator_populate( get_the_ID() );
@@ -133,7 +134,7 @@ function wordlift_shortcode_navigator() {
             // Launch navigator
             $("#wl-navigator-widget").slick({
                 dots: false,
-                arrows: true, 
+                arrows: false, 
                 infinite: true,
                 slidesToShow: ' . $num_cards_on_front . ',
                 slidesToScroll: 1
