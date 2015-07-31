@@ -45,4 +45,8 @@ background-image: -o-linear-gradient(135deg,#292484,#dc4225);
 background-image: linear-gradient(135deg,#292484,#dc4225);
 opacity: 0.6;
 }
-.slick-prev, .slick-next {}
+
+/* fix arrow color */
+.slick-prev:before, .slick-next:before {
+    color: gray;
+}
