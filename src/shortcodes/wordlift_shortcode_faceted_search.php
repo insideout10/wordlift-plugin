@@ -89,7 +89,7 @@ function wl_shortcode_faceted_search_ajax()
                 'related_to__in'  =>    $filtering_entity_ids,
                 'related_to'      =>    $entity_id,
                 'post_type'       =>    'post', 
-                'as'              =>    'object',
+                'as'              =>    'subject',
             ) );
             
             foreach ( $filtered_posts as $post_obj ) {

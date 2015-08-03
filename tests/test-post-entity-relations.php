@@ -568,6 +568,33 @@ EOF;
 
         }
         
+        function testWlCoreGetRelatedPostIdsForAnMoreThanAnEntity() {
+            
+            // Create 2 posts and 2 entities
+            $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
+            $entity_2_id = wl_create_post( '', 'entity1', 'An Entity', 'draft', 'entity' );
+            $post_1_id = wl_create_post( '', 'post1', 'A post');
+            $post_2_id = wl_create_post( '', 'post2', 'A post');
+            
+            // Insert relations
+            wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+            wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
+
+            // Search posts that reference all the filtering entities.               
+            $result = wl_core_get_posts( array(
+                'get'             =>    'post_ids',  
+                'related_to__in'  =>    array( $entity_2_id ),
+                'related_to'      =>    $entity_1_id,
+                'post_type'       =>    'post', 
+                'as'              =>    'subject',
+            ) );
+            // Check that only $post_2_id is related both to $entity_1_id and $entity_2_id
+            $this->assertCount( 1, $result );
+            $this->assertTrue( in_array( $post_2_id, $result ) );
+            $this->assertFalse( in_array( $post_1_id, $result ) );
+
+        }
         /**
          * Get relations for a given $subject_id as an associative array.
          * 
