@@ -13,9 +13,11 @@ function wl_shortcode_chord_most_referenced_entity_id()
     // For each post get the entities they reference.
     $post_ids = get_posts( array(
         'numberposts' => 20,
+        'post_type'   => 'post',
         'fields'      => 'ids', //only get post IDs
+        'post_status' => 'published',
         'orderby'     => 'post_date',
-        'order'       => 'DESC'
+        'order'       => 'DESC',
     ) );
 	
     if( empty( $post_ids ) ){
@@ -24,7 +26,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
     
     $entities = array();
     foreach ( $post_ids as $id ) {
-        $entities = array_merge( $entities, wl_get_referenced_entities( $id ) );
+        $entities = array_merge( $entities, wl_core_get_related_entity_ids( $id ) );
     }
 
     $famous_entities = array_count_values($entities);
@@ -40,38 +42,39 @@ function wl_shortcode_chord_most_referenced_entity_id()
 /**
  * Recursive function used to retrieve related content starting from a post ID.
  *
- * @uses wl_get_referencing_posts to get the list of posts that reference an entity.
+ * @uses wl_core_get_related_post_ids to get the list of post ids that reference an entity.
  *
- * @param int $post_id The entity post ID.
+ * @param int $entity_id The entity post ID.
  * @param int $depth Max number of entities in output.
  * @param array $related An existing array of related entities.
  * @return array
  */
-function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null ) {
+function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
 	
-	// Search for more entities only if we did not exceed $depth or $max_size
-	$max_size = 50;
-	if( ! is_null($related) )
-		if( count($related['entities']) > $max_size || $depth <= 0 ) {
-        	return $related;
+    // Search for more entities only if we did not exceed $depth or $max_size
+    $max_size = 30;
+    if( ! is_null($related) ) {
+            if( count($related['entities']) > $max_size || $depth <= 0 ) {
+            return $related;
+        }
     }
 
-    wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $post_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
+    wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
 
-	// Create a related array which will hold entities and relations.
+    // Create a related array which will hold entities and relations.
     if ( is_null( $related ) ) {
         $related = array(
-            'entities'  => array( $post_id ),
+            'entities'  => array( $entity_id ),
             'relations' => array()
         );
     }
 
     // Get the post IDs that reference this entity.
-    $related_ids = wl_get_referencing_posts( $post_id );
+    $related_ids = wl_core_get_related_post_ids( $entity_id );
     
-    // Get the post IDs referenced  or related by this entity/post.
-    $related_ids = array_merge( $related_ids, wl_get_referenced_entities( $post_id ) );
-    $related_ids = array_merge( $related_ids, wl_get_related_entities( $post_id ) );
+    // Get the entities referenced by this entity.
+    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $entity_id ) );
+
     $related_ids = array_unique( $related_ids );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.
@@ -83,7 +86,7 @@ function wl_shortcode_chord_get_relations( $post_id, $depth = 2, $related = null
         // TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_relations_to_json*
         // method is going anyway to *refactor* the data structure. So here the structure may be optimized in terms
         // of readability and performance.
-        $related['relations'][] = array( $post_id, $related_id );
+        $related['relations'][] = array( $entity_id, $related_id );
 
         if ( !in_array( $related_id, $related['entities'] ) ) {
             //Found new related entity!

@@ -109,9 +109,6 @@ add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
  */
 function wl_entities_box_content( $post ) {
     
-        // Store referenced entity ids
-	$referenced_entity_ids = array();
-
 	wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
 	// Angularjs edit-post widget wrapper
 	echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
@@ -125,10 +122,8 @@ function wl_entities_box_content( $post ) {
 		wl_write_log( "Going to related of $relation_name" );
     
 		// Get entity ids related to the current post for the given relation name
-		$entity_ids = wl_core_get_related_post_and_entities( $post->ID, $relation_name );
-		// Add as referenced entities
-		$referenced_entity_ids = array_merge( $referenced_entity_ids, $entity_ids);
-
+		$entity_ids = wl_core_get_related_entity_ids( $post->ID, $relation_name );
+	
 		// Transform entity ids array in entity uris array
 		array_walk($entity_ids, function(&$entity_id) {
     		// Retrieve the entity uri for the given entity id
@@ -140,29 +135,18 @@ function wl_entities_box_content( $post ) {
 	}
 	// Json encoding for classification boxes structure
 	$classification_boxes = json_encode( $classification_boxes );
-	// Retrievies all referenced entities performing a Wp_Query 
-	// if there is at least one referenced entity id
-        $referenced_entities = array();
-        if ( !empty( $referenced_entity_ids ) ){
-            $args = array(
-                    'post_status' => 'any',
-                    'post__in'    => array_unique( $referenced_entity_ids ),
-                    'post_type'   => 'entity'
-                    );
-                    $query            = new WP_Query( $args );
-                    $referenced_entities = $query->get_posts();
-            }
-            // Build the entity storage object
-        $referenced_entities_obj = array();
-        foreach ( $referenced_entities as $related_entity ) {
-            $entity = wl_serialize_entity( $related_entity );
-            $referenced_entities_obj[ $entity['id'] ] = $entity;
-        }
+	
+    // Build the entity storage object
+    $referenced_entities_obj = array();
+    foreach ( wl_core_get_related_entity_ids( $post->ID ) as $referenced_entity ) {
+        $entity = wl_serialize_entity( $referenced_entity );
+        $referenced_entities_obj[ $entity['id'] ] = $entity;
+    }
 
-        $referenced_entities_obj = empty($referenced_entities_obj) ? 
-            '{}' : json_encode( $referenced_entities_obj );
-		
-		$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
+    $referenced_entities_obj = empty($referenced_entities_obj) ? 
+        '{}' : json_encode( $referenced_entities_obj );
+	
+	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 
 	echo <<<EOF
     <script type="text/javascript">
@@ -612,10 +596,10 @@ function wl_entity_metabox_save( $post_id ) {
 		}
 	}
 	// Push changes on RedLink
-	wl_push_to_redlink( $post_id );
+	wl_linked_data_push_to_redlink( $post_id );
 }
 
-add_action( 'wordlift_save_post', 'wl_entity_metabox_save' );
+add_action( 'wl_linked_data_save_post', 'wl_entity_metabox_save' );
 
 
 function wl_echo_nonce( $meta_name ) {

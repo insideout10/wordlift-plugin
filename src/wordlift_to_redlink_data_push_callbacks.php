@@ -211,7 +211,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// get related entities.
-	$related_entities_ids = wl_get_related_entities( $entity_post->ID );
+	$related_entities_ids = wl_core_get_related_entitY_ids( $entity_post->ID );
 
 	if ( is_array( $related_entities_ids ) ) {
 		foreach ( $related_entities_ids as $entity_post_id ) {
@@ -255,7 +255,7 @@ function wl_get_sparql_post_references( $post_id ) {
 	$post_uri = wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
 
 	// Get the related entities IDs.
-	$related = wl_get_referenced_entities( $post_id );
+	$related = wl_core_get_related_entity_ids( $post_id );
 
 	// Build the SPARQL fragment.
 	$sparql = '';
@@ -396,7 +396,3 @@ function wordlift_reindex_triple_store() {
 
 	return true;
 }
-
-// hook save events.
-// moved to the Linked Data module: add_action('save_post', 'wordlift_save_post');
-// moved to the Linked Data module: add_action('wordlift_save_post', 'wordlift_save_post_and_related_entities');

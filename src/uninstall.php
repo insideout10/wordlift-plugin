@@ -19,98 +19,50 @@ global $wpdb;
 $args = array(
 	'posts_per_page'   => -1,
 	'post_type'        => WL_ENTITY_TYPE_NAME,
-        'fields' => 'ids'
+        'post_status'      => array('publish', 'pending', 'draft', 'auto-draft', 'future', 'private', 'inherit', 'trash'),
+        'fields'           => 'ids'
 );
 $entities_array = get_posts( $args );
 
-// We will keep track of ordinary posts that reference entities.
-$referencing_posts_ids = array();
-$referenced_metas = array(
-    WL_CUSTOM_FIELD_IS_REFERENCED_BY_POSTS,
-    WL_CUSTOM_FIELD_IS_WHAT_FOR_POSTS,
-    WL_CUSTOM_FIELD_IS_WHEN_FOR_POSTS,
-    WL_CUSTOM_FIELD_IS_WHERE_FOR_POSTS,
-    WL_CUSTOM_FIELD_IS_WHO_FOR_POSTS
-);
-
-// Loop over entities and delete their meta.
+// Loop over entities and delete them.
 // TODO: thumbnails?
-echo 'Deleting entities and their meta... ';
-foreach( $entities_array as $entity_id ) {
-    
-    // Get metas defined for this entity
-    $entity_metas = array_keys( get_post_meta( $entity_id ) );
-    
-    // Loop over metas.
-    foreach( $entity_metas as $meta_name ) {
-        
-        // Keep track of referencing posts.
-        if( in_array( $meta_name, $referenced_metas ) ) {
-            $involved_posts = get_post_meta( $entity_id, $meta_name );
-            if( is_array( $involved_posts ) && !empty( $involved_posts ) ){
-                $referencing_posts_ids = array_merge( $referencing_posts_ids, $involved_posts );
-            }
-        }
-        
-        // Actually delete the meta.
-        delete_post_meta( $entity_id, $meta_name );
-    }
-    
-    // Delete the whole entity.
+wl_write_log('Deleting entities and their meta... ');
+wl_write_log( $entities_array );
+foreach( $entities_array as $entity_id ) {    
+    // Delete the whole entity and its metas.
     wp_delete_post( $entity_id, true);
 }
-echo 'Done.</br>';
-
-$referencing_posts_ids = array_unique( $referencing_posts_ids );
-//var_dump($referencing_posts_ids);
+wl_write_log('Done.');
 
 /*
- * Delete ordinary posts' meta related to entities.
- * Clean also their content from annotations.
+ * Delete post-entity relationships
  */
-echo 'Cleaning ordinary posts from entities metadata... ';
-foreach( $referencing_posts_ids as $post_id ) {
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_REFERENCED_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHAT_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHEN_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHERE_ENTITIES );
-    delete_post_meta( $post_id, WL_CUSTOM_FIELD_WHO_ENTITIES );
-    
-    // TODO: clean post content... this is the major performance point.
-    /*
-    $post = get_post( $post_id );
-    var_dump( $post->post_content );
-    wp_update_post( array(
-        'ID' => $post_id,
-        'post_content' => 'A_' . $post->post_content    // call here the cleaning function
-    ));
-    
-    
-    $post = get_post( $post_id );
-    var_dump( $post->post_content );
-     */
-}
-echo 'Done.</br>';
+wl_write_log('Deleting post-entity relationships... ');
+$sql = 'DROP TABLE IF EXISTS ' . wl_core_get_relation_instances_table_name() . ';';
+$wpdb->query( $sql );
+delete_option( 'wl_db_version' );
+wl_write_log('Done.');
 
 /*
  * Delete taxonomy
  */
-echo 'Cleaning entities taxonomy... ';
+wl_write_log( 'Cleaning entities taxonomy... ');
 // Delte custom taxonomy terms.
 // We loop over terms in this rude way because in the uninstall script
 // is not possible to call WP custom taxonomy functions.
-foreach ( range(0, 20) as $index ) {
+foreach ( range(0, 100) as $index ) {
     delete_option( WL_ENTITY_TYPE_TAXONOMY_NAME . '_' . $index );
     wp_delete_term( $index, WL_ENTITY_TYPE_TAXONOMY_NAME );
 }
 delete_option( WL_ENTITY_TYPE_TAXONOMY_NAME . '_children' );  // it's a hierarchical taxonomy
-echo 'Done.</br>';
+wl_write_log('Done.');
 
 /**
  * Delete options
  */
-echo 'Cleaning WordLift options... ';
+wl_write_log('Cleaning WordLift options... ');
+delete_option( WL_OPTIONS_NAME );
 delete_option( 'wl_option_prefixes' );
 delete_option( 'wl_general_settings' );
 delete_option( 'wl_advanced_settings' );
-echo 'Done. WordLift successfully uninstalled.</br>';
+wl_write_log('Done. WordLift successfully uninstalled.');

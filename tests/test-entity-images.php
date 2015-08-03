@@ -35,16 +35,19 @@ class EntityImagesTest extends WP_UnitTestCase
     }
 
     function testSaveOneImage() {
-
-        $uri         = 'http://example.org/entity';
-        $label       = 'Entity';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array(
-            'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
-        );
-        $same_as     = array();
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        
+        $entity_post = wl_save_entity( array(
+            'uri'               => 'http://example.org/entity',
+            'label'             => 'Entity',
+            'main_type_uri'     => 'http://schema.org/Thing',
+            'description'       => 'An example entity.',
+            'type_uris'         => array(),
+            'related_post_id'   => null,
+            'images'            => array(
+                'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
+            ),
+            'same_as'           => array()
+        ));
 
         // Get all the attachments for the entity post.
         $attachments = wl_get_attachments( $entity_post->ID );
@@ -53,7 +56,7 @@ class EntityImagesTest extends WP_UnitTestCase
         $this->assertEquals( 1, count( $attachments ) );
 
         // Check that the attachments are found by source URL.
-        $image_post  = wl_get_attachment_for_source_url( $entity_post->ID, $images[0] );
+        $image_post  = wl_get_attachment_for_source_url( $entity_post->ID, 'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg' );
         $this->assertNotNull( $image_post );
 
         // Check that the no attachments are found if the source URL doesn't exist.
@@ -62,19 +65,23 @@ class EntityImagesTest extends WP_UnitTestCase
     }
 
     function testSaveMultipleImages() {
-
-        $uri         = 'http://example.org/entity';
-        $label       = 'Entity';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array(
+        
+        $images = array(
             'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
             'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
             'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg'
         );
-        $same_as     = array();
 
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        $entity_post = wl_save_entity( array(
+            'uri'               => 'http://example.org/entity',
+            'label'             => 'Entity',
+            'main_type_uri'     => 'http://schema.org/Thing',
+            'description'       => 'An example entity.',
+            'type_uris'         => array(),
+            'related_post_id'   => null,
+            'images'            => $images,
+            'same_as'           => array()
+        ));
 
         // Get all the attachments for the entity post.
         $attachments = wl_get_attachments( $entity_post->ID );
@@ -90,20 +97,24 @@ class EntityImagesTest extends WP_UnitTestCase
     }
 
     function testSaveExistingImages() {
-
-        $uri         = 'http://example.org/entity';
-        $label       = 'Entity';
-        $type        = 'http://schema.org/Thing';
-        $description = 'An example entity.';
-        $images      = array(
+        
+        $images = array(
             'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg',
             'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg',
             'http://upload.wikimedia.org/wikipedia/commons/c/c2/Tim_Berners-Lee_2012.jpg',
             'http://upload.wikimedia.org/wikipedia/commons/3/3a/Tim_Berners-Lee_closeup.jpg'
         );
-        $same_as     = array();
 
-        $entity_post = wl_save_entity( $uri, $label, $type, $description, array(), $images, null, $same_as );
+        $entity_post = wl_save_entity( array(
+            'uri'               => 'http://example.org/entity',
+            'label'             => 'Entity',
+            'main_type_uri'     => 'http://schema.org/Thing',
+            'description'       => 'An example entity.',
+            'type_uris'         => array(),
+            'related_post_id'   => null,
+            'images'            => $images,
+            'same_as'           => array()
+        ));
 
         // Get all the attachments for the entity post.
         $attachments = wl_get_attachments( $entity_post->ID );

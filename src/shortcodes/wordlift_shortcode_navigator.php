@@ -30,8 +30,12 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
     }
     */
 
-    // get the related entities, and for each one retrieve the most recent post regarding it.
-    $related_entities = wl_get_referenced_entities( $post_id );
+    // get the related entities, ordered by WHO-WHAT-WHERE-WHEN (as established the 29/7/2015 12:45 in the grottino)
+    // TODO: shoud be a single query
+    $related_entities = wl_core_get_related_entity_ids( $post_id, WL_WHO_RELATION );
+    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, WL_WHAT_RELATION ) );
+    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, WL_WHERE_RELATION ) );
+    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, WL_WHEN_RELATION ) );
     
     wl_write_log("Entities related to post $post_id");
     wl_write_log( $related_entities );
@@ -41,14 +45,14 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
         wl_write_log("Looking for posts related to entity $rel_entity");
        
         // take the id of posts referencing the entity
-        $referencing_posts_ids = wl_get_referencing_posts( $rel_entity );
+        $referencing_posts_ids = wl_core_get_related_post_ids( $rel_entity );
+        wl_write_log($referencing_posts_ids);
         
         // loop over them and take the first one which is not already in the $related_posts
         foreach ( $referencing_posts_ids as $referencing_post_id ) {
             if( !in_array( $referencing_post_id, $related_posts_ids ) && $referencing_post_id != $post_id ) {
                 $related_posts_ids[] = $referencing_post_id;
                 $related_posts[] = array( $referencing_post_id, $rel_entity );
-                break;
             }
         }
     }
@@ -79,10 +83,12 @@ function wordlift_shortcode_navigator() {
         return;
     }
     
-    // include mobifyjs on page
+    // include slick on page
     wp_enqueue_script( 'slick-js', plugins_url( 'js-client/slick/slick.min.js', __FILE__ ) );
     wp_enqueue_style( 'slick-css', plugins_url( 'js-client/slick/slick.css', __FILE__ ) );
+    wp_enqueue_style( 'slick-theme-css', plugins_url( 'js-client/slick/slick-theme.css', __FILE__ ) );
     wp_enqueue_style( 'wordlift-slick-css', plugins_url( 'js-client/slick/wordliftslick.css', __FILE__ ) );
+    
     
     // get posts that will populate the navigator (criteria may vary, see function *wordlift_shortcode_navigator_populate*)
     $related_posts_and_entities = wordlift_shortcode_navigator_populate( get_the_ID() );
@@ -100,18 +106,6 @@ function wordlift_shortcode_navigator() {
         if( empty( $thumb ) ) {
             $thumb = WL_DEFAULT_THUMBNAIL_PATH;
         }
-        
-        /*
-        if( $counter == 0 ) {
-            // the first card is a post suggested by category
-            $context_link = get_iptc_category_links( $related_post_id, true );
-            $context_name = get_iptc_category_names( $related_post_id, true );
-        } else {
-            // the other cards are suggested by entities
-            $context_link = get_permalink( $related_post_entity[1] );
-            $context_name = get_post( $related_post_entity[1] )->post_title;
-        }
-        */
 
         $context_link = get_permalink( $related_post_entity[1] );
         $context_name = get_post( $related_post_entity[1] )->post_title;
@@ -144,7 +138,7 @@ function wordlift_shortcode_navigator() {
             // Launch navigator
             $("#wl-navigator-widget").slick({
                 dots: false,
-                arrows: false, 
+                arrows: true,
                 infinite: true,
                 slidesToShow: ' . $num_cards_on_front . ',
                 slidesToScroll: 1

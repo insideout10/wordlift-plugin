@@ -5,11 +5,6 @@
 
 require_once( 'wordlift_linked_data_images.php' );
 
-// TODO: remove this method.
-function wordlift_save_post( $post_id ) {
-	wl_linked_data_save_post( $post_id );
-}
-
 /**
  * Receive events from post saves, and split them according to the post type.
  *
@@ -27,19 +22,14 @@ function wl_linked_data_save_post( $post_id ) {
 	// unhook this function so it doesn't loop infinitely
 	remove_action( 'save_post', 'wl_linked_data_save_post' );
 
-	// raise the *wordlift_save_post* event.
-	do_action( 'wordlift_save_post', $post_id );
+	// raise the *wl_linked_data_save_post* event.
+	do_action( 'wl_linked_data_save_post', $post_id );
 
 	// re-hook this function
 	add_action( 'save_post', 'wl_linked_data_save_post' );
 }
 
 add_action( 'save_post', 'wl_linked_data_save_post' );
-
-// TODO: remove this function.
-function wordlift_save_post_and_related_entities( $post_id ) {
-	wl_linked_data_save_post_and_related_entities( $post_id );
-}
 
 /**
  * Save the post to the triple store. Also saves the entities locally and on the triple store.
@@ -58,92 +48,60 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// get the current post.
 	$post = get_post( $post_id );
 
-	remove_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
+	remove_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 	wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
     
-    // Store mapping between tmp new entities uris and real new entities uri
-    $entities_uri_mapping = array();
-
+        // Store mapping between tmp new entities uris and real new entities uri
+        $entities_uri_mapping = array();
+        // Store classification box mapping
+        $entities_predicates_mapping = null;
+    
 	// Save the entities coming with POST data.
-	if ( isset( $_POST['wl_entities'] ) ) {
+	if ( isset( $_POST['wl_entities'] ) &&  isset( $_POST['wl_boxes'] ) ) {
 
-		wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
-		wl_write_log( var_export( $_POST['wl_entities'], true ) );
-		wl_write_log( "]" );
+            wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
+            wl_write_log( var_export( $_POST['wl_entities'], true ) );
+            wl_write_log( "]" );
 
-		$entities_via_post = array_values( $_POST['wl_entities'] );
+            $entities_via_post = array_values( $_POST['wl_entities'] );
+            $boxes_via_post = $_POST['wl_boxes'] ;
 
-		// Save each entity and store the post id.
-		foreach ( $entities_via_post as $index => $entity ) {
+            // Save each entity and store the post id.
+            foreach ( $entities_via_post as $index => $entity ) {
 
-			if ( preg_match( '/^local-entity-.+/', $entity['uri'] ) > 0 ) {
-				// Build the proper uri 
-				$uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
-				// Populate the mapping
-				$entities_uri_mapping[ $entity['uri'] ] = $uri;
-				// Override the entity obj
-				$entities_via_post[ $index ]['uri'] = $uri;
-			} 
-		
-		}
+                    //if ( preg_match( '/^local-entity-.+/', $entity['uri'] ) > 0 ) {
+                            // Build the proper uri 
+                            $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
+                            // Populate the mapping
+                            $entities_uri_mapping[ $entity['uri'] ] = $uri;
+                            // Override the entity obj
+                            $entities_via_post[ $index ]['uri'] = $uri;
+                    //}
+            }
 
-		wl_write_log( "[ entities_via_post :: " );
-		wl_write_log( $entities_via_post );
-		wl_write_log( "]" );
+            // Populate the $entities_predicates_mapping
+            foreach ( $boxes_via_post as $predicate => $entity_uris ) {
+                    foreach ( $entity_uris as $entity_uri ) {
+                            $uri = $entity_uri;
+                            if ( array_key_exists( $entity_uri, $entities_uri_mapping ) ) {
+                                    $uri = $entities_uri_mapping[ $entity_uri ];
+                            }
+                            $entities_predicates_mapping[ $uri ][] = $predicate; 
+                    }	
+            }
 
-		wl_save_entities( $entities_via_post, $post_id );
+            wl_write_log( "[ entities_via_post :: " );
+            wl_write_log( $entities_via_post );
+            wl_write_log( "]" );
 
-		// If there are props values, save them.
-		if ( isset( $_POST[ WL_POST_ENTITY_PROPS ] ) ) {
-			foreach ( $_POST[ WL_POST_ENTITY_PROPS ] as $key => $values ) {
-				// TODO: use new methods to set the meta
-                // and delete *wl_entity_props_save* and related methods
-                wl_entity_props_save( $key, $values );
-			}
-		}
+            // Save entities and push them to Redlink
+            // TODO: pass also latitude, longitude, etc.
+            wl_save_entities( $entities_via_post, $post_id );
 	}
-        
-    // Retrieve box classification 
-	$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
-	// Loop trough boxes
-	foreach ( $classification_boxes as $box) {
-		// Box id matchs related relation name
-		$relation = $box['id'];
-		
-		wl_write_log( "Going to reset relation instances of type $relation for post $post_id ..." );
-		// Reset previous existing instnaces		
-		wl_core_reset_relation_between_posts_and_entities( $post_id, $relation );
-		
-		// Check if other relations instances has to be added
-		if ( isset( $_POST['wl_boxes'] ) ) {			
-			
-			$boxes_via_post = $_POST['wl_boxes'] ;
-			$entity_ids = array();
-
-			if ( isset( $boxes_via_post[ $relation ] ))  {	
-				foreach ( $boxes_via_post[ $relation ] as $entity_id ) {
-
-					$uri = $entity_id;
-					
-					if ( array_key_exists( $entity_id, $entities_uri_mapping ) ) {
-						$uri = $entities_uri_mapping[ $entity_id ];
-					}
-
-					if ( $entity_post = wl_get_entity_post_by_uri( $uri ) ) {
-						array_push( $entity_ids, $entity_post->ID );	
-						wl_write_log( "Going to relate entity {$entity_post->ID} to post $post_id trough $relation relation ..." );
-					}
-				}
-			}
-
-			// Finally add relation instances
-			wl_core_add_relation_between_posts_and_entities( $post_id, $relation, $entity_ids);
-		}
-	}
-	
+    
 	$updated_post_content = $post->post_content;
-    // Save each entity and store the post id.
+        // Save each entity and store the post id.
 	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
 		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
 	}
@@ -154,38 +112,37 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
   		'post_content' => $updated_post_content, 
   	) );
 
-    // Extract related/referenced entities from text.
-    $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-    
-    // Delete previously saved related/referenced
-    if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
-        wl_set_related_entities( $post_id, array() );   // TODO: May have side effects on other entities
-    } else {
-        wl_set_referenced_entities( $post_id, array() );
-    }
+        // Extract related/referenced entities from text.
+        $disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
         
-    // Add the related/referenced entities if provided.
-    // NOTE: related !== referenced. See wordlift core methods.
-    foreach( $disambiguated_entities as $rel_entity_id ) {
-                        
-    	if( $post->post_type == WL_ENTITY_TYPE_NAME ) {
-            // Adding related entitity to an entity
-            wl_add_related_entities( $post_id, $rel_entity_id );
-        } else {
-            // Adding this entity as referenced by a post
-            wl_add_referenced_entities( $post_id, $rel_entity_id );
-        }        
-		
-		wl_push_to_redlink( $rel_entity_id );
-    }
+        // Reset previously saved instances
+	wl_core_delete_relation_instances( $post_id ); 
+        
+        // Save relation instances
+        foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
+            wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
+            wl_write_log($entities_predicates_mapping);
+            if( $entities_predicates_mapping ) {
+                    $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
+                    foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
+                        wl_write_log(" Going to add relation with predicate $predicate");
+                        wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
+                    }
+            } else {
+                    // Just for unit tests
+                    wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
+            }
+
+            wl_linked_data_push_to_redlink( $referenced_entity_id );
+        }
         
 	// Push the post to Redlink.
-	wl_push_to_redlink( $post->ID );
+	wl_linked_data_push_to_redlink( $post->ID );
 
-	add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
+	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
 
-add_action( 'wordlift_save_post', 'wordlift_save_post_and_related_entities' );
+add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 /**
  * Adds default schema type "Thing" as soon as an entity is created.
@@ -202,7 +159,7 @@ function wordlift_save_post_add_default_schema_type( $entity_id ) {
     }
 }
 // Priority 1 (default is 10) because we want the default type to be set as soon as possible
-// Attatched to save_post because wordlift_save_post does not always fire
+// Attatched to save_post because *wl_linked_data_save_post* does not always fire
 add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1);
 
 /**
@@ -230,7 +187,9 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 		$main_type_uri = $entity['main_type'];
 
 		// the preferred type.
-		$type_uris = $entity['type'];
+		$type_uris = ( isset( $entity['type'] ) ?
+                                $entity['type'] :
+                                array() );
 
 		$description = $entity['description'];
 		$images      = ( isset( $entity['image'] ) ?
@@ -244,8 +203,20 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 				: array( $entity['sameas'] ) )
 			: array() );
                 
+                // Bring properties inside an associative array
+                $entity_properties = array(
+                    'uri'           => $uri,
+                    'label'         => $label,
+                    'main_type_uri' => $main_type_uri,
+                    'description'   => $description,
+                    'type_uris'     => $type_uris,
+                    'images'        => $images,
+                    'related_post_id' => $related_post_id,
+                    'same_as'       => $same_as
+                );
+                
 		// Save the entity.
-		$entity_post = wl_save_entity( $uri, $label, $main_type_uri, $description, $type_uris, $images, $related_post_id, $same_as );
+		$entity_post = wl_save_entity( $entity_properties );
                 
 		// Store the post in the return array if successful.
 		if ( null !== $entity_post ) {
@@ -260,18 +231,30 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
  * found (by its URI), then the original post is returned.
  *
- * @param string $uri The entity URI.
- * @param string $label The entity label.
- * @param string $type_uri The entity type URI.
- * @param string $description The entity description.
- * @param array $entity_types An array of entity type URIs.
- * @param array $images An array of image URLs.
- * @param int $related_post_id A related post ID.
- * @param array $same_as An array of sameAs URLs.
+ * @param array $entity_properties, associative array containing: 
+ * string 'uri' The entity URI.
+ * string 'label' The entity label.
+ * string 'main_type_uri' The entity type URI.
+ * string 'description' The entity description.
+ * array 'type_uris' An array of entity type URIs.
+ * array 'images' An array of image URLs.
+ * int 'related_post_id' A related post ID.
+ * array 'same_as' An array of sameAs URLs.
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = array(), $images = array(), $related_post_id = null, $same_as = array() ) {
+function wl_save_entity( $entity_properties ) {
+    
+        $uri            = $entity_properties['uri'];
+        $label          = $entity_properties['label'];
+        $type_uri  = $entity_properties['main_type_uri'];
+        $description    = $entity_properties['description'];
+        $entity_types   = $entity_properties['type_uris'];
+        $images         = $entity_properties['images'];
+        $related_post_id = $entity_properties['related_post_id'];
+        $same_as        = $entity_properties['same_as'];
+
+            
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
 		$entity_types = array();
@@ -375,92 +358,11 @@ function wl_save_entity( $uri, $label, $type_uri, $description, $entity_types = 
         
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.
-	wl_push_to_redlink( $post_id );
+	wl_linked_data_push_to_redlink( $post_id );
 
 	// finally return the entity post.
 	return get_post( $post_id );
 }
-
-/**
- * Save the entity properties.
- *
- * @uses wl_entity_props_save_prop to save a specific property.
- *
- * @param string An entity URI.
- * @param array $props An array of entity properties.
- */
-function wl_entity_props_save( $entity_uri, $props ) {
-
-	$mappings = wl_entity_props_get_mappings();
-
-	// Get the post by the URI.
-	$post = wl_get_entity_post_by_uri( $entity_uri );
-
-	// Return if there's no post.
-	if ( null === $post ) {
-		wl_write_log( "wl_entity_props_save : no post found [ entity uri :: $entity_uri ]" );
-
-		return;
-	}
-
-	// Save each property.
-	foreach ( $props as $key => $values ) {
-		wl_entity_props_save_prop( $post->ID, $key, $values, $mappings );
-	}
-}
-
-/**
- * Get the entity properties mappings to custom field names.
- */
-function wl_entity_props_get_mappings() {
-
-    wl_write_log( "wl_entity_props_get_mappings");
-
-    return array(
-        'http://www.w3.org/2002/12/cal#dtstart'        => WL_CUSTOM_FIELD_CAL_DATE_START,
-        'http://www.w3.org/2002/12/cal#dtend'          => WL_CUSTOM_FIELD_CAL_DATE_END,
-        'http://www.w3.org/2003/01/geo/wgs84_pos#lat'  => WL_CUSTOM_FIELD_GEO_LATITUDE,
-        'http://www.w3.org/2003/01/geo/wgs84_pos#long' => WL_CUSTOM_FIELD_GEO_LONGITUDE
-    );
-}
-
-/**
- * Save the specified prop.
- *
- * @param int $post_id The post ID.
- * @param string $key The property name.
- * @param string $values The property values.
- * @param array $mappings An array of mappings from property URIs to field names.
- */
-function wl_entity_props_save_prop( $post_id, $key, $values, $mappings ) {
-
-	// The property is not found in mappings, then exit.
-	if ( ! isset( $mappings[ $key ] ) ) {
-		wl_write_log( "property not found in mappings [ post ID :: $post_id ][ key :: $key ][ values count :: " . count( $values ) . " ]" );
-
-		return;
-	}
-
-	// Get the custom field name.
-	$custom_field_name = $mappings[ $key ];
-
-	wl_write_log( "[ post ID :: $post_id ][ custom field name :: $custom_field_name ][ key :: $key ][ values count :: " . count( $values ) . " ]" );
-
-	// Don't overwrite existing data.
-	$existing = get_post_meta( $post_id, $custom_field_name );
-	if ( ! empty( $existing ) ) {
-		return;
-	}
-
-	// Delete existing values for that custom field.
-	delete_post_meta( $post_id, $custom_field_name );
-
-	// Save the values.
-	foreach ( $values as $value ) {
-		add_post_meta( $post_id, $custom_field_name, $value );
-	}
-}
-
 
 /**
  * Get an array of entities from the *itemid* attributes embedded in the provided content.
@@ -510,12 +412,6 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	return $entities;
 }
 
-
-// TODO: remove this function.
-function wl_push_to_redlink( $post_id ) {
-	wl_linked_data_push_to_redlink( $post_id );
-}
-
 /**
  * Push the post with the specified ID to Redlink.
  *
@@ -528,7 +424,7 @@ function wl_linked_data_push_to_redlink( $post_id ) {
 	// Get the post.
 	$post = get_post( $post_id );
 
-	wl_write_log( "wl_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
+	wl_write_log( "wl_linked_data_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
 
 	// Call the method on behalf of the post type.
 	switch ( $post->post_type ) {

@@ -32,7 +32,7 @@ function wl_transition_post_status( $new_status, $old_status, $post ) {
 
 	// when a post is published, then all the referenced entities must be published.
 	if ( 'publish' !== $old_status && 'publish' === $new_status ) {
-		foreach ( wl_get_referenced_entities( $post->ID ) as $entity_id ) {
+		foreach ( wl_core_get_related_entity_ids( $post->ID ) as $entity_id ) {
 			wl_update_post_status( $entity_id, 'publish' );
 		}
 	}
@@ -52,19 +52,13 @@ function rl_delete_post( $post ) {
 	$post_id = ( is_numeric( $post ) ? $post : $post->ID );
 
 	// hide all entities that are not referenced by any published post.
-	foreach ( wl_get_referenced_entities( $post_id ) as $entity_id ) {
-
-		// consider only entities here, because we don't want to hide a post.
-		if ( WL_ENTITY_TYPE_NAME !== get_post_type( $entity_id ) ) {
-			continue;
-		}
+	foreach ( wl_core_get_related_entity_ids( $post_id ) as $entity_id ) {
 
 		// check if there is at least one referencing post published.
-		$is_published = array_reduce( wl_get_referencing_posts( $entity_id ), function ( $carry, $item ) {
+		$is_published = array_reduce( wl_core_get_related_post_ids( $entity_id ), function ( $carry, $item ) {
                     $post = get_post( $item );
                     return ( $carry || ( 'publish' === $post->post_status ) );
 		} );
-
 		// set the entity to draft if no referencing posts are published.
 		if ( ! $is_published ) {
 			wl_update_post_status( $entity_id, 'draft' );
@@ -134,7 +128,7 @@ function wl_update_post_status( $post_id, $status ) {
 	/** This action is documented in wp-includes/post.php */
 	do_action( "save_post_{$post->post_type}", $post->ID, $post, true );
 	/** This action is documented in wp-includes/post.php */
-	do_action( 'wordlift_save_post', $post->ID );
+	do_action( 'wl_linked_data_save_post', $post->ID );
 	/** This action is documented in wp-includes/post.php */
 	do_action( 'wp_insert_post', $post->ID, $post, true );
 }

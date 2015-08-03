@@ -5,7 +5,7 @@
 
 // Define the basic options for HTTP calls to REDLINK.
 define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
-	'timeout'     => 60,
+	'timeout'     => 10,
 	'redirection' => 5,
 	'httpversion' => '1.0',
 	'blocking'    => true,
@@ -31,9 +31,6 @@ define( 'WL_REDLINK_API_VERSION', '1.0-BETA' );
 
 // Define the Redlink API base URI (with end slash).
 // define('WL_REDLINK_API_BASE_URI', 'https://api.staging.redlink.io/');
-
-// The field name where the properties are hold (from a POST).
-define( 'WL_POST_ENTITY_PROPS', 'wl_props' );
 
 // WL internal data types
 define( 'WL_DATA_TYPE_URI', 'uri' );
