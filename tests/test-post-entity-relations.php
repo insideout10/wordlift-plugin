@@ -206,6 +206,30 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
 
             $result = wl_core_get_posts( $args );
             $this->assertInternalType( "array", $result ); 
+            
+            // Case 13 - Ask a valid post status 
+            $args = array(
+                'get' => 'posts',  
+                'as' => 'subject',
+                'post_type' => 'post',
+                'post_status' => 'draft',
+                'related_to' => 4,
+                );
+            
+            $result = wl_core_get_posts( $args );
+            $this->assertInternalType( "array", $result ); 
+            
+            // Case 14 - Ask an invalid post status 
+            $args = array(
+                'get' => 'posts',  
+                'as' => 'subject',
+                'post_type' => 'post',
+                'post_status' => 'pippo',
+                'related_to' => 4,
+                );
+            
+            $result = wl_core_get_posts( $args );
+            $this->assertFalse( $result ); 
         }
 
         function testWlCoreSqlQueryBuilder() {
@@ -220,7 +244,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
                 'get' => 'posts',  
                 'related_to' => 3,
                 'as' => 'subject',
-                'post_type' => 'post',   
+                'post_type' => 'post',  
                 );
             $expected_sql = <<<EOF
 SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND r.object_id = 3 GROUP BY p.id;
@@ -350,6 +374,41 @@ EOF;
             // Try to perform query in order to see if there are errors on db side
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
+            
+            // Case 14 - Require a specific post status
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 4,
+                'post_type' => 'post', 
+                'post_status' => 'draft',
+                'as' => 'object',
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND p.post_status = 'draft' AND r.subject_id = 4 GROUP BY p.id;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+            
+            // Case 15 - Do not require an post status
+            $args = array(
+                'get' => 'posts',  
+                'related_to' => 4,
+                'post_type' => 'post', 
+                'post_status' => null,
+                'as' => 'object',
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id = 4 GROUP BY p.id;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );
+            
         }
 
         function testWlCoreAddRelationInstance() {

@@ -316,7 +316,8 @@ function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null ) {
 *   'related_to__in' => array(10,20,30)
 *   'as'   => [ subject | object ],
 *   'with_predicate'   => [ what | where | when | who ], // null as default value
-*   'post_type' => [ post | entity ] 
+*   'post_type' => [ post | entity ],
+*   'post_status' => [ publish | draft | pending | trash ], default is null (meaning *any* post status)
 * );
 * </code>
 *
@@ -347,9 +348,15 @@ function wl_core_sql_query_builder( $args ) {
     $join_column = $args[ 'as' ] . "_id"; 
         
     $sql .= " FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.$join_column";
+    
     // Sql add post type filter
     $sql .= $wpdb->prepare( " AND p.post_type = %s AND", $args[ 'post_type' ] );
-
+    
+    // Sql add post status filter
+    if( isset( $args['post_status'] ) && !is_null( $args['post_status'] ) ) {
+        $sql .= $wpdb->prepare( " p.post_status = %s AND", $args[ 'post_status' ] );
+    }
+    
     
     // Add filtering conditions
     // If we look for posts related as objects this means that 
@@ -411,7 +418,8 @@ function wl_core_get_posts( $args, $returned_type = ARRAY_A ) {
         'with_predicate' => null,
         'as' => 'subject',
         'post_type' => 'post',
-        'get' => 'posts'
+        'get' => 'posts',
+        'post_status' => null
     ), $args);
 
     // Arguments validation rules
@@ -442,6 +450,11 @@ function wl_core_get_posts( $args, $returned_type = ARRAY_A ) {
     }
     if ( !in_array( $args[ 'post_type' ], array( 'post', 'entity' ) ) )  {
         return false;
+    }
+    if ( isset( $args['post_status'] ) && !is_null( $args['post_status'] ) ) {
+        if( !in_array( $args['post_status'], get_post_stati() ) )  {
+            return false;
+        }
     }
     if ( null != $args[ 'with_predicate' ] )  {
         if ( !wl_core_check_relation_predicate_is_supported( $args[ 'with_predicate' ] ) ) {
