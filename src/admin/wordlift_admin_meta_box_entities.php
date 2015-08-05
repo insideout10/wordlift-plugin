@@ -122,7 +122,9 @@ function wl_entities_box_content( $post ) {
 		wl_write_log( "Going to related of $relation_name" );
     
 		// Get entity ids related to the current post for the given relation name
-		$entity_ids = wl_core_get_related_entity_ids( $post->ID, $relation_name );
+		$entity_ids = wl_core_get_related_entity_ids( $post->ID, array(
+                    'predicate' => $relation_name
+                ) );
 	
 		// Transform entity ids array in entity uris array
 		array_walk($entity_ids, function(&$entity_id) {

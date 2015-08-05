@@ -32,10 +32,18 @@ function wordlift_shortcode_navigator_populate( $post_id ) {
 
     // get the related entities, ordered by WHO-WHAT-WHERE-WHEN (as established the 29/7/2015 12:45 in the grottino)
     // TODO: shoud be a single query
-    $related_entities = wl_core_get_related_entity_ids( $post_id, WL_WHO_RELATION );
-    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, WL_WHAT_RELATION ) );
-    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, WL_WHERE_RELATION ) );
-    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, WL_WHEN_RELATION ) );
+    $related_entities = wl_core_get_related_entity_ids( $post_id, array(
+                'predicate' => WL_WHO_RELATION
+    ));
+    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, array(
+                'predicate' => WL_WHAT_RELATION
+    )));
+    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, array(
+                'predicate' => WL_WHERE_RELATION
+    )));
+    $related_entities = array_merge( $related_entities, wl_core_get_related_entity_ids( $post_id, array(
+                'predicate' => WL_WHEN_RELATION
+    )));
     
     wl_write_log("Entities related to post $post_id");
     wl_write_log( $related_entities );

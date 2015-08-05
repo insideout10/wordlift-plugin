@@ -535,15 +535,21 @@ EOF;
             $this->assertTrue( in_array( $post_1_id, $result ) );
             $this->assertTrue( in_array( $post_2_id, $result ) );
             
-            $result = wl_core_get_related_post_ids( $entity_1_id, WL_WHERE_RELATION );
+            $result = wl_core_get_related_post_ids( $entity_1_id, array(
+                'predicate' => WL_WHERE_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $post_1_id, $result ) );
 
-            $result = wl_core_get_related_post_ids( $entity_1_id, WL_WHO_RELATION );
+            $result = wl_core_get_related_post_ids( $entity_1_id, array(
+                'predicate' => WL_WHO_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $post_2_id, $result ) );
 
-            $result = wl_core_get_related_post_ids( $entity_1_id, WL_WHAT_RELATION );
+            $result = wl_core_get_related_post_ids( $entity_1_id, array(
+                'predicate' => WL_WHAT_RELATION
+            ) );
             $this->assertCount( 0, $result );
 
         }
@@ -564,10 +570,14 @@ EOF;
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $post_2_id, $result ) );
             
-            $result = wl_core_get_related_post_ids( $post_1_id, WL_WHERE_RELATION );
+            $result = wl_core_get_related_post_ids( $post_1_id, array(
+                'predicate' => WL_WHERE_RELATION
+            ) );
             $this->assertCount( 0, $result );
             
-            $result = wl_core_get_related_post_ids( $post_1_id, WL_WHO_RELATION );
+            $result = wl_core_get_related_post_ids( $post_1_id, array(
+                'predicate' => WL_WHO_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $post_2_id, $result ) );
 
@@ -590,11 +600,15 @@ EOF;
             $this->assertTrue( in_array( $entity_1_id, $result ) );
             $this->assertTrue( in_array( $entity_2_id, $result ) );
             
-            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHERE_RELATION );
+            $result = wl_core_get_related_entity_ids( $post_1_id, array(
+                'predicate' => WL_WHERE_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $entity_1_id, $result ) );
             
-            $result = wl_core_get_related_entity_ids( $post_1_id, WL_WHO_RELATION );
+            $result = wl_core_get_related_entity_ids( $post_1_id, array(
+                'predicate' => WL_WHO_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $entity_2_id, $result ) );
 
@@ -617,11 +631,15 @@ EOF;
             $this->assertTrue( in_array( $entity_1_id, $result ) );
             $this->assertTrue( in_array( $entity_2_id, $result ) );
             
-            $result = wl_core_get_related_entity_ids( $entity_0_id, WL_WHERE_RELATION );
+            $result = wl_core_get_related_entity_ids( $entity_0_id, array(
+                'predicate' => WL_WHERE_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $entity_1_id, $result ) );
             
-            $result = wl_core_get_related_entity_ids( $entity_0_id, WL_WHO_RELATION );
+            $result = wl_core_get_related_entity_ids( $entity_0_id, array(
+                'predicate' => WL_WHO_RELATION
+            ) );
             $this->assertCount( 1, $result );
             $this->assertTrue( in_array( $entity_2_id, $result ) );
 
