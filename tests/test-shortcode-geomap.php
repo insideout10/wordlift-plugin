@@ -67,44 +67,42 @@ class GeomapShortcodeTest extends WP_UnitTestCase
         $this->assertContains( $entity_2_id, $places_ids );
 
         // From here onwards we check that the JSON response matches the places data.
-        $json = wl_shortcode_geomap_to_json( $places );
-
-        $response = json_decode( $json );
+        $response = wl_shortcode_geomap_prepare_map( $places );
 
 		// Check retrieved boundaries
-        $this->assertTrue( isset( $response->boundaries ) );
-		$this->assertCount( 2, $response->boundaries );	// Should contain two set of coordinates.
-		$this->assertCount( 2, $response->boundaries[0] );	// [minLat, minLon]
-		$this->assertCount( 2, $response->boundaries[1] );	// [maxLat, maxLon]
+        $this->assertTrue( isset( $response['boundaries'] ) );
+		$this->assertCount( 2, $response['boundaries'] );	// Should contain two set of coordinates.
+		$this->assertCount( 2, $response['boundaries'][0] );	// [minLat, minLon]
+		$this->assertCount( 2, $response['boundaries'][1] );	// [maxLat, maxLon]
 		
 		// Check if coordinates are actually numbers
-		$this->assertTrue( is_numeric($response->boundaries[0][0]) );
-		$this->assertTrue( is_numeric($response->boundaries[0][1]) );
-		$this->assertTrue( is_numeric($response->boundaries[1][0]) );
-		$this->assertTrue( is_numeric($response->boundaries[1][1]) );
+		$this->assertTrue( is_numeric($response['boundaries'][0][0]) );
+		$this->assertTrue( is_numeric($response['boundaries'][0][1]) );
+		$this->assertTrue( is_numeric($response['boundaries'][1][0]) );
+		$this->assertTrue( is_numeric($response['boundaries'][1][1]) );
 		
 		// Check retrieved places
-		$this->assertTrue( isset( $response->features ) );
+		$this->assertTrue( isset( $response['features'] ) );
 		
 		$i = 0;
 		foreach($places as $place) {
 			
 			// Check object attributes
-			$poi = $response->features[$i];
+			$poi = $response['features'][$i];
 			$this->assertTrue( isset( $poi ) );
-			$this->assertTrue( isset( $poi->type ) );
-			$this->assertTrue( isset( $poi->properties ) );
-			$this->assertNotEmpty( isset( $poi->properties->popupContent ) );
-			$this->assertTrue( isset( $poi->geometry ) );
-			$this->assertTrue( isset( $poi->geometry->coordinates ) );
-			$this->assertCount( 2, $poi->geometry->coordinates );
-			$this->assertTrue( is_numeric( $poi->geometry->coordinates[0] ) );
-			$this->assertTrue( is_numeric( $poi->geometry->coordinates[1] ) );
+			$this->assertTrue( isset( $poi['type'] ) );
+			$this->assertTrue( isset( $poi['properties'] ) );
+			$this->assertNotEmpty( isset( $poi['properties']['popupContent'] ) );
+			$this->assertTrue( isset( $poi['geometry'] ) );
+			$this->assertTrue( isset( $poi['geometry']['coordinates'] ) );
+			$this->assertCount( 2, $poi['geometry']['coordinates'] );
+			$this->assertTrue( is_numeric( $poi['geometry']['coordinates'][0] ) );
+			$this->assertTrue( is_numeric( $poi['geometry']['coordinates'][1] ) );
 			
 			// Check consistency with declared places
 			$coords = wl_get_coordinates( $place->ID );
 			$coords = array( $coords['longitude'], $coords['latitude'] ); // Leaflet geoJSON wants them swapped
-			$this->assertEquals($coords, $poi->geometry->coordinates);
+			$this->assertEquals($coords, $poi['geometry']['coordinates'] );
 			$i++;
 		}
     }
@@ -120,7 +118,7 @@ class GeomapShortcodeTest extends WP_UnitTestCase
 		
 		// Create two posts.
         $post_id_1 = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
-		$post_id_2 = wl_create_post( '', 'post-2', 'Post 2', 'publich', 'post');
+	$post_id_2 = wl_create_post( '', 'post-2', 'Post 2', 'publish', 'post');
 
 		// Create a place-
         $place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
@@ -138,17 +136,16 @@ class GeomapShortcodeTest extends WP_UnitTestCase
 		$this->assertEquals( $places[0]->ID, $place_id );
 
         // Check json formatted data.
-        $json = wl_shortcode_geomap_to_json( $places );
-        $response = json_decode( $json );
+        $response = wl_shortcode_geomap_prepare_map( $places );
 	
 		// Check object attributes
-		$poi = $response->features[0];
+		$poi = $response['features'][0];
 		$this->assertTrue( isset( $poi ) );
-		$this->assertTrue( isset( $poi->properties ) );
-		$this->assertTrue( isset( $poi->properties->popupContent ) );
+		$this->assertTrue( isset( $poi['properties'] ) );
+		$this->assertTrue( isset( $poi['properties']['popupContent'] ) );
 		
 		// Check if popup contains links to the two posts
-		$popup = $poi->properties->popupContent;
+		$popup = $poi['properties']['popupContent'];
 		$link1 = esc_attr( get_permalink($post_id_1) );
 		$this->assertContains( $link1, $popup );
 		$link2 = esc_attr( get_permalink($post_id_2) );

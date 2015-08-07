@@ -32,11 +32,14 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 		// Collect entities related to latest posts
 	    $entity_ids = array();
 	    foreach ( $latest_posts_ids as $id ) {
-	        $entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id ) );
+	        $entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
+                    'status' => 'publilsh'
+                ) ) );
 	    }
 		
-		if( empty($entity_ids) )
-			return array();
+		if( empty($entity_ids) ) {
+                    return array();
+                }
 		
 	} else {
 		// Post-specific timeline. Search for entities in the post itself.
@@ -48,6 +51,7 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
     return get_posts( array(
         'post__in'        => $entity_ids,
         'post_type'       => WL_ENTITY_TYPE_NAME,
+        'post_status'     => 'publish',
         'posts_per_page'  => -1,
         'meta_query'      => array(
             'relation'    => 'AND',
