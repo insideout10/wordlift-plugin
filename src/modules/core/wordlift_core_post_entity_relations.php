@@ -297,7 +297,7 @@ function wl_core_get_related_posts( $object_id, $filters = array() ) {
     
     $filters = wl_core_validate_filters_for_related( $filters );
     
-    return wl_core_inner_get_related_posts( "posts", $object_id, $filters['predicate'], $filters['status'] );
+    return wl_core_inner_get_related_posts( "posts", $object_id, $filters[ 'predicate' ], $filters[ 'status' ] );
 }
 /**
 * Find all post ids related to a given $object_id
@@ -318,7 +318,7 @@ function wl_core_get_related_post_ids( $object_id, $filters = array() ) {
     
     $filters = wl_core_validate_filters_for_related( $filters );
     
-    return wl_core_inner_get_related_posts( "post_ids", $object_id, $filters['predicate'], $filters['status'] );
+    return wl_core_inner_get_related_posts( "post_ids", $object_id, $filters[ 'predicate' ], $filters[ 'status' ] );
 }
 
 /**
@@ -356,7 +356,7 @@ function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $po
             'get'               =>  $get,
             'post_type'         =>  'post',
             'post_status'       =>  $post_status,
-            'related_to__not'   =>  $item_id, 
+            'post__not_in'      =>  array( $item_id ), 
             'related_to__in'    =>  wl_core_get_related_entity_ids( $post->ID ), 
             'as'                =>  'subject',
             'with_predicate'    =>  $predicate,
@@ -379,8 +379,9 @@ function wl_core_inner_get_related_posts( $get, $item_id, $predicate = null, $po
 *   'get' => 'posts', // posts, post_ids, relations, relation_ids 
 *   'first' => n,
 *   'related_to'      => 10,          // the post/s / entity/ies id / ids
-*   'related_to__not'      => 10,          // the post/s / entity/ies id / ids
 *   'related_to__in' => array(10,20,30)
+*   'post__in'      => array(10,20,30),          // the post/s / entity/ies id / ids
+*   'post__not_in'      => array(10,20,30),          // the post/s / entity/ies id / ids
 *   'as'   => [ subject | object ],
 *   'with_predicate'   => [ what | where | when | who ], // null as default value
 *   'post_type' => [ post | entity ],
@@ -424,14 +425,11 @@ function wl_core_sql_query_builder( $args ) {
         $sql .= $wpdb->prepare( " p.post_status = %s AND", $args[ 'post_status' ] );
     }
     
-    
     // Add filtering conditions
     // If we look for posts related as objects this means that 
     // related_to is a reference for a subject: subject_id is the filtering column
     // If we look for posts related as subject this means that 
     // related_to is reference for an object: object_id is the filtering column
-    
-    // TODO implement also array, not only single integer
         
     $filtering_column = ( 'object' == $args[ 'as' ] ) ? "subject_id" : "object_id";
         
@@ -444,11 +442,12 @@ function wl_core_sql_query_builder( $args ) {
     if( isset($args[ 'related_to__in' ] ) ) {
         $sql .= " r.$filtering_column IN (" . implode(",", $args[ 'related_to__in' ] ) . ")";
     }
-
-    if( isset( $args[ 'related_to__not' ] ) ) {
-        $sql .= $wpdb->prepare( " AND r." . $args[ 'as' ] . "_id != %d", $args[ 'related_to__not' ] );
+    if( isset( $args[ 'post__not_in' ] ) ) {
+        $sql .= " AND r." . $args[ 'as' ] . "_id NOT IN (" . implode(",", $args[ 'post__not_in' ] ) . ")";
     }
-
+    if( isset( $args[ 'post__in' ] ) ) {
+        $sql .= " AND r." . $args[ 'as' ] . "_id IN (" . implode(",", $args[ 'post__in' ] ) . ")";
+    }
     // Add predicate filter if required
     if ( isset( $args[ 'with_predicate' ] ) ) {
         // Sql Inner Join clausole 
@@ -497,18 +496,20 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
     if ( isset( $args[ 'related_to' ] ) && !is_numeric( $args[ 'related_to' ] ) ) {
         return false;
     }
-    // Check related_to__not
-    if ( isset( $args[ 'related_to__not' ] ) && !is_numeric( $args[ 'related_to__not' ] ) ) {
-        return false;
-    }
-    // Check related_to__in if present and validate it
-    if ( isset( $args[ 'related_to__in' ] ) ) {
-        if ( !is_array( $args[ 'related_to__in' ] ) || 0 == count( array_filter( $args[ 'related_to__in' ], "is_numeric" ) ) ) {
-            return false;
+
+    // The same check is applied to post_in, post__not_in and related_to__in options
+    // Only arrays with at least one numeric value are considerad valid
+    // The argument value is further sanitized in order to clean up not numeric values
+    foreach ( array( 'post__in', 'post__not_in', 'related_to__in' ) as $option_name ) {
+        if ( isset( $args[ $option_name ] ) ) {
+            if ( !is_array( $args[ $option_name ] ) || 0 == count( array_filter( $args[ $option_name ], "is_numeric" ) ) ) {
+                return false;
+            }
+            // Sanitize value removing non numeric values from the array
+            $args[ $option_name ] = array_filter( $args[ $option_name ], "is_numeric" );
         }
-        // Sanitize related_to__in  value removing non numeric values from the array
-        $args[ 'related_to__in' ] = array_filter( $args[ 'related_to__in' ], "is_numeric" );
-    }
+   }
+ 
     if ( !in_array( $args[ 'get' ], array( 'posts', 'post_ids' ) ) )  {
         return false;
     }

@@ -358,16 +358,16 @@ EOF;
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
 
-            // Case 13 - Find post ids of type 'post' related to post / entity id IN (3, 4) as object with predicate what
+            // Case 13 - Find post ids of type 'post' not included IN (6) related to post / entity id IN (3, 4) as object 
             $args = array(
                 'get' => 'posts',  
                 'related_to__in' => array('4','5'),
-                'related_to__not' => 6,
+                'post__not_in' => array('6'),
                 'post_type' => 'post', 
                 'as' => 'object',
                 );
             $expected_sql = <<<EOF
-SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) AND r.object_id != 6 GROUP BY p.id;
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) AND r.object_id NOT IN (6) GROUP BY p.id;
 EOF;
             $actual_sql = wl_core_sql_query_builder( $args );
             $this->assertEquals( $expected_sql, $actual_sql );
@@ -408,7 +408,23 @@ EOF;
             // Try to perform query in order to see if there are errors on db side
             $wpdb->get_results( $actual_sql );
             $this->assertEmpty( $wpdb->last_error );
-            
+
+            // Case 16 - Find post ids of type 'post' only if included IN (6) and related to post / entity id IN (3, 4) as object 
+            $args = array(
+                'get' => 'posts',  
+                'related_to__in' => array('4','5'),
+                'post__in' => array('6'),
+                'post_type' => 'post', 
+                'as' => 'object',
+                );
+            $expected_sql = <<<EOF
+SELECT p.* FROM $wpdb->posts as p JOIN $wl_table_name as r ON p.id = r.object_id AND p.post_type = 'post' AND r.subject_id IN (4,5) AND r.object_id IN (6) GROUP BY p.id;
+EOF;
+            $actual_sql = wl_core_sql_query_builder( $args );
+            $this->assertEquals( $expected_sql, $actual_sql );
+            // Try to perform query in order to see if there are errors on db side
+            $wpdb->get_results( $actual_sql );
+            $this->assertEmpty( $wpdb->last_error );       
         }
 
         function testWlCoreAddRelationInstance() {

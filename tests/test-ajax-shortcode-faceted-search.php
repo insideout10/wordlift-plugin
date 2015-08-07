@@ -29,8 +29,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
     	// Create 2 posts and 2 entities
         $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
         $entity_2_id = wl_create_post( '', 'entity1', 'Another Entity', 'draft', 'entity' );
-        $post_1_id = wl_create_post( '', 'post1', 'A post');
-        $post_2_id = wl_create_post( '', 'post2', 'A post');
+        $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish');
+        $post_2_id = wl_create_post( '', 'post2', 'A post', 'publish');
             
         // Insert relations
         wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
@@ -56,13 +56,39 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
 
     }
 
+    public function testPostsSelectionWithoutFiltersOnPostDrafts() {
+
+        // Create 2 posts and 2 entities
+        $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
+        $entity_2_id = wl_create_post( '', 'entity1', 'Another Entity', 'draft', 'entity' );
+        $post_1_id = wl_create_post( '', 'post1', 'A post' );
+        $post_2_id = wl_create_post( '', 'post2', 'A post' );
+            
+        // Insert relations
+        wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
+        wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+        wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
+
+        // Set $_GET variable: this means we will perform data selection for $entity_1_id
+        $_GET['entity_id'] = $entity_1_id;
+        $_GET['type'] = 'posts';
+
+        try {
+            $this->_handleAjax( 'wl_faceted_search' );
+        } catch ( WPAjaxDieContinueException $e ) { }
+        
+        $response = json_decode( $this->_last_response );
+        $this->assertInternalType( 'array', $response );
+        $this->assertCount( 0, $response );
+    }
+
     public function testPostsSelectionWithFilters() {
 
         // Create 2 posts and 2 entities
         $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
         $entity_2_id = wl_create_post( '', 'entity1', 'Another Entity', 'draft', 'entity' );
-        $post_1_id = wl_create_post( '', 'post1', 'A post');
-        $post_2_id = wl_create_post( '', 'post2', 'A post');
+        $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish');
+        $post_2_id = wl_create_post( '', 'post2', 'A post', 'publish');
             
         // Insert relations
         wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
@@ -80,15 +106,15 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
         try {
             $this->_handleAjax( 'wl_faceted_search', $mock_http_raw_data );
         } catch ( WPAjaxDieContinueException $e ) { }
-        
+
         $response = json_decode( $this->_last_response );
+        
         $this->assertInternalType( 'array', $response );
         $this->assertCount( 1, $response );
         $this->assertEquals( 'post', $response[0]->post_type );
-        $this->assertEquals( 'post', $response[1]->post_type );
-        $post_ids = array( $response[0]->ID, $response[1]->ID );
-        $this->assertContains( $post_1_id, $post_ids );
-        $this->assertContains( $post_2_id, $post_ids );     
+        $post_ids = array( $response[0]->ID );
+        $this->assertContains( $post_2_id, $post_ids );
+        $this->assertNotContains( $post_1_id, $post_ids );     
 
     }
 
@@ -97,8 +123,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
     	// Create 2 posts and 2 entities
         $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
         $entity_2_id = wl_create_post( '', 'entity1', 'Another Entity', 'draft', 'entity' );
-        $post_1_id = wl_create_post( '', 'post1', 'A post');
-        $post_2_id = wl_create_post( '', 'post2', 'A post');
+        $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish');
+        $post_2_id = wl_create_post( '', 'post2', 'A post', 'publish');
             
         // Insert relations
         wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );

@@ -51,8 +51,8 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
     $filtering_entity_uris = json_decode( $filtering_entity_uris );
         
     // Set up data structures
-    $referencing_post_ids  = wl_core_get_related_post_ids( $entity_id );
-    $result = array();
+    $referencing_post_ids  = wl_core_get_related_post_ids( $entity_id, array( 'status' => 'publish' ) );
+    $results = array();
 
     if ( 'posts' == $required_type ) {
         // Required filtered posts.
@@ -67,36 +67,34 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
                 $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
 
-                $result[] = $post_obj;
+                $results[] = $post_obj;
             }
         } else {
 
-
-            $filtering_entity_ids = array();  
-            
+            $filtering_entity_ids = array();
             foreach ( $filtering_entity_uris as $entity_uri ) {
                 $entity = wl_get_entity_post_by_uri( $entity_uri );
                 array_push( $filtering_entity_ids, $entity->ID );
             }
 
-            // Search posts that reference all the filtering entities.               
+            // Search posts that reference all the filtering entities.
             $filtered_posts = wl_core_get_posts( array(
                 'get'             =>    'posts',  
+                'post__in'        =>    $referencing_post_ids,
                 'related_to__in'  =>    $filtering_entity_ids,
-                'related_to'      =>    $entity_id,
                 'post_type'       =>    'post', 
                 'as'              =>    'subject',
             ) );
             
             foreach ( $filtered_posts as $post_obj ) {
                 
-                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj['ID'], 'thumbnail' ) );
-                $post_obj['thumbnail'] = ( $thumbnail ) ? 
+                $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+                $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-
-                $result[] = $post_obj;
+                $results[] = $post_obj;
             }
-            $result = $filtered_posts;
+
+            $results = $filtered_posts;
         }
         
     } else {
@@ -108,7 +106,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
         // Retrieve Wordlift relation instances table name
         $table_name = wl_core_get_relation_instances_table_name();
     
-        $ids = implode(',', $referencing_post_ids);
+        $ids = implode( ',', $referencing_post_ids );
 
         $query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
@@ -127,7 +125,7 @@ EOF;
             $entity = get_post( $obj->ID );
             $entity = wl_serialize_entity( $entity );
             $entity['counter'] = $obj->counter;
-            $result[] = $entity;
+            $results[] = $entity;
 
         }
 
@@ -135,7 +133,7 @@ EOF;
         
     // Output JSON and exit
     if ( ob_get_contents() ) ob_clean();
-    wp_send_json( $result );
+    wp_send_json( $results );
 
 }
 add_action('wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');

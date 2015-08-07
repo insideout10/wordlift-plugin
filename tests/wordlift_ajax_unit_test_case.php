@@ -10,7 +10,12 @@
  */
 class WL_Ajax_UnitTestCase extends WP_Ajax_UnitTestCase
 {
-	protected function _handleAjax( $action, $http_raw_data = null ) {
+	
+    function testFoo() {
+        $this->assertTrue( true );
+    }
+
+    protected function _handleAjax( $action, $http_raw_data = null ) {
 
     // Start output buffering
     ini_set( 'implicit_flush', false );
