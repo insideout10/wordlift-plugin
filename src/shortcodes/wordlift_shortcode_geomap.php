@@ -14,23 +14,28 @@
 function wl_shortcode_geomap_get_places( $post_id = null ) {
 
     // If $post_id is null or is not numeric it means this is a global geomap	
-	$is_global = ( is_null( $post_id ) ? true : false );
-    $is_global = ( !is_numeric($post_id) ? true : $is_global );
+    $is_global = is_null( $post_id ) || !is_numeric( $post_id );
 
-    // If the current one is not a global geomap, retrieve related post / place ids
-    $place_ids = $is_global ? array() : wl_core_get_related_entity_ids( $post_id );
+    // If the current one is not a global geomap, retrieve related entities ids
+    if( $is_global ) {
+        $related_ids = array();
+    } else {
+        $related_ids = wl_core_get_related_entity_ids( $post_id, array(
+            'status' => 'publish'
+        ) );
+    }
     
-    // If is not a global geomap, an empty $place_ids means that no place is related to the post
+    // If is not a global geomap, an empty $related_ids means that no entities are related to the post
     // An empty array can be returned in this case
-    if( !$is_global && empty($place_ids) ) {
+    if( !$is_global && empty( $related_ids ) ) {
         return array();
     }
 
-	// Retrieve all 'published' places with geo coordinates defined 
+    // Retrieve all 'published' places with geo coordinates defined 
     // If $place_ids is not empty, it's used to limit query results to the current post related places
     // Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query
     $places = get_posts( array(
-        'post__in' => $place_ids,
+        'post__in' => $related_ids,
         'post_type' => WL_ENTITY_TYPE_NAME,
         'nopaging' => true,
         'post_status' => 'published',
@@ -49,7 +54,7 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
         )
     ) );
 
-	return $places;
+    return $places;
 }
 /**
  * Encode places array in geojson compliant format 
@@ -58,9 +63,9 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
  * Default boundaries are defined using PHP_INT_MAX value
  *
  * @param array $places An array of place posts.
- * @return array An array of place posts.
+ * @return array An array of markers and boundaries for Leaflet.
  */
-function wl_shortcode_geomap_to_json( $places ) {
+function wl_shortcode_geomap_prepare_map( $places ) {
 		
 	// Prepare for min/max lat/long in case we need to define a view boundary for the client JavaScript.
     $min_latitude  = PHP_INT_MAX;
@@ -78,7 +83,7 @@ function wl_shortcode_geomap_to_json( $places ) {
         $coordinates = wl_get_coordinates( $entity->ID );
 
         // Don't show the widget if the coordinates aren't set.
-        if (!is_array($coordinates) || !is_numeric($coordinates['latitude']) || !is_numeric($coordinates['longitude'])) {
+        if ( $coordinates['latitude'] == 0 || $coordinates['longitude'] == 0) {
             continue;
         }
 
@@ -94,51 +99,52 @@ function wl_shortcode_geomap_to_json( $places ) {
 		}
 		
 		// Build HTML popup. TODO: move thumb width in css
-        $content = "<a href=$link>
-        				<h6>$title</h6>";
-		if( isset( $img_src ) ) {
-        	$content = $content . "<img src=$img_src style='width:100%'/>";
-		}
+        $content = "<a href=$link><h6>$title</h6>";
+        if( isset( $img_src ) ) {
+            $content = $content . "<img src=$img_src style='width:100%'/>";
+        }
         $content = $content . "</a><ul>";
 		// Get the related posts (published) and print them in the popup.
-    	$related_posts = wl_core_get_related_post_ids( $entity->ID );
+    	$related_posts = wl_core_get_related_post_ids( $entity->ID, array(
+            'status' => 'publish'
+        ) );
       	foreach ( $related_posts as $rp_id ) {
             
             $rp = get_post( $rp_id );
-        	$title   = esc_attr( $rp->post_title );
-        	$link    = esc_attr( get_permalink( $rp->ID ) );
-			$content = $content . "<li><a href=$link>$title</a></li>";
-		}
-		$content = $content . "</ul>";
-		
-		// Formatting POI in geoJSON.
-		// http://leafletjs.com/examples/geojson.html
-		$poi = array(
-			'type'			=> 'Feature',
-			'properties'	=> array( 'popupContent' => $content ),
-			'geometry'		=> array(
-										'type' => 'Point',
-										'coordinates' => array(
-															// Leaflet geoJSON wants them swapped
-															$coordinates['longitude'],
-															$coordinates['latitude']
-														)
-									)
-		);
-		
-		$pois[] = $poi;
+            $title   = esc_attr( $rp->post_title );
+            $link    = esc_attr( get_permalink( $rp->ID ) );
+                    $content = $content . "<li><a href=$link>$title</a></li>";
+        }
+        $content = $content . "</ul>";
+
+        // Formatting POI in geoJSON.
+        // http://leafletjs.com/examples/geojson.html
+        $poi = array(
+                'type'			=> 'Feature',
+                'properties'	=> array( 'popupContent' => $content ),
+                'geometry'		=> array(
+                                                                        'type' => 'Point',
+                                                                        'coordinates' => array(
+                                                                                                                // Leaflet geoJSON wants them swapped
+                                                                                                                $coordinates['longitude'],
+                                                                                                                $coordinates['latitude']
+                                                                                                        )
+                                                                )
+        );
+
+        $pois[] = $poi;
 
         // TODO: calculate the type to choose a marker of the appropriate color.
 
         // Set a reference to the coordinates.
-        $latitude =  & $coordinates['latitude'];
+        $latitude = $coordinates['latitude'];
         if ( $latitude < $min_latitude ) {
             $min_latitude = $latitude;
         }
         if ( $latitude > $max_latitude ) {
             $max_latitude = $latitude;
         }
-        $longitude =  & $coordinates['longitude'];
+        $longitude = $coordinates['longitude'];
         if ( $longitude < $min_longitude ) {
             $min_longitude = $longitude;
         }
@@ -149,24 +155,24 @@ function wl_shortcode_geomap_to_json( $places ) {
 
     // TODO Baundaries management could be delegated to the wordlift js ui layer
         
-	// Formatting boundaries in a Leaflet-like format (see LatLngBounds).
-	// http://leafletjs.com/reference.html#latlngbounds
-	$boundaries = array(
-						array( $min_latitude, $min_longitude ),
-						array( $max_latitude, $max_longitude )
-					);
+    // Formatting boundaries in a Leaflet-like format (see LatLngBounds).
+    // http://leafletjs.com/reference.html#latlngbounds
+    $boundaries = array(
+            array( $min_latitude, $min_longitude ),
+            array( $max_latitude, $max_longitude )
+    );
 
-	$jsondata = array();
-	$jsondata['features'] = $pois;
-	$jsondata['boundaries'] = $boundaries;
-    	
-	return json_encode( $jsondata );
+    $map_data = array();
+    $map_data['features'] = $pois;
+    $map_data['boundaries'] = $boundaries;
+
+    return $map_data;
 }
 /**
  * Print both global or post related places in json. It's executed via Ajax
  *
  * @uses wl_shortcode_geomap_get_places in order to retrieve places
- * @uses wl_shortcode_geomap_to_json in order to encode retireved places as json object
+ * @uses wl_shortcode_geomap_prepare_map in order to encode retireved places in a Leaflet friendly format
  *
  * @param array $places An array of place posts.
  * @return array An array of place posts.
@@ -176,13 +182,10 @@ function wl_shortcode_geomap_ajax()
 	// Get the post Id.
     $post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
 
-    ob_clean();
-    header( "Content-Type: application/json" );
-
     $places = wl_shortcode_geomap_get_places( $post_id );
-    echo wl_shortcode_geomap_to_json( $places );
+    $map_data = wl_shortcode_geomap_prepare_map( $places );
 	
-    wp_die();
+    wp_send_json( $map_data );
 }
 
 add_action( 'wp_ajax_wl_geomap', 'wl_shortcode_geomap_ajax' );
@@ -230,14 +233,14 @@ function wl_shortcode_geomap( $atts ) {
 	wp_enqueue_script( 'wordlift-ui', plugins_url( 'js/wordlift.ui.min.js', __FILE__ ), array( 'jquery' ) );
 	wp_localize_script( 'wordlift-ui', 'wl_geomap_params', array(
         'ajax_url' => admin_url('admin-ajax.php'),	// Global param
-        'action'   => 'wl_geomap'					// Global param
+        'action'   => 'wl_geomap'			// Global param
     ) );
 
 	// Escaping atts.
     $esc_class  = esc_attr('wl-geomap');
     $esc_id     = esc_attr($geomap_id);
-	$esc_width  = esc_attr($geomap_atts['width']);
-	$esc_height = esc_attr($geomap_atts['height']);
+    $esc_width  = esc_attr($geomap_atts['width']);
+    $esc_height = esc_attr($geomap_atts['height']);
     $esc_post_id 	= esc_attr($post_id);
 	
 	// Return HTML template.
