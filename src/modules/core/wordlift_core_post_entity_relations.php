@@ -180,7 +180,7 @@ function wl_core_delete_relation_instances( $subject_id ) {
 /**
  * Validate filters given as parameters to any *wl_core_get_related_...*
  * 
- * @param $params Associative array containing required predicate and post status
+ * @param $filters Associative array containing required predicate and post status
  * 
  * @return Corrected $filters, default is:
  *  array(
@@ -189,6 +189,10 @@ function wl_core_delete_relation_instances( $subject_id ) {
  *  );
  */
 function wl_core_validate_filters_for_related( $filters ) {
+    
+    if( !is_array( $filters ) ) {
+        $filters = array();
+    }
     
     if( !isset( $filters['predicate'] )) {
         $filters['predicate'] = null;
@@ -474,7 +478,7 @@ function wl_core_sql_query_builder( $args ) {
 *
 * @return (array) List of WP_Post objects or list of WP_Post ids. False in case of error or invalid params
 */
-function wl_core_get_posts( $args, $returned_type = ARRAY_A ) {
+function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 
     // Merge given args with defaults args value
     $args = array_merge( array(

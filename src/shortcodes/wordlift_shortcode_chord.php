@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Get entity with more relations (used for the global chord).
+ * Get entity with more relations (only used for the global chord).
  *
  * @used-by wl_chord_widget_func
  *
@@ -69,12 +69,17 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
         );
     }
 
-    // Get the post IDs that reference this entity.
-    $related_ids = wl_core_get_related_post_ids( $entity_id );
+    // Get related post and entity IDs related to this entity.
+    $related_post_ids = wl_core_get_related_post_ids( $entity_id, array(
+        'status' => 'publish'
+    ) );
     
-    // Get the entities referenced by this entity.
-    $related_ids = array_merge( $related_ids, wl_core_get_related_entity_ids( $entity_id ) );
-
+    $related_entity_ids = wl_core_get_related_entity_ids( $entity_id, array(
+        'status' => 'publish'
+    ) );
+    
+    // Merge results.
+    $related_ids = array_merge( $related_post_ids, $related_entity_ids );
     $related_ids = array_unique( $related_ids );
 	
     // TODO: List of entities ($rel) should be ordered by interest factors.
@@ -83,7 +88,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
     // Now we have all the related IDs.
     foreach ( $related_ids as $related_id ) {
 
-        // TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_relations_to_json*
+        // TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_get_graph*
         // method is going anyway to *refactor* the data structure. So here the structure may be optimized in terms
         // of readability and performance.
         $related['relations'][] = array( $entity_id, $related_id );
@@ -108,7 +113,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
  * @param $data
  * @return mixed|string|void
  */
-function wl_shortcode_chord_relations_to_json( $data )
+function wl_shortcode_chord_get_graph( $data )
 {
 
     // Refactor the entities array in order to provide entities relevant data (uri, url, label, type, css_class).
@@ -117,14 +122,14 @@ function wl_shortcode_chord_relations_to_json( $data )
 
         // Skip non-existing posts.
         if ( is_null( $post ) ) {
-            wl_write_log( "wl_shortcode_chord_relations_to_json : post not found [ post id :: $item ]" );
+            wl_write_log( "wl_shortcode_chord_get_graph : post not found [ post id :: $item ]" );
             return $item;
         }
 
         // Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
         $term = wl_entity_type_taxonomy_get_type( $item );
 
-        wl_write_log( "wl_shortcode_chord_relations_to_json [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
+        wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
 
         $entity = array(
             'uri'   => wl_get_entity_uri( $item ),
@@ -148,14 +153,14 @@ function wl_shortcode_chord_relations_to_json( $data )
     } );
 
     // Return the JSON representation.
-    return json_encode($data);
+    return $data;
 }
 
 /**
  * Retrieve related entities and output them in JSON.
  *
  * @uses wl_shortcode_chord_get_relations
- * @uses wl_shortcode_chord_relations_to_json
+ * @uses wl_shortcode_chord_get_graph
  */
 function wl_shortcode_chord_ajax()
 {
@@ -163,15 +168,10 @@ function wl_shortcode_chord_ajax()
     $post_id = $_REQUEST['post_id'];
     $depth   = $_REQUEST['depth'];
 
-    ob_clean();
-    header( 'Content-Type: application/json' );
+    $relations  = wl_shortcode_chord_get_relations( $post_id, $depth );
+    $graph  = wl_shortcode_chord_get_graph( $relations );
 
-    $result  = wl_shortcode_chord_get_relations( $post_id, $depth );
-    $result  = wl_shortcode_chord_relations_to_json( $result );
-
-    echo $result;
-
-    wp_die();
+    wp_send_json( $graph );
 }
 
 add_action('wp_ajax_wl_chord', 'wl_shortcode_chord_ajax');
