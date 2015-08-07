@@ -16,20 +16,20 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 	
 	// Build list of event-entities.
 	if( is_null( $post_id ) || ( !is_numeric( $post_id ) ) ) {
-		// Global timeline. Get entities from the latest posts.
-		$latest_posts_ids = get_posts( array(
-	        'numberposts' => 50,
-	        'fields'      => 'ids', //only get post IDs
-	        'post_type'	  => 'post',
-	        'post_status' => 'publish'
+            // Global timeline. Get entities from the latest posts.
+            $latest_posts_ids = get_posts( array(
+                'numberposts' => 50,
+                'fields'      => 'ids', //only get post IDs
+                'post_type'	  => 'post',
+                'post_status' => 'publish'
 	    ) );
 	
-		if( empty( $latest_posts_ids ) ){
-			// There are no posts.
-			return array();
-		}
-		
-		// Collect entities related to latest posts
+            if( empty( $latest_posts_ids ) ){
+                    // There are no posts.
+                    return array();
+            }
+
+            // Collect entities related to latest posts
 	    $entity_ids = array();
 	    foreach ( $latest_posts_ids as $id ) {
 	        $entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
