@@ -30,13 +30,13 @@ add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
 /*
  * Ajax call for the faceted search widget
  */
-function wl_shortcode_faceted_search_ajax()
+function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
 {    
     // Entity ID must be defined
     if( ! isset( $_GET['entity_id'] ) ) {
-        echo 'No entity_id given';
-        return;
+        wp_die( 'No entity_id given' );
     }
+
     $entity_id = $_GET['entity_id'];
     
     // Which type was requested?
@@ -47,25 +47,19 @@ function wl_shortcode_faceted_search_ajax()
     }
     
     // Extract filtering conditions
-    $request_body = file_get_contents('php://input');
-    $filtering_entity_uris = json_decode( $request_body );
-    
-    wl_write_log('piedo faceted GET');
-    wl_write_log($_GET);
-    wl_write_log($filtering_entity_uris);
-    
+    $filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents("php://input") : $http_raw_data;
+    $filtering_entity_uris = json_decode( $filtering_entity_uris );
+        
     // Set up data structures
     $referencing_post_ids  = wl_core_get_related_post_ids( $entity_id );
     $result = array();
-    
-    // Get ready to fire a JSON
-    header( 'Content-Type: application/json' );
 
     if ( 'posts' == $required_type ) {
         // Required filtered posts.
         wl_write_log( "Going to find related posts for the current entity [ entity ID :: $entity_id ]" );
 
         if ( empty( $filtering_entity_uris ) ) {
+
             // No filter, just get referencing posts
             foreach ( $referencing_post_ids as $post_obj_id ) {
                 $post_obj = get_post( $post_obj_id );                
@@ -77,12 +71,14 @@ function wl_shortcode_faceted_search_ajax()
             }
         } else {
 
-            $filtering_entity_ids = array( $entity_id );  // the current entity is included in the filter
 
+            $filtering_entity_ids = array();  
+            
             foreach ( $filtering_entity_uris as $entity_uri ) {
                 $entity = wl_get_entity_post_by_uri( $entity_uri );
                 array_push( $filtering_entity_ids, $entity->ID );
             }
+
             // Search posts that reference all the filtering entities.               
             $filtered_posts = wl_core_get_posts( array(
                 'get'             =>    'posts',  
@@ -136,13 +132,11 @@ EOF;
         }
 
     }
-    
-    wl_write_log('piedo faceted result');
-    wl_write_log($result);
-    
+        
     // Output JSON and exit
-    echo json_encode( $result );
-    wp_die();
+    if ( ob_get_contents() ) ob_clean();
+    wp_send_json( $result );
+
 }
 add_action('wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');
 add_action('wp_ajax_nopriv_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');
