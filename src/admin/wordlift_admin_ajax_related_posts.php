@@ -27,7 +27,7 @@ function wordlift_ajax_related_posts() {
         $related_posts = wl_core_get_posts( array(
             'get'             =>    'posts',  
             'related_to__in'  =>    $filtering_entity_ids,
-            'related_to__not' =>    $post_id,
+            'post__not_in'    =>    array( $post_id ),
             'post_type'       =>    'post', 
             'as'              =>    'object',
         ) );
