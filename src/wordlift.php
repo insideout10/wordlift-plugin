@@ -236,12 +236,20 @@ add_filter( 'wp_kses_allowed_html', 'wordlift_allowed_html', 10, 2 );
  */
 function wl_get_coordinates( $post_id ) {
 
-	$latitude  = get_post_meta( $post_id, WL_CUSTOM_FIELD_GEO_LATITUDE, true );
-	$longitude = get_post_meta( $post_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, true );
+	$latitude  = wl_schema_get_value( $post_id, 'latitude' );
+	$longitude = wl_schema_get_value( $post_id, 'longitude' );
 
-	if ( empty( $latitude ) || empty( $longitude ) ) {
-		return null;
-	}
+	// Default coords values [0, 0]
+	if ( ! isset( $latitude[0] ) || ! is_numeric( $latitude[0] ) ) {
+		$latitude = 0.0;
+	} else {
+            $latitude = floatval( $latitude[0] );
+        }
+        if ( ! isset( $longitude[0] ) || ! is_numeric( $longitude[0] ) ) {
+            $longitude = 0.0;
+        } else {
+            $longitude = floatval( $longitude[0] );
+        }
 
 	return array(
 		'latitude'  => $latitude,
