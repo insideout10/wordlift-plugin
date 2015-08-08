@@ -9,5 +9,8 @@ require_once('wordlift_core_post_entity_relations.php');
 // Include wl_schema api
 require_once( 'wordlift_core_schema_api.php' );
 
-// Include methods dor Wordlift plugin install
+// Include methods for Wordlift plugin install
 require_once( 'wordlift_core_install.php' );
+
+// Include utility global functions 
+require_once( 'wordlift_core_functions.php' );

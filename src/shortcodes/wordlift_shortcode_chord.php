@@ -171,7 +171,7 @@ function wl_shortcode_chord_ajax()
     $relations  = wl_shortcode_chord_get_relations( $post_id, $depth );
     $graph  = wl_shortcode_chord_get_graph( $relations );
 
-    wp_send_json( $graph );
+    wl_core_send_json( $graph );
 }
 
 add_action('wp_ajax_wl_chord', 'wl_shortcode_chord_ajax');

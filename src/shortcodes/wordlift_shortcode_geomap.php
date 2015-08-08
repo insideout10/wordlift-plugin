@@ -185,7 +185,7 @@ function wl_shortcode_geomap_ajax()
     $places = wl_shortcode_geomap_get_places( $post_id );
     $map_data = wl_shortcode_geomap_prepare_map( $places );
 	
-    wp_send_json( $map_data );
+    wp_core_send_json( $map_data );
 }
 
 add_action( 'wp_ajax_wl_geomap', 'wl_shortcode_geomap_ajax' );

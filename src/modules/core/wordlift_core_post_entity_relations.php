@@ -535,7 +535,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
     $results = array();
     // If ids are required, returns a one-dimensional array containing ids.
     // Otherwise an array of associative arrays representing the post | relation object
-    if ( in_array( $args[ 'get' ], array( 'post_ids' ) ) ) {
+    if ( 'post_ids' == $args[ 'get' ] ) {
         # See https://codex.wordpress.org/Class_Reference/wpdb#SELECT_a_Column
         $results = $wpdb->get_col( $sql_statement );
     } else {

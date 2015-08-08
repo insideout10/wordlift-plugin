@@ -131,9 +131,7 @@ EOF;
 
     }
         
-    // Output JSON and exit
-    if ( ob_get_contents() ) ob_clean();
-    wp_send_json( $results );
+    wl_core_send_json( $results );
 
 }
 add_action('wp_ajax_wl_faceted_search', 'wl_shortcode_faceted_search_ajax');

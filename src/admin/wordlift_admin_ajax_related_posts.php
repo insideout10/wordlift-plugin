@@ -1,13 +1,19 @@
 <?php
 
-function wordlift_ajax_related_posts() {
+function wordlift_ajax_related_posts( $http_raw_data = null ) {
     
     // Extract filtering conditions
+    if( isset( $_GET["post_id"] ) || !is_numeric( $_GET["post_id"] ) ) {
+        wp_die('Invalid post id!');
+    }
+
     $post_id = isset( $_GET["post_id"] ) ? intval( $_GET["post_id"] ) : 0;
     wl_write_log( "Going to find posts related to current with post id: $post_id ..." );
     
-    $request_body = file_get_contents('php://input');
-    $filtering_entity_uris = json_decode( $request_body );    
+    // Extract filtering conditions
+    $filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents("php://input") : $http_raw_data;
+    $filtering_entity_uris = json_decode( $filtering_entity_uris );
+   
     $filtering_entity_ids = array();
     $related_posts = array();
                        
@@ -34,16 +40,13 @@ function wordlift_ajax_related_posts() {
         
         foreach ( $related_posts as $post_obj ) {
                 
-            $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj[ 'ID' ], 'thumbnail' ) );
-            $post_obj[ 'thumbnail' ] = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;    
+            $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+            $post_obj->thumbnail = ( $thumbnail ) ? $thumbnail : WL_DEFAULT_THUMBNAIL_PATH; 
+            $post_obj->link = get_edit_post_link( $post_obj->ID );  
         }
     }
 
-    // Get ready to fire a JSON
-    header( 'Content-Type: application/json' );
-    echo json_encode( $related_posts );
-
-    die();
+    wl_core_send_json( $related_posts );
 }
 
 if ( is_admin() ) {

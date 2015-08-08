@@ -245,14 +245,14 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  */
 function wl_save_entity( $entity_properties ) {
     
-        $uri            = $entity_properties['uri'];
-        $label          = $entity_properties['label'];
-        $type_uri  = $entity_properties['main_type_uri'];
-        $description    = $entity_properties['description'];
-        $entity_types   = $entity_properties['type_uris'];
-        $images         = $entity_properties['images'];
-        $related_post_id = $entity_properties['related_post_id'];
-        $same_as        = $entity_properties['same_as'];
+    $uri            	= 	$entity_properties['uri'];
+    $label          	= 	$entity_properties['label'];
+    $type_uri  			= 	$entity_properties['main_type_uri'];
+    $description    	= 	$entity_properties['description'];
+    $entity_types   	= 	$entity_properties['type_uris'];
+    $images         	= 	$entity_properties['images'];
+    $related_post_id 	= 	$entity_properties['related_post_id'];
+    $same_as        	= 	$entity_properties['same_as'];
 
             
 	// Avoid errors due to null.
