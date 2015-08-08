@@ -33,7 +33,7 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 	    $entity_ids = array();
 	    foreach ( $latest_posts_ids as $id ) {
 	        $entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
-                    'status' => 'publilsh'
+                    'status' => 'publish'
                 ) ) );
 	    }
 		

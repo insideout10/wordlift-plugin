@@ -268,50 +268,6 @@ function wl_get_sparql_post_references( $post_id ) {
 }
 
 /**
- * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
- *
- * @param string $uri The entity URI.
- *
- * @return WP_Post|null A WP_Post instance or null if not found.
- */
-function wl_get_entity_post_by_uri( $uri ) {
-
-	$query = new WP_Query( array(
-			'posts_per_page' => 1,
-			'post_status'    => 'any',
-			'post_type'      => WL_ENTITY_TYPE_NAME,
-			'meta_query'     => array(
-				'relation' => 'OR',
-				array(
-					'key'     => WL_CUSTOM_FIELD_SAME_AS,
-					'value'   => $uri,
-					'compare' => '='
-				),
-				array(
-					'key'     => 'entity_url',
-					'value'   => $uri,
-					'compare' => '='
-				)
-			)
-		)
-	);
-
-	// Get the matching entity posts.
-	$posts = $query->get_posts();
-
-	wl_write_log( "wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
-
-	// Return null if no post is found.
-	if ( 0 === count( $posts ) ) {
-		return null;
-	}
-
-	// Return the found post.
-	return $posts[0];
-}
-
-
-/**
  * Get a string representing the NS prefixes for a SPARQL query.
  *
  * @return string The PREFIX lines.

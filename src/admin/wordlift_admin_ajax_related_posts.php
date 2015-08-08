@@ -15,19 +15,8 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
     $filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents("php://input") : $http_raw_data;
     $filtering_entity_uris = json_decode( $filtering_entity_uris );
    
-    $filtering_entity_ids = array();
+    $filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
     $related_posts = array();
-                       
-    foreach( $filtering_entity_uris as $uri) {
-        wl_write_log( "Find entity with uri $uri ..." );
-                   
-        if ( $entity = wl_get_entity_post_by_uri( $uri ) ) {
-            $entity = wl_get_entity_post_by_uri( $uri );
-            array_push( $filtering_entity_ids, $entity->ID );
-        }
-    }
-
-    wl_write_log( "Going to find posts related to the following entities ..." );
     
     if ( !empty( $filtering_entity_ids ) ) {
     

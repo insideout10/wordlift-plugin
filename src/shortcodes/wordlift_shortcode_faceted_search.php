@@ -66,16 +66,13 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
                 $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
                 $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
+                $post_obj->link = get_post_permalink( $post_obj->ID );  
 
                 $results[] = $post_obj;
             }
         } else {
 
-            $filtering_entity_ids = array();
-            foreach ( $filtering_entity_uris as $entity_uri ) {
-                $entity = wl_get_entity_post_by_uri( $entity_uri );
-                array_push( $filtering_entity_ids, $entity->ID );
-            }
+            $filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
 
             // Search posts that reference all the filtering entities.
             $filtered_posts = wl_core_get_posts( array(
@@ -91,6 +88,8 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
                 $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
                 $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
+                $post_obj->link = get_post_permalink( $post_obj->ID );  
+
                 $results[] = $post_obj;
             }
 
