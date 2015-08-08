@@ -61,8 +61,9 @@ class AjaxRelatedPostsTest extends WL_Ajax_UnitTestCase
         $this->assertCount( 1, $response );
         $this->assertEquals( 'post', $response[0]->post_type );
         $this->assertEquals( $post_2_id, $response[0]->ID );
-        $this->assertEquals( get_edit_post_link( $post_2_id ), $response[0]->link );
-         
+        $this->assertEquals( get_edit_post_link( $post_2_id, 'none' ), $response[0]->link );
+        $this->assertEquals( get_post_permalink( $post_2_id ), $response[0]->permalink );
+                 
 
     }
     

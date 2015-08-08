@@ -66,7 +66,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
                 $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
                 $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-                $post_obj->link = get_post_permalink( $post_obj->ID );  
+                $post_obj->permalink = get_post_permalink( $post_obj->ID );  
 
                 $results[] = $post_obj;
             }
@@ -88,7 +88,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
                 $thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
                 $post_obj->thumbnail = ( $thumbnail ) ? 
                     $thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-                $post_obj->link = get_post_permalink( $post_obj->ID );  
+                $post_obj->permalink = get_post_permalink( $post_obj->ID );  
 
                 $results[] = $post_obj;
             }

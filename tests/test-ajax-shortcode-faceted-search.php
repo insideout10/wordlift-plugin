@@ -50,8 +50,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
 		$this->assertCount( 2, $response );
 		$this->assertEquals( 'post', $response[0]->post_type );
 		$this->assertEquals( 'post', $response[1]->post_type );
-		$this->assertEquals( get_post_permalink( $response[0]->ID ), $response[0]->link );
-        $this->assertEquals( get_post_permalink( $response[1]->ID ), $response[1]->link );
+		$this->assertEquals( get_post_permalink( $response[0]->ID ), $response[0]->permalink );
+        $this->assertEquals( get_post_permalink( $response[1]->ID ), $response[1]->permalink );
         
         $post_ids = array( $response[0]->ID, $response[1]->ID );
 		$this->assertContains( $post_1_id, $post_ids );
@@ -115,7 +115,7 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
         $this->assertInternalType( 'array', $response );
         $this->assertCount( 1, $response );
         $this->assertEquals( 'post', $response[0]->post_type );
-        $this->assertEquals( get_post_permalink( $response[0]->ID ), $response[0]->link );
+        $this->assertEquals( get_post_permalink( $response[0]->ID ), $response[0]->permalink );
         $post_ids = array( $response[0]->ID );
         $this->assertContains( $post_2_id, $post_ids );
         $this->assertNotContains( $post_1_id, $post_ids );     
