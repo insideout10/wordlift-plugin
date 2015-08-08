@@ -12,31 +12,41 @@ define('WL_WHO_RELATION', 'who');
 define('WL_WHERE_RELATION', 'where');
 define('WL_WHEN_RELATION', 'when');
 
+// Mapping options / validations rules used by wl_core_get_posts to perform validation on args
+// The array is serialized because array constants are only from php 5.6 on.
+define('WL_CORE_GET_POSTS_VALIDATION_RULES', serialize( array(
+    'get'               =>      array( 'posts', 'post_ids' ),
+    'as'                =>      array( 'object', 'subject' ),
+    'post_type'         =>      array( 'post', 'entity' ),
+    'post_status'       =>      array( 'draft', 'trash', 'publish' ),
+    'with_predicate'    =>      array( WL_WHAT_RELATION, WL_WHEN_RELATION, WL_WHERE_RELATION, WL_WHO_RELATION ),
+) ) );
+
 // Classification boxes configuration for angularjs edit-post widget
 // The array is serialized because array constants are only from php 5.6 on.
-define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize(array(
+define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
     array(
     	'id' 				=> WL_WHAT_RELATION,
     	'label' 			=> 'What',
     	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing'),
-        'selectedEntities' 	=> array()
+        'selectedEntities' 	=> array(),
     	),
     array(
     	'id' 				=> WL_WHO_RELATION,
     	'label' 			=> 'Who',
     	'registeredTypes' 	=> array('organization', 'person'),
-        'selectedEntities' 	=> array()
+        'selectedEntities' 	=> array(),
     	),
     array(
     	'id' 				=> WL_WHERE_RELATION,
     	'label' 			=> 'Where',
     	'registeredTypes' 	=> array('place'),
-        'selectedEntities' 	=> array()
+        'selectedEntities' 	=> array(),
     	),
     array(
     	'id' 				=> WL_WHEN_RELATION,
     	'label' 			=> 'When',
     	'registeredTypes' 	=> array('event'),
-        'selectedEntities' 	=> array()
+        'selectedEntities' 	=> array(),
     	),
-)));
+) ) );

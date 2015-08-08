@@ -217,6 +217,7 @@ class PostEntityRelationsTest extends WP_UnitTestCase {
                 );
             
             $result = wl_core_get_posts( $args );
+            
             $this->assertInternalType( "array", $result ); 
             
             // Case 14 - Ask an invalid post status 

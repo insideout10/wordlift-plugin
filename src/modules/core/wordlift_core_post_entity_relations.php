@@ -13,7 +13,15 @@ function wl_core_check_relation_predicate_is_supported( $predicate ) {
         WL_WHAT_RELATION, WL_WHEN_RELATION, WL_WHERE_RELATION, WL_WHO_RELATION
     ) );
 }
+/**
+ * Return an array of validation rules used by wl_core_get_posts
+ * 
+ * @return array in the format field => (array) accepeted_values 
+ */
+function wl_core_get_validation_rules() { 
 
+    return unserialize( WL_CORE_GET_POSTS_VALIDATION_RULES );
+}
 /**
  * Return the wordlift relation instances table name
  * 
@@ -508,27 +516,16 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
             // Sanitize value removing non numeric values from the array
             $args[ $option_name ] = array_filter( $args[ $option_name ], "is_numeric" );
         }
-   }
- 
-    if ( !in_array( $args[ 'get' ], array( 'posts', 'post_ids' ) ) )  {
-        return false;
     }
-    if ( !in_array( $args[ 'as' ], array( 'object', 'subject' ) ) )  {
-        return false;
-    }
-    if ( !in_array( $args[ 'post_type' ], array( 'post', 'entity' ) ) )  {
-        return false;
-    }
-    if ( isset( $args['post_status'] ) && !is_null( $args['post_status'] ) ) {
-        if( !in_array( $args['post_status'], get_post_stati() ) )  {
-            return false;
+    // Performing validation rules
+    foreach ( wl_core_get_validation_rules() as $option_name => $accepeted_values ) {
+        if ( isset( $args[ $option_name ] ) && !is_null( $args[ $option_name ] ) ) {
+            if ( !in_array( $args[ $option_name ], $accepeted_values ) )  {
+                return false;
+            }
         }
     }
-    if ( null != $args[ 'with_predicate' ] )  {
-        if ( !wl_core_check_relation_predicate_is_supported( $args[ 'with_predicate' ] ) ) {
-            return false;
-        } 
-    }
+
     // Prepare interaction with db
     global $wpdb;
     // Build sql statement with given arguments
