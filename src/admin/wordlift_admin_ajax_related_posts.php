@@ -3,11 +3,12 @@
 function wordlift_ajax_related_posts( $http_raw_data = null ) {
     
     // Extract filtering conditions
-    if( isset( $_GET["post_id"] ) || !is_numeric( $_GET["post_id"] ) ) {
-        wp_die('Invalid post id!');
+    if( !isset( $_GET["post_id"] ) || !is_numeric( $_GET["post_id"] ) ) {
+        wp_die('Post id missing or invalid!');
     }
 
-    $post_id = isset( $_GET["post_id"] ) ? intval( $_GET["post_id"] ) : 0;
+    $post_id = $_GET["post_id"]; 
+
     wl_write_log( "Going to find posts related to current with post id: $post_id ..." );
     
     // Extract filtering conditions
@@ -35,7 +36,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
             'related_to__in'  =>    $filtering_entity_ids,
             'post__not_in'    =>    array( $post_id ),
             'post_type'       =>    'post', 
-            'as'              =>    'object',
+            'as'              =>    'subject',
         ) );
         
         foreach ( $related_posts as $post_obj ) {
@@ -49,6 +50,4 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
     wl_core_send_json( $related_posts );
 }
 
-if ( is_admin() ) {
-    add_action( 'wp_ajax_wordlift_related_posts', 'wordlift_ajax_related_posts' );
-}
+add_action( 'wp_ajax_wordlift_related_posts', 'wordlift_ajax_related_posts' );

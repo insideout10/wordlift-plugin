@@ -10,6 +10,7 @@
  */
 class WL_Ajax_UnitTestCase extends WP_Ajax_UnitTestCase
 {
+
 	
     function testFoo() {
         $this->assertTrue( true );
