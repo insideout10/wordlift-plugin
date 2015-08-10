@@ -107,6 +107,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
     
         $ids = implode( ',', $referencing_post_ids );
 
+        // TODO - if an entity is related with different predicates each predicate impacts on counter
         $query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
             FROM $table_name 
