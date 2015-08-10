@@ -59,8 +59,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
     	
     // Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) &&  isset( $_POST['wl_boxes'] ) ) {
-
-
+	
             wl_write_log( "[ post id :: $post_id ][ POST(wl_entities) :: " );
             wl_write_log( json_encode( $_POST['wl_entities'] ) );
             wl_write_log( "]" );
@@ -68,48 +67,45 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
             wl_write_log( json_encode( $_POST['wl_boxes'], true ) );
             wl_write_log( "]" );
 
-            $entities_via_post = array_values( $_POST['wl_entities'] );
+            $entities_via_post = $_POST['wl_entities'];
             $boxes_via_post = $_POST['wl_boxes'] ;
 
-            // Save each entity and store the post id.
-            foreach ( $entities_via_post as $index => $entity ) {
-
-                    //if ( preg_match( '/^local-entity-.+/', $entity['uri'] ) > 0 ) {
-                            // Build the proper uri 
-                            $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
-                            // Populate the mapping
-                            $entities_uri_mapping[ $entity['uri'] ] = $uri;
-                            // Override the entity obj
-                            $entities_via_post[ $index ]['uri'] = $uri;
-                    //}
+            foreach ( $entities_via_post as $entity_uri => $entity ) {
+            	// Local entities have a tmp uri with 'local-entity-'
+            	// These uris need to be rewritten here and replaced in the content
+                if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
+                	// Build the proper uri 
+                	$uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
+                	// Populate the mapping
+                	$entities_uri_mapping[ $entity_uri ] = $uri;
+                	// Override the entity obj
+                	$entities_via_post[ $entity_uri ][ 'uri' ] = $uri;
+                }
             }
 
             // Populate the $entities_predicates_mapping
+            // Local Redlink uris need to be used here
             foreach ( $boxes_via_post as $predicate => $entity_uris ) {
-                    foreach ( $entity_uris as $entity_uri ) {
-                            $uri = $entity_uri;
-                            if ( array_key_exists( $entity_uri, $entities_uri_mapping ) ) {
-                                    $uri = $entities_uri_mapping[ $entity_uri ];
-                            }
-                            $entities_predicates_mapping[ $uri ][] = $predicate; 
-                    }	
+                foreach ( $entity_uris as $entity_uri ) {
+                	// Retrieve the entity label needed to build the uri
+                	$label = $entities_via_post[ $entity_uri ][ 'label' ];
+                    $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
+                    $entities_predicates_mapping[ $uri ][] = $predicate; 
+                }	
             }
-
-            wl_write_log( "[ entities_via_post :: " );
-            wl_write_log( $entities_via_post );
-            wl_write_log( "]" );
 
             // Save entities and push them to Redlink
             // TODO: pass also latitude, longitude, etc.
-            wl_save_entities( $entities_via_post, $post_id );
+            wl_save_entities( array_values( $entities_via_post ), $post_id );
+
 	}
     
+	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
-        // Save each entity and store the post id.
+    // Save each entity and store the post id.
 	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
 		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
 	}
-
 	// Update the post content
   	wp_update_post( array(
   		'ID'           => $post->ID,
@@ -122,26 +118,27 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         // Reset previously saved instances
 	wl_core_delete_relation_instances( $post_id ); 
         
-        // Save relation instances
-        foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
-            
-            wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
-            
-            if( $entities_predicates_mapping ) {
-                $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
-                foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-                    wl_write_log(" Going to add relation with predicate $predicate");
-                    wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
-                }
-            } else {
-                // Just for unit tests
-                wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
-            }
-
-            // TODO Check if is needed
-            wl_linked_data_push_to_redlink( $referenced_entity_id );
-        }
+    // Save relation instances
+    foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
         
+        wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
+        
+        if( $entities_predicates_mapping ) {     
+            // Retrieve the entity uri
+            $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
+            foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
+                wl_write_log(" Going to add relation with predicate $predicate");
+                wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
+            }
+        } else {
+            // Just for unit tests
+            wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
+        }
+
+        // TODO Check if is needed
+        wl_linked_data_push_to_redlink( $referenced_entity_id );
+    }
+    
 	// Push the post to Redlink.
 	wl_linked_data_push_to_redlink( $post->ID );
 
@@ -380,7 +377,6 @@ function wl_save_entity( $entity_properties ) {
  * @return array An array of entity posts.
  */
 function wl_linked_data_content_get_embedded_entities( $content ) {
-
 
 	// Remove quote escapes.
 	$content = str_replace( '\\"', '"', $content );
