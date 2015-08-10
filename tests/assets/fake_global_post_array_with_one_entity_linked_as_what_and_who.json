@@ -1,0 +1,21 @@
+{
+   "wl_entities":{
+      "{{REDLINK_ENDPOINT}}\/entity\/Apprendimento":{
+         "uri":"{{REDLINK_ENDPOINT}}\/entity\/Apprendimento",
+         "label":"Apprendimento",
+         "description":"L\\'apprendimento consiste nell\\'acquisizione o nella modifica di conoscenze (nuove o gi\u00e0 esistenti), comportamenti, abilit\u00e0, valori o preferenze e pu\u00f2 riguardare la sintesi di diversi tipi di informazione. Possiedono questa capacit\u00e0 gli umani, gli animali e alcune macchine. L\\'evoluzione dell\\'apprendimento nel tempo segue una curva di apprendimento. Lo studio dell\\'apprendimento umano fa parte della psicologia cognitiva.",
+         "main_type":"wl-thing",
+         "sameas":[
+            "http:\/\/rdf.freebase.com\/ns\/m.0191f8"
+         ]
+      }
+   },
+   "wl_boxes":{
+      "what":[
+         "{{REDLINK_ENDPOINT}}\/entity\/Apprendimento"
+      ],
+      "who":[
+         "{{REDLINK_ENDPOINT}}\/entity\/Apprendimento"
+      ]
+   }
+}
