@@ -123,7 +123,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         
         wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
         
-        if( $entities_predicates_mapping ) {     
+        if( $entities_predicates_mapping ) { 
+
+        	wl_write_log(" Going to manage relation instances according to the following mapping");
+         	wl_write_log( $entities_predicates_mapping );
+         	
             // Retrieve the entity uri
             $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
             foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
