@@ -1,5 +1,6 @@
 
 (function() {
+    
     tinymce.create('tinymce.plugins.wl_shortcodes', {
     	
     	// Custom function for the Chord

@@ -114,24 +114,7 @@ function wordlift_buttonhooks() {
 	// Only add hooks when the current user has permissions AND is in Rich Text editor mode
 	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) ) {
 		add_filter( 'mce_external_plugins', 'wordlift_register_tinymce_javascript' );
-		add_filter( 'mce_buttons', 'wordlift_register_buttons' );
 	}
-}
-
-/**
- * Register the TinyMCE buttons. This method is called by the WP mce_buttons hook.
- *
- * @param array $buttons The existing buttons array.
- *
- * @return array The modified buttons array.
- */
-function wordlift_register_buttons( $buttons ) {
-	// push the wordlift button the array.
-	array_push( $buttons, 'wordlift' );
-	// push the create entity wordlift
-	array_push( $buttons, 'wordlift_add_entity' );
-
-	return $buttons;
 }
 
 /**
