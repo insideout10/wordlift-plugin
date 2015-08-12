@@ -136,8 +136,6 @@ class EntityFunctionsTest extends WP_UnitTestCase
         
         // Get microdata template
         $entity_type_details = wl_entity_type_taxonomy_get_type( $business_id );
-        wl_write_log('piedo');
-        wl_write_log($entity_type_details);
         $microdata_template = $entity_type_details['microdata_template'];
         
         // Check inherited microdata templates:
