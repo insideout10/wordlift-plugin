@@ -129,7 +129,7 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
 
     }
 
-    public function testEntitySelection() {
+    public function testFacetsSelection() {
 
     	// Create 2 posts and 2 entities
         $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
@@ -144,16 +144,17 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
 
         // Set $_GET variable: this means we will perform data selection for $entity_1_id
         $_GET['entity_id'] = $entity_1_id;
-		
+		$_GET['type'] = 'facets';
+
         try {
  	   	    $this->_handleAjax( 'wl_faceted_search' );
     	} catch ( WPAjaxDieContinueException $e ) { }
     	
     	$response = json_decode( $this->_last_response );
 		$this->assertInternalType( 'array', $response );
-		$this->assertCount( 2, $response );
-		$entity_uris = array( $response[0]->id, $response[1]->id );
-		$this->assertContains( wl_get_entity_uri( $entity_1_id ), $entity_uris );
+		$this->assertCount( 1, $response );
+		$entity_uris = array( $response[0]->id );
+		$this->assertNotContains( wl_get_entity_uri( $entity_1_id ), $entity_uris );
 		$this->assertContains( wl_get_entity_uri( $entity_2_id ), $entity_uris );		
 
     }

@@ -119,7 +119,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
         $query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
             FROM $table_name 
-            WHERE subject_id IN ($ids) 
+            WHERE subject_id IN ($ids) and object_id != $entity_id
             GROUP BY object_id;
 EOF;
         wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ] [ query :: $query ]" );        
