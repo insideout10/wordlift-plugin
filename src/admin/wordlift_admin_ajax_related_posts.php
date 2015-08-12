@@ -5,6 +5,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
     // Extract filtering conditions
     if( !isset( $_GET["post_id"] ) || !is_numeric( $_GET["post_id"] ) ) {
         wp_die('Post id missing or invalid!');
+        return;
     }
 
     $post_id = $_GET["post_id"]; 

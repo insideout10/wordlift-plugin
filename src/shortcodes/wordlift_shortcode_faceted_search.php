@@ -35,10 +35,18 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null )
     // Entity ID must be defined
     if( ! isset( $_GET['entity_id'] ) ) {
         wp_die( 'No entity_id given' );
+        return;
     }
 
     $entity_id = $_GET['entity_id'];
-    
+
+    // If the current post is not an entity post an exception needs to be raised
+    $entity = get_post( $entity_id );
+    if( WL_ENTITY_TYPE_NAME !== $entity->post_type ) {
+        wp_die( 'Faceted search supports only entity posts' );
+        return;
+    }
+
     // Which type was requested?
     if( isset( $_GET['type'] ) ) {
         $required_type = $_GET['type'];

@@ -24,6 +24,13 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
     	$this->_handleAjax( 'wl_faceted_search' );
     }
 
+    public function testDataSelectionForANotEntity() {
+        $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish', 'post');
+        $_GET['entity_id'] = $post_1_id;
+        $this->setExpectedException( 'WPAjaxDieStopException', 'Faceted search supports only entity posts' );
+        $this->_handleAjax( 'wl_faceted_search' );
+    }
+
     public function testPostsSelectionWithoutFilters() {
 
     	// Create 2 posts and 2 entities
