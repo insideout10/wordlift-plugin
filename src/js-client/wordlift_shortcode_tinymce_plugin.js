@@ -51,6 +51,35 @@
         	// Check tinyMCE version. If the version is 4 the menu will be built here,
         	// otherwise in the createControl() function.
         	if( tinymce.majorVersion==4 ) {
+                    
+                        var menu4 = [
+                            {
+                                text: 'Chord',
+                                onclick: this.chordClick
+                            },
+                            {
+                                text: 'Timeline',
+                                onclick: this.timelineClick
+                            },
+                            {
+                                text: 'GeoMap',
+                                onclick: this.geomapClick
+                            },
+                            {
+                                text: 'Navigator',
+                                onclick: this.navigatorClick
+                            }
+                        ];
+                        
+                        // Only show faceted search in the entity editor
+                        if( typenow && typenow == 'entity' ) {
+                            menu4.push({
+                                text: 'FacetedSearch',
+                                onclick: this.facetedSearchClick
+                            });
+                        }
+                        
+                    
         		var btn = ed.addButton('wl_shortcodes_menu', {
 			        type: 'menubutton',
 			        title: 'WordLift Widgets',
@@ -58,28 +87,7 @@
 			        image: url + '/../images/wordlift-logo-20x20.png',
 			        // Must define onclick to avoid error
 			        onclick: function(){ /* OPEN YOURSELF ?? */ },
-			        menu: [
-			            {
-			            	text: 'Chord',
-			            	onclick: this.chordClick
-			            },
-			            {
-			            	text: 'Timeline',
-			            	onclick: this.timelineClick
-			            },
-			            {
-			            	text: 'GeoMap',
-			            	onclick: this.geomapClick
-			            },
-			            {
-			            	text: 'Navigator',
-			            	onclick: this.navigatorClick
-			            },
-			            {
-			            	text: 'FacetedSearch',
-			            	onclick: this.facetedSearchClick
-			            }
-			        ]
+			        menu: menu4
 			    });
         	}
         },
@@ -134,10 +142,13 @@
                     	onclick: pluginRef.navigatorClick
                     });
                     
-                    m.add({
-                    	title: 'FacetedSearch',
-                    	onclick: pluginRef.facetedSearchClick
-                    });
+                    // Only show faceted search in the entity editor
+                    if( typenow && typenow == 'entity' ) {
+                        m.add({
+                            title: 'FacetedSearch',
+                            onclick: pluginRef.facetedSearchClick
+                        });
+                    }
                     
             	});
 
