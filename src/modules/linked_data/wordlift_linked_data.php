@@ -127,7 +127,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
         	wl_write_log(" Going to manage relation instances according to the following mapping");
          	wl_write_log( $entities_predicates_mapping );
-         	
+
             // Retrieve the entity uri
             $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
             foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
@@ -261,7 +261,6 @@ function wl_save_entity( $entity_properties ) {
     $related_post_id 	= 	$entity_properties['related_post_id'];
     $same_as        	= 	$entity_properties['same_as'];
 
-            
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
 		$entity_types = array();
@@ -271,14 +270,14 @@ function wl_save_entity( $entity_properties ) {
 
 	// Check whether an entity already exists with the provided URI.
 	$post = wl_get_entity_post_by_uri( $uri );
-
+	
 	// Return the found post, do not overwrite data.
 	if ( null !== $post ) {
 		wl_write_log( ": post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ]" );
 
 		return $post;
 	}
-
+	
 	// No post found, create a new one.
 	$params = array(
 		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
@@ -314,6 +313,9 @@ function wl_save_entity( $entity_properties ) {
 	if ( $wl_uri !== $uri ) {
 		array_push( $same_as, $uri );
 	}
+
+	$new_uri = wl_get_entity_uri( $post_id );
+	
 	// Save the sameAs data for the entity.
 	wl_schema_set_value( $post_id, 'sameAs', $same_as );
 
