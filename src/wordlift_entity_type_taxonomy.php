@@ -24,9 +24,18 @@ function wl_entity_type_taxonomy_register()
         'new_item_name' => __('New Entity Type'),
         'menu_name' => __('Entity Types'),
     );
+    
+    // Take away GUI for taxonomy editing.
+    $capabilities = array(
+        'manage_terms' => null,
+        'edit_terms' => null,
+        'delete_terms' => null,
+        'assign_terms' => 'edit_posts'
+    );
 
     $args = array(
         'labels' => $labels,
+        'capabilities' => $capabilities,
         'hierarchical' => true,
         'show_admin_column' => true
     );
