@@ -13,15 +13,15 @@
 function wl_content_embed_microdata( $content ) {
 
 	// Apply microdata only to single pages.
-	if ( ! is_single() ) {
+	/*if ( ! is_single() ) {
 		wl_write_log( "wl_content_embed_microdata : is not single" );
 
 		return $content;
 	}
 
 	global $post;
-
-	return _wl_content_embed_microdata( $post->ID, $content );
+        */
+	return _wl_content_embed_microdata( get_the_ID(), $content );
 }
 
 /**
