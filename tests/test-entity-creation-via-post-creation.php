@@ -61,8 +61,8 @@ EOF;
 		
 	}
 
-	// This test simulate the standard workflow from disambiguation widget:
-	// A create a post having in $_POST a NEW entity related as 'who'
+	// This test simulates the standard workflow from disambiguation widget:
+	// Create a post having in $_POST a NEW entity related as 'who'
 	// Please notice that new entities are a tmp uri with 'local-entity-' prefix 
 	// that needs to be processed before the save entity routine
 	// Ea: local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt
@@ -186,29 +186,37 @@ EOF;
 EOF;
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
-		// Here the entity should be created instead
+		
+                // Here the entity should have been created
 		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+                $this->assertNotNull( $entity );
+                
+                // Query the same entity using the Redlink URI
 		$original_entity_id = $entity->ID;
 		$entity_uri = wl_get_entity_uri( $entity->ID );
-		
 		$e = wl_get_entity_post_by_uri( $entity_uri );
-		$this->assertNotNull( $e );
+                $this->assertEquals($entity, $e);
 
-		// The entity url should be the same we expect
+		// The entity description should be the same we expect
 		$raw_entity = current( array_values ( $fake[ 'wl_entities' ] ) );
 		$this->assertEquals( $raw_entity[ 'description' ], $entity->post_content );
+                
 		// The entity is related as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
 		$this->assertCount( 1, $related_entity_ids );
+                
 		// Ensure there are no other relation instances
 		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
 		$this->assertCount( 1, $relation_instances );
 
+                // Now Post is saved again with the same mentioned entity:
+                // - with properties modified
+                // - as WHO instead fo WHAT
 		$fake = $this->prepareFakeGlobalPostArrayFromFile(
-			'/assets/fake_global_post_array_with_one_entity_linked_as_what_and_modified_data.json' 
+			'/assets/fake_global_post_array_with_one_entity_linked_as_who_and_modified_data.json' 
 		);
-		
 		$_POST = $fake;
+                
 		// The entity url should be the same we expect
 		$raw_entity = current( array_values ( $fake[ 'wl_entities' ] ) );
 		$raw_entity_uri = $raw_entity[ 'uri' ];
@@ -216,21 +224,22 @@ EOF;
 		$new_content    = <<<EOF
     <span itemid="$raw_entity_uri">My entity</span>
 EOF;
+                // Update the post status (to force existing entities update)
 		wp_update_post( array('ID' => $post_id, 'post_content' => $new_content ) );
-
-		// Update the post status (to force existing entities update)
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
-		// The entity is related as who predicate
+		
+                // Verify this entity is the same as before
+		$updated_entity = wl_get_entity_post_by_uri( $raw_entity_uri );
+                $this->assertEquals( $entity->ID, $updated_entity->ID );
+                
+		// Verify entity description has been updated
+		$this->assertEquals( $raw_entity[ 'description' ], $updated_entity->post_content );
+                
+                // The entity is related as who predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
 		$this->assertCount( 1, $related_entity_ids );
 		// Ensure there are no other relation instances
 		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
 		$this->assertCount( 1, $relation_instances );
-
-		$this->assertEquals( $entity->ID, $original_entity_id );
-		// TODO Metadata are not properly updated now!
-		// $this->assertEquals( $raw_entity[ 'description' ], $entity->post_content );
-		
 	}
 
 	function prepareFakeGlobalPostArrayFromFile( $fileName ) {

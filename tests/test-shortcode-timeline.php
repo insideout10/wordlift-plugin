@@ -48,9 +48,9 @@ class TimelineShortcodeTest extends WP_UnitTestCase
         wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
         add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-02', true );
         add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-08', true );
-
+        
         $entity_3_id = wl_create_post( '', 'entity-3', 'Entity 3', 'publish', 'entity' );
-        wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
+        wl_set_entity_main_type( $entity_3_id, 'http://schema.org/Event' );
         add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-03', true );
         add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-09', true );
 

@@ -252,14 +252,14 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  */
 function wl_save_entity( $entity_properties ) {
     
-    $uri            	= 	$entity_properties['uri'];
-    $label          	= 	$entity_properties['label'];
-    $type_uri  			= 	$entity_properties['main_type_uri'];
-    $description    	= 	$entity_properties['description'];
-    $entity_types   	= 	$entity_properties['type_uris'];
-    $images         	= 	$entity_properties['images'];
-    $related_post_id 	= 	$entity_properties['related_post_id'];
-    $same_as        	= 	$entity_properties['same_as'];
+        $uri            	= 	$entity_properties['uri'];
+        $label          	= 	$entity_properties['label'];
+        $type_uri               = 	$entity_properties['main_type_uri'];
+        $description    	= 	$entity_properties['description'];
+        $entity_types   	= 	$entity_properties['type_uris'];
+        $images         	= 	$entity_properties['images'];
+        $related_post_id 	= 	$entity_properties['related_post_id'];
+        $same_as        	= 	$entity_properties['same_as'];
 
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
@@ -267,18 +267,8 @@ function wl_save_entity( $entity_properties ) {
 	}
 
 	wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
-
-	// Check whether an entity already exists with the provided URI.
-	$post = wl_get_entity_post_by_uri( $uri );
-	
-	// Return the found post, do not overwrite data.
-	if ( null !== $post ) {
-		wl_write_log( ": post exists [ post id :: $post->ID ][ uri :: $uri ][ label :: $label ]" );
-
-		return $post;
-	}
-	
-	// No post found, create a new one.
+        
+        // Prepare properties of the new entity.
 	$params = array(
 		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
 		'post_type'    => WL_ENTITY_TYPE_NAME,
@@ -287,6 +277,31 @@ function wl_save_entity( $entity_properties ) {
 		'post_excerpt' => ''
 	);
 
+	// Check whether an entity already exists with the provided URI.
+	$post = wl_get_entity_post_by_uri( $uri );
+	if ( null !== $post ) {
+		
+                // The entity is already saved, so now we see if it is necessary to update it.
+                $already_saved_params = array(
+                    'post_status'  => $post->post_status,
+                    'post_type'    => $post->post_type,
+                    'post_title'   => $post->post_title,
+                    'post_content' => $post->post_content,
+                    'post_excerpt' => ''
+                );
+                
+                // Compare saved and updated entity
+                if( $params == $already_saved_params ){
+                    // They are the same, so do nothig
+                    return $post;
+                } else {
+                    // update
+                    $params['ID'] = $post->ID;
+                    $updated_post = wp_update_post( $params, true );
+                    return get_post( $post->ID );
+                }
+	}
+	
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );
 
