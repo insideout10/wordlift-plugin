@@ -14,10 +14,10 @@ define( 'WL_JSON_LD_CONTEXT', serialize( array(
 // Disable buffering.
 define( 'WL_BUFFER_SPARQL_UPDATE_QUERIES', false );
 
-if ( 'true' === getenv( 'WL_SSL_V1_FORCED' )) { 
+if ( 'true' === getenv( 'WL_SSL_V1_FORCED' ) ) {
 	add_action( 'http_api_curl', 'force_curl_ssl_v1' );
 	function force_curl_ssl_v1( $handle ) {
-    	curl_setopt($handle, CURLOPT_SSLVERSION, 1);
+		curl_setopt( $handle, CURLOPT_SSLVERSION, 1 );
 	}
 }
 
@@ -780,21 +780,23 @@ function rl_sparql_select( $query, $accept = 'text/csv' ) {
 
 	// Prepare the SPARQL statement by prepending the default namespaces.
 	$sparql = rl_sparql_prefixes() . "\n" . $query;
-        
-        // select output format from MIME type
-        if( $accept == 'text/csv' ) {
-            $format = 'csv';
-        } else if( $accept == 'text/tab-separated-values' ) {
-            $format = 'tabs';
-        }
-        
-        // Get the SPARQL SELECT URL.
+
+	// select output format from MIME type
+	if ( $accept == 'text/csv' ) {
+		$format = 'csv';
+	} else if ( $accept == 'text/tab-separated-values' ) {
+		$format = 'tabs';
+	}
+
+	// Get the SPARQL SELECT URL.
 	$url = wl_configuration_get_query_select_url( $format ) . urlencode( $sparql );
 
 	// Prepare the request.
-        $args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
+	$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
 
 	// Send the request.
+	wl_write_log( "SPARQL Select [ url :: $url ][ args :: " . var_export( $args, true ) . " ]" );
+
 	return wp_remote_get( $url, $args );
 }
 
@@ -821,7 +823,6 @@ function rl_empty_dataset() {
 }
 
 
-
 /**
  * Get the Redlink URL to delete a dataset data (doesn't delete the dataset itself).
  * @return string
@@ -840,10 +841,12 @@ function rl_empty_dataset_url() {
 
 /**
  * Get relations for a given $subject_id as an associative array.
- * 
+ *
  * @global type $wpdb
+ *
  * @param type $post_id
  * @param type $predicate
+ *
  * @return array in the following format:
  *              Array (
  *                  [0] => stdClass Object ( [id] => 140 [subject_id] => 17 [predicate] => what [object_id] => 47 ),
@@ -853,16 +856,17 @@ function rl_empty_dataset_url() {
  */
 function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 
-   // Prepare interaction with db
-   global $wpdb;
-   // Retrieve Wordlift relation instances table name
-   $table_name = wl_core_get_relation_instances_table_name();
-   // Sql Action
-   $sql_statement = $wpdb->prepare( "SELECT * FROM $table_name WHERE subject_id = %d", $post_id );
-   if ( null != $predicate ) {
-       $sql_statement .= $wpdb->prepare( " AND predicate = %s", $predicate );     
-   }
-   $results = $wpdb->get_results( $sql_statement );
-   return $results;
+	// Prepare interaction with db
+	global $wpdb;
+	// Retrieve Wordlift relation instances table name
+	$table_name = wl_core_get_relation_instances_table_name();
+	// Sql Action
+	$sql_statement = $wpdb->prepare( "SELECT * FROM $table_name WHERE subject_id = %d", $post_id );
+	if ( null != $predicate ) {
+		$sql_statement .= $wpdb->prepare( " AND predicate = %s", $predicate );
+	}
+	$results = $wpdb->get_results( $sql_statement );
+
+	return $results;
 
 }
