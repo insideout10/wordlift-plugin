@@ -13,9 +13,6 @@ env:
   - secure: atgLztwWoQACiMH6M07hZauVcvyzslSfkMZSodPZFnwm+TxjJVNggqpApuJapoZFsJpXpji13vShvZKzynoomxx4uzU7HDZvs5mhUG6qeY2AyFOZ4Au5HyA6HoXPKiRhrMIjMmZvG5ExyOFnCHv7Q8wRsjarURQJV6pLUAdXa+s=
   matrix:
   - WP_VERSION=3.9.1  WP_MULTISITE=0
-before_install:
-- sudo apt-get -y -qq update
-#- sudo apt-get -y -qq install curl libcurl3-gnutls libgnutls26
 
 before_script:
 - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
