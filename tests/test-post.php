@@ -137,7 +137,7 @@ class PostTest extends WP_UnitTestCase {
 
 		$this->assertTrue( $result );
 
-		$this->checkEntityWithData( $uri, '"Linked Open Data"@en', '<http://example.org/?post_type=entity&p=1978>' );
+		$this->checkEntityWithData( $uri, 'Linked Open Data', 'http://example.org/?post_type=entity&p=1978' );
 	}
 
 	/**
@@ -338,13 +338,13 @@ WHERE {
 EOF;
 
 		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+		$response = rl_sparql_select( $sparql );
 		$this->assertFalse( is_wp_error( $response ) );
 
 		$body = $response['body'];
 
 		$matches = array();
-		$count   = preg_match_all( '/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
+		$count   = preg_match_all( '/^(?P<label>.*),(?P<url>.*),(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
 		$this->assertTrue( is_numeric( $count ) );
 
 		// Expect only one match (headers + one row).
@@ -394,13 +394,13 @@ WHERE {
 EOF;
 
 		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+		$response = rl_sparql_select( $sparql );
 		$this->assertFalse( is_wp_error( $response ) );
 
 		$body = $response['body'];
 
 		$matches = array();
-		$count   = preg_match_all( '/^(?P<label>.*)\t(?P<url>.*)\t(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
+		$count   = preg_match_all( '/^(?P<label>.*),(?P<url>.*),(?P<type>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
 		$this->assertTrue( is_numeric( $count ) );
 
 		// Expect only one match (headers + one row).
@@ -451,13 +451,13 @@ WHERE {
 EOF;
 
 		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+		$response = rl_sparql_select( $sparql );
 		$this->assertFalse( is_wp_error( $response ) );
 
 		$body = $response['body'];
 
 		$matches = array();
-		$count   = preg_match_all( '/^(?P<author>.*)\t(?P<dateModified>.*)\t(?P<datePublished>.*)\t(?P<interactionCount>.*)\t(?P<url>.*)\t(?P<type>.*)\t(?P<label>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
+		$count   = preg_match_all( '/^(?P<author>.*),(?P<dateModified>.*),(?P<datePublished>.*),(?P<interactionCount>.*),(?P<url>.*),(?P<type>.*),(?P<label>[^\r]*)/im', $body, $matches, PREG_SET_ORDER );
 		$this->assertTrue( is_numeric( $count ) );
 
 		// Expect only one match (headers + one row).
@@ -514,7 +514,7 @@ EOF;
 		$sparql = "SELECT DISTINCT ?uri WHERE { <$uri> dct:references ?uri . }";
 
 		// Send the query and get the response.
-		$response = rl_sparql_select( $sparql, 'text/tab-separated-values' );
+		$response = rl_sparql_select( $sparql );
 		$this->assertFalse( is_wp_error( $response ) );
 
 		$body = $response['body'];

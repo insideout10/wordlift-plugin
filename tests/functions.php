@@ -727,7 +727,7 @@ function rl_count_triples() {
 	          'WHERE { ?s ?p ?o }';
 
 	// Send the request.
-	$response = rl_sparql_select( $sparql, 'text/csv' );
+	$response = rl_sparql_select( $sparql );
 
 	// Remove the key from the query.
 	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', wl_configuration_get_query_select_url( 'csv' ) );
@@ -776,20 +776,13 @@ function rl_count_triples() {
  *
  * @return WP_Response|WP_Error A WP_Response instance in successful otherwise a WP_Error.
  */
-function rl_sparql_select( $query, $accept = 'text/csv' ) {
+function rl_sparql_select( $query ) {
 
 	// Prepare the SPARQL statement by prepending the default namespaces.
 	$sparql = rl_sparql_prefixes() . "\n" . $query;
 
-	// select output format from MIME type
-	if ( $accept == 'text/csv' ) {
-		$format = 'csv';
-	} else if ( $accept == 'text/tab-separated-values' ) {
-		$format = 'tabs';
-	}
-
 	// Get the SPARQL SELECT URL.
-	$url = wl_configuration_get_query_select_url( $format ) . urlencode( $sparql );
+	$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
 
 	// Prepare the request.
 	$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
