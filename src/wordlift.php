@@ -12,6 +12,10 @@ License: APL
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
 
+// Load modules
+require_once( 'modules/core/wordlift_core.php' );
+require_once( 'modules/configuration/wordlift_configuration.php' );
+
 /**
  * Log to the debug.log file.
  *
@@ -630,8 +634,6 @@ require_once( 'wordlift_content_filter.php' );
 require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 
 // Load modules
-require_once( 'modules/core/wordlift_core.php' );
-require_once( 'modules/configuration/wordlift_configuration.php' );
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
