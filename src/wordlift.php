@@ -51,12 +51,25 @@ function wl_write_log_handler( $log, $caller = null ) {
 		if ( is_array( $log ) || is_object( $log ) ) {
 			error_log( "[ $caller ] " . print_r( $log, true ) );
 		} else {
-			error_log( "[ $caller ] " . wl_core_hide_key( $log ) );
+			error_log( "[ $caller ] " . wl_write_log_hide_key( $log ) );
 		}
 	}
 
 }
 
+/**
+ * Hide the WordLift Key from the provided text.
+ *
+ * @since 3.0.0
+ *
+ * @param $text string A text that may potentially contain a WL key.
+ *
+ * @return string A text with the key hidden.
+ */
+function wl_write_log_hide_key( $text ) {
+
+	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
+}
 
 /**
  * Write the query to the buffer file.

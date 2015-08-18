@@ -11,17 +11,3 @@ function wl_core_send_json( $response ) {
 
 	return wp_send_json( $response );
 }
-
-/**
- * Hide the WordLift Key from the provided text.
- *
- * @since 3.0.0
- *
- * @param $text string A text that may potentially contain a WL key.
- *
- * @return string A text with the key hidden.
- */
-function wl_core_hide_key( $text ) {
-
-	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
-}
