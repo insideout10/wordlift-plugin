@@ -671,10 +671,15 @@ function wl_configure_wordpress_test() {
 
 	// If the WordLift key is set, then we'll configure it, otherwise we configure Redlink.
 	if ( false !== getenv( 'WORDLIFT_KEY' ) ) {
-		// Use WordLift.
+
+		// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 		wl_configuration_set_key( getenv( 'WORDLIFT_KEY' ) );
-		wl_configuration_set_redlink_dataset_uri( getenv( 'DATASET_URI' ) );
+		if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+			die( 'The Redlink dataset URI is not set (maybe the WordLift key is not valid?)' );
+		}
+
 	} else {
+		// TODO: remove this part.
 		// or use Redlink.
 
 		// Set the dataset name to the specified dataset or define it based on the current environment.
@@ -788,7 +793,7 @@ function rl_sparql_select( $query ) {
 	$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
 
 	// Send the request.
-	wl_write_log( "SPARQL Select [ url :: $url ][ args :: " . var_export( $args, true ) . " ]" );
+	wl_write_log( "SPARQL Select [ sparql :: $sparql ][ url :: $url ][ args :: " . var_export( $args, true ) . " ]" );
 
 	return wp_remote_get( $url, $args );
 }
@@ -862,4 +867,8 @@ function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 
 	return $results;
 
+}
+
+function wl_tests_time_0000_to_000Z( $time ) {
+	return preg_replace( '/\+00:00$/', '.000Z', $time );
 }

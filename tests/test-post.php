@@ -362,11 +362,11 @@ EOF;
 		$type  = $match['type'];
 
 		// Get the post title and permalink.
-		$title     = '"' . $post->post_title . '"@' . wl_configuration_get_site_language();
-		$permalink = '<' . get_permalink( $post->ID ) . '>';
+		$post_title = $post->post_title;
+		$permalink  = get_permalink( $post->ID );
 
 		// Check for equality.
-		$this->assertEquals( $title, $label );
+		$this->assertEquals( $post_title, $label );
 
 		$this->assertEquals( $permalink, $url );
 		$this->assertFalse( empty( $type ) );
@@ -479,13 +479,13 @@ EOF;
 		$type              = $match['type'];
 		$label             = $match['label'];
 
-		$permalink           = '<' . get_permalink( $post_id ) . '>';
-		$post_author_url     = '<' . wl_get_user_uri( $post->post_author ) . '>';
-		$post_date_published = wl_get_sparql_time( get_post_time( 'c', false, $post ) );
-		$post_date_modified  = wl_get_sparql_time( wl_get_post_modified_time( $post ) );
+		$permalink           = get_permalink( $post_id );
+		$post_author_url     = wl_get_user_uri( $post->post_author );
+		$post_date_published = wl_tests_time_0000_to_000Z( get_post_time( 'c', false, $post ) );
+		$post_date_modified  = wl_tests_time_0000_to_000Z( wl_get_post_modified_time( $post ) );
 		$post_comment_count  = 'UserComments:' . $post->comment_count;
-		$post_entity_type    = '<http://schema.org/BlogPosting>';
-		$post_title          = '"' . $post->post_title . '"@' . wl_configuration_get_site_language();
+		$post_entity_type    = 'http://schema.org/BlogPosting';
+		$post_title          = $post->post_title;
 
 		$this->assertEquals( $post_author_url, $author );
 		$this->assertEquals( $post_date_published, $date_published );
@@ -536,8 +536,6 @@ EOF;
 		$entity_uris = wl_post_ids_to_entity_uris( $entity_ids );
 		for ( $i = 1; $i < $count; $i ++ ) {
 			$entity_uri = $matches[ $i ]['uri'];
-			// Remove bounding </>
-			$entity_uri = substr( $entity_uri, 1, strlen( $entity_uri ) - 2 );
 			// Check that the URI is in the array.
 			$this->assertTrue( in_array( $entity_uri, $entity_uris ) );
 		}
