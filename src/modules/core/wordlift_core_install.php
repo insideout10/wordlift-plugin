@@ -176,7 +176,7 @@ function wl_core_install_entity_type_data() {
                         'label'              => 'LocalBusiness',
                         'description'        => 'A local business.',
                         'parents'            => array( 'place', 'organization' ),
-                        'css'                => 'wl-organization',
+                        'css'                => 'wl-local-business',
                         'uri'                => 'http://schema.org/LocalBusiness',
                         'same_as'            => array(
                                 'http://rdf.freebase.com/ns/business/business_location',

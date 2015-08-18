@@ -4,13 +4,14 @@
          "uri":"{{REDLINK_ENDPOINT}}\/entity\/Ragione",
          "label":"Ragione",
          "description":"New content",
-         "main_type":"wl-thing",
+         "main_type":"wl-organization",
          "image":[
-            "http:\/\/upload.wikimedia.org\/wikipedia\/commons\/a\/a2\/Goya_Caprichos3.jpg"
+            "http:\/\/upload.wikimedia.org\/wikipedia\/commons\/a\/a2\/Goya_Caprichos3.jpg",
+            "http:\/\/upload.wikimedia.org\/wikipedia\/commons\/7\/71\/Netherlands_vs_Ivory_Coast_2006-06-16.svg"
          ],
          "sameas":[
             "http:\/\/dbpedia.org\/resource\/Reason",
-            "http:\/\/rdf.freebase.com\/ns\/m.0bn32"
+            "http:\/\/sv.dbpedia.org\/page\/Reason"
          ]
       }
    },

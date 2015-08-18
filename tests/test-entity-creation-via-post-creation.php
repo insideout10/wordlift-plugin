@@ -188,19 +188,22 @@ EOF;
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		
                 // Here the entity should have been created
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
-        $this->assertNotNull( $entity );
+		$original_entity = wl_get_entity_post_by_uri( $original_entity_uri );
+                $this->assertNotNull( $original_entity );
+                
+                // Store entity type, images and sameAs (needed later)
+                $original_type = wl_schema_get_types( $original_entity->ID );
+                $original_thumbnails = $this->getThumbs( $original_entity->ID );
+                $original_sameAs = wl_schema_get_value( $original_entity->ID, 'sameAs' );
                 
                 // Query the same entity using the Redlink URI
-		$original_entity_id = $entity->ID;
-		$entity_uri = wl_get_entity_uri( $entity->ID );
+		$entity_uri = wl_get_entity_uri( $original_entity->ID );
 		$e = wl_get_entity_post_by_uri( $entity_uri );
-        
-        $this->assertEquals($entity, $e);
+                $this->assertEquals($original_entity, $e);
 
 		// The entity description should be the same we expect
 		$raw_entity = current( array_values ( $fake[ 'wl_entities' ] ) );
-		$this->assertEquals( $raw_entity[ 'description' ], $entity->post_content );
+		$this->assertEquals( $raw_entity[ 'description' ], $original_entity->post_content );
                 
 		// The entity is related as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
@@ -210,9 +213,13 @@ EOF;
 		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
 		$this->assertCount( 1, $relation_instances );
 
-                // Now Post is saved again with the same mentioned entity:
-                // - with properties modified
-                // - as WHO instead fo WHAT
+                /* Now Post is saved again with the same mentioned entity:
+                 * - with different type
+                 * - with different description
+                 * - with one more image
+                 * - with one modified sameAs
+                 * - as WHO instead fo WHAT
+                 */
 		$fake = $this->prepareFakeGlobalPostArrayFromFile(
 			'/assets/fake_global_post_array_with_one_entity_linked_as_who_and_modified_data.json' 
 		);
@@ -225,17 +232,39 @@ EOF;
 		$new_content    = <<<EOF
     <span itemid="$raw_entity_uri">My entity</span>
 EOF;
-                // Update the post status (to force existing entities update)
+                // Update the post content (to force existing entities update)
 		wp_update_post( array('ID' => $post_id, 'post_content' => $new_content ) );
 		
-                // Verify this entity is the same as before
+                // Verify the mentioned entity was already into DB...
 		$updated_entity = wl_get_entity_post_by_uri( $raw_entity_uri );
-                $this->assertEquals( $original_entity_id, $updated_entity->ID );
+                $this->assertEquals( $original_entity->ID, $updated_entity->ID );
+                $this->assertEquals( $original_entity->post_title, $updated_entity->post_title );
+                // ... but some properties changed!
+                $this->assertNotEquals( $original_entity, $updated_entity );
                 
-		// Verify entity description has been updated
+		// Verify entity type has been updated
+                $updated_type = wl_schema_get_types( $updated_entity->ID );
+                $this->assertNotEquals( $original_type, $updated_type );
+		$this->assertEquals( array('http://schema.org/Organization'), $updated_type );
+                
+                // Verify entity description has been updated
 		$this->assertEquals( $raw_entity[ 'description' ], $updated_entity->post_content );
                 
-                // The entity is related as who predicate
+                // Verify entity images have been updated (one was added)
+                $updated_thumbnails = $this->getThumbs( $updated_entity->ID );
+		$this->assertNotEquals( $original_thumbnails, $updated_thumbnails );
+                $this->assertContains( $original_thumbnails[0], $updated_thumbnails );
+                $this->assertCount( 2, $updated_thumbnails );                                       // There is one more
+                $this->assertContains('Netherlands_vs_Ivory_Coast', $updated_thumbnails[1]);        // ... about soccer
+                
+                // Verify entity sameAs have been updated
+                $updated_sameAs = wl_schema_get_value( $updated_entity->ID, 'sameAs' );
+		$this->assertNotEquals( $original_sameAs, $updated_sameAs );
+                $this->assertContains( $original_sameAs[1], $updated_sameAs );
+                $this->assertNotContains( $original_sameAs[0], $updated_sameAs );
+                $this->assertContains( 'http://sv.dbpedia.org/page/Reason', $updated_sameAs );
+                
+                // Verify the entity is now related as who predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
 		$this->assertCount( 1, $related_entity_ids );
 		// Ensure there are no other relation instances
@@ -260,6 +289,17 @@ EOF;
 			wl_configuration_get_redlink_dataset_uri(), 
 			'entity', wl_sanitize_uri_path( $label ) ); 
 	}
+        
+        function getThumbs( $post_id ) {
+            
+            $attatchments = get_attached_media( 'image', $post_id );
+            $attatchments_uris = array();
+            foreach( $attatchments as $attch ){
+                $attatchments_uris[] = wp_get_attachment_url( $attch->ID );
+            }
+            
+            return $attatchments_uris;
+        }
 
 }
 

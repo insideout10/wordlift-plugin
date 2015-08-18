@@ -280,26 +280,8 @@ function wl_save_entity( $entity_properties ) {
 	// Check whether an entity already exists with the provided URI.
 	$post = wl_get_entity_post_by_uri( $uri );
 	if ( null !== $post ) {
-		
-                // The entity is already saved, so now we see if it is necessary to update it.
-                $already_saved_params = array(
-                    'post_status'  => $post->post_status,
-                    'post_type'    => $post->post_type,
-                    'post_title'   => $post->post_title,
-                    'post_content' => $post->post_content,
-                    'post_excerpt' => ''
-                );
-                
-                // Compare saved and updated entity
-                if( $params == $already_saved_params ){
-                    // They are the same, so do nothig
-                    return $post;
-                } else {
-                    // update
-                    $params['ID'] = $post->ID;
-                    $updated_post = wp_update_post( $params, true );
-                    return get_post( $post->ID );
-                }
+            // We insert into the params the entity ID, so it will be updated and not inserted.
+            $params['ID'] = $post->ID;
 	}
 	
 	// create or update the post.

@@ -173,7 +173,7 @@ class EntityTest extends WP_UnitTestCase
         $entity_props_working_copy = $entity_props; // in PHP arrays are copied, not referenced
         foreach ( $entity_props['same_as'] as $same_as_uri ) {
             // Check that creating a post for the same entity does create a duplicate post.
-            $entity_props_working_copy['same_as'] = $same_as_uri;
+            $entity_props_working_copy['same_as'] = array( $same_as_uri );
             $same_as_entity_post = wl_save_entity( $entity_props_working_copy );
             $this->assertEquals( $entity_post->ID, $same_as_entity_post->ID );
         }
