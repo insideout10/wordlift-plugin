@@ -131,9 +131,14 @@ function wl_build_entity_uri( $post_id ) {
  * @return string|null The URI of the entity or null if not configured.
  */
 function wl_get_entity_uri( $post_id ) {
+    
+    
 	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
 	$uri = utf8_encode( $uri );
 
+        wl_write_log('piedo detail get uri');
+            wl_write_log( $post_id . ' ' . $uri );
+        
 	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {

@@ -68,7 +68,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
             wl_write_log( "]" );
 
             $entities_via_post = $_POST['wl_entities'];
-            $boxes_via_post = $_POST['wl_boxes'] ;
+            $boxes_via_post = $_POST['wl_boxes'];
 
             foreach ( $entities_via_post as $entity_uri => $entity ) {
             	// Local entities have a tmp uri with 'local-entity-'
@@ -118,6 +118,12 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         // Reset previously saved instances
 	wl_core_delete_relation_instances( $post_id ); 
         
+        wl_write_log('piedo');
+        wl_write_log( $disambiguated_entities );
+        wl_write_log( $entities_uri_mapping );
+        wl_write_log( $entities_predicates_mapping );
+        
+        
     // Save relation instances
     foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
         
@@ -130,6 +136,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
             // Retrieve the entity uri
             $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
+            wl_write_log('piedo detail');
+            wl_write_log( $referenced_entity_uri );
+            wl_write_log( $referenced_entity_id );
+            wl_write_log( get_post($referenced_entity_id) );
             foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
                 wl_write_log(" Going to add relation with predicate $predicate");
                 wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
