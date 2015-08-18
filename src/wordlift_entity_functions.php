@@ -56,10 +56,10 @@ function wl_get_entity_post_by_uri( $uri ) {
 function wl_get_entity_post_ids_by_uris( $uris ) {
 
 	$query = new WP_Query( array(
-			'fields' 		 => 'ids',
-			'post_status'    => 'any',
-			'post_type'      => WL_ENTITY_TYPE_NAME,
-			'meta_query'     => array(
+			'fields'      => 'ids',
+			'post_status' => 'any',
+			'post_type'   => WL_ENTITY_TYPE_NAME,
+			'meta_query'  => array(
 				'relation' => 'OR',
 				array(
 					'key'     => WL_CUSTOM_FIELD_SAME_AS,
@@ -77,8 +77,9 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 
 	// Get the matching entity posts.
 	$posts = $query->get_posts();
+
 	// Return the array
-	return $posts;	
+	return $posts;
 }
 
 /**
@@ -100,7 +101,7 @@ function wl_build_entity_uri( $post_id ) {
 
 		wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
 
-		return;
+		return null;
 	}
 
 	// Create an ID given the title.
@@ -214,9 +215,9 @@ function wl_get_meta_type( $property_name ) {
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
 		return null;
 	}
-        
-        // store eventual schema name in  different variable
-        $property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+
+	// store eventual schema name in  different variable
+	$property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
 
 	// Loop over custom_fields
 	$entity_terms = wl_entity_taxonomy_get_custom_fields();
@@ -248,14 +249,14 @@ function wl_get_meta_type( $property_name ) {
  */
 function wl_get_meta_constraints( $property_name ) {
 
-    	// Property name must be defined.
+	// Property name must be defined.
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
 		return null;
 	}
-        
-        // store eventual schema name in  different variable
-        $property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-        
+
+	// store eventual schema name in  different variable
+	$property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
+
 	// Get WL taxonomy mapping.
 	$types = wl_entity_taxonomy_get_custom_fields();
 
@@ -295,7 +296,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		$custom_fields = array();
 		foreach ( $terms as $term ) {
 			// Get custom_fields
-			$term_options = wl_entity_type_taxonomy_get_term_options( $term->term_id );
+			$term_options                          = wl_entity_type_taxonomy_get_term_options( $term->term_id );
 			$custom_fields[ $term_options['uri'] ] = $term_options['custom_fields'];
 		}
 

@@ -186,7 +186,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 
 	// Save each entity and store the post id.
 	foreach ( $entities as $entity ) {
-		
+
 		$uri   = $entity['uri'];
 		$label = $entity['label'];
 

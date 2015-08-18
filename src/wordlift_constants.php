@@ -7,7 +7,7 @@
 define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 	'timeout'     => 10,
 	'redirection' => 5,
-	'httpversion' => '1.0',
+	'httpversion' => '1.1',
 	'blocking'    => true,
 	'cookies'     => array(),
 	'sslverify'   => ( 'false' === getenv( 'WL_SSL_VERIFY_ENABLED' )) ? false : true,

@@ -530,9 +530,10 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
     global $wpdb;
     // Build sql statement with given arguments
     $sql_statement = wl_core_sql_query_builder( $args ); 
-    wl_write_log( "Going to execute sql statement: $sql_statement " );
 
-    $results = array();
+    // wl_write_log( "Going to execute sql statement: $sql_statement " );
+    // $results = array();
+
     // If ids are required, returns a one-dimensional array containing ids.
     // Otherwise an array of associative arrays representing the post | relation object
     if ( 'post_ids' == $args[ 'get' ] ) {
