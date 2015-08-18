@@ -189,13 +189,14 @@ EOF;
 		
                 // Here the entity should have been created
 		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
-                $this->assertNotNull( $entity );
+        $this->assertNotNull( $entity );
                 
                 // Query the same entity using the Redlink URI
 		$original_entity_id = $entity->ID;
 		$entity_uri = wl_get_entity_uri( $entity->ID );
 		$e = wl_get_entity_post_by_uri( $entity_uri );
-                $this->assertEquals($entity, $e);
+        
+        $this->assertEquals($entity, $e);
 
 		// The entity description should be the same we expect
 		$raw_entity = current( array_values ( $fake[ 'wl_entities' ] ) );
@@ -229,7 +230,7 @@ EOF;
 		
                 // Verify this entity is the same as before
 		$updated_entity = wl_get_entity_post_by_uri( $raw_entity_uri );
-                $this->assertEquals( $entity->ID, $updated_entity->ID );
+                $this->assertEquals( $original_entity_id, $updated_entity->ID );
                 
 		// Verify entity description has been updated
 		$this->assertEquals( $raw_entity[ 'description' ], $updated_entity->post_content );
