@@ -21,8 +21,8 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	// Get the calling function for debug purposes.
 	$callers          = debug_backtrace();
 	$calling_function = $callers[1]['function'];
-	wl_write_log( "[ calling function :: $calling_function ][ queue :: " . ( $queue ? 'true' : 'false' ) . ' ]' );        
-        
+	wl_write_log( "[ calling function :: $calling_function ][ queue :: " . ( $queue ? 'true' : 'false' ) . ' ]' );
+
 	// Queue the update query.
 	if ( $queue ) {
 		wl_queue_sparql_update_query( $query );
@@ -46,19 +46,12 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	// Send the request.
 	$response = wp_remote_post( $url, $args );
 
-	// Remove the key from the query.
-	if ( ! WP_DEBUG ) {
-		$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
-	} else {
-		$scrambled_url = $url;
-	}
-
 	// If an error has been raised, return the error.
 	if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
-		wl_write_log( "rl_execute_sparql_update_query : error [ url :: $scrambled_url ][ args :: " );
+		wl_write_log( "rl_execute_sparql_update_query : error [ url :: $url ][ args :: " );
 		wl_write_log( "\n" . var_export( $args, true ) );
 		wl_write_log( "[ response :: " );
 		wl_write_log( "\n" . var_export( $response, true ) );
@@ -69,7 +62,7 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 		return false;
 	}
 
-	wl_write_log( "rl_execute_sparql_query [ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
+	wl_write_log( "rl_execute_sparql_query [ url :: $url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
 	// wl_write_log( "\n" . $query );
 	wl_write_log( "]" );
 

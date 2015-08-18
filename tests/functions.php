@@ -734,15 +734,12 @@ function rl_count_triples() {
 	// Send the request.
 	$response = rl_sparql_select( $sparql );
 
-	// Remove the key from the query.
-	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', wl_configuration_get_query_select_url( 'csv' ) );
-
 	// Return the error in case of failure.
 	if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
-		wl_write_log( "rl_count_triples : error [ url :: $scrambled_url ][ response :: " );
+		wl_write_log( "rl_count_triples : error [ url :: $url ][ response :: " );
 		wl_write_log( "\n" . var_export( $response, true ) );
 		wl_write_log( "][ body :: " );
 		wl_write_log( "\n" . $body );

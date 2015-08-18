@@ -64,10 +64,7 @@ function wl_analyze_content( $content ) {
 		return __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' );
 	}
 
-	// Remove the key from the query.
-	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
-
-	wl_write_log( "[ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]" );
+	wl_write_log( "[ url :: $url ][ response code :: " . $response['response']['code'] . " ]" );
 
 	return $response['body'];
 }
