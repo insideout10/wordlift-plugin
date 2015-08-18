@@ -22,3 +22,4 @@ before_script:
 script: phpunit
 notifications:
   slack: insideout10:NcslbQWVmD4YPInDq8TpBIno
+sudo: false
