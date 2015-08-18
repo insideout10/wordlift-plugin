@@ -10,7 +10,7 @@ function wl_shortcode_blog_map( $atts ) {
         'width'      => '100%',
         'height'     => '500px',
         'main_color' => '000',
-        'depth'      => 2
+        'depth'      => 3
     ), $atts);
 
     $post_id = wl_shortcode_chord_most_referenced_entity_id();

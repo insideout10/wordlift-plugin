@@ -136,6 +136,7 @@ function wl_shortcode_chord_get_graph( $data )
             'url'   => get_permalink( $item ),
             'label' => $post->post_title,
             'type'  => $post->post_type,
+            'thumbnails' => wl_get_image_urls( $post->ID ),
             'css_class' => ( isset( $term['css_class'] ) ? $term['css_class'] : '' )
         );
 
