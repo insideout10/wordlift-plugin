@@ -72,11 +72,6 @@ function wl_write_log_handler( $log, $caller = null ) {
  */
 function wl_write_log_hide_key( $text ) {
 
-	// If the *wl_configuration_get_key* isn't loaded yet, return the text.
-	if ( ! function_exists( 'wl_configuration_get_key' ) ) {
-		return $text;
-	}
-
 	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
 }
 

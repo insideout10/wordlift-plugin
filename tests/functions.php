@@ -644,7 +644,7 @@ function wl_test_write_log_handler( $log ) {
 	if ( is_array( $log ) || is_object( $log ) ) {
 		echo( print_r( $log, true ) . "\n" );
 	} else {
-		echo( $log . "\n" );
+		echo( wl_write_log_hide_key( $log ) . "\n" );
 	}
 
 }
