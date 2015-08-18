@@ -869,6 +869,15 @@ function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 
 }
 
+/**
+ * Replace the midnight in the format of +00:00 to .000Z to allow testing time results from WordLift Server / Redlink.
+ *
+ * @param $time string A time format with +00:00
+ *
+ * @return string A time format with .000Z
+ *
+ * @since 3.0.0
+ */
 function wl_tests_time_0000_to_000Z( $time ) {
 	return preg_replace( '/\+00:00$/', '.000Z', $time );
 }
