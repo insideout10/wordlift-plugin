@@ -25,7 +25,8 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
             'get'             =>    'posts',  
             'related_to__in'  =>    $filtering_entity_ids,
             'post__not_in'    =>    array( $post_id ),
-            'post_type'       =>    'post', 
+            'post_type'       =>    'post',
+            'post_status'     =>    'publish',
             'as'              =>    'subject',
         ) );
         
