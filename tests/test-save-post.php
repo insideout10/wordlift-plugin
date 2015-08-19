@@ -185,7 +185,7 @@ EOF;
 
 	}
         
-        function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed(){
+        /*function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed(){
             
             // Create draft entity
             $e_id = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -212,7 +212,7 @@ EOF;
             wl_write_log($lines);
             $this->assertCount( 8, $lines );
             
-        }
+        }*/
 
 	function getPostTriples( $post_id ) {
 
