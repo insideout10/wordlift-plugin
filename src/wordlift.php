@@ -332,7 +332,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
 	// Add SPARQL stmts to write the schema:image.
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
-		$image_url_esc = wordlift_esc_sparql( $image_url );
+		$image_url_esc = wl_sparql_escape_uri( $image_url );
 		$sparql .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}
 
