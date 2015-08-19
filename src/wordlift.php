@@ -455,7 +455,7 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 	// Plus the ' ' (space).
 	// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
 
-	return preg_replace( '/[;\/?:@&=+$,\s]/', $char, $path );
+	return preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) );
 }
 
 /**
