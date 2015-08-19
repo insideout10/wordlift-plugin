@@ -35,7 +35,7 @@ function wl_core_install_entity_type_data() {
                         )
 		),
 		'creative-work' => array(
-			'label'              => 'Creative Work',
+			'label'              => 'CreativeWork',
 			'description'        => 'A creative work (or a Music Album).',
                         'parents'             => array( 'thing' ),
 			'css'                => 'wl-creative-work',
