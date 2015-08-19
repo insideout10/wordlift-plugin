@@ -350,7 +350,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
 function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 
 	wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
-
+        
 	$posts = get_posts( array(
 		'post_type'      => 'attachment',
 		'posts_per_page' => 1,
