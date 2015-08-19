@@ -11,6 +11,7 @@ function wl_push_post_to_redlink( $post ) {
 	// Only handle published posts.
 	if ( 'post' !== $post->post_type or 'publish' !== $post->post_status ) {
 		wl_write_log( "wl_push_post_to_redlink : not a post or not published [ post type :: $post->post_type ][ post status :: $post->post_status ]" );
+
 		return;
 	}
 
@@ -161,7 +162,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		// is what we're going to do here.
 
 		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
-                
+
 		if ( isset( $main_type['custom_fields'] ) ) {
 			foreach ( $main_type['custom_fields'] as $field => $settings ) {
 
@@ -179,20 +180,20 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
-                                        
-                                        // Establish triple's <object> type
+
+					// Establish triple's <object> type
 					if ( is_null( $type ) ) {
-                                                // No type
+						// No type
 						$sparql .= '<' . wordlift_esc_sparql( $value ) . '>';
 					} else {
 						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^';
-                                                if( substr( $type, 0, 4 ) == 'http' ) {
-                                                    // Type is defined by a raw uri (es. http://schema.org/PostalAddress)
-                                                    $sparql .= '<' . wordlift_esc_sparql( $type ) . '>';
-                                                } else {
-                                                    // Type is defined in another way (es. xsd:double)
-                                                    $sparql .= wordlift_esc_sparql( $type );
-                                                }
+						if ( substr( $type, 0, 4 ) == 'http' ) {
+							// Type is defined by a raw uri (es. http://schema.org/PostalAddress)
+							$sparql .= '<' . wordlift_esc_sparql( $type ) . '>';
+						} else {
+							// Type is defined in another way (es. xsd:double)
+							$sparql .= wordlift_esc_sparql( $type );
+						}
 					}
 
 					$sparql .= " . \n";
@@ -310,6 +311,27 @@ function wordlift_esc_sparql( $string ) {
 	$string = str_replace( "\t", '\\t', $string );
 
 	return $string;
+}
+
+/**
+ * Escapes an URI for a SPARQL query.
+ *
+ * @since 3.0.0
+ *
+ * @param $string string The URI to be escaped.
+ *
+ * @return string The escaped URI.
+ */
+function wl_sparql_escape_uri( $string ) {
+
+	// Should we validate the IRI?
+	// http://www.w3.org/TR/sparql11-query/#QSynIRI
+
+	$string = str_replace( '<', '\<', $string );
+	$string = str_replace( '>', '\>', $string );
+
+	return $string;
+
 }
 
 /**
