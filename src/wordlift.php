@@ -417,10 +417,10 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 		}
 
 		// Get the entity URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = wl_sparql_escape_uri( wl_get_entity_uri( $post->ID ) );
 
 		// Get the post URL.
-		$url = wordlift_esc_sparql( get_permalink( $post->ID ) );
+		$url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
 
 		// Prepare the DELETE and INSERT commands.
 		$delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";

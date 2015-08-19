@@ -66,7 +66,7 @@ function rl_delete_post( $post ) {
 	}
 
 	// get the entity URI (valid also for posts)
-	$uri_esc = wordlift_esc_sparql( wl_get_entity_uri( $post_id ) );
+	$uri_esc = wl_sparql_escape_uri( wl_get_entity_uri( $post_id ) );
 
 	wl_write_log( "rl_delete_post [ post id :: $post_id ][ uri esc :: $uri_esc ]" );
 
