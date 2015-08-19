@@ -488,8 +488,9 @@ EOF;
 		$post_title          = $post->post_title;
 
 		$this->assertEquals( $post_author_url, $author );
-		$this->assertEquals( $post_date_published, $date_published );
-		$this->assertEquals( $post_date_modified, $date_modified );
+		// We expect datetime not to differ more than 5 seconds.
+		$this->assertLessThan( 5, wl_tests_get_time_difference_in_seconds( $post_date_published, $date_published ) );
+		$this->assertLessThan( 5, wl_tests_get_time_difference_in_seconds( $post_date_modified, $date_modified ) );
 		$this->assertEquals( $post_comment_count, $interaction_count );
 		$this->assertEquals( $permalink, $url );
 		$this->assertEquals( $post_entity_type, $type );
