@@ -116,12 +116,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
  	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
         
         // Reset previously saved instances
-	wl_core_delete_relation_instances( $post_id ); 
-        
-        wl_write_log('piedo');
-        wl_write_log( $disambiguated_entities );
-        wl_write_log( $entities_uri_mapping );
-        wl_write_log( $entities_predicates_mapping );
+	wl_core_delete_relation_instances( $post_id );
         
         
     // Save relation instances
@@ -136,10 +131,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
             // Retrieve the entity uri
             $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
-            wl_write_log('piedo detail');
-            wl_write_log( $referenced_entity_uri );
-            wl_write_log( $referenced_entity_id );
-            wl_write_log( get_post($referenced_entity_id) );
             foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
                 wl_write_log(" Going to add relation with predicate $predicate");
                 wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
