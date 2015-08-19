@@ -878,3 +878,20 @@ function wl_tests_get_relation_instances_for( $post_id, $predicate = null ) {
 function wl_tests_time_0000_to_000Z( $time ) {
 	return preg_replace( '/\+00:00$/', '.000Z', $time );
 }
+
+
+/**
+ * Return the time difference in seconds between two times (time2 is expected to be later than time1).
+ *
+ * @param $time1
+ * @param $time2
+ *
+ * @return int
+ */
+function wl_tests_get_time_difference_in_seconds( $time1, $time2 ) {
+
+	$date1 = date_create( $time1 );
+	$date2 = date_create( $time2 );
+
+	return ( $date2->getTimestamp() - $date1->getTimestamp() );
+}
