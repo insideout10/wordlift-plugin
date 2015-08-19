@@ -68,15 +68,20 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
             'relations' => array()
         );
     }
-
-    // Get related post and entity IDs related to this entity.
-    $related_post_ids = wl_core_get_related_post_ids( $entity_id, array(
-        'status' => 'publish'
-    ) );
     
+    // Get related entities
     $related_entity_ids = wl_core_get_related_entity_ids( $entity_id, array(
         'status' => 'publish'
     ) );
+    
+    // Get related posts (only id the current node is an entity)
+    $related_post_ids = array();
+    if( get_post_type( $entity_id ) == WL_ENTITY_TYPE_NAME ) {
+        
+        $related_post_ids = wl_core_get_related_post_ids( $entity_id, array(
+            'status' => 'publish'
+        ) );
+    }
     
     // Merge results.
     $related_ids = array_merge( $related_post_ids, $related_entity_ids );
