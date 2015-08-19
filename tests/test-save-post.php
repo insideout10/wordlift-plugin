@@ -197,10 +197,20 @@ EOF;
             // Create published post mentioning the entity
             $p_id = wl_create_post( $body, 'post-1', uniqid( 'post', true ), 'publish', 'post' );
             
+            // Verify the post triples contain a reference to the entity
             $lines = $this->getPostTriples( $p_id );
-            //$this->assertCount( 40, $lines );
-            $this->assertEquals('', $lines );
+            wl_write_log('piedo');
+            wl_write_log($lines);
+            $this->assertCount( 9, $lines );
             
+            // Trash the entity
+            wl_update_post_status( $e_id, 'trash' );
+            
+            // Verify the post triples does no more contain a reference to the entity
+            $lines = $this->getPostTriples( $p_id );
+            wl_write_log('piedo');
+            wl_write_log($lines);
+            $this->assertCount( 8, $lines );
             
         }
 
