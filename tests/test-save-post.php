@@ -47,86 +47,6 @@ EOF;
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 	}
 
-	// TODO: this test is probably not valid anymore as it is.
-//	function testSaveEntityPostAndRelatedEntities() {
-//
-//		// create two entities
-//		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-//		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
-//
-//		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
-//		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
-//
-//		$body_1 = <<<EOF
-//            <span itemid="$entity_1_uri">Entity 1</span>
-//            <span itemid="$entity_2_uri">Entity 2</span>
-//EOF;
-//
-//		// Create a post in draft
-//		$entity_3_id  = wl_create_post( $body_1, 'entity-3', uniqid( 'entity', true ), 'draft', 'entity' );
-//		$entity_3_uri = wl_get_entity_uri( $entity_3_id );
-//
-//		// Entity post in draft: should be not pushed on Redlink
-//		$lines = $this->getPostTriples( $entity_3_id );
-//		// Just 1 line returned means the entity was not found on Redlink
-//		$this->assertCount( 1, $lines );
-//		// Check that no entity is referenced
-//		$this->assertCount( 2, wl_core_get_related_entity_ids( $entity_3_id ) );
-//		// Force entity post status to publish: this triggers the save_post hook
-//		wl_update_post_status( $entity_3_id, 'publish' );
-//		// Check entities are properly related once the post is published
-//		$this->assertCount( 2, wl_core_get_related_entity_ids( $entity_3_id ) );
-//
-//		// Entity post published: should be pushed on Redlink
-//		$lines = $this->getPostTriples( $entity_3_id );
-//		$this->assertCount( 8, $lines );
-//
-//		// Check entity 1 and 2 are properly related to entity 3 on Redlink side
-//		$this->assertTrue( in_array( "<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines ) );
-//		$this->assertTrue( in_array( "<http://purl.org/dc/terms/relation><$entity_2_uri>", $lines ) );
-//		// And viceversa
-//		$lines = $this->getPostTriples( $entity_1_id );
-//		$this->assertTrue( in_array( "<http://purl.org/dc/terms/relation><$entity_3_uri>", $lines ) );
-//		$lines = $this->getPostTriples( $entity_2_id );
-//		$this->assertTrue( in_array( "<http://purl.org/dc/terms/relation><$entity_3_uri>", $lines ) );
-//		// Update entity 3 body
-//		$body_1 = <<<EOF
-//            <span itemid="$entity_1_uri">Entity 1</span>
-//EOF;
-//		wp_update_post( array( 'ID' => $entity_3_id, 'post_content' => $body_1 ) );
-//		$this->assertCount( 1, wl_core_get_related_entity_ids( $entity_3_id ) );
-//		$lines = $this->getPostTriples( $entity_3_id );
-//		$this->assertCount( 6, $lines );
-//		// Check just entity 1 is properly related to entity 3 on Redlink side
-//		$this->assertTrue( in_array( "<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines ) );
-//		$this->assertFalse( in_array( "<http://purl.org/dc/terms/relation><$entity_2_uri>", $lines ) );
-//		// And Veceversa
-//		$lines = $this->getPostTriples( $entity_1_id );
-//		$this->assertTrue( in_array( "<http://purl.org/dc/terms/relation><$entity_3_uri>", $lines ) );
-//		// Entity 2 should not be related anymore to Entity 3
-//		$lines = $this->getPostTriples( $entity_2_id );
-//		// TODO Fix the bug and uncomment the test
-//		// $this->assertFalse( in_array("<http://purl.org/dc/terms/relation><$entity_3_uri>", $lines) );
-//
-//		// Delete Entity 1 in order to see if relations with Entity 3 are managed properly
-//		wp_delete_post( $entity_1_id, false );
-//
-//		// Check that Entity 3 is no more related to Entity 1 on WP
-//		// TODO Fix the bug and uncomment the test
-//		// $this->assertCount( 0, wl_core_get_related_entity_ids( $entity_3_id ) );
-//
-//		// Check that Entity 1 is no more on Redlink
-//		$lines = $this->getPostTriples( $entity_1_id );
-//		$this->assertCount( 1, $lines );
-//
-//		// Check that Entity 3 is no more related to Entity 1 on Redlink
-//		$lines = $this->getPostTriples( $entity_3_id );
-//		// TODO Fix the bug and uncomment the test
-//		// $this->assertCount( 4, $lines );
-//		// $this->assertFalse( in_array("<http://purl.org/dc/terms/relation><$entity_1_uri>", $lines) );
-//
-//	}
-
 	function testReferencedEntities() {
 
 		// create two entities
@@ -264,6 +184,25 @@ EOF;
 		$this->assertCount( 4, $lines );
 
 	}
+        
+        function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed(){
+            
+            // Create draft entity
+            $e_id = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+            $e_uri = wl_get_entity_uri( $e_id );
+            $body = <<<EOF
+                <span itemid="$e_uri">Entity 1</span>
+EOF;
+            
+            // Create published post mentioning the entity
+            $p_id = wl_create_post( $body, 'post-1', uniqid( 'post', true ), 'publish', 'post' );
+            
+            $lines = $this->getPostTriples( $p_id );
+            //$this->assertCount( 40, $lines );
+            $this->assertEquals('', $lines );
+            
+            
+        }
 
 	function getPostTriples( $post_id ) {
 
