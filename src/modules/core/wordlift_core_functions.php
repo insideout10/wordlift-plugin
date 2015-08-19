@@ -5,8 +5,9 @@
  * Ensure output buffer is cleaned
  */
 function wl_core_send_json( $response ) {
-	if ( ob_get_contents() )  {
+	if ( ob_get_contents() ) {
 		ob_clean();
 	}
+
 	return wp_send_json( $response );
 }

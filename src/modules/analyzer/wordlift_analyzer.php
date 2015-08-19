@@ -36,12 +36,14 @@ function wl_analyze_content( $content ) {
 
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method'  => 'POST',
-		'headers' => array(
+		'method'      => 'POST',
+		'headers'     => array(
 			'Accept'       => 'application/json',
 			'Content-type' => 'text/plain'
 		),
-		'body'    => $content
+		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
+		'httpversion' => '1.0',
+		'body'        => $content
 	) );
 
 	$response = wp_remote_post( $url, $args );
@@ -62,10 +64,7 @@ function wl_analyze_content( $content ) {
 		return __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' );
 	}
 
-	// Remove the key from the query.
-	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
-
-	wl_write_log( "[ url :: $scrambled_url ][ response code :: " . $response['response']['code'] . " ]" );
+	wl_write_log( "[ url :: $url ][ response code :: " . $response['response']['code'] . " ]" );
 
 	return $response['body'];
 }

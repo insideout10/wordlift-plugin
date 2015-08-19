@@ -331,15 +331,12 @@ function wordlift_reindex_triple_store() {
 
 	$response = wp_remote_request( $url, $args );
 
-	// Remove the key from the query.
-	$scrambled_url = preg_replace( '/key=.*$/i', 'key=<hidden>', $url );
-
 	// If an error has been raised, return the error.
 	if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
-		wl_write_log( "wordlift_reindex_triple_store : error [ url :: $scrambled_url ][ args :: " );
+		wl_write_log( "wordlift_reindex_triple_store : error [ url :: $url ][ args :: " );
 		wl_write_log( "\n" . var_export( $args, true ) );
 		wl_write_log( "[ response :: " );
 		wl_write_log( "\n" . var_export( $response, true ) );

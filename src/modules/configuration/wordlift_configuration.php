@@ -502,7 +502,7 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 	$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
 	$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
 
-	wl_write_log( "[ old value :: $old_key ] [ new value :: $new_key ]" );
+	 wl_write_log( "[ old value :: $old_key ][ new value :: $new_key ]" );
 
 	// If the key hasn't changed, don't do anything.
 	// WARN The 'update_option' hook is fired only if the new and old value are not equal

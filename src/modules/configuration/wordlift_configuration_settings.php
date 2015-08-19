@@ -28,9 +28,9 @@ function wl_configuration_get_key() {
 
 	if ( isset( $options['key'] ) ) {
 		return $options['key'];
-	} else {
-		return '';
 	}
+
+	return '';
 }
 
 

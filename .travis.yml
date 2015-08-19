@@ -3,7 +3,7 @@ php:
 - 5.3
 env:
   global:
-  - secure: "FIKNH5o9Ao9sRulTlsafELWS1i2zuk40tU/PaGcsP0WtBB3B8dUYG2f4hhvnwCwcTBVOvFYYfm+euSWw2qj3vCbELv2jlg54Oruxg4OmyTq+vF/WLU113S7lkQrkYWqNDcA+pqzNvqq4mVzGVh1yaEV7JBDFkrnTyrBuufwgU3Y="
+  - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
   - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
   - WL_SSL_VERIFY_ENABLED=true
   - WL_SSL_V1_FORCED=true
