@@ -137,6 +137,9 @@ function wl_entities_box_content( $post ) {
                     'status'    => 'publish'
                 ) );
                 $entity_ids = array_unique( array_merge( $draft_entity_ids, $publish_entity_ids ) );
+                
+                // Store the entity ids for all the 4W
+                $all_referenced_entities_ids = array_merge( $all_referenced_entities_ids, $entity_ids );
 	
 		// Transform entity ids array in entity uris array
 		array_walk($entity_ids, function(&$entity_id) {
@@ -146,9 +149,6 @@ function wl_entities_box_content( $post ) {
 		
 		// Enhance current box selected entities
 		$classification_boxes[ $i ]['selectedEntities'] = $entity_ids;
-                
-                // Store the entity ids for all the 4W
-                $all_referenced_entities_ids = array_merge( $all_referenced_entities_ids, $entity_ids );
 	}
 	// Json encoding for classification boxes structure
 	$classification_boxes = json_encode( $classification_boxes );
@@ -159,6 +159,7 @@ function wl_entities_box_content( $post ) {
     // Build the entity storage object
     $referenced_entities_obj = array();
     foreach ( $all_referenced_entities_ids as $referenced_entity ) {
+        wl_write_log('piedo' . $referenced_entity);
         $entity = wl_serialize_entity( $referenced_entity );
         $referenced_entities_obj[ $entity['id'] ] = $entity;
     }
