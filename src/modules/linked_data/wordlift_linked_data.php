@@ -321,11 +321,19 @@ function wl_save_entity( $entity_properties ) {
 	do_action( 'wl_save_entity', $post_id );
 
 	wl_write_log( "[ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode( ',', $entity_types ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]" );
-
+        
+        wl_write_log('piedo images');
+        wl_write_log( $images );
 	foreach ( $images as $image_remote_url ) {
 
 		// Check if there is an existing attachment for this post ID and source URL.
 		$existing_image = wl_get_attachment_for_source_url( $post_id, $image_remote_url );
+                
+                wl_write_log('piedo image from RL:');
+                wl_write_log( $image_remote_url );
+                wl_write_log('piedo image corresponds to:');
+                wl_write_log( $existing_image );
+                
 
 		// Skip if an existing image is found.
 		if ( null !== $existing_image ) {
