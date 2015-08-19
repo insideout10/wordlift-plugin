@@ -11,11 +11,12 @@ function wl_push_post_to_redlink( $post ) {
 	// Only handle published posts.
 	if ( 'post' !== $post->post_type or 'publish' !== $post->post_status ) {
 		wl_write_log( "wl_push_post_to_redlink : not a post or not published [ post type :: $post->post_type ][ post status :: $post->post_status ]" );
+
 		return;
 	}
 
 	// Get the post URI.
-	$uri = wl_get_entity_uri( $post->ID );
+	$uri = wl_sparql_escape_uri( wl_get_entity_uri( $post->ID ) );
 
 	// If the URI ends with a trailing slash, then we have a problem.
 	if ( '/' === substr( $uri, - 1, 1 ) ) {
@@ -31,13 +32,13 @@ function wl_push_post_to_redlink( $post ) {
 	$site_language = wl_configuration_get_site_language();
 
 	// save the author and get the author URI.
-	$author_uri = wl_get_user_uri( $post->post_author );
+	$author_uri = wl_sparql_escape_uri( wl_get_user_uri( $post->post_author ) );
 
 	// Get other post properties.
 	$date_published      = wl_get_sparql_time( get_the_time( 'c', $post ) );
 	$date_modified       = wl_get_sparql_time( wl_get_post_modified_time( $post ) );
 	$title               = wordlift_esc_sparql( $post->post_title );
-	$permalink           = wordlift_esc_sparql( get_permalink( $post->ID ) );
+	$permalink           = wl_sparql_escape_uri( get_permalink( $post->ID ) );
 	$user_comments_count = $post->comment_count;
 
 	wl_write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ type :: $post->post_type ][ slug :: $post->post_name ][ title :: $post->post_title ][ date modified :: $date_modified ][ date published :: $date_published ]" );
@@ -108,7 +109,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	// get the entity URI and the SPARQL escaped version.
 	$uri   = wl_get_entity_uri( $entity_post->ID );
-	$uri_e = esc_html( $uri );
+	$uri_e = wl_sparql_escape_uri( $uri );
 
 	// If the URI ends with a trailing slash, then we have a problem.
 	if ( '/' === substr( $uri, - 1, 1 ) ) {
@@ -124,7 +125,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// get the title and content as label and description.
 	$label     = wordlift_esc_sparql( $entity_post->post_title );
 	$descr     = wordlift_esc_sparql( $entity_post->post_content );
-	$permalink = wordlift_esc_sparql( get_permalink( $entity_post->ID ) );
+	$permalink = wl_sparql_escape_uri( get_permalink( $entity_post->ID ) );
 
 	wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
 
@@ -135,7 +136,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// set the same as.
 	$same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' );
 	foreach ( $same_as as $same_as_uri ) {
-		$same_as_uri_esc = wordlift_esc_sparql( $same_as_uri );
+		$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
 		$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
 	}
 
@@ -152,7 +153,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	$main_type = wl_entity_type_taxonomy_get_type( $entity_post->ID );
 
 	if ( null != $main_type ) {
-		$main_type_uri = wordlift_esc_sparql( $main_type['uri'] );
+		$main_type_uri = wl_sparql_escape_uri( $main_type['uri'] );
 		$sparql .= " <$uri_e> a <$main_type_uri> . \n";
 
 		// The type define custom fields that hold additional data about the entity.
@@ -161,7 +162,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		// is what we're going to do here.
 
 		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
-                
+
 		if ( isset( $main_type['custom_fields'] ) ) {
 			foreach ( $main_type['custom_fields'] as $field => $settings ) {
 
@@ -179,20 +180,20 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
-                                        
-                                        // Establish triple's <object> type
+
+					// Establish triple's <object> type
 					if ( is_null( $type ) ) {
-                                                // No type
-						$sparql .= '<' . wordlift_esc_sparql( $value ) . '>';
+						// No type
+						$sparql .= '<' . wl_sparql_escape_uri( $value ) . '>';
 					} else {
 						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^';
-                                                if( substr( $type, 0, 4 ) == 'http' ) {
-                                                    // Type is defined by a raw uri (es. http://schema.org/PostalAddress)
-                                                    $sparql .= '<' . wordlift_esc_sparql( $type ) . '>';
-                                                } else {
-                                                    // Type is defined in another way (es. xsd:double)
-                                                    $sparql .= wordlift_esc_sparql( $type );
-                                                }
+						if ( substr( $type, 0, 4 ) == 'http' ) {
+							// Type is defined by a raw uri (es. http://schema.org/PostalAddress)
+							$sparql .= '<' . wl_sparql_escape_uri( $type ) . '>';
+						} else {
+							// Type is defined in another way (es. xsd:double)
+							$sparql .= wordlift_esc_sparql( $type );
+						}
 					}
 
 					$sparql .= " . \n";
@@ -206,7 +207,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	// Support type are only schema.org ones: it could by null
 	foreach ( $type_uris as $type_uri ) {
-		$type_uri = esc_attr( $type_uri );
+		$type_uri = wl_sparql_escape_uri( $type_uri );
 		$sparql .= "<$uri_e> a <$type_uri> . \n";
 	}
 
@@ -215,7 +216,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	if ( is_array( $related_entities_ids ) ) {
 		foreach ( $related_entities_ids as $entity_post_id ) {
-			$related_entity_uri = wordlift_esc_sparql( wl_get_entity_uri( $entity_post_id ) );
+			$related_entity_uri = wl_sparql_escape_uri( wl_get_entity_uri( $entity_post_id ) );
 			// create a two-way relationship.
 			$sparql .= " <$uri_e> dct:relation <$related_entity_uri> . \n";
 			$sparql .= " <$related_entity_uri> dct:relation <$uri_e> . \n";
@@ -310,6 +311,27 @@ function wordlift_esc_sparql( $string ) {
 	$string = str_replace( "\t", '\\t', $string );
 
 	return $string;
+}
+
+/**
+ * Escapes an URI for a SPARQL query.
+ *
+ * @since 3.0.0
+ *
+ * @param $string string The URI to be escaped.
+ *
+ * @return string The escaped URI.
+ */
+function wl_sparql_escape_uri( $string ) {
+
+	// Should we validate the IRI?
+	// http://www.w3.org/TR/sparql11-query/#QSynIRI
+
+	$string = str_replace( '<', '\<', $string );
+	$string = str_replace( '>', '\>', $string );
+
+	return $string;
+
 }
 
 /**

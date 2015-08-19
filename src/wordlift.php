@@ -332,7 +332,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
 	// Add SPARQL stmts to write the schema:image.
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
-		$image_url_esc = wordlift_esc_sparql( $image_url );
+		$image_url_esc = wl_sparql_escape_uri( $image_url );
 		$sparql .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}
 
@@ -417,10 +417,10 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 		}
 
 		// Get the entity URI.
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $post->ID ) );
+		$uri = wl_sparql_escape_uri( wl_get_entity_uri( $post->ID ) );
 
 		// Get the post URL.
-		$url = wordlift_esc_sparql( get_permalink( $post->ID ) );
+		$url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
 
 		// Prepare the DELETE and INSERT commands.
 		$delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
