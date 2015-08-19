@@ -159,7 +159,6 @@ function wl_entities_box_content( $post ) {
     // Build the entity storage object
     $referenced_entities_obj = array();
     foreach ( $all_referenced_entities_ids as $referenced_entity ) {
-        wl_write_log('piedo' . $referenced_entity);
         $entity = wl_serialize_entity( $referenced_entity );
         $referenced_entities_obj[ $entity['id'] ] = $entity;
     }
