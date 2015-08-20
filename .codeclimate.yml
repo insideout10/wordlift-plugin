@@ -39,12 +39,12 @@ ratings:
 # exclude_paths key.
 
 exclude_paths:
-  - "/bin/*"
-  - "/dist/*"
-  - "/tests/*"
-  - "/vendor/*"
-  - "/wordpress-svn/*"
-  - "/wp-tests/*"
-  - "/src/bower_components/*"
+  - "bin/**/*"
+  - "dist/**/*"
+  - "tests/**/*"
+  - "vendor/**/*"
+  - "wordpress-svn/**/*"
+  - "wp-tests/**/*"
+  - "src/bower_components/**/*"
 #- spec/**/*
 #- vendor/**/*
