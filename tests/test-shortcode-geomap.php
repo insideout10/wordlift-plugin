@@ -30,8 +30,6 @@ class GeomapShortcodeTest extends WP_UnitTestCase
      *  * 1 Person entity reference by the Post
      *
      * Check that only the first 2 entities are returned when calling *wl_core_get_related_entity_ids*.
-     *
-     * @uses wl_core_get_related_entity_ids to retrieve the entities referenced by a post.
      */
     function testGetPlaces() {
 
