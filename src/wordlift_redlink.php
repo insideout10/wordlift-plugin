@@ -63,7 +63,7 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 	}
 
 	wl_write_log( "rl_execute_sparql_query [ url :: $url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
-	// wl_write_log( "\n" . $query );
+	wl_write_log( "\n" . $query );
 	wl_write_log( "]" );
 
 	return true;

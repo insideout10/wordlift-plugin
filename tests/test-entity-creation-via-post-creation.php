@@ -78,13 +78,57 @@ EOF;
     <span itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );		
+		
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
 		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNotNull( $entity );
+
+		// Check if the content was properly fixed
+		$expected_content = <<<EOF
+    <span itemid="$expected_entity_uri">My entity</span>
+EOF;
+		$post = get_post( $post_id );
+		$this->assertEquals( $post->post_content, $expected_content );
+		// And it should be related to the post as what predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
+		$this->assertCount( 1, $related_entity_ids );
+		$this->assertContains( $entity->ID, $related_entity_ids );
+		// Ensure there are no other relation instances
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 1, $relation_instances );
+		
+	}
+
+	// Same test of the previous one but with utf8 chars in the entity label
+	function testNewEntityWithUtf8CharsIsCreatedAndLinkedToThePost() {
+
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_a_new_entity_linked_with_utf8_chars.json' 
+		);
+		$_POST = $fake;
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Retrieve the label 
+		$raw_entity = current( array_values ( $fake['wl_entities' ] ) );
+		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
+		// Reference the entity to the post content 
+		$content    = <<<EOF
+    <span itemid="$entity_uri">My entity</span>
+EOF;
+		// Be sure that the entity does not exist yet
+		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );		
+		
+		$this->assertNull( $entity );
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		// Here the entity should be created instead
+		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$this->assertNotNull( $entity );
+
 		// Check if the content was properly fixed
 		$expected_content = <<<EOF
     <span itemid="$expected_entity_uri">My entity</span>

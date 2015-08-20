@@ -87,9 +87,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
             // Local Redlink uris need to be used here
             foreach ( $boxes_via_post as $predicate => $entity_uris ) {
                 foreach ( $entity_uris as $entity_uri ) {
+                	wl_write_log("Going to map predicates for uri $entity_uri ");
                 	// Retrieve the entity label needed to build the uri
-                	$label = $entities_via_post[ $entity_uri ][ 'label' ];
+                	$label = $entities_via_post[ stripslashes( $entity_uri ) ][ 'label' ];
                     $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
+                    wl_write_log("Going to map predicate $predicate to uri $uri ");
                     $entities_predicates_mapping[ $uri ][] = $predicate; 
                 }	
             }
@@ -115,9 +117,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Extract related/referenced entities from text.
  	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
         
-        // Reset previously saved instances
-	wl_core_delete_relation_instances( $post_id );
-        
+    // Reset previously saved instances
+	wl_core_delete_relation_instances( $post_id );    
         
     // Save relation instances
     foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
@@ -127,14 +128,20 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
         if( $entities_predicates_mapping ) { 
 
         	wl_write_log(" Going to manage relation instances according to the following mapping");
-         	wl_write_log( $entities_predicates_mapping );
-
+         	
             // Retrieve the entity uri
             $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
-            foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-                wl_write_log(" Going to add relation with predicate $predicate");
-                wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
+            // Retrieve predicates for the current uri
+            if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
+           		foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
+                	wl_write_log(" Going to add relation with predicate $predicate");
+                	wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
+            	}
+            } else {
+            	wl_write_log("Entity uri $referenced_entity_uri missing in the mapping");
+                wl_write_log( $entities_predicates_mapping );
             }
+
         } else {
             // Just for unit tests
             wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
@@ -413,6 +420,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	foreach ( $matches[1] as $uri ) {
 		$uri_d = html_entity_decode( $uri );
 		$entity = wl_get_entity_post_by_uri( $uri_d );
+		
 		if ( null !== $entity ) {
 			array_push( $entities, $entity->ID );
 		}

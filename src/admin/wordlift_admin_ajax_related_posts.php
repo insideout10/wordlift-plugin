@@ -9,6 +9,8 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
     }
 
     $post_id = $_GET["post_id"]; 
+    // Get the current post
+    $post = get_post( $post_id );
 
     wl_write_log( "Going to find posts related to current with post id: $post_id ..." );
     
@@ -19,6 +21,12 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
     $filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
     $related_posts = array();
     
+    // If the current post is an antity 
+    // related posts to the current entity are returned
+    if ( WL_ENTITY_TYPE_NAME == $post->post_type ) {
+        $filtering_entity_ids = array( $post_id );        
+    }
+
     if ( !empty( $filtering_entity_ids ) ) {
     
         $related_posts = wl_core_get_posts( array(

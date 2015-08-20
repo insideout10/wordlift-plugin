@@ -29,7 +29,7 @@ class UserTest extends WP_UnitTestCase
         ) );
 
         $this->assertEquals(
-            $this->getURI( 'Lorem_Ipsum' ),
+            $this->getURI( 'lorem_ipsum' ),
             wl_get_user_uri( $user_id )
         );
 
@@ -73,7 +73,7 @@ class UserTest extends WP_UnitTestCase
         ) );
 
         $this->assertEquals(
-            $this->getURI( 'Mario_Rossi' ),
+            $this->getURI( 'mario_rossi' ),
             wl_get_user_uri( $user_id_1 )
         );
 
@@ -85,7 +85,7 @@ class UserTest extends WP_UnitTestCase
         ) );
 
         $this->assertEquals(
-            $this->getURI( 'Mario_Rossi_1' ),
+            $this->getURI( 'mario_rossi_1' ),
             wl_get_user_uri( $user_id_2 )
         );
     }

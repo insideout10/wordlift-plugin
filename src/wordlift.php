@@ -439,6 +439,8 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
+ * @uses sanitize_title to manage not ASCII chars
+ * @see https://codex.wordpress.org/Function_Reference/sanitize_title
  *
  * @param string $path The path to sanitize.
  * @param string $char The replacement character (by default an underscore).
@@ -455,7 +457,7 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 	// Plus the ' ' (space).
 	// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
 
-	return preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) );
+	return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) ) );
 }
 
 /**
