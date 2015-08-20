@@ -66,5 +66,33 @@ class AjaxRelatedPostsTest extends WL_Ajax_UnitTestCase
                  
 
     }
+
+    public function testPostsSelectionWithoutFilters() {
+
+        // Create 2 posts and 2 entities
+        $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
+        $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish');
+        $post_2_id = wl_create_post( '', 'post2', 'A post', 'publish');
+        // Notice that 
+        wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+  
+        // Set $_GET variable: this means we will perform data selection for $entity_1_id
+        $_GET['post_id'] = $post_1_id;
+        // Mock php://input
+        $mock_http_raw_data = json_encode( 
+            array() 
+        );
+
+        try {
+            $this->_handleAjax( 'wordlift_related_posts', $mock_http_raw_data );
+        } catch ( WPAjaxDieContinueException $e ) { }
+
+        $response = json_decode( $this->_last_response );
+        
+        $this->assertInternalType( 'array', $response );
+        // Here there will be no results
+        $this->assertCount( 0, $response );
+                 
+    }
     
 }

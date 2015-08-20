@@ -18,7 +18,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
    
     $filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
     $related_posts = array();
-    
+ 
     if ( !empty( $filtering_entity_ids ) ) {
     
         $related_posts = wl_core_get_posts( array(

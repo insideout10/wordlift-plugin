@@ -55,6 +55,11 @@ function wl_get_entity_post_by_uri( $uri ) {
  */
 function wl_get_entity_post_ids_by_uris( $uris ) {
 
+
+	if ( empty( $uris )) {
+		return array();
+	}
+
 	$query = new WP_Query( array(
 			'fields'      => 'ids',
 			'post_status' => 'any',
