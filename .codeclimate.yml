@@ -56,5 +56,7 @@ exclude_paths:
   - vendor/**/*
   - wordpress-svn/**/*
   - wp-tests/**/*
+  - src/bower_components/**/*
+  - src/libs/**/*
 #- spec/**/*
 #- vendor/**/*
