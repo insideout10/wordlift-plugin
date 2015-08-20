@@ -15,8 +15,6 @@
 engines:
   phpcodesniffer:
     enabled: true
-    config:
-      - file_extensions: "php"
   fixme:
     enabled: false
 
