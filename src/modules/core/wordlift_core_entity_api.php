@@ -39,10 +39,10 @@ function wl_entity_get_by_title( $title ) {
 function wl_entity_ajax_get_by_title() {
 
 	// Get the parameter.
-	$title = $_GET['title'];
-	if ( empty( $title ) ) {
+	if ( !isset( $_GET['title'] ) || empty( $_GET['title'] ) ) {
 		wp_die( 'The title parameter is required.' );
 	}
+        $title = $_GET['title'];
 
 	// Get the edit link.
 	$post_type_object = get_post_type_object( WL_ENTITY_TYPE_NAME );
@@ -54,8 +54,7 @@ function wl_entity_ajax_get_by_title() {
 	$response->results   = wl_entity_get_by_title( $title );
 
 
-	echo( json_encode( $response ) );
-	wp_die();
+	wl_core_send_json( $response );
 }
 
 add_action( 'wp_ajax_entity_by_title', 'wl_entity_ajax_get_by_title' );
