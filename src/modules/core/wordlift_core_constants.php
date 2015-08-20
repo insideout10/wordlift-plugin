@@ -29,13 +29,13 @@ define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
     array(
     	'id' 				=> WL_WHAT_RELATION,
     	'label' 			=> 'What',
-    	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing', 'creative-work'),
+    	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing', 'creative-work', 'local-business'),
         'selectedEntities' 	=> array(),
     	),
     array(
     	'id' 				=> WL_WHO_RELATION,
     	'label' 			=> 'Who',
-    	'registeredTypes' 	=> array('organization', 'person'),
+    	'registeredTypes' 	=> array('organization', 'person', 'local-business'),
         'selectedEntities' 	=> array(),
     	),
     array(
