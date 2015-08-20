@@ -1,4 +1,4 @@
-<span itemscope  itemtype="http://schema.org/Thing" itemid="{{REDLINK_ENDPOINT}}/entity/MyPlace">
+<span itemscope  itemtype="http://schema.org/Thing" itemid="{{REDLINK_ENDPOINT}}/entity/myplace">
     <link itemprop="url" href="http://example.org/?entity=my-place"/>
     <a href="http://example.org/?entity=my-place" itemprop="name" content="MyPlace">MyPlace</a>
 </span>

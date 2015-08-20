@@ -134,8 +134,7 @@ function wl_get_entity_uri( $post_id ) {
     
     
 	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
-	$uri = utf8_encode( $uri );
-        
+	    
 	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
@@ -157,9 +156,7 @@ function wl_get_entity_uri( $post_id ) {
 function wl_set_entity_uri( $post_id, $uri ) {
 
 	wl_write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
-
-	$uri = utf8_decode( $uri );
-
+	
 	return update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, $uri );
 }
 

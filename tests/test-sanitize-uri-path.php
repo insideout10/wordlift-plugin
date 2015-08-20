@@ -16,25 +16,25 @@ class SanitizeUriPathTest extends WP_UnitTestCase
 
     function testSimple() {
 
-        $this->assertEquals( 'David_Riccitelli', wl_sanitize_uri_path( 'David Riccitelli' ) );
-        $this->assertEquals( 'David_Luigi_Riccitelli', wl_sanitize_uri_path( 'David Luigi Riccitelli' ) );
+        $this->assertEquals( 'david_riccitelli', wl_sanitize_uri_path( 'David Riccitelli' ) );
+        $this->assertEquals( 'david_luigi_riccitelli', wl_sanitize_uri_path( 'David Luigi Riccitelli' ) );
 
-        $this->assertEquals( 'David-Riccitelli', wl_sanitize_uri_path( 'David Riccitelli', '-' ) );
-        $this->assertEquals( 'David-Luigi-Riccitelli', wl_sanitize_uri_path( 'David Luigi Riccitelli', '-' ) );
+        $this->assertEquals( 'david-riccitelli', wl_sanitize_uri_path( 'David Riccitelli', '-' ) );
+        $this->assertEquals( 'david-luigi-riccitelli', wl_sanitize_uri_path( 'David Luigi Riccitelli', '-' ) );
     }
 
     function testWithParentheses() {
 
-        $this->assertEquals( 'David_(Riccitelli)', wl_sanitize_uri_path( 'David (Riccitelli)' ) );
-        $this->assertEquals( 'David_(Luigi)_Riccitelli', wl_sanitize_uri_path( 'David (Luigi) Riccitelli' ) );
+        $this->assertEquals( 'david_riccitelli', wl_sanitize_uri_path( 'David (Riccitelli)' ) );
+        $this->assertEquals( 'david_luigi_riccitelli', wl_sanitize_uri_path( 'David (Luigi) Riccitelli' ) );
 
-        $this->assertEquals( 'David-(Riccitelli)', wl_sanitize_uri_path( 'David (Riccitelli)', '-' ) );
-        $this->assertEquals( 'David-(Luigi)-Riccitelli', wl_sanitize_uri_path( 'David (Luigi) Riccitelli', '-' ) );
+        $this->assertEquals( 'david-riccitelli', wl_sanitize_uri_path( 'David (Riccitelli)', '-' ) );
+        $this->assertEquals( 'david-luigi-riccitelli', wl_sanitize_uri_path( 'David (Luigi) Riccitelli', '-' ) );
     }
 
     function testEkkehardBohmer() {
 
-        $this->assertEquals( 'Ekkehard_Böhmer', wl_sanitize_uri_path( 'Ekkehard Böhmer' ) );
+        $this->assertEquals( 'ekkehard_bohmer', wl_sanitize_uri_path( 'Ekkehard Böhmer' ) );
 
     }
 

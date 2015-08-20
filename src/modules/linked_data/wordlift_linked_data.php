@@ -407,6 +407,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	foreach ( $matches[1] as $uri ) {
 		$uri_d = html_entity_decode( $uri );
 		$entity = wl_get_entity_post_by_uri( $uri_d );
+		
 		if ( null !== $entity ) {
 			array_push( $entities, $entity->ID );
 		}

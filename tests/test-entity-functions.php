@@ -33,7 +33,7 @@ class EntityFunctionsTest extends WP_UnitTestCase
 
         $post_id = wl_create_post('', 'test', 'This is a test');
 
-        $expected_uri = wl_configuration_get_redlink_dataset_uri() . '/post/This_is_a_test';
+        $expected_uri = wl_configuration_get_redlink_dataset_uri() . '/post/this_is_a_test';
         $this->assertEquals($expected_uri, wl_build_entity_uri( $post_id ) );
 
     }
@@ -45,7 +45,7 @@ class EntityFunctionsTest extends WP_UnitTestCase
 
         $post_id = wl_create_post('', 'test', 'This is a test', 'draft', 'entity');
 
-        $expected_uri = wl_configuration_get_redlink_dataset_uri() . '/entity/This_is_a_test';
+        $expected_uri = wl_configuration_get_redlink_dataset_uri() . '/entity/this_is_a_test';
         $this->assertEquals($expected_uri, wl_build_entity_uri( $post_id ) );
 
     }
