@@ -34,7 +34,7 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses wl_configuration_get_redlink_dataset_uri to get the default dataset URI.
+	 * @uses ::wl_configuration_get_redlink_dataset_uri to get the default dataset URI.
 	 *
 	 * @param string $base_uri The base URI for resources, default the WordLift dataset.
 	 * @param string $suffix The suffix to append to URI in order to load the JSON-LD file, default *.json*.
@@ -83,8 +83,8 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses wl_configuration_get_redlink_dataset_uri to get the default dataset URI.
-	 * @uses wl_jsonld_load_remote to load a remote JSON-LD file.
+	 * @uses ::wl_configuration_get_redlink_dataset_uri to get the default dataset URI.
+	 * @uses ::wl_jsonld_load_remote to load a remote JSON-LD file.
 	 *
 	 * @param string $path The entity path.
 	 */
@@ -110,7 +110,7 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses expand to expand the property name.
+	 * @uses ::expand to expand the property name.
 	 *
 	 * @param string $name          The property name.
 	 * @param int $index            The value index (default NULL, returns an array of properties).
@@ -156,7 +156,7 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses get_first_property to get the first property value.
+	 * @uses ::get_first_property to get the first property value.
 	 *
 	 * @param string $name The predicate name.
 	 *
@@ -173,7 +173,7 @@ class WL_View {
 	 *
 	 * @since 3.0.0
 	 *
-	 * @uses get_property to get the property value.
+	 * @uses ::get_property to get the property value.
 	 *
 	 * @param string $name The predicate name.
 	 *

@@ -6,7 +6,7 @@
 /**
  * Retrieve geomap places. If $post_id is null the return places blog wide
  *
- * @uses wl_core_get_related_entities to retrieve the entities referenced by the specified post.
+ * @uses ::wl_core_get_related_entities to retrieve the entities referenced by the specified post.
  *
  * @param int $post_id The post ID.
  * @return array An array of place posts.
@@ -171,8 +171,8 @@ function wl_shortcode_geomap_prepare_map( $places ) {
 /**
  * Print both global or post related places in json. It's executed via Ajax
  *
- * @uses wl_shortcode_geomap_get_places in order to retrieve places
- * @uses wl_shortcode_geomap_prepare_map in order to encode retireved places in a Leaflet friendly format
+ * @uses ::wl_shortcode_geomap_get_places in order to retrieve places
+ * @uses ::wl_shortcode_geomap_prepare_map in order to encode retireved places in a Leaflet friendly format
  *
  * @param array $places An array of place posts.
  * @return array An array of place posts.

@@ -21,7 +21,7 @@ if ( class_exists( 'SU_Module' ) ) {
 		 *
 		 * @since 3.0.0
 		 *
-		 * @uses wl_prefixes_admin_menu_callback to display the admin page.
+		 * @uses ::wl_prefixes_admin_menu_callback to display the admin page.
 		 */
 		function admin_page_contents() {
 

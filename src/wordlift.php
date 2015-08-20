@@ -21,7 +21,7 @@ require_once( 'modules/configuration/wordlift_configuration.php' );
  *
  * @since 3.0.0
  *
- * @uses wl_write_log_handler to write the log output.
+ * @uses ::wl_write_log_handler to write the log output.
  *
  * @param string|mixed $log The log data.
  */
@@ -387,10 +387,10 @@ function wl_set_source_url( $post_id, $source_url ) {
  *
  * @since 3.0.0
  *
- * @uses rl_sparql_prefixes to get the SPARQL prefixes.
- * @uses wordlift_esc_sparql to escape the SPARQL query.
- * @uses wl_get_entity_uri to get an entity URI.
- * @uses rl_execute_sparql_update_query to post the DELETE and INSERT queries.
+ * @uses ::rl_sparql_prefixes to get the SPARQL prefixes.
+ * @uses ::wordlift_esc_sparql to escape the SPARQL query.
+ * @uses ::wl_get_entity_uri to get an entity URI.
+ * @uses ::rl_execute_sparql_update_query to post the DELETE and INSERT queries.
  *
  * @param bool $hard True if the rewrite involves configuration updates in Apache/IIS.
  */
@@ -439,7 +439,7 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
- * @uses sanitize_title to manage not ASCII chars
+ * @uses ::sanitize_title to manage not ASCII chars
  * @see https://codex.wordpress.org/Function_Reference/sanitize_title
  *
  * @param string $path The path to sanitize.

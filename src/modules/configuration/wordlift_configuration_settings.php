@@ -269,9 +269,9 @@ function wl_configuration_set_redlink_application_name( $value ) {
  *
  * @since 3.0.0
  *
- * @uses wl_configuration_get_key to get the WordLift key.
- * @uses wl_configuration_get_redlink_key to get the application key.
- * @uses wl_configuration_get_redlink_application_name to get the analysis name.
+ * @uses ::wl_configuration_get_key to get the WordLift key.
+ * @uses ::wl_configuration_get_redlink_key to get the application key.
+ * @uses ::wl_configuration_get_redlink_application_name to get the analysis name.
  *
  * @return string The analysis URL.
  */
