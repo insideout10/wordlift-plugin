@@ -16,7 +16,7 @@ before_script:
   - composer install --dev
 after_script:
   - vendor/bin/test-reporter
-script: phpunit
+script: phpunit --coverage-clover build/logs/clover.xml
 notifications:
   slack: insideout10:NcslbQWVmD4YPInDq8TpBIno
 sudo: false
