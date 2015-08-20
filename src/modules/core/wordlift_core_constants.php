@@ -24,11 +24,12 @@ define('WL_CORE_GET_POSTS_VALIDATION_RULES', serialize( array(
 
 // Classification boxes configuration for angularjs edit-post widget
 // The array is serialized because array constants are only from php 5.6 on.
+
 define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
     array(
     	'id' 				=> WL_WHAT_RELATION,
     	'label' 			=> 'What',
-    	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing'),
+    	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing', 'creative-work'),
         'selectedEntities' 	=> array(),
     	),
     array(
