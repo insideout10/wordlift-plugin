@@ -39,7 +39,7 @@ engines:
 
 ratings:
   paths:
-    - "src/**"
+    - "src/**/*"
     - "**.php"
 #   - app/**
 #   - lib/**
@@ -57,6 +57,5 @@ exclude_paths:
   - "wordpress-svn/**/*"
   - "wp-tests/**/*"
   - "src/bower_components/**/*"
-  - "src/libs/**/*"
 #- spec/**/*
 #- vendor/**/*
