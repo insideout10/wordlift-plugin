@@ -1,6 +1,6 @@
 <?php
 
-define('WL_DEFAULT_THUMBNAIL_PATH', plugins_url( 'js-client/slick/missing-image-150x150.png', __FILE__ ) );
+define('WL_DEFAULT_THUMBNAIL_PATH', plugins_url( 'wordlift/js-client/slick/missing-image-150x150.png' ) );
 
 // Database version 
 define('WL_DB_VERSION', '1.0');
