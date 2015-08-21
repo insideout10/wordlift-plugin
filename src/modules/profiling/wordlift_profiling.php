@@ -40,7 +40,7 @@ add_action( 'wl_sparql_pre_request', 'wl_profiling_sparql_pre_request', 10, 3 );
  *
  * @since 3.0.0
  *
- * @uses ::wl_caching_is_response_cached to determine if the response is cached. Cached responses are ignored.
+ * @uses wl_caching_is_response_cached() to determine if the response is cached. Cached responses are ignored.
  *
  * @param string $url     The remote URL.
  * @param string $args    The request parameters.

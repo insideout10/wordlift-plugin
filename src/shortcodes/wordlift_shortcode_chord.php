@@ -42,7 +42,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
 /**
  * Recursive function used to retrieve related content starting from a post ID.
  *
- * @uses ::wl_core_get_related_post_ids to get the list of post ids that reference an entity.
+ * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
  *
  * @param int $entity_id The entity post ID.
  * @param int $depth Max number of entities in output.
@@ -165,8 +165,8 @@ function wl_shortcode_chord_get_graph( $data )
 /**
  * Retrieve related entities and output them in JSON.
  *
- * @uses ::wl_shortcode_chord_get_relations
- * @uses ::wl_shortcode_chord_get_graph
+ * @uses wl_shortcode_chord_get_relations()
+ * @uses wl_shortcode_chord_get_graph()
  */
 function wl_shortcode_chord_ajax()
 {
@@ -187,7 +187,7 @@ add_action('wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax');
 /**
  * Sets-up the widget. This is called by WordPress when the shortcode is inserted in the body.
  *
- * @uses ::wl_shortcode_chord_most_referenced_entity_id to get the most connected entity.
+ * @uses wl_shortcode_chord_most_referenced_entity_id() to get the most connected entity.
  *
  * @param array $atts An array of parameters set by the editor to customize the shortcode behaviour.
  * @return string

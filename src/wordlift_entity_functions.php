@@ -90,8 +90,8 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 /**
  * Build the entity URI given the entity's post.
  *
- * @uses ::wl_sanitize_uri_path to sanitize the post title.
- * @uses ::wl_configuration_get_redlink_dataset_uri to get the dataset base URI.
+ * @uses wl_sanitize_uri_path() to sanitize the post title.
+ * @uses wl_configuration_get_redlink_dataset_uri() to get the dataset base URI.
  *
  * @param int $post_id The post ID
  *
@@ -128,8 +128,8 @@ function wl_build_entity_uri( $post_id ) {
 /**
  * Get the entity URI of the provided post.
  *
- * @uses ::wl_build_entity_uri to create a new URI if the entity doesn't have an URI yet.
- * @uses ::wl_set_entity_uri to set a newly create URI.
+ * @uses wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
+ * @uses wl_set_entity_uri() to set a newly create URI.
  *
  * @param int $post_id The post ID.
  *

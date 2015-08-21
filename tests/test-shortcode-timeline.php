@@ -31,7 +31,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase
      *  * 3 Event entities of which 2 referenced by the Post
      *  * 1 Person entity reference by the Post
      *
-	 * @uses ::wl_shortcode_timeline_get_events to retrieve events
+	 * @uses wl_shortcode_timeline_get_events() to retrieve events
      */
     function testGetEvents() {
 
@@ -138,7 +138,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase
      *  * 1 Place entity as a distractor
      * Check that the 2 events are retrieved from the global timeline (no post specified).
      *
-	 * @uses ::wl_shortcode_timeline_get_events to retrieve events
+	 * @uses wl_shortcode_timeline_get_events() to retrieve events
      */
 	function testGlobalTimeline() {
 		

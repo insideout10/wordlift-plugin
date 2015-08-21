@@ -193,8 +193,8 @@ function wl_schema_set_types( $post_id, $type_names ) {
 
 /**
  * Retrieves the list of supported properties for the specified type.
- * @uses ::wl_entity_taxonomy_get_custom_fields to retrieve all custom fields (type properties)
- * @uses ::wl_build_full_schema_uri_from_schema_slug to convert a schema slug to full uri
+ * @uses wl_entity_taxonomy_get_custom_fields() to retrieve all custom fields (type properties)
+ * @uses wl_build_full_schema_uri_from_schema_slug() to convert a schema slug to full uri
  * 
  * @param $type_name string Name of the type (e.g. Type, for the http://schema.org/Type)
  * 

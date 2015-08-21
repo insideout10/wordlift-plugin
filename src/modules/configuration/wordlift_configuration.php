@@ -474,7 +474,7 @@ function wl_configuration_admin_notices() {
  *
  * @since 3.0.0
  *
- * @uses ::wl_configuration_validate
+ * @uses wl_configuration_validate()
  */
 function wl_configuration_check() {
 

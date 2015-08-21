@@ -9,7 +9,7 @@
  *
  * @since 3.0.0
  *
- * @uses ::wl_queue_sparql_update_query to queue a query if query buffering is on.
+ * @uses wl_queue_sparql_update_query() to queue a query if query buffering is on.
  *
  * @param string $query The query to execute.
  * @param bool $queue Whether to queue the update.
