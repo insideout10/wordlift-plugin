@@ -21,7 +21,7 @@ class ContentFilterTest extends WP_UnitTestCase {
 
 	function testColorCodingOnFrontEnd() {
 
-		$entity_id  = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
+		$entity_id  = wl_create_post( '', 'entity-1', 'Entity 1', 'publish', 'entity' );
 		$entity_uri = wl_get_entity_uri( $entity_id );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Event' );
 
@@ -42,8 +42,49 @@ EOF;
 		$this->assertContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
 
 	}
+        
+        // Test <span> markup is cleaned out when referring to a non-existent entity
+        function testMicrodataCompilingForANonExistentEntity() {
+                
+            // Create content for a post referencing a non existent entity
+            $content = <<<EOF
+                Let's talk about <span itemid="http://nonExistent.yeah">Watzlawick</span>
+EOF;
+            
+            // Create a post with above content
+            $post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+            
+            // Verify the span tag does not appear on the frontend, but content is preserved.
+            $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+            $this->assertEquals(
+                $this->prepareMarkup( "Let's talk about Watzlawick" ),
+                $this->prepareMarkup( $compiled_markup )
+            );
+        }
+        
+        // Test <span> markup is cleaned out when referring to a non-published entity
+        function testMicrodataCompilingForANonPublishedEntity() {
+            
+            $entity_id  = wl_create_post( 'A trashed entity about Paul Watzlawick', 'watzlawick', 'Paul Watzlawick', 'draft', 'entity' );
+            $entity_uri = wl_get_entity_uri( $entity_id );
+            
+            // Create content for a post referencing the entity
+            $content = <<<EOF
+                Let's talk about <span itemid="$entity_uri">Watzlawick</span>
+EOF;
+            
+            // Create a post with above content
+            $post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+            
+            // Verify the span tag does not appear on the frontend
+            $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+            $this->assertEquals(
+                $this->prepareMarkup( "Let's talk about Watzlawick" ),
+                $this->prepareMarkup( $compiled_markup )
+            );
+        }
 
-	// Test if the microdata compiling does not fail on an entity with an undefined schema.org type
+        // Test if the microdata compiling does not fail on an entity with an undefined schema.org type
 	function testMicrodataCompilingForAnEntityWithUndefinedType() {
 		// Create an entity without defining the schema.org type. WordLift will assume it is a Thing
 		$entity_id  = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );

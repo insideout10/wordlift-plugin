@@ -1,7 +1,17 @@
 <?php
 /**
- * This file contains content-related functions.
+ * This file contains functions that filter the post content before it is showed on the frontend.
+ * For "microdata compiling" we refer to the process used to insert schema.org markup into the text.
  */
+
+/**
+ * Build the regex to find a <span> tag relative to a specific uri
+ * 
+ * @param string $uri Uri of the entity to search in the post content.
+ */
+function wl_content_embed_build_regex_from_uri( $uri ) {
+    return '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';
+}
 
 /**
  * Lift the post content with the microdata.
@@ -41,7 +51,7 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 	// Return the content if not item IDs have been found.
 	if ( false === preg_match_all( $regex, $content, $matches, PREG_SET_ORDER ) ) {
 		return $content;
-	};
+        }
 
 	// TODO: Retrieve here just one time entities type structure to avoid multiple queries.
 	foreach ( $matches as $match ) {
@@ -74,10 +84,15 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 
 	$post = wl_get_entity_post_by_uri( $uri );
 
-	// Entity not found.
-	if ( null === $post ) {
-		wl_write_log( "wl_content_embed_item_microdata : post not found [ uri :: $uri ]" );
-
+	// Entity not found or not published. Delete <span> tags but leave their content on page.
+	if ( null === $post || $post->post_status !== 'publish' ) {
+		
+                wl_write_log( "wl_content_embed_item_microdata : entity not found or not published [ uri :: $uri ]" );
+                
+                // Replace the original tagging with the new tagging.
+                $regex   = wl_content_embed_build_regex_from_uri( $uri );
+                $content = preg_replace( $regex, '$2', $content );
+                
 		return $content;
 	}
 
@@ -118,7 +133,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	$url = '<link itemprop="url" href="' . $permalink . '" />';
 
 	// Replace the original tagging with the new tagging.
-	$regex   = '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';
+	$regex   = wl_content_embed_build_regex_from_uri( $uri );
 	$content = preg_replace( $regex,
 		'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
 		. $same_as
