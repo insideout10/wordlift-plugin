@@ -118,7 +118,7 @@ function wl_core_delete_relation_instance( $subject_id, $predicate, $object_id )
 
 /**
 * Create multiple relation instances 
-* @uses wl_add_relation_instance to create each single instance
+* @uses ::wl_add_relation_instance to create each single instance
 * 
 * @param int $subject_id The post ID | The entity post ID.
 * @param string $predicate Name of the relation: 'what' | 'where' | 'when' | 'who'
@@ -215,7 +215,7 @@ function wl_core_validate_filters_for_related( $filters ) {
 /**
 * Find all entities related to a given $subject_id
 * If $predicate is omitted, $predicate filter is not applied 
-* @uses wl_core_inner_get_related_entities to perform the action
+* @uses ::wl_core_inner_get_related_entities to perform the action
 *
 * @param int $subject_id The post ID | The entity post ID.
 * @param $filters Associative array formed like this:
@@ -238,7 +238,7 @@ function wl_core_get_related_entities( $subject_id, $filters = array() ) {
 /**
 * Find all entity ids related to a given $subject_id
 * If $predicate is omitted, $predicate filter is not applied 
-* @uses wl_core_inner_get_related_entities to perform the action
+* @uses ::wl_core_inner_get_related_entities to perform the action
 *
 * @param int $subject_id The post ID | The entity post ID.
 * @param $filters Associative array formed like this:
@@ -288,7 +288,7 @@ function wl_core_inner_get_related_entities( $get, $item_id, $predicate = null, 
 /**
 * Find all posts related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
-* @uses wl_core_get_related_posts to perform the action 
+* @uses ::wl_core_get_related_posts to perform the action
 *
 * @param int $object_id The entity ID or the post ID.
 * @param $filters Associative array formed like this:
@@ -310,7 +310,7 @@ function wl_core_get_related_posts( $object_id, $filters = array() ) {
 /**
 * Find all post ids related to a given $object_id
 * If $predicate is omitted, $predicate filter is not applied 
-* @uses wl_core_get_related_posts to perform the action 
+* @uses ::wl_core_get_related_posts to perform the action
 *
 * @param int $object_id The entity ID or the post ID.
 * @param $filters Associative array formed like this:
@@ -478,8 +478,8 @@ function wl_core_sql_query_builder( $args ) {
 /**
 * Perform a query on db depending on args
 * It's responsible for argument validations  
-* @uses wl_core_sql_query_builder to compose the sql statement
-* @uses $wpdb instance to perform the query
+* @uses ::wl_core_sql_query_builder to compose the sql statement
+* @uses ::wpdb instance to perform the query
 *
 * @param array args Arguments to be used in the query builder.
 *
