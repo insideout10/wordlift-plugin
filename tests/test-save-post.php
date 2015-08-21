@@ -184,35 +184,34 @@ EOF;
 		$this->assertCount( 4, $lines );
 
 	}
+       
+    function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed(){
         
-        /*function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed(){
-            
-            // Create draft entity
-            $e_id = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-            $e_uri = wl_get_entity_uri( $e_id );
-            $body = <<<EOF
-                <span itemid="$e_uri">Entity 1</span>
+        // Create draft entity
+        $e_id = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+        $e_uri = wl_get_entity_uri( $e_id );
+        $body = <<<EOF
+            <span itemid="$e_uri">Entity 1</span>
 EOF;
-            
-            // Create published post mentioning the entity
-            $p_id = wl_create_post( $body, 'post-1', uniqid( 'post', true ), 'publish', 'post' );
-            
-            // Verify the post triples contain a reference to the entity
-            $lines = $this->getPostTriples( $p_id );
-            wl_write_log('piedo');
-            wl_write_log($lines);
-            $this->assertCount( 9, $lines );
-            
-            // Trash the entity
-            wl_update_post_status( $e_id, 'trash' );
-            
-            // Verify the post triples does no more contain a reference to the entity
-            $lines = $this->getPostTriples( $p_id );
-            wl_write_log('piedo');
-            wl_write_log($lines);
-            $this->assertCount( 8, $lines );
-            
-        }*/
+        // Create draft post mentioning the entity
+        $p_id = wl_create_post( $body, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+        // Publish the post (and related entities)
+        wl_update_post_status( $p_id, 'publish' );
+
+        // Verify the post triples contain a reference to the entity
+        $lines = $this->getPostTriples( $p_id );
+
+        $this->assertCount( 9, $lines );
+        
+        // Trash the entity
+        wl_update_post_status( $e_id, 'trash' );
+        
+        // Verify the post triples does no more contain a reference to the entity
+        $lines = $this->getPostTriples( $p_id );
+        
+        $this->assertCount( 8, $lines );
+        
+    }
 
 	function getPostTriples( $post_id ) {
 
