@@ -73,8 +73,11 @@ function wl_shortcode_geomap_prepare_map( $places ) {
     $max_latitude  = ~PHP_INT_MAX;
     $max_longitude = ~PHP_INT_MAX;
 
-    // Prepare an empty array of POIs.
+    // Prepare an empty array of POIs in geoJSON format.
     $pois = array();
+    // And store list of points to allow Leaflet compute the optimal bounding box.
+    // The main reason for this is that geoJSON has swapped coordinates (lon. lat)
+    $boundaries = array();
 
     // Add a POI for each entity that has coordinates.
     foreach ($places as $entity) {
@@ -134,33 +137,11 @@ function wl_shortcode_geomap_prepare_map( $places ) {
 
         $pois[] = $poi;
 
-        // TODO: calculate the type to choose a marker of the appropriate color.
+        // Formatting boundaries in a Leaflet-like format (see LatLngBounds).
+        // http://leafletjs.com/reference.html#latlngbounds
+        $boundaries[] = array( $coordinates['latitude'], $coordinates['longitude'] );
 
-        // Set a reference to the coordinates.
-        $latitude = $coordinates['latitude'];
-        if ( $latitude < $min_latitude ) {
-            $min_latitude = $latitude;
-        }
-        if ( $latitude > $max_latitude ) {
-            $max_latitude = $latitude;
-        }
-        $longitude = $coordinates['longitude'];
-        if ( $longitude < $min_longitude ) {
-            $min_longitude = $longitude;
-        }
-        if ( $longitude > $max_longitude ) {
-            $max_longitude = $longitude;
-        }
     }
-
-    // TODO Baundaries management could be delegated to the wordlift js ui layer
-        
-    // Formatting boundaries in a Leaflet-like format (see LatLngBounds).
-    // http://leafletjs.com/reference.html#latlngbounds
-    $boundaries = array(
-            array( $min_latitude, $min_longitude ),
-            array( $max_latitude, $max_longitude )
-    );
 
     $map_data = array();
     $map_data['features'] = $pois;
