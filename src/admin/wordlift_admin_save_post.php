@@ -15,7 +15,7 @@
  *
  * @see http://codex.wordpress.org/Post_Status_Transitions about WordPress post transitions.
  *
- * @uses wl_delete_post to delete a post when the status transitions from *published* to anything else.
+ * @uses wl_delete_post() to delete a post when the status transitions from *published* to anything else.
  *
  * @param string $new_status The new post status
  * @param string $old_status The old post status

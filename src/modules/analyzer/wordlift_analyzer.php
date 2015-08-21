@@ -6,7 +6,7 @@
  *
  * @since 1.0.0
  *
- * @uses wl_analyze_content to analyze the provided content.
+ * @uses wl_analyze_content() to analyze the provided content.
  */
 function wl_ajax_analyze_action() {
 
@@ -23,7 +23,7 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  *
  * @since 1.0.0
  *
- * @uses wl_configuration_get_analyzer_url to get the API for the analysis.
+ * @uses wl_configuration_get_analyzer_url() to get the API for the analysis.
  *
  * @param string $content The content to analyze.
  *

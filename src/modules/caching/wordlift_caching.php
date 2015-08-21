@@ -15,10 +15,10 @@ License: APL
  *
  * @since 3.0.0
  *
- * @uses wl_caching_hash to get the hash for a request.
- * @uses wl_caching_get_filename to check whether a request is cached.
- * @uses wl_caching_get to get a cached response.
- * @uses wl_caching_put to store a response in the cache.
+ * @uses wl_caching_hash() to get the hash for a request.
+ * @uses wl_caching_get_filename() to check whether a request is cached.
+ * @uses wl_caching_get() to get a cached response.
+ * @uses wl_caching_put() to store a response in the cache.
  *
  * @param string $url   The remote URL.
  * @param array $args   The request parameters.
@@ -75,8 +75,8 @@ function wl_caching_hash( $url, $args ) {
  *
  * @since 3.0.0
  *
- * @uses wl_caching_get_temp_path to get the base cache filename.
- * @uses wl_caching_delete_file to delete the cached file.
+ * @uses wl_caching_get_temp_path() to get the base cache filename.
+ * @uses wl_caching_delete_file() to delete the cached file.
  *
  * @param string $hash The hash.
  * @return string|false The cache filename or false if not found.
@@ -117,8 +117,8 @@ function wl_caching_get_filename( $hash ) {
  *
  * @since 3.0.0
  *
- * @uses wl_caching_get_filename
- * @uses wl_caching_get_temp_path
+ * @uses wl_caching_get_filename()
+ * @uses wl_caching_get_temp_path()
  *
  * @param string $hash The document hash
  * @return array|false The cached response or false if the document is not found in the cache.
@@ -188,7 +188,7 @@ function wl_caching_get_cache_folder() {
  *
  * @since 3.0.0
  *
- * @uses wl_caching_get_cache_folder to get the cache folder.
+ * @uses wl_caching_get_cache_folder() to get the cache folder.
  *
  * @param string $hash The hash.
  * @return string The full path to the file.
@@ -205,8 +205,8 @@ function wl_caching_get_temp_path( $hash ) {
  * Delete the cache file bound to the specified hash.
  *
  * @since 3.0.0
- * @uses wl_caching_get_filename to get the filename of the cache file.
- * @uses wl_caching_delete_file to delete the cache file.
+ * @uses wl_caching_get_filename() to get the filename of the cache file.
+ * @uses wl_caching_delete_file() to delete the cache file.
  *
  * @param string $hash The hash file.
  */

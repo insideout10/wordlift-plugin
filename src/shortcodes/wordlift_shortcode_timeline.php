@@ -7,7 +7,7 @@
 /**
  * Retrieve timeline events.
  *
- * @uses wl_core_get_related_entity_ids to retrieve the entities referenced by the specified post.
+ * @uses wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
  *
  * @param int $post_id The post ID.
  * @return array An array of event posts.
@@ -141,8 +141,8 @@ function wl_shortcode_timeline_to_json( $posts ) {
 /**
  * Retrieve timeline events and output them in JSON.
  *
- * @uses wl_shortcode_timeline_get_events to retrieve the list of events referenced by the specified Post ID.
- * @uses wl_shortcode_timeline_to_json to convert the result to JSON.
+ * @uses wl_shortcode_timeline_get_events() to retrieve the list of events referenced by the specified Post ID.
+ * @uses wl_shortcode_timeline_to_json() to convert the result to JSON.
  */
 function wl_shortcode_timeline_ajax()
 {
