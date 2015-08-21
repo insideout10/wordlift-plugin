@@ -2,5 +2,5 @@
     <span itemprop="startDate" content="2014-10-21"></span>
     <span itemprop="endDate" content="2015-10-26"></span>
     <link itemprop="url" href="http://example.org/?entity=my-event" />
-    <a href="http://example.org/?entity=my-event" itemprop="name" content="MyEvent">MyEvent</a>
+    <a class="wl-entity-page-link" href="http://example.org/?entity=my-event" itemprop="name" content="MyEvent">MyEvent</a>
 </span>

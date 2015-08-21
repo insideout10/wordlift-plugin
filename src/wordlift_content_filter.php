@@ -139,7 +139,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		. $same_as
 		. $additional_properties
 		. $url
-		. '<a href="' . $permalink .'" itemprop="name" content="$2">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
+		. '<a class="wl-entity-page-link" href="' . $permalink .'" itemprop="name" content="$2">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
 		$content
 	);
 
