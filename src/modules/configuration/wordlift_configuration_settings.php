@@ -109,7 +109,7 @@ function wl_configuration_set_site_language( $value ) {
  */
 function wl_configuration_get_api_url() {
 
-	$options = get_option( 'wl_advanced_settings' );
+	$options = get_option( 'wl_advanced_settings', '' );
 
 	return ( empty( $options['api_url'] ) ? '' : $options['api_url'] );
 
@@ -136,7 +136,7 @@ function wl_configuration_set_api_url( $value ) {
  */
 function wl_configuration_get_redlink_key() {
 
-	$options = get_option( 'wl_advanced_settings' );
+	$options = get_option( 'wl_advanced_settings', '' );
 
 	return ( empty( $options['redlink_key'] ) ? '' : $options['redlink_key'] );
 
@@ -163,7 +163,7 @@ function wl_configuration_set_redlink_key( $value ) {
  */
 function wl_configuration_get_redlink_user_id() {
 
-	$options = get_option( 'wl_advanced_settings' );
+	$options = get_option( 'wl_advanced_settings', '' );
 
 	return ( empty( $options['redlink_user_id'] ) ? '' : $options['redlink_user_id'] );
 
@@ -190,7 +190,7 @@ function wl_configuration_set_redlink_user_id( $value ) {
  */
 function wl_configuration_get_redlink_dataset_name() {
 
-	$options = get_option( 'wl_advanced_settings' );
+	$options = get_option( 'wl_advanced_settings', '' );
 
 	return ( empty( $options['redlink_dataset_name'] ) ? '' : $options['redlink_dataset_name'] );
 }
@@ -218,7 +218,7 @@ function wl_configuration_set_redlink_dataset_name( $value ) {
  */
 function wl_configuration_get_redlink_dataset_uri() {
 
-	$options = get_option( 'wl_advanced_settings' );
+	$options = get_option( 'wl_advanced_settings', '' );
 
 	return ( empty( $options['redlink_dataset_uri'] ) ? '' : $options['redlink_dataset_uri'] );
 }
@@ -245,7 +245,7 @@ function wl_configuration_set_redlink_dataset_uri( $value ) {
  */
 function wl_configuration_get_redlink_application_name() {
 
-	$options = get_option( 'wl_advanced_settings' );
+	$options = get_option( 'wl_advanced_settings', '' );
 
 	return ( empty( $options['redlink_application_name'] ) ? '' : $options['redlink_application_name'] );
 }
