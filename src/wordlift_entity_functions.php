@@ -140,7 +140,12 @@ function wl_get_entity_uri( $post_id ) {
     
 	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
 	    
-	// Set the URI if it isn't set yet.
+	// If the dataset uri is not properly configured, null is returned
+    if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+        return null;
+    }
+
+    // Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
 		$uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
