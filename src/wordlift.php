@@ -299,7 +299,7 @@ function wl_get_image_urls( $post_id ) {
 
 	// Prepare the return array.
 	$image_urls = array();
-
+        
 	// Collect the URLs.
 	foreach ( $images as $attachment_id => $attachment ) {
 		$image_url = wp_get_attachment_url( $attachment_id );

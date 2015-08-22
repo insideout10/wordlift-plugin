@@ -135,13 +135,23 @@ function wl_shortcode_chord_get_graph( $data )
         $term = wl_entity_type_taxonomy_get_type( $item );
 
         wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
-
+        
+        // TODO: get all images
+        $thumbnail = null;
+        $thumbnail_id = get_post_thumbnail_id( $post->ID );
+        if ( '' !== $thumbnail_id ) {
+            $attachment = wp_get_attachment_image_src( $thumbnail_id );
+            if ( false !== $attachment ) {
+                $thumbnail = esc_attr( $attachment[0] );
+            }
+        }
+        
         $entity = array(
-            'uri'   => wl_get_entity_uri( $item ),
-            'url'   => get_permalink( $item ),
-            'label' => $post->post_title,
-            'type'  => $post->post_type,
-            'thumbnails' => wl_get_image_urls( $post->ID ),
+            'uri'               => wl_get_entity_uri( $item ),
+            'url'               => get_permalink( $item ),
+            'label'             => $post->post_title,
+            'type'              => $post->post_type,
+            'thumbnails'        => array( $thumbnail ),
             'css_class' => ( isset( $term['css_class'] ) ? $term['css_class'] : '' )
         );
 

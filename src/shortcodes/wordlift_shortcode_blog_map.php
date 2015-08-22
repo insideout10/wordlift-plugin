@@ -23,10 +23,11 @@ function wl_shortcode_blog_map( $atts ) {
 	
     // Adding javascript code
     wp_enqueue_script('vis-js', plugins_url( 'js-client/visjs/vis.js', __FILE__ ) );
-    wp_enqueue_script('blog-map-launcher', plugins_url( 'js-client/visjs/wordlift_shortcode_blog_map.js', __FILE__ ) );
+    wp_enqueue_script('blog-map-launcher', plugins_url( 'js-client/wordlift_shortcode_blog_map.js', __FILE__ ) );
     wp_localize_script( 'blog-map-launcher', 'blog_map_params', array(
             'ajax_url'   => admin_url('admin-ajax.php'),
-            'action'     => 'wl_chord'  // let's piggy back on chord graph functions
+            'action'     => 'wl_chord',  // let's piggy back on chord graph functions
+            'default_thumbnail' => plugins_url('images/wordlift-logo-black-32x32', __FILE__ )
         )
     );
 
