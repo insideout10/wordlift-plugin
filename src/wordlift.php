@@ -3,7 +3,7 @@
 Plugin Name: WordLift
 Plugin URI: http://wordlift.it
 Description: Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
-Version: 3.0.0-SNAPSHOT
+Version: 3.1.1-dev
 Author: InsideOut10
 Author URI: http://www.insideout.io
 License: APL
@@ -299,7 +299,7 @@ function wl_get_image_urls( $post_id ) {
 
 	// Prepare the return array.
 	$image_urls = array();
-
+        
 	// Collect the URLs.
 	foreach ( $images as $attachment_id => $attachment ) {
 		$image_url = wp_get_attachment_url( $attachment_id );

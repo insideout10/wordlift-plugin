@@ -9,9 +9,15 @@ jQuery(document).ready( function($) {
         
         // build nodes
         for(var i=0; i<nodes.length; i++){
+            console.log( nodes[i].thumbnails );
             nodes[i].id = i;
             nodes[i].shape = 'circularImage';
-            nodes[i].image = nodes[i].thumbnails[0];
+            
+            if( nodes[i].thumbnails.length > 0 ){ 
+                nodes[i].image = nodes[i].thumbnails[0];
+            } else {
+                nodes[i].image = blog_map_params.default_thumbnail;
+            }
             
             // refresh node indexes hash
             var uri = nodes[i].uri;
@@ -26,8 +32,6 @@ jQuery(document).ready( function($) {
             var toUri = edges[i].o;
             edges[i].to = nodesIndexes[toUri];
         }
-        
-        console.log(edges);
 
         // create the network
         var container = document.getElementById('wl-blog-map');
