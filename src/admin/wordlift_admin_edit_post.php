@@ -16,7 +16,7 @@
  */
 function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 
-    // If the post is published, add the button view on Redlink.
+    // If the post is published, add the button to view Redlink's linked data.
     if ( 'publish' == get_post_status( $post_id ) ) {
         if ( $uri = wl_get_entity_uri( $post_id ) ) {
             $uri_esc  =  esc_attr( wl_get_entity_uri( $post_id ) );
