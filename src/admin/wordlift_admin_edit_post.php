@@ -20,8 +20,9 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
     if ( 'publish' == get_post_status( $post_id ) ) {
         if ( $uri = wl_get_entity_uri( $post_id ) ) {
             $uri_esc  =  esc_attr( wl_get_entity_uri( $post_id ) );
-            $html     .= "<span id='view-post-btn'><a href='$uri_esc' class='button button-small' target='_blank'>" .
-                __('View on Redlink', 'wordlift') .
+            $lod_view_href = 'http://lodview.it/lodview/?IRI=' . $uri_esc;
+            $html     .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small' target='_blank'>" .
+                __('View Linked Data', 'wordlift') .
                 "</a></span>\n";
         }
         $html     .= "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
