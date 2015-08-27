@@ -233,8 +233,8 @@ function wl_core_install_entity_type_data() {
             // Update term with description, slug and parent    
             wp_update_term( $result['term_id'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
                 'name'         => $term['label'],
-                'description'   => $term['description'],
                 'slug'          => $slug,
+                'description'   => $term['description'],
                 'parent'        => $parent_id   // We give to WP taxonomy just one parent. TODO: see if can give more than one
             ));
 
