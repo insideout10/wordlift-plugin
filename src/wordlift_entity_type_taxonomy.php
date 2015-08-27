@@ -26,6 +26,7 @@ function wl_entity_type_taxonomy_register()
     );
     
     // Take away GUI for taxonomy editing.
+    // TODO: readd capabilities when editing of the WL <-> schema.org mapping is possible
     $capabilities = array(
         'manage_terms' => null,
         'edit_terms' => null,
