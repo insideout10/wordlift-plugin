@@ -36,7 +36,7 @@ function wl_entity_type_taxonomy_register()
 
     $args = array(
         'labels' => $labels,
-        /*'capabilities' => $capabilities,*/
+        'capabilities' => $capabilities,
         'hierarchical' => true,
         'show_admin_column' => true
     );
