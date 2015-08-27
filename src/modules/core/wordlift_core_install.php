@@ -198,7 +198,7 @@ function wl_core_install_entity_type_data() {
             $term_id = term_exists( $slug, WL_ENTITY_TYPE_TAXONOMY_NAME );
 
             if( $term_id == 0 || is_null( $term_id ) ) {
-                $result = wp_insert_term( $term['label'], WL_ENTITY_TYPE_TAXONOMY_NAME );
+                $result = wp_insert_term( $slug, WL_ENTITY_TYPE_TAXONOMY_NAME );
             } else {
                 $term_id = $term_id['term_id'];
                 $result = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
@@ -232,6 +232,7 @@ function wl_core_install_entity_type_data() {
 
             // Update term with description, slug and parent    
             wp_update_term( $result['term_id'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+                'label'         => $term['label'],
                 'description'   => $term['description'],
                 'slug'          => $slug,
                 'parent'        => $parent_id   // We give to WP taxonomy just one parent. TODO: see if can give more than one
