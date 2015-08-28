@@ -43,9 +43,15 @@ function wl_content_embed_microdata( $content ) {
  * @return string The updated post content.
  */
 function _wl_content_embed_microdata( $post_id, $content ) {
-
+    
+        // If it is an entity, add its own microdata to the content.
+        if( get_post_type( $post_id ) == WL_ENTITY_TYPE_NAME ) {
+            $own_uri = wl_get_entity_uri( $post_id );
+            $content .= '<span itemid="' . $own_uri . '"></span>';
+        }
+    
+        // Now search in the text entity mentions        
 	$regex = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
-
 	$matches = array();
 
 	// Return the content if not item IDs have been found.
@@ -154,7 +160,7 @@ add_filter( 'the_content', 'wl_content_embed_microdata' );
  * Fills up the microdata_template with entity's values.
  *
  * @param string $entity_id An entity ID.
- * @param string $entity_type Entity type stracture.
+ * @param string $entity_type Entity type structure.
  * @param integer $recursion_level Recursion depth level in microdata compiling. Recursion depth limit is defined by WL_MAX_NUM_RECURSIONS_WHEN_PRINTING_MICRODATA constant.
  *
  * @return string The content with embedded microdata.

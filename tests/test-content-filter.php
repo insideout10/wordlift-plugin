@@ -362,6 +362,27 @@ EOF;
 			$this->prepareMarkup( $compiled_markup )
 		);
 	}
+        
+	// If the content filter is applied to an entity, the entity's microdata must be printed too.
+	function testMicrodataCompilingForAnEntityPage() {
+
+		// A place
+		$place_id = wl_create_post( '', 'my-place', 'My Place', 'publish', 'entity' );
+		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+                wl_schema_set_value( $place_id, 'latitude', 40.12 );
+		wl_schema_set_value( $place_id, 'longitude', 72.3 );
+
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $place_id, '' );
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_entity_page.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
 
 	function setRecursionDepthLimit( $value ) {
 		// Set the default as index.
