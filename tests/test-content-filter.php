@@ -367,7 +367,7 @@ EOF;
 	function testMicrodataCompilingForAnEntityPage() {
 
 		// A place
-		$place_id = wl_create_post( '', 'my-place', 'My Place', 'publish', 'entity' );
+		$place_id = wl_create_post( '', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
                 wl_schema_set_value( $place_id, 'latitude', 40.12 );
 		wl_schema_set_value( $place_id, 'longitude', 72.3 );
