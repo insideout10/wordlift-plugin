@@ -1,8 +1,8 @@
-<span itemscope itemtype="http://schema.org/Place" itemid="http://data.redlink.io/91/be4/entity/myplace">
+<span itemscope itemtype="http://schema.org/Place" itemid="{{REDLINK_ENDPOINT}}/entity/myplace">
     <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
         <span itemprop="latitude" content="40.12"></span>
         <span itemprop="longitude" content="72.3"></span>
     </span>
     <link itemprop="url" href="http://example.org/?entity=my-place"/>
-    <a class="wl-entity-page-link" href="http://example.org/?entity=my-place" itemprop="name" content="My Place"></a>
+    <a class="wl-entity-page-link" href="http://example.org/?entity=my-place" itemprop="name" content="MyPlace"></a>
 </span>
