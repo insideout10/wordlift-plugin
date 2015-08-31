@@ -132,8 +132,17 @@ function wl_core_install_entity_type_data() {
 				'http://rdf.freebase.com/ns/music.artist',
 				'http://dbpedia.org/class/yago/LivingPeople'
 			),
-			'custom_fields'      => array(),
-			'microdata_template' => '',
+			'custom_fields'      => array(
+                            WL_CUSTOM_FIELD_KNOWS  => array(
+                                        'predicate'        => 'http://schema.org/knows',
+					'type'        => WL_DATA_TYPE_URI,
+                                        'export_type' => 'http://schema.org/Person',
+					'constraints' => array(
+						'uri_type' => 'Person'
+					)
+				),
+                        ),
+			'microdata_template' => '{{knows}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
