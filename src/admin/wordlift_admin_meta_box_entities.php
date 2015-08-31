@@ -386,10 +386,10 @@ function wl_entities_uri_box_content( $post, $info ) {
 	// Which type of entity is object?
 	if ( isset( $custom_field[ $meta_name ]['constraints']['uri_type'] ) ) {
 		// Specific type (e.g. Place, Event, ecc.)
-		$expected_type = $custom_field[ $meta_name ]['constraints']['uri_type'];
+		$expected_types = $custom_field[ $meta_name ]['constraints']['uri_type'];
 	} else {
 		// Any entity
-		$expected_type = null;
+		$expected_types = null;
 	}
         
 	// Set Nonce
@@ -423,10 +423,17 @@ function wl_entities_uri_box_content( $post, $info ) {
 
 	// Search entities of the expected type
 	$args       = array(
-		'posts_per_page'             => - 1,
-		'orderby'                    => 'RECENCYYYYYYYY',
+		'numberposts' => 50,
+		'orderby'     => 'post_date',
+                'order'       => 'DESC',
 		'post_type'                  => WL_ENTITY_TYPE_NAME,
-		WL_ENTITY_TYPE_TAXONOMY_NAME => $expected_type
+		'tax_query' => array(  
+                    array(  
+                        'taxonomy' => WL_ENTITY_TYPE_TAXONOMY_NAME,  
+                        'field' => 'name',  
+                        'terms' => $expected_types 
+                    )  
+                )
 	);
 
         $candidates = get_posts( $args );
