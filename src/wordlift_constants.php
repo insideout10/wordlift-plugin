@@ -50,6 +50,8 @@ define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 define( 'WL_CUSTOM_FIELD_FOUNDER', 'wl_founder');
 define( 'WL_CUSTOM_FIELD_AUTHOR', 'wl_author');
 define( 'WL_CUSTOM_FIELD_KNOWS', 'wl_knows');
+define( 'WL_CUSTOM_FIELD_BIRTH_DATE', 'wl_birth_date');
+define( 'WL_CUSTOM_FIELD_BIRTH_PLACE', 'wl_birth_place');
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
