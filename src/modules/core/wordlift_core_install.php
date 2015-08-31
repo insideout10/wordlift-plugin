@@ -43,7 +43,16 @@ function wl_core_install_entity_type_data() {
 				'http://schema.org/MusicAlbum',
 				'http://schema.org/Product'
 			),
-			'custom_fields'      => array(),
+			'custom_fields'      => array(
+                            WL_CUSTOM_FIELD_AUTHOR  => array(
+                                        'predicate'        => 'http://schema.org/author',
+					'type'        => WL_DATA_TYPE_URI,
+                                        'export_type' => 'http://schema.org/Person',
+					'constraints' => array(
+						'uri_type' => 'Person'
+					)
+				),
+                        ),
 			'microdata_template' => '',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
