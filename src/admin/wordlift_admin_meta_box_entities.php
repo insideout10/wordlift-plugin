@@ -587,20 +587,28 @@ function wl_entity_metabox_save( $post_id ) {
 			if ( $expecting_uri && $absent_from_db && ! $name_is_uri ) {
 
 				// ...we create a new entity!
-				$new_entity = wl_save_entity( '', $meta_value, WL_ENTITY_TYPE_NAME, '' );
-
+				$new_entity_id = wp_insert_post( array(
+                                    'post_status'  => 'publish',
+                                    'post_type'    => WL_ENTITY_TYPE_NAME,
+                                    'post_title'   => $meta_value
+                                ) );
+                                $new_entity = get_post( $new_entity_id );
+                                
 				// Assign type
 				$constraints = wl_get_meta_constraints( $meta_name );
 				$type        = 'http://schema.org/' . $constraints['uri_type'];
-				wl_set_entity_main_type( $new_entity->ID, $type );
+				wl_set_entity_main_type( $new_entity_id, $type );
 
-				// TODO: directly publish the new entity
-
+                                // Build uri for this entity
+                                $new_uri = wl_build_entity_uri( $new_entity_id );
+                                wl_set_entity_uri( $new_entity_id, $new_uri );
+                                
 				// Update the value that will be saved as meta
-				$meta_value = wl_get_entity_uri( $new_entity->ID );
+				$meta_value = $new_uri;
+                                
+                                wl_push_entity_post_to_redlink( $new_entity );
 			}
                         
-                        // TODO: use WL methods
 			add_post_meta( $post_id, $meta_name, $meta_value );
                     }
 		}
