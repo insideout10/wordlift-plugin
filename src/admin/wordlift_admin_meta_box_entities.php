@@ -24,9 +24,15 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 	if ( isset( $entity_id ) && is_numeric( $entity_id ) && isset( $entity_type['custom_fields'] ) ) {
 
 		// In some special case, properties must be grouped in one metabox (e.g. coordinates) or dealed with custom methods.
+                // We divide metaboxes in two groups:
+                // - simple: accept values for one property
+                // - grouped: accept values for more properties, or for one property that needs a specific metabox.
 		$metaboxes         = wl_entities_metaboxes_group_properties_by_input_field( $entity_type['custom_fields'] );
 		$simple_metaboxes  = $metaboxes[0];
 		$grouped_metaboxes = $metaboxes[1];
+                
+                wl_write_log('piedo');
+                wl_write_log($metaboxes);
 
 		// Loop over simple entity properties
 		foreach ( $simple_metaboxes as $key => $property ) {

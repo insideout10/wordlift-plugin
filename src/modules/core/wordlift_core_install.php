@@ -22,8 +22,9 @@ function wl_core_install_entity_type_data() {
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Thing',
-					'constraints' => '',
-                                        'input_field' => 'sameas'   // to build custom metabox
+					'constraints' => array(
+                                            'cardinality'   => 'n'
+                                        )
 				)
 			),
                         // {{sameAs}} not present in the microdata template,
