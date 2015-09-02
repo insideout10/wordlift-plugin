@@ -271,57 +271,6 @@ function wl_entities_string_box_content( $post, $info ) {
 }
 
 /**
- * Displays the sameAs meta box contents (called by *add_meta_box* callback).
- *
- * @param WP_Post $post The current post.
- */
-function wl_entities_sameas_box_content( $post ) {
-
-	// Set nonce for both meta (latitude and longitude)
-	wl_echo_nonce( WL_CUSTOM_FIELD_SAME_AS );
-
-	// Get sameAs
-        $sameAs = implode( "\n", wl_schema_get_value( $post->ID, 'sameAs' ) );
-        
-        // Print input textarea. The user writes here the sameAs URIs, separated by \n.
-	echo '<textarea style="width: 100%;" id="wl_same_as" placeholder="Same As URLs, one per row">' . esc_attr( $sameAs ) . '</textarea>';
-        echo '<div id="wl_same_as_list"></div>';
-
-        // Input tags are updated at each change to contain the rows typed in the textarea
-        echo <<<EOF
-        <script>
-            $ = jQuery;
-            $(document).ready(function(){
-        
-                refreshSameAsList();    // refresh now and at every change event
-                $("#wl_same_as").on("change keyup paste", function(){
-                    refreshSameAsList();
-                });
-                
-                function refreshSameAsList() {
-                    $("#wl_same_as_list").empty();
-
-                    var sameAsList = $("#wl_same_as").val();
-                    sameAsList = sameAsList.split('\\n');
-                    console.log(sameAsList);
-                    
-                    for(var i=0; i<sameAsList.length; i++){
-                        // some validation
-                        if(sameAsList[i].indexOf("http") == 0){
-        
-                            // Refresh input tags
-                            $("#wl_same_as_list").append(
-                                '<input type="hidden" name="wl_metaboxes[entity_same_as][' + i + ']" value="' + sameAsList[i] + '" />'
-                            );
-                        }
-                    }
-                }
-            });
-        </script>
-EOF;
-}
-
-/**
  * Displays the coordinates meta box contents (called by *add_meta_box* callback).
  *
  * @param WP_Post $post The current post.
@@ -383,167 +332,90 @@ function wl_entities_coordinates_box_content( $post ) {
  * @param $info Array The custom_field the method must manage.
  */
 function wl_entities_uri_box_content( $post, $info ) {
-
+    
 	// Which meta/custom_field are we managing?
 	$custom_field = $info['args'];
 	$meta_name    = ( array_keys( $custom_field ) );
 	$meta_name    = $meta_name[0];
-
-	// Which type of entity is object?
+        
+        // Which type of entity can we accept?
 	if ( isset( $custom_field[ $meta_name ]['constraints']['uri_type'] ) ) {
-		// Specific type (e.g. Place, Event, ecc.)
+		// Specific schema type (e.g. Place, Event, ecc.)
 		$expected_types = $custom_field[ $meta_name ]['constraints']['uri_type'];
 	} else {
 		// Any entity
 		$expected_types = null;
 	}
         
+        // How many values can we accept?
+        if( isset( $custom_field[ $meta_name ]['constraints']['cardinality'] ) ){
+            $cardinality = $custom_field[ $meta_name ]['constraints']['cardinality'];
+        } else {
+            $cardinality = '1';
+        }
+        
+        echo 'cardinality ' . $cardinality;
+        
 	// Set Nonce
 	wl_echo_nonce( $meta_name );
 
-	// Get default value, if any
-	$defaultEntity = get_post_meta( $post->ID, $meta_name, true );
-
-	// Is there a value?
-	if ( $defaultEntity !== '' ) {
-		// Is the value an ID or a string?
-		if ( is_numeric( $defaultEntity ) ) {
-			$defaultEntity      = get_post( $defaultEntity );
-			$defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
-		} else {
-			// Is the entity external or internal?
-			$defaultEntityTmp = wl_get_entity_post_by_uri( $defaultEntity );
-			if ( is_null( $defaultEntityTmp ) ) {
-				// external entity
-				$defaultEntity = array(
-					'uri'        => $defaultEntity,
-					'post_title' => $defaultEntity
-				);
-			} else {
-				// internal entity
-				$defaultEntity      = $defaultEntityTmp;
-				$defaultEntity->uri = wl_get_entity_uri( $defaultEntity->ID );
-			}
+	// Get already inserted values, if any
+	$defaultEntities = get_post_meta( $post->ID, '$meta_name' );
+	if ( is_array( $defaultEntities ) && !empty( $defaultEntities ) ) {
+            foreach( $defaultEntities as $defaultEntityIdentifier ) {
+		// If the value is an ID (local entity for sure), display the URI
+		if ( is_numeric( $defaultEntityIdentifier ) ) {
+			$defaultEntity      = get_post( $defaultEntityIdentifier );
+			$defaultEntityIdentifier = wl_get_entity_uri( $defaultEntity->ID );
 		}
-	}
-
-	// Search entities of the expected type
-	$args       = array(
-		'numberposts' => 50,
-		'orderby'     => 'post_date',
-                'order'       => 'DESC',
-		'post_type'                  => WL_ENTITY_TYPE_NAME,
-		'tax_query' => array(  
-                    array(  
-                        'taxonomy' => WL_ENTITY_TYPE_TAXONOMY_NAME,  
-                        'field' => 'name',  
-                        'terms' => $expected_types 
-                    )  
-                )
-	);
-
-        $candidates = get_posts( $args );
-
-	// Write Autocomplete selection
-	if ( count( $candidates ) > 0 ) {
-            
-                $autocomplete_visible_input_id = 'autocompleteEntity-' . $meta_name;
-                $autocomplete_hidden_input_id = 'autocompleteEntityHidden-' . $meta_name;
-                $autocomplete_create_new_input_id = 'autocompleteCreateNew-' . $meta_name;
-            
-		// Input to show the autocomplete options
-		echo '<input id="' . $autocomplete_visible_input_id . '" style="width:100%" >';
-		// Input to store the actual chosen values ( autocomplete quirks... )
-		echo '<input type="hidden" id="' . $autocomplete_hidden_input_id . '" name="wl_metaboxes[' . $meta_name . ']">';
-		// Input to create new entity (insert uri or just give a name)
-		$placeholder = __( 'Insert uri or just a name', 'wordlift' );
-		echo '<input id="' . $autocomplete_create_new_input_id . '" placeholder="' . $placeholder . '" style="width:100%" >';
-
-
-		// Add jQuery Autocomplete
-		wp_enqueue_script( 'jquery-ui-autocomplete' );
-
-		// Filter $candidates to only contain id, name and uri
-		$simpleCandidates = array_map( function ( $p ) {
-			return array(
-				'value' => wl_get_entity_uri( $p->ID ),
-				'label' => $p->post_title
-			);
-		}, $candidates );
-
-		// Add null value (to delete location)
-		$nullCandidate = array(
-			'value' => '',
-			'label' => __( '< no entity >', 'wordlift' )
-		);
-		array_unshift( $simpleCandidates, $nullCandidate );
-
-		// Add null value (to delete location)
-		$newCandidate = array(
-			'value' => '§',
-			'label' => __( '< add new entity >', 'wordlift' )
-		);
-		array_unshift( $simpleCandidates, $newCandidate );
-
-		// Add to Autocomplete available place
-                $entities_list_name = 'availableEntities' . $meta_name;
-		wp_localize_script( 'jquery-ui-autocomplete', $entities_list_name,
-			array(
-				'list'    => $simpleCandidates,
-				'default' => $defaultEntity
-			)
-		);
-                
-		echo "<script type='text/javascript'>
-        $ = jQuery;
-        $(document).ready(function() {
-            var availableEntities = " . $entities_list_name . "
-            var selector = '#" . $autocomplete_visible_input_id . "';               // to display labels
-            var createNewSelector = '#" . $autocomplete_create_new_input_id . "';   // to insert new entitiy
-            var hiddenSelector = '#" . $autocomplete_hidden_input_id . "';   // to contain the value to be saved
-            
-            // 'create new' input
-            $(createNewSelector).hide()     // Starts hidden
-                .change( function(){        // keyboard event
-                    $(hiddenSelector).val( $(this).val() );
-                });
-                
-            // Default label and value
-            if( availableEntities.default.hasOwnProperty( 'uri' ) ){
-                $(selector).val( availableEntities.default.post_title );
-                $(hiddenSelector).val( availableEntities.default.uri );
             }
-            
-            // Init autocomplete
-            $(selector).autocomplete({
-                minLength: 0,
-                source: availableEntities.list,
-                select: function( event, ui ){
-                    // Display label but store value in the hidden <input>
-                    event.preventDefault();
-                    $(selector).val( ui.item.label );
-                    $(hiddenSelector).val( ui.item.value );
-
-                    if( $(hiddenSelector).val() === '§' ){
-                        $(createNewSelector).show();
-                        $(createNewSelector).focus();
-                        $(hiddenSelector).val('');
-                    } else {
-                        $(createNewSelector).hide();
-                    }
-                },
-                focus: function( event, ui ) {
-                    // Do not show values instead of the label
-                    event.preventDefault();
-                    $(selector).val(ui.item.label);
-                }
-            });
-            
-        });
-        </script>";
-	} else {
-		echo __( 'No entities of the right type found.', 'wordlift' );
 	}
+        
+        // Dispose the items one per line
+        $default = implode( "\n", $defaultEntities );
+        
+        if( $cardinality == '1' ){
+            echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $default . '" style="width:100%" />';
+        } else {
+            // Print input textarea. The user writes here the sameAs URIs, separated by \n.
+            echo '<textarea style="width: 100%;" id="' . $meta_name . '" placeholder="Insert URLs or entity name, one per row">' . esc_attr( $default ) . '</textarea>';
+            
+            // This div will store an <input> tag for every line of the textarea
+            echo '<div id="' . $meta_name . '_list"></div>';
+                  
+            // Input tags are updated at each change to contain the rows typed in the textarea
+            echo <<<EOF
+            <script>
+                $ = jQuery;
+                $(document).ready(function(){
+
+                    refreshList();    // refresh now and at every change event
+                    $("#' . $meta_name . '").on("change keyup paste", function(){
+                        refreshList();
+                    });
+
+                    function refreshList() {
+                        $("#' . $meta_name . '_list").empty();
+
+                        var list = $("#' . $meta_name . '").val();
+                        list = list.split('\\n');
+                        console.log(list);
+
+                        for(var i=0; i<list.length; i++){
+                            // some validation
+                            if(list[i].indexOf("http") == 0){
+
+                                // Refresh input tags
+                                $("#' . $meta_name . '_list").append(
+                                    '<input type="hidden" name="wl_metaboxes[' . $meta_name . '][' + i + ']" value="' + list[i] + '" />'
+                                );
+                            }
+                        }
+                    }
+                });
+            </script>
+EOF;
+        }
 }
 
 /**
