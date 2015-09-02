@@ -30,9 +30,6 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		$metaboxes         = wl_entities_metaboxes_group_properties_by_input_field( $entity_type['custom_fields'] );
 		$simple_metaboxes  = $metaboxes[0];
 		$grouped_metaboxes = $metaboxes[1];
-                
-                wl_write_log('piedo');
-                wl_write_log($metaboxes);
 
 		// Loop over simple entity properties
 		foreach ( $simple_metaboxes as $key => $property ) {
@@ -354,13 +351,11 @@ function wl_entities_uri_box_content( $post, $info ) {
             $cardinality = '1';
         }
         
-        echo 'cardinality ' . $cardinality;
-        
 	// Set Nonce
 	wl_echo_nonce( $meta_name );
 
 	// Get already inserted values, if any
-	$defaultEntities = get_post_meta( $post->ID, '$meta_name' );
+	$defaultEntities = get_post_meta( $post->ID, $meta_name );
 	if ( is_array( $defaultEntities ) && !empty( $defaultEntities ) ) {
             foreach( $defaultEntities as $defaultEntityIdentifier ) {
 		// If the value is an ID (local entity for sure), display the URI
@@ -381,7 +376,8 @@ function wl_entities_uri_box_content( $post, $info ) {
             echo '<textarea style="width: 100%;" id="' . $meta_name . '" placeholder="Insert URLs or entity name, one per row">' . esc_attr( $default ) . '</textarea>';
             
             // This div will store an <input> tag for every line of the textarea
-            echo '<div id="' . $meta_name . '_list"></div>';
+            $meta_name_list = $meta_name . '_list';
+            echo '<div id="' . $meta_name_list . '"></div>';
                   
             // Input tags are updated at each change to contain the rows typed in the textarea
             echo <<<EOF
@@ -390,24 +386,23 @@ function wl_entities_uri_box_content( $post, $info ) {
                 $(document).ready(function(){
 
                     refreshList();    // refresh now and at every change event
-                    $("#' . $meta_name . '").on("change keyup paste", function(){
+                    $("#$meta_name").on("change keyup paste", function(){
                         refreshList();
                     });
 
                     function refreshList() {
-                        $("#' . $meta_name . '_list").empty();
+                        $("#$meta_name_list").empty();
 
-                        var list = $("#' . $meta_name . '").val();
+                        var list = $("#$meta_name").val();
                         list = list.split('\\n');
-                        console.log(list);
 
                         for(var i=0; i<list.length; i++){
                             // some validation
                             if(list[i].indexOf("http") == 0){
-
+                                console.log(list[i]);
                                 // Refresh input tags
-                                $("#' . $meta_name . '_list").append(
-                                    '<input type="hidden" name="wl_metaboxes[' . $meta_name . '][' + i + ']" value="' + list[i] + '" />'
+                                $("#$meta_name_list").append(
+                                    '<input type="hidden" name="wl_metaboxes[$meta_name][' + i + ']" value="' + list[i] + '" />'
                                 );
                             }
                         }
@@ -454,6 +449,9 @@ function wl_entity_metabox_save( $post_id ) {
                     }
                         
                     foreach( $meta_values as $meta_value ) { 
+                        
+                        wl_write_log( 'piedo about to evaluate ' . $meta_name );
+                        wl_write_log( $meta_value );
                 
 			// If the meta expects an entity...
 			$expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
@@ -486,6 +484,9 @@ function wl_entity_metabox_save( $post_id ) {
                                 
                                 wl_push_entity_post_to_redlink( $new_entity );
 			}
+                        
+                        wl_write_log( 'piedo about to insert ' . $meta_name );
+                        wl_write_log( $meta_value );
                         
 			add_post_meta( $post_id, $meta_name, $meta_value );
                     }
