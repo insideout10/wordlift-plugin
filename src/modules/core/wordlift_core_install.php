@@ -138,21 +138,25 @@ function wl_core_install_entity_type_data() {
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
-						'uri_type' => 'Person'
+						'uri_type'      => 'Person',
+                                                'cardinality'   => 'n'
 					)
 				),
                             WL_CUSTOM_FIELD_BIRTH_DATE => array(
 					'predicate'   => 'http://schema.org/birthDate',
 					'type'        => WL_DATA_TYPE_DATE,
                                         'export_type' => 'xsd:date',
-					'constraints' => ''
+					'constraints' => array(
+                                                'cardinality'   => '1'
+                                        )
 				),
                             WL_CUSTOM_FIELD_BIRTH_PLACE => array(
 					'predicate'   => 'http://schema.org/birthPlace',
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Place',
 					'constraints' => array(
-						'uri_type' => 'Place'
+						'uri_type' => 'Place',
+                                                'cardinality'   => '1'
 					)
 				)
                         ),
