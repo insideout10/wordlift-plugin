@@ -12,7 +12,7 @@
 function wl_admin_add_entities_meta_box( $post_type ) {
 	wl_write_log( "wl_admin_add_entities_meta_box [ post type :: $post_type ]" );
 
-	// Add meta box for related entities (separated from the others for historical reasons)
+	// Add main meta box for related entities and 4W
 	add_meta_box(
 		'wordlift_entities_box', __( 'Wordlift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 	);
@@ -65,7 +65,43 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 			);
 
 		}
+                
+                // Add AJAX autocomplete to facilitate metabox editing
+                wp_enqueue_script('wl-entity-metabox-utility', plugins_url( 'js-client/wl_entity_metabox_utilities.js', __FILE__ ) );
+                wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
+                        'ajax_url'          => admin_url('admin-ajax.php'),
+                        'action'            => 'entity_by_title'
+                    )
+                );
 	}
+}
+
+/**
+ * Build the HTML template for metaboxes
+ */
+function wl_entities_metaboxes_build_template( $meta_name, $meta_values, $cardinality ) {
+    
+    // TODO: test this function and add parameters checks
+    // TODO: move nonce here!
+    
+    // Always add an empty <input> tag for new values
+    $meta_values[] = null;
+    
+    $template = '<div class="wl-metabox" data-cardinality="' . $cardinality . '">';
+    foreach( $meta_values as $index => $meta_value ){
+        $template .= '<div data-wl-meta-index="' . $index . '">
+                        <input type="text" class="' . $meta_name . ' wl-autocomplete" value="' . $meta_value . '" style="width:100%" />
+                        <input type="hidden" class="' . $meta_name . '_hidden" name="wl_metaboxes[' . $meta_name . '][' . $index . ']" value="' . $meta_value . '" />
+                    </div>';
+    }
+    $template .= '</div>';
+    
+    return $template;
+}
+
+
+function wl_echo_nonce( $meta_name ) {
+	wp_nonce_field( 'wordlift_' . $meta_name . '_entity_box', 'wordlift_' . $meta_name . '_entity_box_nonce' );
 }
 
 /**
@@ -355,8 +391,8 @@ function wl_entities_uri_box_content( $post, $info ) {
 	wl_echo_nonce( $meta_name );
 
 	// Get already inserted values, if any
-	$defaultEntities = get_post_meta( $post->ID, $meta_name );
-	if ( is_array( $defaultEntities ) && !empty( $defaultEntities ) ) {
+	$default_entities = get_post_meta( $post->ID, $meta_name );
+	/*if ( is_array( $defaultEntities ) && !empty( $defaultEntities ) ) {
             foreach( $defaultEntities as $defaultEntityIdentifier ) {
 		// If the value is an ID (local entity for sure), display the URI
 		if ( is_numeric( $defaultEntityIdentifier ) ) {
@@ -364,53 +400,10 @@ function wl_entities_uri_box_content( $post, $info ) {
 			$defaultEntityIdentifier = wl_get_entity_uri( $defaultEntity->ID );
 		}
             }
-	}
+	}*/
         
-        // Dispose the items one per line
-        $default = implode( "\n", $defaultEntities );
-        
-        if( $cardinality == '1' ){
-            echo '<input type="text" id="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . ']" value="' . $default . '" style="width:100%" />';
-        } else {
-            // Print input textarea. The user writes here the sameAs URIs, separated by \n.
-            echo '<textarea style="width: 100%;" id="' . $meta_name . '" placeholder="Insert URLs or entity name, one per row">' . esc_attr( $default ) . '</textarea>';
-            
-            // This div will store an <input> tag for every line of the textarea
-            $meta_name_list = $meta_name . '_list';
-            echo '<div id="' . $meta_name_list . '"></div>';
-                  
-            // Input tags are updated at each change to contain the rows typed in the textarea
-            echo <<<EOF
-            <script>
-                $ = jQuery;
-                $(document).ready(function(){
-
-                    refreshList();    // refresh now and at every change event
-                    $("#$meta_name").on("change keyup paste", function(){
-                        refreshList();
-                    });
-
-                    function refreshList() {
-                        $("#$meta_name_list").empty();
-
-                        var list = $("#$meta_name").val();
-                        list = list.split('\\n');
-
-                        for(var i=0; i<list.length; i++){
-                            // some validation
-                            if(list[i].indexOf("http") == 0){
-                                console.log(list[i]);
-                                // Refresh input tags
-                                $("#$meta_name_list").append(
-                                    '<input type="hidden" name="wl_metaboxes[$meta_name][' + i + ']" value="' + list[i] + '" />'
-                                );
-                            }
-                        }
-                    }
-                });
-            </script>
-EOF;
-        }
+        // Write already saved values in page
+        echo wl_entities_metaboxes_build_template( $meta_name, $default_entities, $cardinality );
 }
 
 /**
@@ -457,7 +450,7 @@ function wl_entity_metabox_save( $post_id ) {
 			$expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
 			// ...and the user inputs an entity that is not present in the db...
 			$absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );
-			// ...and that is not a external uri
+			// ...and that is not an external uri
 			$name_is_uri = strpos( $meta_value, 'http' ) === 0;
 
 			if ( $expecting_uri && $absent_from_db && ! $name_is_uri ) {
@@ -497,8 +490,3 @@ function wl_entity_metabox_save( $post_id ) {
 }
 
 add_action( 'wl_linked_data_save_post', 'wl_entity_metabox_save' );
-
-
-function wl_echo_nonce( $meta_name ) {
-	wp_nonce_field( 'wordlift_' . $meta_name . '_entity_box', 'wordlift_' . $meta_name . '_entity_box_nonce' );
-}
