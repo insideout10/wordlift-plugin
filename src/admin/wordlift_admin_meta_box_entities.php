@@ -76,30 +76,6 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 	}
 }
 
-/**
- * Build the HTML template for metaboxes
- */
-function wl_entities_metaboxes_build_template( $meta_name, $meta_values, $cardinality ) {
-    
-    // TODO: test this function and add parameters checks
-    // TODO: move nonce here!
-    
-    // Always add an empty <input> tag for new values
-    $meta_values[] = null;
-    
-    $template = '<div class="wl-metabox" data-cardinality="' . $cardinality . '">';
-    foreach( $meta_values as $index => $meta_value ){
-        $template .= '<div data-wl-meta-index="' . $index . '">
-                        <input type="text" class="' . $meta_name . ' wl-autocomplete" value="' . $meta_value . '" style="width:100%" />
-                        <input type="hidden" class="' . $meta_name . '_hidden" name="wl_metaboxes[' . $meta_name . '][' . $index . ']" value="' . $meta_value . '" />
-                    </div>';
-    }
-    $template .= '</div>';
-    
-    return $template;
-}
-
-
 function wl_echo_nonce( $meta_name ) {
 	wp_nonce_field( 'wordlift_' . $meta_name . '_entity_box', 'wordlift_' . $meta_name . '_entity_box_nonce' );
 }
@@ -224,6 +200,42 @@ function wl_entities_box_content( $post ) {
         });
     </script>
 EOF;
+}
+
+/**
+ * Build the HTML template for metaboxes
+ */
+function wl_entities_metaboxes_build_template( $meta_name, $meta_values, $cardinality=1, $expected_types=null ) {
+    
+    // TODO: test this function and add parameters checks
+    if( !is_array( $expected_types ) ){
+        $expected_types = array( $expected_types );
+    }
+    
+    // TODO: move nonce here! (may be risky)
+    
+    // Always add an empty <input> tag to allow insertion of new values.
+    $meta_values[] = null;
+    
+    // The containing <div> contains info on cardinality and expected types
+    $template = 'template:::::</br><div class="wl-metabox" data-cardinality="' . $cardinality . '"';
+    if( count( $expected_types ) != 0 && !is_null( $expected_types[0] ) ){
+        $template.= ' data-expected-types="' . implode($expected_types,',') . '"';
+    }
+    $template.= '>';
+    
+    // The insid <input> tags host the meta values.
+    // Each hosts one human readable value (i.e. entity name or uri)
+    // and is accompained by an hidden <input> tag has both the index of the value and its raw value (i.e. the uri or entity id)
+    foreach( $meta_values as $index => $meta_value ){
+        $template .= '<div data-wl-meta-index="' . $index . '">
+                        <input type="text" class="' . $meta_name . ' wl-autocomplete" value="' . $meta_value . '" style="width:100%" />
+                        <input type="hidden" class="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . '][' . $index . ']" value="' . $meta_value . '" />
+                    </div>';
+    }
+    $template .= '</div>';
+    
+    return $template;
 }
 
 /**
@@ -384,7 +396,7 @@ function wl_entities_uri_box_content( $post, $info ) {
         if( isset( $custom_field[ $meta_name ]['constraints']['cardinality'] ) ){
             $cardinality = $custom_field[ $meta_name ]['constraints']['cardinality'];
         } else {
-            $cardinality = '1';
+            $cardinality = 1;
         }
         
 	// Set Nonce
@@ -403,7 +415,9 @@ function wl_entities_uri_box_content( $post, $info ) {
 	}*/
         
         // Write already saved values in page
-        echo wl_entities_metaboxes_build_template( $meta_name, $default_entities, $cardinality );
+        echo wl_entities_metaboxes_build_template( $meta_name, $default_entities, $cardinality, $expected_types );
+        
+        // That's all. The script *wl_entity_metabox_utilities.js* will take care of the rest.
 }
 
 /**
@@ -465,7 +479,16 @@ function wl_entity_metabox_save( $post_id ) {
                                 
 				// Assign type
 				$constraints = wl_get_meta_constraints( $meta_name );
-				$type        = 'http://schema.org/' . $constraints['uri_type'];
+                                if( isset( $constraints['uri_type'] ) ){
+                                    if( !is_array($constraints['uri_type']) ){
+                                        $type = $constraints['uri_type'];
+                                    } else {
+                                        $type = $constraints['uri_type'];
+                                    }
+                                } else {
+                                    $type = 'Thing';
+                                }
+				$type        = 'http://schema.org/' . $type;
 				wl_set_entity_main_type( $new_entity_id, $type );
 
                                 // Build uri for this entity

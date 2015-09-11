@@ -1,5 +1,7 @@
 /* 
  * This file contains utilities running on the entity editor page (i.e. AJAX autocomplete).
+ * The main meeting points between the PHP backend and this script are:
+ * <input 
  */
 
 jQuery(document).ready(function($){
@@ -7,37 +9,59 @@ jQuery(document).ready(function($){
     var ajax_url = wlEntityMetaboxParams.ajax_url + '?action=' + wlEntityMetaboxParams.action;
     $('.wl-metabox').each( function( i, metabox ){
         
-        var meta_cardinality = $(metabox).data('cardinality');
-        console.log( $(metabox).children('.wl-autocomplete') );
+        var cardinality = $(metabox).data('cardinality');
+        var expectedTypes = $(metabox).data('expected-types');
         
-        // If there are no value, put empty <input> tag
+        // Launch autocomplete on every <input> with class autocomplete
         $(metabox).find('.wl-autocomplete').each( attachAutocomplete );
         
-        function attachAutocomplete( i, input ){
-          
-            $(input).autocomplete({
+        function attachAutocomplete( inputIndex, inputElement ){
+            
+            var hiddenInput = $(inputElement).siblings('input');
+            var latestResults = {};  // hash used to keep a reference to the entities (title => uri, id, type, ecc.)
+            
+            $(inputElement).autocomplete({
                 source: function( request, response ) {
                     // AJAX call to search for entities starting with the typed letters
-                    $.getJSON( ajax_url + '&autocomplete' + '&title=' + $(input).val(), function( searchResults ){
+                    $.getJSON( ajax_url + '&autocomplete' + '&title=' + $(inputElement).val(), function( searchResults ){
+                        // TODO: expected types???
                         // Populate suggestions
                         var suggestedTitles = [];
                         if( searchResults.results ){
                             for( var i=0; i<searchResults.results.length; i++ ) {
-                                suggestedTitles.push(searchResults.results[i].title);
+                                var entityName = searchResults.results[i].title;
+                                // Keep hash table up to date
+                                latestResults[entityName] = searchResults.results[i];
+                                // refresh suggestions list
+                                suggestedTitles.push( entityName );
                             }
                             response( suggestedTitles );
                         }
                     });
                 },
+                // Callback that fires when a suggestion is taken.
                 select: function(s){
                     
-                    // TODO: refresh the attributes of the new <inputs>
+                    // Assign entity id to the hidden <input>
+                    var chosenEntity = $(inputElement).val();
+                    var chosenEntityObj = latestResults[chosenEntity];
+                    $(hiddenInput).val( chosenEntityObj.id );
                     
-                    var newInputDiv = $(input).parent().clone();
-                    newInputDiv.appendTo( metabox ); // check for cardinality, clone latest inputs, add index and append to page
-                    newInputField = newInputDiv.find('.wl-autocomplete');
-                    attachAutocomplete( 99999, newInputField );
-                    newInputField.focus();
+                    // Now we proceed to create a new <input> for eventual new values
+                    var newInputIndex = inputIndex + 1;
+                    
+                    // Check for cardinality
+                    if( cardinality === 'n' || newInputIndex <= cardinality ){
+                        
+                        // Build HTML of the new <input>
+                        var newInputDiv = $(inputElement).parent().clone();
+                        newInputDiv.appendTo( metabox ); // check for cardinality, clone latest inputs, add index and append to page
+                        var newInputField = newInputDiv.find('.wl-autocomplete');
+
+                        // Launch autocomplete on the new created <input>
+                        attachAutocomplete( newInputIndex, newInputField );
+                        newInputField.val('').focus();
+                    }
                 }
             });
         };
