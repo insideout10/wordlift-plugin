@@ -24,7 +24,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 					'compare' => '='
 				),
 				array(
-					'key'     => 'entity_url',
+					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '='
 				)

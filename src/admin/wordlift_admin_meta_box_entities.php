@@ -203,42 +203,6 @@ EOF;
 }
 
 /**
- * Build the HTML template for metaboxes
- */
-function wl_entities_metaboxes_build_template( $meta_name, $meta_values, $cardinality=1, $expected_types=null ) {
-    
-    // TODO: test this function and add parameters checks
-    if( !is_array( $expected_types ) ){
-        $expected_types = array( $expected_types );
-    }
-    
-    // TODO: move nonce here! (may be risky)
-    
-    // Always add an empty <input> tag to allow insertion of new values.
-    $meta_values[] = null;
-    
-    // The containing <div> contains info on cardinality and expected types
-    $template = 'template:::::</br><div class="wl-metabox" data-cardinality="' . $cardinality . '"';
-    if( count( $expected_types ) != 0 && !is_null( $expected_types[0] ) ){
-        $template.= ' data-expected-types="' . implode($expected_types,',') . '"';
-    }
-    $template.= '>';
-    
-    // The insid <input> tags host the meta values.
-    // Each hosts one human readable value (i.e. entity name or uri)
-    // and is accompained by an hidden <input> tag has both the index of the value and its raw value (i.e. the uri or entity id)
-    foreach( $meta_values as $index => $meta_value ){
-        $template .= '<div data-wl-meta-index="' . $index . '">
-                        <input type="text" class="' . $meta_name . ' wl-autocomplete" value="' . $meta_value . '" style="width:100%" />
-                        <input type="hidden" class="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . '][' . $index . ']" value="' . $meta_value . '" />
-                    </div>';
-    }
-    $template .= '</div>';
-    
-    return $template;
-}
-
-/**
  * Displays the date meta box contents (called by *add_meta_box* callback).
  *
  * @param WP_Post $post The current post.
@@ -404,20 +368,78 @@ function wl_entities_uri_box_content( $post, $info ) {
 
 	// Get already inserted values, if any
 	$default_entities = get_post_meta( $post->ID, $meta_name );
-	/*if ( is_array( $defaultEntities ) && !empty( $defaultEntities ) ) {
-            foreach( $defaultEntities as $defaultEntityIdentifier ) {
-		// If the value is an ID (local entity for sure), display the URI
-		if ( is_numeric( $defaultEntityIdentifier ) ) {
-			$defaultEntity      = get_post( $defaultEntityIdentifier );
-			$defaultEntityIdentifier = wl_get_entity_uri( $defaultEntity->ID );
-		}
+        
+        // Prepare structure to host both labels and ids of the entities.
+        $meta_values = array();
+        
+	if ( is_array( $default_entities ) && !empty( $default_entities ) ) {
+            foreach( $default_entities as $default_entity_identifier ) {
+                // The entity can be referenced as URI or ID.
+		if ( is_numeric( $default_entity_identifier ) ) {
+                    $entity = get_post( $default_entity_identifier );
+                } else {
+                    // It is an URI
+                    $entity = wl_get_entity_post_by_uri( $default_entity_identifier );
+                }
+                
+                if( !is_null( $entity ) ){
+                    $meta_values[] = array(
+                        'label' => $entity->post_title,
+                        'value' => $entity->ID
+                    );
+                } else {
+                    // No ID and no internal uri. Just leave as is.
+                    $meta_values[] = array(
+                        'label' => $default_entity_identifier,
+                        'value' => $default_entity_identifier
+                    );
+                }
             }
-	}*/
+	}
         
         // Write already saved values in page
-        echo wl_entities_metaboxes_build_template( $meta_name, $default_entities, $cardinality, $expected_types );
+        echo wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $cardinality, $expected_types );
         
         // That's all. The script *wl_entity_metabox_utilities.js* will take care of the rest.
+}
+
+/**
+ * Build the HTML template for metaboxes
+ */
+function wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $cardinality=1, $expected_types=null ) {
+    
+    // TODO: test this function and add parameters checks
+    if( !is_array( $expected_types ) ){
+        $expected_types = array( $expected_types );
+    }
+    
+    // TODO: move nonce here! (may be risky)
+    
+    // Always add an empty <input> tag to allow insertion of new values.
+    $meta_values[] = null;
+    
+    // The containing <div> contains info on cardinality and expected types
+    $template = 'template::</br><div class="wl-metabox" data-cardinality="' . $cardinality . '"';
+    if( count( $expected_types ) != 0 && !is_null( $expected_types[0] ) ){
+        $template.= ' data-expected-types="' . implode($expected_types,',') . '"';
+    }
+    $template.= '>';
+    
+    // The insid <input> tags host the meta values.
+    // Each hosts one human readable value (i.e. entity name or uri)
+    // and is accompained by an hidden <input> tag has both the index of the value and its raw value (i.e. the uri or entity id)
+    foreach( $meta_values as $meta_value ){
+        $label = $meta_value['label'];
+        $value = $meta_value['value'];
+        
+        $template .= '<div class="wl-autocomplete-wrapper">
+                        <input type="text" class="' . $meta_name . ' wl-autocomplete" value="' . $label . '" style="width:100%" />
+                        <input type="hidden" class="' . $meta_name . '" name="wl_metaboxes[' . $meta_name . '][]" value="' . $value . '" />
+                    </div>';
+    }
+    $template .= '</div>';
+    
+    return $template;
 }
 
 /**
@@ -455,54 +477,65 @@ function wl_entity_metabox_save( $post_id ) {
                         $meta_values = array( $meta_values );
                     }
                         
-                    foreach( $meta_values as $meta_value ) { 
+                    foreach( $meta_values as $meta_value ) {
                         
-                        wl_write_log( 'piedo about to evaluate ' . $meta_name );
-                        wl_write_log( $meta_value );
-                
-			// If the meta expects an entity...
-			$expecting_uri = ( wl_get_meta_type( $meta_name ) === WL_DATA_TYPE_URI );
-			// ...and the user inputs an entity that is not present in the db...
-			$absent_from_db = is_null( wl_get_entity_post_by_uri( $meta_value ) );
-			// ...and that is not an external uri
-			$name_is_uri = strpos( $meta_value, 'http' ) === 0;
+                        // Ignore blank values
+                        if( is_null( $meta_value ) || empty( $meta_value ) ){
+                            continue;
+                        }
+                        
+                        wl_write_log( 'piedo about to insert ' . $meta_name . ': ' . $meta_value );
+                 
+			// Are we expecting an entity?
+			$expecting_uri = ( wl_get_meta_type( $meta_name ) == WL_DATA_TYPE_URI );
+                        if( $expecting_uri ) {
+                            
+                            // Check that the inserted URI or ID does not point to a saved entity.
+                            $absent_from_db =
+                                is_null( wl_get_entity_post_by_uri( $meta_value ) ) &&
+                                is_null( get_post( $meta_value ) );
+                                // TODO: get post by title.
+                                // TODO: get by permalink!!!
 
-			if ( $expecting_uri && $absent_from_db && ! $name_is_uri ) {
+                            // Is it an URI?
+                            $name_is_uri = strpos( $meta_value, 'http' ) === 0;
+                            
+                            // We create a new entity only if the entity is not present in the DB.
+                            // In the case of an external uri, we do nothing (i.e. a sameAs to another website).
+                            if( $absent_from_db && !$name_is_uri ) {
 
-				// ...we create a new entity!
-				$new_entity_id = wp_insert_post( array(
-                                    'post_status'  => 'publish',
-                                    'post_type'    => WL_ENTITY_TYPE_NAME,
-                                    'post_title'   => $meta_value
-                                ) );
-                                $new_entity = get_post( $new_entity_id );
-                                
-				// Assign type
-				$constraints = wl_get_meta_constraints( $meta_name );
-                                if( isset( $constraints['uri_type'] ) ){
-                                    if( !is_array($constraints['uri_type']) ){
-                                        $type = $constraints['uri_type'];
+                                    // ...we create a new entity!
+                                    $new_entity_id = wp_insert_post( array(
+                                        'post_status'  => 'publish',
+                                        'post_type'    => WL_ENTITY_TYPE_NAME,
+                                        'post_title'   => $meta_value
+                                    ) );
+                                    $new_entity = get_post( $new_entity_id );
+
+                                    // Assign type
+                                    $constraints = wl_get_meta_constraints( $meta_name );
+                                    if( isset( $constraints['uri_type'] ) ){
+                                        if( !is_array($constraints['uri_type']) ){
+                                            $type = $constraints['uri_type'];
+                                        } else {
+                                            $type = $constraints['uri_type'][0];
+                                        }
                                     } else {
-                                        $type = $constraints['uri_type'];
+                                        $type = 'Thing';
                                     }
-                                } else {
-                                    $type = 'Thing';
-                                }
-				$type        = 'http://schema.org/' . $type;
-				wl_set_entity_main_type( $new_entity_id, $type );
+                                    $type        = 'http://schema.org/' . $type;
+                                    wl_set_entity_main_type( $new_entity_id, $type );
 
-                                // Build uri for this entity
-                                $new_uri = wl_build_entity_uri( $new_entity_id );
-                                wl_set_entity_uri( $new_entity_id, $new_uri );
-                                
-				// Update the value that will be saved as meta
-				$meta_value = $new_uri;
-                                
-                                wl_push_entity_post_to_redlink( $new_entity );
+                                    // Build uri for this entity
+                                    $new_uri = wl_build_entity_uri( $new_entity_id );
+                                    wl_set_entity_uri( $new_entity_id, $new_uri );
+
+                                    // Update the value that will be saved as meta
+                                    $meta_value = $new_uri;
+
+                                    wl_push_entity_post_to_redlink( $new_entity );
+                            }
 			}
-                        
-                        wl_write_log( 'piedo about to insert ' . $meta_name );
-                        wl_write_log( $meta_value );
                         
 			add_post_meta( $post_id, $meta_name, $meta_value );
                     }
