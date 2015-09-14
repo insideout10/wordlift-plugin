@@ -296,6 +296,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		// Return all custom fields.
 		// Get taxonomy terms
 		$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
+
 		if ( is_wp_error( $terms ) ) {
 			return null;
 		}
