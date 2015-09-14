@@ -23,7 +23,7 @@ function wl_core_install_entity_type_data() {
 					'type'        => WL_DATA_TYPE_URI,
                                         'export_type' => 'http://schema.org/Thing',
 					'constraints' => array(
-                                            'cardinality'   => 'n'
+                                            'cardinality'   => INF
                                         )
 				)
 			),
@@ -51,7 +51,7 @@ function wl_core_install_entity_type_data() {
                                         'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
 						'uri_type' => array('Person','Organization'),
-                                                'cardinality' => 'n'
+                                                'cardinality' => INF
 					)
 				),
                         ),
@@ -86,7 +86,7 @@ function wl_core_install_entity_type_data() {
                                         'export_type' => 'http://schema.org/PostalAddress',
 					'constraints' => array(
 						'uri_type' => 'Place',
-                                                'cardinality' => 'n'
+                                                'cardinality' => INF
 					)
 				)
 			),
@@ -142,7 +142,7 @@ function wl_core_install_entity_type_data() {
                                         'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
 						'uri_type'      => 'Person',
-                                                'cardinality'   => 'n'
+                                                'cardinality'   => INF
 					)
 				),
                             WL_CUSTOM_FIELD_BIRTH_DATE => array(

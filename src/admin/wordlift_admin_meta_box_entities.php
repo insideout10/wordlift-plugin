@@ -412,14 +412,17 @@ function wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $ca
     if( !is_array( $expected_types ) ){
         $expected_types = array( $expected_types );
     }
+    if( !is_array( $meta_values ) ){
+        $meta_values = array();
+    }
     
-    // TODO: move nonce here! (may be risky)
-    
-    // Always add an empty <input> tag to allow insertion of new values.
-    $meta_values[] = null;
+    // If the cardinality is more than the number of present values, add an empty <input> tag to allow insertion of new values.
+    if( $cardinality > count( $meta_values ) ){
+        $meta_values[] = null;
+    }
     
     // The containing <div> contains info on cardinality and expected types
-    $template = 'template::</br><div class="wl-metabox" data-cardinality="' . $cardinality . '"';
+    $template = '<div class="wl-metabox" data-cardinality="' . $cardinality . '"';
     if( count( $expected_types ) != 0 && !is_null( $expected_types[0] ) ){
         $template.= ' data-expected-types="' . implode($expected_types,',') . '"';
     }
