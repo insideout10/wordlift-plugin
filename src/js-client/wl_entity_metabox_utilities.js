@@ -92,28 +92,29 @@ jQuery(document).ready(function($){
                 $(metabox).find('.wl-autocomplete').last().focus();
             }
         });
-    }
     
-    function appendNewAutocomplete(metabox){
-        
-        var cardinality = $(metabox).data('cardinality');
-        var alreadyPresentInputs = $(metabox).find('.wl-autocomplete').size();
-        var latestInput = $(metabox).find('.wl-autocomplete').last();
-        var latestInputVal = $(latestInput).val();
-                
-        // Don't trasgress cardinality
-        var canAddInput = (cardinality === 'INF') || (alreadyPresentInputs < cardinality);
-        
-        if( canAddInput && latestInputVal !== '' ){
+        function appendNewAutocomplete(){
 
-            // Build HTML of the new <input>
-            var newInputDiv = $(latestInput).parent().clone();
-            newInputDiv.appendTo( metabox );
-            
-            // Launch autocomplete on the new created <input>
-            var newInputField = newInputDiv.find('.wl-autocomplete');
-            attachAutocomplete( null, newInputField );
-            newInputField.val('');
+            var alreadyPresentInputs = $(metabox).find('.wl-autocomplete').size();
+            var latestInput = $(metabox).find('.wl-autocomplete').last();
+            var latestInputVal = $(latestInput).val();
+
+            // Don't trasgress cardinality
+            var canAddInput = (cardinality === 'INF') || (alreadyPresentInputs < cardinality);
+
+            if( canAddInput && latestInputVal !== '' ){
+
+                // Build HTML of the new <input>
+                var newInputDiv = $(latestInput).parent().clone();
+                newInputDiv.appendTo( metabox );
+
+                // Launch autocomplete on the new created <input>
+                var newInputField = newInputDiv.find('.wl-autocomplete');
+                attachAutocomplete( null, newInputField );
+                // Impose default new values
+                newInputField.val('');
+                newInputField.siblings('input').val('');
+            }
         }
     }
 });

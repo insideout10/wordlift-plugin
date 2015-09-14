@@ -334,6 +334,56 @@ function wl_entities_coordinates_box_content( $post ) {
 }
 
 /**
+ * Displays the sameAs meta box contents. The sameAs has a custom metabox (not using *wl_entities_uri_box_content*)
+ * because we are expecting entity uris ("http" validation) but we don't want the autocomplete.
+ *
+ * @param WP_Post $post The current post.
+ */
+function wl_entities_sameas_box_content( $post ) {
+    
+	// Set nonce for both meta (latitude and longitude)
+	wl_echo_nonce( WL_CUSTOM_FIELD_SAME_AS );
+	
+        // Get sameAs
+        $sameAs = implode( "\n", wl_schema_get_value( $post->ID, 'sameAs' ) );
+        
+        // Print input textarea. The user writes here the sameAs URIs, separated by \n.
+	echo '<textarea style="width: 100%;" id="wl_same_as" placeholder="Same As URLs, one per row">' . esc_attr( $sameAs ) . '</textarea>';
+        echo '<div id="wl_same_as_list"></div>';
+        // Input tags are updated at each change to contain the rows typed in the textarea
+        echo <<<EOF
+        <script>
+            $ = jQuery;
+            $(document).ready(function(){
+        
+                refreshSameAsList();    // refresh now and at every change event
+                $("#wl_same_as").on("change keyup paste", function(){
+                    refreshSameAsList();
+                });
+                
+                function refreshSameAsList() {
+                    $("#wl_same_as_list").empty();
+                    var sameAsList = $("#wl_same_as").val();
+                    sameAsList = sameAsList.split('\\n');
+                    console.log(sameAsList);
+                    
+                    for(var i=0; i<sameAsList.length; i++){
+                        // some validation
+                        if(sameAsList[i].indexOf("http") == 0){
+        
+                            // Refresh input tags
+                            $("#wl_same_as_list").append(
+                                '<input type="hidden" name="wl_metaboxes[entity_same_as][' + i + ']" value="' + sameAsList[i] + '" />'
+                            );
+                        }
+                    }
+                }
+            });
+        </script>
+EOF;
+}
+
+/**
  * Displays jQuery autocomplete in a meta box, to assign an entity as property value (e.g. location of an Event).
  * The assigned entity can also be created on the fly.
  *
@@ -346,6 +396,9 @@ function wl_entities_uri_box_content( $post, $info ) {
 	$custom_field = $info['args'];
 	$meta_name    = ( array_keys( $custom_field ) );
 	$meta_name    = $meta_name[0];
+        
+        // Set Nonce
+	wl_echo_nonce( $meta_name );
         
         // Which type of entity can we accept?
 	if ( isset( $custom_field[ $meta_name ]['constraints']['uri_type'] ) ) {
@@ -362,9 +415,6 @@ function wl_entities_uri_box_content( $post, $info ) {
         } else {
             $cardinality = 1;
         }
-        
-	// Set Nonce
-	wl_echo_nonce( $meta_name );
 
 	// Get already inserted values, if any
 	$default_entities = get_post_meta( $post->ID, $meta_name );
@@ -374,6 +424,7 @@ function wl_entities_uri_box_content( $post, $info ) {
         
 	if ( is_array( $default_entities ) && !empty( $default_entities ) ) {
             foreach( $default_entities as $default_entity_identifier ) {
+                
                 // The entity can be referenced as URI or ID.
 		if ( is_numeric( $default_entity_identifier ) ) {
                     $entity = get_post( $default_entity_identifier );
@@ -486,8 +537,6 @@ function wl_entity_metabox_save( $post_id ) {
                         if( is_null( $meta_value ) || empty( $meta_value ) ){
                             continue;
                         }
-                        
-                        wl_write_log( 'piedo about to insert ' . $meta_name . ': ' . $meta_value );
                  
 			// Are we expecting an entity?
 			$expecting_uri = ( wl_get_meta_type( $meta_name ) == WL_DATA_TYPE_URI );
@@ -497,11 +546,9 @@ function wl_entity_metabox_save( $post_id ) {
                             $absent_from_db =
                                 is_null( wl_get_entity_post_by_uri( $meta_value ) ) &&
                                 is_null( get_post( $meta_value ) );
-                                // TODO: get post by title.
-                                // TODO: get by permalink!!!
 
                             // Is it an URI?
-                            $name_is_uri = strpos( $meta_value, 'http' ) === 0;
+                            $name_is_uri = strpos( $meta_value, 'http' ) === 0; 
                             
                             // We create a new entity only if the entity is not present in the DB.
                             // In the case of an external uri, we do nothing (i.e. a sameAs to another website).
@@ -539,7 +586,6 @@ function wl_entity_metabox_save( $post_id ) {
                                     wl_push_entity_post_to_redlink( $new_entity );
                             }
 			}
-                        
 			add_post_meta( $post_id, $meta_name, $meta_value );
                     }
 		}

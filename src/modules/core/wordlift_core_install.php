@@ -24,7 +24,8 @@ function wl_core_install_entity_type_data() {
                                         'export_type' => 'http://schema.org/Thing',
 					'constraints' => array(
                                             'cardinality'   => INF
-                                        )
+                                        ),
+                                        'input_field' => 'sameas'   // we need a custom metabox
 				)
 			),
                         // {{sameAs}} not present in the microdata template,

@@ -208,7 +208,6 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 	}
 }
 
-// TODO: this method must be eliminated in favor of the new *wl_schema_get_property_expected_type*
 /**
  * Retrieve entity property type, starting from the schema.org's property name
  * or from the WL_CUSTOM_FIELD_xxx name.
