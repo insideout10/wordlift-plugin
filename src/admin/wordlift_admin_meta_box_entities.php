@@ -400,13 +400,23 @@ function wl_entities_uri_box_content( $post, $info ) {
         // Set Nonce
 	wl_echo_nonce( $meta_name );
         
-        // Which type of entity can we accept?
+        // Which type of entity can we accept (e.g. Place, Event, ecc.)?
+        $expected_types = array();
 	if ( isset( $custom_field[ $meta_name ]['constraints']['uri_type'] ) ) {
-		// Specific schema type (e.g. Place, Event, ecc.)
-		$expected_types = $custom_field[ $meta_name ]['constraints']['uri_type'];
-	} else {
-		// Any entity
-		$expected_types = null;
+		// We accept also children of this types
+		$parent_expected_types = $custom_field[ $meta_name ]['constraints']['uri_type'];
+                if( !is_array( $parent_expected_types ) ){
+                    $parent_expected_types = array( $parent_expected_types );
+                }
+                foreach ( $parent_expected_types as $term ){
+                    $children = wl_entity_type_taxonomy_get_term_children( $term );
+                    foreach( $children as $child ){
+                        if( isset( $child->name ) ){
+                            $expected_types[] = $child->name;
+                        }
+                    }
+                }
+                $expected_types = array_unique( array_merge( $expected_types, $parent_expected_types ) );
 	}
         
         // How many values can we accept?
@@ -481,7 +491,8 @@ function wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $ca
     
     // The insid <input> tags host the meta values.
     // Each hosts one human readable value (i.e. entity name or uri)
-    // and is accompained by an hidden <input> tag has both the index of the value and its raw value (i.e. the uri or entity id)
+    // and is accompained by an hidden <input> tag, the one passed to the server,
+    // that has both the index of the value and its raw value (i.e. the uri or entity id)
     foreach( $meta_values as $meta_value ){
         $label = $meta_value['label'];
         $value = $meta_value['value'];
@@ -542,10 +553,14 @@ function wl_entity_metabox_save( $post_id ) {
 			$expecting_uri = ( wl_get_meta_type( $meta_name ) == WL_DATA_TYPE_URI );
                         if( $expecting_uri ) {
                             
-                            // Check that the inserted URI or ID does not point to a saved entity.
-                            $absent_from_db =
-                                is_null( wl_get_entity_post_by_uri( $meta_value ) ) &&
-                                is_null( get_post( $meta_value ) );
+                            // Check that the inserted URI, ID or name does not point to a saved entity.
+                            if( is_numeric( $meta_value ) ){
+                                $absent_from_db = is_null( get_post( $meta_value ) );                           // search by ID
+                            } else {
+                                $absent_from_db =
+                                    is_null( wl_get_entity_post_by_uri( $meta_value ) ) &&                      // search by uri
+                                    is_null( get_page_by_title( $meta_value, OBJECT, WL_ENTITY_TYPE_NAME ) );   // search by name
+                            }
 
                             // Is it an URI?
                             $name_is_uri = strpos( $meta_value, 'http' ) === 0; 

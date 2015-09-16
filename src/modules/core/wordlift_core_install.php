@@ -38,7 +38,7 @@ function wl_core_install_entity_type_data() {
 		'creative-work' => array(
 			'label'              => 'CreativeWork',
 			'description'        => 'A creative work (or a Music Album).',
-                        'parents'             => array( 'thing' ),
+                        'parents'             => array( 'thing' ),  // give term slug as parent
 			'css'                => 'wl-creative-work',
 			'uri'                => 'http://schema.org/CreativeWork',
 			'same_as'            => array(
