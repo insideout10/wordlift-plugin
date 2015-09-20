@@ -29,7 +29,7 @@ define('WL_CORE_POST_CLASSIFICATION_BOXES', serialize( array(
     array(
     	'id' 				=> WL_WHAT_RELATION,
     	'label' 			=> 'What',
-    	'registeredTypes' 	=> array('event', 'organization', 'person', 'place', 'thing', 'creative-work', 'local-business'),
+    	'registeredTypes' 	=> array('thing', 'creative-work'),
         'selectedEntities' 	=> array(),
     	),
     array(
