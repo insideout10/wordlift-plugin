@@ -288,8 +288,10 @@ EOF;
  */
 function wl_core_install() {
 
-	// Create a blank application key
-	wl_configuration_set_key('');
+	// Create a blank application key if there is none
+    if( empty( wl_configuration_get_key() ) ){
+    	wl_configuration_set_key('');
+    }
 	
 	wl_core_install_entity_type_data();
 	wl_core_install_create_relation_instance_table();
