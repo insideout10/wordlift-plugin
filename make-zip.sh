@@ -11,7 +11,7 @@ git clone -b master https://github.com/insideout10/wordlift-plugin-js.git
 mkdir wordlift
 
 cp -R wordlift-plugin/src/* wordlift/
-cp -R wordlift-plugin-js/dist/3.0.0-beta/* wordlift/
+cp -R wordlift-plugin-js/dist/latest/* wordlift/
 
 rm -fr wordlift-plugin wordlift-plugin-js
 
