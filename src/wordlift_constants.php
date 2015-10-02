@@ -18,7 +18,7 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 define( 'WL_REQUEST_ID', uniqid() );
 
 // Set the temporary files folder.
-define( 'WL_TEMP_DIR', get_temp_dir() );
+defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', get_temp_dir() );
 
 define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv( 'WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING' ) );
 
