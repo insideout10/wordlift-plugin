@@ -374,7 +374,7 @@ function wl_entities_sameas_box_content( $post ) {
         
                             // Refresh input tags
                             $("#wl_same_as_list").append(
-                                '<input type="hidden" name="wl_metaboxes[entity_same_as][' + i + ']" value="' + sameAsList[i] + '" />'
+                                '<input type="hidden" name="wl_metaboxes[entity_same_as][]" value="' + sameAsList[i] + '" />'
                             );
                         }
                     }
