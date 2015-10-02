@@ -66,13 +66,13 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 
 		}
                 
-                // Add AJAX autocomplete to facilitate metabox editing
-                wp_enqueue_script('wl-entity-metabox-utility', plugins_url( 'js-client/wl_entity_metabox_utilities.js', __FILE__ ) );
-                wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
-                        'ajax_url'          => admin_url('admin-ajax.php'),
-                        'action'            => 'entity_by_title'
-                    )
-                );
+        // Add AJAX autocomplete to facilitate metabox editing
+        wp_enqueue_script('wl-entity-metabox-utility', plugins_url( 'js-client/wl_entity_metabox_utilities.js', __FILE__ ) );
+        wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
+                'ajax_url'          => admin_url('admin-ajax.php'),
+                'action'            => 'entity_by_title'
+            )
+        );
 	}
 }
 
@@ -367,7 +367,6 @@ function wl_entities_sameas_box_content( $post ) {
                     $("#wl_same_as_list").empty();
                     var sameAsList = $("#wl_same_as").val();
                     sameAsList = sameAsList.split('\\n');
-                    console.log(sameAsList);
                     
                     for(var i=0; i<sameAsList.length; i++){
                         // some validation
@@ -402,68 +401,69 @@ function wl_entities_uri_box_content( $post, $info ) {
         // Set Nonce
 	wl_echo_nonce( $meta_name );
         
-        // Which type of entity can we accept (e.g. Place, Event, ecc.)?
-        $expected_types = array();
+    // Which type of entity can we accept (e.g. Place, Event, ecc.)?
+    $expected_types = array();
 	if ( isset( $custom_field[ $meta_name ]['constraints']['uri_type'] ) ) {
 		// We accept also children of this types
 		$parent_expected_types = $custom_field[ $meta_name ]['constraints']['uri_type'];
-                if( !is_array( $parent_expected_types ) ){
-                    $parent_expected_types = array( $parent_expected_types );
+        
+        if( !is_array( $parent_expected_types ) ){
+            $parent_expected_types = array( $parent_expected_types );
+        }
+        foreach ( $parent_expected_types as $term ){
+            $children = wl_entity_type_taxonomy_get_term_children( $term );
+            foreach( $children as $child ){
+                if( isset( $child->name ) ){
+                    $expected_types[] = $child->name;
                 }
-                foreach ( $parent_expected_types as $term ){
-                    $children = wl_entity_type_taxonomy_get_term_children( $term );
-                    foreach( $children as $child ){
-                        if( isset( $child->name ) ){
-                            $expected_types[] = $child->name;
-                        }
-                    }
-                }
-                $expected_types = array_unique( array_merge( $expected_types, $parent_expected_types ) );
+            }
+        }
+        $expected_types = array_unique( array_merge( $expected_types, $parent_expected_types ) );
 	}
         
-        // How many values can we accept?
-        if( isset( $custom_field[ $meta_name ]['constraints']['cardinality'] ) ){
-            $cardinality = $custom_field[ $meta_name ]['constraints']['cardinality'];
-        } else {
-            $cardinality = 1;
-        }
+    // How many values can we accept?
+    if( isset( $custom_field[ $meta_name ]['constraints']['cardinality'] ) ){
+        $cardinality = $custom_field[ $meta_name ]['constraints']['cardinality'];
+    } else {
+        $cardinality = 1;
+    }
 
 	// Get already inserted values, if any
 	$default_entities = get_post_meta( $post->ID, $meta_name );
         
-        // Prepare structure to host both labels and ids of the entities.
-        $meta_values = array();
-        
-	if ( is_array( $default_entities ) && !empty( $default_entities ) ) {
-            foreach( $default_entities as $default_entity_identifier ) {
-                
-                // The entity can be referenced as URI or ID.
-		if ( is_numeric( $default_entity_identifier ) ) {
-                    $entity = get_post( $default_entity_identifier );
-                } else {
-                    // It is an URI
-                    $entity = wl_get_entity_post_by_uri( $default_entity_identifier );
-                }
-                
-                if( !is_null( $entity ) ){
-                    $meta_values[] = array(
-                        'label' => $entity->post_title,
-                        'value' => $entity->ID
-                    );
-                } else {
-                    // No ID and no internal uri. Just leave as is.
-                    $meta_values[] = array(
-                        'label' => $default_entity_identifier,
-                        'value' => $default_entity_identifier
-                    );
-                }
+    // Prepare structure to host both labels and ids of the entities.
+    $meta_values = array();
+
+    if ( is_array( $default_entities ) && !empty( $default_entities ) ) {
+        foreach( $default_entities as $default_entity_identifier ) {
+
+            // The entity can be referenced as URI or ID.
+            if ( is_numeric( $default_entity_identifier ) ) {
+                $entity = get_post( $default_entity_identifier );
+            } else {
+                // It is an URI
+                $entity = wl_get_entity_post_by_uri( $default_entity_identifier );
             }
+
+            if( !is_null( $entity ) ){
+                $meta_values[] = array(
+                    'label' => $entity->post_title,
+                    'value' => $entity->ID
+                );
+            } else {
+                // No ID and no internal uri. Just leave as is.
+                $meta_values[] = array(
+                    'label' => $default_entity_identifier,
+                    'value' => $default_entity_identifier
+                );
+            }
+        }
 	}
         
-        // Write already saved values in page
-        echo wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $cardinality, $expected_types );
-        
-        // That's all. The script *wl_entity_metabox_utilities.js* will take care of the rest.
+    // Write already saved values in page
+    echo wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $cardinality, $expected_types );
+
+    // That's all. The script *wl_entity_metabox_utilities.js* will take care of the rest.
 }
 
 /**
