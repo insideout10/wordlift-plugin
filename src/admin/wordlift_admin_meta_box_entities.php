@@ -4,7 +4,7 @@
  * This file provides methods and functions to generate entities meta-boxes in the admin UI.
  */
 
-// Load metabox generator class
+// Load metabox classes
 require_once( 'WL_Metabox.php' );
 
 /**
@@ -71,10 +71,8 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'normal', 'high', $info
 			);
             
-            $args = array(
-                
-            );
-            $wl_metabox->add_field( $args );
+            // COOOOOOOOOOOOOOOL //////
+            $wl_metabox->add_field( $info );
 		}
                 
 		// Loop over grouped properties
@@ -534,9 +532,13 @@ function wl_entities_uri_metaboxes_build_template( $meta_name, $meta_values, $ca
     return $template;
 }
 
+
+
+
 /**
  * Saves the values of wordlift metaboxes set in the entity editor page
  */
+/*
 function wl_entity_metabox_save( $post_id ) {
 
 	if ( ! isset( $_POST['wl_metaboxes'] ) ) {
@@ -637,3 +639,4 @@ function wl_entity_metabox_save( $post_id ) {
 }
 
 add_action( 'wl_linked_data_save_post', 'wl_entity_metabox_save' );
+*/
