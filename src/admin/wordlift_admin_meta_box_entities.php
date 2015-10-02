@@ -4,6 +4,9 @@
  * This file provides methods and functions to generate entities meta-boxes in the admin UI.
  */
 
+// Load metabox generator class
+require_once( 'WL_Metabox.php' );
+
 /**
  * Adds the entities meta box (called from *add_meta_boxes* hook).
  *
@@ -16,6 +19,23 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 	add_meta_box(
 		'wordlift_entities_box', __( 'Wordlift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 	);
+    
+    
+    
+    
+    
+    $args = array(
+                
+    );
+    $wl_metabox = new WL_Metabox( $args );
+    
+    
+    
+    
+    
+    
+    
+    
 
 	// Add meta box for specific type of entities
 	$entity_id   = get_the_ID();
@@ -34,9 +54,9 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 		// Loop over simple entity properties
 		foreach ( $simple_metaboxes as $key => $property ) {
                         
-                        // Don't present to the user the full schema name, just the slug
-                        $property_slug_name = explode( '/', $property['predicate'] );
-                        $property_slug_name = end( $property_slug_name );
+            // Don't present to the user the full schema name, just the slug
+            $property_slug_name = explode( '/', $property['predicate'] );
+            $property_slug_name = end( $property_slug_name );
                         
 			// Metabox title
 			$title = __( 'Edit', 'wordlift' ) . ' ' . get_the_title() . ' ' . __( $property_slug_name, 'wordlift' );
@@ -50,6 +70,11 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 			add_meta_box(
 				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'normal', 'high', $info
 			);
+            
+            $args = array(
+                
+            );
+            $wl_metabox->add_field( $args );
 		}
                 
 		// Loop over grouped properties
