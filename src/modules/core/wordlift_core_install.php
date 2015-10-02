@@ -287,7 +287,8 @@ EOF;
 function wl_core_install() {
 
 	// Create a blank application key if there is none
-    if( empty( wl_configuration_get_key() ) ){
+    $key = wl_configuration_get_key();
+    if( empty( $key ) ){
     	wl_configuration_set_key('');
     }
 	
