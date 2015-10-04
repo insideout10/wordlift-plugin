@@ -124,7 +124,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	// get the title and content as label and description.
 	$label     = wordlift_esc_sparql( $entity_post->post_title );
-	$descr     = wordlift_esc_sparql( $entity_post->post_content );
+	$descr     = wordlift_esc_sparql( wp_strip_all_tags( strip_shortcodes( $entity_post->post_content ) ) );
 	$permalink = wl_sparql_escape_uri( get_permalink( $entity_post->ID ) );
 
 	wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );

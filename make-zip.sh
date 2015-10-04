@@ -1,12 +1,14 @@
 #!/bin/sh
 
+echo Going to package from $1
+
 mkdir dist
 cd dist
 
 rm -fr wordlift-plugin wordlift-plugin-js wordlift
 
-git clone -b master https://github.com/insideout10/wordlift-plugin.git
-git clone -b master https://github.com/insideout10/wordlift-plugin-js.git
+git clone -b $1 https://github.com/insideout10/wordlift-plugin.git
+git clone -b $1 https://github.com/insideout10/wordlift-plugin-js.git
 
 mkdir wordlift
 
