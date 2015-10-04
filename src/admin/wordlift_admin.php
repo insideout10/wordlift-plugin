@@ -23,7 +23,7 @@ function wl_serialize_entity( $entity ) {
 	return array(
 		'id'         	=> wl_get_entity_uri( $entity->ID ),
 		'label'      	=> $entity->post_title,
-		'description'	=> wp_strip_all_tags( $entity->post_content ),
+		'description'	=> $entity->post_content,
 		'sameAs'     	=> wl_schema_get_value( $entity->ID, 'sameAs' ),
 		'mainType'      => str_replace( 'wl-', '', $type['css_class'] ),
 		'types'      	=> wl_get_entity_rdf_types( $entity->ID ),
