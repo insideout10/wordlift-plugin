@@ -4,8 +4,22 @@
  * This file provides methods and functions to generate entities meta-boxes in the admin UI.
  */
 
-// Load metabox classes
-require_once( 'WL_Metabox.php' );
+function wl_register_metaboxes() {
+    
+    // Load metabox classes
+    require_once( 'WL_Metabox.php' );
+    require_once( 'WL_Metabox_Fields.php' );
+    
+    $args = array(
+        
+    );
+    $wl_metabox = new WL_Metabox( $args );   
+}
+if ( is_admin() ) {
+    add_action( 'load-post.php', 'wl_register_metaboxes' );
+    add_action( 'load-post-new.php', 'wl_register_metaboxes' );
+}
+
 
 /**
  * Adds the entities meta box (called from *add_meta_boxes* hook).
@@ -19,84 +33,6 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 	add_meta_box(
 		'wordlift_entities_box', __( 'Wordlift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 	);
-    
-    
-    
-    
-    
-    $args = array(
-                
-    );
-    $wl_metabox = new WL_Metabox( $args );
-    
-    
-    
-    
-    
-    
-    
-    
-
-	// Add meta box for specific type of entities
-	$entity_id   = get_the_ID();
-	$entity_type = wl_entity_type_taxonomy_get_type( $entity_id );
-        
-	if ( isset( $entity_id ) && is_numeric( $entity_id ) && isset( $entity_type['custom_fields'] ) ) {
-
-		// In some special case, properties must be grouped in one metabox (e.g. coordinates) or dealed with custom methods.
-                // We divide metaboxes in two groups:
-                // - simple: accept values for one property
-                // - grouped: accept values for more properties, or for one property that needs a specific metabox.
-		$metaboxes         = wl_entities_metaboxes_group_properties_by_input_field( $entity_type['custom_fields'] );
-		$simple_metaboxes  = $metaboxes[0];
-		$grouped_metaboxes = $metaboxes[1];
-
-		// Loop over simple entity properties
-		foreach ( $simple_metaboxes as $key => $property ) {
-                        
-            // Don't present to the user the full schema name, just the slug
-            $property_slug_name = explode( '/', $property['predicate'] );
-            $property_slug_name = end( $property_slug_name );
-                        
-			// Metabox title
-			$title = __( 'Edit', 'wordlift' ) . ' ' . get_the_title() . ' ' . __( $property_slug_name, 'wordlift' );
-
-			// Info passed to the metabox
-			$info         = array();
-			$info[ $key ] = $property;
-
-			$unique_metabox_name = uniqid( 'wl_metabox_' );
-
-			add_meta_box(
-				$unique_metabox_name, $title, 'wl_entities_' . $property['type'] . '_box_content', $post_type, 'normal', 'high', $info
-			);
-            
-            // COOOOOOOOOOOOOOOL //////
-            $wl_metabox->add_field( $info );
-		}
-                
-		// Loop over grouped properties
-		foreach ( $grouped_metaboxes as $key => $property ) {
-
-			// Metabox title
-			$title = __( 'Edit', 'wordlift' ) . ' ' . get_the_title() . ' ' . __( $key, 'wordlift' );
-
-			$unique_metabox_name = uniqid( 'wl_metabox_' );
-                        
-			add_meta_box(
-				$unique_metabox_name, $title, 'wl_entities_' . $key . '_box_content', $post_type, 'normal', 'high'
-			);
-
-		}
-                
-        // Add AJAX autocomplete to facilitate metabox editing
-        wp_enqueue_script('wl-entity-metabox-utility', plugins_url( 'js-client/wl_entity_metabox_utilities.js', __FILE__ ) );
-        wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
-                'ajax_url'          => admin_url('admin-ajax.php'),
-                'action'            => 'entity_by_title'
-            )
-        );
-	}
 }
 
 function wl_echo_nonce( $meta_name ) {
@@ -109,7 +45,7 @@ function wl_echo_nonce( $meta_name ) {
  * @param array $custom_fields Information on the entity type.
  */
 function wl_entities_metaboxes_group_properties_by_input_field( $custom_fields ) {
-
+    
 	$simple_properties  = array();
 	$grouped_properties = array();
 
@@ -227,61 +163,6 @@ function wl_entities_box_content( $post ) {
 EOF;
 }
 
-/**
- * Displays the date meta box contents (called by *add_meta_box* callback).
- *
- * @param WP_Post $post The current post.
- * @param $info Array The custom_field the method must manage.
- */
-function wl_entities_date_box_content( $post, $info ) {
-
-	// Which meta/custom_field are we managing?
-	$custom_field = $info['args'];
-	$meta_name    = ( array_keys( $custom_field ) );
-	$meta_name    = $meta_name[0];
-
-	// Include dateTimePicker on page
-	wp_enqueue_style(
-		'datetimepickercss', plugins_url( 'js-client/datetimepicker/jquery.datetimepicker.css', __FILE__ )
-	);
-	wp_enqueue_script(
-		'datetimepickerjs', plugins_url( 'js-client/datetimepicker/jquery.datetimepicker.js', __FILE__ )
-	);
-
-	// Set nonce
-	wl_echo_nonce( $meta_name );
-
-	$date = get_post_meta( $post->ID, $meta_name, true );
-	$date = esc_attr( $date );
-        
-        $pickerDate  = '';
-	// Give the timepicker the date in its favourite format.
-	if ( ! empty( $date ) ) {
-		$pickerDate = date( 'Y/m/d H:i', strtotime( $date ) );
-	}
-
-	// Two input fields, one for the datetimepicker and another to store the time in the required format
-	echo '<input type="text" id="' . $meta_name . '" value="' . $pickerDate . '" style="width:100%" />';
-	echo '<input type="hidden" id="' . $meta_name . '_hidden" name="wl_metaboxes[' . $meta_name . ']" value="' . $date . '" style="width:100%" />';
-
-	echo "<script type='text/javascript'>
-    $ = jQuery;
-    $(document).ready(function() {
-    
-        var lastDateTimePickerClicked;
-
-        $('#" . $meta_name . "').datetimepicker({
-            onChangeDateTime:function(dp, input){
-                // format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
-                var currentDate = input.val();
-                currentDate = currentDate.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z')
-                // store value to save in the hidden input field
-                $('#" . $meta_name . "_hidden').val( currentDate );
-            }
-        });
-    });
-    </script>";
-}
 
 /**
  * Displays the string meta box contents (called by *add_meta_box* callback).
