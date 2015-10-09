@@ -288,20 +288,25 @@ EOF;
 		// Build fake obj to simulate save same entity again on a new post
 		$original_entity = current( array_values ( $fake['wl_entities' ] ) );
 		$original_entity[ 'uri' ] = $entity_uri;
-		
+
 		$fake_2 = array(
 			'wl_entities' => array( $entity_uri => $original_entity ),
 			'wl_boxes' => array( 'what' => array( $entity_uri ) )
 		);
+		$_POST = $fake_2;
+
 		// Reference the entity to the post content 
 		$content_2    = <<<EOF
     <span itemid="$entity_uri">My entity</span>
 EOF;
+
 		// Create a post referincing to the created entity
-		$post_2_id = wl_create_post( $content, 'my-post', 'Another post' , 'draft');
+		$post_2_id = wl_create_post( $content_2, 'my-post-2', 'Another post' , 'draft');
+		$entity_reloaded = wl_get_entity_post_by_uri( $entity_uri );
+		// Check is the same entity for WP
+		$this->assertEquals( $entity->ID, $entity_reloaded->ID ); 
 		// Here I expect entity status is still public
-		$entity = wl_get_entity_post_by_uri( $entity_uri );
-		$this->assertEquals( 'public', $entity->post_status );
+		$this->assertEquals( 'public', $entity_reloaded->post_status );
 		
 	}
 	// This test simulate entity metadata updating trough the disambiguation widget
