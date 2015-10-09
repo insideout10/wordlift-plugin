@@ -4,14 +4,18 @@
  * This file provides methods and functions to generate entities meta-boxes in the admin UI.
  */
 
+
+/**
+ * Build WL_Metabox and the contained WL_Metabox_Field(s)
+ */
 function wl_register_metaboxes() {
     
     // Load metabox classes
-    require_once( 'WL_Metabox.php' );
-    require_once( 'WL_Metabox_Fields.php' );
+    require_once( 'WL_Metabox/WL_Metabox.php' );
+    require_once( 'WL_Metabox/WL_Metabox_Fields.php' );
     
     $args = array(
-        
+        // TODO: arg for the metabox?
     );
     $wl_metabox = new WL_Metabox( $args );   
 }
