@@ -9,9 +9,15 @@
  * @uses wl_analyze_content() to analyze the provided content.
  */
 function wl_ajax_analyze_action() {
-
-	echo( wl_analyze_content( file_get_contents( "php://input" ) ) );
-	wp_die();
+	
+    if ( $analysis = wl_analyze_content( file_get_contents( "php://input" ) ) ) {
+        header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );	        
+        echo( $analysis );
+        wp_die();
+    }
+	
+    status_header( 500 );
+    wp_send_json( __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' ) );
 
 }
 
@@ -61,7 +67,7 @@ function wl_analyze_content( $content ) {
 		wl_write_log( "\n" . $body );
 		wl_write_log( "]" );
 
-		return __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' );
+		return null;
 	}
 
 	wl_write_log( "[ url :: $url ][ response code :: " . $response['response']['code'] . " ]" );
