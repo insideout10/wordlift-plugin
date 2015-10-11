@@ -1,3 +1,7 @@
+filter:
+    paths:
+        - src/*
+
 checks:
     php:
         code_rating: true
