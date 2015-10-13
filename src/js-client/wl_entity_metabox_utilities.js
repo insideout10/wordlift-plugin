@@ -8,6 +8,8 @@ jQuery(document).ready(function($){
     
     var ajax_url = wlEntityMetaboxParams.ajax_url + '?action=' + wlEntityMetaboxParams.action;
     
+    // TODO: Add and remove buttons should be independent of the autocomplete
+    
     // Launch autocomplete on every <input> with class autocomplete
     $('.wl-autocomplete').each( attachAutocomplete );
     
