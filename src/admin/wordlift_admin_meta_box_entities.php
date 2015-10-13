@@ -300,41 +300,6 @@ EOF;
  * @param $info Array The custom_field the method must manage.
  */
 function wl_entities_uri_box_content( $post, $info ) {
-    
-	// Which meta/custom_field are we managing?
-	$custom_field = $info['args'];
-	$meta_name    = ( array_keys( $custom_field ) );
-	$meta_name    = $meta_name[0];
-        
-        // Set Nonce
-	wl_echo_nonce( $meta_name );
-        
-    // Which type of entity can we accept (e.g. Place, Event, ecc.)?
-    $expected_types = array();
-	if ( isset( $custom_field[ $meta_name ]['constraints']['uri_type'] ) ) {
-		// We accept also children of this types
-		$parent_expected_types = $custom_field[ $meta_name ]['constraints']['uri_type'];
-        
-        if( !is_array( $parent_expected_types ) ){
-            $parent_expected_types = array( $parent_expected_types );
-        }
-        foreach ( $parent_expected_types as $term ){
-            $children = wl_entity_type_taxonomy_get_term_children( $term );
-            foreach( $children as $child ){
-                if( isset( $child->name ) ){
-                    $expected_types[] = $child->name;
-                }
-            }
-        }
-        $expected_types = array_unique( array_merge( $expected_types, $parent_expected_types ) );
-	}
-        
-    // How many values can we accept?
-    if( isset( $custom_field[ $meta_name ]['constraints']['cardinality'] ) ){
-        $cardinality = $custom_field[ $meta_name ]['constraints']['cardinality'];
-    } else {
-        $cardinality = 1;
-    }
 
 	// Get already inserted values, if any
 	$default_entities = get_post_meta( $post->ID, $meta_name );

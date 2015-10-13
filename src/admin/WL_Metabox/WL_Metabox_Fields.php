@@ -34,23 +34,44 @@ class WL_Metabox_Field {
         $exploded_predicate = explode( '/', $this->predicate );
         $this->label = end( $exploded_predicate );
         
-        $this->expected_wl_type = $this->raw_custom_field['type'];
-        
         // Extract field constraints (numerosity, expected type)
         // Default constaints: accept one string.
+        if( isset( $this->raw_custom_field['type'] ) ){
+            $this->expected_wl_type = $this->raw_custom_field['type'];
+        } else {
+            $this->expected_wl_type = WL_DATA_TYPE_STRING;
+        }
+        
         $this->cardinality = 1;
-        $this->expected_wl_type = WL_DATA_TYPE_STRING;
         if( isset( $this->raw_custom_field['constraints'] ) ){
             
             $constraints = $this->raw_custom_field['constraints'];
             
-            if( $this->expected_wl_type === WL_DATA_TYPE_URI ) {
-                $this->expected_uri_type = $constraints['uri_type'];
-            }
-            
             // Extract cardinality
             if( isset( $constraints['cardinality'] ) ) {
                 $this->cardinality = $constraints['cardinality'];
+            }
+            
+            // Which type of entity can we accept (e.g. Place, Event, ecc.)?
+            if( $this->expected_wl_type === WL_DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
+                
+                $expected_types = array();
+                // We accept also children of this types
+                $parent_expected_types = $constraints['uri_type'];
+
+                if( !is_array( $parent_expected_types ) ){
+                    $parent_expected_types = array( $parent_expected_types );
+                }
+                foreach ( $parent_expected_types as $term ){
+                    $children = wl_entity_type_taxonomy_get_term_children( $term );
+                    foreach( $children as $child ){
+                        if( isset( $child->name ) ){
+                            $expected_types[] = $child->name;
+                        }
+                    }
+                }
+                
+                $this->expected_uri_type = array_unique( array_merge( $expected_types, $parent_expected_types ) ); 
             }
             
         }
@@ -169,9 +190,7 @@ class WL_Metabox_Field {
      */
     public function html(){
         
-        $html = '';
-        
-        $html .=  '<h3>' . $this->label . '</h3>';
+        $html = '<h3>' . $this->label . '</h3>';
         
         if( empty( $this->data ) ){
             $html .= $this->html_input( '' );    // Will print an empty <input>
@@ -217,7 +236,116 @@ class WL_Metabox_Field {
  */
 
 class WL_Metabox_Field_uri extends WL_Metabox_Field {
-   
+    
+    public function html_wrapper_open() {
+        
+        // The containing <div> contains info on cardinality and expected types
+        $html = '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '"';
+        
+        if( isset( $this->expected_uri_type ) && !is_null( $this->expected_uri_type ) ){
+            
+            if( is_array( $this->expected_uri_type ) ) {
+                $html.= ' data-expected-types="' . implode( $this->expected_uri_type, ',') . '"';
+            } else {
+                $html.= ' data-expected-types="' . $this->expected_uri_type . '"';
+            }
+        }
+        
+        $html.= '>';
+        
+        return $html;
+    }
+    
+    public function html() {
+        
+        // Prepare structure to host both labels and ids of the entities.
+        $meta_values = array();
+
+        foreach( $this->data as $default_entity_identifier ) {
+
+            // The entity can be referenced as URI or ID.
+            if ( is_numeric( $default_entity_identifier ) ) {
+                $entity = get_post( $default_entity_identifier );
+            } else {
+                // It is an URI
+                $entity = wl_get_entity_post_by_uri( $default_entity_identifier );
+            }
+
+            if( !is_null( $entity ) ){
+                $meta_values[] = array(
+                    'label' => $entity->post_title,
+                    'value' => $entity->ID
+                );
+            } else {
+                // No ID and no internal uri. Just leave as is.
+                $meta_values[] = array(
+                    'label' => $default_entity_identifier,
+                    'value' => $default_entity_identifier
+                );
+            }
+        }
+        
+        /*
+         * Write saved values in page
+         * The <input> tags host the meta values.
+         * Each hosts one human readable value (i.e. entity name or uri)
+         * and is accompained by an hidden <input> tag, the one passed to the server,
+         * that contains its raw value (i.e. the uri or entity id)
+         */
+        $html = '<h3>' . $this->label . '</h3>';
+        
+        if( count( $meta_values ) === 0 ){
+            $html .= '<div class="wl-autocomplete-wrapper">
+                        <input type="text" class="' . $this->meta_name . ' wl-autocomplete" style="width:100%" />
+                        <input type="hidden" class="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" />
+                    </div>';
+        } else {
+            $count = 0;
+            foreach( $meta_values as $meta_value ){
+                if( $count < $this->cardinality ) {
+                    $label = $meta_value['label'];
+                    $value = $meta_value['value'];
+
+                    $html .= '<div class="wl-autocomplete-wrapper">
+                                <input type="text" class="' . $this->meta_name . ' wl-autocomplete" value="' . $label . '" style="width:100%" />
+                                <input type="hidden" class="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" />
+                            </div>';
+                }
+                $count++;
+            }
+            
+            // If cardiality allows it, print button to add new values.
+            if( $this->cardinality > 1 ) {
+                $html .= '<button>Add</button>';
+            }
+        }
+
+        return $html;
+        
+        
+        
+        
+        
+        
+        
+        
+        if( empty( $this->data ) ){
+            $html .= $this->html_input( '' );    // Will print an empty <input>
+        } else {
+            // print data loaded from DB
+            $count = 0;
+            foreach( $this->data as $value ){
+                if( $count < $this->cardinality ) {
+                    $html .= $this->html_input( $value );
+                }
+                $count++;
+            }
+        }
+        
+        
+        
+        return $html;
+    }
 }
 
 class WL_Metabox_Field_date extends WL_Metabox_Field {
