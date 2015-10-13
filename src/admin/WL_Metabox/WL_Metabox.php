@@ -37,20 +37,35 @@ class WL_Metabox {
         // Build the fields we need to print.
         $this->instantiate_fields( $entity->ID );
         
+        $html = '';
+        
         // Loop over the fields
         foreach( $this->fields as $field ) {
             
             // load data from DB (values will be available in $field->data)
             $field->get_data();
             
+            /*
+             * opens the HTML tag that will contain the Field HTML.
+             * By default, it's a <div> containing data- attributes on cardinality and expected types.
+             * Overwrite if you want to put a custom wrapper.
+             */
+            $html .= $field->html_wrapper_open();
+            
             // print nonce
-            $field->print_nonce();
+            $html .= $field->print_nonce();
             
             // print field HTML
-            // TODO: $fileds should return HTML, not print it
-            $field->html();
-            echo '<hr>';
+            $html .= $field->html();
+            
+            // Close the HTML wrapper
+            $html .= $field->html_wrapper_close();
+            
+            $html .= '<hr>';
         }
+        
+        // Echo Fields in page.
+        echo $html;
     }
     
     /**
@@ -95,58 +110,75 @@ class WL_Metabox {
 
             // Loop over grouped properties
             foreach ( $grouped_metaboxes as $key => $property ) {
-                // TODO
-                var_dump($key);
+                
+                // Info passed to the metabox
+                $info         = array();
+                $info[ $key ] = $property;
+
+                // Build the requested field as WL_Metabox_Field_ object
+                $this->add_field( $info, true );
             }
             
         }
     }
     
     
-    public function add_field( $args ){
+    public function add_field( $args, $grouped=false ){
         
-        // TODO default args
-        
-        // Which field? We want to use the class that is specific for the field.
-        // TODO: custom input_type
-        $meta = key( $args );
-        if( !isset( $args[$meta]['type'] ) || ( $args[$meta]['type'] == WL_DATA_TYPE_STRING ) ){
-            // Use default WL_Metabox_Field (manages strings)
-            $field_class = 'WL_Metabox_Field';
-        } else {
+        if( $grouped ) {
+            // Special fields (sameas, coordinates, etc.)
+            
             // Build Field with a custom class (e.g. WL_Metabox_Field_date)
-            $field_class = 'WL_Metabox_Field_' . $args[$meta]['type'];
+            $field_class = 'WL_Metabox_Field_' . key($args);           
+            
+        } else {
+            // Simple fields (string, uri, boolean, etc.)
+            
+            // Which field? We want to use the class that is specific for the field.
+            $meta = key( $args );
+            if( !isset( $args[$meta]['type'] ) || ( $args[$meta]['type'] == WL_DATA_TYPE_STRING ) ){
+                // Use default WL_Metabox_Field (manages strings)
+                $field_class = 'WL_Metabox_Field';
+            } else {
+                // Build Field with a custom class (e.g. WL_Metabox_Field_date)
+                $field_class = 'WL_Metabox_Field_' . $args[$meta]['type'];
+            }
         }
         
-        // Call apropriate constructor (e.g. WL_Metabox_Field_ )
+        // Call apropriate constructor (e.g. WL_Metabox_Field_... )
         $this->fields[] = new $field_class( $args );
     }
     
     public function save_form_data( $post_id ){
 
+        // Build Field objects
         $this->instantiate_fields( $post_id );
+        
+        // Check if WL metabox form was posted
+        if( !isset( $_POST['wl_metaboxes'] ) ){
+            return;
+        }
         
         foreach( $this->fields as $field ) {
             
-            $field->verify_nonce();
+            $valid_nonce = $field->verify_nonce();
         
-            // TODO: verify NONCE with an IF
+            if( $valid_nonce ){
             
-            // Check if WL metabox form was posted
-            if( isset( $_POST['wl_metaboxes'] ) ){
-                
                 $posted_data = $_POST['wl_metaboxes'];
                 $field_name = $field->meta_name;
-                
+
                 // Each Filed only deals with its values.
                 if( isset( $posted_data[$field_name] ) ){
-                    
+
                     $values = $posted_data[$field_name];
                     if( !is_array($values) ){
                         $values = array( $values );
                     }
+                    
+                    $field->sanitize_data( $values );
 
-                    $field->save_data( $values );
+                    $field->save_data();
                 }
             }
         }

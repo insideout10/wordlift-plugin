@@ -57,12 +57,12 @@ class WL_Metabox_Field {
     }
     
     /**
-     * Print nonce in page.
+     * Return nonce HTML.
      * Overwrite this method in a child class to obtain custom behaviour.
      */
     public function print_nonce(){
-        // write NONCE
-        wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce' );
+        
+        return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', true, false );
     }
     
     /**
@@ -75,12 +75,13 @@ class WL_Metabox_Field {
         
 		$nonce_name   = 'wordlift_' . $this->meta_name . '_entity_box_nonce';
 		$nonce_verify = 'wordlift_' . $this->meta_name . '_entity_box';
-		if ( ! isset( $nonce_name ) ) {
-			return false;
-		}
-
+        
+        if( !isset( $_POST[ $nonce_name ] ) ){
+            return false;
+        }
+        
 		// Verify that the nonce is valid.
-		return wp_verify_nonce( $nonce_name, $nonce_verify );
+		return wp_verify_nonce( $_POST[ $nonce_name ], $nonce_verify );
     }
     
     /**
@@ -100,10 +101,42 @@ class WL_Metabox_Field {
     }
     
     /**
-     * Sanitize and save data to DB.
+     * Sanitize data before saving to DB. Default sanitization excludes empty values.
      * Overwrite this method in a child class to obtain custom behaviour.
      */
-    public function save_data( $values ){
+    public function sanitize_data( $values ){
+        
+        $sanitized_data = array();
+        
+        foreach( $values as $value ){
+            $sanitized_value = $this->sanitize_data_filter( $value );
+            if( !is_null( $sanitized_value ) ){
+                $sanitized_data[] = $sanitized_value;
+            }
+        }
+        
+        $this->data = $sanitized_data;
+    }
+    
+    /**
+     * Sanitize a single value. Called from $this->sanitize_data. Default sanitization excludes empty values.
+     * Overwrite this method in a child class to obtain custom behaviour.
+     * 
+     * @return mixed Returns sanitized value, or null.
+     */
+    public function sanitize_data_filter( $value ){
+        
+        if( !is_null( $value ) && $value !== '' ){         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/
+            return $value;
+        }
+        return null;
+    }
+    
+    /**
+     * Save data to DB.
+     * Overwrite this method in a child class to obtain custom behaviour.
+     */
+    public function save_data(){
         
         $entity_id = get_the_ID();
         
@@ -112,30 +145,42 @@ class WL_Metabox_Field {
         
         // insert new values, respecting cardinality
         $single = ( $this->cardinality == 1 );
-        foreach( $values as $value ){
-            if( !is_null( $value ) && $value !== '' ){         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/
-                add_post_meta( $entity_id, $this->meta_name, $value, $single );
-            }
+        foreach( $this->data as $value ){
+            add_post_meta( $entity_id, $this->meta_name, $value, $single );
         }
     }
     
     /**
-     * Print metabox in page.
+     * Returns the HTML tag that will contain the Field. By default the we return a <div> with data- attributes on cardinality and expected types.
+     * It is useful to provide data for the JS scripts.
+     * Overwrite this method in a child class to obtain custom behaviour.
+     */
+    public function html_wrapper_open(){
+        $html = '';
+        
+        $html .= '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '">';
+        
+        return $html;
+    }
+    
+    /**
+     * Returns Field HTML.
      * Overwrite this method in a child class to obtain custom behaviour.
      */
     public function html(){
         
-        echo '<h3>' . $this->label . '</h3>';
-        var_dump($this->data);
+        $html = '';
+        
+        $html .=  '<h3>' . $this->label . '</h3>';
         
         if( empty( $this->data ) ){
-            $this->html_input( '' );    // Will print an empty <input>
+            $html .= $this->html_input( '' );    // Will print an empty <input>
         } else {
             // print data loaded from DB
             $count = 0;
             foreach( $this->data as $value ){
                 if( $count < $this->cardinality ) {
-                    $this->html_input( $value );
+                    $html .= $this->html_input( $value );
                 }
                 $count++;
             }
@@ -143,17 +188,27 @@ class WL_Metabox_Field {
         
         // If cardiality allows it, print button to add new values.
         if( $this->cardinality > 1 ) {
-            echo '<button>Add</button>';
+            $html .= '<button>Add</button>';
         }
+        
+        return $html;
     }
     
     /**
-     * Print a single <input> tag for the Field.
+     * Return a single <input> tag for the Field.
      * 
      * @param mixed $value Input value
      */
     public function html_input( $value ){
-        echo '<input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" style="width:100%" />';
+        return '<input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" style="width:100%" />';
+    }
+    
+    /**
+     * Returns closing for the wrapper HTML tag.
+     */
+    public function html_wrapper_close(){
+        
+        return '</div>';
     }
 }
 
@@ -169,9 +224,10 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
     
     public function html(){
         
-        echo '<h3>' . $this->label . '</h3>';
+        $html = '';
         
-        var_dump($this->data);
+        $html .= '<h3>' . $this->label . '</h3>';
+        
         foreach( $this->data as $date){
             
             $pickerDate  = '';
@@ -181,11 +237,11 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
             $pickerDate = esc_attr( $pickerDate );
 
             // Two input fields, one for the datetimepicker and another to store the time in the required format
-            echo '<input type="text" class="' . $this->meta_name . '" value="' . $pickerDate . '" style="width:100%" />';
-            echo '<input type="hidden" class="' . $this->meta_name . '_hidden" name="wl_metaboxes[' . $this->meta_name . ']" value="' . $date . '" style="width:100%" />';
+            $html .= '<input type="text" class="' . $this->meta_name . '" value="' . $pickerDate . '" style="width:100%" />';
+            $html .= '<input type="hidden" class="' . $this->meta_name . '_hidden" name="wl_metaboxes[' . $this->meta_name . ']" value="' . $date . '" style="width:100%" />';
         }
             
-        echo "<script type='text/javascript'>
+        $html .= "<script type='text/javascript'>
         $ = jQuery;
         $(document).ready(function() {
 
@@ -202,5 +258,25 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
             });
         });
         </script>";
+        
+        return $html;
+    }
+}
+
+class WL_Metabox_Field_sameas extends WL_Metabox_Field {
+
+    public function __construct( $args ) {
+        parent::__construct( $args['sameas'] );
+    }
+    
+    /**
+     * Only accept URIs
+     */
+    public function sanitize_data_filter( $value ) {
+
+        if( !is_null( $value ) && $value !== '' && filter_var($value, FILTER_VALIDATE_URL) ){
+            return $value;
+        }
+        return null;
     }
 }
