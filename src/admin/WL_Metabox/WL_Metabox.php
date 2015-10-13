@@ -183,7 +183,7 @@ class WL_Metabox {
             }
         }
         
-        // TODO: Push to Redlink
+        wl_linked_data_push_to_redlink( $post_id );
     }
     
     // print on page all the js and css the fields will need
@@ -192,6 +192,10 @@ class WL_Metabox {
         // dateTimePicker
         wp_enqueue_style( 'datetimepickercss', plugins_url( 'js-client/datetimepicker/jquery.datetimepicker.css', __FILE__ ) );
         wp_enqueue_script( 'datetimepickerjs', plugins_url( 'js-client/datetimepicker/jquery.datetimepicker.js', __FILE__ ) );
+        
+        // Leaflet.
+        wp_enqueue_style( 'leaflet_css', plugins_url( 'bower_components/leaflet/dist/leaflet.css', __FILE__ ) );
+        wp_enqueue_script( 'leaflet_js', plugins_url( 'bower_components/leaflet/dist/leaflet.js', __FILE__ ) );
         
         // Add AJAX autocomplete to facilitate metabox editing
         wp_enqueue_script('wl-entity-metabox-utility', plugins_url( 'js-client/wl_entity_metabox_utilities.js', __FILE__ ) );

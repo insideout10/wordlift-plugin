@@ -424,6 +424,86 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
     }
 }
 
+class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
+
+    public function __construct( $args ) {
+        var_dump( $args );
+        parent::__construct( $args['coordinates'] );
+    }
+    
+    public function get_data() {
+        $entity_id = get_the_ID();
+        $this->data = wl_get_coordinates( $entity_id );
+    }
+    
+    public function html() {
+        
+        $html = '<h3>coordinates</h3>';
+        
+        // Get coordinates
+        $coords = $this->data;
+
+        // Print input fields
+        $html .= '<label for="wl_place_lat">' . __( 'Latitude', 'wordlift' ) . '</label>';
+        $html .= '<input type="text" id="wl_place_lat" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LATITUDE . ']" value="' . $coords['latitude'] . '" style="width:100%" />';
+
+        $html .= '<label for="wl_place_lon">' . __( 'Longitude', 'wordlift' ) . '</label>';
+        $html .= '<input type="text" id="wl_place_lon" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LONGITUDE . ']" value="' . $coords['longitude'] . '" style="width:100%" />';
+
+        // Show Leaflet map to pick coordinates
+        $html .= "<div id='wl_place_coords_map'></div>";
+        $html .= "<script type='text/javascript'>
+        $ = jQuery;
+        $(document).ready(function(){
+            $('#wl_place_coords_map').width('100%').height('200px');
+            var wlMap = L.map('wl_place_coords_map').setView([" . $coords['latitude'] . "," . $coords['longitude'] . "], 9);
+
+            L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+                { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
+            ).addTo( wlMap );
+
+            var marker = L.marker([" . $coords['latitude'] . "," . $coords['longitude'] . "]).addTo( wlMap );
+
+            function refreshCoords(e) {
+                $('#wl_place_lat').val( e.latlng.lat );
+                $('#wl_place_lon').val( e.latlng.lng );
+                marker.setLatLng( e.latlng )
+            }
+
+            wlMap.on('click', refreshCoords);
+        });
+        </script>";
+        
+        return $html;
+    }
+    
+    public function save_data() {
+        
+        // TODO: should I create a namespace for grouped properties??
+        
+        $entity_id = get_the_ID();
+        
+        // Take away old values
+        delete_post_meta( $entity_id, $this->meta_name );
+        
+        // insert new coordinate values
+        foreach( $this->data as $value ){
+            add_post_meta( $entity_id, $this->meta_name, $value, true );
+        }
+    }
+    
+    /**
+     * Only accept float numbers
+     */
+    public function sanitize_data_filter( $value ) {
+
+        if( !is_null( $value ) && $value !== '' && is_numeric( $value ) ){
+            return $value;
+        }
+        return null;
+    }
+}
+
 class WL_Metabox_Field_sameas extends WL_Metabox_Field {
 
     public function __construct( $args ) {

@@ -196,51 +196,13 @@ function wl_entities_string_box_content( $post, $info ) {
  */
 function wl_entities_coordinates_box_content( $post ) {
 
-	// Add leaflet css and library.
-	wp_enqueue_style(
-		'leaflet_css', plugins_url( 'bower_components/leaflet/dist/leaflet.css', __FILE__ )
-	);
-	wp_enqueue_script(
-		'leaflet_js', plugins_url( 'bower_components/leaflet/dist/leaflet.js', __FILE__ )
-	);
+	
 
 	// Set nonce for both meta (latitude and longitude)
 	wl_echo_nonce( WL_CUSTOM_FIELD_GEO_LATITUDE );
 	wl_echo_nonce( WL_CUSTOM_FIELD_GEO_LONGITUDE );
 
-	// Get coordinates
-	$coords = wl_get_coordinates( $post->ID );
-
-	// Print input fields
-	echo '<label for="wl_place_lat">' . __( 'Latitude', 'wordlift' ) . '</label>';
-	echo '<input type="text" id="wl_place_lat" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LATITUDE . ']" value="' . $coords['latitude'] . '" style="width:100%" />';
-
-	echo '<label for="wl_place_lon">' . __( 'Longitude', 'wordlift' ) . '</label>';
-	echo '<input type="text" id="wl_place_lon" name="wl_metaboxes[' . WL_CUSTOM_FIELD_GEO_LONGITUDE . ']" value="' . $coords['longitude'] . '" style="width:100%" />';
-
-	// Show Leaflet map to pick coordinates
-	echo "<div id='wl_place_coords_map'></div>";
-	echo "<script type='text/javascript'>
-    $ = jQuery;
-    $(document).ready(function(){
-        $('#wl_place_coords_map').width('100%').height('200px');
-        var wlMap = L.map('wl_place_coords_map').setView([" . $coords['latitude'] . "," . $coords['longitude'] . "], 9);
-    
-        L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-            { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
-        ).addTo( wlMap );
-        
-        var marker = L.marker([" . $coords['latitude'] . "," . $coords['longitude'] . "]).addTo( wlMap );
-    
-        function refreshCoords(e) {
-            $('#wl_place_lat').val( e.latlng.lat );
-            $('#wl_place_lon').val( e.latlng.lng );
-            marker.setLatLng( e.latlng )
-        }
-
-        wlMap.on('click', refreshCoords);
-    });
-    </script>";
+	
 }
 
 /**
