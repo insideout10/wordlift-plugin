@@ -182,6 +182,8 @@ class WL_Metabox {
                 }
             }
         }
+        
+        // TODO: Push to Redlink
     }
     
     // print on page all the js and css the fields will need

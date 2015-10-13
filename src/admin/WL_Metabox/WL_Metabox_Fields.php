@@ -207,7 +207,7 @@ class WL_Metabox_Field {
         
         // If cardiality allows it, print button to add new values.
         if( $this->cardinality > 1 ) {
-            $html .= '<button>Add</button>';
+            $html .= '<button type="button">Add</button>';
         }
         
         return $html;
@@ -236,6 +236,63 @@ class WL_Metabox_Field {
  */
 
 class WL_Metabox_Field_uri extends WL_Metabox_Field {
+    
+    /**
+     * Only accept URIs or local entity IDs.
+     * Build new entity if the user inputted a name that is not present in DB.
+     */
+    public function sanitize_data_filter( $value ) {
+        
+        if( empty( $value ) ){
+            return null;
+        }
+ 
+        // Check that the inserted URI, ID or name does not point to a saved entity.
+        if( is_numeric( $value ) ){
+            $absent_from_db = is_null( get_post( $value ) );                           // search by ID
+        } else {
+            $absent_from_db =
+                is_null( wl_get_entity_post_by_uri( $value ) ) &&                      // search by uri
+                is_null( get_page_by_title( $value, OBJECT, WL_ENTITY_TYPE_NAME ) );   // search by name
+        }
+
+        // Is it an URI?
+        $name_is_uri = strpos( $value, 'http' ) === 0; 
+
+        // We create a new entity only if the entity is not present in the DB.
+        // In the case of an external uri, we just save the uri.
+        if( $absent_from_db && !$name_is_uri ) {
+
+                // ...we create a new entity!
+                $new_entity_id = wp_insert_post( array(
+                    'post_status'  => 'publish',
+                    'post_type'    => WL_ENTITY_TYPE_NAME,
+                    'post_title'   => $value
+                ) );
+                $new_entity = get_post( $new_entity_id );
+
+                // Assign type
+                $constraints = wl_get_meta_constraints( $value );
+                if( isset( $this->expected_uri_type ) ){
+                    $type = $this->expected_uri_type[0];
+                } else {
+                    $type = 'Thing';
+                }
+                $type        = 'http://schema.org/' . $type;
+                wl_set_entity_main_type( $new_entity_id, $type );
+
+                // Build uri for this entity
+                $new_uri = wl_build_entity_uri( $new_entity_id );
+                wl_set_entity_uri( $new_entity_id, $new_uri );
+
+                wl_push_entity_post_to_redlink( $new_entity );
+                
+                // Update the value that will be saved as meta
+                $value = $new_entity_id;
+        }
+        
+        return $value;
+    }
     
     public function html_wrapper_open() {
         
@@ -313,37 +370,13 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
                 }
                 $count++;
             }
-            
-            // If cardiality allows it, print button to add new values.
-            if( $this->cardinality > 1 ) {
-                $html .= '<button>Add</button>';
-            }
+        }
+        
+        // If cardiality allows it, print button to add new values.
+        if( $this->cardinality > 1 ) {
+            $html .= '<button type="button">Add</button>';
         }
 
-        return $html;
-        
-        
-        
-        
-        
-        
-        
-        
-        if( empty( $this->data ) ){
-            $html .= $this->html_input( '' );    // Will print an empty <input>
-        } else {
-            // print data loaded from DB
-            $count = 0;
-            foreach( $this->data as $value ){
-                if( $count < $this->cardinality ) {
-                    $html .= $this->html_input( $value );
-                }
-                $count++;
-            }
-        }
-        
-        
-        
         return $html;
     }
 }

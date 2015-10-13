@@ -44,6 +44,9 @@ jQuery(document).ready(function($){
         $(inputElement).keyup(function(s){
             // Keep <input>s in synch
             synchInputValueWithAutocompleteResults();
+        });
+        
+        metabox.find('button').click(function(){
             // Create a new <input> for eventual new values
             appendNewAutocomplete(metabox);
         });
@@ -106,7 +109,8 @@ jQuery(document).ready(function($){
 
                 // Build HTML of the new <input>
                 var newInputDiv = $(latestInput).parent().clone();
-                newInputDiv.appendTo( metabox );
+                //newInputDiv.appendTo( metabox );
+                metabox.children('button').before( newInputDiv );
 
                 // Launch autocomplete on the new created <input>
                 var newInputField = newInputDiv.find('.wl-autocomplete');
