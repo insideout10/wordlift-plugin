@@ -2,29 +2,30 @@
 
 FILE='wordlift/wordlift.php'
 README='trunk/readme.txt'
+STEPS=10
 
-echo "checking out and updating the svn branch..."
+echo "Checking out and updating the svn branch..."
 git checkout -b svn >/dev/null 2>&1
-git pull origin svn
-echo "removing make-zip.sh..."
+git pull origin svn >/dev/null 2>&1
+echo "Removing make-zip.sh..."
 rm -fr make-zip.sh
-echo "updating the svn branch..."
+echo "Updating the svn branch..."
 svn up
-echo "checking make-zip.sh from master branch..."
+echo "Checking make-zip.sh from master branch..."
 git checkout master -- make-zip.sh
-echo "remove dist folder..."
+echo "Remove dist folder..."
 rm -fr dist wordlift
-echo "making wordlift.zip..."
+echo "Making wordlift.zip..."
 ./make-zip.sh master > /dev/null
-echo "unzipping to wordlift/..."
+echo "Unzipping to wordlift/..."
 unzip dist/wordlift-*.zip > /dev/null
 
 VERSION=`egrep -o "Version:\s+\d+\.\d+\.\d+" $FILE | egrep -o "\d+\.\d+\.\d+"`
 
 if [[ -z "$VERSION" ]]; then
-	echo "version not set, halting."
+	echo "Version not set, halting."
 else
-	echo "removing tag $VERSION..."
+	echo "Removing tag $VERSION..."
 	svn rm --force tags/$VERSION > /dev/null
 	echo "removing trunk..."
 	svn rm --force trunk > /dev/null
@@ -39,6 +40,7 @@ else
 	git add -A
 	git commit -m "bump to $VERSION" -a
 	git push origin svn
+
 fi
 
 
