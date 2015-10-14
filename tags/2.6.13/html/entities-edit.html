@@ -1,0 +1,164 @@
+<div class='modal hide fade' id='delete-confirmation-dialog'>
+  <div class='modal-header'>
+    <button aria-hidden='true' class='close' data-dismiss='modal' ng-click='cancelDeleteProperty()' type='button'>
+      &times;
+    </button>
+    <h3>
+      Warning!
+    </h3>
+  </div>
+  <div class='modal-body'>
+    <p>
+      Are you sure you want to delete the property? The action cannot be undone.
+    </p>
+  </div>
+  <div class='modal-footer'>
+    <a class='btn' href='javascript:void(0);' ng-click='cancelDeleteProperty()'>
+      Cancel
+    </a>
+    <a class='btn btn-primary' href='javascript:void(0);' ng-click='confirmDeleteProperty()'>
+      Delete
+    </a>
+  </div>
+</div>
+<div class='alert alert-info'>
+  <span class='label label-info'>
+    Edit an Entity
+  </span>
+  Use this page to edit an entity:
+  <ul>
+    <li></li>
+    <li>
+      <div class='icon-plus'></div>
+      Add new properties to an entity by filling the property name, type and value (and optionally the language code)
+    </li>
+    <li>
+      <div class='icon-pencil'></div>
+      Edit an existing property
+    </li>
+    <li>
+      <div class='icon-trash'></div>
+      Delete a property
+    </li>
+    <li>
+      <div class='icon-ok'></div>
+      Save the changes
+    </li>
+    <li>
+      <div class='icon-remove'></div>
+      Cancel the changes
+    </li>
+  </ul>
+  <span class='label label-info'>
+    Languages
+  </span>
+  Use the following list to select the language you would like to use to display the properties of the entities
+</div>
+<div class='well'>
+  <ul class='nav nav-pills'>
+    <li class='language' ng-class="{'active': isCurrentLanguage('')}">
+      <a ng-click="setLanguage('');">
+        (none)
+      </a>
+    </li>
+    <li class='language' ng-class="{'active': isCurrentLanguage(code)}" ng-repeat='(code, language) in languages'>
+      <a ng-click='setLanguage(code);'>
+        {{language.language}}
+      </a>
+    </li>
+  </ul>
+</div>
+<table class='entity table table-striped table-hover'>
+  <thead>
+    <tr>
+      <th class='column-key'>
+        Key
+      </th>
+      <th>
+        Language
+      </th>
+      <th></th>
+      <th>
+        Value
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class='add-property'>
+      <td colspan='4'>
+        <a ng-click='showNewProperty()'>
+          <div ng-class="{true:'icon-minus', false:'icon-plus'}[isNewPropertyVisible]"></div>
+          add property
+        </a>
+      </td>
+    </tr>
+    <tr class='new-property' ng-show='isNewPropertyVisible'>
+      <td>
+        <div>
+          <input ng-model='newProperty.key' placeholder='http://schema.org/property' type='text'>
+          <select class='type' ng-model='newProperty.type'>
+            <option value='literal'>
+              Literal
+            </option>
+            <option value='uri'>
+              URI
+            </option>
+          </select>
+        </div>
+      </td>
+      <td>
+        <div>
+          <input class='language' ng-model='newProperty.lang' placeholder='en' type='text'>
+        </div>
+      </td>
+      <td>
+        <a class='icon-ok' ng-click='saveNewProperty( newProperty, clearNewProperty )'></a>
+      </td>
+      <td>
+        <textarea ng-model='newProperty.value' ng-show="'literal'==newProperty.type"></textarea>
+        <input ng-model='newProperty.value' ng-show="'uri'==newProperty.type" placeholder='http://example.org/path' type='url'>
+      </td>
+    </tr>
+    <tr ng-repeat='property in data.content' ng-show='isCurrentLanguage(property.lang)'>
+      <td>
+        <div ng-bind='property.key'></div>
+        <div>
+          ({{property.type}})
+        </div>
+      </td>
+      <td>
+        <div ng-bind='property.lang'></div>
+      </td>
+      <td>
+        <a class='icon-pencil' ng-click='setEditMode( property, true )' ng-hide='property.editMode'></a>
+        <a class='icon-trash' ng-click='deleteProperty( property )' ng-hide='property.editMode'></a>
+        <a class='icon-ok' ng-click='saveProperty( property )' ng-show='true == property.editMode'></a>
+        <a class='icon-remove' ng-click='setEditMode( property, false )' ng-show='true == property.editMode'></a>
+      </td>
+      <td>
+        <div class='image' ng-show='isImage( property.value )' style="background-image: url('{{property.value}}');"></div>
+        <div ng-bind='property.value' ng-hide='property.editMode'></div>
+        <textarea ng-model='property.value' ng-show="'literal'==property.type &amp;&amp; true == property.editMode"></textarea>
+        <input ng-model='property.value' ng-show="'uri'==property.type &amp;&amp; true == property.editMode" type='url'>
+        <select ng-model='property.value' ng-show="'bnode'==property.type &amp;&amp; true == property.editMode"></select>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class='pagination pagination-centered' style='display: none;'>
+  <ul>
+    <li ng-class="{true: 'disabled', false: ''}[0==data.page]">
+      <a ng-click='goToPreviousPage()'>
+        Prev
+      </a>
+    </li>
+    <li ng-class="{true: 'active', false: ''}[page==(data.page + 1)]" ng-repeat='page in getPages()'>
+      <a ng-bind='page' ng-click='goToPage( page - 1 )'></a>
+    </li>
+    <li ng-class="{true: 'disabled', false: ''}[data.page==(data.pages - 1)]">
+      <a ng-click='goToNextPage()'>
+        Next
+      </a>
+    </li>
+  </ul>
+</div>
