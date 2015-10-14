@@ -30,17 +30,19 @@ else
 	svn rm --force tags/$VERSION > /dev/null
 	echo "removing trunk..."
 	svn rm --force trunk > /dev/null
-	svn ci -m "updating trunk (1 of 2)"
+
+	echo "If you see 'forbidden by the server', you need to authenticate to the server first."
+	svn ci -m "$VERSION: updating trunk (1 of 2)"
 	mv wordlift trunk
 	echo "setting the stable tag in $README..."
-	sed -i '' 's/Stable tag: .*/Stable tag: $VERSION/g' $README
-	svn add trunk
-	svn cp trunk tags/$VERSION
-	svn ci -m "updating trunk (2 of 2)"
+	sed -i '' "s/Stable tag: .*/Stable tag: $VERSION/g" $README
+	svn add trunk > /dev/null
+	svn cp trunk tags/$VERSION > /dev/null
+
+	echo "If you see 'forbidden by the server', you need to authenticate to the server first."
+	svn ci -m "$VERSION: updating trunk (2 of 2)"
 
 	git add -A
 	git commit -m "bump to $VERSION" -a
 	git push origin svn
 fi
-
-

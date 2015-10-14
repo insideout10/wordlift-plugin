@@ -2,7 +2,7 @@
 Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
-Requires at least: {wpversion}
+Requires at least: 4.2
 Tested up to: 4.2.4
 Stable tag: $VERSION
 License: GPLv2 or later
