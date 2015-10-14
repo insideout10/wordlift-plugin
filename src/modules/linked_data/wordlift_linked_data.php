@@ -287,10 +287,15 @@ function wl_save_entity( $entity_properties ) {
 
 	// Check whether an entity already exists with the provided URI.
 	$post = wl_get_entity_post_by_uri( $uri );
+	        
 	if ( null !== $post ) {
             // We insert into the params the entity ID, so it will be updated and not inserted.
-            $params['ID'] = $post->ID;
-	}
+            $params[ 'ID' ] = $post->ID;
+            // Preserve the current entity status
+            if ( 'public' == $post->post_status ) {
+            	$params[ 'post_status' ] = $post->post_status;
+            }
+	}	
 	
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );
