@@ -4,7 +4,7 @@ Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
 Requires at least: {wpversion}
 Tested up to: 4.2.4
-Stable tag: {version}
+Stable tag: $VERSION
 License: GPLv2 or later
 
 Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
