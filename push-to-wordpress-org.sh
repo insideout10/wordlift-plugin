@@ -2,7 +2,6 @@
 
 FILE='wordlift/wordlift.php'
 README='trunk/readme.txt'
-STEPS=10
 
 echo "Checking out and updating the svn branch..."
 git checkout -b svn >/dev/null 2>&1

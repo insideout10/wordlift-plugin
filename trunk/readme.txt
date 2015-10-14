@@ -2,14 +2,24 @@
 Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
-Requires at least: {wpversion}
-Tested up to: 4.2.4
-Stable tag: $VERSION
+Requires at least: 3.3.0
+Tested up to: 3.6.1
+Stable tag: 2.6.20
 License: GPLv2 or later
 
 Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
 
 == Description ==
+
+**We're working** for the new version of WordLift 3. We've recently been to the [Dublin Web Summit](http://websummit.net) where we gathered a valuable feedback from bloggers, web publishers, editors and investors.
+
+For the time being **WordLift 2 is suspended**, i.e. it won't work on your WordPress site, while we focus all of our energies to bring you a market-ready version of WordLift 3.
+
+In order to be among the first to know as soon as WordLift 3 is out, please subscribe to [http://join.wordlift.it](http://join.wordlift.it).
+
+Thanks for your continued support!
+
+
 
 **WordLift** is a WordPress Plug-in developed by [InSideOut10](http://www.insideout.io) to help you organise your post and pages using "concepts" like you do in the real world. 
 
@@ -117,6 +127,9 @@ We're glad to support you and you can send us an e-mail to
 6. The WordLift Bar.
 
 == Changelog ==
+
+= 2.6.20 =
+ * Fix: remove components non-compliant with licensing.
 
 = 2.6.19 =
  * Fix: [issue 13](https://github.com/insideout10/wordlift-plugin/issues/13): authorship tagging is now shown only on single pages and posts (thanks to Kevin Polley)
