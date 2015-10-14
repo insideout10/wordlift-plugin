@@ -118,6 +118,8 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
+= 3.0.10 (???) =
+
 = 2.6.19 =
  * Fix: [issue 13](https://github.com/insideout10/wordlift-plugin/issues/13): authorship tagging is now shown only on single pages and posts (thanks to Kevin Polley)
 
