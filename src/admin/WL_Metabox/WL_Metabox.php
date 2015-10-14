@@ -4,9 +4,7 @@ class WL_Metabox {
     
     protected $fields;
     
-    public function __construct( $args ) {
-        
-        // TODO: default args
+    public function __construct() {
         
         // Add hooks to print metaboxes and save submitted data.
         add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ));

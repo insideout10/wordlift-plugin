@@ -13,11 +13,8 @@ function wl_register_metaboxes() {
     // Load metabox classes
     require_once( 'WL_Metabox/WL_Metabox.php' );
     require_once( 'WL_Metabox/WL_Metabox_Fields.php' );
-    
-    $args = array(
-        // TODO: arg for the metabox?
-    );
-    $wl_metabox = new WL_Metabox( $args );   
+
+    $wl_metabox = new WL_Metabox();     // Everything is done inside here with the correct timing 
 }
 if ( is_admin() ) {
     add_action( 'load-post.php', 'wl_register_metaboxes' );
