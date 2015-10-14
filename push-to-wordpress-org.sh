@@ -21,6 +21,8 @@ unzip dist/wordlift-*.zip > /dev/null
 
 VERSION=`egrep -o "Version:\s+\d+\.\d+\.\d+" $FILE | egrep -o "\d+\.\d+\.\d+"`
 
+echo $VERSION
+
 if [[ -z "$VERSION" ]]; then
 	echo "Version not set, halting."
 else
@@ -39,7 +41,6 @@ else
 	git add -A
 	git commit -m "bump to $VERSION" -a
 	git push origin svn
-
 fi
 
 
