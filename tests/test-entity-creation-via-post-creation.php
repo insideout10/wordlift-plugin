@@ -255,6 +255,60 @@ EOF;
 	
 	}
 
+
+	// If an entity with status 'public' is related to a post in draft
+	// I expect that the 'public' status is properly preserved
+	function testPublicEntityStatusIsPreservedWhenLinkedToDraftPost() {
+
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json' 
+		);
+		$_POST = $fake;
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$original_entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Reference the entity to the post content 
+		$content    = <<<EOF
+    <span itemid="$original_entity_uri">My entity</span>
+EOF;
+		// Be sure that the entity does not exist yet
+		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$this->assertNull( $entity );
+		// Create a post referincing to the created entity
+		$post_1_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		// Here the entity should be created instead
+		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$this->assertNotNull( $entity );
+		$this->assertEquals( 'draft', $entity->post_status );
+		// Update post status and check if also entity status changed accrdingly
+		wl_update_post_status( $post_1_id, 'public' );
+		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$this->assertEquals( 'public', $entity->post_status );
+		// Retrieve the internal entity uri
+		$entity_uri = wl_get_entity_uri( $entity->ID );
+		// Build fake obj to simulate save same entity again on a new post
+		$original_entity = current( array_values ( $fake['wl_entities' ] ) );
+		$original_entity[ 'uri' ] = $entity_uri;
+
+		$fake_2 = array(
+			'wl_entities' => array( $entity_uri => $original_entity ),
+			'wl_boxes' => array( 'what' => array( $entity_uri ) )
+		);
+		$_POST = $fake_2;
+
+		// Reference the entity to the post content 
+		$content_2    = <<<EOF
+    <span itemid="$entity_uri">My entity</span>
+EOF;
+
+		// Create a post referincing to the created entity
+		$post_2_id = wl_create_post( $content_2, 'my-post-2', 'Another post' , 'draft');
+		$entity_reloaded = wl_get_entity_post_by_uri( $entity_uri );
+		// Check is the same entity for WP
+		$this->assertEquals( $entity->ID, $entity_reloaded->ID ); 
+		// Here I expect entity status is still public
+		$this->assertEquals( 'public', $entity_reloaded->post_status );
+		
+	}
 	// This test simulate entity metadata updating trough the disambiguation widget
 	function testEntityMetadataAreProperlyUpdated() {
 
