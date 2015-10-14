@@ -1,0 +1,3526 @@
+{
+  "@context": {
+    "dbp-ont": "http://dbpedia.org/ontology/",
+    "dbp-ont:thumbnail": {
+      "@type": "@id"
+    },
+    "dc": "http://purl.org/dc/terms/",
+    "dc:created": {
+      "@type": "xsd:dateTime"
+    },
+    "dc:creator": {
+      "@type": "xsd:string"
+    },
+    "dc:references": {
+      "@type": "@id"
+    },
+    "dc:relation": {
+      "@type": "@id"
+    },
+    "dc:type": {
+      "@type": "@id"
+    },
+    "enhancer": "http://fise.iks-project.eu/ontology/",
+    "enhancer:confidence": {
+      "@type": "xsd:double"
+    },
+    "enhancer:end": {
+      "@type": "xsd:int"
+    },
+    "enhancer:entity-reference": {
+      "@type": "@id"
+    },
+    "enhancer:entity-type": {
+      "@type": "@id"
+    },
+    "enhancer:extracted-from": {
+      "@type": "@id"
+    },
+    "enhancer:start": {
+      "@type": "xsd:int"
+    },
+    "foaf": "http://xmlns.com/foaf/0.1/",
+    "foaf:depiction": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/business.business_operation.industry": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/common.topic.image": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/common.topic.notable_for": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/common.topic.notable_types": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/common.topic.official_website": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/location.location.containedby": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/location.location.geolocation": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/organization.organization.date_founded": {
+      "@type": "xsd:date"
+    },
+    "http://rdf.freebase.com/ns/organization.organization.parent": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/people.person.date_of_birth": {
+      "@type": "xsd:date"
+    },
+    "http://rdf.freebase.com/ns/people.person.gender": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/people.person.nationality": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/people.person.place_of_birth": {
+      "@type": "@id"
+    },
+    "http://rdf.freebase.com/ns/people.person.profession": {
+      "@type": "@id"
+    },
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "owl:sameAs": {
+      "@type": "@id"
+    },
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "http://schema.org/",
+    "schema:url": {
+      "@type": "@id"
+    },
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  },
+  "@graph": [
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/118",
+      "@type": "schema:BlogPosting",
+      "dc:references": [
+        "http://data.redlink.io/353/wordlift/resource/Semantic_technology",
+        "http://data.redlink.io/353/wordlift/resource/m.0kybkd_"
+      ],
+      "rdfs:label": "InsideOut10",
+      "schema:datePublished": "2014-01-14T07:58:06+00:00",
+      "schema:url": "http://wordpress380.localhost/?p=118"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/120",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": "InsideOut10",
+      "schema:datePublished": "2014-01-09T13:58:46+00:00",
+      "schema:url": "http://wordpress380.localhost/118-revision-v1/"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/135",
+      "@type": "schema:BlogPosting",
+      "dc:references": [
+        "http://data.redlink.io/353/wordlift/resource/Apache_Software_Foundation",
+        "http://data.redlink.io/353/wordlift/resource/Apache_Stanbol",
+        "http://data.redlink.io/353/wordlift/resource/Consiglio_Nazionale_delle_Ricerche",
+        "http://data.redlink.io/353/wordlift/resource/European_Commission",
+        "http://data.redlink.io/353/wordlift/resource/Framework_Programmes_for_Research_and_Technological_Development",
+        "http://data.redlink.io/353/wordlift/resource/Java_(programming_language)",
+        "http://data.redlink.io/353/wordlift/resource/Software_Projects",
+        "http://data.redlink.io/353/wordlift/resource/University_of_Paderborn",
+        "http://data.redlink.io/353/wordlift/resource/University_of_St._Gallen",
+        "http://data.redlink.io/353/wordlift/resource/m.0gfddxb",
+        "http://data.redlink.io/353/wordlift/resource/m.0x30mx8"
+      ],
+      "rdfs:label": "Apache Stanbol",
+      "schema:datePublished": "2014-01-14T09:42:06+00:00",
+      "schema:url": "http://wordpress380.localhost/entity/apache-stanbol/"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/154",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": "Redlink",
+      "schema:datePublished": "2014-01-14T10:29:57+00:00",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=154"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/155",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": "Platform-as-a-Service",
+      "schema:datePublished": "2014-01-14T10:29:58+00:00",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=155"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/157",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": "Apache Solr",
+      "schema:datePublished": "2014-01-14T10:30:01+00:00",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=157"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/159",
+      "@type": "schema:BlogPosting",
+      "rdfs:label": "Apache Marmotta",
+      "schema:datePublished": "2014-01-14T10:31:34+00:00",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=159"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/post/4",
+      "@type": "schema:BlogPosting",
+      "dc:references": [
+        "http://data.redlink.io/353/wordlift/resource/Apache_Stanbol",
+        "http://data.redlink.io/353/wordlift/resource/Consiglio_Nazionale_delle_Ricerche",
+        "http://data.redlink.io/353/wordlift/resource/Content_management_system",
+        "http://data.redlink.io/353/wordlift/resource/Research_and_development",
+        "http://data.redlink.io/353/wordlift/resource/Software_Projects"
+      ],
+      "rdfs:label": "Apache Stanbol",
+      "schema:datePublished": "2014-01-14T07:49:41+00:00",
+      "schema:url": "http://146.185.137.73/apache-stanbol/"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/Apache_Solr",
+      "@type": "schema:CreativeWork",
+      "owl:sameAs": "http://dbpedia.org/resource/Apache_Solr",
+      "rdfs:label": "Apache Solr",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=157"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/Apache_Stanbol",
+      "@type": "schema:CreativeWork",
+      "owl:sameAs": "http://dbpedia.org/resource/Apache_Stanbol",
+      "rdfs:label": "Apache Stanbol",
+      "schema:url": "http://146.185.137.73/?post_type=entity&p=7"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/m.0kybkd_",
+      "owl:sameAs": "http://rdf.freebase.com/ns/m.0kybkd_",
+      "rdfs:label": "InsideOut10",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=132"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/m.0wqhskn",
+      "owl:sameAs": "http://rdf.freebase.com/ns/m.0wqhskn",
+      "rdfs:label": "Apache Marmotta",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=159"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/m.0wqhwn_",
+      "owl:sameAs": "http://rdf.freebase.com/ns/m.0wqhwn_",
+      "rdfs:label": "Redlink",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=154"
+    },
+    {
+      "@id": "http://data.redlink.io/353/wordlift/resource/Platform_as_a_service",
+      "owl:sameAs": "http://dbpedia.org/resource/Platform_as_a_service",
+      "rdfs:label": "Platform-as-a-Service",
+      "schema:url": "http://wordpress380.localhost/?post_type=entity&p=155"
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Apache_Solr",
+      "@type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "owl:Thing",
+        "schema:CreativeWork"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Solr.png/200px-Solr.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/3/3e/Solr.png",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Solr is an open source enterprise search platform from the Apache Lucene project. Its major features include full-text search, hit highlighting, faceted search, dynamic clustering, database integration, and rich document (e.g. , Word, PDF) handling. Providing distributed search and index replication, Solr is highly scalable. Solr is the most popular enterprise search engine. Solr 4 adds NoSQL features."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Apache Solr"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Apache_Stanbol",
+      "@type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "owl:Thing",
+        "schema:CreativeWork"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Apache_Stanbol_-_logo.png/200px-Apache_Stanbol_-_logo.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/9/9d/Apache_Stanbol_-_logo.png",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Apache Stanbol is an open source modular software stack and reusable set of components for semantic content management. Apache Stanbol components are meant to be accessed over RESTful interfaces to provide semantic services for content management. Thus, one application is to extend traditional content management systems with (internal or external) semantic services. Additionally, Apache Stanbol lets you create new types of content management systems with semantics at their core."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Apache Stanbol"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Computer_data_storage",
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/DDR2_ram_mounted.jpg/200px-DDR2_ram_mounted.jpg",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/e/e8/DDR2_ram_mounted.jpg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Computer data storage, often called storage or memory, is a technology consisting of computer components and recording media used to retain digital data. It is a core function and fundamental component of computers. The central processing unit (CPU) of a computer is what manipulates data by performing computations."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Computer data storage"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Digital_photography",
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/D700-400.jpg/200px-D700-400.jpg",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/b/bb/D700-400.jpg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Digital photography uses an array of electronic photodetectors to capture the image focused by the lens, as opposed to an exposure on photographic film. The captured image is then digitzed and stored as a computer file ready for digital processing, viewing, digital publishing or printing. Until the advent of such technology, photographs were made by exposing light sensitive photographic film, and used chemical photographic processing to develop and stabilize the image."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Digital photography"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Earth",
+      "@type": [
+        "dbp-ont:CelestialBody",
+        "dbp-ont:Planet",
+        "owl:Thing"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Earth_symbol.svg/200px-Earth_symbol.svg.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/e/e7/Earth_symbol.svg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Earth is the third planet from the Sun, and the densest and fifth-largest of the eight planets in the Solar System. It is also the largest of the Solar System's four terrestrial planets. It is sometimes referred to as the world or the Blue Planet. Earth formed approximately 4.54 billion years ago, and life appeared on its surface within one billion years."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Earth"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Eastern_Europe",
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Eastern-Europe-map2.svg/200px-Eastern-Europe-map2.svg.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/b/b0/Eastern-Europe-map2.svg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Eastern Europe is the eastern part of the European continent. The term has widely disparate and varying geopolitical, geographical, cultural and socioeconomic readings, which makes it highly context-dependent and even volatile, and there are \"almost as many definitions of Eastern Europe as there are scholars of the region\". A related United Nations paper adds that \"every assessment of spatial identities is essentially a social and cultural construct\"."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Eastern Europe"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Europe",
+      "@type": [
+        "dbp-ont:Continent",
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "owl:Thing",
+        "schema:Continent",
+        "schema:Place"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Europe_orthographic_Caucasus_Urals_boundary.svg/200px-Europe_orthographic_Caucasus_Urals_boundary.svg.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/d/de/Europe_orthographic_Caucasus_Urals_boundary.svg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Europe is, by convention, one of the world's seven continents. Comprising the westernmost peninsula of Eurasia, Europe is generally divided from Asia by the watershed divides of the Ural and Caucasus Mountains, the Ural River, the Caspian and Black Seas, and the waterways connecting the Black and Aegean Seas. Europe is bordered by the Arctic Ocean to the north, the Atlantic Ocean to the west, the Mediterranean Sea to the south, and the Black Sea and connected waterways to the southeast."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Europe"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Framework_Programmes_for_Research_and_Technological_Development",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The Framework Programmes for Research and Technological Development, also called Framework Programmes or abbreviated FP1 through FP8, are funding programmes created by the European Union in order to support and encourage research in the European Research Area (ERA). The specific objectives and actions vary between funding periods."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Framework Programmes for Research and Technological Development"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Fraunhofer_Society",
+      "@type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Company",
+        "dbp-ont:Organisation",
+        "owl:Thing",
+        "schema:Organization"
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The Fraunhofer Society is a German research organization with 60 institutes spread throughout Germany, each focusing on different fields of applied science (as opposed to the Max Planck Society, which works primarily on basic science). It employs around 20,000 people, mainly scientists and engineers, with an annual research budget of about €1.65 billion."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Fraunhofer Society"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Internaut",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Internaut is a term for a designer, operator, or technically capable user of the Internet. Beginning with participants in the Internet Engineering Task Force (IETF), it gradually expanded to members of the Internet Society (ISoc) and the larger community."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Internaut"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Linked_data",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "In computing, linked data describes a method of publishing structured data so that it can be interlinked and become more useful. It builds upon standard Web technologies such as HTTP and URIs, but rather than using them to serve web pages for human readers, it extends them to share information in a way that can be read automatically by computers. This enables data from different sources to be connected and queried."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Linked data"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/List_of_Dawson's_Creek_episodes",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Dawson's Creek, an American television series, was created by Kevin Williamson, who was the executive producer until the end of the show's second season. Paul Stupin shared the executive producer role until Williamson left, and remained until the series finale along with Tom Kapinos and Greg Prange. It is produced by Outerbanks Entertainment and Sony Pictures Television. The series stars James Van Der Beek as Dawson Leery, an aspiring film maker."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "List of Dawson's Creek episodes"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Medes",
+      "@type": [
+        "dbp-ont:Country",
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "owl:Thing",
+        "schema:Country",
+        "schema:Place"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Map_of_Assyria.png/200px-Map_of_Assyria.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/c/c1/Map_of_Assyria.png",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The Medes were an ancient Iranian people who lived in an area known as Media and who spoke a northwestern Iranian language referred to as the Median language. Their arrival to the region is associated with the first wave of Iranic tribes in the late second millennium BCE through the beginning of the first millennium BCE. From the 10th century BCE to the late 7th century BCE, the Iranic Medes and Persians fell under the domination of the Neo Assyrian Empire based in Mesopotamia."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Medes"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Miro_(software)",
+      "@type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "owl:Thing",
+        "schema:CreativeWork"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Miro_icon.png/200px-Miro_icon.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/c/cb/Miro_icon.png",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Miro (formerly named Democracy Player or DTV) is an Internet television application developed by the Participatory Culture Foundation. It runs on Microsoft Windows, Mac OS X and GNU/Linux and supports most known video file formats. It offers both audio and video, some in HD quality. Miro is free software, released under the terms of the GNU General Public License."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Miro (software)"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/News_media",
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Newark-prudential-terrorist-threat-media-2004.jpg/200px-Newark-prudential-terrorist-threat-media-2004.jpg",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/1/11/Newark-prudential-terrorist-threat-media-2004.jpg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "The news media are those elements of the mass media that focus on delivering news to the general public or a target public. These include print media, broadcast news, and more recently the Internet."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "News media"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Platform_as_a_service",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Platform as a service (PaaS) is a category of cloud computing services that provide a computing platform and a solution stack as a service. Along with software as a service (SaaS) and infrastructure as a service (IaaS), it is a service model of cloud computing. In this model, the consumer creates the software using tools and/or libraries from the provider. The consumer also controls software deployment and configuration settings."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Platform as a service"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/RealNetworks",
+      "@type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Company",
+        "dbp-ont:Organisation",
+        "owl:Thing",
+        "schema:Organization"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/6/63/RealNetwork_Logo.png/200px-RealNetwork_Logo.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/6/63/RealNetwork_Logo.png",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "RealNetworks, Inc. is a provider of Internet media delivery software and services based in Seattle, Washington, United States. The company is the creator of RealAudio, a compressed audio format; RealVideo, a compressed video format; RealPlayer, a media player; RealDownloader, a download manager; Unifi, a personal cloud media service; Rinse, a digital music library cleanup tool; and Helix, technology for delivering digital media to PCs, mobile phone and emerging devices."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "RealNetworks"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Robert_Bosch_GmbH",
+      "@type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Company",
+        "dbp-ont:Organisation",
+        "owl:Thing",
+        "schema:Organization"
+      ],
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Bosch-brand.svg/200px-Bosch-brand.svg.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/b/bf/Bosch-brand.svg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "(commonly known as Bosch) is a German multinational engineering and electronics company headquartered in Gerlingen, near Stuttgart. It is the world's largest supplier of automotive components. The company was founded by Robert Bosch in Stuttgart in 1886."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Robert Bosch GmbH"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Text",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Text"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Text_(literary_theory)",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "In literary theory, a text is any object that can be \"read,\" whether this object is a work of literature, a street sign, an arrangement of buildings on a city block, or styles of clothing. It is a coherent set of signs that transmits some kind of informative message. This set of symbols is considered in terms of the informative message's content, rather than in terms of its physical form or the medium in which it is represented."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Text (literary theory)"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/We",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "We /wiː/ is the first-person, plural personal pronoun in Modern English. Personal pronouns in standard Modern English Singular Plural Subject Object Possessive determiner Possessive pronoun Reflexive Subject Object Possessive determiner Possessive pronoun Reflexive First I me my mine myself we us our ours ourselves Second you your yours yourself you your yours yourselves Third Masculine he him his himself they them their theirs themselves Feminine she her hers herself Neuter it its - itself"
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "We"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/Western_Europe",
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/WesternEurope.png/200px-WesternEurope.png",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/b/b8/WesternEurope.png",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "Western Europe is the region comprising the westerly countries of Europe. While the term has a geographic context, another main definition developed during the Cold War (approx. 1945-1991) to describe the countries associated with the Western European Union (1954–2011; now part of the European Union), a defensive alliance drafted in 1948 among non-communist European nations during the Cold War, as opposed to the countries of the Eastern Bloc."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Western Europe"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/World",
+      "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/200px-The_Earth_seen_from_Apollo_17.jpg",
+      "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg",
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "World is a common name for the whole of human civilization, specifically human experience, history, or the human condition in general, worldwide, i.e. anywhere on Earth. In a philosophical context it may refer to: the whole of the physical Universe, or an ontological world. In a theological context, world usually refers to the material or the profane sphere, as opposed to the celestial, spiritual, transcendent or sacred."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "World"
+      }
+    },
+    {
+      "@id": "http://dbpedia.org/resource/World_music",
+      "@type": [
+        "dbp-ont:Genre",
+        "dbp-ont:MusicGenre",
+        "dbp-ont:TopicalConcept",
+        "owl:Thing"
+      ],
+      "rdfs:comment": {
+        "@language": "en",
+        "@value": "World music is a musical category encompassing many different styles of music from around the world, including traditional music, quasi-traditional music, and music where more than one cultural tradition intermingle. World music's inclusive nature and elasticity as a musical category pose obstacles to a universal definition, but its ethic of interest in the culturally exotic is encapsulated in fRoots magazine's description of the genre as \"local music from out there\"."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "World music"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.01_52t",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.myspace.myspace_user",
+        "http://rdf.freebase.com/ns/broadcast.artist",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/film.film_crewmember",
+        "http://rdf.freebase.com/ns/film.music_contributor",
+        "http://rdf.freebase.com/ns/film.person_or_entity_appearing_in_film",
+        "http://rdf.freebase.com/ns/internet.social_network_user",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.lyricist",
+        "http://rdf.freebase.com/ns/music.musical_group",
+        "http://rdf.freebase.com/ns/music.producer",
+        "http://rdf.freebase.com/ns/user.narphorium.people.topic"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "Europe - Sweden"
+        },
+        {
+          "@language": "en",
+          "@value": "Force"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Europe is a Swedish rock band formed in Upplands Väsby, Stockholm in 1979 under the name Force by vocalist Joey Tempest, guitarist John Norum, bassist Peter Olsson and drummer Tony Reno. Since its formation, Europe has released nine studio albums, three live albums, three compilations and nineteen videos.\r\nEurope rose to international fame in the 1980s with its third album The Final Countdown, which became a substantial commercial success and sold over three million copies in the United States. Europe was one of the most successful rock acts of the 1980s and sold over 20 million albums worldwide. The band has achieved two top 20 albums on the Billboard 200 chart and two top 10 singles on the Billboard Hot 100 chart.\r\nEurope went on hiatus in 1992, reunited temporarily for a one-off performance in Stockholm on New Year's Eve 1999 and announced an official reunion in 2003. Since then the band has released four albums, Start from the Dark, Secret Society, Last Look at Eden and Bag of Bones on April 18, 2012."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.04r26q2",
+        "http://rdf.freebase.com/ns/m.04xzmj_"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125gbgzgg",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02nrqx2",
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.europetheband.com/",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Europe"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.01lbnjz",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.musical_group"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "TEXT is the band founded by Kristofer Steen, David Sandström, Fredrik Bäckström and Jon F Brännström. All, except Bäckström, were ex-members of hardcore band Refused. Stylistically, they have little in common with Refused. Their debut album, Text, is a mix of spoken word, music of various styles, and ambient sound effects, often producing an ethereal, avant-garde sound. Apart from the three \"Tableau\" tracks, each track could be described as fitting into a different genre. In 2008, a second album, Vital Signs, was released. Yet again the style of music is far from Refused and the first Text album. Only Fredrik Bäckström and Jon F Brännström appear on this album.\r\nThe record came out on Demonbox Recordings in Sweden and on Buddyhead in America and the rest of the world. Text – \"Text\" was Buddyhead #4 and considered a building block in what is now a very successfully diverse indie-boutique-label run by music journalist Travis Keller. Text announced a US tour the year after the record was released on Buddyhead but due to conflicts with International Noise Conspiracy tours, it was cancelled."
+      },
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125f4sy9n",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpv1m",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Text"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.02j9z",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.athletics.athletics_area",
+        "http://rdf.freebase.com/ns/base.athletics.topic",
+        "http://rdf.freebase.com/ns/base.bioventurist.bv_geography",
+        "http://rdf.freebase.com/ns/base.campaigns.campaign_location",
+        "http://rdf.freebase.com/ns/base.casinos.topic",
+        "http://rdf.freebase.com/ns/base.caveart.topic",
+        "http://rdf.freebase.com/ns/base.ecology.habitat",
+        "http://rdf.freebase.com/ns/base.ecology.topic",
+        "http://rdf.freebase.com/ns/base.folklore.topic",
+        "http://rdf.freebase.com/ns/base.locations.continents",
+        "http://rdf.freebase.com/ns/base.locations.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/base.popstra.location",
+        "http://rdf.freebase.com/ns/base.popstra.sww_base",
+        "http://rdf.freebase.com/ns/base.popstra.topic",
+        "http://rdf.freebase.com/ns/base.schemastaging.body_of_water_extra",
+        "http://rdf.freebase.com/ns/base.schemastaging.contact_product",
+        "http://rdf.freebase.com/ns/base.skosbase.topic",
+        "http://rdf.freebase.com/ns/base.skosbase.vocabulary_equivalent_topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/base.tallinn.topic",
+        "http://rdf.freebase.com/ns/base.todolists.topic",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/cvg.computer_game_region",
+        "http://rdf.freebase.com/ns/fictional_universe.fictional_setting",
+        "http://rdf.freebase.com/ns/location.continent",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/location.region",
+        "http://rdf.freebase.com/ns/location.statistical_region",
+        "http://rdf.freebase.com/ns/m.0gkmg97",
+        "http://rdf.freebase.com/ns/meteorology.cyclone_affected_area",
+        "http://rdf.freebase.com/ns/organization.organization_scope",
+        "http://rdf.freebase.com/ns/periodicals.newspaper_circulation_area",
+        "http://rdf.freebase.com/ns/symbols.name_source",
+        "http://rdf.freebase.com/ns/symbols.namesake",
+        "http://rdf.freebase.com/ns/user.robert.mobile_phones.mobile_phone_region",
+        "http://rdf.freebase.com/ns/user.skud.names.topic",
+        "http://rdf.freebase.com/ns/user.tsegaran.random.taxonomy_subject"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": {
+        "@language": "en",
+        "@value": "The Old Continent"
+      },
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Europe is, by convention, one of the world's seven continents. Comprising the westernmost peninsula of Eurasia, Europe is generally divided from Asia by the watershed divides of the Ural and Caucasus Mountains, the Ural River, the Caspian and Black Seas, and the waterways connecting the Black and Aegean Seas.\r\nEurope is bordered by the Arctic Ocean to the north, the Atlantic Ocean to the west, the Mediterranean Sea to the south, and the Black Sea and connected waterways to the southeast. Yet the borders of Europe—a concept dating back to classical antiquity—are somewhat arbitrary, as the primarily physiographic term \"continent\" can incorporate cultural and political elements.\r\nEurope is the world's second-smallest continent by surface area, covering about 10,180,000 square kilometres or 2% of the Earth's surface and about 6.8% of its land area. Of Europe's approximately 50 countries, Russia is by far the largest by both area and population, taking up 40% of the continent, while Vatican City is the smallest. Europe is the third-most populous continent after Asia and Africa, with a population of 733 million or about 11% of the world's population."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.01z0kd0",
+        "http://rdf.freebase.com/ns/m.02c2pky",
+        "http://rdf.freebase.com/ns/m.03s3v95"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258dcbf2",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01mh",
+      "http://rdf.freebase.com/ns/location.location.containedby": "http://rdf.freebase.com/ns/m.05k3k",
+      "http://rdf.freebase.com/ns/location.location.geolocation": "http://rdf.freebase.com/ns/m.03k07c4",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Europe"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.02jxk",
+      "@type": [
+        "http://rdf.freebase.com/ns/award.award_winner",
+        "http://rdf.freebase.com/ns/base.estonia.topic",
+        "http://rdf.freebase.com/ns/base.industrystandards.standard_organization",
+        "http://rdf.freebase.com/ns/base.languagesfordomainnames.topic",
+        "http://rdf.freebase.com/ns/base.nations.supranational_body",
+        "http://rdf.freebase.com/ns/base.nations.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/base.type_ontology.abstract",
+        "http://rdf.freebase.com/ns/base.type_ontology.inanimate",
+        "http://rdf.freebase.com/ns/book.author",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/government.governmental_jurisdiction",
+        "http://rdf.freebase.com/ns/internet.website_owner",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/location.statistical_region",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/organization.organization_member",
+        "http://rdf.freebase.com/ns/organization.organization_scope",
+        "http://rdf.freebase.com/ns/projects.project_participant",
+        "http://rdf.freebase.com/ns/symbols.flag_referent",
+        "http://rdf.freebase.com/ns/user.ktrueman.default_domain.international_organization"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "EU"
+        },
+        {
+          "@language": "en",
+          "@value": "Europäischen Union"
+        },
+        {
+          "@language": "en",
+          "@value": "Union européenne"
+        },
+        {
+          "@language": "en",
+          "@value": "Unión Europea"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "The European Union is an economic and political union of 28 member states that are located primarily in Europe. The EU operates through a system of supranational independent institutions and intergovernmental negotiated decisions by the member states. Institutions of the EU include the European Commission, the Council of the European Union, the European Council, the Court of Justice of the European Union, the European Central Bank, the Court of Auditors, and the European Parliament. The European Parliament is elected every five years by EU citizens. The EU's de facto capital is Brussels.\r\nThe EU traces its origins from the European Coal and Steel Community and the European Economic Community, formed by the Inner Six countries in 1951 and 1958, respectively. In the intervening years the community and its successors have grown in size by the accession of new member states and in power by the addition of policy areas to its remit. The Maastricht Treaty established the European Union under its current name in 1993. The latest major amendment to the constitutional basis of the EU, the Treaty of Lisbon, came into force in 2009.\r\nThe EU has developed a single market through a standardised system of laws that apply in all member states. Within the Schengen Area passport controls have been abolished. EU policies aim to ensure the free movement of people, goods, services, and capital, enact legislation in justice and home affairs, and maintain common policies on trade, agriculture, fisheries, and regional development."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.02h79c7",
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125677f5v",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0bjqdqr",
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://europa.eu/",
+      "http://rdf.freebase.com/ns/organization.organization.date_founded": "1993-11-01",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "European Union"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.02qd9s1",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Solr is an open source enterprise search platform from the Apache Lucene project. Its major features include full-text search, hit highlighting, faceted search, dynamic clustering, database integration, and rich document handling. Providing distributed search and index replication, Solr is highly scalable. Solr is the most popular enterprise search engine. Solr 4 adds NoSQL features.\r\nSolr is written in Java and runs as a standalone full-text search server within a servlet container such as Apache Tomcat or Jetty. Solr uses the Lucene Java search library at its core for full-text indexing and search, and has REST-like HTTP/XML and JSON APIs that make it usable from most popular programming languages. Solr's powerful external configuration allows it to be tailored to many types of application without Java coding, and it has a plugin architecture to support more advanced customization.\r\nApache Lucene and Apache Solr are both produced by the same Apache Software Foundation development team since the two projects were merged in 2010. It is common to refer to the technology or products as Lucene/Solr or Solr/Lucene."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0hpr4jg",
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://lucene.apache.org/solr",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Apache Solr"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.02r2kb1",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.bio2rdf.topic",
+        "http://rdf.freebase.com/ns/base.dependencygraph.topic",
+        "http://rdf.freebase.com/ns/base.sameas.consuming_api_format",
+        "http://rdf.freebase.com/ns/base.sameas.topic",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/education.field_of_study",
+        "http://rdf.freebase.com/ns/freebase.task",
+        "http://rdf.freebase.com/ns/internet.website_category",
+        "http://rdf.freebase.com/ns/user.bio2rdf.default_domain.timeline_of_bio2rdf",
+        "http://rdf.freebase.com/ns/user.randy1234.default_domain.dbpedia"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": {
+        "@language": "en",
+        "@value": "Linked Data - Connect Distributed Data across the Web"
+      },
+      "http://rdf.freebase.com/ns/common.topic.description": [
+        {
+          "@language": "en",
+          "@value": "In computing, linked data describes a method of publishing structured data so that it can be interlinked and become more useful. It builds upon standard Web technologies such as HTTP, RDF and URIs, but rather than using them to serve web pages for human readers, it extends them to share information in a way that can be read automatically by computers. This enables data from different sources to be connected and queried.\r\nTim Berners-Lee, director of the World Wide Web Consortium, coined the term in a design note discussing issues around the Semantic Web project."
+        },
+        {
+          "@language": "en",
+          "@value": "Linked Data is about using the Web to connect related data that wasn't previously linked, or using the Web to lower the barriers to linking data currently linked using other methods. More specifically, Wikipedia defines Linked Data as \"a term used to describe a recommended best practice for exposing, sharing, and connecting pieces of data, information, and knowledge on the Semantic Web using URIs and RDF.\"\r\n\r\nThis site exists to provide a home for, or pointers to, resources from across the Linked Data community."
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.042byy5",
+        "http://rdf.freebase.com/ns/m.04rrr70",
+        "http://rdf.freebase.com/ns/m.05pn2zq",
+        "http://rdf.freebase.com/ns/m.0bdccf1"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12577xc5_",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02h7kvm",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Linked Data"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.03bt1pv",
+      "@type": [
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/book.periodical_subject",
+        "http://rdf.freebase.com/ns/broadcast.genre",
+        "http://rdf.freebase.com/ns/common.topic"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125ct53p6",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.043vwq6",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "World"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.03nptth",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.group_member",
+        "http://rdf.freebase.com/ns/people.person"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "Hirota Mieko"
+        },
+        {
+          "@language": "en",
+          "@value": "MICO"
+        },
+        {
+          "@language": "en",
+          "@value": "Mieko Takagi"
+        },
+        {
+          "@language": "en",
+          "@value": "Miko"
+        },
+        {
+          "@language": "en",
+          "@value": "Takagi Mieko"
+        },
+        {
+          "@language": "en",
+          "@value": "たかぎ みえこ"
+        },
+        {
+          "@language": "en",
+          "@value": "ひろた みえこ"
+        },
+        {
+          "@language": "en",
+          "@value": "弘田 三枝子"
+        },
+        {
+          "@language": "en",
+          "@value": "高木 エリカ"
+        },
+        {
+          "@language": "en",
+          "@value": "高木 三枝子"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Mieko Hirota is a Japanese popular singer. Her nickname is Mico.\r\nHirota was born in Setagaya, Tokyo. She grew up listening to pop and jazz in places like Tachikawa, which was frequented by Occupation troops. She made her debut in 1961 at age 14. In 1965, Mico became the first Japanese singer to appear at the Newport Jazz Festival.\r\nMico appeared on the NHK New Year's Eve Kōhaku Uta Gassen eight times. Her first performance was in 1962, when she sang the Connie Francis tune \"Vacation.\" NHK tapped her for the next four years in succession, and again in 1969, 1970, and 1971.\r\nShe sang the theme song, \"Leo no Uta\", for the animated television series Kimba the White Lion.\r\nHirota's commercial career has included endorsements for Nescafé, Nippon Oil, Daikin Industries, Fujiya, Renown, and Sapporo Beer."
+      },
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1256v9vm9",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpv1m",
+      "http://rdf.freebase.com/ns/people.person.date_of_birth": "1947-02-05",
+      "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.02zsn",
+      "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.03_3d",
+      "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.01xhjc",
+      "http://rdf.freebase.com/ns/people.person.profession": "http://rdf.freebase.com/ns/m.09l65",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Mieko Hirota"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.03qh03g",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.facetedbrowsing.software_domain",
+        "http://rdf.freebase.com/ns/base.schemastaging.contact_product",
+        "http://rdf.freebase.com/ns/base.skosbase.topic",
+        "http://rdf.freebase.com/ns/base.skosbase.vocabulary_equivalent_topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/base.tagit.topic",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.industry",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/education.field_of_study",
+        "http://rdf.freebase.com/ns/freebase.equivalent_topic",
+        "http://rdf.freebase.com/ns/internet.website_category",
+        "http://rdf.freebase.com/ns/media_common.quotation_subject",
+        "http://rdf.freebase.com/ns/organization.contact_category",
+        "http://rdf.freebase.com/ns/organization.organization_sector",
+        "http://rdf.freebase.com/ns/radio.radio_subject"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Media are the storage and transmission channels or tools used to store and deliver information or data. It is often referred to as synonymous with mass media or news media, but may refer to any means of information communication."
+      },
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125734rd_",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xxxsy",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Media"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.03zbhkq",
+      "@type": [
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.industry",
+        "http://rdf.freebase.com/ns/common.topic"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12559strk",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xxxsy",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Media"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0414krx",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.socanddatamanagement.concept",
+        "http://rdf.freebase.com/ns/base.socanddatamanagement.topic",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software_genre"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Platform as a service is a category of cloud computing services that provides a computing platform and a solution stack as a service. Along with software as a service and infrastructure as a service, it is a service model of cloud computing. In this model, the consumer creates the software using tools and/or libraries from the provider. The consumer also controls software deployment and configuration settings. The provider provides the networks, servers, storage, and other services.\r\nPaaS offerings facilitate the deployment of applications without the cost and complexity of buying and managing the underlying hardware and software and provisioning hosting capabilities.\r\nThere are various types of PaaS vendors; however, all offer application hosting and a deployment environment, along with various integrated services. Services offer varying levels of scalability and maintenance.\r\nPaaS offerings may also include facilities for application design, application development, testing, and deployment as well as services such as team collaboration, web service integration, and marshalling, database integration, security, scalability, storage, persistence, state management, application versioning, application instrumentation, and developer community facilitation."
+      },
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Platform as a service"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.04lw__",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/film.actor",
+        "http://rdf.freebase.com/ns/film.person_or_entity_appearing_in_film",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.composer",
+        "http://rdf.freebase.com/ns/music.group_member",
+        "http://rdf.freebase.com/ns/music.guitarist",
+        "http://rdf.freebase.com/ns/music.lyricist",
+        "http://rdf.freebase.com/ns/music.songwriter",
+        "http://rdf.freebase.com/ns/people.person"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "Europe"
+        },
+        {
+          "@language": "en",
+          "@value": "John Terry Norum"
+        },
+        {
+          "@language": "en",
+          "@value": "Jonta"
+        },
+        {
+          "@language": "en",
+          "@value": "Norum, John"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "John Terry Norum is a rock music guitarist and founder of the Swedish rock band Europe. Concurrent to his role with Europe, he also maintains a side solo project."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.0419q4l",
+        "http://rdf.freebase.com/ns/m.04r6m1j"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125g4_btf",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpyt8",
+      "http://rdf.freebase.com/ns/common.topic.official_website": [
+        "http://www.johnnorum.com/",
+        "http://www.johnnorum.se/"
+      ],
+      "http://rdf.freebase.com/ns/people.person.date_of_birth": "1964-02-23",
+      "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+      "http://rdf.freebase.com/ns/people.person.nationality": [
+        "http://rdf.freebase.com/ns/m.05b4w",
+        "http://rdf.freebase.com/ns/m.0d0vqn"
+      ],
+      "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.0185hx",
+      "http://rdf.freebase.com/ns/people.person.profession": [
+        "http://rdf.freebase.com/ns/m.039v1",
+        "http://rdf.freebase.com/ns/m.09jwl",
+        "http://rdf.freebase.com/ns/m.0nbcg"
+      ],
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "John Norum"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.09nm_",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.athletics.athletics_area",
+        "http://rdf.freebase.com/ns/base.athletics.topic",
+        "http://rdf.freebase.com/ns/base.masterthesis.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/organization.organization_scope"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": {
+        "@language": "en",
+        "@value": "Worldwide"
+      },
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "World is a common name for the whole of human civilization, specifically human experience, history, or the human condition in general, worldwide, i.e. anywhere on Earth.\r\nIn a philosophical context it may refer to:\r\n⁕the whole of the physical Universe, or\r\n⁕an ontological world.\r\nIn a theological context, world usually refers to the material or the profane sphere, as opposed to the celestial, spiritual, transcendent or sacred. The \"end of the world\" refers to scenarios of the final end of human history, often in religious contexts.\r\nWorld history is commonly understood as spanning the major geopolitical developments of about five millennia, from the first civilizations to the present.\r\nWorld population is the sum of all human populations at any time; similarly, world economy is the sum of the economies of all societies, especially in the context of globalization. Terms like world championship, gross world product, world flags etc. also imply the sum or combination of all current-day sovereign states.\r\nIn terms such as world religion, world language, and world war, world suggests international or intercontinental scope without necessarily implying participation of the entire world."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.02bcrr1",
+        "http://rdf.freebase.com/ns/m.02bl9yq",
+        "http://rdf.freebase.com/ns/m.0cphms3"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1257xjn4t",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01n7",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "World"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.09q5cb",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.markrobertdaveyphotographer.topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/exhibitions.exhibition_subject",
+        "http://rdf.freebase.com/ns/interests.hobby",
+        "http://rdf.freebase.com/ns/interests.interest",
+        "http://rdf.freebase.com/ns/user.robert.default_domain.things_i_wish_i_knew_more_about",
+        "http://rdf.freebase.com/ns/visual_art.art_period_movement"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "SLR photography"
+        },
+        {
+          "@language": "en",
+          "@value": "photography"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Digital photography uses an array of electronic photodetectors to capture the image focused by the lens, as opposed to an exposure on photographic film. The captured image is then digitized and stored as a computer file ready for digital processing, viewing, digital publishing or printing.\r\nUntil the advent of such technology, photographs were made by exposing light sensitive photographic film, and used chemical photographic processing to develop and stabilize the image. By contrast, digital photographs can be displayed, printed, stored, manipulated, transmitted, and archived using digital and computer techniques, without chemical processing.\r\nDigital photography is one of several forms of digital imaging. Digital images are also created by non-photographic equipment such as computer tomography scanners and radio telescopes. Digital images can also be made by scanning other photographic images."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.03s5qls",
+        "http://rdf.freebase.com/ns/m.0bc62lk"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125crtn4p",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.05cglk1",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Digital photography"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0f356t5",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.composition",
+        "http://rdf.freebase.com/ns/user.alust.default_domain.processed_with_review_queue"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "\"World\" is the song by the Bee Gees second album Horizontal, released in 1967 in the United Kingdom. Though it was a big hit in Europe, Atco Records did not issue it as a single in the United States. Atco had issued a third single from Bee Gees' 1st, \"Holiday\", instead of \"World\", and now in effect issued the delayed \"Massachusetts\" in the U.S., using its B side \"Sir Geoffrey Saved the World\". \"World\" was covered by the band, Gregorian, on their album Masters of Chant Chapter IV. In 2006, British singer Declan Galbraith covered the song as a bonus track for his album \"Thank You.\""
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.041xcsc",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "World"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0h1cy",
+      "@type": [
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/business.brand",
+        "http://rdf.freebase.com/ns/business.business_operation",
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/business.issuer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software_developer",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/venture_capital.venture_funded_company"
+      ],
+      "http://rdf.freebase.com/ns/business.business_operation.industry": [
+        "http://rdf.freebase.com/ns/m.01m3v",
+        "http://rdf.freebase.com/ns/m.01mf0",
+        "http://rdf.freebase.com/ns/m.03qbp3m"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": [
+        {
+          "@language": "en",
+          "@value": "RealNetworks, Inc. is a provider of Internet streaming media delivery software and services based in Seattle, Washington, United States. The company is the creator of RealAudio, a compressed audio format; RealVideo, a compressed video format; RealPlayer, a media player; RealDownloader, a download manager; Unifi, a personal cloud media service; Rinse, a digital music library cleanup tool; and Helix technology for delivering digital media to PCs, mobile phone, and other devices. The company also manages subscription-based online entertainment services including SuperPass and GameHouse RealNetworks’ software as a service group also provides mobile entertainment and messaging services to mobile carriers."
+        },
+        {
+          "@language": "en",
+          "@value": "Who We Are\r\nIn 1995, RealNetworks, Inc. pioneered the entire Internet media industry, and continues to fuel its exponential growth.\r\n\r\nBecause the Internet was built to handle\r\ntext-based information, not audio and video and other rich media,\r\nRealNetworks, Inc. foresaw the need for specific solutions that could\r\nhandle the creation, delivery and consumption of media via the\r\nInternet. That led RealNetworks, Inc. to invent and release the\r\nRealPlayer and RealAudio in 1995.\r\n\r\nToday, hundreds of millions of RealPlayers have\r\nbeen downloaded throughout the world take advantage of RealNetworks,\r\nInc. world-class media creation, delivery and playback technology."
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.030nt59",
+        "http://rdf.freebase.com/ns/m.03t7451"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125d3k9y_",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02gwt_x",
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.realnetworks.com",
+      "http://rdf.freebase.com/ns/organization.organization.date_founded": 1994,
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "RealNetworks"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0hz28",
+      "@type": [
+        "http://rdf.freebase.com/ns/award.award_discipline",
+        "http://rdf.freebase.com/ns/base.allthingsnewyork.topic",
+        "http://rdf.freebase.com/ns/base.elsevier.topic",
+        "http://rdf.freebase.com/ns/base.jewishstudies.topic",
+        "http://rdf.freebase.com/ns/base.jewlib.jewish_studies_field",
+        "http://rdf.freebase.com/ns/base.jewlib.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/base.services.topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.industry",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/education.field_of_study",
+        "http://rdf.freebase.com/ns/film.film_subject",
+        "http://rdf.freebase.com/ns/freebase.equivalent_topic",
+        "http://rdf.freebase.com/ns/freebase.task",
+        "http://rdf.freebase.com/ns/organization.organization_sector",
+        "http://rdf.freebase.com/ns/organization.organization_type",
+        "http://rdf.freebase.com/ns/people.professional_field",
+        "http://rdf.freebase.com/ns/user.alexander.philosophy.subject",
+        "http://rdf.freebase.com/ns/user.jamie.default_domain.service_category"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "Media"
+        },
+        {
+          "@language": "en",
+          "@value": "Publisher"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Publishing is the process of production and dissemination of literature, music, or information — the activity of making information available to the general public. In some cases, authors may be their own publishers, meaning: originators and developers of content also provide media to deliver and display the content for the same. Also, the word publisher can refer to the individual who leads a publishing company or imprint or to a person who owns a magazine.\r\nTraditionally, the term refers to the distribution of printed works such as books and newspapers. With the advent of digital information systems and the Internet, the scope of publishing has expanded to include electronic resources, such as the electronic versions of books and periodicals, as well as micropublishing, websites, blogs, video game publishers and the like.\r\nPublishing includes the stages of the development, acquisition, copy editing, graphic design, production – printing, and marketing and distribution of newspapers, magazines, books, literary works, musical works, software and other works dealing with information, including the electronic media.\r\nPublication is also important as a legal concept:"
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.03t9x3h",
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258qrx9p",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xxxsy",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Publishing"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0kybkd_",
+      "@type": [
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/organization.organization_founder"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "At InsideOut10, we believe that the open exchange of ideas have a positive global impact. Every day we are inspired by stories of people using technologies to help make the world a better place in unexpected ways. \r\n\r\nWe want to be part of this community and share our enthusiasm and passion for a smarter planet. \r\n\r\nInsideOut10 is an incubator and it is currently main shareholder of Interact Egypt L.L.C. an Egyptian startup powering the Internet revolution in Middle East and Africa and co-founder of Redlink GmbH a commercial spin-off based in Austria and focused on Semantic Technologies and Free Open Source Software."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": [
+        "http://rdf.freebase.com/ns/m.0kybkyc",
+        "http://rdf.freebase.com/ns/m.0kybl3w",
+        "http://rdf.freebase.com/ns/m.0kyblb5",
+        "http://rdf.freebase.com/ns/m.0kyblkj"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.126sz3p77",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02_77lg",
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.insideout.io",
+      "http://rdf.freebase.com/ns/organization.organization.date_founded": "2011-03-29",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "InSideOut10"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0kybkfc",
+      "@type": [
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.organization"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Interact Egypt was launched in mid 2009 as an Egyptian company bringing to the region more than a decade of world-wide online experience. Our goal is to be the focal point for telecoms, enterprises, institutions and motivated online entrepreneurs that need to distribute content over Mobile and Broadband networks and that are looking for end-to-end solutions paired with know-how and skilled resources for integration and support. Merging innovation, creativity, content and technology is the key to our success."
+      },
+      "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0kyd1_8",
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12v_hb5vj",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02hr7t2",
+      "http://rdf.freebase.com/ns/organization.organization.parent": "http://rdf.freebase.com/ns/m.0kybmq2",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Interact Egypt"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0tk9h27",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/fictional_universe.fictional_character",
+        "http://rdf.freebase.com/ns/film.film_character"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Internet user is a fictional character from the 2009 film Micmacs."
+      },
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12h335wr4",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02nsjl9",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Internet user"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0wqhskn",
+      "@type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.description": {
+        "@language": "en",
+        "@value": "Apache Marmotta is an Open Platform for Linked Data whose goal is to enable organizations to publish and build custom applications based on Linked Data.\r\nThe platform is split in several modules: Core, LDCache, LDPath, Reasoner, Security, SPARQL, User, Versioning, Client library, Sesame tools, KiWi Triple Store.\r\nThe client library, also known as LDClient, is a Linked Data client that allows retrieval of remote resources via different protocols by making use of pluggable adapters that wrap other data sources."
+      },
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://marmotta.incubator.apache.org",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "Apache Marmotta"
+      }
+    },
+    {
+      "@id": "http://rdf.freebase.com/ns/m.0wqhwn_",
+      "@type": [
+        "http://rdf.freebase.com/ns/business.company_type",
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization"
+      ],
+      "http://rdf.freebase.com/ns/common.topic.alias": [
+        {
+          "@language": "en",
+          "@value": "redlink"
+        },
+        {
+          "@language": "en",
+          "@value": "redlinkgmbh"
+        }
+      ],
+      "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12v_gq2xh",
+      "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02hr7t2",
+      "http://rdf.freebase.com/ns/common.topic.official_website": "http://redlink.co",
+      "http://rdf.freebase.com/ns/organization.organization.date_founded": "2013-03-21",
+      "http://rdf.freebase.com/ns/organization.organization.parent": "http://rdf.freebase.com/ns/m.0x30snr",
+      "rdfs:label": {
+        "@language": "en",
+        "@value": "RedLink GmbH"
+      }
+    },
+    {
+      "@id": "urn:enhancement-019d3ced-b935-50ae-b659-0a905ed0228f",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.579Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.03bt1pv",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/book.periodical_subject",
+        "http://rdf.freebase.com/ns/broadcast.genre",
+        "http://rdf.freebase.com/ns/common.topic"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-034542a4-068d-280f-f806-7ead8d9008d4",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.503Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c2089085-d1df-0625-91f8-4b371fb9e94e",
+      "enhancer:confidence": 0.8,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "We're"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/We",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-0b6d60af-7dd0-1b7e-0db1-f980c728817b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.502Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Work",
+      "enhancer:confidence": 0.42857143,
+      "enhancer:end": 2555,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Video Platform"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " will validate these technologies in our Online Video Platform Helix Cloud: a solution enterprises and telcos"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "ur Online "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " Helix Clo"
+      },
+      "enhancer:start": 2541
+    },
+    {
+      "@id": "urn:enhancement-0d90daa9-b7d6-9fbc-b650-3cf17d318fa9",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.585Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-cad4833c-3be1-3c13-1b2c-a7e1d1125a49",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Apache Marmotta"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0wqhskn",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-0da3ba5d-4ba5-248f-8936-249c648cbed6",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.495Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "enhancer:confidence": 0.9866667,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/World",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-0edbd75e-d632-2d25-ab8e-a640c2aed969",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.587Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-44c6bbc0-1d95-abe0-7729-9a9c89990b98",
+      "enhancer:confidence": 0.8181818,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "InSideOut10"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0kybkd_",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/organization.organization_founder"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-0f9a5640-9ebb-1165-1bd8-1bd262d9ac61",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.497Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Computer_data_storage",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-101ab2ac-efe5-902d-6c4b-a3e36101c1a6",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.581Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d328a928-2e4f-c034-d0e9-0e691dcd1e0c",
+      "enhancer:confidence": 0.8095238,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Platform as a service"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0414krx",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.socanddatamanagement.concept",
+        "http://rdf.freebase.com/ns/base.socanddatamanagement.topic",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software_genre"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-179de4e4-fcb5-402d-a66f-16ef9294804b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.385Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ad2152b-5075-61e6-aae9-f98be772d905",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Redlink",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/154",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-1851fefc-9ff4-912f-c16e-d3a232bd208d",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.386Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-30638c9b-961a-fd84-bb87-dff6870c0cc4",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Stanbol",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/Apache_Stanbol",
+      "enhancer:entity-type": "schema:CreativeWork",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-1ced1e6e-2433-467a-dc56-be9fab3dcba5",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.578Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-66b1bc68-0e50-d672-e735-9130a201fee5",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Digital photography"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.09q5cb",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.markrobertdaveyphotographer.topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/exhibitions.exhibition_subject",
+        "http://rdf.freebase.com/ns/interests.hobby",
+        "http://rdf.freebase.com/ns/interests.interest",
+        "http://rdf.freebase.com/ns/user.robert.default_domain.things_i_wish_i_knew_more_about",
+        "http://rdf.freebase.com/ns/visual_art.art_period_movement"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-1fcbf956-e177-04e0-9f7b-0875f9d615ce",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.584Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-838db9ea-2905-5799-9fea-35fd885146ea",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "MICO"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.03nptth",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.group_member",
+        "http://rdf.freebase.com/ns/people.person"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-1fdba45f-70d4-fb78-ab97-0be193ac61e3",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.583Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c7ec6826-c4f3-4aa6-bb33-bc4db0face70",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Linked Data"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02r2kb1",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.bio2rdf.topic",
+        "http://rdf.freebase.com/ns/base.dependencygraph.topic",
+        "http://rdf.freebase.com/ns/base.sameas.consuming_api_format",
+        "http://rdf.freebase.com/ns/base.sameas.topic",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/education.field_of_study",
+        "http://rdf.freebase.com/ns/freebase.task",
+        "http://rdf.freebase.com/ns/internet.website_category",
+        "http://rdf.freebase.com/ns/user.bio2rdf.default_domain.timeline_of_bio2rdf",
+        "http://rdf.freebase.com/ns/user.randy1234.default_domain.dbpedia"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-23225bdc-90a1-b18c-4ba2-2c0641ff0ecf",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.494Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7c3c5729-3b9c-c747-6206-eed3358e865c",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Internet users"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Internaut",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-24cd60aa-34aa-063b-11f4-5ca8c7cccbde",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.588Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-cab5b5a9-ed0d-b631-640c-21addb2de4d7",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Interact Egypt"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0kybkfc",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.organization"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.503Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 3476,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " for organisations and developers around the World.\n\nAs usual we’re more than happy to hear your"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "round the "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": ".\n\nAs usua"
+      },
+      "enhancer:start": 3471
+    },
+    {
+      "@id": "urn:enhancement-280b7a11-f571-fc52-0b4f-53fe70781356",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.385Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ad2152b-5075-61e6-aae9-f98be772d905",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Redlink",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/m.0wqhwn_",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-2a5d8a05-465e-8839-7420-3a486b4876e0",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.587Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "enhancer:confidence": 0.98333335,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.04lw__",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/film.actor",
+        "http://rdf.freebase.com/ns/film.person_or_entity_appearing_in_film",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.composer",
+        "http://rdf.freebase.com/ns/music.group_member",
+        "http://rdf.freebase.com/ns/music.guitarist",
+        "http://rdf.freebase.com/ns/music.lyricist",
+        "http://rdf.freebase.com/ns/music.songwriter",
+        "http://rdf.freebase.com/ns/people.person"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-30638c9b-961a-fd84-bb87-dff6870c0cc4",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.386Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Work",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2137,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Apache Stanbol"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " framework we use for text analysis (being Apache Stanbol, Apache Marmotta and Apache Solr - seehere for"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "is (being "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": ", Apache M"
+      },
+      "enhancer:start": 2123
+    },
+    {
+      "@id": "urn:enhancement-323ca554-d338-db5b-4b19-259ff4f27e82",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.501Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Europe",
+      "enhancer:entity-type": [
+        "dbp-ont:Continent",
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "schema:Continent",
+        "schema:Place",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-32bd7014-24b4-4e1a-982e-48fa1c0b082b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.389Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-44c6bbc0-1d95-abe0-7729-9a9c89990b98",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:entity-label": "InsideOut10",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/118",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.500Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Place",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2337,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " Institute (a leading research institution in Europe well known for its invention of the MP3 audio"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "tution in "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " well know"
+      },
+      "enhancer:start": 2331
+    },
+    {
+      "@id": "urn:enhancement-3a613d84-191e-b0a0-84de-3fae066e1185",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.384Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-eb591b5f-3da9-6506-3998-f5c677801f0c",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:entity-label": "InsideOut10",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/120",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-3d40ec6b-c393-ddb7-0668-e46c3af735ee",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.589Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "enhancer:confidence": 0.99375,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.09nm_",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.athletics.athletics_area",
+        "http://rdf.freebase.com/ns/base.athletics.topic",
+        "http://rdf.freebase.com/ns/base.masterthesis.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/organization.organization_scope"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-3df06725-ce5f-8e58-cadb-3ca5ee6395ca",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.580Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "enhancer:confidence": 0.9875,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0f356t5",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.composition",
+        "http://rdf.freebase.com/ns/user.alust.default_domain.processed_with_review_queue"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-3f2b3444-e123-59b7-332c-8a67af86ab65",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.500Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-68351968-0002-9bbb-be95-8404854581dc",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Apache Solr"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Apache_Solr",
+      "enhancer:entity-type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "schema:CreativeWork",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-44c6bbc0-1d95-abe0-7729-9a9c89990b98",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.388Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Organisation",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:end": 2448,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Insideout10"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " benefits for our clients and partners\n\nInsideout10 (along with Interact Egypt and RealNetworks) will"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "partners\n\n"
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " (along wi"
+      },
+      "enhancer:start": 2437
+    },
+    {
+      "@id": "urn:enhancement-48d935ee-f459-5576-a7f9-84948c2a69ce",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.499Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-30638c9b-961a-fd84-bb87-dff6870c0cc4",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Apache Stanbol"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Apache_Stanbol",
+      "enhancer:entity-type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "schema:CreativeWork",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-48dd4014-ffb2-7d9c-a81c-9f135ce7d3d8",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.503Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-0b6d60af-7dd0-1b7e-0db1-f980c728817b",
+      "enhancer:confidence": 0.42857143,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Miro player"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Miro_(software)",
+      "enhancer:entity-type": [
+        "dbp-ont:Software",
+        "dbp-ont:Work",
+        "schema:CreativeWork",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-49226ef2-6d7d-fd2e-be63-f1fcc9619886",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.584Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": [
+        "dbp-ont:Organisation",
+        "dbp-ont:Place"
+      ],
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 1819,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "European Union"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " available in the Linked Data Cloud).\n\nMICO is a European Union Framework Programme 7 research and development"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "MICO is a "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " Framework"
+      },
+      "enhancer:start": 1805
+    },
+    {
+      "@id": "urn:enhancement-53e35a0f-c73b-4a4e-e0f8-6f7515a9be0e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.504Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Earth",
+      "enhancer:entity-type": [
+        "dbp-ont:CelestialBody",
+        "dbp-ont:Planet",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-5a06a776-4207-8611-6841-b4f376fc2813",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.588Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-bfac1c38-694d-0b9b-fe3d-ce24d384da77",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "RealNetworks"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0h1cy",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/business.brand",
+        "http://rdf.freebase.com/ns/business.business_operation",
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/business.issuer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software_developer",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/venture_capital.venture_funded_company"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-5ba5c928-bb97-f8a1-e48a-f5bf136eb968",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.388Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-68351968-0002-9bbb-be95-8404854581dc",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Solr",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/Apache_Solr",
+      "enhancer:entity-type": "schema:CreativeWork",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-5c6eed5f-5936-448c-176e-834c9e758147",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.581Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ae1970c-a098-c4ba-228c-7d6a1ae5deff",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Text"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.01lbnjz",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.musical_group"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-5f1ef15e-4001-5f75-0a4e-bd8a68c92b5b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.497Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "enhancer:confidence": 0.9941176,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Medes",
+      "enhancer:entity-type": [
+        "dbp-ont:Country",
+        "dbp-ont:Place",
+        "dbp-ont:PopulatedPlace",
+        "schema:Country",
+        "schema:Place",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-648720f0-adce-056f-1587-aef08c60183a",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.582Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "enhancer:confidence": 0.99,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.03qh03g",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.facetedbrowsing.software_domain",
+        "http://rdf.freebase.com/ns/base.schemastaging.contact_product",
+        "http://rdf.freebase.com/ns/base.skosbase.topic",
+        "http://rdf.freebase.com/ns/base.skosbase.vocabulary_equivalent_topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/base.tagit.topic",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.industry",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/education.field_of_study",
+        "http://rdf.freebase.com/ns/freebase.equivalent_topic",
+        "http://rdf.freebase.com/ns/internet.website_category",
+        "http://rdf.freebase.com/ns/media_common.quotation_subject",
+        "http://rdf.freebase.com/ns/organization.contact_category",
+        "http://rdf.freebase.com/ns/organization.organization_sector",
+        "http://rdf.freebase.com/ns/radio.radio_subject"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-66b1bc68-0e50-d672-e735-9130a201fee5",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.493Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 275,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Digital photography"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " experience that media contents are on the rise. Digital photography and DIY videos are part of our information"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "the rise. "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " and DIY v"
+      },
+      "enhancer:start": 256
+    },
+    {
+      "@id": "urn:enhancement-68351968-0002-9bbb-be95-8404854581dc",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.388Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Work",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2170,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Apache Solr"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " (being Apache Stanbol, Apache Marmotta and Apache Solr - seehere for more information) and combining it"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "motta and "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " - seehere"
+      },
+      "enhancer:start": 2159
+    },
+    {
+      "@id": "urn:enhancement-688ad501-fada-de19-f4a5-74c07c53d3d3",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.494Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Earth",
+      "enhancer:entity-type": [
+        "dbp-ont:CelestialBody",
+        "dbp-ont:Planet",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-6cce68c8-8a88-4252-9bf9-eb18318127d9",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.384Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-eb591b5f-3da9-6506-3998-f5c677801f0c",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:entity-label": "InsideOut10",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/118",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-7379268d-23cf-f6c8-0b5f-88b118822cda",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.583Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "enhancer:confidence": 0.98,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.03zbhkq",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.industry",
+        "http://rdf.freebase.com/ns/common.topic"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-75c7e69b-3ac9-0d8e-b6a2-fd0b8ce89473",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.388Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-68351968-0002-9bbb-be95-8404854581dc",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Solr",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/157",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-75e59f39-0e50-8824-5ff5-374a4d3b7bec",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.590Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "enhancer:confidence": 0.9875,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0f356t5",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/music.composition",
+        "http://rdf.freebase.com/ns/user.alust.default_domain.processed_with_review_queue"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-7ad2152b-5075-61e6-aae9-f98be772d905",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.384Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Organisation",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 803,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Redlink"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " in partnership with our sister company Redlink (focused on developing a Platform-as-a-Service"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "r company "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " (focused "
+      },
+      "enhancer:start": 796
+    },
+    {
+      "@id": "urn:enhancement-7ae1970c-a098-c4ba-228c-7d6a1ae5deff",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.495Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 1001,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Text"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " considerably harder than from textual documents. Text provides an underlying structure at"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "ocuments. "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " provides "
+      },
+      "enhancer:start": 997
+    },
+    {
+      "@id": "urn:enhancement-7c3c5729-3b9c-c747-6206-eed3358e865c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.494Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:FictionalCharacter",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 423,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Internet users"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " sites on a regular basis and 46% of Internet users post original photos and videos.\n\n\n\nWhile media"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "nd 46% of "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " post orig"
+      },
+      "enhancer:start": 409
+    },
+    {
+      "@id": "urn:enhancement-7fe5dded-d0e7-f536-d9dd-21365f734445",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.496Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ae1970c-a098-c4ba-228c-7d6a1ae5deff",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Text"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/List_of_Dawson's_Creek_episodes",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-838db9ea-2905-5799-9fea-35fd885146ea",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.498Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": [
+        "dbp-ont:Organisation",
+        "dbp-ont:Person"
+      ],
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 1799,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "MICO"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " available in the Linked Data Cloud).\n\nMICO is a European Union Framework Programme 7"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": " Cloud).\n\n"
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " is a Euro"
+      },
+      "enhancer:start": 1795
+    },
+    {
+      "@id": "urn:enhancement-84d3eed5-506b-0f6c-1630-71dc0c558670",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:12.789Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+      "dc:language": "en",
+      "dc:type": "dc:LinguisticSystem",
+      "enhancer:confidence": 0.99999535,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-889bf3cd-f62f-51e4-bdd4-bf118ac5ff1c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.389Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-44c6bbc0-1d95-abe0-7729-9a9c89990b98",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:entity-label": "InsideOut10",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/120",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-89ef419a-8220-23d9-cde3-da9133860c81",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.384Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-eb591b5f-3da9-6506-3998-f5c677801f0c",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:entity-label": "InsideOut10",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/m.0kybkd_",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-8ab05622-edd8-53b2-f2b2-d3e1eb750ae9",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.502Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-bfac1c38-694d-0b9b-fe3d-ce24d384da77",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "RealNetworks"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/RealNetworks",
+      "enhancer:entity-type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Company",
+        "dbp-ont:Organisation",
+        "schema:Organization",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-8b19c6b9-0e3a-e76f-a42d-72c1e6d11897",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.586Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02j9z",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.athletics.athletics_area",
+        "http://rdf.freebase.com/ns/base.athletics.topic",
+        "http://rdf.freebase.com/ns/base.bioventurist.bv_geography",
+        "http://rdf.freebase.com/ns/base.campaigns.campaign_location",
+        "http://rdf.freebase.com/ns/base.casinos.topic",
+        "http://rdf.freebase.com/ns/base.caveart.topic",
+        "http://rdf.freebase.com/ns/base.ecology.habitat",
+        "http://rdf.freebase.com/ns/base.ecology.topic",
+        "http://rdf.freebase.com/ns/base.folklore.topic",
+        "http://rdf.freebase.com/ns/base.locations.continents",
+        "http://rdf.freebase.com/ns/base.locations.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/base.popstra.location",
+        "http://rdf.freebase.com/ns/base.popstra.sww_base",
+        "http://rdf.freebase.com/ns/base.popstra.topic",
+        "http://rdf.freebase.com/ns/base.schemastaging.body_of_water_extra",
+        "http://rdf.freebase.com/ns/base.schemastaging.contact_product",
+        "http://rdf.freebase.com/ns/base.skosbase.topic",
+        "http://rdf.freebase.com/ns/base.skosbase.vocabulary_equivalent_topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/base.tallinn.topic",
+        "http://rdf.freebase.com/ns/base.todolists.topic",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/cvg.computer_game_region",
+        "http://rdf.freebase.com/ns/fictional_universe.fictional_setting",
+        "http://rdf.freebase.com/ns/location.continent",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/location.region",
+        "http://rdf.freebase.com/ns/location.statistical_region",
+        "http://rdf.freebase.com/ns/m.0gkmg97",
+        "http://rdf.freebase.com/ns/meteorology.cyclone_affected_area",
+        "http://rdf.freebase.com/ns/meteorology.forecast_zone",
+        "http://rdf.freebase.com/ns/organization.organization_scope",
+        "http://rdf.freebase.com/ns/periodicals.newspaper_circulation_area",
+        "http://rdf.freebase.com/ns/symbols.name_source",
+        "http://rdf.freebase.com/ns/symbols.namesake",
+        "http://rdf.freebase.com/ns/user.robert.mobile_phones.mobile_phone_region",
+        "http://rdf.freebase.com/ns/user.skud.names.topic",
+        "http://rdf.freebase.com/ns/user.tsegaran.random.taxonomy_subject"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-8c5e0e8a-ca91-f098-23b2-fab336a9259a",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.386Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d328a928-2e4f-c034-d0e9-0e691dcd1e0c",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Platform-as-a-Service",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/Platform_as_a_service",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-8df62c45-46e9-35b6-c1d1-9af338a5e396",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.579Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7c3c5729-3b9c-c747-6206-eed3358e865c",
+      "enhancer:confidence": 0.9285714,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Internet user"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0tk9h27",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/fictional_universe.fictional_character",
+        "http://rdf.freebase.com/ns/film.film_character"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-8ef1aa85-36d8-51c4-a7c8-b073d8164de5",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.493Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-66b1bc68-0e50-d672-e735-9130a201fee5",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Digital photography"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Digital_photography",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-8f754e0c-b53a-b401-72d2-68be5377b0bc",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.504Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "enhancer:confidence": 0.9866667,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/World",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-91d57520-7df7-0bbd-923a-2a0feae85ebb",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.386Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-30638c9b-961a-fd84-bb87-dff6870c0cc4",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Stanbol",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/135",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-9466a97f-db2b-f2f0-d3f3-2c6ed014b65a",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.501Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "enhancer:confidence": 0.99130434,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Western_Europe",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-9fa39e3e-471e-4fb7-dd5c-a1ff4005c99b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.498Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-838db9ea-2905-5799-9fea-35fd885146ea",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "MICO"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Robert_Bosch_GmbH",
+      "enhancer:entity-type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Company",
+        "dbp-ont:Organisation",
+        "schema:Organization",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-a1a62291-6df5-806f-111d-de709d7da78b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.580Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ad2152b-5075-61e6-aae9-f98be772d905",
+      "enhancer:confidence": 0.85714287,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "redlink"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0wqhwn_",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/business.company_type",
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-a393c5cc-2920-1489-0d34-c566c3817169",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.497Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "enhancer:confidence": 0.9882353,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/News_media",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-a67d5af9-ab62-dd8f-8d1e-1287dc89f982",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.500Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Organisation",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2295,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Fraunhofer Institute"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " extractors developed by the Fraunhofer Institute (a leading research institution in Europe well"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "ed by the "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " (a leadin"
+      },
+      "enhancer:start": 2275
+    },
+    {
+      "@id": "urn:enhancement-a89c5c0f-c3f0-369f-921c-51f80130402b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.495Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d328a928-2e4f-c034-d0e9-0e691dcd1e0c",
+      "enhancer:confidence": 0.95238096,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Platform-as-a-service"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Platform_as_a_service",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-a94384b9-0a90-c59c-a4cf-36e446740b57",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.496Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ae1970c-a098-c4ba-228c-7d6a1ae5deff",
+      "enhancer:confidence": 0.9714286,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Text"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Text",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-aa7f7f66-1c0b-2187-692b-0f4d920e1537",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.496Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-7ae1970c-a098-c4ba-228c-7d6a1ae5deff",
+      "enhancer:confidence": 0.98571426,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Text"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Text_(literary_theory)",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-aeffaf73-0d4c-9825-7e44-e13090420063",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.499Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-f73b9e7f-3324-2072-4cdf-f3e18f292208",
+      "enhancer:confidence": 0.9166667,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "European Union's Framework programme"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Framework_Programmes_for_Research_and_Technological_Development",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-b1d378f3-d3b6-b2ae-3fa5-1ef5d3a1643d",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.582Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0hz28",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/award.award_discipline",
+        "http://rdf.freebase.com/ns/base.allthingsnewyork.topic",
+        "http://rdf.freebase.com/ns/base.elsevier.topic",
+        "http://rdf.freebase.com/ns/base.jewishstudies.topic",
+        "http://rdf.freebase.com/ns/base.jewlib.jewish_studies_field",
+        "http://rdf.freebase.com/ns/base.jewlib.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/base.services.topic",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.industry",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/education.field_of_study",
+        "http://rdf.freebase.com/ns/film.film_subject",
+        "http://rdf.freebase.com/ns/freebase.equivalent_topic",
+        "http://rdf.freebase.com/ns/freebase.task",
+        "http://rdf.freebase.com/ns/organization.organization_sector",
+        "http://rdf.freebase.com/ns/organization.organization_type",
+        "http://rdf.freebase.com/ns/people.professional_field",
+        "http://rdf.freebase.com/ns/user.alexander.philosophy.subject",
+        "http://rdf.freebase.com/ns/user.jamie.default_domain.service_category"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-b2effd5d-8ae5-46dd-1821-120df63bdf25",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.501Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "enhancer:confidence": 0.9956522,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Eastern_Europe",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-b3b5ddc9-788a-170d-594f-0f0567c8cf95",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.585Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-68351968-0002-9bbb-be95-8404854581dc",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Apache Solr"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02qd9s1",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/computer.software"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-b4d98ea9-0095-61be-37ee-74392320666f",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.584Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-49226ef2-6d7d-fd2e-be63-f1fcc9619886",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "European Union"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02jxk",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/award.award_winner",
+        "http://rdf.freebase.com/ns/base.estonia.topic",
+        "http://rdf.freebase.com/ns/base.industrystandards.standard_organization",
+        "http://rdf.freebase.com/ns/base.languagesfordomainnames.topic",
+        "http://rdf.freebase.com/ns/base.nations.supranational_body",
+        "http://rdf.freebase.com/ns/base.nations.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/base.tagit.concept",
+        "http://rdf.freebase.com/ns/base.type_ontology.abstract",
+        "http://rdf.freebase.com/ns/base.type_ontology.inanimate",
+        "http://rdf.freebase.com/ns/book.author",
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/government.governmental_jurisdiction",
+        "http://rdf.freebase.com/ns/internet.website_owner",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/location.statistical_region",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/organization.organization_member",
+        "http://rdf.freebase.com/ns/organization.organization_scope",
+        "http://rdf.freebase.com/ns/projects.project_participant",
+        "http://rdf.freebase.com/ns/symbols.flag_referent",
+        "http://rdf.freebase.com/ns/user.ktrueman.default_domain.international_organization"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-b8b1202e-2718-6e7a-d67a-782bf9b798cd",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.387Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-cad4833c-3be1-3c13-1b2c-a7e1d1125a49",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Marmotta",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/159",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-b9cdcac9-8283-aac6-a4d1-3029ab348b48",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.580Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-eb591b5f-3da9-6506-3998-f5c677801f0c",
+      "enhancer:confidence": 0.8181818,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "InSideOut10"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0kybkd_",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/business.employer",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/organization.membership_organization",
+        "http://rdf.freebase.com/ns/organization.organization",
+        "http://rdf.freebase.com/ns/organization.organization_founder"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-bfac1c38-694d-0b9b-fe3d-ce24d384da77",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.502Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": [
+        "dbp-ont:Organisation",
+        "schema:brand"
+      ],
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2492,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "RealNetworks"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " (along with Interact Egypt and RealNetworks) will validate these technologies in our Online"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "Egypt and "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": ") will val"
+      },
+      "enhancer:start": 2480
+    },
+    {
+      "@id": "urn:enhancement-c2089085-d1df-0625-91f8-4b371fb9e94e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.503Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 0.8,
+      "enhancer:end": 3157,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "We’re"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " the development ofhttp://enel.tv).\n\nNext steps\n\nWe’re currently gathering user-stories and technical"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "xt steps\n\n"
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " currently"
+      },
+      "enhancer:start": 3152
+    },
+    {
+      "@id": "urn:enhancement-c39e34b8-3bb4-dd2e-9432-9000c211fd1d",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.385Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-d328a928-2e4f-c034-d0e9-0e691dcd1e0c",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Platform-as-a-Service",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/155",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-c7ec6826-c4f3-4aa6-bb33-bc4db0face70",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.498Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 1785,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Linked Data"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " algorithms with information available in the Linked Data Cloud).\n\nMICO is a European Union Framework"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "le in the "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " Cloud).\n\n"
+      },
+      "enhancer:start": 1774
+    },
+    {
+      "@id": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.494Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 622,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " challenge for many organisations around the World.\n\nWe as Insideout10 with our experience on"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "round the "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": ".\n\nWe as I"
+      },
+      "enhancer:start": 617
+    },
+    {
+      "@id": "urn:enhancement-c8fd92d4-2f06-595b-048e-fe1121b34b59",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.579Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "enhancer:confidence": 0.99375,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.09nm_",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.athletics.athletics_area",
+        "http://rdf.freebase.com/ns/base.athletics.topic",
+        "http://rdf.freebase.com/ns/base.masterthesis.topic",
+        "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/location.location",
+        "http://rdf.freebase.com/ns/organization.organization_scope"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-cab5b5a9-ed0d-b631-640c-21addb2de4d7",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.588Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Organisation",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2475,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Interact Egypt"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " clients and partners\n\nInsideout10 (along with Interact Egypt and RealNetworks) will validate these"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "long with "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " and RealN"
+      },
+      "enhancer:start": 2461
+    },
+    {
+      "@id": "urn:enhancement-cad4833c-3be1-3c13-1b2c-a7e1d1125a49",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.387Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 2154,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Apache Marmotta"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " we use for text analysis (being Apache Stanbol, Apache Marmotta and Apache Solr - seehere for more information)"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": " Stanbol, "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " and Apach"
+      },
+      "enhancer:start": 2139
+    },
+    {
+      "@id": "urn:enhancement-d10b836d-65ba-8189-22f2-af403b1e08b0",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.496Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 1340,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Media"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " valuable means of information extraction. Media (being a photo, a video or an audio clip) on the"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "traction. "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " (being a "
+      },
+      "enhancer:start": 1335
+    },
+    {
+      "@id": "urn:enhancement-d25c7c41-da7a-1a27-f3e4-7e6ad44d4e8c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.495Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c825241c-521f-e182-befd-bb66409468ee",
+      "enhancer:confidence": 0.99333334,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/World_music",
+      "enhancer:entity-type": [
+        "dbp-ont:Genre",
+        "dbp-ont:MusicGenre",
+        "dbp-ont:TopicalConcept",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-d328a928-2e4f-c034-d0e9-0e691dcd1e0c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.385Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 1.0,
+      "enhancer:end": 850,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Platform-as-a-Service"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " sister company Redlink (focused on developing a Platform-as-a-Service for Semantic Processing) are much aware"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "eloping a "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " for Seman"
+      },
+      "enhancer:start": 829
+    },
+    {
+      "@id": "urn:enhancement-d81b066e-35fe-695a-8e0f-630755f32366",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.589Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.03bt1pv",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/book.book_subject",
+        "http://rdf.freebase.com/ns/book.periodical_subject",
+        "http://rdf.freebase.com/ns/broadcast.genre",
+        "http://rdf.freebase.com/ns/common.topic"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-ddd66c61-684b-aaeb-73ad-42a1380aa19e",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.504Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-27402b33-7dea-24d2-23cd-ad2d3e16434e",
+      "enhancer:confidence": 0.99333334,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "World"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/World_music",
+      "enhancer:entity-type": [
+        "dbp-ont:Genre",
+        "dbp-ont:MusicGenre",
+        "dbp-ont:TopicalConcept",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-e34930c3-4e11-c3bd-6078-b960f9cc87f8",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.389Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-44c6bbc0-1d95-abe0-7729-9a9c89990b98",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:entity-label": "InsideOut10",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/m.0kybkd_",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-eb591b5f-3da9-6506-3998-f5c677801f0c",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:created": "2014-02-14T10:18:13.383Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:type": "dbp-ont:Organisation",
+      "enhancer:confidence": 0.90909094,
+      "enhancer:end": 642,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "Insideout10"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " for many organisations around the World.\n\nWe as Insideout10 with our experience on semantic analysis"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "d.\n\nWe as "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " with our "
+      },
+      "enhancer:start": 631
+    },
+    {
+      "@id": "urn:enhancement-ee022868-fd1f-7ff6-15f5-cf72add9ae77",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.387Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-cad4833c-3be1-3c13-1b2c-a7e1d1125a49",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Marmotta",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/resource/m.0wqhskn",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-effaf0bc-4b0d-4bd9-6dbc-5b6d8bcf3f3b",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.500Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-a67d5af9-ab62-dd8f-8d1e-1287dc89f982",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Fraunhofer Institute"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Fraunhofer_Society",
+      "enhancer:entity-type": [
+        "dbp-ont:Agent",
+        "dbp-ont:Company",
+        "dbp-ont:Organisation",
+        "schema:Organization",
+        "owl:Thing"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-f015e57b-9950-8d85-a733-048702996e6f",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.387Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-30638c9b-961a-fd84-bb87-dff6870c0cc4",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": "Apache Stanbol",
+      "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/4",
+      "enhancer:entity-type": "schema:BlogPosting",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-f1ea6e90-8f9c-45e4-813b-141ba588b3f8",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.498Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-c7ec6826-c4f3-4aa6-bb33-bc4db0face70",
+      "enhancer:confidence": 1.0,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Linked Data"
+      },
+      "enhancer:entity-reference": "http://dbpedia.org/resource/Linked_data",
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    },
+    {
+      "@id": "urn:enhancement-f73b9e7f-3324-2072-4cdf-f3e18f292208",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:TextAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.499Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "enhancer:confidence": 0.9166667,
+      "enhancer:end": 1839,
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9",
+      "enhancer:selected-text": {
+        "@language": "en",
+        "@value": "European Union Framework Programme"
+      },
+      "enhancer:selection-context": {
+        "@language": "en",
+        "@value": " available in the Linked Data Cloud).\n\nMICO is a European Union Framework Programme 7 research and development project and it will"
+      },
+      "enhancer:selection-prefix": {
+        "@language": "en",
+        "@value": "MICO is a "
+      },
+      "enhancer:selection-suffix": {
+        "@language": "en",
+        "@value": " 7 researc"
+      },
+      "enhancer:start": 1805
+    },
+    {
+      "@id": "urn:enhancement-ff690275-8157-ebde-7a41-9776d945981d",
+      "@type": [
+        "enhancer:Enhancement",
+        "enhancer:EntityAnnotation"
+      ],
+      "dc:created": "2014-02-14T10:18:13.587Z",
+      "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+      "dc:relation": "urn:enhancement-35e3c592-2add-86cb-5ef7-8a7e3670e22f",
+      "enhancer:confidence": 0.9916667,
+      "enhancer:entity-label": {
+        "@language": "en",
+        "@value": "Europe"
+      },
+      "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.01_52t",
+      "enhancer:entity-type": [
+        "http://rdf.freebase.com/ns/base.myspace.myspace_user",
+        "http://rdf.freebase.com/ns/broadcast.artist",
+        "http://rdf.freebase.com/ns/common.topic",
+        "http://rdf.freebase.com/ns/film.film_crewmember",
+        "http://rdf.freebase.com/ns/film.music_contributor",
+        "http://rdf.freebase.com/ns/film.person_or_entity_appearing_in_film",
+        "http://rdf.freebase.com/ns/internet.social_network_user",
+        "http://rdf.freebase.com/ns/music.artist",
+        "http://rdf.freebase.com/ns/music.lyricist",
+        "http://rdf.freebase.com/ns/music.musical_group",
+        "http://rdf.freebase.com/ns/music.producer",
+        "http://rdf.freebase.com/ns/user.narphorium.people.topic"
+      ],
+      "enhancer:extracted-from": "urn:content-item-sha1-7ce4af00c32cd4b3af85ab2b62cbd6552c2e75f9"
+    }
+  ]
+}

@@ -33,6 +33,7 @@ else
 	svn cp trunk tags/$VERSION
 	svn ci -m "updating trunk (2 of 2)"
 
+	git add -A
 	git commit -m "bump to $VERSION" -a
 	git push origin svn
 fi
