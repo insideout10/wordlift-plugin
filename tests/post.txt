@@ -1,5 +1,0 @@
-My name is Andrea Volpini and I am here with David Riccitelli.
-
-We are the co-founders of Insideout10 an Italian Startup and we're happy to present today at the Central Archives of the State in Rome for the Linked Open Data Event.
-
-WordLift is plugin for WordPress demonstrating how Semantic Web technologies and Linked Open Data, can be used in practice to organise your online contents.

@@ -1,9 +1,0 @@
-export DB_NAME=<database-name>                                 # database must exist.
-export DB_USERID=<database-user-id>
-export DB_PASSWORD=<database-password>
-export DB_HOST=<database-host>
-export WP_VERSION=<wordpress-version>
-export WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=<true|false> # use true for unit tests.
-export WORDLIFT_KEY=<wordlift-key>							   # your WordLift key
-export WP_MULTISITE=<0|1>                                      # whether multisite, use 0 if unsure.
-export WL_SSL_VERIFY_ENABLED=<true|false>					   # skip ssl check for unit tests.
