@@ -1,16 +1,22 @@
 #!/bin/bash
 
-FILE='src/wordlift.php'
+FILE='wordlift/wordlift.php'
 
 echo "checking out and updating the svn branch..."
 git checkout -b svn
 git pull origin svn
-echo "removing src..."
-rm -fr src
+echo "removing make-zip.sh..."
+rm -fr make-zip.sh
 echo "updating the svn branch..."
 svn up
-echo "checking out the src folder from master branch..."
-git checkout master -- src
+echo "checking make-zip.sh from master branch..."
+git checkout master -- make-zip.sh
+echo "remove dist folder..."
+rm -fr dist wordlift
+echo "making wordlift.zip..."
+./make-zip.sh master
+echo "unzipping to wordlift/..."
+unzip dist/wordlift-*.zip
 
 VERSION=`egrep -o "Version:\s+\d+\.\d+\.\d+" $FILE | egrep -o "\d+\.\d+\.\d+"`
 
@@ -22,7 +28,7 @@ else
 	echo "removig trunk..."
 	svn rm --force trunk
 	svn ci -m "updating trunk (1 of 2)"
-	mv src trunk
+	mv wordlift trunk
 	svn add trunk
 	svn cp trunk tags/$VERSION
 	svn ci -m "updating trunk (2 of 2)"
