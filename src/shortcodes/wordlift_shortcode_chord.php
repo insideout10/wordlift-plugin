@@ -52,7 +52,7 @@ function wl_shortcode_chord_most_referenced_entity_id()
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
 	
     // Search for more entities only if we did not exceed $depth or $max_size
-    $max_size = 30;
+    $max_size = 15;
     if( ! is_null($related) ) {
             if( count($related['entities']) > $max_size || $depth <= 0 ) {
             return $related;

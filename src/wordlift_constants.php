@@ -5,7 +5,7 @@
 
 // Define the basic options for HTTP calls to REDLINK.
 define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
-	'timeout'     => 10,
+	'timeout'     => 30,
 	'redirection' => 5,
 	'httpversion' => '1.1',
 	'blocking'    => true,
