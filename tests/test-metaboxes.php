@@ -1,5 +1,7 @@
 <?php
 require_once 'functions.php';
+require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/WL_Metabox.php' );
+require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/WL_Metabox_Fields.php' );
 
 /**
  * Class MetaboxTest
@@ -37,11 +39,11 @@ class MetaboxTest extends WP_UnitTestCase
     /*
      * Test the WL_Metabox fields are built properly
      */
-    function testWL_Metabox_field_instantiation() {
+    function testWL_Metabox_fields_instantiation() {
        
         $metabox = new WL_Metabox();
         
-        $$entity_id = 23; // TODO: create entity
+        $entity_id = 23; // TODO: create entity
         
         $metabox->instantiate_fields( $entity_id );
         // Verify the correct fields have been built.
@@ -57,11 +59,32 @@ class MetaboxTest extends WP_UnitTestCase
      * Test the WL_Metabox_Field obj is built properly
      */
     function testWL_Metabox_Field_constructor() {
-        $args = array(
-            // TODO
-        );
-        $field = new WL_Metabox_Field( $args );
+        
+        // Build a single Field
+        $author_custom_field = $this->getSampleCustomField();
+        $field = new WL_Metabox_Field( $author_custom_field );  // using default constructor even if there is a WL_Metabox_Field_uri class
+        
         // Verify Field has been built correctly
+        $this->assertEquals( WL_CUSTOM_FIELD_AUTHOR, $field->meta_name );
+        $this->assertEquals( 'http://schema.org/author', $field->predicate );
+        $this->assertEquals( 'author', $field->label );
+        $this->assertEquals( WL_DATA_TYPE_URI, $field->expected_wl_type );
+        $this->assertEquals( array('Person', 'Organization'), $field->expected_uri_type );  // TODO: there should be LocalBusiness also!!
+        $this->assertEquals( INF, $field->cardinality );
+        
+        // Stress the constructor with invalid data
+        $field = new WL_Metabox_Field( null );
+        $emptyField = array(
+            'meta_name' => null,
+            'raw_custom_field' => null,
+            'predicate' => null,
+            'label' => null,
+            'expected_wl_type' => null,
+            'expected_uri_type' => null,
+            'cardinality' => null,
+            'data' => null
+        );
+        $this->assertEquals( $emptyField, (array) $field );
     }
     
     /*
@@ -71,18 +94,17 @@ class MetaboxTest extends WP_UnitTestCase
         
         // TODO: insert data into DB (also invalid data)
         
-        $args = array(
-            // TODO
-        );
+        $args = $this->getSampleCustomField();
         $field = new WL_Metabox_Field( $args );
         
         // TODO: load data from DB
         
         // verify html methods
-        $field->html_wrapper_open();
-        $field->html();
-        $field->html_input( 'aaaah' );
-        $field->html_wrapper_close();
+        $html = $field->html_wrapper_open();
+        $html .= $field->html();
+        $html .= $field->html_wrapper_close();
+        
+        $this->assertEquals( $html, 'yeeeeah' );
     }
     
     /*
@@ -90,12 +112,12 @@ class MetaboxTest extends WP_UnitTestCase
      */
     function testWL_Metabox_Field_data() {
         
-        // TODO: insert data into DB (also invalid data)
-        
-        $args = array(
-            // TODO
-        );
-        $field = new WL_Metabox_Field( $args );
+        // Build a single Field
+        $author_custom_field = $this->getSampleCustomField();
+        $field = new WL_Metabox_Field( $author_custom_field );
+        /*
+        wl_write_log('piedo');
+        wl_write_log( $field );
         
         $field->get_data();
         // Verify data is loaded correctly from DB
@@ -108,5 +130,21 @@ class MetaboxTest extends WP_UnitTestCase
         
         $field->save_data();
         // Verify new DB values
+        
+         */
+    }
+    
+    function getSampleCustomField(){
+        return array(
+            WL_CUSTOM_FIELD_AUTHOR => array(
+                'predicate' => 'http://schema.org/author',
+                'type' => WL_DATA_TYPE_URI,
+                'export_type' => 'http://schema.org/Person',
+                'constraints' => array(
+                    'uri_type' => array('Person', 'Organization'),
+                    'cardinality' => INF
+                )
+            ),
+        );
     }
 }

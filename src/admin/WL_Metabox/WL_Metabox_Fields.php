@@ -8,18 +8,22 @@
 class WL_Metabox_Field {
     
     public $meta_name;
-    protected $raw_custom_field;
-    protected $predicate;
-    protected $label;
-    protected $expected_wl_type;
-    protected $expected_uri_type;
-    protected $cardinality;
-    protected $data;
+    public $raw_custom_field;
+    public $predicate;
+    public $label;
+    public $expected_wl_type;
+    public $expected_uri_type;
+    public $cardinality;
+    public $data;
 
     /**
      * Constructor. Recevies.... TODO write docs
      */
     public function __construct( $args ) {
+        
+        if( empty( $args ) ){
+            return;
+        }
 
         // Save a copy of the custom field's params
         $this->raw_custom_field = reset( $args );
@@ -28,7 +32,11 @@ class WL_Metabox_Field {
         $this->meta_name = key( $args );
         
         // Extract linked data predicate
-        $this->predicate = $this->raw_custom_field['predicate'];
+        if( isset( $this->raw_custom_field['predicate'] ) ) {
+            $this->predicate = $this->raw_custom_field['predicate'];
+        } else {
+            return;
+        }
         
         // Extract human readable label
         $exploded_predicate = explode( '/', $this->predicate );
