@@ -4,7 +4,7 @@ Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
 Requires at least: 4.0
 Tested up to: 4.2.4
-Stable tag: 3.0.10
+Stable tag: 3.0.11
 License: GPLv2 or later
 
 Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
@@ -117,6 +117,9 @@ We're glad to support you and you can send us an e-mail to
 6. The WordLift Bar.
 
 == Changelog ==
+
+= 3.0.11 =
+ * Enhancement: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
 
 = 3.0.10 (2015-10-14) =
   * Fix [#119]. Now public entities status is properly preserved when linked to draft posts (https://github.com/insideout10/wordlift-plugin/issues/119)

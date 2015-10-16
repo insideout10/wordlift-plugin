@@ -15,13 +15,13 @@
  * @return The enhanced html.
  */
 function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
-
-    // If the post is published, add the button view on Redlink.
+    // If the post is published, add the button to view Redlink's linked data.
     if ( 'publish' == get_post_status( $post_id ) ) {
         if ( $uri = wl_get_entity_uri( $post_id ) ) {
             $uri_esc  =  esc_attr( wl_get_entity_uri( $post_id ) );
-            $html     .= "<span id='view-post-btn'><a href='$uri_esc' class='button button-small' target='_blank'>" .
-                __('View on Redlink', 'wordlift') .
+            $lod_view_href = 'http://lodview.it/lodview/?IRI=' . $uri_esc;
+            $html     .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small' target='_blank'>" .
+                __('View Linked Data', 'wordlift') .
                 "</a></span>\n";
         }
         $html     .= "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
@@ -30,7 +30,6 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
             __('Test Google Rich Snippets', 'wordlift') .
             "</a></span>\n";
     }
-
     return $html;
 }
 add_filter('get_sample_permalink_html', 'wl_admin_permalink_html', 10, 4 );
