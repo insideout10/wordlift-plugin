@@ -1,0 +1,116 @@
+<?php
+
+
+class WL_Metabox_Field_uri extends WL_Metabox_Field {
+    
+    /**
+     * Only accept URIs or local entity IDs.
+     * Build new entity if the user inputted a name that is not present in DB.
+     */
+    public function sanitize_data_filter( $value ) {
+        
+        if( empty( $value ) ){
+            return null;
+        }
+ 
+        // Check that the inserted URI, ID or name does not point to a saved entity.
+        if( is_numeric( $value ) ){
+            $absent_from_db = is_null( get_post( $value ) );                           // search by ID
+        } else {
+            $absent_from_db =
+                is_null( wl_get_entity_post_by_uri( $value ) ) &&                      // search by uri
+                is_null( get_page_by_title( $value, OBJECT, WL_ENTITY_TYPE_NAME ) );   // search by name
+        }
+
+        // Is it an URI?
+        $name_is_uri = strpos( $value, 'http' ) === 0; 
+
+        // We create a new entity only if the entity is not present in the DB.
+        // In the case of an external uri, we just save the uri.
+        if( $absent_from_db && !$name_is_uri ) {
+
+                // ...we create a new entity!
+                $new_entity_id = wp_insert_post( array(
+                    'post_status'  => 'publish',
+                    'post_type'    => WL_ENTITY_TYPE_NAME,
+                    'post_title'   => $value
+                ) );
+                $new_entity = get_post( $new_entity_id );
+
+                // Assign type
+                $constraints = wl_get_meta_constraints( $value );
+                if( isset( $this->expected_uri_type ) ){
+                    $type = $this->expected_uri_type[0];
+                } else {
+                    $type = 'Thing';
+                }
+                $type        = 'http://schema.org/' . $type;
+                wl_set_entity_main_type( $new_entity_id, $type );
+
+                // Build uri for this entity
+                $new_uri = wl_build_entity_uri( $new_entity_id );
+                wl_set_entity_uri( $new_entity_id, $new_uri );
+
+                wl_push_entity_post_to_redlink( $new_entity );
+                
+                // Update the value that will be saved as meta
+                $value = $new_entity_id;
+        }
+        
+        return $value;
+    }
+    
+    public function html_wrapper_open() {
+        
+        // The containing <div> contains info on cardinality and expected types
+        $html = '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '"';
+        
+        if( isset( $this->expected_uri_type ) && !is_null( $this->expected_uri_type ) ){
+            
+            if( is_array( $this->expected_uri_type ) ) {
+                $html.= ' data-expected-types="' . implode( $this->expected_uri_type, ',') . '"';
+            } else {
+                $html.= ' data-expected-types="' . $this->expected_uri_type . '"';
+            }
+        }
+        
+        $html.= '>';
+        
+        return $html;
+    }
+    
+    public function html_input( $default_entity_identifier ) {
+
+        // The entity can be referenced as URI or ID.
+        if ( is_numeric( $default_entity_identifier ) ) {
+            $entity = get_post( $default_entity_identifier );
+        } else {
+            // It is an URI
+            $entity = wl_get_entity_post_by_uri( $default_entity_identifier );
+        }
+
+        if( !is_null( $entity ) ){
+            $label = $entity->post_title;
+            $value = $entity->ID;
+        } else {
+            // No ID and no internal uri. Just leave as is.
+            $label = $default_entity_identifier;
+            $value = $default_entity_identifier;
+        }
+        
+        /*
+         * Write saved value in page
+         * The <input> tags host the meta values.
+         * Each hosts one human readable value (i.e. entity name or uri)
+         * and is accompained by an hidden <input> tag, the one passed to the server,
+         * that contains its raw value (i.e. the uri or entity id)
+         */
+        $html = '<div class="wl-autocomplete-wrapper">
+                    <input type="text" class="' . $this->meta_name . ' wl-autocomplete" value="' . $label . '" style="width:100%" />
+                    <input type="hidden" class="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" />
+                </div>';
+
+        return $html;
+    }
+}
+
