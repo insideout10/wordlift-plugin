@@ -89,7 +89,7 @@ class WL_Metabox_Field {
      * Return nonce HTML.
      * Overwrite this method in a child class to obtain custom behaviour.
      */
-    public function print_nonce(){
+    public function html_nonce(){
         
         return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', true, false );
     }
@@ -169,7 +169,10 @@ class WL_Metabox_Field {
      * Save data to DB.
      * Overwrite this method in a child class to obtain custom behaviour.
      */
-    public function save_data(){
+    public function save_data( $values ){
+        
+        // Will sanitize data and store them in $field->data
+        $this->sanitize_data( $values );
         
         $entity_id = get_the_ID();
         
@@ -185,7 +188,7 @@ class WL_Metabox_Field {
     
     /**
      * Returns the HTML tag that will contain the Field. By default the we return a <div> with data- attributes on cardinality and expected types.
-     * It is useful to provide data for the JS scripts.
+     * It is useful to provide data- attributes for the JS scripts.
      * Overwrite this method in a child class to obtain custom behaviour.
      */
     public function html_wrapper_open(){
@@ -197,12 +200,19 @@ class WL_Metabox_Field {
     }
     
     /**
-     * Returns Field HTML.
-     * Overwrite this method in a child class to obtain custom behaviour.
+     * Returns Field HTML (nonce included).
+     * Overwrite this method (or methods called from this method) in a child class to obtain custom behaviour.
      */
     public function html(){
         
-        $html = '<h3>' . $this->label . '</h3>';
+        // Open main <div> for the Field
+        $html = $this->html_wrapper_open();
+        
+        // Label
+        $html .= '<h3>' . $this->label . '</h3>';
+        
+        // print nonce
+        $html .= $this->html_nonce();
         
         // print data loaded from DB
         $count = 0;
@@ -224,6 +234,9 @@ class WL_Metabox_Field {
             $html .= '<button type="button">Add</button>';
         }
         
+        // Close the HTML wrapper
+        $html .= $this->html_wrapper_close();
+        
         return $html;
     }
     
@@ -241,7 +254,7 @@ class WL_Metabox_Field {
      */
     public function html_wrapper_close(){
         
-        return '</div>';
+        return '</div><hr>';
     }
 }
 

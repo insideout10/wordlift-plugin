@@ -45,27 +45,12 @@ class WL_Metabox {
         
         // Loop over the fields
         foreach( $this->fields as $field ) {
-            
+ 
             // load data from DB (values will be available in $field->data)
             $field->get_data();
             
-            /*
-             * opens the HTML tag that will contain the Field HTML.
-             * By default, it's a <div> containing data- attributes on cardinality and expected types.
-             * Overwrite if you want to put a custom wrapper.
-             */
-            $html .= $field->html_wrapper_open();
-            
-            // print nonce
-            $html .= $field->print_nonce();
-            
-            // print field HTML
+            // print field HTML (nonce included)
             $html .= $field->html();
-            
-            // Close the HTML wrapper
-            $html .= $field->html_wrapper_close();
-            
-            $html .= '<hr>';
         }
         
         // Echo Fields in page.
@@ -220,12 +205,9 @@ class WL_Metabox {
                     if( !is_array($values) ){
                         $values = array( $values );
                     }
-                    
-                    // Will sanitize data and store them in $field->data
-                    $field->sanitize_and_keep_data( $values );
 
                     // Save data permanently
-                    $field->save_data();
+                    $field->save_data( $values );
                 }
             }
         }

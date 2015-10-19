@@ -20,7 +20,14 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
     
     public function html() {
         
-        $html = '<h3>coordinates</h3>';
+        // Open main <div> for the Field
+        $html = $this->html_wrapper_open();
+        
+        // Label
+        $html .= '<h3>coordinates</h3>';
+        
+        // print nonce
+        $html .= $this->html_nonce();
         
         // Get coordinates
         $coords = $this->data;
@@ -56,10 +63,14 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
         });
         </script>";
         
+        $this->html_wrapper_close();
+        
         return $html;
     }
     
-    public function save_data() {
+    public function save_data( $coords ) {
+        
+        $this->sanitize_data( $coords );
         
         $entity_id = get_the_ID();
         

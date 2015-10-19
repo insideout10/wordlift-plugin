@@ -38,6 +38,8 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
         });
         </script>";
         
+        parent::html_wrapper_close();
+        
         return $html;
     }
 }
