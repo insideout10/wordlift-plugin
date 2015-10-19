@@ -221,8 +221,10 @@ class WL_Metabox {
                         $values = array( $values );
                     }
                     
-                    $field->sanitize_data( $values );
+                    // Will sanitize data and store them in $field->data
+                    $field->sanitize_and_keep_data( $values );
 
+                    // Save data permanently
                     $field->save_data();
                 }
             }

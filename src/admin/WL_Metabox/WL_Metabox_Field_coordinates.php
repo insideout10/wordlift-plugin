@@ -21,7 +21,6 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
     public function html() {
         
         $html = '<h3>coordinates</h3>';
-        var_dump( $this->data );
         
         // Get coordinates
         $coords = $this->data;
@@ -63,9 +62,6 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
     public function save_data() {
         
         $entity_id = get_the_ID();
-        
-        wl_write_log('piedo');
-        wl_write_log( $this->data );
         
         // Take away old values
         delete_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LATITUDE );
