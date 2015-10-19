@@ -1,10 +1,53 @@
 /* 
- * This file contains utilities running on the entity editor page (i.e. AJAX autocomplete).
+ * This file contains utilities running on the entity editor page (e.g. AJAX autocomplete).
  * The main meeting points between the PHP backend and this script are:
  * <input 
  */
 
 jQuery(document).ready(function($){
+    
+    // Remove button
+    $('.wl-remove-input').click( function(event){
+        
+        var button = $(event.target);
+        var inputWrapper = button.parent('.wl-input-wrapper');
+        
+        // If this is the only <input> for the field, do nothing
+        console.log( inputWrapper.parent('.wl-metabox').children('.wl-input-wrapper').size() );
+        if( inputWrapper.parent('.wl-metabox').children('.wl-input-wrapper').size() > 1 ){
+            // Delete the <div> containing the <input> tags and the "Remove" button
+            inputWrapper.remove();
+        }
+    });
+    
+    // Add button
+    $('.wl-add-input').click( function(event){
+        
+        var button = $(event.target);
+        var field = button.parent('.wl-metabox');
+        var cardinality = field.data('cardinality');
+        
+        // Take previous, delete values and copy it at the end
+        var alreadyPresentInputs = field.find('.wl-input-wrapper').size();
+        var latestInput = field.find('.wl-input-wrapper').last();
+        
+        // Don't trasgress cardinality
+        var canAddInput = (cardinality === 'INF') || (alreadyPresentInputs < cardinality);
+        if( canAddInput ){
+
+            // Build HTML of the new <input>
+            var newInputDiv = latestInput.clone( true );    // .clone(true) clones also the event callbacks
+            $(this).before( newInputDiv );
+            
+            // Impose default new values
+            newInputDiv.find('input').val('');
+
+            // If necessary, launch autocomplete on the new created <input>
+            //var newInputField = newInputDiv.find('.wl-autocomplete');
+            //attachAutocomplete( null, newInputField );
+        }
+    });
+    
     
     var ajax_url = wlEntityMetaboxParams.ajax_url + '?action=' + wlEntityMetaboxParams.action;
     
@@ -46,11 +89,6 @@ jQuery(document).ready(function($){
         $(inputElement).keyup(function(s){
             // Keep <input>s in synch
             synchInputValueWithAutocompleteResults();
-        });
-        
-        metabox.find('button').click(function(){
-            // Create a new <input> for eventual new values
-            appendNewAutocomplete(metabox);
         });
 
         // Launch autocomplete
@@ -97,31 +135,6 @@ jQuery(document).ready(function($){
                 $(metabox).find('.wl-autocomplete').last().focus();
             }
         });
-    
-        function appendNewAutocomplete(){
-
-            var alreadyPresentInputs = $(metabox).find('.wl-autocomplete').size();
-            var latestInput = $(metabox).find('.wl-autocomplete').last();
-            var latestInputVal = $(latestInput).val();
-
-            // Don't trasgress cardinality
-            var canAddInput = (cardinality === 'INF') || (alreadyPresentInputs < cardinality);
-
-            if( canAddInput && latestInputVal !== '' ){
-
-                // Build HTML of the new <input>
-                var newInputDiv = $(latestInput).parent().clone();
-                //newInputDiv.appendTo( metabox );
-                metabox.children('button').before( newInputDiv );
-
-                // Launch autocomplete on the new created <input>
-                var newInputField = newInputDiv.find('.wl-autocomplete');
-                attachAutocomplete( null, newInputField );
-                // Impose default new values
-                newInputField.val('');
-                newInputField.siblings('input').val('');
-            }
-        }
     }
 });
 

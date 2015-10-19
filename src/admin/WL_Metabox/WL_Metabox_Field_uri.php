@@ -100,14 +100,15 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
         
         /*
          * Write saved value in page
-         * The <input> tags host the meta values.
-         * Each hosts one human readable value (i.e. entity name or uri)
-         * and is accompained by an hidden <input> tag, the one passed to the server,
-         * that contains its raw value (i.e. the uri or entity id)
+         * The <input> tags host the meta value.
+         * The visible <input> has the human readable value (i.e. entity name or uri)
+         * and is accompained by an hidden <input> tag, passed to the server,
+         * that contains the raw value (i.e. the uri or entity id).
          */
-        $html = '<div class="wl-autocomplete-wrapper">
-                    <input type="text" class="' . $this->meta_name . ' wl-autocomplete" value="' . $label . '" style="width:100%" />
+        $html = '<div class="wl-input-wrapper wl-autocomplete-wrapper">
+                    <input type="text" class="' . $this->meta_name . ' wl-autocomplete" value="' . $label . '" style="width:88%" />
                     <input type="hidden" class="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" />
+                    <button class="wl-remove-input" type="button" style="width:10%">Remove</button>
                 </div>';
 
         return $html;
