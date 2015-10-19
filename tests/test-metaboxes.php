@@ -1,7 +1,6 @@
 <?php
 require_once 'functions.php';
 require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/WL_Metabox.php' );
-require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/WL_Metabox_Fields.php' );
 
 /**
  * Class MetaboxTest

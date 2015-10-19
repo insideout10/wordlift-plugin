@@ -1,5 +1,11 @@
 <?php
 
+require_once( 'WL_Metabox_Field.php' );
+require_once( 'WL_Metabox_Field_date.php' );
+require_once( 'WL_Metabox_Field_uri.php' );
+require_once( 'WL_Metabox_Field_coordinates.php' );
+require_once( 'WL_Metabox_Field_sameas.php' );
+
 class WL_Metabox {
     
     protected $fields;
@@ -91,7 +97,7 @@ class WL_Metabox {
              * - simple: accept values for one property
              * - grouped: accept values for more properties, or for one property that needs a specific metabox.
              */
-            $metaboxes         = wl_entities_metaboxes_group_properties_by_input_field( $entity_type );
+            $metaboxes         = $this->wl_entities_metaboxes_group_properties_by_input_field( $entity_type );
             $simple_metaboxes  = $metaboxes[0];
             $grouped_metaboxes = $metaboxes[1];
 
@@ -120,7 +126,48 @@ class WL_Metabox {
         }
     }
     
+    /**
+    * Separes metaboxes in simple and grouped.
+    *
+    * @param array $custom_fields Information on the entity type.
+    */
+    public function wl_entities_metaboxes_group_properties_by_input_field( $custom_fields ) {
+
+        $simple_properties  = array();
+        $grouped_properties = array();
+
+        // Loop over possible entity properties
+        foreach ( $custom_fields as $key => $property ) {
+
+            // Check presence of predicate and type
+            if ( isset( $property['predicate'] ) && isset( $property['type'] ) ) {
+
+                // Check if input_field is defined
+                if ( isset( $property['input_field'] ) && $property['input_field'] !== '' ) {
+
+                    $grouped_key = $property['input_field'];
+
+                    // Update list of grouped properties
+                    $grouped_properties[ $grouped_key ][ $key ] = $property;
+
+                } else {
+
+                    // input_field not defined, add simple metabox
+                    $simple_properties[ $key ] = $property;
+                }
+            }
+        }
+
+        return array( $simple_properties, $grouped_properties );
+    }
     
+    /**
+     * Add a Field to the current Metabox, based on the description of the Field.
+     * This method is a rude factory for Field objects. 
+     * 
+     * @param type $args
+     * @param type $grouped Flag to distinguish between simple and grouped Fields
+     */
     public function add_field( $args, $grouped=false ){
         
         if( $grouped ) {
