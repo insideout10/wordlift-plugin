@@ -11,9 +11,12 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
         }
         $pickerDate = esc_attr( $pickerDate );
         
-        $html = '<input type="text" class="' . $this->meta_name . '" value="' . $pickerDate . '" style="width:100%" />';
-        $html .= '<input type="hidden" class="' . $this->meta_name . '_hidden" name="wl_metaboxes[' . $this->meta_name . ']" value="' . $date . '" style="width:100%" />';        
-    
+        $html = '<div class="wl-input-wrapper">
+            <input type="text" class="' . $this->meta_name . '" value="' . $pickerDate . '" style="width:88%" />
+            <input type="hidden" class="' . $this->meta_name . '_hidden" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $date . '" />      
+            <button class="wl-remove-input" type="button" style="width:10%">Remove</button>
+        </div>';
+        
         return $html;
 
     }
@@ -23,8 +26,6 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
         $html = "<script type='text/javascript'>
         $ = jQuery;
         $(document).ready(function() {
-
-            var lastDateTimePickerClicked;
 
             $('." . $this->meta_name . "').datetimepicker({
                 onChangeDateTime:function(dp, input){
@@ -38,7 +39,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
         });
         </script>";
         
-        parent::html_wrapper_close();
+        $html .= parent::html_wrapper_close();
         
         return $html;
     }

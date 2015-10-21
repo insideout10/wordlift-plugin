@@ -12,11 +12,12 @@ jQuery(document).ready(function($){
         var button = $(event.target);
         var inputWrapper = button.parent('.wl-input-wrapper');
         
-        // If this is the only <input> for the field, do nothing
-        console.log( inputWrapper.parent('.wl-metabox').children('.wl-input-wrapper').size() );
+        // Leave at least one <input>
         if( inputWrapper.parent('.wl-metabox').children('.wl-input-wrapper').size() > 1 ){
             // Delete the <div> containing the <input> tags and the "Remove" button
             inputWrapper.remove();
+        } else {
+            inputWrapper.find('input').val('');
         }
     });
     
@@ -36,23 +37,26 @@ jQuery(document).ready(function($){
         if( canAddInput ){
 
             // Build HTML of the new <input>
-            var newInputDiv = latestInput.clone( true );    // .clone(true) clones also the event callbacks
+            var newInputDiv = latestInput.clone();    // .clone(true) would clone also the event callbacks, but messes up with autocomplete
             $(this).before( newInputDiv );
             
             // Impose default new values
             newInputDiv.find('input').val('');
+            
+            // Move focus to the empty new <input>
+            newInputDiv.find('input:visible').focus();
 
             // If necessary, launch autocomplete on the new created <input>
-            //var newInputField = newInputDiv.find('.wl-autocomplete');
-            //attachAutocomplete( null, newInputField );
+            var newInputField = newInputDiv.find('.wl-autocomplete')[0];
+            if( newInputField ){
+                attachAutocomplete( null, newInputField );
+            }
         }
     });
     
     
     var ajax_url = wlEntityMetaboxParams.ajax_url + '?action=' + wlEntityMetaboxParams.action;
-    
-    // TODO: Add and remove buttons should be independent of the autocomplete
-    
+
     // Launch autocomplete on every <input> with class autocomplete
     $('.wl-autocomplete').each( attachAutocomplete );
     
@@ -64,6 +68,7 @@ jQuery(document).ready(function($){
         if( expectedTypes ) {
             expectedTypes = expectedTypes.split(',');
         }
+        console.log(inputElement, cardinality, expectedTypes);
         var hiddenInput = $(inputElement).siblings('input');
         var latestResults = {};  // hash used to keep a reference to the entities (title => uri, id, type, ecc.)
         
@@ -106,7 +111,6 @@ jQuery(document).ready(function($){
                             var entityName = entity.title;
                             var entityType = entity.schema_type_name;
                             
-                            console.log(entityType, expectedTypes);
                             // Verify accepted schema.org type
                             if( !expectedTypes || ( entityType && expectedTypes.indexOf(entityType) !== -1 ) ) {
 
@@ -130,9 +134,6 @@ jQuery(document).ready(function($){
                 var chosenEntity = $(inputElement).val();
                 var chosenEntityObj = latestResults[chosenEntity];
                 $(hiddenInput).val( chosenEntityObj.id );
-                
-                // Move focus to the empty new <input>
-                $(metabox).find('.wl-autocomplete').last().focus();
             }
         });
     }
