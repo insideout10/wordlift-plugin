@@ -7,8 +7,9 @@
 jQuery(document).ready(function($){
     
     // Remove button
-    $('.wl-remove-input').click( function(event){
-        
+    $('.wl-remove-input').click( removeButton );
+    
+    function removeButton(event){
         var button = $(event.target);
         var inputWrapper = button.parent('.wl-input-wrapper');
         
@@ -19,11 +20,12 @@ jQuery(document).ready(function($){
         } else {
             inputWrapper.find('input').val('');
         }
-    });
+    }
     
     // Add button
-    $('.wl-add-input').click( function(event){
-        
+    $('.wl-add-input').click( addButton );
+    
+    function addButton( event ) {
         var button = $(event.target);
         var field = button.parent('.wl-metabox');
         var cardinality = field.data('cardinality');
@@ -35,9 +37,14 @@ jQuery(document).ready(function($){
         // Don't trasgress cardinality
         var canAddInput = (cardinality === 'INF') || (alreadyPresentInputs < cardinality);
         if( canAddInput ){
-
+            
+            var isAutocomplete = ( latestInput.find('.wl-autocomplete').size() > 0 );
+            
             // Build HTML of the new <input>
-            var newInputDiv = latestInput.clone();    // .clone(true) would clone also the event callbacks, but messes up with autocomplete
+            var newInputDiv = latestInput.clone( !isAutocomplete );
+            // .clone(true) clones also the event callbacks, but messes up with the autocomplete. See below**
+            
+            // Insert cloned element in page
             $(this).before( newInputDiv );
             
             // Impose default new values
@@ -47,13 +54,15 @@ jQuery(document).ready(function($){
             newInputDiv.find('input:visible').focus();
 
             // If necessary, launch autocomplete on the new created <input>
-            var newInputField = newInputDiv.find('.wl-autocomplete')[0];
-            if( newInputField ){
+            if( isAutocomplete ){
+                var newInputField = newInputDiv.find('.wl-autocomplete')[0];
+                
+                // **Since we could not use .clone(true) with the autocomplete, we attach the events manually.
+                newInputDiv.find('.wl-remove-input').click( removeButton );
                 attachAutocomplete( null, newInputField );
             }
         }
-    });
-    
+    }
     
     var ajax_url = wlEntityMetaboxParams.ajax_url + '?action=' + wlEntityMetaboxParams.action;
 
@@ -68,7 +77,7 @@ jQuery(document).ready(function($){
         if( expectedTypes ) {
             expectedTypes = expectedTypes.split(',');
         }
-        console.log(inputElement, cardinality, expectedTypes);
+        
         var hiddenInput = $(inputElement).siblings('input');
         var latestResults = {};  // hash used to keep a reference to the entities (title => uri, id, type, ecc.)
         
@@ -127,6 +136,7 @@ jQuery(document).ready(function($){
                     synchInputValueWithAutocompleteResults();
                 });
             },
+            
             // Callback that fires when a suggestion is approved.
             select: function(s){
 
