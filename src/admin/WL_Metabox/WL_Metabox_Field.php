@@ -59,7 +59,7 @@ class WL_Metabox_Field {
             if( isset( $constraints['cardinality'] ) ) {
                 $this->cardinality = $constraints['cardinality'];
             }
-            
+             
             // Which type of entity can we accept (e.g. Place, Event, ecc.)?
             if( $this->expected_wl_type === WL_DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
                 
@@ -70,6 +70,7 @@ class WL_Metabox_Field {
                 if( !is_array( $parent_expected_types ) ){
                     $parent_expected_types = array( $parent_expected_types );
                 }
+
                 foreach ( $parent_expected_types as $term ){
                     $children = wl_entity_type_taxonomy_get_term_children( $term );
                     foreach( $children as $child ){
@@ -216,11 +217,13 @@ class WL_Metabox_Field {
         
         // print data loaded from DB
         $count = 0;
-        foreach( $this->data as $value ){
-            if( $count < $this->cardinality ) {
-                $html .= $this->html_input( $value );
+        if( $this->data ){
+            foreach( $this->data as $value ){
+                if( $count < $this->cardinality ) {
+                    $html .= $this->html_input( $value );
+                }
+                $count++;
             }
-            $count++;
         }
         
         // Print the empty <input> to add new values
