@@ -8,7 +8,7 @@ require_once( 'WL_Metabox_Field_sameas.php' );
 
 class WL_Metabox {
     
-    protected $fields;
+    public $fields;
     
     public function __construct() {
         
@@ -16,7 +16,7 @@ class WL_Metabox {
         add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ));
         add_action( 'wl_linked_data_save_post', array( &$this, 'save_form_data' ) );
         
-        // TODO: enqueue JS and CSS for the fields
+        // Enqueue js and css
         $this->enqueue_scripts_and_styles();
         
     }
@@ -73,7 +73,7 @@ class WL_Metabox {
         }
         
         $entity_type = wl_entity_taxonomy_get_custom_fields( $entity_id );
-        
+
         if ( isset( $entity_type ) ) {
 
             /**
@@ -82,7 +82,7 @@ class WL_Metabox {
              * - simple: accept values for one property
              * - grouped: accept values for more properties, or for one property that needs a specific metabox.
              */
-            $metaboxes         = $this->wl_entities_metaboxes_group_properties_by_input_field( $entity_type );
+            $metaboxes         = $this->group_properties_by_input_field( $entity_type );
             $simple_metaboxes  = $metaboxes[0];
             $grouped_metaboxes = $metaboxes[1];
 
@@ -104,7 +104,7 @@ class WL_Metabox {
                 $info         = array();
                 $info[ $key ] = $property;
 
-                // Build the requested field as WL_Metabox_Field_ object
+                // Build the requested field group as WL_Metabox_Field_ object
                 $this->add_field( $info, true );
             }
             
@@ -116,7 +116,7 @@ class WL_Metabox {
     *
     * @param array $custom_fields Information on the entity type.
     */
-    public function wl_entities_metaboxes_group_properties_by_input_field( $custom_fields ) {
+    public function group_properties_by_input_field( $custom_fields ) {
 
         $simple_properties  = array();
         $grouped_properties = array();

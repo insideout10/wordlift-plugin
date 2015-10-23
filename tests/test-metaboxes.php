@@ -32,30 +32,76 @@ class MetaboxTest extends WP_UnitTestCase
        
         $metabox = new WL_Metabox();
         
-        // Verify the object has been built (verify hooks, mainly)
+        // Verify the object has hooked correctly (default priority for hooks is 10)
+        $this->assertEquals( 10, has_action( 'add_meta_boxes', array( $metabox, 'add_main_metabox' ) ) );
+        $this->assertEquals( 10, has_action( 'wl_linked_data_save_post', array( $metabox, 'save_form_data' ) ) );
     }
     
     /*
      * Test the WL_Metabox fields are built properly
      */
     function testWL_Metabox_fields_instantiation() {
-       
+    
+        // Create an entity of type Place
+        $place_id = wl_create_post( '', 'p', 'A place', 'publish', WL_ENTITY_TYPE_NAME );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        
+        // Create Metabox and its Fields
         $metabox = new WL_Metabox();
+        $metabox->instantiate_fields( $place_id );
         
-        $entity_id = 23; // TODO: create entity
+        $fields = wl_entity_taxonomy_get_custom_fields( $place_id );
+        $sameAs_field = array( 'sameas' => array( WL_CUSTOM_FIELD_SAME_AS => $fields[WL_CUSTOM_FIELD_SAME_AS] ) );
+        $sameAs_field_obj = new WL_Metabox_Field_sameas( $sameAs_field );
+        $coordinates_field = array( 'coordinates' => array(
+                                        WL_CUSTOM_FIELD_GEO_LATITUDE => $fields[WL_CUSTOM_FIELD_GEO_LATITUDE],
+                                        WL_CUSTOM_FIELD_GEO_LONGITUDE => $fields[WL_CUSTOM_FIELD_GEO_LONGITUDE],
+        ) );
+        $coordinates_field_obj = new WL_Metabox_Field_coordinates( $sameAs_field );
+        $address_field = array( WL_CUSTOM_FIELD_ADDRESS => $fields[WL_CUSTOM_FIELD_ADDRESS] );
+        $address_field_obj = new WL_Metabox_Field( $address_field );
         
-        $metabox->instantiate_fields( $entity_id );
         // Verify the correct fields have been built.
+        $this->assertEquals( $address_field_obj, $metabox->fields[0] );
+        $this->assertEquals( $coordinates_field_obj, $metabox->fields[1] );
+        $this->assertEquals( $sameAs_field_obj, $metabox->fields[2] );
+    }
+    
+    /*
+     * Test the WL_Metabox field grouping mechanism
+     */
+    function testWL_Metabox_group_properties_by_input_field() {
+        
+        // Create an entity of type Place
+        $place_id = wl_create_post( '', 'p', 'A place', 'publish', WL_ENTITY_TYPE_NAME );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        
+        // Create Metabox and its Fields
+        $metabox = new WL_Metabox();
+        $entity_type = wl_entity_taxonomy_get_custom_fields( $place_id );
+        $simple_and_grouped_fields = $metabox->group_properties_by_input_field( $entity_type );
+        
+        // Verify properties have been distinguished (single vs special/grouped)
+        $this->assertArrayHasKey( WL_CUSTOM_FIELD_ADDRESS, $simple_and_grouped_fields[0] );     // Simple field
+        $this->assertArrayHasKey( 'coordinates', $simple_and_grouped_fields[1] );               // Special/grouped Field
+        $this->assertArrayHasKey( 'sameas', $simple_and_grouped_fields[1] );                    // Special/grouped Field
+    }
+    
+    /*
+     * Test the WL_Metabox $_POST saving mechanism
+     */
+    function testWL_Metabox_save_form_data() {
+        // TODO
+        wl_write_log( 'piedo' );
+        wl_write_log( $simple_and_grouped_fields );
     }
     
     
-    /*
-     * Test Fields. The following are about the base class WL_Metabox_Filed.
-     */
+    /*************************************************************************
+     * Test Fields. The following are about the WL_Metabox_Filed_xxx classes. *
+     *************************************************************************/
     
-    // TODO: Base class :(
-    
-    
+    // TODO: Test base class WL_Metabox_Field :(
     
     
     /*
@@ -95,12 +141,9 @@ class MetaboxTest extends WP_UnitTestCase
      */
     function testWL_Metabox_Field_uri_html() {
         
-        // TODO: insert data into DB (also invalid data)
-        
         $args = $this->getSampleCustomField( WL_DATA_TYPE_URI );
-        $field = new WL_Metabox_Field_uri( $args );
         
-        // TODO: load data from DB
+        $field = new WL_Metabox_Field_uri( $args );
         
         // verify html methods
         $html = $field->html();
@@ -114,30 +157,40 @@ class MetaboxTest extends WP_UnitTestCase
     }
     
     /*
-     * Test the WL_Metabox_Field loads data correcly
+     * Test the WL_Metabox_Field loads and saves data correcly
      */
     function testWL_Metabox_Field_uri_data() {
+        
+        // Create an entity of type Person
+        $person_id = wl_create_post( '', 'p', 'A person', 'publish', WL_ENTITY_TYPE_NAME );
+        wl_set_entity_main_type( $person_id, 'http://schema.org/Person' );
+        wl_schema_set_value( $person_id, 'author', 43 );
+        
+        // Create an entity of type CreativeWork
+        $creative_work_id = wl_create_post( '', 'cw', 'A creative work', 'publish', WL_ENTITY_TYPE_NAME );
+        wl_set_entity_main_type( $creative_work_id, 'http://schema.org/CreativeWork' );
+        wl_schema_set_value( $creative_work_id, 'author', $person_id );     // Set authorship
+        
+        // Create fake context
+        global $post;
+        $post = get_post( $creative_work_id );
         
         // Build a single Field
         $author_custom_field = $this->getSampleCustomField( WL_DATA_TYPE_URI );
         $field = new WL_Metabox_Field_uri( $author_custom_field );
-        /*
-        wl_write_log('piedo');
-        wl_write_log( $field );
         
-        $field->get_data();
         // Verify data is loaded correctly from DB
+        $field->get_data();
+        $this->assertEquals( array( $person_id ), $field->data );
         
-        $field->sanitize_data( array('', 12, 'aaaaioio') );
-        // Verify only valid data pass
+        // Save new DB values (third value is invalid and fourth is a new entity)
+        $field->save_data( array( $person_id, 'http://some-triplestore/person2', null, 'Annibale' ) );
         
-        $field->sanitize_data_filter( '' );
-        // Verify data filter
+        // Verify data is loaded correctly from DB
+        $new_entity = get_page_by_title( 'Annibale', OBJECT, WL_ENTITY_TYPE_NAME );
+        $field->get_data();
+        $this->assertEquals( array( $person_id, 'http://some-triplestore/person2', $new_entity->ID ), $field->data );
         
-        $field->save_data();
-        // Verify new DB values
-        
-         */
     }
     
     function getSampleCustomField( $type ){
@@ -157,6 +210,12 @@ class MetaboxTest extends WP_UnitTestCase
         }
         
         if( $type == WL_DATA_TYPE_STRING ){
+            return array(
+                // TODO
+            );
+        }
+        
+        if( $type == WL_DATA_TYPE_DATE ){
             return array(
                 // TODO
             );

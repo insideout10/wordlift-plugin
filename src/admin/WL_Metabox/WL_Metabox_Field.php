@@ -142,6 +142,10 @@ class WL_Metabox_Field {
         
         $sanitized_data = array();
         
+        if( !is_array( $values ) ){
+            $values = array( $values );
+        }
+        
         foreach( $values as $value ){
             $sanitized_value = $this->sanitize_data_filter( $value );
             if( !is_null( $sanitized_value ) ){
