@@ -92,8 +92,8 @@ class MetaboxTest extends WP_UnitTestCase
      */
     function testWL_Metabox_save_form_data() {
         // TODO
-        wl_write_log( 'piedo' );
-        wl_write_log( $simple_and_grouped_fields );
+        //wl_write_log( 'piedo' );
+        //wl_write_log( $simple_and_grouped_fields );
     }
     
     
