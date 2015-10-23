@@ -11,7 +11,8 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 	'blocking'    => true,
 	'cookies'     => array(),
 	'sslverify'   => ( 'false' === getenv( 'WL_SSL_VERIFY_ENABLED' )) ? false : true,
-    'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt'
+    'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt',
+    'decompress'  => false
 ) ) );
 
 // Create a unique ID for this request, useful to hook async HTTP requests.

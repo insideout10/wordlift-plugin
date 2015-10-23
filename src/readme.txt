@@ -4,7 +4,7 @@ Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
 Requires at least: 4.0
 Tested up to: 4.2.4
-Stable tag: 3.0.11
+Stable tag: 3.0.12
 License: GPLv2 or later
 
 Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
@@ -118,12 +118,16 @@ We're glad to support you and you can send us an e-mail to
 
 == Changelog ==
 
-= 3.0.11 =
+= 3.0.12 (2015-10-23) =
+ * Enhancement: [issue 85](https://github.com/insideout10/wordlift-plugin/issues/85). Now structured data are added in the entity pages for the current entity itself
+ * Fix: [issue 119](https://github.com/insideout10/wordlift-plugin/issues/119). Now public entities status is properly preserved when linked to draft posts 
+
+= 3.0.11 (2015-10-14) =
  * Enhancement: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
 
 = 3.0.10 (2015-10-14) =
-  * Fix [#119]. Now public entities status is properly preserved when linked to draft posts (https://github.com/insideout10/wordlift-plugin/issues/119)
-  * Fix: install script in order to use branch-specific WP unit tests libs
+ * Fix: [issue 119](https://github.com/insideout10/wordlift-plugin/issues/119). Now public entities status is properly preserved when linked to draft posts 
+ * Fix: install script in order to use branch-specific WP unit tests libs
 
 = 2.6.19 =
  * Fix: [issue 13](https://github.com/insideout10/wordlift-plugin/issues/13): authorship tagging is now shown only on single pages and posts (thanks to Kevin Polley)
