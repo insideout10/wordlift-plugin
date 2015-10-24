@@ -15,7 +15,10 @@
  * @return The enhanced html.
  */
 function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     // If the post is published, add the button to view Redlink's linked data.
     if ( 'publish' == get_post_status( $post_id ) ) {
         if ( $uri = wl_get_entity_uri( $post_id ) ) {
@@ -31,7 +34,6 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
             __('Test Google Rich Snippets', 'wordlift') .
             "</a></span>\n";
     }
-
     return $html;
 }
 add_filter('get_sample_permalink_html', 'wl_admin_permalink_html', 10, 4 );
