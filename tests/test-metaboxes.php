@@ -91,9 +91,44 @@ class MetaboxTest extends WP_UnitTestCase
      * Test the WL_Metabox $_POST saving mechanism
      */
     function testWL_Metabox_save_form_data() {
-        // TODO
-        //wl_write_log( 'piedo' );
-        //wl_write_log( $simple_and_grouped_fields );
+        
+        // Create an entity of type Place
+        $place_id = wl_create_post( '', 'p', 'A place', 'publish', WL_ENTITY_TYPE_NAME );
+        wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+        
+        // Create Metabox and its Fields
+        $metabox = new WL_Metabox();
+        $metabox->instantiate_fields( $place_id );
+        
+        // Create fake context
+        global $post;
+        $post = get_post( $place_id );
+        
+        // Let's mock up $_POST data
+        $_POST = array(
+            // Data to be saved from the Metabox
+            'wl_metaboxes' => array(
+                'coordinates' => array( 43.77, 11.25 ),     // special field has a wrapper name, not directly the meta
+                WL_CUSTOM_FIELD_ADDRESS => array( 'Tuscany, Italy' ),
+                WL_CUSTOM_FIELD_SAME_AS => array( 'http://yago-knowledge.org/resource/Florence', 'http://dbpedia.org/resource/Florence' )
+            ),
+            // Fake nonces
+            'wordlift_coordinates_entity_box_nonce' => wp_create_nonce( 'wordlift_coordinates_entity_box' ),
+            'wordlift_' . WL_CUSTOM_FIELD_ADDRESS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . WL_CUSTOM_FIELD_ADDRESS . '_entity_box' ),
+            'wordlift_' . WL_CUSTOM_FIELD_SAME_AS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . WL_CUSTOM_FIELD_SAME_AS . '_entity_box' )
+        );
+        
+        // Metabox save (we call it manually here, but it's hooked to wl_linked_data_save_post - see *testWL_Metabox_constructor*)
+        $metabox->save_form_data( $place_id );
+        
+        // Verify data was correctly passed to the fields and saved into DB
+        $place_meta = get_post_meta( $place_id );
+        
+        $this->assertEquals( array( 'http://yago-knowledge.org/resource/Florence', 'http://dbpedia.org/resource/Florence' ),
+                            $place_meta[WL_CUSTOM_FIELD_SAME_AS] );
+        $this->assertEquals( array( 43.77 ), $place_meta[WL_CUSTOM_FIELD_GEO_LATITUDE] );
+        $this->assertEquals( array( 11.25 ), $place_meta[WL_CUSTOM_FIELD_GEO_LONGITUDE] );
+        $this->assertEquals( array( 'Tuscany, Italy' ), $place_meta[WL_CUSTOM_FIELD_ADDRESS] );
     }
     
     

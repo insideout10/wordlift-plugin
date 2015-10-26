@@ -179,20 +179,20 @@ class WL_Metabox {
         $this->fields[] = new $field_class( $args );
     }
     
-    public function save_form_data( $post_id ){
+    public function save_form_data( $entity_id ){
 
         // Build Field objects
-        $this->instantiate_fields( $post_id );
-        
+        $this->instantiate_fields( $entity_id );
+
         // Check if WL metabox form was posted
         if( !isset( $_POST['wl_metaboxes'] ) ){
             return;
         }
-        
+
         foreach( $this->fields as $field ) {
             
+            // Verify nonce
             $valid_nonce = $field->verify_nonce();
-        
             if( $valid_nonce ){
             
                 $posted_data = $_POST['wl_metaboxes'];
@@ -212,7 +212,7 @@ class WL_Metabox {
             }
         }
         
-        wl_linked_data_push_to_redlink( $post_id );
+        wl_linked_data_push_to_redlink( $entity_id );
     }
     
     // print on page all the js and css the fields will need

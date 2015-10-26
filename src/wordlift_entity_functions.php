@@ -230,6 +230,7 @@ function wl_get_meta_type( $property_name ) {
 	$entity_terms = wl_entity_taxonomy_get_custom_fields();
 
 	foreach ( $entity_terms as $term ) {
+
 		foreach ( $term as $wl_constant => $field ) {
 
 			// Is this the predicate we are searching for?
