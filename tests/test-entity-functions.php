@@ -98,7 +98,7 @@ class EntityFunctionsTest extends WP_UnitTestCase
         
         // Get all custom_fileds
         $custom_fields = wl_entity_taxonomy_get_custom_fields();
-        $custom_fields = json_encode( $custom_fields ); // Stringify for brevity
+        $custom_fields = print_r( $custom_fields, true ); // Stringify for brevity
         
         $this->assertContains( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
         $this->assertContains( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );

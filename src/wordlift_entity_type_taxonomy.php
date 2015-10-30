@@ -40,7 +40,7 @@ function wl_entity_type_taxonomy_register()
         'hierarchical' => true,
         'show_admin_column' => true
     );
-
+    
     register_taxonomy(WL_ENTITY_TYPE_TAXONOMY_NAME, 'entity', $args);
 }
 
@@ -110,4 +110,29 @@ function wl_entity_type_taxonomy_get_term_options($term_id)
     // wl_write_log( "wl_entity_type_taxonomy_get_term_options [ term :: " . var_export( $term , true ) . " ]" );
 
     return $term;
+}
+
+/**
+ * Get the children types of given term.
+ * @param mixes $term Term ID (e.g. 12) or slug (e.g. 'creative-work') or name (e.g. 'CreativeWork').
+ * @param string $by Search key. Must be one of: 'id', 'slug', 'name', or 'term_taxonomy_id'.
+ */
+function wl_entity_type_taxonomy_get_term_children( $term, $by='name' ){
+    // TODO: test this method
+    // NOTE: WP taxonomy terms can have only one parent. This is a WP limit.
+    
+    $children_terms = array();
+
+    $term = get_term_by( $by, $term, WL_ENTITY_TYPE_TAXONOMY_NAME );
+
+    if( isset( $term->term_id ) ){
+        
+        $children_ids = get_term_children( $term->term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+
+        foreach( $children_ids as $children_id ){
+            $children_terms[] = get_term( $children_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+        }
+    }
+
+    return $children_terms;
 }

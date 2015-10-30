@@ -11,7 +11,8 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 	'blocking'    => true,
 	'cookies'     => array(),
 	'sslverify'   => ( 'false' === getenv( 'WL_SSL_VERIFY_ENABLED' )) ? false : true,
-    'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt'
+    'sslcertificates' => dirname(__FILE__) . '/ssl/ca-bundle.crt',
+    'decompress'  => false
 ) ) );
 
 // Create a unique ID for this request, useful to hook async HTTP requests.
@@ -48,6 +49,10 @@ define( 'WL_CUSTOM_FIELD_CAL_DATE_END', 'wl_cal_date_end' );
 define( 'WL_CUSTOM_FIELD_LOCATION', 'wl_location' );
 define( 'WL_CUSTOM_FIELD_ADDRESS', 'wl_address' );
 define( 'WL_CUSTOM_FIELD_FOUNDER', 'wl_founder');
+define( 'WL_CUSTOM_FIELD_AUTHOR', 'wl_author');
+define( 'WL_CUSTOM_FIELD_KNOWS', 'wl_knows');
+define( 'WL_CUSTOM_FIELD_BIRTH_DATE', 'wl_birth_date');
+define( 'WL_CUSTOM_FIELD_BIRTH_PLACE', 'wl_birth_place');
 
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );

@@ -231,12 +231,12 @@ function wl_schema_get_type_properties( $type_name ) {
  * @return array of allowed types or NULL in case of property not found.
  * 
  * The following types are supported (defined as constants):
- * - WL_DATA_TYPE_URI
  * - WL_DATA_TYPE_DATE
  * - WL_DATA_TYPE_INTEGER
  * - WL_DATA_TYPE_DOUBLE
  * - WL_DATA_TYPE_BOOLEAN
  * - WL_DATA_TYPE_STRING
+ * - WL_DATA_TYPE_URI
  * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
  */
 function wl_schema_get_property_expected_type( $property_name ) {
@@ -278,17 +278,9 @@ function wl_schema_get_property_expected_type( $property_name ) {
                     $expected_types[] = $field['type'];
                 }
                 
-                // We found the property, we can exit the cycles
-                $found = true;
+                // We found the property
+                return $expected_types;
             }
-            
-            if( $found ) {
-                break;
-            }
-        }
-        
-        if( $found ) {
-            break;
         }
     }
     

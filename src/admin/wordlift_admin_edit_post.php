@@ -31,7 +31,6 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
             __('Test Google Rich Snippets', 'wordlift') .
             "</a></span>\n";
     }
-
     return $html;
 }
 add_filter('get_sample_permalink_html', 'wl_admin_permalink_html', 10, 4 );

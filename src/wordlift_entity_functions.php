@@ -24,7 +24,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 					'compare' => '='
 				),
 				array(
-					'key'     => 'entity_url',
+					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '='
 				)
@@ -137,7 +137,6 @@ function wl_build_entity_uri( $post_id ) {
  */
 function wl_get_entity_uri( $post_id ) {
     
-    
 	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
 	    
 	// If the dataset uri is not properly configured, null is returned
@@ -209,7 +208,6 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 	}
 }
 
-// TODO: this method must be eliminated in favor of the new *wl_schema_get_property_expected_type*
 /**
  * Retrieve entity property type, starting from the schema.org's property name
  * or from the WL_CUSTOM_FIELD_xxx name.
@@ -232,6 +230,7 @@ function wl_get_meta_type( $property_name ) {
 	$entity_terms = wl_entity_taxonomy_get_custom_fields();
 
 	foreach ( $entity_terms as $term ) {
+
 		foreach ( $term as $wl_constant => $field ) {
 
 			// Is this the predicate we are searching for?
@@ -298,6 +297,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		// Return all custom fields.
 		// Get taxonomy terms
 		$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
+
 		if ( is_wp_error( $terms ) ) {
 			return null;
 		}
