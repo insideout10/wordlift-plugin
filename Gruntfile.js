@@ -75,7 +75,13 @@ module.exports = function ( grunt ) {
                 SOURCE_DIR + '{js,css}/wordlift-faceted-entity-search-widget.*',
                 SOURCE_DIR + '{js,css}/wordlift-reloaded.*',
                 SOURCE_DIR + '{js,css}/wordlift-ui.*'
-            ]
+            ],
+            dynamic: {
+                dot: true,
+                expand: true,
+                cwd: BUILD_DIR,
+                src: []
+            }
         },
         /* CoffeeScript compilation */
         coffee: {
@@ -132,7 +138,16 @@ module.exports = function ( grunt ) {
         },
         /* Copy files */
         copy: {
-            files: {
+            /* Copy font files */
+            fonts: {
+                expand: true,
+                cwd: SOURCE_DIR + 'bower_components/components-font-awesome/fonts/',
+                src: '*',
+                dest: SOURCE_DIR + 'fonts/',
+                flatten: true,
+                filter: 'isFile'
+            },
+            build: {
                 files: [
                     {
                         dot: true,
@@ -142,98 +157,80 @@ module.exports = function ( grunt ) {
                             '**',
                             '!**/.{svn,git}/**', // Ignore version control directories.
                             // Ignore unminified versions of external libs we don't ship:
-                            '!coffee/**'
+                            '!coffee/**',
+                            '!less/**'
                         ],
                         dest: BUILD_DIR
                     }
-                    //,{
-                    //    src: 'wp-config-sample.php',
-                    //    dest: BUILD_DIR
-                    //}
                 ]
             },
-            fonts: {
+            dynamic: {
+                dot: true,
                 expand: true,
-                cwd: 'bower_components/components-font-awesome/fonts/',
-                src: '*',
-                dest: 'app/fonts/',
-                flatten: true,
-                filter: 'isFile'
-            },
-            'dist-stylesheets': {
-                expand: true,
-                cwd: 'app/css/',
-                src: [ 'wordlift-faceted-entity-search-widget.css',
-                    'wordlift-faceted-entity-search-widget.min.css',
-                    'wordlift-faceted-entity-search-widget.min.css.map',
-                    'wordlift-reloaded.css',
-                    'wordlift-reloaded.min.css',
-                    'wordlift-reloaded.min.css.map',
-                    'wordlift.css',
-                    'wordlift.min.css',
-                    'wordlift.min.css.map',
-                    'wordlift.ui.css',
-                    'wordlift.ui.min.css',
-                    'wordlift.ui.min.css.map' ],
-                dest: 'dist/<%= pkg.version %>/css/',
-                flatten: true
-            },
-            'dist-fonts': {
-                expand: true,
-                cwd: 'app/fonts/',
-                src: '*',
-                dest: 'dist/<%= pkg.version %>/fonts/',
-                flatten: true
-            }
-        },
-        symlink: {
-            options: {
-                overwrite: true
-            },
-            explicit: {
-                src: 'dist/<%= pkg.version %>',
-                dest: 'dist/latest'
+                cwd: SOURCE_DIR,
+                dest: BUILD_DIR,
+                src: []
             }
         },
         /* Document file */
-        docco: {
-            doc: {
-                src: [ SOURCE_DIR + 'coffee/**/*.coffee',
-                    'test/unit/**/*.coffee' ],
-                options: {
-                    output: 'docs/'
-                }
-            }
-        },
+        //docco: {
+        //    doc: {
+        //        src: [ SOURCE_DIR + 'coffee/**/*.coffee',
+        //            'test/unit/**/*.coffee' ],
+        //        options: {
+        //            output: 'docs/'
+        //        }
+        //    }
+        //},
         /* Watch for changes */
         watch: {
-            scripts: {
-                files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
-                tasks: [ 'coffee',
-                    'uglify',
-                    'copy:dist-scripts',
-                    'docco' ],
+            all: {
+                files: [
+                    SOURCE_DIR + '**',
+                    // Ignore version control directories.
+                    '!' + SOURCE_DIR + '**/.{svn,git}/**'
+                ],
+                tasks: [ 'clean:dynamic', 'copy:dynamic' ],
                 options: {
-                    spawn: false
+                    dot: true,
+                    spawn: false,
+                    interval: 2000
                 }
             },
-            styles: {
-                files: [ SOURCE_DIR + 'less/*.less' ],
-                tasks: [ 'less',
-                    'copy:dist-fonts',
-                    'copy:dist-stylesheets' ],
-                options: {
-                    spawn: false
-                }
+            config: {
+                files: 'Gruntfile.js'
             }
         }
+        //,
+        //watch: {
+        //    scripts: {
+        //        files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
+        //        tasks: [ 'coffee',
+        //            'uglify',
+        //            'copy:dist-scripts',
+        //            'docco' ],
+        //        options: {
+        //            spawn: false
+        //        }
+        //    },
+        //    styles: {
+        //        files: [ SOURCE_DIR + 'less/*.less' ],
+        //        tasks: [ 'less',
+        //            'copy:dist-fonts',
+        //            'copy:dist-stylesheets' ],
+        //        options: {
+        //            spawn: false
+        //        }
+        //    }
+        //}
     } );
 
     grunt.registerTask( 'build', [
         'coffee',
         'uglify',
         'less',
-        'cssmin'
+        'cssmin',
+        'copy:fonts'
     ] );
 
     grunt.registerTask( 'rebuild', [
@@ -241,11 +238,25 @@ module.exports = function ( grunt ) {
         'build'
     ] );
 
-    return grunt.registerTask( 'default',
-        [ 'coffee',
-            'uglify',
-            'less',
-            'copy',
-            'symlink',
-            'docco' ] );
+    /*
+     * Automatically updates the `:dynamic` configurations
+     * so that only the changed files are updated.
+     */
+    grunt.event.on('watch', function( action, filepath, target ) {
+        var src;
+
+        if ( [ 'coffee', 'less' ].indexOf( target ) === -1 ) {
+            return;
+        }
+
+        src = [ path.relative( SOURCE_DIR, filepath ) ];
+
+        if ( action === 'deleted' ) {
+            grunt.config( [ 'clean', 'dynamic', 'src' ], src );
+        } else {
+            grunt.config( [ 'copy', 'dynamic', 'src' ], src );
+        }
+    });
+
+    return grunt.registerTask( 'default', [ 'build' ] );
 };
