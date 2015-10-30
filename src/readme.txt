@@ -6,19 +6,19 @@ Tested up to: 4.3.1
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to Web Publishers. Beautifully.
+WordLift brings the power of Artificial Intelligence to WordPress. Beautifully turns editorial contents into actionable knowledge and helps you reach your maximum potential audiences.
 
 == Description ==
 
-**WordLift** is a WordPress Plug-in developed by [InSideOut10](http://blog.insideout.io/about-us) to organise post and pages. 
+**WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
+**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
 **WordLift** is a **semantic editor** for WordPress.
-**WordLift** turns editorial contents into actionable knowledge and helps bloggers and site owners reach their maximum potential audiences.
 
-=Features=
+= Features =
 
 **WordLift** adds [semantic annotations](http://docs.wordlift.it/en/latest/key-concepts.html#semantic-fingerprint) and combines information publicly available as [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to support the editorial workflow by suggesting relevant information, images and links.
 
-=**WordLift** brings to content editors=
+= **WordLift** brings to content editors =
 _____________
 
 * support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph)
@@ -29,7 +29,7 @@ _____________
 * new means to drive business growth with **meaningful content discovery paths**
 * content tagging for **better SEO**
 
-=Websites built with **WordLift** bring to readers=
+= Websites built with **WordLift** bring to readers =
 _____________
 
 * multiple means of searching and accessing **editorial contents around a specific topic** 
@@ -51,11 +51,11 @@ The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* l
 
 == Frequently Asked Questions ==
 
-=Why shall I use WordLift?= 
+= Why shall I use WordLift? = 
 
 The purpose of using WordLift is to (1) categorize your content, (2) help people find content of interest to them, and (3) help WordLift describe your contents in *machine-readable* format so that other computers can re-use it. 
 
-=Why shall I publish my contents as Linked Data?=
+= Why shall I publish my contents as Linked Data? =
 
 Richer metadata helps making content discoverable, searchable, and provides new means to reaching your audience.
 Organising web contents around concepts or entities rather than traditional web pages helps improve navigation, content re-use, content re-purposing and search engine rankings.
