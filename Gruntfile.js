@@ -73,61 +73,17 @@ module.exports = function ( grunt ) {
         },
         /* Minify the JavaScript files */
         uglify: {
-            'wordlift': {
-                options: {
-                    sourceMap: true,
-                    sourceMapIn: SOURCE_DIR + 'js/wordlift.js.map',
-                    compress: {},
-                    drop_console: true,
-                    dead_code: true,
-                    mangle: true,
-                    beautify: false
-                },
-                files: {
-                    'app/js/wordlift.min.js': 'app/js/wordlift.js'
-                }
-            },
-            'wordlift-ui': {
-                options: {
-                    sourceMap: true,
-                    sourceMapIn: 'app/js/wordlift.ui.js.map',
-                    compress: {},
-                    drop_console: true,
-                    dead_code: true,
-                    mangle: true,
-                    beautify: false
-                },
-                files: {
-                    'app/js/wordlift.ui.min.js': 'app/js/wordlift.ui.js'
-                }
-            },
-            'wordlift-reloaded': {
-                options: {
-                    sourceMap: true,
-                    sourceMapIn: 'app/js/wordlift-reloaded.js.map',
-                    compress: {},
-                    drop_console: true,
-                    dead_code: true,
-                    mangle: true,
-                    beautify: false
-                },
-                files: {
-                    'app/js/wordlift-reloaded.min.js': 'app/js/wordlift-reloaded.js'
-                }
-            },
-            'wordlift-faceted-entity-search-widget': {
-                options: {
-                    sourceMap: true,
-                    sourceMapIn: 'app/js/wordlift-faceted-entity-search-widget.js.map',
-                    compress: {},
-                    drop_console: true,
-                    dead_code: true,
-                    mangle: true,
-                    beautify: false
-                },
-                files: {
-                    'app/js/wordlift-faceted-entity-search-widget.min.js': 'app/js/wordlift-faceted-entity-search-widget.js'
-                }
+            all: {
+                expand: true,
+                cwd: SOURCE_DIR,
+                dest: BUILD_DIR,
+                ext: '.min.js',
+                src: [
+                    'js/wordlift.js',
+                    'js/wordlift.ui.js',
+                    'js/wordlift-reloaded.js',
+                    'js/wordlift-faceted-entity-search-widget.js'
+                ]
             }
         },
         /* CSS */
@@ -156,6 +112,26 @@ module.exports = function ( grunt ) {
         },
         /* Copy files */
         copy: {
+            files: {
+                files: [
+                    {
+                        dot: true,
+                        expand: true,
+                        cwd: SOURCE_DIR,
+                        src: [
+                            '**',
+                            '!**/.{svn,git}/**', // Ignore version control directories.
+                            // Ignore unminified versions of external libs we don't ship:
+                            '!coffee/**'
+                        ],
+                        dest: BUILD_DIR
+                    }
+                    //,{
+                    //    src: 'wp-config-sample.php',
+                    //    dest: BUILD_DIR
+                    //}
+                ]
+            },
             fonts: {
                 expand: true,
                 cwd: 'bower_components/components-font-awesome/fonts/',

@@ -9,10 +9,11 @@ wp-tests/wordpress/wp-content/uploads
 composer.phar
 composer.lock
 vendor/
-src/js
-src/css
-src/fonts
-dist/
 
-/build/
-/node_modules/
+/node_modules
+
+# folders belonging to the svn branch
+/build
+/tags
+/trunk
+
