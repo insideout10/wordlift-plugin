@@ -1,39 +1,35 @@
 === Plugin Name ===
 Contributors: wordlift, ziodave
-Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web
 Requires at least: 4.2
 Tested up to: 4.3.1
 Stable tag: {version}
 License: GPLv2 or later
 
-Serendipity for Bloggers. 
-**WordLift** brings the power of Artificial Intelligence to Web Publishers.
+WordLift brings the power of Artificial Intelligence to Web Publishers. Beautifully.
 
 == Description ==
 
 **WordLift** is a WordPress Plug-in developed by [InSideOut10](http://blog.insideout.io/about-us) to organise post and pages. 
-
 **WordLift** is a **semantic editor** for WordPress.
-
 **WordLift** turns editorial contents into actionable knowledge and helps bloggers and site owners reach their maximum potential audiences.
 
-Features:
+=Features=
 
-**WordLift** adds [semantic annotations] (http://docs.wordlift.it/en/latest/key-concepts.html#semantic-fingerprint) and combines information publicly available as [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to support the editorial workflow by suggesting relevant information, images and links.
+**WordLift** adds [semantic annotations](http://docs.wordlift.it/en/latest/key-concepts.html#semantic-fingerprint) and combines information publicly available as [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to support the editorial workflow by suggesting relevant information, images and links.
 
-WordLift brings to content editors
+=**WordLift** brings to content editors=
 _____________
 
-* support for **self-organising** (or structuring) **contents** using publicly (or privately) available `knowledge graphs <key-concepts.html#knowledge-graph>`_ (`linked open data <key-concepts.html#linked-open-data>`_)
-* an easy way to **build your own dataset** made of *web content*, *semantic annotations* and a *custom vocabulary* 
+* support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph)
+* an easy way to **build a dataset** made of *web content*, *semantic annotations* and a *custom vocabulary* 
 * support for creating web content using **contextually relevant fact-based information**
 * valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more
 * insightful **visualisations to engage the reader**
 * new means to drive business growth with **meaningful content discovery paths**
 * content tagging for **better SEO**
 
-Websites built with WordLift bring to readers
+=Websites built with **WordLift** bring to readers=
 _____________
 
 * multiple means of searching and accessing **editorial contents around a specific topic** 
@@ -49,16 +45,18 @@ The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* l
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in using a [WordLift key] (http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
+3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
 
 **Subscribing to the service from the WordLift website is NOT yet available.**
 
 == Frequently Asked Questions ==
 
 =Why shall I use WordLift?= 
+
 The purpose of using WordLift is to (1) categorize your content, (2) help people find content of interest to them, and (3) help WordLift describe your contents in *machine-readable* format so that other computers can re-use it. 
 
 =Why shall I publish my contents as Linked Data?=
+
 Richer metadata helps making content discoverable, searchable, and provides new means to reaching your audience.
 Organising web contents around concepts or entities rather than traditional web pages helps improve navigation, content re-use, content re-purposing and search engine rankings.
 
@@ -68,12 +66,13 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Screenshots ==
 
-1. To add the schema.org mark-up simply add the [wordlift.entites] shortcode, WordLift will take care of the rest.
-2. User Registration
-3. WordLift Widget in Edit Post
-4. In order to add the Geo-map Widget use the shortcode <em>[wordlift.geomap]</em>
-5. In order to add the Treemap Widget use the shortcode <em>[wordlift.treemap]</em>
-6. The WordLift Bar.
+1. The slick [WordLift Edit Post Widget](http://docs.wordlift.it/en/latest/analysis.html#wordlift-edit-post-widget). 
+2. The WordLift Edit Post Widget explained.
+3. The WordLift Event Entity.
+4. The WordLift Place Entity.
+5. The [Navigator Widget](http://docs.wordlift.it/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
+6. The [Faceted Search Widget](http://docs.wordlift.it/en/latest/discover.html#the-faceted-search-widget).
+7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
 
