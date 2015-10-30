@@ -7,10 +7,10 @@ module.exports = function ( grunt ) {
         config = {};
 
     // Load tasks.
-    require('matchdep').filterDev(['grunt-*', '!grunt-legacy-util']).forEach( grunt.loadNpmTasks );
+    require( 'matchdep' ).filterDev( [ 'grunt-*', '!grunt-legacy-util' ] ).forEach( grunt.loadNpmTasks );
 
     // Load legacy utils
-    grunt.util = require('grunt-legacy-util');
+    grunt.util = require( 'grunt-legacy-util' );
 
     // wordlift.js
     config[ SOURCE_DIR + 'js/wordlift.js' ] = [
@@ -71,10 +71,10 @@ module.exports = function ( grunt ) {
         clean: {
             all: [
                 BUILD_DIR,
-                SOURCE_DIR + 'js/wordlift.*',
-                SOURCE_DIR + 'js/wordlift-faceted-entity-search-widget.*',
-                SOURCE_DIR + 'js/wordlift-reloaded.*',
-                SOURCE_DIR + 'js/wordlift-ui.*'
+                SOURCE_DIR + '{js,css}/wordlift.*',
+                SOURCE_DIR + '{js,css}/wordlift-faceted-entity-search-widget.*',
+                SOURCE_DIR + '{js,css}/wordlift-reloaded.*',
+                SOURCE_DIR + '{js,css}/wordlift-ui.*'
             ]
         },
         /* CoffeeScript compilation */
@@ -111,33 +111,23 @@ module.exports = function ( grunt ) {
                 expand: true,
                 cwd: SOURCE_DIR + 'less/',
                 dest: SOURCE_DIR + 'css/',
+                ext: '.css',
                 src: [
                     'wordlift.less',
                     'wordlift-ui.less',
                     'wordlift-reloaded.less',
                     'wordlift-faceted-entity-search-widget.less'
                 ]
-            },
-            development: {
-                files: {
-                    'app/css/wordlift.css': [ SOURCE_DIR + 'less/wordlift.less' ],
-                    'app/css/wordlift.ui.css': [ SOURCE_DIR + 'less/wordlift.ui.less' ],
-                    'app/css/wordlift-reloaded.css': [ SOURCE_DIR + 'less/wordlift-reloaded.less' ],
-                    'app/css/wordlift-faceted-entity-search-widget.css': [ SOURCE_DIR + 'less/wordlift-faceted-entity-search-widget.less' ]
-                }
-            },
-            dist: {
-                options: {
-                    cleancss: true,
-                    sourceMap: true,
-                    sourceMapFilename: 'app/css/wordlift.min.css.map'
-                },
-                files: {
-                    'app/css/wordlift.min.css': SOURCE_DIR + 'less/wordlift.less',
-                    'app/css/wordlift.ui.min.css': SOURCE_DIR + 'less/wordlift.ui.less',
-                    'app/css/wordlift-reloaded.min.css': SOURCE_DIR + 'less/wordlift-reloaded.less',
-                    'app/css/wordlift-faceted-entity-search-widget.min.css': SOURCE_DIR + 'less/wordlift-faceted-entity-search-widget.less'
-                }
+            }
+        },
+        /* Minify css */
+        cssmin: {
+            all: {
+                expand: true,
+                cwd: SOURCE_DIR + 'less/',
+                dest: SOURCE_DIR + 'css/',
+                ext: '.min.css',
+                src: '*.css'
             }
         },
         /* Copy files */
