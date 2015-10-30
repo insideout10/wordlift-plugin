@@ -71,7 +71,10 @@ module.exports = function ( grunt ) {
         clean: {
             all: [
                 BUILD_DIR,
-                SOURCE_DIR + 'js/'
+                SOURCE_DIR + 'js/wordlift.*',
+                SOURCE_DIR + 'js/wordlift-faceted-entity-search-widget.*',
+                SOURCE_DIR + 'js/wordlift-reloaded.*',
+                SOURCE_DIR + 'js/wordlift-ui.*'
             ]
         },
         /* CoffeeScript compilation */
