@@ -1,75 +1,45 @@
 === Plugin Name ===
 Contributors: wordlift, ziodave
 Donate link: http://www.linkedin.com/company/insideout10/wordlift-327348/product
-Tags: semantic, stanbol, seo, iks, semantic web, schema.org, microdata, authorship, google, google authorship, google plus, google plus author, google plus integration, google plus search, in-depth, indepth
-Requires at least: 4.0
-Tested up to: 4.2.4
-Stable tag: 3.0.12
+Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web
+Requires at least: 4.2
+Tested up to: 4.3.1
+Stable tag: {version}
 License: GPLv2 or later
 
-Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a new way to write, and publish your contents to the Linked Data Cloud.
+Serendipity for Bloggers. 
+**WordLift** brings the power of Artificial Intelligence to Web Publishers.
 
 == Description ==
 
-**WordLift** is a WordPress Plug-in developed by [InSideOut10](http://www.insideout.io) to help you organise your post and pages using "concepts" like you do in the real world. 
+**WordLift** is a WordPress Plug-in developed by [InSideOut10](http://blog.insideout.io/about-us) to organise post and pages. 
 
-**In-Depth features**
+**WordLift** is a **semantic editor** for WordPress.
 
-The web is changing fast and search engines update the algorithms to find quality content. For editor it means to mark up their pages in the right way.
-
-WordLift comes to the rescue with new **In-Depth features** that automatically add the correct semantic tagging for you, just download, install and activate WordLift.
+**WordLift** turns editorial contents into actionable knowledge and helps bloggers and site owners reach their maximum potential audiences.
 
 Features:
 
- * Article
-   * author
-   * name
-   * text
-   * interactionCount
-   * datePublished (Twenty Thirteen)
+**WordLift** adds [semantic annotations] (http://docs.wordlift.it/en/latest/key-concepts.html#semantic-fingerprint) and combines information publicly available as [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to support the editorial workflow by suggesting relevant information, images and links.
 
- * Organization (Avamsys)
-   * logo
-   * url
+WordLift brings to content editors
+_____________
 
-Since these tags are highly coupled with your WordPress theme, we list here the themes we tested so far:
+* support for **self-organising** (or structuring) **contents** using publicly (or privately) available `knowledge graphs <key-concepts.html#knowledge-graph>`_ (`linked open data <key-concepts.html#linked-open-data>`_)
+* an easy way to **build your own dataset** made of *web content*, *semantic annotations* and a *custom vocabulary* 
+* support for creating web content using **contextually relevant fact-based information**
+* valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more
+* insightful **visualisations to engage the reader**
+* new means to drive business growth with **meaningful content discovery paths**
+* content tagging for **better SEO**
 
- * Twenty Thirteen
- * Twenty Twelve
- * [DW Focus](http://www.designwall.com/wordpress/themes/dw-focus/) 1.0.3
- * [Avamsys](http://themeforest.net/item/avamys-retina-ready-business-wordpress-theme/4122827?ref=cyberandy)
+Websites built with WordLift bring to readers
+_____________
 
-Please let us know if your theme is working or not, and we'll try to add support for it.
-
-**WordLift Bar**
-
-We now feature the **WordLift Bar** with the list of entities and links to the entity page right within your blog. WordLift Bar is *experimental*, if you encounter any issue you can disable it from the plugin options and report us any trouble or suggestion.
-
-You can view some examples of the WordLift Bar:
-
- * English: [demo 1](http://bit.ly/wlbar-english)
- * Russian: [demo 2](http://bit.ly/wlbar-russian)
-
-**Warning:** WordLift is still under heavy testing, therefore some features might not work as expected or not work at all. Should you encounter any issue while installing, activating, configuring and using the plug-in, we would love to receive your feedback to support [AT] wordlift.it
-
-"Concepts" are just like tags but let you add structure to your information providing you and your visitors many ways to filter and visualize your content. 
-
-We developed WordLift with love because we believe that your website deserves a special place in the Semantic Web.
-
-WordLift reads your pages or blog posts, understands it, *enriches it* by querying the semantic web and tags them using a markup vocabulary that all major search providers (Google, Bing, Yahoo! and Yandex) recognise. 
-
-Through a simple Plug-in all your contents will be instantly compliant with [schema.org](http://www.schema.org) specifications; moreover WordLift will add to your blog an interface to ask *meaning-driven questions* about your contents (hence connecting your website to the Linked Data Cloud).
-
- * Organize your contents using "Concepts" (or Entities)
- * Treemap, Geomap and Entity List available as add-on Widgets
- * Multi-language support (see below)  
- * Attract more search traffic
- * Compatible with WordPress 3.3.0 and above
- * Eye-catching supplementary SERP data
- * Instantly review and markup old post
- * Use the [schema.org](http://www.schema.org) vocabulary
- * Add HTML Microdata
- * Enable a SPARQL end-point for your site
+* multiple means of searching and accessing **editorial contents around a specific topic** 
+* **contextual information** helping readers with limited domain understanding
+* an **intuitive overview of all content being written** *on the site* and *around a specific topic* or graph of topics
+* meaningful **content recommendations** 
 
 WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
@@ -79,33 +49,22 @@ The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* l
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in
+3. Activate the plug-in using a [WordLift key] (http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
+
+**Subscribing to the service from the WordLift website is NOT yet available.**
 
 == Frequently Asked Questions ==
 
-= How do I get my API-Key? =
+=Why shall I use WordLift?= 
+The purpose of using WordLift is to (1) categorize your content, (2) help people find content of interest to them, and (3) help WordLift describe your contents in *machine-readable* format so that other computers can re-use it. 
 
-To grab an existing API-Key or to generate a new one, follow these steps:
-1. go to the **Register/Login** section in the WordLift menu on the Dashboard
-2. register using your Facebook, LinkedIn or Twitter account or choose login, password and e-mail by clicking *"Click here to register"*
-3. enter the **Consumer Key** and hit the **Save** button. API-Key provide full access to your WordLift account, so always keep them secure.
+=Why shall I publish my contents as Linked Data?=
+Richer metadata helps making content discoverable, searchable, and provides new means to reaching your audience.
+Organising web contents around concepts or entities rather than traditional web pages helps improve navigation, content re-use, content re-purposing and search engine rankings.
 
-= Can I use WordLift on other blogging platforms other then WordPress? =
+Having content aggregations based on semantic annotations that use unambiguous Linked Data identifiers creates a richer navigation bringing the user experience to new levels of engagement. 
 
-WordLift is powered by RedLink a semantic enrichment platform that is currently available for Drupal, Typo3, Alfresco and OpenCMS. Get in contact with us for more information, we'll be happy to help.
-
-= Which version of WordPress do you support? =
-
-We currently support WordPress 3.3.0 or higher.
-
-= What is an "entity"? =
-
-An entity is something that exists in the real-world: celebrities, cities, sports teams, buildings, geographical features, movies, celestial objects and works of art are all entities. WordLift by reading your posts and pages understands the real-world entities associated with your contents as well as their relationships —in geek-speak— it builds a “graph” of your website.
-
-= What do I do if I have questions? =
-
-We're glad to support you and you can send us an e-mail to
- <wordpress@insideout.io>
+More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) can be found on [docs.wordlift.it](http://docs.wordlift.it).  
 
 == Screenshots ==
 
@@ -127,8 +86,8 @@ We're glad to support you and you can send us an e-mail to
  * Enhancement: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
 
 = 3.0.10 (2015-10-14) =
- * Fix: [issue 119](https://github.com/insideout10/wordlift-plugin/issues/119). Now public entities status is properly preserved when linked to draft posts 
- * Fix: install script in order to use branch-specific WP unit tests libs
+  * Fix [#119](https://github.com/insideout10/wordlift-plugin/issues/119). Now public entities status is properly preserved when linked to draft posts.
+  * Fix: install script in order to use branch-specific WP unit tests libs
 
 = 2.6.19 =
  * Fix: [issue 13](https://github.com/insideout10/wordlift-plugin/issues/13): authorship tagging is now shown only on single pages and posts (thanks to Kevin Polley)
@@ -252,8 +211,12 @@ We're glad to support you and you can send us an e-mail to
 * First public release
 
 == More Information ==
+WordLift is **happily developed** by [InSideOut10](http://blog.insideout.io/about-us).
 
-Find more information about "WordLift: HTML Microdata for WordPress using the Interactive Knowledge Stack (IKS)" see below:
- * [WordLift presentation](http://www.slideshare.net/cyberandy/wordlift-microdata-for-wordpress-using-the-interactive-knowledge-stack-iks) on SlideShare,
- * [WordLift screencast](http://vimeo.com/26049653).
- * [Blog Post on the Semantic Web Workshop where WordLift was first announced](http://blog.iks-project.eu/what-do-you-love-about-iks-an-early-adopters-account/) on the IKS Blog.
+[InSideOut10](http://blog.insideout.io/about-us) delivers strategic digital communication tools for enterprises and organisations. 
+
+[InSideOut10](http://blog.insideout.io/about-us) uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
+
+WordLift infrastructure runs on the semantic platform of [Redlink](http://redlink.co). 
+
+[Redlink](http://redlink.co) is commercial spin-off based in Salzburg, Austria focused on *Semantic Technologies* and *Free Open Source Software* that has been co-founded by [InSideOut10](http://blog.insideout.io/about-us) in 2013.
