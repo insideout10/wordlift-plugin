@@ -1,0 +1,1477 @@
+{
+    "@context": {
+        "Agent": "http://dbpedia.org/ontology/Agent",
+        "comment": "http://www.w3.org/2000/01/rdf-schema#comment",
+        "confidence": {
+            "@id": "http://fise.iks-project.eu/ontology/confidence",
+            "@type": "http://www.w3.org/2001/XMLSchema#double"
+        },
+        "contributor": "http://purl.org/dc/terms/contributor",
+        "created": {
+            "@id": "http://purl.org/dc/terms/created",
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        },
+        "creator": {
+            "@id": "http://purl.org/dc/terms/creator",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        "depiction": {
+            "@id": "http://xmlns.com/foaf/0.1/depiction",
+            "@type": "@id"
+        },
+        "description": "http://schema.org/description",
+        "end": {
+            "@id": "http://fise.iks-project.eu/ontology/end",
+            "@type": "http://www.w3.org/2001/XMLSchema#int"
+        },
+        "Enhancement": "http://fise.iks-project.eu/ontology/Enhancement",
+        "entity-label": "http://fise.iks-project.eu/ontology/entity-label",
+        "entity-reference": {
+            "@id": "http://fise.iks-project.eu/ontology/entity-reference",
+            "@type": "@id"
+        },
+        "entity-type": {
+            "@id": "http://fise.iks-project.eu/ontology/entity-type",
+            "@type": "@id"
+        },
+        "EntityAnnotation": "http://fise.iks-project.eu/ontology/EntityAnnotation",
+        "extracted-from": {
+            "@id": "http://fise.iks-project.eu/ontology/extracted-from",
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.image": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_for": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_types": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.official_website": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/organization.organization.date_founded": {
+            "@type": "http://www.w3.org/2001/XMLSchema#gYearMonth"
+        },
+        "image": {
+            "@id": "http://schema.org/image",
+            "@type": "@id"
+        },
+        "label": "http://www.w3.org/2000/01/rdf-schema#label",
+        "language": "http://purl.org/dc/terms/language",
+        "LinguisticSystem": "http://purl.org/dc/terms/LinguisticSystem",
+        "Organisation": "http://dbpedia.org/ontology/Organisation",
+        "Organization": "http://schema.org/Organization",
+        "relation": {
+            "@id": "http://purl.org/dc/terms/relation",
+            "@type": "@id"
+        },
+        "sameAs": {
+            "@id": "http://www.w3.org/2002/07/owl#sameAs",
+            "@type": "@id"
+        },
+        "selected-text": "http://fise.iks-project.eu/ontology/selected-text",
+        "selection-context": "http://fise.iks-project.eu/ontology/selection-context",
+        "selection-prefix": "http://fise.iks-project.eu/ontology/selection-prefix",
+        "selection-suffix": "http://fise.iks-project.eu/ontology/selection-suffix",
+        "start": {
+            "@id": "http://fise.iks-project.eu/ontology/start",
+            "@type": "http://www.w3.org/2001/XMLSchema#int"
+        },
+        "subject": {
+            "@id": "http://purl.org/dc/terms/subject",
+            "@type": "@id"
+        },
+        "TextAnnotation": "http://fise.iks-project.eu/ontology/TextAnnotation",
+        "Thing": "http://www.w3.org/2002/07/owl#Thing",
+        "thumbnail": {
+            "@id": "http://dbpedia.org/ontology/thumbnail",
+            "@type": "@id"
+        },
+        "type": {
+            "@id": "http://purl.org/dc/terms/type",
+            "@type": "@id"
+        },
+        "url": {
+            "@id": "http://schema.org/url",
+            "@type": "@id"
+        },
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/World_Wide_Web",
+            "description": {
+                "@language": "en",
+                "@value": "The World Wide Web (abbreviated as WWW or W3, commonly known as the Web), is a system of interlinked hypertext documents accessed via the Internet. With a web browser, one can view web pages that may contain text, images, videos, and other multimedia, and navigate between them via hyperlinks."
+            },
+            "image": [
+                "http://wordpress380.localhost/wp-content/uploads/02b/k7t/n/02bk7tn.png",
+                "http://wordpress380.localhost/wp-content/uploads/04z/st5/8/04zst58.jpg",
+                "http://wordpress380.localhost/wp-content/uploads/www/_lo/go_/by_/rob/ert/_ca/ill/iau/WWW_logo_by_Robert_Cailliau.svg"
+            ],
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web"
+            },
+            "sameAs": [
+                "http://dbpedia.org/resource/World_Wide_Web",
+                "http://rdf.freebase.com/ns/m.0828v",
+                "http://yago-knowledge.org/resource/World_Wide_Web"
+            ],
+            "url": "http://wordpress380.localhost/?post_type=entity&p=500"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Data_access",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Act100030358",
+                "http://dbpedia.org/class/yago/Activity100407535",
+                "http://dbpedia.org/class/yago/Application100949134",
+                "http://dbpedia.org/class/yago/DataAccessTechnologies",
+                "http://dbpedia.org/class/yago/Event100029378",
+                "http://dbpedia.org/class/yago/Occupation100582388",
+                "http://dbpedia.org/class/yago/Profession100609953",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/Technology100949619",
+                "http://dbpedia.org/class/yago/Use100947128",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "Data access typically refers to software and activities related to storing, retrieving, or acting on data housed in a database or other repository. There are two types of data access, sequential access and random access. Data Access is simply the authorization you have to access different data files. Data access can help distinguish the abilities of Administrators and users. E.g."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Data access"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.05d6bp",
+                "http://yago-knowledge.org/resource/Data_access"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:Data_access_technologies",
+                "http://dbpedia.org/resource/Category:Data_management"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/January_2008",
+            "comment": {
+                "@language": "en",
+                "@value": "January 2008 was the first month of that year. It began on a Tuesday and ended after 31 days on a Thursday."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "January 2008"
+            },
+            "subject": [
+                "http://dbpedia.org/resource/Category:2008",
+                "http://dbpedia.org/resource/Category:Days_of_the_year",
+                "http://dbpedia.org/resource/Category:January"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Query_language",
+            "comment": {
+                "@language": "en",
+                "@value": "Query languages are computer languages used to make queries into databases and information systems. Broadly, query languages can be classified according to whether they are database query languages or information retrieval query languages. The difference is that a database query language attempts to give factual answers to factual questions, while an information retrieval query language attempts to find documents containing information that is relevant to an area of inquiry. Examples include: ."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Query language"
+            },
+            "sameAs": "http://rdf.freebase.com/ns/m.02h6qq",
+            "subject": [
+                "http://dbpedia.org/resource/Category:Computer_languages",
+                "http://dbpedia.org/resource/Category:Data_management",
+                "http://dbpedia.org/resource/Category:Database_management_systems",
+                "http://dbpedia.org/resource/Category:Databases",
+                "http://dbpedia.org/resource/Category:Internet_search_engines",
+                "http://dbpedia.org/resource/Category:Markup_languages",
+                "http://dbpedia.org/resource/Category:Query_languages",
+                "http://dbpedia.org/resource/Category:SQL"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/RDF_query_language",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/CommandLanguage106899446",
+                "http://dbpedia.org/class/yago/Communication100033020",
+                "http://dbpedia.org/class/yago/Language106282651",
+                "http://dbpedia.org/class/yago/QueryLanguages",
+                "http://dbpedia.org/class/yago/SourceLanguage106283912"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "An RDF query language is a computer language, specifically a query language for databases, able to retrieve and manipulate data stored in Resource Description Framework format. SPARQL is emerging as the de facto RDF query language, and is a W3C recommendation. Released as a Candidate Recommendation in April 2006, it returned to Working Draft status in October 2006, due to open issues. It returned to Candidate Recommendation status in June 2007."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "RDF query language"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.0gtvyj",
+                "http://yago-knowledge.org/resource/RDF_query_language"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:Query_languages",
+                "http://dbpedia.org/resource/Category:RDF_data_access",
+                "http://dbpedia.org/resource/Category:Resource_Description_Framework",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:XML-based_standards"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Resource_Description_Framework",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/BibliographyFileFormats",
+                "http://dbpedia.org/class/yago/Communication100033020",
+                "http://dbpedia.org/class/yago/Format106636806",
+                "http://dbpedia.org/class/yago/Information106634376",
+                "http://dbpedia.org/class/yago/Measure100033615",
+                "http://dbpedia.org/class/yago/Message106598915",
+                "http://dbpedia.org/class/yago/Standard107260623",
+                "http://dbpedia.org/class/yago/SystemOfMeasurement113577171",
+                "http://dbpedia.org/class/yago/WorldWideWebConsortiumStandards",
+                "http://dbpedia.org/class/yago/XML-basedStandards"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The Resource Description Framework (RDF) is a family of World Wide Web Consortium (W3C) specifications originally designed as a metadata data model. It has come to be used as a general method for conceptual description or modeling of information that is implemented in web resources, using a variety of syntax notations and data serialization formats."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Resource Description Framework"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.0f2vj",
+                "http://yago-knowledge.org/resource/Resource_Description_Framework"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:Bibliography_file_formats",
+                "http://dbpedia.org/resource/Category:Computer_file_formats",
+                "http://dbpedia.org/resource/Category:Computer_standards",
+                "http://dbpedia.org/resource/Category:Internet_governance",
+                "http://dbpedia.org/resource/Category:Knowledge_representation",
+                "http://dbpedia.org/resource/Category:Markup_languages",
+                "http://dbpedia.org/resource/Category:Metadata",
+                "http://dbpedia.org/resource/Category:Open_formats",
+                "http://dbpedia.org/resource/Category:Resource_Description_Framework",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:Standards",
+                "http://dbpedia.org/resource/Category:Web_standards",
+                "http://dbpedia.org/resource/Category:World_Wide_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium_standards",
+                "http://dbpedia.org/resource/Category:XML",
+                "http://dbpedia.org/resource/Category:XML-based_standards"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/SPARQL",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Act100030358",
+                "http://dbpedia.org/class/yago/Activity100407535",
+                "http://dbpedia.org/class/yago/ArtificialLanguage106894544",
+                "http://dbpedia.org/class/yago/Cognition100023271",
+                "http://dbpedia.org/class/yago/CommandLanguage106899446",
+                "http://dbpedia.org/class/yago/Communication100033020",
+                "http://dbpedia.org/class/yago/ComputerLanguage106899633",
+                "http://dbpedia.org/class/yago/ComputerLanguages",
+                "http://dbpedia.org/class/yago/DataModelingLanguages",
+                "http://dbpedia.org/class/yago/Datum105816622",
+                "http://dbpedia.org/class/yago/Event100029378",
+                "http://dbpedia.org/class/yago/Information105816287",
+                "http://dbpedia.org/class/yago/Language106282651",
+                "http://dbpedia.org/class/yago/Measure100033615",
+                "http://dbpedia.org/class/yago/ProgrammingLanguage106898352",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/QueryLanguages",
+                "http://dbpedia.org/class/yago/Service100577525",
+                "http://dbpedia.org/class/yago/SourceLanguage106283912",
+                "http://dbpedia.org/class/yago/Standard107260623",
+                "http://dbpedia.org/class/yago/SystemOfMeasurement113577171",
+                "http://dbpedia.org/class/yago/WebServices",
+                "http://dbpedia.org/class/yago/Work100575741",
+                "http://dbpedia.org/class/yago/WorldWideWebConsortiumStandards",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "SPARQL (pronounced \"sparkle\", a recursive acronym for SPARQL Protocol and RDF Query Language) is an RDF query language, that is, a query language for databases, able to retrieve and manipulate data stored in Resource Description Framework format. It was made a standard by the RDF Data Access Working Group (DAWG) of the World Wide Web Consortium, and is considered as one of the key technologies of the semantic web. On 15 January 2008, SPARQL 1.0 became an official W3C Recommendation."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "SPARQL"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.07n__5",
+                "http://yago-knowledge.org/resource/SPARQL"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:Computer_languages",
+                "http://dbpedia.org/resource/Category:Computing_acronyms",
+                "http://dbpedia.org/resource/Category:Data_modeling_languages",
+                "http://dbpedia.org/resource/Category:Declarative_programming_languages",
+                "http://dbpedia.org/resource/Category:Query_languages",
+                "http://dbpedia.org/resource/Category:RDF_data_access",
+                "http://dbpedia.org/resource/Category:Resource_Description_Framework",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:World_Wide_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium_standards"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Working_Group",
+            "label": {
+                "@language": "en",
+                "@value": "Working Group"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Working_Group_(dogs)",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Act100030358",
+                "http://dbpedia.org/class/yago/Activity100407535",
+                "http://dbpedia.org/class/yago/Diversion100426928",
+                "http://dbpedia.org/class/yago/DogShow100519492",
+                "http://dbpedia.org/class/yago/DogShowsAndShowing",
+                "http://dbpedia.org/class/yago/Entertainment100429048",
+                "http://dbpedia.org/class/yago/Event100029378",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/Show100520257",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "Working Group is the name of a breed group of dogs, used by kennel clubs to classify a defined collection of dog breeds. Most major English-language kennel clubs include a Working Group, although different kennel clubs may not include the same breeds in their Working Group. Working Group does not define one particular type of dog. It is not a scientific classification."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Working Group (dogs)"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.09c5f2",
+                "http://yago-knowledge.org/resource/Working_Group_(dogs)"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:Dog_shows_and_showing",
+                "http://dbpedia.org/resource/Category:Working_dogs"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/World_Wide_Web_Consortium",
+            "@type": [
+                "Agent",
+                "Organisation",
+                "Organization",
+                "Thing",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Association108049401",
+                "http://dbpedia.org/class/yago/Consortia",
+                "http://dbpedia.org/class/yago/Consortium108236438",
+                "http://dbpedia.org/class/yago/Group100031264",
+                "http://dbpedia.org/class/yago/InternationalNongovernmentalOrganizations",
+                "http://dbpedia.org/class/yago/NongovernmentalOrganization108009834",
+                "http://dbpedia.org/class/yago/Organization108008335",
+                "http://dbpedia.org/class/yago/OrganizationsEstablishedIn1994",
+                "http://dbpedia.org/class/yago/SocialGroup107950920",
+                "http://dbpedia.org/class/yago/StandardsOrganizations",
+                "http://dbpedia.org/class/yago/YagoLegalActor",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The World Wide Web Consortium (W3C) is the main international standards organization for the World Wide Web (abbreviated WWW or W3). Founded by Tim Berners-Lee at MIT and currently headed by him, the consortium is made up of member organizations which maintain full-time staff for the purpose of working together in the development of standards for the World Wide Web. As of 29 March 2012 (2012-03-29), the World Wide Web Consortium (W3C) has 351 members."
+            },
+            "depiction": "http://upload.wikimedia.org/wikipedia/commons/4/4b/W3C_Icon.svg",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.082bb",
+                "http://yago-knowledge.org/resource/World_Wide_Web_Consortium"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:1994_establishments",
+                "http://dbpedia.org/resource/Category:Accessible_information",
+                "http://dbpedia.org/resource/Category:Cascading_Style_Sheets",
+                "http://dbpedia.org/resource/Category:Computer-related_organizations",
+                "http://dbpedia.org/resource/Category:Consortia",
+                "http://dbpedia.org/resource/Category:HTML",
+                "http://dbpedia.org/resource/Category:International_non-profit_organizations",
+                "http://dbpedia.org/resource/Category:International_nongovernmental_organizations",
+                "http://dbpedia.org/resource/Category:International_organizations",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_governance",
+                "http://dbpedia.org/resource/Category:Internet_standards",
+                "http://dbpedia.org/resource/Category:Keio_University",
+                "http://dbpedia.org/resource/Category:Massachusetts_Institute_of_Technology",
+                "http://dbpedia.org/resource/Category:Networking_standards",
+                "http://dbpedia.org/resource/Category:Organizations",
+                "http://dbpedia.org/resource/Category:Organizations_established_in_1994",
+                "http://dbpedia.org/resource/Category:Standards",
+                "http://dbpedia.org/resource/Category:Standards_organizations",
+                "http://dbpedia.org/resource/Category:Web_development",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:Websites",
+                "http://dbpedia.org/resource/Category:World_Wide_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium_standards"
+            ],
+            "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/W3C_Icon.svg/200px-W3C_Icon.svg.png"
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02h6qq",
+            "@type": [
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Query languages are computer languages used to make queries into databases and information systems.\r\nBroadly, query languages can be classified according to whether they are database query languages or information retrieval query languages. The difference is that a database query language attempts to give factual answers to factual questions, while an information retrieval query language attempts to find documents containing information that is relevant to an area of inquiry.\r\nExamples include:\r\n⁕.QL is a proprietary object-oriented query language for querying relational databases; successor of Datalog;\r\n⁕Contextual Query Language a formal language for representing queries to information retrieval systems such as web indexes or bibliographic catalogues.\r\n⁕CQLF is a query language for CODASYL-type databases;\r\n⁕Concept-Oriented Query Language is used in the concept-oriented model. It is based on a novel data modeling construct, concept, and uses such operations as projection and de-projection for multi-dimensional analysis, analytical operations and inference;\r\n⁕DMX is a query language for Data Mining models;\r\n⁕Datalog is a query language for deductive databases;"
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Query language"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.040hv",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.saints.feast_day",
+                "http://rdf.freebase.com/ns/base.saints.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.day_of_year"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "15 January"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "January 15 is the 15th day of the year in the Gregorian calendar. There are 350 days remaining until the end of the year."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.044jf67",
+            "label": {
+                "@language": "en",
+                "@value": "January 15"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.05vsnz4",
+            "@type": [
+                "http://rdf.freebase.com/ns/book.author",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1254y8hm2",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xryvt",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.082bb",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.natlang.abbreviated_topic",
+                "http://rdf.freebase.com/ns/base.natlang.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.politeuri.provider",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.business_operation",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language_developer",
+                "http://rdf.freebase.com/ns/computer.software_developer",
+                "http://rdf.freebase.com/ns/organization.organization",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.standards_body",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.topic",
+                "http://rdf.freebase.com/ns/user.jg.default_domain.standards_organization"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "W3C"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "The World Wide Web Consortium is the main international standards organization for the World Wide Web.\r\nFounded and currently led by Tim Berners-Lee the consortium is made up of member organizations which maintain full-time staff for the purpose of working together in the development of standards for the World Wide Web. As of 7 September 2013, the World Wide Web Consortium has 383 members.\r\nW3C also engages in education and outreach, develops software and serves as an open forum for discussion about the Web."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125b02m_v",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrt3_",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.w3.org/",
+            "http://rdf.freebase.com/ns/organization.organization.date_founded": "1994-10",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.09c5f2",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.dogbreed.topic",
+                "http://rdf.freebase.com/ns/base.petbreeds.dog_breed_group",
+                "http://rdf.freebase.com/ns/base.petbreeds.topic",
+                "http://rdf.freebase.com/ns/biology.breed_group",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/user.jefft0.default_domain.dog_breed_group"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Working Group is the name of a breed group of dogs, used by kennel clubs to classify a defined collection of dog breeds. Most major English-language kennel clubs include a Working Group, although different kennel clubs may not include the same breeds in their Working Group. Working Group does not define one particular type of dog. It is not a scientific classification. Working Group is not a term used by the international kennel club association, the Fédération Cynologique Internationale, which more finely divides its breed groupings by dog type and breed history."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.029l39n",
+                "http://rdf.freebase.com/ns/m.029l3_9"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1257yx7ym",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.05czn04",
+            "label": {
+                "@language": "en",
+                "@value": "Working Group"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.09xr80",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_type"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "A working group is an ad hoc group of subject-matter experts working together to achieve specified goals. The term sometimes refers more specifically to an interdisciplinary collaboration of researchers working on new research activities that would be difficult to develop under traditional funding mechanisms. The lifespan of a working group can last anywhere between a few months and several years. Such groups have the tendency to develop a quasi-permanent existence once the assigned task is accomplished; hence the need to disband the working group once it has achieved its goal.\r\nExamples of common goals for working groups include:\r\n⁕creation of an informational document\r\n⁕creation of a standard\r\n⁕resolution of problems related to a system or network\r\n⁕Continuous improvement\r\n⁕Research\r\nWorking groups are also referred to as task groups, workgroups, or technical advisory groups."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Working group"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0f2vj",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.bio2rdf.bio2rdf_format",
+                "http://rdf.freebase.com/ns/base.bio2rdf.database_format",
+                "http://rdf.freebase.com/ns/base.bio2rdf.format",
+                "http://rdf.freebase.com/ns/base.bio2rdf.topic",
+                "http://rdf.freebase.com/ns/base.natlang.abbreviated_topic",
+                "http://rdf.freebase.com/ns/base.natlang.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology",
+                "http://rdf.freebase.com/ns/base.ontologies.topic",
+                "http://rdf.freebase.com/ns/base.politeuri.namespace_1",
+                "http://rdf.freebase.com/ns/base.rdfschema.resource",
+                "http://rdf.freebase.com/ns/base.semanticpatterns.topic",
+                "http://rdf.freebase.com/ns/base.titticimmino.topic",
+                "http://rdf.freebase.com/ns/base.vocab.topic",
+                "http://rdf.freebase.com/ns/base.vocab.vocabulary",
+                "http://rdf.freebase.com/ns/base.vocabulary.ontology",
+                "http://rdf.freebase.com/ns/base.vocabulary.topic",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.file_format",
+                "http://rdf.freebase.com/ns/computer.internet_protocol",
+                "http://rdf.freebase.com/ns/computer.software_genre",
+                "http://rdf.freebase.com/ns/internet.api",
+                "http://rdf.freebase.com/ns/user.giladgoren.default_domain.supertopic",
+                "http://rdf.freebase.com/ns/user.sandos.computation.specification",
+                "http://rdf.freebase.com/ns/user.sandos.computation.topic",
+                "http://rdf.freebase.com/ns/user.sandos.semantic_web.semantic_website_export",
+                "http://rdf.freebase.com/ns/user.yge.default_domain.metadata_model"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "Resource Description Framework"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": [
+                {
+                    "@language": "en",
+                    "@value": "The Resource Description Framework (RDF) is a framework for representing information in the Web.\r\n\r\nRDF Concepts and Abstract Syntax defines an abstract syntax on which RDF is based, and which serves to link its concrete syntax to its formal semantics. It also includes discussion of design goals, key concepts, datatyping, character normalization and handling of URI references."
+                },
+                {
+                    "@language": "en",
+                    "@value": "The Resource Description Framework is a family of World Wide Web Consortium specifications originally designed as a metadata data model. It has come to be used as a general method for conceptual description or modeling of information that is implemented in web resources, using a variety of syntax notations and data serialization formats."
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.09z4v1d",
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125cqy4tb",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02kpw0f",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.w3.org/TR/rdf-primer/",
+            "label": {
+                "@language": "en",
+                "@value": "RDF"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0gtvyj",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language",
+                "http://rdf.freebase.com/ns/user.admos0.default_domain.query_language"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "An RDF query language is a computer language, specifically a query language for databases, able to retrieve and manipulate data stored in Resource Description Framework format.\r\nSPARQL is emerging as the de facto RDF query language, and is a W3C recommendation. Released as a Candidate Recommendation in April 2006, it returned to Working Draft status in October 2006, due to open issues. It returned to Candidate Recommendation status in June 2007. On 12 November 2007 the status of SPARQL changed into Proposed Recommendation. On 15 January 2008, SPARQL was standardized."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "RDF query language"
+            }
+        },
+        {
+            "@id": "urn:enhancement-060a3702-15dc-d88c-d20e-b1c008d70981",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.90909094,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 303,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "Data Access"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " format. It was made a standard by the RDF Data Access Working Group (DAWG) of the World Wide Web"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "y the RDF "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " Working G"
+            },
+            "start": 292
+        },
+        {
+            "@id": "urn:enhancement-0650485f-8e3d-23e5-2424-625bce6f4859",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 249,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "Resource Description Framework"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " able to retrieve and manipulate data stored in Resource Description Framework format. It was made a standard by the RDF Data"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "stored in "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " format. I"
+            },
+            "start": 219
+        },
+        {
+            "@id": "urn:enhancement-155a6a90-02f6-406c-dc76-516dfb1727d3",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Working Group"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Working_Group_(dogs)",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-2221f2f0-dcc3-08b3-f874-e1049e1e1f02"
+        },
+        {
+            "@id": "urn:enhancement-1c03bb72-6cfe-3dfc-ad7f-3082a5ce086b",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.30222222,
+            "created": "2014-03-16T13:37:20.798Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "RDF query language"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.0gtvyj",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language",
+                "http://rdf.freebase.com/ns/user.admos0.default_domain.query_language"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": [
+                "urn:enhancement-9de365a0-3312-4927-0cbd-8735d460901d",
+                "urn:enhancement-d791d926-23e9-61f9-7b67-6414586bc49e"
+            ]
+        },
+        {
+            "@id": "urn:enhancement-2221f2f0-dcc3-08b3-f874-e1049e1e1f02",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 317,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "Working Group"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " It was made a standard by the RDF Data Access Working Group (DAWG) of the World Wide Web Consortium, and is"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "ta Access "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " (DAWG) of"
+            },
+            "start": 304
+        },
+        {
+            "@id": "urn:enhancement-25859928-666d-29ea-fc27-11b777e20513",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 442,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "15 January"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " of the key technologies of the semantic web. On 15 January 2008, SPARQL 1.0 became an official W3C"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "c web. On "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " 2008, SPA"
+            },
+            "start": 432
+        },
+        {
+            "@id": "urn:enhancement-2f31d5f0-9589-81a7-e488-a6876b7a6786",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "15 January"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.040hv",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/base.saints.feast_day",
+                "http://rdf.freebase.com/ns/base.saints.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.day_of_year"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-25859928-666d-29ea-fc27-11b777e20513"
+        },
+        {
+            "@id": "urn:enhancement-2f8992ca-c8e8-5cef-d2b6-4d9724ae10dc",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.082bb",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/base.natlang.abbreviated_topic",
+                "http://rdf.freebase.com/ns/base.natlang.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.politeuri.provider",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.business_operation",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language_developer",
+                "http://rdf.freebase.com/ns/computer.software_developer",
+                "http://rdf.freebase.com/ns/organization.organization",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.standards_body",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.topic",
+                "http://rdf.freebase.com/ns/user.jg.default_domain.standards_organization"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-a3998091-47f8-9ddb-2c63-e963692fe468"
+        },
+        {
+            "@id": "urn:enhancement-373d390a-d679-eddf-3386-d8f76c1830d8",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Resource Description Framework"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.0f2vj",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/base.bio2rdf.bio2rdf_format",
+                "http://rdf.freebase.com/ns/base.bio2rdf.database_format",
+                "http://rdf.freebase.com/ns/base.bio2rdf.format",
+                "http://rdf.freebase.com/ns/base.bio2rdf.topic",
+                "http://rdf.freebase.com/ns/base.natlang.abbreviated_topic",
+                "http://rdf.freebase.com/ns/base.natlang.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology",
+                "http://rdf.freebase.com/ns/base.ontologies.topic",
+                "http://rdf.freebase.com/ns/base.politeuri.namespace_1",
+                "http://rdf.freebase.com/ns/base.rdfschema.resource",
+                "http://rdf.freebase.com/ns/base.semanticpatterns.topic",
+                "http://rdf.freebase.com/ns/base.titticimmino.topic",
+                "http://rdf.freebase.com/ns/base.vocab.topic",
+                "http://rdf.freebase.com/ns/base.vocab.vocabulary",
+                "http://rdf.freebase.com/ns/base.vocabulary.ontology",
+                "http://rdf.freebase.com/ns/base.vocabulary.topic",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.file_format",
+                "http://rdf.freebase.com/ns/computer.internet_protocol",
+                "http://rdf.freebase.com/ns/computer.software_genre",
+                "http://rdf.freebase.com/ns/internet.api",
+                "http://rdf.freebase.com/ns/user.giladgoren.default_domain.supertopic",
+                "http://rdf.freebase.com/ns/user.sandos.computation.specification",
+                "http://rdf.freebase.com/ns/user.sandos.computation.topic",
+                "http://rdf.freebase.com/ns/user.sandos.semantic_web.semantic_website_export",
+                "http://rdf.freebase.com/ns/user.yge.default_domain.metadata_model"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-0650485f-8e3d-23e5-2424-625bce6f4859"
+        },
+        {
+            "@id": "urn:enhancement-387764ad-4e92-d535-f251-78a47480388c",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.90909094,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Data access"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Data_access",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-060a3702-15dc-d88c-d20e-b1c008d70981"
+        },
+        {
+            "@id": "urn:enhancement-4be38b20-d11c-19b3-055d-050c566534cd",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.962Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "January 2008"
+            },
+            "entity-reference": "http://dbpedia.org/resource/January_2008",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-8415fe19-8737-7ae8-b70f-b589e478a555"
+        },
+        {
+            "@id": "urn:enhancement-4cfc0e25-5da0-662f-d790-4f890d633152",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.95,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.05vsnz4",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/book.author",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-a3998091-47f8-9ddb-2c63-e963692fe468"
+        },
+        {
+            "@id": "urn:enhancement-53e65996-ec83-734b-af7d-ca0ad0cdff8b",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.962Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "W3C Recommendation"
+            },
+            "entity-reference": "http://dbpedia.org/resource/World_Wide_Web_Consortium",
+            "entity-type": [
+                "Agent",
+                "Organisation",
+                "Organization",
+                "Thing"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-d6551797-13d6-690d-d6cf-9c7b509fa1e5"
+        },
+        {
+            "@id": "urn:enhancement-7aa0d159-7539-5b8f-a056-633710f8ef4f",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.34,
+            "created": "2014-03-16T13:37:20.798Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "RDF query language"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.0gtvyj",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language",
+                "http://rdf.freebase.com/ns/user.admos0.default_domain.query_language"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": [
+                "urn:enhancement-aaf7f73e-910a-3516-1f58-d5c41c42ab0b",
+                "urn:enhancement-d791d926-23e9-61f9-7b67-6414586bc49e"
+            ]
+        },
+        {
+            "@id": "urn:enhancement-8415fe19-8737-7ae8-b70f-b589e478a555",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.962Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 447,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "January 2008"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " the key technologies of the semantic web. On 15 January 2008, SPARQL 1.0 became an official W3C"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "eb. On 15 "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ", SPARQL 1"
+            },
+            "start": 435
+        },
+        {
+            "@id": "urn:enhancement-8b5dc020-b771-e8fd-5258-2156b2148db1",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 103,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "SPARQL Protocol and RDF Query Language"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " (pronounced \\\"sparkle\\\", a recursive acronym for SPARQL Protocol and RDF Query Language) is an RDF query language, that is, a query"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "ronym for "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ") is an RD"
+            },
+            "start": 65
+        },
+        {
+            "@id": "urn:enhancement-9888e160-9f05-e067-3ac5-8284fbd3fc43",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.34,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "RDF query language"
+            },
+            "entity-reference": "http://dbpedia.org/resource/RDF_query_language",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": [
+                "urn:enhancement-aaf7f73e-910a-3516-1f58-d5c41c42ab0b",
+                "urn:enhancement-d791d926-23e9-61f9-7b67-6414586bc49e"
+            ]
+        },
+        {
+            "@id": "urn:enhancement-9de365a0-3312-4927-0cbd-8735d460901d",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.8888889,
+            "created": "2014-03-16T13:37:20.798Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 103,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "RDF Query Language"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " a recursive acronym for SPARQL Protocol and RDF Query Language) is an RDF query language, that is, a query"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "tocol and "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ") is an RD"
+            },
+            "start": 85
+        },
+        {
+            "@id": "urn:enhancement-a3998091-47f8-9ddb-2c63-e963692fe468",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 357,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " the RDF Data Access Working Group (DAWG) of the World Wide Web Consortium, and is considered as one of the key technologies"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "G) of the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ", and is c"
+            },
+            "start": 332,
+            "type": "Organisation"
+        },
+        {
+            "@id": "urn:enhancement-aaf7f73e-910a-3516-1f58-d5c41c42ab0b",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": [
+                "org.apache.stanbol.enhancer.engines.entitycomention.EntityCoMentionEngine",
+                "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine"
+            ],
+            "created": "2014-03-16T13:37:20.798Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 156,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": [
+                "urn:enhancement-8b5dc020-b771-e8fd-5258-2156b2148db1",
+                "urn:enhancement-9de365a0-3312-4927-0cbd-8735d460901d",
+                "urn:enhancement-d791d926-23e9-61f9-7b67-6414586bc49e"
+            ],
+            "selected-text": {
+                "@language": "en",
+                "@value": "query language"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " Language) is an RDF query language, that is, a query language for databases, able to retrieve and manipulate"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "hat is, a "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " for datab"
+            },
+            "start": 142
+        },
+        {
+            "@id": "urn:enhancement-aec44246-8eff-3d53-052c-c5f618207390",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Working Group"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.09c5f2",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/base.dogbreed.topic",
+                "http://rdf.freebase.com/ns/base.petbreeds.dog_breed_group",
+                "http://rdf.freebase.com/ns/base.petbreeds.topic",
+                "http://rdf.freebase.com/ns/biology.breed_group",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/user.jefft0.default_domain.dog_breed_group"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-2221f2f0-dcc3-08b3-f874-e1049e1e1f02"
+        },
+        {
+            "@id": "urn:enhancement-c0ee56b6-b165-8b0d-a5b6-435669fca683",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.794Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web"
+            },
+            "entity-reference": "http://data.redlink.io/353/wordlift/entity/World_Wide_Web",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-e35137ad-0648-d99c-86f0-cba95ec7e997"
+        },
+        {
+            "@id": "urn:enhancement-c13305ce-826d-ef30-ef57-087e5b76db83",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.9230769,
+            "created": "2014-03-16T13:37:20.799Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Working group"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.09xr80",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_type"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-2221f2f0-dcc3-08b3-f874-e1049e1e1f02"
+        },
+        {
+            "@id": "urn:enhancement-d20e08d7-87fa-0ced-0dd2-216daa10b911",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.3157143,
+            "created": "2014-03-16T13:37:20.798Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Query language"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.02h6qq",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-aaf7f73e-910a-3516-1f58-d5c41c42ab0b"
+        },
+        {
+            "@id": "urn:enhancement-d6551797-13d6-690d-d6cf-9c7b509fa1e5",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.962Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 497,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "W3C Recommendation"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " 15 January 2008, SPARQL 1.0 became an official W3C Recommendation.\"}"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": " official "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ".\"}"
+            },
+            "start": 479,
+            "type": "Organisation"
+        },
+        {
+            "@id": "urn:enhancement-d73da083-6d58-9126-c990-fb11a5bb01a6",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.962Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "entity-reference": "http://dbpedia.org/resource/World_Wide_Web_Consortium",
+            "entity-type": [
+                "Agent",
+                "Organisation",
+                "Organization",
+                "Thing"
+            ],
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-a3998091-47f8-9ddb-2c63-e963692fe468"
+        },
+        {
+            "@id": "urn:enhancement-d791d926-23e9-61f9-7b67-6414586bc49e",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": [
+                "org.apache.stanbol.enhancer.engines.entitycomention.EntityCoMentionEngine",
+                "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine"
+            ],
+            "created": "2014-03-16T13:37:20.798Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 129,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": [
+                "urn:enhancement-8b5dc020-b771-e8fd-5258-2156b2148db1",
+                "urn:enhancement-9de365a0-3312-4927-0cbd-8735d460901d"
+            ],
+            "selected-text": {
+                "@language": "en",
+                "@value": "RDF query language"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " SPARQL Protocol and RDF Query Language) is an RDF query language, that is, a query language for databases, able to"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "ge) is an "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ", that is,"
+            },
+            "start": 111
+        },
+        {
+            "@id": "urn:enhancement-db2df26e-8f26-79a1-605c-bfb0db988bfc",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.3157143,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Query language"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Query_language",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-aaf7f73e-910a-3516-1f58-d5c41c42ab0b"
+        },
+        {
+            "@id": "urn:enhancement-dd5ec6f2-78af-ebbf-0ca2-270805580476",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.9999966,
+            "created": "2014-03-16T13:37:20.745Z",
+            "creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "language": "en",
+            "type": "LinguisticSystem"
+        },
+        {
+            "@id": "urn:enhancement-dee1110b-473c-5b4f-d8ff-377f09803400",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.9230769,
+            "created": "2014-03-16T13:37:20.962Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Working group"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Working_group",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-2221f2f0-dcc3-08b3-f874-e1049e1e1f02"
+        },
+        {
+            "@id": "urn:enhancement-e35137ad-0648-d99c-86f0-cba95ec7e997",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.794Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 346,
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "selected-text": {
+                "@language": "en",
+                "@value": "World Wide Web"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " the RDF Data Access Working Group (DAWG) of the World Wide Web Consortium, and is considered as one of the key"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "G) of the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " Consortiu"
+            },
+            "start": 332
+        },
+        {
+            "@id": "urn:enhancement-ee057616-a5b7-e0c1-1111-24d2304417ff",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "SPARQL Protocol and RDF Query Language"
+            },
+            "entity-reference": "http://dbpedia.org/resource/SPARQL",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": [
+                "urn:enhancement-8b5dc020-b771-e8fd-5258-2156b2148db1",
+                "urn:enhancement-aaf7f73e-910a-3516-1f58-d5c41c42ab0b",
+                "urn:enhancement-d791d926-23e9-61f9-7b67-6414586bc49e"
+            ]
+        },
+        {
+            "@id": "urn:enhancement-f1de6388-d9e7-924c-2886-936264651ada",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Resource Description Framework"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Resource_Description_Framework",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-0650485f-8e3d-23e5-2424-625bce6f4859"
+        },
+        {
+            "@id": "urn:enhancement-f29ab4d7-2ac9-7c8d-830d-dc14d1f345f1",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.96153843,
+            "created": "2014-03-16T13:37:20.961Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Working Group"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Working_Group",
+            "extracted-from": "urn:content-item-sha1-81523fe70b7cb9e880b091aa085a942f8e6da6d1",
+            "relation": "urn:enhancement-2221f2f0-dcc3-08b3-f874-e1049e1e1f02"
+        }
+    ]
+}

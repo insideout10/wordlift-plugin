@@ -1,0 +1,100 @@
+@import '../../bower_components/components-font-awesome/less/font-awesome.less';
+@import 'colors.less';
+@import 'wordlift-functions.less';
+@import 'wordlift-carousel.less';
+@import 'wordlift-card.less';
+@import 'wordlift-label.less';
+
+#wordlift-faceted-entity-search-widget {
+
+	font-size:13px !important;
+	
+	border:#e2e2e2 1px solid;
+	padding: 0.6em;
+	margin: 0.6em 0em;
+
+	h6 {
+		text-transform: uppercase;
+		font-size: 0.86em;
+		padding: 0.6em 0.6em 0em 0.6em;
+		margin: 0;
+	}
+
+	ul {
+		margin:0;
+		padding:0.6em;
+		list-style-type:none;
+	}
+	.wl-facets {
+
+		background-color:#fff;
+		margin: 0em 0em 0.6em 0em;
+					
+		.wl-facets-container {
+			
+			h6 {
+  				
+				&.wl-fs-creative-work { .tile(@wl-creative-work-color, @fa-var-lightbulb-o) }
+  				&.wl-fs-event { .tile(@wl-event-color, @fa-var-calendar) }
+  				&.wl-fs-organization { .tile(@wl-organization-color, @fa-var-building-o) }
+  				&.wl-fs-local-business { .tile(@wl-organization-color, @fa-var-building-o) }
+  				&.wl-fs-person { .tile(@wl-person-color, @fa-var-user) }
+  				&.wl-fs-place { .tile(@wl-place-color, @fa-var-map-marker) }
+  				&.wl-fs-thing { .tile(@wl-thing-color, @fa-var-file-o) }
+			}
+
+			li {
+				
+				padding: 0em;
+				margin: 0em;
+				line-height: 1.4em;
+				font-size: 0.8em;
+					
+				.wl-label {
+					text-transform: capitalize;
+					cursor: pointer;
+
+				}
+				.wl-counter {
+					cursor: pointer;
+				}
+
+			}
+		}
+
+	}
+
+	.wl-filters {
+		margin: 0em 0em 0.6em 0em;
+		min-height: 22px;
+		font-size: 0.8em;
+		padding-right:80px;
+
+		.wl-filter-button { 
+			i {
+				.fa-icon(@fa-var-filter);
+				color:@wl-brand-color;
+			}
+			position: absolute;
+			right:0;
+			top:0;
+			color:#000;
+			cursor:pointer;
+			padding:2px 4px;
+
+			border:#e2e2e2 1px solid;
+			-webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -ms-border-radius: 5px;
+
+            &.selected {
+				border-color: @wl-brand-color; 		
+			}
+
+		}
+	}
+	.wl-posts {
+		padding: 0em;
+		margin: 0.6em 0em 0em 0em;
+	}
+}

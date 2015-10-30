@@ -1,0 +1,1729 @@
+{
+    "@context": {
+        "dbp-ont": "http://dbpedia.org/ontology/",
+        "dbp-ont:thumbnail": {
+            "@type": "@id"
+        },
+        "dc": "http://purl.org/dc/terms/",
+        "dc:created": {
+            "@type": "xsd:dateTime"
+        },
+        "dc:creator": {
+            "@type": "xsd:string"
+        },
+        "dc:references": {
+            "@type": "@id"
+        },
+        "dc:relation": {
+            "@type": "@id"
+        },
+        "dc:subject": {
+            "@type": "@id"
+        },
+        "dc:type": {
+            "@type": "@id"
+        },
+        "enhancer": "http://fise.iks-project.eu/ontology/",
+        "enhancer:confidence": {
+            "@type": "xsd:double"
+        },
+        "enhancer:end": {
+            "@type": "xsd:int"
+        },
+        "enhancer:entity-reference": {
+            "@type": "@id"
+        },
+        "enhancer:entity-type": {
+            "@type": "@id"
+        },
+        "enhancer:extracted-from": {
+            "@type": "@id"
+        },
+        "enhancer:start": {
+            "@type": "xsd:int"
+        },
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "foaf:depiction": {
+            "@type": "@id"
+        },
+        "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+        "geo:lat": {
+            "@type": "xsd:decimal"
+        },
+        "geo:long": {
+            "@type": "xsd:decimal"
+        },
+        "http://rdf.freebase.com/ns/common.topic.image": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_for": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_types": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.official_website": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/location.location.containedby": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/location.location.geolocation": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/organization.organization.date_founded": {
+            "@type": "xsd:date"
+        },
+        "http://rdf.freebase.com/ns/people.person.date_of_birth": {
+            "@type": "xsd:date"
+        },
+        "http://rdf.freebase.com/ns/people.person.gender": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.nationality": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.place_of_birth": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.profession": {
+            "@type": "@id"
+        },
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "owl:sameAs": {
+            "@type": "@id"
+        },
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "schema": "http://schema.org/",
+        "schema:author": {
+            "@type": "@id"
+        },
+        "schema:dateModified": {
+            "@type": "xsd:dateTime"
+        },
+        "schema:datePublished": {
+            "@type": "xsd:dateTime"
+        },
+        "schema:image": {
+            "@type": "@id"
+        },
+        "schema:url": {
+            "@type": "@id"
+        },
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/Rome",
+            "@type": "schema:Place",
+            "geo:lat": 41.9,
+            "geo:long": 12.5,
+            "owl:sameAs": [
+                "http://dbpedia.org/resource/Rome",
+                "http://rdf.freebase.com/ns/m.06c62",
+                "http://sws.geonames.org/3169070/",
+                "http://sws.geonames.org/3169071/",
+                "http://yago-knowledge.org/resource/Rome"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "schema:description": {
+                "@language": "en",
+                "@value": "Rome is a city and special comune (\"Roma Capitale\") in Italy. Rome is the capital of Italy and also of Lazio. With 2.8 million residents in 1,285.3 km, it is also the country's largest and most populated comune and fourth-most populous city in the European Union by population within city limits. Between 3.2 and 3.8 million people live in the Rome urban and metropolitan area."
+            },
+            "schema:image": [
+                "http://wordpress380.localhost/wp-content/uploads/04j/s6k/c/04js6kc.jpg",
+                "http://wordpress380.localhost/wp-content/uploads/04j/s6k/q/04js6kq.jpg",
+                "http://wordpress380.localhost/wp-content/uploads/04m/n0b/4/04mn0b4.jpg",
+                "http://wordpress380.localhost/wp-content/uploads/04m/n0b/t/04mn0bt.jpg",
+                "http://wordpress380.localhost/wp-content/uploads/fla/g_o/f_r/ome/Flag_of_Rome.svg"
+            ],
+            "schema:url": "http://wordpress380.localhost/entity/rome/"
+        },
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/WordPress",
+            "@type": "schema:Thing",
+            "owl:sameAs": "http://dbpedia.org/resource/WordPress",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "schema:url": "http://wordpress380.localhost/?post_type=entity&p=639"
+        },
+        {
+            "@id": "http://data.redlink.io/353/wordlift/post/InsideOut10",
+            "@type": "schema:BlogPosting",
+            "dc:references": "http://data.redlink.io/353/wordlift//",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "InsideOut10"
+            },
+            "schema:author": "http://data.redlink.io/353/wordlift/author/1",
+            "schema:dateModified": "2014-03-16T12:30:53Z",
+            "schema:datePublished": "2014-01-14T07:58:06Z",
+            "schema:interactionCount": "UserComments:0",
+            "schema:url": "http://wordpress380.localhost/?p=118"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Ancient_Rome",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Civilization108111783",
+                "http://dbpedia.org/class/yago/Civilizations",
+                "http://dbpedia.org/class/yago/Group100031264",
+                "http://dbpedia.org/class/yago/SocialGroup107950920",
+                "http://dbpedia.org/class/yago/Society107966140"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Roman_Republic_Empire_map.gif/200px-Roman_Republic_Empire_map.gif",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:476_disestablishments",
+                "http://dbpedia.org/resource/Category:8th-century_BC_establishments",
+                "http://dbpedia.org/resource/Category:Ancient_Rome",
+                "http://dbpedia.org/resource/Category:Ancient_history",
+                "http://dbpedia.org/resource/Category:Civilizations",
+                "http://dbpedia.org/resource/Category:Classical_antiquity",
+                "http://dbpedia.org/resource/Category:Former_countries_in_Africa",
+                "http://dbpedia.org/resource/Category:Former_countries_in_Europe",
+                "http://dbpedia.org/resource/Category:Former_countries_in_the_Middle_East",
+                "http://dbpedia.org/resource/Category:History_of_Italy",
+                "http://dbpedia.org/resource/Category:History_of_Rome",
+                "http://dbpedia.org/resource/Category:History_of_the_Mediterranean",
+                "http://dbpedia.org/resource/Category:Roman_Empire",
+                "http://dbpedia.org/resource/Category:Rome"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/e/ea/Roman_Republic_Empire_map.gif",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02l341",
+                "http://yago-knowledge.org/resource/Ancient_Rome"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "]] Ancient Rome </td><tr><td>{{#invoke:InfoboxImage|InfoboxImage|image=Roman SPQR banner."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Ancient Rome"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)",
+            "@type": [
+                "http://dbpedia.org/class/yago/Archive102735086",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/Depository103177349",
+                "http://dbpedia.org/class/yago/Facility103315023",
+                "http://dbpedia.org/class/yago/NationalArchives",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "http://dbpedia.org/class/yago/YagoGeoEntity",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+                "http://www.opengis.net/gml/_Feature"
+            ],
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:1875_establishments_in_Italy",
+                "http://dbpedia.org/resource/Category:Italian_culture",
+                "http://dbpedia.org/resource/Category:National_archives",
+                "http://dbpedia.org/resource/Category:Organizations_established_in_1871"
+            ],
+            "geo:lat": 41.82861,
+            "geo:long": 12.476666,
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.04jk__q",
+                "http://yago-knowledge.org/resource/Central_Archives_of_the_State_(Italy)"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "The Central Archives of the State are the main national archives of Italy. They were created in 1875 under the name of Royal Archives. They took their present name in 1953. They are located in Rome and are put under the responsibility of the Ministry of Culture. However, each of the 103 Italian provinces has its own state archive, keeping the public documents created in that territory and, mainly, the state archives of the Italian historical states."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Central Archives of the State (Italy)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Debrecen",
+            "@type": [
+                "dbp-ont:City",
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "dbp-ont:Settlement",
+                "http://dbpedia.org/class/yago/Area108497294",
+                "http://dbpedia.org/class/yago/Center108523483",
+                "http://dbpedia.org/class/yago/CountySeat108547143",
+                "http://dbpedia.org/class/yago/CountySeatsInHungary",
+                "http://dbpedia.org/class/yago/GeographicalArea108574314",
+                "http://dbpedia.org/class/yago/Location100027167",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/PopulatedPlacesInHajdú-BiharCounty",
+                "http://dbpedia.org/class/yago/Region108630985",
+                "http://dbpedia.org/class/yago/Seat108647945",
+                "http://dbpedia.org/class/yago/Site108651247",
+                "http://dbpedia.org/class/yago/Tract108673395",
+                "http://dbpedia.org/class/yago/YagoGeoEntity",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+                "http://www.opengis.net/gml/_Feature",
+                "owl:Thing",
+                "schema:City",
+                "schema:Place"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Debrecen_montage.JPG/200px-Debrecen_montage.JPG",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Cities_in_Hungary",
+                "http://dbpedia.org/resource/Category:Counties_of_Hungary",
+                "http://dbpedia.org/resource/Category:County_seats_in_Hungary",
+                "http://dbpedia.org/resource/Category:Debrecen",
+                "http://dbpedia.org/resource/Category:Populated_places_in_Hajdú-Bihar_county",
+                "http://dbpedia.org/resource/Category:Populated_places_in_Hungary",
+                "http://dbpedia.org/resource/Category:Spa_towns_in_Hungary"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/7/70/Debrecen_montage.JPG",
+            "geo:lat": 47.52997,
+            "geo:long": 21.63916,
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.01gchw",
+                "http://sws.geonames.org/721472/",
+                "http://yago-knowledge.org/resource/Debrecen"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Debrecen, is the second largest city in Hungary after Budapest. Debrecen is the regional centre of the Northern Great Plain region and the seat of Hajdú-Bihar county."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Debrecen"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Linked_data",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/CloudStandards",
+                "http://dbpedia.org/class/yago/Measure100033615",
+                "http://dbpedia.org/class/yago/Standard107260623",
+                "http://dbpedia.org/class/yago/SystemOfMeasurement113577171"
+            ],
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Cloud_standards",
+                "http://dbpedia.org/resource/Category:Computing_terminology",
+                "http://dbpedia.org/resource/Category:Data_management",
+                "http://dbpedia.org/resource/Category:Distributed_computing_architecture",
+                "http://dbpedia.org/resource/Category:Hypermedia",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_terminology",
+                "http://dbpedia.org/resource/Category:Knowledge_representation",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02r2kb1",
+                "http://yago-knowledge.org/resource/Linked_data"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "In computing, linked data describes a method of publishing structured data so that it can be interlinked and become more useful. It builds upon standard Web technologies such as HTTP and URIs, but rather than using them to serve web pages for human readers, it extends them to share information in a way that can be read automatically by computers. This enables data from different sources to be connected and queried."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Linked data"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Rome",
+            "@type": [
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "dbp-ont:Settlement",
+                "http://dbpedia.org/class/yago/AdministrativeDistrict108491826",
+                "http://dbpedia.org/class/yago/AncientCities",
+                "http://dbpedia.org/class/yago/Area108497294",
+                "http://dbpedia.org/class/yago/Capital108518505",
+                "http://dbpedia.org/class/yago/CapitalsInEurope",
+                "http://dbpedia.org/class/yago/Center108523483",
+                "http://dbpedia.org/class/yago/City108524735",
+                "http://dbpedia.org/class/yago/District108552138",
+                "http://dbpedia.org/class/yago/GeographicalArea108574314",
+                "http://dbpedia.org/class/yago/HolyCities",
+                "http://dbpedia.org/class/yago/HostCitiesOfTheSummerOlympicGames",
+                "http://dbpedia.org/class/yago/Location100027167",
+                "http://dbpedia.org/class/yago/Municipality108626283",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/PopulatedPlacesEstablishedInThe8thCenturyBC",
+                "http://dbpedia.org/class/yago/Region108630985",
+                "http://dbpedia.org/class/yago/Seat108647945",
+                "http://dbpedia.org/class/yago/Site108651247",
+                "http://dbpedia.org/class/yago/Tract108673395",
+                "http://dbpedia.org/class/yago/UrbanArea108675967",
+                "http://dbpedia.org/class/yago/YagoGeoEntity",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+                "http://www.opengis.net/gml/_Feature",
+                "owl:Thing",
+                "schema:Place"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Flag_of_Rome.svg/200px-Flag_of_Rome.svg.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Ancient_cities",
+                "http://dbpedia.org/resource/Category:Archaeological_sites_in_Italy",
+                "http://dbpedia.org/resource/Category:Capitals",
+                "http://dbpedia.org/resource/Category:Capitals_in_Europe",
+                "http://dbpedia.org/resource/Category:Catholic_pilgrimage_sites",
+                "http://dbpedia.org/resource/Category:Cities_and_towns_in_Italy",
+                "http://dbpedia.org/resource/Category:Cities_and_towns_in_Lazio",
+                "http://dbpedia.org/resource/Category:Communes_of_the_Province_of_Rome",
+                "http://dbpedia.org/resource/Category:Hebrew_Bible_places",
+                "http://dbpedia.org/resource/Category:Holy_cities",
+                "http://dbpedia.org/resource/Category:Host_cities_of_the_Olympic_Games",
+                "http://dbpedia.org/resource/Category:Host_cities_of_the_Summer_Olympic_Games",
+                "http://dbpedia.org/resource/Category:Italy",
+                "http://dbpedia.org/resource/Category:Lazio",
+                "http://dbpedia.org/resource/Category:New_Testament_places",
+                "http://dbpedia.org/resource/Category:Pilgrimages",
+                "http://dbpedia.org/resource/Category:Populated_places_established_in_the_8th_century_BC",
+                "http://dbpedia.org/resource/Category:Province_of_Rome",
+                "http://dbpedia.org/resource/Category:Roman_Empire",
+                "http://dbpedia.org/resource/Category:Roman_towns_and_cities",
+                "http://dbpedia.org/resource/Category:Rome",
+                "http://dbpedia.org/resource/Category:World_Heritage_Sites_in_Italy"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/a/a6/Flag_of_Rome.svg",
+            "geo:lat": 41.9,
+            "geo:long": 12.5,
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.06c62",
+                "http://sws.geonames.org/3169070/",
+                "http://sws.geonames.org/3169071/",
+                "http://yago-knowledge.org/resource/Rome"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Rome is a city and special comune (\"Roma Capitale\") in Italy. Rome is the capital of Italy and also of Lazio. With 2.8 million residents in 1,285.3 km, it is also the country's largest and most populated comune and fourth-most populous city in the European Union by population within city limits. Between 3.2 and 3.8 million people live in the Rome urban and metropolitan area."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Rome"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Semantic_Web",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Act100030358",
+                "http://dbpedia.org/class/yago/Activity100407535",
+                "http://dbpedia.org/class/yago/Buzzword106608277",
+                "http://dbpedia.org/class/yago/Buzzwords",
+                "http://dbpedia.org/class/yago/Communication100033020",
+                "http://dbpedia.org/class/yago/Event100029378",
+                "http://dbpedia.org/class/yago/Message106598915",
+                "http://dbpedia.org/class/yago/Nonsense106607339",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/Service100577525",
+                "http://dbpedia.org/class/yago/WebServices",
+                "http://dbpedia.org/class/yago/Work100575741",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Sw-horz-w3c.png/200px-Sw-horz-w3c.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Artificial_intelligence",
+                "http://dbpedia.org/resource/Category:Buzzwords",
+                "http://dbpedia.org/resource/Category:Computer_science",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Knowledge_representation",
+                "http://dbpedia.org/resource/Category:Library_science",
+                "http://dbpedia.org/resource/Category:Metadata",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:Wide_area_networks",
+                "http://dbpedia.org/resource/Category:World_Wide_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium_standards"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/a/a4/Sw-horz-w3c.png",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.076k0",
+                "http://yago-knowledge.org/resource/Semantic_Web"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "The Semantic Web is a collaborative movement led by the international standards body, the World Wide Web Consortium (W3C). The standard promotes common data formats on the World Wide Web. By encouraging the inclusion of semantic content in web pages, the Semantic Web aims at converting the current web dominated by unstructured and semi-structured documents into a \"web of data\". The Semantic Web stack builds on the W3C's Resource Description Framework (RDF)."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Semantic Web"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/WordPress",
+            "@type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Article100022903",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/ContentManagementSystems",
+                "http://dbpedia.org/class/yago/Cutlery103153375",
+                "http://dbpedia.org/class/yago/Fork103383948",
+                "http://dbpedia.org/class/yago/FreeContentManagementSystems",
+                "http://dbpedia.org/class/yago/Instrumentality103575240",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/SoftwareForks",
+                "http://dbpedia.org/class/yago/System104377057",
+                "http://dbpedia.org/class/yago/Tableware104381994",
+                "http://dbpedia.org/class/yago/Ware104550840",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "owl:Thing",
+                "schema:CreativeWork"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/2/20/WordPress_logo.svg/200px-WordPress_logo.svg.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:2003_software",
+                "http://dbpedia.org/resource/Category:Blog_software",
+                "http://dbpedia.org/resource/Category:Blogs",
+                "http://dbpedia.org/resource/Category:Computer_science",
+                "http://dbpedia.org/resource/Category:Content_management_systems",
+                "http://dbpedia.org/resource/Category:Free_content_management_systems",
+                "http://dbpedia.org/resource/Category:Free_software",
+                "http://dbpedia.org/resource/Category:Free_software_programmed_in_PHP",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_suites",
+                "http://dbpedia.org/resource/Category:Linux_software",
+                "http://dbpedia.org/resource/Category:PHP",
+                "http://dbpedia.org/resource/Category:PHP_programming_language",
+                "http://dbpedia.org/resource/Category:Software",
+                "http://dbpedia.org/resource/Category:Software_forks",
+                "http://dbpedia.org/resource/Category:Template_engines",
+                "http://dbpedia.org/resource/Category:Web_2.0",
+                "http://dbpedia.org/resource/Category:Web_applications",
+                "http://dbpedia.org/resource/Category:Web_development",
+                "http://dbpedia.org/resource/Category:Web_development_software",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:Website_management",
+                "http://dbpedia.org/resource/Category:WordPress",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/2/20/WordPress_logo.svg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02vtpl",
+                "http://yago-knowledge.org/resource/WordPress"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL. It has many features including a plug-in architecture and a template system. WordPress is used by over 14.7% of Alexa Internet's \"top 1 million\" websites and as of August 2011 manages 22% of all new websites. WordPress is currently the most popular blogging system in use on the Web, powering over 60 million websites worldwide."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "WordPress"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.01lszsz",
+            "@type": [
+                "http://rdf.freebase.com/ns/award.award_nominee",
+                "http://rdf.freebase.com/ns/award.award_winner",
+                "http://rdf.freebase.com/ns/base.myspace.myspace_user",
+                "http://rdf.freebase.com/ns/base.popstra.celebrity",
+                "http://rdf.freebase.com/ns/base.popstra.sww_base",
+                "http://rdf.freebase.com/ns/base.popstra.topic",
+                "http://rdf.freebase.com/ns/base.schemastaging.context_name",
+                "http://rdf.freebase.com/ns/base.schemastaging.person_extra",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.actor",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.group_member",
+                "http://rdf.freebase.com/ns/people.measured_person",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/sports.pro_athlete",
+                "http://rdf.freebase.com/ns/tv.tv_actor",
+                "http://rdf.freebase.com/ns/tv.tv_personality",
+                "http://rdf.freebase.com/ns/tv.tv_program_guest"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "Li'l Romeo"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Lil' Romeo"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Maserati Rome"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Percy Miller, Jr."
+                },
+                {
+                    "@language": "en",
+                    "@value": "Percy Romeo Miller"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Percy Romeo Miller, Jr."
+                },
+                {
+                    "@language": "en",
+                    "@value": "Prince P"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Remy Romeo Sonya Miller"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Ro"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Rome"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Romeo"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Romeo Miller"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Percy Romeo Miller, Jr, better known by his stage name Romeo, is an American rapper, actor, basketball player, entrepreneur, and model. As a rapper, Miller has released three studio albums, one independent album, three soundtracks, four collaboration albums, and two compilation albums."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.05thd8b",
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125chkfn5",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpv1m",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://romeoforever.com",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1989-08-19",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.09c7w0",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.0f2tj",
+            "http://rdf.freebase.com/ns/people.person.profession": [
+                "http://rdf.freebase.com/ns/m.01445t",
+                "http://rdf.freebase.com/ns/m.02h664x",
+                "http://rdf.freebase.com/ns/m.02hqyhw",
+                "http://rdf.freebase.com/ns/m.02hrh1q",
+                "http://rdf.freebase.com/ns/m.09l65",
+                "http://rdf.freebase.com/ns/m.09x_r",
+                "http://rdf.freebase.com/ns/m.0d1pc",
+                "http://rdf.freebase.com/ns/m.0hpcdn2"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Lil Romeo"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02vtpl",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_applications",
+                "http://rdf.freebase.com/ns/base.services.web_development_platform",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.api"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "WordPress is a free and open source blogging tool and a content-management system based on PHP and MySQL, which runs on a web hosting service. Features include a plug-in architecture and a template system. WordPress is used by more than 18.9% of the top 10 million websites as of August 2013. WordPress is the most popular blogging system in use on the Web, at more than 60 million websites.\r\nIt was first released on May 27, 2003, by its founders, Matt Mullenweg and Mike Little, as a fork of b2/cafelog. As of September 2013, version 3.6 had been downloaded more than 6 million times."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258246cd",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrvrv",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.wordpress.org/",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "WordPress"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.04jk__q",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/government.government_agency",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "The Central Archives of the State are the main national archives of Italy. They were created in 1875 under the name of Royal Archives. They took their present name in 1953. They are located in Rome and are put under the responsibility of the Ministry of Culture.\r\nHowever, each of the 103 Italian provinces has its own State Archive, keeping the public documents created in that territory and, mainly, the state archives of the Italian historical states."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1259lv6q5",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02hr9mp",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Central Archives of the State"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.06c62",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.aareas.schema.administrative_area",
+                "http://rdf.freebase.com/ns/base.aareas.schema.earth.citytown",
+                "http://rdf.freebase.com/ns/base.arthist.helynevek",
+                "http://rdf.freebase.com/ns/base.biblioness.bibs_location",
+                "http://rdf.freebase.com/ns/base.biblioness.bibs_topic",
+                "http://rdf.freebase.com/ns/base.musiteca.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.ovguide.topic",
+                "http://rdf.freebase.com/ns/base.popstra.location",
+                "http://rdf.freebase.com/ns/base.popstra.sww_base",
+                "http://rdf.freebase.com/ns/base.popstra.topic",
+                "http://rdf.freebase.com/ns/base.summermovies2009.topic",
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/base.tagit.place",
+                "http://rdf.freebase.com/ns/base.type_ontology.abstract",
+                "http://rdf.freebase.com/ns/base.type_ontology.inanimate",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_setting",
+                "http://rdf.freebase.com/ns/film.film_location",
+                "http://rdf.freebase.com/ns/film.film_subject",
+                "http://rdf.freebase.com/ns/government.political_district",
+                "http://rdf.freebase.com/ns/location.administrative_division",
+                "http://rdf.freebase.com/ns/location.capital_of_administrative_division",
+                "http://rdf.freebase.com/ns/location.citytown",
+                "http://rdf.freebase.com/ns/location.dated_location",
+                "http://rdf.freebase.com/ns/location.it_comune",
+                "http://rdf.freebase.com/ns/location.location",
+                "http://rdf.freebase.com/ns/location.statistical_region",
+                "http://rdf.freebase.com/ns/olympics.olympic_bidding_city",
+                "http://rdf.freebase.com/ns/olympics.olympic_host_city",
+                "http://rdf.freebase.com/ns/people.place_of_interment",
+                "http://rdf.freebase.com/ns/periodicals.newspaper_circulation_area",
+                "http://rdf.freebase.com/ns/protected_sites.listed_site",
+                "http://rdf.freebase.com/ns/sports.sports_team_location",
+                "http://rdf.freebase.com/ns/symbols.namesake",
+                "http://rdf.freebase.com/ns/travel.travel_destination",
+                "http://rdf.freebase.com/ns/user.brendan.default_domain.top_architectural_city",
+                "http://rdf.freebase.com/ns/user.carmenmfenn1.default_domain.cityscape",
+                "http://rdf.freebase.com/ns/user.enrico_speranza.default_domain.italian_city",
+                "http://rdf.freebase.com/ns/user.narphorium.default_domain.base_equivalent_location",
+                "http://rdf.freebase.com/ns/user.robert.default_domain.my_favorite_things",
+                "http://rdf.freebase.com/ns/user.skud.names.topic",
+                "http://rdf.freebase.com/ns/user.tsegaran.random.taxonomy_subject"
+            ],
+            "geo:lat": 41.9,
+            "geo:long": 12.5,
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "Caput Mundi"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Comune of Rome"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Roma"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Rome, Italy"
+                },
+                {
+                    "@language": "en",
+                    "@value": "The eternal City"
+                },
+                {
+                    "@language": "en",
+                    "@value": "the City of seven hills"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Рим"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Rome is a city and special comune in Italy. Rome is the capital of Italy and also of the homonymous province and of the region of Lazio. With 2.7 million residents in 1,285.3 km², it is also the country's largest and most populated comune and fourth-most populous city in the European Union by population within city limits. The urban area of Rome extends beyond the administrative city limits with a population of around 3.8 million. Between 3.2 and 4.2 million people live in Rome metropolitan area. The city is located in the central-western portion of the Italian Peninsula, on the Tiber within Lazio. Rome is the only city in the world to contain in its interior a whole state; the enclave of Vatican City.\r\nRome's history spans more than two and a half thousand years, since its legendary founding in 753 BC. Rome is one of the oldest continuously occupied cities in Europe. It is referred to as \"The Eternal City\", a notion expressed by ancient Roman poets and writers. In the ancient world it was successively the capital city of the Roman Kingdom, the Roman Republic and the Roman Empire, and is regarded as one of the birthplaces of Western civilization. Since the 1st century AD, Rome has been considered the seat of the Papacy and in the 8th century it became the capital of the Papal States, which lasted until 1870. In 1871 Rome became the capital of the Kingdom of Italy, and in 1946 that of the Italian Republic."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.04js6kc",
+                "http://rdf.freebase.com/ns/m.04js6kq",
+                "http://rdf.freebase.com/ns/m.04mn0b4",
+                "http://rdf.freebase.com/ns/m.04mn0bt"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1259x8r06",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02_1y_h",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.comune.roma.it/",
+            "http://rdf.freebase.com/ns/location.location.containedby": [
+                "http://rdf.freebase.com/ns/m.03rjj",
+                "http://rdf.freebase.com/ns/m.04q_g",
+                "http://rdf.freebase.com/ns/m.098phg"
+            ],
+            "http://rdf.freebase.com/ns/location.location.geolocation": "http://rdf.freebase.com/ns/m.0w6c6tp",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Rome"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.06k176",
+            "@type": [
+                "http://rdf.freebase.com/ns/award.award_nominated_work",
+                "http://rdf.freebase.com/ns/award.award_winning_work",
+                "http://rdf.freebase.com/ns/base.italiantv.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/media_common.netflix_title",
+                "http://rdf.freebase.com/ns/tv.tv_program"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Rome is a British-American-Italian historical drama television series created by Bruno Heller, John Milius and William J. MacDonald. The show's two seasons premiered in 2005 and 2007, and were later released on DVD. Rome is set in the 1st century BC, during Ancient Rome's transition from Republic to Empire. The series begins with Julius Caesar's conquest of Gaul, and the first season concludes with the assassination of Caesar followed by the rise of the first Emperor Augustus, also known as Gaius Octavian.\r\nThe series features a sprawling ensemble cast of characters, many of whom are based on real figures from historical records, but the lead protagonists are ultimately two soldiers, Lucius Vorenus and Titus Pullo, who find their lives intertwined with key historical events. Rome was a ratings success for HBO and the BBC. The series received much media attention from the start, and was honored with numerous awards and nominations in its two-season run. Co-creator Heller stated in December 2008 that a Rome movie was in development. The series was filmed in various locations, but most notably in the Cinecittà studios in Italy."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125cphhz_",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrzk0",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.hbo.com/rome/",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Rome"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0djtw2h",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.linkedinbase.linkedin_profile",
+                "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+                "http://rdf.freebase.com/ns/business.board_member",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/internet.website_owner",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/organization.organization_member",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "volpini"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Andrea Volpini is co-founder of InSideOut10 an innovative Internet startup and director of Interact Egypt (an egyptian award winning creative digital agency focusing on the African continent) with eighteen years of world-class experience on Content Management, Digital Media, Online Marketing and SoLoMo (Social + Local + Mobile). In 2013 Andrea Volpini kick-started RedLink GmbH a commercial spin-off focusing on Semantic Content Enrichment and Search. \r\n\r\nAndrea Volpini is a visionary entrepreneur focused on hi-tech startups working on innovation management with a strong footprint on emerging markets in the Middle East and Africa. In 1995 Andrea started his working experience in the ISP market pioneering the digital media revolution. After the successful startup of his first Internet company at the age of 18, he sold the company and in 1997 he joined Interact focusing on value added multimedia services. He served Interact as the General Manager and under his guidance the company became in 2008 a joint stock company. In 2006 Andrea increased the involvement of the company on the international markets and in 2009 he co-founded and started-up Interact Egypt as branch office of Interact in Egypt. Andrea in 2011 twisted completely his life, sold his shares of Interact, co-founded InSideOut10, acquired the egyptian company and he's now focusing on SoLoMo, Semantic Web and Neural Networks. In 2013 after two years of R&D on Semantic Web technologies, InSideOut10 becomes co-founder and shareholder of RedLink GmbH a commercial spin-off based in Salzburg, Austria."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0djtw4k",
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258yhgtg",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02h51nz",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://andrea.volpini.com",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1977-03-10",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.03rjj",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.06c62",
+            "http://rdf.freebase.com/ns/people.person.profession": [
+                "http://rdf.freebase.com/ns/m.012t_z",
+                "http://rdf.freebase.com/ns/m.02q54yj"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Andrea Volpini"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0j2h5nt",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/organization.organization_member",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "ziodave"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "David Riccitelli is co-founder of InSideOut10, with now almost 20 years of experience since he started his own BBS in the early nineties, deeply fascinated by the concept of emergent superorganism (Kevin Kelly), always active in bringing the human being at the core of his creations, he's managed and delivered a wide range of cross-media projects, from Content and Digital Asset Management, Online Media to Open Government solutions in Europe and North Africa. David is an Internet pioneer and technology enthusiast, in 2006 he was Italy's first Twitter, which few years later became one of the largest social media on the Planet. David started his first Internet start up (Flux IM) in 1996, later acquired by Interact SpA where, by defining the technical strategies and managing the company operations he enabled the company success and a tenfold growth. David has now started a new journey as co-founder of InSideOut10 (IO10) to leverage on the Social Mobile Local Revolution (SoLoMo), Semantic Web and Neural Networks."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0p7qbkp",
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258x3dkp",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02_77lg",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1978-01-27",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.03rjj",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.06c62",
+            "http://rdf.freebase.com/ns/people.person.profession": "http://rdf.freebase.com/ns/m.02q54yj",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "David Riccitelli"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0kybkd_",
+            "@type": [
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.membership_organization",
+                "http://rdf.freebase.com/ns/organization.organization",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "At InsideOut10, we believe that the open exchange of ideas have a positive global impact. Every day we are inspired by stories of people using technologies to help make the world a better place in unexpected ways. \r\n\r\nWe want to be part of this community and share our enthusiasm and passion for a smarter planet. \r\n\r\nInsideOut10 is an incubator and it is currently main shareholder of Interact Egypt L.L.C. an Egyptian startup powering the Internet revolution in Middle East and Africa and co-founder of Redlink GmbH a commercial spin-off based in Austria and focused on Semantic Technologies and Free Open Source Software."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.0kybkyc",
+                "http://rdf.freebase.com/ns/m.0kybl3w",
+                "http://rdf.freebase.com/ns/m.0kyblb5",
+                "http://rdf.freebase.com/ns/m.0kyblkj"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.126sz3p77",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02_77lg",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.insideout.io",
+            "http://rdf.freebase.com/ns/organization.organization.date_founded": "2011-03-29",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "InSideOut10"
+            }
+        },
+        {
+            "@id": "urn:enhancement-07cce8b1-6cfb-41b8-ff92-6f0779ba9c60",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:06.934Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+            "dc:language": "en",
+            "dc:type": "dc:LinguisticSystem",
+            "enhancer:confidence": 0.99999714,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-07fcc54a-e762-8378-b3a8-c4533b231a01",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Rome",
+            "enhancer:entity-type": [
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "dbp-ont:Settlement",
+                "schema:Place",
+                "http://www.opengis.net/gml/_Feature",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-1a072c8d-ad1c-2ba7-1a5b-82190cba96dd",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.102Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 0.99791664,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.06k176",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/award.award_nominated_work",
+                "http://rdf.freebase.com/ns/award.award_winning_work",
+                "http://rdf.freebase.com/ns/base.italiantv.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/media_common.netflix_title",
+                "http://rdf.freebase.com/ns/tv.tv_program"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-297703c3-3ce7-2551-e476-9a55b217ad3e",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.102Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Work",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 264,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Linked Open Data Event.\n\nWordLift is plugin for WordPress demonstrating how Semantic Web technologies and"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "lugin for "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " demonstra"
+            },
+            "enhancer:start": 255
+        },
+        {
+            "@id": "urn:enhancement-3d577745-72ea-277c-c7a5-dc3454741ab4",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-297703c3-3ce7-2551-e476-9a55b217ad3e",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/WordPress",
+            "enhancer:entity-type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.058Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "dbp-ont:Place",
+            "enhancer:end": 198,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " today at the Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": " State in "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " for the L"
+            },
+            "enhancer:start": 194
+        },
+        {
+            "@id": "urn:enhancement-4c1bf72d-85aa-e524-472a-2785bc77ff3f",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.119Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-7c4f839a-0448-32db-c5a8-11583c05fd40",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "InsideOut10"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/post/InsideOut10",
+            "enhancer:entity-type": "schema:BlogPosting",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-4ec743bd-184d-792c-9436-ccdc2b1c223b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 0.99787235,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Debrecen",
+            "enhancer:entity-type": [
+                "dbp-ont:City",
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "dbp-ont:Settlement",
+                "schema:City",
+                "schema:Place",
+                "http://www.opengis.net/gml/_Feature",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-505ff875-b0fe-7623-2f60-21f57746ff68",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.102Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-297703c3-3ce7-2551-e476-9a55b217ad3e",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02vtpl",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_applications",
+                "http://rdf.freebase.com/ns/base.services.web_development_platform",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.api"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-53b38386-9e82-e2ac-09f8-4e775cff95ad",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 0.9989362,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Ancient_Rome",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-61d5d454-ebed-8250-bb72-fce541a70e18",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.057Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:end": 25,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Andrea Volpini"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": "My name is Andrea Volpini and I am here with David Riccitelli.\n\nWe are the"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "y name is "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " and I am "
+            },
+            "enhancer:start": 11
+        },
+        {
+            "@id": "urn:enhancement-631ef5e5-acca-ea04-a987-80ff02c58018",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-677cdfa6-a0c1-6c2e-533d-1ee87727a798",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "David Riccitelli"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0j2h5nt",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/organization.organization_member",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-677cdfa6-a0c1-6c2e-533d-1ee87727a798",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.057Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:end": 61,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "David Riccitelli"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": "My name is Andrea Volpini and I am here with David Riccitelli.\n\nWe are the co-founders of Insideout10 an"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "here with "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ".\n\nWe are "
+            },
+            "enhancer:start": 45
+        },
+        {
+            "@id": "urn:enhancement-7c4f839a-0448-32db-c5a8-11583c05fd40",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Organisation",
+            "enhancer:confidence": 0.8181818,
+            "enhancer:end": 101,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Insideout10"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " David Riccitelli.\n\nWe are the co-founders of Insideout10 an Italian Startup and we're happy to present"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "unders of "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " an Italia"
+            },
+            "enhancer:start": 90
+        },
+        {
+            "@id": "urn:enhancement-869c5dc0-fb3a-2dde-7b38-218b444f45fd",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-c9f9d064-686a-cca2-fbe1-e4309ae8c660",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Semantic Web"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Semantic_Web",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-88c5f1ba-879e-47e7-ad15-88bbd096a4e1",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.06c62",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.aareas.schema.administrative_area",
+                "http://rdf.freebase.com/ns/base.aareas.schema.earth.citytown",
+                "http://rdf.freebase.com/ns/base.arthist.helynevek",
+                "http://rdf.freebase.com/ns/base.biblioness.bibs_location",
+                "http://rdf.freebase.com/ns/base.biblioness.bibs_topic",
+                "http://rdf.freebase.com/ns/base.musiteca.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.ovguide.topic",
+                "http://rdf.freebase.com/ns/base.popstra.location",
+                "http://rdf.freebase.com/ns/base.popstra.sww_base",
+                "http://rdf.freebase.com/ns/base.popstra.topic",
+                "http://rdf.freebase.com/ns/base.summermovies2009.topic",
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/base.tagit.place",
+                "http://rdf.freebase.com/ns/base.type_ontology.abstract",
+                "http://rdf.freebase.com/ns/base.type_ontology.inanimate",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_setting",
+                "http://rdf.freebase.com/ns/film.film_location",
+                "http://rdf.freebase.com/ns/film.film_subject",
+                "http://rdf.freebase.com/ns/government.political_district",
+                "http://rdf.freebase.com/ns/location.administrative_division",
+                "http://rdf.freebase.com/ns/location.capital_of_administrative_division",
+                "http://rdf.freebase.com/ns/location.citytown",
+                "http://rdf.freebase.com/ns/location.dated_location",
+                "http://rdf.freebase.com/ns/location.it_comune",
+                "http://rdf.freebase.com/ns/location.location",
+                "http://rdf.freebase.com/ns/location.statistical_region",
+                "http://rdf.freebase.com/ns/olympics.olympic_bidding_city",
+                "http://rdf.freebase.com/ns/olympics.olympic_host_city",
+                "http://rdf.freebase.com/ns/people.place_of_interment",
+                "http://rdf.freebase.com/ns/periodicals.newspaper_circulation_area",
+                "http://rdf.freebase.com/ns/protected_sites.listed_site",
+                "http://rdf.freebase.com/ns/sports.sports_team_location",
+                "http://rdf.freebase.com/ns/symbols.namesake",
+                "http://rdf.freebase.com/ns/travel.travel_destination",
+                "http://rdf.freebase.com/ns/user.brendan.default_domain.top_architectural_city",
+                "http://rdf.freebase.com/ns/user.carmenmfenn1.default_domain.cityscape",
+                "http://rdf.freebase.com/ns/user.enrico_speranza.default_domain.italian_city",
+                "http://rdf.freebase.com/ns/user.narphorium.default_domain.base_equivalent_location",
+                "http://rdf.freebase.com/ns/user.robert.default_domain.my_favorite_things",
+                "http://rdf.freebase.com/ns/user.skud.names.topic",
+                "http://rdf.freebase.com/ns/user.tsegaran.random.taxonomy_subject"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-9038ce1e-749f-0d60-0085-b23f01b5c88f",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 223,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Linked Open Data"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is plugin for WordPress"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "e for the "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " Event.\n\nW"
+            },
+            "enhancer:start": 207
+        },
+        {
+            "@id": "urn:enhancement-99d7b34c-57eb-9f7d-615b-276244750055",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.102Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 0.99583334,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.01lszsz",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/award.award_nominee",
+                "http://rdf.freebase.com/ns/award.award_winner",
+                "http://rdf.freebase.com/ns/base.myspace.myspace_user",
+                "http://rdf.freebase.com/ns/base.popstra.celebrity",
+                "http://rdf.freebase.com/ns/base.popstra.sww_base",
+                "http://rdf.freebase.com/ns/base.popstra.topic",
+                "http://rdf.freebase.com/ns/base.schemastaging.context_name",
+                "http://rdf.freebase.com/ns/base.schemastaging.person_extra",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.actor",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.group_member",
+                "http://rdf.freebase.com/ns/people.measured_person",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/sports.pro_athlete",
+                "http://rdf.freebase.com/ns/tv.tv_actor",
+                "http://rdf.freebase.com/ns/tv.tv_personality",
+                "http://rdf.freebase.com/ns/tv.tv_program_guest"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-a1470d18-6dfc-5359-d6a1-3029a1c20cda",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": [
+                "dbp-ont:Organisation",
+                "dbp-ont:Place"
+            ],
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 190,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Central Archives of the State"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Startup and we're happy to present today at the Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "ay at the "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " in Rome f"
+            },
+            "enhancer:start": 161
+        },
+        {
+            "@id": "urn:enhancement-a23cb8a5-10a5-2c1f-a153-b1ec5284415c",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.058Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:end": 120,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Italian Startup"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " are the co-founders of Insideout10 an Italian Startup and we're happy to present today at the Central"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "eout10 an "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " and we're"
+            },
+            "enhancer:start": 105
+        },
+        {
+            "@id": "urn:enhancement-a6a351da-3b4e-0a53-6702-f6b12c7df3a7",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b1add1c0-bd6b-de91-5f3f-fbc91ccac7b0",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Linked Open Data"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Linked_data",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-b163d877-cced-e0c6-9d7d-c1528cb6ab99",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-7c4f839a-0448-32db-c5a8-11583c05fd40",
+            "enhancer:confidence": 0.8181818,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "InSideOut10"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0kybkd_",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.membership_organization",
+                "http://rdf.freebase.com/ns/organization.organization",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-b1add1c0-bd6b-de91-5f3f-fbc91ccac7b0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.058Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:end": 329,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Linked Open Data"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " demonstrating how Semantic Web technologies and Linked Open Data, can be used in practice to organise your online"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "ogies and "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ", can be u"
+            },
+            "enhancer:start": 313
+        },
+        {
+            "@id": "urn:enhancement-bf4d544a-e865-51b9-94e9-0778669be875",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.058Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:end": 229,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Linked Open Data Event"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Central Archives of the State in Rome for the Linked Open Data Event.\n\nWordLift is plugin for WordPress demonstrating"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "e for the "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ".\n\nWordLif"
+            },
+            "enhancer:start": 207
+        },
+        {
+            "@id": "urn:enhancement-c7351c26-6214-b185-236b-b8f6dc56d6e3",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.114Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9038ce1e-749f-0d60-0085-b23f01b5c88f",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Linked Open Data"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Linked_data",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-c9f9d064-686a-cca2-fbe1-e4309ae8c660",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-27T12:44:07.058Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:end": 295,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Semantic Web"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " is plugin for WordPress demonstrating how Semantic Web technologies and Linked Open Data, can be used in"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "ating how "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " technolog"
+            },
+            "enhancer:start": 283
+        },
+        {
+            "@id": "urn:enhancement-ca1d225e-4460-ca0d-43e6-b055758723e9",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.119Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-428d3f0d-897e-07df-6b88-3c4524aa3ca0",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rome"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Rome",
+            "enhancer:entity-type": "schema:Place",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-ce7935c5-7f13-5260-4eba-5645242ea8f3",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.113Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-a1470d18-6dfc-5359-d6a1-3029a1c20cda",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Central Archives of the State"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)",
+            "enhancer:entity-type": "http://www.opengis.net/gml/_Feature",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-dba64fde-2555-260e-4e85-0cf3d767bdca",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-61d5d454-ebed-8250-bb72-fce541a70e18",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Andrea Volpini"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0djtw2h",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.linkedinbase.linkedin_profile",
+                "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+                "http://rdf.freebase.com/ns/business.board_member",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/internet.website_owner",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/organization.organization_member",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-e0c412ea-22a8-e71c-797f-e592e75d42ef",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.058Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "http://www.w3.org/2006/time#Instant",
+            "enhancer:end": 153,
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "present today"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " an Italian Startup and we're happy to present today at the Central Archives of the State in Rome for"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": " happy to "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " at the Ce"
+            },
+            "enhancer:start": 140
+        },
+        {
+            "@id": "urn:enhancement-e1eabef2-5508-6258-f42c-f05a269d1694",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.119Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-297703c3-3ce7-2551-e476-9a55b217ad3e",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/WordPress",
+            "enhancer:entity-type": "schema:Thing",
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        },
+        {
+            "@id": "urn:enhancement-e2bc3ed8-0087-765d-8c4c-874660493914",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-27T12:44:07.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-a1470d18-6dfc-5359-d6a1-3029a1c20cda",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Central Archives of the State"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.04jk__q",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/government.government_agency",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-73424d1e43c132979243a848187f64e4c550ba94"
+        }
+    ]
+}
