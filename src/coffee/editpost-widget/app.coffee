@@ -32,6 +32,11 @@ $(
         <span>Semantic tagging</span>
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
+
+      <div ng-click="createTextAnnotationFromCurrentSelection()" id="wl-add-entity-button-wrapper">
+        <span class="button" ng-class="{ 'button-primary selected' : isThereASelection, 'preview' : !isThereASelection }">Add entity</span>
+        <div class="clear" />     
+      </div>
       
       <div ng-show="annotation">
         <h4 class="wl-annotation-label">
@@ -40,6 +45,7 @@ $(
           <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>
           <i class="wl-annotation-label-remove-icon" ng-click="selectAnnotation(undefined)"></i>
         </h4>
+        <wl-entity-form entity="newEntity" on-submit="addNewEntityToAnalysis()" ng-show="analysis.annotations[annotation].entityMatches.length == 0"></wl-entity-form>
       </div>
 
       <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
@@ -141,13 +147,11 @@ tinymce.PluginManager.add 'wordlift', (editor, url) ->
   # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
   fireEvent( editor, "NodeChange", (e) ->        
     injector.invoke(['AnalysisService', 'EditorService','$rootScope', '$log', (AnalysisService, EditorService, $rootScope, $log) ->
-      
-      if AnalysisService._currentAnalysis    
+      if AnalysisService._currentAnalysis
         $rootScope.$apply(->          
           $rootScope.selectionStatus = EditorService.hasSelection() 
         )
       true
-
     ])
   )
 
@@ -155,12 +159,12 @@ tinymce.PluginManager.add 'wordlift', (editor, url) ->
   fireEvent( editor, "Click", (e) ->
     injector.invoke(['AnalysisService', 'EditorService','$rootScope', '$log', (AnalysisService, EditorService, $rootScope, $log) ->
       
-      if AnalysisService._currentAnalysis
+      if AnalysisService._currentAnalysis 
+        # execute the following commands in the angular js context.
         $rootScope.$apply(->          
           EditorService.selectAnnotation e.target.id 
         )
       true
-
     ])
   )
 )
