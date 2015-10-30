@@ -95,7 +95,7 @@ module.exports = function ( grunt ) {
             all: {
                 expand: true,
                 cwd: SOURCE_DIR,
-                dest: BUILD_DIR,
+                dest: SOURCE_DIR,
                 ext: '.min.js',
                 src: [
                     'js/wordlift.js',
@@ -107,6 +107,17 @@ module.exports = function ( grunt ) {
         },
         /* CSS */
         less: {
+            all: {
+                expand: true,
+                cwd: SOURCE_DIR + 'less/',
+                dest: SOURCE_DIR + 'css/',
+                src: [
+                    'wordlift.less',
+                    'wordlift-ui.less',
+                    'wordlift-reloaded.less',
+                    'wordlift-faceted-entity-search-widget.less'
+                ]
+            },
             development: {
                 files: {
                     'app/css/wordlift.css': [ SOURCE_DIR + 'less/wordlift.less' ],

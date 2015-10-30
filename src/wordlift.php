@@ -142,8 +142,9 @@ function wordlift_buttonhooks() {
  * @return array The modified plugins array.
  */
 function wordlift_register_tinymce_javascript( $plugin_array ) {
+
 	// add the wordlift plugin.
-	$plugin_array['wordlift'] = plugins_url( 'js/wordlift-reloaded.js', __FILE__ );
+	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js';
 
 	return $plugin_array;
 }
@@ -185,8 +186,7 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_script( 'wpdialogs' );
 	wp_enqueue_style( 'wp-jquery-ui-dialog' );
 
-	wp_register_style( 'wordlift_css', plugins_url( 'css/wordlift-reloaded.css', __FILE__ ) );
-	wp_enqueue_style( 'wordlift_css' );
+	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'angularjs', plugins_url( 'bower_components/angular/angular.min.js', __FILE__ ) );
@@ -299,7 +299,7 @@ function wl_get_image_urls( $post_id ) {
 
 	// Prepare the return array.
 	$image_urls = array();
-        
+
 	// Collect the URLs.
 	foreach ( $images as $attachment_id => $attachment ) {
 		$image_url = wp_get_attachment_url( $attachment_id );
@@ -350,7 +350,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
 function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 
 	wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
-        
+
 	$posts = get_posts( array(
 		'post_type'      => 'attachment',
 		'posts_per_page' => 1,

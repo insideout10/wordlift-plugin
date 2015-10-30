@@ -7,35 +7,34 @@
  *
  * @return mixed
  */
-function wl_shortcode_chord_most_referenced_entity_id()
-{
-    // Get the last 20 posts by post date.
-    // For each post get the entities they reference.
-    $post_ids = get_posts( array(
-        'numberposts' => 20,
-        'post_type'   => 'post',
-        'fields'      => 'ids', //only get post IDs
-        'post_status' => 'published',
-        'orderby'     => 'post_date',
-        'order'       => 'DESC',
-    ) );
-	
-    if( empty( $post_ids ) ){
-            return null;
-    }
-    
-    $entities = array();
-    foreach ( $post_ids as $id ) {
-        $entities = array_merge( $entities, wl_core_get_related_entity_ids( $id ) );
-    }
+function wl_shortcode_chord_most_referenced_entity_id() {
+	// Get the last 20 posts by post date.
+	// For each post get the entities they reference.
+	$post_ids = get_posts( array(
+		'numberposts' => 20,
+		'post_type'   => 'post',
+		'fields'      => 'ids', //only get post IDs
+		'post_status' => 'published',
+		'orderby'     => 'post_date',
+		'order'       => 'DESC',
+	) );
 
-    $famous_entities = array_count_values($entities);
-    arsort($famous_entities);
-    if (sizeof($famous_entities) >= 1) {
-        return key($famous_entities);
-    } else {
-        return $post_ids[0];
-    }
+	if ( empty( $post_ids ) ) {
+		return null;
+	}
+
+	$entities = array();
+	foreach ( $post_ids as $id ) {
+		$entities = array_merge( $entities, wl_core_get_related_entity_ids( $id ) );
+	}
+
+	$famous_entities = array_count_values( $entities );
+	arsort( $famous_entities );
+	if ( sizeof( $famous_entities ) >= 1 ) {
+		return key( $famous_entities );
+	} else {
+		return $post_ids[0];
+	}
 
 }
 
@@ -47,67 +46,68 @@ function wl_shortcode_chord_most_referenced_entity_id()
  * @param int $entity_id The entity post ID.
  * @param int $depth Max number of entities in output.
  * @param array $related An existing array of related entities.
+ *
  * @return array
  */
 function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
-	
-    // Search for more entities only if we did not exceed $depth or $max_size
-    $max_size = 15;
-    if( ! is_null($related) ) {
-            if( count($related['entities']) > $max_size || $depth <= 0 ) {
-            return $related;
-        }
-    }
 
-    wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
+	// Search for more entities only if we did not exceed $depth or $max_size
+	$max_size = 15;
+	if ( ! is_null( $related ) ) {
+		if ( count( $related['entities'] ) > $max_size || $depth <= 0 ) {
+			return $related;
+		}
+	}
 
-    // Create a related array which will hold entities and relations.
-    if ( is_null( $related ) ) {
-        $related = array(
-            'entities'  => array( $entity_id ),
-            'relations' => array()
-        );
-    }
-    
-    // Get related entities
-    $related_entity_ids = wl_core_get_related_entity_ids( $entity_id, array(
-        'status' => 'publish'
-    ) );
-    
-    // Get related posts (only id the current node is an entity)
-    $related_post_ids = array();
-    if( get_post_type( $entity_id ) == WL_ENTITY_TYPE_NAME ) {
-        
-        $related_post_ids = wl_core_get_related_post_ids( $entity_id, array(
-            'status' => 'publish'
-        ) );
-    }
-    
-    // Merge results.
-    $related_ids = array_merge( $related_post_ids, $related_entity_ids );
-    $related_ids = array_unique( $related_ids );
-	
-    // TODO: List of entities ($rel) should be ordered by interest factors.
-    shuffle( $related_ids );
+	wl_write_log( "wl_shortcode_chord_get_relations [ post id :: $entity_id ][ depth :: $depth ][ related? :: " . ( is_null( $related ) ? 'yes' : 'no' ) . " ]" );
 
-    // Now we have all the related IDs.
-    foreach ( $related_ids as $related_id ) {
+	// Create a related array which will hold entities and relations.
+	if ( is_null( $related ) ) {
+		$related = array(
+			'entities'  => array( $entity_id ),
+			'relations' => array()
+		);
+	}
 
-        // TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_get_graph*
-        // method is going anyway to *refactor* the data structure. So here the structure may be optimized in terms
-        // of readability and performance.
-        $related['relations'][] = array( $entity_id, $related_id );
+	// Get related entities
+	$related_entity_ids = wl_core_get_related_entity_ids( $entity_id, array(
+		'status' => 'publish'
+	) );
 
-        if ( !in_array( $related_id, $related['entities'] ) ) {
-            //Found new related entity!
-            $related['entities'][] = $related_id;
-			
-            $related = wl_shortcode_chord_get_relations( $related_id, ( $depth - 1 ), $related );
-        }
-    }
+	// Get related posts (only id the current node is an entity)
+	$related_post_ids = array();
+	if ( get_post_type( $entity_id ) == WL_ENTITY_TYPE_NAME ) {
 
-    // End condition 2: no more entities to search for.
-    return $related;
+		$related_post_ids = wl_core_get_related_post_ids( $entity_id, array(
+			'status' => 'publish'
+		) );
+	}
+
+	// Merge results.
+	$related_ids = array_merge( $related_post_ids, $related_entity_ids );
+	$related_ids = array_unique( $related_ids );
+
+	// TODO: List of entities ($rel) should be ordered by interest factors.
+	shuffle( $related_ids );
+
+	// Now we have all the related IDs.
+	foreach ( $related_ids as $related_id ) {
+
+		// TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_get_graph*
+		// method is going anyway to *refactor* the data structure. So here the structure may be optimized in terms
+		// of readability and performance.
+		$related['relations'][] = array( $entity_id, $related_id );
+
+		if ( ! in_array( $related_id, $related['entities'] ) ) {
+			//Found new related entity!
+			$related['entities'][] = $related_id;
+
+			$related = wl_shortcode_chord_get_relations( $related_id, ( $depth - 1 ), $related );
+		}
+	}
+
+	// End condition 2: no more entities to search for.
+	return $related;
 }
 
 /**
@@ -116,60 +116,61 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
  * @used-by wl_shortcode_chord_ajax
  *
  * @param $data
+ *
  * @return mixed|string|void
  */
-function wl_shortcode_chord_get_graph( $data )
-{
+function wl_shortcode_chord_get_graph( $data ) {
 
-    // Refactor the entities array in order to provide entities relevant data (uri, url, label, type, css_class).
-    array_walk( $data['entities'], function ( &$item ) {
-        $post = get_post( $item );
+	// Refactor the entities array in order to provide entities relevant data (uri, url, label, type, css_class).
+	array_walk( $data['entities'], function ( &$item ) {
+		$post = get_post( $item );
 
-        // Skip non-existing posts.
-        if ( is_null( $post ) ) {
-            wl_write_log( "wl_shortcode_chord_get_graph : post not found [ post id :: $item ]" );
-            return $item;
-        }
+		// Skip non-existing posts.
+		if ( is_null( $post ) ) {
+			wl_write_log( "wl_shortcode_chord_get_graph : post not found [ post id :: $item ]" );
 
-        // Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
-        $term = wl_entity_type_taxonomy_get_type( $item );
+			return $item;
+		}
 
-        wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
-        
-        // TODO: get all images
-        $thumbnail = null;
-        $thumbnail_id = get_post_thumbnail_id( $post->ID );
-        if ( '' !== $thumbnail_id ) {
-            $attachment = wp_get_attachment_image_src( $thumbnail_id );
-            if ( false !== $attachment ) {
-                $thumbnail = esc_attr( $attachment[0] );
-            }
-        }
-        
-        $entity = array(
-            'uri'               => wl_get_entity_uri( $item ),
-            'url'               => get_permalink( $item ),
-            'label'             => $post->post_title,
-            'type'              => $post->post_type,
-            'thumbnails'        => array( $thumbnail ),
-            'css_class' => ( isset( $term['css_class'] ) ? $term['css_class'] : '' )
-        );
+		// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
+		$term = wl_entity_type_taxonomy_get_type( $item );
 
-        $item = $entity;
-    } );
+		wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
 
-    // Refactor the relations.
-    array_walk( $data['relations'], function ( &$item ) {
-        $relation = array(
-            's' => wl_get_entity_uri( $item[0] ),
-            'o' => wl_get_entity_uri( $item[1] )
-        );
+		// TODO: get all images
+		$thumbnail    = null;
+		$thumbnail_id = get_post_thumbnail_id( $post->ID );
+		if ( '' !== $thumbnail_id ) {
+			$attachment = wp_get_attachment_image_src( $thumbnail_id );
+			if ( false !== $attachment ) {
+				$thumbnail = esc_attr( $attachment[0] );
+			}
+		}
 
-        $item = $relation;
-    } );
+		$entity = array(
+			'uri'        => wl_get_entity_uri( $item ),
+			'url'        => get_permalink( $item ),
+			'label'      => $post->post_title,
+			'type'       => $post->post_type,
+			'thumbnails' => array( $thumbnail ),
+			'css_class'  => ( isset( $term['css_class'] ) ? $term['css_class'] : '' )
+		);
 
-    // Return the JSON representation.
-    return $data;
+		$item = $entity;
+	} );
+
+	// Refactor the relations.
+	array_walk( $data['relations'], function ( &$item ) {
+		$relation = array(
+			's' => wl_get_entity_uri( $item[0] ),
+			'o' => wl_get_entity_uri( $item[1] )
+		);
+
+		$item = $relation;
+	} );
+
+	// Return the JSON representation.
+	return $data;
 }
 
 /**
@@ -178,20 +179,19 @@ function wl_shortcode_chord_get_graph( $data )
  * @uses wl_shortcode_chord_get_relations()
  * @uses wl_shortcode_chord_get_graph()
  */
-function wl_shortcode_chord_ajax()
-{
+function wl_shortcode_chord_ajax() {
 
-    $post_id = $_REQUEST['post_id'];
-    $depth   = $_REQUEST['depth'];
+	$post_id = $_REQUEST['post_id'];
+	$depth   = $_REQUEST['depth'];
 
-    $relations  = wl_shortcode_chord_get_relations( $post_id, $depth );
-    $graph  = wl_shortcode_chord_get_graph( $relations );
+	$relations = wl_shortcode_chord_get_relations( $post_id, $depth );
+	$graph     = wl_shortcode_chord_get_graph( $relations );
 
-    wl_core_send_json( $graph );
+	wl_core_send_json( $graph );
 }
 
-add_action('wp_ajax_wl_chord', 'wl_shortcode_chord_ajax');
-add_action('wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax');
+add_action( 'wp_ajax_wl_chord', 'wl_shortcode_chord_ajax' );
+add_action( 'wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax' );
 
 
 /**
@@ -200,56 +200,59 @@ add_action('wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax');
  * @uses wl_shortcode_chord_most_referenced_entity_id() to get the most connected entity.
  *
  * @param array $atts An array of parameters set by the editor to customize the shortcode behaviour.
+ *
  * @return string
  */
 function wl_shortcode_chord( $atts ) {
 
-    //extract attributes and set default values
-    $chord_atts = shortcode_atts(array(
-        'width'      => '100%',
-        'height'     => '500px',
-        'main_color' => '000',
-        'depth'      => 2,
-        'global'     => false
-    ), $atts);
+	//extract attributes and set default values
+	$chord_atts = shortcode_atts( array(
+		'width'      => '100%',
+		'height'     => '500px',
+		'main_color' => '000',
+		'depth'      => 2,
+		'global'     => false
+	), $atts );
 
-    if ($chord_atts['global']) {
-        $post_id = wl_shortcode_chord_most_referenced_entity_id();
-		if($post_id == null){
+	if ( $chord_atts['global'] ) {
+		$post_id = wl_shortcode_chord_most_referenced_entity_id();
+		if ( $post_id == null ) {
 			return "WordLift Chord: no entities found.";
 		}
-        $widget_id = 'wl_chord_global';
-        $chord_atts['height'] = '200px';
-    } else {
-        $post_id = get_the_ID();
-        $widget_id = 'wl_chord_' . $post_id;
-    }
-	
+		$widget_id            = 'wl_chord_global';
+		$chord_atts['height'] = '200px';
+	} else {
+		$post_id   = get_the_ID();
+		$widget_id = 'wl_chord_' . $post_id;
+	}
+
 	// Adding css
 	wp_enqueue_style( 'wordlift-ui-css', plugins_url( 'css/wordlift.ui.min.css', __FILE__ ) );
-	
+
 	// Adding javascript code
-    wp_enqueue_script('d3', plugins_url('bower_components/d3/d3.min.js', __FILE__));
-    wp_enqueue_script( 'wordlift-ui', plugins_url('js/wordlift-ui.min.js', __FILE__) );
-    wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
-            'ajax_url'   => admin_url('admin-ajax.php'),
-            'action'     => 'wl_chord'
-        )
-    );
+	wp_enqueue_script( 'd3', plugins_url( 'bower_components/d3/d3.min.js', __FILE__ ) );
 
-    // Escaping atts.
-    $esc_class  = esc_attr('wl-chord');
-    $esc_id     = esc_attr($widget_id);
-	$esc_width  = esc_attr($chord_atts['width']);
-	$esc_height = esc_attr($chord_atts['height']);
+	wp_enqueue_script( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'js/wordlift-ui.min.js', array( 'jquery' ) );
 
-    $esc_post_id 	= esc_attr($post_id);
-    $esc_depth		= esc_attr($chord_atts['depth']);
-    $esc_main_color = esc_attr($chord_atts['main_color']);
-    
+	wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'action'   => 'wl_chord'
+		)
+	);
+
+	// Escaping atts.
+	$esc_class  = esc_attr( 'wl-chord' );
+	$esc_id     = esc_attr( $widget_id );
+	$esc_width  = esc_attr( $chord_atts['width'] );
+	$esc_height = esc_attr( $chord_atts['height'] );
+
+	$esc_post_id    = esc_attr( $post_id );
+	$esc_depth      = esc_attr( $chord_atts['depth'] );
+	$esc_main_color = esc_attr( $chord_atts['main_color'] );
+
 	// Building template.
-    // TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-    return <<<EOF
+	// TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
+	return <<<EOF
 <div class="$esc_class" 
 	id="$esc_id"
 	data-post-id="$esc_post_id"
@@ -268,8 +271,8 @@ EOF;
 /**
  * Registers the *wl_chord* shortcode.
  */
-function wl_shortcode_chord_register()
-{
-    add_shortcode('wl_chord', 'wl_shortcode_chord');
+function wl_shortcode_chord_register() {
+	add_shortcode( 'wl_chord', 'wl_shortcode_chord' );
 }
-add_action('init', 'wl_shortcode_chord_register');
+
+add_action( 'init', 'wl_shortcode_chord_register' );

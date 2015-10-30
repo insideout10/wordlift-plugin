@@ -1,0 +1,507 @@
+@import '../../bower_components/components-font-awesome/less/font-awesome.less';
+@import 'colors.less';
+
+// see http://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout
+.wl-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+
+  .wl-dummy {
+    margin-top: 100%; /* 4:3 aspect ratio */
+  }
+
+  .wl-element {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.wl-entity-input-boxes, .wl-entity-props {
+  display: none;
+}
+
+.wl-error-controller {
+  margin: 0 10px;
+}
+
+// TinyMCE toolbar
+.wp_themeSkin .mceIcon.mce_wordlift, .mce-widget.mce-btn.mce-wordlift button {
+    background-position: center center;
+    background-repeat: no-repeat;
+    
+    &:before {
+      content: @fa-var-cogs; 
+    }
+    &:hover {
+      color:rgb(0,0,0) !important;
+    }
+    color:@wl-brand-color !important;
+    font-size:14px !important;   
+    
+    font-family: FontAwesome !important;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 18px !important;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  &.running {
+    background-image: data-uri('../img/spinner-20x20.gif');
+    width: 21px;
+    height: 22px;
+      &:before {
+        content: ' ';
+      }
+  }
+}
+
+.wp_themeSkin .mceIcon.mce_wordlift_add_entity, .mce-widget.mce-btn.mce-wordlift_add_entity button {
+
+    &:before {
+      content: @fa-var-pencil; 
+    }
+
+    &:hover {
+      color:rgb(0,0,0) !important;
+    }
+
+    color:@wl-brand-color !important;
+    
+
+    font-size:18px !important;   
+    
+    font-family: FontAwesome !important;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 18px !important;
+    
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+}
+
+// Set a tile color background, foreground and icon.
+.tile(@color, @icon) {
+  border-color: @color;
+  color: black;
+
+  .type {
+    &:before {
+      content: @icon; }
+  }
+  &:hover, &.selected {
+    background-color: @color;
+    color: contrast(@color);
+  }
+  .thumbnail {
+    background-color: @color;
+    color: contrast(@color); }
+}
+  
+.entity {
+  background: white;
+  border: 1px solid gray;
+  height: 50px;
+  position: relative;
+  cursor: pointer;
+
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    line-height: 50px;
+    font-size: 36px;
+    text-align: center;
+    font-family: Times, serif;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    &.empty:before {
+      content: 'W';
+    }
+  }
+
+  .label {
+    top: 0px;
+    position: absolute;
+    left: 50px;
+    margin-left: 4px;
+    font-weight: 600;
+  }
+
+  .url {
+    position: absolute;
+    top: 18px;
+    left: 50px;
+    margin-left: 4px;
+    font-size: 10px;
+    line-height: 10px;
+  }
+
+  .confidence {
+    position: absolute;
+    left: 50px;
+    margin-left: 4px;
+    bottom: 0px;
+    font-size: 8px;
+  }
+
+  .type {
+    bottom: 0px;
+    right: 0px;
+    position: absolute;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 12px;
+    padding: 2px 6px;
+  }
+
+  &.wl-creative-work { .tile(@wl-creative-work-color, @fa-var-lightbulb-o) }
+  &.wl-event { .tile(@wl-event-color, @fa-var-calendar) }
+  &.wl-organization { .tile(@wl-organization-color, @fa-var-building-o) }
+  &.wl-person { .tile(@wl-person-color, @fa-var-user) }
+  &.wl-place { .tile(@wl-place-color, @fa-var-map-marker) }
+  &.wl-thing { .tile(@wl-thing-color, @fa-var-circle-o) }
+
+  .source {
+    position: absolute;
+    bottom: 0px;
+    right: 40px;
+    font-size: 8px;
+  }
+}
+
+#wordlift-disambiguation-popover {
+  position: absolute;
+  width: 300px;
+  height: 400px;
+  top: 40px;
+  right: 10px;
+  z-index: 99;
+
+  .fa-icon(@icon) {
+    display: block;
+    &:before {
+      content: @icon; 
+    }
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    padding: 0px 3px;
+  }
+
+  .content {
+    height: 400px;
+    background: white;
+    border: 1px solid darkgray;
+    padding: 10px;
+    overflow: auto;
+  }
+
+  .bubble-arrow-border {
+    border-color: #666666 transparent transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    bottom: -3px;
+    left: 30px;
+  }
+
+  .bubble-arrow {
+    border-color: white transparent transparent transparent;
+    border-style: solid;
+    border-width: 10px;
+    height: 0;
+    width: 0;
+    position: absolute;
+    bottom: 0px;
+    left: 30px;
+  }
+
+  input, select {
+    width:100%;
+    font-size: 11px;
+    margin:3px 0px;
+  }
+  .button-container {
+    text-align:right
+  }
+
+  .tab {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px; 
+  }
+
+  .wl-spinner { 
+    .fa-icon(@fa-var-spinner);
+    -webkit-animation: spin 2s infinite linear;
+    -moz-animation: spin 2s infinite linear;
+    -o-animation: spin 2s infinite linear;
+    animation: spin 2s infinite linear;
+    display:inline-block;
+  }
+  .wl-entities-wrapper.ng-hide-add, .wl-entities-wrapper.ng-hide-remove {
+    -webkit-transition:0.5s linear all;
+    transition:0.5s linear all;
+    display:block!important;
+    opacity:1;
+  }
+  #wl-entities-wrapper {
+    &.ng-hide {
+      display:block!important;
+      opacity: 0.3;
+    }
+  }
+}
+
+#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift {
+  float: right; // push the WordLift logo to the extreme right.
+  cursor: pointer;
+
+  > .ab-item {
+    width: 12px;
+    background: data-uri('../img/wordlift-logo-pink-28x28.png') center no-repeat;
+  }
+
+  &:hover > .ab-item {
+    background: data-uri('../img/wordlift-logo-black-28x28.png') center no-repeat;
+  }
+
+  > .ab-sub-wrapper {
+    right: 0;
+    left: auto;
+  }
+}
+
+div.wp-menu-image:before
+#adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-post {
+
+  div.wp-menu-image {
+    background: data-uri('../img/blocks-20x20.png') center no-repeat !important;
+    opacity: 1;
+    filter: alpha(opacity=100);
+
+    &:before {
+      content: '';
+    }
+  }
+
+  &:hover div.wp-menu-image {
+    background: data-uri('../img/blocks-blue-20x20.png') center no-repeat !important;
+  }
+
+  &.current div.wp-menu-image, &.wp-menu-open div.wp-menu-image {
+    background: data-uri('../img/blocks-white-20x20.png') center no-repeat !important;
+  }
+}
+
+#wl-entities-wrapper {
+  max-height:400px;
+  overflow: auto;
+}
+
+
+#wordlift-disambiguation-popover {
+  display: none;
+  position: fixed;
+  top: 50px;
+  right: 20px;
+
+  .postbox {
+    border-color: #bbb;
+    box-shadow: 0 0 10em #666;
+    height: 100%;
+    margin-bottom: 0;
+
+    &:before {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -50px;
+      top: 50px;
+      border: 25px solid;
+      border-color: transparent #bbb transparent transparent;
+    }
+
+    &:after {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -49px;
+      top: 50px;
+      border: 25px solid;
+      border-color: transparent #fff transparent transparent;
+    }
+  }
+
+  .handlediv:before {
+    content: '\f158';
+    right: 12px;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    padding: 8px 10px;
+    top: 0;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: none !important;
+  }
+
+  .arrow-left {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-right: 10px solid blue;
+  }
+}
+
+body#tinymce {
+  .annotation_(@type, @icon, @hover-color) {
+    border-color: @type;
+
+  }
+
+  .rounded-corners (@radius: 5px) {
+    -webkit-border-radius: @radius;
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -o-border-radius: @radius;
+    border-radius: @radius;
+  }
+
+  .highlight(@color) {
+    border: 0 !important;
+    color: contrast(@color);
+    background-color: @color;
+    vertical-align: center;
+  }
+
+  .textannotation {
+    border-bottom: 2px solid #2b2b2b;
+    padding: 2px;
+    cursor: pointer;
+    cursor: hand;
+
+    &.wl-creative-work { .highlight(@wl-creative-work-color) }
+    &.wl-event { .highlight(@wl-event-color) }
+    &.wl-organization { .highlight(@wl-organization-color) }
+    &.wl-person { .highlight(@wl-person-color) }
+    &.wl-place { .highlight(@wl-place-color) }
+    &.wl-thing { .highlight(@wl-thing-color) }
+
+    .textannotation {
+      border: 0;
+    }
+  }
+
+  &[contenteditable=false] {
+    background-color: rgb(241, 241, 241);
+  }
+}
+
+// Disambiguation toolbar
+.toolbar {
+  
+  text-align:right;
+  padding:4px 10px;
+  background-color:#eee;
+  border-bottom: 1px solid #eee;
+   position:relative;
+
+  .toolbar-icon(@icon) {
+    &:before {
+      content: @icon; 
+    }
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px;
+    padding: 0px 3px;
+
+    &.selected {
+      color:@wl-brand-color;
+    }
+  }
+  .wl-active-tab {
+    position:absolute;
+    left: 11px;
+    border-left:@wl-brand-color 12px solid;
+    padding-left:6px;
+
+  }
+  .wl-search-toolbar-icon { 
+    .toolbar-icon(@fa-var-search); 
+  }
+
+  .wl-add-entity-toolbar-icon { 
+    .toolbar-icon(@fa-var-pencil); 
+  }
+
+}
+
+.wl-event-info {
+  .date {
+    &:before {
+      content: @fa-var-calendar-o + ' '; 
+    }
+    font-family: FontAwesome;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .place {
+    &:before {
+      content: @fa-var-map-marker + ' '; 
+    }
+    font-family: FontAwesome;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/**
+ * The following rules apply to the *display as* element in the *publish* meta box.
+ *
+ * @see admin/wordlift_admin_entity_publish.php for the html.
+ */
+#wl-entity-display-as {
+  font-weight: 600;
+}
+
+#misc-publishing-actions label[for="wl_entity_display_as"]:before {
+  color: #888;
+  content: '\f116';
+  display: inline-block;
+  font: normal 20px/1 'dashicons';
+  speak: none;
+  left: -1px;
+  padding: 0 5px 0 0;
+  position: relative;
+  top: 0;
+  text-decoration: none !important;
+  vertical-align: top;
+  -webkit-font-smoothing: antialiased;
+}
+/**********************************************************************************************************************/
