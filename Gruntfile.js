@@ -6,6 +6,12 @@ module.exports = function ( grunt ) {
         BUILD_DIR = 'build/',
         config = {};
 
+    // Load tasks.
+    require('matchdep').filterDev(['grunt-*', '!grunt-legacy-util']).forEach( grunt.loadNpmTasks );
+
+    // Load legacy utils
+    grunt.util = require('grunt-legacy-util');
+
     // wordlift.js
     config[ SOURCE_DIR + 'js/wordlift.js' ] = [
         SOURCE_DIR + 'coffee/traslator.coffee',
@@ -61,6 +67,10 @@ module.exports = function ( grunt ) {
 
     grunt.initConfig( {
         pkg: grunt.file.readJSON( 'package.json' ),
+        /* Clean the build dir */
+        clean: {
+            all: [ BUILD_DIR ]
+        },
         /* CoffeeScript compilation */
         coffee: {
             compile: {
@@ -230,13 +240,7 @@ module.exports = function ( grunt ) {
             }
         }
     } );
-    grunt.loadNpmTasks( 'grunt-contrib-watch' );
-    grunt.loadNpmTasks( 'grunt-contrib-coffee' );
-    grunt.loadNpmTasks( 'grunt-contrib-less' );
-    grunt.loadNpmTasks( 'grunt-contrib-uglify' );
-    grunt.loadNpmTasks( 'grunt-contrib-copy' );
-    grunt.loadNpmTasks( 'grunt-contrib-symlink' );
-    grunt.loadNpmTasks( 'grunt-docco' );
+
     return grunt.registerTask( 'default',
         [ 'coffee',
             'uglify',
