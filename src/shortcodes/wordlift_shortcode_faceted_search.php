@@ -7,9 +7,9 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
-	wp_enqueue_style( 'wordlift-faceted-search-css', plugins_url( 'css/wordlift-faceted-entity-search-widget.css', __FILE__ ) );
+	wp_enqueue_style( 'wordlift-faceted-search', plugin_dir_url( __FILE__ ) . 'css/wordlift-faceted-entity-search-widget.min.css' );
 
-	wp_enqueue_script( 'angularjs', plugins_url( 'bower_components/angular/angular.min.js', __FILE__ ) );
+	wp_enqueue_script( 'angularjs', plugin_dir_url( __FILE__ ) . 'bower_components/angular/angular.min.js' );
 
 	wp_enqueue_script( 'wordlift-faceted-search', plugin_dir_url( __FILE__ ) . 'js/wordlift-faceted-entity-search-widget.min.js' );
 

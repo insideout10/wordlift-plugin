@@ -227,7 +227,7 @@ function wl_shortcode_chord( $atts ) {
 	}
 
 	// Adding css
-	wp_enqueue_style( 'wordlift-ui-css', plugins_url( 'css/wordlift.ui.min.css', __FILE__ ) );
+	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift.ui.min.css' );
 
 	// Adding javascript code
 	wp_enqueue_script( 'd3', plugins_url( 'bower_components/d3/d3.min.js', __FILE__ ) );

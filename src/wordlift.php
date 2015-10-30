@@ -186,7 +186,7 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_script( 'wpdialogs' );
 	wp_enqueue_style( 'wp-jquery-ui-dialog' );
 
-	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.css' );
+	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'angularjs', plugins_url( 'bower_components/angular/angular.min.js', __FILE__ ) );
@@ -196,7 +196,7 @@ function wordlift_admin_enqueue_scripts() {
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
 
 function wl_enqueue_scripts() {
-	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.css' );
+	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.min.css' );
 }
 
 add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
