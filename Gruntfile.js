@@ -3,11 +3,11 @@
 module.exports = function ( grunt ) {
 
     var SOURCE_DIR = 'src/',
-        BUILD_DIR = 'build/js/',
+        BUILD_DIR = 'build/',
         config = {};
 
     // wordlift.js
-    config[ BUILD_DIR + 'wordlift.js' ] = [
+    config[ SOURCE_DIR + 'js/wordlift.js' ] = [
         SOURCE_DIR + 'coffee/traslator.coffee',
         SOURCE_DIR + 'coffee/app.constants.coffee',
         SOURCE_DIR + 'coffee/app.config.coffee',
@@ -29,7 +29,7 @@ module.exports = function ( grunt ) {
     ];
 
     // wordlift-reloaded.js
-    config[ BUILD_DIR + 'wordlift-reloaded.js' ] = [
+    config[ SOURCE_DIR + 'js/wordlift-reloaded.js' ] = [
         SOURCE_DIR + 'coffee/traslator.coffee',
         SOURCE_DIR + 'coffee/utils/app.utils.directives.coffee',
         SOURCE_DIR + 'coffee/ui/carousel.coffee',
@@ -46,14 +46,14 @@ module.exports = function ( grunt ) {
     ];
 
     // wordlift.ui.js
-    config[ BUILD_DIR + 'wordlift.ui.js' ] = [
+    config[ SOURCE_DIR + 'js/wordlift.ui.js' ] = [
         SOURCE_DIR + 'coffee/ui/chord.coffee',
         SOURCE_DIR + 'coffee/ui/timeline.coffee',
         SOURCE_DIR + 'coffee/ui/geomap.coffee'
     ];
 
     // wordlift-faceted-entity-search-widget.js
-    config[ BUILD_DIR + 'wordlift-faceted-entity-search-widget.js' ] = [
+    config[ SOURCE_DIR + 'js/wordlift-faceted-entity-search-widget.js' ] = [
         SOURCE_DIR + 'coffee/ui/carousel.coffee',
         SOURCE_DIR + 'coffee/utils/app.utils.directives.coffee',
         SOURCE_DIR + 'coffee/faceted-entity-search-widget/app.coffee'
@@ -76,7 +76,7 @@ module.exports = function ( grunt ) {
             'wordlift': {
                 options: {
                     sourceMap: true,
-                    sourceMapIn: 'app/js/wordlift.js.map',
+                    sourceMapIn: SOURCE_DIR + 'js/wordlift.js.map',
                     compress: {},
                     drop_console: true,
                     dead_code: true,
