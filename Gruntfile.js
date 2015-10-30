@@ -2,7 +2,8 @@
 
 module.exports = function ( grunt ) {
 
-    var SOURCE_DIR = 'src/',
+    var path = require( 'path' ),
+        SOURCE_DIR = 'src/',
         BUILD_DIR = 'build/',
         config = {};
 
@@ -87,7 +88,7 @@ module.exports = function ( grunt ) {
         coffee: {
             compile: {
                 options: {
-                    join: true,
+                    join: false,
                     sourceMap: true
                 },
                 files: config
@@ -188,7 +189,9 @@ module.exports = function ( grunt ) {
                 files: [
                     SOURCE_DIR + '**',
                     // Ignore version control directories.
-                    '!' + SOURCE_DIR + '**/.{svn,git}/**'
+                    '!' + SOURCE_DIR + '**/.{svn,git}/**',
+                    '!' + SOURCE_DIR + 'less/**',
+                    '!' + SOURCE_DIR + 'coffee/**',
                 ],
                 tasks: [ 'clean:dynamic', 'copy:dynamic' ],
                 options: {
@@ -196,6 +199,22 @@ module.exports = function ( grunt ) {
                     spawn: false,
                     interval: 2000
                 }
+            },
+            coffee: {
+                files: [ SOURCE_DIR + 'coffee/**' ],
+                tasks: [ 'coffee' ]
+            },
+            less: {
+                files: [ SOURCE_DIR + 'less/**' ],
+                tasks: [ 'less' ]
+            },
+            uglify: {
+                files: [ SOURCE_DIR + 'js/**' ],
+                tasks: [ 'uglify' ]
+            },
+            cssmin: {
+                files: [ SOURCE_DIR + 'css/**' ],
+                tasks: [ 'cssmin' ]
             },
             config: {
                 files: 'Gruntfile.js'
@@ -230,7 +249,8 @@ module.exports = function ( grunt ) {
         'uglify',
         'less',
         'cssmin',
-        'copy:fonts'
+        'copy:fonts',
+        'copy:build'
     ] );
 
     grunt.registerTask( 'rebuild', [
@@ -238,14 +258,31 @@ module.exports = function ( grunt ) {
         'build'
     ] );
 
+    //grunt.renameTask( 'watch', '_watch' );
+
+    //grunt.registerTask( 'watch', function () {
+    //    if ( !this.args.length || this.args.indexOf( 'coffee' ) > -1 ) {
+    //        //grunt.config( 'browserify.options', {
+    //        //    browserifyOptions: {
+    //        //        debug: true
+    //        //    },
+    //        //    watch: true
+    //        //} );
+    //
+    //        grunt.task.run( 'coffee' );
+    //    }
+    //
+    //    grunt.task.run( '_' + this.nameArgs );
+    //} );
+
     /*
      * Automatically updates the `:dynamic` configurations
      * so that only the changed files are updated.
      */
-    grunt.event.on('watch', function( action, filepath, target ) {
+    grunt.event.on( 'watch', function ( action, filepath, target ) {
         var src;
 
-        if ( [ 'coffee', 'less' ].indexOf( target ) === -1 ) {
+        if ( [ 'coffee', 'less' ].indexOf( target ) > -1 ) {
             return;
         }
 
@@ -256,7 +293,7 @@ module.exports = function ( grunt ) {
         } else {
             grunt.config( [ 'copy', 'dynamic', 'src' ], src );
         }
-    });
+    } );
 
     return grunt.registerTask( 'default', [ 'build' ] );
 };

@@ -1669,7 +1669,6 @@ $(
                 <wl-entities on-select="onEntitySelected(textAnnotation, entityAnnotation)" text-annotation="textAnnotation"></wl-entities>
               </div>
             </form>
-            
             <wl-entity-input-boxes text-annotations="analysis.textAnnotations"></wl-entity-input-boxes>
             <wl-entity-props text-annotations="analysis.textAnnotations"></wl-entity-props>
           </div>
@@ -1681,27 +1680,28 @@ $(
 
   $('#wordlift-disambiguation-popover')
   .css(
-      display: 'none'
-      height: $('body').height() - $('#wpadminbar').height() + 12
-      top: $('#wpadminbar').height() - 1
-      right: 20
-    )
+    display: 'none'
+    height: $('body').height() - $('#wpadminbar').height() + 12
+    top: $('#wpadminbar').height() - 1
+    right: 20
+  )
   .draggable()
 
-  # When the user clicks on the handle, hide the popover.
+# When the user clicks on the handle, hide the popover.
   $('#wordlift-disambiguation-popover .handlediv').click (e) ->
     $('#wordlift-disambiguation-popover').hide()
 
-  # Declare the whole document as bootstrap scope.
+# Declare the whole document as bootstrap scope.
   injector = angular.bootstrap $('#wl-app'), ['wordlift.tinymce.plugin']
-  injector.invoke ['AnalysisService', 'EntityAnnotationConfidenceService', (AnalysisService, EntityAnnotationConfidenceService) ->
-    if window.wordlift?
-      AnalysisService.setKnownTypes window.wordlift.types
-      AnalysisService.setEntities window.wordlift.entities
-      EntityAnnotationConfidenceService.setEntities window.wordlift.entities
+  injector.invoke ['AnalysisService', 'EntityAnnotationConfidenceService',
+    (AnalysisService, EntityAnnotationConfidenceService) ->
+      if window.wordlift?
+        AnalysisService.setKnownTypes window.wordlift.types
+        AnalysisService.setEntities window.wordlift.entities
+        EntityAnnotationConfidenceService.setEntities window.wordlift.entities
   ]
 
-  # Add WordLift as a plugin of the TinyMCE editor.
+# Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
     editor.onLoadContent.add((ed, o) ->
       injector.invoke(['EditorService', (EditorService) ->
@@ -1715,9 +1715,8 @@ $(
       text: ' ' # the space is necessary to avoid right spacing on TinyMCE 4
       tooltip: 'Insert entity'
       onclick: ->
-
-        injector.invoke(['EditorService','$rootScope', (EditorService, $rootScope) ->
-          # execute the following commands in the angular js context.
+        injector.invoke(['EditorService', '$rootScope', (EditorService, $rootScope) ->
+# execute the following commands in the angular js context.
           $rootScope.$apply(->
             EditorService.createTextAnnotationFromCurrentSelection()
           )
@@ -1729,11 +1728,11 @@ $(
       text: ' ' # the space is necessary to avoid right spacing on TinyMCE 4
       tooltip: 'Analyse'
 
-    # When the editor is clicked, the [EditorService.analyze](app.services.EditorService.html#analyze) method is invoked.
+# When the editor is clicked, the [EditorService.analyze](app.services.EditorService.html#analyze) method is invoked.
       onclick: ->
         injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
           $rootScope.$apply(->
-            # Get the html content of the editor.
+# Get the html content of the editor.
             html = editor.getContent format: 'raw'
 
             # Get the text content from the Html.
@@ -1749,9 +1748,9 @@ $(
     # this event is raised when a textannotation is selected in the TinyMCE editor.
     editor.onClick.add (editor, e) ->
       injector.invoke(['$rootScope', ($rootScope) ->
-        # execute the following commands in the angular js context.
+# execute the following commands in the angular js context.
         $rootScope.$apply(->
-          # send a message about the currently clicked annotation.
+# send a message about the currently clicked annotation.
           $rootScope.$broadcast 'textAnnotationClicked', e.target.id
         )
       ])
@@ -1766,20 +1765,17 @@ $wlEntityDisplayAsSelect.siblings('a.wl-edit-entity-display-as').click (event) -
   event.preventDefault()
 
 $wlEntityDisplayAsSelect.find('.wl-save-entity-display-as').click (event) ->
-
   $wlEntityDisplayAsSelect.slideUp('fast').siblings('a.wl-edit-entity-display-as').show()
-
   $('#hidden_wl_entity_display_as').val $('#wl_entity_display_as').val()
   $('#wl-entity-display-as').html $('#wl_entity_display_as option:selected').text()
 
   event.preventDefault()
 
 
-$wlEntityDisplayAsSelect.find('.wl-cancel-entity-display-as').click ( event ) ->
+$wlEntityDisplayAsSelect.find('.wl-cancel-entity-display-as').click (event) ->
 
-  $('#wl-entity-display-as-select').slideUp('fast').siblings( 'a.wl-edit-entity-display-as' ).show().focus()
-
-  $('#wl_entity_display_as').val( $('#hidden_wl_entity_display_as').val() )
+  $('#wl-entity-display-as-select').slideUp('fast').siblings('a.wl-edit-entity-display-as').show().focus()
+  $('#wl_entity_display_as').val($('#hidden_wl_entity_display_as').val())
 
   event.preventDefault()
 # TODO this code has to be integrated within angular app
