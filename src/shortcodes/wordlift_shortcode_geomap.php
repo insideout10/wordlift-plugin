@@ -211,7 +211,7 @@ function wl_shortcode_geomap( $atts ) {
 
 	// Add wordlift-ui css and library.
 	wp_enqueue_style( 'wordlift-ui-css', plugins_url( 'css/wordlift.ui.min.css', __FILE__ ) );
-	wp_enqueue_script( 'wordlift-ui', plugins_url( 'js/wordlift.ui.min.js', __FILE__ ), array( 'jquery' ) );
+	wp_enqueue_script( 'wordlift-ui', plugins_url( 'js/wordlift-ui.min.js', __FILE__ ), array( 'jquery' ) );
 	wp_localize_script( 'wordlift-ui', 'wl_geomap_params', array(
         'ajax_url' => admin_url('admin-ajax.php'),	// Global param
         'action'   => 'wl_geomap'			// Global param

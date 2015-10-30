@@ -52,7 +52,7 @@ module.exports = function ( grunt ) {
     ];
 
     // wordlift.ui.js
-    config[ SOURCE_DIR + 'js/wordlift.ui.js' ] = [
+    config[ SOURCE_DIR + 'js/wordlift-ui.js' ] = [
         SOURCE_DIR + 'coffee/ui/chord.coffee',
         SOURCE_DIR + 'coffee/ui/timeline.coffee',
         SOURCE_DIR + 'coffee/ui/geomap.coffee'
@@ -69,7 +69,10 @@ module.exports = function ( grunt ) {
         pkg: grunt.file.readJSON( 'package.json' ),
         /* Clean the build dir */
         clean: {
-            all: [ BUILD_DIR ]
+            all: [
+                BUILD_DIR,
+                SOURCE_DIR + 'js/'
+            ]
         },
         /* CoffeeScript compilation */
         coffee: {
@@ -83,6 +86,9 @@ module.exports = function ( grunt ) {
         },
         /* Minify the JavaScript files */
         uglify: {
+            options: {
+                ASCIIOnly: true
+            },
             all: {
                 expand: true,
                 cwd: SOURCE_DIR,
@@ -90,8 +96,8 @@ module.exports = function ( grunt ) {
                 ext: '.min.js',
                 src: [
                     'js/wordlift.js',
-                    'js/wordlift.ui.js',
                     'js/wordlift-reloaded.js',
+                    'js/wordlift-ui.js',
                     'js/wordlift-faceted-entity-search-widget.js'
                 ]
             }
@@ -149,28 +155,6 @@ module.exports = function ( grunt ) {
                 dest: 'app/fonts/',
                 flatten: true,
                 filter: 'isFile'
-            },
-            'dist-scripts': {
-                expand: true,
-                cwd: 'app/js/',
-                src: [ 'wordlift-faceted-entity-search-widget.js',
-                    'wordlift-faceted-entity-search-widget.js.map',
-                    'wordlift-faceted-entity-search-widget.min.js',
-                    'wordlift-faceted-entity-search-widget.min.map',
-                    'wordlift-reloaded.js',
-                    'wordlift-reloaded.js.map',
-                    'wordlift-reloaded.min.js',
-                    'wordlift-reloaded.min.map',
-                    'wordlift.js',
-                    'wordlift.js.map',
-                    'wordlift.min.js',
-                    'wordlift.min.map',
-                    'wordlift.ui.js',
-                    'wordlift.ui.js.map',
-                    'wordlift.ui.min.js',
-                    'wordlift.ui.min.map' ],
-                dest: 'dist/<%= pkg.version %>/js/',
-                flatten: true
             },
             'dist-stylesheets': {
                 expand: true,
@@ -240,6 +224,16 @@ module.exports = function ( grunt ) {
             }
         }
     } );
+
+    grunt.registerTask( 'build', [
+        'coffee',
+        'uglify'
+    ] );
+
+    grunt.registerTask( 'rebuild', [
+        'clean',
+        'build'
+    ] );
 
     return grunt.registerTask( 'default',
         [ 'coffee',

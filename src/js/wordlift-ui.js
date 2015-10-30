@@ -380,4 +380,4 @@
 
 }).call(this);
 
-//# sourceMappingURL=wordlift.ui.js.map
+//# sourceMappingURL=wordlift-ui.js.map
