@@ -124,7 +124,7 @@ module.exports = function ( grunt ) {
         cssmin: {
             all: {
                 expand: true,
-                cwd: SOURCE_DIR + 'less/',
+                cwd: SOURCE_DIR + 'css/',
                 dest: SOURCE_DIR + 'css/',
                 ext: '.min.css',
                 src: '*.css'
@@ -231,7 +231,9 @@ module.exports = function ( grunt ) {
 
     grunt.registerTask( 'build', [
         'coffee',
-        'uglify'
+        'uglify',
+        'less',
+        'cssmin'
     ] );
 
     grunt.registerTask( 'rebuild', [
