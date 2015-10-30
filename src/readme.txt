@@ -6,7 +6,7 @@ Tested up to: 4.3.1
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to WordPress. Beautifully helps you reach your maximum potential audiences.
+WordLift brings the power of Artificial Intelligence to WordPress. Beautifully helps you reach your maximum potential audience.
 
 == Description ==
 
