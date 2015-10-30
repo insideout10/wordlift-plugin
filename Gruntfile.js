@@ -219,6 +219,12 @@ module.exports = function ( grunt ) {
             config: {
                 files: 'Gruntfile.js'
             }
+        },
+        phpunit: {
+            'default': {
+                cmd: 'phpunit',
+                args: [ '-c', 'phpunit.xml' ]
+            }
         }
         //,
         //watch: {
@@ -294,6 +300,21 @@ module.exports = function ( grunt ) {
             grunt.config( [ 'copy', 'dynamic', 'src' ], src );
         }
     } );
+
+    // Testing tasks.
+    grunt.registerMultiTask( 'phpunit', 'Runs PHPUnit tests.', function () {
+        grunt.util.spawn( {
+            cmd: this.data.cmd,
+            args: this.data.args,
+            opts: { stdio: 'inherit' }
+        }, this.async() );
+    } );
+
+    grunt.registerTask( 'test', 'Runs all PHPUnit tasks.', [ 'phpunit' ] );
+
+    // Travis CI tasks.
+    //grunt.registerTask('travis:js', 'Runs Javascript Travis CI tasks.', [ 'jshint:corejs', 'qunit:compiled' ]);
+    grunt.registerTask( 'travis:phpunit', 'Runs PHPUnit Travis CI tasks.', 'phpunit' );
 
     return grunt.registerTask( 'default', [ 'build' ] );
 };
