@@ -6,7 +6,7 @@ Tested up to: 4.3.1
 Stable tag: 3.0.12
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to WordPress. Beautifully turns editorial contents into actionable knowledge and helps you reach your maximum potential audiences.
+WordLift brings the power of Artificial Intelligence to WordPress. Beautifully helps you reach your maximum potential audience.
 
 == Description ==
 
@@ -18,7 +18,7 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully t
 
 **WordLift** adds [semantic annotations](http://docs.wordlift.it/en/latest/key-concepts.html#semantic-fingerprint) and combines information publicly available as [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to support the editorial workflow by suggesting relevant information, images and links.
 
-= **WordLift** brings to content editors =
+= WordLift brings to content editors =
 _____________
 
 * support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph)
@@ -29,7 +29,7 @@ _____________
 * new means to drive business growth with **meaningful content discovery paths**
 * content tagging for **better SEO**
 
-= Websites built with **WordLift** bring to readers =
+= Websites built with WordLift bring to readers =
 _____________
 
 * multiple means of searching and accessing **editorial contents around a specific topic** 
