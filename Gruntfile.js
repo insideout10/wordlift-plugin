@@ -230,7 +230,7 @@ module.exports = function ( grunt ) {
             unit: {
                 configFile: 'tests/js/config/karma.conf.js',
                 singleRun: true,
-                browsers: [ 'Firefox' ],
+                browsers: [ 'PhantomJS' ],
                 reporters: 'dots'
             }
         }
