@@ -230,7 +230,7 @@ module.exports = function ( grunt ) {
             unit: {
                 configFile: 'tests/js/config/karma.conf.js',
                 singleRun: true,
-                browsers: ['Firefox'],
+                browsers: [ 'Firefox' ],
                 reporters: 'dots'
             }
         }
@@ -321,7 +321,7 @@ module.exports = function ( grunt ) {
     grunt.registerTask( 'test', 'Runs all PHPUnit tasks.', [ 'phpunit' ] );
 
     // Travis CI tasks.
-    //grunt.registerTask('travis:js', 'Runs Javascript Travis CI tasks.', [ 'jshint:corejs', 'qunit:compiled' ]);
+    grunt.registerTask( 'travis:js', 'Runs Javascript Travis CI tasks.', 'karma' );
     grunt.registerTask( 'travis:phpunit', 'Runs PHPUnit Travis CI tasks.', 'phpunit' );
 
     return grunt.registerTask( 'default', [ 'build' ] );
