@@ -29,7 +29,7 @@
         });
       };
       buildChord = function(data) {
-        var arc, beautifyLabel, chord, colorLuminance, e, entity, getEntityIndex, height, innerRadius, matrix, outerRadius, rad2deg, relation, rotate, sign, size, tooltip, translate, viz, width, x, y, _i, _j, _len, _len1, _ref, _ref1;
+        var arc, beautifyLabel, chord, colorLuminance, e, entity, getEntityIndex, height, innerRadius, j, k, len, len1, matrix, outerRadius, rad2deg, ref, ref1, relation, rotate, sign, size, tooltip, translate, viz, width, x, y;
         if ((data.entities == null) || data.entities.length < 2) {
           container.hide();
           log("No data found for the chord.");
@@ -52,13 +52,13 @@
           }
         };
         beautifyLabel = function(words) {
-          var n, w, _i, _ref;
+          var j, n, ref, w;
           if (words.length > settings.maxLabelLength) {
             words = words.substring(0, settings.maxLabelLength) + '...';
           }
           words = words.split(/\s/);
           n = [];
-          for (w = _i = 0, _ref = words.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; w = 0 <= _ref ? ++_i : --_i) {
+          for (w = j = 0, ref = words.length - 1; 0 <= ref ? j <= ref : j >= ref; w = 0 <= ref ? ++j : --j) {
             if (words[w].length > settings.maxWordLength || w === words.length - 1) {
               n.push(words[w]);
             } else {
@@ -68,7 +68,7 @@
           return n;
         };
         colorLuminance = function(hex, lum) {
-          var c, i, rgb, _i;
+          var c, i, j, rgb;
           hex = String(hex).replace(/[^0-9a-f]/gi, '');
           if (hex.length < 6) {
             hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
@@ -77,7 +77,7 @@
           rgb = "#";
           c = void 0;
           i = void 0;
-          for (i = _i = 0; _i <= 3; i = ++_i) {
+          for (i = j = 0; j <= 3; i = ++j) {
             c = parseInt(hex.substr(i * 2, 2), 16);
             c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
             rgb += ("00" + c).substr(c.length);
@@ -85,8 +85,8 @@
           return rgb;
         };
         getEntityIndex = function(uri) {
-          var i, _i, _ref;
-          for (i = _i = 0, _ref = data.entities.length; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
+          var i, j, ref;
+          for (i = j = 0, ref = data.entities.length; 0 <= ref ? j <= ref : j >= ref; i = 0 <= ref ? ++j : --j) {
             if (data.entities[i].uri === uri) {
               return i;
             }
@@ -94,23 +94,23 @@
           return -1;
         };
         matrix = [];
-        _ref = data.entities;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          entity = _ref[_i];
+        ref = data.entities;
+        for (j = 0, len = ref.length; j < len; j++) {
+          entity = ref[j];
           matrix.push((function() {
-            var _j, _len1, _ref1, _results;
-            _ref1 = data.entities;
-            _results = [];
-            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-              e = _ref1[_j];
-              _results.push(0);
+            var k, len1, ref1, results;
+            ref1 = data.entities;
+            results = [];
+            for (k = 0, len1 = ref1.length; k < len1; k++) {
+              e = ref1[k];
+              results.push(0);
             }
-            return _results;
+            return results;
           })());
         }
-        _ref1 = data.relations;
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          relation = _ref1[_j];
+        ref1 = data.relations;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          relation = ref1[k];
           x = getEntityIndex(relation.s);
           y = getEntityIndex(relation.o);
           matrix[x][y] = 1;
@@ -153,10 +153,10 @@
           }
           return fontSize + 'px';
         }).each(function(d) {
-          var i, n, text, _k, _ref2;
+          var i, l, n, ref2, text;
           n = beautifyLabel(data.entities[d.index].label);
           text = d3.select(this).attr("dy", n.length / 3 - (n.length - 1) * 0.9 + 'em').text(n[0]);
-          for (i = _k = 1, _ref2 = n.length; 1 <= _ref2 ? _k <= _ref2 : _k >= _ref2; i = 1 <= _ref2 ? ++_k : --_k) {
+          for (i = l = 1, ref2 = n.length; 1 <= ref2 ? l <= ref2 : l >= ref2; i = 1 <= ref2 ? ++l : --l) {
             text.append("tspan").attr('x', 0).attr('dy', '1em').text(n[i]);
           }
           return text.attr('transform', function(d) {
@@ -224,7 +224,7 @@
       element = $(this);
       params = element.data();
       $.extend(params, wl_chord_params);
-      url = ("" + params.ajax_url + "?") + $.param({
+      url = (params.ajax_url + "?") + $.param({
         'action': params.action,
         'post_id': params.postId
       });
@@ -291,7 +291,7 @@
       element = $(this);
       params = element.data();
       $.extend(params, wl_timeline_params);
-      url = ("" + params.ajax_url + "?") + $.param({
+      url = (params.ajax_url + "?") + $.param({
         'action': params.action,
         'post_id': params.postId
       });
@@ -326,14 +326,14 @@
         });
       };
       buildGeomap = function(data) {
-        var map, _ref, _ref1;
-        if ((data.features == null) || ((_ref = data.features) != null ? _ref.length : void 0) === 0) {
+        var map, ref, ref1;
+        if ((data.features == null) || ((ref = data.features) != null ? ref.length : void 0) === 0) {
           container.hide();
           log("Features missing: geomap cannot be rendered");
           return;
         }
         map = L.map(container.attr('id'));
-        if (((_ref1 = data.boundaries) != null ? _ref1.length : void 0) === 1) {
+        if (((ref1 = data.boundaries) != null ? ref1.length : void 0) === 1) {
           map.setView(data.boundaries[0], settings.zoom);
         } else {
           map.fitBounds(L.latLngBounds(data.boundaries));
@@ -346,8 +346,8 @@
             return L.marker(latlng, {});
           },
           onEachFeature: function(feature, layer) {
-            var _ref2;
-            if ((_ref2 = feature.properties) != null ? _ref2.popupContent : void 0) {
+            var ref2;
+            if ((ref2 = feature.properties) != null ? ref2.popupContent : void 0) {
               return layer.bindPopup(feature.properties.popupContent);
             }
           }
@@ -368,7 +368,7 @@
       element = $(this);
       params = element.data();
       $.extend(params, wl_geomap_params);
-      url = ("" + params.ajax_url + "?") + $.param({
+      url = (params.ajax_url + "?") + $.param({
         'action': params.action,
         'post_id': params.postId
       });

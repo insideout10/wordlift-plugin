@@ -1,6 +1,6 @@
 (function() {
   var $, Traslator, container, injector,
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Traslator = (function() {
     var decodeHtml;
@@ -70,10 +70,10 @@
     };
 
     Traslator.prototype.text2html = function(pos) {
-      var htmlPos, i, textPos, _i, _ref;
+      var htmlPos, i, j, ref, textPos;
       htmlPos = 0;
       textPos = 0;
-      for (i = _i = 0, _ref = this._textPositions.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (i = j = 0, ref = this._textPositions.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
         if (pos < this._textPositions[i]) {
           break;
         }
@@ -84,13 +84,13 @@
     };
 
     Traslator.prototype.html2text = function(pos) {
-      var htmlPos, i, textPos, _i, _ref;
+      var htmlPos, i, j, ref, textPos;
       if (pos < this._htmlPositions[0]) {
         return 0;
       }
       htmlPos = 0;
       textPos = 0;
-      for (i = _i = 0, _ref = this._htmlPositions.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (i = j = 0, ref = this._htmlPositions.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
         if (pos < this._htmlPositions[i]) {
           break;
         }
@@ -182,12 +182,12 @@
             return $scope.currentPaneIndex = 0;
           };
           w.bind('resize', function() {
-            var pane, _i, _len, _ref;
+            var j, len, pane, ref;
             $scope.itemWidth = $scope.setItemWidth();
             $scope.setPanesWrapperWidth();
-            _ref = $scope.panes;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              pane = _ref[_i];
+            ref = $scope.panes;
+            for (j = 0, len = ref.length; j < len; j++) {
+              pane = ref[j];
               pane.scope.setWidth($scope.itemWidth);
             }
             return $scope.$apply();
@@ -204,11 +204,11 @@
             return $scope.setPanesWrapperWidth();
           };
           return ctrl.unregisterPane = function(scope) {
-            var index, pane, unregisterPaneIndex, _i, _len, _ref;
+            var index, j, len, pane, ref, unregisterPaneIndex;
             unregisterPaneIndex = void 0;
-            _ref = $scope.panes;
-            for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
-              pane = _ref[index];
+            ref = $scope.panes;
+            for (index = j = 0, len = ref.length; j < len; index = ++j) {
+              pane = ref[index];
               if (pane.scope.$id === scope.$id) {
                 unregisterPaneIndex = index;
               }
@@ -230,7 +230,7 @@
           $log.debug("Going to add carousel pane with id " + $scope.$id + " to carousel");
           $element.addClass("wl-carousel-item");
           $scope.setWidth = function(size) {
-            return $element.css('width', "" + size + "px");
+            return $element.css('width', size + "px");
           };
           $scope.$on('$destroy', function() {
             $log.debug("Destroy " + $scope.$id);
@@ -245,7 +245,7 @@
   angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
     'configuration', '$log', function(configuration, $log) {
       return function(items, types) {
-        var annotations_count, entity, filtered, id, treshold, _ref;
+        var annotations_count, entity, filtered, id, ref, treshold;
         filtered = [];
         if (items == null) {
           return filtered;
@@ -253,7 +253,7 @@
         treshold = Math.floor(((1 / 120) * Object.keys(items).length) + 0.75);
         for (id in items) {
           entity = items[id];
-          if (_ref = entity.mainType, __indexOf.call(types, _ref) >= 0) {
+          if (ref = entity.mainType, indexOf.call(types, ref) >= 0) {
             annotations_count = Object.keys(entity.annotations).length;
             if (annotations_count === 0) {
               continue;
@@ -277,11 +277,11 @@
   ]).filter('filterEntitiesByTypes', [
     '$log', function($log) {
       return function(items, types) {
-        var entity, filtered, id, _ref;
+        var entity, filtered, id, ref;
         filtered = [];
         for (id in items) {
           entity = items[id];
-          if (_ref = entity.mainType, __indexOf.call(types, _ref) >= 0) {
+          if (ref = entity.mainType, indexOf.call(types, ref) >= 0) {
             filtered.push(entity);
           }
         }
@@ -304,7 +304,7 @@
     }
   ]).controller('EditPostWidgetController', [
     'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$injector', function(RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $injector) {
-      var box, _i, _len, _ref;
+      var box, j, len, ref;
       $scope.isRunning = false;
       $scope.analysis = void 0;
       $scope.relatedPosts = void 0;
@@ -326,9 +326,9 @@
       $rootScope.$watch('selectionStatus', function() {
         return $scope.isThereASelection = $rootScope.selectionStatus;
       });
-      _ref = $scope.configuration.classificationBoxes;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        box = _ref[_i];
+      ref = $scope.configuration.classificationBoxes;
+      for (j = 0, len = ref.length; j < len; j++) {
+        box = ref[j];
         $scope.selectedEntities[box.id] = {};
       }
       $scope.createTextAnnotationFromCurrentSelection = function() {
@@ -341,8 +341,8 @@
         return $scope.selectedEntities[box.id][entity.id] != null;
       };
       $scope.isLinkedToCurrentAnnotation = function(entity) {
-        var _ref1;
-        return (_ref1 = $scope.annotation, __indexOf.call(entity.occurrences, _ref1) >= 0);
+        var ref1;
+        return (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0);
       };
       $scope.addNewEntityToAnalysis = function(scope) {
         var annotation;
@@ -362,17 +362,17 @@
         return $scope.newEntity = AnalysisService.createEntity();
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
-        var entities, _ref1, _results;
+        var entities, ref1, results;
         $log.debug("Occurrences " + occurrences.length + " for " + entityId);
         $scope.analysis.entities[entityId].occurrences = occurrences;
         if (occurrences.length === 0) {
-          _ref1 = $scope.selectedEntities;
-          _results = [];
-          for (box in _ref1) {
-            entities = _ref1[box];
-            _results.push(delete $scope.selectedEntities[box][entityId]);
+          ref1 = $scope.selectedEntities;
+          results = [];
+          for (box in ref1) {
+            entities = ref1[box];
+            results.push(delete $scope.selectedEntities[box][entityId]);
           }
-          return _results;
+          return results;
         }
       });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
@@ -393,23 +393,23 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, uri, _j, _k, _l, _len1, _len2, _len3, _ref1, _ref2, _ref3;
+        var entity, entityId, k, l, len1, len2, len3, m, ref1, ref2, ref3, uri;
         $scope.analysis = analysis;
-        _ref1 = $scope.configuration.classificationBoxes;
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          box = _ref1[_j];
-          _ref2 = box.selectedEntities;
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            entityId = _ref2[_k];
+        ref1 = $scope.configuration.classificationBoxes;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          box = ref1[k];
+          ref2 = box.selectedEntities;
+          for (l = 0, len2 = ref2.length; l < len2; l++) {
+            entityId = ref2[l];
             if (entity = analysis.entities[entityId]) {
               if (entity.occurrences.length === 0) {
                 $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              _ref3 = entity.images;
-              for (_l = 0, _len3 = _ref3.length; _l < _len3; _l++) {
-                uri = _ref3[_l];
+              ref3 = entity.images;
+              for (m = 0, len3 = ref3.length; m < len3; m++) {
+                uri = ref3[m];
                 $scope.images[uri] = entity.label;
               }
             } else {
@@ -420,12 +420,12 @@
         return $scope.updateRelatedPosts();
       });
       $scope.updateRelatedPosts = function() {
-        var entities, entity, entityIds, id, _ref1;
+        var entities, entity, entityIds, id, ref1;
         $log.debug("Going to update related posts box ...");
         entityIds = [];
-        _ref1 = $scope.selectedEntities;
-        for (box in _ref1) {
-          entities = _ref1[box];
+        ref1 = $scope.selectedEntities;
+        for (box in ref1) {
+          entities = ref1[box];
           for (id in entities) {
             entity = entities[id];
             entityIds.push(id);
@@ -434,23 +434,23 @@
         return RelatedPostDataRetrieverService.load(entityIds);
       };
       return $scope.onSelectedEntityTile = function(entity, scope) {
-        var uri, _j, _k, _len1, _len2, _ref1, _ref2;
+        var k, l, len1, len2, ref1, ref2, uri;
         $log.debug("Entity tile selected for entity " + entity.id + " within '" + scope.id + "' scope");
         $log.debug(entity);
         $log.debug(scope);
         if ($scope.selectedEntities[scope.id][entity.id] == null) {
           $scope.selectedEntities[scope.id][entity.id] = entity;
-          _ref1 = entity.images;
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            uri = _ref1[_j];
+          ref1 = entity.images;
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            uri = ref1[k];
             $scope.images[uri] = entity.label;
           }
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
         } else {
-          _ref2 = entity.images;
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            uri = _ref2[_k];
+          ref2 = entity.images;
+          for (l = 0, len2 = ref2.length; l < len2; l++) {
+            uri = ref2[l];
             delete $scope.images[uri];
           }
           $scope.$emit("entityDeselected", entity, $scope.annotation);
@@ -515,14 +515,14 @@
             return $scope.tiles.push(tile);
           };
           return ctrl.closeTiles = function() {
-            var tile, _i, _len, _ref, _results;
-            _ref = $scope.tiles;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              tile = _ref[_i];
-              _results.push(tile.close());
+            var j, len, ref, results, tile;
+            ref = $scope.tiles;
+            results = [];
+            for (j = 0, len = ref.length; j < len; j++) {
+              tile = ref[j];
+              results.push(tile.close());
             }
-            return _results;
+            return results;
           };
         }
       };
@@ -540,13 +540,13 @@
         },
         template: "<div name=\"wordlift\" class=\"wl-entity-form\">\n<div ng-show=\"entity.images.length > 0\">\n    <img ng-src=\"{{entity.images[0]}}\" wl-src=\"{{configuration.defaultThumbnailPath}}\" />\n</div>\n<div>\n    <label>Entity label</label>\n    <input type=\"text\" ng-model=\"entity.label\" ng-disabled=\"checkEntityId(entity.id)\" />\n</div>\n<div>\n    <label>Entity type</label>\n    <select ng-hide=\"hasOccurences()\" ng-model=\"entity.mainType\" ng-options=\"type.id as type.name for type in supportedTypes\" ></select>\n    <input ng-show=\"hasOccurences()\" type=\"text\" ng-value=\"getCurrentTypeUri()\" disabled=\"true\" />\n</div>\n<div>\n    <label>Entity Description</label>\n    <textarea ng-model=\"entity.description\" rows=\"6\"></textarea>\n</div>\n<div ng-show=\"checkEntityId(entity.id)\">\n    <label>Entity Id</label>\n    <input type=\"text\" ng-model=\"entity.id\" disabled=\"true\" />\n</div>\n<div class=\"wl-suggested-sameas-wrapper\">\n    <label>Entity Same as (*)</label>\n    <input type=\"text\" ng-model=\"entity.sameAs\" />\n    <h5 ng-show=\"entity.suggestedSameAs.length > 0\">same as suggestions</h5>\n    <div ng-click=\"setSameAs(sameAs)\" ng-class=\"{ 'active': entity.sameAs == sameAs }\" class=\"wl-sameas\" ng-repeat=\"sameAs in entity.suggestedSameAs\">\n      {{sameAs}}\n    </div>\n</div>\n\n<div class=\"wl-submit-wrapper\">\n  <span class=\"button button-primary\" ng-click=\"onSubmit()\">Save</span>\n</div>\n\n</div>",
         link: function($scope, $element, $attrs, $ctrl) {
-          var availableTypes, type, _i, _len, _ref;
+          var availableTypes, j, len, ref, type;
           $scope.configuration = configuration;
           $scope.getCurrentTypeUri = function() {
-            var type, _i, _len, _ref;
-            _ref = configuration.types;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              type = _ref[_i];
+            var j, len, ref, type;
+            ref = configuration.types;
+            for (j = 0, len = ref.length; j < len; j++) {
+              type = ref[j];
               if (type.css === ("wl-" + $scope.entity.mainType)) {
                 return type.uri;
               }
@@ -562,37 +562,37 @@
             return /^(f|ht)tps?:\/\//i.test(uri);
           };
           availableTypes = [];
-          _ref = configuration.types;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            type = _ref[_i];
+          ref = configuration.types;
+          for (j = 0, len = ref.length; j < len; j++) {
+            type = ref[j];
             availableTypes[type.css.replace('wl-', '')] = type.uri;
           }
           $scope.supportedTypes = (function() {
-            var _j, _len1, _ref1, _results;
-            _ref1 = configuration.types;
-            _results = [];
-            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-              type = _ref1[_j];
-              _results.push({
+            var k, len1, ref1, results;
+            ref1 = configuration.types;
+            results = [];
+            for (k = 0, len1 = ref1.length; k < len1; k++) {
+              type = ref1[k];
+              results.push({
                 id: type.css.replace('wl-', ''),
                 name: type.uri
               });
             }
-            return _results;
+            return results;
           })();
           if ($scope.box) {
             return $scope.supportedTypes = (function() {
-              var _j, _len1, _ref1, _results;
-              _ref1 = $scope.box.registeredTypes;
-              _results = [];
-              for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                type = _ref1[_j];
-                _results.push({
+              var k, len1, ref1, results;
+              ref1 = $scope.box.registeredTypes;
+              results = [];
+              for (k = 0, len1 = ref1.length; k < len1; k++) {
+                type = ref1[k];
+                results.push({
                   id: type,
                   name: availableTypes[type]
                 });
               }
-              return _results;
+              return results;
             })();
           }
         }
@@ -649,7 +649,7 @@
 
   angular.module('wordlift.editpost.widget.services.AnalysisService', []).service('AnalysisService', [
     'configuration', '$log', '$http', '$rootScope', function(configuration, $log, $http, $rootScope) {
-      var box, extend, findAnnotation, merge, service, type, uniqueId, _i, _j, _len, _len1, _ref, _ref1;
+      var box, extend, findAnnotation, j, k, len, len1, merge, ref, ref1, service, type, uniqueId;
       uniqueId = function(length) {
         var id;
         if (length == null) {
@@ -688,23 +688,23 @@
         _defaultType: "thing"
       };
       service.cleanAnnotations = function(analysis, positions) {
-        var annotation, annotationId, annotationRange, isOverlapping, pos, _i, _j, _len, _ref, _ref1, _ref2, _results;
+        var annotation, annotationId, annotationRange, isOverlapping, j, k, len, pos, ref, ref1, ref2, results;
         if (positions == null) {
           positions = [];
         }
-        _ref = analysis.annotations;
-        for (annotationId in _ref) {
-          annotation = _ref[annotationId];
+        ref = analysis.annotations;
+        for (annotationId in ref) {
+          annotation = ref[annotationId];
           if (annotation.start > 0 && annotation.end > annotation.start) {
             annotationRange = (function() {
-              _results = [];
-              for (var _i = _ref1 = annotation.start, _ref2 = annotation.end; _ref1 <= _ref2 ? _i <= _ref2 : _i >= _ref2; _ref1 <= _ref2 ? _i++ : _i--){ _results.push(_i); }
-              return _results;
+              results = [];
+              for (var j = ref1 = annotation.start, ref2 = annotation.end; ref1 <= ref2 ? j <= ref2 : j >= ref2; ref1 <= ref2 ? j++ : j--){ results.push(j); }
+              return results;
             }).apply(this);
             isOverlapping = false;
-            for (_j = 0, _len = annotationRange.length; _j < _len; _j++) {
-              pos = annotationRange[_j];
-              if (__indexOf.call(positions, pos) >= 0) {
+            for (k = 0, len = annotationRange.length; k < len; k++) {
+              pos = annotationRange[k];
+              if (indexOf.call(positions, pos) >= 0) {
                 isOverlapping = true;
               }
               break;
@@ -720,13 +720,13 @@
         }
         return analysis;
       };
-      _ref = configuration.classificationBoxes;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        box = _ref[_i];
-        _ref1 = box.registeredTypes;
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          type = _ref1[_j];
-          if (__indexOf.call(service._supportedTypes, type) < 0) {
+      ref = configuration.classificationBoxes;
+      for (j = 0, len = ref.length; j < len; j++) {
+        box = ref[j];
+        ref1 = box.registeredTypes;
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          type = ref1[k];
+          if (indexOf.call(service._supportedTypes, type) < 0) {
             service._supportedTypes.push(type);
           }
         }
@@ -750,12 +750,12 @@
         return merge(defaults, params);
       };
       service.deleteAnnotation = function(analysis, annotationId) {
-        var ea, index, _k, _len2, _ref2;
+        var ea, index, l, len2, ref2;
         $log.warn("Going to remove overlapping annotation with id " + annotationId);
         if (analysis.annotations[annotationId] != null) {
-          _ref2 = analysis.annotations[annotationId].entityMatches;
-          for (index = _k = 0, _len2 = _ref2.length; _k < _len2; index = ++_k) {
-            ea = _ref2[index];
+          ref2 = analysis.annotations[annotationId].entityMatches;
+          for (index = l = 0, len2 = ref2.length; l < len2; index = ++l) {
+            ea = ref2[index];
             delete analysis.entities[ea.entityId].annotations[annotationId];
           }
           delete analysis.annotations[annotationId];
@@ -778,15 +778,15 @@
         return merge(defaults, params);
       };
       service.parse = function(data) {
-        var annotation, annotationId, ea, em, entity, id, index, localEntity, local_confidence, _k, _l, _len2, _len3, _ref10, _ref11, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
-        _ref2 = configuration.entities;
-        for (id in _ref2) {
-          localEntity = _ref2[id];
+        var annotation, annotationId, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
+        ref2 = configuration.entities;
+        for (id in ref2) {
+          localEntity = ref2[id];
           data.entities[id] = localEntity;
         }
-        _ref3 = data.entities;
-        for (id in _ref3) {
-          entity = _ref3[id];
+        ref3 = data.entities;
+        for (id in ref3) {
+          entity = ref3[id];
           if (!entity.label) {
             $log.warn("Label missing for entity " + id);
           }
@@ -796,16 +796,16 @@
           if (!entity.sameAs) {
             $log.warn("sameAs missing for entity " + id);
             entity.sameAs = [];
-            if ((_ref4 = configuration.entities[id]) != null) {
-              _ref4.sameAs = [];
+            if ((ref4 = configuration.entities[id]) != null) {
+              ref4.sameAs = [];
             }
             $log.debug("Schema.org sameAs overridden for entity " + id);
           }
-          if (_ref5 = entity.mainType, __indexOf.call(this._supportedTypes, _ref5) < 0) {
+          if (ref5 = entity.mainType, indexOf.call(this._supportedTypes, ref5) < 0) {
             $log.warn("Schema.org type " + entity.mainType + " for entity " + id + " is not supported from current classification boxes configuration");
             entity.mainType = this._defaultType;
-            if ((_ref6 = configuration.entities[id]) != null) {
-              _ref6.mainType = this._defaultType;
+            if ((ref6 = configuration.entities[id]) != null) {
+              ref6.mainType = this._defaultType;
             }
             $log.debug("Schema.org type overridden for entity " + id);
           }
@@ -814,14 +814,14 @@
           entity.annotations = {};
           entity.confidence = 1;
         }
-        _ref7 = data.annotations;
-        for (id in _ref7) {
-          annotation = _ref7[id];
+        ref7 = data.annotations;
+        for (id in ref7) {
+          annotation = ref7[id];
           annotation.id = id;
           annotation.entities = {};
-          _ref8 = annotation.entityMatches;
-          for (index = _k = 0, _len2 = _ref8.length; _k < _len2; index = ++_k) {
-            ea = _ref8[index];
+          ref8 = annotation.entityMatches;
+          for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
+            ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
               data.entities[ea.entityId].label = annotation.text;
               $log.debug("Missing label retrived from related annotation for entity " + ea.entityId);
@@ -830,16 +830,16 @@
             data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
           }
         }
-        _ref9 = data.entities;
-        for (id in _ref9) {
-          entity = _ref9[id];
-          _ref10 = data.annotations;
-          for (annotationId in _ref10) {
-            annotation = _ref10[annotationId];
+        ref9 = data.entities;
+        for (id in ref9) {
+          entity = ref9[id];
+          ref10 = data.annotations;
+          for (annotationId in ref10) {
+            annotation = ref10[annotationId];
             local_confidence = 1;
-            _ref11 = annotation.entityMatches;
-            for (_l = 0, _len3 = _ref11.length; _l < _len3; _l++) {
-              em = _ref11[_l];
+            ref11 = annotation.entityMatches;
+            for (m = 0, len3 = ref11.length; m < len3; m++) {
+              em = ref11[m];
               if ((em.entityId != null) && em.entityId === id) {
                 local_confidence = em.confidence;
               }
@@ -852,11 +852,11 @@
       service.getSuggestedSameAs = function(content) {
         var promise;
         return promise = this._innerPerform(content).then(function(response) {
-          var entity, id, suggestions, _ref2;
+          var entity, id, ref2, suggestions;
           suggestions = [];
-          _ref2 = response.data.entities;
-          for (id in _ref2) {
-            entity = _ref2[id];
+          ref2 = response.data.entities;
+          for (id in ref2) {
+            entity = ref2[id];
             if (id.startsWith('http')) {
               suggestions.push(id);
             }
@@ -897,11 +897,11 @@
         });
       };
       service.preselect = function(analysis, annotations) {
-        var annotation, e, entity, id, textAnnotation, _k, _len2, _ref2, _ref3, _results;
+        var annotation, e, entity, id, l, len2, ref2, ref3, results, textAnnotation;
         $log.debug("Going to perform annotations preselection");
-        _results = [];
-        for (_k = 0, _len2 = annotations.length; _k < _len2; _k++) {
-          annotation = annotations[_k];
+        results = [];
+        for (l = 0, len2 = annotations.length; l < len2; l++) {
+          annotation = annotations[l];
           if (annotation.start === annotation.end) {
             $log.warn("There is a broken empty annotation for entityId " + annotation.uri);
             continue;
@@ -917,10 +917,10 @@
             analysis.annotations[textAnnotation.id] = textAnnotation;
           }
           entity = analysis.entities[annotation.uri];
-          _ref2 = configuration.entities;
-          for (id in _ref2) {
-            e = _ref2[id];
-            if (_ref3 = annotation.uri, __indexOf.call(e.sameAs, _ref3) >= 0) {
+          ref2 = configuration.entities;
+          for (id in ref2) {
+            e = ref2[id];
+            if (ref3 = annotation.uri, indexOf.call(e.sameAs, ref3) >= 0) {
               entity = analysis.entities[e.id];
             }
           }
@@ -935,12 +935,12 @@
               entityId: entity.id,
               confidence: 1
             });
-            _results.push(analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]);
+            results.push(analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]);
           } else {
-            _results.push(void 0);
+            results.push(void 0);
           }
         }
-        return _results;
+        return results;
       };
       return service;
     }
@@ -950,10 +950,10 @@
     'AnalysisService', '$log', '$http', '$rootScope', function(AnalysisService, $log, $http, $rootScope) {
       var currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
       findEntities = function(html) {
-        var annotation, match, pattern, traslator, _results;
+        var annotation, match, pattern, results, traslator;
         traslator = Traslator.create(html);
         pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
-        _results = [];
+        results = [];
         while (match = pattern.exec(html)) {
           annotation = {
             start: traslator.html2text(match.index),
@@ -961,19 +961,19 @@
             uri: match[2],
             label: match[3]
           };
-          _results.push(annotation);
+          results.push(annotation);
         }
-        return _results;
+        return results;
       };
       findPositions = function(entities) {
-        var entityAnnotation, positions, _i, _j, _len, _ref, _ref1, _results;
+        var entityAnnotation, j, k, len, positions, ref, ref1, results;
         positions = [];
-        for (_i = 0, _len = entities.length; _i < _len; _i++) {
-          entityAnnotation = entities[_i];
+        for (j = 0, len = entities.length; j < len; j++) {
+          entityAnnotation = entities[j];
           positions = positions.concat((function() {
-            _results = [];
-            for (var _j = _ref = entityAnnotation.start, _ref1 = entityAnnotation.end; _ref <= _ref1 ? _j <= _ref1 : _j >= _ref1; _ref <= _ref1 ? _j++ : _j--){ _results.push(_j); }
-            return _results;
+            results = [];
+            for (var k = ref = entityAnnotation.start, ref1 = entityAnnotation.end; ref <= ref1 ? k <= ref1 : k >= ref1; ref <= ref1 ? k++ : k--){ results.push(k); }
+            return results;
           }).apply(this));
         }
         return positions;
@@ -1000,15 +1000,15 @@
         return discardedItemId;
       };
       currentOccurencesForEntity = function(entityId) {
-        var annotation, annotations, ed, itemId, occurrences, _i, _len;
+        var annotation, annotations, ed, itemId, j, len, occurrences;
         ed = editor();
         occurrences = [];
         if (entityId === "") {
           return occurrences;
         }
         annotations = ed.dom.select("span.textannotation");
-        for (_i = 0, _len = annotations.length; _i < _len; _i++) {
-          annotation = annotations[_i];
+        for (j = 0, len = annotations.length; j < len; j++) {
+          annotation = annotations[j];
           itemId = ed.dom.getAttrib(annotation.id, "itemid");
           if (itemId === entityId) {
             occurrences.push(annotation.id);
@@ -1025,19 +1025,19 @@
         return tinyMCE.execCommand('mceInsertContent', false, "<img src=\"" + image + "\" width=\"100%\" />");
       });
       $rootScope.$on("entitySelected", function(event, entity, annotationId) {
-        var annotation, discarded, entityId, id, occurrences, _i, _len, _ref;
+        var annotation, discarded, entityId, id, j, len, occurrences, ref;
         discarded = [];
         if (annotationId != null) {
           discarded.push(disambiguate(entity.annotations[annotationId], entity));
         } else {
-          _ref = entity.annotations;
-          for (id in _ref) {
-            annotation = _ref[id];
+          ref = entity.annotations;
+          for (id in ref) {
+            annotation = ref[id];
             discarded.push(disambiguate(annotation, entity));
           }
         }
-        for (_i = 0, _len = discarded.length; _i < _len; _i++) {
-          entityId = discarded[_i];
+        for (j = 0, len = discarded.length; j < len; j++) {
+          entityId = discarded[j];
           if (entityId) {
             occurrences = currentOccurencesForEntity(entityId);
             $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
@@ -1047,19 +1047,19 @@
         return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
       });
       $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
-        var annotation, discarded, entityId, id, occurrences, _i, _len, _ref;
+        var annotation, discarded, entityId, id, j, len, occurrences, ref;
         discarded = [];
         if (annotationId != null) {
           dedisambiguate(entity.annotations[annotationId], entity);
         } else {
-          _ref = entity.annotations;
-          for (id in _ref) {
-            annotation = _ref[id];
+          ref = entity.annotations;
+          for (id in ref) {
+            annotation = ref[id];
             dedisambiguate(annotation, entity);
           }
         }
-        for (_i = 0, _len = discarded.length; _i < _len; _i++) {
-          entityId = discarded[_i];
+        for (j = 0, len = discarded.length; j < len; j++) {
+          entityId = discarded[j];
           if (entityId) {
             occurrences = currentOccurencesForEntity(entityId);
             $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
@@ -1119,11 +1119,11 @@
           return $rootScope.$broadcast('textAnnotationAdded', textAnnotation);
         },
         selectAnnotation: function(annotationId) {
-          var annotation, ed, _i, _len, _ref;
+          var annotation, ed, j, len, ref;
           ed = editor();
-          _ref = ed.dom.select("span.textannotation");
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            annotation = _ref[_i];
+          ref = ed.dom.select("span.textannotation");
+          for (j = 0, len = ref.length; j < len; j++) {
+            annotation = ref[j];
             ed.dom.removeClass(annotation.id, "selected");
           }
           $rootScope.$broadcast('textAnnotationClicked', void 0);
@@ -1134,7 +1134,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, traslator, _i, _len, _ref, _ref1;
+            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, traslator;
             ed = editor();
             html = ed.getContent({
               format: 'raw'
@@ -1146,18 +1146,18 @@
               html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]*)<\/\1>/gim, '$2');
             }
             traslator = Traslator.create(html);
-            _ref = analysis.annotations;
-            for (annotationId in _ref) {
-              annotation = _ref[annotationId];
+            ref = analysis.annotations;
+            for (annotationId in ref) {
+              annotation = ref[annotationId];
               if (!(0 < annotation.entityMatches.length)) {
                 continue;
               }
               element = "<span id=\"" + annotationId + "\" class=\"textannotation";
-              _ref1 = annotation.entityMatches;
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                em = _ref1[_i];
+              ref1 = annotation.entityMatches;
+              for (j = 0, len = ref1.length; j < len; j++) {
+                em = ref1[j];
                 entity = analysis.entities[em.entityId];
-                if (__indexOf.call(entity.occurrences, annotationId) >= 0) {
+                if (indexOf.call(entity.occurrences, annotationId) >= 0) {
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
                 }
               }
@@ -1210,7 +1210,7 @@
   ]);
 
   angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).provider("configuration", function() {
-    var provider, _configuration;
+    var _configuration, provider;
     _configuration = void 0;
     provider = {
       setConfiguration: function(configuration) {
@@ -1244,11 +1244,11 @@
     };
     injector.invoke([
       'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-        var method, originalMethod, _i, _len, _ref, _results;
-        _ref = ['setMarkers', 'toViews'];
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          method = _ref[_i];
+        var j, len, method, originalMethod, ref, results;
+        ref = ['setMarkers', 'toViews'];
+        results = [];
+        for (j = 0, len = ref.length; j < len; j++) {
+          method = ref[j];
           if (wp.mce.views[method] != null) {
             originalMethod = wp.mce.views[method];
             $log.warn("Override wp.mce.views method " + method + "() to prevent shortcodes rendering");
@@ -1265,10 +1265,10 @@
             });
             break;
           } else {
-            _results.push(void 0);
+            results.push(void 0);
           }
         }
-        return _results;
+        return results;
       }
     ]);
     fireEvent(editor, "LoadContent", function(e) {

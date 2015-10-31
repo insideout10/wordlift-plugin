@@ -225,6 +225,14 @@ module.exports = function ( grunt ) {
                 cmd: 'phpunit',
                 args: [ '-c', 'phpunit.xml' ]
             }
+        },
+        karma: {
+            unit: {
+                configFile: 'tests/js/config/karma.conf.js',
+                singleRun: true,
+                browsers: ['Firefox'],
+                reporters: 'dots'
+            }
         }
         //,
         //watch: {

@@ -1,6 +1,6 @@
 (function() {
   var $, $wlEntityDisplayAsSelect, ANALYSIS_EVENT, CONFIGURATION_TYPES_EVENT, CONTENT_EDITABLE, CONTENT_IFRAME, CONTEXT, DBPEDIA, DBPEDIA_ORG, DBPEDIA_ORG_REGEX, DCTERMS, DEFAULT_ENTITY_ANNOTATION_CONFIDENCE_LEVEL, EDITOR_ID, FISE_ONT, FISE_ONT_CONFIDENCE, FISE_ONT_ENTITY_ANNOTATION, FISE_ONT_TEXT_ANNOTATION, FREEBASE, FREEBASE_COM, FREEBASE_NS, FREEBASE_NS_DESCRIPTION, GRAPH, MCE_WORDLIFT, RDFS, RDFS_COMMENT, RDFS_LABEL, RUNNING_CLASS, SCHEMA_ORG, SCHEMA_ORG_DESCRIPTION, TEXT_ANNOTATION, TEXT_HTML_NODE_TYPE, Traslator, VALUE, WGS84_POS, WORDLIFT, container, injector,
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Traslator = (function() {
     var decodeHtml;
@@ -70,10 +70,10 @@
     };
 
     Traslator.prototype.text2html = function(pos) {
-      var htmlPos, i, textPos, _i, _ref;
+      var htmlPos, i, j, ref, textPos;
       htmlPos = 0;
       textPos = 0;
-      for (i = _i = 0, _ref = this._textPositions.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (i = j = 0, ref = this._textPositions.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
         if (pos < this._textPositions[i]) {
           break;
         }
@@ -84,13 +84,13 @@
     };
 
     Traslator.prototype.html2text = function(pos) {
-      var htmlPos, i, textPos, _i, _ref;
+      var htmlPos, i, j, ref, textPos;
       if (pos < this._htmlPositions[0]) {
         return 0;
       }
       htmlPos = 0;
       textPos = 0;
-      for (i = _i = 0, _ref = this._htmlPositions.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (i = j = 0, ref = this._htmlPositions.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
         if (pos < this._htmlPositions[i]) {
           break;
         }
@@ -133,29 +133,29 @@
 
   RDFS = 'http://www.w3.org/2000/01/rdf-schema#';
 
-  RDFS_LABEL = "" + RDFS + "label";
+  RDFS_LABEL = RDFS + "label";
 
-  RDFS_COMMENT = "" + RDFS + "comment";
+  RDFS_COMMENT = RDFS + "comment";
 
   FREEBASE = 'freebase';
 
   FREEBASE_COM = "http://rdf." + FREEBASE + ".com/";
 
-  FREEBASE_NS = "" + FREEBASE_COM + "ns/";
+  FREEBASE_NS = FREEBASE_COM + "ns/";
 
-  FREEBASE_NS_DESCRIPTION = "" + FREEBASE_NS + "common.topic.description";
+  FREEBASE_NS_DESCRIPTION = FREEBASE_NS + "common.topic.description";
 
   SCHEMA_ORG = 'http://schema.org/';
 
-  SCHEMA_ORG_DESCRIPTION = "" + SCHEMA_ORG + "description";
+  SCHEMA_ORG_DESCRIPTION = SCHEMA_ORG + "description";
 
   FISE_ONT = 'http://fise.iks-project.eu/ontology/';
 
-  FISE_ONT_ENTITY_ANNOTATION = "" + FISE_ONT + "EntityAnnotation";
+  FISE_ONT_ENTITY_ANNOTATION = FISE_ONT + "EntityAnnotation";
 
-  FISE_ONT_TEXT_ANNOTATION = "" + FISE_ONT + "TextAnnotation";
+  FISE_ONT_TEXT_ANNOTATION = FISE_ONT + "TextAnnotation";
 
-  FISE_ONT_CONFIDENCE = "" + FISE_ONT + "confidence";
+  FISE_ONT_CONFIDENCE = FISE_ONT + "confidence";
 
   DCTERMS = 'http://purl.org/dc/terms/';
 
@@ -206,10 +206,10 @@
       },
       link: function(scope, element, attrs) {
         return scope.select = function(item) {
-          var entityAnnotation, id, _ref;
-          _ref = scope.textAnnotation.entityAnnotations;
-          for (id in _ref) {
-            entityAnnotation = _ref[id];
+          var entityAnnotation, id, ref;
+          ref = scope.textAnnotation.entityAnnotations;
+          for (id in ref) {
+            entityAnnotation = ref[id];
             entityAnnotation.selected = item.id === entityAnnotation.id && !entityAnnotation.selected;
           }
           return scope.onSelect({
@@ -229,9 +229,9 @@
           onSelect: '&'
         },
         link: function(scope, element, attrs) {
-          var template, _ref, _ref1;
-          scope.entity = (_ref = scope.entityAnnotation) != null ? _ref.entity : void 0;
-          template = "<div class=\"entity {{entityAnnotation.entity.css}}\" ng-class=\"{selected: true==entityAnnotation.selected}\" ng-click=\"onSelect()\" ng-show=\"entity.label\">\n  <div class=\"thumbnail\" ng-show=\"entity.thumbnail\" title=\"{{entity.id}}\" ng-attr-style=\"background-image: url({{entity.thumbnail}})\"></div>\n  <div class=\"thumbnail empty\" ng-hide=\"entity.thumbnail\" title=\"{{entity.id}}\"></div>\n  <div class=\"confidence\" ng-bind=\"entityAnnotation.confidence\"></div>\n  <div class=\"label\" ng-bind=\"entity.label\"></div>\n  <div class=\"" + ((_ref1 = scope.entity) != null ? _ref1.css : void 0) + "-info url\" entity=\"entity\"></div>\n  <div class=\"type\"></div>\n  <div class=\"source\" ng-class=\"entity.source\" ng-bind=\"entity.source\"></div>     \n</div>";
+          var ref, ref1, template;
+          scope.entity = (ref = scope.entityAnnotation) != null ? ref.entity : void 0;
+          template = "<div class=\"entity {{entityAnnotation.entity.css}}\" ng-class=\"{selected: true==entityAnnotation.selected}\" ng-click=\"onSelect()\" ng-show=\"entity.label\">\n  <div class=\"thumbnail\" ng-show=\"entity.thumbnail\" title=\"{{entity.id}}\" ng-attr-style=\"background-image: url({{entity.thumbnail}})\"></div>\n  <div class=\"thumbnail empty\" ng-hide=\"entity.thumbnail\" title=\"{{entity.id}}\"></div>\n  <div class=\"confidence\" ng-bind=\"entityAnnotation.confidence\"></div>\n  <div class=\"label\" ng-bind=\"entity.label\"></div>\n  <div class=\"" + ((ref1 = scope.entity) != null ? ref1.css : void 0) + "-info url\" entity=\"entity\"></div>\n  <div class=\"type\"></div>\n  <div class=\"source\" ng-class=\"entity.source\" ng-bind=\"entity.source\"></div>     \n</div>";
           element.html(template).show();
           return $compile(element.contents())(scope);
         }
@@ -245,10 +245,10 @@
           entity: '='
         },
         link: function(scope, element, attrs) {
-          var _ref, _ref1, _ref2, _ref3, _ref4;
-          scope.startDate = (_ref = scope.entity) != null ? (_ref1 = _ref.props['http://www.w3.org/2002/12/cal#dtstart']) != null ? _ref1[0] : void 0 : void 0;
-          scope.endDate = (_ref2 = scope.entity) != null ? (_ref3 = _ref2.props['http://www.w3.org/2002/12/cal#dtend']) != null ? _ref3[0] : void 0 : void 0;
-          scope.place = (_ref4 = scope.entity) != null ? _ref4.props['http://www.w3.org/2006/vcard/ns#locality'] : void 0;
+          var ref, ref1, ref2, ref3, ref4;
+          scope.startDate = (ref = scope.entity) != null ? (ref1 = ref.props['http://www.w3.org/2002/12/cal#dtstart']) != null ? ref1[0] : void 0 : void 0;
+          scope.endDate = (ref2 = scope.entity) != null ? (ref3 = ref2.props['http://www.w3.org/2002/12/cal#dtend']) != null ? ref3[0] : void 0 : void 0;
+          scope.place = (ref4 = scope.entity) != null ? ref4.props['http://www.w3.org/2006/vcard/ns#locality'] : void 0;
           return scope.renderDate = function() {
             if (scope.startDate === scope.endDate) {
               return scope.startDate;
@@ -345,15 +345,15 @@
        * @param {string} The message to log.
        */
       service.debug = function(message, params) {
-        var key, value, _results;
-        $log.debug("" + (getFunctionName(arguments.callee.caller)) + " - " + message);
+        var key, results, value;
+        $log.debug((getFunctionName(arguments.callee.caller)) + " - " + message);
         if (params != null) {
-          _results = [];
+          results = [];
           for (key in params) {
             value = params[key];
-            _results.push(($log.debug("[ " + key + " :: "), $log.debug(value), $log.debug("]")));
+            results.push(($log.debug("[ " + key + " :: "), $log.debug(value), $log.debug("]")));
           }
-          return _results;
+          return results;
         }
       };
       return service;
@@ -405,15 +405,15 @@
         };
       };
       service.enhance = function(analysis, textAnnotation, entityAnnotation) {
-        var ea, entityAnnotations, id, _ref;
+        var ea, entityAnnotations, id, ref;
         entityAnnotations = EntityAnnotationService.find(textAnnotation.entityAnnotations, {
           uri: entityAnnotation.entity.id
         });
         if (0 === entityAnnotations.length) {
           analysis.entities[entityAnnotation.entity.id] = entityAnnotation.entity;
-          _ref = textAnnotation.entityAnnotations;
-          for (id in _ref) {
-            ea = _ref[id];
+          ref = textAnnotation.entityAnnotations;
+          for (id in ref) {
+            ea = ref[id];
             ea.selected = false;
           }
           entityAnnotation.selected = true;
@@ -424,16 +424,16 @@
         return false;
       };
       service.preselect = function(analysis, annotations) {
-        var annotation, ea, entities, entityAnnotations, textAnnotation, _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = annotations.length; _i < _len; _i++) {
-          annotation = annotations[_i];
+        var annotation, ea, entities, entityAnnotations, j, len, results, textAnnotation;
+        results = [];
+        for (j = 0, len = annotations.length; j < len; j++) {
+          annotation = annotations[j];
           textAnnotation = TextAnnotationService.findOrCreate(analysis.textAnnotations, annotation);
           entityAnnotations = EntityAnnotationService.find(textAnnotation.entityAnnotations, {
             uri: annotation.uri
           });
           if (0 < entityAnnotations.length) {
-            _results.push(entityAnnotations[0].selected = true);
+            results.push(entityAnnotations[0].selected = true);
           } else {
             entities = EntityService.find(analysis.entities, {
               uri: annotation.uri
@@ -457,10 +457,10 @@
               selected: true
             });
             analysis.entityAnnotations[ea.id] = ea;
-            _results.push(textAnnotation.entityAnnotations[ea.id] = analysis.entityAnnotations[ea.id]);
+            results.push(textAnnotation.entityAnnotations[ea.id] = analysis.entityAnnotations[ea.id]);
           }
         }
-        return _results;
+        return results;
       };
       service.analyze = function(content, merge) {
         if (merge == null) {
@@ -489,7 +489,7 @@
         });
       };
       service.parse = function(data, merge) {
-        var anotherEntityAnnotation, anotherId, context, createLanguage, dctype, entities, entity, entityAnnotation, entityAnnotations, graph, id, item, language, languages, textAnnotation, textAnnotationId, textAnnotations, types, _i, _j, _len, _len1, _ref, _ref1, _ref2, _ref3;
+        var anotherEntityAnnotation, anotherId, context, createLanguage, dctype, entities, entity, entityAnnotation, entityAnnotations, graph, id, item, j, k, language, languages, len, len1, ref, ref1, ref2, ref3, textAnnotation, textAnnotationId, textAnnotations, types;
         if (merge == null) {
           merge = false;
         }
@@ -499,7 +499,7 @@
         entities = {};
         createLanguage = function(item) {
           return {
-            code: h.get("" + DCTERMS + "language", item, context),
+            code: h.get(DCTERMS + "language", item, context),
             confidence: h.get(FISE_ONT_CONFIDENCE, item, context),
             _item: item
           };
@@ -510,12 +510,12 @@
         }
         context = data[CONTEXT];
         graph = data[GRAPH];
-        for (_i = 0, _len = graph.length; _i < _len; _i++) {
-          item = graph[_i];
+        for (j = 0, len = graph.length; j < len; j++) {
+          item = graph[j];
           id = item['@id'];
           types = item['@type'];
-          dctype = h.get("" + DCTERMS + "type", item, context);
-          if (h.containsOrEquals(FISE_ONT_TEXT_ANNOTATION, types, context) && h.containsOrEquals("" + DCTERMS + "LinguisticSystem", dctype, context)) {
+          dctype = h.get(DCTERMS + "type", item, context);
+          if (h.containsOrEquals(FISE_ONT_TEXT_ANNOTATION, types, context) && h.containsOrEquals(DCTERMS + "LinguisticSystem", dctype, context)) {
             languages.push(createLanguage(item));
           } else if (h.containsOrEquals(FISE_ONT_TEXT_ANNOTATION, types, context)) {
             textAnnotations[id] = item;
@@ -550,9 +550,9 @@
           }
         }
         if (merge) {
-          _ref = this._entities;
-          for (id in _ref) {
-            entity = _ref[id];
+          ref = this._entities;
+          for (id in ref) {
+            entity = ref[id];
             EntityService.merge(entity, entities);
           }
         }
@@ -562,21 +562,21 @@
         }
         for (id in entityAnnotations) {
           item = entityAnnotations[id];
-          _ref1 = EntityAnnotationService.build(item, language, entities, textAnnotations, context);
-          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-            entityAnnotation = _ref1[_j];
+          ref1 = EntityAnnotationService.build(item, language, entities, textAnnotations, context);
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            entityAnnotation = ref1[k];
             entityAnnotations[entityAnnotation.id] = entityAnnotation;
           }
         }
         if (merge) {
           for (textAnnotationId in textAnnotations) {
             textAnnotation = textAnnotations[textAnnotationId];
-            _ref2 = textAnnotation.entityAnnotations;
-            for (id in _ref2) {
-              entityAnnotation = _ref2[id];
-              _ref3 = textAnnotation.entityAnnotations;
-              for (anotherId in _ref3) {
-                anotherEntityAnnotation = _ref3[anotherId];
+            ref2 = textAnnotation.entityAnnotations;
+            for (id in ref2) {
+              entityAnnotation = ref2[id];
+              ref3 = textAnnotation.entityAnnotations;
+              for (anotherId in ref3) {
+                anotherEntityAnnotation = ref3[anotherId];
                 if (id !== anotherId && entityAnnotation.entity === anotherEntityAnnotation.entity) {
                   delete textAnnotation.entityAnnotations[anotherId];
                 }
@@ -603,19 +603,19 @@
         return tinyMCE.get(EDITOR_ID);
       };
       findEntities = function(html) {
-        var match, pattern, traslator, _results;
+        var match, pattern, results, traslator;
         traslator = Traslator.create(html);
         pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]+)<\/\1>/gim;
-        _results = [];
+        results = [];
         while (match = pattern.exec(html)) {
-          _results.push({
+          results.push({
             start: traslator.html2text(match.index),
             end: traslator.html2text(match.index + match[0].length),
             uri: match[2],
             label: match[3]
           });
         }
-        return _results;
+        return results;
       };
       service = {
         createTextAnnotationFromCurrentSelection: function() {
@@ -644,16 +644,16 @@
           return $rootScope.$broadcast('textAnnotationAdded', textAnnotation);
         },
         createDefaultAnalysis: function() {
-          var analysis, ea, ed, entities, html, inTextEntity, localEntities, ta, _i, _len, _ref;
+          var analysis, ea, ed, entities, html, inTextEntity, j, len, localEntities, ref, ta;
           ed = editor();
           html = ed.getContent({
             format: 'raw'
           });
           analysis = AnalysisService.createAnEmptyAnalysis();
           entities = AnalysisService.getEntities();
-          _ref = findEntities(html);
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            inTextEntity = _ref[_i];
+          ref = findEntities(html);
+          for (j = 0, len = ref.length; j < len; j++) {
+            inTextEntity = ref[j];
             localEntities = EntityService.find(entities, {
               uri: inTextEntity.uri
             });
@@ -673,7 +673,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var ed, element, entities, entity, entityAnnotations, html, isDirty, textAnnotation, textAnnotationId, traslator, _ref;
+            var ed, element, entities, entity, entityAnnotations, html, isDirty, ref, textAnnotation, textAnnotationId, traslator;
             ed = editor();
             html = ed.getContent({
               format: 'raw'
@@ -684,9 +684,9 @@
               html = html.replace(/<(\w+)[^>]*\sclass="textannotation[^"]*"[^>]*>([^<]+)<\/\1>/gim, '$2');
             }
             traslator = Traslator.create(html);
-            _ref = analysis.textAnnotations;
-            for (textAnnotationId in _ref) {
-              textAnnotation = _ref[textAnnotationId];
+            ref = analysis.textAnnotations;
+            for (textAnnotationId in ref) {
+              textAnnotation = ref[textAnnotationId];
               if (!(0 < Object.keys(textAnnotation.entityAnnotations).length)) {
                 continue;
               }
@@ -794,20 +794,20 @@
        * @return {array} An array of entity annotations.
        */
       service.build = function(item, language, entities, tas, context) {
-        var annotations, entityAnnotation, reference, relation, relations, textAnnotation, _i, _len;
-        reference = h.get("" + FISE_ONT + "entity-reference", item, context);
+        var annotations, entityAnnotation, j, len, reference, relation, relations, textAnnotation;
+        reference = h.get(FISE_ONT + "entity-reference", item, context);
         if (entities[reference] == null) {
           return [];
         }
         annotations = [];
-        relations = h.get("" + DCTERMS + "relation", item, context);
+        relations = h.get(DCTERMS + "relation", item, context);
         relations = angular.isArray(relations) ? relations : [relations];
-        for (_i = 0, _len = relations.length; _i < _len; _i++) {
-          relation = relations[_i];
+        for (j = 0, len = relations.length; j < len; j++) {
+          relation = relations[j];
           textAnnotation = tas[relation];
           entityAnnotation = service.create({
             id: h.get('@id', item, context),
-            label: h.getLanguage("" + FISE_ONT + "entity-label", item, language, context),
+            label: h.getLanguage(FISE_ONT + "entity-label", item, language, context),
             confidence: h.get(FISE_ONT_CONFIDENCE, item, context),
             entity: entities[reference],
             relation: textAnnotation,
@@ -824,28 +824,28 @@
         var entityAnnotation, id;
         if (filter.uri != null) {
           return (function() {
-            var _ref, _results;
-            _results = [];
+            var ref, results;
+            results = [];
             for (id in entityAnnotations) {
               entityAnnotation = entityAnnotations[id];
-              if (filter.uri === entityAnnotation.entity.id || (_ref = filter.uri, __indexOf.call(entityAnnotation.entity.sameAs, _ref) >= 0)) {
-                _results.push(entityAnnotation);
+              if (filter.uri === entityAnnotation.entity.id || (ref = filter.uri, indexOf.call(entityAnnotation.entity.sameAs, ref) >= 0)) {
+                results.push(entityAnnotation);
               }
             }
-            return _results;
+            return results;
           })();
         }
         if (filter.selected != null) {
           return (function() {
-            var _results;
-            _results = [];
+            var results;
+            results = [];
             for (id in entityAnnotations) {
               entityAnnotation = entityAnnotations[id];
               if (entityAnnotation.selected === filter.selected) {
-                _results.push(entityAnnotation);
+                results.push(entityAnnotation);
               }
             }
-            return _results;
+            return results;
           })();
         }
       };
@@ -871,7 +871,7 @@
         if (entityAnnotation.entity.sources.length > 1) {
           delta += 0.20;
         }
-        if (__indexOf.call(entityAnnotation.entity.sources, WORDLIFT) >= 0) {
+        if (indexOf.call(entityAnnotation.entity.sources, WORDLIFT) >= 0) {
           delta += 0.20;
         }
         if (entityAnnotation.entity.source === WORDLIFT) {
@@ -899,15 +899,15 @@
         var entity, entityId;
         if (filter.uri != null) {
           return (function() {
-            var _ref, _results;
-            _results = [];
+            var ref, results;
+            results = [];
             for (entityId in entities) {
               entity = entities[entityId];
-              if (filter.uri === (entity != null ? entity.id : void 0) || (_ref = filter.uri, __indexOf.call(entity != null ? entity.sameAs : void 0, _ref) >= 0)) {
-                _results.push(entity);
+              if (filter.uri === (entity != null ? entity.id : void 0) || (ref = filter.uri, indexOf.call(entity != null ? entity.sameAs : void 0, ref) >= 0)) {
+                results.push(entity);
               }
             }
-            return _results;
+            return results;
           })();
         }
       };
@@ -930,33 +930,33 @@
         var css, entity, fn, id, knownTypes, sameAs, thumbnails, types;
         id = h.get('@id', item, context);
         types = h.get('@type', item, context, function(ts) {
-          var t, _i, _len, _results;
+          var j, len, results, t;
           ts = angular.isArray(ts) ? ts : [ts];
-          _results = [];
-          for (_i = 0, _len = ts.length; _i < _len; _i++) {
-            t = ts[_i];
-            _results.push(h.expand(t, context));
+          results = [];
+          for (j = 0, len = ts.length; j < len; j++) {
+            t = ts[j];
+            results.push(h.expand(t, context));
           }
-          return _results;
+          return results;
         });
         sameAs = h.get('http://www.w3.org/2002/07/owl#sameAs', item, context);
         sameAs = angular.isArray(sameAs) ? sameAs : [sameAs];
         fn = function(values) {
-          var match, value, _i, _len, _results;
+          var j, len, match, results, value;
           values = angular.isArray(values) ? values : [values];
-          _results = [];
-          for (_i = 0, _len = values.length; _i < _len; _i++) {
-            value = values[_i];
+          results = [];
+          for (j = 0, len = values.length; j < len; j++) {
+            value = values[j];
             match = /m\.(.*)$/i.exec(value);
             if (null === match) {
-              _results.push(value);
+              results.push(value);
             } else {
-              _results.push("https://usercontent.googleapis.com/" + FREEBASE + "/v1/image/m/" + match[1] + "?maxwidth=4096&maxheight=4096");
+              results.push("https://usercontent.googleapis.com/" + FREEBASE + "/v1/image/m/" + match[1] + "?maxwidth=4096&maxheight=4096");
             }
           }
-          return _results;
+          return results;
         };
-        thumbnails = h.get(['http://xmlns.com/foaf/0.1/depiction', "" + FREEBASE_NS + "common.topic.image", "" + SCHEMA_ORG + "image"], item, context, fn);
+        thumbnails = h.get(['http://xmlns.com/foaf/0.1/depiction', FREEBASE_NS + "common.topic.image", SCHEMA_ORG + "image"], item, context, fn);
         knownTypes = service.getKnownTypes(types, kt, context);
         css = knownTypes[0].type.css;
         entity = {
@@ -979,8 +979,8 @@
         if (entity.description == null) {
           entity.description = '';
         }
-        entity.latitude = h.get("" + WGS84_POS + "lat", item, context);
-        entity.longitude = h.get("" + WGS84_POS + "long", item, context);
+        entity.latitude = h.get(WGS84_POS + "lat", item, context);
+        entity.longitude = h.get(WGS84_POS + "long", item, context);
         if (0 === entity.latitude.length || 0 === entity.longitude.length) {
           entity.latitude = '';
           entity.longitude = '';
@@ -997,10 +997,10 @@
        * @return {object} The merged entity.
        */
       service.merge = function(entity, entities) {
-        var existing, sameAs, _i, _len, _ref;
-        _ref = entity.sameAs;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          sameAs = _ref[_i];
+        var existing, j, len, ref, sameAs;
+        ref = entity.sameAs;
+        for (j = 0, len = ref.length; j < len; j++) {
+          sameAs = ref[j];
           if ((entities[sameAs] != null) && entities[sameAs] !== entity) {
             existing = entities[sameAs];
             logger.debug("EntityService.merge : found a match [ entity 1 :: " + entity.id + " ][ entity 2 :: " + existing.id + " ]");
@@ -1038,12 +1038,12 @@
        * @return {object} The default type.
        */
       service.getKnownTypes = function(types, knownTypes, context) {
-        var defaultType, kt, matches, returnTypes, uri, uris, _i, _len;
+        var defaultType, j, kt, len, matches, returnTypes, uri, uris;
         returnTypes = [];
         defaultType = void 0;
-        for (_i = 0, _len = knownTypes.length; _i < _len; _i++) {
-          kt = knownTypes[_i];
-          if (__indexOf.call(kt.sameAs, '*') >= 0) {
+        for (j = 0, len = knownTypes.length; j < len; j++) {
+          kt = knownTypes[j];
+          if (indexOf.call(kt.sameAs, '*') >= 0) {
             defaultType = [
               {
                 type: kt
@@ -1052,15 +1052,15 @@
           }
           uris = kt.sameAs.concat(kt.uri);
           matches = (function() {
-            var _j, _len1, _results;
-            _results = [];
-            for (_j = 0, _len1 = uris.length; _j < _len1; _j++) {
-              uri = uris[_j];
+            var k, len1, results;
+            results = [];
+            for (k = 0, len1 = uris.length; k < len1; k++) {
+              uri = uris[k];
               if (h.containsOrEquals(uri, types, context)) {
-                _results.push(uri);
+                results.push(uri);
               }
             }
-            return _results;
+            return results;
           })();
           if (0 < matches.length) {
             returnTypes.push({
@@ -1164,25 +1164,25 @@
         var c;
         if (angular.isArray(content)) {
           return (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = content.length; _i < _len; _i++) {
-              c = content[_i];
-              _results.push(service.expand(c, context));
+            var j, len, results;
+            results = [];
+            for (j = 0, len = content.length; j < len; j++) {
+              c = content[j];
+              results.push(service.expand(c, context));
             }
-            return _results;
+            return results;
           })();
         }
         return service._expand(content, context);
       };
       service.get = function(what, container, context, filter) {
-        var add, key, values, _i, _len;
+        var add, j, key, len, values;
         if (!angular.isArray(what)) {
           return service.getA(what, container, context, filter);
         }
         values = [];
-        for (_i = 0, _len = what.length; _i < _len; _i++) {
-          key = what[_i];
+        for (j = 0, len = what.length; j < len; j++) {
+          key = what[j];
           add = service.getA(key, container, context, filter);
           add = angular.isArray(add) ? add : [add];
           service.mergeUnique(values, add);
@@ -1206,47 +1206,47 @@
         return [];
       };
       service.getLanguage = function(what, container, language, context) {
-        var item, items, _i, _j, _len, _len1;
+        var item, items, j, k, len, len1;
         if (null === (items = service.get(what, container, context))) {
           return;
         }
         items = angular.isArray(items) ? items : [items];
-        for (_i = 0, _len = items.length; _i < _len; _i++) {
-          item = items[_i];
+        for (j = 0, len = items.length; j < len; j++) {
+          item = items[j];
           if (language === item['@language']) {
             return item[VALUE];
           }
         }
-        for (_j = 0, _len1 = items.length; _j < _len1; _j++) {
-          item = items[_j];
+        for (k = 0, len1 = items.length; k < len1; k++) {
+          item = items[k];
           if ('en' === item['@language']) {
             return item[VALUE];
           }
         }
       };
       service.mergeUnique = function(array1, array2) {
-        var item, _i, _len, _results;
+        var item, j, len, results;
         if (array1 == null) {
           array1 = [];
         }
-        _results = [];
-        for (_i = 0, _len = array2.length; _i < _len; _i++) {
-          item = array2[_i];
-          if (__indexOf.call(array1, item) < 0) {
-            _results.push(array1.push(item));
+        results = [];
+        for (j = 0, len = array2.length; j < len; j++) {
+          item = array2[j];
+          if (indexOf.call(array1, item) < 0) {
+            results.push(array1.push(item));
           }
         }
-        return _results;
+        return results;
       };
       service.containsOrEquals = function(what, where, context) {
-        var item, whatExp, whereArray, _i, _len;
+        var item, j, len, whatExp, whereArray;
         if (where == null) {
           return false;
         }
         whereArray = angular.isArray(where) ? where : [where];
         whatExp = service.expand(what, context);
-        for (_i = 0, _len = whereArray.length; _i < _len; _i++) {
-          item = whereArray[_i];
+        for (j = 0, len = whereArray.length; j < len; j++) {
+          item = whereArray[j];
           if (whatExp === service.expand(item, context)) {
             return true;
           }
@@ -1293,9 +1293,9 @@
       service.build = function(item, context) {
         return service.create({
           id: h.get('@id', item, context),
-          text: h.get("" + FISE_ONT + "selected-text", item, context)[VALUE],
-          start: h.get("" + FISE_ONT + "start", item, context),
-          end: h.get("" + FISE_ONT + "end", item, context),
+          text: h.get(FISE_ONT + "selected-text", item, context)[VALUE],
+          start: h.get(FISE_ONT + "start", item, context),
+          end: h.get(FISE_ONT + "end", item, context),
           confidence: h.get(FISE_ONT_CONFIDENCE, item, context),
           entityAnnotations: {},
           _item: item
@@ -1471,10 +1471,10 @@
         return $scope.$broadcast('textAnnotationClicked', textAnnotation.id);
       });
       return $scope.$on('textAnnotationClicked', function(event, textAnnotationId) {
-        var pos, _ref, _ref1, _ref2;
-        $scope.textAnnotation = (_ref = $scope.analysis) != null ? _ref.textAnnotations[textAnnotationId] : void 0;
-        $scope.newEntity.label = (_ref1 = $scope.textAnnotation) != null ? _ref1.text : void 0;
-        if (((_ref2 = $scope.textAnnotation) != null ? _ref2.entityAnnotations : void 0) == null) {
+        var pos, ref, ref1, ref2;
+        $scope.textAnnotation = (ref = $scope.analysis) != null ? ref.textAnnotations[textAnnotationId] : void 0;
+        $scope.newEntity.label = (ref1 = $scope.textAnnotation) != null ? ref1.text : void 0;
+        if (((ref2 = $scope.textAnnotation) != null ? ref2.entityAnnotations : void 0) == null) {
           return $('#wordlift-disambiguation-popover').hide();
         } else {
           pos = EditorService.getWinPos(textAnnotationId);
