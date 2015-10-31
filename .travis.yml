@@ -7,7 +7,7 @@ env:
   - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
   - WL_SSL_VERIFY_ENABLED=true
   - WL_SSL_V1_FORCED=true
-  matrix:
+matrix:
   include:
   - php: 5.5
     env: WP_TRAVISCI=travis:js
@@ -27,9 +27,6 @@ before_script:
   - npm install -g npm
   - npm install -g grunt-cli
   - npm install
-after_script:
-  - vendor/bin/test-reporter
-# script: phpunit --coverage-clover build/logs/clover.xml
 script: grunt $WP_TRAVISCI
 notifications:
   slack: insideout10:NcslbQWVmD4YPInDq8TpBIno
