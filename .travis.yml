@@ -1,7 +1,5 @@
 sudo: false
 language: php
-matrix:
-  include:
 env:
   global:
   - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
@@ -16,7 +14,13 @@ env:
   - php: 5.2
     env: WP_TRAVISCI=travis:phpunit
   - php: 5.3
-
+    env: WP_TRAVISCI=travis:phpunit
+  - php: 5.4
+    env: WP_TRAVISCI=travis:phpunit
+  - php: 5.5
+    env: WP_TRAVISCI=travis:phpunit
+  - php: 5.6
+    env: WP_TRAVISCI=travis:phpunit
 before_script:
   - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
   - composer install --dev
