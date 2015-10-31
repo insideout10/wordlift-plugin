@@ -1,0 +1,1670 @@
+{
+    "@context": {
+        "dbp-ont": "http://dbpedia.org/ontology/",
+        "dbp-ont:thumbnail": {
+            "@type": "@id"
+        },
+        "dc": "http://purl.org/dc/terms/",
+        "dc:created": {
+            "@type": "xsd:dateTime"
+        },
+        "dc:creator": {
+            "@type": "xsd:string"
+        },
+        "dc:references": {
+            "@type": "@id"
+        },
+        "dc:relation": {
+            "@type": "@id"
+        },
+        "dc:subject": {
+            "@type": "@id"
+        },
+        "dc:type": {
+            "@type": "@id"
+        },
+        "enhancer": "http://fise.iks-project.eu/ontology/",
+        "enhancer:confidence": {
+            "@type": "xsd:double"
+        },
+        "enhancer:end": {
+            "@type": "xsd:int"
+        },
+        "enhancer:entity-reference": {
+            "@type": "@id"
+        },
+        "enhancer:entity-type": {
+            "@type": "@id"
+        },
+        "enhancer:extracted-from": {
+            "@type": "@id"
+        },
+        "enhancer:start": {
+            "@type": "xsd:int"
+        },
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "foaf:depiction": {
+            "@type": "@id"
+        },
+        "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+        "geo:lat": {
+            "@type": "xsd:decimal"
+        },
+        "geo:long": {
+            "@type": "xsd:decimal"
+        },
+        "geonames": "http://www.geonames.org/ontology#",
+        "geonames:featureClass": {
+            "@type": "@id"
+        },
+        "geonames:featureCode": {
+            "@type": "@id"
+        },
+        "geonames:parentADM1": {
+            "@type": "@id"
+        },
+        "geonames:parentADM2": {
+            "@type": "@id"
+        },
+        "geonames:parentCountry": {
+            "@type": "@id"
+        },
+        "geonames:parentFeature": {
+            "@type": "@id"
+        },
+        "http://linkedevents.org/ontology/atPlace": {
+            "@type": "@id"
+        },
+        "http://linkedevents.org/ontology/atTime": {
+            "@type": "@id"
+        },
+        "http://linkedevents.org/ontology/inSpace": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.image": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_for": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_types": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.official_website": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/location.location.containedby": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/location.location.geolocation": {
+            "@type": "@id"
+        },
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "owl:sameAs": {
+            "@type": "@id"
+        },
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "rdfs:type": {
+            "@type": "@id"
+        },
+        "schema": "http://schema.org/",
+        "schema:image": {
+            "@type": "@id"
+        },
+        "skos": "http://www.w3.org/2004/02/skos/core#",
+        "skos:broader": {
+            "@type": "@id"
+        },
+        "skos:inScheme": {
+            "@type": "@id"
+        },
+        "skos:isTopConceptOf": {
+            "@type": "@id"
+        },
+        "skos:topConceptOf": {
+            "@type": "@id"
+        },
+        "vCal": "http://www.w3.org/2002/12/cal#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "http://dbpedia.org/resource/Ironman_70.3",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Sports_competitions",
+                "http://dbpedia.org/resource/Category:Triathlon",
+                "http://dbpedia.org/resource/Category:Triathlon_competitions"
+            ],
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.04_1l0g",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "An Ironman 70.3, also known as a Half Ironman, is one of a series of middle-distance triathlon races organized by the World Triathlon Corporation (WTC). The \"70.3\" refers to the total distance in miles (113.0 km) covered in the race, consisting of a 1.2-mile swim, a 56-mile bike ride, and a 13.1-mile run. Each distance of the swim, bike, and run segments are half the distances of those segments found in an Ironman triathlon."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Ironman 70.3"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/October",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/CalendarMonth115209413",
+                "http://dbpedia.org/class/yago/FundamentalQuantity113575869",
+                "http://dbpedia.org/class/yago/Measure100033615",
+                "http://dbpedia.org/class/yago/Months",
+                "http://dbpedia.org/class/yago/TimePeriod115113229"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Les_Très_Riches_Heures_du_duc_de_Berry_octobre.jpg/200px-Les_Très_Riches_Heures_du_duc_de_Berry_octobre.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Gregorian_calendar",
+                "http://dbpedia.org/resource/Category:Months",
+                "http://dbpedia.org/resource/Category:October"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/f/f5/Les_Très_Riches_Heures_du_duc_de_Berry_octobre.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.05lf_",
+                "http://yago-knowledge.org/resource/October"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "October is the tenth month of the year in the Julian and Gregorian Calendars and one of seven months with a length of 31 days. The eighth month in the old Roman calendar, October retained its name after January and February were inserted into the calendar that had originally been created by the Romans."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "October"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/October:_Ten_Days_That_Shook_the_World",
+            "@type": [
+                "dbp-ont:Film",
+                "dbp-ont:Work",
+                "owl:Thing",
+                "schema:CreativeWork",
+                "schema:Movie"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Octyabr_poster.jpg/200px-Octyabr_poster.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:1917_Russian_Revolution",
+                "http://dbpedia.org/resource/Category:1928_films",
+                "http://dbpedia.org/resource/Category:Black-and-white_films",
+                "http://dbpedia.org/resource/Category:Drama_films",
+                "http://dbpedia.org/resource/Category:Epic_films",
+                "http://dbpedia.org/resource/Category:Films_about_communism",
+                "http://dbpedia.org/resource/Category:Films_about_the_1917_Russian_Revolution",
+                "http://dbpedia.org/resource/Category:Films_directed_by_Grigori_Aleksandrov",
+                "http://dbpedia.org/resource/Category:Films_directed_by_Sergei_Eisenstein",
+                "http://dbpedia.org/resource/Category:Historical_films",
+                "http://dbpedia.org/resource/Category:Mosfilm_films",
+                "http://dbpedia.org/resource/Category:Propaganda_films",
+                "http://dbpedia.org/resource/Category:Russian_films",
+                "http://dbpedia.org/resource/Category:Russian_silent_films",
+                "http://dbpedia.org/resource/Category:Silent_films",
+                "http://dbpedia.org/resource/Category:Soviet_films",
+                "http://dbpedia.org/resource/Category:Soviet_propaganda_films",
+                "http://dbpedia.org/resource/Category:Soviet_revolutionary_propaganda_films",
+                "http://dbpedia.org/resource/Category:Soviet_silent_films"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/3/31/Octyabr_poster.jpg",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.01ww2l",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "October: Ten Days That Shook the World is a Soviet silent film Classic premiered in 1928 by Sergei Eisenstein and Grigori Aleksandrov, sometimes referred to simply as October in English. It is a celebratory dramatization of the 1917 October Revolution. The title is taken from John Reed's book on the Revolution, Ten Days That Shook The World."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "October: Ten Days That Shook the World"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/October_(album)",
+            "@type": [
+                "dbp-ont:Album",
+                "dbp-ont:MusicalWork",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/1981Albums",
+                "http://dbpedia.org/class/yago/Album106591815",
+                "http://dbpedia.org/class/yago/AlbumsProducedBySteveLillywhite",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/English-languageAlbums",
+                "http://dbpedia.org/class/yago/Instrumentality103575240",
+                "http://dbpedia.org/class/yago/IslandRecordsAlbums",
+                "http://dbpedia.org/class/yago/Medium106254669",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/U2Albums",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "owl:Thing",
+                "schema:CreativeWork",
+                "schema:MusicAlbum"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/U2_October.jpg/200px-U2_October.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:1981_albums",
+                "http://dbpedia.org/resource/Category:Albums_certified_platinum_by_the_Recording_Industry_Association_of_America",
+                "http://dbpedia.org/resource/Category:Albums_produced_by_Steve_Lillywhite",
+                "http://dbpedia.org/resource/Category:English-language_albums",
+                "http://dbpedia.org/resource/Category:Island_Records_albums",
+                "http://dbpedia.org/resource/Category:Rock_albums",
+                "http://dbpedia.org/resource/Category:U2_albums"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/f/fb/U2_October.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.01hdp5f",
+                "http://yago-knowledge.org/resource/October_(album)",
+                "http://zitgist.com/music/record/cb24eab2-e812-4f25-b4e8-92451fdcdb89"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "October is the second album by Irish rock band U2, released in 1981. The album featured spiritual themes, inspired by Bono, The Edge, and Larry Mullen, Jr. 's memberships in a Christian group called the \"Shalom Fellowship\", which led them to question the relationship between the Christian faith and the rock and roll lifestyle. The album received mixed reviews and limited radio play."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "October (album)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Zell_am_See",
+            "@type": [
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "dbp-ont:Settlement",
+                "http://dbpedia.org/class/yago/AdministrativeDistrict108491826",
+                "http://dbpedia.org/class/yago/CitiesAndTownsInSalzburg(state)",
+                "http://dbpedia.org/class/yago/City108524735",
+                "http://dbpedia.org/class/yago/District108552138",
+                "http://dbpedia.org/class/yago/GeographicalArea108574314",
+                "http://dbpedia.org/class/yago/Location100027167",
+                "http://dbpedia.org/class/yago/Municipality108626283",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/Region108630985",
+                "http://dbpedia.org/class/yago/UrbanArea108675967",
+                "http://dbpedia.org/class/yago/YagoGeoEntity",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+                "owl:Thing",
+                "schema:Place"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Zell_am_See.Wiki.jpeg/200px-Zell_am_See.Wiki.jpeg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Cities_and_towns_in_Austria",
+                "http://dbpedia.org/resource/Category:Cities_and_towns_in_Salzburg_(state)",
+                "http://dbpedia.org/resource/Category:Salzburg_(state)",
+                "http://dbpedia.org/resource/Category:Ski_areas_and_resorts_in_Austria",
+                "http://dbpedia.org/resource/Category:Spa_towns_in_Austria",
+                "http://dbpedia.org/resource/Category:Zell_am_See",
+                "http://dbpedia.org/resource/Category:Zell_am_See_District"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/6/6e/Zell_am_See.Wiki.jpeg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.06tbm5",
+                "http://sws.geonames.org/2760634/",
+                "http://yago-knowledge.org/resource/Zell_am_See"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Zell am See is the administrative capital of the Zell am See District in the Austrian state of Salzburg. The town is an important tourist destination known as Zell am See-Kaprun and is a transportation hub for the region."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Zell am See"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.05lf_",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.localfood.seasonal_month",
+                "http://rdf.freebase.com/ns/base.localfood.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.month"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "Oct"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "October is the tenth month of the year in the Julian and Gregorian Calendars and one of seven months with a length of 31 days. The eighth month in the old Roman calendar, October retained its name after January and February were inserted into the calendar that had originally been created by the Romans.\r\nOctober is commonly associated with the season of autumn in the Northern hemisphere and spring in the Southern hemisphere, where it is the seasonal equivalent to April in the Northern hemisphere and vice versa. It is also very commonly associated with Halloween in western world.\r\nIn common years January starts on the same day of the week as October, but no other month starts on the same day of the week as October in leap years. October ends on the same day of the week as February every year and January in common years only. In common years, October starts on the same day of the week as May of the previous year while in leap years, October starts on the same day of the week as August of the previous year. In common years, October ends on the same day of the week as May of the previous year while in leap years, October ends on the same day of the week as August and November of the previous year. In years immediately before common years, October starts on the same day as April and July of the following year while in years immediately before leap years, October starts on the same day of the week as September and December of the following year. In years immediately before common years, October ends on the same day of the week as July of the previous year while years immediately before leap years, October ends on the same day of the week as April and December of the following year."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.02bh2sv",
+                "http://rdf.freebase.com/ns/m.04rmlw_"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "October"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.06tbm5",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.aareas.schema.administrative_area",
+                "http://rdf.freebase.com/ns/base.aareas.schema.at.municipality",
+                "http://rdf.freebase.com/ns/base.austria.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/location.citytown",
+                "http://rdf.freebase.com/ns/location.dated_location",
+                "http://rdf.freebase.com/ns/location.location",
+                "http://rdf.freebase.com/ns/location.statistical_region",
+                "http://rdf.freebase.com/ns/travel.travel_destination",
+                "http://rdf.freebase.com/ns/user.hangy.default_domain.at_municipality"
+            ],
+            "geo:lat": 47.316666,
+            "geo:long": 12.8,
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Zell am See is the administrative capital of the Zell am See District in the Austrian state of Salzburg. The town is an important tourist destination known as Zell am See-Kaprun and is a transportation hub for the region."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.02cmhx5",
+                "http://rdf.freebase.com/ns/m.02nc01b",
+                "http://rdf.freebase.com/ns/m.05lfp4c"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1255r1svl",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01m9",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.zellamsee.salzburg.at/",
+            "http://rdf.freebase.com/ns/location.location.containedby": [
+                "http://rdf.freebase.com/ns/m.0fhnf",
+                "http://rdf.freebase.com/ns/m.0h7x"
+            ],
+            "http://rdf.freebase.com/ns/location.location.geolocation": "http://rdf.freebase.com/ns/m.0239pzv",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Zell am See"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0dlfqvz",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/visual_art.artwork"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "October (1901) is a painting by American Impressionist artist John Henry Twachtman."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125gnwq56",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01y2hcq",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "October"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0dqjwfv",
+            "@type": [
+                "http://rdf.freebase.com/ns/business.business_operation",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.record_label",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125g9fhsk",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpv2k",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "October"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/41186418-cc60-4ed5-bbb8-49efa99e9333",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "dc:subject": "http://rdf.salzburgerland.com/facilities/691b68bf-5fe5-4967-9dbc-1c2347c09831",
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/9cfe06c0-96e2-4c76-a9fe-1f54c3b072e2",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/41186418-cc60-4ed5-bbb8-49efa99e9333-time",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Florianifeier"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=2f9144d9-3ca5-49ef-b3e9-8596334f4118",
+            "vCal:dtend": "2014-04-11",
+            "vCal:dtstart": "2014-04-11",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Pfarrkirche / Neuwirt"
+            },
+            "vCal:uid": "41186418-cc60-4ed5-bbb8-49efa99e9333"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/4add396b-665b-424b-a6e1-00c9778dddb6",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/a703042b-e81e-4734-87c6-a74640916dd1",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/4add396b-665b-424b-a6e1-00c9778dddb6-time",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Zimmererhütte"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=c23f381e-6625-4bf8-84f5-fe753166cdfe",
+            "vCal:dtend": "2014-06-14",
+            "vCal:dtstart": "2014-06-14",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Kolm Saigurn"
+            },
+            "vCal:uid": "4add396b-665b-424b-a6e1-00c9778dddb6"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/79598d8e-fb5f-4eea-811b-00a17b7dbed8",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "dc:subject": [
+                "http://rdf.salzburgerland.com/holiday-themes/6b7e741b-40d6-4eab-b745-1408aaee360a",
+                "http://rdf.salzburgerland.com/holiday-themes/7231442e-1bf1-4746-bb37-32205a109b25",
+                "http://rdf.salzburgerland.com/holiday-themes/efdf7edf-b161-4d5f-b2c9-c21df98397e5"
+            ],
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/e484891c-50f8-4470-9330-1de09d4606af",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/79598d8e-fb5f-4eea-811b-00a17b7dbed8-time",
+            "http://linkedevents.org/ontology/inSpace": "http://rdf.salzburgerland.com/events/79598d8e-fb5f-4eea-811b-00a17b7dbed8-space",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "It is a circuit with a length of 2.12 km. Two thirds are asphalt, one third gravel path. The small circuit leads you via asphalt and gravel to the finish. \n\nContact: \nLaufclub Saalfelden\nChairman: Guntram Hufler\nPhone: 0043 676 710 38 38\nE-Mail: laufclubsaalfelden@sbg.at\nInternet: www.lc-saalfelden.at"
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Ritzensee Sonwendlauf 2014"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=d9f34b4c-d521-4398-b003-46d74dbe2891",
+            "vCal:dtend": "2014-06-14",
+            "vCal:dtstart": "2014-06-14",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Ritzensee"
+            },
+            "vCal:uid": "79598d8e-fb5f-4eea-811b-00a17b7dbed8"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/9b747693-8b8d-404d-b449-04f44d5fedf8",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "dc:references": [
+                "http://ironmansalzburg.com/",
+                "http://youtu.be/XzSacASntDE"
+            ],
+            "dc:subject": [
+                "http://rdf.salzburgerland.com/facilities/1328f4a5-833a-4cc0-977d-fdb1f1d2d8cd",
+                "http://rdf.salzburgerland.com/facilities/db07bd12-7db3-47ad-b553-26ab395b2489",
+                "http://rdf.salzburgerland.com/holiday-themes/6b7e741b-40d6-4eab-b745-1408aaee360a"
+            ],
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/8d347ff1-8c15-4a68-95cc-eff9f9e8be67",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/9b747693-8b8d-404d-b449-04f44d5fedf8-time",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "After the successful Ironman 70.3 in summer 2013, Zell am See-Kaprun, Bruck, Maishofen, Piesendorf are for the third time host of this great sport event. The competition is part of the world series and is known as one of the toughest sport endurance events in the world. Athletes will swim 1,9 km in the beautiful Zeller lake, cycle 90 km along the picturesque landscape of the mountains and run 21,2 km along the lake to finish in Zell am See. \nExperience a great programme and cheer for the athletes - an amazing atmosphere is guaranteed."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Ironman 70.3 Zell am See-Kaprun"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=a832ffb2-c04b-432e-acd3-8e24989db6f8",
+            "vCal:dtend": "2014-08-31",
+            "vCal:dtstart": "2014-08-31",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Kaprun, Piesendorf, Bruck, Maishofen"
+            },
+            "vCal:uid": "9b747693-8b8d-404d-b449-04f44d5fedf8"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/cb3fb061-c3e6-4d99-8cfb-0082f835320d",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "dc:subject": "http://rdf.salzburgerland.com/facilities/1328f4a5-833a-4cc0-977d-fdb1f1d2d8cd",
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/b986263a-b81b-465d-a3b4-a8cbd63d76e9",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/cb3fb061-c3e6-4d99-8cfb-0082f835320d-time",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Almsommer"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=2c654941-ecb2-487a-b527-eab0fa1837c5",
+            "vCal:dtend": "2014-07-12",
+            "vCal:dtstart": "2014-07-12",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "-"
+            },
+            "vCal:uid": "cb3fb061-c3e6-4d99-8cfb-0082f835320d"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/faa1e106-0b89-4e52-9b76-00f26abe4e2f",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "dc:subject": "http://rdf.salzburgerland.com/holiday-themes/efdf7edf-b161-4d5f-b2c9-c21df98397e5",
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/68a86fc5-1a50-4d28-8b13-e50515ce2736",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/faa1e106-0b89-4e52-9b76-00f26abe4e2f-time",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "06.06.2014\nLiterature in the Regions - talk “Homeopathy & Cattle” with Angela Lamminger - Reith (practitioner in alternative veterinary medicine)\nDiscussion: Forgotten cattle species rediscovered - Pustertaler Sprinzen, Pinzgauer Rind, Tiroler Grauvieh. Panel: Barbara Geisler (Judbauer farm in Piesendorf), Christian Moser (Tyrol Cattle Breeders Assoc.), Otto Hausegger (Tyrolese Grey Cattle Assoc.) and Christian Dullnig (Arge Pinzgauer Rind); Moderator: Co-hosts from ARGE Pinzgauer Rind, …"
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Literatur in den Regionen"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=f1355c35-ac23-4a97-b45f-f6ad724045e1",
+            "vCal:dtend": "2014-06-06",
+            "vCal:dtstart": "2014-06-06",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Tauriska-Kammerlanderstall"
+            },
+            "vCal:uid": "faa1e106-0b89-4e52-9b76-00f26abe4e2f"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/fae8095e-9c18-4113-99c3-001551633e25",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "dc:subject": "http://rdf.salzburgerland.com/holiday-themes/367b2a92-e45e-4a96-855e-74332339f7b0",
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/e77e3f06-0a3f-40b7-a197-6c8631d6971f",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/fae8095e-9c18-4113-99c3-001551633e25-time",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Creative girls and boys, aged 5 to 12 will fully enjoy the extensive program.\nExcitement, fun and playing in the group - handling with many different materials is the motto... fold, cut, glue, draw, tie... in the creative club passes time too fast.\n\nfrom 02.00 to 04.00 p.m.\n\nprice per child: € 12,50 (incl. material) with Gasteincard \n€ 4,- extra charge without Gasteincard\n\nregistration: 0699 12341357 or creativekidsgastein@outlook.de"
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "creative design for children"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=087c4708-c934-4d04-8f2d-8190409cac8e",
+            "vCal:dtend": "2014-02-14",
+            "vCal:dtstart": "2014-02-14",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Dr.-Zimmermann Straße 16"
+            },
+            "vCal:uid": "fae8095e-9c18-4113-99c3-001551633e25"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/events/fafba0aa-1617-4d18-ba13-081d5965cdf9",
+            "@type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "http://linkedevents.org/ontology/atPlace": "http://rdf.salzburgerland.com/places/4b394edc-a0e8-4d85-8160-223b679f66a1",
+            "http://linkedevents.org/ontology/atTime": "http://rdf.salzburgerland.com/events/fafba0aa-1617-4d18-ba13-081d5965cdf9-time",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Florianifeier"
+            },
+            "schema:image": "http://interface.deskline.net/Handlers/Document?code=SBG&id=2d7666c8-9a84-4dde-a068-8dc051e51304",
+            "vCal:dtend": "2014-05-04",
+            "vCal:dtstart": "2014-05-04",
+            "vCal:location": {
+                "@language": "en",
+                "@value": "Pfarrkirche"
+            },
+            "vCal:uid": "fafba0aa-1617-4d18-ba13-081d5965cdf9"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/facilities/4a0c64c5-f85d-4aab-8322-d0e315ba374a",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "families"
+            },
+            "skos:broader": "http://rdf.salzburgerland.com/facilities/d00e6c4b-2dca-4437-8c14-884c718ed998",
+            "skos:inScheme": "http://rdf.salzburgerland.com/facilities/accommodations-facilities",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "families"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/facilities/6a1e47d7-ee4d-4017-93ce-daa4121774f2",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "children"
+            },
+            "skos:broader": "http://rdf.salzburgerland.com/facilities/d00e6c4b-2dca-4437-8c14-884c718ed998",
+            "skos:inScheme": "http://rdf.salzburgerland.com/facilities/accommodations-facilities",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "children"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/facilities/b927396f-af23-4a78-b629-6f89f733774c",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Children"
+            },
+            "skos:inScheme": "http://rdf.salzburgerland.com/facilities/accommodations-facilities",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "Children"
+            },
+            "skos:topConceptOf": "http://rdf.salzburgerland.com/facilities/accommodations-facilities"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/facilities/cd44bf59-47f1-4531-9a07-77af8790eb80",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Family"
+            },
+            "skos:inScheme": "http://rdf.salzburgerland.com/facilities/events-classification",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "Family"
+            },
+            "skos:topConceptOf": "http://rdf.salzburgerland.com/facilities/events-classification"
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/facilities/e69c1317-4432-4873-a866-fb59f48bc776",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "snowshoe hiking"
+            },
+            "skos:broader": "http://rdf.salzburgerland.com/facilities/3ca6870e-5e7f-45b6-9b7f-5e6bf5ae63b1",
+            "skos:inScheme": "http://rdf.salzburgerland.com/facilities/accommodations-facilities",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "snowshoe hiking"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/holiday-themes/090a18ae-5d50-421e-a65a-c5a2b8227ae5",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Family"
+            },
+            "skos:isTopConceptOf": "http://rdf.salzburgerland.com/holiday-themes/holiday-themes-classification",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "Family"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/holiday-themes/367b2a92-e45e-4a96-855e-74332339f7b0",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Children"
+            },
+            "skos:isTopConceptOf": "http://rdf.salzburgerland.com/holiday-themes/holiday-themes-classification",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "Children"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/holiday-themes/6b7e741b-40d6-4eab-b745-1408aaee360a",
+            "@type": "skos:Concept",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Event"
+            },
+            "skos:isTopConceptOf": "http://rdf.salzburgerland.com/holiday-themes/holiday-themes-classification",
+            "skos:prefLabel": {
+                "@language": "en",
+                "@value": "Event"
+            }
+        },
+        {
+            "@id": "http://rdf.salzburgerland.com/places/8d347ff1-8c15-4a68-95cc-eff9f9e8be67",
+            "@type": [
+                "geonames:Feature",
+                "http://www.loa-cnr.it/ontologies/DUL.owl#Place",
+                "schema:Place"
+            ],
+            "geonames:countryCode": "AT",
+            "geonames:featureClass": "geonames:A",
+            "geonames:featureCode": "geonames:A.ADM3",
+            "geonames:name": "Zell am See",
+            "geonames:parentADM1": "http://sws.geonames.org/2766823/",
+            "geonames:parentADM2": "http://rdf.salzburgerland.com/places/ad66a30b-13df-4b30-990b-241630f755f8",
+            "geonames:parentCountry": "http://sws.geonames.org/2782113/",
+            "geonames:parentFeature": "http://rdf.salzburgerland.com/places/ad66a30b-13df-4b30-990b-241630f755f8",
+            "rdfs:label": "Zell am See",
+            "rdfs:type": "http://www.loc.gov/mads/rdf/v1#City"
+        },
+        {
+            "@id": "urn:enhancement-07ee5ea6-dd36-d50c-6d90-ab08bab1c965",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.900Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "skos:Concept",
+            "enhancer:confidence": 0.8333333,
+            "enhancer:end": 264,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "events"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " is going to take place in Zell am See. Other events include:\n\nthe creative design for children,the"
+            },
+            "enhancer:start": 258
+        },
+        {
+            "@id": "urn:enhancement-0cad5cdd-47a7-6a58-d9d4-971b2070d5cd",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.903Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "enhancer:confidence": 0.98,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/October:_Ten_Days_That_Shook_the_World",
+            "enhancer:entity-type": [
+                "dbp-ont:Film",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "schema:Movie",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-0fb8489a-f8b7-8002-5199-c145ff8729b7",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.904Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 435,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Ironman 70.3"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Alpine Stubach valley - Snowshoe Hiking Tour,the Ironman 70.3 Zell am See-Kaprun."
+            },
+            "enhancer:start": 423
+        },
+        {
+            "@id": "urn:enhancement-12e9baf3-68e5-6a92-a7e4-790fbbf75e1a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.897Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": [
+                "urn:enhancement-6476bf49-d184-2e1f-beb6-a8425795ce91",
+                "urn:enhancement-e0667afe-1a11-f4c8-a258-7b7c5f42d092"
+            ],
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": "Zell am See",
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/places/8d347ff1-8c15-4a68-95cc-eff9f9e8be67",
+            "enhancer:entity-type": [
+                "schema:Place",
+                "geonames:Feature",
+                "http://www.loa-cnr.it/ontologies/DUL.owl#Place"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-14d824e2-feb6-ae30-044a-22492b1abf53",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 454,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Ironman 70.3 Zell am See-Kaprun"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Alpine Stubach valley - Snowshoe Hiking Tour,the Ironman 70.3 Zell am See-Kaprun."
+            },
+            "enhancer:start": 423
+        },
+        {
+            "@id": "urn:enhancement-18d5112a-7b31-a7dd-3d60-b93e164b01ca",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 307,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "creative design for children"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " place in Zell am See. Other events include:\n\nthe creative design for children,the Almsommer,the Zimmererhütte,the Literatur in"
+            },
+            "enhancer:start": 279
+        },
+        {
+            "@id": "urn:enhancement-23c778f8-de57-cebd-3ccd-582c2f0c3a22",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.903Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "enhancer:confidence": 0.99,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/October_(album)",
+            "enhancer:entity-type": [
+                "dbp-ont:Album",
+                "dbp-ont:MusicalWork",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "schema:MusicAlbum",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-285928fb-3e60-324f-166f-8782d266af83",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-14d824e2-feb6-ae30-044a-22492b1abf53",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Ironman 70.3 Zell am See-Kaprun"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/9b747693-8b8d-404d-b449-04f44d5fedf8",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-396a5a0e-3b7f-62fb-82d1-7d33db54b659",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.908Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-6be4b7de-bab1-d6bd-a4e2-930563cca91c",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Ritzensee Sonwendlauf 2014"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/79598d8e-fb5f-4eea-811b-00a17b7dbed8",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-3cff7d63-2a80-0042-45df-2fce6419708b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.908Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 41,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Florianifeier"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": "This October don't miss the Florianifeier, we'll have fun as usual. Come and experience the"
+            },
+            "enhancer:start": 28
+        },
+        {
+            "@id": "urn:enhancement-413b7283-a482-0710-4426-58efee86e20a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.889Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-74f351ec-80ec-43dc-9ad6-fcda5deeca24",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "snowshoe hiking"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/facilities/e69c1317-4432-4873-a866-fb59f48bc776",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-523be199-8a2f-54d7-b0a4-372b586d58df",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.904Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": [
+                "urn:enhancement-6476bf49-d184-2e1f-beb6-a8425795ce91",
+                "urn:enhancement-e0667afe-1a11-f4c8-a258-7b7c5f42d092"
+            ],
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Zell am See"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Zell_am_See",
+            "enhancer:entity-type": [
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "dbp-ont:Settlement",
+                "schema:Place",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-574eed8c-8d39-536e-5e0c-debcfc212fed",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-5faf87ae-e3ed-0260-2e64-fbe6f8f0ec43",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Almsommer"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/cb3fb061-c3e6-4d99-8cfb-0082f835320d",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-5faf87ae-e3ed-0260-2e64-fbe6f8f0ec43",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 321,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Almsommer"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " include:\n\nthe creative design for children,the Almsommer,the Zimmererhütte,the Literatur in den"
+            },
+            "enhancer:start": 312
+        },
+        {
+            "@id": "urn:enhancement-635d25ec-0be7-e7a4-c268-47aae80d6103",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.881Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "enhancer:confidence": 0.99230766,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0dqjwfv",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/business.business_operation",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.record_label",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-63f13835-1a9d-b9c0-58f5-cd6e43629ac2",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-26T09:31:06.888Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "skos:Concept",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 307,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "children"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Other events include:\n\nthe creative design for children,the Almsommer,the Zimmererhütte,the Literatur in"
+            },
+            "enhancer:start": 299
+        },
+        {
+            "@id": "urn:enhancement-6476bf49-d184-2e1f-beb6-a8425795ce91",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-26T09:31:06.881Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Place",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 250,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Zell am See"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " am See-Kaprun event is going to take place in Zell am See. Other events include:\n\nthe creative design for"
+            },
+            "enhancer:start": 239
+        },
+        {
+            "@id": "urn:enhancement-65d074af-007d-591d-aed4-16e739433c6d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.881Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "enhancer:confidence": 0.9846154,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0dlfqvz",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/visual_art.artwork"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-66e5804d-618f-e1d5-cced-71375fe4a112",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.900Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9d1d4daf-aff5-4fe2-8e19-b038c9f96481",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Family"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/holiday-themes/090a18ae-5d50-421e-a65a-c5a2b8227ae5",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-6973314d-bf54-2afa-2a59-c682630ddc7d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.889Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-63f13835-1a9d-b9c0-58f5-cd6e43629ac2",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "children"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/facilities/6a1e47d7-ee4d-4017-93ce-daa4121774f2",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-6be4b7de-bab1-d6bd-a4e2-930563cca91c",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.908Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 118,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Ritzensee Sonwendlauf 2014"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " we'll have fun as usual. Come and experience the Ritzensee Sonwendlauf 2014 with your family. Very soon the Maisi Children"
+            },
+            "enhancer:start": 92
+        },
+        {
+            "@id": "urn:enhancement-73162e3e-352b-5178-cdd4-70de124a6a68",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-18d5112a-7b31-a7dd-3d60-b93e164b01ca",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "creative design for children"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/fae8095e-9c18-4113-99c3-001551633e25",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-74f351ec-80ec-43dc-9ad6-fcda5deeca24",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.889Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "skos:Concept",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 413,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Snowshoe Hiking"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " in den Regionen,the Alpine Stubach valley - Snowshoe Hiking Tour,the Ironman 70.3 Zell am See-Kaprun."
+            },
+            "enhancer:start": 398
+        },
+        {
+            "@id": "urn:enhancement-8276a8d4-6525-036a-647c-283581a759ef",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.847Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+            "dc:language": "en",
+            "dc:type": "dc:LinguisticSystem",
+            "enhancer:confidence": 0.99999684,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-8d20298c-46a0-f915-cca3-b902d4544b96",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.900Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-63f13835-1a9d-b9c0-58f5-cd6e43629ac2",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Children"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/holiday-themes/367b2a92-e45e-4a96-855e-74332339f7b0",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-94229c32-2b77-c8a5-330e-5107e2280e63",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.900Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-07ee5ea6-dd36-d50c-6d90-ab08bab1c965",
+            "enhancer:confidence": 0.8333333,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Event"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/holiday-themes/6b7e741b-40d6-4eab-b745-1408aaee360a",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-9d1d4daf-aff5-4fe2-8e19-b038c9f96481",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-26T09:31:06.888Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "skos:Concept",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 135,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "family"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " the Ritzensee Sonwendlauf 2014 with your family. Very soon the Maisi Children &amp; Family"
+            },
+            "enhancer:start": 129
+        },
+        {
+            "@id": "urn:enhancement-9de1c7d7-77ab-020b-cb36-3fe1c287f712",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.908Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-3cff7d63-2a80-0042-45df-2fce6419708b",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Florianifeier"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/41186418-cc60-4ed5-bbb8-49efa99e9333",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-9f233ccb-c7b2-1a81-92c1-7d7eed8a6145",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.908Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-3cff7d63-2a80-0042-45df-2fce6419708b",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Florianifeier"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/ddedcdf7-c41f-4d3f-8232-7498f552da54",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-a60f07a3-ce9c-3385-1f2e-43ea5b18a24b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.908Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-3cff7d63-2a80-0042-45df-2fce6419708b",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Florianifeier"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/fafba0aa-1617-4d18-ba13-081d5965cdf9",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-ae2e0158-2ba2-7c90-220d-b3e9b54275d2",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.888Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9d1d4daf-aff5-4fe2-8e19-b038c9f96481",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Family"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/facilities/cd44bf59-47f1-4531-9a07-77af8790eb80",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-b246a5ef-ea8d-550c-41ea-2da1a7babd7d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-cabc0f2a-be12-8bc3-ba93-bc076bc32c18",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Zimmererhütte"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/4add396b-665b-424b-a6e1-00c9778dddb6",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-26T09:31:06.881Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 12,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": "This October don't miss the Florianifeier, we'll have fun as"
+            },
+            "enhancer:start": 5
+        },
+        {
+            "@id": "urn:enhancement-be4810b4-c7e9-ad45-f62b-51d093de3c10",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-de6bf96e-9363-f007-b4b5-b8d7cad558ff",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Literatur in den Regionen"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/events/faa1e106-0b89-4e52-9b76-00f26abe4e2f",
+            "enhancer:entity-type": [
+                "http://linkedevents.org/ontology/Event",
+                "schema:Event",
+                "vCal:Vevent"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-c3c4d352-6d81-6eda-4acf-81cb00275e6f",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.903Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/October",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-cabc0f2a-be12-8bc3-ba93-bc076bc32c18",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 339,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Zimmererhütte"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " creative design for children,the Almsommer,the Zimmererhütte,the Literatur in den Regionen,the Alpine Stubach"
+            },
+            "enhancer:start": 326
+        },
+        {
+            "@id": "urn:enhancement-cd223afd-1f6b-cae5-fbf4-88896f33746e",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.888Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9d1d4daf-aff5-4fe2-8e19-b038c9f96481",
+            "enhancer:confidence": 0.625,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "families"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/facilities/4a0c64c5-f85d-4aab-8322-d0e315ba374a",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-d72396e9-6db2-8d1d-2cf9-a05cd61cf4ca",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.881Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": [
+                "urn:enhancement-6476bf49-d184-2e1f-beb6-a8425795ce91",
+                "urn:enhancement-e0667afe-1a11-f4c8-a258-7b7c5f42d092"
+            ],
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Zell am See"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.06tbm5",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.aareas.schema.administrative_area",
+                "http://rdf.freebase.com/ns/base.aareas.schema.at.municipality",
+                "http://rdf.freebase.com/ns/base.austria.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/location.citytown",
+                "http://rdf.freebase.com/ns/location.dated_location",
+                "http://rdf.freebase.com/ns/location.location",
+                "http://rdf.freebase.com/ns/location.statistical_region",
+                "http://rdf.freebase.com/ns/travel.travel_destination",
+                "http://rdf.freebase.com/ns/user.hangy.default_domain.at_municipality"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-de6bf96e-9363-f007-b4b5-b8d7cad558ff",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.909Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Event",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 369,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Literatur in den Regionen"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " for children,the Almsommer,the Zimmererhütte,the Literatur in den Regionen,the Alpine Stubach valley - Snowshoe Hiking"
+            },
+            "enhancer:start": 344
+        },
+        {
+            "@id": "urn:enhancement-e0667afe-1a11-f4c8-a258-7b7c5f42d092",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.922Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.entitycomention.EntityCoMentionEngine",
+            "dc:relation": "urn:enhancement-6476bf49-d184-2e1f-beb6-a8425795ce91",
+            "dc:type": "dbp-ont:Place",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 443,
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Zell am"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": "70.3 Zell am See"
+            },
+            "enhancer:start": 436
+        },
+        {
+            "@id": "urn:enhancement-e44c45ee-8b24-257a-8138-3897e143c28b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.904Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-0fb8489a-f8b7-8002-5199-c145ff8729b7",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Ironman 70.3"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Ironman_70.3",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-e7b5b982-d645-b5cd-da2b-46d834070ea1",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.881Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b5467189-0675-b5bf-4711-856ffbe59d1d",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "October"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.05lf_",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.localfood.seasonal_month",
+                "http://rdf.freebase.com/ns/base.localfood.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.month"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        },
+        {
+            "@id": "urn:enhancement-f0f83164-6dfb-f8e3-2dd1-049e51ca1b58",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-26T09:31:06.888Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-63f13835-1a9d-b9c0-58f5-cd6e43629ac2",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Children"
+            },
+            "enhancer:entity-reference": "http://rdf.salzburgerland.com/facilities/b927396f-af23-4a78-b629-6f89f733774c",
+            "enhancer:entity-type": "skos:Concept",
+            "enhancer:extracted-from": "urn:content-item-sha1-0401ee6d06b7ab0b99a7f70aa03f4e9eb2c53ca1"
+        }
+    ]
+}
