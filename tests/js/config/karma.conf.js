@@ -106,6 +106,15 @@ module.exports = function ( config ) {
 
         browsers: [ 'Firefox', 'Chrome' ],
 
+        // This is the new content for your travis-ci configuration test
+        //  Custom launcher for Travis-CI
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+
         phantomjsLauncher: {
             // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
             exitOnResourceError: true
@@ -127,5 +136,10 @@ module.exports = function ( config ) {
             suite: 'unit'
         }
 
-    } )
+    } );
+
+    if(process.env.TRAVIS){
+        config.browsers = ['Chrome_travis_ci'];
+    }
+    
 };
