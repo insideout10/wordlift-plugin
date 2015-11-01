@@ -26,7 +26,7 @@ function wl_admin_shortcode_buttons() {
  */
 function wl_admin_shortcode_buttons_register_tinymce_javascript( $plugin_array ) {
 
-	$plugin_array['wl_shortcodes'] = plugin_dir_url( __FILE__ ) . 'js-client/wordlift_shortcode_tinymce_plugin.js';
+	$plugin_array['wl_shortcodes'] = plugin_dir_url( __FILE__ ) . 'js/wordlift_shortcode_tinymce_plugin.js';
 
 	return $plugin_array;
 }

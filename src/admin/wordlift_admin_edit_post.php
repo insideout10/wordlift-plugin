@@ -52,7 +52,7 @@ function wl_admin_search_duplicated_entity_while_editing_title( $hook ) {
 		// Exit if we are not dealing with an entity
 		if ( $entity_being_edited->post_type == WL_ENTITY_TYPE_NAME ) {
 
-			wp_enqueue_script( 'wl-entity-duplicated-titles-live-search', plugin_dir_url( __FILE__ ) . 'js-client/wl_entity-duplicated-titles-live-search.js' );
+			wp_enqueue_script( 'wl-entity-duplicated-titles-live-search', plugin_dir_url( __FILE__ ) . 'js/wl_entity-duplicated-titles-live-search.js' );
 			wp_localize_script( 'wl-entity-duplicated-titles-live-search', 'wlEntityDuplicatedTitlesLiveSearchParams', array(
 					'ajax_url' => admin_url( 'admin-ajax.php' ),
 					'action'   => 'entity_by_title',

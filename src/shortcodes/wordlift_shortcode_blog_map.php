@@ -19,15 +19,15 @@ function wl_shortcode_blog_map( $atts ) {
 	$widget_id = 'wl-blog-map';
 
 	// Adding css
-	wp_enqueue_style( 'vis-css', plugin_dir_url( __FILE__ ) . 'js-client/visjs/vis.css' );
+	wp_enqueue_style( 'vis', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/visjs/vis.css' );
 
 	// Adding javascript code
-	wp_enqueue_script( 'vis-js', plugin_dir_url( __FILE__ ) . 'js-client/visjs/vis.js' );
-	wp_enqueue_script( 'blog-map-launcher', plugin_dir_url( __FILE__ ) . 'js-client/wordlift_shortcode_blog_map.js' );
+	wp_enqueue_script( 'vis', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/visjs/vis.js' );
+	wp_enqueue_script( 'blog-map-launcher', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/wordlift_shortcode_blog_map.js' );
 	wp_localize_script( 'blog-map-launcher', 'blog_map_params', array(
 			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 			'action'            => 'wl_chord',  // let's piggy back on chord graph functions
-			'default_thumbnail' => plugin_dir_url( __FILE__ ) . 'images/wordlift-logo-black-32x32'
+			'default_thumbnail' => dirname( plugin_dir_url( __FILE__ ) ) . '/images/wordlift-logo-black-32x32'
 		)
 	);
 

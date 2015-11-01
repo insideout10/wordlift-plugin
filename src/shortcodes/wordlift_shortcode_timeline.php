@@ -185,15 +185,15 @@ function wl_shortcode_timeline( $atts ) {
 	// Add timeline library.
 	wp_enqueue_script(
 		'timelinejs-storyjs-embed',
-		plugin_dir_url( __FILE__ ) . 'bower_components/TimelineJS.build/build/js/storyjs-embed.js'
+		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/storyjs-embed.js'
 	);
 	wp_enqueue_script(
 		'timelinejs',
-		plugin_dir_url( __FILE__ ) . 'bower_components/TimelineJS.build/build/js/timeline-min.js'
+		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/timeline-min.js'
 	);
 
 	// Add wordlift-ui script.
-	wp_enqueue_script( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'js/wordlift-ui.js', array( 'jquery' ) );
+	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.js', array( 'jquery' ) );
 
 	wp_localize_script( 'wordlift-ui', 'wl_timeline_params', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),    // Global param

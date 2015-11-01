@@ -207,18 +207,18 @@ function wl_shortcode_geomap( $atts ) {
 
 	// Add leaflet css and library.
 	wp_enqueue_style(
-		'leaflet_css',
-		plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.css'
+		'leaflet',
+		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.css'
 	);
 	wp_enqueue_script(
-		'leaflet_js',
-		plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.js'
+		'leaflet',
+		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.js'
 	);
 
 	// Add wordlift-ui css and library.
-	wp_enqueue_style( 'wordlift-ui-css', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.min.css' );
+	wp_enqueue_style( 'wordlift-ui-css', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
 
-	wp_enqueue_script( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'js/wordlift-ui.min.js', array( 'jquery' ) );
+	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
 
 	wp_localize_script( 'wordlift-ui', 'wl_geomap_params', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),    // Global param

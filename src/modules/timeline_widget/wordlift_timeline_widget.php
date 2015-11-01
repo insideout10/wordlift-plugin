@@ -26,9 +26,9 @@ function wordlift_timeline_widget_shortcode( $atts, $content = null ) {
 //	), $atts );
 
 	// Add TimelineJS css and library.
-	wp_enqueue_script( 'timeline', plugin_dir_url( __FILE__ ) . 'bower_components/TimelineJS.build/build/css/timeline.css' );
-	wp_enqueue_script( 'timeline', plugin_dir_url( __FILE__ ) . 'bower_components/TimelineJS.build/build/js/storyjs-embed.js', array( 'jquery' ) );
-	wp_enqueue_style( 'wordlift-timeline-widget', plugin_dir_url( __FILE__ ) . 'modules/timeline_widget/css/wordlift_timeline_widget.css' );
+	wp_enqueue_script( 'timeline', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/TimelineJS.build/build/css/timeline.css' );
+	wp_enqueue_script( 'timeline', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/TimelineJS.build/build/js/storyjs-embed.js', array( 'jquery' ) );
+	wp_enqueue_style( 'wordlift-timeline-widget', plugin_dir_url( __FILE__ ) . 'css/wordlift_timeline_widget.css' );
 
 	// Generate a unique ID for the element.
 	$element_id = uniqid( 'wl-timeline-' );

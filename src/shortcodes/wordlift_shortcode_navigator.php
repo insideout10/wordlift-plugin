@@ -95,10 +95,10 @@ function wordlift_shortcode_navigator() {
 	}
 
 	// include slick on page
-	wp_enqueue_script( 'slick', plugin_dir_url( __FILE__ ) . 'public/js/slick.min.js' );
-	wp_enqueue_style( 'slick', plugin_dir_url( __FILE__ ) . 'public/css/slick.css' );
-	wp_enqueue_style( 'slick-theme', plugin_dir_url( __FILE__ ) . 'public/css/slick-theme.css' );
-	wp_enqueue_style( 'slick-theme-wordlift', plugin_dir_url( __FILE__ ) . 'public/css/slick-theme-wordlift.css' );
+	wp_enqueue_script( 'slick', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/slick.min.js' );
+	wp_enqueue_style( 'slick', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick.css' );
+	wp_enqueue_style( 'slick-theme', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick-theme.css' );
+	wp_enqueue_style( 'slick-theme-wordlift', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick-theme-wordlift.css' );
 
 
 	// get posts that will populate the navigator (criteria may vary, see function *wordlift_shortcode_navigator_populate*)

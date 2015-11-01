@@ -13,8 +13,8 @@ function wordlift_geo_widget_shortcode( $atts, $content = null ) {
 	), $atts );
 
 	// Add leaflet css and library.
-	wp_enqueue_style( 'leaflet_css', plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.css' );
-	wp_enqueue_script( 'leaflet_js', plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.js' );
+	wp_enqueue_style( 'leaflet_css', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );
+	wp_enqueue_script( 'leaflet_js', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.js' );
 
 	ob_start(); // Collect the buffer.
 	wordlift_geo_widget_html(

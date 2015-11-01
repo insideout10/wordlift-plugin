@@ -227,12 +227,12 @@ function wl_shortcode_chord( $atts ) {
 	}
 
 	// Adding css
-	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift.ui.min.css' );
+	wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
 
 	// Adding javascript code
-	wp_enqueue_script( 'd3', plugin_dir_url( __FILE__ ) . 'bower_components/d3/d3.min.js' );
+	wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js' );
 
-	wp_enqueue_script( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'js/wordlift-ui.min.js', array( 'jquery' ) );
+	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
 
 	wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
