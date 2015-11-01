@@ -85,7 +85,7 @@ module.exports = function ( grunt ) {
             }
         },
         /* CoffeeScript compilation */
-        coffee: {
+        _coffee: {
             compile: {
                 options: {
                     join: false,
@@ -113,7 +113,7 @@ module.exports = function ( grunt ) {
             }
         },
         /* CSS */
-        less: {
+        _less: {
             all: {
                 expand: true,
                 cwd: SOURCE_DIR + 'less/',
@@ -173,48 +173,33 @@ module.exports = function ( grunt ) {
                 src: []
             }
         },
-        /* Document file */
-        //docco: {
-        //    doc: {
-        //        src: [ SOURCE_DIR + 'coffee/**/*.coffee',
-        //            'test/unit/**/*.coffee' ],
-        //        options: {
-        //            output: 'docs/'
-        //        }
-        //    }
-        //},
         /* Watch for changes */
         watch: {
-            all: {
-                files: [
-                    SOURCE_DIR + '**',
-                    // Ignore version control directories.
-                    '!' + SOURCE_DIR + '**/.{svn,git}/**',
-                    '!' + SOURCE_DIR + 'less/**',
-                    '!' + SOURCE_DIR + 'coffee/**',
-                ],
-                tasks: [ 'clean:dynamic', 'copy:dynamic' ],
-                options: {
-                    dot: true,
-                    spawn: false,
-                    interval: 2000
-                }
-            },
+            /* Enable when using a build folder */
+            //all: {
+            //    files: [
+            //        SOURCE_DIR + '**',
+            //        // Ignore version control directories.
+            //        '!' + SOURCE_DIR + '**/.{svn,git}/**',
+            //        '!' + SOURCE_DIR + 'less/**',
+            //        '!' + SOURCE_DIR + 'coffee/**',
+            //        '!' + SOURCE_DIR + '**/*.coffee',
+            //        '!' + SOURCE_DIR + '**/*.less'
+            //    ],
+            //    //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
+            //    options: {
+            //        dot: true,
+            //        spawn: false,
+            //        interval: 2000
+            //    }
+            //},
             coffee: {
-                files: [ SOURCE_DIR + 'coffee/**' ],
+                files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
                 tasks: [ 'coffee' ]
             },
             less: {
-                files: [ SOURCE_DIR + 'less/**' ],
+                files: [ SOURCE_DIR + 'less/**/*.less' ],
                 tasks: [ 'less' ]
-            },
-            uglify: {
-                files: [ SOURCE_DIR + 'js/**' ],
-                tasks: [ 'uglify' ]
-            },
-            cssmin: {
-                files: [ SOURCE_DIR + 'css/**' ],
-                tasks: [ 'cssmin' ]
             },
             config: {
                 files: 'Gruntfile.js'
@@ -234,33 +219,20 @@ module.exports = function ( grunt ) {
                 reporters: 'dots'
             }
         }
-        //,
-        //watch: {
-        //    scripts: {
-        //        files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
-        //        tasks: [ 'coffee',
-        //            'uglify',
-        //            'copy:dist-scripts',
-        //            'docco' ],
-        //        options: {
-        //            spawn: false
-        //        }
-        //    },
-        //    styles: {
-        //        files: [ SOURCE_DIR + 'less/*.less' ],
-        //        tasks: [ 'less',
-        //            'copy:dist-fonts',
-        //            'copy:dist-stylesheets' ],
-        //        options: {
-        //            spawn: false
-        //        }
-        //    }
-        //}
     } );
+
+    /* Rename the coffee task in _coffee, in order to create a coffee task that
+     * includes both coffee and uglify, so that every time that coffee generates
+     * a JavaScript file, it is also minified.
+     */
+    grunt.renameTask( 'coffee', '_coffee' );
+    grunt.registerTask( 'coffee', [ '_coffee', 'uglify' ] );
+
+    grunt.renameTask( 'less', '_less' );
+    grunt.registerTask( 'less', [ '_less', 'cssmin' ] );
 
     grunt.registerTask( 'build', [
         'coffee',
-        'uglify',
         'less',
         'cssmin',
         'copy:fonts',
@@ -272,42 +244,28 @@ module.exports = function ( grunt ) {
         'build'
     ] );
 
-    //grunt.renameTask( 'watch', '_watch' );
-
-    //grunt.registerTask( 'watch', function () {
-    //    if ( !this.args.length || this.args.indexOf( 'coffee' ) > -1 ) {
-    //        //grunt.config( 'browserify.options', {
-    //        //    browserifyOptions: {
-    //        //        debug: true
-    //        //    },
-    //        //    watch: true
-    //        //} );
-    //
-    //        grunt.task.run( 'coffee' );
-    //    }
-    //
-    //    grunt.task.run( '_' + this.nameArgs );
-    //} );
 
     /*
      * Automatically updates the `:dynamic` configurations
      * so that only the changed files are updated.
      */
-    grunt.event.on( 'watch', function ( action, filepath, target ) {
-        var src;
-
-        if ( [ 'coffee', 'less' ].indexOf( target ) > -1 ) {
-            return;
-        }
-
-        src = [ path.relative( SOURCE_DIR, filepath ) ];
-
-        if ( action === 'deleted' ) {
-            grunt.config( [ 'clean', 'dynamic', 'src' ], src );
-        } else {
-            grunt.config( [ 'copy', 'dynamic', 'src' ], src );
-        }
-    } );
+    //grunt.event.on( 'watch', function ( action, filepath, target ) {
+    //    var src;
+    //
+    //    src = [ path.relative( SOURCE_DIR, filepath ) ];
+    //
+    //    grunt.log.writeln( '[ action :: %s ][ filepath :: %s ][ target :: %s ][ source :: %s ]', action, filepath, target, src[ 0 ] );
+    //
+    //    //if ( [ 'coffee', 'less' ].indexOf( target ) > -1 ) {
+    //    //    return;
+    //    //}
+    //
+    //    if ( action === 'deleted' ) {
+    //        grunt.config( [ 'clean', 'dynamic', 'src' ], src );
+    //    } else {
+    //        grunt.config( [ 'copy', 'dynamic', 'src' ], src );
+    //    }
+    //} );
 
     // Testing tasks.
     grunt.registerMultiTask( 'phpunit', 'Runs PHPUnit tests.', function () {
@@ -324,5 +282,6 @@ module.exports = function ( grunt ) {
     grunt.registerTask( 'travis:js', 'Runs Javascript Travis CI tasks.', 'karma' );
     grunt.registerTask( 'travis:phpunit', 'Runs PHPUnit Travis CI tasks.', 'phpunit' );
 
-    return grunt.registerTask( 'default', [ 'build' ] );
+    grunt.registerTask( 'default', [ 'build' ] );
+
 };

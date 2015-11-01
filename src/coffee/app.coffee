@@ -151,7 +151,6 @@ $wlEntityDisplayAsSelect.find('.wl-save-entity-display-as').click (event) ->
 
 
 $wlEntityDisplayAsSelect.find('.wl-cancel-entity-display-as').click (event) ->
-
   $('#wl-entity-display-as-select').slideUp('fast').siblings('a.wl-edit-entity-display-as').show().focus()
   $('#wl_entity_display_as').val($('#hidden_wl_entity_display_as').val())
 
