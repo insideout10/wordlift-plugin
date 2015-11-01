@@ -222,15 +222,15 @@ class WL_Metabox {
 	public function enqueue_scripts_and_styles() {
 
 		// dateTimePicker
-		wp_enqueue_style( 'datetimepicker', plugin_dir_url( __FILE__ ) . 'admin/css/jquery.datetimepicker.css' );
+		wp_enqueue_style( 'datetimepicker', plugin_dir_url( __FILE__ ) . 'admin/css/jquery.datetimepicker.css' ;
 		wp_enqueue_script( 'datetimepicker', plugin_dir_url( __FILE__ ) . 'admin/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
 
 		// Leaflet.
-		wp_enqueue_style( 'leaflet_css', plugins_url( 'bower_components/leaflet/dist/leaflet.css', __FILE__ ) );
-		wp_enqueue_script( 'leaflet_js', plugins_url( 'bower_components/leaflet/dist/leaflet.js', __FILE__ ) );
+		wp_enqueue_style( 'leaflet_css', plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.css' );
+		wp_enqueue_script( 'leaflet_js', plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.js', __FILE__ );
 
 		// Add AJAX autocomplete to facilitate metabox editing
-		wp_enqueue_script( 'wl-entity-metabox-utility', plugins_url( 'js-client/wl_entity_metabox_utilities.js', __FILE__ ) );
+		wp_enqueue_script( 'wl-entity-metabox-utility', plugin_dir_url( __FILE__ ) . 'js-client/wl_entity_metabox_utilities.js' );
 		wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'action'   => 'entity_by_title'

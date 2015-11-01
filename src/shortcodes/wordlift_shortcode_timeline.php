@@ -185,11 +185,11 @@ function wl_shortcode_timeline( $atts ) {
 	// Add timeline library.
 	wp_enqueue_script(
 		'timelinejs-storyjs-embed',
-		plugins_url( 'bower_components/TimelineJS.build/build/js/storyjs-embed.js', __FILE__ )
+		plugin_dir_url( __FILE__ ) . 'bower_components/TimelineJS.build/build/js/storyjs-embed.js'
 	);
 	wp_enqueue_script(
 		'timelinejs',
-		plugins_url( 'bower_components/TimelineJS.build/build/js/timeline-min.js', __FILE__ )
+		plugin_dir_url( __FILE__ ) . 'bower_components/TimelineJS.build/build/js/timeline-min.js'
 	);
 
 	// Add wordlift-ui script.

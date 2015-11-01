@@ -208,11 +208,11 @@ function wl_shortcode_geomap( $atts ) {
 	// Add leaflet css and library.
 	wp_enqueue_style(
 		'leaflet_css',
-		plugins_url( 'bower_components/leaflet/dist/leaflet.css', __FILE__ )
+		plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.css'
 	);
 	wp_enqueue_script(
 		'leaflet_js',
-		plugins_url( 'bower_components/leaflet/dist/leaflet.js', __FILE__ )
+		plugin_dir_url( __FILE__ ) . 'bower_components/leaflet/dist/leaflet.js'
 	);
 
 	// Add wordlift-ui css and library.

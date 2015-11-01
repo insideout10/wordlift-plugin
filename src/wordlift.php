@@ -189,7 +189,7 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'angularjs', plugins_url( 'bower_components/angular/angular.min.js', __FILE__ ) );
+	wp_enqueue_script( 'angularjs', plugin_dir_url( __FILE__ ) . 'bower_components/angular/angular.min.js' );
 
 }
 
