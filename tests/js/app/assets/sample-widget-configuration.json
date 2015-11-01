@@ -1,0 +1,28 @@
+{
+ 	"classificationBoxes": [
+ 		{
+ 			"id": "what",
+ 			"label": "What",
+ 			"registeredTypes": [ "event", "organization", "person", "place" ],
+ 			"registeredWidgets": [ "ImageSuggestor", "ArticleSuggestor"]
+ 		},
+ 		{
+	 		"id": "who",
+	 		"label": "Who",
+ 			"registeredTypes": [ "organization", "person" ],
+ 			"registeredWidgets": [ "ImageSuggestor"]
+ 		},
+ 		{
+	 		"id": "where",
+	 		"label": "Where",
+ 			"registeredTypes": [ "place" ],
+ 			"registeredWidgets": [ "ImageSuggestor"]
+ 		},
+ 		{
+	 		"id": "when",
+	 		"label": "When",
+ 			"registeredTypes": [ "event" ],
+ 			"registeredWidgets": [ "ImageSuggestor"]
+ 		}
+ 	]
+}
