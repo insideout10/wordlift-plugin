@@ -104,7 +104,7 @@ module.exports = function ( config ) {
 
         frameworks: [ 'jasmine' ],
 
-        browsers: [ 'Firefox' ],
+        browsers: [ 'Firefox', 'Chrome' ],
 
         phantomjsLauncher: {
             // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
