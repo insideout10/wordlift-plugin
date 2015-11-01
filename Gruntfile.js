@@ -226,11 +226,11 @@ module.exports = function ( grunt ) {
                 args: [ '-c', 'phpunit.xml' ]
             }
         },
+        /* Karma JS Unit Testing */
         karma: {
             unit: {
                 configFile: 'tests/js/config/karma.conf.js',
                 singleRun: true,
-                browsers: [ 'PhantomJS' ],
                 reporters: 'dots'
             }
         }

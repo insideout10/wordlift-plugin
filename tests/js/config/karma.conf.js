@@ -104,22 +104,22 @@ module.exports = function ( config ) {
 
         frameworks: [ 'jasmine' ],
 
-        browsers: [
-            'Chrome'
-//       ,'Firefox'
-//        ,'Safari'
-        ],
+        browsers: [ 'Firefox' ],
 
-//    logLevel : 'DEBUG',
+        phantomjsLauncher: {
+            // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+            exitOnResourceError: true
+        },
 
         plugins: [
-            'karma-junit-reporter',
             'karma-chrome-launcher',
+            'karma-coffee-preprocessor',
             'karma-firefox-launcher',
             'karma-safari-launcher',
-            'karma-jasmine',
             'karma-html2js-preprocessor',
-            'karma-coffee-preprocessor'
+            'karma-jasmine',
+            'karma-junit-reporter',
+            'karma-phantomjs-launcher'
         ],
 
         junitReporter: {
