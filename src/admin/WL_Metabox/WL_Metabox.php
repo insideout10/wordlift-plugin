@@ -222,8 +222,8 @@ class WL_Metabox {
 	public function enqueue_scripts_and_styles() {
 
 		// dateTimePicker
-		wp_enqueue_style( 'datetimepicker', plugin_dir_url( __FILE__ ) . 'admin/css/jquery.datetimepicker.css' );
-		wp_enqueue_script( 'datetimepicker', plugin_dir_url( __FILE__ ) . 'admin/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
+		wp_enqueue_style( 'datetimepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/css/jquery.datetimepicker.css' );
+		wp_enqueue_script( 'datetimepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
 
 		// Leaflet.
 		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );
