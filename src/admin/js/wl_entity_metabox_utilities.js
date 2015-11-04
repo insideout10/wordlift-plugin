@@ -138,11 +138,11 @@ jQuery(document).ready(function($){
             },
             
             // Callback that fires when a suggestion is approved.
-            select: function(s){
-
-                // Assign entity id to the hidden <input>
-                var chosenEntity = $(inputElement).val();
+            select: function(event, ui){
+                
+                var chosenEntity = ui.item.value;
                 var chosenEntityObj = latestResults[chosenEntity];
+                
                 $(hiddenInput).val( chosenEntityObj.id );
             }
         });
