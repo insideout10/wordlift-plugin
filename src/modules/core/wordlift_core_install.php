@@ -199,7 +199,7 @@ function wl_core_install_entity_type_data() {
                 WL_CUSTOM_FIELD_ADDRESS => array(
                     'predicate' => 'http://schema.org/address',
                     'type' => WL_DATA_TYPE_STRING,
-                    'export_type' => 'http://schema.org/PostalAddress',
+                    'export_type' => 'xsd:string',
                     'constraints' => ''
                 )
             ),

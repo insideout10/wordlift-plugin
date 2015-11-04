@@ -177,30 +177,34 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				// add the delete statement for later execution.
 				$delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
-
+                
+                wl_write_log($type);
+                
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
+                    
+                    if ( !is_null( $type ) && ( substr( $type, 0, 4 ) == 'http' ) ) {
+                        // Type is defined by a raw uri (es. http://schema.org/PostalAddress)
 
-					// Establish triple's <object> type
-					if ( is_null( $type ) ) {
-						// No type
-						$sparql .= '<' . wl_sparql_escape_uri( $value ) . '>';
-					} else {
-						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^';
-						if ( substr( $type, 0, 4 ) == 'http' ) {
-							// Type is defined by a raw uri (es. http://schema.org/PostalAddress)
-							$sparql .= '<' . wl_sparql_escape_uri( $type ) . '>';
-						} else {
-							// Type is defined in another way (es. xsd:double)
-							$sparql .= wordlift_esc_sparql( $type );
-						}
-					}
+                        // Extract uri if the value is numeric
+                        if(is_numeric( $value ) ){
+                            $value = wl_get_entity_uri( $value );
+                        }
+
+                        $sparql .= '<' . wl_sparql_escape_uri( $value ) . '>';
+                    } else {
+                        // Type is defined in another way (es. xsd:double)
+                        $sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
+                    }
 
 					$sparql .= " . \n";
 				}
 			}
 		}
 	}
+    
+    wl_write_log('piedo');
+    wl_write_log( $sparql );
 
 	// Get the entity types.
 	$type_uris = wl_get_entity_rdf_types( $entity_post->ID );
