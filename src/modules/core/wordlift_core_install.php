@@ -117,7 +117,8 @@ function wl_core_install_entity_type_data() {
                     'type' => WL_DATA_TYPE_URI,
                     'export_type' => 'http://schema.org/Person',
                     'constraints' => array(
-                        'uri_type' => 'Person'
+                        'uri_type' => 'Person',
+                        'cardinality' => INF
                     )
                 ),
             ),
