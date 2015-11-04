@@ -2,56 +2,57 @@
 
 function wordlift_geo_widget_shortcode( $atts, $content = null ) {
 
-    // Extract attributes and set default values.
-    $params = shortcode_atts( array(
-        'width'     => '100%',
-        'height'    => '300px',
-        'latitude'  => 0.0,
-        'longitude' => 0.0,
-        'zoom'      => 5
+	// Extract attributes and set default values.
+	$params = shortcode_atts( array(
+		'width'     => '100%',
+		'height'    => '300px',
+		'latitude'  => 0.0,
+		'longitude' => 0.0,
+		'zoom'      => 5
 
-    ), $atts );
+	), $atts );
 
-    // Add leaflet css and library.
-    wp_enqueue_style( 'leaflet_css', plugins_url( 'bower_components/leaflet/dist/leaflet.css', __FILE__ ) );
-    wp_enqueue_script( 'leaflet_js', plugins_url( 'bower_components/leaflet/dist/leaflet.js', __FILE__ ) );
+	// Add leaflet css and library.
+	wp_enqueue_style( 'leaflet_css', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );
+	wp_enqueue_script( 'leaflet_js', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.js' );
 
 	ob_start(); // Collect the buffer.
-    wordlift_geo_widget_html(
-        $params['width'],
-        $params['height'],
-        $params['latitude'],
-        $params['longitude'],
-        $params['zoom'],
-        $content
-    );
+	wordlift_geo_widget_html(
+		$params['width'],
+		$params['height'],
+		$params['latitude'],
+		$params['longitude'],
+		$params['zoom'],
+		$content
+	);
 
 	// Return the accumulated buffer.
 	return ob_get_clean();
 
 }
+
 add_shortcode( 'wl_geo', 'wordlift_geo_widget_shortcode' );
 
 function wl_geo_widget_layer_shortcode( $atts ) {
 
-    // Extract attributes and set default values.
-    $params = shortcode_atts( array(
-        'name'  => '',
-        'label' => ''
-    ), $atts );
+	// Extract attributes and set default values.
+	$params = shortcode_atts( array(
+		'name'  => '',
+		'label' => ''
+	), $atts );
 
-    // Return if a SPARQL Query name hasn't been provided.
-    if ( empty( $params['name'] ) ) {
-        return;
-    }
+	// Return if a SPARQL Query name hasn't been provided.
+	if ( empty( $params['name'] ) ) {
+		return;
+	}
 
-    // Set the layer label.
-    $label_j  = json_encode( empty( $params['label'] ) ? $params['name'] : $params['label'] );
+	// Set the layer label.
+	$label_j = json_encode( empty( $params['label'] ) ? $params['name'] : $params['label'] );
 
-    // Define the AJAX Url.
-    $ajax_url = admin_url( 'admin-ajax.php?action=wl_sparql&format=geojson&slug=' . urlencode( $params['name'] ) );
+	// Define the AJAX Url.
+	$ajax_url = admin_url( 'admin-ajax.php?action=wl_sparql&format=geojson&slug=' . urlencode( $params['name'] ) );
 
-    echo <<<EOF
+	echo <<<EOF
 
         $.ajax( '$ajax_url', {
             success: function( data ) {
@@ -76,6 +77,7 @@ function wl_geo_widget_layer_shortcode( $atts ) {
 EOF;
 
 }
+
 add_shortcode( 'wl_geo_layer', 'wl_geo_widget_layer_shortcode' );
 
 
@@ -101,15 +103,16 @@ function wl_geo_widget_marker_shortcode( $atts ) {
 EOF;
 
 }
+
 add_shortcode( 'wl_geo_marker', 'wl_geo_widget_marker_shortcode' );
 
 
 function wordlift_geo_widget_html( $width, $height, $latitude, $longitude, $zoom, $content ) {
 
-    // Create a unique Id for this widget.
-    $div_id   = uniqid( 'wl-geo-' );
+	// Create a unique Id for this widget.
+	$div_id = uniqid( 'wl-geo-' );
 
-    echo <<<EOF
+	echo <<<EOF
 <div id="$div_id" style="width: $width; height: $height;"></div>
 
 <script type="text/javascript">
@@ -134,10 +137,10 @@ function wordlift_geo_widget_html( $width, $height, $latitude, $longitude, $zoom
 
 EOF;
 
-    // Run inner shortcodes.
-    do_shortcode( $content );
+	// Run inner shortcodes.
+	do_shortcode( $content );
 
-    echo <<<EOF
+	echo <<<EOF
 
     } );
 </script>

@@ -1,0 +1,5 @@
+Andrea Volpini e Kim Renberg oggi ci parlano di WordPress, Linked Data e Intelligenza Artificiale per la promozione dei contenuti sul web.
+
+Alla luce del nuovo algoritmo di ricerca di Google (code-named Hummingbird) in che modo cambiano le regole della SEO?
+
+Il primo esempio è legato a Apache Marmotta, un software per la pubblicazione dei Linked Open Data.

@@ -26,9 +26,9 @@ function wordlift_timeline_widget_shortcode( $atts, $content = null ) {
 //	), $atts );
 
 	// Add TimelineJS css and library.
-	wp_enqueue_script( 'timeline_css', plugins_url( 'bower_components/TimelineJS.build/build/css/timeline.css', __FILE__ ) );
-	wp_enqueue_script( 'timeline_js', plugins_url( 'bower_components/TimelineJS.build/build/js/storyjs-embed.js', __FILE__ ), array( 'jquery' ) );
-	wp_enqueue_style( 'wordlift_timeline_widget_css', plugins_url( 'modules/timeline_widget/css/wordlift_timeline_widget.css', __FILE__ ) );
+	wp_enqueue_script( 'timeline', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/TimelineJS.build/build/css/timeline.css' );
+	wp_enqueue_script( 'timeline', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/TimelineJS.build/build/js/storyjs-embed.js', array( 'jquery' ) );
+	wp_enqueue_style( 'wordlift-timeline-widget', plugin_dir_url( __FILE__ ) . 'css/wordlift_timeline_widget.css' );
 
 	// Generate a unique ID for the element.
 	$element_id = uniqid( 'wl-timeline-' );
@@ -62,36 +62,35 @@ function wordlift_timeline_widget_html( $element_id, $url, $iframe_url, $width =
 	$language_j   = json_encode( $language );
 	$url_j        = json_encode( $url );
 
-?>
-		<div id="<?php echo $element_id_a; ?>"></div>
+	?>
+	<div id="<?php echo $element_id_a; ?>"></div>
 
-		<script type="text/javascript">
-			jQuery( function( $ ) {
+	<script type="text/javascript">
+		jQuery( function ( $ ) {
 
-				$.ajax( <?php echo( $url_j ); ?>, {
-					success: function( data, status, xhr ) {
+			$.ajax( <?php echo( $url_j ); ?>, {
+				success: function ( data, status, xhr ) {
 
-						$.each( data, function ( index, value ) {
-							value.text = '<iframe src="<?php echo esc_attr( $iframe_url ); ?>&url=' +
-								encodeURIComponent( value.url ) + '"></iframe>';
-						});
+					$.each( data, function ( index, value ) {
+						value.text = '<iframe src="<?php echo esc_attr( $iframe_url ); ?>&url=' +
+							encodeURIComponent( value.url ) + '"></iframe>';
+					} );
 
-						createStoryJS({
-		                    type:       'timeline',
-		                    width:      <?php echo( $width_j ); ?>,
-		                    height:     <?php echo( $height_j ); ?>,
-		                    source:     {
-										    "timeline":
-										    {
-										        "headline":"Timeline",
-										        "type":"default",
+					createStoryJS( {
+						type: 'timeline',
+						width:      <?php echo( $width_j ); ?>,
+						height:     <?php echo( $height_j ); ?>,
+						source: {
+							"timeline": {
+								"headline": "Timeline",
+								"type": "default",
 //										        "text":"<p>Intro body text goes here, some HTML is ok</p>",
 //										        "asset": {
 //										            "media":"http://yourdomain_or_socialmedialink_goes_here.jpg",
 //										            "credit":"Credit Name Goes Here",
 //										            "caption":"Caption text goes here"
 //										        },
-										        "date": data
+								"date": data
 //										        "era": [
 //										            {
 //										                "startDate":"2011,12,10",
@@ -102,17 +101,17 @@ function wordlift_timeline_widget_html( $element_id, $url, $iframe_url, $width =
 //										            }
 //
 //										        ]
-										    }
-										},
-		                    embed_id:   <?php echo( $element_id_j ); ?>,
-		                    lang:       <?php echo( $language_j ); ?>
-		                });
+							}
+						},
+						embed_id:   <?php echo( $element_id_j ); ?>,
+						lang:       <?php echo( $language_j ); ?>
+					} );
 
-                    }
-				} );
-
+				}
 			} );
-		</script>
-<?php
+
+		} );
+	</script>
+	<?php
 
 }
