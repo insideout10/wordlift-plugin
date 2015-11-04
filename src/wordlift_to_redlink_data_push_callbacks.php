@@ -178,8 +178,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 				// add the delete statement for later execution.
 				$delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
                 
-                wl_write_log($type);
-                
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
                     
@@ -202,9 +200,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 			}
 		}
 	}
-    
-    wl_write_log('piedo');
-    wl_write_log( $sparql );
 
 	// Get the entity types.
 	$type_uris = wl_get_entity_rdf_types( $entity_post->ID );
