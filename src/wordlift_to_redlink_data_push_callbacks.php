@@ -212,7 +212,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// get related entities.
-	$related_entities_ids = wl_core_get_related_entitY_ids( $entity_post->ID );
+	$related_entities_ids = wl_core_get_related_entity_ids( $entity_post->ID );
 
 	if ( is_array( $related_entities_ids ) ) {
 		foreach ( $related_entities_ids as $entity_post_id ) {
