@@ -1,0 +1,39 @@
+{
+	"entities":[
+		{
+			"css_class": "wl-thing",
+			"label": "Label A",
+			"type": "entity",
+			"uri": "http://uriA",
+			"url": "http://urlA"
+		},
+		{
+			"css_class": "wl-thing",
+			"label": "Label B",
+			"type": "entity",
+			"uri": "http://uriB",
+			"url": "http://urlB"		
+		},
+		{
+			"css_class": "wl-person",
+			"label": "Label C",
+			"type": "entity",
+			"uri": "http://uriC",
+			"url": "http://urlC"		
+		}
+	],
+	"relations":[
+		{
+			"o": "http://uriA",
+			"s": "http://uriB"
+		},
+		{
+			"o": "http://uriB",
+			"s": "http://uriC"
+		},
+		{
+			"o": "http://uriC",
+			"s": "http://uriA"
+		}
+	]
+}

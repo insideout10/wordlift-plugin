@@ -1,0 +1,2921 @@
+{
+    "@context": {
+        "dbp-ont": "http://dbpedia.org/ontology/",
+        "dbp-ont:thumbnail": {
+            "@type": "@id"
+        },
+        "dc": "http://purl.org/dc/terms/",
+        "dc:created": {
+            "@type": "xsd:dateTime"
+        },
+        "dc:creator": {
+            "@type": "xsd:string"
+        },
+        "dc:relation": {
+            "@type": "@id"
+        },
+        "dc:subject": {
+            "@type": "@id"
+        },
+        "dc:type": {
+            "@type": "@id"
+        },
+        "enhancer": "http://fise.iks-project.eu/ontology/",
+        "enhancer:confidence": {
+            "@type": "xsd:double"
+        },
+        "enhancer:end": {
+            "@type": "xsd:int"
+        },
+        "enhancer:entity-reference": {
+            "@type": "@id"
+        },
+        "enhancer:entity-type": {
+            "@type": "@id"
+        },
+        "enhancer:extracted-from": {
+            "@type": "@id"
+        },
+        "enhancer:start": {
+            "@type": "xsd:int"
+        },
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "foaf:depiction": {
+            "@type": "@id"
+        },
+        "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+        "geo:lat": {
+            "@type": "xsd:float"
+        },
+        "geo:long": {
+            "@type": "xsd:float"
+        },
+        "http://rdf.freebase.com/ns/common.topic.image": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_for": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_types": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.official_website": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/organization.organization.date_founded": {
+            "@type": "xsd:date"
+        },
+        "http://rdf.freebase.com/ns/organization.organization.parent": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.date_of_birth": {
+            "@type": "xsd:date"
+        },
+        "http://rdf.freebase.com/ns/people.person.gender": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.nationality": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.place_of_birth": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.profession": {
+            "@type": "@id"
+        },
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "owl:sameAs": {
+            "@type": "@id"
+        },
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "schema": "http://schema.org/",
+        "schema:url": {
+            "@type": "@id"
+        },
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/Apache_Solr",
+            "@type": "schema:Thing",
+            "owl:sameAs": "http://dbpedia.org/resource/Apache_Solr",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            },
+            "schema:url": "http://wordpress380.localhost/?post_type=entity&p=641"
+        },
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/Apache_Stanbol",
+            "@type": "schema:Thing",
+            "owl:sameAs": "http://dbpedia.org/resource/Apache_Stanbol",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Apache Stanbol"
+            },
+            "schema:url": "http://wordpress380.localhost/?post_type=entity&p=640"
+        },
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/RedLink_GmbH",
+            "@type": "schema:Thing",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0wqhwn_",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "RedLink GmbH"
+            },
+            "schema:url": "http://wordpress380.localhost/?post_type=entity&p=658"
+        },
+        {
+            "@id": "http://data.redlink.io/353/wordlift/entity/WordPress",
+            "@type": "schema:Thing",
+            "owl:sameAs": "http://dbpedia.org/resource/WordPress",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "schema:url": "http://wordpress380.localhost/?post_type=entity&p=639"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Apache_Solr",
+            "@type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Code106355894",
+                "http://dbpedia.org/class/yago/CodingSystem106353757",
+                "http://dbpedia.org/class/yago/Communication100033020",
+                "http://dbpedia.org/class/yago/Software106566077",
+                "http://dbpedia.org/class/yago/Writing106359877",
+                "http://dbpedia.org/class/yago/WrittenCommunication106349220",
+                "owl:Thing",
+                "schema:CreativeWork"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Solr.png/200px-Solr.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Apache_Software_Foundation",
+                "http://dbpedia.org/resource/Category:Free_search_engine_software",
+                "http://dbpedia.org/resource/Category:Free_software",
+                "http://dbpedia.org/resource/Category:Free_software_programmed_in_Java",
+                "http://dbpedia.org/resource/Category:Internet_search_engines",
+                "http://dbpedia.org/resource/Category:Java_programming_language",
+                "http://dbpedia.org/resource/Category:Search_engine_software",
+                "http://dbpedia.org/resource/Category:Searching"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/3/3e/Solr.png",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02qd9s1",
+                "http://yago-knowledge.org/resource/Apache_Solr"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Solr is an open source enterprise search platform from the Apache Lucene project. Its major features include full-text search, hit highlighting, faceted search, dynamic clustering, database integration, and rich document (e.g. , Word, PDF) handling. Providing distributed search and index replication, Solr is highly scalable. Solr is the most popular enterprise search engine. Solr 4 adds NoSQL features."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Apache_Stanbol",
+            "@type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "owl:Thing",
+                "schema:CreativeWork"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Apache_Stanbol_-_logo.png/200px-Apache_Stanbol_-_logo.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Apache_Software_Foundation",
+                "http://dbpedia.org/resource/Category:Cross-platform_software",
+                "http://dbpedia.org/resource/Category:Free_software_programmed_in_Java",
+                "http://dbpedia.org/resource/Category:Java_programming_language"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/9/9d/Apache_Stanbol_-_logo.png",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0pl0b_k",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Apache Stanbol is an open source modular software stack and reusable set of components for semantic content management. Apache Stanbol components are meant to be accessed over RESTful interfaces to provide semantic services for content management. Thus, one application is to extend traditional content management systems with (internal or external) semantic services. Additionally, Apache Stanbol lets you create new types of content management systems with semantics at their core."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Apache Stanbol"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/April",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/CalendarMonth115209413",
+                "http://dbpedia.org/class/yago/FundamentalQuantity113575869",
+                "http://dbpedia.org/class/yago/Measure100033615",
+                "http://dbpedia.org/class/yago/Months",
+                "http://dbpedia.org/class/yago/TimePeriod115113229"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Les_Très_Riches_Heures_du_duc_de_Berry_avril.jpg/200px-Les_Très_Riches_Heures_du_duc_de_Berry_avril.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:April",
+                "http://dbpedia.org/resource/Category:Category:June_observances",
+                "http://dbpedia.org/resource/Category:Gregorian_calendar",
+                "http://dbpedia.org/resource/Category:Months"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/c/c6/Les_Très_Riches_Heures_du_duc_de_Berry_avril.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.0lkm",
+                "http://yago-knowledge.org/resource/April"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "April is the fourth month of the year in the Julian and Gregorian calendars, and one of four months with a length of 30 days. April is commonly associated with the season of spring in the Northern hemisphere and autumn in the Southern hemisphere, where it is the seasonal equivalent to October in the Northern hemisphere and vice versa. April starts on the same day of the week as July in all years, and January in leap years. April ends on the same day of the week as December every year."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "April"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/April,_april",
+            "@type": [
+                "dbp-ont:EurovisionSongContestEntry",
+                "dbp-ont:MusicalWork",
+                "dbp-ont:Song",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/AuditoryCommunication107109019",
+                "http://dbpedia.org/class/yago/Communication100033020",
+                "http://dbpedia.org/class/yago/EurovisionSongsOf1959",
+                "http://dbpedia.org/class/yago/EurovisionSongsOfSweden",
+                "http://dbpedia.org/class/yago/MelodifestivalenSongs",
+                "http://dbpedia.org/class/yago/Music107020895",
+                "http://dbpedia.org/class/yago/MusicalComposition107037465",
+                "http://dbpedia.org/class/yago/Song107048000",
+                "owl:Thing",
+                "schema:CreativeWork",
+                "schema:MusicRecording"
+            ],
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:1961_singles",
+                "http://dbpedia.org/resource/Category:1961_songs",
+                "http://dbpedia.org/resource/Category:Eurovision_songs",
+                "http://dbpedia.org/resource/Category:Eurovision_songs_of_1959",
+                "http://dbpedia.org/resource/Category:Eurovision_songs_of_1961",
+                "http://dbpedia.org/resource/Category:Eurovision_songs_of_Sweden",
+                "http://dbpedia.org/resource/Category:Melodifestivalen_songs",
+                "http://dbpedia.org/resource/Category:Pop_songs",
+                "http://dbpedia.org/resource/Category:Swedish-language_songs",
+                "http://dbpedia.org/resource/Category:Swedish_music",
+                "http://dbpedia.org/resource/Category:Swedish_songs"
+            ],
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.05zwpr4",
+                "http://yago-knowledge.org/resource/April,_april"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "\"April, april\" is a song by Swedish singer Lill-Babs, that represented Sweden at the Eurovision Song Contest 1961, performed in Swedish. The song was the winner of Melodifestivalen 1961, where it was performed by both Siw Malmkvist and Gunnar Wiklund. Sveriges Radio however decided that Lill-Babs would perform the song at the Eurovision Song Contest for Sweden."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "April, april"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/April_(VAST_album)",
+            "@type": [
+                "dbp-ont:Album",
+                "dbp-ont:MusicalWork",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/2006Albums",
+                "http://dbpedia.org/class/yago/2007Albums",
+                "http://dbpedia.org/class/yago/Album106591815",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/Instrumentality103575240",
+                "http://dbpedia.org/class/yago/Medium106254669",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/VASTAlbums",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "owl:Thing",
+                "schema:CreativeWork",
+                "schema:MusicAlbum"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/2007_-_April_(Retail_Version)_Large.jpg/200px-2007_-_April_(Retail_Version)_Large.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:2006_albums",
+                "http://dbpedia.org/resource/Category:VAST_albums"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/a/a2/2007_-_April_(Retail_Version)_Large.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.03fzs2p",
+                "http://yago-knowledge.org/resource/April_(VAST_album)"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "April is the fifth album by the band VAST. The band had recorded two different versions of the album. The Online Version was recorded all in one take with little mastering, which was then released in 2006 as an online download on Crosby's independent label 2blossoms. This version is not considered to be the \"finished\" version, according to Jon Crosby."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "April (VAST album)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Chief_executive_officer",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Business_and_financial_operations_occupations",
+                "http://dbpedia.org/resource/Category:Chief_executive_officers",
+                "http://dbpedia.org/resource/Category:Corporate_executives",
+                "http://dbpedia.org/resource/Category:Corporate_governance",
+                "http://dbpedia.org/resource/Category:Corporations_law",
+                "http://dbpedia.org/resource/Category:Management",
+                "http://dbpedia.org/resource/Category:Management_occupations",
+                "http://dbpedia.org/resource/Category:Occupations",
+                "http://dbpedia.org/resource/Category:Titles"
+            ],
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0dq_5",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "A Chief Executive Officer (CEO) is the highest-ranking corporate officer or administrator in charge of total management of an organization. An individual appointed as a CEO of a corporation, company, organization, or agency typically reports to the board of directors. In British English, terms often used as synonyms for CEO are managing director (MD) and chief executive (CE). In American English, the title executive director (ED) is sometimes used for non-profit organizations."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Chief executive officer"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Investment",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Accountancy",
+                "http://dbpedia.org/resource/Category:Business_economics",
+                "http://dbpedia.org/resource/Category:Capital",
+                "http://dbpedia.org/resource/Category:Capitalism",
+                "http://dbpedia.org/resource/Category:Commerce",
+                "http://dbpedia.org/resource/Category:Corporate_finance",
+                "http://dbpedia.org/resource/Category:Economics",
+                "http://dbpedia.org/resource/Category:Economics_terminology",
+                "http://dbpedia.org/resource/Category:Entrepreneurship",
+                "http://dbpedia.org/resource/Category:Finance",
+                "http://dbpedia.org/resource/Category:Financial_economics",
+                "http://dbpedia.org/resource/Category:Financial_markets",
+                "http://dbpedia.org/resource/Category:Investment",
+                "http://dbpedia.org/resource/Category:Macroeconomics",
+                "http://dbpedia.org/resource/Category:Management_accounting",
+                "http://dbpedia.org/resource/Category:National_accounts",
+                "http://dbpedia.org/resource/Category:Welfare"
+            ],
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0g_fl",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Investment has different meanings in finance and economics. In economics, investment is related to saving and deferring consumption. Investment is involved in many areas of the economy, such as business management and finance whether for households, firms, or governments. In finance, investment is putting money into something with the expectation of gain, usually over a longer term. This may or may not be backed by research and analysis."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Investment"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/March_5",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Days",
+                "http://dbpedia.org/resource/Category:Days_of_the_year",
+                "http://dbpedia.org/resource/Category:March"
+            ],
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0535b",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": ""
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "March 5"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/March_5_(Eastern_Orthodox_liturgics)",
+            "dc:subject": "http://dbpedia.org/resource/Category:Eastern_Orthodox_liturgical_days",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0bc0y7",
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "March 4 - Eastern Orthodox Church calendar - March 6"
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "March 5 (Eastern Orthodox liturgics)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Platform_as_a_service",
+            "@type": [
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/CloudPlatforms",
+                "http://dbpedia.org/class/yago/HorizontalSurface103536348",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/Platform103961939",
+                "http://dbpedia.org/class/yago/Surface104362025",
+                "http://dbpedia.org/class/yago/Whole100003553"
+            ],
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Cloud_computing",
+                "http://dbpedia.org/resource/Category:Cloud_platforms",
+                "http://dbpedia.org/resource/Category:Computer_networks",
+                "http://dbpedia.org/resource/Category:Computing",
+                "http://dbpedia.org/resource/Category:Distribution,_retailing,_and_wholesaling",
+                "http://dbpedia.org/resource/Category:History_of_computing",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Software",
+                "http://dbpedia.org/resource/Category:Software_architecture",
+                "http://dbpedia.org/resource/Category:Systems"
+            ],
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.0414krx",
+                "http://yago-knowledge.org/resource/Platform_as_a_service"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Platform as a service (PaaS) is a category of cloud computing services that provide a computing platform and a solution stack as a service. Along with software as a service (SaaS) and infrastructure as a service (IaaS), it is a service model of cloud computing. In this model, the consumer creates the software using tools and/or libraries from the provider. The consumer also controls software deployment and configuration settings."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Platform as a service"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Siegfried_Reich",
+            "@type": [
+                "dbp-ont:Agent",
+                "dbp-ont:Athlete",
+                "dbp-ont:Person",
+                "dbp-ont:SoccerPlayer",
+                "foaf:Person",
+                "http://dbpedia.org/class/yago/ArminiaBielefeldPlayers",
+                "http://dbpedia.org/class/yago/Athlete109820263",
+                "http://dbpedia.org/class/yago/BorussiaDortmundPlayers",
+                "http://dbpedia.org/class/yago/BorussiaMönchengladbachPlayers",
+                "http://dbpedia.org/class/yago/CausalAgent100007347",
+                "http://dbpedia.org/class/yago/Contestant109613191",
+                "http://dbpedia.org/class/yago/FootballPlayer110101634",
+                "http://dbpedia.org/class/yago/Fußball-BundesligaPlayers",
+                "http://dbpedia.org/class/yago/GermanFootballers",
+                "http://dbpedia.org/class/yago/Hannover96Players",
+                "http://dbpedia.org/class/yago/KFCUerdingen05Players",
+                "http://dbpedia.org/class/yago/LivingPeople",
+                "http://dbpedia.org/class/yago/LivingThing100004258",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/Organism100004475",
+                "http://dbpedia.org/class/yago/Person100007846",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/Player110439851",
+                "http://dbpedia.org/class/yago/VfLWolfsburgPlayers",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "http://dbpedia.org/class/yago/YagoLegalActor",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "owl:Thing",
+                "schema:Person"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Siegfried_Reich_by_Stuart_Mentiply.jpg/200px-Siegfried_Reich_by_Stuart_Mentiply.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:1959_births",
+                "http://dbpedia.org/resource/Category:2._Fußball-Bundesliga_players",
+                "http://dbpedia.org/resource/Category:Arminia_Bielefeld_players",
+                "http://dbpedia.org/resource/Category:Borussia_Dortmund_players",
+                "http://dbpedia.org/resource/Category:Borussia_Mönchengladbach_players",
+                "http://dbpedia.org/resource/Category:Fußball-Bundesliga_players",
+                "http://dbpedia.org/resource/Category:German_footballers",
+                "http://dbpedia.org/resource/Category:Hannover_96_players",
+                "http://dbpedia.org/resource/Category:KFC_Uerdingen_05_players",
+                "http://dbpedia.org/resource/Category:Living_people",
+                "http://dbpedia.org/resource/Category:Men",
+                "http://dbpedia.org/resource/Category:People_from_Lower_Saxony",
+                "http://dbpedia.org/resource/Category:People_from_Wolfsburg",
+                "http://dbpedia.org/resource/Category:VfL_Wolfsburg_players"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/3/33/Siegfried_Reich_by_Stuart_Mentiply.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.05b10s9",
+                "http://yago-knowledge.org/resource/Siegfried_Reich"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Siegfried Reich (born 29 September 1959 in Fallersleben) is a retired German football player. The prolific goalscorer ended his career one year before Wolfsburg's first top flight promotion in 1997."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Text_annotation",
+            "@type": [
+                "http://dbpedia.org/class/yago/Assistant109815790",
+                "http://dbpedia.org/class/yago/Attendant109821831",
+                "http://dbpedia.org/class/yago/CausalAgent100007347",
+                "http://dbpedia.org/class/yago/Escort110063461",
+                "http://dbpedia.org/class/yago/LivingThing100004258",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/Organism100004475",
+                "http://dbpedia.org/class/yago/Person100007846",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/StyleGuides",
+                "http://dbpedia.org/class/yago/Usher110741821",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "http://dbpedia.org/class/yago/Worker109632518",
+                "http://dbpedia.org/class/yago/YagoLegalActor",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Talmud.jpg/200px-Talmud.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Literary_theory",
+                "http://dbpedia.org/resource/Category:Style_guides"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/2/28/Talmud.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.0bmj429",
+                "http://yago-knowledge.org/resource/Text_annotation"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "Text annotation is the practice and the result of adding a note to a text, which may include highlights or underlining, comments, footnotes, tags, and links. Text annotations can include notes written for a reader's private purposes, as well as shared annotations written for the purposes of collaborative writing and editing, commentary, or social reading and sharing."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Text annotation"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/The_World_(archipelago)",
+            "@type": [
+                "dbp-ont:Island",
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "http://dbpedia.org/class/yago/Archipelago109203827",
+                "http://dbpedia.org/class/yago/ArchipelagoesOfTheUnitedArabEmirates",
+                "http://dbpedia.org/class/yago/ArtificialIslands",
+                "http://dbpedia.org/class/yago/Island109316454",
+                "http://dbpedia.org/class/yago/IslandsOfDubai",
+                "http://dbpedia.org/class/yago/Land109334396",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/PrivateIslands",
+                "http://dbpedia.org/class/yago/YagoGeoEntity",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+                "http://www.opengis.net/gml/_Feature",
+                "owl:Thing",
+                "schema:Place"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Dubaiworld.jpg/200px-Dubaiworld.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Archipelagoes",
+                "http://dbpedia.org/resource/Category:Archipelagoes_of_the_Indian_Ocean",
+                "http://dbpedia.org/resource/Category:Archipelagoes_of_the_United_Arab_Emirates",
+                "http://dbpedia.org/resource/Category:Artificial_islands",
+                "http://dbpedia.org/resource/Category:Buildings_and_structures_in_Dubai",
+                "http://dbpedia.org/resource/Category:Buildings_and_structures_in_the_United_Arab_Emirates",
+                "http://dbpedia.org/resource/Category:Dubai",
+                "http://dbpedia.org/resource/Category:Geography_of_Dubai",
+                "http://dbpedia.org/resource/Category:Geography_of_the_United_Arab_Emirates",
+                "http://dbpedia.org/resource/Category:Islands_of_Dubai",
+                "http://dbpedia.org/resource/Category:Islands_of_the_United_Arab_Emirates",
+                "http://dbpedia.org/resource/Category:Land_reclamation",
+                "http://dbpedia.org/resource/Category:Landforms_of_the_United_Arab_Emirates",
+                "http://dbpedia.org/resource/Category:Nakheel_Properties",
+                "http://dbpedia.org/resource/Category:Private_islands",
+                "http://dbpedia.org/resource/Category:Proposed_buildings_and_structures_in_Dubai",
+                "http://dbpedia.org/resource/Category:World_maps"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/1/16/Dubaiworld.jpg",
+            "geo:lat": 25.216667,
+            "geo:long": 55.166668,
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.04q5nb",
+                "http://sws.geonames.org/8469718/",
+                "http://yago-knowledge.org/resource/The_World_(archipelago)"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "The World or World Islands is an artificial archipelago of various small islands constructed in the rough shape of a world map, located 4.0 kilometres off the coast of Dubai, United Arab Emirates. The World islands are composed mainly of sand dredged from Dubai's shallow coastal waters, and are one of several artificial island developments in Dubai. The World's developer is Nakheel Properties, and the project was originally conceived by Sheikh Mohammed bin Rashid Al Maktoum, the ruler of Dubai."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "The World (archipelago)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/The_World_(radio_program)",
+            "@type": [
+                "dbp-ont:RadioProgram",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/AmericanNewsRadioPrograms",
+                "http://dbpedia.org/class/yago/CBCRadioOnePrograms",
+                "http://dbpedia.org/class/yago/Cognition100023271",
+                "http://dbpedia.org/class/yago/Content105809192",
+                "http://dbpedia.org/class/yago/Idea105833840",
+                "http://dbpedia.org/class/yago/Plan105898568",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/PublicRadioInternationalPrograms",
+                "owl:Thing",
+                "schema:CreativeWork"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/The_World_Logo.jpg/200px-The_World_Logo.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Alfred_I._duPont–Columbia_University_Award_recipients",
+                "http://dbpedia.org/resource/Category:American_news_radio_programs",
+                "http://dbpedia.org/resource/Category:BBC_World_Service_programmes",
+                "http://dbpedia.org/resource/Category:CBC_Radio_One_programs",
+                "http://dbpedia.org/resource/Category:Public_Radio_International_programs"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/c/c0/The_World_Logo.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.068xhb",
+                "http://yago-knowledge.org/resource/The_World_(radio_program)"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "PRI's The World is a global news radio, audio and multi-platform program created by Public Radio International based on the program's congruence with PRI's mission, and in order to fulfill the critical need for more original global news created for and provided to Americans. This was partly a response to declining investments by commercial media in international news."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "The World (radio program)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/WordPress",
+            "@type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Article100022903",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/ContentManagementSystems",
+                "http://dbpedia.org/class/yago/Cutlery103153375",
+                "http://dbpedia.org/class/yago/Fork103383948",
+                "http://dbpedia.org/class/yago/FreeContentManagementSystems",
+                "http://dbpedia.org/class/yago/Instrumentality103575240",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/SoftwareForks",
+                "http://dbpedia.org/class/yago/System104377057",
+                "http://dbpedia.org/class/yago/Tableware104381994",
+                "http://dbpedia.org/class/yago/Ware104550840",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "owl:Thing",
+                "schema:CreativeWork"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/2/20/WordPress_logo.svg/200px-WordPress_logo.svg.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:2003_software",
+                "http://dbpedia.org/resource/Category:Blog_software",
+                "http://dbpedia.org/resource/Category:Blogs",
+                "http://dbpedia.org/resource/Category:Computer_science",
+                "http://dbpedia.org/resource/Category:Content_management_systems",
+                "http://dbpedia.org/resource/Category:Free_content_management_systems",
+                "http://dbpedia.org/resource/Category:Free_software",
+                "http://dbpedia.org/resource/Category:Free_software_programmed_in_PHP",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_suites",
+                "http://dbpedia.org/resource/Category:Linux_software",
+                "http://dbpedia.org/resource/Category:PHP",
+                "http://dbpedia.org/resource/Category:PHP_programming_language",
+                "http://dbpedia.org/resource/Category:Software",
+                "http://dbpedia.org/resource/Category:Software_forks",
+                "http://dbpedia.org/resource/Category:Template_engines",
+                "http://dbpedia.org/resource/Category:Web_2.0",
+                "http://dbpedia.org/resource/Category:Web_applications",
+                "http://dbpedia.org/resource/Category:Web_development",
+                "http://dbpedia.org/resource/Category:Web_development_software",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:Website_management",
+                "http://dbpedia.org/resource/Category:WordPress",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/2/20/WordPress_logo.svg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02vtpl",
+                "http://yago-knowledge.org/resource/WordPress"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "WordPress is a free and open source blogging tool and a content management system (CMS) based on PHP and MySQL. It has many features including a plug-in architecture and a template system. WordPress is used by over 14.7% of Alexa Internet's \"top 1 million\" websites and as of August 2011 manages 22% of all new websites. WordPress is currently the most popular blogging system in use on the Web, powering over 60 million websites worldwide."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "WordPress"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/World",
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/9/97/The_Earth_seen_from_Apollo_17.jpg/200px-The_Earth_seen_from_Apollo_17.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Astronomy",
+                "http://dbpedia.org/resource/Category:Continents",
+                "http://dbpedia.org/resource/Category:Culture",
+                "http://dbpedia.org/resource/Category:Earth",
+                "http://dbpedia.org/resource/Category:Ethnology",
+                "http://dbpedia.org/resource/Category:Geography",
+                "http://dbpedia.org/resource/Category:Humans",
+                "http://dbpedia.org/resource/Category:Metaphysics",
+                "http://dbpedia.org/resource/Category:Natural_philosophy",
+                "http://dbpedia.org/resource/Category:Religion",
+                "http://dbpedia.org/resource/Category:Universe",
+                "http://dbpedia.org/resource/Category:World"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.09nm_",
+                "http://www4.wiwiss.fu-berlin.de/factbook/resource/World"
+            ],
+            "rdfs:comment": {
+                "@language": "en",
+                "@value": "World is a common name for the whole of human civilization, specifically human experience, history, or the human condition in general, worldwide, i.e. anywhere on Earth. In a philosophical context it may refer to: the whole of the physical Universe, or an ontological world. In a theological context, world usually refers to the material or the profane sphere, as opposed to the celestial, spiritual, transcendent or sacred."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "World"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.01pvmnm",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "Neil Innes & The World"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Neil Innes (The World)"
+                },
+                {
+                    "@language": "en",
+                    "@value": "World, The"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12582g6_c",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpv1m",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "The World"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.01s2tcp",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12553cmvr",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02nrqx2",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "April"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02j71",
+            "@type": [
+                "http://rdf.freebase.com/ns/astronomy.astronomical_discovery",
+                "http://rdf.freebase.com/ns/astronomy.celestial_object",
+                "http://rdf.freebase.com/ns/astronomy.celestial_object_with_coordinate_system",
+                "http://rdf.freebase.com/ns/astronomy.orbital_relationship",
+                "http://rdf.freebase.com/ns/astronomy.planet",
+                "http://rdf.freebase.com/ns/astronomy.star_system_body",
+                "http://rdf.freebase.com/ns/base.aareas.schema.administrative_area",
+                "http://rdf.freebase.com/ns/base.exoplanetology.exoplanet",
+                "http://rdf.freebase.com/ns/base.exoplanetology.topic",
+                "http://rdf.freebase.com/ns/base.litcentral.focal_location",
+                "http://rdf.freebase.com/ns/base.litcentral.topic",
+                "http://rdf.freebase.com/ns/base.locations.planets",
+                "http://rdf.freebase.com/ns/base.locations.topic",
+                "http://rdf.freebase.com/ns/base.masterthesis.topic",
+                "http://rdf.freebase.com/ns/base.newsevents.photographed_event",
+                "http://rdf.freebase.com/ns/base.newsevents.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.satelites.natural_satellite",
+                "http://rdf.freebase.com/ns/base.satelites.orbited_body",
+                "http://rdf.freebase.com/ns/base.satelites.topic",
+                "http://rdf.freebase.com/ns/base.schemastaging.celestial_object_extra",
+                "http://rdf.freebase.com/ns/base.schemastaging.star_system_body_extra",
+                "http://rdf.freebase.com/ns/base.schemastaging.topic",
+                "http://rdf.freebase.com/ns/base.sharing.sharing_location",
+                "http://rdf.freebase.com/ns/base.sharing.topic",
+                "http://rdf.freebase.com/ns/base.skosbase.topic",
+                "http://rdf.freebase.com/ns/base.skosbase.vocabulary_equivalent_topic",
+                "http://rdf.freebase.com/ns/base.tagasauris.organic_object",
+                "http://rdf.freebase.com/ns/base.tagit.organic_thing",
+                "http://rdf.freebase.com/ns/base.thesolarsystem.topic",
+                "http://rdf.freebase.com/ns/base.type_ontology.abstract",
+                "http://rdf.freebase.com/ns/base.type_ontology.inanimate",
+                "http://rdf.freebase.com/ns/base.uncommon.topic",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_setting",
+                "http://rdf.freebase.com/ns/location.location",
+                "http://rdf.freebase.com/ns/location.statistical_region",
+                "http://rdf.freebase.com/ns/m.06vzyr0",
+                "http://rdf.freebase.com/ns/m.0cgyc3f",
+                "http://rdf.freebase.com/ns/media_common.quotation_subject",
+                "http://rdf.freebase.com/ns/organization.organization_scope",
+                "http://rdf.freebase.com/ns/tv.tv_subject",
+                "http://rdf.freebase.com/ns/user.stu.default_domain.planet",
+                "http://rdf.freebase.com/ns/user.tsegaran.random.taxonomy_subject"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "Gaia"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Planet Earth"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Tellus"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Terra"
+                },
+                {
+                    "@language": "en",
+                    "@value": "The Blue Planet"
+                },
+                {
+                    "@language": "en",
+                    "@value": "The Earth"
+                },
+                {
+                    "@language": "en",
+                    "@value": "The World"
+                },
+                {
+                    "@language": "en",
+                    "@value": "globe"
+                },
+                {
+                    "@language": "en",
+                    "@value": "the Globe"
+                },
+                {
+                    "@language": "en",
+                    "@value": "world"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Γη"
+                },
+                {
+                    "@language": "en",
+                    "@value": "ארץ"
+                },
+                {
+                    "@language": "en",
+                    "@value": "כדור הארץ"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Earth is the third planet from the Sun, and the densest and fifth-largest of the eight planets in the Solar System. It is also the largest of the Solar System's four terrestrial planets. It is sometimes referred to as the world or the Blue Planet.\r\nEarth formed approximately 4.54 billion years ago, and life appeared on its surface within its first billion years. Earth's biosphere then significantly altered the atmospheric and other basic physical conditions, which enabled the proliferation of organisms as well as the formation of the ozone layer, which together with Earth's magnetic field blocked harmful solar radiation, and permitted formerly ocean-confined life to move safely to land. The physical properties of the Earth, as well as its geological history and orbit, have allowed life to persist. Estimates on how much longer the planet will be able to continue to support life range from 500 million years, to as long as 2.3 billion years.\r\nEarth's lithosphere is divided into several rigid segments, or tectonic plates, that migrate across the surface over periods of many millions of years. About 71% of the surface is covered by salt water oceans, with the remainder consisting of continents and islands which together have many lakes and other sources of water that contribute to the hydrosphere. Earth's poles are mostly covered with ice that is the solid ice of the Antarctic ice sheet and the sea ice that is the polar ice packs. The planet's interior remains active, with a solid iron inner core, a liquid outer core that generates the magnetic field, and a thick layer of relatively solid mantle."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.02bcrr1",
+                "http://rdf.freebase.com/ns/m.03stv48"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125773mnn",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.021ynn2",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Earth"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02qd9s1",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Solr is an open source enterprise search platform from the Apache Lucene project. Its major features include full-text search, hit highlighting, faceted search, dynamic clustering, database integration, and rich document handling. Providing distributed search and index replication, Solr is highly scalable. Solr is the most popular enterprise search engine. Solr 4 adds NoSQL features.\r\nSolr is written in Java and runs as a standalone full-text search server within a servlet container such as Apache Tomcat or Jetty. Solr uses the Lucene Java search library at its core for full-text indexing and search, and has REST-like HTTP/XML and JSON APIs that make it usable from most popular programming languages. Solr's powerful external configuration allows it to be tailored to many types of application without Java coding, and it has a plugin architecture to support more advanced customization.\r\nApache Lucene and Apache Solr are both produced by the same Apache Software Foundation development team since the two projects were merged in 2010. It is common to refer to the technology or products as Lucene/Solr or Solr/Lucene."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0hpr4jg",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://lucene.apache.org/solr",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02tcn5",
+            "@type": [
+                "http://rdf.freebase.com/ns/award.award_winner",
+                "http://rdf.freebase.com/ns/base.newyorkcitynewspapers.topic",
+                "http://rdf.freebase.com/ns/book.newspaper",
+                "http://rdf.freebase.com/ns/book.periodical",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "The World"
+                },
+                {
+                    "@language": "en",
+                    "@value": "World"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "The New York World was a newspaper published in New York City from 1860 until 1931. The paper played a major role in the history of American newspapers. It was a leading national voice of the Democratic Party. From 1883 to 1911 under publisher Joseph Pulitzer, it became a pioneer in Yellow Journalism, capturing readers' attention and pushing its daily circulation to the one-million mark."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.02d1zlh",
+                "http://rdf.freebase.com/ns/m.03t4p5g"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1259dwd8x",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02k9yd8",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "New York World"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02vtpl",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_applications",
+                "http://rdf.freebase.com/ns/base.services.web_development_platform",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.api"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "WordPress is a free and open source blogging tool and a content-management system based on PHP and MySQL, which runs on a web hosting service. Features include a plug-in architecture and a template system. WordPress is used by more than 18.9% of the top 10 million websites as of August 2013. WordPress is the most popular blogging system in use on the Web, at more than 60 million websites.\r\nIt was first released on May 27, 2003, by its founders, Matt Mullenweg and Mike Little, as a fork of b2/cafelog. As of September 2013, version 3.6 had been downloaded more than 6 million times."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258246cd",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrvrv",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.wordpress.org/",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "WordPress"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.03ws66t",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0414krx",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.socanddatamanagement.concept",
+                "http://rdf.freebase.com/ns/base.socanddatamanagement.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software_genre"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Platform as a service is a category of cloud computing services that provides a computing platform and a solution stack as a service. Along with software as a service and infrastructure as a service, it is a service model of cloud computing. In this model, the consumer creates the software using tools and/or libraries from the provider. The consumer also controls software deployment and configuration settings. The provider provides the networks, servers, storage, and other services.\r\nPaaS offerings facilitate the deployment of applications without the cost and complexity of buying and managing the underlying hardware and software and provisioning hosting capabilities.\r\nThere are various types of PaaS vendors; however, all offer application hosting and a deployment environment, along with various integrated services. Services offer varying levels of scalability and maintenance.\r\nPaaS offerings may also include facilities for application design, application development, testing, and deployment as well as services such as team collaboration, web service integration, and marshalling, database integration, security, scalability, storage, persistence, state management, application versioning, application instrumentation, and developer community facilitation."
+            },
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Platform as a service"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.04t64n",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/business.board_member_title",
+                "http://rdf.freebase.com/ns/business.job_title",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/dataworld.information_source",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_job_title",
+                "http://rdf.freebase.com/ns/film.film_job",
+                "http://rdf.freebase.com/ns/organization.role",
+                "http://rdf.freebase.com/ns/projects.project_role",
+                "http://rdf.freebase.com/ns/theater.theater_production_staff_role"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "MD"
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1257xzlg4",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02h51py",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0535b",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.day_of_year"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "5 March"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "March 5 is the 64th day of the year in the Gregorian calendar. There are 301 days remaining until the end of the year."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.044q652",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "March 5"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.05b10s9",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/soccer.football_player",
+                "http://rdf.freebase.com/ns/sports.pro_athlete"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Siegfried Reich is a retired German football player.\r\nThe prolific goalscorer ended his career one year before Wolfsburg's first top flight promotion in 1997."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12585jbwn",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xljr7",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1959-09-29",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.0345h",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.05cjb9",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.07zqbwz",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software_developer",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "wikier"
+                },
+                {
+                    "@language": "en",
+                    "@value": "willy"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125dp7726",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02_77lg",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.wikier.org",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1981-10-07",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.06mkj",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.05p6x12",
+            "http://rdf.freebase.com/ns/people.person.profession": [
+                "http://rdf.freebase.com/ns/m.03bx017",
+                "http://rdf.freebase.com/ns/m.03qc7q6"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.09j5wgd",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.film_job"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0dvd30",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.adultentertainment.adult_entertainer",
+                "http://rdf.freebase.com/ns/base.adultentertainment.topic",
+                "http://rdf.freebase.com/ns/base.pornactresses.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.actor",
+                "http://rdf.freebase.com/ns/people.measured_person",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/tv.tv_actor",
+                "http://rdf.freebase.com/ns/user.karins.default_domain.teresa_orlowski"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "April"
+                },
+                {
+                    "@language": "en",
+                    "@value": "April Rain"
+                },
+                {
+                    "@language": "en",
+                    "@value": "April Summers"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Diana Espen"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "April Flowers is an American former pornographic actress.\r\nFlowers was raised in Wasilla, Alaska.\r\nFlowers began her career as an exotic dancer after discovering exotic dancing during a contest held at a local club in Anchorage, Alaska. She claims that she earned more in one night than she would have working three weeks at her regular job.\r\nShe was introduced to the adult industry while dancing in Las Vegas, Nevada. She was approached by a talent scout who asked if she would be interested in doing print work. She later moved to Los Angeles, California and took the leap into pornography.\r\nStarting in 2001, while continuing in the adult industry, she also appeared in several mainstream films under the names Diana Espen and Diana Espin, including A Man Apart, Cheerleader Massacre, and The Model Solution.\r\nFlowers identifies as bisexual."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1257hw71j",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0jsg4j",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.visitapril.com/",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1978-03-28",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.02zsn",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.09c7w0",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.0g_wn2",
+            "http://rdf.freebase.com/ns/people.person.profession": "http://rdf.freebase.com/ns/m.0g7nc",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "April Flowers"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0h6y9s0",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_character",
+                "http://rdf.freebase.com/ns/film.film_character"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125by8zyq",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02nsjl9",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0jvvc5l",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.film_crewmember",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125g8chw8",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02_6zn1",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0lkm",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.localfood.seasonal_month",
+                "http://rdf.freebase.com/ns/base.localfood.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.month"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "Apr"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "April is the fourth month of the year in the Julian and Gregorian calendars, and one of four months with a length of 30 days.\r\nApril is commonly associated with the season of spring in the Northern hemisphere and autumn in the Southern hemisphere, where it is the seasonal equivalent to October in the Northern hemisphere and vice versa.\r\nApril starts on the same day of the week as July in all years, and January in leap years. April ends on the same day of the week as December every year. October of the previous year starts on the same day of the week as April of the current year as a common year and May of the previous year starts on the same day of the week as April of the current year as a leap year. July of the previous year ends on the same day of the week as April of the current year as a leap year and February and October of the previous year ends on the same day of the week as April of the current year as a leap year. In years immediately before common years, April starts on the same day of the week as September and December of the following year and in years immediately before leap years, June of the following year. In years immediately before common years, April ends one the same day of the week as September of the following year and in years immediately before leap years, March and June of the following year."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.02cczw7",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "April"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0tk6rmw",
+            "@type": [
+                "http://rdf.freebase.com/ns/award.award_nominee",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "John Pereira is a TV director."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12h2x3jrx",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02kl653",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.profession": "http://rdf.freebase.com/ns/m.02krf9",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "John Pereira"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0wqhskn",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Apache Marmotta is an Open Platform for Linked Data whose goal is to enable organizations to publish and build custom applications based on Linked Data.\r\nThe platform is split in several modules: Core, LDCache, LDPath, Reasoner, Security, SPARQL, User, Versioning, Client library, Sesame tools, KiWi Triple Store.\r\nThe client library, also known as LDClient, is a Linked Data client that allows retrieval of remote resources via different protocols by making use of pluggable adapters that wrap other data sources."
+            },
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://marmotta.incubator.apache.org",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Apache Marmotta"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0wqhwn_",
+            "@type": [
+                "http://rdf.freebase.com/ns/business.company_type",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.membership_organization",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "redlink"
+                },
+                {
+                    "@language": "en",
+                    "@value": "redlinkgmbh"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12v_gq2xh",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02hr7t2",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://redlink.co",
+            "http://rdf.freebase.com/ns/organization.organization.date_founded": "2013-03-21",
+            "http://rdf.freebase.com/ns/organization.organization.parent": "http://rdf.freebase.com/ns/m.0x30snr",
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "RedLink GmbH"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0x30mx8",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Sebastian Schaffert"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0x30mzh",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Rupert Westenthaler"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0x30n0s",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "John Pereira"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0xmqk98",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.group_member",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "Sergio Fernández is a singer and bassist."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12yxhbxq9",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.0kpv1_",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.06mkj",
+            "http://rdf.freebase.com/ns/people.person.profession": [
+                "http://rdf.freebase.com/ns/m.09l65",
+                "http://rdf.freebase.com/ns/m.0gbbt"
+            ],
+            "rdfs:label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            }
+        },
+        {
+            "@id": "urn:enhancement-00c5fdee-b81e-f96e-a1b8-dc787c615d45",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.738Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "enhancer:confidence": 0.879798,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "The World"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.01pvmnm",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-01baa5cd-5136-0328-2fe9-143a3ca22f3e",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0lkm",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.localfood.seasonal_month",
+                "http://rdf.freebase.com/ns/base.localfood.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.month"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-01d2d01d-28fd-1375-4d63-5c348c0bb8e0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.738Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "enhancer:confidence": 0.8888889,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "The World"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02j71",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/astronomy.astronomical_discovery",
+                "http://rdf.freebase.com/ns/astronomy.celestial_object",
+                "http://rdf.freebase.com/ns/astronomy.celestial_object_with_coordinate_system",
+                "http://rdf.freebase.com/ns/astronomy.orbital_relationship",
+                "http://rdf.freebase.com/ns/astronomy.planet",
+                "http://rdf.freebase.com/ns/astronomy.star_system_body",
+                "http://rdf.freebase.com/ns/base.aareas.schema.administrative_area",
+                "http://rdf.freebase.com/ns/base.exoplanetology.exoplanet",
+                "http://rdf.freebase.com/ns/base.exoplanetology.topic",
+                "http://rdf.freebase.com/ns/base.litcentral.focal_location",
+                "http://rdf.freebase.com/ns/base.litcentral.topic",
+                "http://rdf.freebase.com/ns/base.locations.planets",
+                "http://rdf.freebase.com/ns/base.locations.topic",
+                "http://rdf.freebase.com/ns/base.masterthesis.topic",
+                "http://rdf.freebase.com/ns/base.newsevents.photographed_event",
+                "http://rdf.freebase.com/ns/base.newsevents.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.satelites.natural_satellite",
+                "http://rdf.freebase.com/ns/base.satelites.orbited_body",
+                "http://rdf.freebase.com/ns/base.satelites.topic",
+                "http://rdf.freebase.com/ns/base.schemastaging.celestial_object_extra",
+                "http://rdf.freebase.com/ns/base.schemastaging.star_system_body_extra",
+                "http://rdf.freebase.com/ns/base.schemastaging.topic",
+                "http://rdf.freebase.com/ns/base.sharing.sharing_location",
+                "http://rdf.freebase.com/ns/base.sharing.topic",
+                "http://rdf.freebase.com/ns/base.skosbase.topic",
+                "http://rdf.freebase.com/ns/base.skosbase.vocabulary_equivalent_topic",
+                "http://rdf.freebase.com/ns/base.tagasauris.organic_object",
+                "http://rdf.freebase.com/ns/base.tagit.organic_thing",
+                "http://rdf.freebase.com/ns/base.thesolarsystem.topic",
+                "http://rdf.freebase.com/ns/base.type_ontology.abstract",
+                "http://rdf.freebase.com/ns/base.type_ontology.inanimate",
+                "http://rdf.freebase.com/ns/base.uncommon.topic",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_setting",
+                "http://rdf.freebase.com/ns/location.location",
+                "http://rdf.freebase.com/ns/location.statistical_region",
+                "http://rdf.freebase.com/ns/m.06vzyr0",
+                "http://rdf.freebase.com/ns/m.0cgyc3f",
+                "http://rdf.freebase.com/ns/media_common.quotation_subject",
+                "http://rdf.freebase.com/ns/organization.organization_scope",
+                "http://rdf.freebase.com/ns/tv.tv_subject",
+                "http://rdf.freebase.com/ns/user.stu.default_domain.planet",
+                "http://rdf.freebase.com/ns/user.tsegaran.random.taxonomy_subject"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-02fb2ffb-7fa8-562c-55bc-9b818b08fe8d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.738Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-92f65fd7-389f-ea27-1090-55a470c2c596",
+            "enhancer:confidence": 0.8095238,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Platform as a service"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0414krx",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.socanddatamanagement.concept",
+                "http://rdf.freebase.com/ns/base.socanddatamanagement.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software_genre"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-087ab527-a391-243d-01d2-f8eb34766329",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "enhancer:confidence": 0.99,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/April_(VAST_album)",
+            "enhancer:entity-type": [
+                "dbp-ont:Album",
+                "dbp-ont:MusicalWork",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "schema:MusicAlbum",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-0dc4b98a-d28a-78ff-f52c-f4bf871c2678",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 697,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "March 5"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " RedLink GmbH (hereinafter Redlink) in March 5, 2013 to proceed with preliminary work. Each"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "dlink) in "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ", 2013 to "
+            },
+            "enhancer:start": 690
+        },
+        {
+            "@id": "urn:enhancement-1181e020-0d93-2a5a-b0e6-55fd9e72ddbb",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-d60757ef-1da1-ee28-2d35-67fea2da1de9",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Sebastian Schaffert"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0x30mx8",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-12a08a0e-7209-fe90-00cc-1fa1d1fbb6e4",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 268,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " John Pereira, Jakob Frank, Thomas Kurz and Sergio Fernández have agreed to join hands to set up Redlink a"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": " Kurz and "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " have agre"
+            },
+            "enhancer:start": 252
+        },
+        {
+            "@id": "urn:enhancement-139e1c4b-e213-459c-8f64-b3edec2b3b3a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.738Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-7392ddda-f54d-8b43-4cfd-3309a5287e7a",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "RedLink GmbH"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0wqhwn_",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/business.company_type",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.membership_organization",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-2c4fa25f-b93b-4622-ad40-469c055410e2",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-fb74279e-e2b5-b14f-85cd-b06eb85b493b",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/WordPress",
+            "enhancer:entity-type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-334273e6-086c-d700-b7b0-bbd2f947fac5",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 75,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Managing Director"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Research Forschungsgesellschaft m.b.H. (Managing Director: Siegfried Reich) announces that the eight"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "t m.b.H. ("
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ": Siegfrie"
+            },
+            "enhancer:start": 58
+        },
+        {
+            "@id": "urn:enhancement-39e57bd4-d7b3-cc7f-c59f-33be893f6e26",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-e6ec2540-07be-af89-4093-ebda632de42f",
+            "enhancer:confidence": 0.95,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.03ws66t",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-3a03e5dd-c2b5-089b-77f7-e62341c50a84",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-f2bb9d78-68bb-d2d5-22a7-3ed0e1f633f0",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Apache Stanbol"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Apache_Stanbol",
+            "enhancer:entity-type": "schema:Thing",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-3cc76d23-6a84-c600-53ee-87248d0e8411",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "enhancer:confidence": 0.98,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/April,_april",
+            "enhancer:entity-type": [
+                "dbp-ont:EurovisionSongContestEntry",
+                "dbp-ont:MusicalWork",
+                "dbp-ont:Song",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "schema:MusicRecording",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-43587c56-f5fb-71ac-03dc-45cd6590bc53",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 221,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "John Pereira"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Dr. Sebastian Schaffert, Rupert Westenthaler, John Pereira, Jakob Frank, Thomas Kurz and Sergio Fernández"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "enthaler, "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ", Jakob Fr"
+            },
+            "enhancer:start": 209
+        },
+        {
+            "@id": "urn:enhancement-44ec633f-275b-ba37-9b8d-e1ff8d5d019f",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b9a1e42e-6f7a-a288-204f-85eb572e5e3e",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02qd9s1",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-4705a4e0-3895-23c9-794c-ade83e43c1a1",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-92f65fd7-389f-ea27-1090-55a470c2c596",
+            "enhancer:confidence": 0.95238096,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Platform-as-a-service"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Platform_as_a_service",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-4aea2a11-4a26-5b0a-c1dc-8b7598716b41",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-43587c56-f5fb-71ac-03dc-45cd6590bc53",
+            "enhancer:confidence": 0.95,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "John Pereira"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0x30n0s",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-4eacf1f1-74e1-4bcb-3ac6-4efc7870dac1",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-334273e6-086c-d700-b7b0-bbd2f947fac5",
+            "enhancer:confidence": 0.99159664,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.09j5wgd",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.film_job"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-53452fe5-24a8-c61f-6400-50a0f822f6d7",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Organisation",
+            "enhancer:confidence": 0.85714287,
+            "enhancer:end": 312,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Redlink"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Fernández have agreed to join hands to set up Redlink a Platform-as-a-Service to deliver World-wide"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "to set up "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " a Platfo"
+            },
+            "enhancer:start": 305
+        },
+        {
+            "@id": "urn:enhancement-5ab6077f-9680-1ddc-d1f0-1279b337454a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 207,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Rupert Westenthaler"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " Srl, Zaizi Limited, Dr. Sebastian Schaffert, Rupert Westenthaler, John Pereira, Jakob Frank, Thomas Kurz and"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "chaffert, "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ", John Per"
+            },
+            "enhancer:start": 188
+        },
+        {
+            "@id": "urn:enhancement-5ad49a81-82ad-c11b-dcd6-132593530c42",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.709Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 0.93333334,
+            "enhancer:end": 1184,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "text annotation"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " cloud based framework for linked data, text annotation and semantic search using Apache Stanbol, Apache"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "ked data, "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " and seman"
+            },
+            "enhancer:start": 1169
+        },
+        {
+            "@id": "urn:enhancement-5be57804-ad87-5135-82f5-03713205c21e",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-12a08a0e-7209-fe90-00cc-1fa1d1fbb6e4",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.07zqbwz",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software_developer",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-5daabe86-b91b-505a-9d78-9282605314a3",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-7f490095-2c3a-bc93-2393-fe2503286033",
+            "enhancer:confidence": 0.9444444,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Capital investment"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Investment",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-63f05b71-813c-d3b5-4808-ce0fc6785c49",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "enhancer:confidence": 0.99841267,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0dvd30",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.adultentertainment.adult_entertainer",
+                "http://rdf.freebase.com/ns/base.adultentertainment.topic",
+                "http://rdf.freebase.com/ns/base.pornactresses.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.actor",
+                "http://rdf.freebase.com/ns/people.measured_person",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/tv.tv_actor",
+                "http://rdf.freebase.com/ns/user.karins.default_domain.teresa_orlowski"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-72606a67-41cc-9bf1-97ae-3957a1fa2417",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-0dc4b98a-d28a-78ff-f52c-f4bf871c2678",
+            "enhancer:confidence": 0.95,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "March 5"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/March_5_(Eastern_Orthodox_liturgics)",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-72c9e7af-7868-1fd8-2503-96761a742377",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-7392ddda-f54d-8b43-4cfd-3309a5287e7a",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "RedLink GmbH"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/RedLink_GmbH",
+            "enhancer:entity-type": "schema:Thing",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-7392ddda-f54d-8b43-4cfd-3309a5287e7a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Organisation",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 664,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "RedLink GmbH"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " the launch of services, the partners established RedLink GmbH (hereinafter Redlink) in March 5, 2013 to proceed"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "tablished "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " (hereinaf"
+            },
+            "enhancer:start": 652
+        },
+        {
+            "@id": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Place",
+            "enhancer:confidence": 0.8888889,
+            "enhancer:end": 487,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "the World"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " PaaS are already being used by users around the World using WordLift 2.5 (a Plug-in for WordPress) and"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "rs around "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " using Wor"
+            },
+            "enhancer:start": 478
+        },
+        {
+            "@id": "urn:enhancement-7f490095-2c3a-bc93-2393-fe2503286033",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 0.9444444,
+            "enhancer:end": 885,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "capital investment"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " to kick-start in April as planned. The amount of capital investment and the percentage of ownership after the"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "amount of "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " and the p"
+            },
+            "enhancer:start": 867
+        },
+        {
+            "@id": "urn:enhancement-8bb9586b-b319-d0a3-e916-0a608cc745ec",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/April",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-91368df6-dc96-4484-2d4c-8156caf49bfc",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "enhancer:confidence": 0.8826389,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "The World"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/The_World_(radio_program)",
+            "enhancer:entity-type": [
+                "dbp-ont:RadioProgram",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-92f65fd7-389f-ea27-1090-55a470c2c596",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 0.95238096,
+            "enhancer:end": 337,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Platform-as-a-Service"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " have agreed to join hands to set up Redlink a Platform-as-a-Service to deliver World-wide linked data services,"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "edlink a "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " to delive"
+            },
+            "enhancer:start": 316
+        },
+        {
+            "@id": "urn:enhancement-957b574a-8d1c-a4e4-2b69-d12f09d43519",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.692Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b9a1e42e-6f7a-a288-204f-85eb572e5e3e",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/Apache_Solr",
+            "enhancer:entity-type": "schema:Thing",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-9d61fa49-df97-ef2a-42d3-b6597c6a6ce8",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.709Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-f2bb9d78-68bb-d2d5-22a7-3ed0e1f633f0",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Apache Stanbol"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Apache_Stanbol",
+            "enhancer:entity-type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-9dc4bc8f-c395-7335-0c54-395cd696b694",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.709Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-b9a1e42e-6f7a-a288-204f-85eb572e5e3e",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Apache_Solr",
+            "enhancer:entity-type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-9e315125-367e-a429-d984-4e3cfe7f75c0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-53452fe5-24a8-c61f-6400-50a0f822f6d7",
+            "enhancer:confidence": 0.85714287,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "redlink"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0wqhwn_",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/business.company_type",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.membership_organization",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 840,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " the platformRedlink aiming to kick-start in April as planned. The amount of capital investment and"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "-start in "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " as planne"
+            },
+            "enhancer:start": 835
+        },
+        {
+            "@id": "urn:enhancement-a15eebfb-5549-ccbb-848a-2bfd82fd3afe",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-334273e6-086c-d700-b7b0-bbd2f947fac5",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.04t64n",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/business.board_member_title",
+                "http://rdf.freebase.com/ns/business.job_title",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/dataworld.information_source",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_job_title",
+                "http://rdf.freebase.com/ns/film.film_job",
+                "http://rdf.freebase.com/ns/organization.role",
+                "http://rdf.freebase.com/ns/projects.project_role",
+                "http://rdf.freebase.com/ns/theater.theater_production_staff_role"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-a1bca9a9-c165-948f-0c43-28cac00bb434",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-e6ec2540-07be-af89-4093-ebda632de42f",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Siegfried_Reich",
+            "enhancer:entity-type": [
+                "dbp-ont:Agent",
+                "dbp-ont:Athlete",
+                "dbp-ont:Person",
+                "dbp-ont:SoccerPlayer",
+                "schema:Person",
+                "owl:Thing",
+                "foaf:Person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-a3cfbe42-ec28-a5c4-74cc-d2626483667a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "enhancer:confidence": 0.8763889,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "The World"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/The_World_(archipelago)",
+            "enhancer:entity-type": [
+                "dbp-ont:Island",
+                "dbp-ont:Place",
+                "dbp-ont:PopulatedPlace",
+                "schema:Place",
+                "http://www.opengis.net/gml/_Feature",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-a8d934e6-72ee-7b00-831f-ca407ff8752a",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.708Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-0dc4b98a-d28a-78ff-f52c-f4bf871c2678",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "March 5"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/March_5",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-abf4e23b-8481-a744-1759-2da652bb7372",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.738Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "enhancer:confidence": 0.8707071,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "The World"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02tcn5",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/award.award_winning_work",
+                "http://rdf.freebase.com/ns/base.newyorkcitynewspapers.topic",
+                "http://rdf.freebase.com/ns/book.newspaper",
+                "http://rdf.freebase.com/ns/book.periodical",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b0a2adec-79fe-c19c-45f9-a32dd779bfab",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-334273e6-086c-d700-b7b0-bbd2f947fac5",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Chief_executive_officer",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b4113797-46da-6007-bb85-c7f6069568c3",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-5ab6077f-9680-1ddc-d1f0-1279b337454a",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Rupert Westenthaler"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0x30mzh",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization_founder"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b45a586d-ce4d-a49d-0284-5e9f5286f28c",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-78e7d254-a01a-3c85-caad-c7ab47491db6",
+            "enhancer:confidence": 0.8888889,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "The World"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/World",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b4e5fb4c-3a59-3635-0a87-ec898a832bea",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-43587c56-f5fb-71ac-03dc-45cd6590bc53",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "John Pereira"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0tk6rmw",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/award.award_nominee",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b5a65f3e-e0ea-bd48-8011-c304c9b4d8d6",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-12a08a0e-7209-fe90-00cc-1fa1d1fbb6e4",
+            "enhancer:confidence": 0.975,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0xmqk98",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.group_member",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b7e4c19f-d3f0-cab5-a6cf-31c60935316b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-c6f09abe-028b-413b-f24d-005f5cd5e0cc",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Apache Marmotta"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0wqhskn",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-b9a1e42e-6f7a-a288-204f-85eb572e5e3e",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Work",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 1258,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Apache Solr"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " search using Apache Stanbol, Apache Marmotta and Apache Solr.\"}"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "motta and "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ".\"}"
+            },
+            "enhancer:start": 1247
+        },
+        {
+            "@id": "urn:enhancement-baccba7b-a3d7-9a85-9a90-3471554e3ff8",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-e6ec2540-07be-af89-4093-ebda632de42f",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.05b10s9",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/soccer.football_player",
+                "http://rdf.freebase.com/ns/sports.pro_athlete"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-bcf2a065-986f-c587-d75b-42b7fd5dd403",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-0dc4b98a-d28a-78ff-f52c-f4bf871c2678",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "March 5"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0535b",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/time.day_of_year"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-c6f09abe-028b-413b-f24d-005f5cd5e0cc",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 1242,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Apache Marmotta"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " and semantic search using Apache Stanbol, Apache Marmotta and Apache Solr.\"}"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": " Stanbol, "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": " and Apach"
+            },
+            "enhancer:start": 1227
+        },
+        {
+            "@id": "urn:enhancement-cd11298a-1bf8-31e3-f061-3167dc30a842",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.709Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-5ad49a81-82ad-c11b-dcd6-132593530c42",
+            "enhancer:confidence": 0.93333334,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Text annotation"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Text_annotation",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-ce6310be-259e-817d-0c5a-6fb81ec44913",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.737Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-12a08a0e-7209-fe90-00cc-1fa1d1fbb6e4",
+            "enhancer:confidence": 0.95,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0jvvc5l",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/film.film_crewmember",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-d42cf2d6-fa61-98ec-5f94-e4a7f636871d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-334273e6-086c-d700-b7b0-bbd2f947fac5",
+            "enhancer:confidence": 0.9831933,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Managing Director"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0h6y9s0",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/fictional_universe.fictional_character",
+                "http://rdf.freebase.com/ns/film.film_character"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-d60757ef-1da1-ee28-2d35-67fea2da1de9",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.736Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 186,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Sebastian Schaffert"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " entities of Insideout10 Srl, Zaizi Limited, Dr. Sebastian Schaffert, Rupert Westenthaler, John Pereira, Jakob Frank,"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "ited, Dr. "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ", Rupert W"
+            },
+            "enhancer:start": 167
+        },
+        {
+            "@id": "urn:enhancement-de9bf401-1840-deb9-d115-f944ce19b6b5",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.598Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+            "dc:language": "en",
+            "dc:type": "dc:LinguisticSystem",
+            "enhancer:confidence": 0.999997,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-e6ec2540-07be-af89-4093-ebda632de42f",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 92,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Siegfried Reich"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " m.b.H. (Managing Director: Siegfried Reich) announces that the eight entities of Insideout10"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "Director: "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ") announce"
+            },
+            "enhancer:start": 77
+        },
+        {
+            "@id": "urn:enhancement-eacf9d21-eccc-6fca-000e-3c63425cb0d0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.738Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-fb74279e-e2b5-b14f-85cd-b06eb85b493b",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02vtpl",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_applications",
+                "http://rdf.freebase.com/ns/base.services.web_development_platform",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.api"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-f2bb9d78-68bb-d2d5-22a7-3ed0e1f633f0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Work",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 1225,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "Apache Stanbol"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " data, text annotation and semantic search using Apache Stanbol, Apache Marmotta and Apache Solr.\"}"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "rch using "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ", Apache M"
+            },
+            "enhancer:start": 1211
+        },
+        {
+            "@id": "urn:enhancement-f494a2df-826c-74ec-095d-3e431fb4b6b0",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.707Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-12a08a0e-7209-fe90-00cc-1fa1d1fbb6e4",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Sergio Fernández"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Sergio_Fern%C3%A1ndez",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-f7a92485-c896-fbd2-7a91-94033fbafb38",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.739Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-9e540314-4856-a2e6-669c-345fa9902e54",
+            "enhancer:confidence": 0.99920636,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "April"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.01s2tcp",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-f877be3f-9906-5e17-b781-d9266fd7b481",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-fb74279e-e2b5-b14f-85cd-b06eb85b493b",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://data.redlink.io/353/wordlift/entity/WordPress",
+            "enhancer:entity-type": "schema:Thing",
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171"
+        },
+        {
+            "@id": "urn:enhancement-fb74279e-e2b5-b14f-85cd-b06eb85b493b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-03-16T12:46:56.691Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": "dbp-ont:Work",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 531,
+            "enhancer:extracted-from": "urn:content-item-sha1-fbb31b25f1e1612df3e03400a7703a7e739a0171",
+            "enhancer:selected-text": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:selection-context": {
+                "@language": "en",
+                "@value": " the World using WordLift 2.5 (a Plug-in for WordPress) and will be activated for selected clients in"
+            },
+            "enhancer:selection-prefix": {
+                "@language": "en",
+                "@value": "ug-in for "
+            },
+            "enhancer:selection-suffix": {
+                "@language": "en",
+                "@value": ") and will"
+            },
+            "enhancer:start": 522
+        }
+    ]
+}

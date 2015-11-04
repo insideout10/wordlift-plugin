@@ -1,0 +1,52 @@
+{
+	"entities": {
+			"http://dbpedia.org/resource/Alexis_Tsipras" : {
+				"confidence": 1,
+				"description": "Alexīs Tsipras è un politico greco, leader di SYRIZA e candidato, per il Partito della Sinistra Europea, alla Presidenza della Commissione UE nelle Elezioni europee del 2014.",
+				"label": "Alexīs Tsipras",
+				"mainType": "person",
+				"types": [ 
+					"http://schema.org/Person" 
+				],
+				"images": [
+					"http://upload.wikimedia.org/wikipedia/commons/d/d6/Alexis_Tsipras_Syriza.JPG",
+					"http://www.formiche.net/wp-content/uploads/2014/12/Tsipras.jpg",
+					"http://www.correttainformazione.it/wp-content/uploads/2014/02/Lista-Tsipras.jpg"
+				]
+			},
+			"http://dbpedia.org/resource/Athens" : {"confidence":1,"mainType": "place","types":["http://dbpedia.org/ontology/AdministrativeRegion","http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Region","http://dbpedia.org/class/yago/AdministrativeDistrict108491826","http://dbpedia.org/class/yago/AncientGreekArchaeologicalSitesInGreece","http://dbpedia.org/class/yago/AncientGreekCities","http://dbpedia.org/class/yago/Area108497294","http://dbpedia.org/class/yago/Capital108518505","http://dbpedia.org/class/yago/CapitalsInEurope","http://dbpedia.org/class/yago/Center108523483","http://dbpedia.org/class/yago/City108524735","http://dbpedia.org/class/yago/District108552138","http://dbpedia.org/class/yago/EuropeanCapitalsOfCulture","http://dbpedia.org/class/yago/GeographicalArea108574314","http://dbpedia.org/class/yago/GreekPrefecturalCapitals","http://dbpedia.org/class/yago/GreekRegionalCapitals","http://dbpedia.org/class/yago/HostCitiesOfTheSummerOlympicGames","http://dbpedia.org/class/yago/Location100027167","http://dbpedia.org/class/yago/Municipality108626283","http://dbpedia.org/class/yago/Object100002684","http://dbpedia.org/class/yago/PhysicalEntity100001930","http://dbpedia.org/class/yago/PopulatedCoastalPlacesInGreece","http://dbpedia.org/class/yago/PopulatedPlacesEstablishedInThe3rdMillenniumBC","http://dbpedia.org/class/yago/PopulatedPlacesInAncientGreece","http://dbpedia.org/class/yago/PopulatedPlacesInCentralAthens(regionalUnit)","http://dbpedia.org/class/yago/Region108630985","http://dbpedia.org/class/yago/RomanSitesInGreece","http://dbpedia.org/class/yago/Seat108647945","http://dbpedia.org/class/yago/Site108651247","http://dbpedia.org/class/yago/Tract108673395","http://dbpedia.org/class/yago/UrbanArea108675967","http://dbpedia.org/class/yago/YagoGeoEntity","http://dbpedia.org/class/yago/YagoLegalActorGeo","http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity","http://www.w3.org/2002/07/owl#Thing","http://schema.org/AdministrativeArea","http://schema.org/Place"], "label":"Atene","description":"Atene è un comune greco di 655.780 abitanti, capoluogo dell'unità periferica di Atene Centrale, della periferia dell'Attica e capitale della Repubblica Ellenica. Fu la prima città del mondo ad adottare una forma di governo democratico storicamente accertata.","images":[
+			"http://upload.wikimedia.org/wikipedia/commons/b/bf/2011_Dimos_Athineon.png",
+			"http://a.mytrend.it/prp/2015/01/556703/o.273540.jpg",
+			"http://www.athens-today.com/images/licavitos-big.jpg"
+			]},
+			"http://dbpedia.org/resource/Athens_Prefecture" : {"confidence":0.96666664,"mainType": "place","types":["http://dbpedia.org/ontology/AdministrativeRegion","http://dbpedia.org/ontology/Place","http://dbpedia.org/ontology/PopulatedPlace","http://dbpedia.org/ontology/Region","http://dbpedia.org/class/yago/AdministrativeDistrict108491826","http://dbpedia.org/class/yago/District108552138","http://dbpedia.org/class/yago/Location100027167","http://dbpedia.org/class/yago/Object100002684","http://dbpedia.org/class/yago/PhysicalEntity100001930","http://dbpedia.org/class/yago/Prefecture108626947","http://dbpedia.org/class/yago/PrefecturesOfGreece","http://dbpedia.org/class/yago/Region108630985","http://dbpedia.org/class/yago/YagoGeoEntity","http://dbpedia.org/class/yago/YagoLegalActorGeo","http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity","http://www.opengis.net/gml/_Feature","http://www.w3.org/2002/07/owl#Thing","http://schema.org/AdministrativeArea","http://schema.org/Place"],"label":"Atene","description":"Atene era una prefettura della Grecia, abolita a partire dal 1º gennaio 2011 a seguito dell'entrata in vigore della riforma amministrativa detta piano Kallikratis. La capitale della prefettura era la città di Atene.","images":["http://upload.wikimedia.org/wikipedia/commons/2/20/GreeceAttica.png"]}
+	},
+	"annotations": {
+			"urn:enhancement-1f83847a-95c2-c81b-cba9-f958aed45b34" : {
+				"start": 791,
+				"text": "Alexīs Tsipras",
+				"end": 805,
+				"entityMatches" : [
+					{ "entityId": "http://dbpedia.org/resource/Alexis_Tsipras", "confidence": 1 }
+				]
+			},
+			"urn:enhancement-afe6a8de-56cf-6dca-d307-d890993297fa" : {
+				"start":768,
+				"end":773,
+				"text":"Atene",
+				"entityMatches":[
+					{ "confidence":1, "entityId": "http://dbpedia.org/resource/Athens" },
+					{ "confidence":0.96666664, "entityId": "http://dbpedia.org/resource/Athens_Prefecture" }
+				]
+			},
+			"urn:enhancement-afe6a8de-56cf-6dca-d307-d890993297fb" : {
+				"start":9,
+				"end":14,
+				"text":"Atene",
+				"entityMatches":[
+					{ "confidence":1, "entityId": "http://dbpedia.org/resource/Athens" },
+					{ "confidence":0.96666664, "entityId": "http://dbpedia.org/resource/Athens_Prefecture" }
+				]
+			}
+		}
+}

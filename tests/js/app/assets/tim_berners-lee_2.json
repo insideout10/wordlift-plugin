@@ -1,0 +1,1242 @@
+{
+    "@context": {
+        "Agent": "http://dbpedia.org/ontology/Agent",
+        "comment": "http://www.w3.org/2000/01/rdf-schema#comment",
+        "Company": "http://dbpedia.org/ontology/Company",
+        "confidence": {
+            "@id": "http://fise.iks-project.eu/ontology/confidence",
+            "@type": "http://www.w3.org/2001/XMLSchema#double"
+        },
+        "contributor": "http://purl.org/dc/terms/contributor",
+        "created": {
+            "@id": "http://purl.org/dc/terms/created",
+            "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        },
+        "CreativeWork": "http://schema.org/CreativeWork",
+        "creator": {
+            "@id": "http://purl.org/dc/terms/creator",
+            "@type": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        "depiction": {
+            "@id": "http://xmlns.com/foaf/0.1/depiction",
+            "@type": "@id"
+        },
+        "end": {
+            "@id": "http://fise.iks-project.eu/ontology/end",
+            "@type": "http://www.w3.org/2001/XMLSchema#int"
+        },
+        "Enhancement": "http://fise.iks-project.eu/ontology/Enhancement",
+        "entity-label": "http://fise.iks-project.eu/ontology/entity-label",
+        "entity-reference": {
+            "@id": "http://fise.iks-project.eu/ontology/entity-reference",
+            "@type": "@id"
+        },
+        "entity-type": {
+            "@id": "http://fise.iks-project.eu/ontology/entity-type",
+            "@type": "@id"
+        },
+        "EntityAnnotation": "http://fise.iks-project.eu/ontology/EntityAnnotation",
+        "extracted-from": {
+            "@id": "http://fise.iks-project.eu/ontology/extracted-from",
+            "@type": "@id"
+        },
+        "Film": "http://dbpedia.org/ontology/Film",
+        "http://rdf.freebase.com/ns/common.topic.image": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_for": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_types": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.official_website": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/organization.organization.date_founded": {
+            "@type": "http://www.w3.org/2001/XMLSchema#gYearMonth"
+        },
+        "label": "http://www.w3.org/2000/01/rdf-schema#label",
+        "language": "http://purl.org/dc/terms/language",
+        "lat": {
+            "@id": "http://www.w3.org/2003/01/geo/wgs84_pos#lat",
+            "@type": "http://www.w3.org/2001/XMLSchema#float"
+        },
+        "LinguisticSystem": "http://purl.org/dc/terms/LinguisticSystem",
+        "long": {
+            "@id": "http://www.w3.org/2003/01/geo/wgs84_pos#long",
+            "@type": "http://www.w3.org/2001/XMLSchema#float"
+        },
+        "Movie": "http://schema.org/Movie",
+        "Organisation": "http://dbpedia.org/ontology/Organisation",
+        "Organization": "http://schema.org/Organization",
+        "Place": "http://dbpedia.org/ontology/Place",
+        "relation": {
+            "@id": "http://purl.org/dc/terms/relation",
+            "@type": "@id"
+        },
+        "sameAs": {
+            "@id": "http://www.w3.org/2002/07/owl#sameAs",
+            "@type": "@id"
+        },
+        "selected-text": "http://fise.iks-project.eu/ontology/selected-text",
+        "selection-context": "http://fise.iks-project.eu/ontology/selection-context",
+        "selection-prefix": "http://fise.iks-project.eu/ontology/selection-prefix",
+        "selection-suffix": "http://fise.iks-project.eu/ontology/selection-suffix",
+        "start": {
+            "@id": "http://fise.iks-project.eu/ontology/start",
+            "@type": "http://www.w3.org/2001/XMLSchema#int"
+        },
+        "subject": {
+            "@id": "http://purl.org/dc/terms/subject",
+            "@type": "@id"
+        },
+        "TelevisionShow": "http://dbpedia.org/ontology/TelevisionShow",
+        "TextAnnotation": "http://fise.iks-project.eu/ontology/TextAnnotation",
+        "Thing": "http://www.w3.org/2002/07/owl#Thing",
+        "thumbnail": {
+            "@id": "http://dbpedia.org/ontology/thumbnail",
+            "@type": "@id"
+        },
+        "type": {
+            "@id": "http://purl.org/dc/terms/type",
+            "@type": "@id"
+        },
+        "Work": "http://dbpedia.org/ontology/Work",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "http://dbpedia.org/resource/MIT_Center_for_Collective_Intelligence",
+            "comment": {
+                "@language": "en",
+                "@value": "The MIT Center for Collective Intelligence (CCI) is a research center at the Massachusetts Institute of Technology, headed by Professor Thomas W. Malone that focuses on the study of collective intelligence. The Center for Collective Intelligence brings together faculty from across MIT to conduct researchs on how new communications technologies are changing the way people work together."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "MIT Center for Collective Intelligence"
+            },
+            "sameAs": "http://rdf.freebase.com/ns/m.04n2n64",
+            "subject": [
+                "http://dbpedia.org/resource/Category:Information_society",
+                "http://dbpedia.org/resource/Category:Massachusetts_Institute_of_Technology",
+                "http://dbpedia.org/resource/Category:Technology_in_society"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/MIT_Computer_Science_and_Artificial_Intelligence_Laboratory",
+            "comment": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory (also CSAIL) is a research laboratory at the Massachusetts Institute of Technology formed by the 2003 merger of the Laboratory for Computer Science and Artificial Intelligence Laboratory. Housed within the Stata Center, CSAIL is the largest on-campus laboratory as measured by research scope and membership."
+            },
+            "depiction": "http://upload.wikimedia.org/wikipedia/commons/1/17/Stata_Center1.jpg",
+            "label": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory"
+            },
+            "sameAs": "http://rdf.freebase.com/ns/m.0280z8",
+            "subject": [
+                "http://dbpedia.org/resource/Category:2003_establishments_in_the_United_States",
+                "http://dbpedia.org/resource/Category:Artificial_intelligence_laboratories",
+                "http://dbpedia.org/resource/Category:Computer_science_institutes_in_the_United_States",
+                "http://dbpedia.org/resource/Category:History_of_artificial_intelligence",
+                "http://dbpedia.org/resource/Category:Massachusetts_Institute_of_Technology",
+                "http://dbpedia.org/resource/Category:Research_institutes_in_the_United_States",
+                "http://dbpedia.org/resource/Category:Robotics_organizations"
+            ],
+            "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Stata_Center1.jpg/200px-Stata_Center1.jpg"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/The_Web_(film)",
+            "@type": [
+                "CreativeWork",
+                "Film",
+                "Movie",
+                "Thing",
+                "Work",
+                "http://dbpedia.org/class/yago/1947Films",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/Creation103129123",
+                "http://dbpedia.org/class/yago/Event100029378",
+                "http://dbpedia.org/class/yago/FilmsDirectedByMichaelGordon",
+                "http://dbpedia.org/class/yago/Movie106613686",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/Product104007894",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/Show106619065",
+                "http://dbpedia.org/class/yago/SocialEvent107288639",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The Web is a black-and-white 1947 thriller film starring Vincent Price. The film, directed by Michael Gordon, is considered film noir."
+            },
+            "depiction": "http://upload.wikimedia.org/wikipedia/commons/8/8c/The_Web_1947_movie_poster.jpg",
+            "label": {
+                "@language": "en",
+                "@value": "The Web (film)"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.07mwqm",
+                "http://yago-knowledge.org/resource/The_Web_(film)"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:1947_films",
+                "http://dbpedia.org/resource/Category:American_films",
+                "http://dbpedia.org/resource/Category:American_thriller_films",
+                "http://dbpedia.org/resource/Category:Drama_films",
+                "http://dbpedia.org/resource/Category:English-language_films",
+                "http://dbpedia.org/resource/Category:Film_noir",
+                "http://dbpedia.org/resource/Category:Films_directed_by_Michael_Gordon",
+                "http://dbpedia.org/resource/Category:Thriller_films"
+            ],
+            "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/The_Web_1947_movie_poster.jpg/200px-The_Web_1947_movie_poster.jpg"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/The_Web_(TV_series)",
+            "@type": [
+                "CreativeWork",
+                "TelevisionShow",
+                "Thing",
+                "Work",
+                "http://dbpedia.org/class/yago/1950TelevisionSeriesDebuts",
+                "http://dbpedia.org/class/yago/1957TelevisionSeriesEndings",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Act100030358",
+                "http://dbpedia.org/class/yago/Action100037396",
+                "http://dbpedia.org/class/yago/Activity100407535",
+                "http://dbpedia.org/class/yago/Beginning100235435",
+                "http://dbpedia.org/class/yago/Black-and-whiteTelevisionPrograms",
+                "http://dbpedia.org/class/yago/Broadcast106619428",
+                "http://dbpedia.org/class/yago/CBSNetworkShows",
+                "http://dbpedia.org/class/yago/Change100191142",
+                "http://dbpedia.org/class/yago/ChangeOfState100199130",
+                "http://dbpedia.org/class/yago/Diversion100426928",
+                "http://dbpedia.org/class/yago/Ending106308765",
+                "http://dbpedia.org/class/yago/Entertainment100429048",
+                "http://dbpedia.org/class/yago/Event100029378",
+                "http://dbpedia.org/class/yago/Introduction100238022",
+                "http://dbpedia.org/class/yago/LanguageUnit106284225",
+                "http://dbpedia.org/class/yago/LiveTelevisionPrograms",
+                "http://dbpedia.org/class/yago/Morpheme106306233",
+                "http://dbpedia.org/class/yago/NBCNetworkShows",
+                "http://dbpedia.org/class/yago/Part113809207",
+                "http://dbpedia.org/class/yago/PsychologicalFeature100023100",
+                "http://dbpedia.org/class/yago/Relation100031921",
+                "http://dbpedia.org/class/yago/Show100520257",
+                "http://dbpedia.org/class/yago/Show106619065",
+                "http://dbpedia.org/class/yago/SocialEvent107288639",
+                "http://dbpedia.org/class/yago/TelevisionProgram106620579",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The Web is an American dramatic anthology series that aired live on CBS for four seasons from July 11, 1950 to September 26, 1954. The series was also revived briefly by NBC in the summer during 1957. The program was produced by Mark Goodson and Bill Todman."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "The Web (TV series)"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.0gvrk4p",
+                "http://yago-knowledge.org/resource/The_Web_(TV_series)"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:1950_American_television_series_debuts",
+                "http://dbpedia.org/resource/Category:1950s_American_television_series",
+                "http://dbpedia.org/resource/Category:1954_American_television_series_endings",
+                "http://dbpedia.org/resource/Category:1957_American_television_series_debuts",
+                "http://dbpedia.org/resource/Category:1957_American_television_series_endings",
+                "http://dbpedia.org/resource/Category:American_anthology_television_series",
+                "http://dbpedia.org/resource/Category:Black-and-white_television_programs",
+                "http://dbpedia.org/resource/Category:CBS_network_shows",
+                "http://dbpedia.org/resource/Category:Live_television_programs",
+                "http://dbpedia.org/resource/Category:NBC_network_shows",
+                "http://dbpedia.org/resource/Category:Television_series_by_FremantleMedia"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Web_Science_Trust",
+            "comment": {
+                "@language": "en",
+                "@value": "The Web Science Trust is a joint effort originally started between MIT and University of Southampton to bridge and formalize the social and technical aspects of the World Wide Web. The Trust now coordinates a set of international \"WSTnet Laboratories\" that include many of the top academic research groups in the emerging area of Web science. It was first announced at MIT on November 2, 2006 as the Web Science Research Initiative (WSRI), changing its name in 2009 to the Web Science Trust."
+            },
+            "label": {
+                "@language": "en",
+                "@value": "Web Science Trust"
+            },
+            "sameAs": "http://rdf.freebase.com/ns/m.026brzq",
+            "subject": [
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Massachusetts_Institute_of_Technology",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:Social_networking_services",
+                "http://dbpedia.org/resource/Category:Social_networks",
+                "http://dbpedia.org/resource/Category:Social_sciences",
+                "http://dbpedia.org/resource/Category:University_of_Southampton",
+                "http://dbpedia.org/resource/Category:Web_Science",
+                "http://dbpedia.org/resource/Category:Web_development"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/World_Wide_Web",
+            "@type": [
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/Commodity103076708",
+                "http://dbpedia.org/class/yago/Merchandise103748886",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "http://www.opengis.net/gml/_Feature"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The World Wide Web (abbreviated as WWW or W3, commonly known as the Web), is a system of interlinked hypertext documents accessed via the Internet. With a web browser, one can view web pages that may contain text, images, videos, and other multimedia, and navigate between them via hyperlinks."
+            },
+            "depiction": "http://upload.wikimedia.org/wikipedia/commons/b/b2/WWW_logo_by_Robert_Cailliau.svg",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web"
+            },
+            "lat": 46.2325,
+            "long": 6.045,
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.0828v",
+                "http://yago-knowledge.org/resource/World_Wide_Web"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:1989_introductions",
+                "http://dbpedia.org/resource/Category:CERN",
+                "http://dbpedia.org/resource/Category:Computer_networks",
+                "http://dbpedia.org/resource/Category:Computing_terminology",
+                "http://dbpedia.org/resource/Category:English_inventions",
+                "http://dbpedia.org/resource/Category:History_of_the_Internet",
+                "http://dbpedia.org/resource/Category:Human–computer_interaction",
+                "http://dbpedia.org/resource/Category:Hypertext",
+                "http://dbpedia.org/resource/Category:Information_Age",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Inventions",
+                "http://dbpedia.org/resource/Category:Library_science",
+                "http://dbpedia.org/resource/Category:Prefixes",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/WWW_logo_by_Robert_Cailliau.svg/200px-WWW_logo_by_Robert_Cailliau.svg.png"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/World_Wide_Web_Consortium",
+            "@type": [
+                "Agent",
+                "Organisation",
+                "Organization",
+                "Thing",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Association108049401",
+                "http://dbpedia.org/class/yago/Consortia",
+                "http://dbpedia.org/class/yago/Consortium108236438",
+                "http://dbpedia.org/class/yago/Group100031264",
+                "http://dbpedia.org/class/yago/InternationalNongovernmentalOrganizations",
+                "http://dbpedia.org/class/yago/NongovernmentalOrganization108009834",
+                "http://dbpedia.org/class/yago/Organization108008335",
+                "http://dbpedia.org/class/yago/OrganizationsEstablishedIn1994",
+                "http://dbpedia.org/class/yago/SocialGroup107950920",
+                "http://dbpedia.org/class/yago/StandardsOrganizations",
+                "http://dbpedia.org/class/yago/YagoLegalActor",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The World Wide Web Consortium (W3C) is the main international standards organization for the World Wide Web (abbreviated WWW or W3). Founded by Tim Berners-Lee at MIT and currently headed by him, the consortium is made up of member organizations which maintain full-time staff for the purpose of working together in the development of standards for the World Wide Web. As of 29 March 2012 (2012-03-29), the World Wide Web Consortium (W3C) has 351 members."
+            },
+            "depiction": "http://upload.wikimedia.org/wikipedia/commons/4/4b/W3C_Icon.svg",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.082bb",
+                "http://yago-knowledge.org/resource/World_Wide_Web_Consortium"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:1994_establishments",
+                "http://dbpedia.org/resource/Category:Accessible_information",
+                "http://dbpedia.org/resource/Category:Cascading_Style_Sheets",
+                "http://dbpedia.org/resource/Category:Computer-related_organizations",
+                "http://dbpedia.org/resource/Category:Consortia",
+                "http://dbpedia.org/resource/Category:HTML",
+                "http://dbpedia.org/resource/Category:International_non-profit_organizations",
+                "http://dbpedia.org/resource/Category:International_nongovernmental_organizations",
+                "http://dbpedia.org/resource/Category:International_organizations",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_governance",
+                "http://dbpedia.org/resource/Category:Internet_standards",
+                "http://dbpedia.org/resource/Category:Keio_University",
+                "http://dbpedia.org/resource/Category:Massachusetts_Institute_of_Technology",
+                "http://dbpedia.org/resource/Category:Networking_standards",
+                "http://dbpedia.org/resource/Category:Organizations",
+                "http://dbpedia.org/resource/Category:Organizations_established_in_1994",
+                "http://dbpedia.org/resource/Category:Standards",
+                "http://dbpedia.org/resource/Category:Standards_organizations",
+                "http://dbpedia.org/resource/Category:Web_development",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:Websites",
+                "http://dbpedia.org/resource/Category:World_Wide_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium",
+                "http://dbpedia.org/resource/Category:World_Wide_Web_Consortium_standards"
+            ],
+            "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/W3C_Icon.svg/200px-W3C_Icon.svg.png"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/World_Wide_Web_Foundation",
+            "@type": [
+                "Agent",
+                "Company",
+                "Organisation",
+                "Organization",
+                "Thing",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Company108058098",
+                "http://dbpedia.org/class/yago/Group100031264",
+                "http://dbpedia.org/class/yago/Institution108053576",
+                "http://dbpedia.org/class/yago/InternationalNongovernmentalOrganizations",
+                "http://dbpedia.org/class/yago/NongovernmentalOrganization108009834",
+                "http://dbpedia.org/class/yago/Organization108008335",
+                "http://dbpedia.org/class/yago/OrganizationsEstablishedIn2009",
+                "http://dbpedia.org/class/yago/SocialGroup107950920",
+                "http://dbpedia.org/class/yago/YagoLegalActor",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity"
+            ],
+            "comment": {
+                "@language": "en",
+                "@value": "The World Wide Web Foundation is an organization dedicated to the improvement and availability of the World Wide Web. The formation of the organization was announced on September 14, 2008 by Tim Berners-Lee at the Newseum in Washington, D.C.. The organization launched on November 15, 2009. One of its board members is former British Prime Minister Gordon Brown."
+            },
+            "depiction": "http://upload.wikimedia.org/wikipedia/commons/7/78/Ibarguen_and_Berners-Lee_announcing_W3F.jpg",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Foundation"
+            },
+            "sameAs": [
+                "http://rdf.freebase.com/ns/m.04myd3k",
+                "http://yago-knowledge.org/resource/World_Wide_Web_Foundation"
+            ],
+            "subject": [
+                "http://dbpedia.org/resource/Category:Information_and_communication_technologies_for_development",
+                "http://dbpedia.org/resource/Category:International_nongovernmental_organizations",
+                "http://dbpedia.org/resource/Category:Organizations_established_in_2009",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Ibarguen_and_Berners-Lee_announcing_W3F.jpg/200px-Ibarguen_and_Berners-Lee_announcing_W3F.jpg"
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.01w4jzb",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "Web, The"
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12571zhx7",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02nrqx2",
+            "label": {
+                "@language": "en",
+                "@value": "The Web"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.01wf0c1",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "Webs, The"
+            },
+            "label": {
+                "@language": "en",
+                "@value": "The Webs"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0280z8",
+            "@type": [
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/education.department",
+                "http://rdf.freebase.com/ns/m.02kp6yv",
+                "http://rdf.freebase.com/ns/m.04mp13m",
+                "http://rdf.freebase.com/ns/user.cip22.default_domain.research_institute"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "CSAIL"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory is a research laboratory at the Massachusetts Institute of Technology formed by the 2003 merger of the Laboratory for Computer Science and Artificial Intelligence Laboratory. Housed within the Stata Center, CSAIL is the largest on-campus laboratory as measured by research scope and membership."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.029t60j",
+                "http://rdf.freebase.com/ns/m.059ygn8"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125cs2lt0",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.07zmp_r",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.csail.mit.edu/",
+            "label": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.03qbp5p",
+            "@type": [
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.industry",
+                "http://rdf.freebase.com/ns/common.topic"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": [
+                {
+                    "@language": "en",
+                    "@value": "Science research"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Scientific research"
+                }
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "This industry comprises establishments primarily engaged in conducting research and experimental development in the physical, engineering, and life sciences, such as agriculture, electronics, environmental, biology, botany, biotechnology, computers, chemistry, food, fisheries, forests, geology, health, mathematics, medicine, oceanography, pharmacy, physics, veterinary, and other allied subjects."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258pj1sd",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xxxsy",
+            "label": {
+                "@language": "en",
+                "@value": "Research and Development in the Physical, Engineering, and Life Sciences"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.04myd3k",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "The World Wide Web Foundation is an organization dedicated to the improvement and availability of the World Wide Web. The formation of the organization was announced on September 14, 2008 by Tim Berners-Lee at the Newseum in Washington, D.C.. The organization launched on November 15, 2009. One of its board members is former British Prime Minister Gordon Brown.\r\nThe mission of the organization is \"to advance One Web that is free and open\", \"to expand the Web's capability and robustness\" and \"to extend the Web's benefits to all people on the planet\". The foundation employs three programs, Web Science and Research, Web Technology and Practice and Web for Society, to reach the objectives of the organization.\r\nThe organization is not related to the Open Web Foundation."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0bcy_xb",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.webfoundation.org/",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Foundation"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.05vsnz4",
+            "@type": [
+                "http://rdf.freebase.com/ns/book.author",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1254y8hm2",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xryvt",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.082bb",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.natlang.abbreviated_topic",
+                "http://rdf.freebase.com/ns/base.natlang.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.politeuri.provider",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.business_operation",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language_developer",
+                "http://rdf.freebase.com/ns/computer.software_developer",
+                "http://rdf.freebase.com/ns/organization.organization",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.standards_body",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.topic",
+                "http://rdf.freebase.com/ns/user.jg.default_domain.standards_organization"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.alias": {
+                "@language": "en",
+                "@value": "W3C"
+            },
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "The World Wide Web Consortium is the main international standards organization for the World Wide Web.\r\nFounded and currently led by Tim Berners-Lee the consortium is made up of member organizations which maintain full-time staff for the purpose of working together in the development of standards for the World Wide Web. As of 7 September 2013, the World Wide Web Consortium has 383 members.\r\nW3C also engages in education and outreach, develops software and serves as an open forum for discussion about the Web."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125b02m_v",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrt3_",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.w3.org/",
+            "http://rdf.freebase.com/ns/organization.organization.date_founded": "1994-10",
+            "label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0gvrk4p",
+            "@type": [
+                "http://rdf.freebase.com/ns/award.award_nominated_work",
+                "http://rdf.freebase.com/ns/award.award_winning_work",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/tv.tv_program"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "en",
+                "@value": "The Web is an American dramatic anthology series that aired live on CBS for four seasons from July 11, 1950 to September 26, 1954. The series was also revived briefly by NBC in the summer during 1957. The program was produced by Mark Goodson and Bill Todman."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125fqztyv",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrzk0",
+            "label": {
+                "@language": "en",
+                "@value": "The Web"
+            }
+        },
+        {
+            "@id": "urn:enhancement-0058ab06-872e-87c2-b842-a31c1cc709ea",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "MIT Center for Collective Intelligence"
+            },
+            "entity-reference": "http://dbpedia.org/resource/MIT_Center_for_Collective_Intelligence",
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-d9dc798a-5e41-7d8d-5b3e-177bbed7a810"
+        },
+        {
+            "@id": "urn:enhancement-088ad932-6102-ce55-d7e4-bd817d0982e1",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "created": "2014-03-16T08:10:37.326Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 69,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": "{\"data\":\"Berners-Lee is the director of the World Wide Web Consortium (W3C), which oversees the Web's continued"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "or of the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " (W3C), wh"
+            },
+            "start": 44,
+            "type": "Organisation"
+        },
+        {
+            "@id": "urn:enhancement-0dbbb1b6-0c74-6571-77eb-69098ee7719e",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.98507464,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 315,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory (CSAIL"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " and holder of the Founders Chair at the MIT Computer Science and Artificial Intelligence Laboratory (CSAIL).  He is a director of the Web Science Research"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "ir at the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ").  He is "
+            },
+            "start": 249
+        },
+        {
+            "@id": "urn:enhancement-0f4452cc-865f-a826-9643-a3c14cbce17d",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.95,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.05vsnz4",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/book.author",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-088ad932-6102-ce55-d7e4-bd817d0982e1"
+        },
+        {
+            "@id": "urn:enhancement-10f38ec8-5a67-7679-3208-9785138c38ff",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.9375,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Science research"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.03qbp5p",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.industry",
+                "http://rdf.freebase.com/ns/common.topic"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-974f1919-5e6a-41ad-ea62-412329bb26d6"
+        },
+        {
+            "@id": "urn:enhancement-1532e941-6e97-409a-3d3a-a8e7b10f9b06",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 374,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "Web Science Research Initiative"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " Laboratory (CSAIL).  He is a director of the Web Science Research Initiative (WSRI), and a member of the advisory board of the"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "or of the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " (WSRI), a"
+            },
+            "start": 343
+        },
+        {
+            "@id": "urn:enhancement-17b7acd9-5a0e-4148-4a2b-d04194644759",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.85714287,
+            "created": "2014-03-16T08:10:37.331Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "The Web"
+            },
+            "entity-reference": "http://dbpedia.org/resource/World_Wide_Web",
+            "entity-type": "http://www.opengis.net/gml/_Feature",
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-6e889961-1509-3108-c90e-20e414387b37"
+        },
+        {
+            "@id": "urn:enhancement-2be1807b-40ee-6234-86a5-616e57a6f65e",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.082bb",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/base.natlang.abbreviated_topic",
+                "http://rdf.freebase.com/ns/base.natlang.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.politeuri.provider",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.business_operation",
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.programming_language_developer",
+                "http://rdf.freebase.com/ns/computer.software_developer",
+                "http://rdf.freebase.com/ns/organization.organization",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.standards_body",
+                "http://rdf.freebase.com/ns/user.doconnor.industry_standards.topic",
+                "http://rdf.freebase.com/ns/user.jg.default_domain.standards_organization"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-088ad932-6102-ce55-d7e4-bd817d0982e1"
+        },
+        {
+            "@id": "urn:enhancement-2f8adc47-8682-a6b8-60f9-e48d82cb2f6c",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.81714284,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "The Web"
+            },
+            "entity-reference": "http://dbpedia.org/resource/The_Web_(film)",
+            "entity-type": [
+                "Film",
+                "Work",
+                "CreativeWork",
+                "Movie",
+                "Thing"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-6e889961-1509-3108-c90e-20e414387b37"
+        },
+        {
+            "@id": "urn:enhancement-34c8b63f-eb73-f66d-12c6-980d5647ff73",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.0280z8",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/education.department",
+                "http://rdf.freebase.com/ns/m.02kp6yv",
+                "http://rdf.freebase.com/ns/m.04mp13m",
+                "http://rdf.freebase.com/ns/user.cip22.default_domain.research_institute"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-5bd990a1-a68d-e5b9-eeb6-74205293965a"
+        },
+        {
+            "@id": "urn:enhancement-44255dcf-507d-04ff-fa8e-27704bd7b650",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.99999815,
+            "created": "2014-03-16T08:10:37.276Z",
+            "creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "language": "en",
+            "type": "LinguisticSystem"
+        },
+        {
+            "@id": "urn:enhancement-4c0466cd-7156-c2ce-be65-bb1a8fd7639e",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.7777778,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 101,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "the Web's"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " World Wide Web Consortium (W3C), which oversees the Web's continued development. He is also the founder of"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": " oversees "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " continued"
+            },
+            "start": 92
+        },
+        {
+            "@id": "urn:enhancement-5bd990a1-a68d-e5b9-eeb6-74205293965a",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 308,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " and holder of the Founders Chair at the MIT Computer Science and Artificial Intelligence Laboratory (CSAIL).  He is a director of the Web Science"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "ir at the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " (CSAIL). "
+            },
+            "start": 249
+        },
+        {
+            "@id": "urn:enhancement-6e889961-1509-3108-c90e-20e414387b37",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.85714287,
+            "created": "2014-03-16T08:10:37.331Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 99,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "the Web"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " World Wide Web Consortium (W3C), which oversees the Web's continued development. He is also the founder"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": " oversees "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": "'s continu"
+            },
+            "start": 92,
+            "type": "Place"
+        },
+        {
+            "@id": "urn:enhancement-6fb63cde-06fe-ea7c-665f-a1eac3ceb2e7",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 180,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "World Wide Web Foundation"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " development. He is also the founder of the World Wide Web Foundation, and is a senior researcher and holder of the"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "er of the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ", and is a"
+            },
+            "start": 155,
+            "type": "Organisation"
+        },
+        {
+            "@id": "urn:enhancement-966a3108-71e5-a2c4-9aa8-4ed8612bbcf0",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Foundation"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.04myd3k",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/organization.organization"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-6fb63cde-06fe-ea7c-665f-a1eac3ceb2e7"
+        },
+        {
+            "@id": "urn:enhancement-974f1919-5e6a-41ad-ea62-412329bb26d6",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 0.9375,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 363,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "Science Research"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " Laboratory (CSAIL).  He is a director of the Web Science Research Initiative (WSRI), and a member of the advisory"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "f the Web "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": " Initiativ"
+            },
+            "start": 347
+        },
+        {
+            "@id": "urn:enhancement-a4a46550-d539-31af-4c75-38974004d522",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.331Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Consortium"
+            },
+            "entity-reference": "http://dbpedia.org/resource/World_Wide_Web_Consortium",
+            "entity-type": [
+                "Agent",
+                "Organisation",
+                "Organization",
+                "Thing"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-088ad932-6102-ce55-d7e4-bd817d0982e1"
+        },
+        {
+            "@id": "urn:enhancement-af9b08a7-6113-6a53-585f-d42616f7a7e9",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.64666665,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "The Web"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.01w4jzb",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-4c0466cd-7156-c2ce-be65-bb1a8fd7639e"
+        },
+        {
+            "@id": "urn:enhancement-b18dfa64-5315-de60-adf5-a39c4bb02065",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.7777778,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "The Webs"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.01wf0c1",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-4c0466cd-7156-c2ce-be65-bb1a8fd7639e"
+        },
+        {
+            "@id": "urn:enhancement-d670437e-e622-4be2-4ee1-01b617859fe0",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.98507464,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "MIT Computer Science and Artificial Intelligence Laboratory (CSAIL)"
+            },
+            "entity-reference": "http://dbpedia.org/resource/MIT_Computer_Science_and_Artificial_Intelligence_Laboratory",
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-0dbbb1b6-0c74-6571-77eb-69098ee7719e"
+        },
+        {
+            "@id": "urn:enhancement-d7509c9e-c583-2059-3994-8e6ce1920225",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "Web Science Research Initiative"
+            },
+            "entity-reference": "http://dbpedia.org/resource/Web_Science_Trust",
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-1532e941-6e97-409a-3d3a-a8e7b10f9b06"
+        },
+        {
+            "@id": "urn:enhancement-d9dc798a-5e41-7d8d-5b3e-177bbed7a810",
+            "@type": [
+                "Enhancement",
+                "TextAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "end": 463,
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "selected-text": {
+                "@language": "en",
+                "@value": "MIT Center for Collective Intelligence"
+            },
+            "selection-context": {
+                "@language": "en",
+                "@value": " and a member of the advisory board of the MIT Center for Collective Intelligence.\"}"
+            },
+            "selection-prefix": {
+                "@language": "en",
+                "@value": "rd of the "
+            },
+            "selection-suffix": {
+                "@language": "en",
+                "@value": ".\"}"
+            },
+            "start": 425
+        },
+        {
+            "@id": "urn:enhancement-f0f4f413-32a1-4dfb-57ef-de5f5b42af94",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 1.0,
+            "created": "2014-03-16T08:10:37.332Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "World Wide Web Foundation"
+            },
+            "entity-reference": "http://dbpedia.org/resource/World_Wide_Web_Foundation",
+            "entity-type": [
+                "Agent",
+                "Company",
+                "Organisation",
+                "Organization",
+                "Thing"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-6fb63cde-06fe-ea7c-665f-a1eac3ceb2e7"
+        },
+        {
+            "@id": "urn:enhancement-f4283ac3-1f2c-f252-071a-5087c911ba88",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.6666667,
+            "created": "2014-03-16T08:10:37.327Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "The Web"
+            },
+            "entity-reference": "http://rdf.freebase.com/ns/m.0gvrk4p",
+            "entity-type": [
+                "http://rdf.freebase.com/ns/award.award_nominated_work",
+                "http://rdf.freebase.com/ns/award.award_winning_work",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/tv.tv_program"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-4c0466cd-7156-c2ce-be65-bb1a8fd7639e"
+        },
+        {
+            "@id": "urn:enhancement-f8b9e18c-e8a1-5bb1-877d-0c33f53e8e50",
+            "@type": [
+                "Enhancement",
+                "EntityAnnotation"
+            ],
+            "confidence": 0.8371429,
+            "created": "2014-03-16T08:10:37.331Z",
+            "creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "entity-label": {
+                "@language": "en",
+                "@value": "The Web"
+            },
+            "entity-reference": "http://dbpedia.org/resource/The_Web_(TV_series)",
+            "entity-type": [
+                "TelevisionShow",
+                "Work",
+                "CreativeWork",
+                "Thing"
+            ],
+            "extracted-from": "urn:content-item-sha1-5f404288e0dde3180a086f2ff95562e97f15df92",
+            "relation": "urn:enhancement-6e889961-1509-3108-c90e-20e414387b37"
+        }
+    ]
+}
