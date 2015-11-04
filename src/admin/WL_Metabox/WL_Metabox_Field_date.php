@@ -14,7 +14,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
         $html = '<div class="wl-input-wrapper">
             <input type="text" class="' . $this->meta_name . '" value="' . $pickerDate . '" style="width:88%" />
             <input type="hidden" class="' . $this->meta_name . '_hidden" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $date . '" />      
-            <button class="wl-remove-input" type="button" style="width:10%">Remove</button>
+            <button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
         </div>';
         
         return $html;

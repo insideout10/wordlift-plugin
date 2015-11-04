@@ -108,7 +108,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
         $html = '<div class="wl-input-wrapper wl-autocomplete-wrapper">
                     <input type="text" class="' . $this->meta_name . ' wl-autocomplete" value="' . $label . '" style="width:88%" />
                     <input type="hidden" class="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" />
-                    <button class="wl-remove-input" type="button" style="width:10%">Remove</button>
+                    <button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
                 </div>';
 
         return $html;
