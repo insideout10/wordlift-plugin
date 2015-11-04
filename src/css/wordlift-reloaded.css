@@ -2384,3 +2384,8 @@ body#tinymce .textannotation.wl-thing {
 body#tinymce[contenteditable=false] {
   background-color: #f1f1f1;
 }
+/* metaboxes */
+.wl-input-notice {
+  color: darkred;
+  font-size: 10px;
+}

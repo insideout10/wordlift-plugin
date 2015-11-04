@@ -50,6 +50,8 @@ jQuery(document).ready(function($){
             // Impose default new values
             newInputDiv.find('input').val('');
             
+            newInputDiv.find('.wl-input-notice').text('');
+            
             // Move focus to the empty new <input>
             newInputDiv.find('input:visible').focus();
 
@@ -90,11 +92,20 @@ jQuery(document).ready(function($){
         //    - new entity name.
         function synchInputValueWithAutocompleteResults(){
             var newValue = $(inputElement).val();
+            var noticeText = '';
             
             // If the typed name is in the autocomplete list, put the id in the value field
             if( latestResults[newValue] ) {
                 newValue = latestResults[newValue].id;
+            } else {
+                if( newValue !== '' ){
+                    // If we are creating a new entity, notify the user
+                    noticeText = newValue + ' will be created.';
+                }
             }
+            
+            // Update the notice
+            $(inputElement).siblings('.wl-input-notice').text( noticeText );
             
             // Update hidden <input> value
             $(hiddenInput).val( newValue );
@@ -138,12 +149,8 @@ jQuery(document).ready(function($){
             },
             
             // Callback that fires when a suggestion is approved.
-            select: function(event, ui){
-                
-                var chosenEntity = ui.item.value;
-                var chosenEntityObj = latestResults[chosenEntity];
-                
-                $(hiddenInput).val( chosenEntityObj.id );
+            close: function(event, ui){                
+                synchInputValueWithAutocompleteResults();
             }
         });
     }
