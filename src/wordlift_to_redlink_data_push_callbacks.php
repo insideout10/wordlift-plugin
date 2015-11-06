@@ -132,6 +132,19 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// create a new empty statement.
 	$delete_stmt = '';
 	$sparql      = '';
+    
+    // delete on RL all statements regarding properties set from WL (necessary when changing entity type)
+    $all_custom_fields = wl_entity_taxonomy_get_custom_fields();
+    $predicates_to_be_deleted = array();
+    foreach( $all_custom_fields as $type => $fields ) {
+        foreach( $fields as $cf ){
+            $predicate = $cf['predicate'];
+            if( !in_array( $predicate, $predicates_to_be_deleted ) ){
+                $predicates_to_be_deleted[] = $predicate;
+                $delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
+            }
+        }
+    }
 
 	// set the same as.
 	$same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' );
@@ -174,9 +187,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 				} else {
 					$type = $settings['export_type'];
 				}
-
-				// add the delete statement for later execution.
-				$delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
                 
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
@@ -204,7 +214,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// Get the entity types.
 	$type_uris = wl_get_entity_rdf_types( $entity_post->ID );
 
-	// Support type are only schema.org ones: it could by null
+	// Support type are only schema.org ones: it could be null
 	foreach ( $type_uris as $type_uri ) {
 		$type_uri = wl_sparql_escape_uri( $type_uri );
 		$sparql .= "<$uri_e> a <$type_uri> . \n";
@@ -234,11 +244,9 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     DELETE { <$uri_e> a ?o . } WHERE  { <$uri_e> a ?o . };
     DELETE { <$uri_e> dct:relation ?o . } WHERE  { <$uri_e> dct:relation ?o . };
     DELETE { <$uri_e> schema:image ?o . } WHERE  { <$uri_e> schema:image ?o . };
-    DELETE { <$uri_e> geo:lat ?o . } WHERE  { <$uri_e> geo:lat ?o . };
-    DELETE { <$uri_e> geo:long ?o . } WHERE  { <$uri_e> geo:long ?o . };
     INSERT DATA { $sparql };
 EOF;
-
+    
 	rl_execute_sparql_update_query( $query );
 }
 
