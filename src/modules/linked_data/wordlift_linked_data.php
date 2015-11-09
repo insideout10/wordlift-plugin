@@ -299,9 +299,16 @@ function wl_save_entity( $entity_properties ) {
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
 	// the local SEO form values to the created entity (https://github.com/insideout10/wordlift-plugin/issues/156)
-	global $wpseo_metabox;
+	// Same thing applies to SEO Ultimate (https://github.com/insideout10/wordlift-plugin/issues/148)
+	// This does NOT affect saving an entity from the entity admin page since this function is called when an entity
+	// is created when saving a post.
+	global $wpseo_metabox, $seo_ultimate;
 	if ( isset( $wpseo_metabox ) ) {
 		remove_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
+	}
+
+	if (isset($seo_ultimate)) {
+		remove_action( 'save_post', array( $seo_ultimate, 'save_postmeta_box' ) );
 	}
 
 	// create or update the post.
@@ -310,6 +317,11 @@ function wl_save_entity( $entity_properties ) {
 	// If Yoast is installed and active, we restore the Yoast save_postdata hook (https://github.com/insideout10/wordlift-plugin/issues/156)
 	if ( isset( $wpseo_metabox ) ) {
 		add_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
+	}
+
+	// If SEO Ultimate is installed, add back the hook we removed a few lines above.
+	if (isset($seo_ultimate)) {
+		add_action( 'save_post',  array( $seo_ultimate, 'save_postmeta_box' ), 10, 2 );
 	}
 
 	// TODO: handle errors.
