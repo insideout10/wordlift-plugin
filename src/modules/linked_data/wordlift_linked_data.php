@@ -295,10 +295,22 @@ function wl_save_entity( $entity_properties ) {
             if ( 'public' == $post->post_status ) {
             	$params[ 'post_status' ] = $post->post_status;
             }
-	}	
-	
+	}
+
+	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
+	// the local SEO form values to the created entity (https://github.com/insideout10/wordlift-plugin/issues/156)
+	global $wpseo_metabox;
+	if ( isset( $wpseo_metabox ) ) {
+		remove_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
+	}
+
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );
+
+	// If Yoast is installed and active, we restore the Yoast save_postdata hook (https://github.com/insideout10/wordlift-plugin/issues/156)
+	if ( isset( $wpseo_metabox ) ) {
+		add_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
+	}
 
 	// TODO: handle errors.
 	if ( is_wp_error( $post_id ) ) {
