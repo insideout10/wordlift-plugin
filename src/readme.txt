@@ -76,6 +76,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 
+= 3.0.14 (2015-11-09) =
+ * Fix: [issue 156](https://github.com/insideout10/wordlift-plugin/issues/156): Yoast compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
+
 = 3.0.13 (2015-10-30) =
  * Fix: [issue 95](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
  * Fix: [issue 95](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
