@@ -75,10 +75,6 @@ function wl_entity_type_taxonomy_save_custom_meta($term_id)
     }
 }
 
-add_action('edited_wl_entity_type', 'wl_entity_type_taxonomy_save_custom_meta', 10, 2);
-add_action('create_wl_entity_type', 'wl_entity_type_taxonomy_save_custom_meta', 10, 2);
-
-
 // Add term page
 function wl_entity_type_taxonomy_add_term_fields()
 {
