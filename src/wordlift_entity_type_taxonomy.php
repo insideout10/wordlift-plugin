@@ -46,8 +46,6 @@ function wl_entity_type_taxonomy_register() {
 /**
  * Get the entity main type for the specified post ID.
  *
- * @see wl_entity_type_taxonomy_update_term for a list of keys in the returned array.
- *
  * @param int $post_id The post ID
  *
  * @return array|null An array of type properties or null if no term is associated
