@@ -15,7 +15,9 @@ function wl_save_image( $url ) {
 	$path  = $parts['path'];
 
 	// Get the bare filename (filename w/o the extension).
-	$basename = pathinfo( $path, PATHINFO_FILENAME ) . '-' . uniqid( date( 'YmdH-' ) );
+	// Sanitize filename before saving the current image as attachment
+	// See https://codex.wordpress.org/Function_Reference/sanitize_file_name
+	$basename = sanitize_file_name( pathinfo( $path, PATHINFO_FILENAME ) . '-' . uniqid( date( 'YmdH-' ) ) );
 
 	// Chunk the bare name to get a subpath.
 	$chunks = chunk_split( strtolower( $basename ), 3, DIRECTORY_SEPARATOR );
