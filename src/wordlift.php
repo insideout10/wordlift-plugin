@@ -561,53 +561,6 @@ function wl_replace_item_id_with_uri( $content ) {
 
 add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
 
-
-/**
- * Merge the custom_fields and microdata_templates of an entity type with the ones from parents.
- * This function is used by *wl_install_entity_type_data* at installation time.
- *
- * @param array $child_term Child entity type (expanded as array).
- * @param array $parent_term_ids containing the ids of the parent types.
- *
- * @return array $child_term enriched with parents' custom_fields and microdata_template
- */
-function wl_entity_type_taxonomy_type_inheritance( $child_term, $parent_term_ids ) {
-
-	// If we re at the top of hierarchy ...
-	if ( empty( $parent_term_ids ) || $parent_term_ids[0] == 0 ) {
-		// ... return term as it is.
-		return $child_term;
-	}
-
-	// Loop over parents
-	$merged_custom_fields      = $child_term['custom_fields'];
-	$merged_microdata_template = $child_term['microdata_template'];
-	foreach ( $parent_term_ids as $parent_term_id ) {
-
-		// Get a parent's custom fields
-		$parent_term                    = wl_entity_type_taxonomy_get_term_options( $parent_term_id );
-		$parent_term_custom_fields      = $parent_term['custom_fields'];
-		$parent_term_microdata_template = $parent_term['microdata_template'];
-
-		// Merge custom fields (array)
-		$merged_custom_fields = array_merge( $merged_custom_fields, $parent_term_custom_fields );
-		// Merge microdata templates (string)
-		$merged_microdata_template = $merged_microdata_template . $parent_term_microdata_template;
-	}
-
-	// Ensure there are no duplications in microdata_templates
-	$exploded_microdata_template = explode( '}}', $merged_microdata_template );
-	$unique_microdata_template   = array_unique( $exploded_microdata_template );
-	$merged_microdata_template   = implode( '}}', $unique_microdata_template );
-
-	// Update child_term with inherited structures
-	$child_term['custom_fields']      = $merged_custom_fields;
-	$child_term['microdata_template'] = $merged_microdata_template;
-
-	// Return new version of the term
-	return $child_term;
-}
-
 require_once( 'wordlift_entity_functions.php' );
 
 // add editor related methods.
@@ -735,4 +688,5 @@ function run_wordlift() {
 	$plugin->run();
 
 }
+
 run_wordlift();
