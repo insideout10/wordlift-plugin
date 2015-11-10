@@ -85,7 +85,6 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 = 3.0.13 (2015-10-30) =
  * Fix: [issue 95](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
- * Fix: [issue 95](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
 
 = 3.0.12 (2015-10-23) =
  * Enhancement: [issue 85](https://github.com/insideout10/wordlift-plugin/issues/85). Now structured data are added in the entity pages for the current entity itself
