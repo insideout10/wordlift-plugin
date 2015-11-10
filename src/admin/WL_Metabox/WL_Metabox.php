@@ -6,11 +6,33 @@ require_once( 'WL_Metabox_Field_uri.php' );
 require_once( 'WL_Metabox_Field_coordinates.php' );
 require_once( 'WL_Metabox_Field_sameas.php' );
 
+/**
+ * Class WL_Metabox
+ *
+ * @since 3.1.0
+ */
 class WL_Metabox {
 
 	public $fields;
 
+	/**
+	 * The Log service.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var Wordlift_Log_Service $log_service The Log service.
+	 */
+	private $log_service;
+
+	/**
+	 * WL_Metabox constructor.
+	 *
+	 * @since 3.1.0
+	 */
 	public function __construct() {
+
+		// Create a logger instance.
+		$this->log_service = Wordlift_Log_Service::get_logger( 'WL_Metabox' );
 
 		// Add hooks to print metaboxes and save submitted data.
 		add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ) );
@@ -33,19 +55,22 @@ class WL_Metabox {
 			$this,
 			'html'
 		), WL_ENTITY_TYPE_NAME, 'normal', 'high' );
+
 	}
 
 	/**
 	 * Called from WP to print the metabox content in page.
 	 *
-	 * @param WP_Post $entity
+	 * @since 3.1.0
+	 *
+	 * @param WP_Post $post The post.
 	 */
-	public function html( $entity ) {
+	public function html( $post ) {
 
 		// Build the fields we need to print.
-		$this->instantiate_fields( $entity->ID );
+		$this->instantiate_fields( $post->ID );
 
-		$html = '';
+		$this->log_service->trace( var_export( $this->fields, true ) );
 
 		// Loop over the fields
 		foreach ( $this->fields as $field ) {
@@ -54,29 +79,31 @@ class WL_Metabox {
 			$field->get_data();
 
 			// print field HTML (nonce included)
-			$html .= $field->html();
+			echo $field->html();
 		}
 
-		// Echo Fields in page.
-		echo $html;
 	}
 
 	/**
 	 * Read the WL <-> Schema mapping and build the Fields for the entity being edited.
 	 *
-	 * @param int $entity_id
-	 *
 	 * Note: the first function that calls this method will instantiate the fields.
 	 * Why it isn't called from the constructor? Because we need to hook this process as late as possible.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param int $post_id The post id.
 	 */
-	public function instantiate_fields( $entity_id ) {
+	public function instantiate_fields( $post_id ) {
 
 		// This function must be called only once. Not called from the constructor because WP hooks have a rococo ordering
 		if ( isset( $this->fields ) ) {
 			return;
 		}
 
-		$entity_type = wl_entity_taxonomy_get_custom_fields( $entity_id );
+		$entity_type = wl_entity_taxonomy_get_custom_fields( $post_id );
+
+		$this->log_service->trace( "Instantiating fields [ entity type :: " . var_export( $entity_type, true ) . " ]" );
 
 		if ( isset( $entity_type ) ) {
 
