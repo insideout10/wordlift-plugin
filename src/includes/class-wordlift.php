@@ -130,6 +130,10 @@ class Wordlift {
 
 		$this->loader = new Wordlift_Loader();
 
+		// Instantiate a global logger.
+		global $wl_logger;
+		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
+
 	}
 
 	/**
