@@ -56,25 +56,6 @@ class Wordlift_Taxonomy_Walker extends Walker {
     }
 }
 
-/**
- * Save extra taxonomy fields callback function.
- */
-function wl_entity_type_taxonomy_save_custom_meta($term_id)
-{
-    if (isset($_POST['term_meta'])) {
-
-        // Get the values for the term.
-        $css_class = $_POST['term_meta']['css_class'];
-        $uri = $_POST['term_meta']['uri'];
-        $same_as = (!empty($_POST['term_meta']['same_as']) ? preg_split( "/\\r\\n|\\r|\\n/", $_POST['term_meta']['same_as'] ) : array());
-
-        // Update the term data.
-        wl_entity_type_taxonomy_update_term($term_id, $css_class, $uri, $same_as);
-
-        wl_write_log("wl_entity_type_save_taxonomy_custom_meta [ term id :: $term_id ]");
-    }
-}
-
 // Add term page
 function wl_entity_type_taxonomy_add_term_fields()
 {
