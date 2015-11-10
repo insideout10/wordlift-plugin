@@ -70,8 +70,6 @@ class WL_Metabox {
 		// Build the fields we need to print.
 		$this->instantiate_fields( $post->ID );
 
-		$this->log_service->trace( var_export( $this->fields, true ) );
-
 		// Loop over the fields
 		foreach ( $this->fields as $field ) {
 
@@ -103,7 +101,7 @@ class WL_Metabox {
 
 		$entity_type = wl_entity_taxonomy_get_custom_fields( $post_id );
 
-		$this->log_service->trace( "Instantiating fields [ entity type :: " . var_export( $entity_type, true ) . " ]" );
+		$this->log_service->trace( "Instantiating fields [ post id :: $post_id ][ entity type :: " . var_export( $entity_type, true ) . " ]" );
 
 		if ( isset( $entity_type ) ) {
 
