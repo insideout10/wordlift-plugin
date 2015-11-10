@@ -174,7 +174,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		// The value in the export fields must be rewritten as triple predicates, this
 		// is what we're going to do here.
 
-		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
+//		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
 
 		if ( isset( $main_type['custom_fields'] ) ) {
 			foreach ( $main_type['custom_fields'] as $field => $settings ) {

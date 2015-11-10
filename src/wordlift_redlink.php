@@ -66,9 +66,9 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 		return false;
 	}
 
-	wl_write_log( "rl_execute_sparql_query [ url :: $url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
-	wl_write_log( "\n" . $query );
-	wl_write_log( "]" );
+//	wl_write_log( "rl_execute_sparql_query [ url :: $url ][ response code :: " . $response['response']['code'] . " ][ query :: " );
+//	wl_write_log( "\n" . $query );
+//	wl_write_log( "]" );
 
 	return true;
 }

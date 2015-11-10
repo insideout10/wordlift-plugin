@@ -122,7 +122,7 @@ function wl_get_user_by_uri( $uri ) {
 		return null;
 	}
 
-	wl_write_log( "wl_get_user_by_uri [ uri :: $uri ][ user id :: " . $users[0]->ID . " ]" );
+//	wl_write_log( "wl_get_user_by_uri [ uri :: $uri ][ user id :: " . $users[0]->ID . " ]" );
 
 	return $users[0];
 }
