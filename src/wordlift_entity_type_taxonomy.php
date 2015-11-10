@@ -108,9 +108,7 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 function wl_entity_type_taxonomy_get_term_options( $term_id ) {
 
 	$term = get_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id" );
-
-	// wl_write_log( "wl_entity_type_taxonomy_get_term_options [ term :: " . var_export( $term , true ) . " ]" );
-
+	
 	return $term;
 }
 
