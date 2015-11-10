@@ -551,7 +551,7 @@ add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
  *
  * @return Array $child_term enriched with parents' custom_fields and microdata_template
  */
-function wl_entity_type_taxonomy_type_inheritage( $child_term, $parent_term_ids ) {
+function wl_entity_type_taxonomy_type_inheritance( $child_term, $parent_term_ids ) {
 
 	// If we re at the top of hierarchy ...
 	if ( empty( $parent_term_ids ) || $parent_term_ids[0] == 0 ) {

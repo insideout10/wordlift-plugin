@@ -278,7 +278,7 @@ function wl_core_install_entity_type_data() {
 		) );
 
 		// Inherit custom fields and microdata template from parent.
-		$term = wl_entity_type_taxonomy_type_inheritage( $term, $parent_ids );
+		$term = wl_entity_type_taxonomy_type_inheritance( $term, $parent_ids );
 
 		// Add custom metadata to the term.
 		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['microdata_template'] );
