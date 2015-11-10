@@ -5,6 +5,9 @@
  */
 function wl_core_install_entity_type_data() {
 
+	global $wl_logger;
+	$wl_logger->trace( 'Installing entity type data...' );
+
 	// Ensure the custom type and the taxonomy are registered.
 	wl_entity_type_register();
 	wl_entity_type_taxonomy_register();
@@ -282,7 +285,9 @@ function wl_core_install_entity_type_data() {
 
 		// Add custom metadata to the term.
 		wl_entity_type_taxonomy_update_term( $result['term_id'], $term['css'], $term['uri'], $term['same_as'], $term['custom_fields'], $term['templates'], $term['microdata_template'] );
+
 	}
+
 }
 
 /**
