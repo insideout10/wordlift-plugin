@@ -200,7 +200,7 @@ class Wordlift_Schema_Service {
 	 */
 	private function get_creative_work_schema() {
 
-		return array(
+		$schema = array(
 			'label'              => 'CreativeWork',
 			'description'        => 'A creative work (or a Music Album).',
 			'parents'            => array( 'thing' ), // give term slug as parent
@@ -227,6 +227,11 @@ class Wordlift_Schema_Service {
 			)
 		);
 
+		// Merge the custom fields with those provided by the thing schema.
+		$thing_schema            = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+
+		return $schema;
 	}
 
 	/**
@@ -238,11 +243,11 @@ class Wordlift_Schema_Service {
 	 */
 	private function get_event_schema() {
 
-		return array(
+		$schema = array(
 			'label'              => 'Event',
-			'description'        => 'An event.',
+			'description'        => 'An event . ',
 			'parents'            => array( 'thing' ),
-			'css'                => 'wl-event',
+			'css'                => 'wl - event',
 			'uri'                => 'http://schema.org/Event',
 			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
 			'custom_fields'      => array(
@@ -277,6 +282,11 @@ class Wordlift_Schema_Service {
 			)
 		);
 
+		// Merge the custom fields with those provided by the thing schema.
+		$thing_schema            = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+
+		return $schema;
 	}
 
 	/**
@@ -288,7 +298,7 @@ class Wordlift_Schema_Service {
 	 */
 	private function get_organization_schema() {
 
-		return array(
+		$schema = array(
 			'label'              => 'Organization',
 			'description'        => 'An organization, including a government or a newspaper.',
 			'parents'            => array( 'thing' ),
@@ -316,6 +326,11 @@ class Wordlift_Schema_Service {
 			)
 		);
 
+		// Merge the custom fields with those provided by the thing schema.
+		$thing_schema            = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+
+		return $schema;
 	}
 
 	/**
@@ -327,7 +342,7 @@ class Wordlift_Schema_Service {
 	 */
 	private function get_person_schema() {
 
-		return array(
+		$schema = array(
 			'label'              => 'Person',
 			'description'        => 'A person (or a music artist).',
 			'parents'            => array( 'thing' ),
@@ -372,6 +387,12 @@ class Wordlift_Schema_Service {
 			)
 		);
 
+		// Merge the custom fields with those provided by the thing schema.
+		$thing_schema            = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+
+		return $schema;
+
 	}
 
 	/**
@@ -383,7 +404,7 @@ class Wordlift_Schema_Service {
 	 */
 	private function get_place_schema() {
 
-		return array(
+		$schema = array(
 			'label'              => 'Place',
 			'description'        => 'A place.',
 			'parents'            => array( 'thing' ),
@@ -426,6 +447,11 @@ class Wordlift_Schema_Service {
 			)
 		);
 
+		// Merge the custom fields with those provided by the thing schema.
+		$thing_schema            = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+
+		return $schema;
 	}
 
 	/**
@@ -437,7 +463,7 @@ class Wordlift_Schema_Service {
 	 */
 	private function get_local_business_schema() {
 
-		return array(
+		$schema = array(
 			'label'              => 'LocalBusiness',
 			'description'        => 'A local business.',
 			'parents'            => array( 'place', 'organization' ),
@@ -448,12 +474,23 @@ class Wordlift_Schema_Service {
 				'https://schema.org/Store'
 			),
 			'custom_fields'      => array(),
-			'microdata_template' => '',
+			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+                                    {{latitude}}
+                                    {{longitude}}
+                                </span>
+                                {{address}}
+                                {{founder}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
 		);
 
+		// Merge the custom fields with those provided by the place and organization schema.
+		$place_schema            = $this->get_place_schema();
+		$organization_schema     = $this->get_organization_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $place_schema['custom_fields'], $organization_schema['custom_fields'] );
+
+		return $schema;
 	}
 
 }
