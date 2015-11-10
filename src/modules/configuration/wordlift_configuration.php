@@ -496,13 +496,13 @@ add_action( 'admin_init', 'wl_configuration_check' );
  */
 function wl_configuration_update_key( $old_value, $new_value ) {
 
-	wl_write_log( "Going to request set redlink dataset uri if needed" );
+	// wl_write_log( "Going to request set redlink dataset uri if needed" );
 
 	// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
 	$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
 	$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
 
-	 wl_write_log( "[ old value :: $old_key ][ new value :: $new_key ]" );
+	// wl_write_log( "[ old value :: $old_key ][ new value :: $new_key ]" );
 
 	// If the key hasn't changed, don't do anything.
 	// WARN The 'update_option' hook is fired only if the new and old value are not equal
@@ -521,7 +521,7 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 	// If the response is valid, then set the value.
 	if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 
-		wl_write_log( "[ Retrieved dataset :: " . $response['body'] . " ]" );
+		// wl_write_log( "[ Retrieved dataset :: " . $response['body'] . " ]" );
 		wl_configuration_set_redlink_dataset_uri( $response['body'] );
 
 	} else {

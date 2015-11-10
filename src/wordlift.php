@@ -311,7 +311,7 @@ function wl_get_post_modified_time( $post ) {
  */
 function wl_get_image_urls( $post_id ) {
 
-	wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
+	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
 
 	$images = get_children( array(
 		'post_parent'    => $post_id,
@@ -336,7 +336,7 @@ function wl_get_image_urls( $post_id ) {
 		}
 	}
 
-	wl_write_log( "wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count( $image_urls ) . " ]" );
+	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count( $image_urls ) . " ]" );
 
 	return $image_urls;
 }
@@ -376,7 +376,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
  */
 function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 
-	wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
+	// wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
 
 	$posts = get_posts( array(
 		'post_type'      => 'attachment',

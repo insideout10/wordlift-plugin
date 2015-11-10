@@ -50,7 +50,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	remove_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
-	wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
+	// wl_write_log( "[ post id :: $post_id ][ autosave :: false ][ post type :: $post->post_type ]" );
     
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
@@ -87,11 +87,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
             // Local Redlink uris need to be used here
             foreach ( $boxes_via_post as $predicate => $entity_uris ) {
                 foreach ( $entity_uris as $entity_uri ) {
-                	wl_write_log("Going to map predicates for uri $entity_uri ");
+                	// wl_write_log("Going to map predicates for uri $entity_uri ");
                 	// Retrieve the entity label needed to build the uri
                 	$label = $entities_via_post[ stripslashes( $entity_uri ) ][ 'label' ];
                     $uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
-                    wl_write_log("Going to map predicate $predicate to uri $uri ");
+                    // wl_write_log("Going to map predicate $predicate to uri $uri ");
                     $entities_predicates_mapping[ $uri ][] = $predicate; 
                 }	
             }
@@ -123,18 +123,18 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
     // Save relation instances
     foreach( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
         
-        wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
+        // wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
         
         if( $entities_predicates_mapping ) { 
 
-        	wl_write_log(" Going to manage relation instances according to the following mapping");
+        	// wl_write_log(" Going to manage relation instances according to the following mapping");
          	
             // Retrieve the entity uri
             $referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
             // Retrieve predicates for the current uri
             if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
            		foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-                	wl_write_log(" Going to add relation with predicate $predicate");
+                	// wl_write_log(" Going to add relation with predicate $predicate");
                 	wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
             	}
             } else {
@@ -187,7 +187,7 @@ add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1);
  */
 function wl_save_entities( $entities, $related_post_id = null ) {
 
-	wl_write_log( "[ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
+	// wl_write_log( "[ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
 
 	// Prepare the return array.
 	$posts = array();
@@ -274,7 +274,7 @@ function wl_save_entity( $entity_properties ) {
 		$entity_types = array();
 	}
 
-	wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
+	// wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
         
         // Prepare properties of the new entity.
 	$params = array(

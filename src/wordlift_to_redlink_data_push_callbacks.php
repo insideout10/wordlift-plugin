@@ -26,7 +26,7 @@ function wl_push_post_to_redlink( $post ) {
 		return;
 	}
 
-	wl_write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
+	// wl_write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
 
 	// Get the site language in order to define the literals language.
 	$site_language = wl_configuration_get_site_language();

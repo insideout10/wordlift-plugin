@@ -164,7 +164,7 @@ function wl_get_entity_uri( $post_id ) {
  */
 function wl_set_entity_uri( $post_id, $uri ) {
 
-	wl_write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
 
 	return update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, $uri );
 }

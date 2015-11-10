@@ -5,8 +5,8 @@
  */
 function wl_core_install_entity_type_data() {
 
-	global $wl_logger;
-	$wl_logger->trace( 'Installing entity type data...' );
+	// global $wl_logger;
+	// $wl_logger->trace( 'Installing entity type data...' );
 
 	// Ensure the custom type and the taxonomy are registered.
 	wl_entity_type_register();
