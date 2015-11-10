@@ -101,8 +101,6 @@ class WL_Metabox {
 
 		$entity_type = wl_entity_taxonomy_get_custom_fields( $post_id );
 
-		$this->log_service->trace( "Instantiating fields [ post id :: $post_id ][ entity type :: " . var_export( $entity_type, true ) . " ]" );
-
 		if ( isset( $entity_type ) ) {
 
 			/**
