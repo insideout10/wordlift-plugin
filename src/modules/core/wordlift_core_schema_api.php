@@ -231,21 +231,21 @@ function wl_schema_get_type_properties( $type_name ) {
  * @return array of allowed types or NULL in case of property not found.
  * 
  * The following types are supported (defined as constants):
- * - WL_DATA_TYPE_DATE
+ * - Wordlift_Schema_Service::DATA_TYPE_DATE
  * - WL_DATA_TYPE_INTEGER
- * - WL_DATA_TYPE_DOUBLE
+ * - Wordlift_Schema_Service::DATA_TYPE_DOUBLE
  * - WL_DATA_TYPE_BOOLEAN
- * - WL_DATA_TYPE_STRING
- * - WL_DATA_TYPE_URI
+ * - Wordlift_Schema_Service::DATA_TYPE_STRING
+ * - Wordlift_Schema_Service::DATA_TYPE_URI
  * - a schema.org URI when the property type supports a schema.org entity (e.g. http://schema.org/Place)
  */
 function wl_schema_get_property_expected_type( $property_name ) {
     
     // This is the actual structure of a custom_field.
     /*
-     * WL_CUSTOM_FIELD_LOCATION       => array(
+     * Wordlift_Schema_Service::FIELD_LOCATION       => array(
      *      'predicate'   => 'http://schema.org/location',
-     *      'type'        => WL_DATA_TYPE_URI,
+     *      'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
      *      'export_type' => 'http://schema.org/PostalAddress',
      *      'constraints' => array(
      *              'uri_type' => 'Place'

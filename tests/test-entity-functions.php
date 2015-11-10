@@ -55,23 +55,23 @@ class EntityFunctionsTest extends WP_UnitTestCase
      */
     function testEntityGetMetaType() {
         
-        $type = wl_get_meta_type( WL_CUSTOM_FIELD_GEO_LATITUDE );
+        $type = wl_get_meta_type( Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
         $this->assertEquals( 'double', $type );
         $type = wl_get_meta_type( 'latitude' );
         $this->assertEquals( 'double', $type );
-        $this->assertEquals( WL_DATA_TYPE_DOUBLE, $type );
+        $this->assertEquals( Wordlift_Schema_Service::DATA_TYPE_DOUBLE, $type );
         
-        $type = wl_get_meta_type( WL_CUSTOM_FIELD_CAL_DATE_START );
+        $type = wl_get_meta_type( Wordlift_Schema_Service::FIELD_DATE_START );
         $this->assertEquals( 'date', $type );
         $type = wl_get_meta_type( 'startDate' );
         $this->assertEquals( 'date', $type );
-        $this->assertEquals( WL_DATA_TYPE_DATE, $type );
+        $this->assertEquals( Wordlift_Schema_Service::DATA_TYPE_DATE, $type );
 
-        $type = wl_get_meta_type( WL_CUSTOM_FIELD_LOCATION );
+        $type = wl_get_meta_type( Wordlift_Schema_Service::FIELD_LOCATION );
         $this->assertEquals( 'uri', $type );
         $type = wl_get_meta_type( 'location' );
         $this->assertEquals( 'uri', $type );
-        $this->assertEquals( WL_DATA_TYPE_URI, $type );
+        $this->assertEquals( Wordlift_Schema_Service::DATA_TYPE_URI, $type );
         
         $type = wl_get_meta_type( 'random_silly_name' );
         $this->assertEquals( null, $type );
@@ -88,24 +88,24 @@ class EntityFunctionsTest extends WP_UnitTestCase
         
         $custom_fields = wl_entity_taxonomy_get_custom_fields( $place_id );
         
-        $this->assertArrayHasKey( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
-        $this->assertArrayHasKey( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
-        $this->assertArrayHasKey( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
-        $this->assertArrayNotHasKey( WL_CUSTOM_FIELD_LOCATION, $custom_fields );    // Negative test
-        $this->assertArrayHasKey( 'predicate', $custom_fields[WL_CUSTOM_FIELD_GEO_LATITUDE] );
-        $this->assertArrayHasKey( 'type', $custom_fields[WL_CUSTOM_FIELD_GEO_LATITUDE] );
-        $this->assertArrayHasKey( 'export_type', $custom_fields[WL_CUSTOM_FIELD_GEO_LATITUDE] );
+        $this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $custom_fields );
+        $this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $custom_fields );
+        $this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_ADDRESS, $custom_fields );
+        $this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_LOCATION, $custom_fields );    // Negative test
+        $this->assertArrayHasKey( 'predicate', $custom_fields[Wordlift_Schema_Service::FIELD_GEO_LATITUDE] );
+        $this->assertArrayHasKey( 'type', $custom_fields[Wordlift_Schema_Service::FIELD_GEO_LATITUDE] );
+        $this->assertArrayHasKey( 'export_type', $custom_fields[Wordlift_Schema_Service::FIELD_GEO_LATITUDE] );
         
         // Get all custom_fileds
         $custom_fields = wl_entity_taxonomy_get_custom_fields();
         $custom_fields = print_r( $custom_fields, true ); // Stringify for brevity
         
-        $this->assertContains( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_GEO_LONGITUDE, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_ADDRESS, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_CAL_DATE_START, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_CAL_DATE_END, $custom_fields );
-        $this->assertContains( WL_CUSTOM_FIELD_LOCATION, $custom_fields );
+        $this->assertContains( Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $custom_fields );
+        $this->assertContains( Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $custom_fields );
+        $this->assertContains( Wordlift_Schema_Service::FIELD_ADDRESS, $custom_fields );
+        $this->assertContains( Wordlift_Schema_Service::FIELD_DATE_START, $custom_fields );
+        $this->assertContains( Wordlift_Schema_Service::FIELD_DATE_END, $custom_fields );
+        $this->assertContains( Wordlift_Schema_Service::FIELD_LOCATION, $custom_fields );
     }
     
     function testWlEntityTaxonomyCustomFieldsInheritance() {
@@ -119,13 +119,13 @@ class EntityFunctionsTest extends WP_UnitTestCase
         
         // Check inherited custom fields:
         // sameAs from Thing
-        $this->assertArrayHasKey( WL_CUSTOM_FIELD_SAME_AS, $custom_fields );
+        $this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_SAME_AS, $custom_fields );
         // latitude from Place
-        $this->assertArrayHasKey( WL_CUSTOM_FIELD_GEO_LATITUDE, $custom_fields );
+        $this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $custom_fields );
         // founder from Organization
-        $this->assertArrayHasKey( WL_CUSTOM_FIELD_FOUNDER, $custom_fields );
+        $this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_FOUNDER, $custom_fields );
         // negative test
-        $this->assertArrayNotHasKey( WL_CUSTOM_FIELD_CAL_DATE_START, $custom_fields ); 
+        $this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_DATE_START, $custom_fields );
     }
     
     function testWlEntityTaxonomyMicrodataTemplateInheritance() {

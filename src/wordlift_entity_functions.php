@@ -19,7 +19,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 			'meta_query'     => array(
 				'relation' => 'OR',
 				array(
-					'key'     => WL_CUSTOM_FIELD_SAME_AS,
+					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $uri,
 					'compare' => '='
 				),
@@ -67,7 +67,7 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 			'meta_query'  => array(
 				'relation' => 'OR',
 				array(
-					'key'     => WL_CUSTOM_FIELD_SAME_AS,
+					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $uris,
 					'compare' => 'IN'
 				),

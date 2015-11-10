@@ -38,19 +38,19 @@ class TimelineShortcodeTest extends WP_UnitTestCase
         $entity_1_id = wl_create_post( "Entity 1's\nText", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
         $thumbnail_1_id = $this->createPostThumbnail( 'http://example.org/entity_1.png', 'Entity 1 Thumbnail', 'image/png', 'dummy/image_1.png', $entity_1_id );
         wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-01', true );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-07', true );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
         $entity_2_id = wl_create_post( "Entity 2's\nText", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
         $thumbnail_2_id = $this->createPostThumbnail( 'http://example.org/entity_2.png', 'Entity 2 Thumbnail', 'image/png', 'dummy/image_2.png', $entity_2_id );
         wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
-        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-02', true );
-        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-08', true );
+        add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
+        add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
         
         $entity_3_id = wl_create_post( '', 'entity-3', 'Entity 3', 'publish', 'entity' );
         wl_set_entity_main_type( $entity_3_id, 'http://schema.org/Event' );
-        add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-03', true );
-        add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-09', true );
+        add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', true );
+        add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', true );
 
         $entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
         wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
@@ -81,10 +81,10 @@ class TimelineShortcodeTest extends WP_UnitTestCase
         $entity_1_headline = '<a href="' . get_permalink( $entity_1_id ) . '">' . $entity_1->post_title . '</a>';
         $entity_2_headline = '<a href="' . get_permalink( $entity_2_id ) . '">' . $entity_2->post_title . '</a>';
 
-        $entity_1_date_start = str_replace( '-', ',', get_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
-        $entity_1_date_end   = str_replace( '-', ',', get_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
-        $entity_2_date_start = str_replace( '-', ',', get_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
-        $entity_2_date_end   = str_replace( '-', ',', get_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
+        $entity_1_date_start = str_replace( '-', ',', get_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
+        $entity_1_date_end   = str_replace( '-', ',', get_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
+        $entity_2_date_start = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
+        $entity_2_date_end   = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
 
         // This is the right order, i.e. the event 1 is in the 2nd position in the dates array.
         $date_1 = $response->timeline->date[1];
@@ -146,18 +146,18 @@ class TimelineShortcodeTest extends WP_UnitTestCase
 
             $entity_1_id = wl_create_post( "Entity 1's Text", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
             wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
-            add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-01', true );
-            add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-07', true );
+            add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
+            add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
             $entity_2_id = wl_create_post( "Entity 2's Text", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
             wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
-            add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-02', true );
-            add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-08', true );
+            add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
+            add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 
             $entity_3_id = wl_create_post( 'Entity 3 Text', 'entity-3', 'Entity 3 Title', 'publish', 'entity' );
             wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
-            add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 45.12, true );
-            add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 90.3, true );
+            add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 45.12, true );
+            add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 90.3, true );
 
             wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_3_id ) );
             wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );

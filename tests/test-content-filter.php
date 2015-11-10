@@ -173,7 +173,7 @@ EOF;
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
 		
                 // Trying out both the schema API and the classic WP method
-                add_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
+                add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
 		wl_schema_set_value( $entity_id, 'longitude', 72.3 );
 		
                 $entity_uri = wl_get_entity_uri( $entity_id );
@@ -208,14 +208,14 @@ EOF;
 		
                 // Trying out both the schema API and the classic WP method
                 wl_schema_set_value( $place_id, 'latitude', 40.12 );
-		add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
 		
                 // Trying out both the schema API and the classic WP method
-                add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
+                add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
 		wl_schema_set_value( $event_id, 'endDate', '2015-10-26' );
                 
                 wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
@@ -229,7 +229,7 @@ EOF;
 		$post_id    = wl_create_post( $content, 'post', 'A post' );
 
 		// Case 1 - Nested entity is referenced trough the wordpress entity ID
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
 
 		// The expected mark-up expects color coding to be on.
 		wl_configuration_set_enable_color_coding( true );
@@ -249,11 +249,11 @@ EOF;
 			"Error on comparing markup when the entity type is not defined"
 		);
 
-		delete_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION );
+		delete_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION );
 		// Check if meta were deleted properly
-		$this->assertEquals( array(), get_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION ) );
+		$this->assertEquals( array(), get_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION ) );
 		// Case 2 - Nested entity is referenced trough the an uri
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, wl_get_entity_uri( $place_id ), true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, wl_get_entity_uri( $place_id ), true );
 
 		$expected_markup = file_get_contents( dirname( __FILE__ ) .
 		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
@@ -272,10 +272,10 @@ EOF;
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
 		// Set a fake uri ad entity reference
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, 'http://my.fake.uri/broken/entity/linking', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, 'http://my.fake.uri/broken/entity/linking', true );
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
@@ -309,13 +309,13 @@ EOF;
 		
                 // Trying out both the schema API and the classic WP method
                 wl_schema_set_value( $place_id, 'latitude', 40.12 );
-		add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-10-21', true );
-		add_post_meta( $event_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2015-10-26', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
                 
                 wl_schema_set_value($event_id, 'sameAs', array(
                     'http://rdf.freebase.com/my-event',
@@ -323,7 +323,7 @@ EOF;
                 ));
                 //wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
 		
-                add_post_meta( $event_id, WL_CUSTOM_FIELD_LOCATION, $place_id, true );
+                add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );

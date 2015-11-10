@@ -47,7 +47,7 @@ class WL_Metabox_Field {
         if( isset( $this->raw_custom_field['type'] ) ){
             $this->expected_wl_type = $this->raw_custom_field['type'];
         } else {
-            $this->expected_wl_type = WL_DATA_TYPE_STRING;
+            $this->expected_wl_type = Wordlift_Schema_Service::DATA_TYPE_STRING;
         }
         
         $this->cardinality = 1;
@@ -61,7 +61,7 @@ class WL_Metabox_Field {
             }
              
             // Which type of entity can we accept (e.g. Place, Event, ecc.)?
-            if( $this->expected_wl_type === WL_DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
+            if( $this->expected_wl_type === Wordlift_Schema_Service::DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
                 
                 $expected_types = array();
                 // We accept also children of this types

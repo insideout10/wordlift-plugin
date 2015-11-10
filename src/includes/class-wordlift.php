@@ -128,6 +128,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
 
+		/**
+		 * The Schema service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
+
 		$this->loader = new Wordlift_Loader();
 
 		// Instantiate a global logger.

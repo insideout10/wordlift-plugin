@@ -193,7 +193,7 @@ class WL_Metabox {
 
 			// Which field? We want to use the class that is specific for the field.
 			$meta = key( $args );
-			if ( ! isset( $args[ $meta ]['type'] ) || ( $args[ $meta ]['type'] == WL_DATA_TYPE_STRING ) ) {
+			if ( ! isset( $args[ $meta ]['type'] ) || ( $args[ $meta ]['type'] == Wordlift_Schema_Service::DATA_TYPE_STRING ) ) {
 				// Use default WL_Metabox_Field (manages strings)
 				$field_class = 'WL_Metabox_Field';
 			} else {

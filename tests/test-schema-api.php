@@ -132,12 +132,12 @@ class SchemaApiTest extends WP_UnitTestCase {
 
         // Test properties expecting a simple tye
         // TODO: add tests for integer and boolean types (we have no examples right now)
-        $this->assertEquals( array( WL_DATA_TYPE_URI ), wl_schema_get_property_expected_type( 'sameAs' ) );
-        $this->assertEquals( array( WL_DATA_TYPE_DATE ), wl_schema_get_property_expected_type( 'endDate' ) );
+        $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_URI ), wl_schema_get_property_expected_type( 'sameAs' ) );
+        $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_DATE ), wl_schema_get_property_expected_type( 'endDate' ) );
         //$this->assertEquals( array( WL_DATA_TYPE_INTEGER ), wl_schema_get_property_expected_type( 'xxxxxx' ) );
-        $this->assertEquals( array( WL_DATA_TYPE_DOUBLE ), wl_schema_get_property_expected_type( 'latitude' ) );
+        $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_DOUBLE ), wl_schema_get_property_expected_type( 'latitude' ) );
         //$this->assertEquals( array( WL_DATA_TYPE_BOOLEAN ), wl_schema_get_property_expected_type( 'xxxxxx' ) );
-        $this->assertEquals( array( WL_DATA_TYPE_STRING ), wl_schema_get_property_expected_type( 'address' ) );
+        $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_STRING ), wl_schema_get_property_expected_type( 'address' ) );
         
         // Test properties expecting a schema type
         $this->assertEquals( array( 'http://schema.org/Person' ), wl_schema_get_property_expected_type( 'founder' ) );

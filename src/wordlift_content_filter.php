@@ -201,7 +201,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 
 		foreach ( $meta_collection as $field_value ) {
 
-			if ( WL_DATA_TYPE_URI == $expected_type ) {
+			if ( Wordlift_Schema_Service::DATA_TYPE_URI == $expected_type ) {
 				// If is a numeric value we assume it is an ID referencing for an internal entity.
 				if ( is_numeric( $field_value ) ) {
 					// Found id, get uri.

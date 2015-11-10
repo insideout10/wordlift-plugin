@@ -126,13 +126,13 @@ class AjaxTest extends WP_UnitTestCase
 
         $entity_1_id = wl_create_post('This is Entity 1', 'entity-1', 'Entity 1', 'publish', 'entity');
         wl_set_entity_main_type($entity_1_id, 'http://schema.org/Thing');
-        add_post_meta($entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-02', true);
-        add_post_meta($entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-03', true);
+        add_post_meta($entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true);
+        add_post_meta($entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-03', true);
 
         $entity_2_id = wl_create_post('This is Entity 2', 'entity-2', 'Entity 2', 'publish', 'entity');
         wl_set_entity_main_type($entity_2_id, 'http://schema.org/Thing');
-        add_post_meta($entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2014-01-03', true);
-        add_post_meta($entity_2_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2014-01-04', true);
+        add_post_meta($entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', true);
+        add_post_meta($entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-04', true);
 
         wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
 
@@ -158,13 +158,13 @@ class AjaxTest extends WP_UnitTestCase
 
         $entity_1_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
         wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Place' );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
         $entity_2_id = wl_create_post( "Entity 2 Text", 'entity-2', "Entity 2 Title", 'publish', 'entity' );
         wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
-        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 41.20, true );
-        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 78.2, true );
+        add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 41.20, true );
+        add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 78.2, true );
 
         wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
 

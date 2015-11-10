@@ -43,12 +43,12 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 		'meta_query'  => array(
 			'relation' => 'AND',
 			array(
-				'key'     => WL_CUSTOM_FIELD_GEO_LATITUDE,
+				'key'     => Wordlift_Schema_Service::FIELD_GEO_LATITUDE,
 				'value'   => null,
 				'compare' => '!=',
 			),
 			array(
-				'key'     => WL_CUSTOM_FIELD_GEO_LONGITUDE,
+				'key'     => Wordlift_Schema_Service::FIELD_GEO_LONGITUDE,
 				'value'   => null,
 				'compare' => '!=',
 			)

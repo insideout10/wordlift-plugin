@@ -75,15 +75,15 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
         $entity_id = get_the_ID();
         
         // Take away old values
-        delete_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LATITUDE );
-        delete_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LONGITUDE );
+        delete_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE );
+        delete_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE );
         
         $latitude = $this->data[0];
         $longitude = $this->data[1];
         
         // insert new coordinate values
-        add_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LATITUDE, $latitude, true );
-        add_post_meta( $entity_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, $longitude, true );
+        add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );
+        add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $longitude, true );
     }
     
     /**

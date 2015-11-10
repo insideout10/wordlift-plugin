@@ -44,31 +44,6 @@ function wl_entity_type_taxonomy_register() {
 }
 
 /**
- * Update an entity type with the provided data.
- *
- * @param int $term_id The numeric term ID.
- * @param string $css_class The stylesheet class.
- * @param string $uri The URI.
- * @param array $same_as An array of sameAs URIs.
- * @param array $custom_fields An array of custom fields and their properties mapping (with info on how to export them to the triple store).
- * @param array $templates
- * @param array $microdata_template A template string to print microdata on the frontend.
- *
- * @return True if option value has changed, false if not or if update failed.
- */
-function wl_entity_type_taxonomy_update_term( $term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $microdata_template = array() ) {
-
-	return update_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id", array(
-		'css_class'          => $css_class,
-		'uri'                => $uri,
-		'same_as'            => $same_as,
-		'custom_fields'      => $custom_fields,
-		'templates'          => $templates,
-		'microdata_template' => $microdata_template
-	) );
-}
-
-/**
  * Get the entity main type for the specified post ID.
  *
  * @see wl_entity_type_taxonomy_update_term for a list of keys in the returned array.

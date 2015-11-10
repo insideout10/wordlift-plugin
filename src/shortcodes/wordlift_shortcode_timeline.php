@@ -57,12 +57,12 @@ function wl_shortcode_timeline_get_events( $post_id = null ) {
 		'meta_query'     => array(
 			'relation' => 'AND',
 			array(
-				'key'     => WL_CUSTOM_FIELD_CAL_DATE_START,
+				'key'     => Wordlift_Schema_Service::FIELD_DATE_START,
 				'value'   => null,
 				'compare' => '!=',
 			),
 			array(
-				'key'     => WL_CUSTOM_FIELD_CAL_DATE_END,
+				'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
 				'value'   => null,
 				'compare' => '!=',
 			)
@@ -95,8 +95,8 @@ function wl_shortcode_timeline_to_json( $posts ) {
 
 	$timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
 
-		$start_date = strtotime( get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_START, true ) );
-		$end_date   = strtotime( get_post_meta( $post->ID, WL_CUSTOM_FIELD_CAL_DATE_END, true ) );
+		$start_date = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
+		$end_date   = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
 
 		// Set the starting slide.
 		$event_index ++;
