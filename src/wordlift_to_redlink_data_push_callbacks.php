@@ -127,7 +127,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	$descr     = wordlift_esc_sparql( wp_strip_all_tags( strip_shortcodes( $entity_post->post_content ) ) );
 	$permalink = wl_sparql_escape_uri( get_permalink( $entity_post->ID ) );
 
-	wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
+	// wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $entity_post->ID ][ uri :: $uri ][ label :: $label ]" );
 
 	// create a new empty statement.
 	$delete_stmt = '';
@@ -179,7 +179,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		if ( isset( $main_type['custom_fields'] ) ) {
 			foreach ( $main_type['custom_fields'] as $field => $settings ) {
 
-				wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
+				// wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
 
 				$predicate = wordlift_esc_sparql( $settings['predicate'] );
 				if ( ! isset( $settings['export_type'] ) || empty( $settings['export_type'] ) ) {

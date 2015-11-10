@@ -525,7 +525,7 @@ add_action( 'shutdown', 'wl_shutdown' );
  */
 function wl_replace_item_id_with_uri( $content ) {
 
-	wl_write_log( "wl_replace_item_id_with_uri" );
+	// wl_write_log( "wl_replace_item_id_with_uri" );
 
 	// Strip slashes, see https://core.trac.wordpress.org/ticket/21767
 	$content = stripslashes( $content );
@@ -550,7 +550,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			// Get the URI for that post.
 			$uri = wl_get_entity_uri( $post->ID );
 
-			wl_write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
+			// wl_write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
 
 			// If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
 			if ( $item_id !== $uri ) {

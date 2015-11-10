@@ -31,7 +31,7 @@ function wl_get_user_uri( $user_id ) {
  */
 function wl_set_user_uri( $user_id, $uri ) {
 
-	wl_write_log( "wl_set_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_set_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
 
 	delete_user_meta( $user_id, 'wl_uri' );
 	add_user_meta( $user_id, 'wl_uri', $uri );
@@ -82,7 +82,7 @@ function wl_build_user_uri( $user_id ) {
 		$uri = $base_uri . "_" . ( $counter ++ );
 	}
 
-	wl_write_log( "wl_build_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_build_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
 
 	return $uri;
 }
@@ -96,7 +96,7 @@ function wl_build_user_uri( $user_id ) {
  */
 function wl_get_user( $user_id ) {
 
-	wl_write_log( "wl_get_user [ user id :: $user_id ]" );
+	// wl_write_log( "wl_get_user [ user id :: $user_id ]" );
 
 	return get_user_by( 'id', $user_id );
 }

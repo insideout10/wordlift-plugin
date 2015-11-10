@@ -47,7 +47,7 @@ function wl_remove_text_annotations( $data ) {
 	//    $pattern = '/<span class=\\\"textannotation\\\" id=\\\"[^\"]+\\\">([^<]+)<\/span>/i';
 	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation\\\"[^>]*>([^<]+)<\/\1>/im';
 
-	wl_write_log( "Removing text annotations [ pattern :: $pattern ]" );
+	// wl_write_log( "Removing text annotations [ pattern :: $pattern ]" );
 
 	// Remove the pattern while it is found (match nested annotations).
 	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {

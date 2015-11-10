@@ -171,7 +171,7 @@ function wl_core_delete_relation_instances( $subject_id ) {
     // Prepare interaction with db
     global $wpdb;
 
-    wl_write_log( "Going to delete relation instances [ subject_id :: $subject_id ]"); 
+    // wl_write_log( "Going to delete relation instances [ subject_id :: $subject_id ]");
     
     // @see ttps://codex.wordpress.org/it:Riferimento_classi/wpdb#DELETE_di_righe
     $wpdb->delete(

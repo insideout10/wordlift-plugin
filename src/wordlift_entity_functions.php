@@ -120,7 +120,7 @@ function wl_build_entity_uri( $post_id ) {
 	// Create the URL (dataset base URI has a trailing slash).
 	$url = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), $post->post_type, $path );
 
-	wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
+	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
 
 	return $url;
 }

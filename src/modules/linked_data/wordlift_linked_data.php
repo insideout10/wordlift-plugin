@@ -430,7 +430,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	// Match all itemid attributes.
 	$pattern = '/<\w+[^>]*\sitemid="([^"]+)"[^>]*>/im';
 
-	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ]" );
+	//	wl_write_log( "Getting entities embedded into content [ pattern :: $pattern ]" );
 
 	// Remove the pattern while it is found (match nested annotations).
 	$matches = array();
@@ -455,8 +455,8 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 		}
 	}
 
-	$count = sizeof( $entities );
-	wl_write_log( "Found $count entities embedded in content" );
+	// $count = sizeof( $entities );
+	// wl_write_log( "Found $count entities embedded in content" );
 
 	return $entities;
 }
@@ -473,7 +473,7 @@ function wl_linked_data_push_to_redlink( $post_id ) {
 	// Get the post.
 	$post = get_post( $post_id );
 
-	wl_write_log( "wl_linked_data_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
+	// wl_write_log( "wl_linked_data_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
 
 	// Call the method on behalf of the post type.
 	switch ( $post->post_type ) {

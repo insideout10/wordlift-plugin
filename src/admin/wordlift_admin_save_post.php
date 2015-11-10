@@ -23,7 +23,7 @@
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
-	wl_write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
+	// wl_write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
 
 	// transition from *published* to any other status: delete the post.
 	if ( 'publish' === $old_status && 'publish' !== $new_status ) {
