@@ -71,12 +71,19 @@ function wl_write_log( $log ) {
  */
 function wl_write_log_handler( $log, $caller = null ) {
 
+	global $wl_logger;
+
 	if ( true === WP_DEBUG ) {
-		if ( is_array( $log ) || is_object( $log ) ) {
-			error_log( "[ $caller ] " . print_r( $log, true ) );
+
+		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
+		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
+
+		if ( isset( $wl_logger ) ) {
+			$wl_logger->info( $message );
 		} else {
-			error_log( "[ $caller ] " . wl_write_log_hide_key( $log ) );
+			error_log( $message );
 		}
+
 	}
 
 }

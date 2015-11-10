@@ -35,7 +35,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 	// Get the matching entity posts.
 	$posts = $query->get_posts();
 
-	wl_write_log( "wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
+	// wl_write_log( "wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
 
 	// Return null if no post is found.
 	if ( 0 === count( $posts ) ) {

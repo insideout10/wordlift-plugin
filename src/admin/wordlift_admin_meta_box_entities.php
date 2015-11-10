@@ -27,7 +27,8 @@ if ( is_admin() ) {
  * @param string $post_type The type of the current open post.
  */
 function wl_admin_add_entities_meta_box( $post_type ) {
-	wl_write_log( "wl_admin_add_entities_meta_box [ post type :: $post_type ]" );
+
+	// wl_write_log( "wl_admin_add_entities_meta_box [ post type :: $post_type ]" );
 
 	// Add main meta box for related entities and 4W
 	add_meta_box(
@@ -43,7 +44,7 @@ add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
  */
 function wl_entities_box_content( $post ) {
     
-	wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
+	// wl_write_log( "wl_entities_box_content [ post id :: $post->ID ]" );
 	
         // Angularjs edit-post widget wrapper
 	echo '<div id="wordlift-edit-post-outer-wrapper"></div>';
@@ -59,7 +60,7 @@ function wl_entities_box_content( $post ) {
 		// Build the proper relation name
 		$relation_name = $box['id'];
 		
-		wl_write_log( "Going to related of $relation_name" );
+		// wl_write_log( "Going to related of $relation_name" );
     
 		// Get entity ids related to the current post for the given relation name (both draft and published entities)
 		$draft_entity_ids = wl_core_get_related_entity_ids( $post->ID, array(

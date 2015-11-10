@@ -6,11 +6,11 @@
 
 /**
  * Build the regex to find a <span> tag relative to a specific uri
- * 
+ *
  * @param string $uri Uri of the entity to search in the post content.
  */
 function wl_content_embed_build_regex_from_uri( $uri ) {
-    return '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';
+	return '|<(\\w+)[^<]* itemid=\"' . esc_attr( $uri ) . '\"[^>]*>([^<]*)<\\/\\1>|i';
 }
 
 /**
@@ -43,27 +43,27 @@ function wl_content_embed_microdata( $content ) {
  * @return string The updated post content.
  */
 function _wl_content_embed_microdata( $post_id, $content ) {
-    
-        // If it is an entity, add its own microdata to the content.
-        if( get_post_type( $post_id ) == WL_ENTITY_TYPE_NAME ) {
-            $own_uri = wl_get_entity_uri( $post_id );
-            $content .= '<span itemid="' . $own_uri . '"></span>';
-        }
-    
-        // Now search in the text entity mentions        
-	$regex = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+
+	// If it is an entity, add its own microdata to the content.
+	if ( get_post_type( $post_id ) == WL_ENTITY_TYPE_NAME ) {
+		$own_uri = wl_get_entity_uri( $post_id );
+		$content .= '<span itemid="' . $own_uri . '"></span>';
+	}
+
+	// Now search in the text entity mentions
+	$regex   = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
 	$matches = array();
 
 	// Return the content if not item IDs have been found.
 	if ( false === preg_match_all( $regex, $content, $matches, PREG_SET_ORDER ) ) {
 		return $content;
-        }
+	}
 
 	// TODO: Retrieve here just one time entities type structure to avoid multiple queries.
 	foreach ( $matches as $match ) {
 		$item_id = $match[2];
 
-		wl_write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
+		// wl_write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
 
 		$content = wl_content_embed_item_microdata( $content, $item_id );
 	}
@@ -92,13 +92,13 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 
 	// Entity not found or not published. Delete <span> tags but leave their content on page.
 	if ( null === $post || $post->post_status !== 'publish' ) {
-		
-                wl_write_log( "wl_content_embed_item_microdata : entity not found or not published [ uri :: $uri ]" );
-                
-                // Replace the original tagging with the new tagging.
-                $regex   = wl_content_embed_build_regex_from_uri( $uri );
-                $content = preg_replace( $regex, '$2', $content );
-                
+
+		// wl_write_log( "wl_content_embed_item_microdata : entity not found or not published [ uri :: $uri ]" );
+
+		// Replace the original tagging with the new tagging.
+		$regex   = wl_content_embed_build_regex_from_uri( $uri );
+		$content = preg_replace( $regex, '$2', $content );
+
 		return $content;
 	}
 
@@ -136,7 +136,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 
 	// Get the entity URL.
 	$permalink = get_permalink( $post->ID );
-	$url = '<link itemprop="url" href="' . $permalink . '" />';
+	$url       = '<link itemprop="url" href="' . $permalink . '" />';
 
 	// Replace the original tagging with the new tagging.
 	$regex   = wl_content_embed_build_regex_from_uri( $uri );
@@ -145,11 +145,11 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		. $same_as
 		. $additional_properties
 		. $url
-		. '<a class="wl-entity-page-link" href="' . $permalink .'" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
+		. '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
 		$content
 	);
 
-	wl_write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
+	// wl_write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
 
 	return $content;
 }
@@ -167,7 +167,7 @@ add_filter( 'the_content', 'wl_content_embed_microdata' );
  */
 function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $recursion_level = 0 ) {
 
-	wl_write_log( "[ entity id :: $entity_id ][ entity type :: " . var_export( $entity_type, true ) . " ][ recursion level :: $recursion_level ]" );
+	// wl_write_log( "[ entity id :: $entity_id ][ entity type :: " . var_export( $entity_type, true ) . " ][ recursion level :: $recursion_level ]" );
 
 	$regex   = '/{{(.*?)}}/';
 	$matches = array();
@@ -181,12 +181,12 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 	if ( false === preg_match_all( $regex, $template, $matches, PREG_SET_ORDER ) ) {
 		return '';
 	}
-        
+
 	foreach ( $matches as $match ) {
 
 		$placeholder = $match[0];
 		$field_name  = $match[1];
-                
+
 		// Get property value.
 		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
 		// If no value is given, just remove the placeholder from the template
@@ -208,8 +208,8 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 					$field_value = wl_get_entity_uri( $field_value );
 				}
 				// Just if the linked entity does exist I can go further with template compiling
-                                $nested_entity = wl_get_entity_post_by_uri( $field_value );
-				if ( !is_null($nested_entity) ) {
+				$nested_entity = wl_get_entity_post_by_uri( $field_value );
+				if ( ! is_null( $nested_entity ) ) {
 					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
 					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $field_name, ++ $recursion_level );
 					$template          = str_replace( $placeholder, $compiled_template, $template );
@@ -224,6 +224,6 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 			$template = str_replace( $placeholder, $value, $template );
 		}
 	}
-        
+
 	return $template;
 }
