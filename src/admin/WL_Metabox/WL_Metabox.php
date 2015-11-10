@@ -28,7 +28,8 @@ class WL_Metabox {
 	public function add_main_metabox() {
 
 		// Add main metabox (will print also the inner fields)
-		add_meta_box( 'uniqueMetaboxId', get_the_title() . ' properties', array(
+		$id = uniqid( 'wl-metabox-' );
+		add_meta_box( $id, get_the_title() . ' properties', array(
 			$this,
 			'html'
 		), WL_ENTITY_TYPE_NAME, 'normal', 'high' );
