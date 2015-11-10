@@ -546,10 +546,10 @@ add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
  * Merge the custom_fields and microdata_templates of an entity type with the ones from parents.
  * This function is used by *wl_install_entity_type_data* at installation time.
  *
- * @param $child_term Array Child entity type (expanded as array).
- * @param $parent_term_ids Array containing the ids of the parent types.
+ * @param array $child_term Child entity type (expanded as array).
+ * @param array $parent_term_ids containing the ids of the parent types.
  *
- * @return Array $child_term enriched with parents' custom_fields and microdata_template
+ * @return array $child_term enriched with parents' custom_fields and microdata_template
  */
 function wl_entity_type_taxonomy_type_inheritance( $child_term, $parent_term_ids ) {
 
