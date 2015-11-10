@@ -99,8 +99,7 @@ add_action( 'wl_entity_type_add_form_fields', 'wl_entity_type_taxonomy_add_term_
 function wl_entity_type_taxonomy_edit_term_fields( $term ) {
 
 	// put the term ID into a variable
-	$t_id        = $term->term_id;
-	$entity_type = wl_entity_type_taxonomy_get_term_options( $t_id );
+	$entity_type = wl_entity_type_taxonomy_get_term_options( $term );
 	$css_class   = esc_attr( $entity_type['css_class'] );
 	$uri         = esc_attr( $entity_type['uri'] );
 	$same_as     = ( is_array( $entity_type['same_as'] ) ? esc_attr( implode( "\n", $entity_type['same_as'] ) ) : '' );

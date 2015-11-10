@@ -52,9 +52,7 @@ function wl_entity_type_taxonomy_register() {
  */
 function wl_entity_type_taxonomy_get_type( $post_id ) {
 
-	$terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME, array(
-		'fields' => 'ids'
-	) );
+	$terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
 
 	if ( is_wp_error( $terms ) ) {
 		// TODO: handle error
@@ -73,15 +71,33 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 /**
  * Get the data for the specified entity type (term id).
  *
- * @param int $term_id A numeric term ID.
+ * @since 3.1.0
  *
- * @return mixed|void The entity type data.
+ * @param object|string $term The term instance or the term slug.
+ *
+ * @return array|null The term schema.
  */
-function wl_entity_type_taxonomy_get_term_options( $term_id ) {
+function wl_entity_type_taxonomy_get_term_options( $term ) {
 
-	$term = get_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id" );
+	global $wl_logger;
 
-	return $term;
+	$wl_logger->trace( var_export( $term, true ) );
+
+	if ( is_object( $term ) && isset( $term->slug ) ) {
+		return Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
+	}
+
+	if ( is_string( $term ) ) {
+		return Wordlift_Schema_Service::get_instance()->get_schema( $term );
+	}
+
+	return null;
+
+//	wp_die();
+//
+////	$term = get_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id" );
+//
+//	return $term;
 }
 
 /**

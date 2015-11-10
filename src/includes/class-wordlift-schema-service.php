@@ -135,17 +135,47 @@ class Wordlift_Schema_Service {
 	const DATA_TYPE_BOOLEAN = 'bool';
 
 	/**
-	 * Get the WordLift's schema.
+	 * The Schema service singleton instance.
 	 *
-	 * @return array An array with the schema configuration.
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $instance The Schema service singleton instance.
+	 */
+	private static $instance;
+
+	/**
+	 * WordLift's schema.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var array $schema WordLift's schema.
+	 */
+	private $schema;
+
+	/**
+	 * The Log service.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log_service The Log service.
+	 */
+	private $log_service;
+
+	/**
+	 * Wordlift_Schema_Service constructor.
 	 *
 	 * @since 3.1.0
 	 */
-	public function get_schema() {
+	public function __construct() {
+
+		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Schema_Service' );
+
+		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
+		self::$instance = $this;
 
 		// Set the taxonomy data.
 		// Note: parent types must be defined before child types.
-		return array(
+		$this->schema = array(
 			'thing'         => $this->get_thing_schema(),
 			'creative-work' => $this->get_creative_work_schema(),
 			'event'         => $this->get_event_schema(),
@@ -158,6 +188,40 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
+	 * Get a reference to the Schema service.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @return Wordlift_Schema_Service A reference to the Schema service.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
+	}
+
+	/**
+	 * Get the WordLift's schema.
+	 *
+	 * @param string $name The schema name.
+	 *
+	 * @return array|null An array with the schema configuration or NULL if the schema is not found.
+	 *
+	 * @since 3.1.0
+	 */
+	public function get_schema( $name ) {
+
+		$this->log_service->trace( "Get schema [ name :: $name ]" );
+
+		// Check if the schema exists and, if not, return NULL.
+		if ( ! isset( $this->schema[ $name ] ) ) {
+			return null;
+		}
+
+		// Return the requested schema.
+		return $this->schema[ $name ];
+	}
+
+	/**
 	 * Get the 'thing' schema.
 	 *
 	 * @return array An array with the schema configuration.
@@ -167,7 +231,7 @@ class Wordlift_Schema_Service {
 	private function get_thing_schema() {
 
 		return array(
-			'css'                => 'wl-thing',
+			'css_class'          => 'wl-thing',
 			'uri'                => 'http://schema.org/Thing',
 			'same_as'            => array( '*' ), // set as default.
 			'custom_fields'      => array(
@@ -204,7 +268,7 @@ class Wordlift_Schema_Service {
 			'label'              => 'CreativeWork',
 			'description'        => 'A creative work (or a Music Album).',
 			'parents'            => array( 'thing' ), // give term slug as parent
-			'css'                => 'wl-creative-work',
+			'css_class'          => 'wl-creative-work',
 			'uri'                => 'http://schema.org/CreativeWork',
 			'same_as'            => array(
 				'http://schema.org/MusicAlbum',
@@ -247,7 +311,7 @@ class Wordlift_Schema_Service {
 			'label'              => 'Event',
 			'description'        => 'An event . ',
 			'parents'            => array( 'thing' ),
-			'css'                => 'wl - event',
+			'css_class'          => 'wl-event',
 			'uri'                => 'http://schema.org/Event',
 			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
 			'custom_fields'      => array(
@@ -302,7 +366,7 @@ class Wordlift_Schema_Service {
 			'label'              => 'Organization',
 			'description'        => 'An organization, including a government or a newspaper.',
 			'parents'            => array( 'thing' ),
-			'css'                => 'wl-organization',
+			'css_class'          => 'wl-organization',
 			'uri'                => 'http://schema.org/Organization',
 			'same_as'            => array(
 				'http://rdf.freebase.com/ns/organization.organization',
@@ -346,7 +410,7 @@ class Wordlift_Schema_Service {
 			'label'              => 'Person',
 			'description'        => 'A person (or a music artist).',
 			'parents'            => array( 'thing' ),
-			'css'                => 'wl-person',
+			'css_class'          => 'wl-person',
 			'uri'                => 'http://schema.org/Person',
 			'same_as'            => array(
 				'http://rdf.freebase.com/ns/people.person',
@@ -408,7 +472,7 @@ class Wordlift_Schema_Service {
 			'label'              => 'Place',
 			'description'        => 'A place.',
 			'parents'            => array( 'thing' ),
-			'css'                => 'wl-place',
+			'css_class'          => 'wl-place',
 			'uri'                => 'http://schema.org/Place',
 			'same_as'            => array(
 				'http://rdf.freebase.com/ns/location.location',
@@ -467,7 +531,7 @@ class Wordlift_Schema_Service {
 			'label'              => 'LocalBusiness',
 			'description'        => 'A local business.',
 			'parents'            => array( 'place', 'organization' ),
-			'css'                => 'wl-local-business',
+			'css_class'          => 'wl-local-business',
 			'uri'                => 'http://schema.org/LocalBusiness',
 			'same_as'            => array(
 				'http://rdf.freebase.com/ns/business/business_location',

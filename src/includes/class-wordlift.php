@@ -139,6 +139,8 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
+		$schema_service = new Wordlift_Schema_Service();
+
 	}
 
 	/**
