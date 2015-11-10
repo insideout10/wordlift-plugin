@@ -18,10 +18,6 @@
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
-	//
-	$log_service = Wordlift_Log_Service::get_logger( 'rl_execute_sparql_update_query' );
-	$log_service->trace( "Sending a SPARQL query [ query :: $query ]" );
-
 	// Get the calling function for debug purposes.
 	$callers          = debug_backtrace();
 	$calling_function = $callers[1]['function'];

@@ -350,7 +350,7 @@ function wordlift_reindex_triple_store() {
 	$url = wl_configuration_get_dataset_index_url();
 
 	// Post the request.
-	wl_write_log( "wordlift_reindex_triple_store" );
+	// wl_write_log( "wordlift_reindex_triple_store" );
 
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(

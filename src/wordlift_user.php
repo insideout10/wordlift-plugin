@@ -12,7 +12,7 @@ function wl_get_user_uri( $user_id ) {
 	// Get the user URI.
 	$uri = get_user_meta( $user_id, 'wl_uri', true );
 
-	wl_write_log( "wl_get_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_get_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
 
 	// Create the URI if the URI is not yet set.
 	if ( empty( $uri ) ) {
@@ -158,7 +158,7 @@ add_action( 'delete_user', 'wl_before_delete_user' );
  */
 function wl_update_user_profile( $user_id ) {
 
-	wl_write_log( "wl_update_user_profile [ user id :: $user_id ]" );
+	// wl_write_log( "wl_update_user_profile [ user id :: $user_id ]" );
 
 	// Get the site language setting.
 	$language = wl_configuration_get_site_language();
@@ -201,7 +201,7 @@ add_action( 'profile_update', 'wl_update_user_profile', 10, 1 );
  */
 function wl_register_user( $user_id ) {
 
-	wl_write_log( "wl_register_user [ user id :: $user_id ]" );
+	// wl_write_log( "wl_register_user [ user id :: $user_id ]" );
 
 	return wl_update_user_profile( $user_id );
 }

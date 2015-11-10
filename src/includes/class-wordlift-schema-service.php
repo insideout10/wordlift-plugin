@@ -210,7 +210,7 @@ class Wordlift_Schema_Service {
 	 */
 	public function get_schema( $name ) {
 
-		$this->log_service->trace( "Get schema [ name :: $name ]" );
+		// $this->log_service->trace( "Get schema [ name :: $name ]" );
 
 		// Check if the schema exists and, if not, return NULL.
 		if ( ! isset( $this->schema[ $name ] ) ) {

@@ -469,7 +469,7 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
  */
 function wl_sanitize_uri_path( $path, $char = '_' ) {
 
-	wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
+	// wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
 
 	// According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
 	// ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
