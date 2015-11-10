@@ -57,7 +57,6 @@ function wl_entity_type_taxonomy_register() {
  * @return True if option value has changed, false if not or if update failed.
  */
 function wl_entity_type_taxonomy_update_term( $term_id, $css_class, $uri, $same_as = array(), $custom_fields = array(), $templates = array(), $microdata_template = array() ) {
-	wl_write_log( "wl_entity_type_taxonomy_update_term [ term id :: $term_id ][ css class :: $css_class ][ uri :: $uri ][ same as :: " . implode( ',', $same_as ) . " ]" );
 
 	return update_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id", array(
 		'css_class'          => $css_class,
@@ -108,7 +107,7 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 function wl_entity_type_taxonomy_get_term_options( $term_id ) {
 
 	$term = get_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id" );
-	
+
 	return $term;
 }
 
