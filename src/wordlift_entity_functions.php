@@ -285,15 +285,16 @@ function wl_get_meta_constraints( $property_name ) {
 }
 
 /**
- * Retrieve entity type custom fields
+ * Retrieve entity type custom fields.
  *
- * @param int $entity_id id of the entity, if any
+ * @param int $entity_id id of the entity, if any.
  *
  * @return array|null if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
  */
 function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 	if ( is_null( $entity_id ) ) {
+
 		// Return all custom fields.
 		// Get taxonomy terms
 		$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
@@ -310,11 +311,12 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		}
 
 		return $custom_fields;
-	} else {
-		// Return custom fields for this specific entity's type.
-		$type = wl_entity_type_taxonomy_get_type( $entity_id );
 
-		return $type['custom_fields'];
 	}
+
+	// Return custom fields for this specific entity's type.
+	$type = wl_entity_type_taxonomy_get_type( $entity_id );
+
+	return $type['custom_fields'];
 
 }
