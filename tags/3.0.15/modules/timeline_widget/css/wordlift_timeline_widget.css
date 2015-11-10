@@ -1,0 +1,32 @@
+/*Hide all the elements, embed an IFRAME only*/
+.vco-slider .slider-item .content .content-container .text .container h2.date,
+    .vco-slider .slider-item .content .content-container .text .container h3 {
+    display: none;
+}
+
+/*.vco-slider .slider-item .content .content-container .text .container h2.date,*/
+    /*.vco-slider .slider-item .content .content-container .text .container h2.date small {*/
+    /*font-size: 11px;*/
+/*}*/
+
+/*.vco-slider .slider-item .content .content-container .text .container h2.date br {*/
+    /*content: '';*/
+/*}*/
+
+/*.vco-slider .slider-item .content .content-container .text .container h2.date br:after {*/
+    /*content: ' ';*/
+/*}*/
+
+/*.vco-slider .slider-item .content .content-container .text .container h3 {*/
+    /*font-size: 18px;*/
+    /*margin-bottom: 5px;*/
+/*}*/
+
+.vco-slider .slider-item .content {
+    display: block;
+}
+
+.vco-storyjs iframe {
+    border: 1px solid gray;
+    height: 180px;
+}
