@@ -77,7 +77,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 == Changelog ==
 
 = 3.0.15 (2015-11-10) =
- * Sanitize filename in order to properly save entity images as entity post attachments
+ * Fix: [issue 135](https://github.com/insideout10/wordlift-plugin/issues/135): Sanitize filename in order to properly save entity images as entity post attachments.
 
 = 3.0.14 (2015-11-09) =
  * Fix: [issue 156](https://github.com/insideout10/wordlift-plugin/issues/156): Yoast compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
