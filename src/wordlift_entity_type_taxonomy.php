@@ -65,39 +65,7 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 	}
 
 	// Return the entity type with the specified id.
-	return wl_entity_type_taxonomy_get_term_options( $terms[0] );
-}
-
-/**
- * Get the data for the specified entity type (term id).
- *
- * @since 3.1.0
- *
- * @param object|string $term The term instance or the term slug.
- *
- * @return array|null The term schema.
- */
-function wl_entity_type_taxonomy_get_term_options( $term ) {
-
-	global $wl_logger;
-
-	$wl_logger->trace( var_export( $term, true ) );
-
-	if ( is_object( $term ) && isset( $term->slug ) ) {
-		return Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
-	}
-
-	if ( is_string( $term ) ) {
-		return Wordlift_Schema_Service::get_instance()->get_schema( $term );
-	}
-
-	return null;
-
-//	wp_die();
-//
-////	$term = get_option( WL_ENTITY_TYPE_TAXONOMY_NAME . "_$term_id" );
-//
-//	return $term;
+	return Wordlift_Schema_Service::get_instance()->get_schema( $terms[0]->slug );
 }
 
 /**

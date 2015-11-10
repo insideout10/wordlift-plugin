@@ -159,7 +159,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 	// Check which term matches the specified URI.
 	foreach ( $terms as $term_id => $term_slug ) {
 		// Load the type data.
-		$type = wl_entity_type_taxonomy_get_term_options( $term_slug );
+		$type = Wordlift_Schema_Service::get_instance()->get_schema( $term_slug );
 		// Set the related term ID.
 		if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
 			wp_set_object_terms( $post_id, (int) $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
@@ -192,7 +192,7 @@ EOF;
 		$term_name = $term->name;
 
 		// Load the type data.
-		$type = wl_entity_type_taxonomy_get_term_options( $term );
+		$type = Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
 
 		// Skip types that are not defined.
 		if ( ! empty( $type['uri'] ) ) {

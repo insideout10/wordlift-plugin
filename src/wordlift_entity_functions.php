@@ -306,7 +306,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		$custom_fields = array();
 		foreach ( $terms as $term ) {
 			// Get custom_fields
-			$term_options                          = wl_entity_type_taxonomy_get_term_options( $term );
+			$term_options                          = Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
 			$custom_fields[ $term_options['uri'] ] = $term_options['custom_fields'];
 		}
 
