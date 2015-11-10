@@ -56,7 +56,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 function wl_get_entity_post_ids_by_uris( $uris ) {
 
 
-	if ( empty( $uris )) {
+	if ( empty( $uris ) ) {
 		return array();
 	}
 
@@ -136,15 +136,15 @@ function wl_build_entity_uri( $post_id ) {
  * @return string|null The URI of the entity or null if not configured.
  */
 function wl_get_entity_uri( $post_id ) {
-    
-	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
-	    
-	// If the dataset uri is not properly configured, null is returned
-    if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
-        return null;
-    }
 
-    // Set the URI if it isn't set yet.
+	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
+
+	// If the dataset uri is not properly configured, null is returned
+	if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+		return null;
+	}
+
+	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
 		$uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
@@ -165,7 +165,7 @@ function wl_get_entity_uri( $post_id ) {
 function wl_set_entity_uri( $post_id, $uri ) {
 
 	wl_write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
-	
+
 	return update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, $uri );
 }
 
@@ -289,7 +289,7 @@ function wl_get_meta_constraints( $property_name ) {
  *
  * @param int $entity_id id of the entity, if any
  *
- * @return mixed if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
+ * @return array|null if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
  */
 function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
@@ -316,4 +316,5 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 		return $type['custom_fields'];
 	}
+
 }
