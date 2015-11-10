@@ -16,221 +16,38 @@ function wl_core_install_entity_type_data() {
 	// Note: parent types must be defined before child types.
 	$terms = array(
 		'thing'         => array(
-			'label'              => 'Thing',
-			'description'        => 'A generic thing (something that doesn\'t fit in the previous definitions.',
-			'css'                => 'wl-thing',
-			'uri'                => 'http://schema.org/Thing',
-			'same_as'            => array( '*' ), // set as default.
-			'custom_fields'      => array(
-				Wordlift_Schema_Service::FIELD_SAME_AS => array(
-					'predicate'   => 'http://schema.org/sameAs',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/Thing',
-					'constraints' => array(
-						'cardinality' => INF
-					),
-					'input_field' => 'sameas'   // we need a custom metabox
-				)
-			),
-			// {{sameAs}} not present in the microdata template,
-			// because it is treated separately in *wl_content_embed_item_microdata*
-			'microdata_template' => '',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'Thing',
+			'description' => 'A generic thing (something that doesn\'t fit in the previous definitions.',
 		),
 		'creative-work' => array(
-			'label'              => 'CreativeWork',
-			'description'        => 'A creative work (or a Music Album).',
-			'parents'            => array( 'thing' ), // give term slug as parent
-			'css'                => 'wl-creative-work',
-			'uri'                => 'http://schema.org/CreativeWork',
-			'same_as'            => array(
-				'http://schema.org/MusicAlbum',
-				'http://schema.org/Product'
-			),
-			'custom_fields'      => array(
-				WL_CUSTOM_FIELD_AUTHOR => array(
-					'predicate'   => 'http://schema.org/author',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/Person',
-					'constraints' => array(
-						'uri_type'    => array( 'Person', 'Organization' ),
-						'cardinality' => INF
-					)
-				),
-			),
-			'microdata_template' => '{{author}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'CreativeWork',
+			'description' => 'A creative work (or a Music Album).',
+			'parents'     => array( 'thing' ), // give term slug as parent
 		),
 		'event'         => array(
-			'label'              => 'Event',
-			'description'        => 'An event.',
-			'parents'            => array( 'thing' ),
-			'css'                => 'wl-event',
-			'uri'                => 'http://schema.org/Event',
-			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
-			'custom_fields'      => array(
-				Wordlift_Schema_Service::FIELD_DATE_START => array(
-					'predicate'   => 'http://schema.org/startDate',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_DATE,
-					'export_type' => 'xsd:date',
-					'constraints' => ''
-				),
-				Wordlift_Schema_Service::FIELD_DATE_END   => array(
-					'predicate'   => 'http://schema.org/endDate',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_DATE,
-					'export_type' => 'xsd:date',
-					'constraints' => ''
-				),
-				Wordlift_Schema_Service::FIELD_LOCATION   => array(
-					'predicate'   => 'http://schema.org/location',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/PostalAddress',
-					'constraints' => array(
-						'uri_type'    => 'Place',
-						'cardinality' => INF
-					)
-				)
-			),
-			'microdata_template' =>
-				'{{startDate}}
-                                {{endDate}}
-                                {{location}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'Event',
+			'description' => 'An event.',
+			'parents'     => array( 'thing' ),
 		),
 		'organization'  => array(
-			'label'              => 'Organization',
-			'description'        => 'An organization, including a government or a newspaper.',
-			'parents'            => array( 'thing' ),
-			'css'                => 'wl-organization',
-			'uri'                => 'http://schema.org/Organization',
-			'same_as'            => array(
-				'http://rdf.freebase.com/ns/organization.organization',
-				'http://rdf.freebase.com/ns/government.government',
-				'http://schema.org/Newspaper'
-			),
-			'custom_fields'      => array(
-				Wordlift_Schema_Service::FIELD_FOUNDER => array(
-					'predicate'   => 'http://schema.org/founder',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/Person',
-					'constraints' => array(
-						'uri_type'    => 'Person',
-						'cardinality' => INF
-					)
-				),
-			),
-			'microdata_template' => '{{founder}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'Organization',
+			'description' => 'An organization, including a government or a newspaper.',
+			'parents'     => array( 'thing' ),
 		),
 		'person'        => array(
-			'label'              => 'Person',
-			'description'        => 'A person (or a music artist).',
-			'parents'            => array( 'thing' ),
-			'css'                => 'wl-person',
-			'uri'                => 'http://schema.org/Person',
-			'same_as'            => array(
-				'http://rdf.freebase.com/ns/people.person',
-				'http://rdf.freebase.com/ns/music.artist',
-				'http://dbpedia.org/class/yago/LivingPeople'
-			),
-			'custom_fields'      => array(
-				Wordlift_Schema_Service::FIELD_KNOWS       => array(
-					'predicate'   => 'http://schema.org/knows',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/Person',
-					'constraints' => array(
-						'uri_type'    => 'Person',
-						'cardinality' => INF
-					)
-				),
-				Wordlift_Schema_Service::FIELD_BIRTH_DATE  => array(
-					'predicate'   => 'http://schema.org/birthDate',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_DATE,
-					'export_type' => 'xsd:date',
-					'constraints' => ''
-				),
-				Wordlift_Schema_Service::FIELD_BIRTH_PLACE => array(
-					'predicate'   => 'http://schema.org/birthPlace',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
-					'export_type' => 'http://schema.org/Place',
-					'constraints' => array(
-						'uri_type' => 'Place'
-					)
-				)
-			),
-			'microdata_template' =>
-				'{{birthDate}}
-                            {{birthPlace}}
-                            {{knows}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'Person',
+			'description' => 'A person (or a music artist).',
+			'parents'     => array( 'thing' ),
 		),
 		'place'         => array(
-			'label'              => 'Place',
-			'description'        => 'A place.',
-			'parents'            => array( 'thing' ),
-			'css'                => 'wl-place',
-			'uri'                => 'http://schema.org/Place',
-			'same_as'            => array(
-				'http://rdf.freebase.com/ns/location.location',
-				'http://www.opengis.net/gml/_Feature'
-			),
-			'custom_fields'      => array(
-				Wordlift_Schema_Service::FIELD_GEO_LATITUDE  => array(
-					'predicate'   => 'http://schema.org/latitude',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_DOUBLE,
-					'export_type' => 'xsd:double',
-					'constraints' => '',
-					'input_field' => 'coordinates'   // to build custom metabox
-				),
-				Wordlift_Schema_Service::FIELD_GEO_LONGITUDE => array(
-					'predicate'   => 'http://schema.org/longitude',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_DOUBLE,
-					'export_type' => 'xsd:double',
-					'constraints' => '',
-					'input_field' => 'coordinates'   // to build custom metabox
-				),
-				Wordlift_Schema_Service::FIELD_ADDRESS       => array(
-					'predicate'   => 'http://schema.org/address',
-					'type'        => Wordlift_Schema_Service::DATA_TYPE_STRING,
-					'export_type' => 'xsd:string',
-					'constraints' => ''
-				)
-			),
-			'microdata_template' =>
-				'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-                                    {{latitude}}
-                                    {{longitude}}
-                                </span>
-                                {{address}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'Place',
+			'description' => 'A place.',
+			'parents'     => array( 'thing' ),
 		),
 		'localbusiness' => array(
-			'label'              => 'LocalBusiness',
-			'description'        => 'A local business.',
-			'parents'            => array( 'place', 'organization' ),
-			'css'                => 'wl-local-business',
-			'uri'                => 'http://schema.org/LocalBusiness',
-			'same_as'            => array(
-				'http://rdf.freebase.com/ns/business/business_location',
-				'https://schema.org/Store'
-			),
-			'custom_fields'      => array(),
-			'microdata_template' => '',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'label'       => 'LocalBusiness',
+			'description' => 'A local business.',
+			'parents'     => array( 'place', 'organization' ),
 		),
 	);
 
@@ -279,9 +96,6 @@ function wl_core_install_entity_type_data() {
 			'description' => $term['description'],
 			'parent'      => $parent_id   // We give to WP taxonomy just one parent. TODO: see if can give more than one
 		) );
-
-		// Inherit custom fields and microdata template from parent.
-		$term = wl_entity_type_taxonomy_type_inheritance( $term, $parent_ids );
 
 	}
 
