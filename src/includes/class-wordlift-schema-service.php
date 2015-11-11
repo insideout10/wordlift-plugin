@@ -318,13 +318,13 @@ class Wordlift_Schema_Service {
 				self::FIELD_DATE_START => array(
 					'predicate'   => 'http://schema.org/startDate',
 					'type'        => self::DATA_TYPE_DATE,
-					'export_type' => 'xsd:date',
+					'export_type' => 'xsd:datetime',
 					'constraints' => ''
 				),
 				self::FIELD_DATE_END   => array(
 					'predicate'   => 'http://schema.org/endDate',
 					'type'        => self::DATA_TYPE_DATE,
-					'export_type' => 'xsd:date',
+					'export_type' => 'xsd:datetime',
 					'constraints' => ''
 				),
 				self::FIELD_LOCATION   => array(
