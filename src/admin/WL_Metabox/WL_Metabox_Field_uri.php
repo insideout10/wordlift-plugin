@@ -62,7 +62,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		if ( isset( $this->expected_uri_type ) && ! is_null( $this->expected_uri_type ) ) {
 
 			if ( is_array( $this->expected_uri_type ) ) {
-				$html .= ' data-expected-types="' . implode( $this->expected_uri_type, ',' ) . '"';
+				$html .= ' data-expected-types="' . implode( ',', $this->expected_uri_type ) . '"';
 			} else {
 				$html .= ' data-expected-types="' . $this->expected_uri_type . '"';
 			}

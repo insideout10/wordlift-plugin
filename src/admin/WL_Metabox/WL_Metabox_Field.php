@@ -73,7 +73,7 @@ class WL_Metabox_Field {
 
 			// Which type of entity can we accept (e.g. Place, Event, ecc.)?
 			if ( $this->expected_wl_type === Wordlift_Schema_Service::DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
-				$this->expected_uri_type = array( $constraints['uri_type'] );
+				$this->expected_uri_type = is_array( $constraints['uri_type'] ) ? $constraints['uri_type'] : array( $constraints['uri_type'] );
 			}
 
 		}
