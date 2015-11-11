@@ -51,7 +51,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
 
 	// store eventual schema name in  different variable
 	$property_schema_name = wl_build_full_schema_uri_from_schema_slug( $property_name );
-	
+
 	// Establish entity id.
 	if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
 		$post_id = get_the_ID();

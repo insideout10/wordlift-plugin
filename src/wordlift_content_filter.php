@@ -193,10 +193,6 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		// Get property value.
 		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
 
-		if ( WP_DEBUG ) {
-			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ][ meta collection :: " . ( is_array( $meta_collection ) ? var_export( $meta_collection, true ) : $meta_collection ) . " ]" );
-		}
-
 		// If no value is given, just remove the placeholder from the template
 		if ( null == $meta_collection ) {
 			$template = str_replace( $placeholder, '', $template );
@@ -207,7 +203,18 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		// TODO: Performance issue here: meta type retrieving should be centralized
 		$expected_type = wl_get_meta_type( $field_name );
 
+		if ( WP_DEBUG ) {
+			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ][ meta collection :: " . ( is_array( $meta_collection ) ? var_export( $meta_collection, true ) : $meta_collection ) . " ][ expected type :: $expected_type ]" );
+		}
+
 		foreach ( $meta_collection as $field_value ) {
+
+			// Quick and dirty patch for #163.
+			if ( is_numeric( $field_value ) && 'publish' !== get_post_status( $field_value ) ) {
+				// Remove the placeholder.
+				$template = str_replace( $placeholder, '', $template );
+				continue;
+			}
 
 			if ( Wordlift_Schema_Service::DATA_TYPE_URI == $expected_type ) {
 				// If is a numeric value we assume it is an ID referencing for an internal entity.
