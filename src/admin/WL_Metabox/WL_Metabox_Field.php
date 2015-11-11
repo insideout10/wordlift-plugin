@@ -17,9 +17,20 @@ class WL_Metabox_Field {
 	public $data;
 
 	/**
+	 * The Log service.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log_service The Log service.
+	 */
+	private $log_service;
+
+	/**
 	 * Constructor. Recevies.... TODO write docs
 	 */
 	public function __construct( $args ) {
+
+		$this->log_service = Wordlift_Log_Service::get_logger( 'WL_Metabox_Field' );
 
 		if ( empty( $args ) ) {
 			return;
@@ -62,25 +73,7 @@ class WL_Metabox_Field {
 
 			// Which type of entity can we accept (e.g. Place, Event, ecc.)?
 			if ( $this->expected_wl_type === Wordlift_Schema_Service::DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
-
-				$expected_types = array();
-				// We accept also children of this types
-				$parent_expected_types = $constraints['uri_type'];
-
-				if ( ! is_array( $parent_expected_types ) ) {
-					$parent_expected_types = array( $parent_expected_types );
-				}
-
-				foreach ( $parent_expected_types as $term ) {
-					$children = wl_entity_type_taxonomy_get_term_children( $term );
-					foreach ( $children as $child ) {
-						if ( isset( $child->name ) ) {
-							$expected_types[] = $child->name;
-						}
-					}
-				}
-
-				$this->expected_uri_type = array_unique( array_merge( $expected_types, $parent_expected_types ) );
+				$this->expected_uri_type = array( $constraints['uri_type'] );
 			}
 
 		}
@@ -200,7 +193,7 @@ class WL_Metabox_Field {
 	public function html_wrapper_open() {
 		$html = '';
 
-		$html .= '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '">';
+		$html .= '<div class="wl - metabox" data-cardinality="' . $this->cardinality . '">';
 
 		return $html;
 	}
@@ -239,7 +232,7 @@ class WL_Metabox_Field {
 
 		// If cardiality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			$html .= '<button class="button wl-add-input" type="button">Add</button>';
+			$html .= '<button class="button wl - add - input" type="button">Add</button>';
 		}
 
 		// Close the HTML wrapper
@@ -254,9 +247,9 @@ class WL_Metabox_Field {
 	 * @param mixed $value Input value
 	 */
 	public function html_input( $value ) {
-		$html = '<div class="wl-input-wrapper">
-            <input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" style="width:88%" />
-            <button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
+		$html = '<div class="wl - input - wrapper">
+            <input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[ ' . $this->meta_name . ' ][]" value="' . $value . '" style="width:88 % " />
+            <button class="button wl - remove - input" type="button" style="width:10 % ">Remove</button>
         </div>';
 
 		return $html;
