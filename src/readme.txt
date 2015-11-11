@@ -75,19 +75,28 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.1.0 (???) =
+ * Enhancement: [#145](https://github.com/insideout10/wordlift-plugin/issues/145): control new entities creation from metaboxes.
+ * Enhancement: [#134](https://github.com/insideout10/wordlift-plugin/issues/134): scripts and styles source repository merged with PHP repository.
+ * Enhancement: [#57](https://github.com/insideout10/wordlift-plugin/issues/57): on the Edit Entity page the referencing posts has been restored.
+ * Fix: [#144](https://github.com/insideout10/wordlift-plugin/issues/144): changing type on WordLift doesn't reset the property list on Redlink is now fixed.
+ * Fix: [#141](https://github.com/insideout10/wordlift-plugin/issues/141): properties when published to Redlink have no links (and no meaning) is now fixed.
+ * Fix: [#139](https://github.com/insideout10/wordlift-plugin/issues/139): single founder while expecting multiple founders is not fixed.
+ * Fix: [#138](https://github.com/insideout10/wordlift-plugin/issues/138): Uncaught TypeError: Cannot read property 'id' of undefined is now fixed.
+
 = 3.0.16 (2015-11-11) =
- * Fix: [issue 152](https://github.com/insideout10/wordlift-plugin/issues/152): Entity description update from disambiguation widget is now disabled in order to prevent existing entity pages content overriding.
+ * Fix: [#152](https://github.com/insideout10/wordlift-plugin/issues/152): Entity description update from disambiguation widget is now disabled in order to prevent existing entity pages content overriding.
 
 = 3.0.15 (2015-11-10) =
- * Fix: [issue 135](https://github.com/insideout10/wordlift-plugin/issues/135): Sanitize filename in order to properly save entity images as entity post attachments.
+ * Fix: [#135](https://github.com/insideout10/wordlift-plugin/issues/135): Sanitize filename in order to properly save entity images as entity post attachments.
 
 = 3.0.14 (2015-11-09) =
- * Fix: [issue 156](https://github.com/insideout10/wordlift-plugin/issues/156): Yoast compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
- * Fix: [issue 148](https://github.com/insideout10/wordlift-plugin/issues/148): SEO Ultimate compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
+ * Fix: [#156](https://github.com/insideout10/wordlift-plugin/issues/156): Yoast compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
+ * Fix: [#148](https://github.com/insideout10/wordlift-plugin/issues/148): SEO Ultimate compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
 
 = 3.0.13 (2015-10-30) =
- * Fix: [issue 95](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
- * Fix: [issue 95](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
+ * Fix: [#128](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution.
+ * Fix: [#95](https://github.com/insideout10/wordlift-plugin/issues/95): WordPress image edit controls disappears after installing WordLift is now fixed.
 
 = 3.0.12 (2015-10-23) =
  * Enhancement: [issue 85](https://github.com/insideout10/wordlift-plugin/issues/85). Now structured data are added in the entity pages for the current entity itself
