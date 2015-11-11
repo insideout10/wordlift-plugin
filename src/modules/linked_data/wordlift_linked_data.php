@@ -295,6 +295,8 @@ function wl_save_entity( $entity_properties ) {
             if ( 'public' == $post->post_status ) {
             	$params[ 'post_status' ] = $post->post_status;
             }
+			// Preserve the current entity content. Hotfix for issue #152
+            $params[ 'post_content' ] = $post->post_content;       
 	}
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"

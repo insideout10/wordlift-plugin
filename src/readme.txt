@@ -75,6 +75,8 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.0.16 (2015-11-11) =
+ * Fix: [issue 152](https://github.com/insideout10/wordlift-plugin/issues/152): Entity description update from disambiguation widget is now disabled in order to prevent existing entity pages content overriding.
 
 = 3.0.15 (2015-11-10) =
  * Fix: [issue 135](https://github.com/insideout10/wordlift-plugin/issues/135): Sanitize filename in order to properly save entity images as entity post attachments.
