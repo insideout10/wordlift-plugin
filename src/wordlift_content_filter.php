@@ -190,10 +190,6 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		$placeholder = $match[0];
 		$field_name  = $match[1];
 
-		if ( WP_DEBUG ) {
-			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ]" );
-		}
-
 		// Get property value.
 		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
 
