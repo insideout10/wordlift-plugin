@@ -191,11 +191,8 @@ class WL_Metabox_Field {
 	 * Overwrite this method in a child class to obtain custom behaviour.
 	 */
 	public function html_wrapper_open() {
-		$html = '';
 
-		$html .= '<div class="wl - metabox" data-cardinality="' . $this->cardinality . '">';
-
-		return $html;
+		return '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '">';
 	}
 
 	/**
@@ -232,7 +229,7 @@ class WL_Metabox_Field {
 
 		// If cardiality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			$html .= '<button class="button wl - add - input" type="button">Add</button>';
+			$html .= '<button class="button wl-add-input" type="button">Add</button>';
 		}
 
 		// Close the HTML wrapper
@@ -247,9 +244,9 @@ class WL_Metabox_Field {
 	 * @param mixed $value Input value
 	 */
 	public function html_input( $value ) {
-		$html = '<div class="wl - input - wrapper">
+		$html = '<div class="wl-input-wrapper">
             <input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[ ' . $this->meta_name . ' ][]" value="' . $value . '" style="width:88 % " />
-            <button class="button wl - remove - input" type="button" style="width:10 % ">Remove</button>
+            <button class="button wl-remove-input" type="button" style="width:10 % ">Remove</button>
         </div>';
 
 		return $html;

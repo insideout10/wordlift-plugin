@@ -166,8 +166,11 @@ add_filter( 'the_content', 'wl_content_embed_microdata' );
  * @return string The content with embedded microdata.
  */
 function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $recursion_level = 0 ) {
+	global $wl_logger;
 
-	// wl_write_log( "[ entity id :: $entity_id ][ entity type :: " . var_export( $entity_type, true ) . " ][ recursion level :: $recursion_level ]" );
+	if ( WP_DEBUG ) {
+		$wl_logger->trace( "Embedding microdata [ entity id :: $entity_id ][ entity type :: " . var_export( $entity_type, true ) . " ][ recursion level :: $recursion_level ]" );
+	}
 
 	$regex   = '/{{(.*?)}}/';
 	$matches = array();
@@ -187,8 +190,17 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		$placeholder = $match[0];
 		$field_name  = $match[1];
 
+		if ( WP_DEBUG ) {
+			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ]" );
+		}
+
 		// Get property value.
 		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
+
+		if ( WP_DEBUG ) {
+			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ][ meta collection :: " . ( is_array( $meta_collection ) ? var_export( $meta_collection, true ) : $meta_collection ) . " ]" );
+		}
+
 		// If no value is given, just remove the placeholder from the template
 		if ( null == $meta_collection ) {
 			$template = str_replace( $placeholder, '', $template );
