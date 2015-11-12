@@ -57,8 +57,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 
 		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id, $entity_4_id ) );
 
-
-		$events = wl_shortcode_timeline_get_events( $post_id );
+		$events = Wordlift_Timeline_Service::get_instance()->get_events( $post_id );
 		$this->assertCount( 2, $events );
 
 		$event_ids = array_map( function ( $item ) {
@@ -164,7 +163,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
 
 		// Call retrieving function with null argument (i.e. global timeline)
-		$events = wl_shortcode_timeline_get_events( null );
+		$events = Wordlift_Timeline_Service::get_instance()->get_events();
 		$this->assertCount( 2, $events );
 
 		$event_ids = array_map( function ( $item ) {
