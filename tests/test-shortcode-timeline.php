@@ -36,18 +36,18 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 
 		$entity_1_id    = wl_create_post( "Entity 1's\nText", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
 		$thumbnail_1_id = $this->createPostThumbnail( 'http://example.org/entity_1.png', 'Entity 1 Thumbnail', 'image/png', 'dummy/image_1.png', $entity_1_id );
-		wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
 		$entity_2_id    = wl_create_post( "Entity 2's\nText", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
 		$thumbnail_2_id = $this->createPostThumbnail( 'http://example.org/entity_2.png', 'Entity 2 Thumbnail', 'image/png', 'dummy/image_2.png', $entity_2_id );
-		wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 
 		$entity_3_id = wl_create_post( '', 'entity-3', 'Entity 3', 'publish', 'entity' );
-		wl_set_entity_main_type( $entity_3_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', true );
 		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', true );
 
@@ -144,12 +144,12 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		// Create entities (2 events and one place)
 
 		$entity_1_id = wl_create_post( "Entity 1's Text", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
-		wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
 		$entity_2_id = wl_create_post( "Entity 2's Text", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
-		wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 

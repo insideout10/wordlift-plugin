@@ -180,7 +180,7 @@ function wl_set_entity_uri( $post_id, $uri ) {
  * @return array An array of terms.
  */
 function wl_get_entity_rdf_types( $post_id ) {
-	return get_post_meta( $post_id, 'wl_entity_type_uri' );
+	return get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_ENTITY_TYPE );
 }
 
 /**
@@ -199,12 +199,12 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 	// Ensure there are no duplicates.
 	$type_uris = array_unique( $type_uris );
 
-	delete_post_meta( $post_id, 'wl_entity_type_uri' );
+	delete_post_meta( $post_id, Wordlift_Schema_Service::FIELD_ENTITY_TYPE );
 	foreach ( $type_uris as $type_uri ) {
 		if ( empty( $type_uri ) ) {
 			continue;
 		}
-		add_post_meta( $post_id, 'wl_entity_type_uri', $type_uri );
+		add_post_meta( $post_id, Wordlift_Schema_Service::FIELD_ENTITY_TYPE, $type_uri );
 	}
 }
 

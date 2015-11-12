@@ -23,7 +23,7 @@ class ContentFilterTest extends WP_UnitTestCase {
 
 		$entity_id  = wl_create_post( '', 'entity-1', 'Entity 1', 'publish', 'entity' );
 		$entity_uri = wl_get_entity_uri( $entity_id );
-		wl_set_entity_main_type( $entity_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $entity_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 
 		# Create a test entity post.
 		$content = <<<EOF
@@ -212,7 +212,7 @@ EOF;
 
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
-		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 
 		// Trying out both the schema API and the classic WP method
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
@@ -271,7 +271,7 @@ EOF;
 
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
-		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
 		// Set a fake uri ad entity reference
@@ -313,7 +313,7 @@ EOF;
 
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
-		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
+		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
 

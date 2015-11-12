@@ -121,12 +121,16 @@ class Wordlift_Timeline_Service {
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_START,
 					'value'   => null,
-					'compare' => '!=',
+					'compare' => '!='
 				),
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
 					'value'   => null,
-					'compare' => '!=',
+					'compare' => '!='
+				),
+				array(
+					'key'   => Wordlift_Schema_Service::FIELD_ENTITY_TYPE,
+					'value' => Wordlift_Schema_Service::SCHEMA_EVENT_TYPE
 				)
 			)
 		) );

@@ -91,6 +91,12 @@ class Wordlift_Schema_Service {
 	 */
 	const FIELD_ADDRESS = 'wl_address';
 
+	/**
+	 * The 'entity type' field name.
+	 *
+	 * @since 3.1.0
+	 */
+	const FIELD_ENTITY_TYPE = 'wl_entity_type_uri';
 
 	/**
 	 * The 'URI' data type name.
@@ -133,6 +139,13 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	const DATA_TYPE_BOOLEAN = 'bool';
+
+	/**
+	 * The schema.org Event type URI.
+	 *
+	 * @since 3.1.0
+	 */
+	const SCHEMA_EVENT_TYPE = 'http://schema.org/Event';
 
 	/**
 	 * The Schema service singleton instance.
@@ -312,7 +325,7 @@ class Wordlift_Schema_Service {
 			'description'        => 'An event . ',
 			'parents'            => array( 'thing' ),
 			'css_class'          => 'wl-event',
-			'uri'                => 'http://schema.org/Event',
+			'uri'                => self::SCHEMA_EVENT_TYPE,
 			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
 			'custom_fields'      => array(
 				self::FIELD_DATE_START => array(
