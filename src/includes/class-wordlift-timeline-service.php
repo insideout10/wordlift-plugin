@@ -26,6 +26,15 @@ class Wordlift_Timeline_Service {
 	private $entity_service;
 
 	/**
+	 * A singleton instance of the Entity service (useful for unit tests).
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $instance The singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Create a Wordlift_Timeline_Service instance.
 	 *
 	 * @since 3.1.0
@@ -38,6 +47,20 @@ class Wordlift_Timeline_Service {
 
 		$this->entity_service = $entity_service;
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance of the Wordlift_Entity_Service
+	 *
+	 * @since 3.1.0
+	 *
+	 * @return \Wordlift_Entity_Service The singleton instance of the Wordlift_Entity_Service.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
