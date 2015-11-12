@@ -52,11 +52,11 @@ class Wordlift_Timeline_Service {
 	}
 
 	/**
-	 * Get the singleton instance of the Wordlift_Entity_Service
+	 * Get the singleton instance of the Wordlift_Timeline_Service
 	 *
 	 * @since 3.1.0
 	 *
-	 * @return \Wordlift_Entity_Service The singleton instance of the Wordlift_Entity_Service.
+	 * @return \Wordlift_Timeline_Service The singleton instance of the Wordlift_Timeline_Service.
 	 */
 	public static function get_instance() {
 
@@ -67,9 +67,6 @@ class Wordlift_Timeline_Service {
 	 * Retrieve timeline events and output them in JSON.
 	 *
 	 * @since 3.1.0
-	 *
-	 * @uses wl_shortcode_timeline_get_events() to retrieve the list of events referenced by the specified Post ID.
-	 * @uses wl_shortcode_timeline_to_json() to convert the result to JSON.
 	 */
 	public function ajax_timeline() {
 
