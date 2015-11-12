@@ -53,6 +53,11 @@ class Wordlift_Log_Service {
 	 */
 	public function log( $level, $message ) {
 
+		// If we're tracing or debugging, but the debug flag isn't set, then we don't log.
+		if ( ( self::TRACE === $level || self::DEBUG === $level ) && ( ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ) ) {
+			return;
+		}
+
 		error_log( sprintf( self::MESSAGE_TEMPLATE, $level, $this->class_name, $message ) );
 
 	}

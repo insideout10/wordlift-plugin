@@ -26,14 +26,8 @@ define( 'WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING', 'true' !== getenv( 'WL_DISA
 // Define the meta name used to store the entity URL.
 define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 
-// Define the Redlink API version (it is used to build API URLs).
-define( 'WL_REDLINK_API_VERSION', '1.0-BETA' );
-
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
-
-// The entity type.
-define( 'WL_ENTITY_TYPE_NAME', 'entity' );
 
 // The name for the entity type taxonomy.
 define( 'WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type' );

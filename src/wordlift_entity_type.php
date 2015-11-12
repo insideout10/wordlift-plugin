@@ -31,7 +31,7 @@ function wl_entity_type_register() {
         'taxonomies' => array('category')*/
 	);
 
-	register_post_type( WL_ENTITY_TYPE_NAME, $args );
+	register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );
 }
 
 add_action( 'init', 'wl_entity_type_register' );

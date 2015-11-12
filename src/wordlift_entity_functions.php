@@ -15,7 +15,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 	$query = new WP_Query( array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => WL_ENTITY_TYPE_NAME,
+			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
 			'meta_query'     => array(
 				'relation' => 'OR',
 				array(
@@ -63,7 +63,7 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 	$query = new WP_Query( array(
 			'fields'      => 'ids',
 			'post_status' => 'any',
-			'post_type'   => WL_ENTITY_TYPE_NAME,
+			'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
 			'meta_query'  => array(
 				'relation' => 'OR',
 				array(

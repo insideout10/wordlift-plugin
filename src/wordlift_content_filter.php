@@ -45,7 +45,7 @@ function wl_content_embed_microdata( $content ) {
 function _wl_content_embed_microdata( $post_id, $content ) {
 
 	// If it is an entity, add its own microdata to the content.
-	if ( get_post_type( $post_id ) == WL_ENTITY_TYPE_NAME ) {
+	if ( get_post_type( $post_id ) == Wordlift_Entity_Service::TYPE_NAME ) {
 		$own_uri = wl_get_entity_uri( $post_id );
 		$content .= '<span itemid="' . $own_uri . '"></span>';
 	}

@@ -58,6 +58,24 @@ class Wordlift {
 	protected $version;
 
 	/**
+	 * The Entity service.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
+	 */
+	private $entity_service;
+
+	/**
+	 * The Timeline service.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Timeline_Service $timeline_service The Timeline service.
+	 */
+	private $timeline_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -119,6 +137,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
 
 		/**
+		 * The Entity service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
+
+		/**
+		 * The Timeline service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-timeline-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
@@ -140,8 +168,13 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
-		$schema_service     = new Wordlift_Schema_Service();
-		$timeline_shortcode = new Wordlift_Timeline_Shortcode();
+		$schema_service = new Wordlift_Schema_Service();
+
+		$this->entity_service = new Wordlift_Entity_Service();
+
+		// Create a new instance of the Timeline service and Timeline shortcode.
+		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
+		$timeline_shortcode     = new Wordlift_Timeline_Shortcode();
 
 	}
 
@@ -177,6 +210,9 @@ class Wordlift {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		// Hook the AJAX wl_timeline action to the Timeline service.
+		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
+
 	}
 
 	/**
@@ -192,6 +228,9 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		// Hook the AJAX wl_timeline action to the Timeline service.
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
 	}
 

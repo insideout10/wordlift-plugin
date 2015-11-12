@@ -19,7 +19,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		} else {
 			$absent_from_db =
 				is_null( wl_get_entity_post_by_uri( $value ) ) &&                      // search by uri
-				is_null( get_page_by_title( $value, OBJECT, WL_ENTITY_TYPE_NAME ) );   // search by name
+				is_null( get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::TYPE_NAME ) );   // search by name
 		}
 
 		// Is it an URI?
@@ -32,7 +32,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			// ...we create a new entity!
 			$new_entity_id = wp_insert_post( array(
 				'post_status' => 'publish',
-				'post_type'   => WL_ENTITY_TYPE_NAME,
+				'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
 				'post_title'  => $value
 			) );
 			$new_entity    = get_post( $new_entity_id );

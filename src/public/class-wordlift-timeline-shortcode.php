@@ -38,10 +38,6 @@ class Wordlift_Timeline_Shortcode {
 	 */
 	public function render( $atts ) {
 
-		if ( WP_DEBUG ) {
-			$this->log_service->trace( 'Creating the timeline widget...' );
-		}
-
 		//extract attributes and set default values
 		$timeline_atts = shortcode_atts( array(
 			'width'  => '100%',
@@ -63,6 +59,10 @@ class Wordlift_Timeline_Shortcode {
 		$esc_width    = esc_attr( $timeline_atts['width'] );
 		$esc_height   = esc_attr( $timeline_atts['height'] );
 		$data_post_id = ( isset( $post_id ) ? "data-post-id='$post_id'" : '' );
+
+		if ( WP_DEBUG ) {
+			$this->log_service->trace( "Creating a timeline widget [ element id :: $element_id ][ post id :: $post_id ]" );
+		}
 
 		// Building template.
 		// TODO: in the HTML code there are static CSS rules. Move them to the CSS file.

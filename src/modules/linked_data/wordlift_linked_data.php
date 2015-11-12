@@ -168,7 +168,7 @@ function wordlift_save_post_add_default_schema_type( $entity_id ) {
     $entity_type = wl_schema_get_types( $entity_id );
     
     // Assign type 'Thing' if we are dealing with an entity without type
-    if( $entity->post_type == WL_ENTITY_TYPE_NAME && is_null( $entity_type ) ) {
+    if( $entity->post_type == Wordlift_Entity_Service::TYPE_NAME && is_null( $entity_type ) ) {
         
         wl_schema_set_types( $entity_id, 'Thing' );
     }
@@ -279,7 +279,7 @@ function wl_save_entity( $entity_properties ) {
         // Prepare properties of the new entity.
 	$params = array(
 		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
-		'post_type'    => WL_ENTITY_TYPE_NAME,
+		'post_type'    => Wordlift_Entity_Service::TYPE_NAME,
 		'post_title'   => $label,
 		'post_content' => $description,
 		'post_excerpt' => ''

@@ -41,7 +41,7 @@ class MetaboxTest extends WP_UnitTestCase {
 	function testWL_Metabox_fields_instantiation() {
 
 		// Create an entity of type Place
-		$place_id = wl_create_post( '', 'p', 'A place', 'publish', WL_ENTITY_TYPE_NAME );
+		$place_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 
 		// Create Metabox and its Fields
@@ -73,7 +73,7 @@ class MetaboxTest extends WP_UnitTestCase {
 	function testWL_Metabox_group_properties_by_input_field() {
 
 		// Create an entity of type Place
-		$place_id = wl_create_post( '', 'p', 'A place', 'publish', WL_ENTITY_TYPE_NAME );
+		$place_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 
 		// Create Metabox and its Fields
@@ -93,7 +93,7 @@ class MetaboxTest extends WP_UnitTestCase {
 	function testWL_Metabox_save_form_data() {
 
 		// Create an entity of type Place
-		$place_id = wl_create_post( '', 'p', 'A place', 'publish', WL_ENTITY_TYPE_NAME );
+		$place_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 
 		// Create Metabox and its Fields
@@ -205,12 +205,12 @@ class MetaboxTest extends WP_UnitTestCase {
 	function testWL_Metabox_Field_uri_data() {
 
 		// Create an entity of type Person
-		$person_id = wl_create_post( '', 'p', 'A person', 'publish', WL_ENTITY_TYPE_NAME );
+		$person_id = wl_create_post( '', 'p', 'A person', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $person_id, 'http://schema.org/Person' );
 		wl_schema_set_value( $person_id, 'author', 43 );
 
 		// Create an entity of type CreativeWork
-		$creative_work_id = wl_create_post( '', 'cw', 'A creative work', 'publish', WL_ENTITY_TYPE_NAME );
+		$creative_work_id = wl_create_post( '', 'cw', 'A creative work', 'publish', Wordlift_Entity_Service::TYPE_NAME );
 		wl_set_entity_main_type( $creative_work_id, 'http://schema.org/CreativeWork' );
 		wl_schema_set_value( $creative_work_id, 'author', $person_id );     // Set authorship
 
@@ -230,7 +230,7 @@ class MetaboxTest extends WP_UnitTestCase {
 		$field->save_data( array( $person_id, 'http://some-triplestore/person2', null, 'Annibale' ) );
 
 		// Verify data is loaded correctly from DB
-		$new_entity = get_page_by_title( 'Annibale', OBJECT, WL_ENTITY_TYPE_NAME );
+		$new_entity = get_page_by_title( 'Annibale', OBJECT, Wordlift_Entity_Service::TYPE_NAME );
 		$field->get_data();
 		$this->assertEquals( array( $person_id, 'http://some-triplestore/person2', $new_entity->ID ), $field->data );
 

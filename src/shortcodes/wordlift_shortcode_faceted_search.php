@@ -44,7 +44,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 	// If the current post is not an entity post an exception needs to be raised
 	$entity = get_post( $entity_id );
-	if ( WL_ENTITY_TYPE_NAME !== $entity->post_type ) {
+	if ( Wordlift_Entity_Service::TYPE_NAME !== $entity->post_type ) {
 		wp_die( 'Faceted search supports only entity posts' );
 
 		return;

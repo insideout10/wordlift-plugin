@@ -54,7 +54,7 @@ class WL_Metabox {
 		add_meta_box( $id, get_the_title() . ' properties', array(
 			$this,
 			'html'
-		), WL_ENTITY_TYPE_NAME, 'normal', 'high' );
+		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
 
 	}
 

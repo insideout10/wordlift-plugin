@@ -37,7 +37,7 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 	// Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query
 	$places = get_posts( array(
 		'post__in'    => $related_ids,
-		'post_type'   => WL_ENTITY_TYPE_NAME,
+		'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
 		'nopaging'    => true,
 		'post_status' => 'published',
 		'meta_query'  => array(

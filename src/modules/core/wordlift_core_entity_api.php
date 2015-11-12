@@ -32,7 +32,7 @@ function wl_entity_get_by_title( $title, $autocomplete=false ) {
 	         " AND tt.term_taxonomy_id = tr.term_taxonomy_id" .
 	         " AND tr.object_id = p.ID";
         
-	return $wpdb->get_results( $wpdb->prepare( $query, $title, WL_ENTITY_TYPE_NAME ) );
+	return $wpdb->get_results( $wpdb->prepare( $query, $title, Wordlift_Entity_Service::TYPE_NAME ) );
 }
 
 
@@ -57,7 +57,7 @@ function wl_entity_ajax_get_by_title() {
         }
 
 	// Get the edit link.
-	$post_type_object = get_post_type_object( WL_ENTITY_TYPE_NAME );
+	$post_type_object = get_post_type_object( Wordlift_Entity_Service::TYPE_NAME );
 	$edit_link        = $post_type_object->_edit_link . '&action=edit';
 
 	// Prepare the response with the edit link.
