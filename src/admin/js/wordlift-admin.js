@@ -39,6 +39,11 @@
         // The Entity Types Taxonomy is exclusive, one cannot choose more than a type. Therefore from the PHP code
         // we provide a Walker that changes checkboxes into radios. However the quickedit on the client side is applied
         // only to checkboxes, so we override the function here to apply the selection also to radios.
+
+        // Do not hook, if we're not on a page with the inlineEditPost.
+        if ( 'undefined' === typeof inlineEditPost || null === inlineEditPost )
+            return;
+
         var fnEdit = inlineEditPost.edit; // Create a reference to the original function.
 
         // Override the edit function.
