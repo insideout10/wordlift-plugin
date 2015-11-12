@@ -82,8 +82,11 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
 		$longitude = $this->data[1];
 
 		// insert new coordinate values
-		add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );
-		add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $longitude, true );
+		if ( ! empty( $latitude ) && ! empty( $longitude ) ) {
+			add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, $latitude, true );
+			add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, $longitude, true );
+		}
+
 	}
 
 	/**
@@ -91,11 +94,13 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
 	 */
 	public function sanitize_data_filter( $value ) {
 
-		if ( ! is_null( $value ) && $value !== '' && is_numeric( $value ) ) {
-			return $value;
+		// DO NOT set latitude/longitude to 0/0 as default values. It's a specific place on the globe:
+		// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
+		if ( ! is_numeric( $value ) ) {
+			return '';
 		}
 
-		return 0.0;
+		return $value;
 	}
 }
 
