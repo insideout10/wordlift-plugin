@@ -6,6 +6,7 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 * Sets up the widgets name etc
 	 */
 	public function __construct() {
+
 		// widget actual processes
 		parent::__construct(
 			'wl_timeline_widget', // Base ID

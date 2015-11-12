@@ -175,6 +175,11 @@ add_action( 'wp_ajax_nopriv_wl_timeline', 'wl_shortcode_timeline_ajax' );
  */
 function wl_shortcode_timeline( $atts ) {
 
+	if ( WP_DEBUG ) {
+		global $wl_logger;
+		$wl_logger->trace( 'Creating the timeline widget via wl_shortcode_timeline...' );
+	}
+
 	//extract attributes and set default values
 	$timeline_atts = shortcode_atts( array(
 		'width'  => '100%',
