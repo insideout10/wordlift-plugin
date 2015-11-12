@@ -42,49 +42,49 @@ EOF;
 		$this->assertContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
 
 	}
-        
-        // Test <span> markup is cleaned out when referring to a non-existent entity
-        function testMicrodataCompilingForANonExistentEntity() {
-                
-            // Create content for a post referencing a non existent entity
-            $content = <<<EOF
+
+	// Test <span> markup is cleaned out when referring to a non-existent entity
+	function testMicrodataCompilingForANonExistentEntity() {
+
+		// Create content for a post referencing a non existent entity
+		$content = <<<EOF
                 Let's talk about <span itemid="http://nonExistent.yeah">Watzlawick</span>
 EOF;
-            
-            // Create a post with above content
-            $post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
-            
-            // Verify the span tag does not appear on the frontend, but content is preserved.
-            $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-            $this->assertEquals(
-                $this->prepareMarkup( "Let's talk about Watzlawick" ),
-                $this->prepareMarkup( $compiled_markup )
-            );
-        }
-        
-        // Test <span> markup is cleaned out when referring to a non-published entity
-        function testMicrodataCompilingForANonPublishedEntity() {
-            
-            $entity_id  = wl_create_post( 'A trashed entity about Paul Watzlawick', 'watzlawick', 'Paul Watzlawick', 'draft', 'entity' );
-            $entity_uri = wl_get_entity_uri( $entity_id );
-            
-            // Create content for a post referencing the entity
-            $content = <<<EOF
+
+		// Create a post with above content
+		$post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+
+		// Verify the span tag does not appear on the frontend, but content is preserved.
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		$this->assertEquals(
+			$this->prepareMarkup( "Let's talk about Watzlawick" ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
+
+	// Test <span> markup is cleaned out when referring to a non-published entity
+	function testMicrodataCompilingForANonPublishedEntity() {
+
+		$entity_id  = wl_create_post( 'A trashed entity about Paul Watzlawick', 'watzlawick', 'Paul Watzlawick', 'draft', 'entity' );
+		$entity_uri = wl_get_entity_uri( $entity_id );
+
+		// Create content for a post referencing the entity
+		$content = <<<EOF
                 Let's talk about <span itemid="$entity_uri">Watzlawick</span>
 EOF;
-            
-            // Create a post with above content
-            $post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
-            
-            // Verify the span tag does not appear on the frontend
-            $compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-            $this->assertEquals(
-                $this->prepareMarkup( "Let's talk about Watzlawick" ),
-                $this->prepareMarkup( $compiled_markup )
-            );
-        }
 
-        // Test if the microdata compiling does not fail on an entity with an undefined schema.org type
+		// Create a post with above content
+		$post_id = wl_create_post( $content, 'post', 'A post', 'publish', 'post' );
+
+		// Verify the span tag does not appear on the frontend
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		$this->assertEquals(
+			$this->prepareMarkup( "Let's talk about Watzlawick" ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
+
+	// Test if the microdata compiling does not fail on an entity with an undefined schema.org type
 	function testMicrodataCompilingForAnEntityWithUndefinedType() {
 		// Create an entity without defining the schema.org type. WordLift will assume it is a Thing
 		$entity_id  = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
@@ -171,12 +171,12 @@ EOF;
 		// Create an entity without defining the schema.org type properly
 		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
-		
-                // Trying out both the schema API and the classic WP method
-                add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
+
+		// Trying out both the schema API and the classic WP method
+		add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
 		wl_schema_set_value( $entity_id, 'longitude', 72.3 );
-		
-                $entity_uri = wl_get_entity_uri( $entity_id );
+
+		$entity_uri = wl_get_entity_uri( $entity_id );
 		$content    = <<<EOF
     <span itemid="$entity_uri">MyPlace</span>
 EOF;
@@ -205,21 +205,21 @@ EOF;
 		// A place
 		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-		
-                // Trying out both the schema API and the classic WP method
-                wl_schema_set_value( $place_id, 'latitude', 40.12 );
+
+		// Trying out both the schema API and the classic WP method
+		wl_schema_set_value( $place_id, 'latitude', 40.12 );
 		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// An Event having as location the place above
 		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
-		
-                // Trying out both the schema API and the classic WP method
-                add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
+
+		// Trying out both the schema API and the classic WP method
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
 		wl_schema_set_value( $event_id, 'endDate', '2015-10-26' );
-                
-                wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
-                wl_schema_add_value($event_id, 'sameAs', 'http://rdf.freebase.com/my-event');
+
+		wl_schema_set_value( $event_id, 'sameAs', 'http://dbpedia.org/resource/my-event' );
+		wl_schema_add_value( $event_id, 'sameAs', 'http://rdf.freebase.com/my-event' );
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
@@ -306,9 +306,9 @@ EOF;
 		// A place
 		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-		
-                // Trying out both the schema API and the classic WP method
-                wl_schema_set_value( $place_id, 'latitude', 40.12 );
+
+		// Trying out both the schema API and the classic WP method
+		wl_schema_set_value( $place_id, 'latitude', 40.12 );
 		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// An Event having as location the place above
@@ -316,14 +316,14 @@ EOF;
 		wl_set_entity_main_type( $event_id, 'http://schema.org/Event' );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
-                
-                wl_schema_set_value($event_id, 'sameAs', array(
-                    'http://rdf.freebase.com/my-event',
-                    'http://dbpedia.org/resource/my-event'
-                ));
-                //wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
-		
-                add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
+
+		wl_schema_set_value( $event_id, 'sameAs', array(
+			'http://rdf.freebase.com/my-event',
+			'http://dbpedia.org/resource/my-event'
+		) );
+		//wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
+
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
@@ -362,14 +362,14 @@ EOF;
 			$this->prepareMarkup( $compiled_markup )
 		);
 	}
-        
+
 	// If the content filter is applied to an entity, the entity's microdata must be printed too.
 	function testMicrodataCompilingForAnEntityPage() {
 
 		// A place
 		$place_id = wl_create_post( '', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-                wl_schema_set_value( $place_id, 'latitude', 40.12 );
+		wl_schema_set_value( $place_id, 'latitude', 40.12 );
 		wl_schema_set_value( $place_id, 'longitude', 72.3 );
 
 		// Compile markup for the given content
