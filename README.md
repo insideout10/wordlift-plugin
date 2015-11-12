@@ -19,7 +19,7 @@ http://git-scm.com/book
 
 ### Versioning
 
-We use [Semantic Versioning](http://semver.org/). We add the *SNAPSHOT* suffix to releases that are not yet usable.
+We use [Semantic Versioning](http://semver.org/). We add the *dev* suffix to releases that are not yet usable.
 
 ### Coding Standard
 
