@@ -133,7 +133,7 @@ class AjaxTest extends WP_UnitTestCase {
 
 		$_REQUEST['post_id'] = $post_id;
 
-		wl_shortcode_timeline_ajax();
+		Wordlift_Timeline_Service::get_instance()->ajax_timeline();
 		$headers = xdebug_get_headers();
 
 		$this->assertTrue( in_array( 'Content-Type: application/json', $headers ) );
