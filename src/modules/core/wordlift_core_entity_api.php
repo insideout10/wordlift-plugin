@@ -28,7 +28,7 @@ function wl_entity_get_by_title( $title, $autocomplete=false ) {
 	         " FROM $wpdb->posts p, $wpdb->term_taxonomy tt, $wpdb->term_relationships tr, $wpdb->terms t" .
 	         " WHERE p.post_title LIKE %s AND p.post_type= %s" .
 	         " AND t.term_id = tt.term_id" .
-	         " AND tt.taxonomy = '" . WL_ENTITY_TYPE_TAXONOMY_NAME . "'" .
+	         " AND tt.taxonomy = '" . Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . "'" .
 	         " AND tt.term_taxonomy_id = tr.term_taxonomy_id" .
 	         " AND tr.object_id = p.ID";
         

@@ -76,6 +76,15 @@ class Wordlift {
 	private $timeline_service;
 
 	/**
+	 * The Entity Types Taxonomy Walker.
+	 *
+	 * @since 3.1.0
+	 * @access private
+	 * @var \Wordlift_Entity_Types_Taxonomy_Walker $entity_types_taxonomy_walker The Entity Types Taxonomy Walker
+	 */
+	private $entity_types_taxonomy_walker;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -137,6 +146,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
 
 		/**
+		 * The Entity Types Taxonomy service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-types-taxonomy-service.php';
+
+		/**
 		 * The Entity service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
@@ -150,6 +164,11 @@ class Wordlift {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
+
+		/**
+		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -175,6 +194,8 @@ class Wordlift {
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
 		$timeline_shortcode     = new Wordlift_Timeline_Shortcode();
+
+		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 	}
 
@@ -212,6 +233,9 @@ class Wordlift {
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
+
+
+		$this->loader->add_filter('wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 	}
 

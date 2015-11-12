@@ -633,7 +633,6 @@ require_once( 'admin/wordlift_admin_bar.php' );
 
 // add the entities meta box.
 require_once( 'admin/wordlift_admin_meta_box_entities.php' );
-require_once( 'admin/wordlift_admin_entity_type_taxonomy.php' );
 
 // add the entity creation AJAX.
 require_once( 'admin/wordlift_admin_ajax_related_posts.php' );

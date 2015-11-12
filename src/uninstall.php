@@ -74,10 +74,10 @@ wl_write_log( 'Cleaning entities taxonomy... ' );
 // We loop over terms in this rude way because in the uninstall script
 // is not possible to call WP custom taxonomy functions.
 foreach ( range( 0, 100 ) as $index ) {
-	delete_option( WL_ENTITY_TYPE_TAXONOMY_NAME . '_' . $index );
-	wp_delete_term( $index, WL_ENTITY_TYPE_TAXONOMY_NAME );
+	delete_option( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . '_' . $index );
+	wp_delete_term( $index, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 }
-delete_option( WL_ENTITY_TYPE_TAXONOMY_NAME . '_children' );  // it's a hierarchical taxonomy
+delete_option( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME . '_children' );  // it's a hierarchical taxonomy
 wl_write_log( 'Done.' );
 
 /**

@@ -1,7 +1,6 @@
 <?php
 /**
  * This file contains methods related to the Entity Type taxonomy.
- * The file admin/wordlift_admin_entity_type_taxonomy.php contains admin methods.
  */
 
 
@@ -40,7 +39,7 @@ function wl_entity_type_taxonomy_register() {
 		'show_admin_column' => true
 	);
 
-	register_taxonomy( WL_ENTITY_TYPE_TAXONOMY_NAME, 'entity', $args );
+	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'entity', $args );
 }
 
 /**
@@ -52,7 +51,7 @@ function wl_entity_type_taxonomy_register() {
  */
 function wl_entity_type_taxonomy_get_type( $post_id ) {
 
-	$terms = wp_get_object_terms( $post_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+	$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 	if ( is_wp_error( $terms ) ) {
 		// TODO: handle error
@@ -80,14 +79,14 @@ function wl_entity_type_taxonomy_get_term_children( $term, $by = 'name' ) {
 
 	$children_terms = array();
 
-	$term = get_term_by( $by, $term, WL_ENTITY_TYPE_TAXONOMY_NAME );
+	$term = get_term_by( $by, $term, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 	if ( isset( $term->term_id ) ) {
 
-		$children_ids = get_term_children( $term->term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+		$children_ids = get_term_children( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 		foreach ( $children_ids as $children_id ) {
-			$children_terms[] = get_term( $children_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+			$children_terms[] = get_term( $children_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		}
 	}
 

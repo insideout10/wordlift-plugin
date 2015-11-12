@@ -54,13 +54,13 @@ function wl_core_install_entity_type_data() {
 	foreach ( $terms as $slug => $term ) {
 
 		// Create the term if it does not exist, then get its ID
-		$term_id = term_exists( $slug, WL_ENTITY_TYPE_TAXONOMY_NAME );
+		$term_id = term_exists( $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 		if ( $term_id == 0 || is_null( $term_id ) ) {
-			$result = wp_insert_term( $slug, WL_ENTITY_TYPE_TAXONOMY_NAME );
+			$result = wp_insert_term( $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		} else {
 			$term_id = $term_id['term_id'];
-			$result  = get_term( $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME, ARRAY_A );
+			$result  = get_term( $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, ARRAY_A );
 		}
 
 		// Check for errors.
@@ -76,7 +76,7 @@ function wl_core_install_entity_type_data() {
 
 		$parent_ids = array();
 		foreach ( $term['parents'] as $parent_slug ) {
-			$parent_id    = get_term_by( 'slug', $parent_slug, WL_ENTITY_TYPE_TAXONOMY_NAME );
+			$parent_id    = get_term_by( 'slug', $parent_slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 			$parent_ids[] = intval( $parent_id->term_id );  // Note: int casting is suggested by Codex: http://codex.wordpress.org/Function_Reference/get_term_by
 		}
 
@@ -90,7 +90,7 @@ function wl_core_install_entity_type_data() {
 		}
 
 		// Update term with description, slug and parent
-		wp_update_term( $result['term_id'], WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+		wp_update_term( $result['term_id'], Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
 			'name'        => $term['label'],
 			'slug'        => $slug,
 			'description' => $term['description'],

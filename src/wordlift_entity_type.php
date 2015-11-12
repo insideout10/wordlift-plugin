@@ -145,13 +145,13 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 
 	// If the type URI is empty we remove the type.
 	if ( empty( $type_uri ) ) {
-		wp_set_object_terms( $post_id, null, WL_ENTITY_TYPE_TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, null, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 		return;
 	}
 
 	// Get all the terms bound to the wl_entity_type taxonomy.
-	$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+	$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
 		'hide_empty' => false,
 		'fields'     => 'id=>slug'
 	) );
@@ -162,7 +162,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 		$type = Wordlift_Schema_Service::get_instance()->get_schema( $term_slug );
 		// Set the related term ID.
 		if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
-			wp_set_object_terms( $post_id, (int) $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+			wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 			return;
 		}
@@ -174,7 +174,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
  */
 function wl_print_entity_type_inline_js() {
 
-	$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+	$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
 		'hide_empty' => false
 	) );
 

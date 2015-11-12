@@ -29,9 +29,6 @@ define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
-// The name for the entity type taxonomy.
-define( 'WL_ENTITY_TYPE_TAXONOMY_NAME', 'wl_entity_type' );
-
 
 /**
  * Get an array with commonly supported prefixes.
