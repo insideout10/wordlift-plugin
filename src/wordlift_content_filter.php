@@ -209,8 +209,16 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 
 		foreach ( $meta_collection as $field_value ) {
 
-			// Quick and dirty patch for #163.
-			if ( is_numeric( $field_value ) && 'publish' !== get_post_status( $field_value ) ) {
+			// Quick and dirty patch for #163:
+			//  - only apply to URIs, i.e. to properties pointing to another post ( $field_value should be a post ID ),
+			//  - check that $field_value is actually a number,
+			//  - check that the referenced post is published.
+			if ( Wordlift_Schema_Service::DATA_TYPE_URI === $expected_type && is_numeric( $field_value ) && 'publish' !== ( $post_status = get_post_status( $field_value ) ) ) {
+
+				if ( WP_DEBUG ) {
+					$wl_logger->trace( "Microdata refers to a non-published post [ field value :: $field_value ][ post status :: $post_status ]" );
+				}
+
 				// Remove the placeholder.
 				$template = str_replace( $placeholder, '', $template );
 				continue;

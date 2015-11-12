@@ -180,7 +180,7 @@ EOF;
 		$content    = <<<EOF
     <span itemid="$entity_uri">MyPlace</span>
 EOF;
-		// Create a post referincing to the created entity
+		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' );
 
 		// The expected mark-up expects color coding to be on.
