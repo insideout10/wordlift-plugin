@@ -141,7 +141,7 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array|string An array of timeline events or an empty string if no posts are provided.
 	 */
-	private function to_json( $posts ) {
+	public function to_json( $posts ) {
 
 		// If there are no events, return empty JSON
 		if ( empty( $posts ) || is_null( $posts ) ) {
