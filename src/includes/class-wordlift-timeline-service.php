@@ -173,7 +173,7 @@ class Wordlift_Timeline_Service {
 			$date['startDate'] = date( 'Y,m,d', $start_date );
 			$date['endDate']   = date( 'Y,m,d', $end_date );
 			$date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-			$date['text']      = $post->post_content;
+			$date['text']      = strip_shortcodes( $post->post_content );
 
 			// Load thumbnail
 			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
