@@ -266,21 +266,11 @@ function wl_get_coordinates( $post_id ) {
 	$latitude  = wl_schema_get_value( $post_id, 'latitude' );
 	$longitude = wl_schema_get_value( $post_id, 'longitude' );
 
-	// Default coords values [0, 0]
-	if ( ! isset( $latitude[0] ) || ! is_numeric( $latitude[0] ) ) {
-		$latitude = 0.0;
-	} else {
-		$latitude = floatval( $latitude[0] );
-	}
-	if ( ! isset( $longitude[0] ) || ! is_numeric( $longitude[0] ) ) {
-		$longitude = 0.0;
-	} else {
-		$longitude = floatval( $longitude[0] );
-	}
-
+	// DO NOT set latitude/longitude to 0/0 as default values. It's a specific place on the globe:
+	// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
 	return array(
-		'latitude'  => $latitude,
-		'longitude' => $longitude
+		'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
+		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : ''
 	);
 }
 
