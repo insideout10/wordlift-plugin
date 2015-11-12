@@ -349,7 +349,7 @@ EOF;
 
 		// Expect only one match (headers + one row).
 		if ( 2 !== $count ) {
-			wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ count :: $count ][ count (expected) :: 2 ]" );
+			wl_write_log( "checkEntity [ post id :: $post->ID ][ uri :: $uri ][ body :: $body ][ count :: $count ][ count (expected) :: 2 ]" );
 		}
 		$this->assertEquals( 2, $count );
 

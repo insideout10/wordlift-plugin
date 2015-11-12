@@ -30,6 +30,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 	 *  * 1 Person entity reference by the Post
 	 */
 	function testGetEvents() {
+		$log = Wordlift_Log_Service::get_logger( 'testGetEvents' );
 
 		$post_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 
@@ -69,9 +70,9 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		// From here onwards we check that the JSON response matches the events data.
 		$response = Wordlift_Timeline_Service::get_instance()->to_json( $events );
 
-		$this->assertTrue( isset( $response->timeline ) );
-		$this->assertCount( 2, $response->timeline->date );
-		$this->assertEquals( 'default', $response->timeline->type );
+		$this->assertTrue( isset( $response['timeline'] ) );
+		$this->assertCount( 2, $response['timeline']['date'] );
+		$this->assertEquals( 'default', $response['timeline']['type'] );
 
 		$entity_1 = get_post( $entity_1_id );
 		$entity_2 = get_post( $entity_2_id );
@@ -85,25 +86,25 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		$entity_2_date_end   = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
 
 		// This is the right order, i.e. the event 1 is in the 2nd position in the dates array.
-		$date_1 = $response->timeline->date[1];
-		$date_2 = $response->timeline->date[0];
+		$date_1 = $response['timeline']['date'][0];
+		$date_2 = $response['timeline']['date'][1];
 
-		$this->assertEquals( $entity_1_date_start, $date_1->startDate );
-		$this->assertEquals( $entity_1_date_end, $date_1->endDate );
-		$this->assertEquals( $entity_2_date_start, $date_2->startDate );
-		$this->assertEquals( $entity_2_date_end, $date_2->endDate );
+		$this->assertEquals( $entity_1_date_start, $date_1['startDate'] );
+		$this->assertEquals( $entity_1_date_end, $date_1['endDate'] );
+		$this->assertEquals( $entity_2_date_start, $date_2['startDate'] );
+		$this->assertEquals( $entity_2_date_end, $date_2['endDate'] );
 
-		$this->assertEquals( $entity_1->post_content, $date_1->text );
-		$this->assertEquals( $entity_2->post_content, $date_2->text );
+		$this->assertEquals( $entity_1->post_content, $date_1['text'] );
+		$this->assertEquals( $entity_2->post_content, $date_2['text'] );
 
-		$this->assertEquals( $entity_1_headline, $date_1->headline );
-		$this->assertEquals( $entity_2_headline, $date_2->headline );
+		$this->assertEquals( $entity_1_headline, $date_1['headline'] );
+		$this->assertEquals( $entity_2_headline, $date_2['headline'] );
 
 		$thumbnail_1 = wp_get_attachment_image_src( $thumbnail_1_id );
 		$thumbnail_2 = wp_get_attachment_image_src( $thumbnail_2_id );
 
-		$this->assertEquals( $thumbnail_1[0], $date_1->asset->media );
-		$this->assertEquals( $thumbnail_2[0], $date_2->asset->media );
+		$this->assertEquals( $thumbnail_1[0], $date_1['asset']['media'] );
+		$this->assertEquals( $thumbnail_2[0], $date_2['asset']['media'] );
 	}
 
 	function createPostThumbnail( $guid, $label, $content_type, $file, $post_id ) {
