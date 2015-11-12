@@ -127,11 +127,12 @@ class Wordlift_Timeline_Service {
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
 					'value'   => null,
 					'compare' => '!='
-				),
-				array(
-					'key'   => Wordlift_Schema_Service::FIELD_ENTITY_TYPE,
-					'value' => Wordlift_Schema_Service::SCHEMA_EVENT_TYPE
 				)
+			),
+			'tax_query'      => array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'event'
 			)
 		) );
 	}
