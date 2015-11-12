@@ -1,12 +1,12 @@
 <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="{{REDLINK_ENDPOINT}}/entity/myevent">
     <link itemprop="sameAs" href="http://rdf.freebase.com/my-event">
     <link itemprop="sameAs" href="http://dbpedia.org/resource/my-event">
-    <span itemprop="startDate" content="2014-10-21"></span>
-    <span itemprop="endDate" content="2015-10-26"></span>
+    <meta itemprop="startDate" content="2014-10-21" />
+    <meta itemprop="endDate" content="2015-10-26" />
     <span itemprop="location" itemscope itemtype="http://schema.org/Place" itemid="{{REDLINK_ENDPOINT}}/entity/myplace">
         <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-            <span itemprop="latitude" content="40.12"></span>
-            <span itemprop="longitude" content="72.3"></span>
+            <meta itemprop="latitude" content="40.12" />
+            <meta itemprop="longitude" content="72.3" />
         </span>
         <link itemprop="url" href="http://example.org/?entity=my-place" />
         <a class="wl-entity-page-link" href="http://example.org/?entity=my-place" itemprop="name" content="MyPlace"></a>

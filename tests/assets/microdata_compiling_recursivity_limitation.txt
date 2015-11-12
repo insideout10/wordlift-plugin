@@ -1,8 +1,8 @@
 <span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="{{REDLINK_ENDPOINT}}/entity/myevent">
     <link itemprop="sameAs" href="http://rdf.freebase.com/my-event">
     <link itemprop="sameAs" href="http://dbpedia.org/resource/my-event">  
-    <span itemprop="startDate" content="2014-10-21"></span>
-    <span itemprop="endDate" content="2015-10-26"></span>
+    <meta itemprop="startDate" content="2014-10-21" />
+    <meta itemprop="endDate" content="2015-10-26" />
     <link itemprop="url" href="http://example.org/?entity=my-event" />
     <a class="wl-entity-page-link" href="http://example.org/?entity=my-event" itemprop="name" content="MyEvent">MyEvent</a>
 </span>
