@@ -86,8 +86,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		$entity_2_date_end   = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
 
 		// This is the right order, i.e. the event 1 is in the 2nd position in the dates array.
-		$date_1 = $response['timeline']['date'][0];
-		$date_2 = $response['timeline']['date'][1];
+		$date_1 = $response['timeline']['date'][1];
+		$date_2 = $response['timeline']['date'][0];
 
 		$this->assertEquals( $entity_1_date_start, $date_1['startDate'] );
 		$this->assertEquals( $entity_1_date_end, $date_1['endDate'] );
