@@ -89,7 +89,7 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array An array of event posts.
 	 */
-	private function get_events( $post_id = null ) {
+	public function get_events( $post_id = null ) {
 
 		// Get the entity IDs either from the entities related to the specified post or from the last 50 published
 		// posts if no post has been specified.
