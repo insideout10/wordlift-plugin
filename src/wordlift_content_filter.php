@@ -247,7 +247,9 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 			}
 
 			// Standard condition: field containing a raw value
-			$value    = '<span itemprop="' . esc_attr( $field_name ) . '" content="' . esc_attr( $field_value ) . '"></span>';
+			// For non visible test, schema.org dictates to use the *meta* tag.
+			// see http://schema.org/docs/gs.html#advanced_missing
+			$value    = '<meta itemprop="' . esc_attr( $field_name ) . '" content="' . esc_attr( $field_value ) . '" />';
 			$template = str_replace( $placeholder, $value, $template );
 		}
 	}
