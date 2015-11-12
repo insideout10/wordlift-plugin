@@ -109,6 +109,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
 
 		/**
+		 * The Log service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
+
+		/**
+		 * The Schema service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
@@ -120,18 +130,9 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-public.php';
 
 		/**
-		 * Load our own classes.
+		 * The Timeline shortcode.
 		 */
-
-		/**
-		 * The Log service.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
-
-		/**
-		 * The Schema service.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-timeline-shortcode.php';
 
 		$this->loader = new Wordlift_Loader();
 
@@ -139,7 +140,8 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
-		$schema_service = new Wordlift_Schema_Service();
+		$schema_service     = new Wordlift_Schema_Service();
+		$timeline_shortcode = new Wordlift_Timeline_Shortcode();
 
 	}
 
