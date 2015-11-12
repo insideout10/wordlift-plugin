@@ -67,9 +67,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( $entity_2_id, $event_ids );
 
 		// From here onwards we check that the JSON response matches the events data.
-		$json = wl_shortcode_timeline_to_json( $events );
-
-		$response = json_decode( $json );
+		$response = Wordlift_Timeline_Service::get_instance()->to_json( $events );
 
 		$this->assertTrue( isset( $response->timeline ) );
 		$this->assertCount( 2, $response->timeline->date );
