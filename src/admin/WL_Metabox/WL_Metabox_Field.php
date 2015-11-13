@@ -245,7 +245,7 @@ class WL_Metabox_Field {
 	 */
 	public function html_input( $value ) {
 		$html = '<div class="wl-input-wrapper">
-            <input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[ ' . $this->meta_name . ' ][]" value="' . $value . '" style="width:88 % " />
+            <input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" style="width:88%" />
             <button class="button wl-remove-input" type="button" style="width:10 % ">Remove</button>
         </div>';
 

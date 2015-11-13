@@ -187,13 +187,16 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
-		$schema_service = new Wordlift_Schema_Service();
+		// Create an instance of the Schema service.
+		new Wordlift_Schema_Service();
 
 		$this->entity_service = new Wordlift_Entity_Service();
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
-		$timeline_shortcode     = new Wordlift_Timeline_Shortcode();
+
+		// Create an instance of the Timeline shortcode.
+		new Wordlift_Timeline_Shortcode();
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -235,7 +238,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
 
-		$this->loader->add_filter('wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
+		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 	}
 

@@ -26,11 +26,11 @@ class Wordlift_Timeline_Service {
 	private $entity_service;
 
 	/**
-	 * A singleton instance of the Entity service (useful for unit tests).
+	 * A singleton instance of the Timeline service (useful for unit tests).
 	 *
 	 * @since 3.1.0
 	 * @access private
-	 * @var \Wordlift_Entity_Service $instance The singleton instance.
+	 * @var \Wordlift_Timeline_Service $instance The singleton instance.
 	 */
 	private static $instance;
 

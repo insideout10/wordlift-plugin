@@ -75,7 +75,8 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
-= 3.1.0 (???) =
+
+= 3.1.0 (2015-11-13) =
  * Enhancement: [#145](https://github.com/insideout10/wordlift-plugin/issues/145): control new entities creation from metaboxes.
  * Enhancement: [#134](https://github.com/insideout10/wordlift-plugin/issues/134): scripts and styles source repository merged with PHP repository.
  * Enhancement: [#57](https://github.com/insideout10/wordlift-plugin/issues/57): on the Edit Entity page the referencing posts has been restored.
@@ -83,6 +84,14 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
  * Fix: [#141](https://github.com/insideout10/wordlift-plugin/issues/141): properties when published to Redlink have no links (and no meaning) is now fixed.
  * Fix: [#139](https://github.com/insideout10/wordlift-plugin/issues/139): single founder while expecting multiple founders is not fixed.
  * Fix: [#138](https://github.com/insideout10/wordlift-plugin/issues/138): Uncaught TypeError: Cannot read property 'id' of undefined is now fixed.
+ * Fix: [#169](https://github.com/insideout10/wordlift-plugin/issues/169): entities that are not events may be displayed in the timeline.
+ * Fix: [#168](https://github.com/insideout10/wordlift-plugin/issues/168): WordPress shortcodes are displayed in timelines.
+ * Fix: [#167](https://github.com/insideout10/wordlift-plugin/issues/167): schema.org markup is wrong for implicit contents.
+ * Fix: [#166](https://github.com/insideout10/wordlift-plugin/issues/166): latitude and longitude are set to zero when not specified.
+ * Fix: [#165](https://github.com/insideout10/wordlift-plugin/issues/165): entity type is lost in quickedit mode.
+ * Fix: [#164](https://github.com/insideout10/wordlift-plugin/issues/164): timeline widget is showing unrelated events.
+ * Fix: [#163](https://github.com/insideout10/wordlift-plugin/issues/163): incorrect markup for events' locations.
+ * Fix: [#162](https://github.com/insideout10/wordlift-plugin/issues/162): only dates are stored for startDate/endDate properties in linked data.
 
 = 3.0.16 (2015-11-11) =
  * Fix: [#152](https://github.com/insideout10/wordlift-plugin/issues/152): Entity description update from disambiguation widget is now disabled in order to prevent existing entity pages content overriding.
