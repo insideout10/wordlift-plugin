@@ -12,7 +12,7 @@ function wl_get_user_uri( $user_id ) {
 	// Get the user URI.
 	$uri = get_user_meta( $user_id, 'wl_uri', true );
 
-	wl_write_log( "wl_get_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_get_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
 
 	// Create the URI if the URI is not yet set.
 	if ( empty( $uri ) ) {
@@ -31,7 +31,7 @@ function wl_get_user_uri( $user_id ) {
  */
 function wl_set_user_uri( $user_id, $uri ) {
 
-	wl_write_log( "wl_set_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_set_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
 
 	delete_user_meta( $user_id, 'wl_uri' );
 	add_user_meta( $user_id, 'wl_uri', $uri );
@@ -82,7 +82,7 @@ function wl_build_user_uri( $user_id ) {
 		$uri = $base_uri . "_" . ( $counter ++ );
 	}
 
-	wl_write_log( "wl_build_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
+	// wl_write_log( "wl_build_user_uri [ user id :: $user_id ][ uri :: $uri ]" );
 
 	return $uri;
 }
@@ -96,7 +96,7 @@ function wl_build_user_uri( $user_id ) {
  */
 function wl_get_user( $user_id ) {
 
-	wl_write_log( "wl_get_user [ user id :: $user_id ]" );
+	// wl_write_log( "wl_get_user [ user id :: $user_id ]" );
 
 	return get_user_by( 'id', $user_id );
 }
@@ -122,7 +122,7 @@ function wl_get_user_by_uri( $uri ) {
 		return null;
 	}
 
-	wl_write_log( "wl_get_user_by_uri [ uri :: $uri ][ user id :: " . $users[0]->ID . " ]" );
+//	wl_write_log( "wl_get_user_by_uri [ uri :: $uri ][ user id :: " . $users[0]->ID . " ]" );
 
 	return $users[0];
 }
@@ -158,7 +158,7 @@ add_action( 'delete_user', 'wl_before_delete_user' );
  */
 function wl_update_user_profile( $user_id ) {
 
-	wl_write_log( "wl_update_user_profile [ user id :: $user_id ]" );
+	// wl_write_log( "wl_update_user_profile [ user id :: $user_id ]" );
 
 	// Get the site language setting.
 	$language = wl_configuration_get_site_language();
@@ -201,7 +201,7 @@ add_action( 'profile_update', 'wl_update_user_profile', 10, 1 );
  */
 function wl_register_user( $user_id ) {
 
-	wl_write_log( "wl_register_user [ user id :: $user_id ]" );
+	// wl_write_log( "wl_register_user [ user id :: $user_id ]" );
 
 	return wl_update_user_profile( $user_id );
 }

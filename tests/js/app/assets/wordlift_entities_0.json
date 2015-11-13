@@ -1,0 +1,69 @@
+{
+	"http://data.redlink.io/353/wordlift/entity/David_Riccitelli": {
+		"id": "http://data.redlink.io/353/wordlift/entity/David_Riccitelli",
+        "thumbnail": "http://3.wordlift.it/wp-content/uploads/0p7/qbk/p/0p7qbkp.jpg",
+		"thumbnails": [
+			"http://3.wordlift.it/wp-content/uploads/0p7/qbk/p/0p7qbkp.jpg"
+		],
+		"label": "David Riccitelli",
+		"sameAs": [
+			"http://rdf.freebase.com/ns/m.0j2h5nt"
+		],
+        "type": "http://schema.org/Person",
+        "css": "wl-person",
+        "source": "wordlift",
+        "sources": ["wordlift"],
+ 		"types": [
+			"http://rdf.freebase.com/ns/base.linkedinbase.topic",
+			"http://rdf.freebase.com/ns/common.topic",
+			"http://rdf.freebase.com/ns/internet.social_network_user",
+			"http://rdf.freebase.com/ns/organization.organization_founder",
+			"http://rdf.freebase.com/ns/organization.organization_member",
+			"http://rdf.freebase.com/ns/people.person",
+			"http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+		]
+	},
+	"http://data.redlink.io/353/wordlift/entity/Central_Archives_of_the_State_(Italy)": {
+		"id": "http://data.redlink.io/353/wordlift/entity/Central_Archives_of_the_State_(Italy)",
+		"images": [
+		],
+		"label": "Central Archives of the State (Italy)",
+		"sameAs": [
+			"http://rdf.freebase.com/ns/m.04jk__q",
+			"http://yago-knowledge.org/resource/Central_Archives_of_the_State_(Italy)",
+			"http://dbpedia.org/resource/Central_Archives_of_the_State_(Italy)"
+		],
+        "source": "wordlift",
+        "sources": ["wordlift"],
+		"types": [
+			"http://dbpedia.org/class/yago/Archive102735086",
+			"http://dbpedia.org/class/yago/Artifact100021939",
+			"http://dbpedia.org/class/yago/Depository103177349",
+			"http://dbpedia.org/class/yago/Facility103315023",
+			"http://dbpedia.org/class/yago/NationalArchives",
+			"http://dbpedia.org/class/yago/Object100002684",
+			"http://dbpedia.org/class/yago/PhysicalEntity100001930",
+			"http://dbpedia.org/class/yago/Whole100003553",
+			"http://dbpedia.org/class/yago/YagoGeoEntity",
+			"http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+			"http://www.opengis.net/gml/_Feature"
+		]
+	},
+	"http://data.redlink.io/353/wordlift/entity/WordPress": {
+		"id": "http://data.redlink.io/353/wordlift/entity/WordPress",
+		"images": [
+			"http://3.wordlift.it/wp-content/uploads/wor/dpr/ess/_lo/go/WordPress_logo.svg"
+		],
+		"label": "WordPress",
+		"sameAs": [
+			"http://dbpedia.org/resource/WordPress",
+			"http://rdf.freebase.com/ns/m.02vtpl",
+			"http://yago-knowledge.org/resource/WordPress"
+		],
+        "source": "wordlift",
+        "sources": ["wordlift"],
+		"types": [
+			"schema:Thing"
+		]
+	}
+}

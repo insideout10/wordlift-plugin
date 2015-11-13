@@ -68,7 +68,7 @@ function wl_save_image( $url ) {
 	// Store the data locally.
 	file_put_contents( $image_full_path, wp_remote_retrieve_body( $response ) );
 
-	wl_write_log( "wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n" );
+	// wl_write_log( "wl_save_image [ url :: $url ][ content type :: $content_type ][ image full path :: $image_full_path ][ image full url :: $image_full_url ]\n" );
 
 	// Return the path.
 	return array(

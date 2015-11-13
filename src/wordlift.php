@@ -1,13 +1,33 @@
 <?php
-/*
-Plugin Name: WordLift
-Plugin URI: http://wordlift.it
-Description: Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
-Version: 3.0.16
-Author: InsideOut10
-Author URI: http://www.insideout.io
-License: APL
-*/
+/**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              http://wordlift.it
+ * @since             1.0.0
+ * @package           Wordlift
+ *
+ * @wordpress-plugin
+ * Plugin Name:       WordLift
+ * Plugin URI:        http://wordlift.it
+ * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
+ * Version:           3.1.0
+ * Author:            WordLift, Insideout10
+ * Author URI:        http://wordlift.it
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       wordlift
+ * Domain Path:       /languages
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
 
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
@@ -51,12 +71,19 @@ function wl_write_log( $log ) {
  */
 function wl_write_log_handler( $log, $caller = null ) {
 
+	global $wl_logger;
+
 	if ( true === WP_DEBUG ) {
-		if ( is_array( $log ) || is_object( $log ) ) {
-			error_log( "[ $caller ] " . print_r( $log, true ) );
+
+		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
+		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
+
+		if ( isset( $wl_logger ) ) {
+			$wl_logger->info( $message );
 		} else {
-			error_log( "[ $caller ] " . wl_write_log_hide_key( $log ) );
+			error_log( $message );
 		}
+
 	}
 
 }
@@ -142,8 +169,9 @@ function wordlift_buttonhooks() {
  * @return array The modified plugins array.
  */
 function wordlift_register_tinymce_javascript( $plugin_array ) {
+
 	// add the wordlift plugin.
-	$plugin_array['wordlift'] = plugins_url( 'js/wordlift-reloaded.js', __FILE__ );
+	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js';
 
 	return $plugin_array;
 }
@@ -185,18 +213,17 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_script( 'wpdialogs' );
 	wp_enqueue_style( 'wp-jquery-ui-dialog' );
 
-	wp_register_style( 'wordlift_css', plugins_url( 'css/wordlift-reloaded.css', __FILE__ ) );
-	wp_enqueue_style( 'wordlift_css' );
+	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'angularjs', plugins_url( 'bower_components/angular/angular.min.js', __FILE__ ) );
+	wp_enqueue_script( 'angularjs', plugin_dir_url( __FILE__ ) . 'bower_components/angular/angular.min.js' );
 
 }
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
 
 function wl_enqueue_scripts() {
-	wp_enqueue_style( 'wordlift-ui', plugins_url( 'css/wordlift.ui.css', __FILE__ ) );
+	wp_enqueue_style( 'wordlift-ui', plugin_dir_url( __FILE__ ) . 'css/wordlift-ui.min.css' );
 }
 
 add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
@@ -239,21 +266,11 @@ function wl_get_coordinates( $post_id ) {
 	$latitude  = wl_schema_get_value( $post_id, 'latitude' );
 	$longitude = wl_schema_get_value( $post_id, 'longitude' );
 
-	// Default coords values [0, 0]
-	if ( ! isset( $latitude[0] ) || ! is_numeric( $latitude[0] ) ) {
-		$latitude = 0.0;
-	} else {
-		$latitude = floatval( $latitude[0] );
-	}
-	if ( ! isset( $longitude[0] ) || ! is_numeric( $longitude[0] ) ) {
-		$longitude = 0.0;
-	} else {
-		$longitude = floatval( $longitude[0] );
-	}
-
+	// DO NOT set latitude/longitude to 0/0 as default values. It's a specific place on the globe:
+	// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
 	return array(
-		'latitude'  => $latitude,
-		'longitude' => $longitude
+		'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
+		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : ''
 	);
 }
 
@@ -284,7 +301,7 @@ function wl_get_post_modified_time( $post ) {
  */
 function wl_get_image_urls( $post_id ) {
 
-	wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
+	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
 
 	$images = get_children( array(
 		'post_parent'    => $post_id,
@@ -309,7 +326,7 @@ function wl_get_image_urls( $post_id ) {
 		}
 	}
 
-	wl_write_log( "wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count( $image_urls ) . " ]" );
+	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ][ image urls count :: " . count( $image_urls ) . " ]" );
 
 	return $image_urls;
 }
@@ -349,8 +366,8 @@ function wl_get_sparql_images( $uri, $post_id ) {
  */
 function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 
-	wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
-        
+	// wl_write_log( "wl_get_attachment_for_source_url [ parent post id :: $parent_post_id ][ source url :: $source_url ]" );
+
 	$posts = get_posts( array(
 		'post_type'      => 'attachment',
 		'posts_per_page' => 1,
@@ -449,7 +466,7 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
  */
 function wl_sanitize_uri_path( $path, $char = '_' ) {
 
-	wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
+	// wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
 
 	// According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
 	// ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
@@ -498,7 +515,7 @@ add_action( 'shutdown', 'wl_shutdown' );
  */
 function wl_replace_item_id_with_uri( $content ) {
 
-	wl_write_log( "wl_replace_item_id_with_uri" );
+	// wl_write_log( "wl_replace_item_id_with_uri" );
 
 	// Strip slashes, see https://core.trac.wordpress.org/ticket/21767
 	$content = stripslashes( $content );
@@ -523,7 +540,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			// Get the URI for that post.
 			$uri = wl_get_entity_uri( $post->ID );
 
-			wl_write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
+			// wl_write_log( "wl_replace_item_id_with_uri [ item id :: $item_id ][ uri :: $uri ]" );
 
 			// If the item ID and the URI differ, replace the item ID with the URI saved in WordPress.
 			if ( $item_id !== $uri ) {
@@ -540,81 +557,6 @@ function wl_replace_item_id_with_uri( $content ) {
 }
 
 add_filter( 'content_save_pre', 'wl_replace_item_id_with_uri', 1, 1 );
-
-
-/**
- * Merge the custom_fields and microdata_templates of an entity type with the ones from parents.
- * This function is used by *wl_install_entity_type_data* at installation time.
- *
- * @param $child_term Array Child entity type (expanded as array).
- * @param $parent_term_ids Array containing the ids of the parent types.
- *
- * @return Array $child_term enriched with parents' custom_fields and microdata_template
- */
-function wl_entity_type_taxonomy_type_inheritage( $child_term, $parent_term_ids ) {
-
-	// If we re at the top of hierarchy ...
-	if ( empty( $parent_term_ids ) || $parent_term_ids[0] == 0 ) {
-		// ... return term as it is.
-		return $child_term;
-	}
-
-	// Loop over parents
-	$merged_custom_fields      = $child_term['custom_fields'];
-	$merged_microdata_template = $child_term['microdata_template'];
-	foreach ( $parent_term_ids as $parent_term_id ) {
-
-		// Get a parent's custom fields
-		$parent_term                    = wl_entity_type_taxonomy_get_term_options( $parent_term_id );
-		$parent_term_custom_fields      = $parent_term['custom_fields'];
-		$parent_term_microdata_template = $parent_term['microdata_template'];
-
-		// Merge custom fields (array)
-		$merged_custom_fields = array_merge( $merged_custom_fields, $parent_term_custom_fields );
-		// Merge microdata templates (string)
-		$merged_microdata_template = $merged_microdata_template . $parent_term_microdata_template;
-	}
-
-	// Ensure there are no duplications in microdata_templates
-	$exploded_microdata_template = explode( '}}', $merged_microdata_template );
-	$unique_microdata_template   = array_unique( $exploded_microdata_template );
-	$merged_microdata_template   = implode( '}}', $unique_microdata_template );
-
-	// Update child_term with inherited structures
-	$child_term['custom_fields']      = $merged_custom_fields;
-	$child_term['microdata_template'] = $merged_microdata_template;
-
-	// Return new version of the term
-	return $child_term;
-}
-
-/**
- * Change *plugins_url* response to return the correct path of WordLift files when working in development mode.
- *
- * @param $url The URL as set by the plugins_url method.
- * @param $path The request path.
- * @param $plugin The plugin folder.
- *
- * @return string The URL.
- */
-function wl_plugins_url( $url, $path, $plugin ) {
-
-	wl_write_log( "wl_plugins_url [ url :: $url ][ path :: $path ][ plugin :: $plugin ]" );
-
-	// Check if it's our pages calling the plugins_url.
-	if ( 1 !== preg_match( '/\/wordlift[^.]*.php$/i', $plugin ) ) {
-		return $url;
-	}
-
-	// Set the URL to plugins URL + wordlift, in order to support the plugin being symbolic linked.
-	$plugin_url = plugins_url() . '/wordlift/' . $path;
-
-	wl_write_log( "wl_plugins_url [ match :: yes ][ plugin url :: $plugin_url ][ url :: $url ][ path :: $path ][ plugin :: $plugin ]" );
-
-	return $plugin_url;
-}
-
-add_filter( 'plugins_url', 'wl_plugins_url', 10, 3 );
 
 require_once( 'wordlift_entity_functions.php' );
 
@@ -647,9 +589,7 @@ if ( version_compare( phpversion(), '5.4.0', '>=' ) ) {
 }
 
 require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
-require_once( 'modules/timeline_widget/wordlift_timeline_widget.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
-require_once( 'shortcodes/wordlift_shortcode_timeline.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
 require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
@@ -683,7 +623,6 @@ require_once( 'admin/wordlift_admin_bar.php' );
 
 // add the entities meta box.
 require_once( 'admin/wordlift_admin_meta_box_entities.php' );
-require_once( 'admin/wordlift_admin_entity_type_taxonomy.php' );
 
 // add the entity creation AJAX.
 require_once( 'admin/wordlift_admin_ajax_related_posts.php' );
@@ -699,3 +638,49 @@ require_once( 'admin/wordlift_admin_sync.php' );
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
 load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
+
+
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-wordlift-activator.php
+ */
+function activate_wordlift() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-activator.php';
+	Wordlift_Activator::activate();
+}
+
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-wordlift-deactivator.php
+ */
+function deactivate_wordlift() {
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wordlift-deactivator.php';
+	Wordlift_Deactivator::deactivate();
+}
+
+register_activation_hook( __FILE__, 'activate_wordlift' );
+register_deactivation_hook( __FILE__, 'deactivate_wordlift' );
+
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require plugin_dir_path( __FILE__ ) . 'includes/class-wordlift.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function run_wordlift() {
+
+	$plugin = new Wordlift();
+	$plugin->run();
+
+}
+
+run_wordlift();

@@ -15,16 +15,16 @@ function wl_get_entity_post_by_uri( $uri ) {
 	$query = new WP_Query( array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => WL_ENTITY_TYPE_NAME,
+			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
 			'meta_query'     => array(
 				'relation' => 'OR',
 				array(
-					'key'     => WL_CUSTOM_FIELD_SAME_AS,
+					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $uri,
 					'compare' => '='
 				),
 				array(
-					'key'     => 'entity_url',
+					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
 					'compare' => '='
 				)
@@ -35,7 +35,7 @@ function wl_get_entity_post_by_uri( $uri ) {
 	// Get the matching entity posts.
 	$posts = $query->get_posts();
 
-	wl_write_log( "wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
+	// wl_write_log( "wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
 
 	// Return null if no post is found.
 	if ( 0 === count( $posts ) ) {
@@ -56,18 +56,18 @@ function wl_get_entity_post_by_uri( $uri ) {
 function wl_get_entity_post_ids_by_uris( $uris ) {
 
 
-	if ( empty( $uris )) {
+	if ( empty( $uris ) ) {
 		return array();
 	}
 
 	$query = new WP_Query( array(
 			'fields'      => 'ids',
 			'post_status' => 'any',
-			'post_type'   => WL_ENTITY_TYPE_NAME,
+			'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
 			'meta_query'  => array(
 				'relation' => 'OR',
 				array(
-					'key'     => WL_CUSTOM_FIELD_SAME_AS,
+					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $uris,
 					'compare' => 'IN'
 				),
@@ -120,7 +120,7 @@ function wl_build_entity_uri( $post_id ) {
 	// Create the URL (dataset base URI has a trailing slash).
 	$url = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), $post->post_type, $path );
 
-	wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
+	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
 
 	return $url;
 }
@@ -136,16 +136,15 @@ function wl_build_entity_uri( $post_id ) {
  * @return string|null The URI of the entity or null if not configured.
  */
 function wl_get_entity_uri( $post_id ) {
-    
-    
-	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
-	    
-	// If the dataset uri is not properly configured, null is returned
-    if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
-        return null;
-    }
 
-    // Set the URI if it isn't set yet.
+	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
+
+	// If the dataset uri is not properly configured, null is returned
+	if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+		return null;
+	}
+
+	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
 		$uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
@@ -165,8 +164,8 @@ function wl_get_entity_uri( $post_id ) {
  */
 function wl_set_entity_uri( $post_id, $uri ) {
 
-	wl_write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
-	
+	// wl_write_log( "wl_set_entity_uri [ post id :: $post_id ][ uri :: $uri ]" );
+
 	return update_post_meta( $post_id, WL_ENTITY_URL_META_NAME, $uri );
 }
 
@@ -181,7 +180,7 @@ function wl_set_entity_uri( $post_id, $uri ) {
  * @return array An array of terms.
  */
 function wl_get_entity_rdf_types( $post_id ) {
-	return get_post_meta( $post_id, 'wl_entity_type_uri' );
+	return get_post_meta( $post_id, Wordlift_Schema_Service::FIELD_ENTITY_TYPE );
 }
 
 /**
@@ -200,16 +199,15 @@ function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
 	// Ensure there are no duplicates.
 	$type_uris = array_unique( $type_uris );
 
-	delete_post_meta( $post_id, 'wl_entity_type_uri' );
+	delete_post_meta( $post_id, Wordlift_Schema_Service::FIELD_ENTITY_TYPE );
 	foreach ( $type_uris as $type_uri ) {
 		if ( empty( $type_uri ) ) {
 			continue;
 		}
-		add_post_meta( $post_id, 'wl_entity_type_uri', $type_uri );
+		add_post_meta( $post_id, Wordlift_Schema_Service::FIELD_ENTITY_TYPE, $type_uri );
 	}
 }
 
-// TODO: this method must be eliminated in favor of the new *wl_schema_get_property_expected_type*
 /**
  * Retrieve entity property type, starting from the schema.org's property name
  * or from the WL_CUSTOM_FIELD_xxx name.
@@ -232,6 +230,7 @@ function wl_get_meta_type( $property_name ) {
 	$entity_terms = wl_entity_taxonomy_get_custom_fields();
 
 	foreach ( $entity_terms as $term ) {
+
 		foreach ( $term as $wl_constant => $field ) {
 
 			// Is this the predicate we are searching for?
@@ -286,18 +285,20 @@ function wl_get_meta_constraints( $property_name ) {
 }
 
 /**
- * Retrieve entity type custom fields
+ * Retrieve entity type custom fields.
  *
- * @param int $entity_id id of the entity, if any
+ * @param int $entity_id id of the entity, if any.
  *
- * @return mixed if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
+ * @return array|null if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
  */
 function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 	if ( is_null( $entity_id ) ) {
+
 		// Return all custom fields.
 		// Get taxonomy terms
-		$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
+		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
+
 		if ( is_wp_error( $terms ) ) {
 			return null;
 		}
@@ -305,15 +306,17 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		$custom_fields = array();
 		foreach ( $terms as $term ) {
 			// Get custom_fields
-			$term_options                          = wl_entity_type_taxonomy_get_term_options( $term->term_id );
+			$term_options                          = Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
 			$custom_fields[ $term_options['uri'] ] = $term_options['custom_fields'];
 		}
 
 		return $custom_fields;
-	} else {
-		// Return custom fields for this specific entity's type.
-		$type = wl_entity_type_taxonomy_get_type( $entity_id );
 
-		return $type['custom_fields'];
 	}
+
+	// Return custom fields for this specific entity's type.
+	$type = wl_entity_type_taxonomy_get_type( $entity_id );
+
+	return $type['custom_fields'];
+
 }

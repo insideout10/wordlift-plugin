@@ -6,12 +6,13 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 * Sets up the widgets name etc
 	 */
 	public function __construct() {
+
 		// widget actual processes
 		parent::__construct(
-            'wl_timeline_widget', // Base ID
-            __('Timeline Widget', 'wordlift'), // Name
-            array('description' => __('The Timeline widget displays event-entities on a timeline.', 'wordlift'),) // Args
-        );
+			'wl_timeline_widget', // Base ID
+			__( 'Timeline Widget', 'wordlift' ), // Name
+			array( 'description' => __( 'The Timeline widget displays event-entities on a timeline.', 'wordlift' ), ) // Args
+		);
 	}
 
 	/**
@@ -45,11 +46,10 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	}
 }
 
-function wl_register_timeline_widget()
-{
+function wl_register_timeline_widget() {
 
-    register_widget('WordLift_Timeline_Widget');
+	register_widget( 'WordLift_Timeline_Widget' );
 }
 
-add_action('widgets_init', 'wl_register_timeline_widget');
-add_filter( 'widget_text', 'do_shortcode');
+add_action( 'widgets_init', 'wl_register_timeline_widget' );
+add_filter( 'widget_text', 'do_shortcode' );

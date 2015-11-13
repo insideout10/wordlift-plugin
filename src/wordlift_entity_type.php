@@ -31,7 +31,7 @@ function wl_entity_type_register() {
         'taxonomies' => array('category')*/
 	);
 
-	register_post_type( WL_ENTITY_TYPE_NAME, $args );
+	register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );
 }
 
 add_action( 'init', 'wl_entity_type_register' );
@@ -59,20 +59,20 @@ add_action( 'add_meta_boxes', 'wl_entity_type_meta_boxes' );
  * @param WP_Post $post The post.
  */
 function wl_entity_type_meta_boxes_content( $post ) {
-    
+
 	wp_nonce_field( 'wordlift_entity_box', 'wordlift_entity_box_nonce' );
 
 	$value = wl_get_entity_uri( $post->ID );
 
 	echo '<label for="entity_url">' . __( 'entity-url-label', 'wordlift' ) . '</label>';
 	echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
-        
-        /*
-	$entity_types = implode( "\n", wl_get_entity_rdf_types( $post->ID ) );
 
-	echo '<label for="entity_types">' . __( 'entity-types-label', 'wordlift' ) . '</label>';
-	echo '<textarea style="width: 100%;" id="entity_types" name="entity_types" placeholder="Entity Types URIs">' . esc_attr( $entity_types ) . '</textarea>';
-        */
+	/*
+$entity_types = implode( "\n", wl_get_entity_rdf_types( $post->ID ) );
+
+echo '<label for="entity_types">' . __( 'entity-types-label', 'wordlift' ) . '</label>';
+echo '<textarea style="width: 100%;" id="entity_types" name="entity_types" placeholder="Entity Types URIs">' . esc_attr( $entity_types ) . '</textarea>';
+	*/
 }
 
 /**
@@ -120,14 +120,14 @@ function wl_entity_type_save_custom_fields( $post_id ) {
 		$post_id,
 		$_POST['entity_url']
 	);
-        
-        /*
-	// save the rdf:type values.
-	wl_set_entity_rdf_types(
-		$post_id,
-		explode( "\r\n", $_POST['entity_types'] )
-	);
-        */
+
+	/*
+// save the rdf:type values.
+wl_set_entity_rdf_types(
+	$post_id,
+	explode( "\r\n", $_POST['entity_types'] )
+);
+	*/
 
 }
 
@@ -141,28 +141,28 @@ add_action( 'save_post', 'wl_entity_type_save_custom_fields' );
  */
 function wl_set_entity_main_type( $post_id, $type_uri ) {
 
-	wl_write_log( "wl_set_entity_main_type [ post id :: $post_id ][ type uri :: $type_uri ]" );
+//	wl_write_log( "wl_set_entity_main_type [ post id :: $post_id ][ type uri :: $type_uri ]" );
 
 	// If the type URI is empty we remove the type.
 	if ( empty( $type_uri ) ) {
-		wp_set_object_terms( $post_id, null, WL_ENTITY_TYPE_TAXONOMY_NAME );
+		wp_set_object_terms( $post_id, null, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 		return;
 	}
 
 	// Get all the terms bound to the wl_entity_type taxonomy.
-	$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array(
+	$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
 		'hide_empty' => false,
-		'fields'     => 'ids'
+		'fields'     => 'id=>slug'
 	) );
 
 	// Check which term matches the specified URI.
-	foreach ( $terms as $term_id ) {
+	foreach ( $terms as $term_id => $term_slug ) {
 		// Load the type data.
-		$type = wl_entity_type_taxonomy_get_term_options( $term_id );
+		$type = Wordlift_Schema_Service::get_instance()->get_schema( $term_slug );
 		// Set the related term ID.
-		if ( $type_uri === $type['uri'] || $type_uri === $type['css_class']) {
-			wp_set_object_terms( $post_id, (int) $term_id, WL_ENTITY_TYPE_TAXONOMY_NAME );
+		if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
+			wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 			return;
 		}
@@ -174,9 +174,8 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
  */
 function wl_print_entity_type_inline_js() {
 
-	$terms = get_terms( WL_ENTITY_TYPE_TAXONOMY_NAME, array(
-		'hide_empty' => false,
-		'fields'     => 'id=>name'
+	$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+		'hide_empty' => false
 	) );
 
 	echo <<<EOF
@@ -188,10 +187,12 @@ EOF;
 
 	// Cycle in each WordLift term and get its metadata. The metadata will be printed as a global object in JavaScript
 	// to be used by the JavaScript client library.
-	foreach ( $terms as $term_id => $term_name ) {
+	foreach ( $terms as $term ) {
+
+		$term_name = $term->name;
 
 		// Load the type data.
-		$type = wl_entity_type_taxonomy_get_term_options( $term_id );
+		$type = Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
 
 		// Skip types that are not defined.
 		if ( ! empty( $type['uri'] ) ) {

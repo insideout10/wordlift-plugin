@@ -37,18 +37,18 @@ class GeomapShortcodeTest extends WP_UnitTestCase
 
         $entity_1_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
         wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Place' );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
         $entity_2_id = wl_create_post( "Entity 2 Text", 'entity-2', "Entity 2 Title", 'publish', 'entity' );
         wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
-        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 41.20, true );
-        add_post_meta( $entity_2_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 78.2, true );
+        add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 41.20, true );
+        add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 78.2, true );
 
         $entity_3_id = wl_create_post( 'Entity 3 Text', 'entity-3', 'Entity 3 Title', 'publish', 'entity' );
         wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
-        add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 45.12, true );
-        add_post_meta( $entity_3_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 90.3, true );
+        add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 45.12, true );
+        add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 90.3, true );
 
         $entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
         wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
@@ -121,8 +121,8 @@ class GeomapShortcodeTest extends WP_UnitTestCase
 		// Create a place-
         $place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
         wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
-        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
 
 		// Reference place from both posts-
         wl_core_add_relation_instance( $post_id_1, WL_WHERE_RELATION, $place_id );

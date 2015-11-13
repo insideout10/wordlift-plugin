@@ -1,0 +1,1515 @@
+{
+    "@context": {
+        "dbp-ont": "http://dbpedia.org/ontology/",
+        "dbp-ont:thumbnail": {
+            "@type": "@id"
+        },
+        "dc": "http://purl.org/dc/terms/",
+        "dc:created": {
+            "@type": "xsd:dateTime"
+        },
+        "dc:creator": {
+            "@type": "xsd:string"
+        },
+        "dc:relation": {
+            "@type": "@id"
+        },
+        "dc:subject": {
+            "@type": "@id"
+        },
+        "dc:type": {
+            "@type": "@id"
+        },
+        "enhancer": "http://fise.iks-project.eu/ontology/",
+        "enhancer:confidence": {
+            "@type": "xsd:double"
+        },
+        "enhancer:end": {
+            "@type": "xsd:int"
+        },
+        "enhancer:entity-reference": {
+            "@type": "@id"
+        },
+        "enhancer:entity-type": {
+            "@type": "@id"
+        },
+        "enhancer:extracted-from": {
+            "@type": "@id"
+        },
+        "enhancer:start": {
+            "@type": "xsd:int"
+        },
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "foaf:depiction": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.image": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_for": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.notable_types": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/common.topic.official_website": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.date_of_birth": {
+            "@type": "xsd:date"
+        },
+        "http://rdf.freebase.com/ns/people.person.gender": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.nationality": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.place_of_birth": {
+            "@type": "@id"
+        },
+        "http://rdf.freebase.com/ns/people.person.profession": {
+            "@type": "@id"
+        },
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "owl:sameAs": {
+            "@type": "@id"
+        },
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "schema": "http://schema.org/",
+        "xsd": "http://www.w3.org/2001/XMLSchema#"
+    },
+    "@graph": [
+        {
+            "@id": "http://dbpedia.org/resource/Artificial_intelligence",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Artificial_intelligence",
+                "http://dbpedia.org/resource/Category:Cognitive_science",
+                "http://dbpedia.org/resource/Category:Computational_linguistics",
+                "http://dbpedia.org/resource/Category:Computational_neuroscience",
+                "http://dbpedia.org/resource/Category:Computer_science",
+                "http://dbpedia.org/resource/Category:Computing",
+                "http://dbpedia.org/resource/Category:Cybernetics",
+                "http://dbpedia.org/resource/Category:Emerging_technologies",
+                "http://dbpedia.org/resource/Category:Formal_sciences",
+                "http://dbpedia.org/resource/Category:Machine_learning",
+                "http://dbpedia.org/resource/Category:Open_problems",
+                "http://dbpedia.org/resource/Category:Philosophy_of_mind",
+                "http://dbpedia.org/resource/Category:Science_fiction",
+                "http://dbpedia.org/resource/Category:Science_fiction_themes",
+                "http://dbpedia.org/resource/Category:Systems_theory",
+                "http://dbpedia.org/resource/Category:Technology",
+                "http://dbpedia.org/resource/Category:Technology_in_society",
+                "http://dbpedia.org/resource/Category:Transhumanism"
+            ],
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0mkz",
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "Con il termine intelligenza artificiale (o IA, dalle iniziali delle due parole, in italiano) si intende generalmente l'abilità di un computer di svolgere funzioni e ragionamenti tipici della mente umana. L'intelligenza artificiale è una disciplina dibattuta tra scienziati e filosofi, la quale manifesta aspetti sia teorici che pratici."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Intelligenza artificiale"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Bodybuilding",
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Falk,_Benjamin_J._(1853-1925)_-_Eugen_Sandow_(1867-1925).jpg/200px-Falk,_Benjamin_J._(1853-1925)_-_Eugen_Sandow_(1867-1925).jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Body_modification",
+                "http://dbpedia.org/resource/Category:Bodybuilding",
+                "http://dbpedia.org/resource/Category:Bodybuilding_competitions",
+                "http://dbpedia.org/resource/Category:Hobbies",
+                "http://dbpedia.org/resource/Category:Individual_sports",
+                "http://dbpedia.org/resource/Category:Physical_exercise",
+                "http://dbpedia.org/resource/Category:Sports",
+                "http://dbpedia.org/resource/Category:Sports_by_type",
+                "http://dbpedia.org/resource/Category:Weight_training"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/0/0e/Falk,_Benjamin_J._(1853-1925)_-_Eugen_Sandow_(1867-1925).jpg",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.01ddm",
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "Il culturismo o cultura fisica, è lo sport che tramite l'allenamento con pesi e sovraccarichi e un'alimentazione specifica si pone come fine ultimo il cambiamento della composizione corporea, quindi con l'aumento della massa muscolare e la riduzione del grasso corporeo, dove le finalità sono estetiche piuttosto che competitive."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Culturismo"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Election_commission",
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Tangipahoa_Parish_Board_of_Election_Supervisors_2010_December_03-2.JPG/200px-Tangipahoa_Parish_Board_of_Election_Supervisors_2010_December_03-2.JPG",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Election_commissions",
+                "http://dbpedia.org/resource/Category:Elections",
+                "http://dbpedia.org/resource/Category:Government_institutions",
+                "http://dbpedia.org/resource/Category:Politics_of_Norway"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/b/ba/Tangipahoa_Parish_Board_of_Election_Supervisors_2010_December_03-2.JPG",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0dt2gy"
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Exynos_(system_on_chip)",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:ARM_architecture",
+                "http://dbpedia.org/resource/Category:Embedded_microprocessors",
+                "http://dbpedia.org/resource/Category:Microprocessors",
+                "http://dbpedia.org/resource/Category:Samsung_Electronics",
+                "http://dbpedia.org/resource/Category:Samsung_Electronics_products",
+                "http://dbpedia.org/resource/Category:Samsung_Group",
+                "http://dbpedia.org/resource/Category:Samsung_products"
+            ],
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0h96_2k",
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "Samsung ha una lunga storia di progettazione e produzione di System-on-a-chip (SoC) e ha prodotto SoC per i suoi stessi dispositivi tanto quanto per altri, per esempio per Apple. Il primo SoC di Samsung, il S3C44B0, era costruito usando una CPU ARM7 che funzionava con una frequenza di clock di 66 MHz. In seguito furono prodotti diversi SoC, S3C2xxx, che contenevano una CPU ARM9."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Samsung Exynos"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Google_Code",
+            "@type": [
+                "dbp-ont:Website",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/Computer103082979",
+                "http://dbpedia.org/class/yago/Device103183080",
+                "http://dbpedia.org/class/yago/Instrumentality103575240",
+                "http://dbpedia.org/class/yago/Machine103699975",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/WebSite106359193",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "owl:Thing",
+                "schema:CreativeWork",
+                "schema:WebPage"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Google_Code_logo.png/200px-Google_Code_logo.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Free_software_websites",
+                "http://dbpedia.org/resource/Category:Google",
+                "http://dbpedia.org/resource/Category:Google_services",
+                "http://dbpedia.org/resource/Category:Internet_properties_established_in_2005",
+                "http://dbpedia.org/resource/Category:Project_hosting_websites",
+                "http://dbpedia.org/resource/Category:Technology_websites"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/6/63/Google_Code_logo.png",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.0dj2_7",
+                "http://yago-knowledge.org/resource/Google_Code"
+            ],
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "Google Code è il sito web di Google che fornisce strumenti, API e risorse tecniche agli sviluppatori software. Il sito contiene la documentazione sull'uso degli strumenti per gli sviluppatori di Google e le API inclusi i gruppi di discussione e i blog per gli sviluppatori che usano i prodotti di Google. Ci sono API fornite per quasi tutti i prodotti più popolari di Google presso i consumatori come Google Maps, YouTube, Google Apps e altri."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Google Code"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Hummingbird",
+            "@type": [
+                "dbp-ont:Animal",
+                "dbp-ont:Bird",
+                "dbp-ont:Eukaryote",
+                "dbp-ont:Species",
+                "owl:Thing"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Archilochus-alexandri-002-edit.jpg/200px-Archilochus-alexandri-002-edit.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Apodiformes",
+                "http://dbpedia.org/resource/Category:Bird_families",
+                "http://dbpedia.org/resource/Category:Birds_by_classification",
+                "http://dbpedia.org/resource/Category:Birds_of_Central_America",
+                "http://dbpedia.org/resource/Category:Birds_of_North_America",
+                "http://dbpedia.org/resource/Category:Birds_of_South_America",
+                "http://dbpedia.org/resource/Category:Colibri",
+                "http://dbpedia.org/resource/Category:Hummingbirds",
+                "http://dbpedia.org/resource/Category:National_symbols_of_Trinidad_and_Tobago",
+                "http://dbpedia.org/resource/Category:Natural_history_of_the_Americas",
+                "http://dbpedia.org/resource/Category:Pollinators",
+                "http://dbpedia.org/resource/Category:Trinidad_and_Tobago",
+                "http://dbpedia.org/resource/Category:Trochilidae",
+                "http://dbpedia.org/resource/Category:Trochiliformes",
+                "http://dbpedia.org/resource/Category:Western_North_American_migratory_birds",
+                "http://dbpedia.org/resource/Category:World_records"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/1/16/Archilochus-alexandri-002-edit.jpg",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.0j91q",
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "I Trochilidi sono una famiglia di uccelli dell'ordine Apodiformes, che comprende 342 specie comunemente note come colibrì. Sono considerati gli uccelli più piccoli al mondo: la maggior parte delle specie ha un peso tra 2.5 e 6.5 g e una lunghezza tra 6 e 12 cm. Hanno l'abilità di poter rimanere quasi immobili a mezz'aria, capacità garantita dal rapidissimo battito alare (dai 12 agli 80 battiti al secondo, a seconda della specie), e che gli consente di potersi cibare del nettare dei fiori."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Trochilidae"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Hummingbird_(band)",
+            "@type": [
+                "dbp-ont:Agent",
+                "dbp-ont:Band",
+                "dbp-ont:Organisation",
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/Group100031264",
+                "http://dbpedia.org/class/yago/MusicalGroupsEstablishedIn1974",
+                "http://dbpedia.org/class/yago/MusicalOrganization108246613",
+                "http://dbpedia.org/class/yago/Organization108008335",
+                "http://dbpedia.org/class/yago/SocialGroup107950920",
+                "http://dbpedia.org/class/yago/YagoLegalActor",
+                "http://dbpedia.org/class/yago/YagoLegalActorGeo",
+                "http://dbpedia.org/class/yago/YagoPermanentlyLocatedEntity",
+                "owl:Thing",
+                "schema:MusicGroup",
+                "schema:Organization"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Hummingbird_the_band.jpg/200px-Hummingbird_the_band.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:British_rock_music_groups",
+                "http://dbpedia.org/resource/Category:Musical_groups_established_in_1974"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/a/a0/Hummingbird_the_band.jpg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.051vlvb",
+                "http://yago-knowledge.org/resource/Hummingbird_(band)"
+            ]
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Linked_data",
+            "@type": [
+                "http://dbpedia.org/class/yago/Abstraction100002137",
+                "http://dbpedia.org/class/yago/CloudStandards",
+                "http://dbpedia.org/class/yago/Measure100033615",
+                "http://dbpedia.org/class/yago/Standard107260623",
+                "http://dbpedia.org/class/yago/SystemOfMeasurement113577171"
+            ],
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Cloud_standards",
+                "http://dbpedia.org/resource/Category:Computing_terminology",
+                "http://dbpedia.org/resource/Category:Data_management",
+                "http://dbpedia.org/resource/Category:Distributed_computing_architecture",
+                "http://dbpedia.org/resource/Category:Hypermedia",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_terminology",
+                "http://dbpedia.org/resource/Category:Knowledge_representation",
+                "http://dbpedia.org/resource/Category:Semantic_Web",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02r2kb1",
+                "http://yago-knowledge.org/resource/Linked_data"
+            ],
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "I dati collegati (linked data in inglese) sono un aspetto del web semantico. Il termine dati collegati è usato per descrivere un metodo di esporre, condividere e connettere dati attraverso URI deferenziabili."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Dati collegati"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/Search_engine_optimization",
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Yahoo_google_Haifa.jpg/200px-Yahoo_google_Haifa.jpg",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:Economics",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_advertising",
+                "http://dbpedia.org/resource/Category:Internet_marketing",
+                "http://dbpedia.org/resource/Category:Internet_search_engines",
+                "http://dbpedia.org/resource/Category:Internet_terminology",
+                "http://dbpedia.org/resource/Category:Library_science",
+                "http://dbpedia.org/resource/Category:Marketing",
+                "http://dbpedia.org/resource/Category:Mathematical_optimization",
+                "http://dbpedia.org/resource/Category:Search_engine_optimization",
+                "http://dbpedia.org/resource/Category:Searching",
+                "http://dbpedia.org/resource/Category:Web_analytics",
+                "http://dbpedia.org/resource/Category:Web_design",
+                "http://dbpedia.org/resource/Category:Web_development",
+                "http://dbpedia.org/resource/Category:Websites",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/4/41/Yahoo_google_Haifa.jpg",
+            "owl:sameAs": "http://rdf.freebase.com/ns/m.019qb_",
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "Con il termine ottimizzazione (Search Engine Optimization, SEO, in inglese) si intendono tutte quelle attività finalizzate ad ottenere la migliore rilevazione, analisi e lettura del sito web da parte dei motori di ricerca attraverso i loro spider, grazie ad un migliore posizionamento."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Ottimizzazione (motori di ricerca)"
+            }
+        },
+        {
+            "@id": "http://dbpedia.org/resource/WordPress",
+            "@type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "http://dbpedia.org/class/yago/Article100022903",
+                "http://dbpedia.org/class/yago/Artifact100021939",
+                "http://dbpedia.org/class/yago/ContentManagementSystems",
+                "http://dbpedia.org/class/yago/Cutlery103153375",
+                "http://dbpedia.org/class/yago/Fork103383948",
+                "http://dbpedia.org/class/yago/FreeContentManagementSystems",
+                "http://dbpedia.org/class/yago/Instrumentality103575240",
+                "http://dbpedia.org/class/yago/Object100002684",
+                "http://dbpedia.org/class/yago/PhysicalEntity100001930",
+                "http://dbpedia.org/class/yago/SoftwareForks",
+                "http://dbpedia.org/class/yago/System104377057",
+                "http://dbpedia.org/class/yago/Tableware104381994",
+                "http://dbpedia.org/class/yago/Ware104550840",
+                "http://dbpedia.org/class/yago/Whole100003553",
+                "owl:Thing",
+                "schema:CreativeWork"
+            ],
+            "dbp-ont:thumbnail": "http://upload.wikimedia.org/wikipedia/commons/thumb/2/20/WordPress_logo.svg/200px-WordPress_logo.svg.png",
+            "dc:subject": [
+                "http://dbpedia.org/resource/Category:2003_software",
+                "http://dbpedia.org/resource/Category:Blog_software",
+                "http://dbpedia.org/resource/Category:Blogs",
+                "http://dbpedia.org/resource/Category:Computer_science",
+                "http://dbpedia.org/resource/Category:Content_management_systems",
+                "http://dbpedia.org/resource/Category:Free_content_management_systems",
+                "http://dbpedia.org/resource/Category:Free_software",
+                "http://dbpedia.org/resource/Category:Free_software_programmed_in_PHP",
+                "http://dbpedia.org/resource/Category:Internet",
+                "http://dbpedia.org/resource/Category:Internet_suites",
+                "http://dbpedia.org/resource/Category:Linux_software",
+                "http://dbpedia.org/resource/Category:PHP",
+                "http://dbpedia.org/resource/Category:PHP_programming_language",
+                "http://dbpedia.org/resource/Category:Software",
+                "http://dbpedia.org/resource/Category:Software_forks",
+                "http://dbpedia.org/resource/Category:Template_engines",
+                "http://dbpedia.org/resource/Category:Web_2.0",
+                "http://dbpedia.org/resource/Category:Web_applications",
+                "http://dbpedia.org/resource/Category:Web_development",
+                "http://dbpedia.org/resource/Category:Web_development_software",
+                "http://dbpedia.org/resource/Category:Web_services",
+                "http://dbpedia.org/resource/Category:Website_management",
+                "http://dbpedia.org/resource/Category:WordPress",
+                "http://dbpedia.org/resource/Category:World_Wide_Web"
+            ],
+            "foaf:depiction": "http://upload.wikimedia.org/wikipedia/commons/2/20/WordPress_logo.svg",
+            "owl:sameAs": [
+                "http://rdf.freebase.com/ns/m.02vtpl",
+                "http://yago-knowledge.org/resource/WordPress"
+            ],
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": "WordPress è una piattaforma software di \"personal publishing\" e content management system (CMS), sviluppata in PHP e che usa come database MySQL. Consente la creazione di un sito internet formato da contenuti testuali o multimediali, facilmente gestibili ed aggiornabili. Creata da Matt Mullenweg, è distribuita con la licenza GNU General Public License."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "WordPress"
+            }
+        },
+        {
+            "@id": "http://it.dbpedia.org/resource/Andrea_Volpini",
+            "@type": [
+                "dbp-ont:Agent",
+                "dbp-ont:Athlete",
+                "dbp-ont:Person",
+                "foaf:Person",
+                "owl:Thing",
+                "schema:Person"
+            ],
+            "rdfs:comment": {
+                "@language": "it",
+                "@value": ""
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Andrea Volpini"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.019qb_",
+            "@type": [
+                "http://rdf.freebase.com/ns/award.competition_type",
+                "http://rdf.freebase.com/ns/base.column.column",
+                "http://rdf.freebase.com/ns/base.column.topic",
+                "http://rdf.freebase.com/ns/base.nevillegorup.topic",
+                "http://rdf.freebase.com/ns/base.searchengineoptimizationprovider.topic",
+                "http://rdf.freebase.com/ns/base.seobase.topic",
+                "http://rdf.freebase.com/ns/base.services.internet_marketing_service_type",
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_design_expertise",
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.consumer_product",
+                "http://rdf.freebase.com/ns/business.industry",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.website_category",
+                "http://rdf.freebase.com/ns/m.05d1fdx",
+                "http://rdf.freebase.com/ns/organization.organization_sector",
+                "http://rdf.freebase.com/ns/people.profession",
+                "http://rdf.freebase.com/ns/user.ngerakines.facebook_platform.facebook_application",
+                "http://rdf.freebase.com/ns/user.unavailable.default_domain.marketing_device"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "it",
+                "@value": "Con il termine ottimizzazione si intendono tutte quelle attività finalizzate ad ottenere la migliore rilevazione, analisi e lettura del sito web da parte dei motori di ricerca attraverso i loro spider, grazie ad un migliore posizionamento."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.029gj4q",
+                "http://rdf.freebase.com/ns/m.0gzsch3"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125f2tffj",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02h7kvm",
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Ottimizzazione"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02r2kb1",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.bio2rdf.topic",
+                "http://rdf.freebase.com/ns/base.dependencygraph.topic",
+                "http://rdf.freebase.com/ns/base.sameas.consuming_api_format",
+                "http://rdf.freebase.com/ns/base.sameas.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/education.field_of_study",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.website_category",
+                "http://rdf.freebase.com/ns/user.bio2rdf.default_domain.timeline_of_bio2rdf",
+                "http://rdf.freebase.com/ns/user.randy1234.default_domain.dbpedia"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "it",
+                "@value": "I dati collegati sono un aspetto del web semantico. Il termine dati collegati è usato per descrivere un metodo di esporre, condividere e connettere dati attraverso URI deferenziabili."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.042byy5",
+                "http://rdf.freebase.com/ns/m.04rrr70",
+                "http://rdf.freebase.com/ns/m.05pn2zq",
+                "http://rdf.freebase.com/ns/m.0bdccf1"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12577xc5_",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02h7kvm",
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Dati collegati"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.02vtpl",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_applications",
+                "http://rdf.freebase.com/ns/base.services.web_development_platform",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.api"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "it",
+                "@value": "WordPress è una piattaforma software di \"personal publishing\" e content management system, sviluppata in PHP e che usa come database MySQL. Consente la creazione di un sito internet formato da contenuti testuali o multimediali, facilmente gestibili ed aggiornabili. Creata da Matt Mullenweg, è distribuita con la licenza GNU General Public License.\r\nWordPress supporta un solo blog per installazione, ma ne esiste anche una versione multi-utente, WordPress MU, anch'essa distribuita con la stessa licenza. Dalla versione 3.0 WordPress MU non esiste più e tutte le funzionalità sono state inglobate in WordPress nella modalità Network."
+            },
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258246cd",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xrvrv",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://www.wordpress.org/",
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "WordPress"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.051vlvb",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258319gd",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02nrqx2"
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.07l7qm",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.composition"
+            ]
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0cc7vc6",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/soccer.football_player",
+                "http://rdf.freebase.com/ns/sports.pro_athlete"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1254yry9_",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xljr7",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1988-04-26",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.06mkj",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.01rvk3",
+            "http://rdf.freebase.com/ns/people.person.profession": "http://rdf.freebase.com/ns/m.0gl2ny2"
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0dj2_7",
+            "@type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.website"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "it",
+                "@value": "Google Code è il sito web di Google che fornisce strumenti, API e risorse tecniche agli sviluppatori software. Il sito contiene la documentazione sull'uso degli strumenti per gli sviluppatori di Google e le API inclusi i gruppi di discussione e i blog per gli sviluppatori che usano i prodotti di Google.\r\nCi sono API fornite per quasi tutti i prodotti più popolari di Google presso i consumatori come Google Maps, YouTube, Google Apps e altri.\r\nIl sito include anche un assortimento di prodotti e strumenti per sviluppatori particolarmente dedicati agli sviluppatori. Google App Engine è un servizio di hosting per le applicazioni web che fornisce agli utenti il controllo di versione per il codice open source. Il Google Web Toolkit permette agli sviluppatori di creare applicazioni AJAX usando il linguaggio Java.\r\nIl sito contiene informazioni di riferimento per i prodotti per sviluppatori basati su comunità con cui Google è coinvolta tra cui Android dalla Open Handset Alliance e OpenSocial dalla OpenSocial Foundation."
+            },
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Google Code"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0djtw2h",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.linkedinbase.linkedin_profile",
+                "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+                "http://rdf.freebase.com/ns/business.board_member",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/internet.website_owner",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/organization.organization_member",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0djtw4k",
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258yhgtg",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.02h51nz",
+            "http://rdf.freebase.com/ns/common.topic.official_website": "http://andrea.volpini.com",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1977-03-10",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.03rjj",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.06c62",
+            "http://rdf.freebase.com/ns/people.person.profession": [
+                "http://rdf.freebase.com/ns/m.012t_z",
+                "http://rdf.freebase.com/ns/m.02q54yj"
+            ],
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Andrea Volpini"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0g4zp0c",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.ireferdex.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0g4zn_8",
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.12587nfsx",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.04kr",
+            "http://rdf.freebase.com/ns/people.person.date_of_birth": "1964-05-29",
+            "http://rdf.freebase.com/ns/people.person.gender": "http://rdf.freebase.com/ns/m.05zppz",
+            "http://rdf.freebase.com/ns/people.person.nationality": "http://rdf.freebase.com/ns/m.0k6nt",
+            "http://rdf.freebase.com/ns/people.person.place_of_birth": "http://rdf.freebase.com/ns/m.012hcl",
+            "http://rdf.freebase.com/ns/people.person.profession": "http://rdf.freebase.com/ns/m.0g4_jv4"
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0h5k3bl",
+            "@type": [
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/user.artifact.default_domain.web_development",
+                "http://rdf.freebase.com/ns/user.ilear.blog.web_design",
+                "http://rdf.freebase.com/ns/user.kconragan.graphic_design.graphic_designer",
+                "http://rdf.freebase.com/ns/user.player.player_entertainment_group_inc$002E.branding",
+                "http://rdf.freebase.com/ns/user.player.player_entertainment_group_inc$002E.topic"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.image": "http://rdf.freebase.com/ns/m.0h5k1x4"
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0j91q",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.animal_synopses.animal_synopsis",
+                "http://rdf.freebase.com/ns/base.birdconservation.bird_taxa",
+                "http://rdf.freebase.com/ns/base.birdconservation.topic",
+                "http://rdf.freebase.com/ns/base.birdwatching.checklist_bird",
+                "http://rdf.freebase.com/ns/base.birdwatching.topic",
+                "http://rdf.freebase.com/ns/base.hummingbirdhub.topic",
+                "http://rdf.freebase.com/ns/base.litcentral.focal_taxa",
+                "http://rdf.freebase.com/ns/base.litcentral.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.tagasauris.organic_object",
+                "http://rdf.freebase.com/ns/base.tagit.organic_thing",
+                "http://rdf.freebase.com/ns/biology.animal",
+                "http://rdf.freebase.com/ns/biology.organism_classification",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/m.0cgpx6r",
+                "http://rdf.freebase.com/ns/m.0cgxpqv",
+                "http://rdf.freebase.com/ns/m.0cgyc3f",
+                "http://rdf.freebase.com/ns/m.0cgyl1d"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "it",
+                "@value": "I Trochilidi sono una famiglia di uccelli dell'ordine Apodiformes, che comprende 342 specie comunemente note come colibrì.\r\nSono considerati gli uccelli più piccoli al mondo: la maggior parte delle specie ha un peso tra 2.5 e 6.5 g e una lunghezza tra 6 e 12 cm. Hanno l'abilità di poter rimanere quasi immobili a mezz'aria, capacità garantita dal rapidissimo battito alare, e che gli consente di potersi cibare del nettare dei fiori. La loro straordinaria mobilità degli arti superiori gli consente inoltre prodezze di volo inimmaginabili per altri uccelli, come volare all'indietro.\r\nInoltre, in caso di scarsità di cibo o durante il sonno, sono in grado di cadere in uno stato di torpore che consente loro di risparmiare energia, rallentando drasticamente il loro metabolismo."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.02brmpp",
+                "http://rdf.freebase.com/ns/m.041rcfg",
+                "http://rdf.freebase.com/ns/m.04r6w4t"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.125d8rp8j",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.04_bvk3",
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Trochilidae"
+            }
+        },
+        {
+            "@id": "http://rdf.freebase.com/ns/m.0mkz",
+            "@type": [
+                "http://rdf.freebase.com/ns/base.computerscience.computer_science_subfield",
+                "http://rdf.freebase.com/ns/base.computerscience.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/base.visleg.collaboration_topic",
+                "http://rdf.freebase.com/ns/base.visleg.topic",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/book.periodical_subject",
+                "http://rdf.freebase.com/ns/business.industry",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software_genre",
+                "http://rdf.freebase.com/ns/conferences.conference_subject",
+                "http://rdf.freebase.com/ns/education.field_of_study",
+                "http://rdf.freebase.com/ns/fictional_universe.character_species",
+                "http://rdf.freebase.com/ns/film.film_subject",
+                "http://rdf.freebase.com/ns/internet.website_category",
+                "http://rdf.freebase.com/ns/m.05mq9mq",
+                "http://rdf.freebase.com/ns/m.05mq9wh",
+                "http://rdf.freebase.com/ns/m.069q9jh",
+                "http://rdf.freebase.com/ns/m.0b6z93b",
+                "http://rdf.freebase.com/ns/media_common.literary_genre",
+                "http://rdf.freebase.com/ns/media_common.media_genre",
+                "http://rdf.freebase.com/ns/media_common.quotation_subject"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.description": {
+                "@language": "it",
+                "@value": "Con il termine intelligenza artificiale si intende generalmente l'abilità di un computer di svolgere funzioni e ragionamenti tipici della mente umana.\r\nL'intelligenza artificiale è una disciplina dibattuta tra scienziati e filosofi, la quale manifesta aspetti sia teorici che pratici.\r\nNel suo aspetto puramente informatico, essa comprende la teoria e le tecniche per lo sviluppo di algoritmi che consentano alle macchine di mostrare un'abilità e/o attività intelligente, almeno in domini specifici.\r\nUno dei problemi principali dell'intelligenza artificiale è quello di dare una definizione formale delle funzioni sintetiche/astratte di ragionamento, meta-ragionamento e apprendimento dell'uomo, per poter poi costruire dei modelli computazionali che li concretizzano e realizzano."
+            },
+            "http://rdf.freebase.com/ns/common.topic.image": [
+                "http://rdf.freebase.com/ns/m.0290tcp",
+                "http://rdf.freebase.com/ns/m.03snq2z"
+            ],
+            "http://rdf.freebase.com/ns/common.topic.notable_for": "http://rdf.freebase.com/ns/g.1258jp76n",
+            "http://rdf.freebase.com/ns/common.topic.notable_types": "http://rdf.freebase.com/ns/m.01xxxsy",
+            "rdfs:label": {
+                "@language": "it",
+                "@value": "Intelligenza artificiale"
+            }
+        },
+        {
+            "@id": "urn:enhancement-03240da1-7bfd-b8cd-2a02-354cc765bb68",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ea51f858-3671-0e4b-368a-8efc54259c05",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Linked Data"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Linked_data",
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-07e5459f-7457-ce3a-cea7-ddb6efeb7328",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.106Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "enhancer:confidence": 0.33333334,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Seo"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0cc7vc6",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/soccer.football_player",
+                "http://rdf.freebase.com/ns/sports.pro_athlete"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-16bb179f-7695-8d90-62c7-474bb09ebcb5",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "enhancer:confidence": 0.9875,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "SEO"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Search_engine_optimization",
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-184f52bd-f0b9-e2b2-f98b-20e5eb16d4d5",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:type": [
+                "dbp-ont:Organisation",
+                "dbp-ont:Work"
+            ],
+            "enhancer:confidence": 0.9166667,
+            "enhancer:end": 196,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Google (code"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " luce del nuovo algoritmo di ricerca di Google (code-named Hummingbird) in che modo cambiano le regole"
+            },
+            "enhancer:start": 184
+        },
+        {
+            "@id": "urn:enhancement-21cfbb2e-6c83-e3ab-c5de-7cf88073369d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 14,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Andrea Volpini"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": "Andrea Volpini e Kim Renberg oggi ci parlano di WordPress,"
+            },
+            "enhancer:start": 0
+        },
+        {
+            "@id": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.094Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "schema:Product",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 256,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "SEO"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " in che modo cambiano le regole della SEO?\n\n"
+            },
+            "enhancer:start": 253
+        },
+        {
+            "@id": "urn:enhancement-4a365e91-3cc7-c085-7f15-277dfc4d62fa",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "dbp-ont:Person",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 28,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Kim Renberg"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": "Andrea Volpini e Kim Renberg oggi ci parlano di WordPress, Linked Data e"
+            },
+            "enhancer:start": 17
+        },
+        {
+            "@id": "urn:enhancement-4f5d2915-e729-2de1-c2de-9d097bdba394",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "SEO"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Bodybuilding",
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-4f78dbda-12b1-d77d-c7ab-19c3017d6913",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Hummingbird"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.051vlvb",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.artist",
+                "http://rdf.freebase.com/ns/music.musical_group"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-52133c21-a74f-36e6-dc75-845d784f1295",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-184f52bd-f0b9-e2b2-f98b-20e5eb16d4d5",
+            "enhancer:confidence": 0.9166667,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Google code"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Google_Code",
+            "enhancer:entity-type": [
+                "dbp-ont:Website",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "schema:WebPage",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-6569a983-05f1-447a-671e-3f01d1e58177",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-db067b7a-81f8-36df-9654-c6d7f02b8148",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "it",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/WordPress",
+            "enhancer:entity-type": [
+                "dbp-ont:Software",
+                "dbp-ont:Work",
+                "schema:CreativeWork",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-7896b4df-c9b6-6c43-7b81-a4c143f5fb7e",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "enhancer:confidence": 0.95,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "SEO"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0h5k3bl",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/business.employer",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/user.artifact.default_domain.web_development",
+                "http://rdf.freebase.com/ns/user.ilear.blog.web_design",
+                "http://rdf.freebase.com/ns/user.kconragan.graphic_design.graphic_designer",
+                "http://rdf.freebase.com/ns/user.player.player_entertainment_group_inc$002E.branding",
+                "http://rdf.freebase.com/ns/user.player.player_entertainment_group_inc$002E.topic"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-801586b5-b28d-97b1-0195-940e35125f04",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 202,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "code-named"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " luce del nuovo algoritmo di ricerca di Google (code-named Hummingbird) in che modo cambiano le regole della"
+            },
+            "enhancer:start": 192
+        },
+        {
+            "@id": "urn:enhancement-a53cf73c-417f-df7d-d632-f936e321ee45",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-184f52bd-f0b9-e2b2-f98b-20e5eb16d4d5",
+            "enhancer:confidence": 0.8333333,
+            "enhancer:entity-label": {
+                "@language": "it",
+                "@value": "Google Code"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0dj2_7",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.website"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-ac810e34-16de-916b-a79e-85044200a9e7",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-db067b7a-81f8-36df-9654-c6d7f02b8148",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "WordPress"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02vtpl",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_applications",
+                "http://rdf.freebase.com/ns/base.services.web_development_platform",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.api"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-b5f583bc-9e84-07b5-ee9c-4cb450c55a2c",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "enhancer:confidence": 0.9848485,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Hummingbird"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.07l7qm",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/music.composition"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-c53bac92-d51a-ca93-f280-c269d90ea9f8",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.100Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-21cfbb2e-6c83-e3ab-c5de-7cf88073369d",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "it",
+                "@value": "Andrea Volpini"
+            },
+            "enhancer:entity-reference": "http://it.dbpedia.org/resource/Andrea_Volpini",
+            "enhancer:entity-type": [
+                "dbp-ont:Agent",
+                "dbp-ont:Athlete",
+                "dbp-ont:Person",
+                "schema:Person",
+                "owl:Thing",
+                "foaf:Person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-c59a9987-69e1-2f48-c01a-087365a8a8b7",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "enhancer:confidence": 0.9916667,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Hummingbird"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Hummingbird_(band)",
+            "enhancer:entity-type": [
+                "dbp-ont:Agent",
+                "dbp-ont:Band",
+                "dbp-ont:Organisation",
+                "schema:MusicGroup",
+                "schema:Organization",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-c626bca4-b12f-39df-7812-7bcf92ed7c53",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "enhancer:confidence": 0.975,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "SEO"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Election_commission",
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-d0543e83-50f0-3c7e-08f3-47efb9519acd",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "enhancer:confidence": 0.99583334,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Hummingbird"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Exynos_(system_on_chip)",
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-d6266a08-a44b-08b0-40fe-71a1ae842b77",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Hummingbird"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Hummingbird",
+            "enhancer:entity-type": [
+                "dbp-ont:Animal",
+                "dbp-ont:Bird",
+                "dbp-ont:Eukaryote",
+                "dbp-ont:Species",
+                "owl:Thing"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-d701af14-0164-2df2-fdf0-18cf0fbecf67",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.072Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.langdetect.LanguageDetectionEnhancementEngine",
+            "dc:language": "it",
+            "dc:type": "dc:LinguisticSystem",
+            "enhancer:confidence": 0.9999978,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-db067b7a-81f8-36df-9654-c6d7f02b8148",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "dc:type": "dbp-ont:Work",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 57,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "WordPress"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": "Andrea Volpini e Kim Renberg oggi ci parlano di WordPress, Linked Data e Intelligenza Artificiale per la"
+            },
+            "enhancer:start": 48
+        },
+        {
+            "@id": "urn:enhancement-dc519cf1-e02c-1a10-7884-4709a73e378b",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "enhancer:confidence": 0.99242425,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Hummingbird"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0j91q",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.animal_synopses.animal_synopsis",
+                "http://rdf.freebase.com/ns/base.birdconservation.bird_taxa",
+                "http://rdf.freebase.com/ns/base.birdconservation.topic",
+                "http://rdf.freebase.com/ns/base.birdwatching.checklist_bird",
+                "http://rdf.freebase.com/ns/base.birdwatching.topic",
+                "http://rdf.freebase.com/ns/base.hummingbirdhub.topic",
+                "http://rdf.freebase.com/ns/base.litcentral.focal_taxa",
+                "http://rdf.freebase.com/ns/base.litcentral.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.tagasauris.organic_object",
+                "http://rdf.freebase.com/ns/base.tagit.organic_thing",
+                "http://rdf.freebase.com/ns/biology.animal",
+                "http://rdf.freebase.com/ns/biology.organism_classification",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/m.0cgpx6r",
+                "http://rdf.freebase.com/ns/m.0cgxpqv",
+                "http://rdf.freebase.com/ns/m.0cgyc3f",
+                "http://rdf.freebase.com/ns/m.0cgyl1d"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-dfebf214-7c85-fb0b-c83d-645657562021",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-ea51f858-3671-0e4b-368a-8efc54259c05",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Linked Data"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.02r2kb1",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.bio2rdf.topic",
+                "http://rdf.freebase.com/ns/base.dependencygraph.topic",
+                "http://rdf.freebase.com/ns/base.sameas.consuming_api_format",
+                "http://rdf.freebase.com/ns/base.sameas.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/education.field_of_study",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.website_category",
+                "http://rdf.freebase.com/ns/user.bio2rdf.default_domain.timeline_of_bio2rdf",
+                "http://rdf.freebase.com/ns/user.randy1234.default_domain.dbpedia"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-e00373ce-2ac2-361c-ebfe-676d79d87979",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.101Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-e5bc2c63-de2a-fd60-478b-309b05fffb56",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "it",
+                "@value": "Intelligenza Artificiale"
+            },
+            "enhancer:entity-reference": "http://dbpedia.org/resource/Artificial_intelligence",
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-e19318b1-876b-4237-703b-2bcabb8f9ea2",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-374102e4-7d15-572b-e683-cd3ed98a7583",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "SEO"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.019qb_",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/award.competition_type",
+                "http://rdf.freebase.com/ns/base.column.column",
+                "http://rdf.freebase.com/ns/base.column.topic",
+                "http://rdf.freebase.com/ns/base.nevillegorup.topic",
+                "http://rdf.freebase.com/ns/base.searchengineoptimizationprovider.topic",
+                "http://rdf.freebase.com/ns/base.seobase.topic",
+                "http://rdf.freebase.com/ns/base.services.internet_marketing_service_type",
+                "http://rdf.freebase.com/ns/base.services.topic",
+                "http://rdf.freebase.com/ns/base.services.web_design_expertise",
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/business.consumer_product",
+                "http://rdf.freebase.com/ns/business.industry",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/freebase.task",
+                "http://rdf.freebase.com/ns/internet.website_category",
+                "http://rdf.freebase.com/ns/m.05d1fdx",
+                "http://rdf.freebase.com/ns/organization.organization_sector",
+                "http://rdf.freebase.com/ns/people.profession",
+                "http://rdf.freebase.com/ns/user.ngerakines.facebook_platform.facebook_application",
+                "http://rdf.freebase.com/ns/user.unavailable.default_domain.marketing_device"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-e451f293-a2e4-8ccd-d5ef-80a5264f103c",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 190,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Google"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " luce del nuovo algoritmo di ricerca di Google (code-named Hummingbird) in che modo cambiano le"
+            },
+            "enhancer:start": 184
+        },
+        {
+            "@id": "urn:enhancement-e4bce1f6-09e2-648c-489c-9d60d385cb5d",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.105Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-e5bc2c63-de2a-fd60-478b-309b05fffb56",
+            "enhancer:confidence": 0.9583333,
+            "enhancer:entity-label": {
+                "@language": "it",
+                "@value": "Intelligenza artificiale"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0mkz",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.computerscience.computer_science_subfield",
+                "http://rdf.freebase.com/ns/base.computerscience.topic",
+                "http://rdf.freebase.com/ns/base.ontologies.ontology_instance",
+                "http://rdf.freebase.com/ns/base.tagit.concept",
+                "http://rdf.freebase.com/ns/base.visleg.collaboration_topic",
+                "http://rdf.freebase.com/ns/base.visleg.topic",
+                "http://rdf.freebase.com/ns/book.book_subject",
+                "http://rdf.freebase.com/ns/book.periodical_subject",
+                "http://rdf.freebase.com/ns/business.industry",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/computer.software_genre",
+                "http://rdf.freebase.com/ns/conferences.conference_subject",
+                "http://rdf.freebase.com/ns/education.field_of_study",
+                "http://rdf.freebase.com/ns/fictional_universe.character_species",
+                "http://rdf.freebase.com/ns/film.film_subject",
+                "http://rdf.freebase.com/ns/internet.website_category",
+                "http://rdf.freebase.com/ns/m.05mq9mq",
+                "http://rdf.freebase.com/ns/m.05mq9wh",
+                "http://rdf.freebase.com/ns/m.069q9jh",
+                "http://rdf.freebase.com/ns/m.0b6z93b",
+                "http://rdf.freebase.com/ns/media_common.literary_genre",
+                "http://rdf.freebase.com/ns/media_common.media_genre",
+                "http://rdf.freebase.com/ns/media_common.quotation_subject"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-e5bc2c63-de2a-fd60-478b-309b05fffb56",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 97,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Intelligenza Artificiale"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " oggi ci parlano di WordPress, Linked Data e Intelligenza Artificiale per la promozione dei contenuti sul web.\n\nAlla"
+            },
+            "enhancer:start": 73
+        },
+        {
+            "@id": "urn:enhancement-ea51f858-3671-0e4b-368a-8efc54259c05",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 70,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Linked Data"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " e Kim Renberg oggi ci parlano di WordPress, Linked Data e Intelligenza Artificiale per la promozione dei"
+            },
+            "enhancer:start": 59
+        },
+        {
+            "@id": "urn:enhancement-ed8890d5-8379-fd2a-9f31-53d2acef1d04",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:TextAnnotation"
+            ],
+            "dc:contributor": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:created": "2014-04-14T15:16:15.093Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.restful.nlp.impl.RestfulNlpAnalysisEngine",
+            "enhancer:confidence": 1.0,
+            "enhancer:end": 214,
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc",
+            "enhancer:selected-text": {
+                "@language": "it",
+                "@value": "Hummingbird"
+            },
+            "enhancer:selection-context": {
+                "@language": "it",
+                "@value": " nuovo algoritmo di ricerca di Google (code-named Hummingbird) in che modo cambiano le regole della SEO?\n\n"
+            },
+            "enhancer:start": 203
+        },
+        {
+            "@id": "urn:enhancement-f195fd1d-9d52-7d9a-7c70-ce2ed8627ce7",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.104Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-4a365e91-3cc7-c085-7f15-277dfc4d62fa",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Kim Renberg"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0g4zp0c",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.ireferdex.topic",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/people.person"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        },
+        {
+            "@id": "urn:enhancement-f735339d-b05e-cbb2-ed40-ada8d83f00c3",
+            "@type": [
+                "enhancer:Enhancement",
+                "enhancer:EntityAnnotation"
+            ],
+            "dc:created": "2014-04-14T15:16:15.104Z",
+            "dc:creator": "org.apache.stanbol.enhancer.engines.lucenefstlinking.FstLinkingEngine",
+            "dc:relation": "urn:enhancement-21cfbb2e-6c83-e3ab-c5de-7cf88073369d",
+            "enhancer:confidence": 1.0,
+            "enhancer:entity-label": {
+                "@language": "en",
+                "@value": "Andrea Volpini"
+            },
+            "enhancer:entity-reference": "http://rdf.freebase.com/ns/m.0djtw2h",
+            "enhancer:entity-type": [
+                "http://rdf.freebase.com/ns/base.linkedinbase.linkedin_profile",
+                "http://rdf.freebase.com/ns/base.linkedinbase.topic",
+                "http://rdf.freebase.com/ns/business.board_member",
+                "http://rdf.freebase.com/ns/common.topic",
+                "http://rdf.freebase.com/ns/internet.social_network_user",
+                "http://rdf.freebase.com/ns/internet.website_owner",
+                "http://rdf.freebase.com/ns/organization.organization_founder",
+                "http://rdf.freebase.com/ns/organization.organization_member",
+                "http://rdf.freebase.com/ns/people.person",
+                "http://rdf.freebase.com/ns/user.ngerakines.social_software.twitter_user"
+            ],
+            "enhancer:extracted-from": "urn:content-item-sha1-21bd35041eccd70426b4ee588dc51685038691dc"
+        }
+    ]
+}

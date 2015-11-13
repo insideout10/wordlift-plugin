@@ -28,8 +28,8 @@ class FieldShortcodeTest extends WP_UnitTestCase
 
         $place_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
         wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LATITUDE, 40.12, true );
-        add_post_meta( $place_id, WL_CUSTOM_FIELD_GEO_LONGITUDE, 72.3, true );
+        add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
+        add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
         
         // Correct use
         $result = do_shortcode( "[wl_field id=$place_id name='latitude']" );

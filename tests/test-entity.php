@@ -187,10 +187,10 @@ class EntityTest extends WP_UnitTestCase
     function testSaveEventWithStartAndEndDates() {
 
         $entity_1_id = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_START, '2013-01-02' );
-        add_post_meta( $entity_1_id, WL_CUSTOM_FIELD_CAL_DATE_END, '2013-02-03' );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2013-01-02' );
+        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2013-02-03' );
 
-        wl_set_entity_main_type( $entity_1_id, 'http://schema.org/Event' );
+        wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 
         wp_update_post( array(
             'ID'           => $entity_1_id,

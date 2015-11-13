@@ -23,7 +23,7 @@
  */
 function wl_transition_post_status( $new_status, $old_status, $post ) {
 
-	wl_write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
+	// wl_write_log( "wl_transition_post_status [ new status :: $new_status ][ old status :: $old_status ][ post ID :: $post->ID ]" );
 
 	// transition from *published* to any other status: delete the post.
 	if ( 'publish' === $old_status && 'publish' !== $new_status ) {
@@ -78,7 +78,7 @@ function rl_delete_post( $post ) {
 	}
 
 	// if the post is an entity and has exported properties, delete the related predicates.
-	if ( WL_ENTITY_TYPE_NAME === $post->post_type ) {
+	if ( Wordlift_Entity_Service::TYPE_NAME === $post->post_type ) {
 		$type = wl_entity_type_taxonomy_get_type( $post->ID );
 
 		if ( isset( $type['custom_fields'] ) ) {

@@ -1,154 +1,131 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2014-06-02 16:59+0200\n"
-"PO-Revision-Date: 2014-06-02 17:01+0200\n"
+"POT-Creation-Date: 2015-08-25 15:18+0100\n"
+"PO-Revision-Date: 2015-08-25 15:29+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../admin/wordlift_admin_edit_post.php:23
-msgid "View on Redlink"
-msgstr "Apri su Redlink"
+#: ../wordlift_entity_type_taxonomy.php:15
+msgctxt "taxonomy general name"
+msgid "Entity Types"
+msgstr "Tipi di Entità"
 
-#: ../admin/wordlift_admin_edit_post.php:28
-msgid "Test Google Rich Snippets"
-msgstr "Verifica Google Rich Snippets"
+#: ../wordlift_entity_type_taxonomy.php:16
+msgctxt "taxonomy singular name"
+msgid "Entity Type"
+msgstr "Tipo dell'Entità"
 
-#: ../admin/wordlift_admin_entity_publish.php:20
-msgid "Display as:"
+#: ../wordlift_entity_type_taxonomy.php:17
+msgid "Search Entity Types"
+msgstr "Cerca tipo di Entità"
+
+#: ../wordlift_entity_type_taxonomy.php:18
+msgid "All Entity Types"
+msgstr "Tutti i tipi di Entità"
+
+#: ../wordlift_entity_type_taxonomy.php:19
+msgid "Parent Entity Type"
+msgstr "Tipo superiore"
+
+#: ../wordlift_entity_type_taxonomy.php:20
+msgid "Parent Entity Type:"
+msgstr "Tipo superiore"
+
+#: ../wordlift_entity_type_taxonomy.php:21
+msgid "Edit Entity Type"
+msgstr "Modifica il tipo dell'Entità"
+
+#: ../wordlift_entity_type_taxonomy.php:22
+msgid "Update Entity Type"
+msgstr "Aggiorna il tipo dell'Entità"
+
+#: ../wordlift_entity_type_taxonomy.php:23
+msgid "Add New Entity Type"
+msgstr "Aggiungi nuovo tipo di Entità"
+
+#: ../wordlift_entity_type_taxonomy.php:24
+msgid "New Entity Type"
+msgstr "Nuovo tipo di Entità"
+
+#: ../wordlift_entity_type_taxonomy.php:25
+msgid "Entity Types"
+msgstr "Tipi di Entità"
+
+#: ../wordlift_entity_type.php:9
+msgctxt "post type general name"
+msgid "Vocabulary"
+msgstr "Vocabolario"
+
+#: ../wordlift_entity_type.php:10
+msgctxt "post type singular name"
+msgid "Entity"
+msgstr "Entità"
+
+#: ../wordlift_entity_type.php:11
+msgctxt "entity"
+msgid "Add New Entity"
+msgstr "Aggiungi una nuova Entità"
+
+#: ../wordlift_entity_type.php:12
+msgid "Add New Entity"
+msgstr "Aggiungi una nuova Entità"
+
+#: ../wordlift_entity_type.php:13
+msgid "Edit Entity"
+msgstr "Modifica Entità"
+
+#: ../wordlift_entity_type.php:14
+msgid "New Entity"
+msgstr "Nuova Entità"
+
+#: ../wordlift_entity_type.php:15
+msgid "All Entities"
+msgstr "Tutte le Entità"
+
+#: ../wordlift_entity_type.php:16
+msgid "View Entity"
+msgstr "Vedi Entità"
+
+#: ../wordlift_entity_type.php:17
+msgid "Search in Vocabulary"
+msgstr "Cerca nel Vocabolario"
+
+#: ../wordlift_entity_type.php:18
+msgid "No entities found"
+msgstr "Nessuna Entità trovata"
+
+#: ../wordlift_entity_type.php:19
+msgid "No entities found in the Trash"
+msgstr "Nessuna Entità trovata nel cestino"
+
+#: ../wordlift_entity_type.php:21
+msgid "Vocabulary"
+msgstr "Vocabolario"
+
+#: ../wordlift_entity_type.php:46
+msgid "Entity URL"
+msgstr "URL dell'Entità"
+
+#: ../wordlift_entity_type.php:67
+msgid "entity-url-label"
 msgstr ""
 
-#: ../admin/wordlift_admin_entity_publish.php:23
-msgid "index"
-msgstr "indice"
-
-#: ../admin/wordlift_admin_entity_publish.php:27
-msgid "Edit"
+#: ../widgets/wordlift_widget_timeline.php:12
+msgid "Timeline Widget"
 msgstr ""
 
-#: ../admin/wordlift_admin_entity_publish.php:32
-#: ../admin/wordlift_admin_settings_page.php:69
-msgid "Index"
-msgstr "Indice"
-
-#: ../admin/wordlift_admin_entity_publish.php:33
-#: ../admin/wordlift_admin_settings_page.php:70
-msgid "Page"
-msgstr "Pagina"
-
-#: ../admin/wordlift_admin_entity_publish.php:35
-msgid "OK"
-msgstr ""
-
-#: ../admin/wordlift_admin_entity_publish.php:36
-msgid "Cancel"
-msgstr ""
-
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:36
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:81
-msgid "Entity Type CSS Class"
-msgstr ""
-
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:40
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:49
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:58
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:85
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:94
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:103
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:112
-msgid "Enter a value for this field"
-msgstr ""
-
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:44
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:89
-msgid "Entity Type URI"
-msgstr ""
-
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:54
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:99
-msgid "Entity Type Alternative URIs"
-msgstr ""
-
-#: ../admin/wordlift_admin_entity_type_taxonomy.php:108
-msgid "Additional Properties"
-msgstr ""
-
-#: ../admin/wordlift_admin_meta_box_entities.php:18
-msgid "Related Entities"
-msgstr ""
-
-#: ../admin/wordlift_admin_meta_box_entities.php:49
-msgid "No related entities"
-msgstr ""
-
-#: ../admin/wordlift_admin_meta_box_related_posts.php:8
-msgid "Referencing Posts"
-msgstr ""
-
-#: ../admin/wordlift_admin_meta_box_related_posts.php:27
-msgid "No referencing posts"
-msgstr ""
-
-#: ../admin/wordlift_admin_settings_page.php:21
-msgid "main-settings-title"
-msgstr "Impostazioni principali"
-
-#: ../admin/wordlift_admin_settings_page.php:26
-msgid "New Entity Posts are displayed as:"
-msgstr "I nuovi post Entità sono mostrati come:"
-
-#: ../admin/wordlift_admin_settings_page.php:35
-msgid "Enable color coding of Entities"
-msgstr "Abilita i colori delle entità sul sito"
-
-#: ../admin/wordlift_admin_settings_page.php:46
-msgid "application-key"
-msgstr "Chiave dell'applicazione"
-
-#: ../admin/wordlift_admin_settings_page.php:47
-msgid "user-id"
-msgstr "Nome utente (es: 123):"
-
-#: ../admin/wordlift_admin_settings_page.php:48
-msgid "dataset-name"
-msgstr "Nome del dataset:"
-
-#: ../admin/wordlift_admin_settings_page.php:49
-msgid "dataset-base-uri"
-msgstr "URI del dataset (es: http://data.redlink.io/123/dataset):"
-
-#: ../admin/wordlift_admin_settings_page.php:50
-msgid "analysis-name"
-msgstr "Nome dell'analisi:"
-
-#: ../admin/wordlift_admin_settings_page.php:51
-msgid "site-language"
-msgstr "Lingua del sito:"
-
-#: ../admin/wordlift_admin_settings_page.php:60
-msgid "main-settings-description"
-msgstr "Configura le impostazioni principali:"
-
-#: ../admin/wordlift_admin_settings_page.php:82
-msgid "Yes"
-msgstr ""
-
-#: ../admin/wordlift_admin_settings_page.php:83
-msgid "No"
-msgstr ""
-
-#: ../shortcodes/wordlift_shortcode_related_posts.php:19
-#, php-format
-msgid "Visit %s&#8217;s website"
+#: ../widgets/wordlift_widget_timeline.php:13
+msgid "The Timeline widget displays event-entities on a timeline."
 msgstr ""
 
 #: ../widgets/wordlift_widget_chord.php:12
@@ -159,134 +136,421 @@ msgstr ""
 msgid "The Chord Widget depicts the main topics of your blog in concise graph."
 msgstr ""
 
-#: ../widgets/wordlift_widget_geo.php:20
+#: ../widgets/wordlift_widget_geo.php:19
 msgid "Geo Widget"
 msgstr ""
 
-#: ../widgets/wordlift_widget_geo.php:21
+#: ../widgets/wordlift_widget_geo.php:20
 msgid "Geo Widget description"
 msgstr ""
 
-#: ../widgets/wordlift_widget_geo.php:226
+#: ../widgets/wordlift_widget_geo.php:60
 msgid "New title"
 msgstr ""
 
-#: ../widgets/wordlift_widget_geo.php:230
+#: ../widgets/wordlift_widget_geo.php:64
 msgid "Title:"
 msgstr ""
 
-#: ../wordlift_configuration.php:157
+#: ../modules/analyzer/wordlift_analyzer.php:64
+msgid ""
+"An error occurred while request an analysis to the remote service. Please "
+"try again later."
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:24
+#: ../modules/configuration/wordlift_configuration.php:25
+msgid "Configuration"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:45
+#: ../modules/prefixes/wordlift_prefixes.php:193
+#: ../admin/wordlift_admin_menu.php:41
+msgid "You do not have sufficient permissions to access this page."
+msgstr "Non hai i permessi per accedere a questa pagina."
+
+#: ../modules/configuration/wordlift_configuration.php:126
+#, fuzzy
+msgid "WordLift Key"
+msgstr "WordLift Settings"
+
+#: ../modules/configuration/wordlift_configuration.php:134
+msgid "Insert the WordLift Key"
+msgstr "Inserisci la WordLift Key"
+
+#: ../modules/configuration/wordlift_configuration.php:140
+#, fuzzy
+msgid "Enable color coding on front-end"
+msgstr "Abilita i colori delle entità sul sito"
+
+#: ../modules/configuration/wordlift_configuration.php:148
+#, fuzzy
+msgid "Enable color coding"
+msgstr "Abilita i colori delle entità sul sito"
+
+#: ../modules/configuration/wordlift_configuration.php:155
+#, fuzzy
+msgid "Site Language"
+msgstr "Lingua del sito:"
+
+#: ../modules/configuration/wordlift_configuration.php:163
+#, fuzzy
+msgid "The site language"
+msgstr "Lingua del sito:"
+
+#: ../modules/configuration/wordlift_configuration.php:186
+msgid "API URL"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:194
+msgid "The API URL"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:200
+msgid "Redlink Key"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:208
+#, fuzzy
+msgid "The Redlink key"
+msgstr "Apri su Redlink"
+
+#: ../modules/configuration/wordlift_configuration.php:214
+msgid "Redlink User Id"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:222
+msgid "The Redlink User Id"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:228
+#, fuzzy
+msgid "Redlink Dataset name"
+msgstr "Nome del dataset:"
+
+#: ../modules/configuration/wordlift_configuration.php:236
+msgid "The Redlink Dataset Name"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:242
+msgid "Redlink Dataset URI"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:250
+msgid "The Redlink Dataset URI"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:256
+msgid "Redlink Application Name"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:264
+msgid "The Redlink Application Name"
+msgstr ""
+
+#: ../modules/configuration/wordlift_configuration.php:465
 msgid "application-key-not-set"
 msgstr "La chiave dell'applicazione non é impostata."
 
-#: ../wordlift_entity_type.php:10
-msgctxt "post type general name"
-msgid "Entities"
+#: ../modules/configuration/configuration.php:12
+#: ../modules/configuration/configuration.php:16
+#, fuzzy
+msgid "WordLift Configuration"
+msgstr "WordLift Settings"
+
+#: ../modules/configuration/configuration.php:51
+#: ../modules/prefixes/prefixes.php:51
+msgid "Overview"
 msgstr ""
 
-#: ../wordlift_entity_type.php:11
+#: ../modules/configuration/configuration.php:53
+#: ../modules/prefixes/prefixes.php:53
+msgid ""
+"\n"
+"<ul>\n"
+"\t<li><strong>What it does:</strong> Lorem ipsum dolor sit amet, consectetur "
+"adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
+"aliqua.</li>\n"
+"\t<li><strong>Why it helps:</strong> Lorem ipsum dolor sit amet, consectetur "
+"adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna "
+"aliqua.</li>\n"
+"\t<li><strong>How to use it:</strong> Lorem ipsum dolor sit amet, "
+"consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et "
+"dolore magna aliqua.</li>\n"
+"</ul>\n"
+"\n"
+"<p>If there are no 404 errors in the log, this is good and means there's no "
+"action required on your part.</p>\n"
+msgstr ""
+
+#: ../modules/entity_view/wordlift_entity_view_shortcode.php:136
+msgid "I need a wl_entity_view"
+msgstr ""
+
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:9
+msgctxt "as shown in the admin menu"
+msgid "SPARQL Queries"
+msgstr ""
+
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:10
 msgctxt "post type singular name"
-msgid "Entity"
+msgid "SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:12
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:11
 msgctxt "entity"
-msgid "Add New"
+msgid "Add New SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:13
-msgid "Add New Entity"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:12
+msgid "Add New SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:14
-msgid "Edit Entity"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:13
+msgid "Edit SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:15
-msgid "New Entity"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:14
+msgid "New SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:16
-msgid "All Entities"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:15
+msgid "All SPARQL Queries"
 msgstr ""
 
-#: ../wordlift_entity_type.php:17
-msgid "View Entity"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:16
+msgid "View SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:18
-msgid "Search Entities"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:17
+msgid "Search in SPARQL Queries"
 msgstr ""
 
-#: ../wordlift_entity_type.php:19
-msgid "No entities found"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:18
+msgid "No SPARQL Queries found"
 msgstr ""
 
-#: ../wordlift_entity_type.php:20
-msgid "No entities found in the Trash"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:19
+msgid "No SPARQL Queries found in the Trash"
 msgstr ""
 
-#: ../wordlift_entity_type.php:47
-msgid "Entity URL"
+#: ../modules/sparql/wordlift_sparql_query_post_type.php:21
+msgid "SPARQL Queries"
 msgstr ""
 
-#: ../wordlift_entity_type.php:66
-msgid "entity-url-label"
+#: ../modules/sparql/wordlift_sparql_meta_box.php:18
+#: ../modules/profiling/wordlift_profiling_post_type.php:165
+msgid "SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:71
-msgid "entity-same-as-label"
+#: ../modules/sparql/wordlift_sparql_meta_box.php:86
+#, fuzzy
+msgid "Dataset"
+msgstr "Nome del dataset:"
+
+#: ../modules/sparql/wordlift_sparql_meta_box.php:93
+msgid "Edit the SPARQL Query"
 msgstr ""
 
-#: ../wordlift_entity_type.php:76
-msgid "entity-types-label"
+#: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
+#: ../modules/prefixes/wordlift_prefixes.php:173
+#: ../modules/prefixes/wordlift_prefixes.php:174
+#: ../modules/prefixes/wordlift_prefixes.php:196
+msgid "Prefixes"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:15
-msgctxt "taxonomy general name"
-msgid "Entity Types"
+#: ../modules/prefixes/wordlift_prefixes.php:225
+#: ../modules/prefixes/wordlift_prefixes.php:235
+msgid "Cheatin&#8217; uh?"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:16
-msgctxt "taxonomy singular name"
-msgid "Entity Type"
+#: ../modules/prefixes/wordlift_prefixes.php:271
+msgid "Prefix"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:17
-msgid "Search Entity Types"
+#: ../modules/prefixes/wordlift_prefixes.php:274
+msgid "The namespace prefix."
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:18
-msgid "All Entity Types"
+#: ../modules/prefixes/wordlift_prefixes.php:277
+msgid "Namespace"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:19
-msgid "Parent Entity Type"
+#: ../modules/prefixes/wordlift_prefixes.php:280
+msgid "The namespace URL."
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:20
-msgid "Parent Entity Type:"
+#: ../modules/prefixes/wordlift_prefixes.php:284
+msgid "Add New Prefix"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:21
-msgid "Edit Entity Type"
+#: ../modules/profiling/wordlift_profiling_post_type.php:11
+msgctxt "as shown in the admin menu"
+msgid "SPARQL Performance"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:22
-msgid "Update Entity Type"
+#: ../modules/profiling/wordlift_profiling_post_type.php:12
+#, fuzzy
+msgctxt "post type singular name"
+msgid "Analysis"
+msgstr "Nome dell'analisi:"
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:13
+msgctxt "Profiling"
+msgid "Add New Analysis"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:23
-msgid "Add New Entity Type"
+#: ../modules/profiling/wordlift_profiling_post_type.php:14
+msgid "Add New Analysis"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:24
-msgid "New Entity Type"
+#: ../modules/profiling/wordlift_profiling_post_type.php:15
+msgid "Edit Analysis"
 msgstr ""
 
-#: ../wordlift_entity_type_taxonomy.php:25
-msgid "Entity Types"
+#: ../modules/profiling/wordlift_profiling_post_type.php:16
+msgid "New Analysis"
 msgstr ""
 
-#~ msgid "WordLift Settings"
-#~ msgstr "WordLift Settings"
+#: ../modules/profiling/wordlift_profiling_post_type.php:17
+msgid "All Analyses"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:18
+msgid "View Analysis"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:19
+msgid "Search in Performance Analyses"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:20
+msgid "No Performance Analyses found"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:21
+msgid "No Performance Analyses found in the Trash"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:23
+msgid "Performance Analyses"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:61
+msgid "Duration"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:62
+msgid "Comments"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:63
+msgid "Date"
+msgstr ""
+
+#: ../modules/profiling/wordlift_profiling_post_type.php:187
+#, php-format
+msgid "The following query took %s s."
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:89
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:134
+msgid "Entity Type CSS Class"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:93
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:102
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:111
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:138
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:147
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:156
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:165
+msgid "Enter a value for this field"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:97
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:142
+msgid "Entity Type URI"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:107
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:152
+msgid "Entity Type Alternative URIs"
+msgstr ""
+
+#: ../admin/wordlift_admin_entity_type_taxonomy.php:161
+msgid "Additional Properties"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:17
+msgid "Wordlift"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:39
+#: ../admin/wordlift_admin_meta_box_entities.php:56
+msgid "Edit"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:341
+msgid "Latitude"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:344
+msgid "Longitude"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:446
+msgid "Insert uri or just a name"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:464
+msgid "< no entity >"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:471
+msgid "< add new entity >"
+msgstr ""
+
+#: ../admin/wordlift_admin_meta_box_entities.php:532
+msgid "No entities of the right type found."
+msgstr ""
+
+#: ../admin/wordlift_admin_menu.php:19 ../admin/wordlift_admin_menu.php:20
+#, fuzzy
+msgid "WordLift"
+msgstr "WordLift Settings"
+
+#: ../admin/wordlift_admin_edit_post.php:25
+msgid "View Linked Data"
+msgstr "Vedi Linked Data"
+
+#: ../admin/wordlift_admin_edit_post.php:31
+msgid "Test Google Rich Snippets"
+msgstr "Verifica Google Rich Snippets"
+
+#~ msgid "index"
+#~ msgstr "indice"
+
+#~ msgid "Index"
+#~ msgstr "Indice"
+
+#~ msgid "Page"
+#~ msgstr "Pagina"
+
+#~ msgid "main-settings-title"
+#~ msgstr "Impostazioni principali"
+
+#~ msgid "New Entity Posts are displayed as:"
+#~ msgstr "I nuovi post Entità sono mostrati come:"
+
+#~ msgid "application-key"
+#~ msgstr "Chiave dell'applicazione"
+
+#~ msgid "user-id"
+#~ msgstr "Nome utente (es: 123):"
+
+#~ msgid "dataset-base-uri"
+#~ msgstr "URI del dataset (es: http://data.redlink.io/123/dataset):"
+
+#~ msgid "main-settings-description"
+#~ msgstr "Configura le impostazioni principali:"

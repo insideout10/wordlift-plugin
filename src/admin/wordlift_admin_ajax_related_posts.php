@@ -23,7 +23,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
     
     // If the current post is an antity 
     // related posts to the current entity are returned
-    if ( WL_ENTITY_TYPE_NAME == $post->post_type ) {
+    if ( Wordlift_Entity_Service::TYPE_NAME == $post->post_type ) {
         $filtering_entity_ids = array( $post_id );        
     }
 
