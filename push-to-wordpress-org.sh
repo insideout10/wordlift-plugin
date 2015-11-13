@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE='src/wordlift/wordlift.php'
+FILE='src/wordlift.php'
 README='trunk/readme.txt'
 
 echo "Checking out and updating the svn branch..."
@@ -10,6 +10,10 @@ git pull origin svn >/dev/null 2>&1
 # rm -fr make-zip.sh
 echo "Updating the svn branch..."
 svn up
+
+echo "Checking out updated src..."
+rm -fr src
+git checkout master -- src
 
 # echo "Checking make-zip.sh from master branch..."
 # git checkout master -- make-zip.sh
@@ -29,9 +33,6 @@ echo $VERSION
 if [[ -z "$VERSION" ]]; then
 	echo "Version not set, halting."
 else
-    echo "Checking out updated src..."
-    git checkout master -- src
-
 	echo "Removing tag $VERSION..."
 	svn rm --force tags/$VERSION > /dev/null
 	echo "Removing trunk..."
