@@ -30,38 +30,54 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
 		$html .= $this->html_nonce();
 
 		// Get coordinates
-		$coords = $this->data;
+		$data        = $this->data;
+		// TODO: We temporary use here 0,0 as default coordinates for the marker, but if no coordinates are given we
+		// want to use the current user location for the marker.
+		$coordinates = ( ! empty( $data['latitude'] ) && ! empty( $data['longitude'] ) ? sprintf( '[%f,%f]', $data['latitude'], $data['longitude'] ) : '[0,0]' );
+		$map_init    = '[0,0]' === $coordinates
+			? 'locate( {setView: true, maxZoom: 16} )'
+			: sprintf( "setView( [%f,%f], 9 )", $data['latitude'], $data['longitude'] );
 
 		// Print input fields
 		$html .= '<label for="wl_place_lat">' . __( 'Latitude', 'wordlift' ) . '</label>';
-		$html .= '<input type="text" id="wl_place_lat" name="wl_metaboxes[coordinates][]" value="' . $coords['latitude'] . '" style="width:100%" />';
+		$html .= '<input type="text" id="wl_place_lat" name="wl_metaboxes[coordinates][]" value="' . $data['latitude'] . '" style="width:100%" />';
 
 		$html .= '<label for="wl_place_lon">' . __( 'Longitude', 'wordlift' ) . '</label>';
-		$html .= '<input type="text" id="wl_place_lon" name="wl_metaboxes[coordinates][]" value="' . $coords['longitude'] . '" style="width:100%" />';
+		$html .= '<input type="text" id="wl_place_lon" name="wl_metaboxes[coordinates][]" value="' . $data['longitude'] . '" style="width:100%" />';
 
 		// Show Leaflet map to pick coordinates
-		$html .= "<div id='wl_place_coords_map'></div>";
-		$html .= "<script type='text/javascript'>
-        $ = jQuery;
-        $(document).ready(function(){
-            $('#wl_place_coords_map').width('100%').height('200px');
-            var wlMap = L.map('wl_place_coords_map').setView([" . $coords['latitude'] . "," . $coords['longitude'] . "], 9);
+		$element_id = uniqid( 'wl-gep-map-' );
+		$html .= <<<EOF
 
-            L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-                { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
-            ).addTo( wlMap );
+<div id="$element_id"></div>
 
-            var marker = L.marker([" . $coords['latitude'] . "," . $coords['longitude'] . "]).addTo( wlMap );
+<script type="text/javascript">
 
-            function refreshCoords(e) {
-                $('#wl_place_lat').val( e.latlng.lat );
-                $('#wl_place_lon').val( e.latlng.lng );
-                marker.setLatLng( e.latlng )
-            }
+	(function ($) {
 
-            wlMap.on('click', refreshCoords);
-        });
-        </script>";
+		$('#$element_id').width('100%').height('200px');
+
+		var wlMap = L.map('$element_id').$map_init;
+
+		L.tileLayer( 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+		    { attribution: '&copy; <a href=http://osm.org/copyright>OpenStreetMap</a> contributors'}
+		).addTo( wlMap );
+
+		var marker = L.marker($coordinates).addTo( wlMap );
+
+		function refreshCoords(e) {
+		    $('#wl_place_lat').val( e.latlng.lat );
+		    $('#wl_place_lon').val( e.latlng.lng );
+		    marker.setLatLng( e.latlng )
+		}
+
+		wlMap.on('click', refreshCoords);
+
+	})(jQuery);
+
+</script>
+EOF;
+
 
 		$this->html_wrapper_close();
 
