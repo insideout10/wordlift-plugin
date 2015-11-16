@@ -96,6 +96,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
+		
 		$this->version     = '3.2.0-dev';
 
 		$this->load_dependencies();

@@ -53,7 +53,9 @@ The Plugin is powered by [RedLink](http://redlink.co): Europe's *open source* la
 2. Extract the files in the wordlift subfolder
 3. Activate the plugin using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
 
-**Subscribing to the service from the WordLift website is NOT yet available.**
+> #### WordLift - Activating the Plugin
+> To activate the plugin you will need a WordLift key. <br />
+> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you to send you the key. <br /> 
 
 == Frequently Asked Questions ==
 
