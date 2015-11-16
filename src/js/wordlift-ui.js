@@ -186,7 +186,7 @@
             return null;
           });
         });
-        tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('background-color', 'white').style('opacity', 0.0).style('position', 'absolute').style('z-index', 100);
+        tooltip = d3.select('body').append('div').attr('class', 'tooltip').style('background-color', 'white').style('color', 'black').style('opacity', 0.0).style('position', 'absolute').style('z-index', 100);
         return viz.selectAll('.entity, .label').on('mouseover', function(c) {
           d3.select(this).attr('cursor', 'pointer');
           viz.selectAll('.relation').filter(function(d, i) {

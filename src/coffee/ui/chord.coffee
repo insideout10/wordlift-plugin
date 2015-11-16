@@ -156,7 +156,7 @@ $.fn.extend
       )
       .each((d) ->
 
-# beautify label
+        # beautify label
         n = beautifyLabel(data.entities[d.index].label)
 
         # get the current element
@@ -205,6 +205,7 @@ $.fn.extend
       tooltip = d3.select('body').append('div')
       .attr('class', 'tooltip')
       .style('background-color', 'white')
+      .style('color', 'black')
       .style('opacity', 0.0)
       .style('position', 'absolute')
       .style('z-index', 100)
