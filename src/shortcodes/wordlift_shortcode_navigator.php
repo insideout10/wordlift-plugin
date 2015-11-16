@@ -107,9 +107,8 @@ function wordlift_shortcode_navigator() {
 
 	// build the HTML
 	$counter = 0;
-    $navigator_css_class = 'wl-navigator-widget';
-    $navigator_css_id = uniqid( $navigator_css_class . '-' );
-	$content = '<div class="' . $navigator_css_class . '" id="' . $navigator_css_id . '">';
+    $navigator_css_id = uniqid( 'wl-navigator-widget-' );
+	$content = "<div class='wl-navigator-widget' id='$navigator_css_id'>";
 
 	foreach ( $related_posts_and_entities as $related_post_entity ) {
 
@@ -127,17 +126,22 @@ function wordlift_shortcode_navigator() {
 		$counter += 1;
 
 		// build card HTML
-		$content .= '<div class="wl-navigator-card">
-            <div class="wl-navigator-lens" style="background-image:url(' . $thumb . ')">
-                <span class="wl-navigator-trigger">
-                    <a href="' . get_permalink( $related_post->ID ) . '">' . $related_post->post_title . '</a>
-                </span>
+        $permalink = get_permalink( $related_post->ID );
+        $content .= <<<EOF
+            <div class="wl-navigator-card">
+                <div class="wl-navigator-lens" style="background-image:url( $thumb )">
+                    <span class="wl-navigator-trigger">
+                        <a href="$permalink">$related_post->post_title</a>
+                    </span>
+                </div>
+                <div class="wl-navigator-context">
+                    <a href="$context_link">$context_name</a>
+                </div>
             </div>
-            <div class="wl-navigator-context">
-                <a href="' . $context_link . '">' . $context_name . '</a>
-            </div>
-        </div>';
+EOF;
+        
 	}
+    
 	$content .= '</div>';
 	// how many cards
 	$num_cards_on_front = count( $related_posts_and_entities );
@@ -146,19 +150,20 @@ function wordlift_shortcode_navigator() {
 		$num_cards_on_front = 3;
 	}
 	// add js
-	$content .= '<script>
-        $=jQuery; 
-        $(document).ready(function(){
-            // Launch navigator
-            $("#' . $navigator_css_id . '").slick({
-                dots: false,
-                arrows: true,
-                infinite: true,
-                slidesToShow: ' . $num_cards_on_front . ',
-                slidesToScroll: 1
+	$content .= "<script>
+        ( jQuery( function($){ 
+            $(document).ready(function(){
+                // Launch navigator
+                $('#$navigator_css_id').slick({
+                    dots: false,
+                    arrows: true,
+                    infinite: true,
+                    slidesToShow: $num_cards_on_front,
+                    slidesToScroll: 1
+                });
             });
-        });
-    </script>';
+        } ) );
+    </script>";
 
 	return $content;
 }
