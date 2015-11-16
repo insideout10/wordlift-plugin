@@ -130,7 +130,6 @@ $.fn.extend
       .enter()
       .append('path')
       .attr('class', (d) ->
-        console.log d
         return "entity #{data.entities[d.index].css_class}"
       )
       .attr('d', arc)

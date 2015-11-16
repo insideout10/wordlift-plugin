@@ -107,7 +107,9 @@ function wordlift_shortcode_navigator() {
 
 	// build the HTML
 	$counter = 0;
-	$content = '<div id="wl-navigator-widget">';
+    $navigator_css_class = 'wl-navigator-widget';
+    $navigator_css_id = uniqid( $navigator_css_class . '-' );
+	$content = '<div class="' . $navigator_css_class . '" id="' . $navigator_css_id . '">';
 
 	foreach ( $related_posts_and_entities as $related_post_entity ) {
 
@@ -148,7 +150,7 @@ function wordlift_shortcode_navigator() {
         $=jQuery; 
         $(document).ready(function(){
             // Launch navigator
-            $("#wl-navigator-widget").slick({
+            $("#' . $navigator_css_id . '").slick({
                 dots: false,
                 arrows: true,
                 infinite: true,

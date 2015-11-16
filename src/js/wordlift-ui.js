@@ -131,7 +131,6 @@
           return d3.select(this).style('opacity', 0.2);
         });
         viz.selectAll('arcs').data(chord.groups).enter().append('path').attr('class', function(d) {
-          console.log(d);
           return "entity " + data.entities[d.index].css_class;
         }).attr('d', arc).attr('transform', translate(0.5, 0.5, width, height)).style('fill', function(d) {
           var baseColor, type;
