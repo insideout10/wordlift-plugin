@@ -84,8 +84,11 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 
+= 3.1.2 (2015-11-16) =
+ * Fix: [#104](https://github.com/insideout10/wordlift-plugin/issues/104): cannot load more than one navigator on the same page.
+
 = 3.1.1 (2015-11-16) =
- * Fix: [#112](https://github.com/insideout10/wordlift-plugin/issues/112): Chord tooltip has white background and black font to avoid themes conflicting with the widget.
+ * Fix: [#112](https://github.com/insideout10/wordlift-plugin/issues/112): chord tooltip has white background and black font to avoid themes conflicting with the widget.
 
 = 3.1.0 (2015-11-13) =
  * Enhancement: [#145](https://github.com/insideout10/wordlift-plugin/issues/145): control new entities creation from metaboxes.
