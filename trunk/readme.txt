@@ -82,7 +82,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
  * Enhancement: [#57](https://github.com/insideout10/wordlift-plugin/issues/57): on the Edit Entity page the referencing posts has been restored.
  * Fix: [#144](https://github.com/insideout10/wordlift-plugin/issues/144): changing type on WordLift doesn't reset the property list on Redlink is now fixed.
  * Fix: [#141](https://github.com/insideout10/wordlift-plugin/issues/141): properties when published to Redlink have no links (and no meaning) is now fixed.
- * Fix: [#139](https://github.com/insideout10/wordlift-plugin/issues/139): single founder while expecting multiple founders is not fixed.
+ * Fix: [#139](https://github.com/insideout10/wordlift-plugin/issues/139): single founder while expecting multiple founders is now fixed.
  * Fix: [#138](https://github.com/insideout10/wordlift-plugin/issues/138): Uncaught TypeError: Cannot read property 'id' of undefined is now fixed.
  * Fix: [#169](https://github.com/insideout10/wordlift-plugin/issues/169): entities that are not events may be displayed in the timeline.
  * Fix: [#168](https://github.com/insideout10/wordlift-plugin/issues/168): WordPress shortcodes are displayed in timelines.
