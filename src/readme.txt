@@ -16,7 +16,7 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 > To activate the plugin you will need a WordLift key. <br />
 > Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you to send you the key. <br /> 
 
-**WordLift** is a WordPress Plugin to organise post and pages adding facts, text and media to build beautifully structured web sites.
+**WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
 **WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
 **WordLift** is a **semantic editor** for WordPress.
 
@@ -45,13 +45,13 @@ _____________
 
 WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
-The Plugin is powered by [RedLink](http://redlink.co): Europe's *open source* largest platform for semantic enrichment and search. 
+The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* largest platform for semantic enrichment and search. 
 
 == Installation ==
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plugin using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
+3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a WordLift key. <br />
@@ -84,8 +84,11 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 
+= 3.1.2 (2015-11-16) =
+ * Fix: [#104](https://github.com/insideout10/wordlift-plugin/issues/104): cannot load more than one navigator on the same page.
+
 = 3.1.1 (2015-11-16) =
- * Fix: [#112](https://github.com/insideout10/wordlift-plugin/issues/112): Chord tooltip has white background and black font to avoid themes conflicting with the widget.
+ * Fix: [#112](https://github.com/insideout10/wordlift-plugin/issues/112): chord tooltip has white background and black font to avoid themes conflicting with the widget.
 
 = 3.1.0 (2015-11-13) =
  * Enhancement: [#145](https://github.com/insideout10/wordlift-plugin/issues/145): control new entities creation from metaboxes.
