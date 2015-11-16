@@ -1,6 +1,8 @@
-=== Plugin Name ===
+=== WordLift - Ordering Knowledge ===
+Author URL: https://blog.insideout.io/about-us
+Plugin URL: https://join.wordlift.it
 Contributors: wordlift, ziodave
-Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web
+Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
 Tested up to: 4.3.1
 Stable tag: {version}
@@ -9,6 +11,10 @@ License: GPLv2 or later
 WordLift brings the power of Artificial Intelligence to WordPress. Beautifully helps you reach your maximum potential audience.
 
 == Description ==
+
+> #### WordLift - Activating the Plugin
+> To activate the plugin you will need a WordLift key. <br />
+> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you to send you the key. <br /> 
 
 **WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
 **WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
