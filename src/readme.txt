@@ -1,6 +1,8 @@
-=== Plugin Name ===
+=== WordLift - Ordering Knowledge ===
+Author URL: https://blog.insideout.io/about-us
+Plugin URL: https://join.wordlift.it
 Contributors: wordlift, ziodave
-Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web
+Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
 Tested up to: 4.3.1
 Stable tag: {version}
@@ -10,7 +12,11 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 
 == Description ==
 
-**WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
+> #### WordLift - Activating the Plugin
+> To activate the plugin you will need a WordLift key. <br />
+> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you to send you the key. <br /> 
+
+**WordLift** is a WordPress Plugin to organise post and pages adding facts, text and media to build beautifully structured web sites.
 **WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
 **WordLift** is a **semantic editor** for WordPress.
 
@@ -39,13 +45,13 @@ _____________
 
 WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
-The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* largest platform for semantic enrichment and search. 
+The Plugin is powered by [RedLink](http://redlink.co): Europe's *open source* largest platform for semantic enrichment and search. 
 
 == Installation ==
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
+3. Activate the plugin using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
 
 **Subscribing to the service from the WordLift website is NOT yet available.**
 
