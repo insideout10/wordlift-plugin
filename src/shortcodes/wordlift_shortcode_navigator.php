@@ -107,7 +107,7 @@ function wordlift_shortcode_navigator() {
 
 	// build the HTML
 	$navigator_css_id = uniqid( 'wl-navigator-widget-' );
-	$content = "<div class='wl-navigator-widget' id='$navigator_css_id'>";
+	$content		  = "<div class='wl-navigator-widget' id='$navigator_css_id'>";
 
 	foreach ( $related_posts_and_entities as $related_post_entity ) {
 
