@@ -91,7 +91,7 @@ function wordlift_shortcode_navigator() {
 
 	// avoid building the widget when there is a list of posts.
 	if ( ! is_single() ) {
-		return;
+		return '';
 	}
 
 	// include slick on page
@@ -106,8 +106,7 @@ function wordlift_shortcode_navigator() {
 	$related_posts_and_entities = wordlift_shortcode_navigator_populate( get_the_ID() );
 
 	// build the HTML
-	$counter = 0;
-    $navigator_css_id = uniqid( 'wl-navigator-widget-' );
+	$navigator_css_id = uniqid( 'wl-navigator-widget-' );
 	$content = "<div class='wl-navigator-widget' id='$navigator_css_id'>";
 
 	foreach ( $related_posts_and_entities as $related_post_entity ) {
@@ -122,8 +121,6 @@ function wordlift_shortcode_navigator() {
 
 		$context_link = get_permalink( $related_entity->ID );
 		$context_name = $related_entity->post_title;
-
-		$counter += 1;
 
 		// build card HTML
         $permalink = get_permalink( $related_post->ID );
