@@ -84,6 +84,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 
+= 3.1.3 (2015-11-18) =
+ * Fix: [#179](https://github.com/insideout10/wordlift-plugin/issues/179): faceted search not running
+
 = 3.1.2 (2015-11-16) =
  * Fix: [#104](https://github.com/insideout10/wordlift-plugin/issues/104): cannot load more than one navigator on the same page.
 
