@@ -13,7 +13,9 @@ svn up
 
 echo "Checking out updated src..."
 rm -fr src
+git checkout master
 git pull --all
+git checkout svn
 git checkout master -- src
 
 # echo "Checking make-zip.sh from master branch..."
