@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
 "POT-Creation-Date: 2015-08-25 15:18+0100\n"
-"PO-Revision-Date: 2015-08-25 15:29+0100\n"
+"PO-Revision-Date: 2015-11-20 11:37+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -250,7 +250,9 @@ msgstr ""
 
 #: ../modules/configuration/wordlift_configuration.php:465
 msgid "application-key-not-set"
-msgstr "La chiave dell'applicazione non é impostata."
+msgstr ""
+"La chiave di WordLift non é impostata. <a target=\"_blank\" href=\"%1$s"
+"\">Iscriviti</a> e ti contatteremo per fornirtene una."
 
 #: ../modules/configuration/configuration.php:12
 #: ../modules/configuration/configuration.php:16
