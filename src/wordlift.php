@@ -618,9 +618,6 @@ require_once( 'admin/wordlift_admin.php' );
 require_once( 'admin/wordlift_admin_edit_post.php' );
 require_once( 'admin/wordlift_admin_save_post.php' );
 
-// add the WordLift admin bar.
-require_once( 'admin/wordlift_admin_bar.php' );
-
 // add the entities meta box.
 require_once( 'admin/wordlift_admin_meta_box_entities.php' );
 

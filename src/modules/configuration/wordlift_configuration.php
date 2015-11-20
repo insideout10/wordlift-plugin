@@ -21,8 +21,8 @@ function wl_configuration_admin_menu( $parent_slug, $capability ) {
 	// see http://codex.wordpress.org/Function_Reference/add_submenu_page
 	add_submenu_page(
 		$parent_slug, // The parent menu slug, provided by the calling hook.
-		__( 'Configuration', 'wordlift' ),  // page title
-		__( 'Configuration', 'wordlift' ),  // menu title
+		__( 'Settings', 'wordlift' ),  // page title
+		__( 'Settings', 'wordlift' ),  // menu title
 		$capability,                   // The required capability, provided by the calling hook.
 		'wl_configuration_admin_menu',      // the menu slug
 		'wl_configuration_admin_menu_callback' // the menu callback for displaying the page content
