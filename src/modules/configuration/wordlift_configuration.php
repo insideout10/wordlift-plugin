@@ -459,10 +459,13 @@ function wl_configuration_admin_notices() {
 
 	// TODO: this page link is different in SEO Ultimate.
 	// get the settings URL.
-	$settings_url = get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' );
+	//$settings_url = get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' );
+	
+	$mailing_list_url = 'http://join.wordlift.it';
+	
 	?>
 	<div class="error">
-		<p><?php printf( __( 'application-key-not-set', 'wordlift' ), $settings_url ); ?></p>
+		<p><?php printf( __( 'application-key-not-set', 'wordlift' ), $mailing_list_url ); ?></p>
 	</div>
 
 	<?php

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
 "POT-Creation-Date: 2015-08-25 15:17+0100\n"
-"PO-Revision-Date: 2015-08-25 15:31+0100\n"
+"PO-Revision-Date: 2015-11-20 11:23+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -248,8 +248,9 @@ msgstr ""
 #: ../modules/configuration/wordlift_configuration.php:465
 msgid "application-key-not-set"
 msgstr ""
-"WordLift application key is not set. Go to the <a href=\"%1$s\">settings "
-"page</a>."
+"WordLift application key is not set. Please signup <a target=\"_blank\" href="
+"\"%1$s\">join.wordlift.it</a> and we will get in contact with you to send "
+"you the key."
 
 #: ../modules/configuration/configuration.php:12
 #: ../modules/configuration/configuration.php:16
