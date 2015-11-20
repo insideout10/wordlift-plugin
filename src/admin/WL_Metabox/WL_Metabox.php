@@ -50,8 +50,9 @@ class WL_Metabox {
 	public function add_main_metabox() {
 
 		// Add main metabox (will print also the inner fields)
-		$id = uniqid( 'wl-metabox-' );
-		add_meta_box( $id, get_the_title() . ' properties', array(
+		$id		= uniqid( 'wl-metabox-' );
+		$title	= 'WordLift - ' . get_the_title() . ' ' . __('properties', 'wordlift');
+		add_meta_box( $id, $title, array(
 			$this,
 			'html'
 		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );

@@ -43,7 +43,7 @@ add_action( 'init', 'wl_entity_type_register' );
 function wl_entity_type_meta_boxes() {
 	add_meta_box(
 		'wordlift_entity_box',
-		__( 'Entity URL', 'wordlift' ),
+		'WordLift - ' . __( 'Entity URL', 'wordlift' ),
 		'wl_entity_type_meta_boxes_content',
 		'entity',
 		'normal',

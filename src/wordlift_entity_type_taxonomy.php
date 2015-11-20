@@ -10,7 +10,7 @@
 function wl_entity_type_taxonomy_register() {
 
 	$labels = array(
-		'name'              => _x( 'Entity Types', 'taxonomy general name' ),
+		'name'              => _x( 'WordLift - Entity Types', 'taxonomy general name' ),
 		'singular_name'     => _x( 'Entity Type', 'taxonomy singular name' ),
 		'search_items'      => __( 'Search Entity Types' ),
 		'all_items'         => __( 'All Entity Types' ),
