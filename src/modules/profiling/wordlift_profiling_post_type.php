@@ -26,8 +26,8 @@ function wl_profiling_post_type_register() {
 	$args = array(
 		'labels'              => $labels,
 		'description'         => 'Performance Analyses ',
-		'show_in_nav_menus'   => true,
-		'show_ui'             => true,
+		'show_in_nav_menus'   => false,
+		'show_ui'             => false,
 		'exclude_from_search' => false,
 		'publicly_queryable'  => false,
 		'menu_position'       => 20, // after the pages menu.
