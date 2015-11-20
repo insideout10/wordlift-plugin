@@ -22,11 +22,14 @@ function wl_admin_menu() {
 		$menu_slug,                  // menu slug
 		//'wl_admin_menu_callback',  // TODO: function callback to draw the coming dashboard
 		'wl_configuration_admin_menu_callback',
-		WP_CONTENT_URL . '/plugins/wordlift/images/pink-logo-20x20.gif' );  // icon URL 20x20 px
+		WP_CONTENT_URL . '/plugins/wordlift/images/pink-logo-20x20.gif' );  // icon URL 20x20 px	
 	
 	// Call hooked functions.
 	do_action( 'wl_admin_menu', $menu_slug, $capability );
-
+	
+	// Remove duplicate 'WordLift' subpage created by WordPress. 
+	remove_submenu_page( $menu_slug, $menu_slug );
+	
 }
 
 add_action( 'admin_menu', 'wl_admin_menu' );
