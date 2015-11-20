@@ -58,6 +58,15 @@ class Wordlift {
 	protected $version;
 
 	/**
+	 * The Thumbnail service.
+	 *
+	 * @since 3.1.5
+	 * @access private
+	 * @var \Wordlift_Thumbnail_Service $thumbnail_service The Thumbnail service.
+	 */
+	private $thumbnail_service;
+
+	/**
 	 * The Entity service.
 	 *
 	 * @since 3.1.0
@@ -96,7 +105,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		
+
 		$this->version     = '3.2.0-dev';
 
 		$this->load_dependencies();
@@ -147,6 +156,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
 
 		/**
+		 * The Thumbnail service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-thumbnail-service.php';
+
+		/**
 		 * The Entity Types Taxonomy service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-types-taxonomy-service.php';
@@ -187,6 +201,9 @@ class Wordlift {
 		// Instantiate a global logger.
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
+
+		// Create an instance of the Thumbnail service. Later it'll be hooked to post meta events.
+		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		// Create an instance of the Schema service.
 		new Wordlift_Schema_Service();
@@ -235,9 +252,14 @@ class Wordlift {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		// Hook the deleted_post_meta action to the Thumbnail service.
+		$this->loader->add_action( 'deleted_post_meta', $this->thumbnail_service, 'deleted_post_meta', 10, 4 );
+
+		// Hook the added_post_meta action to the Thumbnail service.
+		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_post_meta', 10, 4 );
+
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
-
 
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
