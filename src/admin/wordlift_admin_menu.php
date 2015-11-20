@@ -20,7 +20,8 @@ function wl_admin_menu() {
 		__( 'WordLift', 'wordlift' ), // menu title
 		$capability,                 // capabilities
 		$menu_slug,                  // menu slug
-		'wl_admin_menu_callback',    // function callback to draw the menu
+		//'wl_admin_menu_callback',  // TODO: function callback to draw the coming dashboard
+		'wl_configuration_admin_menu_callback',
 		WP_CONTENT_URL . '/plugins/wordlift/images/pink-logo-20x20.gif' );  // icon URL 20x20 px
 	
 	// Call hooked functions.

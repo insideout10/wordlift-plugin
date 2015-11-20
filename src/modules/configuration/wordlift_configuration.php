@@ -30,7 +30,8 @@ function wl_configuration_admin_menu( $parent_slug, $capability ) {
 
 }
 
-add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
+// TODO: re-activate this hook once the dashboard is ready
+//add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
 
 /**
  * Displays the page content.
