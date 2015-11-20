@@ -254,6 +254,9 @@ class Wordlift {
 		// Hook the deleted_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'deleted_post_meta', $this->thumbnail_service, 'deleted_post_meta', 10, 4 );
 
+		// Hook the added_post_meta action to the Thumbnail service.
+		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_post_meta', 10, 4 );
+
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
