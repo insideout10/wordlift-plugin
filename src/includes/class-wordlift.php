@@ -114,7 +114,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.1.6';
+		$this->version     = '3.1.7';
 
 		$this->load_dependencies();
 		$this->set_locale();

@@ -84,6 +84,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 
+= 3.1.7 (2015-11-22) =
+ * Fix: [#150](https://github.com/insideout10/wordlift-plugin/issues/150): the property schema-org:author on blog post lod view goes on error.
+
 = 3.1.6 (2015-11-21) =
  * Fix: [#124](https://github.com/insideout10/wordlift-plugin/issues/124): entity featured image updating is not properly triggered on the triple store (fix tests and apply only to published posts).
 
