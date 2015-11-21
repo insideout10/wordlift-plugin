@@ -155,4 +155,27 @@ class Wordlift_User_Service {
 		return update_user_meta( $user_id, self::URI_META_KEY, $user_uri );
 	}
 
+	private function get_insert_query( $user_id ) {
+
+		// Get the URI, return if there's none.
+		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
+			return false;
+		}
+
+		// Try to get the user data, in case of failure return false.
+		if ( false === ( $user = get_userdata( $user_id ) ) ) {
+			return false;
+		};
+
+		$query = ( new Wordlift_Query_Builder() )
+			->insert()
+			->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
+			->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
+			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
+			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
+			->build();
+
+		return $query;
+	}
+
 }

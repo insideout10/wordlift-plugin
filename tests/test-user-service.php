@@ -32,7 +32,7 @@ class UserServiceTest extends WP_UnitTestCase {
 
 	/**
 	 * Test the User service.
-	 * 
+	 *
 	 * @since 3.1.7
 	 */
 	function test_user_service() {
