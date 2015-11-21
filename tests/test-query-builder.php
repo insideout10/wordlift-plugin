@@ -35,7 +35,7 @@ class QueryBuilderTest extends WP_UnitTestCase {
 	 *
 	 * @since 3.1.7
 	 */
-	function test_query_builder() {
+	function test_insert() {
 
 		$users_ids = get_users( array( 'fields' => 'id' ) );
 
@@ -57,6 +57,33 @@ class QueryBuilderTest extends WP_UnitTestCase {
 
 		}
 
+	}
+
+	function test_delete() {
+
+		$users_ids = get_users( array( 'fields' => 'id' ) );
+
+		foreach ( $users_ids as $user_id ) {
+
+			// Get the URI.
+			$user_uri = Wordlift_User_Service::get_instance()->get_uri( $user_id );
+
+			$query = ( new Wordlift_Query_Builder() )->delete()
+			                                         ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+			                                         ->build()
+			         . ( new Wordlift_Query_Builder() )->delete()
+			                                           ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
+			                                           ->build()
+			         . ( new Wordlift_Query_Builder() )->delete()
+			                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
+			                                           ->build()
+			         . ( new Wordlift_Query_Builder() )->delete()
+			                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
+			                                           ->build();
+
+			$this->log_service->info( $query );
+
+		}
 	}
 
 }

@@ -279,6 +279,9 @@ class Wordlift {
 		// Hook the added_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_post_meta', 10, 4 );
 
+		// Hook posts inserts (or updates) to the user service.
+		$this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
+
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 

@@ -1,7 +1,10 @@
 <?php
 
 /**
- * Manage user-related functions.
+ * Manage user-related functions. This class receives notifications when a post is created/updated and pushes the author's
+ * data to the triple store. It does NOT receive notification when a user is create/updated because we don't want to send
+ * to the triple stores users that eventually do not write posts (therefore if user data change, the triple store is updated
+ * only when the user creates/updates a new post).
  *
  * @since 3.1.7
  */
@@ -97,6 +100,42 @@ class Wordlift_User_Service {
 	}
 
 	/**
+	 * Receives wp_insert_post events.
+	 *
+	 * @since 3.1.7
+	 *
+	 * @param int $post_id Post ID.
+	 * @param WP_Post $post Post object.
+	 * @param bool $update Whether this is an existing post being updated or not.
+	 */
+	public function wp_insert_post( $post_id, $post, $update ) {
+
+		// If the post is not published, return.
+		if ( 'publish' !== get_post_status( $post_id ) ) {
+			return;
+		}
+
+		// We expect a numeric author id.
+		if ( ! is_numeric( $post->post_author ) ) {
+			return;
+		}
+
+		// Get the delete query,or return in case of failure.
+		if ( false === ( $delete = $this->get_delete_query( $post->post_author ) ) ) {
+			return;
+		}
+
+		// Get the insert query,or return in case of failure.
+		if ( false === ( $insert = $this->get_insert_query( $post->post_author ) ) ) {
+			return;
+		}
+
+		// Send the query to the triple store.
+		rl_execute_sparql_update_query( $delete . $insert );
+
+	}
+
+	/**
 	 * Get the user's URI stored in the user's meta.
 	 *
 	 * @since 3.1.7
@@ -155,6 +194,51 @@ class Wordlift_User_Service {
 		return update_user_meta( $user_id, self::URI_META_KEY, $user_uri );
 	}
 
+	/**
+	 * Get the delete query.
+	 *
+	 * @since 3.1.7
+	 *
+	 * @param int $user_id The user id.
+	 *
+	 * @return false|string The delete query or false in case of failure.
+	 */
+	private function get_delete_query( $user_id ) {
+
+		// Get the URI, return if there's none.
+		if ( false === ( $user_uri = $this->get_uri( $user_id ) ) ) {
+			return false;
+		}
+
+		// Build the delete query.
+		$query = ( new Wordlift_Query_Builder() )->delete()
+		                                         ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+		                                         ->build()
+		         . ( new Wordlift_Query_Builder() )->delete()
+		                                           ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
+		                                           ->build()
+		         . ( new Wordlift_Query_Builder() )->delete()
+		                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
+		                                           ->build()
+		         . ( new Wordlift_Query_Builder() )->delete()
+		                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
+		                                           ->build()
+		         . ( new Wordlift_Query_Builder() )->delete()
+		                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
+		                                           ->build();
+
+		return $query;
+	}
+
+	/**
+	 * Get the insert query.
+	 *
+	 * @since 3.1.7
+	 *
+	 * @param int $user_id The user id.
+	 *
+	 * @return false|string The insert query or false in case of failure.
+	 */
 	private function get_insert_query( $user_id ) {
 
 		// Get the URI, return if there's none.
@@ -167,12 +251,14 @@ class Wordlift_User_Service {
 			return false;
 		};
 
+		// Build the insert query.
 		$query = ( new Wordlift_Query_Builder() )
 			->insert()
 			->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
 			->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
 			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
 			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
+			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
 			->build();
 
 		return $query;

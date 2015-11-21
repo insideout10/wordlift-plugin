@@ -32,7 +32,7 @@ function wl_push_post_to_redlink( $post ) {
 	$site_language = wl_configuration_get_site_language();
 
 	// save the author and get the author URI.
-	$author_uri = wl_sparql_escape_uri( wl_get_user_uri( $post->post_author ) );
+	$author_uri = wl_sparql_escape_uri( Wordlift_User_Service::get_instance()->get_uri( $post->post_author ) );
 
 	// Get other post properties.
 	$date_published      = wl_get_sparql_time( get_the_time( 'c', $post ) );
@@ -132,19 +132,19 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// create a new empty statement.
 	$delete_stmt = '';
 	$sparql      = '';
-    
-    // delete on RL all statements regarding properties set from WL (necessary when changing entity type)
-    $all_custom_fields = wl_entity_taxonomy_get_custom_fields();
-    $predicates_to_be_deleted = array();
-    foreach( $all_custom_fields as $type => $fields ) {
-        foreach( $fields as $cf ){
-            $predicate = $cf['predicate'];
-            if( !in_array( $predicate, $predicates_to_be_deleted ) ){
-                $predicates_to_be_deleted[] = $predicate;
-                $delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
-            }
-        }
-    }
+
+	// delete on RL all statements regarding properties set from WL (necessary when changing entity type)
+	$all_custom_fields        = wl_entity_taxonomy_get_custom_fields();
+	$predicates_to_be_deleted = array();
+	foreach ( $all_custom_fields as $type => $fields ) {
+		foreach ( $fields as $cf ) {
+			$predicate = $cf['predicate'];
+			if ( ! in_array( $predicate, $predicates_to_be_deleted ) ) {
+				$predicates_to_be_deleted[] = $predicate;
+				$delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
+			}
+		}
+	}
 
 	// set the same as.
 	$same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' );
@@ -187,23 +187,23 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 				} else {
 					$type = $settings['export_type'];
 				}
-                
+
 				foreach ( get_post_meta( $entity_post->ID, $field ) as $value ) {
 					$sparql .= " <$uri_e> <$predicate> ";
-                    
-                    if ( !is_null( $type ) && ( substr( $type, 0, 4 ) == 'http' ) ) {
-                        // Type is defined by a raw uri (es. http://schema.org/PostalAddress)
 
-                        // Extract uri if the value is numeric
-                        if(is_numeric( $value ) ){
-                            $value = wl_get_entity_uri( $value );
-                        }
+					if ( ! is_null( $type ) && ( substr( $type, 0, 4 ) == 'http' ) ) {
+						// Type is defined by a raw uri (es. http://schema.org/PostalAddress)
 
-                        $sparql .= '<' . wl_sparql_escape_uri( $value ) . '>';
-                    } else {
-                        // Type is defined in another way (es. xsd:double)
-                        $sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
-                    }
+						// Extract uri if the value is numeric
+						if ( is_numeric( $value ) ) {
+							$value = wl_get_entity_uri( $value );
+						}
+
+						$sparql .= '<' . wl_sparql_escape_uri( $value ) . '>';
+					} else {
+						// Type is defined in another way (es. xsd:double)
+						$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
+					}
 
 					$sparql .= " . \n";
 				}
@@ -246,7 +246,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     DELETE { <$uri_e> schema:image ?o . } WHERE  { <$uri_e> schema:image ?o . };
     INSERT DATA { $sparql };
 EOF;
-    
+
 	rl_execute_sparql_update_query( $query );
 }
 
