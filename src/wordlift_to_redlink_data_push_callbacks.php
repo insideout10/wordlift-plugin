@@ -85,6 +85,8 @@ function wl_push_post_to_redlink( $post ) {
             WHERE  { <$uri> schema:image ?o . };
             DELETE { <$uri> schema:interactionCount ?o . }
             WHERE  { <$uri> schema:interactionCount ?o . };
+            DELETE { <$uri> schema:author ?o . }
+            WHERE  { <$uri> schema:author ?o . };
             INSERT DATA { $sparql };
 EOF;
 
