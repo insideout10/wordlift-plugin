@@ -76,6 +76,15 @@ class Wordlift {
 	private $entity_service;
 
 	/**
+	 * The User service.
+	 *
+	 * @since 3.1.7
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The User service.
+	 */
+	private $user_service;
+
+	/**
 	 * The Timeline service.
 	 *
 	 * @since 3.1.0
@@ -170,6 +179,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
 
 		/**
+		 * The User service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-user-service.php';
+
+		/**
 		 * The Timeline service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-timeline-service.php';
@@ -208,6 +222,9 @@ class Wordlift {
 		new Wordlift_Schema_Service();
 
 		$this->entity_service = new Wordlift_Entity_Service();
+
+		// Create an instance of the User service.
+		$this->user_service = new Wordlift_User_Service( wl_configuration_get_redlink_dataset_uri() );
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
