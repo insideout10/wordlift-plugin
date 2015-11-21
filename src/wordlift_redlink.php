@@ -18,18 +18,14 @@
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
-	if ( WP_DEBUG ) {
-		global $wl_logger;
-		$wl_logger->trace( "Executing query [ query :: $query ]" );
-	}
-
-	// Get the calling function for debug purposes.
-	// $callers          = debug_backtrace();
-	// $calling_function = $callers[1]['function'];
-	// wl_write_log( "[ calling function :: $calling_function ][ queue :: " . ( $queue ? 'true' : 'false' ) . ' ]' );
-
 	// Queue the update query.
 	if ( $queue ) {
+
+		if ( WP_DEBUG ) {
+			global $wl_logger;
+			$wl_logger->trace( "Buffering a query [ query :: $query ]" );
+		}
+
 		wl_queue_sparql_update_query( $query );
 
 		return true;
@@ -65,6 +61,11 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 		wl_write_log( "]" );
 
 		return false;
+	}
+
+	if ( WP_DEBUG ) {
+		global $wl_logger;
+		$wl_logger->trace( "Query executed successfully [ query :: $query ]" );
 	}
 
 	return true;
