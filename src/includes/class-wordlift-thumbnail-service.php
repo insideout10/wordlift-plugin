@@ -58,6 +58,11 @@ class Wordlift_Thumbnail_Service {
 			return;
 		}
 
+		// Do not perform any action is the post is not published.
+		if ( 'publish' !== get_post_status( $object_id ) ) {
+			return;
+		}
+
 		// Get the post uri and return if it's null.
 		if ( null === ( $uri = wl_get_entity_uri( $object_id ) ) ) {
 			return;
@@ -85,7 +90,7 @@ class Wordlift_Thumbnail_Service {
 	 */
 	public function added_post_meta( $mid, $object_id, $meta_key, $_meta_value ) {
 
-		$this->log_service->trace( "A post meta has been updated [ meta id :: $mid ][ object id :: $object_id ][ meta key :: $meta_key ][ meta value :: " . ( is_array( $_meta_value ) ? implode( ',', $_meta_value ) : $_meta_value ) . " ]" );
+		$this->log_service->trace( "A post meta has been updated [ meta id :: $mid ][ object id :: $object_id ][ meta key :: $meta_key ][ meta value :: " . var_export( $_meta_value, true ) . " ]" );
 
 		// Return if it's not the Thumbnail id meta key.
 		if ( self::THUMBNAIL_ID_META_KEY !== $meta_key ) {
@@ -94,6 +99,11 @@ class Wordlift_Thumbnail_Service {
 
 		// The meta value must be the numeric id of the attachment. If it isn't, return.
 		if ( ! is_numeric( $_meta_value ) ) {
+			return;
+		}
+
+		// Do not perform any action is the post is not published.
+		if ( 'publish' !== get_post_status( $object_id ) ) {
 			return;
 		}
 
@@ -111,7 +121,7 @@ class Wordlift_Thumbnail_Service {
 		$query = sprintf( 'DELETE { <%1$s> <%2$s> ?o . } WHERE  { <%1$s> <%2$s> ?o . }; INSERT DATA { <%1$s> <%2$s> <%3$s> . };', $uri, self::THUMBNAIL_RDF_PREDICATE, $attachment_url );
 		if ( false === rl_execute_sparql_update_query( $query, false ) ) {
 
-			$this->log_service->error( "An error occurred removing the post thumbnail [ meta ids :: $mid ][ object id :: $object_id ][ meta key :: $meta_key ][ meta value :: " . ( is_array( $_meta_value ) ? implode( ',', $_meta_value ) : $_meta_value ) . " ][ query :: $query ]" );
+			$this->log_service->error( "An error occurred removing the post thumbnail [ meta ids :: $mid ][ object id :: $object_id ][ meta key :: $meta_key ][ meta value :: " . var_export( $_meta_value, true ) . " ][ query :: $query ]" );
 
 		}
 
