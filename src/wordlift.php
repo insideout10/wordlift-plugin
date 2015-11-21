@@ -599,8 +599,6 @@ require_once( 'shortcodes/wordlift_shortcode_blog_map.php' );
 // disable In-Depth Articles
 //require_once('wordlift_indepth_articles.php');
 
-require_once( 'wordlift_user.php' );
-
 require_once( 'widgets/wordlift_widget_geo.php' );
 require_once( 'widgets/wordlift_widget_chord.php' );
 require_once( 'widgets/wordlift_widget_timeline.php' );

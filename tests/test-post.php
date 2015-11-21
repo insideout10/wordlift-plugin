@@ -480,7 +480,7 @@ EOF;
 		$label             = $match['label'];
 
 		$permalink           = get_permalink( $post_id );
-		$post_author_url     = wl_get_user_uri( $post->post_author );
+		$post_author_url     = Wordlift_User_Service::get_instance()->get_uri( $post->post_author );
 		$post_date_published = wl_tests_time_0000_to_000Z( get_post_time( 'c', false, $post ) );
 		$post_date_modified  = wl_tests_time_0000_to_000Z( wl_get_post_modified_time( $post ) );
 		$post_comment_count  = 'UserComments:' . $post->comment_count;
