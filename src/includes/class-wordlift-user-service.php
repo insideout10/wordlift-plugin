@@ -27,15 +27,6 @@ class Wordlift_User_Service {
 	private $log_service;
 
 	/**
-	 * The base dataset URI.
-	 *
-	 * @since 3.1.7
-	 * @access private
-	 * @var string $dataset_uri The base dataset URI.
-	 */
-	private $dataset_uri;
-
-	/**
 	 * The singleton instance of the User service.
 	 *
 	 * @since 3.1.7
@@ -48,14 +39,10 @@ class Wordlift_User_Service {
 	 * Create an instance of the User service.
 	 *
 	 * @since 3.1.7
-	 *
-	 * @param string $dataset_uri The base dataset URI.
 	 */
-	public function __construct( $dataset_uri ) {
+	public function __construct() {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_User_Service' );
-
-		$this->dataset_uri = $dataset_uri;
 
 		self::$instance = $this;
 
@@ -176,7 +163,7 @@ class Wordlift_User_Service {
 			return false;
 		}
 
-		return "$this->dataset_uri/user/$user->user_nicename";
+		return wl_configuration_get_redlink_dataset_uri() . "/user/$user->user_nicename";
 	}
 
 	/**

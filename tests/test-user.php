@@ -41,7 +41,7 @@ class UserTest extends WP_UnitTestCase {
 		) );
 
 		$this->assertEquals(
-			$this->getURI( $user_id ),
+			$this->getURI( 'lorem_ipsum' ),
 			Wordlift_User_Service::get_instance()->get_uri( $user_id )
 		);
 
@@ -56,7 +56,7 @@ class UserTest extends WP_UnitTestCase {
 		$this->assertEquals( $update_user_id, $user_id );
 
 		$this->assertEquals(
-			$this->getURI( $user_id ),
+			$this->getURI( 'lorem_ipsum' ),
 			Wordlift_User_Service::get_instance()->get_uri( $user_id )
 		);
 	}

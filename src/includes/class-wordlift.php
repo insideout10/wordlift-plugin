@@ -229,7 +229,7 @@ class Wordlift {
 		$this->entity_service = new Wordlift_Entity_Service();
 
 		// Create an instance of the User service.
-		$this->user_service = new Wordlift_User_Service( wl_configuration_get_redlink_dataset_uri() );
+		$this->user_service = new Wordlift_User_Service();
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
