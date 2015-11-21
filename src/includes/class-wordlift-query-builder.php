@@ -110,6 +110,17 @@ class Wordlift_Query_Builder {
 	private $statements = array();
 
 	/**
+	 * Create a new instance of the Query builder (compatible with PHP 5.3).
+	 *
+	 * @since 3.1.7
+	 * @return Wordlift_Query_Builder A new instance of the Query builder.
+	 */
+	public static function new_instance() {
+
+		return new Wordlift_Query_Builder();
+	}
+
+	/**
 	 * Set the query to INSERT.
 	 *
 	 * @since 3.1.7

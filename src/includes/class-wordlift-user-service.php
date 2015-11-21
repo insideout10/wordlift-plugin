@@ -211,21 +211,21 @@ class Wordlift_User_Service {
 		}
 
 		// Build the delete query.
-		$query = ( new Wordlift_Query_Builder() )->delete()
-		                                         ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
-		                                         ->build()
-		         . ( new Wordlift_Query_Builder() )->delete()
-		                                           ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
-		                                           ->build()
-		         . ( new Wordlift_Query_Builder() )->delete()
-		                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
-		                                           ->build()
-		         . ( new Wordlift_Query_Builder() )->delete()
-		                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
-		                                           ->build()
-		         . ( new Wordlift_Query_Builder() )->delete()
-		                                           ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
-		                                           ->build();
+		$query = Wordlift_Query_Builder::new_instance()->delete()
+		                               ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+		                               ->build()
+		         . Wordlift_Query_Builder::new_instance()->delete()
+		                                 ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, '?o' )
+		                                 ->build()
+		         . Wordlift_Query_Builder::new_instance()->delete()
+		                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, '?o' )
+		                                 ->build()
+		         . Wordlift_Query_Builder::new_instance()->delete()
+		                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, '?o' )
+		                                 ->build()
+		         . Wordlift_Query_Builder::new_instance()->delete()
+		                                 ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, '?o' )
+		                                 ->build();
 
 		return $query;
 	}
@@ -252,14 +252,14 @@ class Wordlift_User_Service {
 		};
 
 		// Build the insert query.
-		$query = ( new Wordlift_Query_Builder() )
-			->insert()
-			->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
-			->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
-			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
-			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
-			->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
-			->build();
+		$query = Wordlift_Query_Builder::new_instance()
+		                               ->insert()
+		                               ->statement( $user_uri, Wordlift_Query_Builder::RDFS_TYPE_URI, Wordlift_Query_Builder::SCHEMA_PERSON_URI )
+		                               ->statement( $user_uri, Wordlift_Query_Builder::RDFS_LABEL_URI, $user->display_name )
+		                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_GIVEN_NAME_URI, $user->user_firstname )
+		                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_FAMILY_NAME_URI, $user->user_lastname )
+		                               ->statement( $user_uri, Wordlift_Query_Builder::SCHEMA_URL_URI, ( ! empty( $user->user_url ) ? $user->user_url : get_author_posts_url( $user_id ) ) )
+		                               ->build();
 
 		return $query;
 	}
