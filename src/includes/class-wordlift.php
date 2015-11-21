@@ -76,6 +76,15 @@ class Wordlift {
 	private $entity_service;
 
 	/**
+	 * The User service.
+	 *
+	 * @since 3.1.7
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The User service.
+	 */
+	private $user_service;
+
+	/**
 	 * The Timeline service.
 	 *
 	 * @since 3.1.0
@@ -106,7 +115,7 @@ class Wordlift {
 
 		$this->plugin_name = 'wordlift';
 
-		$this->version     = '3.2.0-dev';
+		$this->version = '3.2.0-dev';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -151,6 +160,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
 
 		/**
+		 * The Query builder.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-query-builder.php';
+
+		/**
 		 * The Schema service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
@@ -169,6 +183,11 @@ class Wordlift {
 		 * The Entity service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
+
+		/**
+		 * The User service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-user-service.php';
 
 		/**
 		 * The Timeline service.
@@ -209,6 +228,9 @@ class Wordlift {
 		new Wordlift_Schema_Service();
 
 		$this->entity_service = new Wordlift_Entity_Service();
+
+		// Create an instance of the User service.
+		$this->user_service = new Wordlift_User_Service();
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
@@ -257,6 +279,9 @@ class Wordlift {
 
 		// Hook the added_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_post_meta', 10, 4 );
+
+		// Hook posts inserts (or updates) to the user service.
+		$this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
