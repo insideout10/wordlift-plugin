@@ -583,11 +583,6 @@ require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' )
 
 // Shortcodes
 
-// Entity view shortcode just with php >= 5.4
-if ( version_compare( phpversion(), '5.4.0', '>=' ) ) {
-	require_once( 'modules/entity_view/wordlift_entity_view.php' );
-}
-
 require_once( 'modules/geo_widget/wordlift_geo_widget.php' );
 require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
