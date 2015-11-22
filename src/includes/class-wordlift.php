@@ -103,6 +103,15 @@ class Wordlift {
 	private $entity_types_taxonomy_walker;
 
 	/**
+	 * The ShareThis service.
+	 *
+	 * @since 3.2.0
+	 * @access private
+	 * @var \Wordlift_ShareThis_Service $sharethis_service The ShareThis service.
+	 */
+	private $sharethis_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -215,6 +224,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-timeline-shortcode.php';
 
+		/**
+		 * The ShareThis service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
+
 		$this->loader = new Wordlift_Loader();
 
 		// Instantiate a global logger.
@@ -240,6 +254,8 @@ class Wordlift {
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
+		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
+		$this->sharethis_service = new Wordlift_ShareThis_Service();
 	}
 
 	/**
@@ -307,6 +323,9 @@ class Wordlift {
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
+		// Hook the ShareThis service.
+		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
+		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
 	}
 
 	/**
