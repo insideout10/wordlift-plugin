@@ -577,7 +577,6 @@ require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
 require_once( 'modules/caching/wordlift_caching.php' );
-require_once( 'modules/profiling/wordlift_profiling.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
 require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' );
 
@@ -605,8 +604,6 @@ require_once( 'widgets/wordlift_widget_timeline.php' );
 
 require_once( 'wordlift_sparql.php' );
 require_once( 'wordlift_redlink.php' );
-
-require_once( 'modules/sparql/wordlift_sparql.php' );
 
 // Add admin functions.
 // TODO: find a way to make 'admin' UI tests work.
