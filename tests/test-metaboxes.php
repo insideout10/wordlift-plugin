@@ -191,9 +191,9 @@ class MetaboxTest extends WP_UnitTestCase {
 		// verify html methods
 		$html = $field->html();
 
-		$this->assertContains( 'class="wl-field"', $html );                                       // CSS class
-		$this->assertContains( 'data-cardinality="INF"', $html );                                   // Cardinality
-		$this->assertContains( 'data-expected-types="Person,Organization"', $html );                // Expected types
+		$this->assertContains( "class='wl-field'", $html );                                       // CSS class
+		$this->assertContains( "data-cardinality='INF'", $html );                                   // Cardinality
+		$this->assertContains( "data-expected-types='Person,Organization'", $html );                // Expected types
 		$this->assertContains( 'name="wl_metaboxes[wl_author][]"', $html );                         // $_POST array
 		$this->assertContains( 'button class="button wl-remove-input"', $html );                           // Remove button
 		$this->assertContains( 'button class="button wl-add-input"', $html );                              // Add button
