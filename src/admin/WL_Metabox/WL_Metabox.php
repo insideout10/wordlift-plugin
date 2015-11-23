@@ -51,12 +51,24 @@ class WL_Metabox {
 
 		// Add main metabox (will print also the inner fields)
 		$id		= uniqid( 'wl-metabox-' );
-		$title	= 'WordLift - ' . get_the_title() . ' ' . __('properties', 'wordlift');
+		$title	= get_the_title() . ' ' . __('properties', 'wordlift');
 		add_meta_box( $id, $title, array(
 			$this,
 			'html'
 		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
+		
+		// Add filter to change the metabox CSS class
+		add_filter( "postbox_classes_entity_$id", array( &$this, 'filter_css_class' ) );
+	}
+	
+	public function filter_css_class( $classes=array() ) {
+		
+		// Add wl-metabox CSS class only if it is not already there
+		if( !in_array( 'wl-metabox', $classes ) ) {
+			$classes[] = 'wl-metabox';
+		}
 
+		return $classes;
 	}
 
 	/**
