@@ -10,7 +10,7 @@
 function wl_entity_type_taxonomy_register() {
 
 	$labels = array(
-		'name'              => _x( 'WordLift - Entity Types', 'taxonomy general name' ),
+		'name'              => _x( 'Entity Types', 'taxonomy general name' ),
 		'singular_name'     => _x( 'Entity Type', 'taxonomy singular name' ),
 		'search_items'      => __( 'Search Entity Types' ),
 		'all_items'         => __( 'All Entity Types' ),
@@ -40,6 +40,9 @@ function wl_entity_type_taxonomy_register() {
 	);
 
 	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'entity', $args );
+	
+	// Add filter to change the metabox CSS class
+	add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
 }
 
 /**

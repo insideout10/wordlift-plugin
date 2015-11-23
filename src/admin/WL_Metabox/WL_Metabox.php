@@ -58,17 +58,7 @@ class WL_Metabox {
 		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
 		
 		// Add filter to change the metabox CSS class
-		add_filter( "postbox_classes_entity_$id", array( &$this, 'filter_css_class' ) );
-	}
-	
-	public function filter_css_class( $classes=array() ) {
-		
-		// Add wl-metabox CSS class only if it is not already there
-		if( !in_array( 'wl-metabox', $classes ) ) {
-			$classes[] = 'wl-metabox';
-		}
-
-		return $classes;
+		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
 	}
 
 	/**

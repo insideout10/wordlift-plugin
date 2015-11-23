@@ -58,3 +58,17 @@ function wl_remove_text_annotations( $data ) {
 }
 
 add_filter( 'wp_insert_post_data', 'wl_remove_text_annotations', '98', 1 );
+
+/**
+ * Adds wl-metabox CSS class to a metabox.
+ *
+ * @since 3.2.0
+ *
+ * @param array $classes List of CSS classes already assigned to the metabox.
+ *
+ * @return array The updated list of CSS classes.
+ */
+function wl_admin_metaboxes_add_css_class( $classes = array() ){
+	
+	return array_merge( $classes, array( 'wl-metabox' ) );
+}

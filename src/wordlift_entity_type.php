@@ -43,12 +43,15 @@ add_action( 'init', 'wl_entity_type_register' );
 function wl_entity_type_meta_boxes() {
 	add_meta_box(
 		'wordlift_entity_box',
-		'WordLift - ' . __( 'Entity URL', 'wordlift' ),
+		__( 'Entity URL', 'wordlift' ),
 		'wl_entity_type_meta_boxes_content',
 		'entity',
 		'normal',
 		'high'
 	);
+	
+	// Add filter to change the metabox CSS class
+	add_filter( 'postbox_classes_entity_wordlift_entity_box', 'wl_admin_metaboxes_add_css_class' );
 }
 
 add_action( 'add_meta_boxes', 'wl_entity_type_meta_boxes' );
