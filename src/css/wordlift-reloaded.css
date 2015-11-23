@@ -2385,6 +2385,9 @@ body#tinymce[contenteditable=false] {
   background-color: #f1f1f1;
 }
 /* metaboxes */
+.wl-metabox .hndle span::before {
+  content: "WordLift - ";
+}
 .wl-input-notice {
   color: darkred;
   font-size: 10px;
