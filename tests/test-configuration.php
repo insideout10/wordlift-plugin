@@ -23,14 +23,14 @@ class ConfigurationTest extends WP_UnitTestCase {
 	}
 
 
-	function test_wl_configuration_enable_color_coding() {
-
-		wl_configuration_set_enable_color_coding( false );
-		$this->assertFalse( wl_configuration_get_enable_color_coding() );
-
-		wl_configuration_set_enable_color_coding( true );
-		$this->assertTrue( wl_configuration_get_enable_color_coding() );
-	}
+//	function test_wl_configuration_enable_color_coding() {
+//
+//		wl_configuration_set_enable_color_coding( false );
+//		$this->assertFalse( wl_configuration_get_enable_color_coding() );
+//
+//		wl_configuration_set_enable_color_coding( true );
+//		$this->assertTrue( wl_configuration_get_enable_color_coding() );
+//	}
 
 
 	function test_wl_configuration_site_language() {

@@ -113,9 +113,9 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		$item_type = ' itemtype="' . esc_attr( $main_type['uri'] ) . '"';
 
 		// Append the stylesheet if the enable color coding flag is set to true.
-		if ( wl_configuration_get_enable_color_coding() && is_null( $itemprop ) ) {
-			$item_type .= ' class="' . esc_attr( $main_type['css_class'] ) . '"';
-		}
+//		if ( wl_configuration_get_enable_color_coding() && is_null( $itemprop ) ) {
+//			$item_type .= ' class="' . esc_attr( $main_type['css_class'] ) . '"';
+//		}
 	}
 
 	// Define attribute itemprop if this entity is nested.

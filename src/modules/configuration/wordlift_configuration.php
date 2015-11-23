@@ -135,19 +135,19 @@ function wl_configuration_settings() {
 		)
 	);
 
-	add_settings_field(
-		WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME,
-		__( 'Enable color coding on front-end', 'wordlift' ),
-		'wl_configuration_checkbox',
-		'wl_general_settings',
-		'wl_general_settings_section',
-		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			'id'          => 'wl-enable-color-coding',
-			'name'        => 'wl_general_settings[enable_color_coding]',
-			'value'       => wl_configuration_get_enable_color_coding(),
-			'description' => __( 'Enable color coding', 'wordlift' )
-		)
-	);
+//	add_settings_field(
+//		WL_CONFIG_ENABLE_COLOR_CODING_ON_FRONTEND_NAME,
+//		__( 'Enable color coding on front-end', 'wordlift' ),
+//		'wl_configuration_checkbox',
+//		'wl_general_settings',
+//		'wl_general_settings_section',
+//		array(                              // The array of arguments to pass to the callback. In this case, just a description.
+//			'id'          => 'wl-enable-color-coding',
+//			'name'        => 'wl_general_settings[enable_color_coding]',
+//			'value'       => wl_configuration_get_enable_color_coding(),
+//			'description' => __( 'Enable color coding', 'wordlift' )
+//		)
+//	);
 
 
 	add_settings_field(

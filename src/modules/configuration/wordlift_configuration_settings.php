@@ -47,32 +47,32 @@ function wl_configuration_set_key( $value ) {
 
 }
 
-/**
- * Get the *Enable Color Coding* configuration setting.
- *
- * @since 3.0.0
- *
- * @return bool Whether color coding should be enabled or not.
- */
-function wl_configuration_get_enable_color_coding() {
+///**
+// * Get the *Enable Color Coding* configuration setting.
+// *
+// * @since 3.0.0
+// *
+// * @return bool Whether color coding should be enabled or not.
+// */
+//function wl_configuration_get_enable_color_coding() {
+//
+//	$options = get_option( 'wl_general_settings' );
+//
+//	return ( ! empty( $options['enable_color_coding'] ) );
+//
+//}
 
-	$options = get_option( 'wl_general_settings' );
-
-	return ( ! empty( $options['enable_color_coding'] ) );
-
-}
-
-/**
- * Set the *Enable Color Coding* configuration setting.
- *
- * @since 3.0.0
- *
- * @param bool $value True or false.
- */
-function wl_configuration_set_enable_color_coding( $value ) {
-
-	wl_configuration_set( 'wl_general_settings', 'enable_color_coding', $value );
-}
+///**
+// * Set the *Enable Color Coding* configuration setting.
+// *
+// * @since 3.0.0
+// *
+// * @param bool $value True or false.
+// */
+//function wl_configuration_set_enable_color_coding( $value ) {
+//
+//	wl_configuration_set( 'wl_general_settings', 'enable_color_coding', $value );
+//}
 
 /**
  * Get the *Site Language* configuration setting.
