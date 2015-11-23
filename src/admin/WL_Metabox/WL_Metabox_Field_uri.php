@@ -57,14 +57,14 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 	public function html_wrapper_open() {
 
 		// The containing <div> contains info on cardinality and expected types
-		$html = '<div class="wl-field" data-cardinality="' . $this->cardinality . '"';
+		$html = "<div class='wl-field' data-cardinality='$this->cardinality'";
 
 		if ( isset( $this->expected_uri_type ) && ! is_null( $this->expected_uri_type ) ) {
 
 			if ( is_array( $this->expected_uri_type ) ) {
-				$html .= ' data-expected-types="' . implode( ',', $this->expected_uri_type ) . '"';
+				$html .= " data-expected-types='" . implode( ',', $this->expected_uri_type ) . "'";
 			} else {
-				$html .= ' data-expected-types="' . $this->expected_uri_type . '"';
+				$html .= " data-expected-types='$this->expected_uri_type'";
 			}
 		}
 
@@ -99,12 +99,14 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		 * and is accompained by an hidden <input> tag, passed to the server,
 		 * that contains the raw value (i.e. the uri or entity id).
 		 */
-		$html = '<div class="wl-input-wrapper wl-autocomplete-wrapper">
-                    <input type="text" class="' . $this->meta_name . ' wl-autocomplete" value="' . $label . '" style="width:88%" />
-                    <input type="hidden" class="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" />
-                    <button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
-                    <div class="wl-input-notice"></div>
-                </div>';
+		$html = <<<EOF
+			<div class="wl-input-wrapper wl-autocomplete-wrapper">
+				<input type="text" class="$this->meta_name wl-autocomplete" value="$label" style="width:88%" />
+				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" />
+				<button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
+				<div class="wl-input-notice"></div>
+			</div>
+EOF;
 
 		return $html;
 	}
