@@ -8,11 +8,12 @@
 class Wordlift_Notice_Service {
 
 	/**
-	 * The template used to display notices.
+	 * The template used to display notices. The <em>notice dismissible</em> style classes make this notice dismissible
+	 * on the WordPress UI (via a small X button on the right side of the notice).
 	 *
 	 * @since 3.2.0
 	 */
-	const TEMPLATE = '<div class="wl-notice %s"><p>%s</p></div>';
+	const TEMPLATE = '<div class="wl-notice notice is-dismissible %s"><p>%s</p></div>';
 
 	/**
 	 * The standard WordPress <em>update</em> style class.
@@ -45,6 +46,15 @@ class Wordlift_Notice_Service {
 	private $notices = array();
 
 	/**
+	 * A singleton instance of the Notice service.
+	 *
+	 * @since 3.2.0
+	 * @access private
+	 * @var \Wordlift_Notice_Service $instance A singleton instance of the Notice service.
+	 */
+	private static $instance;
+
+	/**
 	 * Create an instance of the Notice service.
 	 *
 	 * @since 3.2.0
@@ -54,6 +64,19 @@ class Wordlift_Notice_Service {
 		// Hook to be called when to display notices.
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance of the Notice service.
+	 *
+	 * @since 3.2.0
+	 * @return \Wordlift_Notice_Service The singleton instance of the Notice service.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**

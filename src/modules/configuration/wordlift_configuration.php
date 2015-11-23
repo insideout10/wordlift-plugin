@@ -449,45 +449,17 @@ function wl_config_get_recursion_depth() {
  */
 function wl_configuration_validate() {
 
-	return ( ! ( '' === wl_configuration_get_key() && '' === wl_configuration_get_redlink_key() ) );
-}
-
-/**
- * Display admin notices.
- */
-function wl_configuration_admin_notices() {
-
-	// TODO: this page link is different in SEO Ultimate.
-	// get the settings URL.
-	//$settings_url = get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' );
-	
-	$mailing_list_url = 'http://join.wordlift.it';
-	
-	?>
-	<div class="error">
-		<p><?php printf( __( 'application-key-not-set', 'wordlift' ), $mailing_list_url ); ?></p>
-	</div>
-
-	<?php
-
-}
-
-/**
- * Check WordLift configuration. If something is missing, display an admin notice.
- *
- * @since 3.0.0
- *
- * @uses wl_configuration_validate()
- */
-function wl_configuration_check() {
-
-	if ( false === wl_configuration_validate() ) {
-		add_action( 'admin_notices', 'wl_configuration_admin_notices' );
+	// Check that the WordLift key has been set or show a notice.
+	if ( '' !== wl_configuration_get_key() ) {
+		return;
 	}
+
+	Wordlift_Notice_Service::get_instance()
+	                       ->add_error( sprintf( __( 'application-key-not-set', 'wordlift' ), 'http://join.wordlift.it' ) );
+
 }
 
-add_action( 'admin_init', 'wl_configuration_check' );
-
+add_action( 'admin_init', 'wl_configuration_validate' );
 
 /**
  * Intercept the change of the WordLift key in order to set the dataset URI.
