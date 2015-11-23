@@ -14,7 +14,7 @@ jQuery(document).ready(function($){
         var inputWrapper = button.parent('.wl-input-wrapper');
         
         // Leave at least one <input>
-        if( inputWrapper.parent('.wl-metabox').children('.wl-input-wrapper').size() > 1 ){
+        if( inputWrapper.parent('.wl-field').children('.wl-input-wrapper').size() > 1 ){
             // Delete the <div> containing the <input> tags and the "Remove" button
             inputWrapper.remove();
         } else {
@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
     
     function addButton( event ) {
         var button = $(event.target);
-        var field = button.parent('.wl-metabox');
+        var field = button.parent('.wl-field');
         var cardinality = field.data('cardinality');
         
         // Take previous, delete values and copy it at the end
@@ -73,7 +73,7 @@ jQuery(document).ready(function($){
     
     function attachAutocomplete( i, inputElement ){
         
-        var metabox = $(inputElement).parents('.wl-metabox');
+        var metabox = $(inputElement).parents('.wl-field');
         var cardinality = $(metabox).data('cardinality');
         var expectedTypes = $(metabox).data('expected-types');
         if( expectedTypes ) {

@@ -57,7 +57,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 	public function html_wrapper_open() {
 
 		// The containing <div> contains info on cardinality and expected types
-		$html = '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '"';
+		$html = '<div class="wl-field" data-cardinality="' . $this->cardinality . '"';
 
 		if ( isset( $this->expected_uri_type ) && ! is_null( $this->expected_uri_type ) ) {
 

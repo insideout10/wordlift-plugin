@@ -192,7 +192,7 @@ class WL_Metabox_Field {
 	 */
 	public function html_wrapper_open() {
 
-		return '<div class="wl-metabox" data-cardinality="' . $this->cardinality . '">';
+		return '<div class="wl-field" data-cardinality="' . $this->cardinality . '">';
 	}
 
 	/**
