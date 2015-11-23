@@ -214,6 +214,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-types-taxonomy-walker.php';
 
 		/**
+		 * The Notice service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-notice-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -256,6 +261,9 @@ class Wordlift {
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
+
+		// Create an instance of the Notice service.
+		$notice_service = new Wordlift_Notice_Service();
 	}
 
 	/**
