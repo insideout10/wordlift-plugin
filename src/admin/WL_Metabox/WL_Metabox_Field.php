@@ -205,7 +205,7 @@ class WL_Metabox_Field {
 		$html = $this->html_wrapper_open();
 
 		// Label
-		$html .= '<h3>' . $this->label . '</h3>';
+		$html .= "<h3>$this->label</h3>";
 
 		// print nonce
 		$html .= $this->html_nonce();
@@ -244,10 +244,12 @@ class WL_Metabox_Field {
 	 * @param mixed $value Input value
 	 */
 	public function html_input( $value ) {
-		$html = '<div class="wl-input-wrapper">
-            <input type="text" id="' . $this->meta_name . '" name="wl_metaboxes[' . $this->meta_name . '][]" value="' . $value . '" style="width:88%" />
-            <button class="button wl-remove-input" type="button" style="width:10 % ">Remove</button>
-        </div>';
+		$html = <<<EOF
+			<div class="wl-input-wrapper">
+				<input type="text" id="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" style="width:88%" />
+				<button class="button wl-remove-input" type="button" style="width:10 % ">Remove</button>
+			</div>
+EOF;
 
 		return $html;
 	}
