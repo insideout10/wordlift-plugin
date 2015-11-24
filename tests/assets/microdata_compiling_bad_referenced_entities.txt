@@ -1,4 +1,4 @@
-<span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="{{REDLINK_ENDPOINT}}/entity/myevent">
+<span itemscope itemtype="http://schema.org/Event" itemid="{{REDLINK_ENDPOINT}}/entity/myevent">
     <meta itemprop="startDate" content="2014-10-21" />
     <meta itemprop="endDate" content="2015-10-26" />
     <link itemprop="url" href="http://example.org/?entity=my-event" />

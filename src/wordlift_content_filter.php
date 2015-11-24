@@ -107,16 +107,8 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	// Get the main type.
 	$main_type = wl_entity_type_taxonomy_get_type( $post->ID );
 
-	if ( null === $main_type ) {
-		$item_type = '';
-	} else {
-		$item_type = ' itemtype="' . esc_attr( $main_type['uri'] ) . '"';
-
-		// Append the stylesheet if the enable color coding flag is set to true.
-//		if ( wl_configuration_get_enable_color_coding() && is_null( $itemprop ) ) {
-//			$item_type .= ' class="' . esc_attr( $main_type['css_class'] ) . '"';
-//		}
-	}
+	// Set the item type if available.
+	$item_type = ( null === $main_type ? '' : ' itemtype="' . esc_attr( $main_type['uri'] ) . '"' );
 
 	// Define attribute itemprop if this entity is nested.
 	if ( ! is_null( $itemprop ) ) {

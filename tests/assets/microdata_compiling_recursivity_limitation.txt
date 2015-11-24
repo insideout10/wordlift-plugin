@@ -1,4 +1,4 @@
-<span itemscope itemtype="http://schema.org/Event" class="wl-event" itemid="{{REDLINK_ENDPOINT}}/entity/myevent">
+<span itemscope itemtype="http://schema.org/Event" itemid="{{REDLINK_ENDPOINT}}/entity/myevent">
     <link itemprop="sameAs" href="http://rdf.freebase.com/my-event">
     <link itemprop="sameAs" href="http://dbpedia.org/resource/my-event">  
     <meta itemprop="startDate" content="2014-10-21" />

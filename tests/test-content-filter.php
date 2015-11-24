@@ -19,30 +19,6 @@ class ContentFilterTest extends WP_UnitTestCase {
 		rl_empty_dataset();
 	}
 
-//	function testColorCodingOnFrontEnd() {
-//
-//		$entity_id  = wl_create_post( '', 'entity-1', 'Entity 1', 'publish', 'entity' );
-//		$entity_uri = wl_get_entity_uri( $entity_id );
-//		wl_set_entity_main_type( $entity_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-//
-//		# Create a test entity post.
-//		$content = <<<EOF
-//This post is referencing the sample <span id="urn:enhancement-4f0e0fbc-e981-7852-9521-f4718eafa13f" class="textannotation highlight wl-event" itemid="$entity_uri">Entity 1</span>.
-//EOF;
-//
-//		$post_id = wl_create_post( $content, 'post-1', 'Post 1', 'publish', 'post' );
-//		$post    = get_post( $post_id );
-//
-//		// Disable front-end color coding.
-//		wl_configuration_set_enable_color_coding( false );
-//		$this->assertNotContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
-//
-//		// Enable front-end color coding.
-//		wl_configuration_set_enable_color_coding( true );
-//		$this->assertContains( 'class="wl-event"', wl_content_embed_item_microdata( $post->post_content, $entity_uri ) );
-//
-//	}
-
 	// Test <span> markup is cleaned out when referring to a non-existent entity
 	function testMicrodataCompilingForANonExistentEntity() {
 
@@ -107,261 +83,243 @@ EOF;
 		);
 	}
 
-//	// Test if the microdata compiling does not fail on an entity with defined type and undefined custom fields
-//	function testMicrodataCompilingForAnEntityWithDefinedTypeAndUndefinedCustomFields() {
-//
-//		// Create an entity without defining the schema.org type properly
-//		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
-//		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
-//		$entity_uri = wl_get_entity_uri( $entity_id );
-//		$content    = <<<EOF
-//    <span itemid="$entity_uri">MyPlace</span>
-//EOF;
-//		// Create a post referencing to the created entity
-//		$post_id = wl_create_post( $content, 'my-post', 'A post' );
-//
-//		// The expected mark-up expects color coding to be on.
-//		wl_configuration_set_enable_color_coding( true );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		// Expected markup
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_for_an_entity_with_defined_type_and_undefined_custom_fields.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//	}
+	// Test if the microdata compiling does not fail on an entity with defined type and undefined custom fields
+	function testMicrodataCompilingForAnEntityWithDefinedTypeAndUndefinedCustomFields() {
 
-//	// Test if the microdata compiling does not fail on an entity with an unexpected custom field
-//	function testMicrodataCompilingForAnEntityWithUnexpectedCustomField() {
-//		// Create an entity without defining the schema.org type properly
-//		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
-//		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
-//		// The field 'foo' is not included in the 'Place' type definition
-//		add_post_meta( $entity_id, "foo", "bar", true );
-//		$entity_uri = wl_get_entity_uri( $entity_id );
-//		$content    = <<<EOF
-//    <span itemid="$entity_uri">MyPlace</span>
-//EOF;
-//		// Create a post referincing to the created entity
-//		$post_id = wl_create_post( $content, 'my-post', 'A post' );
-//
-//		// The expected mark-up expects color coding to be on.
-//		wl_configuration_set_enable_color_coding( true );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		// Expected markup
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_for_an_entity_with_unexpected_custom_fields.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//	}
+		// Create an entity without defining the schema.org type properly
+		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+		$entity_uri = wl_get_entity_uri( $entity_id );
+		$content    = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+		// Create a post referencing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' );
 
-//	// Test microdata compiling on a well-formed entity without a nested entity
-//	function testMicrodataCompilingProperlyForAnEntityWithoutNestedEntities() {
-//		// Create an entity without defining the schema.org type properly
-//		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
-//		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
-//
-//		// Trying out both the schema API and the classic WP method
-//		add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
-//		wl_schema_set_value( $entity_id, 'longitude', 72.3 );
-//
-//		$entity_uri = wl_get_entity_uri( $entity_id );
-//		$content    = <<<EOF
-//    <span itemid="$entity_uri">MyPlace</span>
-//EOF;
-//		// Create a post referencing to the created entity
-//		$post_id = wl_create_post( $content, 'my-post', 'A post' );
-//
-//		// The expected mark-up expects color coding to be on.
-//		wl_configuration_set_enable_color_coding( true );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		// Expected markup
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_for_an_entity_without_nested_entities.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//	}
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		// Expected markup
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_for_an_entity_with_defined_type_and_undefined_custom_fields.txt' );
 
-//	// Check if nested entities microdata compiling works on nested entities
-//	function testMicrodataCompilingProperlyForAnEntityWithNestedEntities() {
-//
-//		// A place
-//		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
-//		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-//
-//		// Trying out both the schema API and the classic WP method
-//		wl_schema_set_value( $place_id, 'latitude', 40.12 );
-//		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
-//
-//		// An Event having as location the place above
-//		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
-//		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-//
-//		// Trying out both the schema API and the classic WP method
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
-//		wl_schema_set_value( $event_id, 'endDate', '2015-10-26' );
-//
-//		wl_schema_set_value( $event_id, 'sameAs', 'http://dbpedia.org/resource/my-event' );
-//		wl_schema_add_value( $event_id, 'sameAs', 'http://rdf.freebase.com/my-event' );
-//
-//		// Create an annotated post containing the entities
-//		$entity_uri = wl_get_entity_uri( $event_id );
-//		$content    = <<<EOF
-//    <span itemid="$entity_uri">MyEvent</span>
-//EOF;
-//		$post_id    = wl_create_post( $content, 'post', 'A post' );
-//
-//		// Case 1 - Nested entity is referenced trough the wordpress entity ID
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
-//
-//		// The expected mark-up expects color coding to be on.
-//		wl_configuration_set_enable_color_coding( true );
-//
-//		// Set the recursion limit.
-//		$this->setRecursionDepthLimit( 1 );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup ),
-//			"Error on comparing markup when the entity type is not defined"
-//		);
-//
-//		delete_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION );
-//		// Check if meta were deleted properly
-//		$this->assertEquals( array(), get_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION ) );
-//		// Case 2 - Nested entity is referenced trough the an uri
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, wl_get_entity_uri( $place_id ), true );
-//
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//
-//	}
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
 
-//	// Check if nested entities microdata compiling works on nested entities
-//	function testMicrodataCompilingForAnEntityWithNestedBrokenEntities() {
-//
-//		// An Event having as location the place above
-//		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
-//		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
-//		// Set a fake uri ad entity reference
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, 'http://my.fake.uri/broken/entity/linking', true );
-//
-//		// Create an annotated post containing the entities
-//		$entity_uri = wl_get_entity_uri( $event_id );
-//		$content    = <<<EOF
-//    <span itemid="$entity_uri">MyEvent</span>
-//EOF;
-//		$post_id    = wl_create_post( $content, 'post', 'A post' );
-//
-//		// The expected mark-up expects color coding to be on.
-//		wl_configuration_set_enable_color_coding( true );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_bad_referenced_entities.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//
-//	}
+	// Test if the microdata compiling does not fail on an entity with an unexpected custom field
+	function testMicrodataCompilingForAnEntityWithUnexpectedCustomField() {
+		// Create an entity without defining the schema.org type properly
+		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+		// The field 'foo' is not included in the 'Place' type definition
+		add_post_meta( $entity_id, "foo", "bar", true );
+		$entity_uri = wl_get_entity_uri( $entity_id );
+		$content    = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' );
 
-//	// Check recursivity limitation feature
-//	function testMicrodataCompilingRecursivityLimitation() {
-//
-//		// A place
-//		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
-//		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
-//
-//		// Trying out both the schema API and the classic WP method
-//		wl_schema_set_value( $place_id, 'latitude', 40.12 );
-//		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
-//
-//		// An Event having as location the place above
-//		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
-//		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
-//
-//		wl_schema_set_value( $event_id, 'sameAs', array(
-//			'http://rdf.freebase.com/my-event',
-//			'http://dbpedia.org/resource/my-event'
-//		) );
-//		//wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
-//
-//		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
-//
-//		// Create an annotated post containing the entities
-//		$entity_uri = wl_get_entity_uri( $event_id );
-//		$content    = <<<EOF
-//    <span itemid="$entity_uri">MyEvent</span>
-//EOF;
-//		$post_id    = wl_create_post( $content, 'post', 'A post' );
-//
-//		// Set to 0 the recursivity limitation on entity metadata compiling
-//		$this->setRecursionDepthLimit( 0 );
-//
-//		// The expected mark-up expects color coding to be on.
-//		wl_configuration_set_enable_color_coding( true );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_recursivity_limitation.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//
-//		$this->setRecursionDepthLimit( 1 );
-//
-//		// Compile markup for the given content
-//		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
-//		$expected_markup = file_get_contents( dirname( __FILE__ ) .
-//		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
-//
-//		// Verify correct markup
-//		$this->assertEquals(
-//			$this->prepareMarkup( $expected_markup ),
-//			$this->prepareMarkup( $compiled_markup )
-//		);
-//	}
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		// Expected markup
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_for_an_entity_with_unexpected_custom_fields.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
+
+	// Test microdata compiling on a well-formed entity without a nested entity
+	function testMicrodataCompilingProperlyForAnEntityWithoutNestedEntities() {
+		// Create an entity without defining the schema.org type properly
+		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+
+		// Trying out both the schema API and the classic WP method
+		add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
+		wl_schema_set_value( $entity_id, 'longitude', 72.3 );
+
+		$entity_uri = wl_get_entity_uri( $entity_id );
+		$content    = <<<EOF
+    <span itemid="$entity_uri">MyPlace</span>
+EOF;
+		// Create a post referencing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' );
+
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		// Expected markup
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_for_an_entity_without_nested_entities.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
+
+	// Check if nested entities microdata compiling works on nested entities
+	function testMicrodataCompilingProperlyForAnEntityWithNestedEntities() {
+
+		// A place
+		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+
+		// Trying out both the schema API and the classic WP method
+		wl_schema_set_value( $place_id, 'latitude', 40.12 );
+		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
+
+		// An Event having as location the place above
+		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
+		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
+
+		// Trying out both the schema API and the classic WP method
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
+		wl_schema_set_value( $event_id, 'endDate', '2015-10-26' );
+
+		wl_schema_set_value( $event_id, 'sameAs', 'http://dbpedia.org/resource/my-event' );
+		wl_schema_add_value( $event_id, 'sameAs', 'http://rdf.freebase.com/my-event' );
+
+		// Create an annotated post containing the entities
+		$entity_uri = wl_get_entity_uri( $event_id );
+		$content    = <<<EOF
+    <span itemid="$entity_uri">MyEvent</span>
+EOF;
+		$post_id    = wl_create_post( $content, 'post', 'A post' );
+
+		// Case 1 - Nested entity is referenced trough the wordpress entity ID
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
+
+		// Set the recursion limit.
+		$this->setRecursionDepthLimit( 1 );
+
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup ),
+			"Error on comparing markup when the entity type is not defined"
+		);
+
+		delete_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION );
+		// Check if meta were deleted properly
+		$this->assertEquals( array(), get_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION ) );
+		// Case 2 - Nested entity is referenced trough the an uri
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, wl_get_entity_uri( $place_id ), true );
+
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+
+	}
+
+	// Check if nested entities microdata compiling works on nested entities
+	function testMicrodataCompilingForAnEntityWithNestedBrokenEntities() {
+
+		// An Event having as location the place above
+		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
+		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
+		// Set a fake uri ad entity reference
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, 'http://my.fake.uri/broken/entity/linking', true );
+
+		// Create an annotated post containing the entities
+		$entity_uri = wl_get_entity_uri( $event_id );
+		$content    = <<<EOF
+    <span itemid="$entity_uri">MyEvent</span>
+EOF;
+		$post_id    = wl_create_post( $content, 'post', 'A post' );
+
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_bad_referenced_entities.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+
+	}
+
+	// Check recursivity limitation feature
+	function testMicrodataCompilingRecursivityLimitation() {
+
+		// A place
+		$place_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
+		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+
+		// Trying out both the schema API and the classic WP method
+		wl_schema_set_value( $place_id, 'latitude', 40.12 );
+		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 72.3, true );
+
+		// An Event having as location the place above
+		$event_id = wl_create_post( 'Just an event', 'my-event', 'MyEvent', 'publish', 'entity' );
+		wl_set_entity_main_type( $event_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-10-21', true );
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, '2015-10-26', true );
+
+		wl_schema_set_value( $event_id, 'sameAs', array(
+			'http://rdf.freebase.com/my-event',
+			'http://dbpedia.org/resource/my-event'
+		) );
+		//wl_schema_set_value($event_id, 'sameAs', 'http://dbpedia.org/resource/my-event');
+
+		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_LOCATION, $place_id, true );
+
+		// Create an annotated post containing the entities
+		$entity_uri = wl_get_entity_uri( $event_id );
+		$content    = <<<EOF
+    <span itemid="$entity_uri">MyEvent</span>
+EOF;
+		$post_id    = wl_create_post( $content, 'post', 'A post' );
+
+		// Set to 0 the recursivity limitation on entity metadata compiling
+		$this->setRecursionDepthLimit( 0 );
+
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_recursivity_limitation.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+
+		$this->setRecursionDepthLimit( 1 );
+
+		// Compile markup for the given content
+		$compiled_markup = _wl_content_embed_microdata( $post_id, $content );
+		$expected_markup = file_get_contents( dirname( __FILE__ ) .
+		                                      '/assets/microdata_compiling_for_an_entity_with_nested_entities.txt' );
+
+		// Verify correct markup
+		$this->assertEquals(
+			$this->prepareMarkup( $expected_markup ),
+			$this->prepareMarkup( $compiled_markup )
+		);
+	}
 
 	// If the content filter is applied to an entity, the entity's microdata must be printed too.
 	function testMicrodataCompilingForAnEntityPage() {
