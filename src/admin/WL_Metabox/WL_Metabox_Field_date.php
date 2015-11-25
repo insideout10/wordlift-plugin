@@ -14,9 +14,6 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 		parent::__construct($args);
 		
 		// Distinguish between date and datetime
-		wl_write_log('piedo');
-		wl_write_log($this->raw_custom_field);
-		
 		$this->date_format = 'Y/m/d H:i';		// Default is datetime
 		if( isset( $this->raw_custom_field['export_type'] ) ) {
 			
