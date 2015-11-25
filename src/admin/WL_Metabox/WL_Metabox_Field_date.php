@@ -2,12 +2,37 @@
 
 
 class WL_Metabox_Field_date extends WL_Metabox_Field {
+	
+	/*
+	 * Class attribute to distinguish between date formats, inferred from the schema property export type
+	 */
+	private $date_format;
+	
+	public function __construct($args) {
+		
+		// Call parent constructor
+		parent::__construct($args);
+		
+		// Distinguish between date and datetime
+		wl_write_log('piedo');
+		wl_write_log($this->raw_custom_field);
+		
+		$this->date_format = 'Y/m/d H:i';		// Default is datetime
+		if( isset( $this->raw_custom_field['export_type'] ) ) {
+			
+			if( $this->raw_custom_field['export_type'] == 'xsd:date'){
+				$this->date_format = 'Y/m/d';	// Date without time
+			}
+			
+			// Future formats can be managed here
+		}
+	}
     
     public function html_input( $date ) {
         
         $pickerDate  = '';
         if( !empty( $date ) ){
-            $pickerDate = date( 'Y/m/d H:i', strtotime( $date ) );
+            $pickerDate = date( $this->date_format, strtotime( $date ) );
         }
         $pickerDate = esc_attr( $pickerDate );
 		
@@ -30,6 +55,13 @@ EOF;
 		
 		$meta_name		  = $this->meta_name;
 		$meta_name_hidden = $this->meta_name . '_hidden';
+		
+		// Should the widget include time picker?
+		if( strpos( $this->date_format, 'H:i') !== false ) {
+			$timepicker = 'true';
+		} else {
+			$timepicker = 'false';
+		}
           
         $html = <<<EOF
 			<script type='text/javascript'>
@@ -37,6 +69,8 @@ EOF;
 			$(document).ready(function() {
 
 				$('.$meta_name').datetimepicker({
+					format: '$this->date_format',
+					timepicker:$timepicker,
 					onChangeDateTime:function(dp, input){
 						// format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
 						var currentDate = input.val();
