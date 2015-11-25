@@ -97,6 +97,20 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	const FIELD_ENTITY_TYPE = 'wl_entity_type_uri';
+	
+	/**
+	 * The 'email' field name.
+	 *
+	 * @since 3.2.0
+	 */
+	const FIELD_EMAIL = 'wl_email';
+	
+	/**
+	 * The 'affiliation' field name.
+	 *
+	 * @since 3.2.0
+	 */
+	const FIELD_AFFILIATION = 'wl_affiliation';
 
 	/**
 	 * The 'URI' data type name.
@@ -453,12 +467,31 @@ class Wordlift_Schema_Service {
 					'constraints' => array(
 						'uri_type' => 'Place'
 					)
+				),
+				self::FIELD_AFFILIATION => array(
+					'predicate'   => 'http://schema.org/affiliation',
+					'type'        => self::DATA_TYPE_URI,
+					'export_type' => 'http://schema.org/Organization',
+					'constraints' => array(
+						'uri_type' => 'Organization',
+						'cardinality' => INF
+					)
+				),
+				self::FIELD_EMAIL => array(
+					'predicate'   => 'http://schema.org/email',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => array(
+						'cardinality' => INF
+					)
 				)
 			),
 			'microdata_template' =>
 				'{{birthDate}}
-                            {{birthPlace}}
-                            {{knows}}',
+                 {{birthPlace}}
+                 {{knows}}
+				 {{affiliation}}
+				 {{email}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
