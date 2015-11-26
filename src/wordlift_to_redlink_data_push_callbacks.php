@@ -101,8 +101,11 @@ EOF;
  */
 function wl_push_entity_post_to_redlink( $entity_post ) {
 
+	// Get the Entity service instance to perform actions related to entities.
+	$entity_service = Wordlift_Entity_Service::get_instance();
+
 	// Only handle published entities.
-	if ( 'entity' !== $entity_post->post_type or 'publish' !== $entity_post->post_status ) {
+	if ( ! $entity_service->is_entity( $entity_post->ID ) || 'publish' !== $entity_post->post_status ) {
 
 		wl_write_log( "wl_push_entity_post_to_redlink : not an entity or not published [ post type :: $entity_post->post_type ][ post status :: $entity_post->post_status ]" );
 
@@ -157,6 +160,13 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	// set the label
 	$sparql .= "<$uri_e> rdfs:label \"$label\"@$site_language . \n";
+
+	// Set the alternative labels.
+	$alt_labels = $entity_service->get_alternate_labels( $entity_post->ID );
+	foreach ( $alt_labels as $alt_label ) {
+		$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Query_Builder::escape_value( $alt_label ), $site_language );
+	}
+
 	// set the URL
 	$sparql .= "<$uri_e> schema:url <$permalink> . \n";
 
