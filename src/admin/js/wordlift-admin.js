@@ -81,6 +81,12 @@
 
     $( function () {
 
+        $( '.wl-alternative-label > .wl-delete-button' ).on( 'click', function ( event ) {
+
+            $( event.delegateTarget ).parent().remove();
+
+        } );
+
         $( '#wl-add-alternative-labels-button' ).on( 'click', function ( event ) {
 
             $( event.delegateTarget ).before( function () {
