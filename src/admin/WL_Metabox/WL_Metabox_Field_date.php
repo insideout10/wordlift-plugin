@@ -6,6 +6,8 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	/*
 	 * Attribute to distinguish between date formats, inferred from the schema property export type
 	 * 
+	 * @access private
+	 * @var string $date_format The date format.
 	 * @since 3.2.0
 	 */
 	private $date_format;
@@ -13,6 +15,8 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	/*
 	 * Boolean flag to decide if the calendar should include time or not
 	 * 
+	 * @access private
+	 * @var boolean $timepicker A boolean flag.
 	 * @since 3.2.0
 	 */
 	private $timepicker;
@@ -32,14 +36,14 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
     
     public function html_input( $date ) {
         
-		$pickerDate = ( empty( $date ) ? '' :  esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
+		$picker_date = ( empty( $date ) ? '' :  esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
 		
 		$meta_name		  = $this->meta_name;
 		$meta_name_hidden = $this->meta_name . '_hidden';
         
         $html = <<<EOF
 			<div class="wl-input-wrapper">
-				<input type="text" class="$meta_name" value="$pickerDate" style="width:88%" />
+				<input type="text" class="$meta_name" value="$picker_date" style="width:88%" />
 				<input type="hidden" class="$meta_name_hidden" name="wl_metaboxes[$meta_name][]" value="$date" />      
 				<button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
 			</div>
