@@ -17,10 +17,10 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	 */
 	private $timepicker;
 	
-	public function __construct($args) {
+	public function __construct( $args ) {
 		
 		// Call parent constructor
-		parent::__construct($args);
+		parent::__construct( $args );
 		
 		// Distinguish between date and datetime	
 		$this->date_format = 'Y/m/d';		// Default is date
@@ -49,7 +49,7 @@ EOF;
 
     }
     
-    public function html_wrapper_close(){
+    public function html_wrapper_close() {
 		
 		$meta_name		  = $this->meta_name;
 		$meta_name_hidden = $this->meta_name . '_hidden';
