@@ -39,10 +39,16 @@ class Wordlift_Entity_Service {
 	 */
 	const ALTERNATE_LABEL_META_KEY = '_wl_alt_label';
 
+	/**
+	 * The alternative label input template.
+	 *
+	 * @since 3.2.0
+	 */
+	// TODO: this should be moved to a class that deals with HTML code.
 	const ALTERNATIVE_LABEL_INPUT_TEMPLATE = '<div class="wl-alternative-label">
                 <label class="screen-reader-text" id="wl-alternative-label-prompt-text" for="wl-alternative-label">Enter alternative label here</label>
                 <input name="wl_alternative_label[]" size="30" value="%s" id="wl-alternative-label" type="text">
-                <button class="wl-delete-button">%s</button>
+                <button class="button wl-delete-button">%s</button>
                 </div>';
 
 	/**
@@ -173,7 +179,9 @@ class Wordlift_Entity_Service {
 
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
-			add_post_meta( $post_id, self::ALTERNATE_LABEL_META_KEY, $alt_label );
+			if ( ! empty( $alt_label ) ) {
+				add_post_meta( $post_id, self::ALTERNATE_LABEL_META_KEY, $alt_label );
+			}
 		}
 
 	}

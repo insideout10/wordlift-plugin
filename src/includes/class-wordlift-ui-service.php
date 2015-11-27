@@ -12,7 +12,7 @@ class Wordlift_UI_Service {
 	 *
 	 * @since 3.2.0
 	 */
-	const BUTTON_HTML = '<a id="%s" class="button">%s</a>';
+	const BUTTON_HTML = '<a id="%s" class="button wl-button">%s</a>';
 
 	/**
 	 * The template HTML code.
