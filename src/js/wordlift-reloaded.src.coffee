@@ -556,7 +556,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           <label class="wl-required">Entity label</label>
           <input type="text" ng-model="entity.label" ng-disabled="checkEntityId(entity.id)" />
       </div>
-      <div>
+      <div ng-hide="isInternal()">
           <label class="wl-required">Entity type</label>
           <select ng-hide="hasOccurences()" ng-model="entity.mainType" ng-options="type.id as type.name for type in supportedTypes" ></select>
           <input ng-show="hasOccurences()" type="text" ng-value="getCurrentTypeUri()" disabled="true" />
@@ -565,11 +565,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           <label class="wl-required">Entity Description</label>
           <textarea ng-model="entity.description" rows="6" ng-disabled="isInternal()"></textarea>
       </div>
-      <div ng-show="checkEntityId(entity.id)">
+      <div ng-show="checkEntityId(entity.id)" ng-hide="isInternal()">
           <label class="wl-required">Entity Id</label>
           <input type="text" ng-model="entity.id" disabled="true" />
       </div>
-      <div>
+      <div ng-hide="isInternal()">
           <label>Entity Same as</label>
           <input type="text" ng-model="entity.sameAs" />
           <div ng-show="entity.suggestedSameAs.length > 0" class="wl-suggested-sameas-wrapper">
@@ -577,7 +577,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
             <div ng-click="setSameAs(sameAs)" ng-class="{ 'active': entity.sameAs == sameAs }" class="wl-sameas" ng-repeat="sameAs in entity.suggestedSameAs">{{sameAs}}</div>
           </div>
       </div>
-      <div class="wl-submit-wrapper">
+      <div ng-hide="isInternal()" class="wl-submit-wrapper">
         <span class="button button-primary" ng-click="onSubmit()">Save</span>
       </div>
 
