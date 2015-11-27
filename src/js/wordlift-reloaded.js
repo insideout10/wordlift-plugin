@@ -538,7 +538,7 @@
           onSubmit: '&',
           box: '='
         },
-        template: "<div name=\"wordlift\" class=\"wl-entity-form\">\n<div ng-show=\"entity.images.length > 0\">\n    <img ng-src=\"{{entity.images[0]}}\" wl-src=\"{{configuration.defaultThumbnailPath}}\" />\n</div>\n<div>\n    <label>Entity label</label>\n    <input type=\"text\" ng-model=\"entity.label\" ng-disabled=\"checkEntityId(entity.id)\" />\n</div>\n<div>\n    <label>Entity type</label>\n    <select ng-hide=\"hasOccurences()\" ng-model=\"entity.mainType\" ng-options=\"type.id as type.name for type in supportedTypes\" ></select>\n    <input ng-show=\"hasOccurences()\" type=\"text\" ng-value=\"getCurrentTypeUri()\" disabled=\"true\" />\n</div>\n<div>\n    <label>Entity Description</label>\n    <textarea ng-model=\"entity.description\" rows=\"6\"></textarea>\n</div>\n<div ng-show=\"checkEntityId(entity.id)\">\n    <label>Entity Id</label>\n    <input type=\"text\" ng-model=\"entity.id\" disabled=\"true\" />\n</div>\n<div class=\"wl-suggested-sameas-wrapper\">\n    <label>Entity Same as (*)</label>\n    <input type=\"text\" ng-model=\"entity.sameAs\" />\n    <h5 ng-show=\"entity.suggestedSameAs.length > 0\">same as suggestions</h5>\n    <div ng-click=\"setSameAs(sameAs)\" ng-class=\"{ 'active': entity.sameAs == sameAs }\" class=\"wl-sameas\" ng-repeat=\"sameAs in entity.suggestedSameAs\">\n      {{sameAs}}\n    </div>\n</div>\n\n<div class=\"wl-submit-wrapper\">\n  <span class=\"button button-primary\" ng-click=\"onSubmit()\">Save</span>\n</div>\n\n</div>",
+        template: "<div name=\"wordlift\" class=\"wl-entity-form\">\n<div ng-show=\"entity.images.length > 0\">\n    <img ng-src=\"{{entity.images[0]}}\" wl-src=\"{{configuration.defaultThumbnailPath}}\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity label</label>\n    <input type=\"text\" ng-model=\"entity.label\" ng-disabled=\"checkEntityId(entity.id)\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity type</label>\n    <select ng-hide=\"hasOccurences()\" ng-model=\"entity.mainType\" ng-options=\"type.id as type.name for type in supportedTypes\" ></select>\n    <input ng-show=\"hasOccurences()\" type=\"text\" ng-value=\"getCurrentTypeUri()\" disabled=\"true\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity Description</label>\n    <textarea ng-model=\"entity.description\" rows=\"6\" ng-disabled=\"isInternal()\"></textarea>\n</div>\n<div ng-show=\"checkEntityId(entity.id)\">\n    <label class=\"wl-required\">Entity Id</label>\n    <input type=\"text\" ng-model=\"entity.id\" disabled=\"true\" />\n</div>\n<div>\n    <label>Entity Same as</label>\n    <input type=\"text\" ng-model=\"entity.sameAs\" />\n    <div ng-show=\"entity.suggestedSameAs.length > 0\" class=\"wl-suggested-sameas-wrapper\">\n      <h5>same as suggestions</h5>\n      <div ng-click=\"setSameAs(sameAs)\" ng-class=\"{ 'active': entity.sameAs == sameAs }\" class=\"wl-sameas\" ng-repeat=\"sameAs in entity.suggestedSameAs\">{{sameAs}}</div>\n    </div>\n</div>\n<div class=\"wl-submit-wrapper\">\n  <span class=\"button button-primary\" ng-click=\"onSubmit()\">Save</span>\n</div>\n\n</div>",
         link: function($scope, $element, $attrs, $ctrl) {
           var availableTypes, j, len, ref, type;
           $scope.configuration = configuration;
@@ -551,6 +551,12 @@
                 return type.uri;
               }
             }
+          };
+          $scope.isInternal = function() {
+            if ($scope.entity.id.startsWith(configuration.datasetUri)) {
+              return true;
+            }
+            return false;
           };
           $scope.hasOccurences = function() {
             return $scope.entity.occurrences.length > 0;

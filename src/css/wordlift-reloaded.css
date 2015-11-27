@@ -2057,6 +2057,9 @@
 #wordlift-edit-post-wrapper .wl-entity-form div {
   margin-top: 2px;
 }
+#wordlift-edit-post-wrapper .wl-entity-form .wl-required:after {
+  content: " *";
+}
 #wordlift-edit-post-wrapper .wl-entity-form .wl-fields-wrapper {
   padding: 10px;
 }
@@ -2068,7 +2071,7 @@
 #wordlift-edit-post-wrapper .wl-entity-form .wl-suggested-sameas-wrapper h5 {
   text-transform: uppercase;
   margin: 0px;
-  padding: 0.3em 0em;
+  padding: 0.2em 0em;
 }
 #wordlift-edit-post-wrapper .wl-entity-form .wl-suggested-sameas-wrapper .wl-sameas {
   font-size: 0.75em;
@@ -2077,6 +2080,7 @@
   line-height: 12px;
   border-left: #ccc 12px solid;
   padding-left: 5px;
+  text-transform: none;
 }
 #wordlift-edit-post-wrapper .wl-entity-form .wl-suggested-sameas-wrapper .wl-sameas.active {
   border-left: #2ea2cc 12px solid;
