@@ -70,8 +70,8 @@ EOF;
 							onChangeDateTime:function(dp, input){
 
 								// format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
-								var currentDate = input.val();
-								currentDate = currentDate.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z')
+								var currentDate = input.val()
+									.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z');
 
 								// store value to save in the hidden input field
 								$( '.$this->meta_name[type=hidden]' ).val( currentDate );
