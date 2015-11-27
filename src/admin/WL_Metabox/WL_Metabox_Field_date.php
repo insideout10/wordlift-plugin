@@ -4,34 +4,35 @@
 class WL_Metabox_Field_date extends WL_Metabox_Field {
 	
 	/*
-	 * Class attribute to distinguish between date formats, inferred from the schema property export type
+	 * Attribute to distinguish between date formats, inferred from the schema property export type
+	 * 
+	 * @since 3.2.0
 	 */
 	private $date_format;
+	
+	/*
+	 * Boolean flag to decide if the calendar should include time or not
+	 * 
+	 * @since 3.2.0
+	 */
+	private $timepicker;
 	
 	public function __construct($args) {
 		
 		// Call parent constructor
 		parent::__construct($args);
 		
-		// Distinguish between date and datetime
-		$this->date_format = 'Y/m/d H:i';		// Default is datetime
-		if( isset( $this->raw_custom_field['export_type'] ) ) {
-			
-			if( $this->raw_custom_field['export_type'] == 'xsd:date'){
-				$this->date_format = 'Y/m/d';	// Date without time
-			}
-			
-			// Future formats can be managed here
+		// Distinguish between date and datetime	
+		$this->date_format = 'Y/m/d';		// Default is date
+		if( isset( $this->raw_custom_field['export_type'] ) && 'xsd:datetime' === $this->raw_custom_field['export_type'] ) {
+			$this->date_format .= ' H:i';
 		}
+		$this->timepicker = ( strpos( $this->date_format, 'H:i') !== false );
 	}
     
     public function html_input( $date ) {
         
-        $pickerDate  = '';
-        if( !empty( $date ) ){
-            $pickerDate = date( $this->date_format, strtotime( $date ) );
-        }
-        $pickerDate = esc_attr( $pickerDate );
+		$pickerDate = ( empty( $date ) ? '' :  esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
 		
 		$meta_name		  = $this->meta_name;
 		$meta_name_hidden = $this->meta_name . '_hidden';
@@ -54,11 +55,7 @@ EOF;
 		$meta_name_hidden = $this->meta_name . '_hidden';
 		
 		// Should the widget include time picker?
-		if( strpos( $this->date_format, 'H:i') !== false ) {
-			$timepicker = 'true';
-		} else {
-			$timepicker = 'false';
-		}
+		$timepicker = json_encode( $this->timepicker );
           
         $html = <<<EOF
 			<script type='text/javascript'>
