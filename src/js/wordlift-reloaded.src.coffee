@@ -540,7 +540,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       
   ])
 angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
-.directive('wlEntityForm', ['configuration', '$log', (configuration, $log)->
+.directive('wlEntityForm', ['configuration', '$window', '$log', (configuration, $window, $log)->
     restrict: 'E'
     scope:
       entity: '='
@@ -565,9 +565,9 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           <label class="wl-required">Entity Description</label>
           <textarea ng-model="entity.description" rows="6" ng-disabled="isInternal()"></textarea>
       </div>
-      <div ng-show="checkEntityId(entity.id)" ng-hide="isInternal()">
-          <label class="wl-required">Entity Id</label>
-          <input type="text" ng-model="entity.id" disabled="true" />
+      <div ng-hide="isInternal()">
+          <label ng-show="checkEntityId(entity.id)" class="wl-required">Entity Id</label>
+          <input ng-show="checkEntityId(entity.id)" type="text" ng-model="entity.id" disabled="true" />
       </div>
       <div ng-hide="isInternal()">
           <label>Entity Same as</label>
@@ -577,10 +577,13 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
             <div ng-click="setSameAs(sameAs)" ng-class="{ 'active': entity.sameAs == sameAs }" class="wl-sameas" ng-repeat="sameAs in entity.suggestedSameAs">{{sameAs}}</div>
           </div>
       </div>
-      <div ng-hide="isInternal()" class="wl-submit-wrapper">
+      <div ng-hide="isInternal()" class="wl-buttons-wrapper">
         <span class="button button-primary" ng-click="onSubmit()">Save</span>
       </div>
-
+      <div ng-show="isInternal()" class="wl-buttons-wrapper">
+        <span class="button button-primary" ng-click="linkTo('edit')">View Linked Data<i class="wl-link"></i></span>
+        <span class="button button-primary" ng-click="linkTo('lod')">Edit<i class="wl-link"></i></span>
+      </div>
       </div>
     """
     link: ($scope, $element, $attrs, $ctrl) ->  
@@ -596,7 +599,10 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         if $scope.entity.id.startsWith configuration.datasetUri
           return true
         return false 
-
+      
+      $scope.linkTo = (linkType)->
+        $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
+      
       $scope.hasOccurences = ()->
         $scope.entity.occurrences.length > 0
       $scope.setSameAs = (uri)->

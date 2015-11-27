@@ -2085,11 +2085,32 @@
 #wordlift-edit-post-wrapper .wl-entity-form .wl-suggested-sameas-wrapper .wl-sameas.active {
   border-left: #2ea2cc 12px solid;
 }
-#wordlift-edit-post-wrapper .wl-entity-form .wl-submit-wrapper {
-  margin-top: 10px;
-  padding: 10px;
-  border-top: 3px solid #ddd;
+#wordlift-edit-post-wrapper .wl-entity-form .wl-buttons-wrapper {
+  margin-top: 6px;
+  padding: 4px 0px;
+  border-top: 2px solid #ddd;
   text-align: right;
+}
+#wordlift-edit-post-wrapper .wl-entity-form .wl-buttons-wrapper .button {
+  line-height: 20px;
+  height: 22px;
+  font-size: 11px;
+  margin-left: 2px;
+}
+#wordlift-edit-post-wrapper .wl-entity-form .wl-buttons-wrapper .button .wl-link {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+  font-size: 10px;
+  padding: 0px 0px 0px 4px;
+}
+#wordlift-edit-post-wrapper .wl-entity-form .wl-buttons-wrapper .button .wl-link:before {
+  content: "\f08e";
 }
 #wordlift-edit-post-wrapper .wl-entity-form label {
   display: block;

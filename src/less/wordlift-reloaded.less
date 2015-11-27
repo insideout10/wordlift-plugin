@@ -355,11 +355,24 @@
 
     }
 
-    .wl-submit-wrapper {
-      margin-top: 10px;
-      padding: 10px;
-      border-top: 3px solid #ddd;
+    .wl-buttons-wrapper {
+      margin-top: 6px;
+      padding: 4px 0px;
+      border-top: 2px solid #ddd;
       text-align: right;
+
+      .button {
+        line-height:20px;
+        height:22px;
+        font-size:11px;
+        margin-left:2px;
+        
+        .wl-link {
+          .fa-icon(@fa-var-external-link);
+          font-size: 10px;
+          padding:0px 0px 0px 4px;
+        }
+      }
     }
 
     label {
