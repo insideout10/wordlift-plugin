@@ -27,24 +27,24 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 		parent::__construct( $args );
 		
 		// Distinguish between date and datetime	
-		$this->date_format = 'Y/m/d';		// Default is date
 		if( isset( $this->raw_custom_field['export_type'] ) && 'xsd:datetime' === $this->raw_custom_field['export_type'] ) {
-			$this->date_format .= ' H:i';
+			$this->date_format = 'Y/m/d H:i';
+			$this->timepicker  = true;
+		} else {
+			$this->date_format = 'Y/m/d';
+			$this->timepicker  = false;
 		}
-		$this->timepicker = ( strpos( $this->date_format, 'H:i') !== false );
 	}
     
     public function html_input( $date ) {
         
 		$picker_date = ( empty( $date ) ? '' :  esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
-		
-		$meta_name		  = $this->meta_name;
-		$meta_name_hidden = $this->meta_name . '_hidden';
         
         $html = <<<EOF
+			
 			<div class="wl-input-wrapper">
-				<input type="text" class="$meta_name" value="$picker_date" style="width:88%" />
-				<input type="hidden" class="$meta_name_hidden" name="wl_metaboxes[$meta_name][]" value="$date" />      
+				<input type="text" class="$this->meta_name" value="$picker_date" style="width:88%" />
+				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$date" />      
 				<button class="button wl-remove-input" type="button" style="width:10%">Remove</button>
 			</div>
 EOF;
@@ -55,29 +55,31 @@ EOF;
     
     public function html_wrapper_close() {
 		
-		$meta_name		  = $this->meta_name;
-		$meta_name_hidden = $this->meta_name . '_hidden';
-		
 		// Should the widget include time picker?
 		$timepicker = json_encode( $this->timepicker );
           
         $html = <<<EOF
 			<script type='text/javascript'>
-			$ = jQuery;
-			$(document).ready(function() {
+				( function( $ ) {
 
-				$('.$meta_name').datetimepicker({
-					format: '$this->date_format',
-					timepicker:$timepicker,
-					onChangeDateTime:function(dp, input){
-						// format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
-						var currentDate = input.val();
-						currentDate = currentDate.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z')
-						// store value to save in the hidden input field
-						$('.$meta_name_hidden').val( currentDate );
-					}
-				});
-			});
+					$( function() {
+
+						$( '.$this->meta_name[type=text]' ).datetimepicker( {
+							format: '$this->date_format',
+							timepicker:$timepicker,
+							onChangeDateTime:function(dp, input){
+
+								// format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
+								var currentDate = input.val();
+								currentDate = currentDate.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z')
+
+								// store value to save in the hidden input field
+								$( '.$this->meta_name[type=hidden]' ).val( currentDate );
+							}
+						});
+
+					} );
+				} ) ( jQuery );
 			</script>
 EOF;
         
