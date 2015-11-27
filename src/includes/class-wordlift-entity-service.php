@@ -17,6 +17,15 @@ class Wordlift_Entity_Service {
 	private $log_service;
 
 	/**
+	 * The UI service.
+	 *
+	 * @since 3.2.0
+	 * @access private
+	 * @var \Wordlift_UI_Service $ui_service The UI service.
+	 */
+	private $ui_service;
+
+	/**
 	 * The entity post type name.
 	 *
 	 * @since 3.1.0
@@ -29,6 +38,12 @@ class Wordlift_Entity_Service {
 	 * @since 3.2.0
 	 */
 	const ALTERNATE_LABEL_META_KEY = '_wl_alt_label';
+
+	const ALTERNATIVE_LABEL_INPUT_TEMPLATE = '<div class="wl-alternative-label">
+                <label class="screen-reader-text" id="wl-alternative-label-prompt-text" for="wl-alternative-label">Enter alternative label here</label>
+                <input name="wl_alternative_label[]" size="30" value="%s" id="wl-alternative-label" type="text">
+                <button class="wl-delete-button">%s</button>
+                </div>';
 
 	/**
 	 * A singleton instance of the Entity service.
@@ -43,10 +58,15 @@ class Wordlift_Entity_Service {
 	 * Create a Wordlift_Entity_Service instance.
 	 *
 	 * @since 3.2.0
+	 *
+	 * @param \Wordlift_UI_Service $ui_service The UI service.
 	 */
-	public function __construct() {
+	public function __construct( $ui_service ) {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
+
+		// Set the UI service.
+		$this->ui_service = $ui_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -170,6 +190,49 @@ class Wordlift_Entity_Service {
 	public function get_alternate_labels( $post_id ) {
 
 		return get_post_meta( $post_id, self::ALTERNATE_LABEL_META_KEY );
+	}
+
+	/**
+	 * Fires before the permalink field in the edit form (this event is available in WP from 4.1.0).
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param WP_Post $post Post object.
+	 */
+	public function edit_form_before_permalink( $post ) {
+
+		// If it's not an entity, return.
+		if ( ! $this->is_entity( $post->ID ) ) {
+			return;
+		}
+
+		// Print the input template.
+		$this->ui_service->print_template( 'wl-tmpl-alternative-label-input', $this->get_alternative_label_input() );
+
+		// Print all the currently set alternative labels.
+		foreach ( $this->get_alternate_labels( $post->ID ) as $alt_label ) {
+
+			echo $this->get_alternative_label_input( $alt_label );
+
+		};
+
+		// Print the button.
+		$this->ui_service->print_button( 'wl-add-alternative-labels-button', __( 'Add more titles', 'wordlift' ) );
+
+	}
+
+	/**
+	 * Get the alternative label input HTML code.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param string $value The input value.
+	 *
+	 * @return string The input HTML code.
+	 */
+	private function get_alternative_label_input( $value = '' ) {
+
+		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
 	}
 
 }

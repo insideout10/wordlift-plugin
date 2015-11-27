@@ -81,15 +81,15 @@
 
     $( function () {
 
-        $( '#titlewrap' ).on( 'click', function ( event ) {
+        $( '#wl-add-alternative-labels-button' ).on( 'click', function ( event ) {
 
-            $( event.delegateTarget ).after(
-                '<div class="wl-alternative-label">'
-                + '<label class="screen-reader-text" id="wl-alternative-label-prompt-text" for="wl-alternative-label">Enter alternative label here</label>'
-                + '<input name="wl_alternative_label[]" size="30" value="" id="wl-alternative-label" type="text">'
-                + '</div>'
-            );
-
+            $( event.delegateTarget ).before( function () {
+                var $element = $( $( '#wl-tmpl-alternative-label-input' ).html() );
+                $element.children( '.wl-delete-button' ).on( 'click', function () {
+                    $element.remove();
+                } );
+                return $element;
+            } );
 
         } );
 
