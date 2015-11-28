@@ -57,4 +57,48 @@ class Wordlift_Entity_Service {
 		return ( self::TYPE_NAME === get_post_type( $post_id ) );
 	}
 
+	/**
+	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param string $uri The entity URI.
+	 *
+	 * @return WP_Post|null A WP_Post instance or null if not found.
+	 */
+	public function get_entity_post_by_uri( $uri ) {
+
+		$query = new WP_Query( array(
+				'posts_per_page' => 1,
+				'post_status'    => 'any',
+				'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
+				'meta_query'     => array(
+					'relation' => 'OR',
+					array(
+						'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
+						'value'   => $uri,
+						'compare' => '='
+					),
+					array(
+						'key'     => WL_ENTITY_URL_META_NAME,
+						'value'   => $uri,
+						'compare' => '='
+					)
+				)
+			)
+		);
+
+		// Get the matching entity posts.
+		$posts = $query->get_posts();
+
+		// Return null if no post is found.
+		if ( 0 === count( $posts ) ) {
+			return null;
+		}
+
+		// Return the found post.
+		return $posts[0];
+	}
+
+
 }

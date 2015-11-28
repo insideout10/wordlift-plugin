@@ -94,6 +94,15 @@ class Wordlift {
 	private $timeline_service;
 
 	/**
+	 * The Redirect service.
+	 *
+	 * @since 3.2.0
+	 * @access private
+	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
+	 */
+	private $redirect_service;
+
+	/**
 	 * The Entity Types Taxonomy Walker.
 	 *
 	 * @since 3.1.0
@@ -162,6 +171,11 @@ class Wordlift {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
+
+		/**
+		 * The Redirect service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-redirect-service.php';
 
 		/**
 		 * The Log service.
@@ -254,6 +268,9 @@ class Wordlift {
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
 
+		// Create a new instance of the Redirect service.
+		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
+
 		// Create an instance of the Timeline shortcode.
 		new Wordlift_Timeline_Shortcode();
 
@@ -309,6 +326,11 @@ class Wordlift {
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
+
+		// Register custom allowed redirect hosts.
+		$this->loader->add_filter( 'allowed_redirect_hosts' , $this->redirect_service, 'allowed_redirect_hosts' );
+		// Hook the AJAX wordlift_redirect action to the Redirect service.
+		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
 
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
