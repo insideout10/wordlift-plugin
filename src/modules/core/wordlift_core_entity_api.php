@@ -62,7 +62,7 @@ function wl_entity_get_by_title( $title, $autocomplete = false ) {
 		$title,
 		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 		Wordlift_Entity_Service::TYPE_NAME,
-		Wordlift_Entity_Service::ALTERNATE_LABEL_META_KEY,
+		Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY,
 		$title,
 		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME
 	) );

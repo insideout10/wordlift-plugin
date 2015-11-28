@@ -33,11 +33,11 @@ class Wordlift_Entity_Service {
 	const TYPE_NAME = 'entity';
 
 	/**
-	 * The alternate label meta key.
+	 * The alternative label meta key.
 	 *
 	 * @since 3.2.0
 	 */
-	const ALTERNATE_LABEL_META_KEY = '_wl_alt_label';
+	const ALTERNATIVE_LABEL_META_KEY = '_wl_alt_label';
 
 	/**
 	 * The alternative label input template.
@@ -175,12 +175,12 @@ class Wordlift_Entity_Service {
 		$this->log_service->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
 
 		// Delete all the existing alternate labels.
-		delete_post_meta( $post_id, self::ALTERNATE_LABEL_META_KEY );
+		delete_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );
 
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
 			if ( ! empty( $alt_label ) ) {
-				add_post_meta( $post_id, self::ALTERNATE_LABEL_META_KEY, $alt_label );
+				add_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY, $alt_label );
 			}
 		}
 
@@ -195,9 +195,9 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return mixed An array  of alternative labels.
 	 */
-	public function get_alternate_labels( $post_id ) {
+	public function get_alternative_labels( $post_id ) {
 
-		return get_post_meta( $post_id, self::ALTERNATE_LABEL_META_KEY );
+		return get_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );
 	}
 
 	/**
@@ -218,7 +218,7 @@ class Wordlift_Entity_Service {
 		$this->ui_service->print_template( 'wl-tmpl-alternative-label-input', $this->get_alternative_label_input() );
 
 		// Print all the currently set alternative labels.
-		foreach ( $this->get_alternate_labels( $post->ID ) as $alt_label ) {
+		foreach ( $this->get_alternative_labels( $post->ID ) as $alt_label ) {
 
 			echo $this->get_alternative_label_input( $alt_label );
 

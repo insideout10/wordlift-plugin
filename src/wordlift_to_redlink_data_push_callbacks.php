@@ -162,7 +162,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	$sparql .= "<$uri_e> rdfs:label \"$label\"@$site_language . \n";
 
 	// Set the alternative labels.
-	$alt_labels = $entity_service->get_alternate_labels( $entity_post->ID );
+	$alt_labels = $entity_service->get_alternative_labels( $entity_post->ID );
 	foreach ( $alt_labels as $alt_label ) {
 		$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Query_Builder::escape_value( $alt_label ), $site_language );
 	}
