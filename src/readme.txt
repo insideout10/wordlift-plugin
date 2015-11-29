@@ -86,6 +86,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 = 3.2.0 (???) =
  * Enhancement: [#181](https://github.com/insideout10/wordlift-plugin/issues/181): finally, you can add more titles to entities.
+ * Enhancement: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
  * Enhancement: [#185](https://github.com/insideout10/wordlift-plugin/issues/185): cleaning up, remove the entity_view submodule.
  * Enhancement: [#184](https://github.com/insideout10/wordlift-plugin/issues/184): for the joy of the 100,000+ active installs, we're now compatible with the [ShareThis plugin](https://wordpress.org/plugins/share-this/).
  * Enhancement: [#178](https://github.com/insideout10/wordlift-plugin/issues/178): some renovation, add WordLift in the naming of the Metabox.
