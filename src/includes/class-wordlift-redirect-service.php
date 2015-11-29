@@ -89,13 +89,13 @@ class Wordlift_Redirect_Service {
 		}
 
 		switch ( $target ) {
-			case "edit":
+			case 'edit':
 				$redirect_url = get_edit_post_link( $entity_id, 'none' );
 				break;
-			case "lod":
-				$redirect_url = self::LOD_ENDPOINT . "/lodview/?IRI=" . urlencode( $entity_uri );
+			case 'lod':
+				$redirect_url = self::LOD_ENDPOINT . '/lodview/?IRI=' . urlencode( $entity_uri );
 				break;
-			case "permalink":
+			case 'permalink':
 				$redirect_url = get_permalink( $entity_id );
 				break;
 			default:
