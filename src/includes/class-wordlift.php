@@ -67,6 +67,15 @@ class Wordlift {
 	private $thumbnail_service;
 
 	/**
+	 * The UI service.
+	 *
+	 * @since 3.2.0
+	 * @access private
+	 * @var \Wordlift_UI_Service $ui_service The UI service.
+	 */
+	private $ui_service;
+
+	/**
 	 * The Entity service.
 	 *
 	 * @since 3.1.0
@@ -193,6 +202,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
 
 		/**
+		 * The UI service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-ui-service.php';
+
+		/**
 		 * The Thumbnail service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-thumbnail-service.php';
@@ -254,13 +268,17 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
+		// Create an instance of the UI service.
+		$this->ui_service = new Wordlift_UI_Service();
+
 		// Create an instance of the Thumbnail service. Later it'll be hooked to post meta events.
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		// Create an instance of the Schema service.
 		new Wordlift_Schema_Service();
 
-		$this->entity_service = new Wordlift_Entity_Service();
+		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -280,7 +298,7 @@ class Wordlift {
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
 
 		// Create an instance of the Notice service.
-		$notice_service = new Wordlift_Notice_Service();
+		new Wordlift_Notice_Service();
 	}
 
 	/**
@@ -327,10 +345,17 @@ class Wordlift {
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
+<<<<<<< HEAD
 		// Register custom allowed redirect hosts.
 		$this->loader->add_filter( 'allowed_redirect_hosts' , $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
+=======
+		// Hook save_post to the entity service to update custom fields (such as alternate labels).
+		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
+		$this->loader->add_filter( 'save_post', $this->entity_service, 'save_post', 9, 3 );
+		$this->loader->add_filter( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
+>>>>>>> c93cf3cb7f9da3216c7d32f96e872d268b27f3cc
 
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 

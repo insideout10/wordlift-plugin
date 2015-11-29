@@ -78,4 +78,34 @@
 
     } );
 
+
+    /**
+     * Handle the alternative labels, by providing an 'Add more titles' button and input texts where to add the labels.
+     *
+     * @since 3.2.0
+     */
+    $( function () {
+
+        // Add the delete button to the existing input texts.
+        $( '.wl-alternative-label > .wl-delete-button' ).on( 'click', function ( event ) {
+
+            $( event.delegateTarget ).parent().remove();
+
+        } );
+
+        // Handle the click on the 'Add more titles' button and bind the event of the (new) delete button.
+        $( '#wl-add-alternative-labels-button' ).on( 'click', function ( event ) {
+
+            $( event.delegateTarget ).before( function () {
+                var $element = $( $( '#wl-tmpl-alternative-label-input' ).html() );
+                $element.children( '.wl-delete-button' ).on( 'click', function () {
+                    $element.remove();
+                } );
+                return $element;
+            } );
+
+        } );
+
+    } );
+
 })( jQuery );

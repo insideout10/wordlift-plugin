@@ -180,7 +180,7 @@ class Wordlift_Query_Builder {
 		// Escape the subject, predicate and object.
 		$escaped_subject   = $this->escape_uri( $subject );
 		$escaped_predicate = $this->escape_uri( $predicate );
-		$escaped_object    = ( self::OBJECT_URI === $object_value_type ? $this->escape_uri( $object ) : $this->escape_value( $object ) );
+		$escaped_object    = ( self::OBJECT_URI === $object_value_type ? $this->escape_uri( $object ) : self::escape_value( $object ) );
 
 		// Prepare the statement and add it to the list of statements.
 		$this->statements[] = sprintf( $template, $escaped_subject, $escaped_predicate, $escaped_object, $data_type, $language );
@@ -257,7 +257,7 @@ class Wordlift_Query_Builder {
 	 *
 	 * @return string The escaped value.
 	 */
-	private function escape_value( $value ) {
+	public static function escape_value( $value ) {
 
 		// see http://www.w3.org/TR/rdf-sparql-query/
 		//    '\t'	U+0009 (tab)
