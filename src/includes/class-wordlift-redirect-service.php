@@ -87,8 +87,6 @@ class Wordlift_Redirect_Service {
 		if ( null === ( $entity_id = $this->entity_service->get_entity_post_by_uri( $entity_uri ) ) ) {
     		wp_die( 'Entity not found' );
 		}
-		// Set a reference for the redirect url
-		$redirect_url = null; 
 
 		switch ( $target ) {
 			case "edit":
@@ -100,11 +98,10 @@ class Wordlift_Redirect_Service {
 			case "permalink":
 				$redirect_url = get_permalink( $entity_id );
 				break;
+			default:
+ 				wp_die( 'Unsupported redirect target' );
 		}
 
-		if ( null === $redirect_url ) {
-			wp_die( 'Unsupported redirect target' );
-		}
 		// Perform the redirect
 		wp_safe_redirect( $redirect_url );
 	}
