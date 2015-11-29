@@ -345,17 +345,15 @@ class Wordlift {
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
-<<<<<<< HEAD
 		// Register custom allowed redirect hosts.
 		$this->loader->add_filter( 'allowed_redirect_hosts' , $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
-=======
+
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_filter( 'save_post', $this->entity_service, 'save_post', 9, 3 );
 		$this->loader->add_filter( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
->>>>>>> c93cf3cb7f9da3216c7d32f96e872d268b27f3cc
 
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 

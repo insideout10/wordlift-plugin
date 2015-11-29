@@ -139,7 +139,6 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
 	 *
 	 * @since 3.2.0
@@ -182,7 +181,7 @@ class Wordlift_Entity_Service {
 		return $posts[0];
 	}
 
-=======
+	/**
 	 * Fires once a post has been saved.
 	 *
 	 * @since 3.2.0
@@ -286,6 +285,4 @@ class Wordlift_Entity_Service {
 
 		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
 	}
->>>>>>> c93cf3cb7f9da3216c7d32f96e872d268b27f3cc
-
 }
