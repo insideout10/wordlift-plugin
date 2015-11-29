@@ -68,80 +68,45 @@ class Wordlift_Redirect_Service {
 
 	/**
 	 * Perform redirect depending on entity uri and target
-	 * Allowed targets are 'edit', 'lod', 'permalink'
 	 *
 	 * @since 3.2.0
 	 */
 	public function ajax_redirect() {
 
-		// Get the entity uri of the current entity.
-		$entity_uri = ( isset( $_GET['uri'] ) ? $_GET['uri'] : null );
-		// Get the entity id
-		if ( $entity_id = $this->entity_service->get_entity_post_by_uri( $entity_uri ) ) {
-			// Get the target
-			$target = ( isset( $_GET['to'] ) ? $_GET['to'] : '' );
-			// Get the current target method
-			$method = "redirect_to_{$target}";
-			// Check if the target is valid
-			if ( method_exists( $this, $method ) ) {
-				// Prepare arguments 
-				$args = array( 
-					'uri' => $entity_uri,
-					'id'  => $entity_id,	 
-					);
-				// Retrieve redirect url
-				$redirect_url = call_user_func( array( $this, $method ), $args );
-				// Perform the redirect
-				wp_safe_redirect( $redirect_url );
-			} else {
-				// Unsupported target: exit with an error
-				wp_die( "Unsupported target {$target}" );
-			}	
+		if ( !isset( $_GET['uri'] ) ) {
+			wp_die( 'Entity uri missing' );	
 		}
-		// Unexisting entity: exit with an error
-		wp_die( "Does not exist an entity with uri {$entity_uri}" );
-	}
+		if ( !isset( $_GET['to'] ) ) {
+			wp_die( 'Redirect target missing' );	
+		}
+		// Get the entity uri
+		$entity_uri = $_GET['uri'];
+		// Get the redirect target
+		$target = $_GET['to'];
+		
+		if ( null === ( $entity_id = $this->entity_service->get_entity_post_by_uri( $entity_uri ) ) ) {
+    		wp_die( 'Entity not found' );
+		}
+		// Set a reference for the redirect url
+		$redirect_url = null; 
 
-	/**
-	 * Get entity edit link.
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param int $entity_id A post entity id.
-	 *
-	 * @return string Edit link.
-	 */
-	public function redirect_to_edit( $args ) {
+		switch ( $target ) {
+			case "edit":
+				$redirect_url = get_edit_post_link( $entity_id, 'none' );
+				break;
+			case "lod":
+				$redirect_url = self::LOD_ENDPOINT . "/lodview/?IRI=" . urlencode( $entity_uri );
+				break;
+			case "permalink":
+				$redirect_url = get_permalink( $entity_id );
+				break;
+		}
 
-		return get_edit_post_link( $args[ 'id' ], 'none' );
-	}
-
-	/**
-	 * Get entity lod link.
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param int $entity_id A post entity id.
-	 *
-	 * @return string Lod link.
-	 */
-	public function redirect_to_lod( $args ) {
-
-		return self::LOD_ENDPOINT . "/lodview/?IRI=" . urlencode( $args[ 'uri' ] );
-	}
-
-	/**
-	 * Get entity permalink.
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param int $entity_id A post entity id.
-	 *
-	 * @return string permalink.
-	 */
-	public function redirect_to_permalink( $args ) {
-
-		return get_permalink( $args[ 'id' ] );
+		if ( null === $redirect_url ) {
+			wp_die( 'Unsupported redirect target' );
+		}
+		// Perform the redirect
+		wp_safe_redirect( $redirect_url );
 	}
 
 	/**
@@ -156,8 +121,7 @@ class Wordlift_Redirect_Service {
 	 */
 	public function allowed_redirect_hosts( $content ) {
 
-		$content[] = self::LOD_HOST;
-		return $content;
+		return array_merge( $content, array( self::LOD_HOST ) );
 	}
 
 }

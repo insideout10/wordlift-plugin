@@ -71,7 +71,7 @@ class Wordlift_Entity_Service {
 		$query = new WP_Query( array(
 				'posts_per_page' => 1,
 				'post_status'    => 'any',
-				'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
+				'post_type'      => self::TYPE_NAME,
 				'meta_query'     => array(
 					'relation' => 'OR',
 					array(
