@@ -98,6 +98,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
  * Enhancement: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
  * Enhancement: [#149](https://github.com/insideout10/wordlift-plugin/issues/149): add email and organization properties to Person.
 
+= 3.1.8 (2015-11-30) =
+ * Fix: [#192](https://github.com/insideout10/wordlift-plugin/issues/192): fix coordinates metabox field's HTML.
+
 = 3.1.7 (2015-11-22) =
  * Fix: [#150](https://github.com/insideout10/wordlift-plugin/issues/150): the property schema-org:author on blog post lod view goes on error.
 
