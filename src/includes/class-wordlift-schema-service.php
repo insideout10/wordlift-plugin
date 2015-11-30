@@ -444,8 +444,54 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF
 					)
 				),
+				self::FIELD_ADDRESS       => array(
+					'predicate'   => 'http://schema.org/streetAddress',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_PO_BOX => array(
+					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_POSTAL_CODE       => array(
+					'predicate'   => 'http://schema.org/postalCode',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_LOCALITY       => array(
+					'predicate'   => 'http://schema.org/addressLocality',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_REGION       => array(
+					'predicate'   => 'http://schema.org/addressRegion',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_COUNTRY       => array(
+					'predicate'   => 'http://schema.org/addressCountry',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				)
 			),
-			'microdata_template' => '{{founder}}',
+			'microdata_template' =>
+				'{{founder}}
+				<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
+				</span>',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -660,7 +706,9 @@ class Wordlift_Schema_Service {
                                     {{latitude}}
                                     {{longitude}}
                                 </span>
-                                {{address}}
+                                <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+									{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
+								</span>
                                 {{founder}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
