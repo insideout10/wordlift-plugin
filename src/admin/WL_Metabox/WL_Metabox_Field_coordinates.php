@@ -79,7 +79,7 @@ class WL_Metabox_Field_coordinates extends WL_Metabox_Field {
 EOF;
 
 
-		$this->html_wrapper_close();
+		$html .= $this->html_wrapper_close();
 
 		return $html;
 	}

@@ -85,11 +85,45 @@ class Wordlift_Schema_Service {
 	const FIELD_GEO_LONGITUDE = 'wl_geo_longitude';
 
 	/**
-	 * The 'address' field name.
+	 * The 'streetAddress' field name.
 	 *
 	 * @since 3.1.0
 	 */
 	const FIELD_ADDRESS = 'wl_address';
+	
+	/**
+	 * The 'postOfficeBoxNumber' field name.
+	 *
+	 * @since 3.3.0
+	 */
+	const FIELD_ADDRESS_PO_BOX = 'wl_address_post_office_box';
+	
+		/**
+	 * The 'postalCode' field name.
+	 *
+	 * @since 3.3.0
+	 */
+	const FIELD_ADDRESS_POSTAL_CODE = 'wl_address_postal_code';
+	
+		/**
+	 * The 'addressLocality' field name.
+	 *
+	 * @since 3.3.0
+	 */
+	const FIELD_ADDRESS_LOCALITY = 'wl_address_locality';
+	/**
+	 * The 'addressRegion' field name.
+	 *
+	 * @since 3.3.0
+	 */
+	const FIELD_ADDRESS_REGION = 'wl_address_region';
+	
+	/**
+	 * The 'addressCountry' field name.
+	 *
+	 * @since 3.3.0
+	 */
+	const FIELD_ADDRESS_COUNTRY = 'wl_address_country';
 
 	/**
 	 * The 'entity type' field name.
@@ -540,18 +574,56 @@ class Wordlift_Schema_Service {
 					'input_field' => 'coordinates'   // to build custom metabox
 				),
 				self::FIELD_ADDRESS       => array(
-					'predicate'   => 'http://schema.org/address',
+					'predicate'   => 'http://schema.org/streetAddress',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
-					'constraints' => ''
-				)
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_PO_BOX => array(
+					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_POSTAL_CODE       => array(
+					'predicate'   => 'http://schema.org/postalCode',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_LOCALITY       => array(
+					'predicate'   => 'http://schema.org/addressLocality',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_REGION       => array(
+					'predicate'   => 'http://schema.org/addressRegion',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_ADDRESS_COUNTRY       => array(
+					'predicate'   => 'http://schema.org/addressCountry',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'input_field' => 'address'   // to build custom metabox
+				)				
 			),
 			'microdata_template' =>
 				'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-                                    {{latitude}}
-                                    {{longitude}}
-                                </span>
-                                {{address}}',
+					{{latitude}}
+					{{longitude}}
+				</span>
+				<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
+				</span>',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
