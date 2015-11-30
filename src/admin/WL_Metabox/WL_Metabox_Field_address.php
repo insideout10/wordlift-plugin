@@ -4,14 +4,14 @@
  * Field to manage the address. The pattern followed is to simply build an array of subfields using the base WL_Metabox_field class,
  * and act as a proxy between WL_Metabox and them.
  * 
- * @since 3.3.0
+ * @since 3.2.0
  */
 class WL_Metabox_Field_address extends WL_Metabox_Field {
 
 	/**
-	 * The Log service.
+	 * Sub-fields contained in the Field.
 	 *
-	 * @since 3.3.0
+	 * @since 3.2.0
 	 * @access private
 	 * @var $subfields Array of WL_Metabox_Field objects, each dealing with a part of the http://schema.org/PostalAddress structure.
 	 */
