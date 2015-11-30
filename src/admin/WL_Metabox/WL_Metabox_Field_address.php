@@ -21,16 +21,19 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 	 * Constructor.
 	 * 
 	 * @param array $args Set of fields containing info to build the subfields.
+	 * The structure of $args is:
+	 * array( 'address' => array( ... array of subfields ... ) )
 	 */
 	public function __construct( $args ) {
 		
+		$this->label = key( $args );
+		
 		// leverage the WL_Metabox_Field class to build the subfields
 		$this->subfields = array();
-		foreach ( reset($args) as $key => $subfield ) {
+		// Loop over subfields. Using 'reset' to take the data contained in the first element of $args
+		foreach ( reset( $args ) as $key => $subfield ) {
 			$this->subfields[] = new WL_Metabox_Field( array( $key => $subfield ) );
 		}
-		
-		$this->label = 'address';
 		
 		// $_POST array key in which we will pass the values
 		$this->meta_name = 'wl_grouped_field_address';
@@ -66,14 +69,12 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 	 */
 	public function html() {
 
-		// Open main <div> for the Field
-		$html = "<div class='wl-field'>";
-
-		// Label
-		$html .= "<h3>$this->label</h3>";
-
-		// print nonce
-		$html .= $this->html_nonce();
+		// Open main <div> for the Field, then insert label and nonce
+		$html = <<<EOF
+			<div class='wl-field'>
+			<h3>$this->label</h3>
+			{$this->html_nonce()}
+EOF;
 
 		// print data loaded from DB
 		foreach ( $this->subfields as $subfield ) {
