@@ -85,17 +85,18 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 == Changelog ==
 
 = 3.2.0 (???) =
- * Enhancement: [#181](https://github.com/insideout10/wordlift-plugin/issues/181): finally, you can add more titles to entities.
- * Enhancement: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
- * Enhancement: [#149](https://github.com/insideout10/wordlift-plugin/issues/149): add email and organization properties to Person.
  * Enhancement: [#185](https://github.com/insideout10/wordlift-plugin/issues/185): cleaning up, remove the entity_view submodule.
  * Enhancement: [#184](https://github.com/insideout10/wordlift-plugin/issues/184): for the joy of the 100,000+ active installs, we're now compatible with the [ShareThis plugin](https://wordpress.org/plugins/share-this/).
+ * Enhancement: [#181](https://github.com/insideout10/wordlift-plugin/issues/181): finally, you can add more titles to entities.
  * Enhancement: [#178](https://github.com/insideout10/wordlift-plugin/issues/178): some renovation, add WordLift in the naming of the Metabox.
  * Enhancement: [#177](https://github.com/insideout10/wordlift-plugin/issues/177): enjoy better admin notices.
+ * Enhancement: [#176](https://github.com/insideout10/wordlift-plugin/issues/176): cleaning up, remove the option "color coding on front-end".
  * Enhancement: [#175](https://github.com/insideout10/wordlift-plugin/issues/175): cleaning up, remove SPARQL queries menu item.
  * Enhancement: [#174](https://github.com/insideout10/wordlift-plugin/issues/174): cleaning up, remove performance analysis menu item.
  * Enhancement: [#173](https://github.com/insideout10/wordlift-plugin/issues/173): cleaning up, remove WordLift upper-right corner icon.
- * Enhancement: [#176](https://github.com/insideout10/wordlift-plugin/issues/176): cleaning up, remove the option "color coding on front-end".
+ * Enhancement: [#170](https://github.com/insideout10/wordlift-plugin/issues/170): disable entity editing in disambiguation widget for internal entities.
+ * Enhancement: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
+ * Enhancement: [#149](https://github.com/insideout10/wordlift-plugin/issues/149): add email and organization properties to Person.
 
 = 3.1.7 (2015-11-22) =
  * Fix: [#150](https://github.com/insideout10/wordlift-plugin/issues/150): the property schema-org:author on blog post lod view goes on error.
