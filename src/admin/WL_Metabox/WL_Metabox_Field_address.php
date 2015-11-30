@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Field to manage the addresses.
+ * Field to manage the address. The pattern followed is to simply build an array of subfields using the base WL_Metabox_field class,
+ * and act as a proxy between WL_Metabox and them.
  * 
  * @since 3.3.0
  */
@@ -18,6 +19,8 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 	
 	/**
 	 * Constructor.
+	 * 
+	 * @param array $args Set of fields containing info to build the subfields.
 	 */
 	public function __construct( $args ) {
 		
@@ -45,6 +48,8 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 
 	/**
 	 * Save data to DB.
+	 * 
+	 * @param array $values Values coming from $_POST and passed from WL_Metabox. We just send to each subfield its own value.
 	 */
 	public function save_data( $values ) {
 		
@@ -56,7 +61,8 @@ class WL_Metabox_Field_address extends WL_Metabox_Field {
 
 	/**
 	 * Returns Field HTML (nonce included).
-	 * Overwrite this method (or methods called from this method) in a child class to obtain custom behaviour.
+	 * 
+	 * @return string Field HTML
 	 */
 	public function html() {
 
