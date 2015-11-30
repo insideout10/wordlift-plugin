@@ -145,6 +145,7 @@ EOF;
 		// Trying out both the schema API and the classic WP method
 		add_post_meta( $entity_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 40.12, true );
 		wl_schema_set_value( $entity_id, 'longitude', 72.3 );
+		wl_schema_set_value( $entity_id, 'streetAddress', 'via del ciuccio 23' );
 
 		$entity_uri = wl_get_entity_uri( $entity_id );
 		$content    = <<<EOF
@@ -329,6 +330,7 @@ EOF;
 		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
 		wl_schema_set_value( $place_id, 'latitude', 40.12 );
 		wl_schema_set_value( $place_id, 'longitude', 72.3 );
+		wl_schema_set_value( $place_id, 'streetAddress', 'via del ciuccio 23' );
 
 		// Compile markup for the given content
 		$compiled_markup = _wl_content_embed_microdata( $place_id, '' );
