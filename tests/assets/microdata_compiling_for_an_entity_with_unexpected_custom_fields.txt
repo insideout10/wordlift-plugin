@@ -1,5 +1,6 @@
 <span itemscope itemtype="http://schema.org/Place" itemid="{{REDLINK_ENDPOINT}}/entity/myplace">
     <span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates"></span>
+    <spanitemprop="address"itemscopeitemtype="http://schema.org/PostalAddress"></span>
     <link itemprop="url" href="http://example.org/?entity=my-place"/>
     <a class="wl-entity-page-link" href="http://example.org/?entity=my-place" itemprop="name" content="MyPlace">MyPlace</a>
 </span>

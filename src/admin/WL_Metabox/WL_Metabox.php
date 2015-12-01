@@ -5,6 +5,7 @@ require_once( 'WL_Metabox_Field_date.php' );
 require_once( 'WL_Metabox_Field_uri.php' );
 require_once( 'WL_Metabox_Field_coordinates.php' );
 require_once( 'WL_Metabox_Field_sameas.php' );
+require_once( 'WL_Metabox_Field_address.php' );
 
 /**
  * Class WL_Metabox

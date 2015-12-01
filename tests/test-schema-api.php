@@ -111,7 +111,7 @@ class SchemaApiTest extends WP_UnitTestCase {
         
         // Check properties for LocalBusiness ( as a side effect we also test inheritance! )
         $this->assertContains( 'sameAs', $properties );
-        $this->assertContains( 'address', $properties );
+        $this->assertContains( 'streetAddress', $properties );
         $this->assertContains( 'latitude', $properties );
         $this->assertContains( 'founder', $properties );
         $this->assertNotContains( 'startDate', $properties );
@@ -119,7 +119,7 @@ class SchemaApiTest extends WP_UnitTestCase {
         // Valid call alternative
         $properties = wl_schema_get_type_properties( 'http://schema.org/LocalBusiness' );
         $this->assertContains( 'sameAs', $properties );
-        $this->assertContains( 'address', $properties );
+        $this->assertContains( 'streetAddress', $properties );
         $this->assertContains( 'latitude', $properties );
         $this->assertContains( 'founder', $properties );
         $this->assertNotContains( 'startDate', $properties );
@@ -137,7 +137,7 @@ class SchemaApiTest extends WP_UnitTestCase {
         //$this->assertEquals( array( WL_DATA_TYPE_INTEGER ), wl_schema_get_property_expected_type( 'xxxxxx' ) );
         $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_DOUBLE ), wl_schema_get_property_expected_type( 'latitude' ) );
         //$this->assertEquals( array( WL_DATA_TYPE_BOOLEAN ), wl_schema_get_property_expected_type( 'xxxxxx' ) );
-        $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_STRING ), wl_schema_get_property_expected_type( 'address' ) );
+        $this->assertEquals( array( Wordlift_Schema_Service::DATA_TYPE_STRING ), wl_schema_get_property_expected_type( 'streetAddress' ) );
         
         // Test properties expecting a schema type
         $this->assertEquals( array( 'http://schema.org/Person' ), wl_schema_get_property_expected_type( 'founder' ) );

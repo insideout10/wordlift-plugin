@@ -57,13 +57,22 @@ class MetaboxTest extends WP_UnitTestCase {
 				Wordlift_Schema_Service::FIELD_GEO_LONGITUDE => $fields[ Wordlift_Schema_Service::FIELD_GEO_LONGITUDE ],
 			)
 		);
-		$coordinates_field_obj = new WL_Metabox_Field_coordinates( $sameAs_field );
-		$address_field         = array( Wordlift_Schema_Service::FIELD_ADDRESS => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS ] );
-		$address_field_obj     = new WL_Metabox_Field( $address_field );
+		$coordinates_field_obj = new WL_Metabox_Field_coordinates( $coordinates_field );
+		$address_field         = array(
+			'address' => array(
+				Wordlift_Schema_Service::FIELD_ADDRESS => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_REGION => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_REGION ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ]
+			)
+		);
+		$address_field_obj     = new WL_Metabox_Field_address( $address_field );
 
 		// Verify the correct fields have been built.
-		$this->assertEquals( $address_field_obj, $metabox->fields[0] );
-		$this->assertEquals( $coordinates_field_obj, $metabox->fields[1] );
+		$this->assertEquals( $coordinates_field_obj, $metabox->fields[0] );
+		$this->assertEquals( $address_field_obj, $metabox->fields[1] );
 		$this->assertEquals( $sameAs_field_obj, $metabox->fields[2] );
 	}
 
@@ -73,18 +82,19 @@ class MetaboxTest extends WP_UnitTestCase {
 	function testWL_Metabox_group_properties_by_input_field() {
 
 		// Create an entity of type Place
-		$place_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
-		wl_set_entity_main_type( $place_id, 'http://schema.org/Place' );
+		$business_id = wl_create_post( '', 'p', 'A place', 'publish', Wordlift_Entity_Service::TYPE_NAME );
+		wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
 
 		// Create Metabox and its Fields
 		$metabox                   = new WL_Metabox();
-		$entity_type               = wl_entity_taxonomy_get_custom_fields( $place_id );
+		$entity_type               = wl_entity_taxonomy_get_custom_fields( $business_id );
 		$simple_and_grouped_fields = $metabox->group_properties_by_input_field( $entity_type );
 
 		// Verify properties have been distinguished (single vs special/grouped)
-		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_ADDRESS, $simple_and_grouped_fields[0] );     // Simple field
-		$this->assertArrayHasKey( 'coordinates', $simple_and_grouped_fields[1] );               // Special/grouped Field
-		$this->assertArrayHasKey( 'sameas', $simple_and_grouped_fields[1] );                    // Special/grouped Field
+		$this->assertArrayHasKey( Wordlift_Schema_Service::FIELD_FOUNDER, $simple_and_grouped_fields[0] ); // Simple Field
+		$this->assertArrayHasKey( 'address', $simple_and_grouped_fields[1] );                              // Special/grouped Field
+		$this->assertArrayHasKey( 'coordinates', $simple_and_grouped_fields[1] );                          // Special/grouped Field
+		$this->assertArrayHasKey( 'sameas', $simple_and_grouped_fields[1] );                               // Special/grouped Field
 	}
 
 	/*
@@ -118,7 +128,6 @@ class MetaboxTest extends WP_UnitTestCase {
 			),
 			// Fake nonces
 			'wordlift_coordinates_entity_box_nonce'                                    => wp_create_nonce( 'wordlift_coordinates_entity_box' ),
-			'wordlift_' . Wordlift_Schema_Service::FIELD_ADDRESS . '_entity_box_nonce'                => wp_create_nonce( 'wordlift_' . Wordlift_Schema_Service::FIELD_ADDRESS . '_entity_box' ),
 			'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box' )
 		);
 
@@ -129,13 +138,13 @@ class MetaboxTest extends WP_UnitTestCase {
 		$place_meta = get_post_meta( $place_id );
 
 		$this->assertEquals( array(
-			'http://yago-knowledge.org/resource/Florence',
-			'http://dbpedia.org/resource/Florence'
-		),
-			$place_meta[ Wordlift_Schema_Service::FIELD_SAME_AS ] );
+				'http://yago-knowledge.org/resource/Florence',
+				'http://dbpedia.org/resource/Florence'
+			),
+			$place_meta[ Wordlift_Schema_Service::FIELD_SAME_AS ]
+		);
 		$this->assertEquals( array( 43.77 ), $place_meta[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
 		$this->assertEquals( array( 11.25 ), $place_meta[ Wordlift_Schema_Service::FIELD_GEO_LONGITUDE ] );
-		$this->assertEquals( array( 'Tuscany, Italy' ), $place_meta[ Wordlift_Schema_Service::FIELD_ADDRESS ] );
 	}
 
 
