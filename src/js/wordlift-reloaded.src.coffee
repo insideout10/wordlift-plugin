@@ -326,6 +326,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.configuration = configuration
   $scope.errors = []
   
+  # Load related posts starting from local storage entities ids
+  RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
+
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
     $scope.errors.push errorMsg
 
@@ -426,8 +429,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
     
-    $scope.updateRelatedPosts()
-
   $scope.updateRelatedPosts = ()->
     $log.debug "Going to update related posts box ..."
     entityIds = []
