@@ -134,7 +134,7 @@ module.exports = function ( grunt ) {
                 cwd: SOURCE_DIR + 'css/',
                 dest: SOURCE_DIR + 'css/',
                 ext: '.min.css',
-                src: '*.css'
+                src: ['*.css', '!*.min.css']
             }
         },
         /* Copy files */
