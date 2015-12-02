@@ -119,38 +119,29 @@
         var ajax_url      = wlEntityDuplicatedTitlesLiveSearchParams.ajax_url + '?action=' + wlEntityDuplicatedTitlesLiveSearchParams.action;
         var currentPostId = wlEntityDuplicatedTitlesLiveSearchParams.post_id;
         
-        // Duplicates count. The notice will be displayed if dupduplicatesCount > 0.
-        var duplicatesCount = 0;
-        
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $('<div class="error" id="wl-same-title-error" ></div>')
-            .insertBefore('div.wrap [name=post]')
+        var duplicatedEntityErrorDiv = $( '<div class="error" id="wl-same-title-error" ></div>' )
+            .insertBefore( 'div.wrap [name=post]' )
             .hide();
         
         // Check duplicates at startup
-        $('[name=post_title], [name=wl_alternative_label]').each( titleInputChecker );
-        
-        // Whenever something happens in the entity title or alternative labels...
-        $( '#titlediv' ).on( 'change paste keyup', function( event ) {
-            // Note: we attach the event to the parent div (#titlediv) because the elements inside can be removed or added
-            
+        titleInputChecker( $( '[name=post_title]' ) );
+                
+        // Whenever something happens in the entity title...
+        $( '[name=post_title]' ).on( 'change paste keyup', function( event ) {
             // ... check duplicated titles in the interested input
-            titleInputChecker( null, event.target );
+            titleInputChecker( $( event.target ) );
         });
         
-        function titleInputChecker( index, titleInputEl ) {
-            
-            var titleInput    = $( titleInputEl );
+        function titleInputChecker( titleInput ) {
 
-            console.log( 'checkin for', titleInput.val() );
+            var thereAreDuplicates = false;
 
             // AJAX call to search for entities with the same title
             $.getJSON( ajax_url + '&title=' + titleInput.val(), function( response ){
 
                 // Write an error notice with a link for every duplicated entity            
                 if( response && response.results.length > 0 ) {
-
-                    console.log( 'response', response.results[0].title );
 
                     duplicatedEntityErrorDiv.html( function(){
                         var html = '';
@@ -159,6 +150,8 @@
 
                             // No error if the entity ID given from the AJAX endpoint is the same as the entity we are editing
                             if( response.results[i].id !== currentPostId ) {
+                                
+                                thereAreDuplicates = true;
 
                                 var title     = response.results[i].title;
                                 var edit_link = response.edit_link.replace('%d', response.results[i].id);
@@ -174,7 +167,7 @@
                     });
                 }
 
-                if( duplicatesCount > 0 ) {
+                if( thereAreDuplicates ) {
                     // Notify user he is creating a duplicate.
                     duplicatedEntityErrorDiv.show();
                 } else {
