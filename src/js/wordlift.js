@@ -32,7 +32,7 @@
     }
 
     Traslator.prototype.parse = function() {
-      var htmlElem, htmlLength, htmlPost, htmlPre, htmlProcessed, match, pattern, textLength, textPost, textPre;
+      var htmlElem, htmlLength, htmlPost, htmlPre, htmlProcessed, match, pattern, ref, textLength, textPost, textPre;
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
@@ -43,7 +43,7 @@
         htmlPre = match[1];
         htmlElem = match[2];
         htmlPost = match[3];
-        textPre = htmlPre + ('</p>' === htmlElem.toLowerCase() ? '\n\n' : '');
+        textPre = htmlPre + ((ref = htmlElem.toLowerCase()) === '</p>' || ref === '</li>' ? '\n\n' : '');
         textPost = htmlPost;
         textLength += textPre.length;
         if (/^&[^&;]*;$/gim.test(htmlElem)) {

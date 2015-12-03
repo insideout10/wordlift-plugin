@@ -41,7 +41,7 @@ class Traslator
       htmlPost = match[3]
 
       # Get the text pre/post w/o new lines.
-      textPre = htmlPre + (if '</p>' is htmlElem.toLowerCase() then '\n\n' else '')
+      textPre = htmlPre + (if htmlElem.toLowerCase() in ['</p>', '</li>'] then '\n\n' else '')
 #      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
       textPost = htmlPost
 
@@ -1140,8 +1140,13 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       # Prepare a traslator instance that will traslate Html and Text positions.
       traslator = Traslator.create html
 
-      # Add text annotations to the html (skip those text annotations that don't have entity annotations).
-      for annotationId, annotation of analysis.annotations when 0 < annotation.entityMatches.length
+      # Add text annotations to the html 
+      for annotationId, annotation of analysis.annotations 
+        
+        # If the annotation has no entity matches it could be a problem
+        if annotation.entityMatches.length is 0
+          $log.warn "Annotation with id #{annotation.id} has no entity matches!"
+          continue
         
         element = "<span id=\"#{annotationId}\" class=\"textannotation"
         
