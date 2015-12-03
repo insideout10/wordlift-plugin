@@ -83,6 +83,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.1.9 (2015-12-04) =
+ * Fix: [#189](https://github.com/insideout10/wordlift-plugin/issues/189): fix entity recognition when bullet points are used.
+ * Fix: [#122](https://github.com/insideout10/wordlift-plugin/issues/122): fire related posts loading on disambiguation widget loading.
 
 = 3.1.8 (2015-11-30) =
  * Fix: [#192](https://github.com/insideout10/wordlift-plugin/issues/192): fix coordinates metabox field's HTML.
