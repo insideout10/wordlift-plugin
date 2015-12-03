@@ -32,7 +32,7 @@
     }
 
     Traslator.prototype.parse = function() {
-      var htmlElem, htmlLength, htmlPost, htmlPre, htmlProcessed, match, pattern, textLength, textPost, textPre;
+      var htmlElem, htmlLength, htmlPost, htmlPre, htmlProcessed, match, pattern, ref, textLength, textPost, textPre;
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
@@ -43,7 +43,7 @@
         htmlPre = match[1];
         htmlElem = match[2];
         htmlPost = match[3];
-        textPre = htmlPre + ('</p>' === htmlElem.toLowerCase() ? '\n\n' : '');
+        textPre = htmlPre + ((ref = htmlElem.toLowerCase()) === '</p>' || ref === '</li>' ? '\n\n' : '');
         textPost = htmlPost;
         textLength += textPre.length;
         if (/^&[^&;]*;$/gim.test(htmlElem)) {
@@ -316,6 +316,7 @@
       $scope.isThereASelection = false;
       $scope.configuration = configuration;
       $scope.errors = [];
+      RelatedPostDataRetrieverService.load(Object.keys($scope.configuration.entities));
       $rootScope.$on("analysisFailed", function(event, errorMsg) {
         return $scope.errors.push(errorMsg);
       });
@@ -393,31 +394,42 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, k, l, len1, len2, len3, m, ref1, ref2, ref3, uri;
+        var entity, entityId, k, len1, ref1, results, uri;
         $scope.analysis = analysis;
         ref1 = $scope.configuration.classificationBoxes;
+        results = [];
         for (k = 0, len1 = ref1.length; k < len1; k++) {
           box = ref1[k];
-          ref2 = box.selectedEntities;
-          for (l = 0, len2 = ref2.length; l < len2; l++) {
-            entityId = ref2[l];
-            if (entity = analysis.entities[entityId]) {
-              if (entity.occurrences.length === 0) {
-                $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
-                continue;
+          results.push((function() {
+            var l, len2, ref2, results1;
+            ref2 = box.selectedEntities;
+            results1 = [];
+            for (l = 0, len2 = ref2.length; l < len2; l++) {
+              entityId = ref2[l];
+              if (entity = analysis.entities[entityId]) {
+                if (entity.occurrences.length === 0) {
+                  $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
+                  continue;
+                }
+                $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
+                results1.push((function() {
+                  var len3, m, ref3, results2;
+                  ref3 = entity.images;
+                  results2 = [];
+                  for (m = 0, len3 = ref3.length; m < len3; m++) {
+                    uri = ref3[m];
+                    results2.push($scope.images[uri] = entity.label);
+                  }
+                  return results2;
+                })());
+              } else {
+                results1.push($log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing"));
               }
-              $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              ref3 = entity.images;
-              for (m = 0, len3 = ref3.length; m < len3; m++) {
-                uri = ref3[m];
-                $scope.images[uri] = entity.label;
-              }
-            } else {
-              $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
-          }
+            return results1;
+          })());
         }
-        return $scope.updateRelatedPosts();
+        return results;
       });
       $scope.updateRelatedPosts = function() {
         var entities, entity, entityIds, id, ref1;
@@ -1158,7 +1170,8 @@
             ref = analysis.annotations;
             for (annotationId in ref) {
               annotation = ref[annotationId];
-              if (!(0 < annotation.entityMatches.length)) {
+              if (annotation.entityMatches.length === 0) {
+                $log.warn("Annotation with id " + annotation.id + " has no entity matches!");
                 continue;
               }
               element = "<span id=\"" + annotationId + "\" class=\"textannotation";
