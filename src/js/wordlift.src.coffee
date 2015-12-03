@@ -41,6 +41,7 @@ class Traslator
       htmlPost = match[3]
 
       # Get the text pre/post w/o new lines.
+      # Add \n\n when it's needed depending on last tag
       textPre = htmlPre + (if htmlElem.toLowerCase() in ['</p>', '</li>'] then '\n\n' else '')
 #      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
       textPost = htmlPost
