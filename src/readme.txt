@@ -83,8 +83,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
-= 3.2.0 (???) =
+= 3.2.0 (2015-12-04) =
  * Enhancement: [#196](https://github.com/insideout10/wordlift-plugin/issues/196): renovate the Vocabulary icon with WordLift logo.
+ * Enhancement: [#195](https://github.com/insideout10/wordlift-plugin/issues/195): re-enable title duplicates notices.
  * Enhancement: [#185](https://github.com/insideout10/wordlift-plugin/issues/185): cleaning up, remove the entity_view submodule.
  * Enhancement: [#184](https://github.com/insideout10/wordlift-plugin/issues/184): for the joy of the 100,000+ active installs, we're now compatible with the [ShareThis plugin](https://wordpress.org/plugins/share-this/).
  * Enhancement: [#181](https://github.com/insideout10/wordlift-plugin/issues/181): finally, you can add more titles to entities.
@@ -98,8 +99,6 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
  * Enhancement: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
  * Enhancement: [#149](https://github.com/insideout10/wordlift-plugin/issues/149): add email and organization properties to Person.
  * Enhancement: [#143](https://github.com/insideout10/wordlift-plugin/issues/143): it is now possible to specify many additional properties for addresses.
-
-= 3.1.9 (2015-12-04) =
  * Fix: [#189](https://github.com/insideout10/wordlift-plugin/issues/189): fix entity recognition when bullet points are used.
  * Fix: [#122](https://github.com/insideout10/wordlift-plugin/issues/122): fire related posts loading on disambiguation widget loading.
 
