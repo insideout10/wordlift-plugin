@@ -1,7 +1,7 @@
 === WordLift - Ordering Knowledge ===
 Author URL: https://blog.insideout.io/about-us
 Plugin URL: https://join.wordlift.it
-Contributors: wordlift, ziodave
+Contributors: wordlift
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
 Tested up to: 4.3.1
