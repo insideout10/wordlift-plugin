@@ -96,8 +96,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
                 }	
             }
 
-            // Save entities and push them to Redlink
-            // TODO: pass also latitude, longitude, etc.
+            // Save entities (properties included) and push them to Redlink
             wl_save_entities( array_values( $entities_via_post ), $post_id );
 
 	}
@@ -217,17 +216,22 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 				? $entity['sameas']
 				: array( $entity['sameas'] ) )
 			: array() );
+		
+		$other_properties = ( isset( $entity['properties'] ) ?
+			$entity['properties'] :
+			array() );
                 
                 // Bring properties inside an associative array
                 $entity_properties = array(
-                    'uri'           => $uri,
-                    'label'         => $label,
-                    'main_type_uri' => $main_type_uri,
-                    'description'   => $description,
-                    'type_uris'     => $type_uris,
-                    'images'        => $images,
+                    'uri'             => $uri,
+                    'label'           => $label,
+                    'main_type_uri'   => $main_type_uri,
+                    'description'     => $description,
+                    'type_uris'       => $type_uris,
+                    'images'          => $images,
                     'related_post_id' => $related_post_id,
-                    'same_as'       => $same_as
+                    'same_as'         => $same_as
+					'properties'      => $other_properties
                 );
                 
 		// Save the entity.
@@ -260,14 +264,15 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  */
 function wl_save_entity( $entity_properties ) {
     
-        $uri            	= 	$entity_properties['uri'];
-        $label          	= 	$entity_properties['label'];
-        $type_uri               = 	$entity_properties['main_type_uri'];
-        $description    	= 	$entity_properties['description'];
-        $entity_types   	= 	$entity_properties['type_uris'];
-        $images         	= 	$entity_properties['images'];
-        $related_post_id 	= 	$entity_properties['related_post_id'];
-        $same_as        	= 	$entity_properties['same_as'];
+        $uri              = $entity_properties['uri'];
+        $label            = $entity_properties['label'];
+        $type_uri         = $entity_properties['main_type_uri'];
+        $description      = $entity_properties['description'];
+        $entity_types     = $entity_properties['type_uris'];
+        $images           = $entity_properties['images'];
+        $related_post_id  = $entity_properties['related_post_id'];
+        $same_as          = $entity_properties['same_as'];
+		$other_properties = $entity_properties['properties'];
 
 	// Avoid errors due to null.
 	if ( is_null( $entity_types ) ) {
@@ -354,6 +359,9 @@ function wl_save_entity( $entity_properties ) {
 	
 	// Save the sameAs data for the entity.
 	wl_schema_set_value( $post_id, 'sameAs', $same_as );
+	
+	// TODO: deal with other properties
+	AAAAAAAAA
 
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );

@@ -78,6 +78,12 @@ EOF;
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 
 	}
+	
+function testReferencedEntitiesProperties() {
+
+		// TODO
+
+	}
 
 	function testPublishingUnpublishingPosts() {
 
