@@ -213,13 +213,18 @@ class Wordlift_Entity_Service {
 	 * @param int $post_id The post id.
 	 * @param array $alt_labels An array of labels.
 	 */
-	private function set_alternative_labels( $post_id, $alt_labels ) {
+	public function set_alternative_labels( $post_id, $alt_labels ) {
+		
+		// Force $alt_labels to be an array
+		if( !is_array( $alt_labels ) ) {
+			$alt_labels = array( $alt_labels );
+		}
 
 		$this->log_service->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
 
 		// Delete all the existing alternate labels.
 		delete_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );
-
+		
 		// Set the alternative labels.
 		foreach ( $alt_labels as $alt_label ) {
 			if ( ! empty( $alt_label ) ) {

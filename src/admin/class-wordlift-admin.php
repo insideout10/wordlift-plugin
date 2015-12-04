@@ -98,6 +98,17 @@ class Wordlift_Admin {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.js', array( 'jquery' ), $this->version, false );
 
+		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
+		$entity_being_edited = get_post();
+		if (  isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ) ) {
+
+			wp_localize_script( $this->plugin_name, 'wlEntityTitleLiveSearchParams', array(
+					'ajax_url' => admin_url( 'admin-ajax.php' ),
+					'action'   => 'entity_by_title',
+					'post_id'  => get_the_ID()
+				)
+			);
+		}
 	}
 
 }

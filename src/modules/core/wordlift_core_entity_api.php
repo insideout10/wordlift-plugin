@@ -14,10 +14,11 @@
  * @param $title string The title to look for.
  *
  * @param bool $autocomplete
+ * @param bool $include_alias
  *
  * @return array An array of WP_Post instances.
  */
-function wl_entity_get_by_title( $title, $autocomplete = false ) {
+function wl_entity_get_by_title( $title, $autocomplete = false, $include_alias = true ) {
 	global $wpdb;
 
 	// Search by substring
@@ -44,8 +45,11 @@ function wl_entity_get_by_title( $title, $autocomplete = false ) {
 	         . "   AND t.term_id = tt.term_id"
 	         . "   AND tt.taxonomy = %s"
 	         . "   AND tt.term_taxonomy_id = tr.term_taxonomy_id"
-	         . "   AND tr.object_id = p.ID"
-	         . " UNION"
+	         . "   AND tr.object_id = p.ID";
+	
+	if( $include_alias ) {
+	    
+		$query.= " UNION"
 	         . "  SELECT DISTINCT p.ID AS id, CONCAT( m.meta_value, ' (', p.post_title, ')' ) AS title, t.name AS schema_type_name, t.slug AS type_slug"
 	         . "  FROM $wpdb->posts p, $wpdb->term_taxonomy tt, $wpdb->term_relationships tr, $wpdb->terms t, $wpdb->postmeta m"
 	         . "   WHERE p.post_type= %s"
@@ -55,6 +59,7 @@ function wl_entity_get_by_title( $title, $autocomplete = false ) {
 	         . "    AND tt.taxonomy = %s"
 	         . "    AND tt.term_taxonomy_id = tr.term_taxonomy_id"
 	         . "    AND tr.object_id = p.ID";
+	}
 
 	return $wpdb->get_results( $wpdb->prepare(
 		$query,
@@ -85,6 +90,9 @@ function wl_entity_ajax_get_by_title() {
 
 	// Are we searching for a specific title or for a containing title?
 	$autocomplete = isset( $_GET['autocomplete'] );
+	
+	// Are we searching also for the aliases?
+	$include_alias = isset( $_GET['alias'] );
 
 	// Get the edit link.
 	$post_type_object = get_post_type_object( Wordlift_Entity_Service::TYPE_NAME );
@@ -93,7 +101,7 @@ function wl_entity_ajax_get_by_title() {
 	// Prepare the response with the edit link.
 	$response = array(
 		'edit_link' => $edit_link,
-		'results'   => wl_entity_get_by_title( $title, $autocomplete )
+		'results'   => wl_entity_get_by_title( $title, $autocomplete, $include_alias )
 	);
 
 	wl_core_send_json( $response );

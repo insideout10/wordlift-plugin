@@ -107,5 +107,81 @@
         } );
 
     } );
+    
+    /**
+     * Check for duplicate title/labels via AJAX while the user is typing.
+     * 
+     * @since 3.2.0
+     */
+    $( function () {
+        
+        // return if we are not in the entity editor page (the *wlEntityTitleLiveSearchParams* json is only enqueued there)
+        if( typeof wlEntityTitleLiveSearchParams === 'undefined' ){
+            return;
+        }
+        
+        // AJAX environment
+        var ajax_url      = wlEntityTitleLiveSearchParams.ajax_url + '?action=' + wlEntityTitleLiveSearchParams.action;
+        var currentPostId = wlEntityTitleLiveSearchParams.post_id;
+        
+        // Print error message in page and hide it.
+        var duplicatedEntityErrorDiv = $( '<div class="wl-notice notice error" id="wl-same-title-error" ></div>' )
+            .insertBefore( 'div.wrap [name=post]' )
+            .hide();
+        
+        // Check duplicates at startup
+        titleInputChecker( $( '[name=post_title]' ) );
+                
+        // Whenever something happens in the entity title...
+        $( '[name=post_title]' ).on( 'change paste keyup', function( event ) {
+            // ... check duplicated titles in the interested input
+            titleInputChecker( $( event.target ) );
+        });
+        
+        function titleInputChecker( titleInput ) {
+
+            var thereAreDuplicates = false;
+
+            // AJAX call to search for entities with the same title
+            $.getJSON( ajax_url + '&title=' + titleInput.val(), function( response ){
+
+                // Write an error notice with a link for every duplicated entity            
+                if( response && response.results.length > 0 ) {
+
+                    duplicatedEntityErrorDiv.html( function(){
+                        var html = '';
+
+                        for( var i=0; i<response.results.length; i++ ){
+
+                            // No error if the entity ID given from the AJAX endpoint is the same as the entity we are editing
+                            if( response.results[i].id !== currentPostId ) {
+                                
+                                thereAreDuplicates = true;
+
+                                var title     = response.results[i].title;
+                                var edit_link = response.edit_link.replace('%d', response.results[i].id);
+
+                                html += 'Error: you already published an entity with the same name: ';
+                                html += '<a target="_blank" href="' + edit_link + '">';
+                                html += title;
+                                html += '</a></br>';
+                            }
+                        }
+
+                        return html;
+                    });
+                }
+
+                if( thereAreDuplicates ) {
+                    // Notify user he is creating a duplicate.
+                    duplicatedEntityErrorDiv.show();
+                } else {
+                    // Hide notice
+                    duplicatedEntityErrorDiv.hide();
+                }
+            });
+        }
+
+    } );
 
 })( jQuery );

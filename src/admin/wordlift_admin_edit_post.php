@@ -36,31 +36,3 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 }
 
 add_filter( 'get_sample_permalink_html', 'wl_admin_permalink_html', 10, 4 );
-
-
-/*
- * Let user know if he is creating a duplicated entity (performing a live AJAX check on the entity title)
- */
-function wl_admin_search_duplicated_entity_while_editing_title( $hook ) {
-
-	// Only enqueueing script when editing an entity
-	if ( $hook == 'post.php' ) {
-
-		// Get entity object (the auto-draft created automagically by WP)
-		$entity_being_edited = get_post();
-
-		// Exit if we are not dealing with an entity
-		if ( $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME ) {
-
-			wp_enqueue_script( 'wl-entity-duplicated-titles-live-search', plugin_dir_url( __FILE__ ) . 'js/wl_entity-duplicated-titles-live-search.js' );
-			wp_localize_script( 'wl-entity-duplicated-titles-live-search', 'wlEntityDuplicatedTitlesLiveSearchParams', array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'action'   => 'entity_by_title',
-					'post_id'  => get_the_ID()
-				)
-			);
-		}
-	}
-}
-
-add_action( 'admin_enqueue_scripts', 'wl_admin_search_duplicated_entity_while_editing_title' );
