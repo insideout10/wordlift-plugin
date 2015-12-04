@@ -125,7 +125,7 @@
         var currentPostId = wlEntityTitleLiveSearchParams.post_id;
         
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $( '<div class="error" id="wl-same-title-error" ></div>' )
+        var duplicatedEntityErrorDiv = $( '<div class="wl-notice notice error" id="wl-same-title-error" ></div>' )
             .insertBefore( 'div.wrap [name=post]' )
             .hide();
         
