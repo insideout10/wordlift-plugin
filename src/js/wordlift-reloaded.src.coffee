@@ -1130,7 +1130,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
         # If the annotation has no entity matches it could be a problem
         if annotation.entityMatches.length is 0
-          $log.warn "Annotation with id #{annotation.id} has no entity matches!"
+          $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
           continue
         
         element = "<span id=\"#{annotationId}\" class=\"textannotation"

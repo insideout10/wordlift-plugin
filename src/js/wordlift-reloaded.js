@@ -1145,7 +1145,7 @@
             for (annotationId in ref) {
               annotation = ref[annotationId];
               if (annotation.entityMatches.length === 0) {
-                $log.warn("Annotation with id " + annotation.id + " has no entity matches!");
+                $log.warn("Annotation " + annotation.text + " [" + annotation.start + ":" + annotation.end + "] with id " + annotation.id + " has no entity matches!");
                 continue;
               }
               element = "<span id=\"" + annotationId + "\" class=\"textannotation";
