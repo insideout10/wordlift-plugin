@@ -95,7 +95,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     EditorService.createTextAnnotationFromCurrentSelection()
   # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->
+    # Close the entity forms if needed
+    for id, box of $scope.boxes 
+      box.addEntityFormIsVisible = false
+
     EditorService.selectAnnotation annotationId
+
   $scope.isEntitySelected = (entity, box)->
     return $scope.selectedEntities[ box.id ][ entity.id ]?
   $scope.isLinkedToCurrentAnnotation = (entity)->

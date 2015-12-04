@@ -336,6 +336,12 @@
         return EditorService.createTextAnnotationFromCurrentSelection();
       };
       $scope.selectAnnotation = function(annotationId) {
+        var id, ref1;
+        ref1 = $scope.boxes;
+        for (id in ref1) {
+          box = ref1[id];
+          box.addEntityFormIsVisible = false;
+        }
         return EditorService.selectAnnotation(annotationId);
       };
       $scope.isEntitySelected = function(entity, box) {
