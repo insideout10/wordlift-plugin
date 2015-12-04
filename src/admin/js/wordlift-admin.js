@@ -115,7 +115,7 @@
      */
     $( function () {
         
-        // return if we are not in the entity editor page
+        // return if we are not in the entity editor page (the *wlEntityTitleLiveSearchParams* json is only enqueued there)
         if( typeof wlEntityTitleLiveSearchParams === 'undefined' ){
             return;
         }
