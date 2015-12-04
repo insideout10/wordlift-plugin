@@ -115,9 +115,14 @@
      */
     $( function () {
         
+        // return if we are not in the entity editor page
+        if( typeof wlEntityTitleLiveSearchParams === 'undefined' ){
+            return;
+        }
+        
         // AJAX environment
-        var ajax_url      = wlEntityDuplicatedTitlesLiveSearchParams.ajax_url + '?action=' + wlEntityDuplicatedTitlesLiveSearchParams.action;
-        var currentPostId = wlEntityDuplicatedTitlesLiveSearchParams.post_id;
+        var ajax_url      = wlEntityTitleLiveSearchParams.ajax_url + '?action=' + wlEntityTitleLiveSearchParams.action;
+        var currentPostId = wlEntityTitleLiveSearchParams.post_id;
         
         // Print error message in page and hide it.
         var duplicatedEntityErrorDiv = $( '<div class="error" id="wl-same-title-error" ></div>' )
