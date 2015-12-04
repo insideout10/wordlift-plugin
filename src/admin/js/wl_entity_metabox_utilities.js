@@ -121,7 +121,7 @@ jQuery(document).ready(function($){
             minLength: 2,   // Fire an AJAX call only when at least two chars are typed
             source: function( request, response ) {
                 // AJAX call to search for entities starting with the typed letters
-                $.getJSON( ajax_url + '&autocomplete' + '&title=' + $(inputElement).val(), function( searchResults ){
+                $.getJSON( ajax_url + '&autocomplete&alias&title=' + $(inputElement).val(), function( searchResults ){
                     
                     // Populate suggestions
                     var suggestedTitles = [];
