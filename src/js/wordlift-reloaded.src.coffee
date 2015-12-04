@@ -350,10 +350,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     EditorService.createTextAnnotationFromCurrentSelection()
   # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->
-    # Close the entity forms if needed
-    for id, box of $scope.boxes 
-      box.addEntityFormIsVisible = false
-
     EditorService.selectAnnotation annotationId
 
   $scope.isEntitySelected = (entity, box)->
@@ -393,7 +389,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         
 
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
+    
     $scope.annotation = annotationId
+    # Close new entity creation forms if needed
+    for id, box of $scope.boxes 
+      box.addEntityFormIsVisible = false
 
   $scope.$on "textAnnotationAdded", (event, annotation) ->
     $log.debug "added a new annotation with Id #{annotation.id}"

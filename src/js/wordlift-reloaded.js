@@ -336,12 +336,6 @@
         return EditorService.createTextAnnotationFromCurrentSelection();
       };
       $scope.selectAnnotation = function(annotationId) {
-        var id, ref1;
-        ref1 = $scope.boxes;
-        for (id in ref1) {
-          box = ref1[id];
-          box.addEntityFormIsVisible = false;
-        }
         return EditorService.selectAnnotation(annotationId);
       };
       $scope.isEntitySelected = function(entity, box) {
@@ -383,7 +377,15 @@
         }
       });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
-        return $scope.annotation = annotationId;
+        var id, ref1, results;
+        $scope.annotation = annotationId;
+        ref1 = $scope.boxes;
+        results = [];
+        for (id in ref1) {
+          box = ref1[id];
+          results.push(box.addEntityFormIsVisible = false);
+        }
+        return results;
       });
       $scope.$on("textAnnotationAdded", function(event, annotation) {
         $log.debug("added a new annotation with Id " + annotation.id);
