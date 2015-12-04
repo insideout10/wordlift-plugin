@@ -63,9 +63,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   $rootScope.$on "analysisPerformed", (event, analysis) ->
     service.embedAnalysis analysis if analysis? and analysis.annotations?
   
-  $rootScope.$on "embedImageInEditor", (event, image) ->
-    tinyMCE.execCommand 'mceInsertContent', false, "<img src=\"#{image}\" width=\"100%\" />"
-  
   $rootScope.$on "entitySelected", (event, entity, annotationId) ->
     # per tutte le annotazioni o solo per quella corrente 
     # recupero dal testo una struttura del tipo entityId: [ annotationId ]

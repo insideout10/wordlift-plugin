@@ -480,8 +480,6 @@
         transclude: true,
         template: "<div class=\"classification-box\">\n	<div class=\"box-header\">\n          <h5 class=\"label\">\n            {{box.label}}\n            <span ng-click=\"openAddEntityForm()\" class=\"button\" ng-class=\"{ 'button-primary selected' : isThereASelection, 'preview' : !isThereASelection }\">Add entity</span>\n          </h5>\n          <wl-entity-form ng-show=\"addEntityFormIsVisible\" entity=\"newEntity\" box=\"box\" on-submit=\"closeAddEntityForm()\"></wl-entity-form>\n          <div class=\"wl-selected-items-wrapper\">\n            <span ng-class=\"'wl-' + entity.mainType\" ng-repeat=\"(id, entity) in selectedEntities[box.id]\" class=\"wl-selected-item\">\n              {{ entity.label}}\n              <i class=\"wl-deselect\" ng-click=\"onSelectedEntityTile(entity, box)\"></i>\n            </span>\n          </div>\n        </div>\n  			<div class=\"box-tiles\">\n          <div ng-transclude></div>\n  		  </div>\n      </div>	",
         link: function($scope, $element, $attrs, $ctrl) {
-          $scope.currentWidget = void 0;
-          $scope.isWidgetOpened = false;
           $scope.addEntityFormIsVisible = false;
           $scope.openAddEntityForm = function() {
             if ($scope.isThereASelection) {
@@ -493,35 +491,14 @@
             $scope.addEntityFormIsVisible = false;
             return $scope.addNewEntityToAnalysis($scope.box);
           };
-          $scope.closeWidgets = function() {
-            $scope.currentWidget = void 0;
-            return $scope.isWidgetOpened = false;
-          };
-          $scope.hasSelectedEntities = function() {
+          return $scope.hasSelectedEntities = function() {
             return Object.keys($scope.selectedEntities[$scope.box.id]).length > 0;
-          };
-          $scope.embedImageInEditor = function(image) {
-            return $scope.$emit("embedImageInEditor", image);
-          };
-          return $scope.toggleWidget = function(widget) {
-            if ($scope.currentWidget === widget) {
-              $scope.currentWidget = void 0;
-              return $scope.isWidgetOpened = false;
-            } else {
-              $scope.currentWidget = widget;
-              $scope.isWidgetOpened = true;
-              return $scope.updateWidget(widget, $scope.box.id);
-            }
           };
         },
         controller: function($scope, $element, $attrs) {
           var ctrl;
           $scope.tiles = [];
           $scope.boxes[$scope.box.id] = $scope;
-          $scope.$watch("annotation", function(annotationId) {
-            $scope.currentWidget = void 0;
-            return $scope.isWidgetOpened = false;
-          });
           ctrl = this;
           ctrl.addTile = function(tile) {
             return $scope.tiles.push(tile);
@@ -1041,9 +1018,6 @@
         if ((analysis != null) && (analysis.annotations != null)) {
           return service.embedAnalysis(analysis);
         }
-      });
-      $rootScope.$on("embedImageInEditor", function(event, image) {
-        return tinyMCE.execCommand('mceInsertContent', false, "<img src=\"" + image + "\" width=\"100%\" />");
       });
       $rootScope.$on("entitySelected", function(event, entity, annotationId) {
         var annotation, discarded, entityId, id, j, len, occurrences, ref;
