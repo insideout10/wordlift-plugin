@@ -146,7 +146,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       
@@ -218,7 +218,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           if annotationId in entity.occurrences
             element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
         
-        element += "\">"
+        element += "\" contenteditable=\"false\">"
               
         # Finally insert the HTML code.
         traslator.insertHtml element, text: annotation.start

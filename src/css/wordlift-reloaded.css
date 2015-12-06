@@ -2334,7 +2334,7 @@ body#tinymce {
 }
 body#tinymce .textannotation {
   border-bottom: #999 2px solid;
-  padding: 2px;
+  padding: 2px 0px;
   cursor: pointer;
   cursor: hand;
 }

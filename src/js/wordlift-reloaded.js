@@ -1109,7 +1109,7 @@
           textAnnotation = AnalysisService.createAnnotation({
             text: text
           });
-          textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation selected\">" + (ed.selection.getContent()) + "</span>";
+          textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation selected\" contenteditable=\"false\">" + (ed.selection.getContent()) + "</span>";
           ed.selection.setContent(textAnnotationSpan);
           content = ed.getContent({
             format: 'raw'
@@ -1165,7 +1165,7 @@
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
                 }
               }
-              element += "\">";
+              element += "\" contenteditable=\"false\">";
               traslator.insertHtml(element, {
                 text: annotation.start
               });
