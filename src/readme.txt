@@ -83,6 +83,11 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.2.1 (2015-12-06) =
+ * Fix: [#200](https://github.com/insideout10/wordlift-plugin/issues/200): 
+ Fix new entity form visibility with undefined current annotation.
+ * Fix: [#194](https://github.com/insideout10/wordlift-plugin/issues/194): Make text annotations within tinymce editor not editable.
+
 = 3.2.0 (2015-12-04) =
  * Enhancement: [#196](https://github.com/insideout10/wordlift-plugin/issues/196): renovate the Vocabulary icon with WordLift logo.
  * Enhancement: [#195](https://github.com/insideout10/wordlift-plugin/issues/195): re-enable title duplicates notices.

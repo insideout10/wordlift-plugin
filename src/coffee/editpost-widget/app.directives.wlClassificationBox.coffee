@@ -25,8 +25,6 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     """
     link: ($scope, $element, $attrs, $ctrl) ->  	  
   	  
-      $scope.currentWidget = undefined
-      $scope.isWidgetOpened = false
       $scope.addEntityFormIsVisible = false
 
       $scope.openAddEntityForm = ()->
@@ -38,25 +36,9 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
         $scope.addEntityFormIsVisible = false
         $scope.addNewEntityToAnalysis $scope.box
 
-      $scope.closeWidgets = ()->
-        $scope.currentWidget = undefined
-        $scope.isWidgetOpened = false
-
       $scope.hasSelectedEntities = ()->
         Object.keys( $scope.selectedEntities[ $scope.box.id ] ).length > 0
 
-      $scope.embedImageInEditor = (image)->
-        $scope.$emit "embedImageInEditor", image
-
-      $scope.toggleWidget = (widget)->
-        if $scope.currentWidget is widget
-          $scope.currentWidget = undefined
-          $scope.isWidgetOpened = false
-        else 
-          $scope.currentWidget = widget
-          $scope.isWidgetOpened = true   
-          $scope.updateWidget widget, $scope.box.id 
-          
     controller: ($scope, $element, $attrs) ->
       
       # Mantain a reference to nested entity tiles $scope
@@ -64,11 +46,6 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.tiles = []
 
       $scope.boxes[ $scope.box.id ] = $scope
-
-      $scope.$watch "annotation", (annotationId) ->
-        
-        $scope.currentWidget = undefined
-        $scope.isWidgetOpened = false
             
       ctrl = @
       ctrl.addTile = (tile)->
