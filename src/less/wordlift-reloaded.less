@@ -581,6 +581,12 @@ body#tinymce {
     cursor: pointer;
     cursor: hand;
 
+    &.unlinked {
+      border:#999 1px dashed;
+      padding: 2px 2px;
+      font-weight: bold;
+    }
+
     &.selected {
       .highlight(@wl-default-color);
 

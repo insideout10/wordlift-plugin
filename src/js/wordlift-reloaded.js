@@ -991,6 +991,7 @@
         var discardedItemId, ed;
         ed = editor();
         ed.dom.addClass(annotation.id, "disambiguated");
+        ed.dom.removeClass(annotation.id, "unlinked");
         ed.dom.addClass(annotation.id, "wl-" + entity.mainType);
         discardedItemId = ed.dom.getAttrib(annotation.id, "itemid");
         ed.dom.setAttrib(annotation.id, "itemid", entity.id);
@@ -1109,7 +1110,7 @@
           textAnnotation = AnalysisService.createAnnotation({
             text: text
           });
-          textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation selected\" contenteditable=\"false\">" + (ed.selection.getContent()) + "</span>";
+          textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked\" contenteditable=\"false\">" + (ed.selection.getContent()) + "</span>";
           ed.selection.setContent(textAnnotationSpan);
           content = ed.getContent({
             format: 'raw'

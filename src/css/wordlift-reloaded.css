@@ -2338,6 +2338,11 @@ body#tinymce .textannotation {
   cursor: pointer;
   cursor: hand;
 }
+body#tinymce .textannotation.unlinked {
+  border: #999 1px dashed;
+  padding: 2px 2px;
+  font-weight: bold;
+}
 body#tinymce .textannotation.selected {
   border: 0 !important;
   color: #ffffff;
