@@ -63,9 +63,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   $rootScope.$on "analysisPerformed", (event, analysis) ->
     service.embedAnalysis analysis if analysis? and analysis.annotations?
   
-  $rootScope.$on "embedImageInEditor", (event, image) ->
-    tinyMCE.execCommand 'mceInsertContent', false, "<img src=\"#{image}\" width=\"100%\" />"
-  
   $rootScope.$on "entitySelected", (event, entity, annotationId) ->
     # per tutte le annotazioni o solo per quella corrente 
     # recupero dal testo una struttura del tipo entityId: [ annotationId ]
@@ -149,7 +146,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       
@@ -209,7 +206,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
         # If the annotation has no entity matches it could be a problem
         if annotation.entityMatches.length is 0
-          $log.warn "Annotation with id #{annotation.id} has no entity matches!"
+          $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
           continue
         
         element = "<span id=\"#{annotationId}\" class=\"textannotation"
@@ -221,7 +218,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           if annotationId in entity.occurrences
             element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
         
-        element += "\">"
+        element += "\" contenteditable=\"false\">"
               
         # Finally insert the HTML code.
         traslator.insertHtml element, text: annotation.start
