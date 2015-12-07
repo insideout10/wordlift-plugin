@@ -412,6 +412,43 @@ EOF;
 		$this->assertCount( 1, $relation_instances );
 	}
 
+	// This test simulate entity type-specific properties (latitude, startDate, etc.) are saved trough the disambiguation widget
+	function testEntityAdditionalPropertiesAreSaved() {
+
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_a_new_entity_linked_as_where_with_coordinates.json' 
+		);
+		$_POST = $fake;
+		
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Retrieve the label and compose expected uri
+		$raw_entity = current( array_values ( $fake['wl_entities' ] ) );
+		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
+		
+		// Reference the entity to the post content 
+		$content    = <<<EOF
+    <span itemid="$entity_uri">My entity</span>
+EOF;
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		
+        // Here the entity should have been created
+		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$this->assertNotNull( $entity );
+		
+		// Verify association to post as where
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );
+		$this->assertEquals( array( $entity->ID ), $related_entity_ids );
+        
+		// Verify schema type
+		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity->ID ) );
+        
+        // Verify coordinates
+		$this->assertEquals( array( 43.21 ), wl_schema_get_value( $entity->ID, 'latitude' ) );
+		$this->assertEquals( array( 12.34 ), wl_schema_get_value( $entity->ID, 'longitude' ) );
+	}	
+	
 	function prepareFakeGlobalPostArrayFromFile( $fileName ) {
 		$json_data = file_get_contents( dirname( __FILE__ ) . $fileName );
 		$json_data = preg_replace(

@@ -214,14 +214,14 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  * found (by its URI), then the original post is returned.
  *
  * @param array $entity_data, associative array containing: 
- * string 'uri' The entity URI.
- * string 'label' The entity label.
- * string 'main_type' The entity type URI.
- * array  'type_uris' An array of entity type URIs.
- * string 'description' The entity description.
- * array  'images' An array of image URLs.
+ * string 'uri'             The entity URI.
+ * string 'label'           The entity label.
+ * string 'main_type'       The entity type URI.
+ * array  'type'            An array of entity type URIs.
+ * string 'description'     The entity description.
+ * array  'images'          An array of image URLs.
  * int    'related_post_id' A related post ID.
- * array  'same_as' An array of sameAs URLs.
+ * array  'same_as'         An array of sameAs URLs.
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
@@ -230,7 +230,7 @@ function wl_save_entity( $entity_data ) {
 	$uri              = $entity_data['uri'];
 	$label            = $entity_data['label'];
 	$type_uri         = $entity_data['main_type'];
-	$entity_types     = isset( $entity_data['type_uris'] ) ? $entity_data['type_uris'] : array();
+	$entity_types     = isset( $entity_data['type'] ) ? $entity_data['type'] : array();
 	$description      = $entity_data['description'];
 	$images           = isset( $entity_data['image'] ) ?
 		( is_array( $entity_data['image'] )

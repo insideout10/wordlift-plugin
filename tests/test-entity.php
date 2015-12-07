@@ -49,8 +49,8 @@ class EntityTest extends WP_UnitTestCase
         $entity_props = array(
             'uri'             => 'http://dbpedia.org/resource/Tim_Berners-Lee',
             'label'           => 'Tim Berners-Lee',
-            'main_type_uri'   => 'http://schema.org/Person',
-			'type_uris'       => array(
+            'main_type'       => 'http://schema.org/Person',
+			'type'            => array(
 				'http://rdf.freebase.com/ns/people.person',
 				'http://rdf.freebase.com/ns/music.artist'
 			),
@@ -192,7 +192,7 @@ class EntityTest extends WP_UnitTestCase
 		$entity_props = array(
 			'uri'             => 'http://dbpedia.org/resource/Frattocchie',
 			'label'           => 'Frattocchie',
-			'main_type_uri'   => 'http://schema.org/Place',
+			'main_type'       => 'http://schema.org/Place',
 			'description'     => 'best place on hearth, where the porchetta freely flows',
 			'same_as'         => array(
 				'http://dbpedia.org/resource/Frattocchie',

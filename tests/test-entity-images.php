@@ -39,11 +39,11 @@ class EntityImagesTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( array(
             'uri'               => 'http://example.org/entity',
             'label'             => 'Entity',
-            'main_type_uri'     => 'http://schema.org/Thing',
+            'main_type'     => 'http://schema.org/Thing',
             'description'       => 'An example entity.',
             'type_uris'         => array(),
             'related_post_id'   => null,
-            'images'            => array(
+            'image'            => array(
                 'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
             ),
             'same_as'           => array()
@@ -75,11 +75,11 @@ class EntityImagesTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( array(
             'uri'               => 'http://example.org/entity',
             'label'             => 'Entity',
-            'main_type_uri'     => 'http://schema.org/Thing',
+            'main_type'     => 'http://schema.org/Thing',
             'description'       => 'An example entity.',
             'type_uris'         => array(),
             'related_post_id'   => null,
-            'images'            => $images,
+            'image'            => $images,
             'same_as'           => array()
         ));
 
@@ -108,11 +108,11 @@ class EntityImagesTest extends WP_UnitTestCase
         $entity_post = wl_save_entity( array(
             'uri'               => 'http://example.org/entity',
             'label'             => 'Entity',
-            'main_type_uri'     => 'http://schema.org/Thing',
+            'main_type'     => 'http://schema.org/Thing',
             'description'       => 'An example entity.',
             'type_uris'         => array(),
             'related_post_id'   => null,
-            'images'            => $images,
+            'image'            => $images,
             'same_as'           => array()
         ));
 
