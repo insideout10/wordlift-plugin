@@ -79,9 +79,9 @@ EOF;
 
 	}
 	
-function testReferencedEntitiesProperties() {
+	function testReferencedEntitiesProperties() {
 
-		// TODO
+		
 
 	}
 

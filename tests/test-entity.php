@@ -47,16 +47,19 @@ class EntityTest extends WP_UnitTestCase
     function testSaveEntity1() {
 
         $entity_props = array(
-            'uri'           => 'http://dbpedia.org/resource/Tim_Berners-Lee',
-            'label'         => 'Tim Berners-Lee',
-            'main_type_uri' => 'http://schema.org/Person',
-            'type_uris'     => array(),
+            'uri'             => 'http://dbpedia.org/resource/Tim_Berners-Lee',
+            'label'           => 'Tim Berners-Lee',
+            'main_type_uri'   => 'http://schema.org/Person',
+			'type_uris'       => array(
+				'http://rdf.freebase.com/ns/people.person',
+				'http://rdf.freebase.com/ns/music.artist'
+			),
             'related_post_id' => null,
-            'description' => file_get_contents( dirname(__FILE__) . '/assets/tim_berners-lee.txt' ),
-            'images'      => array(
+            'description'     => file_get_contents( dirname(__FILE__) . '/assets/tim_berners-lee.txt' ),
+            'images'          => array(
                 'http://upload.wikimedia.org/wikipedia/commons/f/ff/Tim_Berners-Lee-Knight.jpg'
             ),
-            'same_as'     => array(
+            'same_as'         => array(
                 'http://es.dbpedia.org/resource/Tim_Berners-Lee',
                 'http://el.dbpedia.org/resource/Τιμ_Μπέρνερς_Λι',
                 'http://it.dbpedia.org/resource/Tim_Berners-Lee',
@@ -180,25 +183,34 @@ class EntityTest extends WP_UnitTestCase
 
         // Check that the type is set correctly.
         $types = wl_get_entity_rdf_types( $entity_post->ID );
-        $this->assertEquals( 0, count( $types ) );
-//        $this->assertEquals( $type, wl_get_entity_main_type( $entity_post->ID ) );
+        $this->assertEquals( 2, count( $types ) );
+		$this->assertEquals( array( 'http://schema.org/Person' ), wl_schema_get_types( $entity_post->ID ) );
     }
 
-    function testSaveEventWithStartAndEndDates() {
+    function testSavePlaceWithCoordinates() {
 
-        $entity_1_id = wl_create_post( '', 'entity-1', 'Entity 1', 'draft', 'entity' );
-        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2013-01-02' );
-        add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2013-02-03' );
-
-        wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-
-        wp_update_post( array(
-            'ID'           => $entity_1_id,
-            'post_content' => 'Lorem Ipsum.'
-        ) );
-
-        // TODO: add checks for SPARQL query.
-
+		$entity_props = array(
+			'uri'             => 'http://dbpedia.org/resource/Frattocchie',
+			'label'           => 'Frattocchie',
+			'main_type_uri'   => 'http://schema.org/Place',
+			'description'     => 'best place on hearth, where the porchetta freely flows',
+			'same_as'         => array(
+				'http://dbpedia.org/resource/Frattocchie',
+				'http://frattocchie.com/love'
+			),
+			'properties'      => array(
+				'latitude'    => array( 43.21 ),                        // array
+				'longitude'   => 12.34,                                 // single value
+				'fake'        => array( 'must', 'not', 'be', 'saved' )  // non-schema property
+			)
+		);
+		$entity_post = wl_save_entity( $entity_props );
+		$this->assertNotNull( $entity_post );
+		
+		// Check that the type is set correctly.
+		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity_post->ID ) );
+		$types = wl_get_entity_rdf_types( $entity_post->ID );
+		$this->assertEquals( 0, count( $types ) );
     }
 
     function create_World_Wide_Web_Foundation( $related_post_id ) {

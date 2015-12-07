@@ -193,49 +193,12 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 
 	// Save each entity and store the post id.
 	foreach ( $entities as $entity ) {
-
-		$uri   = $entity['uri'];
-		$label = $entity['label'];
-
-		// This is the main type URI.
-		$main_type_uri = $entity['main_type'];
-
-		// the preferred type.
-		$type_uris = ( isset( $entity['type'] ) ?
-                                $entity['type'] :
-                                array() );
-
-		$description = $entity['description'];
-		$images      = ( isset( $entity['image'] ) ?
-			( is_array( $entity['image'] )
-				? $entity['image']
-				: array( $entity['image'] ) )
-			: array() );
-		$same_as     = ( isset( $entity['sameas'] ) ?
-			( is_array( $entity['sameas'] )
-				? $entity['sameas']
-				: array( $entity['sameas'] ) )
-			: array() );
 		
-		$other_properties = ( isset( $entity['properties'] ) ?
-			$entity['properties'] :
-			array() );
-                
-                // Bring properties inside an associative array
-                $entity_properties = array(
-                    'uri'             => $uri,
-                    'label'           => $label,
-                    'main_type_uri'   => $main_type_uri,
-                    'description'     => $description,
-                    'type_uris'       => $type_uris,
-                    'images'          => $images,
-                    'related_post_id' => $related_post_id,
-                    'same_as'         => $same_as,
-					'properties'      => $other_properties
-                );
-                
+		// Update entity data with related post
+		$entity['related_post_id'] = $related_post_id;
+	
 		// Save the entity.
-		$entity_post = wl_save_entity( $entity_properties );
+		$entity_post = wl_save_entity( $entity, $related_post_id );
                 
 		// Store the post in the return array if successful.
 		if ( null !== $entity_post ) {
@@ -250,38 +213,39 @@ function wl_save_entities( $entities, $related_post_id = null ) {
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
  * found (by its URI), then the original post is returned.
  *
- * @param array $entity_properties, associative array containing: 
+ * @param array $entity_data, associative array containing: 
  * string 'uri' The entity URI.
  * string 'label' The entity label.
- * string 'main_type_uri' The entity type URI.
+ * string 'main_type' The entity type URI.
+ * array  'type_uris' An array of entity type URIs.
  * string 'description' The entity description.
- * array 'type_uris' An array of entity type URIs.
- * array 'images' An array of image URLs.
- * int 'related_post_id' A related post ID.
- * array 'same_as' An array of sameAs URLs.
+ * array  'images' An array of image URLs.
+ * int    'related_post_id' A related post ID.
+ * array  'same_as' An array of sameAs URLs.
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
-function wl_save_entity( $entity_properties ) {
-    
-        $uri              = $entity_properties['uri'];
-        $label            = $entity_properties['label'];
-        $type_uri         = $entity_properties['main_type_uri'];
-        $description      = $entity_properties['description'];
-        $entity_types     = $entity_properties['type_uris'];
-        $images           = $entity_properties['images'];
-        $related_post_id  = $entity_properties['related_post_id'];
-        $same_as          = $entity_properties['same_as'];
-		$other_properties = $entity_properties['properties'];
+function wl_save_entity( $entity_data ) {
+	
+	$uri              = $entity_data['uri'];
+	$label            = $entity_data['label'];
+	$type_uri         = $entity_data['main_type'];
+	$entity_types     = isset( $entity_data['type_uris'] ) ? $entity_data['type_uris'] : array();
+	$description      = $entity_data['description'];
+	$images           = isset( $entity_data['image'] ) ?
+		( is_array( $entity_data['image'] )
+			? $entity_data['image']
+			: array( $entity_data['image'] ) )
+		: array();
+	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
+	$same_as          = isset( $entity_data['sameas'] ) ?
+		( is_array( $entity_data['sameas'] )
+			? $entity_data['sameas']
+			: array( $entity_data['sameas'] ) )
+		: array();
+	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
 
-	// Avoid errors due to null.
-	if ( is_null( $entity_types ) ) {
-		$entity_types = array();
-	}
-
-	// wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
-        
-        // Prepare properties of the new entity.
+	// Prepare properties of the new entity.
 	$params = array(
 		'post_status'  => ( is_numeric( $related_post_id ) ? get_post_status( $related_post_id ) : 'draft' ),
 		'post_type'    => Wordlift_Entity_Service::TYPE_NAME,
@@ -294,14 +258,14 @@ function wl_save_entity( $entity_properties ) {
 	$post = wl_get_entity_post_by_uri( $uri );
 	        
 	if ( null !== $post ) {
-            // We insert into the params the entity ID, so it will be updated and not inserted.
-            $params[ 'ID' ] = $post->ID;
-            // Preserve the current entity status
-            if ( 'public' == $post->post_status ) {
-            	$params[ 'post_status' ] = $post->post_status;
-            }
-			// Preserve the current entity content. Hotfix for issue #152
-            $params[ 'post_content' ] = $post->post_content;       
+		// We insert into the params the entity ID, so it will be updated and not inserted.
+		$params[ 'ID' ] = $post->ID;
+		// Preserve the current entity status
+		if ( 'public' == $post->post_status ) {
+			$params[ 'post_status' ] = $post->post_status;
+		}
+		// Preserve the current entity content. Hotfix for issue #152
+		$params[ 'post_content' ] = $post->post_content;       
 	}
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
@@ -314,7 +278,7 @@ function wl_save_entity( $entity_properties ) {
 		remove_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
 	}
 
-	if (isset($seo_ultimate)) {
+	if ( isset( $seo_ultimate ) ) {
 		remove_action( 'save_post', array( $seo_ultimate, 'save_postmeta_box' ) );
 	}
 
@@ -362,7 +326,7 @@ function wl_save_entity( $entity_properties ) {
 	
 	// Save the other properties (latitude, langitude, startDate, endDate, etc.)
 	foreach ( $other_properties as $property_name => $property_value ) {
-		wl_schema_set_value( $post_id, $property_name, $property_value);
+		wl_schema_set_value( $post_id, $property_name, $property_value );
 	}
 
 	// Call hooks.
@@ -372,11 +336,11 @@ function wl_save_entity( $entity_properties ) {
         
 	foreach ( $images as $image_remote_url ) {
             
-                // Check if image is already present in local DB
-                if ( strpos( $image_remote_url, site_url() ) !== false ) {
-                    // Do nothing.
-                    continue;
-                }
+		// Check if image is already present in local DB
+		if ( strpos( $image_remote_url, site_url() ) !== false ) {
+			// Do nothing.
+			continue;
+		}
 
 		// Check if there is an existing attachment for this post ID and source URL.
 		$existing_image = wl_get_attachment_for_source_url( $post_id, $image_remote_url );

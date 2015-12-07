@@ -309,6 +309,7 @@ EOF;
 		$this->assertEquals( 'public', $entity_reloaded->post_status );
 		
 	}
+	
 	// This test simulate entity metadata updating trough the disambiguation widget
 	function testEntityMetadataAreProperlyUpdated() {
 
