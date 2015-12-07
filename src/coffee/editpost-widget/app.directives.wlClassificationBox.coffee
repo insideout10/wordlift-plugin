@@ -8,7 +8,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     		<div class="box-header">
           <h5 class="label">
             {{box.label}}
-            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button button-primary selected">Add entity</span>
+            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : analysis, 'preview' : !analysis }">Add entity</span>
           </h5>
           <wl-entity-form ng-show="addEntityFormIsVisible" entity="newEntity" box="box" on-submit="closeAddEntityForm()"></wl-entity-form>
           <div class="wl-selected-items-wrapper">
