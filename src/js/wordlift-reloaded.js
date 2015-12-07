@@ -365,8 +365,7 @@
         });
         $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
         $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
-        $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
-        return $scope.newEntity = AnalysisService.createEntity();
+        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results;
@@ -382,6 +381,20 @@
           return results;
         }
       });
+      $scope.$watch("annotation", function(newAnnotationId) {
+        var annotation;
+        $log.debug("Current annotation id changed to " + newAnnotationId);
+        if ($scope.isRunning) {
+          return;
+        }
+        if (newAnnotationId == null) {
+          return;
+        }
+        $scope.newEntity = AnalysisService.createEntity();
+        annotation = $scope.analysis.annotations[newAnnotationId];
+        $scope.newEntity.label = annotation.text;
+        return AnalysisService.getSuggestedSameAs(annotation.text);
+      });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
         var id, ref1, results;
         $scope.annotation = annotationId;
@@ -396,12 +409,9 @@
       $scope.$on("textAnnotationAdded", function(event, annotation) {
         $log.debug("added a new annotation with Id " + annotation.id);
         $scope.analysis.annotations[annotation.id] = annotation;
-        $scope.annotation = annotation.id;
-        $scope.newEntity.label = annotation.text;
-        return AnalysisService.getSuggestedSameAs(annotation.text);
+        return $scope.annotation = annotation.id;
       });
       $scope.$on("sameAsRetrieved", function(event, sameAs) {
-        $log.debug("Retrieved sameAs " + sameAs);
         return $scope.newEntity.suggestedSameAs = sameAs;
       });
       $scope.$on("relatedPostsLoaded", function(event, posts) {

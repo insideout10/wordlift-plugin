@@ -121,10 +121,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     # Select the new entity
     $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
-    # Create new entity object
-    $scope.newEntity = AnalysisService.createEntity()
-
-  
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -135,36 +131,43 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
         
+  # Observe current annotation changed
+  $scope.$watch "annotation", (newAnnotationId)->
+    
+    $log.debug "Current annotation id changed to #{newAnnotationId}"
+    # Execute just once the analysis is properly performed
+    return if $scope.isRunning
+    # Execute just if the current annotation id is defined
+    return unless newAnnotationId?
+    # Create new entity object
+    $scope.newEntity = AnalysisService.createEntity()
+    # Retrieve the current annotation
+    annotation = $scope.analysis.annotations[ newAnnotationId ]
+    # Set the entity label accordingly to the current annotation
+    $scope.newEntity.label = annotation.text
+    # Look for SameAs suggestions
+    AnalysisService.getSuggestedSameAs annotation.text
 
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
-    
     $scope.annotation = annotationId
     # Close new entity creation forms if needed
     for id, box of $scope.boxes 
       box.addEntityFormIsVisible = false
-
-  $scope.$on "textAnnotationAdded", (event, annotation) ->
-    $log.debug "added a new annotation with Id #{annotation.id}"
     
+  $scope.$on "textAnnotationAdded", (event, annotation) ->
+    $log.debug "added a new annotation with Id #{annotation.id}"  
     # Add the new annotation to the current analysis
     $scope.analysis.annotations[ annotation.id ] = annotation
     # Set the annotation scope
     $scope.annotation = annotation.id
-    # Set the annotation text as label for the new entity
-    $scope.newEntity.label = annotation.text
-    # Set the annotation id as id for the new entity
-    # Ask for SameAs suggestions
-    AnalysisService.getSuggestedSameAs annotation.text
-
+    
   $scope.$on "sameAsRetrieved", (event, sameAs) ->
-    $log.debug "Retrieved sameAs #{sameAs}"
     $scope.newEntity.suggestedSameAs = sameAs
   
   $scope.$on "relatedPostsLoaded", (event, posts) ->
     $scope.relatedPosts = posts
   
   $scope.$on "analysisPerformed", (event, analysis) -> 
-    
     $scope.analysis = analysis
 
     # Preselect 
