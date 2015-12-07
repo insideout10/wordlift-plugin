@@ -91,8 +91,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.selectedEntities[ box.id ] = {}
           
   $scope.addError = (errorMsg)->
-    currentDate = new Date()
-    $scope.errors.unshift [ new Date(), errorMsg ] 
+    $scope.errors.unshift { type: 'error', msg: errorMsg } 
 
   # Delegate to EditorService
   $scope.createTextAnnotationFromCurrentSelection = ()->

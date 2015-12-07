@@ -1878,17 +1878,10 @@
   height: 1px;
 }
 #wordlift-edit-post-wrapper .wl-error {
+  margin-bottom: 6px;
   padding: 2px 12px;
-  border-left: #f00 4px solid;
+  border-left: #f20f62 4px solid;
   font-size: 11px;
-}
-#wordlift-edit-post-wrapper .wl-error .wl-date {
-  padding: 2px 0px;
-  font-weight: bold;
-  border-bottom: #ccc 1px dashed;
-}
-#wordlift-edit-post-wrapper .wl-error .wl-msg {
-  padding-left: 6px;
 }
 #wordlift-edit-post-wrapper input,
 #wordlift-edit-post-wrapper select,

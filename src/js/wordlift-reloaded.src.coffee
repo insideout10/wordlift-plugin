@@ -346,8 +346,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.selectedEntities[ box.id ] = {}
           
   $scope.addError = (errorMsg)->
-    currentDate = new Date()
-    $scope.errors.unshift [ new Date(), errorMsg ] 
+    $scope.errors.unshift { type: 'error', msg: errorMsg } 
 
   # Delegate to EditorService
   $scope.createTextAnnotationFromCurrentSelection = ()->
@@ -480,7 +479,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     		<div class="box-header">
           <h5 class="label">
             {{box.label}}
-            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : analysis, 'preview' : !analysis }">Add entity</span>
+            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : !isRunning, 'preview' : isRunning }">Add entity</span>
           </h5>
           <wl-entity-form ng-show="addEntityFormIsVisible" entity="newEntity" box="box" on-submit="closeAddEntityForm()"></wl-entity-form>
           <div class="wl-selected-items-wrapper">
@@ -1246,9 +1245,8 @@ $(
   container = $("""
   	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
   		
-      <div class="wl-error" ng-repeat="error in errors">
-        <span class="wl-date">{{ error[0] | date:'HH:mm:ss' }}</span>
-        <span class="wl-msg">{{ error[1] }}</span>
+      <div class="wl-error" ng-repeat="item in errors">
+        <span class="wl-msg">{{ item.msg }}</span>
       </div>
 
       <h3 class="wl-widget-headline">
