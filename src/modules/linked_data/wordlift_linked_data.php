@@ -232,17 +232,9 @@ function wl_save_entity( $entity_data ) {
 	$type_uri         = $entity_data['main_type'];
 	$entity_types     = isset( $entity_data['type'] ) ? $entity_data['type'] : array();
 	$description      = $entity_data['description'];
-	$images           = isset( $entity_data['image'] ) ?
-		( is_array( $entity_data['image'] )
-			? $entity_data['image']
-			: array( $entity_data['image'] ) )
-		: array();
+	$images           = isset( $entity_data['image'] ) ? wl_force_to_array( $entity_data['image'] ) : array();
+	$same_as          = isset( $entity_data['sameas'] ) ? wl_force_to_array( $entity_data['sameas'] ) : array();
 	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
-	$same_as          = isset( $entity_data['sameas'] ) ?
-		( is_array( $entity_data['sameas'] )
-			? $entity_data['sameas']
-			: array( $entity_data['sameas'] ) )
-		: array();
 	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
 
 	// wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
