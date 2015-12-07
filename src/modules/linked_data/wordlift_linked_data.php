@@ -230,7 +230,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
                     'type_uris'       => $type_uris,
                     'images'          => $images,
                     'related_post_id' => $related_post_id,
-                    'same_as'         => $same_as
+                    'same_as'         => $same_as,
 					'properties'      => $other_properties
                 );
                 
@@ -360,8 +360,10 @@ function wl_save_entity( $entity_properties ) {
 	// Save the sameAs data for the entity.
 	wl_schema_set_value( $post_id, 'sameAs', $same_as );
 	
-	// TODO: deal with other properties
-	AAAAAAAAA
+	// Save the other properties (latitude, langitude, startDate, endDate, etc.)
+	foreach ( $other_properties as $property_name => $property_value ) {
+		wl_schema_set_value( $post_id, $property_name, $property_value);
+	}
 
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );
