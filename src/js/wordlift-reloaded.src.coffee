@@ -313,7 +313,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$injector', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $injector)-> 
+.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
 
   $scope.isRunning = false
   $scope.analysis = undefined
@@ -331,7 +331,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
 
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
-    $scope.errors.push errorMsg
+    $scope.addError errorMsg
 
   $rootScope.$on "analysisServiceStatusUpdated", (event, newStatus) ->
     $scope.isRunning = newStatus
@@ -345,6 +345,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   for box in $scope.configuration.classificationBoxes
     $scope.selectedEntities[ box.id ] = {}
           
+  $scope.addError = (errorMsg)->
+    currentDate = new Date()
+    $scope.errors.unshift [ new Date(), errorMsg ] 
+
   # Delegate to EditorService
   $scope.createTextAnnotationFromCurrentSelection = ()->
     EditorService.createTextAnnotationFromCurrentSelection()
@@ -476,7 +480,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     		<div class="box-header">
           <h5 class="label">
             {{box.label}}
-            <span ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : isThereASelection, 'preview' : !isThereASelection }">Add entity</span>
+            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button button-primary selected">Add entity</span>
           </h5>
           <wl-entity-form ng-show="addEntityFormIsVisible" entity="newEntity" box="box" on-submit="closeAddEntityForm()"></wl-entity-form>
           <div class="wl-selected-items-wrapper">
@@ -496,9 +500,18 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.addEntityFormIsVisible = false
 
       $scope.openAddEntityForm = ()->
-        if $scope.isThereASelection
-          $scope.addEntityFormIsVisible = true
-          $scope.createTextAnnotationFromCurrentSelection()
+        
+        if !$scope.isThereASelection and !$scope.annotation?
+          $scope.addError "Select a text or an existing annotation in order to create a new entity."
+          return
+        
+        $scope.addEntityFormIsVisible = true
+        
+        if $scope.annotation?
+          $log.debug "There is a current annotation already. Nothing to do"
+          return
+
+        $scope.createTextAnnotationFromCurrentSelection()
       
       $scope.closeAddEntityForm = ()->
         $scope.addEntityFormIsVisible = false
@@ -1076,7 +1089,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       
@@ -1231,7 +1244,11 @@ $(
   container = $("""
   	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
   		
-      <div class="wl-error" ng-repeat="error in errors">{{error}}</div>
+      <div class="wl-error" ng-repeat="error in errors">
+        <span class="wl-date">{{ error[0] | date:'HH:mm:ss' }}</span>
+        <span class="wl-msg">{{ error[1] }}</span>
+      </div>
+
       <h3 class="wl-widget-headline">
         <span>Semantic tagging</span>
         <span ng-show="isRunning" class="wl-spinner"></span>

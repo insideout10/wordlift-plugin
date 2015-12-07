@@ -147,7 +147,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       

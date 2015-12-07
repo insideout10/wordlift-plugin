@@ -25,7 +25,11 @@ $(
   container = $("""
   	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
   		
-      <div class="wl-error" ng-repeat="error in errors">{{error}}</div>
+      <div class="wl-error" ng-repeat="error in errors">
+        <span class="wl-date">{{ error[0] | date:'HH:mm:ss' }}</span>
+        <span class="wl-msg">{{ error[1] }}</span>
+      </div>
+
       <h3 class="wl-widget-headline">
         <span>Semantic tagging</span>
         <span ng-show="isRunning" class="wl-spinner"></span>

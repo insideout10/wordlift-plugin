@@ -58,7 +58,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$injector', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $injector)-> 
+.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
 
   $scope.isRunning = false
   $scope.analysis = undefined
@@ -76,7 +76,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
 
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
-    $scope.errors.push errorMsg
+    $scope.addError errorMsg
 
   $rootScope.$on "analysisServiceStatusUpdated", (event, newStatus) ->
     $scope.isRunning = newStatus
@@ -90,6 +90,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   for box in $scope.configuration.classificationBoxes
     $scope.selectedEntities[ box.id ] = {}
           
+  $scope.addError = (errorMsg)->
+    currentDate = new Date()
+    $scope.errors.unshift [ new Date(), errorMsg ] 
+
   # Delegate to EditorService
   $scope.createTextAnnotationFromCurrentSelection = ()->
     EditorService.createTextAnnotationFromCurrentSelection()
