@@ -198,7 +198,7 @@ function wl_save_entities( $entities, $related_post_id = null ) {
 		$entity['related_post_id'] = $related_post_id;
 	
 		// Save the entity.
-		$entity_post = wl_save_entity( $entity, $related_post_id );
+		$entity_post = wl_save_entity( $entity );
                 
 		// Store the post in the return array if successful.
 		if ( null !== $entity_post ) {

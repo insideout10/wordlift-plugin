@@ -209,8 +209,13 @@ class EntityTest extends WP_UnitTestCase
 		
 		// Check that the type is set correctly.
 		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity_post->ID ) );
-		$types = wl_get_entity_rdf_types( $entity_post->ID );
-		$this->assertEquals( 0, count( $types ) );
+		
+		// Check coordinates
+		$this->assertEquals( array( 43.21 ), wl_schema_get_value( $entity_post->ID, 'latitude' ) );
+		$this->assertEquals( array( 12.34 ), wl_schema_get_value( $entity_post->ID, 'longitude' ) );
+		
+		// Check invalid property
+		$this->assertEquals( null, wl_schema_get_value( $entity_post->ID, 'fake' ) );
     }
 
     function create_World_Wide_Web_Foundation( $related_post_id ) {
