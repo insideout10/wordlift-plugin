@@ -37,7 +37,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           </div>
       </div>
       <div ng-hide="isInternal()" class="wl-buttons-wrapper">
-        <span class="button button-primary" ng-click="onSubmit()">Save</span>
+        <span class="button button-primary" ng-click="onSubmit()">Add</span>
       </div>
       <div ng-show="isInternal()" class="wl-buttons-wrapper">
         <span class="button button-primary" ng-click="linkTo('lod')">View Linked Data<i class="wl-link"></i></span>

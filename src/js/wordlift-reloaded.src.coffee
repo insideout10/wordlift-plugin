@@ -575,7 +575,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           </div>
       </div>
       <div ng-hide="isInternal()" class="wl-buttons-wrapper">
-        <span class="button button-primary" ng-click="onSubmit()">Save</span>
+        <span class="button button-primary" ng-click="onSubmit()">Add</span>
       </div>
       <div ng-show="isInternal()" class="wl-buttons-wrapper">
         <span class="button button-primary" ng-click="linkTo('lod')">View Linked Data<i class="wl-link"></i></span>
@@ -945,7 +945,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   'wordlift.editpost.widget.services.AnalysisService'
   ])
 # Manage redlink analysis responses
-.service('EditorService', [ 'AnalysisService', '$log', '$http', '$rootScope', (AnalysisService, $log, $http, $rootScope)-> 
+.service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
   
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
   findEntities = (html) ->
@@ -978,6 +978,8 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   disambiguate = ( annotation, entity )->
     ed = editor()
     ed.dom.addClass annotation.id, "disambiguated"
+    for type in configuration.types
+      ed.dom.removeClass annotation.id, type.css
     ed.dom.removeClass annotation.id, "unlinked"
     ed.dom.addClass annotation.id, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
