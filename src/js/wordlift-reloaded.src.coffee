@@ -351,6 +351,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->
     EditorService.selectAnnotation annotationId
+
   $scope.isEntitySelected = (entity, box)->
     return $scope.selectedEntities[ box.id ][ entity.id ]?
   $scope.isLinkedToCurrentAnnotation = (entity)->
@@ -388,7 +389,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         
 
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
+    
     $scope.annotation = annotationId
+    # Close new entity creation forms if needed
+    for id, box of $scope.boxes 
+      box.addEntityFormIsVisible = false
 
   $scope.$on "textAnnotationAdded", (event, annotation) ->
     $log.debug "added a new annotation with Id #{annotation.id}"
@@ -488,8 +493,6 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     """
     link: ($scope, $element, $attrs, $ctrl) ->  	  
   	  
-      $scope.currentWidget = undefined
-      $scope.isWidgetOpened = false
       $scope.addEntityFormIsVisible = false
 
       $scope.openAddEntityForm = ()->
@@ -501,25 +504,9 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
         $scope.addEntityFormIsVisible = false
         $scope.addNewEntityToAnalysis $scope.box
 
-      $scope.closeWidgets = ()->
-        $scope.currentWidget = undefined
-        $scope.isWidgetOpened = false
-
       $scope.hasSelectedEntities = ()->
         Object.keys( $scope.selectedEntities[ $scope.box.id ] ).length > 0
 
-      $scope.embedImageInEditor = (image)->
-        $scope.$emit "embedImageInEditor", image
-
-      $scope.toggleWidget = (widget)->
-        if $scope.currentWidget is widget
-          $scope.currentWidget = undefined
-          $scope.isWidgetOpened = false
-        else 
-          $scope.currentWidget = widget
-          $scope.isWidgetOpened = true   
-          $scope.updateWidget widget, $scope.box.id 
-          
     controller: ($scope, $element, $attrs) ->
       
       # Mantain a reference to nested entity tiles $scope
@@ -527,11 +514,6 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.tiles = []
 
       $scope.boxes[ $scope.box.id ] = $scope
-
-      $scope.$watch "annotation", (annotationId) ->
-        
-        $scope.currentWidget = undefined
-        $scope.isWidgetOpened = false
             
       ctrl = @
       ctrl.addTile = (tile)->
@@ -1015,9 +997,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   $rootScope.$on "analysisPerformed", (event, analysis) ->
     service.embedAnalysis analysis if analysis? and analysis.annotations?
   
-  $rootScope.$on "embedImageInEditor", (event, image) ->
-    tinyMCE.execCommand 'mceInsertContent', false, "<img src=\"#{image}\" width=\"100%\" />"
-  
   $rootScope.$on "entitySelected", (event, entity, annotationId) ->
     # per tutte le annotazioni o solo per quella corrente 
     # recupero dal testo una struttura del tipo entityId: [ annotationId ]
@@ -1101,7 +1080,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       
@@ -1161,7 +1140,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
         # If the annotation has no entity matches it could be a problem
         if annotation.entityMatches.length is 0
-          $log.warn "Annotation with id #{annotation.id} has no entity matches!"
+          $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
           continue
         
         element = "<span id=\"#{annotationId}\" class=\"textannotation"
@@ -1173,7 +1152,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           if annotationId in entity.occurrences
             element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
         
-        element += "\">"
+        element += "\" contenteditable=\"false\">"
               
         # Finally insert the HTML code.
         traslator.insertHtml element, text: annotation.start

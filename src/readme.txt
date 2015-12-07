@@ -83,6 +83,14 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+
+= 3.2.2 (2015-12-07) =
+* Fix: [#203](https://github.com/insideout10/wordlift-plugin/issues/203): alternative titles are spreading to related entities, fixed.
+
+= 3.2.1 (2015-12-06) =
+ * Fix: [#200](https://github.com/insideout10/wordlift-plugin/issues/200): Fix new entity form visibility with undefined current annotation.
+ * Fix: [#194](https://github.com/insideout10/wordlift-plugin/issues/194): Make text annotations within tinymce editor not editable.
+
 = 3.2.0 (2015-12-04) =
  * Enhancement: [#196](https://github.com/insideout10/wordlift-plugin/issues/196): renovate the Vocabulary icon with WordLift logo.
  * Enhancement: [#195](https://github.com/insideout10/wordlift-plugin/issues/195): re-enable title duplicates notices.
@@ -154,13 +162,13 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
  * Fix: [#148](https://github.com/insideout10/wordlift-plugin/issues/148): SEO Ultimate compatibility issue which caused meta values to be copied to new entities created within a post is now solved.
 
 = 3.0.13 (2015-10-30) =
- * Fix: [#128](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution.
+ * Fix: [#128](https://github.com/insideout10/wordlift-plugin/issues/128): now hashes in the text do not break anymore the annotations embedding after analysis execution.
  * Fix: [#95](https://github.com/insideout10/wordlift-plugin/issues/95): WordPress image edit controls disappears after installing WordLift is now fixed.
 
 = 3.0.12 (2015-10-23) =
- * Enhancement: [issue 85](https://github.com/insideout10/wordlift-plugin/issues/85). Now structured data are added in the entity pages for the current entity itself
- * Fix: [issue 128](https://github.com/insideout10/wordlift-plugin/issues/128). Now hashes in the text do not break anymore the annotations embedding after analysis execution
- * Fix: [issue 96](https://github.com/insideout10/wordlift-plugin/issues/96). Garbage response from api is no more returned
+ * Enhancement: [#85](https://github.com/insideout10/wordlift-plugin/issues/85): now structured data are added in the entity pages for the current entity itself
+ * Fix: [#128](https://github.com/insideout10/wordlift-plugin/issues/128): now hashes in the text do not break anymore the annotations embedding after analysis execution
+ * Fix: [#96](https://github.com/insideout10/wordlift-plugin/issues/96): garbage response from api is no more returned
 
 = 3.0.11 (2015-10-14) =
  * Enhancement: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
