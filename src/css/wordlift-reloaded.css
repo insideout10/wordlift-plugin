@@ -1878,8 +1878,9 @@
   height: 1px;
 }
 #wordlift-edit-post-wrapper .wl-error {
+  margin-bottom: 6px;
   padding: 2px 12px;
-  border-left: #f00 4px solid;
+  border-left: #f20f62 4px solid;
   font-size: 11px;
 }
 #wordlift-edit-post-wrapper input,
@@ -2337,6 +2338,16 @@ body#tinymce .textannotation {
   padding: 2px 0px;
   cursor: pointer;
   cursor: hand;
+}
+body#tinymce .textannotation.unlinked {
+  border: #999 1px dashed;
+  padding: 2px 2px;
+}
+body#tinymce .textannotation.unlinked.selected {
+  font-weight: bold;
+  border: #999 1px dashed !important;
+  background-color: #fff !important;
+  color: inherit !important;
 }
 body#tinymce .textannotation.selected {
   border: 0 !important;
