@@ -344,6 +344,9 @@
       $scope.selectAnnotation = function(annotationId) {
         return EditorService.selectAnnotation(annotationId);
       };
+      $scope.hasAnalysis = function() {
+        return $scope.analysis != null;
+      };
       $scope.isEntitySelected = function(entity, box) {
         return $scope.selectedEntities[box.id][entity.id] != null;
       };
@@ -502,7 +505,7 @@
         restrict: 'E',
         scope: true,
         transclude: true,
-        template: "<div class=\"classification-box\">\n	<div class=\"box-header\">\n          <h5 class=\"label\">\n            {{box.label}}\n            <span ng-hide=\"addEntityFormIsVisible\" ng-click=\"openAddEntityForm()\" class=\"button\" ng-class=\"{ 'button-primary selected' : !isRunning, 'preview' : isRunning }\">Add entity</span>\n          </h5>\n          <wl-entity-form ng-show=\"addEntityFormIsVisible\" entity=\"newEntity\" box=\"box\" on-submit=\"closeAddEntityForm()\"></wl-entity-form>\n          <div class=\"wl-selected-items-wrapper\">\n            <span ng-class=\"'wl-' + entity.mainType\" ng-repeat=\"(id, entity) in selectedEntities[box.id]\" class=\"wl-selected-item\">\n              {{ entity.label}}\n              <i class=\"wl-deselect\" ng-click=\"onSelectedEntityTile(entity, box)\"></i>\n            </span>\n          </div>\n        </div>\n  			<div class=\"box-tiles\">\n          <div ng-transclude></div>\n  		  </div>\n      </div>	",
+        template: "<div class=\"classification-box\">\n	<div class=\"box-header\">\n          <h5 class=\"label\">\n            {{box.label}}\n            <span ng-hide=\"addEntityFormIsVisible\" ng-click=\"openAddEntityForm()\" class=\"button\" ng-class=\"{ 'button-primary selected' : hasAnalysis(), 'preview' : !hasAnalysis() }\">Add entity</span>\n          </h5>\n          <wl-entity-form ng-show=\"addEntityFormIsVisible\" entity=\"newEntity\" box=\"box\" on-submit=\"closeAddEntityForm()\"></wl-entity-form>\n          <div class=\"wl-selected-items-wrapper\">\n            <span ng-class=\"'wl-' + entity.mainType\" ng-repeat=\"(id, entity) in selectedEntities[box.id]\" class=\"wl-selected-item\">\n              {{ entity.label}}\n              <i class=\"wl-deselect\" ng-click=\"onSelectedEntityTile(entity, box)\"></i>\n            </span>\n          </div>\n        </div>\n  			<div class=\"box-tiles\">\n          <div ng-transclude></div>\n  		  </div>\n      </div>	",
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.addEntityFormIsVisible = false;
           $scope.openAddEntityForm = function() {

@@ -100,6 +100,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.selectAnnotation = (annotationId)->
     EditorService.selectAnnotation annotationId
 
+  $scope.hasAnalysis = ()->
+    $scope.analysis? 
+
   $scope.isEntitySelected = (entity, box)->
     return $scope.selectedEntities[ box.id ][ entity.id ]?
   $scope.isLinkedToCurrentAnnotation = (entity)->

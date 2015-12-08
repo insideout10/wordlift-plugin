@@ -355,6 +355,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.selectAnnotation = (annotationId)->
     EditorService.selectAnnotation annotationId
 
+  $scope.hasAnalysis = ()->
+    $scope.analysis? 
+
   $scope.isEntitySelected = (entity, box)->
     return $scope.selectedEntities[ box.id ][ entity.id ]?
   $scope.isLinkedToCurrentAnnotation = (entity)->
@@ -482,7 +485,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     		<div class="box-header">
           <h5 class="label">
             {{box.label}}
-            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : !isRunning, 'preview' : isRunning }">Add entity</span>
+            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : hasAnalysis(), 'preview' : !hasAnalysis() }">Add entity</span>
           </h5>
           <wl-entity-form ng-show="addEntityFormIsVisible" entity="newEntity" box="box" on-submit="closeAddEntityForm()"></wl-entity-form>
           <div class="wl-selected-items-wrapper">
