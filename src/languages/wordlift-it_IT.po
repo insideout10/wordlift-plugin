@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
 "POT-Creation-Date: 2015-12-09 01:38+0100\n"
-"PO-Revision-Date: 2015-12-09 01:39+0100\n"
+"PO-Revision-Date: 2015-12-09 01:50+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: it\n"
@@ -53,7 +53,7 @@ msgstr ""
 
 #: ../includes/class-wordlift-entity-service.php:106
 msgid "Related Posts"
-msgstr "Post collegati"
+msgstr "Articoli collegati"
 
 #: ../includes/class-wordlift-entity-service.php:309
 msgid "Add more titles"
