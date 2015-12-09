@@ -103,7 +103,7 @@ class Wordlift_Entity_Service {
 	public function register_custom_columns( $columns ) {
 
 		return array_merge( $columns, array( 
-			'related_posts' => 'Related Posts' 
+			'related_posts' => __( 'Related Posts', 'wordlift' ) 
 			) );		
 	}
 
