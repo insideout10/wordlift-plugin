@@ -44,14 +44,10 @@ function wl_serialize_entity( $entity ) {
 function wl_remove_text_annotations( $data ) {
 
 	//    <span class="textannotation" id="urn:enhancement-777cbed4-b131-00fb-54a4-ed9b26ae57ea">
-	//    $pattern = '/<span class=\\\"textannotation\\\" id=\\\"[^\"]+\\\">([^<]+)<\/span>/i';
-	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation\\\"[^>]*>([^<]+)<\/\1>/im';
-
-	// wl_write_log( "Removing text annotations [ pattern :: $pattern ]" );
-
+	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?!\sdisambiguated)[^\\"]*\\\"[^>]*>([^<]+)<\/\1>/im';
 	// Remove the pattern while it is found (match nested annotations).
-	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {
-		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], - 1, $count );
+	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {		
+		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count ); 
 	}
 
 	return $data;

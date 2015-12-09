@@ -130,6 +130,15 @@ class Wordlift {
 	private $sharethis_service;
 
 	/**
+	 * The PrimaShop adapter.
+	 *
+	 * @since 3.2.3
+	 * @access private
+	 * @var \Wordlift_PrimaShop_Adapter $primashop_adapter The PrimaShop adapter.
+	 */
+	private $primashop_adapter;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -247,6 +256,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-notice-service.php';
 
 		/**
+		 * The PrimaShop adapter.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-primashop-adapter.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -299,6 +313,9 @@ class Wordlift {
 
 		// Create an instance of the Notice service.
 		new Wordlift_Notice_Service();
+
+		// Create an instance of the PrimaShop adapter.
+		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 	}
 
 	/**
@@ -346,7 +363,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
 		// Register custom allowed redirect hosts.
-		$this->loader->add_filter( 'allowed_redirect_hosts' , $this->redirect_service, 'allowed_redirect_hosts' );
+		$this->loader->add_filter( 'allowed_redirect_hosts', $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
 
@@ -355,7 +372,15 @@ class Wordlift {
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 
+		// Add custom columns for entity listing in the backand
+		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_service, 'register_custom_columns' );
+		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_service, 'render_custom_columns', 10, 2 );
+
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
+
+		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
+		// entities.
+		$this->loader->add_filter( 'prima_metabox_entity_header_args', $this->primashop_adapter, 'prima_metabox_entity_header_args', 10, 2 );
 
 	}
 

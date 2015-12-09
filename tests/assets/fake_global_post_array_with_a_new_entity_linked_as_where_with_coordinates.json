@@ -1,0 +1,19 @@
+{
+   "wl_entities":{
+      "local-entity-5g3iu5g345y5y35yu":{
+         "uri":"local-entity-5g3iu5g345y5y35yu",
+         "label":"Frattocchie",
+         "description":"Just a place",
+         "main_type":"wl-place",
+         "properties":{
+             "latitude": [43.21],
+             "longitude": [12.34]
+         }
+      }
+   },
+   "wl_boxes":{
+      "where":[
+         "local-entity-5g3iu5g345y5y35yu"
+      ]
+   }
+}

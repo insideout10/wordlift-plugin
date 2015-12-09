@@ -84,6 +84,12 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 
+= 3.3.0 (???) =
+* Enhancement: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): download and save Place coordinates from RL.
+
+= 3.2.3 (2015-12-08) =
+* Fix: [#202](https://github.com/insideout10/wordlift-plugin/issues/202): [PrimaShop](http://www.primathemes.com/products/primashop-for-woocommerce/) users may now enjoy header settings on entity pages.
+
 = 3.2.2 (2015-12-07) =
 * Fix: [#203](https://github.com/insideout10/wordlift-plugin/issues/203): alternative titles are spreading to related entities, fixed.
 

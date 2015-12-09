@@ -313,7 +313,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$injector', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $injector)-> 
+.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
 
   $scope.isRunning = false
   $scope.analysis = undefined
@@ -331,7 +331,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
 
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
-    $scope.errors.push errorMsg
+    $scope.addError errorMsg
 
   $rootScope.$on "analysisServiceStatusUpdated", (event, newStatus) ->
     $scope.isRunning = newStatus
@@ -345,12 +345,18 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   for box in $scope.configuration.classificationBoxes
     $scope.selectedEntities[ box.id ] = {}
           
+  $scope.addError = (errorMsg)->
+    $scope.errors.unshift { type: 'error', msg: errorMsg } 
+
   # Delegate to EditorService
   $scope.createTextAnnotationFromCurrentSelection = ()->
     EditorService.createTextAnnotationFromCurrentSelection()
   # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->
     EditorService.selectAnnotation annotationId
+
+  $scope.hasAnalysis = ()->
+    $scope.analysis? 
 
   $scope.isEntitySelected = (entity, box)->
     return $scope.selectedEntities[ box.id ][ entity.id ]?
@@ -373,10 +379,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     # Select the new entity
     $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
-    # Create new entity object
-    $scope.newEntity = AnalysisService.createEntity()
-
-  
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -387,36 +389,43 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
         
+  # Observe current annotation changed
+  $scope.$watch "annotation", (newAnnotationId)->
+    
+    $log.debug "Current annotation id changed to #{newAnnotationId}"
+    # Execute just once the analysis is properly performed
+    return if $scope.isRunning
+    # Execute just if the current annotation id is defined
+    return unless newAnnotationId?
+    # Create new entity object
+    $scope.newEntity = AnalysisService.createEntity()
+    # Retrieve the current annotation
+    annotation = $scope.analysis.annotations[ newAnnotationId ]
+    # Set the entity label accordingly to the current annotation
+    $scope.newEntity.label = annotation.text
+    # Look for SameAs suggestions
+    AnalysisService.getSuggestedSameAs annotation.text
 
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
-    
     $scope.annotation = annotationId
     # Close new entity creation forms if needed
     for id, box of $scope.boxes 
       box.addEntityFormIsVisible = false
-
-  $scope.$on "textAnnotationAdded", (event, annotation) ->
-    $log.debug "added a new annotation with Id #{annotation.id}"
     
+  $scope.$on "textAnnotationAdded", (event, annotation) ->
+    $log.debug "added a new annotation with Id #{annotation.id}"  
     # Add the new annotation to the current analysis
     $scope.analysis.annotations[ annotation.id ] = annotation
     # Set the annotation scope
     $scope.annotation = annotation.id
-    # Set the annotation text as label for the new entity
-    $scope.newEntity.label = annotation.text
-    # Set the annotation id as id for the new entity
-    # Ask for SameAs suggestions
-    AnalysisService.getSuggestedSameAs annotation.text
-
+    
   $scope.$on "sameAsRetrieved", (event, sameAs) ->
-    $log.debug "Retrieved sameAs #{sameAs}"
     $scope.newEntity.suggestedSameAs = sameAs
   
   $scope.$on "relatedPostsLoaded", (event, posts) ->
     $scope.relatedPosts = posts
   
   $scope.$on "analysisPerformed", (event, analysis) -> 
-    
     $scope.analysis = analysis
 
     # Preselect 
@@ -476,7 +485,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     		<div class="box-header">
           <h5 class="label">
             {{box.label}}
-            <span ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : isThereASelection, 'preview' : !isThereASelection }">Add entity</span>
+            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : hasAnalysis(), 'preview' : !hasAnalysis() }">Add entity</span>
           </h5>
           <wl-entity-form ng-show="addEntityFormIsVisible" entity="newEntity" box="box" on-submit="closeAddEntityForm()"></wl-entity-form>
           <div class="wl-selected-items-wrapper">
@@ -496,9 +505,18 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.addEntityFormIsVisible = false
 
       $scope.openAddEntityForm = ()->
-        if $scope.isThereASelection
-          $scope.addEntityFormIsVisible = true
-          $scope.createTextAnnotationFromCurrentSelection()
+        
+        if !$scope.isThereASelection and !$scope.annotation?
+          $scope.addError "Select a text or an existing annotation in order to create a new entity."
+          return
+        
+        $scope.addEntityFormIsVisible = true
+        
+        if $scope.annotation?
+          $log.debug "There is a current annotation already. Nothing to do"
+          return
+
+        $scope.createTextAnnotationFromCurrentSelection()
       
       $scope.closeAddEntityForm = ()->
         $scope.addEntityFormIsVisible = false
@@ -562,7 +580,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           </div>
       </div>
       <div ng-hide="isInternal()" class="wl-buttons-wrapper">
-        <span class="button button-primary" ng-click="onSubmit()">Save</span>
+        <span class="button button-primary" ng-click="onSubmit()">Add</span>
       </div>
       <div ng-show="isInternal()" class="wl-buttons-wrapper">
         <span class="button button-primary" ng-click="linkTo('lod')">View Linked Data<i class="wl-link"></i></span>
@@ -674,7 +692,12 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
             name='wl_entities[{{entity.id}}][image][]' value='{{image}}' />
           <input ng-repeat="sameAs in entity.sameAs" type='text'
             name='wl_entities[{{entity.id}}][sameas][]' value='{{sameAs}}' />
-
+          
+          <div ng-repeat="(property, values) in entity.properties">
+            <input ng-repeat="propertyValue in values" type='text'
+              name='wl_entities[{{entity.id}}][properties][{{property}}][]' value='{{propertyValue}}' />
+          </div>
+         
       	</div>
     """
   )
@@ -932,7 +955,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   'wordlift.editpost.widget.services.AnalysisService'
   ])
 # Manage redlink analysis responses
-.service('EditorService', [ 'AnalysisService', '$log', '$http', '$rootScope', (AnalysisService, $log, $http, $rootScope)-> 
+.service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
   
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
   findEntities = (html) ->
@@ -965,6 +988,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   disambiguate = ( annotation, entity )->
     ed = editor()
     ed.dom.addClass annotation.id, "disambiguated"
+    for type in configuration.types
+      ed.dom.removeClass annotation.id, type.css
+    ed.dom.removeClass annotation.id, "unlinked"
     ed.dom.addClass annotation.id, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
     ed.dom.setAttrib annotation.id, "itemid", entity.id
@@ -1075,7 +1101,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\" contenteditable=\"false\">#{ed.selection.getContent()}</span>"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       
@@ -1230,7 +1256,10 @@ $(
   container = $("""
   	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
   		
-      <div class="wl-error" ng-repeat="error in errors">{{error}}</div>
+      <div class="wl-error" ng-repeat="item in errors">
+        <span class="wl-msg">{{ item.msg }}</span>
+      </div>
+
       <h3 class="wl-widget-headline">
         <span>Semantic tagging</span>
         <span ng-show="isRunning" class="wl-spinner"></span>
