@@ -478,6 +478,22 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 }
 
 /**
+ * Utility function to check if a variable is set and force it to be an array
+ * 
+ * @package mixed $value Any value
+ * 
+ * @return array Array containing $value (if $value was not an array) 
+ */
+function wl_force_to_array( $value ) {
+	
+	if ( ! is_array( $value ) ) {
+		return array( $value );
+	}
+	
+	return $value;
+}
+
+/**
  * Schedule the execution of SPARQL Update queries before the WordPress look ends.
  */
 function wl_shutdown() {
