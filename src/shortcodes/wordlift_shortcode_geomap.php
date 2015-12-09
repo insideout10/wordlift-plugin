@@ -26,7 +26,7 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 		) );
 		
 		// Also include current entity
-		if( get_post_type( $post_id ) == Wordlift_Entity_Service::TYPE_NAME ) {
+		if ( Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
 			$related_ids[] = $post_id;
 		}
 	}
