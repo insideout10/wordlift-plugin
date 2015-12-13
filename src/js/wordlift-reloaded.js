@@ -979,7 +979,8 @@
 
   angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
     'configuration', 'AnalysisService', '$log', '$http', '$rootScope', function(configuration, AnalysisService, $log, $http, $rootScope) {
-      var currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
+      var INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
+      INVISIBLE_CHAR = '\uFEFF';
       findEntities = function(html) {
         var annotation, match, pattern, results, traslator;
         traslator = Traslator.create(html);
@@ -1140,7 +1141,7 @@
           textAnnotation = AnalysisService.createAnnotation({
             text: text
           });
-          textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked selected\" contenteditable=\"false\">" + (ed.selection.getContent()) + "</span>";
+          textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked selected\">" + (ed.selection.getContent()) + "</span>" + INVISIBLE_CHAR;
           ed.selection.setContent(textAnnotationSpan);
           content = ed.getContent({
             format: 'raw'
@@ -1196,7 +1197,7 @@
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
                 }
               }
-              element += "\" contenteditable=\"false\">";
+              element += "\">";
               traslator.insertHtml(element, {
                 text: annotation.start
               });
@@ -1204,9 +1205,11 @@
                 text: annotation.end
               });
             }
+            html = traslator.getHtml();
+            html = html.replace(/<\/span>/gim, "</span>" + INVISIBLE_CHAR);
             $rootScope.$broadcast("analysisEmbedded");
             isDirty = ed.isDirty();
-            ed.setContent(traslator.getHtml(), {
+            ed.setContent(html, {
               format: 'raw'
             });
             return ed.isNotDirty = !isDirty;
