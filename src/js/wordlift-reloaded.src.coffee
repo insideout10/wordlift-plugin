@@ -934,6 +934,8 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 # Manage redlink analysis responses
 .service('EditorService', [ 'AnalysisService', '$log', '$http', '$rootScope', (AnalysisService, $log, $http, $rootScope)-> 
   
+  INVISIBLE_CHAR = '\uFEFF'
+
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
   findEntities = (html) ->
     # Prepare a traslator instance that will traslate Html and Text positions.
@@ -1075,7 +1077,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\">#{ed.selection.getContent()}</span>"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       
@@ -1153,11 +1155,16 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         traslator.insertHtml element, text: annotation.start
         traslator.insertHtml '</span>', text: annotation.end
 
+      # Add a zero-width no-break space after each annotation
+      # to be sure that a caret container is available
+      # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
+      html = traslator.getHtml()
+      html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}" )
+      
       $rootScope.$broadcast "analysisEmbedded"
-
       # Update the editor Html code.
       isDirty = ed.isDirty()
-      ed.setContent traslator.getHtml(), format: 'raw'
+      ed.setContent html, format: 'raw'
       ed.isNotDirty = not isDirty
 
   service
