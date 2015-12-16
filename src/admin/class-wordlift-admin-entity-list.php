@@ -6,44 +6,46 @@
  * @since 3.3.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
-}
-
 /**
  * Wordlift_Entity_List_Service Class
  *
  * Handles the edit entities views.
  */
 class Wordlift_Entity_List_Service {
-
+	
 	/**
-	 * Constructor
+	 * Size of the entity thumbnail in the list
+	 * 
+	 * @since  3.3.0
+	 * 
+	 * @access private
+	 * 
+	 * @var    int $thumb_size Size of the thumb in pixels
 	 */
-	public function __construct() {
-		
-	}
+	private $thumb_size;
 
 	/**
 	 * Register custom columns for entity listing in backend
 	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_posts_custom_column
 	 *
-	 * @since 3.2.0
+	 * @since 3.3.0
 	 *
-	 * @param array $columns the current column.
+	 * @param array $columns the default columns.
 	 *
 	 * @return array Enhanced columns array.
 	 */
 	public function register_custom_columns( $columns ) {
 		
-		// take away first column
+		// Take away first column and keep a reference,
+		// so we can later insert the thumbnail between the first and the rest of columns.
 		$columns_cb = $columns['cb'];
 		unset( $columns['cb'] );
 		
+		// Thumbnails column is inserted in second place, while the related posts on the end.
 		$columns = array_merge(
-			array( 'cb'            => $columns_cb ),                                // re-add first column
+			array( 'cb'                      => $columns_cb ),                      // re-add first column
 			array( 'wl_column_thumbnail'     => __( 'Image', 'wordlift' ) ),        // thumb
-			$columns,                                                               // default columns (without the first 'cb')
+			$columns,                                                               // default columns (without the first)
 			array( 'wl_column_related_posts' => __( 'Related Posts', 'wordlift' ) ) // related posts
 		);
 
@@ -54,7 +56,7 @@ class Wordlift_Entity_List_Service {
 	 * Render custom columns
 	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
 	 *
-	 * @since 3.2.0
+	 * @since 3.3.0
 	 *
 	 * @param string $column the current column.
 	 * @param int $entity_id An entity post id.
@@ -71,12 +73,11 @@ class Wordlift_Entity_List_Service {
 			
 			case 'wl_column_thumbnail':
 				
-				$img_size  = 50;
 				$edit_link = get_edit_post_link( $entity_id );
-				$thumb     = get_the_post_thumbnail( $entity_id, array( $img_size, $img_size ) );
+				$thumb     = get_the_post_thumbnail( $entity_id, array( $this->thumb_size, $this->thumb_size ) );
 				
 				if( ! $thumb ) {
-					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='$img_size' />";
+					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='$this->thumb_size' />";
 				}
 				echo "<a href='$edit_link'>$thumb</a>";
 				break;	
