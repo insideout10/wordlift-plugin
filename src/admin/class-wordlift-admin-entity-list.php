@@ -82,7 +82,7 @@ class Wordlift_Entity_List_Service {
 	}
 	
 	/**
-	 * Add 4W select box before the 'Filter' button
+	 * Add 4W select box before the 'Filter' button.
 	 *
 	 * @since 3.3.0
 	 */
@@ -94,6 +94,9 @@ class Wordlift_Entity_List_Service {
 			return;
 		}
 		
+		// Was a W already selected?
+		$selected = isset( $_GET['4W_filter'] ) ? $_GET['4W_filter'] : '' ;
+		
 		// Build select box with the 4W
 		$all_w = array(
 			'Select W',
@@ -104,7 +107,8 @@ class Wordlift_Entity_List_Service {
 		);
 		$output  = '<select name="4W_filter" id="dropdown_4W_type">';
 		foreach ( $all_w as $w ) {
-			$output .= "<option value='$w'>" . ucfirst( __( $w, 'wordlift' ) ) . '</option>';
+			$default  = ( $selected == $w ) ? 'selected' : ''; 
+			$output  .= "<option value='$w' $default >" . ucfirst( __( $w, 'wordlift' ) ) . '</option>';
 		}
 		$output .= '</select>';
 		
@@ -116,28 +120,32 @@ class Wordlift_Entity_List_Service {
 	 * Server side response operations for the 4W filter set in *add_4W_filter*
 	 *
 	 * @since 3.3.0
+	 * 
+	 * @param array $clauses WP main query clauses.
+	 * 
+	 * @return array Modified clauses.
 	 */
 	public function add_4W_filter_query( $clauses ) {
 				
-		global $typenow, $wp_query;
-			var_dump( $wp_query );
-			var_dump( $clauses );
-		// Only show on entity list page
-		if( $typenow !== Wordlift_Entity_Service::TYPE_NAME ){
-			return;
+		global $typenow, $wpdb;
+		
+		// Only apply on entity list page and if the 4W_filter query param is set
+		if( ! ( $typenow == Wordlift_Entity_Service::TYPE_NAME && isset( $_GET['4W_filter'] ) ) ) {
+			return $clauses;
+		}
+			
+		// Check a valid W was requested
+		$requested_w = $_GET['4W_filter'];
+		if ( ! in_array( $requested_w, array( WL_WHAT_RELATION, WL_WHO_RELATION, WL_WHERE_RELATION, WL_WHEN_RELATION )) ) {
+			return $clauses;
 		}
 		
-		// Check if filter was selected
-		if ( isset( $wp_query->query_vars['4W_filter'] ) ) {
-			
-			$requested_w = $wp_query->query_vars['4W_filter'];
-			
-			// Check a valid W was requested
-			if ( ! in_array( $requested_w, array( WL_WHAT_RELATION, WL_WHO_RELATION, WL_WHERE_RELATION, WL_WHEN_RELATION )) ) {
-				return $wp_query;
-			}
-			
-		}
+		$w_table = wl_core_get_relation_instances_table_name();
+		
+		// Change WP main query clauses
+		$clauses['join']     .= "INNER JOIN $w_table ON $wpdb->posts.ID = $w_table.object_id";
+		$clauses['where']    .= "AND $w_table.predicate = '$requested_w'";
+		$clauses['distinct'] .= "DISTINCT";
 		
 		return $clauses;
 	}
