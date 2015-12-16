@@ -22,7 +22,7 @@ class Wordlift_Entity_List_Service {
 	 * 
 	 * @var    int $thumb_size Size of the thumb in pixels
 	 */
-	private $thumb_size;
+	const THUMB_SIZE = 50;
 
 	/**
 	 * Register custom columns for entity listing in backend
@@ -74,10 +74,10 @@ class Wordlift_Entity_List_Service {
 			case 'wl_column_thumbnail':
 				
 				$edit_link = get_edit_post_link( $entity_id );
-				$thumb     = get_the_post_thumbnail( $entity_id, array( $this->thumb_size, $this->thumb_size ) );
+				$thumb     = get_the_post_thumbnail( $entity_id, array( self::THUMB_SIZE, self::THUMB_SIZE ) );
 				
 				if( ! $thumb ) {
-					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='$this->thumb_size' />";
+					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='" . self::THUMB_SIZE . "' />";
 				}
 				echo "<a href='$edit_link'>$thumb</a>";
 				break;	
