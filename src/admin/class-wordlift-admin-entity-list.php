@@ -82,18 +82,63 @@ class Wordlift_Entity_List_Service {
 	}
 	
 	/**
-	 * Add 4W filter
-	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
+	 * Add 4W select box before the 'Filter' button
 	 *
 	 * @since 3.3.0
-	 *
-	 * @param string $column the current column.
-	 * @param int $entity_id An entity post id.
-	 *
-	 * @return true if the post is an entity otherwise false.
 	 */
 	public function add_4W_filter() {
-		//echo 'STOCAZZOOOO';
+		global $typenow;
+		
+		// Only show on entity list page
+		if( $typenow !== Wordlift_Entity_Service::TYPE_NAME ){
+			return;
+		}
+		
+		// Build select box with the 4W
+		$all_w = array(
+			'Select W',
+			WL_WHAT_RELATION,
+			WL_WHO_RELATION,
+			WL_WHERE_RELATION,
+			WL_WHEN_RELATION
+		);
+		$output  = '<select name="4W_filter" id="dropdown_4W_type">';
+		foreach ( $all_w as $w ) {
+			$output .= "<option value='$w'>" . ucfirst( __( $w, 'wordlift' ) ) . '</option>';
+		}
+		$output .= '</select>';
+		
+		// Print on page
+		echo $output;
 	}
-	
+
+	/**
+	 * Server side response operations for the 4W filter set in *add_4W_filter*
+	 *
+	 * @since 3.3.0
+	 */
+	public function add_4W_filter_query( $clauses ) {
+				
+		global $typenow, $wp_query;
+			var_dump( $wp_query );
+			var_dump( $clauses );
+		// Only show on entity list page
+		if( $typenow !== Wordlift_Entity_Service::TYPE_NAME ){
+			return;
+		}
+		
+		// Check if filter was selected
+		if ( isset( $wp_query->query_vars['4W_filter'] ) ) {
+			
+			$requested_w = $wp_query->query_vars['4W_filter'];
+			
+			// Check a valid W was requested
+			if ( ! in_array( $requested_w, array( WL_WHAT_RELATION, WL_WHO_RELATION, WL_WHERE_RELATION, WL_WHEN_RELATION )) ) {
+				return $wp_query;
+			}
+			
+		}
+		
+		return $clauses;
+	}
 }
