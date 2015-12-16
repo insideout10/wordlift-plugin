@@ -14,13 +14,9 @@
 class Wordlift_Entity_List_Service {
 	
 	/**
-	 * Size of the entity thumbnail in the list
+	 * Size of the entity thumbnail in pixels
 	 * 
 	 * @since  3.3.0
-	 * 
-	 * @access private
-	 * 
-	 * @var    int $thumb_size Size of the thumb in pixels
 	 */
 	const THUMB_SIZE = 50;
 
