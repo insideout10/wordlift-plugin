@@ -91,44 +91,6 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Register custom columns for entity listing in backend
-	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_posts_custom_column
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param array $columns the current column.
-	 *
-	 * @return array Enhanced columns array.
-	 */
-	public function register_custom_columns( $columns ) {
-
-		return array_merge( $columns, array( 
-			'related_posts' => __( 'Related Posts', 'wordlift' ) 
-			) );		
-	}
-
-	/**
-	 * Render custom columns
-	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
-	 *
-	 * @since 3.2.0
-	 *
-	 * @param string $column the current column.
-	 * @param int $entity_id An entity post id.
-	 *
-	 * @return true if the post is an entity otherwise false.
-	 */
-	public function render_custom_columns( $column, $entity_id ) {
-		
-		switch ( $column ) {
-			case 'related_posts':
-				echo count( wl_core_get_related_post_ids( $entity_id ) );
-				break;	
-		}
-
-	}
-
-	/**
 	 * Get the entities related to the last 50 posts published on this blog (we're keeping a long function name due to
 	 * its specific function).
 	 *

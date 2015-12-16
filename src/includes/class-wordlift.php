@@ -110,6 +110,15 @@ class Wordlift {
 	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
 	 */
 	private $redirect_service;
+	
+	/**
+	 * The Entity list customization.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
+	 */
+	private $entity_list_service;
 
 	/**
 	 * The Entity Types Taxonomy Walker.
@@ -244,6 +253,11 @@ class Wordlift {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
+		
+		/**
+		 * The class to customize the entity list admin page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-list.php';
 
 		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
@@ -305,6 +319,9 @@ class Wordlift {
 
 		// Create an instance of the Timeline shortcode.
 		new Wordlift_Timeline_Shortcode();
+		
+		// Create entity list customization (wp-admin/edit.php)
+		$this->entity_list_service = new Wordlift_Entity_List_Service();
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -373,15 +390,14 @@ class Wordlift {
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 
 		// Add custom columns for entity listing in the backand
-		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_service, 'register_custom_columns' );
-		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_service, 'render_custom_columns', 10, 2 );
+		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
+		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
 
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
 		// entities.
 		$this->loader->add_filter( 'prima_metabox_entity_header_args', $this->primashop_adapter, 'prima_metabox_entity_header_args', 10, 2 );
-
 	}
 
 	/**
