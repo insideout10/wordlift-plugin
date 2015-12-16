@@ -84,4 +84,20 @@ class Wordlift_Entity_List_Service {
 		}
 		
 	}
+	
+	/**
+	 * Add 4W filter
+	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_$post_type_posts_custom_column
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param string $column the current column.
+	 * @param int $entity_id An entity post id.
+	 *
+	 * @return true if the post is an entity otherwise false.
+	 */
+	public function add_4W_filter() {
+		//echo 'STOCAZZOOOO';
+	}
+	
 }

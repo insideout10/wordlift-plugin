@@ -389,10 +389,11 @@ class Wordlift {
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 
-		// Add custom columns for entity listing in the backand
+		// Add custom columns for entity listing in the backend
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
 		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
-
+		//$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'add_4W_filter' );
+		
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
