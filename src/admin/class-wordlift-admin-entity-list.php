@@ -124,6 +124,11 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function posts_clauses_classification_scope( $clauses ) {
 		
+		// Run only on admin page
+		if( ! is_admin() ) {
+			return $clauses;
+		}
+		
 		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set
 		$screen = get_current_screen();
 		if( ! ( $screen->post_type === Wordlift_Entity_Service::TYPE_NAME && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
