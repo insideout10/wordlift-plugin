@@ -76,3 +76,6 @@
 #wl_column_related_posts {
     width: 100px;
 }
+#wl-dropdown-classification-scope option {
+    text-transform: capitalize;
+}

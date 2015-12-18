@@ -82,42 +82,39 @@ class Wordlift_Entity_List_Service {
 	}
 	
 	/**
-	 * Add 4W select box before the 'Filter' button.
+	 * Add wl-classification-scope select box before the 'Filter' button.
 	 *
 	 * @since 3.3.0
 	 */
-	public function add_4W_filter() {
-		global $typenow;
+	public function restrict_manage_posts_classification_scope() {
 		
 		// Only show on entity list page
-		if( $typenow !== Wordlift_Entity_Service::TYPE_NAME ){
+		$screen = get_current_screen();
+		if( $screen->post_type !== Wordlift_Entity_Service::TYPE_NAME ){
 			return;
 		}
 		
 		// Was a W already selected?
-		$selected = isset( $_GET['4W_filter'] ) ? $_GET['4W_filter'] : '' ;
+		$selected = isset( $_GET['wl-classification-scope'] ) ? $_GET['wl-classification-scope'] : '' ;
 		
-		// Build select box with the 4W
+		// Print select box with the 4W
 		$all_w = array(
-			'Select W',
+			"All 'W'",
 			WL_WHAT_RELATION,
 			WL_WHO_RELATION,
 			WL_WHERE_RELATION,
 			WL_WHEN_RELATION
 		);
-		$output  = '<select name="4W_filter" id="dropdown_4W_type">';
+		echo '<select name="wl-classification-scope" id="wl-dropdown-classification-scope">';
 		foreach ( $all_w as $w ) {
-			$default  = ( $selected == $w ) ? 'selected' : ''; 
-			$output  .= "<option value='$w' $default >" . ucfirst( __( $w, 'wordlift' ) ) . '</option>';
+			$default  = ( $selected === $w ) ? 'selected' : '';
+			echo sprintf( '<option value="%s" %s >%s</option>', $w, $default, $w );
 		}
-		$output .= '</select>';
-		
-		// Print on page
-		echo $output;
+		echo '</select>';
 	}
 
 	/**
-	 * Server side response operations for the 4W filter set in *add_4W_filter*
+	 * Server side response operations for the classification filter set in *restrict_manage_posts_classification_scope_filter*
 	 *
 	 * @since 3.3.0
 	 * 
@@ -125,26 +122,32 @@ class Wordlift_Entity_List_Service {
 	 * 
 	 * @return array Modified clauses.
 	 */
-	public function add_4W_filter_query( $clauses ) {
-				
-		global $typenow, $wpdb;
+	public function posts_clauses_classification_scope( $clauses ) {
 		
-		// Only apply on entity list page and if the 4W_filter query param is set
-		if( ! ( $typenow == Wordlift_Entity_Service::TYPE_NAME && isset( $_GET['4W_filter'] ) ) ) {
+		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set
+		$screen = get_current_screen();
+		if( ! ( $screen->post_type === Wordlift_Entity_Service::TYPE_NAME && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
 			return $clauses;
 		}
 			
 		// Check a valid W was requested
-		$requested_w = $_GET['4W_filter'];
-		if ( ! in_array( $requested_w, array( WL_WHAT_RELATION, WL_WHO_RELATION, WL_WHERE_RELATION, WL_WHEN_RELATION )) ) {
+		$requested_w = $_GET['wl-classification-scope'];
+		$all_w       = array(
+			WL_WHAT_RELATION,
+			WL_WHO_RELATION,
+			WL_WHERE_RELATION,
+			WL_WHEN_RELATION	
+		);
+		if ( ! in_array( $requested_w, $all_w ) ) {
 			return $clauses;
 		}
 		
-		$w_table = wl_core_get_relation_instances_table_name();
+		global $wpdb;
+		$wl_relation_table = wl_core_get_relation_instances_table_name();
 		
 		// Change WP main query clauses
-		$clauses['join']     .= "INNER JOIN $w_table ON $wpdb->posts.ID = $w_table.object_id";
-		$clauses['where']    .= "AND $w_table.predicate = '$requested_w'";
+		$clauses['join']     .= "INNER JOIN {$wl_relation_table} ON {$wpdb->posts}.ID = {$wl_relation_table}.object_id";
+		$clauses['where']    .= $wpdb->prepare( "AND {$wl_relation_table}.predicate = %s", $requested_w );
 		$clauses['distinct'] .= "DISTINCT";
 		
 		return $clauses;

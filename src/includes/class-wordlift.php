@@ -394,8 +394,8 @@ class Wordlift {
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
 		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
 		// Add 4W selection
-		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'add_4W_filter' );
-		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'add_4W_filter_query' );
+		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
+		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
 		
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
