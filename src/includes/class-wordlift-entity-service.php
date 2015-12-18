@@ -33,6 +33,13 @@ class Wordlift_Entity_Service {
 	const TYPE_NAME = 'entity';
 
 	/**
+	 * Entity rating meta key.
+	 *
+	 * @since 3.3.0
+	 */
+	const RATING_META_KEY = '_wl_entity_rating';
+
+	/**
 	 * The alternative label meta key.
 	 *
 	 * @since 3.2.0
@@ -276,6 +283,36 @@ class Wordlift_Entity_Service {
 		$this->ui_service->print_button( 'wl-add-alternative-labels-button', __( 'Add more titles', 'wordlift' ) );
 
 	}
+
+	/**
+	 * Calculate rating for a given entity
+	 * Rating depends from following criteria
+	 * 1. Is the current entity related to at least 1 post?
+	 * 2. Is the current entity related to at least 1 entity?
+	 * 3. Has the entity a sameas defined?
+	 * 4. Are all schema.org required metadata compiled?
+	 * 5. There is a a thumbnail associated to the entity?
+	 * 6. Is the entity published? 
+	 * Each positive check means +1
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int $post_id The entity post id.
+	 *
+	 * @return int An array representing the rating obj.
+	 */
+	public function calculate_rating( $post_id ) {
+		
+		// Force $alt_labels to be an array
+		if( !is_array( $alt_labels ) ) {
+			$alt_labels = array( $alt_labels );
+		}
+
+		$this->log_service->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
+
+
+	}
+
 
 	/**
 	 * Get the alternative label input HTML code.
