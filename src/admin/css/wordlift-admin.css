@@ -76,12 +76,15 @@
 #wl_column_related_posts {
     width: 100px;
 }
-
+#wl_column_rating {
+    width: 60px;
+}
 .wl-traffic-light {
-  position: absolute;
-  width: 16px;
-  height: 16px;
+  display: block;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
+  margin:5px;
 }
 
 .wl-tl-1 {

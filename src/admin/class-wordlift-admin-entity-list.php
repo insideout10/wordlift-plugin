@@ -104,7 +104,7 @@ class Wordlift_Entity_List_Service {
 				break;
 
 			case 'wl_column_rating':
-				echo "<i class='wl-traffic-light wl-tl-" . $this->entity_service->rating_for( $entity_id ) . "'>&nbsp;</i>";
+				echo "<i class='wl-traffic-light wl-tl-" . $this->entity_service->rating_for( $entity_id ) . "'></i>";
 				break;
 		}
 		
