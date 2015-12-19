@@ -365,7 +365,11 @@ class Wordlift_Entity_Service {
 
 		// MAX : $rating = 3 : x 
 		// See http://php.net/manual/en/function.round.php
-		return round( ( $rating * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
+		$final_rating = round( ( $rating * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
+		if ( 0 == $final_rating ) {
+			$final_rating = 1;
+		}
+		return $final_rating;
 	}
 
 	/**
