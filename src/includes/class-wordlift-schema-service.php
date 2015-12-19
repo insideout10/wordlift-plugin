@@ -283,6 +283,28 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
+	 * Get the WordLift's schema trough schema type uri.
+	 *
+	 * @param string $uri The schema uri.
+	 *
+	 * @return array|null An array with the schema configuration or NULL if the schema is not found.
+	 *
+	 * @since 3.3.0
+	 */
+	public function get_schema_by_uri( $uri ) {
+
+		foreach ( $this->schema as $name => $schema ) {
+			if ( $schema[ 'uri' ] === $uri ) {
+				return $schema;
+			}
+		}
+		return null;
+
+		// Return the requested schema.
+		return $this->schema[ $name ];
+	}
+
+	/**
 	 * Get the 'thing' schema.
 	 *
 	 * @return array An array with the schema configuration.

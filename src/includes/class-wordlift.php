@@ -76,6 +76,15 @@ class Wordlift {
 	private $ui_service;
 
 	/**
+	 * The Schema service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
+	 */
+	private $schema_service;
+
+	/**
 	 * The Entity service.
 	 *
 	 * @since 3.1.0
@@ -303,10 +312,10 @@ class Wordlift {
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Service();
+		$this->schema_service = new Wordlift_Schema_Service();
 
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();

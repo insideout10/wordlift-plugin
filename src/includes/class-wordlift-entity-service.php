@@ -26,6 +26,14 @@ class Wordlift_Entity_Service {
 	private $ui_service;
 
 	/**
+	 * The Schema service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
+	 */
+	private $schema_service;
+	/**
 	 * The entity post type name.
 	 *
 	 * @since 3.1.0
@@ -44,7 +52,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_MAX = 4;
+	const RATING_MAX = 6;
 	/**
 	 * The alternative label meta key.
 	 *
@@ -80,12 +88,15 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param \Wordlift_UI_Service $ui_service The UI service.
 	 */
-	public function __construct( $ui_service ) {
+	public function __construct( $ui_service, $schema_service ) {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
 		// Set the UI service.
 		$this->ui_service = $ui_service;
+
+		// Set the Schema service.
+		$this->schema_service = $schema_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -329,10 +340,31 @@ class Wordlift_Entity_Service {
 		if ( has_post_thumbnail( $post_id ) ) {
 			$rating++;
 		}
+		// Get all post meta keys for the current post		
+		global $wpdb;
+		$query = $wpdb->prepare( 
+			"SELECT DISTINCT(meta_key) FROM $wpdb->postmeta  WHERE post_id = %d", $post_id 
+		);
+		
+		// Check intersection between available meta keys 
+		// and expected ones arrays to detect missing values
+		$available_meta_keys = $wpdb->get_col( $query );
+		// If each expected key is contained in available keys array ...
+		if ( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) {
+			$rating++;
+		}
 
-		// $this->log_service->debug( "s" );
+		$schema = wl_entity_type_taxonomy_get_type( $post_id );
+		$expected_meta_keys = array_keys( $schema[ 'custom_fields' ] );
+
+		$intersection = array_intersect( $expected_meta_keys, $available_meta_keys );
+		// If each expected key is contained in available keys array ...
+		if ( count( $intersection ) === count( $expected_meta_keys ) ) {
+			$rating++;
+		}
 
 		// MAX : $rating = 3 : x 
+		// See http://php.net/manual/en/function.round.php
 		return round( ( $rating * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
 	}
 
