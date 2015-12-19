@@ -40,6 +40,12 @@ class Wordlift_Entity_Service {
 	const RATING_META_KEY = '_wl_entity_rating';
 
 	/**
+	 * Max rating.
+	 *
+	 * @since 3.3.0
+	 */
+	const RATING_MAX = 4;
+	/**
 	 * The alternative label meta key.
 	 *
 	 * @since 3.2.0
@@ -301,18 +307,34 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return int An array representing the rating obj.
 	 */
-	public function calculate_rating( $post_id ) {
+	public function rating_for( $post_id ) {
 		
-		// Force $alt_labels to be an array
-		if( !is_array( $alt_labels ) ) {
-			$alt_labels = array( $alt_labels );
+		// Rating value
+		$rating = 0;
+		
+		// Is the current entity related to at least 1 post?
+		if ( count( wl_core_get_related_post_ids( $post_id ) ) > 0 ) {
+			$rating++;
+		}
+		// Is the current entity related to at least 1 entity?
+		// Was the current entity already disambiguated?
+		if ( count( wl_core_get_related_entity_ids( $post_id ) ) > 0 ) {
+			$rating++;
+		}
+		// Is the entity published?
+		if ( 'publish' === get_post_status( $post_id ) ) {
+			$rating++;
+		} 
+		// Has a thumbnail?
+		if ( has_post_thumbnail( $post_id ) ) {
+			$rating++;
 		}
 
-		$this->log_service->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
+		// $this->log_service->debug( "s" );
 
-
+		// MAX : $rating = 3 : x 
+		return round( ( $rating * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
 	}
-
 
 	/**
 	 * Get the alternative label input HTML code.

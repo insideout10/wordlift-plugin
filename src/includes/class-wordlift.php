@@ -321,7 +321,7 @@ class Wordlift {
 		new Wordlift_Timeline_Shortcode();
 		
 		// Create entity list customization (wp-admin/edit.php)
-		$this->entity_list_service = new Wordlift_Entity_List_Service();
+		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 

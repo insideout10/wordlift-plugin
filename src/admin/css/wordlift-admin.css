@@ -76,3 +76,20 @@
 #wl_column_related_posts {
     width: 100px;
 }
+
+.wl-traffic-light {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.wl-tl-1 {
+  background-color:#f00;
+}
+.wl-tl-2 {
+  background-color:#f90;
+}
+.wl-tl-3 {
+  background-color:#6c0;
+}
