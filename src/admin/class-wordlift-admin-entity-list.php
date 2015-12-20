@@ -107,7 +107,7 @@ class Wordlift_Entity_List_Service {
 
 				$rating = $this->entity_service->get_or_calculate_rating_for( $entity_id );
 				echo '<i class="wl-traffic-light wl-tl-'. $rating[ 'traffic_light_score' ] . '"></i>';
-				echo '<span class="wl-entity-score">' . sprintf( __( '[ <strong>%d</strong> on %d ]', 'wordlift' ), $rating[ 'raw_score' ], Wordlift_Entity_Service::RATING_MAX ) . '</span>';
+				echo '<span class="wl-entity-score">' . sprintf( __( '[ <strong>%d</strong> on %d ]', 'wordlift' ), $rating[ 'raw_score' ], Wordlift_Entity_Service::get_rating_max() ) . '</span>';
 				
 				break;
 		}
