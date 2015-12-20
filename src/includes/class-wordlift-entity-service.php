@@ -414,6 +414,29 @@ class Wordlift_Entity_Service {
 		}
 		
 	}
+	
+	/**
+	 * Set rating for a given entity
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int $post_id The entity post id.
+	 *
+	 * @return int An array representing the rating obj.
+	 */
+	public function set_rating_for( $post_id ) {
+
+		// Calculate rating for the given post
+		$rating = $this->calculate_rating_for( $post_id );
+		// Store the rating on db as post meta
+		// Please notice that RATING_RAW_SCORE_META_KEY 
+		// is saved on a different meta to allow score sorting
+		// Both meta are managed as unique
+		add_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, $rating[ 'raw_score' ], true );
+		add_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, $rating[ 'warnings' ], true );
+		// Finally returns the rating 
+		return $rating;
+	}
 	/**
 	 * Get or calculate rating for a given entity
 	 *
@@ -429,17 +452,7 @@ class Wordlift_Entity_Service {
 		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
 		// If forced reload is required or rating is missing ..
 		if ( $force_reload || empty( $current_raw_score ) ) {
-
-			// Calculate rating for the given post
-			$rating = $this->calculate_rating_for( $post_id );
-			// Store the rating on db as post meta
-			// Please notice that RATING_RAW_SCORE_META_KEY 
-			// is saved on a different meta to allow score sorting
-			// Both meta are managed as unique
-			add_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, $rating[ 'raw_score' ], true );
-			add_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, $rating[ 'warnings' ], true );
-			// Finally returns the rating 
-			return $rating;
+			return $this->set_rating_for( $post_id );
 		}
 
 		$current_warnings = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
