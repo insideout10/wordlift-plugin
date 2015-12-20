@@ -41,11 +41,11 @@ class Wordlift_Entity_Service {
 	const TYPE_NAME = 'entity';
 
 	/**
-	 * Entity rating meta key.
+	 * Entity rating score meta key.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_META_KEY = '_wl_entity_rating';
+	const RATING_RAW_SCORE_META_KEY = '_wl_entity_rating_raw_score';
 	
 	/**
 	 * Entity rating warnings meta key.
@@ -407,7 +407,7 @@ class Wordlift_Entity_Service {
 			return;
 		}
 		// Retrieve an updated rating for the current entity
-		$rating = $this->get_or_calculate_rating_for( $post->ID );
+		$rating = $this->get_or_calculate_rating_for( $post->ID, true );
 		// If there is at least 1 warning
 		if ( isset( $rating[ 'warnings' ] ) && count( array_values( $rating[ 'warnings' ] ) > 0 ) ) {
 			Wordlift_Notice_Service::get_instance()->add_error( array_values( $rating[ 'warnings' ] ) );
@@ -420,12 +420,37 @@ class Wordlift_Entity_Service {
 	 * @since 3.3.0
 	 *
 	 * @param int $post_id The entity post id.
-	 * @param bool $warnings_needed If true, detailed warnings collection is provided with the rating obj.
+	 * @param $force_reload $warnings_needed If true, detailed warnings collection is provided with the rating obj.
 	 *
 	 * @return int An array representing the rating obj.
 	 */
-	public function get_or_calculate_rating_for( $post_id, $warnings_needed = false ) {
-		return $this->calculate_rating_for( $post_id );
+	public function get_or_calculate_rating_for( $post_id, $force_reload = false ) {
+		
+		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
+		// If forced reload is required or rating is missing ..
+		if ( $force_reload || empty( $current_raw_score ) ) {
+
+			// Calculate rating for the given post
+			$rating = $this->calculate_rating_for( $post_id );
+			// Store the rating on db as post meta
+			// Please notice that RATING_RAW_SCORE_META_KEY 
+			// is saved on a different meta to allow score sorting
+			// Both meta are managed as unique
+			add_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, $rating[ 'raw_score' ], true );
+			add_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, $rating[ 'warnings' ], true );
+			// Finally returns the rating 
+			return $rating;
+		}
+
+		$current_warnings = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
+		
+		// Finally return score and warnings
+		return array( 
+			'raw_score' 			=> $current_raw_score,
+			'traffic_light_score' 	=> $this->convert_raw_score( $current_raw_score ),
+			'warnings' 				=> $current_warnings, 
+		);
+
 	}
 	/**
 	 * Calculate rating for a given entity
