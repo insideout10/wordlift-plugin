@@ -397,6 +397,7 @@ class Wordlift {
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
+		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
 
 		// Add custom columns for entity listing in the backand
 		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );

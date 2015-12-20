@@ -52,7 +52,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_MAX = 6;
+	const RATING_MAX = 7;
 	/**
 	 * The alternative label meta key.
 	 *
@@ -302,15 +302,46 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
+	 * Add admin notices for the current entity depending on the current rating.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param WP_Post $post Post object.
+	 */
+	public function in_admin_header() {
+
+		// If you're not in the entity post edit page, return.
+		if ( self::TYPE_NAME !== get_current_screen()->id ) {
+			return;
+		}
+		// Retrieve the current global post
+		global $post;
+		// If it's not an entity, return.
+		if ( ! $this->is_entity( $post->ID ) ) {
+			return;
+		}
+		// Retrieve an updated rating for the current entity
+		$rating = $this->calculate_rating_for( $post->ID );
+		// If there is at least 1 warning
+		if ( isset( $rating[ 'warnings' ] ) && count( $rating[ 'warnings' ] > 0 ) ) {
+			Wordlift_Notice_Service::get_instance()->add_error( $rating[ 'warnings' ] );
+		}
+		
+	}
+
+	/**
 	 * Calculate rating for a given entity
 	 * Rating depends from following criteria
+	 *
 	 * 1. Is the current entity related to at least 1 post?
-	 * 2. Is the current entity related to at least 1 entity?
-	 * 3. Has the entity a sameas defined?
-	 * 4. Are all schema.org required metadata compiled?
+	 * 2. Is the current entity content post not empty?
+	 * 3. Is the current entity related to at least 1 entity?
+	 * 4. Is the entity published? 
 	 * 5. There is a a thumbnail associated to the entity?
-	 * 6. Is the entity published? 
-	 * Each positive check means +1
+	 * 6. Has the entity a sameas defined?
+	 * 7. Are all schema.org required metadata compiled?
+	 *
+	 * Each positive check means +1 in terms of rating score
 	 *
 	 * @since 3.3.0
 	 *
@@ -318,58 +349,79 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return int An array representing the rating obj.
 	 */
-	public function rating_for( $post_id ) {
+	public function calculate_rating_for( $post_id ) {
 		
+		// If it's not an entity, return.
+		if ( ! $this->is_entity( $post_id ) ) {
+			return;
+		}
+		// Retrieve the post object
+		$post = get_post( $post_id );
 		// Rating value
 		$rating = 0;
-		
+		// Store warning messages
+		$warnings = array();
+
 		// Is the current entity related to at least 1 post?
-		if ( count( wl_core_get_related_post_ids( $post_id ) ) > 0 ) {
-			$rating++;
-		}
+		( count( wl_core_get_related_post_ids( $post->ID ) ) > 0 ) ?
+			$rating++ : 
+			array_push( $warnings, __( 'There are no related posts for the current entity. Use your entities to classify your posts.', 'wordlift' ) );
+		
+		// Is the post content not empty?
+		( ! empty( $post->post_content ) ) ?
+			$rating++ :
+			array_push( $warnings, __( 'This entity has not description. Be sure to provide a custom description for each entity.', 'wordlift' ) );
+		
 		// Is the current entity related to at least 1 entity?
 		// Was the current entity already disambiguated?
-		if ( count( wl_core_get_related_entity_ids( $post_id ) ) > 0 ) {
-			$rating++;
-		}
+		( count( wl_core_get_related_entity_ids( $post->ID ) ) > 0 ) ?
+			$rating++ :
+			array_push( $warnings, __( 'There are no related entities for the current entity. Work deeper on your entity description.', 'wordlift' ) );
+		
 		// Is the entity published?
-		if ( 'publish' === get_post_status( $post_id ) ) {
-			$rating++;
-		} 
+		( 'publish' === get_post_status( $post->ID ) ) ?
+			$rating++ :
+			array_push( $warnings, __( 'This entity is not published. It will not appear within analysis results.', 'wordlift' ) );
+		
 		// Has a thumbnail?
-		if ( has_post_thumbnail( $post_id ) ) {
-			$rating++;
-		}
+		( has_post_thumbnail( $post->ID ) ) ?
+			$rating++ :
+			array_push( $warnings, __( 'This entity has no featured image yet.', 'wordlift' ) );
+		
 		// Get all post meta keys for the current post		
 		global $wpdb;
 		$query = $wpdb->prepare( 
-			"SELECT DISTINCT(meta_key) FROM $wpdb->postmeta  WHERE post_id = %d", $post_id 
+			"SELECT DISTINCT(meta_key) FROM $wpdb->postmeta  WHERE post_id = %d", $post->ID 
 		);
 		
 		// Check intersection between available meta keys 
 		// and expected ones arrays to detect missing values
 		$available_meta_keys = $wpdb->get_col( $query );
 		// If each expected key is contained in available keys array ...
-		if ( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) {
-			$rating++;
-		}
-
+		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?
+			$rating++ :
+			array_push( $warnings, __( 'There are no sameAs configured for this entity. SameAs is important to link your data with external existing ones.', 'wordlift' ) );
+		
 		$schema = wl_entity_type_taxonomy_get_type( $post_id );
 		$expected_meta_keys = array_keys( $schema[ 'custom_fields' ] );
 
 		$intersection = array_intersect( $expected_meta_keys, $available_meta_keys );
 		// If each expected key is contained in available keys array ...
-		if ( count( $intersection ) === count( $expected_meta_keys ) ) {
-			$rating++;
-		}
-
+		( count( $intersection ) === count( $expected_meta_keys ) ) ?
+			$rating++ :
+			array_push( $warnings, __( 'Schema.org metadata for this entity are not completed. A complete schema.org markup makes your data meaningful for search engines.', 'wordlift' ) );
+		
 		// MAX : $rating = 3 : x 
 		// See http://php.net/manual/en/function.round.php
 		$final_rating = round( ( $rating * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
 		if ( 0 == $final_rating ) {
 			$final_rating = 1;
 		}
-		return $final_rating;
+		return array( 
+			'score' 	=> $final_rating,
+			'warnings' 	=> $warnings, 
+		);
+
 	}
 
 	/**
