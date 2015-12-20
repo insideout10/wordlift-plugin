@@ -321,14 +321,26 @@ class Wordlift_Entity_Service {
 			return;
 		}
 		// Retrieve an updated rating for the current entity
-		$rating = $this->calculate_rating_for( $post->ID );
+		$rating = $this->get_or_calculate_rating_for( $post->ID );
 		// If there is at least 1 warning
 		if ( isset( $rating[ 'warnings' ] ) && count( $rating[ 'warnings' ] > 0 ) ) {
 			Wordlift_Notice_Service::get_instance()->add_error( $rating[ 'warnings' ] );
 		}
 		
 	}
-
+	/**
+	 * Get or calculate rating for a given entity
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int $post_id The entity post id.
+	 * @param bool $warnings_needed If true, detailed warnings collection is provided with the rating obj.
+	 *
+	 * @return int An array representing the rating obj.
+	 */
+	public function get_or_calculate_rating_for( $post_id, $warnings_needed = false ) {
+		return $this->calculate_rating_for( $post_id );
+	}
 	/**
 	 * Calculate rating for a given entity
 	 * Rating depends from following criteria
@@ -358,34 +370,34 @@ class Wordlift_Entity_Service {
 		// Retrieve the post object
 		$post = get_post( $post_id );
 		// Rating value
-		$rating = 0;
+		$score = 0;
 		// Store warning messages
 		$warnings = array();
 
 		// Is the current entity related to at least 1 post?
 		( count( wl_core_get_related_post_ids( $post->ID ) ) > 0 ) ?
-			$rating++ : 
+			$score++ : 
 			array_push( $warnings, __( 'There are no related posts for the current entity. Use your entities to classify your posts.', 'wordlift' ) );
 		
 		// Is the post content not empty?
 		( ! empty( $post->post_content ) ) ?
-			$rating++ :
+			$score++ :
 			array_push( $warnings, __( 'This entity has not description. Be sure to provide a custom description for each entity.', 'wordlift' ) );
 		
 		// Is the current entity related to at least 1 entity?
 		// Was the current entity already disambiguated?
 		( count( wl_core_get_related_entity_ids( $post->ID ) ) > 0 ) ?
-			$rating++ :
+			$score++ :
 			array_push( $warnings, __( 'There are no related entities for the current entity. Work deeper on your entity description.', 'wordlift' ) );
 		
 		// Is the entity published?
 		( 'publish' === get_post_status( $post->ID ) ) ?
-			$rating++ :
+			$score++ :
 			array_push( $warnings, __( 'This entity is not published. It will not appear within analysis results.', 'wordlift' ) );
 		
 		// Has a thumbnail?
 		( has_post_thumbnail( $post->ID ) ) ?
-			$rating++ :
+			$score++ :
 			array_push( $warnings, __( 'This entity has no featured image yet.', 'wordlift' ) );
 		
 		// Get all post meta keys for the current post		
@@ -399,7 +411,7 @@ class Wordlift_Entity_Service {
 		$available_meta_keys = $wpdb->get_col( $query );
 		// If each expected key is contained in available keys array ...
 		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?
-			$rating++ :
+			$score++ :
 			array_push( $warnings, __( 'There are no sameAs configured for this entity. SameAs is important to link your data with external existing ones.', 'wordlift' ) );
 		
 		$schema = wl_entity_type_taxonomy_get_type( $post_id );
@@ -408,19 +420,34 @@ class Wordlift_Entity_Service {
 		$intersection = array_intersect( $expected_meta_keys, $available_meta_keys );
 		// If each expected key is contained in available keys array ...
 		( count( $intersection ) === count( $expected_meta_keys ) ) ?
-			$rating++ :
+			$score++ :
 			array_push( $warnings, __( 'Schema.org metadata for this entity are not completed. A complete schema.org markup makes your data meaningful for search engines.', 'wordlift' ) );
 		
-		// MAX : $rating = 3 : x 
-		// See http://php.net/manual/en/function.round.php
-		$final_rating = round( ( $rating * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
-		if ( 0 == $final_rating ) {
-			$final_rating = 1;
-		}
+		// Finally return score and warnings
 		return array( 
-			'score' 	=> $final_rating,
-			'warnings' 	=> $warnings, 
+			'raw_score' 			=> $score,
+			'traffic_light_score' 	=> $this->convert_raw_score( $score ),
+			'warnings' 				=> $warnings, 
 		);
+
+	}
+
+	/**
+	 * Get as rating as input and convert in a traffic-light rating
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int $score The rating score for a given entity.
+	 *
+	 * @return string The input HTML code.
+	 */
+	private function convert_raw_score( $score ) {
+
+		// RATING_MAX : $score = 3 : x 
+		// See http://php.net/manual/en/function.round.php
+		$rating = round( ( $score * 3 ) / self::RATING_MAX, 0, PHP_ROUND_HALF_UP );
+		// If rating is 0, return 1, otherwise return rating
+		return ( 0 == $rating ) ? 1 : $rating; 
 
 	}
 

@@ -77,14 +77,19 @@
     width: 100px;
 }
 #wl_column_rating {
-    width: 60px;
+    width: 100px;
+    text-align: center;
+
 }
 .wl-traffic-light {
   display: block;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  margin:5px;
+  margin:5px auto;
+}
+.wl_column_rating {
+  text-align: center;
 }
 
 .wl-tl-1 {
