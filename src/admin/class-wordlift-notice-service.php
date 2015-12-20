@@ -156,7 +156,7 @@ class Wordlift_Notice_Service {
 
 		switch (  gettype( $message ) ) {
 			case 'array':
-				return '<ul>' . implode( array_map( function( $el ) { return "<li>$el</li>"; }, $message ), '' ) . '</ul>';
+				return implode( $message, '<br />' );
 			default:
        			return $message;
 		}
