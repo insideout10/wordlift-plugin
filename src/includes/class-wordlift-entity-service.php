@@ -407,7 +407,7 @@ class Wordlift_Entity_Service {
 			return;
 		}
 		// Retrieve an updated rating for the current entity
-		$rating = $this->get_or_calculate_rating_for( $post->ID, true );
+		$rating = $this->get_rating_for( $post->ID, true );
 		// If there is at least 1 warning
 		if ( isset( $rating[ 'warnings' ] ) && count( array_values( $rating[ 'warnings' ] ) > 0 ) ) {
 			Wordlift_Notice_Service::get_instance()->add_error( array_values( $rating[ 'warnings' ] ) );
@@ -447,7 +447,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return int An array representing the rating obj.
 	 */
-	public function get_or_calculate_rating_for( $post_id, $force_reload = false ) {
+	public function get_rating_for( $post_id, $force_reload = false ) {
 		
 		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
 		// If forced reload is required or rating is missing ..
