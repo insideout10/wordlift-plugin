@@ -407,7 +407,7 @@ class Wordlift_Entity_Service {
 			return;
 		}
 		// Retrieve an updated rating for the current entity
-		$rating = $this->get_rating_for( $post->ID );
+		$rating = $this->get_rating_for( $post->ID, true );
 		// If there is at least 1 warning
 		if ( isset( $rating[ 'warnings' ] ) && count( array_values( $rating[ 'warnings' ] ) > 0 ) ) {
 			Wordlift_Notice_Service::get_instance()->add_error( array_values( $rating[ 'warnings' ] ) );
