@@ -68,3 +68,11 @@
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#cc0058, endColorstr=#bc0062);
     box-shadow: none;
 }
+
+/* wp-admin/edit.php */
+#wl_column_thumbnail {
+    width: 60px;
+}
+#wl_column_related_posts {
+    width: 100px;
+}
