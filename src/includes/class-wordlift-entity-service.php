@@ -410,7 +410,7 @@ class Wordlift_Entity_Service {
 		$rating = $this->get_rating_for( $post->ID, true );
 		$warnings = array_values( $rating[ 'warnings' ] );
 		// If there is at least 1 warning
-		if ( isset( $rating[ 'warnings' ] ) && count( $warnings > 0 ) ) {
+		if ( isset( $rating[ 'warnings' ] ) && 0 < count( $warnings ) ) {
 			// TODO - Pass Wordlift_Notice_Service trough the service constructor 
 			Wordlift_Notice_Service::get_instance()->add_error( $warnings );
 		}
