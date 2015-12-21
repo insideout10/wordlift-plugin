@@ -471,9 +471,10 @@ class Wordlift_Entity_Service {
 		
 		// Finally return score and warnings
 		return array( 
-			'raw_score' 			=> $current_raw_score,
-			'traffic_light_score' 	=> $this->convert_raw_score( $current_raw_score ),
-			'warnings' 				=> $current_warnings, 
+			'raw_score'				=> $current_raw_score,
+			'traffic_light_score'	=> $this->convert_raw_score_to_traffic_light( $current_raw_score ),
+			'percentage_score'		=> $this->convert_raw_score_to_percentage( $current_raw_score ),
+			'warnings'				=> $current_warnings, 
 		);
 
 	}
@@ -565,9 +566,10 @@ class Wordlift_Entity_Service {
 		
 		// Finally return score and warnings
 		return array( 
-			'raw_score' 			=> $score,
-			'traffic_light_score' 	=> $this->convert_raw_score( $score ),
-			'warnings' 				=> $warnings, 
+			'raw_score'				=> $score,
+			'traffic_light_score'	=> $this->convert_raw_score_to_traffic_light( $score ),
+			'traffic_percentage'	=> $this->convert_raw_score_to_percentage( $score ),
+			'warnings'				=> $warnings, 
 		);
 
 	}
@@ -581,8 +583,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string The input HTML code.
 	 */
-	private function convert_raw_score( $score ) {
-
+	private function convert_raw_score_to_traffic_light( $score ) {
 		// RATING_MAX : $score = 3 : x 
 		// See http://php.net/manual/en/function.round.php
 		$rating = round( ( $score * 3 ) / self::get_rating_max(), 0, PHP_ROUND_HALF_UP );
@@ -591,6 +592,19 @@ class Wordlift_Entity_Service {
 
 	}
 
+	/**
+	 * Get as rating as input and convert in a traffic-light rating
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param int $score The rating score for a given entity.
+	 *
+	 * @return string The input HTML code.
+	 */
+	private function convert_raw_score_to_percentage( $score ) {
+		// RATING_MAX : $score = 100 : x 
+		return round( ( $score * 100) / self::get_rating_max(), 0, PHP_ROUND_HALF_UP );
+	}
 	/**
 	 * Add warning to warning collection
 	 *

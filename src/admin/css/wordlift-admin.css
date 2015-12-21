@@ -83,10 +83,14 @@
 }
 .wl-traffic-light {
   display: block;
-  width: 12px;
-  height: 12px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
   border-radius: 50%;
   margin:5px auto;
+  color:#fff;
+  font-weight: bold;
+  font-size: 0.8em;
 }
 .wl_column_rating {
   text-align: center;
