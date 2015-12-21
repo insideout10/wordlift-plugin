@@ -408,9 +408,11 @@ class Wordlift_Entity_Service {
 		}
 		// Retrieve an updated rating for the current entity
 		$rating = $this->get_rating_for( $post->ID, true );
+		$warnings = array_values( $rating[ 'warnings' ] );
 		// If there is at least 1 warning
-		if ( isset( $rating[ 'warnings' ] ) && count( array_values( $rating[ 'warnings' ] ) > 0 ) ) {
-			Wordlift_Notice_Service::get_instance()->add_error( array_values( $rating[ 'warnings' ] ) );
+		if ( isset( $rating[ 'warnings' ] ) && count( $warnings > 0 ) ) {
+			// TODO - Pass Wordlift_Notice_Service trough the service constructor 
+			Wordlift_Notice_Service::get_instance()->add_error( $warnings );
 		}
 		
 	}
@@ -432,8 +434,12 @@ class Wordlift_Entity_Service {
 		// Please notice that RATING_RAW_SCORE_META_KEY 
 		// is saved on a different meta to allow score sorting
 		// Both meta are managed as unique
-		add_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, $rating[ 'raw_score' ], true );
-		add_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, $rating[ 'warnings' ], true );
+		// https://codex.wordpress.org/Function_Reference/update_post_meta
+		update_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, $rating[ 'raw_score' ] );
+		update_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, $rating[ 'warnings' ] );
+		
+		$this->log_service->trace( sprintf( "Rating set for [ post_id :: $post_id ] [ rating :: %s ]", $rating[ 'raw_score' ]  ) );
+		
 		// Finally returns the rating 
 		return $rating;
 	}
@@ -449,13 +455,19 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_rating_for( $post_id, $force_reload = false ) {
 		
-		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
 		// If forced reload is required or rating is missing ..
-		if ( $force_reload || empty( $current_raw_score ) ) {
+		if ( $force_reload ) {
+			$this->log_service->trace( "Force rating reload [ post_id :: $post_id ]" );
 			return $this->set_rating_for( $post_id );
 		}
-
-		$current_warnings = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
+		
+		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
+			
+		if ( '' === $current_raw_score ) {
+			$this->log_service->trace( "Rating missing for [ post_id :: $post_id ] [ current_raw_score :: $current_raw_score ]" );
+			return $this->set_rating_for( $post_id );
+		}
+		$current_warnings = get_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, true );  
 		
 		// Finally return score and warnings
 		return array( 
@@ -533,13 +545,17 @@ class Wordlift_Entity_Service {
 		// Check intersection between available meta keys 
 		// and expected ones arrays to detect missing values
 		$available_meta_keys = $wpdb->get_col( $query );
+
 		// If each expected key is contained in available keys array ...
 		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?
 			$score++ :
 			$this->add_warning( $warnings, self::RATING_WARNING_HAS_SAME_AS );
 		
 		$schema = wl_entity_type_taxonomy_get_type( $post_id );
-		$expected_meta_keys = array_keys( $schema[ 'custom_fields' ] );
+
+		$expected_meta_keys = ( null === $schema[ 'custom_fields' ] ) ? 
+			array() : 
+			array_keys( $schema[ 'custom_fields' ] );
 
 		$intersection = array_intersect( $expected_meta_keys, $available_meta_keys );
 		// If each expected key is contained in available keys array ...
