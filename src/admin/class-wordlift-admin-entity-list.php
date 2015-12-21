@@ -99,7 +99,7 @@ class Wordlift_Entity_List_Service {
 		
 		// Print select box with the 4W
 		$all_w = array(
-			"All 'W'",
+			__( "All 'W'" ),
 			WL_WHAT_RELATION,
 			WL_WHO_RELATION,
 			WL_WHERE_RELATION,
@@ -108,7 +108,7 @@ class Wordlift_Entity_List_Service {
 		echo '<select name="wl-classification-scope" id="wl-dropdown-classification-scope">';
 		foreach ( $all_w as $w ) {
 			$default  = ( $selected === $w ) ? 'selected' : '';
-			echo sprintf( '<option value="%s" %s >%s</option>', $w, $default, $w );
+			echo sprintf( '<option value="%s" %s >%s</option>', $w, $default, __( $w ) );
 		}
 		echo '</select>';
 	}
