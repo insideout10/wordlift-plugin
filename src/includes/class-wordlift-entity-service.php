@@ -512,7 +512,7 @@ class Wordlift_Entity_Service {
 		$warnings = array();
 
 		// Is the current entity related to at least 1 post?
-		( count( wl_core_get_related_post_ids( $post->ID ) ) > 0 ) ?
+		( 0 < count( wl_core_get_related_post_ids( $post->ID ) ) ) ?
 			$score++ : 
 			$this->add_warning( $warnings, self::RATING_WARNING_HAS_RELATED_POSTS );
 		
@@ -523,7 +523,7 @@ class Wordlift_Entity_Service {
 		
 		// Is the current entity related to at least 1 entity?
 		// Was the current entity already disambiguated?
-		( count( wl_core_get_related_entity_ids( $post->ID ) ) > 0 ) ?
+		( 0 < count( wl_core_get_related_entity_ids( $post->ID ) ) ) ?
 			$score++ :
 			$this->add_warning( $warnings, self::RATING_WARNING_HAS_RELATED_ENTITIES );
 		
