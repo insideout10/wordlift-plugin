@@ -33,6 +33,16 @@ class Wordlift_Entity_Service {
 	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
 	 */
 	private $schema_service;
+
+	/**
+	 * The Notice service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
+	 */
+	private $notice_service;
+
 	/**
 	 * The entity post type name.
 	 *
@@ -145,7 +155,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param \Wordlift_UI_Service $ui_service The UI service.
 	 */
-	public function __construct( $ui_service, $schema_service ) {
+	public function __construct( $ui_service, $schema_service, $notice_service ) {
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
@@ -154,6 +164,9 @@ class Wordlift_Entity_Service {
 
 		// Set the Schema service.
 		$this->schema_service = $schema_service;
+
+		// Set the Schema service.
+		$this->notice_service = $notice_service;
 
 		// Set the singleton instance.
 		self::$instance = $this;
@@ -393,7 +406,7 @@ class Wordlift_Entity_Service {
 		// If there is at least 1 warning
 		if ( isset( $rating[ 'warnings' ] ) && 0 < count( $rating[ 'warnings' ] ) ) {
 			// TODO - Pass Wordlift_Notice_Service trough the service constructor 
-			Wordlift_Notice_Service::get_instance()->add_error( $rating[ 'warnings' ] );
+			$this->notice_service->add_error( $rating[ 'warnings' ] );
 		}
 		
 	}

@@ -119,6 +119,15 @@ class Wordlift {
 	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
 	 */
 	private $redirect_service;
+
+	/**
+	 * The Notice service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
+	 */
+	private $notice_service;
 	
 	/**
 	 * The Entity list customization.
@@ -314,8 +323,11 @@ class Wordlift {
 		// Create an instance of the Schema service.
 		$this->schema_service = new Wordlift_Schema_Service();
 
+		// Create an instance of the Notice service.
+		$this->notice_service = new Wordlift_Notice_Service();
+
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service );
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service, $this->notice_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -336,9 +348,6 @@ class Wordlift {
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
-
-		// Create an instance of the Notice service.
-		new Wordlift_Notice_Service();
 
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
