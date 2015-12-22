@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 = 3.3.0 (???) =
 * Enhancement: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): download and save Place coordinates from RL.
 * Enhancement: [#161](https://github.com/insideout10/wordlift-plugin/issues/161): geomap shows current entity if it is a Place (or child of Place).
+* Enhancement: [#207](https://github.com/insideout10/wordlift-plugin/issues/207): add rating score for entities.
 
 = 3.2.4 (2015-12-13) =
 * Fix: [#210](https://github.com/insideout10/wordlift-plugin/issues/210): Restore editable annotations to allow annotations formatting.
