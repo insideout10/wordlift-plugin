@@ -41,6 +41,13 @@ class Wordlift_Entity_Service {
 	const TYPE_NAME = 'entity';
 
 	/**
+	 * Entity rating max.
+	 *
+	 * @since 3.3.0
+	 */
+	const RATING_MAX = 7;
+	
+	/**
 	 * Entity rating score meta key.
 	 *
 	 * @since 3.3.0
@@ -59,49 +66,49 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_HAS_RELATED_POSTS = 'has_related_posts';
+	const RATING_WARNING_HAS_RELATED_POSTS = 'There are no related posts for the current entity.';
 
 	/**
 	 * Entity warning has content post identifier.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_HAS_CONTENT_POST = 'has_content_post';
+	const RATING_WARNING_HAS_CONTENT_POST = 'This entity has not description.';
 
 	/**
 	 * Entity warning has related entities identifier.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_HAS_RELATED_ENTITIES = 'has_related_entities';
+	const RATING_WARNING_HAS_RELATED_ENTITIES = 'There are no related entities for the current entity.';
 
 	/**
 	 * Entity warning is published identifier.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_IS_PUBLISHED = 'is_published';
+	const RATING_WARNING_IS_PUBLISHED = 'This entity is not published. It will not appear within analysis results.';
 
 	/**
 	 * Entity warning has thumbnail identifier.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_HAS_THUMBNAIL = 'has_thumbnail';
+	const RATING_WARNING_HAS_THUMBNAIL = 'This entity has no featured image yet.';
 
 	/**
 	 * Entity warning has same as identifier.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_HAS_SAME_AS = 'has_same_as';
+	const RATING_WARNING_HAS_SAME_AS = 'There are no sameAs configured for this entity.';
 
 	/**
 	 * Entity warning has completed metadata identifier.
 	 *
 	 * @since 3.3.0
 	 */
-	const RATING_WARNING_HAS_COMPLETED_METADATA = 'has_completed_metadata';
+	const RATING_WARNING_HAS_COMPLETED_METADATA = 'Schema.org metadata for this entity are not completed.';
 
 	/**
 	 * The alternative label meta key.
@@ -131,21 +138,6 @@ class Wordlift_Entity_Service {
 	 */
 	private static $instance;
 
-	/**
-	 * Entity rating warning messages.
-	 *
-	 * @since 3.3.0
-	 * @access private
-	 */
-	private static $rating_warning_messages = array(
-		self::RATING_WARNING_HAS_RELATED_POSTS 			=> 'There are no related posts for the current entity. Use your entities to classify your posts.',
-		self::RATING_WARNING_HAS_CONTENT_POST 			=> 'This entity has not description. Be sure to provide a custom description for each entity.',
-		self::RATING_WARNING_HAS_RELATED_ENTITIES		=> 'There are no related entities for the current entity. Work deeper on your entity description.',
-		self::RATING_WARNING_IS_PUBLISHED				=> 'This entity is not published. It will not appear within analysis results.',
-		self::RATING_WARNING_HAS_THUMBNAIL				=> 'This entity has no featured image yet.',
-		self::RATING_WARNING_HAS_SAME_AS				=> 'There are no sameAs configured for this entity. SameAs is important to link your data with external existing ones.',
-		self::RATING_WARNING_HAS_COMPLETED_METADATA 	=> 'Schema.org metadata for this entity are not completed. A complete schema.org markup makes your data meaningful for search engines.',
-	);
 	/**
 	 * Create a Wordlift_Entity_Service instance.
 	 *
@@ -187,19 +179,9 @@ class Wordlift_Entity_Service {
 	 * @return int Max rating according to performed checks.
 	 */
 	public static function get_rating_max() {
-		return count( array_values( self::get_rating_warning_messages() ) );
+		return self::RATING_MAX;
 	}
 
-	/**
-	 * Get rating warning messages
-	 *
-	 * @since 3.3.0
-	 *
-	 * @return array The collection of defined warnings.
-	 */
-	private static function get_rating_warning_messages() {
-		return self::$rating_warning_messages;
-	}
 	/**
 	 * Get the entities related to the last 50 posts published on this blog (we're keeping a long function name due to
 	 * its specific function).
@@ -408,11 +390,10 @@ class Wordlift_Entity_Service {
 		}
 		// Retrieve an updated rating for the current entity
 		$rating = $this->get_rating_for( $post->ID, true );
-		$warnings = array_values( $rating[ 'warnings' ] );
 		// If there is at least 1 warning
-		if ( isset( $rating[ 'warnings' ] ) && 0 < count( $warnings ) ) {
+		if ( isset( $rating[ 'warnings' ] ) && 0 < count( $rating[ 'warnings' ] ) ) {
 			// TODO - Pass Wordlift_Notice_Service trough the service constructor 
-			Wordlift_Notice_Service::get_instance()->add_error( $warnings );
+			Wordlift_Notice_Service::get_instance()->add_error( $rating[ 'warnings' ] );
 		}
 		
 	}
@@ -463,7 +444,7 @@ class Wordlift_Entity_Service {
 		
 		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );  
 			
-		if ( '' === $current_raw_score ) {
+		if ( ! is_numeric( $current_raw_score ) ) {
 			$this->log_service->trace( "Rating missing for [ post_id :: $post_id ] [ current_raw_score :: $current_raw_score ]" );
 			return $this->set_rating_for( $post_id );
 		}
@@ -514,28 +495,28 @@ class Wordlift_Entity_Service {
 		// Is the current entity related to at least 1 post?
 		( 0 < count( wl_core_get_related_post_ids( $post->ID ) ) ) ?
 			$score++ : 
-			$this->add_warning( $warnings, self::RATING_WARNING_HAS_RELATED_POSTS );
+			array_push( $warnings, __( self::RATING_WARNING_HAS_RELATED_POSTS, 'wordlift' ) );
 		
 		// Is the post content not empty?
 		( ! empty( $post->post_content ) ) ?
 			$score++ :
-			$this->add_warning( $warnings, self::RATING_WARNING_HAS_CONTENT_POST );
+			array_push( $warnings, __( self::RATING_WARNING_HAS_CONTENT_POST, 'wordlift' ) );
 		
 		// Is the current entity related to at least 1 entity?
 		// Was the current entity already disambiguated?
 		( 0 < count( wl_core_get_related_entity_ids( $post->ID ) ) ) ?
 			$score++ :
-			$this->add_warning( $warnings, self::RATING_WARNING_HAS_RELATED_ENTITIES );
+			array_push( $warnings, __( self::RATING_WARNING_HAS_RELATED_ENTITIES, 'wordlift' ) );
 		
 		// Is the entity published?
 		( 'publish' === get_post_status( $post->ID ) ) ?
 			$score++ :
-			$this->add_warning( $warnings, self::RATING_WARNING_IS_PUBLISHED );
+			array_push( $warnings, __( self::RATING_WARNING_IS_PUBLISHED, 'wordlift' ) );
 		
 		// Has a thumbnail?
 		( has_post_thumbnail( $post->ID ) ) ?
 			$score++ :
-			$this->add_warning( $warnings, self::RATING_WARNING_HAS_THUMBNAIL );
+			array_push( $warnings, __( self::RATING_WARNING_HAS_THUMBNAIL, 'wordlift' ) );
 		
 		// Get all post meta keys for the current post		
 		global $wpdb;
@@ -550,7 +531,7 @@ class Wordlift_Entity_Service {
 		// If each expected key is contained in available keys array ...
 		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?
 			$score++ :
-			$this->add_warning( $warnings, self::RATING_WARNING_HAS_SAME_AS );
+			array_push( $warnings, __( self::RATING_WARNING_HAS_SAME_AS, 'wordlift' ) );
 		
 		$schema = wl_entity_type_taxonomy_get_type( $post_id );
 
@@ -562,13 +543,13 @@ class Wordlift_Entity_Service {
 		// If each expected key is contained in available keys array ...
 		( count( $intersection ) === count( $expected_meta_keys ) ) ?
 			$score++ :
-			$this->add_warning( $warnings, self::RATING_WARNING_HAS_COMPLETED_METADATA );
+			array_push( $warnings, __( self::RATING_WARNING_HAS_COMPLETED_METADATA, 'wordlift' ) );
 		
 		// Finally return score and warnings
 		return array( 
 			'raw_score'				=> $score,
 			'traffic_light_score'	=> $this->convert_raw_score_to_traffic_light( $score ),
-			'traffic_percentage'	=> $this->convert_raw_score_to_percentage( $score ),
+			'percentage_score'		=> $this->convert_raw_score_to_percentage( $score ),
 			'warnings'				=> $warnings, 
 		);
 
@@ -604,21 +585,6 @@ class Wordlift_Entity_Service {
 	private function convert_raw_score_to_percentage( $score ) {
 		// RATING_MAX : $score = 100 : x 
 		return round( ( $score * 100) / self::get_rating_max(), 0, PHP_ROUND_HALF_UP );
-	}
-	/**
-	 * Add warning to warning collection
-	 *
-	 * @since 3.3.0
-	 *
-	 * @param Array $warnings The rating score for a given entity.
-	 *
-	 * @return string The input HTML code.
-	 */
-	private function add_warning( &$warnings, $key ) {
-
-		$messages = self::get_rating_warning_messages();
-		$warnings[ $key ] = __( $messages [ $key ], 'wordlift' );
-		
 	}
 
 	/**
