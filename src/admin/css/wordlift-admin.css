@@ -76,6 +76,37 @@
 #wl_column_related_posts {
     width: 100px;
 }
+<<<<<<< HEAD
 #wl-dropdown-classification-scope option {
     text-transform: capitalize;
+=======
+#wl_column_rating {
+    width: 100px;
+    text-align: center;
+
+}
+.wl-traffic-light {
+  display: block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 50%;
+  margin:5px auto;
+  color:#fff;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+.wl_column_rating {
+  text-align: center;
+}
+
+.wl-tl-1 {
+  background-color:#f00;
+}
+.wl-tl-2 {
+  background-color:#f90;
+}
+.wl-tl-3 {
+  background-color:#6c0;
+>>>>>>> d22307dd364d48296ada496e4c6e266ed9429c9c
 }

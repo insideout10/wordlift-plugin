@@ -21,6 +21,30 @@ class Wordlift_Entity_List_Service {
 	const THUMB_SIZE = 50;
 
 	/**
+	 * The Entity service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
+	 */
+	private $entity_service;
+
+	/**
+	 * Create a Wordlift_Entity_List_Service.
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
+	 */
+	public function __construct( $entity_service ) {
+
+		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_List_Service' );
+
+		$this->entity_service = $entity_service;
+
+	}
+
+	/**
 	 * Register custom columns for entity listing in backend
 	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference/manage_posts_custom_column
 	 *
@@ -42,7 +66,8 @@ class Wordlift_Entity_List_Service {
 			array( 'cb'                      => $columns_cb ),                      // re-add first column
 			array( 'wl_column_thumbnail'     => __( 'Image', 'wordlift' ) ),        // thumb
 			$columns,                                                               // default columns (without the first)
-			array( 'wl_column_related_posts' => __( 'Related Posts', 'wordlift' ) ) // related posts
+			array( 'wl_column_related_posts' => __( 'Related Posts', 'wordlift' ) ), // related posts
+			array( 'wl_column_rating' 		 => __( 'Rating', 'wordlift' ) ) // related posts
 		);
 
 		return $columns;		
@@ -76,7 +101,13 @@ class Wordlift_Entity_List_Service {
 					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='" . self::THUMB_SIZE . "' />";
 				}
 				echo "<a href='$edit_link'>$thumb</a>";
-				break;	
+				break;
+
+			case 'wl_column_rating':
+
+				$rating = $this->entity_service->get_rating_for( $entity_id );
+				echo '<i class="wl-traffic-light wl-tl-'. $rating[ 'traffic_light_score' ] . '">' . $rating[ 'percentage_score' ] . '%</i>';				
+				break;
 		}
 		
 	}

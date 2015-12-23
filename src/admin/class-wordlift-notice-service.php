@@ -89,7 +89,7 @@ class Wordlift_Notice_Service {
 	 */
 	public function add( $class, $message ) {
 
-		$this->notices[] = sprintf( self::TEMPLATE, $class, $message );
+		$this->notices[] = sprintf( self::TEMPLATE, $class, $this->transform( $message ) );
 
 	}
 
@@ -141,6 +141,24 @@ class Wordlift_Notice_Service {
 
 		foreach ( $this->notices as $notice ) {
 			echo( $notice );
+		}
+
+	}
+
+	/**
+	 * Transform message depending on message type. Return a string
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param string $message The message.
+	 */
+	private function transform( $message ) {
+
+		switch (  gettype( $message ) ) {
+			case 'array':
+				return implode( $message, '<br />' );
+			default:
+       			return $message;
 		}
 
 	}

@@ -76,6 +76,15 @@ class Wordlift {
 	private $ui_service;
 
 	/**
+	 * The Schema service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
+	 */
+	private $schema_service;
+
+	/**
 	 * The Entity service.
 	 *
 	 * @since 3.1.0
@@ -110,6 +119,15 @@ class Wordlift {
 	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
 	 */
 	private $redirect_service;
+
+	/**
+	 * The Notice service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
+	 */
+	private $notice_service;
 	
 	/**
 	 * The Entity list customization.
@@ -303,10 +321,13 @@ class Wordlift {
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Service();
+		$this->schema_service = new Wordlift_Schema_Service();
+
+		// Create an instance of the Notice service.
+		$this->notice_service = new Wordlift_Notice_Service();
 
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service, $this->notice_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -321,15 +342,12 @@ class Wordlift {
 		new Wordlift_Timeline_Shortcode();
 		
 		// Create entity list customization (wp-admin/edit.php)
-		$this->entity_list_service = new Wordlift_Entity_List_Service();
+		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
-
-		// Create an instance of the Notice service.
-		new Wordlift_Notice_Service();
 
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
@@ -387,7 +405,10 @@ class Wordlift {
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
+		$this->loader->add_action( 'save_post_entity', $this->entity_service, 'set_rating_for', 10, 1 );
+		
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
+		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
 
 		// Entity listing customization (wp-admin/edit.php)
 		// Add custom columns
