@@ -76,14 +76,14 @@
 #wl_column_related_posts {
     width: 100px;
 }
-<<<<<<< HEAD
+
 #wl-dropdown-classification-scope option {
     text-transform: capitalize;
-=======
+}
+
 #wl_column_rating {
     width: 100px;
     text-align: center;
-
 }
 .wl-traffic-light {
   display: block;
@@ -108,5 +108,5 @@
 }
 .wl-tl-3 {
   background-color:#6c0;
->>>>>>> d22307dd364d48296ada496e4c6e266ed9429c9c
 }
+
