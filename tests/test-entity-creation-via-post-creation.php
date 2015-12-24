@@ -411,13 +411,78 @@ EOF;
 		$this->assertCount( 1, $relation_instances );
 	}
 
-	function prepareFakeGlobalPostArrayFromFile( $fileName ) {
+	// Given an entity with at least 1 alternative label
+	// This test checks that the entity is properly updated keeping 
+	// WP and RL in synch when the this entity is used in disambiguation 
+	// See https://github.com/insideout10/wordlift-plugin/issues/221
+	function testEntityWithAlternativeLabelIsProperlyOverridden() {
+
+		$original_label = uniqid( 'entity-original', true );
+		// Create an entity
+		$entity_id = wl_create_post( '', 'entity-1', $original_label, 'draft', 'entity' );
+		// Check that there are no related posts for the entity
+		$related_post_ids = wl_core_get_related_post_ids( $entity_id, array( "predicate" => "what" ) );
+		$this->assertCount( 0, $related_post_ids );
+		// Generate e label and set it as alternative label for the new entity
+		$alternative_label = uniqid( 'entity-alternative', true );
+		Wordlift_Entity_Service::get_instance()->set_alternative_labels( $entity_id, $alternative_label );
+		// Check that the alternative label is properly set
+		$labels = Wordlift_Entity_Service::get_instance()->get_alternative_labels( $entity_id );
+		$this->assertCount( 1, $labels );
+		$this->assertContains( $alternative_label, $labels ); 
+		// Force post status to publish: this triggers the save_post hook
+		wl_update_post_status( $entity_id, 'publish' );
+		// Check that entity label is properly mapped on entity post title
+		$this->assertEquals( $original_label, get_post( $entity_id )->post_title );
+		
+		// Notice that the uri is generated trough the original label
+		// while the current label is the alternative one	
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_one_existing_entity_linked_as_what.json',
+			array(
+				'CURRENT_URI'	=> $this->buildEntityUriForLabel( $original_label ),
+				'CURRENT_LABEL'	=> $alternative_label,	
+			) 
+		);
+
+		$_POST = $fake;
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$original_entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Reference the entity to the post content trough its alternative label
+		$content    = <<<EOF
+    <span itemid="$original_entity_uri">$alternative_label</span>
+EOF;
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		// Check that entity label is STILL properly mapped on entity post title
+		$this->assertEquals( $original_label, get_post( $entity_id )->post_title );
+
+		$expected_entity_uri = $this->buildEntityUriForLabel( $original_label );
+		$entity_uri = wl_get_entity_uri( $entity_id );
+		$this->assertEquals( $entity_uri, $expected_entity_uri );
+		
+		// And it should be related to the post as what predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
+		$this->assertCount( 1, $related_entity_ids );
+		$this->assertContains( $entity_id, $related_entity_ids );
+		
+	}
+
+
+	function prepareFakeGlobalPostArrayFromFile( $fileName, $placeholders = array() ) {
 		$json_data = file_get_contents( dirname( __FILE__ ) . $fileName );
 		$json_data = preg_replace(
 			'/{{REDLINK_ENDPOINT}}/',
 			wl_configuration_get_redlink_dataset_uri(),
-			$json_data );
-		wl_write_log( $json_data );
+			$json_data 
+		);
+
+		foreach ( $placeholders as $ph => $value) {
+			$json_data = preg_replace( 
+				sprintf('/{{%s}}/', $ph), $value, $json_data 
+			);
+		}
+		
 		$data = json_decode( $json_data, true );
 		return $data;
 
