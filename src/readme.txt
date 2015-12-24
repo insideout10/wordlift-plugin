@@ -83,6 +83,8 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.2.5 (2015-12-24) =
+* Fix: [#221](https://github.com/insideout10/wordlift-plugin/issues/221): Fix de-synch between Wordpress and RedLink when disambiguation is performed trough entity alternative title
 
 = 3.2.4 (2015-12-13) =
 * Fix: [#210](https://github.com/insideout10/wordlift-plugin/issues/210): Restore editable annotations to allow annotations formatting.
