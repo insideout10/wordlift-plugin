@@ -309,6 +309,7 @@ EOF;
 		$this->assertEquals( 'public', $entity_reloaded->post_status );
 		
 	}
+
 	// This test simulate entity metadata updating trough the disambiguation widget
 	function testEntityMetadataAreProperlyUpdated() {
 
@@ -467,7 +468,6 @@ EOF;
 		$this->assertContains( $entity_id, $related_entity_ids );
 		
 	}
-
 
 	function prepareFakeGlobalPostArrayFromFile( $fileName, $placeholders = array() ) {
 		$json_data = file_get_contents( dirname( __FILE__ ) . $fileName );
