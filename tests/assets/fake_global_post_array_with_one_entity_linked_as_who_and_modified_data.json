@@ -1,7 +1,7 @@
 {
    "wl_entities":{
-      "{{REDLINK_ENDPOINT}}\/entity\/Ragione":{
-         "uri":"{{REDLINK_ENDPOINT}}\/entity\/Ragione",
+      "{{REDLINK_ENDPOINT}}\/entity\/ragione":{
+         "uri":"{{REDLINK_ENDPOINT}}\/entity\/ragione",
          "label":"Ragione",
          "description":"New content",
          "main_type":"wl-organization",
@@ -17,7 +17,7 @@
    },
    "wl_boxes":{
       "who":[
-         "{{REDLINK_ENDPOINT}}\/entity\/Ragione"
+         "{{REDLINK_ENDPOINT}}\/entity\/ragione"
       ]
    }
 }

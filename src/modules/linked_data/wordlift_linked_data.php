@@ -87,12 +87,18 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		// Local Redlink uris need to be used here
 		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
 			foreach ( $entity_uris as $entity_uri ) {
-				// wl_write_log("Going to map predicates for uri $entity_uri ");
 				// Retrieve the entity label needed to build the uri
-				$label = $entities_via_post[ stripslashes( $entity_uri ) ]['label'];
-				$uri   = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
-				// wl_write_log("Going to map predicate $predicate to uri $uri ");
+				// If the current uri is an internal uri, then entity uri is preserved:
+				// the current label could be an alternative label that has not to impact on entity uri
+				if ( 0 !== strrpos( $entity_uri, wl_configuration_get_redlink_dataset_uri() ) ) {	
+					$label	= $entities_via_post[ stripslashes( $entity_uri ) ]['label'];
+					$uri	= sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
+				} else {			
+					$uri	= stripslashes( $entity_uri );
+				}
+				
 				$entities_predicates_mapping[ $uri ][] = $predicate;
+				
 			}
 		}
 
@@ -123,8 +129,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Save relation instances
 	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
 
-		// wl_write_log(" Going to manage relation between Post $post_id and $referenced_entity_id");
-
 		if ( $entities_predicates_mapping ) {
 
 			// wl_write_log(" Going to manage relation instances according to the following mapping");
@@ -134,7 +138,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Retrieve predicates for the current uri
 			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
 				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-					// wl_write_log(" Going to add relation with predicate $predicate");
+					wl_write_log(" Going to add relation with predicate $predicate");
 					wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
 				}
 			} else {
@@ -296,8 +300,11 @@ function wl_save_entity( $entity_properties ) {
 		if ( 'public' == $post->post_status ) {
 			$params['post_status'] = $post->post_status;
 		}
-		// Preserve the current entity content. Hotfix for issue #152
+		// Preserve the current entity post_content.
 		$params['post_content'] = $post->post_content;
+		// Preserve the entity post_title to avoid de-synch between WP and RL
+		// See: https://github.com/insideout10/wordlift-plugin/issues/221
+		$params['post_title'] = $post->post_title;	 
 	}
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
