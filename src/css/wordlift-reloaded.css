@@ -2256,25 +2256,15 @@
   right: 0;
   left: auto;
 }
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post div.wp-menu-image {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAGFBMVEX+AFb91Of+da/9P5H8qs77/v7+GXr/AG2omA+JAAAAZElEQVR4AWMohwNimAzsBQzlBWCmknKSkoGReTmQrxqWEpqQaAASZQ1mCC0wYgcxmQLZQxWUwUy2UDZRcXewtgJRZdMgBQjTNIQltADCTA1mDmSH2MYYwB4EZTIplCsjuYFEJgAK3kvWYXfpIQAAAABJRU5ErkJggg==") center no-repeat !important;
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
 div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities div.wp-menu-image:before,
-#adminmenu #menu-posts-entity .menu-icon-post div.wp-menu-image:before {
-  content: '';
+#adminmenu #menu-posts-entity .menu-icon-entity div.wp-menu-image:before {
+  color: #f20f62;
 }
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities:hover div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post:hover div.wp-menu-image {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABQUlEQVR4AdWVM5RYURRFd2zbtm3btm3bto02Zr+iNilTpwqrNHEy3GPbk/efcc/VWR/gC/Ajm9oXALO58SMbhf34DwVupIOHGOQeetqE8jaknGcY5EH6uI0e9qKGgJ2o6mGG2Y9aqQtcSRvlprLXqpSwPMV8whjltkGstCLFBWxMOV8x3TZUStvkD8xVTjqQ2gIWBr+zzkC2WClaYB9qOp9m6fPhNjoqN3zKsNi9ryxQLrqB9gKuo100YDoEVqOkskPZLBBp+ltmKAd8zUQB99LF4hRKf5TfMEG54jyaRGrSkor+ZKmy3lP0djKNM5Y282mhnDCErZHmAT5guHLav6ywNEUyJjDCHFmjHLE1lQQcSX3lis8Zn7nEfsfsSDPj78l2N9MxcwKX0do1tE2wt5eOtqPy/8/l7BVoNrfs/QWEAb7FzfHlA7vcAAAAAElFTkSuQmCC") center no-repeat !important;
-}
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.current div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post.current div.wp-menu-image,
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.wp-menu-open div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post.wp-menu-open div.wp-menu-image {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAGFBMVEX+AFb91Of+da/9P5H8qs77/v7+GXr/AG2omA+JAAAAZElEQVR4AWMohwNimAzsBQzlBWCmknKSkoGReTmQrxqWEpqQaAASZQ1mCC0wYgcxmQLZQxWUwUy2UDZRcXewtgJRZdMgBQjTNIQltADCTA1mDmSH2MYYwB4EZTIplCsjuYFEJgAK3kvWYXfpIQAAAABJRU5ErkJggg==") center no-repeat !important;
+div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.current div.wp-menu-image:before,
+#adminmenu #menu-posts-entity .menu-icon-entity.current div.wp-menu-image:before,
+div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.wp-menu-open div.wp-menu-image:before,
+#adminmenu #menu-posts-entity .menu-icon-entity.wp-menu-open div.wp-menu-image:before {
+  color: #fff;
 }
 #wordlift-disambiguation-popover {
   display: none;

@@ -27,8 +27,8 @@ function wl_entity_type_register() {
 		'public'        => true,
 		'menu_position' => 20, // after the pages menu.
 		'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
-		'has_archive'   => true/*,
-        'taxonomies' => array('category')*/
+		'has_archive'   => true,
+		'menu_icon'		=> 'dashicons-tag'
 	);
 
 	register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );

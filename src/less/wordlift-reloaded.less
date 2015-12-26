@@ -465,24 +465,17 @@
 }
 
 div.wp-menu-image:before
-#adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-post {
+#adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-entity {
 
   div.wp-menu-image {
-    background: data-uri('../images/pink-logo-20x20.png') center no-repeat !important;
-    opacity: 1;
-    filter: alpha(opacity=100);
-
     &:before {
-      content: '';
+      color: @wl-brand-color;
     }
   }
-
-  &:hover div.wp-menu-image {
-    background: data-uri('../images/wordlift-logo-20x20.png') center no-repeat !important;
-  }
-
-  &.current div.wp-menu-image, &.wp-menu-open div.wp-menu-image {
-    background: data-uri('../images/pink-logo-20x20.png') center no-repeat !important;
+  &.current div.wp-menu-image, &.wp-menu-open div.wp-menu-image { 
+    &:before {
+      color:#fff;
+    }
   }
 
 }
