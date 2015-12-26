@@ -507,12 +507,18 @@ class Wordlift_Schema_Service {
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_EMAIL => array(
+					'predicate'   => 'http://schema.org/email',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => ''
 				)
 			),
 			'microdata_template' =>
 				'{{founder}}
 				<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
+					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}
 				</span>',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
@@ -731,7 +737,8 @@ class Wordlift_Schema_Service {
                                 <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 									{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
 								</span>
-                                {{founder}}',
+                                {{founder}}
+								{{email}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
