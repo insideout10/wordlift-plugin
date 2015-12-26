@@ -229,7 +229,7 @@ class WL_Metabox_Field {
 
 		// If cardiality allows it, print button to add new values.
 		if ( $count < $this->cardinality ) {
-			$html .= '<button class="button wl-add-input" type="button">Add</button>';
+			$html .= '<button class="button wl-add-input wl-button" type="button">Add</button>';
 		}
 
 		// Close the HTML wrapper
@@ -247,7 +247,7 @@ class WL_Metabox_Field {
 		$html = <<<EOF
 			<div class="wl-input-wrapper">
 				<input type="text" id="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" style="width:88%" />
-				<button class="button wl-remove-input" type="button" style="width:10 % ">Remove</button>
+				<button class="button wl-remove-input wl-button" type="button" style="width:10 % ">Remove</button>
 			</div>
 EOF;
 

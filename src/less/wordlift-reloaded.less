@@ -600,8 +600,13 @@ body#tinymce {
 
 /* metaboxes */
 
-.wl-metabox .hndle span::before {
-	content: "WordLift - ";
+.wl-metabox {
+
+  border-left:@wl-brand-color 4px solid;
+  
+  .hndle span::before {
+	   content: "WordLift - ";
+  }
 }
 
 .wl-input-notice {

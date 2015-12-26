@@ -2400,6 +2400,9 @@ body#tinymce[contenteditable=false] {
   background-color: #f1f1f1;
 }
 /* metaboxes */
+.wl-metabox {
+  border-left: #f20f62 4px solid;
+}
 .wl-metabox .hndle span::before {
   content: "WordLift - ";
 }
