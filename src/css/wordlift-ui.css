@@ -1,5 +1,5 @@
 path.wl-person {
-  fill: #f20f62;
+  fill: #ff0000;
 }
 path.wl-place {
   fill: #ff9a2e;
@@ -20,7 +20,7 @@ path.wl-thing {
   fill: #0073aa;
 }
 .wl-person {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
   padding: 2px;
 }

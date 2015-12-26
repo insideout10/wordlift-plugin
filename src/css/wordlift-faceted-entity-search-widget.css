@@ -1474,7 +1474,7 @@
   background-color: inherit !important;
 }
 .wl-selected-item.wl-person {
-  border-left: #f20f62 5px solid;
+  border-left: #ff0000 5px solid;
 }
 .wl-selected-item.wl-place {
   border-left: #ff9a2e 5px solid;
@@ -1613,10 +1613,10 @@
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container h6.wl-fs-person .type:before {
   content: "\f007";
-  color: #f20f62;
+  color: #ff0000;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container h6.wl-fs-person.selected {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container h6.wl-fs-place .type {

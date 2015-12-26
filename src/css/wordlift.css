@@ -1514,7 +1514,7 @@
   color: #000000;
 }
 .entity.wl-person {
-  border-color: #f20f62;
+  border-color: #ff0000;
   color: black;
 }
 .entity.wl-person .type:before {
@@ -1522,11 +1522,11 @@
 }
 .entity.wl-person:hover,
 .entity.wl-person.selected {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
 }
 .entity.wl-person .thumbnail {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
 }
 .entity.wl-place {
@@ -1763,7 +1763,7 @@ body#tinymce .textannotation.wl-organization {
 body#tinymce .textannotation.wl-person {
   border: 0 !important;
   color: #ffffff;
-  background-color: #f20f62;
+  background-color: #ff0000;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-place {
