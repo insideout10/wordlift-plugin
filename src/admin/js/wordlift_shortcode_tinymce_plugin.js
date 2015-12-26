@@ -82,9 +82,9 @@
                     
         		var btn = ed.addButton('wl_shortcodes_menu', {
 			        type: 'menubutton',
-			        title: 'WordLift Widgets',
-			        text: 'WordLift Widgets',
-			        image: url + '/../images/wordlift-logo-20x20.png',
+			        title: 'Widgets',
+			        text: 'Widgets',
+			        classes: 'wl-button',
 			        // Must define onclick to avoid error
 			        onclick: function(){ /* OPEN YOURSELF ?? */ },
 			        menu: menu4
