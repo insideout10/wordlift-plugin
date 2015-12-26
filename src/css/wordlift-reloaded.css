@@ -1513,6 +1513,10 @@
   color: #aa0000;
   cursor: pointer;
 }
+.wl-button {
+  background-color: #f20f62;
+  border-color: #c20c4e;
+}
 .wl-entity-input-boxes,
 .wl-entity-props {
   display: none;

@@ -485,7 +485,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     		<div class="box-header">
           <h5 class="label">
             {{box.label}}
-            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected' : hasAnalysis(), 'preview' : !hasAnalysis() }">Add entity</span>
+            <span ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" class="button" ng-class="{ 'button-primary selected wl-button' : hasAnalysis(), 'preview' : !hasAnalysis() }">Add entity</span>
           </h5>
           <wl-entity-form ng-show="addEntityFormIsVisible" entity="newEntity" box="box" on-submit="closeAddEntityForm()"></wl-entity-form>
           <div class="wl-selected-items-wrapper">
@@ -580,11 +580,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           </div>
       </div>
       <div ng-hide="isInternal()" class="wl-buttons-wrapper">
-        <span class="button button-primary" ng-click="onSubmit()">Add</span>
+        <span class="button button-primary wl-button" ng-click="onSubmit()">Add</span>
       </div>
       <div ng-show="isInternal()" class="wl-buttons-wrapper">
-        <span class="button button-primary" ng-click="linkTo('lod')">View Linked Data<i class="wl-link"></i></span>
-        <span class="button button-primary" ng-click="linkTo('edit')">Edit<i class="wl-link"></i></span>
+        <span class="button button-primary wl-button" ng-click="linkTo('lod')">View Linked Data<i class="wl-link"></i></span>
+        <span class="button button-primary wl-button" ng-click="linkTo('edit')">Edit<i class="wl-link"></i></span>
       </div>
       </div>
     """
