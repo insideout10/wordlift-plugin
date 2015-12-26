@@ -33,34 +33,6 @@
 
 }
 
-.mceIcon.mce_wordlift_add_entity, .mce-widget.mce-btn.mce-wordlift_add_entity button {
-
-    background-position: center center;
-    background-repeat: no-repeat;
-
-    &:before {
-      content: @fa-var-pencil; 
-    }
-
-    &:hover {
-      color:rgb(0,0,0) !important;
-    }
-
-    color:@wl-brand-color !important;
-    
-
-    font-size:18px !important;   
-    
-    font-family: FontAwesome !important;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 18px !important;
-    
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-}
-
 // Set a tile color background, foreground and icons.
 .tile(@color, @icon) {
   border-color: @color;
@@ -95,6 +67,12 @@
   font-size: 0.9em;
   position: relative;
   
+  .wl-internal {
+    color:@wl-brand-color;
+    font-size: 1.1em;
+    line-height: 1.5em;
+  }
+
   .label, i {
     cursor: pointer;
   }

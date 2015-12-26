@@ -1538,33 +1538,17 @@
 .mce-widget.mce-btn.mce-wordlift button:hover {
   color: #000000 !important;
 }
-.mceIcon.mce_wordlift_add_entity,
-.mce-widget.mce-btn.mce-wordlift_add_entity button {
-  background-position: center center;
-  background-repeat: no-repeat;
-  color: #f20f62 !important;
-  font-size: 18px !important;
-  font-family: FontAwesome !important;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 18px !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.mceIcon.mce_wordlift_add_entity:before,
-.mce-widget.mce-btn.mce-wordlift_add_entity button:before {
-  content: "\f040";
-}
-.mceIcon.mce_wordlift_add_entity:hover,
-.mce-widget.mce-btn.mce-wordlift_add_entity button:hover {
-  color: #000000 !important;
-}
 .entity {
   background: white;
   padding: 0em;
   margin: 0.2em 0em;
   font-size: 0.9em;
   position: relative;
+}
+.entity .wl-internal {
+  color: #f20f62;
+  font-size: 1.1em;
+  line-height: 1.5em;
 }
 .entity .label,
 .entity i {
