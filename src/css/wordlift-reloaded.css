@@ -1878,10 +1878,11 @@
   font-size: inherit;
 }
 #wordlift-edit-post-wrapper .wl-widget-headline {
+  padding-left: 32px;
   margin: 10px -12px;
   border-top: #eee 1px solid;
   border-bottom: #eee 1px solid;
-  background-color: #f5f5f5;
+  background: #f5f5f5 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAGFBMVEX+AFb91Of+da/9P5H8qs77/v7+GXr/AG2omA+JAAAAZElEQVR4AWMohwNimAzsBQzlBWCmknKSkoGReTmQrxqWEpqQaAASZQ1mCC0wYgcxmQLZQxWUwUy2UDZRcXewtgJRZdMgBQjTNIQltADCTA1mDmSH2MYYwB4EZTIplCsjuYFEJgAK3kvWYXfpIQAAAABJRU5ErkJggg==") 6px 50% no-repeat !important;
 }
 #wordlift-edit-post-wrapper #wl-add-entity-button-wrapper {
   padding: 4px 0px 0px 0px;
