@@ -55,7 +55,7 @@ $(
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{image}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
         </div>
       </div>
 

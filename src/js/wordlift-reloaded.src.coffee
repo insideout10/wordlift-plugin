@@ -140,18 +140,26 @@ class Traslator
     @_text
 window.Traslator = Traslator
 angular.module('wordlift.utils.directives', [])
-.directive('wlSrc', ['$window', '$log', ($window, $log)->
+# See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
+.directive('wlOnError', ['$parse', '$window', '$log', ($parse, $window, $log)->
+  restrict: 'A'
+  compile: ($element, $attrs) ->  
+    return (scope, element)->
+      fn = $parse($attrs.wlOnError)
+      element.on('error', (event)->
+        callback = ()->
+      	  fn(scope, { $event: event })
+        scope.$apply(callback)
+      )
+])
+.directive('wlFallback', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   priority: 99 # it needs to run after the attributes are interpolated
   link: ($scope, $element, $attrs, $ctrl) ->  
     $element.bind('error', ()->
-      unless $attrs.src is $attrs.wlSrc
-        if $attrs.wlSrc
-          $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
-          $attrs.$set 'src', $attrs.wlSrc
-        else
-          $log.warn "Error on #{$attrs.src}! Going to remove the current element"
-          $element.remove()
+      unless $attrs.src is $attrs.wlFallback
+        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
+        $attrs.$set 'src', $attrs.wlFallback
     )
 ])
 angular.module('wordlift.ui.carousel', [])
@@ -556,7 +564,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     template: """
       <div name="wordlift" class="wl-entity-form">
       <div ng-show="entity.images.length > 0">
-          <img ng-src="{{entity.images[0]}}" wl-src />
+          <img ng-src="{{entity.images[0]}}" wl-on-error="removeCurrentImage()" />
       </div>
       <div>
           <label class="wl-required">Entity label</label>
@@ -596,6 +604,10 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.configuration = configuration
 
+      $scope.removeCurrentImage = ()->
+        removed = $scope.entity.images.shift()
+        $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
+        
       $scope.getCurrentTypeUri = ()->
         for type in configuration.types
           if type.css is "wl-#{$scope.entity.mainType}"
@@ -1297,7 +1309,7 @@ $(
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{image}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
         </div>
       </div>
 

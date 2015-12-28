@@ -102,18 +102,26 @@ angular.module('wordlift.ui.carousel', [])
     $ctrl.registerPane $scope, $element
 ])
 angular.module('wordlift.utils.directives', [])
-.directive('wlSrc', ['$window', '$log', ($window, $log)->
+# See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
+.directive('wlOnError', ['$parse', '$window', '$log', ($parse, $window, $log)->
+  restrict: 'A'
+  compile: ($element, $attrs) ->  
+    return (scope, element)->
+      fn = $parse($attrs.wlOnError)
+      element.on('error', (event)->
+        callback = ()->
+      	  fn(scope, { $event: event })
+        scope.$apply(callback)
+      )
+])
+.directive('wlFallback', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   priority: 99 # it needs to run after the attributes are interpolated
   link: ($scope, $element, $attrs, $ctrl) ->  
     $element.bind('error', ()->
-      unless $attrs.src is $attrs.wlSrc
-        if $attrs.wlSrc
-          $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
-          $attrs.$set 'src', $attrs.wlSrc
-        else
-          $log.warn "Error on #{$attrs.src}! Going to remove the current element"
-          $element.remove()
+      unless $attrs.src is $attrs.wlFallback
+        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
+        $attrs.$set 'src', $attrs.wlFallback
     )
 ])
 # Set the well-known $ reference to jQuery.
@@ -240,7 +248,7 @@ $(
       <div class="wl-posts">
         <div wl-carousel>
           <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
-            <img ng-src="{{post.thumbnail}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+            <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
             </div>
