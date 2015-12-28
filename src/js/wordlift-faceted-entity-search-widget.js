@@ -113,8 +113,13 @@
         link: function($scope, $element, $attrs, $ctrl) {
           return $element.bind('error', function() {
             if ($attrs.src !== $attrs.wlSrc) {
-              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlSrc);
-              return $attrs.$set('src', $attrs.wlSrc);
+              if ($attrs.wlSrc) {
+                $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlSrc);
+                return $attrs.$set('src', $attrs.wlSrc);
+              } else {
+                $log.warn("Error on " + $attrs.src + "! Going to remove the current element");
+                return $element.remove();
+              }
             }
           });
         }

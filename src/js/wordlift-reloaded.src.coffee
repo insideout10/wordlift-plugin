@@ -146,8 +146,12 @@ angular.module('wordlift.utils.directives', [])
   link: ($scope, $element, $attrs, $ctrl) ->  
     $element.bind('error', ()->
       unless $attrs.src is $attrs.wlSrc
-        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
-        $attrs.$set 'src', $attrs.wlSrc
+        if $attrs.wlSrc
+          $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
+          $attrs.$set 'src', $attrs.wlSrc
+        else
+          $log.warn "Error on #{$attrs.src}! Going to remove the current element"
+          $element.remove()
     )
 ])
 angular.module('wordlift.ui.carousel', [])
@@ -552,7 +556,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     template: """
       <div name="wordlift" class="wl-entity-form">
       <div ng-show="entity.images.length > 0">
-          <img ng-src="{{entity.images[0]}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <img ng-src="{{entity.images[0]}}" wl-src />
       </div>
       <div>
           <label class="wl-required">Entity label</label>
