@@ -134,7 +134,7 @@
         link: function($scope, $element, $attrs, $ctrl) {
           return $element.bind('error', function() {
             if ($attrs.src !== $attrs.wlFallback) {
-              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlSrc);
+              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlFallback);
               return $attrs.$set('src', $attrs.wlFallback);
             }
           });

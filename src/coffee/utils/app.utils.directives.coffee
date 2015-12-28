@@ -17,7 +17,7 @@ angular.module('wordlift.utils.directives', [])
   link: ($scope, $element, $attrs, $ctrl) ->  
     $element.bind('error', ()->
       unless $attrs.src is $attrs.wlFallback
-        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
+        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlFallback}"
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])

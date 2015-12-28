@@ -62,7 +62,7 @@ $(
       <h3 class="wl-widget-headline"><span>Related posts</span></h3>
       <div wl-carousel>
         <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{post.thumbnail}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
           <div class="wl-card-title">
             <a ng-href="{{post.link}}">{{post.post_title}}</a>
           </div>
