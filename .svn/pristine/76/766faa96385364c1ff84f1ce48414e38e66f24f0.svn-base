@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<div class='bootstrap-reset' id='wordLiftOptions' ng-controller='OptionsController'>
+  <form ng-submit='save()'>
+    <fieldset>
+      <legend>
+        Options
+      </legend>
+      <label class='checkbox'>
+        <input ng-model='enableFooterBar' type='checkbox'>
+          Enable the WordLift Bar
+        </input>
+      </label>
+      <span class='help-block'>
+        If enabled, the WordLift Bar will appear on the lower part of your
+        site.
+      </span>
+      <input class='btn btn-primary' type='submit' value='Save'>
+    </fieldset>
+  </form>
+</div>
