@@ -15,3 +15,5 @@ dist/
 
 /node_modules/
 /build/
+/.svn/
+/bower_components/
