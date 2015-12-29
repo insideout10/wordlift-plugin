@@ -151,7 +151,7 @@ class Wordlift {
 
 		$this->plugin_name = 'wordlift';
 
-		$this->version = '3.2.5';
+		$this->version = '3.2.4';
 
 		$this->load_dependencies();
 		$this->set_locale();

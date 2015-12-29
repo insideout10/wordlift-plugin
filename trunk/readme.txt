@@ -5,7 +5,7 @@ Contributors: wordlift, ziodave
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
 Tested up to: 4.3.1
-Stable tag: 3.2.5
+Stable tag: 3.2.4
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to WordPress. Beautifully helps you reach your maximum potential audience.
@@ -83,8 +83,6 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
-= 3.2.5 (2015-12-25) =
-* Fix: [#221](https://github.com/insideout10/wordlift-plugin/issues/221): Fix de-synch between Wordpress and RedLink when disambiguation is performed trough entity alternative title
 
 = 3.2.4 (2015-12-13) =
 * Fix: [#210](https://github.com/insideout10/wordlift-plugin/issues/210): Restore editable annotations to allow annotations formatting.
