@@ -1,0 +1,650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<application xmlns="http://purl.org/insideout/configuration" xmlns:wordpress="http://purl.org/insideout/wordpress">
+
+    <property name="entity-post-type" value="io-wordlift-entity" />
+    <property name="entity-field-prefix" value="io-wordlift-" />
+    <property name="entity-field-type" value="io-wordlift-schema-type" />
+    <property name="schemaorg-field-type" value="@type" />
+    <property name="meta-key-job-id" value="_wordlift_job_id" />
+    <property name="meta-key-job-status" value="_wordlift_job_status" />
+    <property name="wordlift-services-api" value="https://api.wordlift.it/api" />
+    <property name="wordpress-api-url" value="https://api.idntik.it/api/proxy/call/api/tasks" />
+    <property name="application-id" value="wordlift" />
+    <property name="consumer-key-option-name" value="wordlift_consumer_key" />
+    <property name="graph-uri" value="http://wordlift.it/graph" />
+    <property name="entity-page-id-option-name" value="_wordlift_entity_page_id" />
+
+    <context name="wordLift" />
+
+    <class id="optionAjaxService" name="WordLift_OptionAjaxService"
+        filename="/php/insideout/wordlift/ajax/OptionAjaxService.php">
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.option" class="optionAjaxService"
+        method="get" authentication="true" capabilities="manage_options" httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordlift.option" class="optionAjaxService"
+        method="set" authentication="true" capabilities="manage_options" httpMethod="POST" />
+
+
+    <class id="postEntitiesService" name="WordLift_PostEntitiesService"
+           filename="/php/insideout/wordlift/services/PostEntitiesService.php">
+        <property name="queryService" reference="queryService" />
+    </class>
+
+    <wordpress:action name="deleted_post" class="postsActionsSyncService" method="postDeleted" />
+    <wordpress:action name="save_post" class="postsActionsSyncService" method="postSaved" />
+    <class id="postsActionsSyncService" name="WordLift_Services_PostsActionsSyncService"
+        filename="/php/insideout/wordlift/services/PostsActionsSyncService.php">
+
+        <property name="queryService" reference="queryService" />
+    </class>
+
+    <class id="entityPageValidator" name="WordLift_Notices_EntityPageValidator"
+        filename="/php/insideout/wordlift/notices/EntityPageValidator.php">
+        <property name="optionName" value="{entity-page-id-option-name}" />
+        <property name="shortCode" value="wordlift.entity" />
+    </class>
+    <wordpress:notice class="entityPageValidator" method="validate" />
+
+    <class id="userRegistrationAjaxService" name="WordLift_UserRegistrationAjaxService"
+        filename="/php/insideout/wordlift/ajax/UserRegistrationAjaxService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
+
+        <property name="apiUrl" value="https://api.wordlift.it/api/user" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.register" class="userRegistrationAjaxService"
+        method="register" authentication="true" capabilities="manage_options" httpMethod="POST" />
+
+    <wordpress:script target="admin" name="wordlift"
+            version="SNAPSHOT"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/wordlift.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
+    <class id="tasksAjaxService" name="WordLift_TasksAjaxService"
+        filename="/php/insideout/wordlift/ajax/TasksAjaxService.php">
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.tasks" class="tasksAjaxService"
+        method="get" authentication="false" capabilities="edit_posts" httpMethod="GET" />
+
+    <class id="languagesAjaxService" name="WordLift_LanguagesAjaxService"
+        filename="/php/insideout/wordlift/ajax/LanguagesAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.languages" class="languagesAjaxService"
+                    method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
+    <class id="javaScriptPostIdFilter" name="WordLift_JavaScriptPostIdFilter"
+        filename="/php/insideout/wordlift/filters/JavaScriptPostIdFilter.php" />
+    <wordpress:filter name="the_content" class="javaScriptPostIdFilter" method="get" />
+
+    <class id="textAnnotationsAjaxService" name="WordLift_TextAnnotationsAjaxService"
+        filename="/php/insideout/wordlift/ajax/TextAnnotationsAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.textannotations" class="textAnnotationsAjaxService"
+                    method="getTextAnnotations"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+    
+
+    <class id="goToEntity" name="WordLift_GoToEntity"
+        filename="/php/insideout/wordlift/ajax/GoToEntity.php">
+
+        <property name="optionName" value="{entity-page-id-option-name}" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.gotoentity" class="goToEntity" method="redirectToEntity"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
+    <class id="entityAutocompleteWidget" name="WordLift_EntityAutocompleteWidget"
+        filename="/php/insideout/wordlift/widgets/EntityAutocompleteWidget.php">
+
+    </class>
+    <wordpress:widget class="entityAutocompleteWidget" />
+
+    <class id="entityPage" name="WordLift_EntityPage"
+       filename="/php/insideout/wordlift/shortcodes/EntityPage.php">
+
+       <property name="storeService" reference="tripleStoreService" />
+       <property name="queryService" reference="queryService" />
+    </class>
+    <wordpress:shortCode name="wordlift.entity" class="entityPage" method="getContent" />
+
+    <class id="sparqlEndPointAjaxService" name="WordLift_SparqlEndPointAjaxService"
+        filename="/php/insideout/wordlift/ajax/SparqlEndPointAjaxService.php">
+        <dependsOn filename="/php/arc2/ARC2.php" />
+
+        <property name="storeService" reference="tripleStoreService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.sparql" class="sparqlEndPointAjaxService" method="process"
+                    authentication="false"  httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordlift.sparql" class="sparqlEndPointAjaxService" method="process" authentication="true" capabilities="edit_posts" httpMethod="POST" />
+
+    <class id="queryService" name="WordLift_QueryService"
+        filename="/php/insideout/wordlift/services/QueryService.php">
+
+        <property name="storeService" reference="tripleStoreService" />
+        <property name="defaultGraphURI" value="{graph-uri}" />
+    </class>
+
+    <class id="triplesUtils" name="WordLift_TriplesUtils"
+        filename="/php/insideout/wordlift/services/TriplesUtils.php">
+        
+        <dependsOn filename="/php/arc2/ARC2.php" />
+    </class>
+    <class id="changeSetService" name="WordLift_ChangeSetService"
+        filename="/php/insideout/wordlift/services/ChangeSetService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="storeService" reference="tripleStoreService" />
+        <property name="triplesUtils" reference="triplesUtils" />
+    </class>
+
+    <wordpress:style target="admin" name="bootstrap.min.css" url="/wp-content/plugins/wordlift/sass/css/bootstrap.css" />
+    <wordpress:script target="admin" name="bootstrap.min.js"
+            version="2.2.2"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/bootstrap.min.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
+    <class id="propertyAjaxService" name="WordLift_PropertyAjaxService"
+        filename="/php/insideout/wordlift/ajax/PropertyAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+        <property name="changeSetService" reference="changeSetService" />
+        <property name="triplesUtils" reference="triplesUtils" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.property" class="propertyAjaxService" method="save"
+                    authentication="true" capabilities="edit_posts" httpMethod="POST" />
+    <wordpress:ajax service="ajaxService" action="wordlift.property" class="propertyAjaxService" method="delete"
+                    authentication="true" capabilities="edit_posts" httpMethod="DELETE" />
+
+    <class id="entitiesManagementPage" name="WordLift_EntitiesManagementPage"
+        filename="/php/insideout/wordlift/pages/EntitiesManagementPage.php">
+    </class>
+    <wordpress:adminMenu pageTitle="WordLift Entities"
+        menuTitle="WordLift Entities"
+        capability="edit_posts"
+        menuSlug="entities_management"
+        class="entitiesManagementPage" method="get" position="14.759"
+        iconUrl="../wp-content/plugins/wordlift/sass/img/semantic-box-14x16.png" />
+
+    <class id="wordLiftOptionsPage" name="WordLift_OptionsPage"
+        filename="/php/insideout/wordlift/pages/OptionsPage.php">
+    </class>
+    <class id="wordLiftJobsPage" name="WordLift_JobsPage"
+        filename="/php/insideout/wordlift/pages/JobsPage.php">
+    </class>
+    <wordpress:script target="admin" name="wordlift-options"
+            version="SNAPSHOT"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/options.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+
+
+    <wordpress:adminMenu pageTitle="Options" menuTitle="WordLift" capability="edit_posts" menuSlug="wordlift_settings"
+        class="wordLiftOptionsPage" method="get" position="81" iconUrl="../wp-content/plugins/wordlift/sass/img/wordlift-logo-18x18.gif" />
+
+    <class id="wordLiftRegisterLoginPage" name="WordLift_WordLiftRegisterLoginPage"
+        filename="/php/insideout/wordlift/pages/WordLiftRegisterLoginPage.php">
+    </class>
+    <wordpress:subAdminMenu parentSlug="wordlift_settings" pageTitle="Tasks" menuTitle="Tasks" capability="edit_posts" menuSlug="wordlift_tasks" class="wordLiftJobsPage" method="get" />
+    <wordpress:subAdminMenu parentSlug="wordlift_settings" pageTitle="Register/Login" menuTitle="Register/Login" capability="edit_posts" menuSlug="wordlift_register_login" class="wordLiftRegisterLoginPage" method="get" />
+
+    <class id="recordSetService" name="WordLift_RecordSetService"
+        filename="/php/insideout/wordlift/services/RecordSetService.php">
+    </class>
+
+    <class id="entityAjaxService" name="WordLift_EntityAjaxService"
+        filename="/php/insideout/wordlift/ajax/EntityAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.entity" class="entityAjaxService" method="get"
+                    authentication="true" capabilities="edit_posts" httpMethod="GET" />
+
+    <class id="entitiesAjaxService" name="WordLift_EntitiesAjaxService"
+        filename="/php/insideout/wordlift/ajax/EntitiesAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+        <property name="recordSetService" reference="recordSetService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.entities" class="entitiesAjaxService" method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
+    <class id="idntikitAjaxService" name="WordLift_IdntikitAjaxService"
+        filename="/php/insideout/wordlift/ajax/IdntikitAjaxService.php">
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.idntikit" class="idntikitAjaxService" method="redirectTo"
+                    authentication="true" capabilities="manage_options" httpMethod="GET" />
+
+    <class id="activationService" name="WordLift_ActivationService"
+        filename="/php/insideout/wordlift/services/ActivationService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
+
+        <property name="apiUrl" value="{wordlift-services-api}/site" />
+        <property name="menuUrl" value="admin.php?page=wordlift_register_login" />
+    </class>
+
+    <class id="settingsValidator" name="WordLift_SettingsValidator"
+        filename="/php/insideout/wordlift/notices/SettingsValidator.php">
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;consumerKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please open the &lt;a href=&quot;admin.php?page=wordlift_register_login#/userlogin&quot;&gt;WordLift Settings&lt;/a&gt; to configure your &lt;em&gt;consumerKey&lt;/em&gt;.&lt;/p&gt;" />
+        <property name="consumerKeyOptionName" value="{consumer-key-option-name}" />
+    </class>
+    <class id="siteKeyValidator" name="WordLift_SiteKeyValidator"
+        filename="/php/insideout/wordlift/notices/SiteKeyValidator.php">
+        <property name="message" value="&lt;p&gt;The &lt;em&gt;siteKey&lt;/em&gt; for &lt;strong&gt;WordLift&lt;/strong&gt; is not configured. Please deactivate and reactivate the WordLift plugin." />
+        <property name="activationService" reference="activationService" />
+    </class>
+    <wordpress:notice class="settingsValidator" method="validate" />
+    <wordpress:notice class="siteKeyValidator" method="validate" />
+
+<!--     <class id="htmlSettingsProxy" name="WordPress_HtmlSettingsProxy"
+        filename="/php/insideout/wordpress/services/HtmlSettingsProxy.php">
+
+        <property name="url" value="../wp-content/plugins/wordlift/html/userly/settings.html" />
+    </class> -->
+
+<!--     <wordpress:settings 
+        menuTitle="WordLift"
+        pageTitle="WordLift Settings"
+        capability="manage_options"
+        menuSlug="wordlift_settings"
+        proxy="htmlSettingsProxy">
+    </wordpress:settings> -->
+
+    <class id="ajaxOptionsService" name="WordPress_AjaxOptionsService"
+        filename="/php/insideout/wordpress/services/AjaxOptionsService.php" />
+    <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="getOption"
+                    authentication="true" capabilities="manage_options" httpMethod="GET" />
+    <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
+                    authentication="true" capabilities="manage_options" httpMethod="PUT" />
+    <wordpress:ajax service="ajaxService" action="wordpress.option" class="ajaxOptionsService" method="setOption"
+                    authentication="true" capabilities="manage_options" httpMethod="POST" />
+
+    <!-- ***** R E L A T E D  P O S T S  W I D G E T ***** -->
+<!--     <class id="relatedPostsWidget" name="WordLift_RelatedPostsWidget"
+           filename="/php/insideout/wordlift/widgets/RelatedPostsWidget.php">
+
+        <property name="entityService" reference="entityService" />
+    </class>
+    <wordpress:widget class="relatedPostsWidget" /> -->
+
+    <!-- ***** W O R D P R E S S   P O S T - T Y P E S -->
+    <!-- <wordpress:postType name="io-wordlift-entity" class="entityPostType" /> -->
+
+    <!-- ***** W O R D P R E S S   A C T I O N S -->
+    <!-- uncomment the following to enable posts analysis via WordLift Server -->
+
+    <!-- ***** W O R D P R E S S   F I L T E R S -->
+<!--     <wordpress:filter name="the_content" class="contentFilter" method="content" /> -->
+
+
+    <!-- ***** W O R D P R E S S   S H O R T C O D E S -->
+    <wordpress:shortCode name="wordlift.entities" class="entitiesBar" method="get" />
+
+    <class id="geoMapShortCode" name="WordLift_GeoMap"
+           filename="/php/insideout/wordlift/shortcodes/GeoMap.php" />
+    <wordpress:shortCode name="wordlift.geomap" class="geoMapShortCode" method="get" />
+
+    <class id="treeMapShortCode" name="WordLift_TreeMap"
+           filename="/php/insideout/wordlift/shortcodes/TreeMap.php">
+        <property name="queryService" reference="queryService"/>
+        <property name="width" value="100"/>
+        <property name="height" value="70"/>
+        <property name="columnWidth" value="4"/>
+    </class>
+    <wordpress:shortCode name="wordlift.treemap" class="treeMapShortCode" method="get" />
+
+    <!-- ***** W O R D P R E S S   S T Y L E S -->
+    <wordpress:style target="user" name="style.css" url="/wp-content/plugins/wordlift/sass/css/style.css" />
+    <wordpress:style target="user" name="isotope.css" url="/wp-content/plugins/wordlift/sass/css/isotope.css" />
+
+    <wordpress:style target="admin" name="admin.css" url="/wp-content/plugins/wordlift/sass/css/admin.css" />
+
+    <!-- ***** W O R D P R E S S   S C R I P T S -->
+    <wordpress:script target="user" name="ba-debug"
+                      version="0.0.4"
+                      footer="true"
+                      url="https://raw.github.com/cowboy/javascript-debug/master/ba-debug.min.js">
+    </wordpress:script>
+
+     <wordpress:script target="user" name="jquery-ui"
+            version="1.9.2"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/jquery-ui.min.js">
+            <dependsOn name="jquery" />
+    </wordpress:script>
+    <wordpress:style target="user" name="jquery-ui.css" url="/wp-content/plugins/wordlift/css/jquery-ui.css" />
+
+    <wordpress:script target="user" name="jquery-isotope"
+                      version="1.8.21"
+                      footer="true"
+                      url="/wp-content/plugins/wordlift/js/jquery.isotope.min.js">
+    </wordpress:script>
+
+    <wordpress:script target="user" name="ioio"
+            version="0.9.7"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/ioio-0.9.7.min.js">
+        <dependsOn name="jquery-ui" />
+    </wordpress:script>
+
+    <wordpress:script target="user" name="entityTiles"
+            version="1"
+            footer="true"
+            url="/wp-content/plugins/wordlift/js/entityTiles.js">
+        <dependsOn name="ioio" />
+    </wordpress:script>
+
+    <wordpress:script target="admin" name="angularjs"
+                      version="1.0.3"
+                      footer="false"
+                      url="/wp-content/plugins/wordlift/js/angular-1.0.3.min.js">
+    </wordpress:script>
+
+
+    <!-- ***** W O R D P R E S S   M E T A B O X E S -->
+    <!--
+        id = (string) (required) HTML 'id' attribute of the edit screen section
+        title = (string) (required) Title of the edit screen section, visible to user
+        postType = (string) (required) The type of Write screen on which to show the edit screen section
+            ('post', 'page', 'link', or 'custom_post_type' where custom_post_type is the custom post type slug)
+        context = (string) (optional) The part of the page where the edit screen section should be shown ('normal',
+            'advanced', or 'side').
+        priority = (string) (optional) The priority within the context where the boxes should show ('high', 'core',
+            'default' or 'low')
+    -->
+    <!-- add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args ); -->
+
+    <!-- ***** S I M P L E  E C H O  S E R V I C E ***** -->
+    <wordpress:ajax service="ajaxService" action="wordlift.echo" class="echoService" method="getPong"
+                    authentication="false" capabilities="any" />
+
+    <!-- ***** S C H E M A . O R G  S E R V I C E S ***** -->
+    <!--       to create and read posts -->
+<!--     <wordpress:ajax service="ajaxService" action="schema-org.create-post" class="postsAjaxService" method="createPost"
+                    authentication="true" capabilities="publish_posts" />
+    <wordpress:ajax service="ajaxService" action="schema-org.posts" class="postsAjaxService" method="getPosts"
+                    authentication="false" capabilities="any" /> -->
+
+    <!-- ***** W O R D L I F T  E N T I T I E S  D U M P  S E R V I C E ***** -->
+    <!--       disambiguations -->
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguation" class="dumpAjaxService" method="options"
+                    authentication="false" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="GET,OPTIONS" corsHeaders="origin, x-requested-with, accept" />
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguation" class="dumpAjaxService" method="getDisambiguationOptions"
+                    authentication="false" capabilities="any" httpMethod="GET"
+                    corsOrigin="*" corsMethods="GET" corsHeaders="origin, x-requested-with, accept" />
+
+    <!-- ***** W O R D L I F T  C A L L B A C K  S E R V I C E ***** -->
+    <!--       receives callback data -->
+    <wordpress:ajax service="ajaxService" action="wordlift.callback" class="jobCallbackService" method="callback"
+                    authentication="false" capabilities="any" httpMethod="POST" />
+
+    <!-- ***** W O R D L I F T  J O B  A J A X  S E R V I C E ***** -->
+    <!--       methods to create, read, update an analysis job. -->
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="options"
+                    authentication="true" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="GET,POST,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="createJob"
+                    authentication="true" capabilities="any" httpMethod="POST"
+                    corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="getJob"
+                    authentication="true" capabilities="any" httpMethod="GET"
+                    corsOrigin="*" corsMethods="GET" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.job" class="jobAjaxService" method="updateJob"
+                    authentication="true" capabilities="any" httpMethod="PUT" />
+
+
+    <!-- ****** W O R D L I F T  P O S T  A J A X  S E R V I C E ***** -->
+    <!--        methods to select a binding between textannotations and entities. -->
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="options"
+                    authentication="false" capabilities="any" httpMethod="OPTIONS"
+                    corsOrigin="*" corsMethods="POST,DELETE,OPTIONS" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="clear"
+                    authentication="false" capabilities="any" httpMethod="DELETE"
+                    corsOrigin="*" corsMethods="DELETE" corsHeaders="origin, x-requested-with, content-type, accept"/>
+    <wordpress:ajax service="ajaxService" action="wordlift.disambiguations" class="postAjaxService" method="bind"
+                    authentication="false" capabilities="any" httpMethod="POST"
+                    corsOrigin="*" corsMethods="POST" corsHeaders="origin, x-requested-with, content-type, accept"/>
+
+
+    <!-- ***** REST API : wordlift.georss ***** -->
+    <class id="geoRssAjaxService" name="WordLift_GeoRssAjaxService" filename="/php/insideout/wordlift/ajax/GeoRssAjaxService.php">
+        <property name="queryService" reference="queryService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.georss" class="geoRssAjaxService" method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+
+    <!-- ***** REST API : wordlift.relatedposts ***** -->
+<!--     <class id="relatedPostsAjaxService"
+           name="WordLift_RelatedPostsAjaxService"
+           filename="/php/insideout/wordlift/ajax/RelatedPostsAjaxService.php">
+        <property name="entityService" reference="entityService" />
+    </class>
+    <wordpress:ajax service="ajaxService" action="wordlift.relatedposts" class="relatedPostsAjaxService" method="get"
+                    authentication="false" capabilities="any" httpMethod="GET" />
+ -->
+    <!-- ***** W O R D P R E S S  E D I T O R  C O N F I G U R A T I O N ***** -->
+    <wordpress:editor property="extended_valid_elements" value="span[about|class|id|typeof]" />
+    <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/admin.css" />
+    <!-- <wordpress:style target="editor" name="style.css" url="../wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" /> -->
+
+
+    <!-- ***** W O R D L I F T  D I S A M B I G U A T I O N  M E T A B O X ***** -->
+    <!--       composed of:
+                1. a reference to the entities HTML metabox class.
+                2. a stylesheet.
+                3. a script.
+                4. a metaBox configuration.
+    -->
+    <class id="entitiesHtmlMetaBox" name="WordPress_HtmlMetaBox"
+           filename="/php/insideout/wordpress/metaboxes/HtmlMetaBox.php">
+        <dependsOn filename="/php/insideout/wordpress/interfaces/IMetaBox.php" />
+
+        <property name="htmlFilename" value="/wordlift/html/insideout/wordlift/build/disambiguate.html" />
+    </class>
+
+    <!-- <wordpress:style target="admin" name="wordlift.disambiguation.css" url="/wp-content/plugins/wordlift/sass/css/wordlift.disambiguate.css" /> -->
+
+    <wordpress:script target="admin" name="wordlift-disambiguation"
+                      version="1.0.0"
+                      footer="true"
+                      url="/wp-content/plugins/wordlift/js/wordlift.disambiguate.js"
+                      developmentUrl="http://localizeme.dyndns.org:4567/javascripts/wordlift.disambiguate.js">
+        <dependsOn name="angularjs" />
+    </wordpress:script>
+
+    <wordpress:metaBox id="wordlift_entity_references_meta_box"
+        title="WordLift Entities"
+        class="entitiesHtmlMetaBox"
+        postType="post" context="side" priority="high" />
+
+
+    <!-- ***** J O B  A J A X  S E R V I C E ***** -->
+    <class id="jobAjaxService" name="WordLift_JobAjaxService"
+           filename="/php/insideout/wordlift/ajax/JobAjaxService.php">
+
+        <property name="jobRequestService" reference="jobRequestService" />
+        <property name="jobService" reference="jobService" />
+    </class>
+
+    <!-- ***** P O S T  A J A X  S E R V I C E ***** -->
+    <class id="postAjaxService" name="WordLift_PostAjaxService"
+           filename="/php/insideout/wordlift/ajax/PostAjaxService.php">
+
+        <property name="metaKeyJobStatus" value="{meta-key-job-status}" />
+        <property name="tripleStoreService" reference="tripleStoreService" />
+    </class>
+
+    <!-- ***** J O B  R E Q U E S T  S E R V I C E ***** -->
+    <class id="jobRequestService" name="WordLift_PlainTextJobRequestService"
+           filename="/php/insideout/wordlift/services/PlainTextJobRequestService.php">
+        <dependsOn filename="/php/insideout/wordlift/services/HttpOperations.php" />
+        <dependsOn filename="/php/insideout/wordlift/services/JobRequestService.php" />
+
+        <property name="callbackURL" value="wp-admin/admin-ajax.php?action=wordlift.callback" />
+        <property name="requestMimeType" value="application/rdf+xml" />
+
+        <property name="requestURL" value="{wordpress-api-url}" />
+        <property name="applicationId" value="{application-id}" />
+        <property name="consumerKeyOptionName" value="{consumer-key-option-name}" />
+    </class>
+
+    <!-- ***** J O B S E R V I C E **** -->
+    <class id="jobService" name="WordLift_DefaultJobService"
+           filename="/php/insideout/wordlift/services/DefaultJobService.php" >
+        <dependsOn filename="/php/insideout/wordlift/services/JobService.php" />
+
+        <property name="metaKeyJobID" value="{meta-key-job-id}" />
+        <property name="metaKeyJobStatus" value="{meta-key-job-status}" />
+    </class>
+
+    <class id="tripleStoreService" name="WordLift_TripleStoreService"
+           filename="/php/insideout/wordlift/services/TripleStoreService.php">
+        <dependsOn filename="/php/arc2/ARC2.php" />
+
+        <property name="tablePrefix" value="wordlift" />
+    </class>
+
+    <class id="dumpAjaxService" name="WordLift_DumpAjaxService"
+           filename="/php/insideout/wordlift/ajax/DumpAjaxService.php">
+
+        <property name="queryService" reference="queryService" />
+    </class>
+
+    <!-- ***** E C H O  S E R V I C E ***** -->
+    <class id="echoService" name="WordLift_EchoService"
+           filename="/php/insideout/wordlift/ajax/EchoService.php" />
+
+    <!-- ***** J O B  C A L L B A C K  S E R V I C E ***** -->
+    <class id="jobCallbackService" name="WordLift_JobCallbackService"
+           filename="/php/insideout/wordlift/ajax/JobCallbackService.php">
+
+
+        <!-- <property name="entityService" reference="entityService" /> -->
+        <property name="jobService" reference="jobService" />
+        <property name="tripleStoreService" reference="tripleStoreService" />
+        <property name="changeSetService" reference="changeSetService" />
+        <property name="triplesUtils" reference="triplesUtils" />
+        <property name="changeCreator" value="system" />
+    </class>
+
+    <!-- ***** A J A X   A N D   J S O N   I N S T A N C E S ***** -->
+    <class id="jsonService" name="WordPress_JsonService"
+           filename="/php/insideout/wordpress/services/JsonService.php" />
+
+    <class id="ajaxService" name="WordPress_AjaxService"
+           filename="/php/insideout/wordpress/services/AjaxService.php">
+        <dependsOn filename="/php/insideout/wordpress/interfaces/IAjaxService.php" />
+        <dependsOn filename="/php/insideout/wordpress/services/AjaxProxy.php" />
+
+        <property name="jsonService" reference="jsonService" />
+    </class>
+
+
+    <!-- ***** E N T I T Y    P O S T - T Y P E -->
+<!--     <class id="entityPostType" name="WordLift_EntityPostType"
+           filename="/php/insideout/wordlift/types/EntityPostType.php">
+        <dependsOn filename="/php/insideout/wordpress/interfaces/IPostType.php" />
+
+        <property name="public" value="false" />
+        <property name="customPostType" value="{entity-post-type}" />
+        <property name="rewriteSlug" value="entities" />
+        <property name="menuIconURL" value="/wordlift/sass/img/semantic-box-14x16.png" />
+        <property name="fieldPrefix" value="{entity-field-prefix}" />
+        <property name="fieldType" value="{entity-field-type}" />
+    </class> -->
+
+    <!-- ***** E N T I T I E S   B A R -->
+    <class id="entitiesBar" name="WordLift_EntitiesBar"
+           filename="/php/insideout/wordlift/shortcodes/EntitiesBar.php">
+        <property name="queryService" reference="queryService" />
+    </class>
+
+    <!-- ***** P O S T   A N A L Y Z E R -->
+    <class id="postAnalyzer" name="WordLift_PostAnalyzer"
+           filename="/php/insideout/wordlift/actions/PostAnalyzer.php">
+
+        <property name="jobService" reference="jobService" />
+        <property name="jobRequestService" reference="jobRequestService" />
+    </class>
+
+    <!-- ***** C O N T E N T   F I L T E R -->
+<!--     <class id="contentFilter" name="WordLift_ContentFilter"
+           filename="/php/insideout/wordlift/filters/ContentFilter.php">
+
+        <property name="entityService" reference="entityService" />
+        <property name="schemaOrg" value="http://schema.org" />
+    </class> -->
+
+    <!-- ***** X R A Y S E R V I C E -->
+<!--     <class id="xRayService" name="SchemaOrg_XRayService"
+           filename="/php/insideout/schemaorg/services/XRayService.php" /> -->
+
+    <!-- ***** S C H E M A S E R V I C E -->
+<!--     <class id="schemaService" name="SchemaOrg_SchemaService"
+           filename="/php/insideout/schemaorg/services/SchemaService.php">
+        <dependsOn filename="/php/insideout/schemaorg/domain/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/SchemaProperty.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/Schema.php" />
+
+        <dependsOn filename="/php/insideout/schemaorg/schemas/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Thing.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/CreativeWork.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/MediaObject.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/AudioObject.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/BlogPosting.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/GeoCoordinates.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Movie.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Organization.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Other.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Person.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Place.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/Product.php" />
+        <dependsOn filename="/php/insideout/schemaorg/schemas/VideoObject.php" />
+
+        <property name="xRayService" reference="xRayService" />
+    </class> -->
+
+    <!-- ***** W O R D P R E S S   D A T A S T O R E -->
+<!--     <class id="dataStore" name="SchemaOrg_WordPressDataStore"
+           filename="/php/insideout/schemaorg/stores/WordPressDataStore.php">
+        <dependsOn filename="/php/insideout/schemaorg/domain/EntityProperty.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/EntityPropertyValue.php" />
+        <dependsOn filename="/php/insideout/schemaorg/stores/IDataStore.php" />
+
+        <property name="fieldPrefix" value="{entity-field-prefix}" />
+        <property name="fieldType" value="{entity-field-type}" />
+	    <property name="schemaService" reference="schemaService" />
+    </class> -->
+
+    <!-- ***** E N T I T Y  S E R V I C E **** -->
+<!--     <class id="entityService" name="WordLift_DefaultEntityService"
+           filename="/php/insideout/wordlift/services/DefaultEntityService.php" >
+        <dependsOn filename="/php/insideout/wordlift/services/EntityService.php" />
+
+        <dependsOn filename="/php/insideout/schemaorg/domain/ISchema.php" />
+        <dependsOn filename="/php/insideout/schemaorg/domain/Entity.php" />
+
+        <property name="dataStore" reference="dataStore" />
+        <property name="metaKey" value="_io-wordlift-posts-accepted" />
+        <property name="postType" value="{entity-post-type}" />
+        <property name="metaKeySubject" value="_wordlift_subject" />
+        <property name="metaKeyReferences" value="_wordlift_references" />
+        <property name="postStatus" value="any" />
+
+        <property name="tripleStoreService" reference="tripleStoreService" />
+    </class> -->
+
+</application>

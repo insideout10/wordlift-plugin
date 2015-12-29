@@ -1,0 +1,61 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: wordlift\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-04-19 11:17+0200\n"
+"PO-Revision-Date: 2011-04-19 19:54+0200\n"
+"Last-Translator: David Riccitelli <ziodave@gmail.com>\n"
+"Language-Team: wordlift <wordlift>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;gettext;gettext_noop;__\n"
+"X-Poedit-Basepath: /Users/david/Developer/php/wordpress-3.1.1\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SearchPath-0: wp-content/plugins/wordlift\n"
+
+#: wp-content/plugins/wordlift/wlp.php:91
+#: wp-content/plugins/wordlift/wlp.php:92
+#: wp-content/plugins/wordlift/wlp.php:101
+msgid "Plugin Name"
+msgstr "WordLift"
+
+#: wp-content/plugins/wordlift/wlp.php:102
+msgid "Settings"
+msgstr "Settings"
+
+#: wp-content/plugins/wordlift/wlp_logfilehandling.php:64
+msgid " Error: Can't write to log folder "
+msgstr ""
+
+#: wp-content/plugins/wordlift/wlp_logfilehandling.php:64
+msgid " Permissions 777 needed."
+msgstr ""
+
+#: wp-content/plugins/wordlift/wlp_logfilehandling.php:66
+msgid ": Log folder created: "
+msgstr ""
+
+#: wp-content/plugins/wordlift/wlp_settings_page.php:1
+msgid "Stanbol Engines URL"
+msgstr ""
+
+#: wp-content/plugins/wordlift/wlp_settings_page.php:1
+msgid "Save Changes"
+msgstr ""
+
+#~ msgid "HTML Title"
+#~ msgstr "HTML Titel"
+
+#~ msgid "Menu title"
+#~ msgstr "Menü Titel"
+
+#~ msgid "HTML Title2"
+#~ msgstr "HTML Titel 2"
+
+#~ msgid "Menu title 2"
+#~ msgstr "Menü Titel 2"
+
+#~ msgid "Language"
+#~ msgstr "Sprache"

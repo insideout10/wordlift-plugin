@@ -1,0 +1,85 @@
+#toolbar {
+	overflow: auto;
+}
+
+#analyze {
+	float: right;
+}
+
+#dialog #content {
+	padding: 2px;
+	margin: 2px;
+	background: lightYellow;
+	overflow: auto;
+	display: none;
+}
+
+#dialog #content p {
+	font-size: 14pt;
+}
+
+.content-option {
+	display: none;
+}
+
+#dialog #bar {
+	text-align: center;
+}
+
+#dialog #bar #save-button {
+	margin: 10px;
+	font-size: 2em;
+}
+
+.entity {
+	border: 1px solid;
+	padding: 2px;
+	margin: 2px;
+	overflow: auto;
+	width: 210px;
+	height: 120px;
+	float: left;
+	background: white;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.entity .types {
+	background: antiqueWhite;
+	color: darkGray;
+	font-size: 9pt;
+	margin: 2px;
+}
+
+.labels,.names {
+	font-weight: bold;
+	font-size: 10pt;
+}
+
+.about {
+	color: lightGray;
+}
+
+.photo {
+	float: left;
+	padding: 2px;
+	width: 80px;
+}
+
+.comments {
+	font-size: 9pt;
+	text-align: justify;
+}
+
+.references,.url {
+	display: none;
+}
+
+#results .ui-selecting {
+	background: #FECA40;
+}
+
+#results .ui-selected {
+	background: #F39814;
+	color: white;
+}

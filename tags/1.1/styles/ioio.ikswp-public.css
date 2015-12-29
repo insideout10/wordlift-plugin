@@ -1,0 +1,20 @@
+.entity {
+	border: 1px solid;
+	padding: 2px;
+	margin: 2px;
+	float: left;
+	background: white;
+	width: 160px;
+	height: 120px;
+	overflow: auto;
+}
+
+.labels,.names {
+	font-weight: bold;
+}
+
+.photo {
+	float: left;
+	padding: 2px;
+	width: 80px;
+}

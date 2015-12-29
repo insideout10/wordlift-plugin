@@ -1,0 +1,74 @@
+<div class='alert alert-info'>
+  <span class='label label-info'>
+    Entities
+  </span>
+  Type the
+  <strong>
+    Name
+  </strong>
+  and hit the
+  <string>
+    Filter
+  </string>
+  button to choose the entity you wish to edit; use the
+  <strong>
+    language selector
+  </strong>
+  to choose the language of the entity's properties you wish to edit
+</div>
+<div class='well'>
+  <form id='filter-form' name='filterForm' ng-submit='filter()'>
+    <input class='input-medium search-query' ng-model='filters.nameFilter' placeholder='Name' type='text'>
+    <input class='btn' type='submit' value='Filter'>
+    <ul class='nav nav-pills'>
+      <li class='language' ng-class="{'active': language.selected}" ng-repeat='(code, language) in languages'>
+        <a ng-click='switchLanguage(code);'>
+          {{language.language}}
+        </a>
+      </li>
+    </ul>
+  </form>
+</div>
+<table class='entities table table-striped table-hover'>
+  <thead>
+    <tr>
+      <th style='width: 20px;'></th>
+      <th>
+        Name
+      </th>
+      <th>
+        Image
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat='entity in data.content'>
+      <td>
+        <div class='type' ng-class='getTypeName( entity.a )'></div>
+      </td>
+      <td>
+        <a ng-bind='entity.name' ng-click='goToEntity( entity )'></a>
+      </td>
+      <td>
+        <div class='image' style="background-image: url( '{{entity.image}}' );"></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div class='pagination pagination-centered'>
+  <ul>
+    <li ng-class="{true: 'disabled', false: ''}[0==data.page]">
+      <a ng-click='goToPreviousPage()'>
+        Prev
+      </a>
+    </li>
+    <li ng-class="{true: 'active', false: ''}[page==(data.page + 1)]" ng-repeat='page in getPages()'>
+      <a ng-bind='page' ng-click='goToPage( page - 1 )'></a>
+    </li>
+    <li ng-class="{true: 'disabled', false: ''}[data.page==(data.pages - 1)]">
+      <a ng-click='goToNextPage()'>
+        Next
+      </a>
+    </li>
+  </ul>
+</div>
