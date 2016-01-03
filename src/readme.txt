@@ -14,7 +14,8 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a WordLift key. <br />
-> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you to send you the key. <br /> 
+> We are currently in **private beta** and we're allowing a closed number of users testing the plugin. <br />
+> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you anytime soon. <br /> 
 
 **WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
 **WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
@@ -45,7 +46,7 @@ _____________
 
 WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
-The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* largest platform for semantic enrichment and search. 
+The Plug-in is built on **open source software**. 
 
 == Installation ==
 
@@ -55,7 +56,9 @@ The Plug-in is powered by [RedLink](http://redlink.co): Europe's *open source* l
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a WordLift key. <br />
-> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you to send you the key. <br /> 
+> We are currently in **private beta** and we're allowing a closed number of users testing the plugin. <br />
+> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you anytime soon. <br /> 
+
 
 == Frequently Asked Questions ==
 
@@ -319,6 +322,4 @@ WordLift is **happily developed** by [InSideOut10](http://blog.insideout.io/abou
 
 [InSideOut10](http://blog.insideout.io/about-us) uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
 
-WordLift infrastructure runs on the semantic platform of [Redlink](http://redlink.co). 
-
-[Redlink](http://redlink.co) is commercial spin-off based in Salzburg, Austria focused on *Semantic Technologies* and *Free Open Source Software* that has been co-founded by [InSideOut10](http://blog.insideout.io/about-us) in 2013.
+WordLift is built on **open source software**.
