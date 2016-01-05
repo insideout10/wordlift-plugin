@@ -37,6 +37,13 @@ class Wordlift_Notice_Service {
 	const ERROR = 'error';
 
 	/**
+	 * A custom WordLift css style class used for WordLift suggestions.
+	 *
+	 * @since 3.3.0
+	 */
+	const SUGGESTION = 'wl-suggestion';
+
+	/**
 	 * The array of notices.
 	 *
 	 * @since 3.2.0
@@ -129,6 +136,19 @@ class Wordlift_Notice_Service {
 	public function add_error( $message ) {
 
 		$this->add( self::ERROR, $message );
+
+	}
+
+	/**
+	 * Add a suggestion notice (message with a white background and a WordLift brand colored left border).
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param string $message The message to display.
+	 */
+	public function add_suggestion( $message ) {
+
+		$this->add( self::SUGGESTION, $message );
 
 	}
 

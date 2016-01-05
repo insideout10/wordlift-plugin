@@ -406,7 +406,7 @@ class Wordlift_Entity_Service {
 		// If there is at least 1 warning
 		if ( isset( $rating[ 'warnings' ] ) && 0 < count( $rating[ 'warnings' ] ) ) {
 			// TODO - Pass Wordlift_Notice_Service trough the service constructor 
-			$this->notice_service->add_error( $rating[ 'warnings' ] );
+			$this->notice_service->add_suggestion( $rating[ 'warnings' ] );
 		}
 		
 	}
