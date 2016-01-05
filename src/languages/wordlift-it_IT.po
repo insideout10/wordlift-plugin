@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2015-12-09 01:38+0100\n"
-"PO-Revision-Date: 2015-12-09 01:50+0100\n"
+"POT-Creation-Date: 2016-01-05 20:30+0100\n"
+"PO-Revision-Date: 2016-01-05 20:32+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: it\n"
@@ -16,7 +16,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../admin/WL_Metabox/WL_Metabox.php:54
+#: ../admin/WL_Metabox/WL_Metabox.php:55
 msgid "properties"
 msgstr ""
 
@@ -26,6 +26,22 @@ msgstr ""
 
 #: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:45
 msgid "Longitude"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-entity-list.php:67
+msgid "Image"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-entity-list.php:69
+msgid "Related Posts"
+msgstr "Articoli collegati"
+
+#: ../admin/class-wordlift-admin-entity-list.php:70
+msgid "Rating"
+msgstr ""
+
+#: ../admin/class-wordlift-admin-entity-list.php:133
+msgid "All 'W'"
 msgstr ""
 
 #: ../admin/wordlift_admin_edit_post.php:25
@@ -43,7 +59,6 @@ msgstr "WordLift Settings"
 
 #: ../admin/wordlift_admin_menu.php:45
 #: ../modules/configuration/wordlift_configuration.php:45
-#: ../modules/prefixes/wordlift_prefixes.php:193
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Non hai i permessi per accedere a questa pagina."
 
@@ -51,15 +66,11 @@ msgstr "Non hai i permessi per accedere a questa pagina."
 msgid "Wordlift"
 msgstr ""
 
-#: ../includes/class-wordlift-entity-service.php:106
-msgid "Related Posts"
-msgstr "Articoli collegati"
-
-#: ../includes/class-wordlift-entity-service.php:309
+#: ../includes/class-wordlift-entity-service.php:381
 msgid "Add more titles"
 msgstr ""
 
-#: ../includes/class-wordlift-entity-service.php:324
+#: ../includes/class-wordlift-entity-service.php:614
 msgid "Delete"
 msgstr ""
 
@@ -181,35 +192,7 @@ msgstr ""
 "\">Iscriviti</a> e ti contatteremo per fornirtene una."
 
 #: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
-#: ../modules/prefixes/wordlift_prefixes.php:173
-#: ../modules/prefixes/wordlift_prefixes.php:174
-#: ../modules/prefixes/wordlift_prefixes.php:196
 msgid "Prefixes"
-msgstr ""
-
-#: ../modules/prefixes/wordlift_prefixes.php:225
-#: ../modules/prefixes/wordlift_prefixes.php:235
-msgid "Cheatin&#8217; uh?"
-msgstr ""
-
-#: ../modules/prefixes/wordlift_prefixes.php:271
-msgid "Prefix"
-msgstr ""
-
-#: ../modules/prefixes/wordlift_prefixes.php:274
-msgid "The namespace prefix."
-msgstr ""
-
-#: ../modules/prefixes/wordlift_prefixes.php:277
-msgid "Namespace"
-msgstr ""
-
-#: ../modules/prefixes/wordlift_prefixes.php:280
-msgid "The namespace URL."
-msgstr ""
-
-#: ../modules/prefixes/wordlift_prefixes.php:284
-msgid "Add New Prefix"
 msgstr ""
 
 #: ../widgets/wordlift_widget_chord.php:12
@@ -348,6 +331,42 @@ msgstr "Nuovo tipo di Entità"
 #: ../wordlift_entity_type_taxonomy.php:23
 msgid "Entity Types"
 msgstr "Tipi di Entità"
+
+#: ../wordlift_manual_translations.php:6
+msgid "There are no related posts for the current entity."
+msgstr "Ogni entità dovrebbe essere collegata ad uno o più articoli."
+
+#: ../wordlift_manual_translations.php:7
+msgid "This entity has not description."
+msgstr "Aggiungi la descrizione per aumentare il ranking dell'entità."
+
+#: ../wordlift_manual_translations.php:8
+msgid "There are no related entities for the current entity."
+msgstr ""
+"Seleziona le entità evidenziate nel testo per creare dei collegamenti con "
+"altre entità."
+
+#: ../wordlift_manual_translations.php:9
+msgid ""
+"This entity is not published. It will not appear within analysis results."
+msgstr ""
+"Questa entità non è ancora pubblica. Sarà disponibile nei risultati "
+"dell'analisi dei tuoi articoli appena la pubblichi."
+
+#: ../wordlift_manual_translations.php:10
+msgid "This entity has no featured image yet."
+msgstr "Aggiungi un'immagine per migliorare la qualità dell'entità."
+
+#: ../wordlift_manual_translations.php:11
+msgid "There are no sameAs configured for this entity."
+msgstr ""
+"Aggiungi i collegamenti <em>sameAs</em> per aumentare il valore dell'entità. "
+"Puoi utilizzare i collegamenti di DBpedia, Freebase, Wikipedia e altri siti."
+
+#: ../wordlift_manual_translations.php:12
+msgid "Schema.org metadata for this entity are not completed."
+msgstr ""
+"Compila tutte le proprietà dell'entità per incrementarne la visibilità."
 
 #, fuzzy
 #~ msgid "Enable color coding on front-end"
