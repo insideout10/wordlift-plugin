@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
  * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
- * Version:           3.2.5
+ * Version:           3.3.0
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it
  * License:           GPL-2.0+
@@ -475,6 +475,22 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 	// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
 
 	return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) ) );
+}
+
+/**
+ * Utility function to check if a variable is set and force it to be an array
+ * 
+ * @package mixed $value Any value
+ * 
+ * @return array Array containing $value (if $value was not an array) 
+ */
+function wl_force_to_array( $value ) {
+	
+	if ( ! is_array( $value ) ) {
+		return array( $value );
+	}
+	
+	return $value;
 }
 
 /**

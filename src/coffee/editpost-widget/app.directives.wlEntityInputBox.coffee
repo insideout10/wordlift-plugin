@@ -18,7 +18,12 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
             name='wl_entities[{{entity.id}}][image][]' value='{{image}}' />
           <input ng-repeat="sameAs in entity.sameAs" type='text'
             name='wl_entities[{{entity.id}}][sameas][]' value='{{sameAs}}' />
-
+          
+          <div ng-repeat="(property, values) in entity.properties">
+            <input ng-repeat="propertyValue in values" type='text'
+              name='wl_entities[{{entity.id}}][properties][{{property}}][]' value='{{propertyValue}}' />
+          </div>
+         
       	</div>
     """
   )

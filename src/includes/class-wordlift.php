@@ -76,6 +76,15 @@ class Wordlift {
 	private $ui_service;
 
 	/**
+	 * The Schema service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
+	 */
+	private $schema_service;
+
+	/**
 	 * The Entity service.
 	 *
 	 * @since 3.1.0
@@ -110,6 +119,24 @@ class Wordlift {
 	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
 	 */
 	private $redirect_service;
+
+	/**
+	 * The Notice service.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
+	 */
+	private $notice_service;
+	
+	/**
+	 * The Entity list customization.
+	 *
+	 * @since 3.3.0
+	 * @access private
+	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
+	 */
+	private $entity_list_service;
 
 	/**
 	 * The Entity Types Taxonomy Walker.
@@ -150,9 +177,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-
-		$this->version = '3.2.5';
-
+		$this->version = '3.3.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -244,6 +269,11 @@ class Wordlift {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
+		
+		/**
+		 * The class to customize the entity list admin page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-list.php';
 
 		/**
 		 * The Entity Types Taxonomy Walker (transforms checkboxes into radios).
@@ -289,10 +319,13 @@ class Wordlift {
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Service();
+		$this->schema_service = new Wordlift_Schema_Service();
+
+		// Create an instance of the Notice service.
+		$this->notice_service = new Wordlift_Notice_Service();
 
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service, $this->notice_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -305,14 +338,14 @@ class Wordlift {
 
 		// Create an instance of the Timeline shortcode.
 		new Wordlift_Timeline_Shortcode();
+		
+		// Create entity list customization (wp-admin/edit.php)
+		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
-
-		// Create an instance of the Notice service.
-		new Wordlift_Notice_Service();
 
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
@@ -370,14 +403,24 @@ class Wordlift {
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
+		$this->loader->add_action( 'save_post_entity', $this->entity_service, 'set_rating_for', 10, 1 );
+		
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
+		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
 
+		// Entity listing customization (wp-admin/edit.php)
+		// Add custom columns
+		$this->loader->add_filter( 'manage_entity_posts_columns', $this->entity_list_service, 'register_custom_columns' );
+		$this->loader->add_filter( 'manage_entity_posts_custom_column', $this->entity_list_service, 'render_custom_columns', 10, 2 );
+		// Add 4W selection
+		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
+		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
+		
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
 		// entities.
 		$this->loader->add_filter( 'prima_metabox_entity_header_args', $this->primashop_adapter, 'prima_metabox_entity_header_args', 10, 2 );
-
 	}
 
 	/**

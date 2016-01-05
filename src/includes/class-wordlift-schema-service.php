@@ -283,6 +283,28 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
+	 * Get the WordLift's schema trough schema type uri.
+	 *
+	 * @param string $uri The schema uri.
+	 *
+	 * @return array|null An array with the schema configuration or NULL if the schema is not found.
+	 *
+	 * @since 3.3.0
+	 */
+	public function get_schema_by_uri( $uri ) {
+
+		foreach ( $this->schema as $name => $schema ) {
+			if ( $schema[ 'uri' ] === $uri ) {
+				return $schema;
+			}
+		}
+		return null;
+
+		// Return the requested schema.
+		return $this->schema[ $name ];
+	}
+
+	/**
 	 * Get the 'thing' schema.
 	 *
 	 * @return array An array with the schema configuration.
@@ -485,12 +507,18 @@ class Wordlift_Schema_Service {
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
+				),
+				self::FIELD_EMAIL => array(
+					'predicate'   => 'http://schema.org/email',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => ''
 				)
 			),
 			'microdata_template' =>
 				'{{founder}}
 				<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
+					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}
 				</span>',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
@@ -709,7 +737,8 @@ class Wordlift_Schema_Service {
                                 <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
 									{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
 								</span>
-                                {{founder}}',
+                                {{founder}}
+								{{email}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)

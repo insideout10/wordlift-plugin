@@ -37,6 +37,13 @@ class Wordlift_Notice_Service {
 	const ERROR = 'error';
 
 	/**
+	 * A custom WordLift css style class used for WordLift suggestions.
+	 *
+	 * @since 3.3.0
+	 */
+	const SUGGESTION = 'wl-suggestion';
+
+	/**
 	 * The array of notices.
 	 *
 	 * @since 3.2.0
@@ -89,7 +96,7 @@ class Wordlift_Notice_Service {
 	 */
 	public function add( $class, $message ) {
 
-		$this->notices[] = sprintf( self::TEMPLATE, $class, $message );
+		$this->notices[] = sprintf( self::TEMPLATE, $class, $this->transform( $message ) );
 
 	}
 
@@ -133,6 +140,19 @@ class Wordlift_Notice_Service {
 	}
 
 	/**
+	 * Add a suggestion notice (message with a white background and a WordLift brand colored left border).
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param string $message The message to display.
+	 */
+	public function add_suggestion( $message ) {
+
+		$this->add( self::SUGGESTION, $message );
+
+	}
+
+	/**
 	 * Print out the notices when the admin_notices action is called.
 	 *
 	 * @since 3.2.0
@@ -141,6 +161,24 @@ class Wordlift_Notice_Service {
 
 		foreach ( $this->notices as $notice ) {
 			echo( $notice );
+		}
+
+	}
+
+	/**
+	 * Transform message depending on message type. Return a string
+	 *
+	 * @since 3.3.0
+	 *
+	 * @param string $message The message.
+	 */
+	private function transform( $message ) {
+
+		switch (  gettype( $message ) ) {
+			case 'array':
+				return implode( $message, '<br />' );
+			default:
+       			return $message;
 		}
 
 	}

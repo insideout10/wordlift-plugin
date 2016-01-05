@@ -86,10 +86,16 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
-= 3.3.0 (???) =
-* Enhancement: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): download and save Place coordinates from RL.
-* Enhancement: [#161](https://github.com/insideout10/wordlift-plugin/issues/161): geomap shows current entity if it is a Place (or child of Place).
-* Enhancement: [#207](https://github.com/insideout10/wordlift-plugin/issues/207): add rating score for entities.
+= 3.3.0 (2016-01-06) =
+* Enhancement: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): Download and save Place coordinates from RL.
+* Enhancement: [#161](https://github.com/insideout10/wordlift-plugin/issues/161): Geomap shows current entity if it is a Place (or child of Place).
+* Enhancement: [#207](https://github.com/insideout10/wordlift-plugin/issues/207): Add rating score and consistency check for entities.
+* Enhancement: [#209](https://github.com/insideout10/wordlift-plugin/issues/209): Add thumbnail preview within the entity listing.
+* Enhancement: [#208](https://github.com/insideout10/wordlift-plugin/issues/208): Add classification scopes filter - aka 4W filter - within entity listing.
+* Enhancement: [#199](https://github.com/insideout10/wordlift-plugin/issues/199) & [#101](https://github.com/insideout10/wordlift-plugin/issues/101): Improve new entity creation workflow usability within the content post editing.
+* Enhancement: [#171](https://github.com/insideout10/wordlift-plugin/issues/171): Add related posts counter within the entity listing.
+* Enhancement: [#121](https://github.com/insideout10/wordlift-plugin/issues/121): Improve UI consinstency
+* Enhancement: [#140](https://github.com/insideout10/wordlift-plugin/issues/140): Add new properties for Organization 
 
 = 3.2.5 (2015-12-25) =
 * Fix: [#221](https://github.com/insideout10/wordlift-plugin/issues/221): Fix de-synch between Wordpress and RedLink when disambiguation is performed trough entity alternative title

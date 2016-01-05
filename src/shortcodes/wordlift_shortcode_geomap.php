@@ -24,6 +24,11 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 		$related_ids = wl_core_get_related_entity_ids( $post_id, array(
 			'status' => 'publish'
 		) );
+		
+		// Also include current entity
+		if ( Wordlift_Entity_Service::get_instance()->is_entity( $post_id ) ) {
+			$related_ids[] = $post_id;
+		}
 	}
 
 	// If is not a global geomap, an empty $related_ids means that no entities are related to the post
@@ -33,13 +38,13 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 	}
 
 	// Retrieve all 'published' places with geo coordinates defined
-	// If $place_ids is not empty, it's used to limit query results to the current post related places
+	// If $related_ids is not empty, it's used to limit query results to the current post related places
 	// Please note that when $place_ids is an empty array, the 'post__in' parameter is not considered in the query
-	$places = get_posts( array(
+	return get_posts( array(
 		'post__in'    => $related_ids,
 		'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
 		'nopaging'    => true,
-		'post_status' => 'published',
+		'post_status' => 'publish',
 		'meta_query'  => array(
 			'relation' => 'AND',
 			array(
@@ -52,10 +57,13 @@ function wl_shortcode_geomap_get_places( $post_id = null ) {
 				'value'   => null,
 				'compare' => '!=',
 			)
+		),
+		'tax_query'      => array(
+			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			'field'    => 'slug',
+			'terms'    => 'place'
 		)
 	) );
-
-	return $places;
 }
 
 /**

@@ -310,108 +310,43 @@ EOF;
 		
 	}
 
-	// This test simulate entity metadata updating trough the disambiguation widget
-	function testEntityMetadataAreProperlyUpdated() {
+	// This test simulate entity type-specific properties (latitude, startDate, etc.) are saved trough the disambiguation widget
+	function testEntityAdditionalPropertiesAreSaved() {
 
 		$fake = $this->prepareFakeGlobalPostArrayFromFile(
-			'/assets/fake_global_post_array_with_one_entity_linked_as_what.json' 
+			'/assets/fake_global_post_array_with_a_new_entity_linked_as_where_with_coordinates.json' 
 		);
 		$_POST = $fake;
+		
 		// Retrieve the entity uri (the first key in wl_entities associative aray)
-		$original_entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		$entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Retrieve the label and compose expected uri
+		$raw_entity = current( array_values ( $fake['wl_entities' ] ) );
+		$expected_entity_uri = $this->buildEntityUriForLabel( $raw_entity['label'] );
+		
 		// Reference the entity to the post content 
 		$content    = <<<EOF
-    <span itemid="$original_entity_uri">My entity</span>
+    <span itemid="$entity_uri">My entity</span>
 EOF;
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		
         // Here the entity should have been created
-		$original_entity = wl_get_entity_post_by_uri( $original_entity_uri );
-        $this->assertNotNull( $original_entity );
-        
-        // Store entity type, images and sameAs (needed later)
-        $original_type = wl_schema_get_types( $original_entity->ID );
-        $original_thumbnails = $this->getThumbs( $original_entity->ID );
-        $original_sameAs = wl_schema_get_value( $original_entity->ID, 'sameAs' );
-        
-        // Query the same entity using the Redlink URI
-		$entity_uri = wl_get_entity_uri( $original_entity->ID );
-		$e = wl_get_entity_post_by_uri( $entity_uri );
-        $this->assertEquals($original_entity, $e);
-
-		// The entity description should be the same we expect
-		$raw_entity = current( array_values ( $fake[ 'wl_entities' ] ) );
-		$this->assertEquals( $raw_entity[ 'description' ], $original_entity->post_content );
-                
-		// The entity is related as what predicate
-		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
-		$this->assertCount( 1, $related_entity_ids );
-                
-		// Ensure there are no other relation instances
-		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
-		$this->assertCount( 1, $relation_instances );
-
-        /* Now Post is saved again with the same mentioned entity:
-         * - with different type
-         * - with different description
-         * - with one more image
-         * - with one modified sameAs
-         * - as WHO instead fo WHAT
-         */
-		$fake = $this->prepareFakeGlobalPostArrayFromFile(
-			'/assets/fake_global_post_array_with_one_entity_linked_as_who_and_modified_data.json' 
-		);
-		$_POST = $fake;
-                
-		// The entity url should be the same we expect
-		$raw_entity = current( array_values ( $fake[ 'wl_entities' ] ) );
-		$raw_entity_uri = $raw_entity[ 'uri' ];
-
-		$new_content    = <<<EOF
-    <span itemid="$raw_entity_uri">My entity</span>
-EOF;
-        // Update the post content (to force existing entities update)
-		wp_update_post( array('ID' => $post_id, 'post_content' => $new_content ) );
+		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$this->assertNotNull( $entity );
 		
-        // Verify the mentioned entity was already into DB...
-		$updated_entity = wl_get_entity_post_by_uri( $raw_entity_uri );
-        $this->assertEquals( $original_entity->ID, $updated_entity->ID );
-        $this->assertEquals( $original_entity->post_title, $updated_entity->post_title );
-        // ... but some properties changed!
-        $this->assertNotEquals( $original_entity, $updated_entity );
-                
-		// Verify entity type has been updated
-        $updated_type = wl_schema_get_types( $updated_entity->ID );
-        $this->assertNotEquals( $original_type, $updated_type );
-		$this->assertEquals( array('http://schema.org/Organization'), $updated_type );
-                
-        // Verify entity description has been updated
-        // TMP - Changed from assertEquals to assertNotEquals to hotfix issue #152
-		$this->assertNotEquals( $raw_entity[ 'description' ], $updated_entity->post_content );
-                
-        // Verify entity images have been updated (one was added)
-        $updated_thumbnails = $this->getThumbs( $updated_entity->ID );
-		$this->assertNotEquals( $original_thumbnails, $updated_thumbnails );
-        $this->assertContains( $original_thumbnails[0], $updated_thumbnails );
-        $this->assertCount( 2, $updated_thumbnails );                                       // There is one more
-        $this->assertContains('Netherlands_vs_Ivory_Coast', $updated_thumbnails[1]);        // ... about soccer
-                
-        // Verify entity sameAs have been updated
-        $updated_sameAs = wl_schema_get_value( $updated_entity->ID, 'sameAs' );
-		$this->assertNotEquals( $original_sameAs, $updated_sameAs );
-        $this->assertContains( $original_sameAs[1], $updated_sameAs );
-        $this->assertNotContains( $original_sameAs[0], $updated_sameAs );
-        $this->assertContains( 'http://sv.dbpedia.org/page/Reason', $updated_sameAs );
-                
-        // Verify the entity is now related as who predicate
-		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
-		$this->assertCount( 1, $related_entity_ids );
-		// Ensure there are no other relation instances
-		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
-		$this->assertCount( 1, $relation_instances );
-	}
-
+		// Verify association to post as where
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );
+		$this->assertEquals( array( $entity->ID ), $related_entity_ids );
+        
+		// Verify schema type
+		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity->ID ) );
+        
+        // Verify coordinates
+		$this->assertEquals( array( 43.21 ), wl_schema_get_value( $entity->ID, 'latitude' ) );
+		$this->assertEquals( array( 12.34 ), wl_schema_get_value( $entity->ID, 'longitude' ) );
+	}	
+	
 	// Given an entity with at least 1 alternative label
 	// This test checks that the entity is properly updated keeping 
 	// WP and RL in synch when the this entity is used in disambiguation 

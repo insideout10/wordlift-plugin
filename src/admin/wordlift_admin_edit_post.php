@@ -21,13 +21,13 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 		if ( $uri = wl_get_entity_uri( $post_id ) ) {
 			$uri_esc       = esc_attr( wl_get_entity_uri( $post_id ) );
 			$lod_view_href = 'http://lodview.it/lodview/?IRI=' . $uri_esc;
-			$html .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small' target='_blank'>" .
+			$html .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small wl-button' target='_blank'>" .
 			         __( 'View Linked Data', 'wordlift' ) .
 			         "</a></span>\n";
 		}
 		$html .= "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
 		         urlencode( get_permalink( $post_id ) ) .
-		         "' class='button button-small' target='_blank'>" .
+		         "' class='button button-small wl-button' target='_blank'>" .
 		         __( 'Test Google Rich Snippets', 'wordlift' ) .
 		         "</a></span>\n";
 	}

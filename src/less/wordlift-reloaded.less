@@ -5,7 +5,19 @@
 @import 'wordlift-card.less';
 @import 'wordlift-label.less';
 
+.wl-button {
+  background-color: @wl-brand-color;
+  border-color: @wl-brand-secondary-color; 
+}
 
+.wl-suggestion {
+  border-left: @wl-brand-color 4px solid;
+}
+
+.mce-wl-button button {
+  background: data-uri('../images/pink-logo-16x16.png') 6px 50% no-repeat !important;
+  padding-left: 28px !important;
+}
 .wl-entity-input-boxes, .wl-entity-props {
   display: none;
 }
@@ -22,34 +34,6 @@
     }
     color:@wl-brand-color !important;
     font-size:14px !important;   
-    
-    font-family: FontAwesome !important;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 18px !important;
-    
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-}
-
-.mceIcon.mce_wordlift_add_entity, .mce-widget.mce-btn.mce-wordlift_add_entity button {
-
-    background-position: center center;
-    background-repeat: no-repeat;
-
-    &:before {
-      content: @fa-var-pencil; 
-    }
-
-    &:hover {
-      color:rgb(0,0,0) !important;
-    }
-
-    color:@wl-brand-color !important;
-    
-
-    font-size:18px !important;   
     
     font-family: FontAwesome !important;
     font-style: normal;
@@ -95,6 +79,12 @@
   font-size: 0.9em;
   position: relative;
   
+  .wl-internal {
+    color:@wl-brand-color;
+    font-size: 1.1em;
+    line-height: 1.5em;
+  }
+
   .label, i {
     cursor: pointer;
   }
@@ -154,8 +144,9 @@
   }
   
   .wl-error {
+    margin-bottom: 6px;
     padding:2px 12px;
-    border-left:#f00 4px solid;
+    border-left:@wl-brand-color 4px solid;
     font-size: 11px;
   }
 
@@ -165,10 +156,11 @@
   }
 
   .wl-widget-headline {
+    padding-left:28px;
     margin: 10px -12px;
     border-top:#eee 1px solid;
     border-bottom:#eee 1px solid;
-    background-color:#f5f5f5;
+    background: #f5f5f5 data-uri('../images/pink-logo-16x16.png') 6px 50% no-repeat !important;
   }
 
   #wl-add-entity-button-wrapper {
@@ -444,44 +436,18 @@
 
 }
 
-#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift {
-  float: right; // push the WordLift logo to the extreme right.
-  cursor: pointer;
-
-  > .ab-item {
-    width: 12px;
-    background: data-uri('../images/wordlift-logo-pink-28x28.png') center no-repeat;
-  }
-
-  &:hover > .ab-item {
-    background: data-uri('../images/wordlift-logo-black-28x28.png') center no-repeat;
-  }
-
-  > .ab-sub-wrapper {
-    right: 0;
-    left: auto;
-  }
-}
-
 div.wp-menu-image:before
-#adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-post {
+#adminmenu .toplevel_page_wordlift-admin-entities, #adminmenu #menu-posts-entity .menu-icon-entity {
 
   div.wp-menu-image {
-    background: data-uri('../images/pink-logo-20x20.png') center no-repeat !important;
-    opacity: 1;
-    filter: alpha(opacity=100);
-
     &:before {
-      content: '';
+      color: @wl-brand-color;
     }
   }
-
-  &:hover div.wp-menu-image {
-    background: data-uri('../images/wordlift-logo-20x20.png') center no-repeat !important;
-  }
-
-  &.current div.wp-menu-image, &.wp-menu-open div.wp-menu-image {
-    background: data-uri('../images/pink-logo-20x20.png') center no-repeat !important;
+  &.current div.wp-menu-image, &.wp-menu-open div.wp-menu-image { 
+    &:before {
+      color:#fff;
+    }
   }
 
 }
@@ -581,6 +547,19 @@ body#tinymce {
     cursor: pointer;
     cursor: hand;
 
+    &.unlinked {
+      border:#999 1px dashed;
+      padding: 2px 2px;
+
+      &.selected {
+        font-weight: bold;
+        border:#999 1px dashed !important;
+        background-color:#fff !important;
+        color:inherit !important;
+      }
+      
+    }
+
     &.selected {
       .highlight(@wl-default-color);
 
@@ -612,8 +591,13 @@ body#tinymce {
 
 /* metaboxes */
 
-.wl-metabox .hndle span::before {
-	content: "WordLift - ";
+.wl-metabox {
+
+  border-left:@wl-brand-color 4px solid;
+  
+  .hndle span::before {
+	   content: "WordLift - ";
+  }
 }
 
 .wl-input-notice {

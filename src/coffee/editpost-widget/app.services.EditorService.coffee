@@ -3,7 +3,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   'wordlift.editpost.widget.services.AnalysisService'
   ])
 # Manage redlink analysis responses
-.service('EditorService', [ 'AnalysisService', '$log', '$http', '$rootScope', (AnalysisService, $log, $http, $rootScope)-> 
+.service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
   
   INVISIBLE_CHAR = '\uFEFF'
 
@@ -38,6 +38,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   disambiguate = ( annotation, entity )->
     ed = editor()
     ed.dom.addClass annotation.id, "disambiguated"
+    for type in configuration.types
+      ed.dom.removeClass annotation.id, type.css
+    ed.dom.removeClass annotation.id, "unlinked"
     ed.dom.addClass annotation.id, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
     ed.dom.setAttrib annotation.id, "itemid", entity.id
@@ -148,7 +151,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       }
 
       # Prepare span wrapper for the new text annotation
-      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
+      textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
       # Update the content within the editor
       ed.selection.setContent textAnnotationSpan 
       

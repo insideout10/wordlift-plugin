@@ -1474,7 +1474,7 @@
   background-color: inherit !important;
 }
 .wl-selected-item.wl-person {
-  border-left: #f20f62 5px solid;
+  border-left: #ff0000 5px solid;
 }
 .wl-selected-item.wl-place {
   border-left: #ff9a2e 5px solid;
@@ -1513,6 +1513,17 @@
   color: #aa0000;
   cursor: pointer;
 }
+.wl-button {
+  background-color: #f20f62;
+  border-color: #c20c4e;
+}
+.wl-suggestion {
+  border-left: #f20f62 4px solid;
+}
+.mce-wl-button button {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTklEQVR42tVSTyiDcRj+KMtRpFZyUXLV3Fx2VcqFw1o28dVks1kRJeRPWS4oNZGUklZL8qfIYY7KRXZZO7hbbijL733fx8/3hehD+XNweOr3vL+n5/1rwOiXn8CwH1F8F79rIIZfw6fR5cifY44GYkQgoS3w7BG4LwWunwLH0q+8OgL2JMAju+CGaUv/zsCEeBNQIlDb52D3ECi4anHaPIOUdYPrxsDrp/ovrvW9Ti34oPayUPkCuHlS8x7b4DgHqYmBO1bALUs6HvxoBj6wdwFKESighZWDUJfXUIUbcGsSNJ+BuOIv5Ttugd0hUO4KtJ8Fta+B2pJQ9w8W53DKSvLpGtnVCRo/sGexeAKu0G3sXEDdFcG1w2824mggJSbYvwx1WwQ1TUBK/aBoGpTJg6vMrw9JjDC4cRQ8c2hlf+LimQMHNsDlA398if/T4BFvhJYPVlRm7QAAAABJRU5ErkJggg==") 6px 50% no-repeat !important;
+  padding-left: 28px !important;
+}
 .wl-entity-input-boxes,
 .wl-entity-props {
   display: none;
@@ -1538,33 +1549,17 @@
 .mce-widget.mce-btn.mce-wordlift button:hover {
   color: #000000 !important;
 }
-.mceIcon.mce_wordlift_add_entity,
-.mce-widget.mce-btn.mce-wordlift_add_entity button {
-  background-position: center center;
-  background-repeat: no-repeat;
-  color: #f20f62 !important;
-  font-size: 18px !important;
-  font-family: FontAwesome !important;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 18px !important;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.mceIcon.mce_wordlift_add_entity:before,
-.mce-widget.mce-btn.mce-wordlift_add_entity button:before {
-  content: "\f040";
-}
-.mceIcon.mce_wordlift_add_entity:hover,
-.mce-widget.mce-btn.mce-wordlift_add_entity button:hover {
-  color: #000000 !important;
-}
 .entity {
   background: white;
   padding: 0em;
   margin: 0.2em 0em;
   font-size: 0.9em;
   position: relative;
+}
+.entity .wl-internal {
+  color: #f20f62;
+  font-size: 1.1em;
+  line-height: 1.5em;
 }
 .entity .label,
 .entity i {
@@ -1753,7 +1748,7 @@
   color: #000000;
 }
 .entity.wl-person {
-  border-color: #f20f62;
+  border-color: #ff0000;
   color: #444;
 }
 .entity.wl-person .type {
@@ -1767,10 +1762,10 @@
 }
 .entity.wl-person .type:before {
   content: "\f007";
-  color: #f20f62;
+  color: #ff0000;
 }
 .entity.wl-person.selected {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
 }
 .entity.wl-person .type {
@@ -1778,17 +1773,17 @@
 }
 .entity.wl-person .type:before {
   content: "\f007";
-  color: #f20f62;
+  color: #ff0000;
 }
 .entity.wl-person .more:before {
   content: "\f007";
 }
 .entity.wl-person.selected {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
 }
 .entity.wl-person .thumbnail {
-  background-color: #f20f62;
+  background-color: #ff0000;
   color: #ffffff;
 }
 .entity.wl-place {
@@ -1878,8 +1873,9 @@
   height: 1px;
 }
 #wordlift-edit-post-wrapper .wl-error {
+  margin-bottom: 6px;
   padding: 2px 12px;
-  border-left: #f00 4px solid;
+  border-left: #f20f62 4px solid;
   font-size: 11px;
 }
 #wordlift-edit-post-wrapper input,
@@ -1889,10 +1885,11 @@
   font-size: inherit;
 }
 #wordlift-edit-post-wrapper .wl-widget-headline {
+  padding-left: 28px;
   margin: 10px -12px;
   border-top: #eee 1px solid;
   border-bottom: #eee 1px solid;
-  background-color: #f5f5f5;
+  background: #f5f5f5 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTklEQVR42tVSTyiDcRj+KMtRpFZyUXLV3Fx2VcqFw1o28dVks1kRJeRPWS4oNZGUklZL8qfIYY7KRXZZO7hbbijL733fx8/3hehD+XNweOr3vL+n5/1rwOiXn8CwH1F8F79rIIZfw6fR5cifY44GYkQgoS3w7BG4LwWunwLH0q+8OgL2JMAju+CGaUv/zsCEeBNQIlDb52D3ECi4anHaPIOUdYPrxsDrp/ovrvW9Ti34oPayUPkCuHlS8x7b4DgHqYmBO1bALUs6HvxoBj6wdwFKESighZWDUJfXUIUbcGsSNJ+BuOIv5Ttugd0hUO4KtJ8Fta+B2pJQ9w8W53DKSvLpGtnVCRo/sGexeAKu0G3sXEDdFcG1w2824mggJSbYvwx1WwQ1TUBK/aBoGpTJg6vMrw9JjDC4cRQ8c2hlf+LimQMHNsDlA398if/T4BFvhJYPVlRm7QAAAABJRU5ErkJggg==") 6px 50% no-repeat !important;
 }
 #wordlift-edit-post-wrapper #wl-add-entity-button-wrapper {
   padding: 4px 0px 0px 0px;
@@ -2240,40 +2237,15 @@
 #wordlift-edit-post-wrapper .wl-with-annotation .wl-unselected:before {
   content: "\f127";
 }
-#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift {
-  float: right;
-  cursor: pointer;
-}
-#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift > .ab-item {
-  width: 12px;
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACw0lEQVR4Ae3WA6wnSRRH4RorXFvBOsbaNsZ49uvp/q9t27Ztz9q2bdveb+ulKxnbSHKCX+X2qVtIVxCGvx/5PvJp5LPpxKfJ8X6H8LeIGcRvHcIfZ6Dwx7lamI3JBPJsPHUTFWaRCl3aCAMj/SMDSro2EQq6VaUs0Wkg3evFupJudaluEF2Gpzwbn7CIVLPqoRw2gmEX0P9cDriVjU+jUzsH38VeN4p5yeF3MPhSQm2knurLOOh29r2NJfcm1ESK8QnzSANLFrzwAQCff8cqqXivy/jldwCeeou1DyI0lmx5FD/8zKMx71mX8nxCS7prZHtW3oO//wPueYkuWxGqIuuQXQjAcdcRVk/1O9F1W868ixV2T9uyy4SWdKRYl2qefhf4C1scSdgx0sKiFT7/EXj/BxZtTx9vZIOTOOMewqDIziNlExbmkb4UlwFw/F2EHSKtkcGMeAGAqlMJfUvpYTeSXZIOVWVyrkUNy+3BT78Dr33Jog2ldOldefdLAM59rMy713LxoyyzN6F5cu5hXhZ0HchVTwPQ9yzCWux8OSc+wDMfAO//yALbs/HBXP40Paqm5OK3l8sy8EwAznyEsB3n3svC7ZxwDwCbHMRul9J8GaE6kk2uMN3JJVr58DsoO9r5Gk69h7A525wGwIPvcN7DzN9OaJqSDvNU2JcT7gP++Ic//2XDYwnbsEgz738DwFF3pcPTGsknTziyy35segT//Ac8/jbdhqRl68vx90E5vuYhhCFT87eoRKroNYRH3wOqzk9dZJH+bH4U8NQH9BlKqIsUUyrM0/Jsyyn3A8tmhKp0qaNg/hp+/INjRxh5T/MpE47sckdqTyuPfJ9aQmPqoonO9Zz5ANsfl5azmBY/4HZ6tNK7jU6ZkR3kJX3a6dYyMpt6YREZedyNFCaa03g+rZ8Y+UTzeY+oGf4QnuFP/f8BwIDkESQuzC0AAAAASUVORK5CYII=") center no-repeat;
-}
-#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift:hover > .ab-item {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACTklEQVR4Ae2WA+ycSxxFz35b27Zt27Zt27Zt225cN1Zt23x2eTuZv+3yJbmLn854BuA+8PvnkWXxG6DPI8vi6ecDWhbPPiPw2Q8KdHAFCHbj+Pn2rei+bNFwfNcJHTAniTWC0upIPrUil/1djUxyQH0ppqGUVBtyGuXSOONrYb5dnrntzO8xlFU/E5OBeKEDpieeTtNBYr7RTN2jjwqTUoB6UVj/MFpittEMnaSlypHOO7cxWfSCfia/sxISPfRzmJbY+pOBFniQZnJ8+fpQQGK60QTNpVyA3BmUVH4ShX3RHKK+xFx9YJwak97bnoiYukNHC33EQKUntrevDhm1m1rhW6WtySMx0Wia1vgrspHqEvOMxqsz2bzty6ikKZQKHzA1sfWcbrbwY/opM3E9hzuO7tJZYqTRFO2kkbXHI7p2UFNZSBA+oGO0mhqeC2S8epHP2qdSSuuprMM0tAvrNYOVipiqR2btp7Zi4IR/49cig2RX5VxtooEAO0cpDGAUpSXm2MY0IZP6k1/dySsXhB+Ykli6QXeJRbpAG02huJZSUYBqklFijG3QNXpoK7WUkBgRP9omUV5iqj4ySGKcqnnuu6RE12W6WpuYpblUlwMRB5Yjud4xXGKxTtFesXwdWTOpILFQHxmh0qQQkQGMg1vHDUistkeXb19Vktvhvkg/JcAVebfFXKpITFJuEvqxJ8HR74zSfOpF7vXUlCzaTFUDiOnH7sKleZRVXTJGLtAxcgcxZG4L/kIX8P/Az/5M/PwP4dixY983+v0z6f4nPgaLkiZzUhYAAAAASUVORK5CYII=") center no-repeat;
-}
-#wpadminbar .ab-top-menu > li#wp-admin-bar-wordlift > .ab-sub-wrapper {
-  right: 0;
-  left: auto;
-}
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post div.wp-menu-image {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAGFBMVEX+AFb91Of+da/9P5H8qs77/v7+GXr/AG2omA+JAAAAZElEQVR4AWMohwNimAzsBQzlBWCmknKSkoGReTmQrxqWEpqQaAASZQ1mCC0wYgcxmQLZQxWUwUy2UDZRcXewtgJRZdMgBQjTNIQltADCTA1mDmSH2MYYwB4EZTIplCsjuYFEJgAK3kvWYXfpIQAAAABJRU5ErkJggg==") center no-repeat !important;
-  opacity: 1;
-  filter: alpha(opacity=100);
-}
 div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities div.wp-menu-image:before,
-#adminmenu #menu-posts-entity .menu-icon-post div.wp-menu-image:before {
-  content: '';
+#adminmenu #menu-posts-entity .menu-icon-entity div.wp-menu-image:before {
+  color: #f20f62;
 }
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities:hover div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post:hover div.wp-menu-image {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABQUlEQVR4AdWVM5RYURRFd2zbtm3btm3bto02Zr+iNilTpwqrNHEy3GPbk/efcc/VWR/gC/Ajm9oXALO58SMbhf34DwVupIOHGOQeetqE8jaknGcY5EH6uI0e9qKGgJ2o6mGG2Y9aqQtcSRvlprLXqpSwPMV8whjltkGstCLFBWxMOV8x3TZUStvkD8xVTjqQ2gIWBr+zzkC2WClaYB9qOp9m6fPhNjoqN3zKsNi9ryxQLrqB9gKuo100YDoEVqOkskPZLBBp+ltmKAd8zUQB99LF4hRKf5TfMEG54jyaRGrSkor+ZKmy3lP0djKNM5Y282mhnDCErZHmAT5guHLav6ywNEUyJjDCHFmjHLE1lQQcSX3lis8Zn7nEfsfsSDPj78l2N9MxcwKX0do1tE2wt5eOtqPy/8/l7BVoNrfs/QWEAb7FzfHlA7vcAAAAAElFTkSuQmCC") center no-repeat !important;
-}
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.current div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post.current div.wp-menu-image,
-div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.wp-menu-open div.wp-menu-image,
-#adminmenu #menu-posts-entity .menu-icon-post.wp-menu-open div.wp-menu-image {
-  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUBAMAAAB/pwA+AAAAGFBMVEX+AFb91Of+da/9P5H8qs77/v7+GXr/AG2omA+JAAAAZElEQVR4AWMohwNimAzsBQzlBWCmknKSkoGReTmQrxqWEpqQaAASZQ1mCC0wYgcxmQLZQxWUwUy2UDZRcXewtgJRZdMgBQjTNIQltADCTA1mDmSH2MYYwB4EZTIplCsjuYFEJgAK3kvWYXfpIQAAAABJRU5ErkJggg==") center no-repeat !important;
+div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.current div.wp-menu-image:before,
+#adminmenu #menu-posts-entity .menu-icon-entity.current div.wp-menu-image:before,
+div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.wp-menu-open div.wp-menu-image:before,
+#adminmenu #menu-posts-entity .menu-icon-entity.wp-menu-open div.wp-menu-image:before {
+  color: #fff;
 }
 #wordlift-disambiguation-popover {
   display: none;
@@ -2338,6 +2310,16 @@ body#tinymce .textannotation {
   cursor: pointer;
   cursor: hand;
 }
+body#tinymce .textannotation.unlinked {
+  border: #999 1px dashed;
+  padding: 2px 2px;
+}
+body#tinymce .textannotation.unlinked.selected {
+  font-weight: bold;
+  border: #999 1px dashed !important;
+  background-color: #fff !important;
+  color: inherit !important;
+}
 body#tinymce .textannotation.selected {
   border: 0 !important;
   color: #ffffff;
@@ -2371,7 +2353,7 @@ body#tinymce .textannotation.selected.wl-local-business {
 body#tinymce .textannotation.selected.wl-person {
   border: 0 !important;
   color: #ffffff;
-  background-color: #f20f62;
+  background-color: #ff0000;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-place {
@@ -2399,7 +2381,7 @@ body#tinymce .textannotation.wl-local-business {
   border-color: #8fd22a !important;
 }
 body#tinymce .textannotation.wl-person {
-  border-color: #f20f62 !important;
+  border-color: #ff0000 !important;
 }
 body#tinymce .textannotation.wl-place {
   border-color: #ff9a2e !important;
@@ -2411,6 +2393,9 @@ body#tinymce[contenteditable=false] {
   background-color: #f1f1f1;
 }
 /* metaboxes */
+.wl-metabox {
+  border-left: #f20f62 4px solid;
+}
 .wl-metabox .hndle span::before {
   content: "WordLift - ";
 }
