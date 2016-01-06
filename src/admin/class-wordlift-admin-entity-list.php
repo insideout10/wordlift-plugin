@@ -119,6 +119,11 @@ class Wordlift_Entity_List_Service {
 	 */
 	public function restrict_manage_posts_classification_scope() {
 		
+		// Return safely if get_current_screen() is not defined (yet)
+		if ( FALSE === function_exists( 'get_current_screen' ) ) {
+			return;
+		}
+
 		// Only show on entity list page
 		$screen = get_current_screen();
 		if( $screen->post_type !== Wordlift_Entity_Service::TYPE_NAME ){
@@ -158,6 +163,11 @@ class Wordlift_Entity_List_Service {
 		// Run only on admin page
 		if( ! is_admin() ) {
 			return $clauses;
+		}
+
+		// Return safely if get_current_screen() is not defined (yet)
+		if ( FALSE === function_exists( 'get_current_screen' ) ) {
+			return;
 		}
 		
 		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set
