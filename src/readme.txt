@@ -86,6 +86,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.3.1 (2016-01-06) =
+* Fix: [#225](https://github.com/insideout10/wordlift-plugin/issues/225): Return safely when get_current_screen() is not defined (yet).
+
 = 3.3.0 (2016-01-06) =
 * Enhancement: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): Download and save Place coordinates from RL.
 * Enhancement: [#161](https://github.com/insideout10/wordlift-plugin/issues/161): Geomap shows current entity if it is a Place (or child of Place).
