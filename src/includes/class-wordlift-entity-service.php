@@ -391,6 +391,11 @@ class Wordlift_Entity_Service {
 	 */
 	public function in_admin_header() {
 
+		// Return safely if get_current_screen() is not defined (yet)
+		if ( FALSE === function_exists( 'get_current_screen' ) ) {
+			return;
+		}
+
 		// If you're not in the entity post edit page, return.
 		if ( self::TYPE_NAME !== get_current_screen()->id ) {
 			return;
