@@ -1891,6 +1891,15 @@
   border-bottom: #eee 1px solid;
   background: #f5f5f5 url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTklEQVR42tVSTyiDcRj+KMtRpFZyUXLV3Fx2VcqFw1o28dVks1kRJeRPWS4oNZGUklZL8qfIYY7KRXZZO7hbbijL733fx8/3hehD+XNweOr3vL+n5/1rwOiXn8CwH1F8F79rIIZfw6fR5cifY44GYkQgoS3w7BG4LwWunwLH0q+8OgL2JMAju+CGaUv/zsCEeBNQIlDb52D3ECi4anHaPIOUdYPrxsDrp/ovrvW9Ti34oPayUPkCuHlS8x7b4DgHqYmBO1bALUs6HvxoBj6wdwFKESighZWDUJfXUIUbcGsSNJ+BuOIv5Ttugd0hUO4KtJ8Fta+B2pJQ9w8W53DKSvLpGtnVCRo/sGexeAKu0G3sXEDdFcG1w2824mggJSbYvwx1WwQ1TUBK/aBoGpTJg6vMrw9JjDC4cRQ8c2hlf+LimQMHNsDlA398if/T4BFvhJYPVlRm7QAAAABJRU5ErkJggg==") 6px 50% no-repeat !important;
 }
+#wordlift-edit-post-wrapper .wl-widget-sub-headline {
+  font-size: 1.04em;
+  line-height: 1.04em;
+  font-weight: 700;
+  padding: 5px 0px;
+  text-transform: uppercase;
+  border-bottom: #eee 1px solid;
+  margin: 0;
+}
 #wordlift-edit-post-wrapper #wl-add-entity-button-wrapper {
   padding: 4px 0px 0px 0px;
   text-align: right;
@@ -2146,6 +2155,34 @@
 }
 #wordlift-edit-post-wrapper .wl-edit.active {
   color: #2ea2cc;
+}
+#wordlift-edit-post-wrapper .wl-toggle-on {
+  color: #444;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+#wordlift-edit-post-wrapper .wl-toggle-on:before {
+  content: "\f05d";
+}
+#wordlift-edit-post-wrapper .wl-toggle-off {
+  color: #888;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+#wordlift-edit-post-wrapper .wl-toggle-off:before {
+  content: "\f10c";
 }
 #wordlift-edit-post-wrapper .wl-more {
   font-family: FontAwesome;

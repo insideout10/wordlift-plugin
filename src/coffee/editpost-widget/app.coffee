@@ -55,7 +55,19 @@ $(
       <h3 class="wl-widget-headline">
         <span>Article classification</span>
       </h3>
-
+      <h5 class="wl-widget-sub-headline">Who</h5>
+      <div class="wl-widget-wrapper">
+        <i class="wl-toggle-on" />
+      </div>  
+      <h5 class="wl-widget-sub-headline">Where</h5>
+      <div class="wl-widget-wrapper">
+        <i class="wl-toggle-off" />
+      </div>
+      <h5 class="wl-widget-sub-headline">When</h5>
+      <div class="wl-widget-wrapper">
+        <i class="wl-toggle-off" />
+      </div>
+      
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
