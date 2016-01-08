@@ -30,7 +30,7 @@ $(
       </div>
 
       <h3 class="wl-widget-headline">
-        <span>Semantic tagging</span>
+        <span>Content classification</span>
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
       
@@ -51,6 +51,10 @@ $(
           <wl-entity-tile is-selected="isLinkedToCurrentAnnotation(entity)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes"" ></wl-entity>
         </div>  
       </wl-classification-box>
+
+      <h3 class="wl-widget-headline">
+        <span>Article classification</span>
+      </h3>
 
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
