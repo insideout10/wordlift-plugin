@@ -1899,6 +1899,7 @@
   text-transform: uppercase;
   border-bottom: #eee 1px solid;
   margin: 0;
+  margin-bottom: 4px;
 }
 #wordlift-edit-post-wrapper #wl-add-entity-button-wrapper {
   padding: 4px 0px 0px 0px;
@@ -2217,6 +2218,21 @@
 }
 #wordlift-edit-post-wrapper .wl-less:before {
   content: "\f0d8";
+}
+#wordlift-edit-post-wrapper .wl-geolocation-cta {
+  padding: 2px 4px;
+  color: #888;
+  cursor: pointer;
+  text-transform: capitalize;
+  border-bottom: #ff9a2e 1px dotted;
+  font-size: 0.8em;
+}
+#wordlift-edit-post-wrapper .wl-role {
+  padding: 2px 4px;
+  color: #888;
+  background-color: #eee;
+  text-transform: uppercase;
+  font-size: 0.8em;
 }
 #wordlift-edit-post-wrapper .wl-without-annotation .wl-selected {
   color: #444;

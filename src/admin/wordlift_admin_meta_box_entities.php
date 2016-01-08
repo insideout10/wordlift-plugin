@@ -104,6 +104,10 @@ function wl_entities_box_content( $post ) {
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 	$dataset_uri = wl_configuration_get_redlink_dataset_uri();
 
+    // Retrieve the current user
+    $current_user = wp_get_current_user();
+    // Retrive the published date
+    $published_date = get_the_time( 'Y-m-d', $post->ID );
 	echo <<<EOF
     <script type="text/javascript">
         jQuery( function() {
@@ -118,7 +122,8 @@ function wl_entities_box_content( $post ) {
         	window.wordlift.currentPostId = $post->ID;
 			window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
 			window.wordlift.datasetUri = '$dataset_uri';
-
+            window.wordlift.currentUser = '$current_user->display_name';
+            window.wordlift.publishedDate = '$published_date';
         });
     </script>
 EOF;

@@ -53,21 +53,34 @@ $(
       </wl-classification-box>
 
       <h3 class="wl-widget-headline">
-        <span>Article classification</span>
+        <span>Article Details</span>
       </h3>
       <h5 class="wl-widget-sub-headline">Who</h5>
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />
+        <span class="entity wl-person"><i class="type" />
+          {{configuration.currentUser}}
+          <span class="wl-role">author</span>
+        </span>
       </div>  
       <h5 class="wl-widget-sub-headline">Where</h5>
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-off" />
+        <span class="entity wl-place"><i class="type" />
+          <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
+          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta">Get Current Location</span>
+          <span class="wl-role">publishing place</span>
+        </span>
       </div>
       <h5 class="wl-widget-sub-headline">When</h5>
       <div class="wl-widget-wrapper">
-        <i class="wl-toggle-off" />
+        <i class="wl-toggle-on" />
+        <span class="entity wl-event"><i class="type" />
+          {{configuration.publishedDate}}
+          <span class="wl-role">publishing date</span>
+        </span>
       </div>
-      
+
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
