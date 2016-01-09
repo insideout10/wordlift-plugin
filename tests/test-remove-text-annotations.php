@@ -98,6 +98,21 @@ EOF;
         $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
     }
 
+    // Test case derioved from issue https://github.com/insideout10/wordlift-plugin/issues/234
+    function testRemoveTextAnnotationsWithNestedBlankSpanInside() {
+
+        $content = <<<EOF
+Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation"><span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f7" class="textannotation">Roma<span><span></span></span></span></span>.
+EOF;
+        $expected_content = <<<EOF
+Sono nato a Roma.
+EOF;
+        // addslashes is used here to simulate a content sent in $_POST
+        $data = array( 'post_content' => addslashes( $content ) );
+        $output = wl_remove_text_annotations( $data ); 
+        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
+    }
+
     // Test case more generic derived from issue https://github.com/insideout10/wordlift-plugin/issues/234
     function testRemoveAnnotationWithMarkupInside() {
 
@@ -112,7 +127,7 @@ EOF;
         $output = wl_remove_text_annotations( $data ); 
         $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
     }
-    
+
     function testKeepADisambiguatedTextAnnotation() {
 
         $content = <<<EOF

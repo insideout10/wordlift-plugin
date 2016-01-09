@@ -43,6 +43,14 @@ function wl_serialize_entity( $entity ) {
  */
 function wl_remove_text_annotations( $data ) {
 
+	// Remove blank elements that can interfere with annoataions removing
+	// See https://github.com/insideout10/wordlift-plugin/issues/234
+	// Just blank attributes without any attribtues are cleaned up
+	$pattern = '/<(\w+)><\/\1>/im';
+	// Remove the pattern while it is found (match nested annotations).
+	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {		
+		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count ); 
+	}
 	//    <span class="textannotation" id="urn:enhancement-777cbed4-b131-00fb-54a4-ed9b26ae57ea">
 	$pattern = '/<(\w+)[^>]*\sclass=\\\"textannotation(?!\sdisambiguated)[^\\"]*\\\"[^>]*>([^<]+)<\/\1>/im';
 	// Remove the pattern while it is found (match nested annotations).
