@@ -86,6 +86,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.3.2 (2016-01-xx) =
+* Fix: [#234](https://github.com/insideout10/wordlift-plugin/issues/234): Fix text annotation removing for annotation containing blank html markup
+
 = 3.3.1 (2016-01-06) =
 * Fix: [#225](https://github.com/insideout10/wordlift-plugin/issues/225): Return safely when get_current_screen() is not defined (yet).
 
