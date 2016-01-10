@@ -150,6 +150,7 @@ function wl_core_install() {
 
 	wl_core_install_entity_type_data();
 	wl_core_install_create_relation_instance_table();
+	flush_rewrite_rules();
 }
 
 // Installation Hook
