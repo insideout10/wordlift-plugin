@@ -30,7 +30,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.openAddEntityForm = ()->
         
         if !$scope.isThereASelection and !$scope.annotation?
-          $scope.addError "Select a text or an existing annotation in order to create a new entity."
+          $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotations."
           return
         
         $scope.addEntityFormIsVisible = true
