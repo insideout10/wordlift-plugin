@@ -73,4 +73,71 @@ class EntityServiceTest extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * Test the {@link get_entity_post_by_uri} function 
+	 * using external uris set as same as for an internal entity
+	 *
+	 * @since 3.3.2
+	 */
+	function test_get_entity_post_by_uri_with_external_uris() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		// Retrieve the new entity uri
+		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
+		// Check the is an internal uri
+		$this->assertTrue( $entity_service->is_internal_uri( $entity_1_uri ) );
+		
+		// Look for an antity with that uri
+		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
+		// Check returned entity is not null
+		$this->assertNotNull( $retrieved_entity );
+		// Check returned entity is the same we expect
+		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
+
+		// Set an external uri as same as
+		$external_uri = 'http://dbpedia.org/resource/berlin';
+		// Check the is NOT an internal uri
+		$this->assertFalse( $entity_service->is_internal_uri( $external_uri ) );
+		// Set this external uri as sameAs of the created entity
+		wl_schema_set_value( $entity_1_id, 'sameAs', $external_uri );
+		
+		// Look for an antity with that uri
+		$retrieved_entity = $entity_service->get_entity_post_by_uri( $external_uri );
+		// Check returned entity is not null
+		$this->assertNotNull( $retrieved_entity );
+		// Check returned entity is the same we expect
+		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
+
+	}
+
+	/**
+	 * Test the {@link get_entity_post_by_uri} function 
+	 * using external uris set as same as for an internal entity
+	 * See https://github.com/insideout10/wordlift-plugin/issues/237
+	 *
+	 * @since 3.3.2
+	 */
+	function test_get_entity_post_by_uri_with_cross_referenced_internal_entities() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		// Create the first entity
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
+		// Create the second entity
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
+		// Reference the first entity as sameAs for the second one
+		wl_schema_set_value( $entity_2_id, 'sameAs', $entity_1_uri );
+		
+		// Look for the first antity 
+		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
+		// Check returned entity is not null
+		$this->assertNotNull( $retrieved_entity );
+		// Check returned entity is the same we expect
+		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
+
+	}
 }

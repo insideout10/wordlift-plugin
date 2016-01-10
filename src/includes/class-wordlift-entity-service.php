@@ -254,9 +254,9 @@ class Wordlift_Entity_Service {
 	 */
 	public function is_internal_uri( $uri ) {
 
-		return ( 0 !== strrpos( $uri, wl_configuration_get_redlink_dataset_uri() ) );
+		return ( 0 === strrpos( $uri, wl_configuration_get_redlink_dataset_uri() ) );
 	}
-	
+
 	/**
 	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
 	 *
