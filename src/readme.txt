@@ -89,6 +89,8 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 = 3.3.2 (2016-01-xx) =
 * Fix: [#237](https://github.com/insideout10/wordlift-plugin/issues/237): Fix disambiguation for internal entities sameAs of other entities
 * Fix: [#234](https://github.com/insideout10/wordlift-plugin/issues/234): Fix text annotation removing for annotation containing blank html markup
+* Fix: [#228](https://github.com/insideout10/wordlift-plugin/issues/228): 
+Flush properly rewrite rules on plugin activation to prevent 404 on entity pages
 
 = 3.3.1 (2016-01-06) =
 * Fix: [#225](https://github.com/insideout10/wordlift-plugin/issues/225): Return safely when get_current_screen() is not defined (yet).
