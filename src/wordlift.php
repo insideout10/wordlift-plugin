@@ -546,7 +546,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			$item_id = $match[1];
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
-			$post = wl_get_entity_post_by_uri( $item_id );
+			$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {

@@ -36,7 +36,7 @@ class ContentParsingTest extends WP_UnitTestCase
             foreach ( $matches as $match  ) {
                 $item_id = $match[1];
 
-                $post = wl_get_entity_post_by_uri( $item_id );
+                $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
                 $this->assertNotNull( $post );
 
                 $uri  = wl_get_entity_uri( $post->ID );
