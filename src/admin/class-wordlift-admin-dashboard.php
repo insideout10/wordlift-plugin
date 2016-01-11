@@ -39,7 +39,7 @@ class Wordlift_Dashboard_Service {
 	}
 
 	/**
-	 * Calculate total number of posts
+	 * Calculate total number of published posts
 	 * @uses https://codex.wordpress.org/it:Riferimento_funzioni/wp_count_posts
 	 * @since 3.4.0
 	 *
@@ -48,6 +48,18 @@ class Wordlift_Dashboard_Service {
 	public function count_posts( ) {
 		
 		return wp_count_posts()->publish;		
+	}
+
+	/**
+	 * Calculate total number of published entities
+	 * @uses https://codex.wordpress.org/it:Riferimento_funzioni/wp_count_posts
+	 * @since 3.4.0
+	 *
+	 * @return int Total number of posts.
+	 */
+	public function count_entities( ) {
+		
+		return wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;		
 	}
 
 }
