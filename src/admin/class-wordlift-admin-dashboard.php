@@ -52,8 +52,9 @@ class Wordlift_Dashboard_Service {
 			'count_entities'	=>	$this->count_entities(),
 			'count_posts'	=>	$this->count_posts(),
 			'count_annotated_posts'	=>	$this->count_annotated_posts(),
-			'count_triples'	=> $this->count_triples()
-			);	
+			'count_triples'	=> $this->count_triples(),
+			'avarage_entities_rating' => $this->avarage_entities_rating(),
+		);	
 		// Return stats as json object
 		wl_core_send_json( $stats );
 	}
@@ -89,6 +90,24 @@ EOF;
 		// Perform the query
 		return (int) $wpdb->get_var( $sql_statement ); 
 		
+	}
+
+	/**
+	 * Calculate the avarage entities rating
+	 * @since 3.4.0
+	 *
+	 * @return int Avarage entities rating.
+	 */
+	public function avarage_entities_rating() {
+		
+		// Prepare interaction with db
+    	global $wpdb;
+		$query = $wpdb->prepare( 
+			"SELECT AVG(meta_value) FROM $wpdb->postmeta where meta_key = %s",
+   			Wordlift_Entity_Service::RATING_RAW_SCORE_META_KEY
+			);
+		// Perform the query
+		return (float) $wpdb->get_var( $query ); 	
 	}
 
 	/**
