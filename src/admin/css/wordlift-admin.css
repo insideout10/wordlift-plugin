@@ -53,6 +53,8 @@
     background-image: linear-gradient(to bottom, #FF006E, #ef007c);
     filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#FF006E, endColorstr=#ef007c);
     box-shadow: none;
+    text-shadow: none;
+    font-weight: normal;
 }
 
 .button.wl-button:hover {

@@ -253,7 +253,7 @@ function wl_save_entity( $entity_data ) {
 	);
 
 	// Check whether an entity already exists with the provided URI.
-	$post = wl_get_entity_post_by_uri( $uri );
+	$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
 
 	if ( null !== $post ) {
 		// We insert into the params the entity ID, so it will be updated and not inserted.
@@ -438,7 +438,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	$entities = array();
 	foreach ( $matches[1] as $uri ) {
 		$uri_d  = html_entity_decode( $uri );
-		$entity = wl_get_entity_post_by_uri( $uri_d );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
 
 		if ( null !== $entity ) {
 			array_push( $entities, $entity->ID );

@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
- * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
+ * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud. <strong>We are currently in private beta</strong> and we're allowing a closed number of users testing the plugin. <strong>Please signup to <a href="http://join.wordlift.it">join.wordlift.it</a></strong> and we will get in contact with you anytime soon.
  * Version:           3.3.2
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it
@@ -546,7 +546,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			$item_id = $match[1];
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
-			$post = wl_get_entity_post_by_uri( $item_id );
+			$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {

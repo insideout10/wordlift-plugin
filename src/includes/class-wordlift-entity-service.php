@@ -244,6 +244,20 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
+	 * Determines whether a given uri is an internal uri or not.
+	 *
+	 * @since 3.3.2
+	 *
+	 * @param int $uri An uri.
+	 *
+	 * @return true if the uri internal to the current dataset otherwise false.
+	 */
+	public function is_internal_uri( $uri ) {
+
+		return ( 0 === strrpos( $uri, wl_configuration_get_redlink_dataset_uri() ) );
+	}
+
+	/**
 	 * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
 	 *
 	 * @since 3.2.0
@@ -254,25 +268,33 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
-		$query = new WP_Query( array(
-				'posts_per_page' => 1,
-				'post_status'    => 'any',
-				'post_type'      => self::TYPE_NAME,
-				'meta_query'     => array(
-					'relation' => 'OR',
-					array(
-						'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-						'value'   => $uri,
-						'compare' => '='
-					),
-					array(
-						'key'     => WL_ENTITY_URL_META_NAME,
-						'value'   => $uri,
-						'compare' => '='
-					)
+		$query_args = array(
+			'posts_per_page'	=> 1,
+			'post_status'		=> 'any',
+			'post_type'			=> self::TYPE_NAME,
+			'meta_query'		=> array(
+				array(
+					'key'     => WL_ENTITY_URL_META_NAME,
+					'value'   => $uri,
+					'compare' => '='
 				)
 			)
 		);
+
+		// Only if the current uri is not an internal uri 
+		// entity search is performed also looking at sameAs values
+		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
+		if ( !$this->is_internal_uri( $uri ) ) {
+		
+			$query_args[ 'meta_query' ][ 'relation' ] = 'OR';
+			$query_args[ 'meta_query' ][] = array(
+				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
+				'value'   => $uri,
+				'compare' => '='
+			);
+		} 
+
+		$query = new WP_Query( $query_args );
 
 		// Get the matching entity posts.
 		$posts = $query->get_posts();
