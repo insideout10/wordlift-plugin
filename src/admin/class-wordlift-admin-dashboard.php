@@ -39,13 +39,33 @@ class Wordlift_Dashboard_Service {
 	}
 
 	/**
+	 * Return stats
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return string JSON obj with all available stats.
+	 */
+	public function ajax_get_stats() {
+		// TODO caching
+		// Calculate stats
+		$stats = array(
+			'count_entities'	=>	$this->count_entities(),
+			'count_posts'	=>	$this->count_posts(),
+			'count_annotated_posts'	=>	$this->count_annotated_posts(),
+			'count_triples'	=> $this->count_triples()
+			);	
+		// Return stats as json object
+		wl_core_send_json( $stats );
+	}
+
+	/**
 	 * Calculate total number of published posts
 	 * @uses https://codex.wordpress.org/it:Riferimento_funzioni/wp_count_posts
 	 * @since 3.4.0
 	 *
 	 * @return int Total number of published posts.
 	 */
-	public function count_posts( ) {
+	public function count_posts() {
 		
 		return wp_count_posts()->publish;		
 	}
@@ -56,7 +76,7 @@ class Wordlift_Dashboard_Service {
 	 *
 	 * @return int Total number of annotated published posts.
 	 */
-	public function count_annotated_posts( ) {
+	public function count_annotated_posts() {
 		
 		// Prepare interaction with db
     	global $wpdb;
@@ -64,7 +84,7 @@ class Wordlift_Dashboard_Service {
     	$table_name = wl_core_get_relation_instances_table_name();
     	// Calculate sql statement
 		$sql_statement = <<<EOF
-    		SELECT COUNT(p.*) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'posts' AND p.post_status = 'publish';
+    		SELECT COUNT(*) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
 EOF;
 		// Perform the query
 		return $wpdb->get_var( $sql_statement ); 
@@ -78,7 +98,7 @@ EOF;
 	 *
 	 * @return int Total number of posts.
 	 */
-	public function count_entities( ) {
+	public function count_entities() {
 		
 		return wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;		
 	}
@@ -89,16 +109,16 @@ EOF;
 	 *
 	 * @return int Total number of triples.
 	 */
-	public function count_triples( ) {
+	public function count_triples() {
 		
 		// Set the SPARQL query.
 		$sparql = 'SELECT (COUNT(*) AS ?no) { ?s ?p ?o  }';
 		// Send the request.
-		$response = rl_sparql_select( $sparql );
+		$response = $this->rl_sparql_select( $sparql );
 
 		// Return the error in case of failure.
 		if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
-			return false;
+			return (int) FALSE;
 		}
 
 		// Get the body.
@@ -110,7 +130,7 @@ EOF;
 			return (int) $matches[1];
 		}
 		
-		return false;
+		return (int) FALSE;
 	}
 
 	private function rl_sparql_select( $query ) {
@@ -121,7 +141,7 @@ EOF;
 		$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
 		// Prepare the request.
 		$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
-		
+
 		return wp_remote_get( $url, $args );
 	}
 
