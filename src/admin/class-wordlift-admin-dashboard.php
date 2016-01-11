@@ -54,6 +54,28 @@ class Wordlift_Dashboard_Service {
 
 	/**
 	 * Return stats
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return string markup
+	 */
+	public function dashboard_widget_callback( $post ) {
+		echo "Wordlift Widget";
+	}
+
+	/**
+	 * Return stats
+	 *
+	 * @since 3.4.0
+	 *
+	 * @return string markup
+	 */
+	public function add_dashboard_widgets() {
+		wp_add_dashboard_widget('wordlift_dashboard_widget', 'Example Dashboard Widget', array( $this, 'dashboard_widget_callback' ) );
+	}
+
+	/**
+	 * Return stats
 	 * @uses https://codex.wordpress.org/Function_Reference/set_transient
 	 *
 	 * @since 3.4.0

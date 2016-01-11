@@ -418,6 +418,8 @@ class Wordlift {
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
+		// Hook the AJAX wordlift_redirect action to the Redirect service.
+		$this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
