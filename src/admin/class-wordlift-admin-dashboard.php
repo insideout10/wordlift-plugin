@@ -67,7 +67,7 @@ class Wordlift_Dashboard_Service {
 	 */
 	public function count_posts() {
 		
-		return wp_count_posts()->publish;		
+		return (int) wp_count_posts()->publish;		
 	}
 
 	/**
@@ -87,7 +87,7 @@ class Wordlift_Dashboard_Service {
     		SELECT COUNT(*) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
 EOF;
 		// Perform the query
-		return $wpdb->get_var( $sql_statement ); 
+		return (int) $wpdb->get_var( $sql_statement ); 
 		
 	}
 
@@ -100,7 +100,7 @@ EOF;
 	 */
 	public function count_entities() {
 		
-		return wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;		
+		return (int) wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;		
 	}
 
 	/**
