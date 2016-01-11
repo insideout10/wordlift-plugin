@@ -13,7 +13,21 @@
  */
 class Wordlift_Dashboard_Service {
 	
-	
+
+	/**
+	 * Transient Name
+	 * 
+	 * @since  3.4.0
+	 */
+	const TRANSIENT_NAME = 'wl_dashboard_stats';
+
+	/**
+	 * Transient Expiration (in seconds)
+	 * 
+	 * @since  3.4.0
+	 */
+	const TRANSIENT_EXPIRATION = 86400;
+
 	/**
 	 * The Entity service.
 	 *
@@ -40,21 +54,29 @@ class Wordlift_Dashboard_Service {
 
 	/**
 	 * Return stats
+	 * @uses https://codex.wordpress.org/Function_Reference/set_transient
 	 *
 	 * @since 3.4.0
 	 *
 	 * @return string JSON obj with all available stats.
 	 */
 	public function ajax_get_stats() {
-		// TODO caching
-		// Calculate stats
-		$stats = array(
-			'count_entities'	=>	$this->count_entities(),
-			'count_posts'	=>	$this->count_posts(),
-			'count_annotated_posts'	=>	$this->count_annotated_posts(),
-			'count_triples'	=> $this->count_triples(),
-			'avarage_entities_rating' => $this->avarage_entities_rating(),
-		);	
+		
+		// Try to retrieve the transient
+		$stats = get_transient( self::TRANSIENT_NAME );
+
+		if ( !$stats ) {
+			// Calculate stats
+			$stats = array(
+				'count_entities'	=>	$this->count_entities(),
+				'count_posts'	=>	$this->count_posts(),
+				'count_annotated_posts'	=>	$this->count_annotated_posts(),
+				'count_triples'	=> $this->count_triples(),
+				'avarage_entities_rating' => $this->avarage_entities_rating(),
+			);	
+			// Cache stats results trough transient
+			set_transient( self::TRANSIENT_NAME, $stats, self::TRANSIENT_EXPIRATION );
+		}
 		// Return stats as json object
 		wl_core_send_json( $stats );
 	}
