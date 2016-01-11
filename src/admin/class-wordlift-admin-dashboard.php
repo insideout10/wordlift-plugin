@@ -83,4 +83,46 @@ EOF;
 		return wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;		
 	}
 
+	/**
+	 * Calculate total number of published rdf triples
+	 * @since 3.4.0
+	 *
+	 * @return int Total number of triples.
+	 */
+	public function count_triples( ) {
+		
+		// Set the SPARQL query.
+		$sparql = 'SELECT (COUNT(*) AS ?no) { ?s ?p ?o  }';
+		// Send the request.
+		$response = rl_sparql_select( $sparql );
+
+		// Return the error in case of failure.
+		if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
+			return false;
+		}
+
+		// Get the body.
+		$body = $response['body'];
+		// Get the values.
+		$matches = array();
+		if ( 1 === preg_match( '/(\d+)/im', $body, $matches ) && 2 === count( $matches ) ) {
+			// Return the counts.
+			return (int) $matches[1];
+		}
+		
+		return false;
+	}
+
+	private function rl_sparql_select( $query ) {
+
+		// Prepare the SPARQL statement by prepending the default namespaces.
+		$sparql = rl_sparql_prefixes() . "\n" . $query;
+		// Get the SPARQL SELECT URL.
+		$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
+		// Prepare the request.
+		$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
+		
+		return wp_remote_get( $url, $args );
+	}
+
 }
