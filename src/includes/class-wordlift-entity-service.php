@@ -600,7 +600,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string The input HTML code.
 	 */
-	private function convert_raw_score_to_percentage( $score ) {
+	public function convert_raw_score_to_percentage( $score ) {
 		// RATING_MAX : $score = 100 : x 
 		return round( ( $score * 100) / self::get_rating_max(), 0, PHP_ROUND_HALF_UP );
 	}

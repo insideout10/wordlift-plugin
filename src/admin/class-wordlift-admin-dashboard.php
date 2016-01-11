@@ -151,7 +151,7 @@ EOF;
    			Wordlift_Entity_Service::RATING_RAW_SCORE_META_KEY
 			);
 		// Perform the query
-		return (float) $wpdb->get_var( $query ); 	
+		return $this->entity_service->convert_raw_score_to_percentage( $wpdb->get_var( $query ) ); 	
 	}
 
 	/**
