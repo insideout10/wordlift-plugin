@@ -60,7 +60,27 @@ class Wordlift_Dashboard_Service {
 	 * @return string markup
 	 */
 	public function dashboard_widget_callback( $post ) {
-		echo "Wordlift Widget";
+
+		echo <<<EOF
+	<div id="wl_dashboard_widget_inner_wrapper">
+		<div class="wl_dashboard_widget_triples_wrapper">
+			<span id="wl_dashboard_widget_triples"></span><br />triples
+		</div>
+		<div class="wl_dashboard_widget_stat_wrapper">
+			<span id="wl_dashboard_widget_annotated_posts" class="wl_stat_value"></span> annotated posts on <span id="wl_dashboard_widget_posts" class="wl_stat_value"></span>
+		</div>
+		<div class="wl_dashboard_widget_stat_wrapper wl_graph_wrapper">
+			<span id="wl_dashboard_widget_posts_bar"></span>
+			<span id="wl_dashboard_widget_annotated_posts_bar"></span>
+		</div>
+		<div class="wl_dashboard_widget_stat_wrapper">
+			<span id="wl_dashboard_widget_entities" class="wl_stat_value"></span> entities (average rating of
+			<span id="wl_dashboard_widget_rating" class="wl_stat_value"></span>%)
+		</div>
+
+	</div>
+EOF;
+
 	}
 
 	/**
@@ -71,7 +91,7 @@ class Wordlift_Dashboard_Service {
 	 * @return string markup
 	 */
 	public function add_dashboard_widgets() {
-		wp_add_dashboard_widget('wordlift_dashboard_widget', 'Example Dashboard Widget', array( $this, 'dashboard_widget_callback' ) );
+		wp_add_dashboard_widget('wordlift_dashboard_widget', 'Wordlift Dashboard', array( $this, 'dashboard_widget_callback' ) );
 	}
 
 	/**
@@ -90,11 +110,11 @@ class Wordlift_Dashboard_Service {
 		if ( !$stats ) {
 			// Calculate stats
 			$stats = array(
-				'count_entities'	=>	$this->count_entities(),
-				'count_posts'	=>	$this->count_posts(),
-				'count_annotated_posts'	=>	$this->count_annotated_posts(),
-				'count_triples'	=> $this->count_triples(),
-				'avarage_entities_rating' => $this->avarage_entities_rating(),
+				'entities'	=>	$this->count_entities(),
+				'posts'	=>	$this->count_posts(),
+				'annotated_posts'	=>	$this->count_annotated_posts(),
+				'triples'	=> $this->count_triples(),
+				'rating' => $this->avarage_entities_rating(),
 			);	
 			// Cache stats results trough transient
 			set_transient( self::TRANSIENT_NAME, $stats, self::TRANSIENT_EXPIRATION );

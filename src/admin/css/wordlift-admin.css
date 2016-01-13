@@ -3,6 +3,67 @@
  * included in this file.
  */
 
+#wordlift_dashboard_widget h3 {
+}
+
+#wl_dashboard_widget_inner_wrapper {
+    overflow: hidden;
+
+}
+.wl_dashboard_widget_triples_wrapper {
+    float:left;
+    width:26%;
+    margin: 0;
+    font-size: 1.6em;
+    line-height: 1.5em;
+    color: #FF006E;
+    border: #FF006E 6px solid;
+    text-align: center;
+    padding:1em 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+#wl_dashboard_widget_triples {
+    font-size: 1.5em;
+}
+
+#wl_dashboard_widget_posts_bar {
+    display: block;
+    font-size: 1.6em;
+    position: absolute;
+    top:4;
+    left:0;
+    width: 100%;
+    height: 24px;
+    background-color:#eee;
+}
+#wl_dashboard_widget_annotated_posts_bar {
+    display: block;
+    font-size: 1.6em;
+    position: absolute;
+    top:4;
+    left:0;
+    height: 24px;
+    background-color:#FF006E;
+    z-index: 10;
+}
+.wl_dashboard_widget_stat_wrapper {
+    float:right;
+    width:68%;
+    margin: 0;
+    padding: 6px 0px;
+    position: relative;
+}
+.wl_graph_wrapper {
+    height: 24px;
+}
+.wl_stat_value {
+    font-weight: bold;
+    font-size: 1.3em;
+    border-bottom: #FF006E 3px solid;
+}
+
 .wl-alternative-label {
     position: relative;
     border: 0;
