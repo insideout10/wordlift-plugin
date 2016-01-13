@@ -191,13 +191,11 @@
      */
     $( function () {
         
-        // return if we are not in the entity editor page (the *wlEntityTitleLiveSearchParams* json is only enqueued there)
+        // return if not needed
         if( ! $( '#wl_dashboard_widget_inner_wrapper' ) ){
             return;
         }
         
-        // $('<div id="wl_dashboard_widget_triples"></div>').appendTo('#wl_dashboard_widget_inner_wrapper');
-
         $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
             for ( var property in stats ) {
                 $( '#wl_dashboard_widget_' + property ).text( stats[ property ] );
