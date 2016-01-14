@@ -63,21 +63,21 @@ class Wordlift_Dashboard_Service {
 
 		echo <<<EOF
 	<div id="wl_dashboard_widget_inner_wrapper">
-		<div class="wl_dashboard_widget_triples_wrapper">
-			<span id="wl_dashboard_widget_triples"></span><br />triples
-		</div>
-		<div class="wl_dashboard_widget_stat_wrapper">
-			<span id="wl_dashboard_widget_annotated_posts" class="wl_stat_value"></span> annotated posts on <span id="wl_dashboard_widget_posts" class="wl_stat_value"></span>
-		</div>
-		<div class="wl_dashboard_widget_stat_wrapper wl_graph_wrapper">
-			<span id="wl_dashboard_widget_posts_bar"></span>
-			<span id="wl_dashboard_widget_annotated_posts_bar"></span>
-		</div>
-		<div class="wl_dashboard_widget_stat_wrapper">
-			<span id="wl_dashboard_widget_entities" class="wl_stat_value"></span> entities (average rating of
-			<span id="wl_dashboard_widget_rating" class="wl_stat_value"></span>%)
-		</div>
+		<div class="wl-stat-card">
+		
+		<svg viewBox="0 0 32 32">
+  			<circle r="16" cx="16" cy="16" />
+		</svg>
 
+		</div>
+		<div class="wl-stat-card">
+		<svg viewBox="0 0 32 32" class="foo">
+  			<circle r="16" cx="16" cy="16" class="foo" />
+		</svg>
+		</div>
+		<div class="wl-stat-card">
+				ccc
+		</div>
 	</div>
 EOF;
 

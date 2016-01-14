@@ -3,6 +3,35 @@
  * included in this file.
  */
 
+svg {
+  width: 80%; height: 80%;
+  transform: rotate(-90deg);
+  background: yellowgreen;
+  border-radius: 50%;
+}
+
+circle {
+  fill: yellowgreen;
+  stroke: #655;
+  stroke-width: 32;
+  stroke-dasharray: 66 100; /* for 38% */
+}
+
+svg.foo {
+  width: 80%; height: 80%;
+  transform: rotate(-180deg);
+  background:#00f;
+  border-radius: 50% 0 50% 0;
+
+}
+
+circle.foo {
+  fill: #fff;
+  stroke: #655;
+  stroke-width: 7;
+  stroke-dasharray: 50 100;
+}
+
 #wordlift_dashboard_widget h3 {
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABTklEQVR42tVSTyiDcRj+KMtRpFZyUXLV3Fx2VcqFw1o28dVks1kRJeRPWS4oNZGUklZL8qfIYY7KRXZZO7hbbijL733fx8/3hehD+XNweOr3vL+n5/1rwOiXn8CwH1F8F79rIIZfw6fR5cifY44GYkQgoS3w7BG4LwWunwLH0q+8OgL2JMAju+CGaUv/zsCEeBNQIlDb52D3ECi4anHaPIOUdYPrxsDrp/ovrvW9Ti34oPayUPkCuHlS8x7b4DgHqYmBO1bALUs6HvxoBj6wdwFKESighZWDUJfXUIUbcGsSNJ+BuOIv5Ttugd0hUO4KtJ8Fta+B2pJQ9w8W53DKSvLpGtnVCRo/sGexeAKu0G3sXEDdFcG1w2824mggJSbYvwx1WwQ1TUBK/aBoGpTJg6vMrw9JjDC4cRQ8c2hlf+LimQMHNsDlA398if/T4BFvhJYPVlRm7QAAAABJRU5ErkJggg==") 6px 50% no-repeat !important;
   padding-left: 28px;
@@ -50,12 +79,14 @@
     background-color:#FF006E;
     z-index: 10;
 }
-.wl_dashboard_widget_stat_wrapper {
-    float:right;
-    width:68%;
+.wl-stat-card {
+    float:left;
+    width:33%;
     margin: 0;
     padding: 6px 0px;
-    position: relative;
+    text-align: center;
+    border-left:#eee 1px solid;
+
 }
 .wl_graph_wrapper {
     height: 24px;
@@ -64,6 +95,7 @@
     font-weight: bold;
     font-size: 1.3em;
     border-bottom: #FF006E 3px solid;
+
 }
 
 .wl-alternative-label {
