@@ -3,32 +3,40 @@
  * included in this file.
  */
 
-svg {
+#posts_pie_chart {
   width: 80%; height: 80%;
   transform: rotate(-90deg);
-  background: yellowgreen;
+  background: #fff;
   border-radius: 50%;
 }
 
-circle {
-  fill: yellowgreen;
-  stroke: #655;
+#posts_pie_chart circle {
+  fill: #eee;
+  stroke: #FF006E;
   stroke-width: 32;
-  stroke-dasharray: 66 100; /* for 38% */
+  stroke-dasharray: 10 100; /* for 38% */
 }
 
-svg.foo {
+#entities_gauge_chart {
   width: 80%; height: 80%;
   transform: rotate(-180deg);
-  background:#00f;
-  border-radius: 50% 0 50% 0;
+  background:#fff;
+  border-radius: 50%;
 
 }
 
-circle.foo {
-  fill: #fff;
-  stroke: #655;
-  stroke-width: 7;
+#entities_gauge_chart circle.stat {
+  fill: transparent;
+  stroke: #FF006E;
+  stroke-width: 16;
+  stroke-dasharray: 40 100;
+
+}
+
+#entities_gauge_chart circle.baseline {
+  fill: transparent;
+  stroke: #eee;
+  stroke-width: 16;
   stroke-dasharray: 50 100;
 }
 

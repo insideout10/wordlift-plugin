@@ -64,16 +64,15 @@ class Wordlift_Dashboard_Service {
 		echo <<<EOF
 	<div id="wl_dashboard_widget_inner_wrapper">
 		<div class="wl-stat-card">
-		
-		<svg viewBox="0 0 32 32">
-  			<circle r="16" cx="16" cy="16" />
-		</svg>
-
+			<svg id="posts_pie_chart" viewBox="0 0 32 32">
+  				<circle r="16" cx="16" cy="16" />
+			</svg>
 		</div>
 		<div class="wl-stat-card">
-		<svg viewBox="0 0 32 32" class="foo">
-  			<circle r="16" cx="16" cy="16" class="foo" />
-		</svg>
+			<svg id="entities_gauge_chart" viewBox="0 0 32 32">
+  				<circle r="16" cx="16" cy="16" class="baseline" />
+				<circle r="16" cx="16" cy="16" class="stat" />
+			</svg>
 		</div>
 		<div class="wl-stat-card">
 				ccc
