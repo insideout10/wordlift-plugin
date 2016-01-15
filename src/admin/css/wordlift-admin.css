@@ -3,37 +3,36 @@
  * included in this file.
  */
 
-#posts_pie_chart {
+#wl-posts-pie-chart {
   width: 80%; height: 80%;
   transform: rotate(-90deg);
   background: #fff;
   border-radius: 50%;
 }
 
-#posts_pie_chart circle {
+#wl-posts-pie-chart circle {
   fill: #eee;
   stroke: #FF006E;
   stroke-width: 32;
-  stroke-dasharray: 10 100; /* for 38% */
+  /* stroke-dasharray: 10 100; for 10% */
 }
 
-#entities_gauge_chart {
+#wl-entities-gauge-chart {
   width: 80%; height: 80%;
   transform: rotate(-180deg);
   background:#fff;
   border-radius: 50%;
-
+  margin-top:1em;
 }
 
-#entities_gauge_chart circle.stat {
+#wl-entities-gauge-chart circle.stat {
   fill: transparent;
   stroke: #FF006E;
   stroke-width: 16;
-  stroke-dasharray: 40 100;
+  /* stroke-dasharray: 40 100; */
 
 }
-
-#entities_gauge_chart circle.baseline {
+#wl-entities-gauge-chart circle.baseline {
   fill: transparent;
   stroke: #eee;
   stroke-width: 16;
@@ -47,64 +46,42 @@
 
 #wl_dashboard_widget_inner_wrapper {
     overflow: hidden;
-
 }
-.wl_dashboard_widget_triples_wrapper {
-    float:left;
-    width:26%;
-    margin: 0;
-    font-size: 1.6em;
+#wl_dashboard_widget_inner_wrapper h4 {
+    text-align: left;
+    font-size: 0.8em;
+    margin: 0 0 1.6em 0;
+    text-transform: capitalize;
+    border-left: #FF006E 10px solid;
+    padding-left: 6px;
+    line-height: 1em;
+}
+#wl_dashboard_widget_inner_wrapper h5 {
+    font-size: 2em;
+    margin-top:0;
+    color: #FF006E;
+}
+.wl-triples {
+    font-size: 4.3em;
     line-height: 1.5em;
     color: #FF006E;
-    border: #FF006E 6px solid;
     text-align: center;
-    padding:1em 0;
+    padding:1rem 0;
+    margin:0.6rem 1.2rem;
     font-weight: bold;
     text-transform: uppercase;
 }
 
-#wl_dashboard_widget_triples {
-    font-size: 1.5em;
-}
 
-#wl_dashboard_widget_posts_bar {
-    display: block;
-    font-size: 1.6em;
-    position: absolute;
-    top:4;
-    left:0;
-    width: 100%;
-    height: 24px;
-    background-color:#eee;
-}
-#wl_dashboard_widget_annotated_posts_bar {
-    display: block;
-    font-size: 1.6em;
-    position: absolute;
-    top:4;
-    left:0;
-    height: 24px;
-    background-color:#FF006E;
-    z-index: 10;
-}
 .wl-stat-card {
     float:left;
     width:33%;
-    margin: 0;
-    padding: 6px 0px;
+    padding:0px;
     text-align: center;
-    border-left:#eee 1px solid;
+    margin: auto 0;
 
 }
-.wl_graph_wrapper {
-    height: 24px;
-}
-.wl_stat_value {
-    font-weight: bold;
-    font-size: 1.3em;
-    border-bottom: #FF006E 3px solid;
 
-}
 
 .wl-alternative-label {
     position: relative;

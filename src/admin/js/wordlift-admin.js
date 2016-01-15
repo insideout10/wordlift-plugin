@@ -198,10 +198,22 @@
         
         $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
             for ( var property in stats ) {
-                $( '#wl_dashboard_widget_' + property ).text( stats[ property ] );
+                $( '#wl-dashboard-widget-' + property ).text( stats[ property ] );
             }
-            var width = ( stats.annotated_posts * 100 ) / stats.posts;
-            $('#wl_dashboard_widget_annotated_posts_bar').css('width', width + '%');
+
+            var percentage = ( stats.annotated_posts * 100 ) / stats.posts;
+
+            // Populate annotated posts pie chart
+            $( '#wl-posts-pie-chart circle').css(
+                'stroke-dasharray', 
+                ( ( stats.annotated_posts * 100 ) / stats.posts ) + ' 100' 
+            );
+            // Populate avarage entity ratings gauge chart
+            $( '#wl-entities-gauge-chart .stat').css(
+                'stroke-dasharray', 
+                ( stats.rating / 2 ) + ' 100' 
+            );
+         
         });
 
     } );
