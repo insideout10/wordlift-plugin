@@ -4,7 +4,7 @@
  */
 
 #wl-posts-pie-chart {
-  width: 70%; height: 70%;
+  width: 75%; height: auto;
   transform: rotate(-90deg);
   background: #fff;
   border-radius: 50%;
@@ -18,7 +18,7 @@
 }
 
 #wl-entities-gauge-chart {
-  width: 60%; height: 60%;
+  width: 65%; height: auto;
   transform: rotate(-180deg);
   background:#fff;
   border-radius: 50%;
@@ -66,7 +66,7 @@
     text-align: left;
     border-top:#eee 6px solid;
     padding: 0.4em 0.2em;
-    margin: 0.4em;
+    margin: 0 0.4em;
 }
 .wl-triples {
     font-size: 3.8em;
@@ -80,7 +80,11 @@
 }
 
 .wl-stat-graph-wrapper {
-    min-height: 170px;
+    position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 .wl-stat-card {
@@ -89,8 +93,15 @@
     padding:0px;
     text-align: center;
     margin: auto 0;
+    position: relative;
 
 }
+.wl-stat-card:before{
+    content: "";
+    display: block;
+    padding-top: 100%;  /* initial ratio of 1:1*/
+}
+
 .wl-stat-value {
     font-weight: bold;
     border-bottom:#ff006E 2px solid;
