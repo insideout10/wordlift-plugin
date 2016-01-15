@@ -197,6 +197,12 @@
         }
         
         $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
+            
+            // Calculate wikidata ratio
+            stats.wikidata = ( ( stats.triples * 100 ) / 22000000 ).toFixed(5);
+            // Calculate wikidata ratio
+            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1);
+
             for ( var property in stats ) {
                 $( '#wl-dashboard-widget-' + property ).text( stats[ property ] );
             }

@@ -64,24 +64,43 @@ class Wordlift_Dashboard_Service {
 		echo <<<EOF
 	<div id="wl_dashboard_widget_inner_wrapper">
 		<div class="wl-stat-card">
+			<div class="wl-stat-graph-wrapper">
 			<h4>enriched posts</h4>
 			<svg id="wl-posts-pie-chart" viewBox="0 0 32 32">
   				<circle r="16" cx="16" cy="16" />
 			</svg>
+			</div>
+			<p>
+			<span id="wl-dashboard-widget-annotated_posts_percentage" class="wl-stat-value"></span>% of your <a href="">posts</a> are annotated. This means <span id="wl-dashboard-widget-annotated_posts" class="wl-stat-value"></span> 
+			on a total number of <span id="wl-dashboard-widget-posts" class="wl-stat-value"></span>%.
+			</p>
 		</div>
 		<div class="wl-stat-card">
+			<div class="wl-stat-graph-wrapper">
 			<h4>avarage entity rating</h4>
 			<svg id="wl-entities-gauge-chart" viewBox="0 0 32 32">
   				<circle r="16" cx="16" cy="16" class="baseline" />
 				<circle r="16" cx="16" cy="16" class="stat" />
 			</svg>
-			<h5><span id="wl-dashboard-widget-rating"></span>%</h5>
+			</div>
+			<p>
+			You have <span id="wl-dashboard-widget-entities" class="wl-stat-value"></span> 
+			entities in the <a href="">vocabulary</a> with an avarage rating of <span id="wl-dashboard-widget-rating" class="wl-stat-value"></span>%.
+			</p>
 		</div>
 		<div class="wl-stat-card">
+			<div class="wl-stat-graph-wrapper">
+			
 			<h4>facts in your graph</h4>
 			<div class="wl-triples">
 				<span id="wl-dashboard-widget-triples"></span>
 			</div>
+
+			</div>
+			<p>
+			Your graphs size corresponds to <span id="wl-dashboard-widget-wikidata" class="wl-stat-value"></span>% of Wikidata.
+			</p>
+
 		</div>
 	</div>
 EOF;

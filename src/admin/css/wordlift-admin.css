@@ -4,7 +4,7 @@
  */
 
 #wl-posts-pie-chart {
-  width: 80%; height: 80%;
+  width: 70%; height: 70%;
   transform: rotate(-90deg);
   background: #fff;
   border-radius: 50%;
@@ -18,24 +18,25 @@
 }
 
 #wl-entities-gauge-chart {
-  width: 80%; height: 80%;
+  width: 60%; height: 60%;
   transform: rotate(-180deg);
   background:#fff;
   border-radius: 50%;
-  margin-top:1em;
+  margin-top:1.3em;
 }
 
 #wl-entities-gauge-chart circle.stat {
   fill: transparent;
   stroke: #FF006E;
-  stroke-width: 16;
+  stroke-width: 14;
   /* stroke-dasharray: 40 100; */
 
 }
+
 #wl-entities-gauge-chart circle.baseline {
   fill: transparent;
   stroke: #eee;
-  stroke-width: 16;
+  stroke-width: 14;
   stroke-dasharray: 50 100;
 }
 
@@ -57,21 +58,30 @@
     line-height: 1em;
 }
 #wl_dashboard_widget_inner_wrapper h5 {
-    font-size: 2em;
-    margin-top:0;
+    font-size: 1.6em;
     color: #FF006E;
+    margin: 0.8em 0 0 0;
+}
+#wl_dashboard_widget_inner_wrapper p {
+    text-align: left;
+    border-top:#eee 6px solid;
+    padding: 0.4em 0.2em;
+    margin: 0.4em;
 }
 .wl-triples {
-    font-size: 4.3em;
+    font-size: 3.8em;
     line-height: 1.5em;
     color: #FF006E;
     text-align: center;
     padding:1rem 0;
-    margin:0.6rem 1.2rem;
+    margin:0.rem 1.2rem;
     font-weight: bold;
     text-transform: uppercase;
 }
 
+.wl-stat-graph-wrapper {
+    min-height: 170px;
+}
 
 .wl-stat-card {
     float:left;
@@ -81,7 +91,10 @@
     margin: auto 0;
 
 }
-
+.wl-stat-value {
+    font-weight: bold;
+    border-bottom:#ff006E 2px solid;
+}
 
 .wl-alternative-label {
     position: relative;
