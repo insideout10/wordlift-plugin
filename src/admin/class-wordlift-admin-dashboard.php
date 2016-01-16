@@ -129,7 +129,7 @@ EOF;
 	 * @return string markup
 	 */
 	public function add_dashboard_widgets() {
-		wp_add_dashboard_widget('wordlift-dashboard-widget', 'Wordlift Dashboard', array( $this, 'dashboard_widget_callback' ) );
+		wp_add_dashboard_widget('wordlift-dashboard-widget', 'WordLift Dashboard', array( $this, 'dashboard_widget_callback' ) );
 	}
 
 	/**
