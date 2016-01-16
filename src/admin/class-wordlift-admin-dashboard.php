@@ -62,7 +62,7 @@ class Wordlift_Dashboard_Service {
 	public function dashboard_widget_callback( $post ) {
 
 		echo <<<EOF
-	<div id="wl_dashboard_widget_inner_wrapper">
+	<div id="wl-dashboard-widget-inner-wrapper">
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
 			<h4>enriched posts</h4>
@@ -72,7 +72,7 @@ class Wordlift_Dashboard_Service {
 			</div>
 			<p>
 			<span id="wl-dashboard-widget-annotated_posts_percentage" class="wl-stat-value"></span>% of your <a href="">posts</a> are annotated. This means <span id="wl-dashboard-widget-annotated_posts" class="wl-stat-value"></span> 
-			on a total number of <span id="wl-dashboard-widget-posts" class="wl-stat-value"></span>%.
+			on a total number of <span id="wl-dashboard-widget-posts" class="wl-stat-value"></span>.
 			</p>
 		</div>
 		<div class="wl-stat-card">
@@ -115,7 +115,7 @@ EOF;
 	 * @return string markup
 	 */
 	public function add_dashboard_widgets() {
-		wp_add_dashboard_widget('wordlift_dashboard_widget', 'Wordlift Dashboard', array( $this, 'dashboard_widget_callback' ) );
+		wp_add_dashboard_widget('wordlift-dashboard-widget', 'Wordlift Dashboard', array( $this, 'dashboard_widget_callback' ) );
 	}
 
 	/**

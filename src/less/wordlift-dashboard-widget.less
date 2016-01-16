@@ -1,0 +1,112 @@
+#wordlift-dashboard-widget {
+
+  h3 {
+    background: data-uri('../images/pink-logo-16x16.png') 6px 50% no-repeat !important;
+    padding-left: 28px;
+  }
+
+}
+
+#wl-dashboard-widget-inner-wrapper {
+
+  overflow: hidden;
+
+  h4 {
+    text-align: left;
+    font-size: 0.8em;
+    margin: 0 0 1.6em 0;
+    text-transform: capitalize;
+    border-left: #FF006E 10px solid;
+    padding-left: 6px;
+    line-height: 1em;
+  }
+
+  h5 {
+    font-size: 1.6em;
+    color: #FF006E;
+    margin: 0.8em 0 0 0;
+  }
+
+  p {
+    text-align: left;
+    border-top:#eee 6px solid;
+    padding: 0.4em 0.2em;
+    margin: 0 0.4em;
+  }
+
+  .wl-stat-card {
+    float:left;
+    width:33%;
+    padding:0px;
+    text-align: center;
+    margin: auto 0;
+    position: relative;
+  }
+
+  .wl-stat-card:before {
+    content: "";
+    display: block;
+    padding-top: 100%;  /* initial ratio of 1:1*/
+  }
+
+  .wl-stat-value {
+    font-weight: bold;
+    border-bottom:#ff006E 2px solid;
+  }
+
+  .wl-triples {
+    font-size: 3.8em;
+    line-height: 1.5em;
+    color: #FF006E;
+    text-align: center;
+    padding:1rem 0;
+    margin:0rem 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .wl-stat-graph-wrapper {
+    position:  absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  #wl-posts-pie-chart {
+    width: 75%; height: auto;
+    transform: rotate(-90deg);
+    background: #fff;
+    border-radius: 50%;
+
+    circle {
+      fill: #eee;
+      stroke: #FF006E;
+      stroke-width: 32;
+    }
+
+  }
+
+  #wl-entities-gauge-chart {
+    width: 65%; height: auto;
+    transform: rotate(-180deg);
+    background:#fff;
+    border-radius: 50%;
+    margin-top:1.3em;
+
+    circle.stat {
+      fill: transparent;
+      stroke: #FF006E;
+      stroke-width: 14;
+    }
+
+    circle.baseline {
+      fill: transparent;
+      stroke: #eee;
+      stroke-width: 14;
+      stroke-dasharray: 50 100;
+    }
+
+  }
+
+}
