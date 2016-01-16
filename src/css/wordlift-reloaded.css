@@ -1522,23 +1522,23 @@
 }
 #wl-dashboard-widget-inner-wrapper h4 {
   text-align: left;
-  font-size: 0.8em;
-  margin: 0 0 1.6em 0;
+  font-size: 10px;
+  margin: 0.6em 0.6em 1.6em 0.6em;
   text-transform: capitalize;
-  border-left: #FF006E 10px solid;
-  padding-left: 6px;
-  line-height: 1em;
+  border-left: #f20f62 10px solid;
+  padding: 0 0 0 6px;
+  line-height: 10px;
 }
 #wl-dashboard-widget-inner-wrapper h5 {
   font-size: 1.6em;
-  color: #FF006E;
+  color: #f20f62;
   margin: 0.8em 0 0 0;
 }
 #wl-dashboard-widget-inner-wrapper p {
   text-align: left;
   border-top: #eee 6px solid;
   padding: 0.4em 0.2em;
-  margin: 0 0.4em;
+  margin: 0 0.6em;
 }
 #wl-dashboard-widget-inner-wrapper .wl-stat-card {
   float: left;
@@ -1547,6 +1547,26 @@
   text-align: center;
   margin: auto 0;
   position: relative;
+  border-right: #eee 1px solid;
+}
+#wl-dashboard-widget-inner-wrapper .wl-info {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+  color: #f20f62;
+  font-size: 1.7em;
+  padding: 0.2em 0.6em;
+}
+#wl-dashboard-widget-inner-wrapper .wl-info:before {
+  content: "\f129";
 }
 #wl-dashboard-widget-inner-wrapper .wl-stat-card:before {
   content: "";
@@ -1556,12 +1576,12 @@
 }
 #wl-dashboard-widget-inner-wrapper .wl-stat-value {
   font-weight: bold;
-  border-bottom: #ff006E 2px solid;
+  border-bottom: #f20f62 2px solid;
 }
 #wl-dashboard-widget-inner-wrapper .wl-triples {
   font-size: 3.8em;
   line-height: 1.5em;
-  color: #FF006E;
+  color: #f20f62;
   text-align: center;
   padding: 1rem 0;
   margin: 0rem 1.2rem;
@@ -1584,7 +1604,7 @@
 }
 #wl-dashboard-widget-inner-wrapper #wl-posts-pie-chart circle {
   fill: #eee;
-  stroke: #FF006E;
+  stroke: #f20f62;
   stroke-width: 32;
 }
 #wl-dashboard-widget-inner-wrapper #wl-entities-gauge-chart {
@@ -1597,7 +1617,7 @@
 }
 #wl-dashboard-widget-inner-wrapper #wl-entities-gauge-chart circle.stat {
   fill: transparent;
-  stroke: #FF006E;
+  stroke: #f20f62;
   stroke-width: 14;
 }
 #wl-dashboard-widget-inner-wrapper #wl-entities-gauge-chart circle.baseline {

@@ -1,3 +1,5 @@
+@import 'wordlift-functions.less';
+
 #wordlift-dashboard-widget {
 
   h3 {
@@ -13,17 +15,17 @@
 
   h4 {
     text-align: left;
-    font-size: 0.8em;
-    margin: 0 0 1.6em 0;
+    font-size: 10px;
+    margin: 0.6em 0.6em 1.6em 0.6em;
     text-transform: capitalize;
-    border-left: #FF006E 10px solid;
-    padding-left: 6px;
-    line-height: 1em;
+    border-left: @wl-brand-color 10px solid;
+    padding: 0 0 0 6px;
+    line-height: 10px;
   }
 
   h5 {
     font-size: 1.6em;
-    color: #FF006E;
+    color: @wl-brand-color;
     margin: 0.8em 0 0 0;
   }
 
@@ -31,7 +33,7 @@
     text-align: left;
     border-top:#eee 6px solid;
     padding: 0.4em 0.2em;
-    margin: 0 0.4em;
+    margin: 0 0.6em;
   }
 
   .wl-stat-card {
@@ -41,6 +43,19 @@
     text-align: center;
     margin: auto 0;
     position: relative;
+    border-right: #eee 1px solid;
+  }
+
+  .wl-info {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
+    .fa-icon(@fa-var-info); 
+    color: @wl-brand-color;
+    font-size: 1.7em;
+    padding:0.2em 0.6em;
+
   }
 
   .wl-stat-card:before {
@@ -51,13 +66,13 @@
 
   .wl-stat-value {
     font-weight: bold;
-    border-bottom:#ff006E 2px solid;
+    border-bottom:@wl-brand-color 2px solid;
   }
 
   .wl-triples {
     font-size: 3.8em;
     line-height: 1.5em;
-    color: #FF006E;
+    color: @wl-brand-color;
     text-align: center;
     padding:1rem 0;
     margin:0rem 1.2rem;
@@ -81,7 +96,7 @@
 
     circle {
       fill: #eee;
-      stroke: #FF006E;
+      stroke: @wl-brand-color;
       stroke-width: 32;
     }
 
@@ -96,7 +111,7 @@
 
     circle.stat {
       fill: transparent;
-      stroke: #FF006E;
+      stroke: @wl-brand-color;
       stroke-width: 14;
     }
 
