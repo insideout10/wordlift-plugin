@@ -86,6 +86,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 = 3.4.0 (???) =
+* Enhancement: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget. 
 * Enhancement: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
 
 = 3.3.2 (2016-01-11) =
