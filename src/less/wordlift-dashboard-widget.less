@@ -12,6 +12,7 @@
 #wl-dashboard-widget-inner-wrapper {
 
   overflow: hidden;
+  display: none;
 
   h4 {
     text-align: left;
@@ -58,11 +59,6 @@
 
   }
 
-  .wl-stat-card:before {
-    content: "";
-    display: block;
-    padding-top: 100%;  /* initial ratio of 1:1*/
-  }
 
   .wl-stat-value {
     font-weight: bold;
@@ -81,11 +77,7 @@
   }
 
   .wl-stat-graph-wrapper {
-    position:  absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    padding-bottom:10px;
   }
 
   #wl-posts-pie-chart {

@@ -1519,6 +1519,7 @@
 }
 #wl-dashboard-widget-inner-wrapper {
   overflow: hidden;
+  display: none;
 }
 #wl-dashboard-widget-inner-wrapper h4 {
   text-align: left;
@@ -1568,12 +1569,6 @@
 #wl-dashboard-widget-inner-wrapper .wl-info:before {
   content: "\f129";
 }
-#wl-dashboard-widget-inner-wrapper .wl-stat-card:before {
-  content: "";
-  display: block;
-  padding-top: 100%;
-  /* initial ratio of 1:1*/
-}
 #wl-dashboard-widget-inner-wrapper .wl-stat-value {
   font-weight: bold;
   border-bottom: #f20f62 2px solid;
@@ -1589,11 +1584,7 @@
   text-transform: uppercase;
 }
 #wl-dashboard-widget-inner-wrapper .wl-stat-graph-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
+  padding-bottom: 10px;
 }
 #wl-dashboard-widget-inner-wrapper #wl-posts-pie-chart {
   width: 75%;

@@ -192,22 +192,16 @@
     $( function () {
         
         // return if not needed
-        if( ! $( '#wl_dashboard_widget_inner_wrapper' ) ){
+        if( ! $( '#wl-dashboard-widget-inner-wrapper' ) ){
             return;
         }
         
         $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
             
             // Calculate wikidata ratio
-            stats.wikidata = ( ( stats.triples * 100 ) / 22000000 ).toFixed(5);
+            stats.wikidata = ( ( stats.triples * 100 ) / 22000000 ).toFixed(5) + '%';
             // Calculate wikidata ratio
-            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1);
-
-            for ( var property in stats ) {
-                $( '#wl-dashboard-widget-' + property ).text( stats[ property ] );
-            }
-
-            var percentage = ( stats.annotated_posts * 100 ) / stats.posts;
+            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1) + '%';
 
             // Populate annotated posts pie chart
             $( '#wl-posts-pie-chart circle').css(
@@ -219,6 +213,27 @@
                 'stroke-dasharray', 
                 ( stats.rating / 2 ) + ' 100' 
             );
+
+            stats.rating = stats.rating + '%';
+            // populate value placeholders
+            for ( var property in stats ) {
+                $( '#wl-dashboard-widget-' + property ).text( stats[ property ] );
+            }
+
+            // Finally show the widget
+            $( '#wl-dashboard-widget-inner-wrapper' ).show();
+
+            // Set the same height for stat graph wrappers
+            // Links not working with css alternatives
+            var minHeight = 0;
+            $('.wl-stat-graph-wrapper').each( function( index ) {
+                var stat = $( this );
+                if ( stat.height() > minHeight ) {
+                    minHeight = stat.height();
+                }
+            } );
+
+            $('.wl-stat-graph-wrapper').css( 'min-height', minHeight );
          
         });
 
