@@ -80,7 +80,7 @@ class Wordlift_Dashboard_Service {
 			$this->render_stat_param( 'rating' )
 		); 
 
-		$graph_title = __( 'facts in your graph', 'wordlift' ); 
+		$graph_title = __( 'triples in your graph', 'wordlift' ); 
 		$graph_caption = sprintf( wp_kses(
 			__( 'Your graphs size corresponds to %1$s of <a href="%2$s">Wikidata</a>.', 'wordlift' ), 
 			array(  'a' => array( 'href' => array() ) ) ), 
@@ -88,6 +88,8 @@ class Wordlift_Dashboard_Service {
 			esc_url( 'https://www.wikidata.org/' )
 		); 
 
+		$triples_label = __( 'triples', 'wordlift' ); 
+		
 		echo <<<EOF
 	<div id="wl-dashboard-widget-inner-wrapper">
 		<div class="wl-stat-card">
@@ -107,7 +109,10 @@ class Wordlift_Dashboard_Service {
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
 				<h4>$graph_title <a href=""><i class="wl-info"></i></a></h4>
-				<div class="wl-triples"><span id="wl-dashboard-widget-triples"></span></div>
+				<div class="wl-triples">
+					<span id="wl-dashboard-widget-triples"></span>
+					<span class="wl-triples-label">$triples_label</span>
+				</div>
 			</div>
 			<p>$graph_caption</p>
 		</div>

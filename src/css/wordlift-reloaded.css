@@ -1574,14 +1574,18 @@
   border-bottom: #f20f62 2px solid;
 }
 #wl-dashboard-widget-inner-wrapper .wl-triples {
-  font-size: 3.8em;
-  line-height: 1.5em;
+  font-size: 3.4em;
+  line-height: 0.8em;
   color: #f20f62;
   text-align: center;
   padding: 1rem 0;
-  margin: 0rem 1.2rem;
+  margin: 0.6em 1.2em;
   font-weight: bold;
   text-transform: uppercase;
+}
+#wl-dashboard-widget-inner-wrapper .wl-triples-label {
+  font-size: 0.5em;
+  line-height: 0.4em;
 }
 #wl-dashboard-widget-inner-wrapper .wl-stat-graph-wrapper {
   padding-bottom: 10px;
