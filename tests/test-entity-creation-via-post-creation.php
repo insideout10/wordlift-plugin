@@ -35,12 +35,12 @@ class EntityCreationViaPostCreationTest extends WP_UnitTestCase {
     <span itemid="$original_entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNotNull( $entity );
 		// Here the original uri should be properly as same_as 
 		$same_as = wl_schema_get_value( $entity->ID, 'sameAs' );
@@ -78,13 +78,13 @@ EOF;
     <span itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );		
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );		
 		
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNotNull( $entity );
 
 		// Check if the content was properly fixed
@@ -120,13 +120,13 @@ EOF;
     <span itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );		
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );		
 		
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNotNull( $entity );
 
 		// Check if the content was properly fixed
@@ -166,12 +166,12 @@ EOF;
     <span itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNotNull( $entity );
 		// Check if the content was properly fixed
 		$expected_content = <<<EOF
@@ -205,12 +205,12 @@ EOF;
     <span itemid="$entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
-		$entity = wl_get_entity_post_by_uri( $entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		$this->assertNotNull( $entity );
 		// And it should be related to the post as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
@@ -242,12 +242,12 @@ EOF;
     <span>My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		$this->assertNull( $entity );
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be existing instead
-		$entity = wl_get_entity_post_by_uri( $entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		$this->assertNotNull( $entity );
 		// And it should be related to the post as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id );
@@ -271,17 +271,17 @@ EOF;
     <span itemid="$original_entity_uri">My entity</span>
 EOF;
 		// Be sure that the entity does not exist yet
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNull( $entity );
 		// Create a post referincing to the created entity
 		$post_1_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		// Here the entity should be created instead
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertNotNull( $entity );
 		$this->assertEquals( 'draft', $entity->post_status );
 		// Update post status and check if also entity status changed accrdingly
 		wl_update_post_status( $post_1_id, 'public' );
-		$entity = wl_get_entity_post_by_uri( $original_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
 		$this->assertEquals( 'public', $entity->post_status );
 		// Retrieve the internal entity uri
 		$entity_uri = wl_get_entity_uri( $entity->ID );
@@ -302,7 +302,7 @@ EOF;
 
 		// Create a post referincing to the created entity
 		$post_2_id = wl_create_post( $content_2, 'my-post-2', 'Another post' , 'draft');
-		$entity_reloaded = wl_get_entity_post_by_uri( $entity_uri );
+		$entity_reloaded = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 		// Check is the same entity for WP
 		$this->assertEquals( $entity->ID, $entity_reloaded->ID ); 
 		// Here I expect entity status is still public
@@ -332,7 +332,7 @@ EOF;
 		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
 		
         // Here the entity should have been created
-		$entity = wl_get_entity_post_by_uri( $expected_entity_uri );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $expected_entity_uri );
 		$this->assertNotNull( $entity );
 		
 		// Verify association to post as where
