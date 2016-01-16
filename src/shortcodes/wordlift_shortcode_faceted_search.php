@@ -33,56 +33,56 @@ add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
  * Ajax call for the faceted search widget
  */
 function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
+	
 	// Entity ID must be defined
-	if ( ! isset( $_GET['entity_id'] ) ) {
-		wp_die( 'No entity_id given' );
+	if ( ! isset( $_GET[ 'post_id' ] ) ) {
+		wp_die( 'No post_id given' );
 
 		return;
 	}
 
-	$entity_id = $_GET['entity_id'];
+	$current_post_id = $_GET[ 'post_id' ];
+	$current_post = get_post( $current_post_id );	
+	// TODO Raise an error if no post is found
 
-	// If the current post is not an entity post an exception needs to be raised
-	$entity = get_post( $entity_id );
-	if ( Wordlift_Entity_Service::TYPE_NAME !== $entity->post_type ) {
-		wp_die( 'Faceted search supports only entity posts' );
+	// If the current post is an entity, 
+	// the current post is used as main entity.
+	// Otherwise, current post related entities are used. 
+	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $entity->post_type ) ?
+		array( $current_post->ID ) :
+		wl_core_get_related_entities_ids( $current_post->ID );
 
-		return;
-	}
+	// TODO Raise an error if $entity_ids is a blank collection
 
-	// Which type was requested?
-	if ( isset( $_GET['type'] ) ) {
-		$required_type = $_GET['type'];
-	} else {
-		$required_type = null;
-	}
+	// Retrieve requested type
+	$required_type = ( isset( $_GET[ 'type' ] ) ) ? $_GET[ 'type' ] : null;  
 
 	// Extract filtering conditions
 	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( "php://input" ) : $http_raw_data;
 	$filtering_entity_uris = json_decode( $filtering_entity_uris );
 
 	// Set up data structures
-	$referencing_post_ids = wl_core_get_related_post_ids( $entity_id, array( 'status' => 'publish' ) );
+	$referencing_posts = wl_core_get_posts( array(
+		'get'				=> 'posts',
+		'related_to__in'	=> $entity_ids,
+		'post_type'			=> 'post',
+		'as'				=> 'subject',
+	) );
+
+	$referencing_post_ids = array_map( function( $p ) { return $p->ID; }, $referencing_posts );
+
 	$results              = array();
 
-	if ( 'posts' == $required_type ) {
+	if ( 'posts' === $required_type ) {
+		
 		// Required filtered posts.
 		wl_write_log( "Going to find related posts for the current entity [ entity ID :: $entity_id ]" );
 
-		if ( empty( $filtering_entity_uris ) ) {
+		$filtered_posts = $referencing_posts;
 
-			// No filter, just get referencing posts
-			foreach ( $referencing_post_ids as $post_obj_id ) {
-				$post_obj            = get_post( $post_obj_id );
-				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
-				$post_obj->thumbnail = ( $thumbnail ) ?
-					$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-				$post_obj->permalink = get_post_permalink( $post_obj->ID );
+		if ( ! empty( $filtering_entity_uris ) ) {
 
-				$results[] = $post_obj;
-			}
-		} else {
-
+			// TODO check wl_get_entity_post_ids_by_uris
 			$filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
 
 			// Search posts that reference all the filtering entities.
@@ -94,18 +94,19 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 				'as'             => 'subject',
 			) );
 
-			foreach ( $filtered_posts as $post_obj ) {
-
-				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
-				$post_obj->thumbnail = ( $thumbnail ) ?
-					$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-				$post_obj->permalink = get_post_permalink( $post_obj->ID );
-
-				$results[] = $post_obj;
-			}
-
-			$results = $filtered_posts;
 		}
+
+		foreach ( $referencing_posts as $post_obj ) {
+
+			$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+			$post_obj->thumbnail = ( $thumbnail ) ?
+			$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
+			$post_obj->permalink = get_post_permalink( $post_obj->ID );
+
+			$results[] = $post_obj;
+
+		}
+
 
 	} else {
 
@@ -135,7 +136,7 @@ EOF;
 
 			$entity            = get_post( $obj->ID );
 			$entity            = wl_serialize_entity( $entity );
-			$entity['counter'] = $obj->counter;
+			$entity[ 'counter' ] = $obj->counter;
 			$results[]         = $entity;
 
 		}
