@@ -20,14 +20,15 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
     }
 
     public function testDataSelectionWithoutAnEntityId() {
-    	$this->setExpectedException( 'WPAjaxDieStopException', 'No entity_id given' );
+    	$this->setExpectedException( 'WPAjaxDieStopException', 'No post_id given' );
     	$this->_handleAjax( 'wl_faceted_search' );
     }
 
+    // From 3.4.0 faceted search is available also for standard posts
     public function testDataSelectionForANotEntity() {
         $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish', 'post');
-        $_GET['entity_id'] = $post_1_id;
-        $this->setExpectedException( 'WPAjaxDieStopException', 'Faceted search supports only entity posts' );
+        $_GET[ 'post_id' ] = $post_1_id;
+        $this->setExpectedException( 'WPAjaxDieContinueException', '' );
         $this->_handleAjax( 'wl_faceted_search' );
     }
 
@@ -45,8 +46,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
         wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
 
         // Set $_GET variable: this means we will perform data selection for $entity_1_id
-        $_GET['entity_id'] = $entity_1_id;
-		$_GET['type'] = 'posts';
+        $_GET[ 'post_id' ] = $entity_1_id;
+		$_GET[ 'type' ] = 'posts';
 
         try {
  	   	    $this->_handleAjax( 'wl_faceted_search' );
@@ -80,8 +81,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
         wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
 
         // Set $_GET variable: this means we will perform data selection for $entity_1_id
-        $_GET['entity_id'] = $entity_1_id;
-        $_GET['type'] = 'posts';
+        $_GET[ 'post_id' ] = $entity_1_id;
+        $_GET[ 'type' ] = 'posts';
 
         try {
             $this->_handleAjax( 'wl_faceted_search' );
@@ -106,8 +107,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
         wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
 
         // Set $_GET variable: this means we will perform data selection for $entity_1_id
-        $_GET['entity_id'] = $entity_1_id;
-        $_GET['type'] = 'posts';
+        $_GET[ 'post_id' ] = $entity_1_id;
+        $_GET[ 'type' ] = 'posts';
         // Mock php://input
         $mock_http_raw_data = json_encode( 
             array( wl_get_entity_uri( $entity_2_id ) ) 
@@ -143,8 +144,8 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
         wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
 
         // Set $_GET variable: this means we will perform data selection for $entity_1_id
-        $_GET['entity_id'] = $entity_1_id;
-		$_GET['type'] = 'facets';
+        $_GET[ 'post_id' ] = $entity_1_id;
+		$_GET[ 'type' ] = 'facets';
 
         try {
  	   	    $this->_handleAjax( 'wl_faceted_search' );

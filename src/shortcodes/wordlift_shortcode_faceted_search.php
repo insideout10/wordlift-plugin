@@ -48,9 +48,9 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// If the current post is an entity, 
 	// the current post is used as main entity.
 	// Otherwise, current post related entities are used. 
-	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $entity->post_type ) ?
+	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $current_post->post_type ) ?
 		array( $current_post->ID ) :
-		wl_core_get_related_entities_ids( $current_post->ID );
+		wl_core_get_related_entity_ids( $current_post->ID );
 
 	// TODO Raise an error if $entity_ids is a blank collection
 
@@ -62,11 +62,13 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	$filtering_entity_uris = json_decode( $filtering_entity_uris );
 
 	// Set up data structures
+	// TODO filter only published posts
 	$referencing_posts = wl_core_get_posts( array(
 		'get'				=> 'posts',
 		'related_to__in'	=> $entity_ids,
 		'post_type'			=> 'post',
 		'as'				=> 'subject',
+		'post_status'		=> 'publish',
 	) );
 
 	$referencing_post_ids = array_map( function( $p ) { return $p->ID; }, $referencing_posts );
@@ -76,27 +78,19 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	if ( 'posts' === $required_type ) {
 		
 		// Required filtered posts.
-		wl_write_log( "Going to find related posts for the current entity [ entity ID :: $entity_id ]" );
+		wl_write_log( "Going to find related posts for the current post [ post ID :: $current_post_id ]" );
 
-		$filtered_posts = $referencing_posts;
-
-		if ( ! empty( $filtering_entity_uris ) ) {
-
-			// TODO check wl_get_entity_post_ids_by_uris
-			$filtering_entity_ids = wl_get_entity_post_ids_by_uris( $filtering_entity_uris );
-
-			// Search posts that reference all the filtering entities.
-			$filtered_posts = wl_core_get_posts( array(
+		$filtered_posts = ( empty( $filtering_entity_uris ) ) ?
+			$referencing_posts : 
+			wl_core_get_posts( array(
 				'get'            => 'posts',
 				'post__in'       => $referencing_post_ids,
-				'related_to__in' => $filtering_entity_ids,
+				'related_to__in' => wl_get_entity_post_ids_by_uris( $filtering_entity_uris ),
 				'post_type'      => 'post',
 				'as'             => 'subject',
 			) );
 
-		}
-
-		foreach ( $referencing_posts as $post_obj ) {
+		foreach ( $filtered_posts as $post_obj ) {
 
 			$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
 			$post_obj->thumbnail = ( $thumbnail ) ?
@@ -107,26 +101,26 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		}
 
-
 	} else {
 
 		global $wpdb;
 
-		wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ]" );
+		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ]" );
 
 		// Retrieve Wordlift relation instances table name
 		$table_name = wl_core_get_relation_instances_table_name();
 
-		$ids = implode( ',', $referencing_post_ids );
+		$subject_ids = implode( ',', $referencing_post_ids );
+		$object_ids_blacklist = implode( ',', $entity_ids );
 
 		// TODO - if an entity is related with different predicates each predicate impacts on counter
 		$query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
             FROM $table_name 
-            WHERE subject_id IN ($ids) and object_id != $entity_id
+            WHERE subject_id IN ($subject_ids) and object_id NOT IN ($object_ids_blacklist)
             GROUP BY object_id;
 EOF;
-		wl_write_log( "Going to find related entities for the current entity [ entity ID :: $entity_id ] [ query :: $query ]" );
+		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
 
 		$entities = $wpdb->get_results( $query, OBJECT );
 
@@ -134,7 +128,7 @@ EOF;
 
 		foreach ( $entities as $obj ) {
 
-			$entity            = get_post( $obj->ID );
+			$entity 		   = get_post( $obj->ID );
 			$entity            = wl_serialize_entity( $entity );
 			$entity[ 'counter' ] = $obj->counter;
 			$results[]         = $entity;
