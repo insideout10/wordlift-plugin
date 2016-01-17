@@ -90,13 +90,14 @@ angular.module('wordlift.facetedsearch.widget', [
   service
 
 ])
+# Configuration provider
 .config((configurationProvider)->
   configurationProvider.setConfiguration window.wl_faceted_search_params
 )
 
 $(
   container = $("""
-  	<div ng-controller="FacetedSearchWidgetController">
+  	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
       <div class="wl-filters wl-selected-items-wrapper">
         <span ng-class="'wl-' + entity.mainType" ng-repeat="(condition, entity) in conditions" class="wl-selected-item">
           {{ entity.label}}
