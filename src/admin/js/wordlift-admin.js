@@ -192,7 +192,7 @@
     $( function () {
         
         // return if not needed
-        if( ! $( '#wl-dashboard-widget-inner-wrapper' ) ){
+        if( ! $( '#wl-dashboard-widget-inner-wrapper' ).length ){
             return;
         }
         
