@@ -132,13 +132,12 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		$table_name = wl_core_get_relation_instances_table_name();
 
 		$subject_ids = implode( ',', $referencing_post_ids );
-		$object_ids_blacklist = implode( ',', $entity_ids );
-
+		
 		// TODO - if an entity is related with different predicates each predicate impacts on counter
 		$query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
             FROM $table_name 
-            WHERE subject_id IN ($subject_ids) and object_id NOT IN ($object_ids_blacklist)
+            WHERE subject_id IN ($subject_ids) and object_id != ($current_post_id)
             GROUP BY object_id;
 EOF;
 		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
