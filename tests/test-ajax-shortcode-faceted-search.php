@@ -23,12 +23,17 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
     	$this->setExpectedException( 'WPAjaxDieStopException', 'No post_id given' );
     	$this->_handleAjax( 'wl_faceted_search' );
     }
+    
+    public function testDataSelectionForAMissingEntity() {
+        $_GET[ 'post_id' ] = 1000000;
+        $this->setExpectedException( 'WPAjaxDieStopException', 'No valid post_id given' );
+        $this->_handleAjax( 'wl_faceted_search' );
+    }
 
-    // From 3.4.0 faceted search is available also for standard posts
-    public function testDataSelectionForANotEntity() {
+    public function testDataSelectionForAPostWithoutRelatedEntities() {
         $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish', 'post');
         $_GET[ 'post_id' ] = $post_1_id;
-        $this->setExpectedException( 'WPAjaxDieContinueException', '' );
+        $this->setExpectedException( 'WPAjaxDieStopException', 'No entities available' );
         $this->_handleAjax( 'wl_faceted_search' );
     }
 

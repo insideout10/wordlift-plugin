@@ -5,6 +5,15 @@
  */
 function wl_shortcode_faceted_search( $atts ) {
 
+	// If the current post is not an entity and has no related entities
+	// than the shortcode cannot be rendered
+	// TODO Add an alert visibile only for connected admin users
+	if ( Wordlift_Entity_Service::TYPE_NAME !== $current_post->post_type ) {
+		if ( 0 === count( wl_core_get_related_entity_ids( $current_post-> ) ) ) {
+			return '';
+		}
+	}
+
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
 	wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css' );
@@ -13,11 +22,13 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.js' );
 
+	$current_post = get_post();
+
 	wp_localize_script( 'wordlift-faceted-search', 'wl_faceted_search_params', array(
 			'ajax_url'             => admin_url( 'admin-ajax.php' ),
 			'action'               => 'wl_faceted_search',
-			'entity_id'            => get_the_ID(),
-			'entity_uri'           => wl_get_entity_uri( get_the_ID() ),
+			'entity_id'            => $current_post->ID,
+			'entity_uri'           => wl_get_entity_uri( $current_post->ID ),
 			'div_id'               => $div_id,
 			'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH
 		)
@@ -34,16 +45,24 @@ add_shortcode( 'wl_faceted_search', 'wl_shortcode_faceted_search' );
  */
 function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	
-	// Entity ID must be defined
+	// Post ID must be defined
 	if ( ! isset( $_GET[ 'post_id' ] ) ) {
 		wp_die( 'No post_id given' );
-
 		return;
 	}
 
+	// Extract filtering conditions
+	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( "php://input" ) : $http_raw_data;
+	$filtering_entity_uris = json_decode( $filtering_entity_uris );
+
 	$current_post_id = $_GET[ 'post_id' ];
 	$current_post = get_post( $current_post_id );	
-	// TODO Raise an error if no post is found
+	
+	// Post ID has to match an existing item
+	if ( null === $current_post ) {
+		wp_die( 'No valid post_id given' );
+		return;
+	}
 
 	// If the current post is an entity, 
 	// the current post is used as main entity.
@@ -52,14 +71,14 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 		array( $current_post->ID ) :
 		wl_core_get_related_entity_ids( $current_post->ID );
 
-	// TODO Raise an error if $entity_ids is a blank collection
+	// If there are no entities we cannot render the widget
+	if ( 0 === count( $entity_ids ) ) {
+		wp_die( 'No entities available' );
+		return;
+	}
 
 	// Retrieve requested type
 	$required_type = ( isset( $_GET[ 'type' ] ) ) ? $_GET[ 'type' ] : null;  
-
-	// Extract filtering conditions
-	$filtering_entity_uris = ( null == $http_raw_data ) ? file_get_contents( "php://input" ) : $http_raw_data;
-	$filtering_entity_uris = json_decode( $filtering_entity_uris );
 
 	// Set up data structures
 	// TODO filter only published posts
