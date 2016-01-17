@@ -72,6 +72,36 @@ class FacetedSearchShortcodeTest extends WL_Ajax_UnitTestCase
 
     }
 
+    public function testPostsSelectionWithoutFiltersForAStandardPost() {
+
+        // Create 2 posts and 1 entities
+        $entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
+        $post_1_id = wl_create_post( '', 'post1', 'A post', 'publish');
+        $post_2_id = wl_create_post( '', 'post2', 'A post', 'publish');
+            
+        // Insert relations
+        wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
+        wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+        
+        // Set $_GET variable: this means we will perform data selection for $entity_1_id
+        $_GET[ 'post_id' ] = $post_1_id;
+        $_GET[ 'type' ] = 'posts';
+
+        try {
+            $this->_handleAjax( 'wl_faceted_search' );
+        } catch ( WPAjaxDieContinueException $e ) { }
+        
+        $response = json_decode( $this->_last_response );
+        $this->assertInternalType( 'array', $response );
+        // I Expect one post becouse $post_1_id should be not included in the results
+        $this->assertCount( 1, $response );
+        $this->assertEquals( 'post', $response[0]->post_type );
+        
+        $post_ids = array( $response[0]->ID );
+        $this->assertContains( $post_2_id, $post_ids );
+
+    }
+
     public function testPostsSelectionWithoutFiltersOnPostDrafts() {
 
         // Create 2 posts and 2 entities

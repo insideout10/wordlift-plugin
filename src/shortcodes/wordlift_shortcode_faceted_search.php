@@ -82,10 +82,10 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	// Retrieve requested type
 	$required_type = ( isset( $_GET[ 'type' ] ) ) ? $_GET[ 'type' ] : null;  
 
-	// Set up data structures
-	// TODO exclude the current post if needed
+	// Set up data structures            
 	$referencing_posts = wl_core_get_posts( array(
 		'get'				=> 'posts',
+		'post__not_in'      =>  array( $current_post_id ), 
 		'related_to__in'	=> $entity_ids,
 		'post_type'			=> 'post',
 		'as'				=> 'subject',
