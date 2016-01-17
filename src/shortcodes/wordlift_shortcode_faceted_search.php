@@ -8,10 +8,14 @@ function wl_shortcode_faceted_search( $atts ) {
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
 	// TODO Add an alert visibile only for connected admin users
-	if ( Wordlift_Entity_Service::TYPE_NAME !== $current_post->post_type ) {
-		if ( 0 === count( wl_core_get_related_entity_ids( $current_post-> ) ) ) {
-			return '';
-		}
+	$current_post = get_post();
+
+	$entity_ids = ( Wordlift_Entity_Service::TYPE_NAME === $current_post->post_type ) ?
+		$current_post->ID : 
+		wl_core_get_related_entity_ids( $current_post->ID );
+
+	if ( 0 === count( $entity_ids ) ) {
+		return '';
 	}
 
 	$div_id = 'wordlift-faceted-entity-search-widget';
@@ -22,15 +26,13 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.js' );
 
-	$current_post = get_post();
-
 	wp_localize_script( 'wordlift-faceted-search', 'wl_faceted_search_params', array(
-			'ajax_url'             => admin_url( 'admin-ajax.php' ),
-			'action'               => 'wl_faceted_search',
-			'entity_id'            => $current_post->ID,
-			'entity_uri'           => wl_get_entity_uri( $current_post->ID ),
-			'div_id'               => $div_id,
-			'defaultThumbnailPath' => WL_DEFAULT_THUMBNAIL_PATH
+			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
+			'action'				=> 'wl_faceted_search',
+			'post_id'				=> $current_post->ID,
+			'entity_ids'			=> $entity_ids,
+			'div_id'				=> $div_id,
+			'defaultThumbnailPath'	=> WL_DEFAULT_THUMBNAIL_PATH
 		)
 	);
 
@@ -81,7 +83,7 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	$required_type = ( isset( $_GET[ 'type' ] ) ) ? $_GET[ 'type' ] : null;  
 
 	// Set up data structures
-	// TODO filter only published posts
+	// TODO exclude the current post if needed
 	$referencing_posts = wl_core_get_posts( array(
 		'get'				=> 'posts',
 		'related_to__in'	=> $entity_ids,

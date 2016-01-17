@@ -149,7 +149,7 @@ angular.module('wordlift.facetedsearch.widget', [
     
     filtered = []
     for id, entity of items
-      if  entity.mainType is type and entity.id != configuration.entity_uri
+      if  entity.mainType is type
         filtered.push entity
     filtered
 
@@ -185,15 +185,11 @@ angular.module('wordlift.facetedsearch.widget', [
 
         
     $scope.$on "postsLoaded", (event, posts) -> 
-      $log.debug "Referencing posts for entity #{configuration.entity_id} ..."
+      $log.debug "Referencing posts for item #{configuration.post_id} ..."
       $scope.posts = posts
       
     $scope.$on "facetsLoaded", (event, facets) -> 
-      $log.debug "Referencing facets for entity #{configuration.entity_id} ..."
-      for entity in facets
-        if entity.id is configuration.entity_uri
-          $scope.entity = entity
-
+      $log.debug "Referencing facets for item #{configuration.post_id} ..."
       $scope.facets = facets
 
 ])
@@ -202,7 +198,7 @@ angular.module('wordlift.facetedsearch.widget', [
   
   service = {}
   service.load = ( type, conditions = [] )->
-    uri = "#{configuration.ajax_url}?action=#{configuration.action}&entity_id=#{configuration.entity_id}&type=#{type}"
+    uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}&type=#{type}"
     
     $log.debug "Going to search #{type} with conditions"
     
@@ -261,7 +257,7 @@ $(
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')
 
-injector = angular.bootstrap $('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget'] )
+injector = angular.bootstrap $('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget'] 
 injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
   # execute the following commands in the angular js context.
   $rootScope.$apply(->    
@@ -269,5 +265,7 @@ injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverSer
     DataRetrieverService.load('facets') 
   )
 ])
+
+)
 
 
