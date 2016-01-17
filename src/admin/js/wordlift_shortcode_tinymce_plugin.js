@@ -139,13 +139,10 @@
                     	onclick: pluginRef.navigatorClick
                     });
                     
-                    // Only show faceted search in the entity editor
-                    if( typenow && typenow == 'entity' ) {
-                        m.add({
-                            title: 'FacetedSearch',
-                            onclick: pluginRef.facetedSearchClick
-                        });
-                    }
+                    m.add({
+                        title: 'FacetedSearch',
+                        onclick: pluginRef.facetedSearchClick
+                    });
                     
             	});
 
