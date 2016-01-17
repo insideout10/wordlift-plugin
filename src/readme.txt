@@ -86,6 +86,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.3.3 (2016-01-17) =
+* Fix: [#243](https://github.com/insideout10/wordlift-plugin/issues/243): Post status for published entities is properly preserved when used to disambiguate a post draft.
+
 = 3.3.2 (2016-01-11) =
 * Fix: [#239](https://github.com/insideout10/wordlift-plugin/issues/239): Fix disambiguation widget look & feel on WP 4.4.+
 * Fix: [#237](https://github.com/insideout10/wordlift-plugin/issues/237): Fix disambiguation for internal entities sameAs of other entities
