@@ -77,10 +77,16 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	public function walk( $elements, $max_depth, $args = array() ) {
 
 		$output = parent::walk( $elements, $max_depth, $args );
+		
+		global $post; 
 
+		// If the current entity is used entity type cannot be changed
+		$disabled = ( Wordlift_Entity_Service::get_instance()->is_used( $post->ID ) ) ? 
+			' disabled ' : ''; 
+		
 		$output = str_replace(
-			array( 'type="checkbox"', "type='checkbox'" ),
-			array( 'type="radio"', "type='radio'" ),
+			array( "type=\"checkbox\"", "type='checkbox'" ),
+			array( "type=\"radio\"$disabled", "type='radio'$disabled" ),
 			$output
 		);
 
