@@ -236,11 +236,65 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param int $post_id A post id.
 	 *
-	 * @return true if the post is an entity otherwise false.
+	 * @return bool Return true if the post is an entity otherwise false.
 	 */
 	public function is_entity( $post_id ) {
 
 		return ( self::TYPE_NAME === get_post_type( $post_id ) );
+	}
+
+	/**
+	 * Determines whether an entity post is used or not.
+	 * An entity is used if:
+	 * 1. Is referenced by a post OR
+	 * 2. Is related to another entity OR
+	 * 3. Is used as value for an entity / post property
+	 *
+	 * @since 3.4.0
+	 *
+	 * @param int $post_id A post id.
+	 *
+	 * @return bool | null Returns true if the entity is used. False otherwise... If the given post is does not match an entity posts NULL is returned instead.
+	 */
+	public function is_used( $post_id ) {
+
+		if ( FALSE === $this->is_entity( $post_id ) ) {
+			return null;
+		}
+		// Retrieve the post
+		$entity = get_post( $post_id ); 
+
+		global $wpdb;
+    	// Retrieve Wordlift relation instances table name
+    	$table_name = wl_core_get_relation_instances_table_name();
+
+		// Check is it's referenced / related to another post / entity
+    	$stmt = $wpdb->prepare( 
+    		"SELECT COUNT(*) FROM $table_name WHERE  object_id = %s", 
+    		$entity->ID
+    	);
+		// Perform the query
+		$relation_instances = (int) $wpdb->get_var( $stmt ); 
+		// If there is at least one relation instance for the current entity, then it's used
+		if ( 0 < $relation_instances ) {
+			return TRUE;
+		}
+
+    	// Check if the entity uri is used as meta_value
+		$stmt = $wpdb->prepare( 
+    		"SELECT COUNT(*) FROM $wpdb->postmeta WHERE  meta_value = %s", 
+    		wl_get_entity_uri( $entity->ID )
+    	);
+
+    	// Perform the query
+		$meta_instances = (int) $wpdb->get_var( $stmt ); 
+		// If there is at least one meta that refers the current entity uri, then current entity is used
+		if ( 0 < $meta_instances ) {
+			return TRUE;
+		}
+		
+		// If we are here, it means the current entity is not used at the moment
+		return FALSE;
 	}
 
 	/**
