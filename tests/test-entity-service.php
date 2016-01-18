@@ -203,4 +203,18 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
             
 	}
+
+	/**
+	 * Test the {@link is_used} function 
+	 *
+	 * @since 3.4.0
+	 */
+	function test_entity_usage_on_a_standard_post() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		// Create the first entity
+		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$this->assertNull( $entity_service->is_used( $post_id ) );
+            
+	}
 }
