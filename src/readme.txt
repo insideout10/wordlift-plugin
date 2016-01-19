@@ -89,6 +89,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 * Enhancement: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget. 
 * Enhancement: [#231](https://github.com/insideout10/wordlift-plugin/issues/231): Faceted search widget is now available also for standard posts 
 * Enhancement: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
+* Enhancement: [#120](https://github.com/insideout10/wordlift-plugin/issues/120): Changing entity type is now not more allowed if the current entity references a post, is related to another entity or its uri is used as value for another entity property.
 
 = 3.3.2 (2016-01-11) =
 * Fix: [#239](https://github.com/insideout10/wordlift-plugin/issues/239): Fix disambiguation widget look & feel on WP 4.4.+
