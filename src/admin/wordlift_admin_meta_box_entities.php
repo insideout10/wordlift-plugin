@@ -103,6 +103,7 @@ function wl_entities_box_content( $post ) {
 	
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 	$dataset_uri = wl_configuration_get_redlink_dataset_uri();
+    $current_post_uri = wl_get_entity_uri( $post->ID );
 
 	echo <<<EOF
     <script type="text/javascript">
@@ -116,7 +117,8 @@ function wl_entities_box_content( $post ) {
         	window.wordlift.classificationBoxes = $classification_boxes;
         	window.wordlift.entities = $referenced_entities_obj;
         	window.wordlift.currentPostId = $post->ID;
-			window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
+			window.wordlift.currentPostUri = '$current_post_uri';
+            window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
 			window.wordlift.datasetUri = '$dataset_uri';
 
         });

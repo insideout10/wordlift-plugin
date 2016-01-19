@@ -884,6 +884,10 @@
               $log.debug("Missing label retrived from related annotation for entity " + ea.entityId);
             }
             data.entities[ea.entityId].annotations[id] = annotation;
+            if (configuration.currentPostUri === ea.entityId) {
+              $log.warn("Skip entity match for annotation " + id + ". It matchs the current entity " + configuration.currentPostUri);
+              continue;
+            }
             data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
           }
         }
@@ -903,6 +907,10 @@
             }
             entity.confidence = entity.confidence * local_confidence;
           }
+        }
+        if (data.entities[configuration.currentPostUri]) {
+          data.entities[configuration.currentPostUri].annotations = {};
+          $log.warn("Remove annotations for current entity " + configuration.currentPostUri);
         }
         return data;
       };
