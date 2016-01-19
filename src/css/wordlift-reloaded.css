@@ -1621,6 +1621,12 @@
   stroke-width: 14;
   stroke-dasharray: 50 100;
 }
+.inline-edit-entity .inline-edit-categories {
+  display: none;
+}
+#wl_entity_type-tabs .hide-if-no-js {
+  display: none;
+}
 .wl-button {
   background-color: #f20f62;
   border-color: #c20c4e;
