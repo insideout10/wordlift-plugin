@@ -280,9 +280,9 @@ EOF;
 		$this->assertNotNull( $entity );
 		$this->assertEquals( 'draft', $entity->post_status );
 		// Update post status and check if also entity status changed accrdingly
-		wl_update_post_status( $post_1_id, 'public' );
+		wl_update_post_status( $post_1_id, 'publish' );
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
-		$this->assertEquals( 'public', $entity->post_status );
+		$this->assertEquals( 'publish', $entity->post_status );
 		// Retrieve the internal entity uri
 		$entity_uri = wl_get_entity_uri( $entity->ID );
 		// Build fake obj to simulate save same entity again on a new post
@@ -306,7 +306,7 @@ EOF;
 		// Check is the same entity for WP
 		$this->assertEquals( $entity->ID, $entity_reloaded->ID ); 
 		// Here I expect entity status is still public
-		$this->assertEquals( 'public', $entity_reloaded->post_status );
+		$this->assertEquals( 'publish', $entity_reloaded->post_status );
 		
 	}
 

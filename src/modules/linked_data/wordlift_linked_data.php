@@ -259,7 +259,7 @@ function wl_save_entity( $entity_data ) {
 		// We insert into the params the entity ID, so it will be updated and not inserted.
 		$params[ 'ID' ] = $post->ID;
 		// Preserve the current entity status
-		if ( 'public' === $post->post_status ) {
+		if ( 'publish' === $post->post_status ) {
 			$params[ 'post_status' ] = $post->post_status;
 		}
 		// Preserve the current entity post_content.
