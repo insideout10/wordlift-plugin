@@ -858,7 +858,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
         data.entities[ ea.entityId ].annotations[ id ] = annotation
         # If a given annotation refers to the current entity / post uri let's skip it!
         if configuration.currentPostUri is ea.entityId
-          $log.warn "Skip entity match for annotation #{id}. It matchs the current entity #{configuration.currentPostUri}"
+          $log.warn "Skip entity match for annotation #{id}. It matches the current entity #{configuration.currentPostUri}"
           continue 
 
         data.annotations[ id ].entities[ ea.entityId ] = data.entities[ ea.entityId ]

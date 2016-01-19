@@ -885,7 +885,7 @@
             }
             data.entities[ea.entityId].annotations[id] = annotation;
             if (configuration.currentPostUri === ea.entityId) {
-              $log.warn("Skip entity match for annotation " + id + ". It matchs the current entity " + configuration.currentPostUri);
+              $log.warn("Skip entity match for annotation " + id + ". It matches the current entity " + configuration.currentPostUri);
               continue;
             }
             data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
