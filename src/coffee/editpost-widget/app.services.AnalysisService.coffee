@@ -185,6 +185,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     
     if service._currentAnalysis
       $log.warn "Analysis already runned! Nothing to do ..."
+      service._updateStatus false
+
       return
 
     service._updateStatus true

@@ -949,6 +949,7 @@
         var promise;
         if (service._currentAnalysis) {
           $log.warn("Analysis already runned! Nothing to do ...");
+          service._updateStatus(false);
           return;
         }
         service._updateStatus(true);

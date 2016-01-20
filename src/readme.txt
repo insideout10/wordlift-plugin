@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.4.0 (???) =
+* Fix: [#244](https://github.com/insideout10/wordlift-plugin/issues/244): Tinymce does not remain idle anymore switching between Visual and Text mode.
 * Enhancement: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget. 
 * Enhancement: [#231](https://github.com/insideout10/wordlift-plugin/issues/231): Faceted search widget is now available also for standard posts 
 * Enhancement: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
