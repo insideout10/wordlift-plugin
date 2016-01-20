@@ -849,18 +849,16 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       annotation.id = id
       annotation.entities = {}
       
-      for ea, index in annotation.entityMatches
+      # Filter out entity matches referring the current entity
+      data.annotations[ id ].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId isnt configuration.currentPostUri )
+      
+      for ea, index in data.annotations[ id ].entityMatches
         
         if not data.entities[ ea.entityId ].label 
           data.entities[ ea.entityId ].label = annotation.text
           $log.debug "Missing label retrived from related annotation for entity #{ea.entityId}"
 
         data.entities[ ea.entityId ].annotations[ id ] = annotation
-        # If a given annotation refers to the current entity / post uri let's skip it!
-        if configuration.currentPostUri is ea.entityId
-          $log.warn "Skip entity match for annotation #{id}. It matches the current entity #{configuration.currentPostUri}"
-          continue 
-
         data.annotations[ id ].entities[ ea.entityId ] = data.entities[ ea.entityId ]
 
     # TODO move this calculation on the server
@@ -871,11 +869,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
           if em.entityId? and em.entityId is id
             local_confidence = em.confidence
         entity.confidence = entity.confidence * local_confidence
-    
-    if data.entities[ configuration.currentPostUri ] 
-      data.entities[ configuration.currentPostUri ].annotations = {}
-      $log.warn "Remove annotations for current entity #{configuration.currentPostUri}"
-            
+
     data
 
   service.getSuggestedSameAs = (content)->

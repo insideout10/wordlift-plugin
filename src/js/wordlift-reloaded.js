@@ -876,7 +876,19 @@
           annotation = ref7[id];
           annotation.id = id;
           annotation.entities = {};
-          ref8 = annotation.entityMatches;
+          data.annotations[id].entityMatches = (function() {
+            var l, len2, ref8, results;
+            ref8 = annotation.entityMatches;
+            results = [];
+            for (l = 0, len2 = ref8.length; l < len2; l++) {
+              ea = ref8[l];
+              if (ea.entityId !== configuration.currentPostUri) {
+                results.push(ea);
+              }
+            }
+            return results;
+          })();
+          ref8 = data.annotations[id].entityMatches;
           for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
             ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
@@ -884,10 +896,6 @@
               $log.debug("Missing label retrived from related annotation for entity " + ea.entityId);
             }
             data.entities[ea.entityId].annotations[id] = annotation;
-            if (configuration.currentPostUri === ea.entityId) {
-              $log.warn("Skip entity match for annotation " + id + ". It matches the current entity " + configuration.currentPostUri);
-              continue;
-            }
             data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
           }
         }
@@ -907,10 +915,6 @@
             }
             entity.confidence = entity.confidence * local_confidence;
           }
-        }
-        if (data.entities[configuration.currentPostUri]) {
-          data.entities[configuration.currentPostUri].annotations = {};
-          $log.warn("Remove annotations for current entity " + configuration.currentPostUri);
         }
         return data;
       };
