@@ -1431,8 +1431,8 @@
 .wl-card .wl-card-image {
   position: relative;
   overflow: hidden;
-  max-height: 100px;
-  height: 100px;
+  max-height: 80px;
+  height: 80px;
 }
 .wl-card .wl-card-image img {
   position: absolute;
@@ -1443,10 +1443,15 @@
   bottom: 0;
 }
 .wl-card .wl-card-title {
+  padding: 0.3em;
+  position: relative;
+  font-size: 1em;
   line-height: 1.2em;
-  padding: 6px;
-  background-color: inherit;
-  min-height: 40px;
+  min-height: 2.4em;
+}
+.wl-card .wl-card-title a {
+  text-decoration: none;
+  border-bottom: none;
 }
 .wl-selected-items-wrapper {
   position: relative;

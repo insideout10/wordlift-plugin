@@ -172,7 +172,7 @@
             w = angular.element($window);
             $scope.visibleElements = function() {
               if ($element.width() > 460) {
-                return 3;
+                return 4;
               }
               if ($element.width() > 1024) {
                 return 5;
