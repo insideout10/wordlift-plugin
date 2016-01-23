@@ -108,6 +108,7 @@ $(
           <ul>
             <li class="entity" ng-repeat="entity in facets | filterEntitiesByType:box.types" ng-click="addCondition(entity)">     
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
+                  <i class="wl-checkbox"></i>
                   <i class="wl-type" ng-class="'wl-fs-' + entity.mainType"></i>  
                   {{entity.label}}
                   <span class="wl-counter">({{entity.counter}})</span>

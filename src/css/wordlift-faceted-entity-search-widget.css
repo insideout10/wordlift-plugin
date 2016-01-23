@@ -1510,7 +1510,7 @@
   color: #aa0000;
   cursor: pointer;
 }
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 460px) {
   .wl-facets-container {
     width: 100% !important;
   }
@@ -1565,6 +1565,34 @@
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label.selected {
   font-weight: bold;
   color: #000;
+}
+#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label.selected .wl-checkbox {
+  font-size: 12px !important;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label.selected .wl-checkbox:before {
+  content: "\f05d";
+}
+#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label .wl-checkbox {
+  font-size: 12px !important;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label .wl-checkbox:before {
+  content: "\f10c";
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-type {
   font-size: inherit !important;

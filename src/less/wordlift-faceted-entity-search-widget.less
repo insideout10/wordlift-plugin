@@ -5,7 +5,7 @@
 @import 'wordlift-card.less';
 @import 'wordlift-label.less';
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 460px) {
  	.wl-facets-container {
  		width:100% !important;
  	}
@@ -69,8 +69,17 @@
 					&.selected {
 						font-weight: bold;
 						color:#000;
-					}
+						
+						.wl-checkbox {	
+							font-size: 12px !important;
+							.fa-icon(@fa-var-check-circle-o);
+						}
 
+					}
+					.wl-checkbox {
+						font-size: 12px !important;
+						.fa-icon(@fa-var-circle-o);
+					}
 				}
 
 				.wl-type {
