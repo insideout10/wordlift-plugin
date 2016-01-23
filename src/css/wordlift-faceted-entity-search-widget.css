@@ -1426,15 +1426,15 @@
   content: "\f0da";
 }
 .wl-card {
-  height: 120px;
-  max-height: 120px;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  overflow: hidden;
   font-size: 11px !important;
 }
-.wl-card img {
+.wl-card .wl-card-image {
+  position: relative;
+  overflow: hidden;
+  max-height: 80px;
+  height: 80px;
+}
+.wl-card .wl-card-image img {
   position: absolute;
   margin: auto;
   top: 0;
@@ -1443,18 +1443,10 @@
   bottom: 0;
 }
 .wl-card .wl-card-title {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
   line-height: 1.2em;
-  height: 40px;
-  padding: 3px 5px;
-  background-color: #fff;
-}
-.wl-card .wl-card-title a {
-  text-decoration: none !important;
-  border-bottom: none !important;
+  padding: 6px;
+  background-color: inherit;
+  min-height: 40px;
 }
 .wl-selected-items-wrapper {
   position: relative;

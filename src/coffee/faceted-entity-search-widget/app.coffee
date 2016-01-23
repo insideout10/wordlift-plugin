@@ -116,7 +116,9 @@ $(
       <div class="wl-posts">
         <div wl-carousel>
           <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
-            <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+            <div class="wl-card-image"> 
+              <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+            </div>
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
             </div>
