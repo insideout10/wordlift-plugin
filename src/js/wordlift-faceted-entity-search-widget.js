@@ -230,9 +230,11 @@
       };
       return service;
     }
-  ]).config(function(configurationProvider) {
-    return configurationProvider.setConfiguration(window.wl_faceted_search_params);
-  });
+  ]).config([
+    'configurationProvider', function(configurationProvider) {
+      return configurationProvider.setConfiguration(window.wl_faceted_search_params);
+    }
+  ]);
 
   $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <div class=\"wl-filters wl-selected-items-wrapper\">\n        <span ng-class=\"'wl-' + entity.mainType\" ng-repeat=\"(condition, entity) in conditions\" class=\"wl-selected-item\">\n          {{ entity.label}}\n          <i class=\"wl-deselect\" ng-click=\"addCondition(entity)\"></i>\n        </span>\n        <span class=\"wl-filter-button\" ng-class=\"{ 'selected' : filteringEnabled }\" ng-click=\"toggleFiltering()\"><i></i>Add a filter</span>\n      </div>\n      <div class=\"wl-facets\" wl-carousel ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"type in supportedTypes\" wl-carousel-pane>\n          <h6 ng-class=\"'wl-fs-' + type\"><i class=\"type\" />{{type}}</h6>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | filterEntitiesByType:type\" ng-click=\"addCondition(entity)\">     \n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">{{entity.label}}</span>\n                <span class=\"wl-counter\">({{entity.counter}})</span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card\" ng-repeat=\"post in posts\" wl-carousel-pane>\n            <img ng-src=\"{{post.thumbnail}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {

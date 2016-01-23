@@ -91,9 +91,9 @@ angular.module('wordlift.facetedsearch.widget', [
 
 ])
 # Configuration provider
-.config((configurationProvider)->
+.config([ 'configurationProvider', (configurationProvider)->
   configurationProvider.setConfiguration window.wl_faceted_search_params
-)
+])
 
 $(
   container = $("""
