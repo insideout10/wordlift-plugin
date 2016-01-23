@@ -5,6 +5,11 @@
 @import 'wordlift-card.less';
 @import 'wordlift-label.less';
 
+@media screen and (max-width: 480px) {
+ 	.wl-facets-container {
+ 		width:100% !important;
+ 	}
+}
 #wordlift-faceted-entity-search-widget {
 
 	font-size:14px !important;
@@ -91,35 +96,6 @@
 
 	}
 
-	.wl-filters {
-		margin: 0em 0em 0.6em 0em;
-		min-height: 22px;
-		font-size: 0.8em;
-		padding-right:80px;
-
-		.wl-filter-button { 
-			i {
-				.fa-icon(@fa-var-filter);
-				color:@wl-brand-color;
-			}
-			position: absolute;
-			right:0;
-			top:0;
-			color:#000;
-			cursor:pointer;
-			padding:2px 4px;
-
-			border:#e2e2e2 1px solid;
-			-webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            -ms-border-radius: 5px;
-
-            &.selected {
-				border-color: @wl-brand-color; 		
-			}
-
-		}
-	}
 	.wl-posts {
 		padding: 0em;
 		margin: 0em;

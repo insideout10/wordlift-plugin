@@ -1510,6 +1510,11 @@
   color: #aa0000;
   cursor: pointer;
 }
+@media screen and (max-width: 480px) {
+  .wl-facets-container {
+    width: 100% !important;
+  }
+}
 #wordlift-faceted-entity-search-widget {
   font-size: 14px !important;
   /* border:#e2e2e2 1px solid; */
@@ -1657,41 +1662,6 @@
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-counter {
   cursor: pointer;
-}
-#wordlift-faceted-entity-search-widget .wl-filters {
-  margin: 0em 0em 0.6em 0em;
-  min-height: 22px;
-  font-size: 0.8em;
-  padding-right: 80px;
-}
-#wordlift-faceted-entity-search-widget .wl-filters .wl-filter-button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  color: #000;
-  cursor: pointer;
-  padding: 2px 4px;
-  border: #e2e2e2 1px solid;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-}
-#wordlift-faceted-entity-search-widget .wl-filters .wl-filter-button i {
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 14px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
-  padding: 0px 3px;
-  color: #f20f62;
-}
-#wordlift-faceted-entity-search-widget .wl-filters .wl-filter-button i:before {
-  content: "\f0b0";
-}
-#wordlift-faceted-entity-search-widget .wl-filters .wl-filter-button.selected {
-  border-color: #f20f62;
 }
 #wordlift-faceted-entity-search-widget .wl-posts {
   padding: 0em;
