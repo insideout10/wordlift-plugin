@@ -1,5 +1,6 @@
 (function() {
-  var $, container, injector;
+  var $, container, injector,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   angular.module('wordlift.ui.carousel', []).directive('wlCarousel', [
     '$window', '$log', function($window, $log) {
@@ -15,9 +16,6 @@
             $scope.visibleElements = function() {
               if ($element.width() > 460) {
                 return 4;
-              }
-              if ($element.width() > 1024) {
-                return 5;
               }
               return 1;
             };
@@ -161,12 +159,12 @@
     return provider;
   }).filter('filterEntitiesByType', [
     '$log', 'configuration', function($log, configuration) {
-      return function(items, type) {
-        var entity, filtered, id;
+      return function(items, types) {
+        var entity, filtered, id, ref;
         filtered = [];
         for (id in items) {
           entity = items[id];
-          if (entity.mainType === type) {
+          if (ref = entity.mainType, indexOf.call(types, ref) >= 0) {
             filtered.push(entity);
           }
         }
@@ -179,9 +177,23 @@
       $scope.posts = [];
       $scope.facets = [];
       $scope.conditions = {};
-      $scope.supportedTypes = ['thing', 'person', 'organization', 'place', 'event', 'local-business', 'creative-work'];
+      $scope.supportedTypes = [
+        {
+          'scope': 'what',
+          'types': ['thing', 'creative-work']
+        }, {
+          'scope': 'who',
+          'types': ['person', 'organization', 'local-business']
+        }, {
+          'scope': 'where',
+          'types': ['place']
+        }, {
+          'scope': 'when',
+          'types': ['event']
+        }
+      ];
       $scope.configuration = configuration;
-      $scope.filteringEnabled = false;
+      $scope.filteringEnabled = true;
       $scope.toggleFiltering = function() {
         return $scope.filteringEnabled = !$scope.filteringEnabled;
       };
@@ -238,7 +250,7 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <div class=\"wl-filters wl-selected-items-wrapper\">\n        <span ng-class=\"'wl-' + entity.mainType\" ng-repeat=\"(condition, entity) in conditions\" class=\"wl-selected-item\">\n          {{ entity.label}}\n          <i class=\"wl-deselect\" ng-click=\"addCondition(entity)\"></i>\n        </span>\n        <span class=\"wl-filter-button\" ng-class=\"{ 'selected' : filteringEnabled }\" ng-click=\"toggleFiltering()\"><i></i>Add a filter</span>\n      </div>\n      <div class=\"wl-facets\" wl-carousel ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"type in supportedTypes\" wl-carousel-pane>\n          <h6 ng-class=\"'wl-fs-' + type\"><i class=\"type\" />{{type}}</h6>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | filterEntitiesByType:type\" ng-click=\"addCondition(entity)\">     \n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">{{entity.label}}</span>\n                <span class=\"wl-counter\">({{entity.counter}})</span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card\" ng-repeat=\"post in posts\" wl-carousel-pane>\n            <div class=\"wl-card-image\"> \n              <img ng-src=\"{{post.thumbnail}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n            </div>\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
+  $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <div class=\"wl-facets\" ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"box in supportedTypes\">\n          <h6>{{box.scope}}</h6>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | filterEntitiesByType:box.types\" ng-click=\"addCondition(entity)\">     \n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">\n                  <i class=\"wl-type\" ng-class=\"'wl-fs-' + entity.mainType\"></i>  \n                  {{entity.label}}\n                  <span class=\"wl-counter\">({{entity.counter}})</span>\n                </span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card\" ng-repeat=\"post in posts\" wl-carousel-pane>\n            <div class=\"wl-card-image\"> \n              <img ng-src=\"{{post.thumbnail}}\" />\n            </div>\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         DataRetrieverService.load('posts');

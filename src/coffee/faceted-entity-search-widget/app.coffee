@@ -16,11 +16,11 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
   provider
 )
 .filter('filterEntitiesByType', [ '$log', 'configuration', ($log, configuration)->
-  return (items, type)->
+  return (items, types)->
     
     filtered = []
     for id, entity of items
-      if  entity.mainType is type
+      if  entity.mainType in types
         filtered.push entity
     filtered
 
@@ -32,9 +32,16 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.posts = []
     $scope.facets = []
     $scope.conditions = {}
-    $scope.supportedTypes = ['thing', 'person', 'organization', 'place', 'event', 'local-business', 'creative-work']
+    # TODO Load dynamically 
+    $scope.supportedTypes = [
+      { 'scope' : 'what', 'types' : [ 'thing', 'creative-work' ] }
+      { 'scope' : 'who', 'types' : [ 'person', 'organization', 'local-business' ] }
+      { 'scope' : 'where', 'types' : [ 'place' ] }
+      { 'scope' : 'when', 'types' : [ 'event' ] }
+    ]
+      
     $scope.configuration = configuration
-    $scope.filteringEnabled = false
+    $scope.filteringEnabled = true
 
     $scope.toggleFiltering = ()->
       $scope.filteringEnabled = !$scope.filteringEnabled
@@ -95,20 +102,16 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 $(
   container = $("""
   	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
-      <div class="wl-filters wl-selected-items-wrapper">
-        <span ng-class="'wl-' + entity.mainType" ng-repeat="(condition, entity) in conditions" class="wl-selected-item">
-          {{ entity.label}}
-          <i class="wl-deselect" ng-click="addCondition(entity)"></i>
-        </span>
-        <span class="wl-filter-button" ng-class="{ 'selected' : filteringEnabled }" ng-click="toggleFiltering()"><i></i>Add a filter</span>
-      </div>
-      <div class="wl-facets" wl-carousel ng-show="filteringEnabled">
-        <div class="wl-facets-container" ng-repeat="type in supportedTypes" wl-carousel-pane>
-          <h6 ng-class="'wl-fs-' + type"><i class="type" />{{type}}</h6>
+      <div class="wl-facets" ng-show="filteringEnabled">
+        <div class="wl-facets-container" ng-repeat="box in supportedTypes">
+          <h6>{{box.scope}}</h6>
           <ul>
-            <li class="entity" ng-repeat="entity in facets | filterEntitiesByType:type" ng-click="addCondition(entity)">     
-                <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">{{entity.label}}</span>
-                <span class="wl-counter">({{entity.counter}})</span>
+            <li class="entity" ng-repeat="entity in facets | filterEntitiesByType:box.types" ng-click="addCondition(entity)">     
+                <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
+                  <i class="wl-type" ng-class="'wl-fs-' + entity.mainType"></i>  
+                  {{entity.label}}
+                  <span class="wl-counter">({{entity.counter}})</span>
+                </span>
             </li>
           </ul>
         </div>
@@ -117,7 +120,7 @@ $(
         <div wl-carousel>
           <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
             <div class="wl-card-image"> 
-              <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+              <img ng-src="{{post.thumbnail}}" />
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
