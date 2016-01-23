@@ -91,6 +91,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 * Enhancement: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget. 
 * Enhancement: [#231](https://github.com/insideout10/wordlift-plugin/issues/231): Faceted search widget is now available also for standard posts 
 * Enhancement: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
+* Enhancement: [#214](https://github.com/insideout10/wordlift-plugin/issues/214): Faceted search 4W revamp.
 * Enhancement: [#180](https://github.com/insideout10/wordlift-plugin/issues/180): Enable minified js files for faceted search shortcode.
 * Enhancement: [#120](https://github.com/insideout10/wordlift-plugin/issues/120): Changing entity type is now not more allowed if the current entity references a post, is related to another entity or its uri is used as value for another entity property.
 * Enhancement: [#115](https://github.com/insideout10/wordlift-plugin/issues/115): Filter out the current entity from the analysis results to avoid to link a given entity with itself.
