@@ -128,10 +128,7 @@ angular.module('wordlift.utils.directives', [])
 $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
-angular.module('wordlift.facetedsearch.widget', [
-  'wordlift.ui.carousel'
-  'wordlift.utils.directives'
-])
+angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordlift.utils.directives' ])
 .provider("configuration", ()->
   
   _configuration = undefined
