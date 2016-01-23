@@ -178,7 +178,7 @@ angular.module('wordlift.ui.carousel', [])
         </div>
       </div>
   """
-  controller: ($scope, $element, $attrs) ->
+  controller: [ '$scope', '$element', '$attrs', ($scope, $element, $attrs) ->
       
     w = angular.element $window
 
@@ -242,7 +242,7 @@ angular.module('wordlift.ui.carousel', [])
 
       $scope.panes.splice unregisterPaneIndex, 1
       $scope.setPanesWrapperWidth()
-      
+  ]   
 ])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'

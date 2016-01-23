@@ -166,78 +166,80 @@
         scope: true,
         transclude: true,
         template: "<div class=\"wl-carousel\" ng-show=\"panes.length > 0\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-right=\"next()\"></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"currentPaneIndex > 0\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
-        controller: function($scope, $element, $attrs) {
-          var ctrl, w;
-          w = angular.element($window);
-          $scope.visibleElements = function() {
-            if ($element.width() > 460) {
-              return 3;
-            }
-            if ($element.width() > 1024) {
-              return 5;
-            }
-            return 1;
-          };
-          $scope.setItemWidth = function() {
-            return $element.width() / $scope.visibleElements();
-          };
-          $scope.itemWidth = $scope.setItemWidth();
-          $scope.panesWidth = void 0;
-          $scope.panes = [];
-          $scope.position = 0;
-          $scope.currentPaneIndex = 0;
-          $scope.isNextArrowVisible = function() {
-            return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
-          };
-          $scope.next = function() {
-            $scope.position = $scope.position - $scope.itemWidth;
-            return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
-          };
-          $scope.prev = function() {
-            $scope.position = $scope.position + $scope.itemWidth;
-            return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
-          };
-          $scope.setPanesWrapperWidth = function() {
-            $scope.panesWidth = $scope.panes.length * $scope.itemWidth;
-            $scope.position = 0;
-            return $scope.currentPaneIndex = 0;
-          };
-          w.bind('resize', function() {
-            var j, len, pane, ref;
-            $scope.itemWidth = $scope.setItemWidth();
-            $scope.setPanesWrapperWidth();
-            ref = $scope.panes;
-            for (j = 0, len = ref.length; j < len; j++) {
-              pane = ref[j];
-              pane.scope.setWidth($scope.itemWidth);
-            }
-            return $scope.$apply();
-          });
-          ctrl = this;
-          ctrl.registerPane = function(scope, element) {
-            var pane;
-            scope.setWidth($scope.itemWidth);
-            pane = {
-              'scope': scope,
-              'element': element
-            };
-            $scope.panes.push(pane);
-            return $scope.setPanesWrapperWidth();
-          };
-          return ctrl.unregisterPane = function(scope) {
-            var index, j, len, pane, ref, unregisterPaneIndex;
-            unregisterPaneIndex = void 0;
-            ref = $scope.panes;
-            for (index = j = 0, len = ref.length; j < len; index = ++j) {
-              pane = ref[index];
-              if (pane.scope.$id === scope.$id) {
-                unregisterPaneIndex = index;
+        controller: [
+          '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+            var ctrl, w;
+            w = angular.element($window);
+            $scope.visibleElements = function() {
+              if ($element.width() > 460) {
+                return 3;
               }
-            }
-            $scope.panes.splice(unregisterPaneIndex, 1);
-            return $scope.setPanesWrapperWidth();
-          };
-        }
+              if ($element.width() > 1024) {
+                return 5;
+              }
+              return 1;
+            };
+            $scope.setItemWidth = function() {
+              return $element.width() / $scope.visibleElements();
+            };
+            $scope.itemWidth = $scope.setItemWidth();
+            $scope.panesWidth = void 0;
+            $scope.panes = [];
+            $scope.position = 0;
+            $scope.currentPaneIndex = 0;
+            $scope.isNextArrowVisible = function() {
+              return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
+            };
+            $scope.next = function() {
+              $scope.position = $scope.position - $scope.itemWidth;
+              return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
+            };
+            $scope.prev = function() {
+              $scope.position = $scope.position + $scope.itemWidth;
+              return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
+            };
+            $scope.setPanesWrapperWidth = function() {
+              $scope.panesWidth = $scope.panes.length * $scope.itemWidth;
+              $scope.position = 0;
+              return $scope.currentPaneIndex = 0;
+            };
+            w.bind('resize', function() {
+              var j, len, pane, ref;
+              $scope.itemWidth = $scope.setItemWidth();
+              $scope.setPanesWrapperWidth();
+              ref = $scope.panes;
+              for (j = 0, len = ref.length; j < len; j++) {
+                pane = ref[j];
+                pane.scope.setWidth($scope.itemWidth);
+              }
+              return $scope.$apply();
+            });
+            ctrl = this;
+            ctrl.registerPane = function(scope, element) {
+              var pane;
+              scope.setWidth($scope.itemWidth);
+              pane = {
+                'scope': scope,
+                'element': element
+              };
+              $scope.panes.push(pane);
+              return $scope.setPanesWrapperWidth();
+            };
+            return ctrl.unregisterPane = function(scope) {
+              var index, j, len, pane, ref, unregisterPaneIndex;
+              unregisterPaneIndex = void 0;
+              ref = $scope.panes;
+              for (index = j = 0, len = ref.length; j < len; index = ++j) {
+                pane = ref[index];
+                if (pane.scope.$id === scope.$id) {
+                  unregisterPaneIndex = index;
+                }
+              }
+              $scope.panes.splice(unregisterPaneIndex, 1);
+              return $scope.setPanesWrapperWidth();
+            };
+          }
+        ]
       };
     }
   ]).directive('wlCarouselPane', [
