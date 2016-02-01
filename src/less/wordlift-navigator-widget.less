@@ -10,23 +10,31 @@
 		padding: 0em;
 		margin: 0em;
 		background-color:#fff;
-			
+		
+		.wl-item-wrapper {
+			/*position: relative;*/
+		}
+	
 		.wl-entity-wrapper {
 
 			padding: 0em;
 			margin: 0em;
+			position:absolute;
+			bottom:0;
+			width:100%;
+
 			
 			h6 {
   				text-transform: uppercase;
 				font-size: 0.86em;
 				padding: 0.6em;
 				margin: 0;
-				background-color:#ddd;
-		
+				background-color:#eee;
+				border-top:#ccc 1px solid;
+				
 			}
 
 			.wl-type {
-
 
 					&.wl-nv-creative-work { .fa-icon(@fa-var-lightbulb-o) }
   					&.wl-nv-event { .fa-icon(@fa-var-calendar) }

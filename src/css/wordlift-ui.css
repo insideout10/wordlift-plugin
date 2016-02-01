@@ -1529,16 +1529,23 @@
   margin: 0em;
   background-color: #fff;
 }
+.wl-navigator-widget .wl-posts .wl-item-wrapper {
+  /*position: relative;*/
+}
 .wl-navigator-widget .wl-posts .wl-entity-wrapper {
   padding: 0em;
   margin: 0em;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper h6 {
   text-transform: uppercase;
   font-size: 0.86em;
   padding: 0.6em;
   margin: 0;
-  background-color: #ddd;
+  background-color: #eee;
+  border-top: #ccc 1px solid;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type {
   font-size: inherit !important;
