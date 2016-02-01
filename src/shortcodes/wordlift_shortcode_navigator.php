@@ -59,11 +59,11 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 		// loop over them and take the first one which is not already in the $related_posts
 		foreach ( $referencing_posts as $referencing_post ) {
 
-			if ( ! in_array( $referencing_post->ID, $related_posts_ids ) && $referencing_post->ID != $current_post_id ) {
-				$related_posts_ids[] = $referencing_post->ID;
+			if ( ! in_array( $referencing_post->ID, $results ) && $referencing_post->ID != $current_post_id ) {
+				$results_ids[] = $referencing_post->ID;
 				// TODO serialize entity and add permalink
 				// TODO returns just title, permalink and thumbnail for post
-				$related_posts[]     = array( $referencing_post, $rel_entity );
+				$results[]     = array( $referencing_post, $rel_entity );
 			}
 		}
 	}
