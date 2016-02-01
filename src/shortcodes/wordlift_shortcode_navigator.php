@@ -94,13 +94,6 @@ function wordlift_shortcode_navigator() {
 		return '';
 	}
 
-	// include slick on page
-	wp_enqueue_script( 'slick', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/slick.min.js' );
-	wp_enqueue_style( 'slick', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick.css' );
-	wp_enqueue_style( 'slick-theme', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick-theme.css' );
-	wp_enqueue_style( 'slick-theme-wordlift', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick-theme-wordlift.css' );
-
-
 	// get posts that will populate the navigator (criteria may vary, see function *wordlift_shortcode_navigator_populate*)
 	// The result array will contains tuples (post_object, entity_object)
 	$related_posts_and_entities = wordlift_shortcode_navigator_populate( get_the_ID() );
