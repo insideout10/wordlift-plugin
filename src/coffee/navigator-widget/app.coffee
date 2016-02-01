@@ -21,9 +21,10 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
     $scope.items = []
     $scope.configuration = configuration
         
-    $scope.$on "postsLoaded", (event, posts) -> 
-      $log.debug "Referencing posts for item #{configuration.post_id} ..."
-      $scope.posts = posts
+    $scope.$on "itemsLoaded", (event, items) -> 
+      $log.debug "Rertieved items for post #{configuration.post_id} ..."
+      $log.debug items
+      $scope.items = items
       
 ])
 # Retrieve post
@@ -41,7 +42,7 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
     )
     # If successful, broadcast an *analysisReceived* event.
     .success (data) ->
-      $rootScope.$broadcast "#itemsLoaded", data
+      $rootScope.$broadcast "itemsLoaded", data
     .error (data, status) ->
        $log.warn "Error loading items, statut #{status}"
 

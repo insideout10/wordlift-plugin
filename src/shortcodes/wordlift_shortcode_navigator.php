@@ -95,15 +95,17 @@ function wordlift_shortcode_navigator() {
 		return '';
 	}
 
+	$current_post = get_post();
+
 	wp_enqueue_script( 'angularjs', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/angular/angular.min.js' );
 	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
 	wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );	
 
 	$navigator_id = uniqid( 'wl-navigator-widget-' );
 
-	wp_localize_script( 'wordlift-navigator', 'wl_navigator_params', array(
+	wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array(
 			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
-			'action'				=> 'wordlift_navigator',
+			'action'				=> 'wl_navigator',
 			'post_id'				=> $current_post->ID
 		)
 	);

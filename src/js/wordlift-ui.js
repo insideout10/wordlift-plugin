@@ -536,9 +536,10 @@
     'DataRetrieverService', 'configuration', '$scope', '$log', function(DataRetrieverService, configuration, $scope, $log) {
       $scope.items = [];
       $scope.configuration = configuration;
-      return $scope.$on("postsLoaded", function(event, posts) {
-        $log.debug("Referencing posts for item " + configuration.post_id + " ...");
-        return $scope.posts = posts;
+      return $scope.$on("itemsLoaded", function(event, items) {
+        $log.debug("Rertieved items for post " + configuration.post_id + " ...");
+        $log.debug(items);
+        return $scope.items = items;
       });
     }
   ]).service('DataRetrieverService', [
@@ -553,7 +554,7 @@
           method: 'get',
           url: uri
         }).success(function(data) {
-          return $rootScope.$broadcast("#itemsLoaded", data);
+          return $rootScope.$broadcast("itemsLoaded", data);
         }).error(function(data, status) {
           return $log.warn("Error loading items, statut " + status);
         });
