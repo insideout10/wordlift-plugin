@@ -26,26 +26,22 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 	// prepare structures to memorize other related posts
 	$results     = array();
 	$blacklist_ids = array( $current_post_id );
-	
+	$related_entities = array();
+
 	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
 	// TODO Replace with a single query if it is possible
+	foreach ( array( 
+		WL_WHO_RELATION,
+		WL_WHAT_RELATION,
+		WL_WHERE_RELATION,
+		WL_WHEN_RELATION ) as $predicate ) {
 
-	$related_entities = wl_core_get_related_entities( $current_post_id, array(
-		'predicate' => WL_WHO_RELATION,
-		'status'    => 'publish'
-	) );
-	$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
-		'predicate' => WL_WHAT_RELATION,
-		'status'    => 'publish'
-	) ) );
-	$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
-		'predicate' => WL_WHERE_RELATION,
-		'status'    => 'publish'
-	) ) );
-	$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
-		'predicate' => WL_WHEN_RELATION,
-		'status'    => 'publish'
-	) ) );
+		$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
+			'predicate' => $predicate,
+			'status'    => 'publish'
+		) ) );
+	
+	}
 
 	foreach ( $related_entities as $related_entity ) {
 
