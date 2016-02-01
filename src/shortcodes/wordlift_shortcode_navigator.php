@@ -60,17 +60,19 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );		 
 			
 				$results[]     = array( 
-					array( 
+					'post' =>	array( 
 						'permalink' => get_post_permalink( $referencing_post_id ),
 						'title'		=> get_the_title( $referencing_post_id ),
 						'thumbnail'	=>  ( $thumbnail ) ?
 							$thumbnail : 
 							WL_DEFAULT_THUMBNAIL_PATH
-					), 
-					array(
-						'label' 	=> $serialized_entity[ 'label' ],
-						'mainType' 	=> $serialized_entity[ 'mainType' ],
-						'permalink'	=> get_post_permalink( $related_entity->ID )
+						),
+					'entity' => array( 
+						array(
+							'label' 	=> $serialized_entity[ 'label' ],
+							'mainType' 	=> $serialized_entity[ 'mainType' ],
+							'permalink'	=> get_post_permalink( $related_entity->ID )
+						)
 					) 
 				);
 			}
@@ -99,6 +101,12 @@ function wordlift_shortcode_navigator() {
 
 	$navigator_id = uniqid( 'wl-navigator-widget-' );
 
+	wp_localize_script( 'wordlift-navigator', 'wl_navigator_params', array(
+			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
+			'action'				=> 'wordlift_navigator',
+			'post_id'				=> $current_post->ID
+		)
+	);
 	return <<<EOF
             <div id="$navigator_id" class="wl-navigator-widget"></div>
 EOF;

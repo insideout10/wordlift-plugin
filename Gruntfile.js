@@ -56,7 +56,10 @@ module.exports = function ( grunt ) {
     config[ SOURCE_DIR + 'js/wordlift-ui.js' ] = [
         SOURCE_DIR + 'coffee/ui/chord.coffee',
         SOURCE_DIR + 'coffee/ui/timeline.coffee',
-        SOURCE_DIR + 'coffee/ui/geomap.coffee'
+        SOURCE_DIR + 'coffee/ui/geomap.coffee',
+        SOURCE_DIR + 'coffee/ui/carousel.coffee',
+        SOURCE_DIR + 'coffee/utils/app.utils.directives.coffee',
+        SOURCE_DIR + 'coffee/navigator-widget/app.coffee'
     ];
 
     // wordlift-faceted-entity-search-widget.js
