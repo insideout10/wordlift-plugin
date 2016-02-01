@@ -24,11 +24,12 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 	}
 
 	// prepare structures to memorize other related posts
-	$results_ids = array();
 	$results     = array();
+	$blacklist_ids = array( $current_post_id );
+	
+	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
+	// TODO Replace with a single query if it is possible
 
-	// get the related entities, ordered by WHO-WHAT-WHERE-WHEN 
-	// TODO Replace with a single query 
 	$related_entities = wl_core_get_related_entities( $current_post_id, array(
 		'predicate' => WL_WHO_RELATION,
 		'status'    => 'publish'
@@ -46,24 +47,35 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 		'status'    => 'publish'
 	) ) );
 
-	foreach ( $related_entities as $rel_entity ) {
-
-		wl_write_log( "Looking for posts related to entity $rel_entity->ID" );
+	foreach ( $related_entities as $related_entity ) {
 
 		// take the id of posts referencing the entity
-		// TODO return just posts ids
-		$referencing_posts = wl_core_get_related_posts( $rel_entity->ID, array(
+		$referencing_post_ids = wl_core_get_related_post_ids( $related_entity->ID, array(
 			'status' => 'publish'
 		) );
 
 		// loop over them and take the first one which is not already in the $related_posts
-		foreach ( $referencing_posts as $referencing_post ) {
+		foreach ( $referencing_post_ids as $referencing_post_id ) {
 
-			if ( ! in_array( $referencing_post->ID, $results ) && $referencing_post->ID != $current_post_id ) {
-				$results_ids[] = $referencing_post->ID;
-				// TODO serialize entity and add permalink
-				// TODO returns just title, permalink and thumbnail for post
-				$results[]     = array( $referencing_post, $rel_entity );
+			if ( ! in_array( $referencing_post_id, $blacklist_ids ) ) {
+				
+				$blacklist_ids[] = $referencing_post_id;
+
+				$serialized_entity = wl_serialize_entity( $related_entity );
+				$serialized_entity[ 'permalink' ] = get_post_permalink( $related_entity->ID );
+			
+				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );		 
+			
+				$results[]     = array( 
+					array( 
+						'permalink' => get_post_permalink( $referencing_post_id ),
+						'title'		=> get_the_title( $referencing_post_id ),
+						'thumbnail'	=>  ( $thumbnail ) ?
+							$thumbnail : 
+							WL_DEFAULT_THUMBNAIL_PATH
+					), 
+					$serialized_entity 
+				);
 			}
 		}
 	}
