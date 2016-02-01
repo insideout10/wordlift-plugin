@@ -1453,6 +1453,14 @@
   text-decoration: none;
   border-bottom: none;
 }
+.wl-card .wl-card-header {
+  padding: 0.6em;
+  position: relative;
+}
+.wl-card .wl-card-header a {
+  text-decoration: none;
+  border-bottom: none;
+}
 .wl-selected-items-wrapper {
   position: relative;
   overflow: hidden;
@@ -1510,17 +1518,121 @@
   color: #aa0000;
   cursor: pointer;
 }
-.wordlift-navigator-widget {
+.wl-navigator-widget {
   font-size: 14px !important;
-  /* border:#e2e2e2 1px solid; */
   padding: 0.6em;
   margin: 0.6em 0em;
   background-color: #eee;
 }
-.wordlift-navigator-widget .wl-posts {
+.wl-navigator-widget .wl-posts {
   padding: 0em;
   margin: 0em;
   background-color: #fff;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper {
+  padding: 0em;
+  margin: 0em;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper h6 {
+  text-transform: uppercase;
+  font-size: 0.86em;
+  padding: 0.6em;
+  margin: 0;
+  background-color: #ddd;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type {
+  font-size: inherit !important;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-creative-work {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-creative-work:before {
+  content: "\f0eb";
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-event {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-event:before {
+  content: "\f073";
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-organization {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-organization:before {
+  content: "\f0f7";
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-local-business {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-local-business:before {
+  content: "\f0f7";
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-person {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-person:before {
+  content: "\f007";
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-place {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-place:before {
+  content: "\f041";
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-thing {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+.wl-navigator-widget .wl-posts .wl-entity-wrapper .wl-type.wl-nv-thing:before {
+  content: "\f016";
 }
 path.wl-person {
   fill: #ff0000;

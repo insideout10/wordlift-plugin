@@ -1,8 +1,7 @@
-.wordlift-navigator-widget {
+.wl-navigator-widget {
 
 	font-size:14px !important;
 	
-	/* border:#e2e2e2 1px solid; */
 	padding: 0.6em;
 	margin: 0.6em 0em;
 	background-color:#eee;
@@ -12,5 +11,35 @@
 		margin: 0em;
 		background-color:#fff;
 			
+		.wl-entity-wrapper {
+
+			padding: 0em;
+			margin: 0em;
+			
+			h6 {
+  				text-transform: uppercase;
+				font-size: 0.86em;
+				padding: 0.6em;
+				margin: 0;
+				background-color:#ddd;
+		
+			}
+
+			.wl-type {
+
+
+					&.wl-nv-creative-work { .fa-icon(@fa-var-lightbulb-o) }
+  					&.wl-nv-event { .fa-icon(@fa-var-calendar) }
+  					&.wl-nv-organization { .fa-icon(@fa-var-building-o) }
+  					&.wl-nv-local-business { .fa-icon(@fa-var-building-o) }
+  					&.wl-nv-person { .fa-icon(@fa-var-user) }
+  					&.wl-nv-place { .fa-icon(@fa-var-map-marker); }
+  					&.wl-nv-thing { .fa-icon(@fa-var-file-o) }	
+
+  					font-size: inherit !important;
+			}
+		}
 	}
+
+
 }

@@ -68,11 +68,9 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 							WL_DEFAULT_THUMBNAIL_PATH
 						),
 					'entity' => array( 
-						array(
-							'label' 	=> $serialized_entity[ 'label' ],
-							'mainType' 	=> $serialized_entity[ 'mainType' ],
-							'permalink'	=> get_post_permalink( $related_entity->ID )
-						)
+						'label' 	=> $serialized_entity[ 'label' ],
+						'mainType' 	=> $serialized_entity[ 'mainType' ],
+						'permalink'	=> get_post_permalink( $related_entity->ID )
 					) 
 				);
 			}
