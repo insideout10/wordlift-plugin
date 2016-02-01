@@ -56,10 +56,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 			if ( ! in_array( $referencing_post_id, $blacklist_ids ) ) {
 				
 				$blacklist_ids[] = $referencing_post_id;
-
 				$serialized_entity = wl_serialize_entity( $related_entity );
-				$serialized_entity[ 'permalink' ] = get_post_permalink( $related_entity->ID );
-			
 				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );		 
 			
 				$results[]     = array( 
@@ -70,7 +67,11 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 							$thumbnail : 
 							WL_DEFAULT_THUMBNAIL_PATH
 					), 
-					$serialized_entity 
+					array(
+						'label' 	=> $serialized_entity[ 'label' ],
+						'mainType' 	=> $serialized_entity[ 'mainType' ],
+						'permalink'	=> get_post_permalink( $related_entity->ID )
+					) 
 				);
 			}
 		}
