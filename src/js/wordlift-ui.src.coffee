@@ -599,17 +599,16 @@ $(
       <div class="wl-posts">
         <div wl-carousel>
           <div class="wl-post wl-card wl-item-wrapper" ng-repeat="item in items" wl-carousel-pane>
+            <div class="wl-card-header wl-entity-wrapper"> 
+              <h6>
+                <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
+              </h6>
+            </div>
             <div class="wl-card-image"> 
               <img ng-src="{{item.post.thumbnail}}" />
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
-            </div>
-            <div class="wl-card-header wl-entity-wrapper"> 
-              <h6>
-                <i class="wl-type" ng-class="'wl-nv-' + item.entity.mainType"></i>  
-                <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
-              </h6>
             </div>
           </div>
         </div>
