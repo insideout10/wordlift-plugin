@@ -67,8 +67,8 @@ class Wordlift_Dashboard_Service {
 			array(  'a' => array( 'href' => array() ) ) ), 
 			$this->render_stat_param( 'annotated_posts_percentage' ),
 			esc_url( admin_url( 'edit.php' ) ),
-			$this->render_stat_param( 'posts' ),
-			$this->render_stat_param( 'annotated_posts' )  
+			$this->render_stat_param( 'annotated_posts' ),
+			$this->render_stat_param( 'posts' )  
 		); 
 
 		$rating_title = __( 'avarage entity rating', 'wordlift' ); 
