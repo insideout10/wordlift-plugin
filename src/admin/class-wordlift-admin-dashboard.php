@@ -142,6 +142,11 @@ EOF;
 	 */
 	public function ajax_get_stats() {
 		
+		// If needed, the transient is force to reloaed
+		if ( isset( $_GET[ 'force_reload'] ) ) {
+			delete_transient( self::TRANSIENT_NAME );
+		}
+
 		// Try to retrieve the transient
 		$stats = get_transient( self::TRANSIENT_NAME );
 
@@ -187,7 +192,7 @@ EOF;
     	$table_name = wl_core_get_relation_instances_table_name();
     	// Calculate sql statement
 		$sql_statement = <<<EOF
-    		SELECT COUNT(*) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
+    		SELECT COUNT(distinct(p.id)) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
 EOF;
 		// Perform the query
 		return (int) $wpdb->get_var( $sql_statement ); 
