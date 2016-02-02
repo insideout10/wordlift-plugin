@@ -1523,9 +1523,13 @@
   font-size: 10px;
   margin: 0.6em 0.6em 1.6em 0.6em;
   text-transform: capitalize;
-  border-left: #f20f62 10px solid;
-  padding: 0 0 0 6px;
+  padding: 0;
   line-height: 10px;
+}
+@media screen and (max-width: 460px) {
+  #wl-dashboard-widget-inner-wrapper h4 {
+    font-size: 8px;
+  }
 }
 #wl-dashboard-widget-inner-wrapper h5 {
   font-size: 1.6em;
@@ -1566,6 +1570,11 @@
 #wl-dashboard-widget-inner-wrapper .wl-info:before {
   content: "\f129";
 }
+@media screen and (max-width: 460px) {
+  #wl-dashboard-widget-inner-wrapper .wl-info {
+    padding: 0.2em;
+  }
+}
 #wl-dashboard-widget-inner-wrapper .wl-stat-value {
   font-weight: bold;
   border-bottom: #f20f62 2px solid;
@@ -1579,6 +1588,11 @@
   margin: 0.6em 1.2em;
   font-weight: bold;
   text-transform: uppercase;
+}
+@media screen and (max-width: 460px) {
+  #wl-dashboard-widget-inner-wrapper .wl-triples {
+    font-size: 2em;
+  }
 }
 #wl-dashboard-widget-inner-wrapper .wl-triples-label {
   font-size: 0.5em;
