@@ -94,21 +94,21 @@ class Wordlift_Dashboard_Service {
 	<div id="wl-dashboard-widget-inner-wrapper">
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
-				<h4>$enriched_posts_title <a href=""><i class="wl-info"></i></a></h4>
+				<h4>$enriched_posts_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-is-content-enrichment" target="_blank"><i class="wl-info"></i></a></h4>
 				<svg id="wl-posts-pie-chart" viewBox="0 0 32 32"><circle r="16" cx="16" cy="16" /></svg>
 			</div>
 			<p>$enriched_posts_caption</p>
 		</div>
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
-				<h4>$rating_title <a href=""><i class="wl-info"></i></a></h4>
+				<h4>$rating_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-factors-determine-the-rating-of-an-entity" target="_blank"><i class="wl-info"></i></a></h4>
 				<svg id="wl-entities-gauge-chart" viewBox="0 0 32 32"><circle r="16" cx="16" cy="16" class="baseline" /><circle r="16" cx="16" cy="16" class="stat" /></svg>
 			</div>
 			<p>$rating_caption</p>
 		</div>
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
-				<h4>$graph_title <a href=""><i class="wl-info"></i></a></h4>
+				<h4>$graph_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-is-a-triple" target="_blank"><i class="wl-info"></i></a></h4>
 				<div class="wl-triples">
 					<span id="wl-dashboard-widget-triples"></span>
 					<span class="wl-triples-label">$triples_label</span>
