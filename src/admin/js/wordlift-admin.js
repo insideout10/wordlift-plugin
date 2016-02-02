@@ -239,16 +239,4 @@
 
     } );
 
-    /**
-     * Disable entity uri metabox if needed
-     * 
-     * @since 3.4.0
-     */
-    $( function () {
-        if( $( '.wl-metabox input[name=entity_url]' ).length ){
-            $( '.wl-metabox input[name=entity_url]' ).prop('disabled', true);
-        }
-
-    } );
-
 })( jQuery );

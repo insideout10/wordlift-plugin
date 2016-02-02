@@ -36,42 +36,6 @@ function wl_entity_type_register() {
 
 add_action( 'init', 'wl_entity_type_register' );
 
-
-/**
- * Adds the Entity URL box and the Entity SameAs box (from the hook *add_meta_boxes*).
- */
-function wl_entity_type_meta_boxes() {
-	add_meta_box(
-		'wordlift_entity_box',
-		__( 'Entity URL', 'wordlift' ),
-		'wl_entity_type_meta_boxes_content',
-		'entity',
-		'normal',
-		'high'
-	);
-	
-	// Add filter to change the metabox CSS class
-	add_filter( 'postbox_classes_entity_wordlift_entity_box', 'wl_admin_metaboxes_add_css_class' );
-}
-
-add_action( 'add_meta_boxes', 'wl_entity_type_meta_boxes' );
-
-/**
- * Displays the content of the entity URL box (called from the *entity_url* method).
- *
- * @param WP_Post $post The post.
- */
-function wl_entity_type_meta_boxes_content( $post ) {
-
-	wp_nonce_field( 'wordlift_entity_box', 'wordlift_entity_box_nonce' );
-
-	$value = wl_get_entity_uri( $post->ID );
-
-	echo '<label for="entity_url">' . __( 'entity-url-label', 'wordlift' ) . '</label>';
-	echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
-
-}
-
 /**
  * Set the main type for the entity using the related taxonomy.
  *
