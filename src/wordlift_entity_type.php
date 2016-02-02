@@ -70,71 +70,7 @@ function wl_entity_type_meta_boxes_content( $post ) {
 	echo '<label for="entity_url">' . __( 'entity-url-label', 'wordlift' ) . '</label>';
 	echo '<input type="text" id="entity_url" name="entity_url" placeholder="enter a URL" value="' . esc_attr( $value ) . '" style="width: 100%;" />';
 
-	/*
-$entity_types = implode( "\n", wl_get_entity_rdf_types( $post->ID ) );
-
-echo '<label for="entity_types">' . __( 'entity-types-label', 'wordlift' ) . '</label>';
-echo '<textarea style="width: 100%;" id="entity_types" name="entity_types" placeholder="Entity Types URIs">' . esc_attr( $entity_types ) . '</textarea>';
-	*/
 }
-
-/**
- * Saves the entity URL for the specified post ID (set via the *save_post* hook).
- *
- * @param int $post_id The post ID.
- *
- * @return int|null
- */
-function wl_entity_type_save_custom_fields( $post_id ) {
-
-	// Check if our nonce is set.
-	if ( ! isset( $_POST['wordlift_entity_box_nonce'] ) ) {
-		return $post_id;
-	}
-
-	$nonce = $_POST['wordlift_entity_box_nonce'];
-
-	// Verify that the nonce is valid.
-	if ( ! wp_verify_nonce( $nonce, 'wordlift_entity_box' ) ) {
-		return $post_id;
-	}
-
-	// If this is an autosave, our form has not been submitted, so we don't want to do anything.
-	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-		return $post_id;
-	}
-
-	// Check the user's permissions.
-	if ( 'page' == $_POST['post_type'] ) {
-
-		if ( ! current_user_can( 'edit_page', $post_id ) ) {
-			return $post_id;
-		}
-
-	} else {
-
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id;
-		}
-	}
-
-	// save the entity URL.
-	wl_set_entity_uri(
-		$post_id,
-		$_POST['entity_url']
-	);
-
-	/*
-// save the rdf:type values.
-wl_set_entity_rdf_types(
-	$post_id,
-	explode( "\r\n", $_POST['entity_types'] )
-);
-	*/
-
-}
-
-add_action( 'save_post', 'wl_entity_type_save_custom_fields' );
 
 /**
  * Set the main type for the entity using the related taxonomy.
