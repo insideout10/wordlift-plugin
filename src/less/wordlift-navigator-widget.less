@@ -1,0 +1,57 @@
+.wl-navigator-widget {
+
+	font-size:14px !important;
+	
+	padding: 0.6em;
+	margin: 0.6em 0em;
+	background-color:#eee;
+
+	.wl-posts {
+		padding: 0em;
+		margin: 0em;
+		background-color:#fff;
+		
+		.wl-item-wrapper {
+			/*position: relative;*/
+		}
+	
+		.wl-entity-wrapper {
+
+			padding: 1em 0em;
+			margin: 0em;
+			
+			h6 {
+  				text-transform: uppercase;
+				font-size: 0.86em;
+				padding: 0 0.6em;
+				margin: 0 0.6em;
+				border-left:#ccc 10px solid;
+
+
+				a {
+					text-decoration: underline;
+				}
+				
+			}
+
+			.wl-right-arrow {
+				.fa-icon(@fa-var-tags)
+			}
+
+			.wl-type {
+
+					&.wl-nv-creative-work { .fa-icon(@fa-var-lightbulb-o) }
+  					&.wl-nv-event { .fa-icon(@fa-var-calendar) }
+  					&.wl-nv-organization { .fa-icon(@fa-var-building-o) }
+  					&.wl-nv-local-business { .fa-icon(@fa-var-building-o) }
+  					&.wl-nv-person { .fa-icon(@fa-var-user) }
+  					&.wl-nv-place { .fa-icon(@fa-var-map-marker); }
+  					&.wl-nv-thing { .fa-icon(@fa-var-file-o) }	
+
+  					font-size: inherit !important;
+			}
+		}
+	}
+
+
+}

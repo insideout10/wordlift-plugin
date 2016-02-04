@@ -1,5 +1,5 @@
 (function() {
-  var $;
+  var $, container, injector;
 
   $ = jQuery;
 
@@ -376,6 +376,204 @@
       });
     });
   });
+
+  angular.module('wordlift.ui.carousel', []).directive('wlCarousel', [
+    '$window', '$log', function($window, $log) {
+      return {
+        restrict: 'A',
+        scope: true,
+        transclude: true,
+        template: "<div class=\"wl-carousel\" ng-show=\"panes.length > 0\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-right=\"next()\"></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"currentPaneIndex > 0\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
+        controller: [
+          '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+            var ctrl, w;
+            w = angular.element($window);
+            $scope.visibleElements = function() {
+              if ($element.width() > 460) {
+                return 4;
+              }
+              return 1;
+            };
+            $scope.setItemWidth = function() {
+              return $element.width() / $scope.visibleElements();
+            };
+            $scope.itemWidth = $scope.setItemWidth();
+            $scope.panesWidth = void 0;
+            $scope.panes = [];
+            $scope.position = 0;
+            $scope.currentPaneIndex = 0;
+            $scope.isNextArrowVisible = function() {
+              return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
+            };
+            $scope.next = function() {
+              $scope.position = $scope.position - $scope.itemWidth;
+              return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
+            };
+            $scope.prev = function() {
+              $scope.position = $scope.position + $scope.itemWidth;
+              return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
+            };
+            $scope.setPanesWrapperWidth = function() {
+              $scope.panesWidth = $scope.panes.length * $scope.itemWidth;
+              $scope.position = 0;
+              return $scope.currentPaneIndex = 0;
+            };
+            w.bind('resize', function() {
+              var j, len, pane, ref;
+              $scope.itemWidth = $scope.setItemWidth();
+              $scope.setPanesWrapperWidth();
+              ref = $scope.panes;
+              for (j = 0, len = ref.length; j < len; j++) {
+                pane = ref[j];
+                pane.scope.setWidth($scope.itemWidth);
+              }
+              return $scope.$apply();
+            });
+            ctrl = this;
+            ctrl.registerPane = function(scope, element) {
+              var pane;
+              scope.setWidth($scope.itemWidth);
+              pane = {
+                'scope': scope,
+                'element': element
+              };
+              $scope.panes.push(pane);
+              return $scope.setPanesWrapperWidth();
+            };
+            return ctrl.unregisterPane = function(scope) {
+              var index, j, len, pane, ref, unregisterPaneIndex;
+              unregisterPaneIndex = void 0;
+              ref = $scope.panes;
+              for (index = j = 0, len = ref.length; j < len; index = ++j) {
+                pane = ref[index];
+                if (pane.scope.$id === scope.$id) {
+                  unregisterPaneIndex = index;
+                }
+              }
+              $scope.panes.splice(unregisterPaneIndex, 1);
+              return $scope.setPanesWrapperWidth();
+            };
+          }
+        ]
+      };
+    }
+  ]).directive('wlCarouselPane', [
+    '$log', function($log) {
+      return {
+        require: '^wlCarousel',
+        restrict: 'EA',
+        transclude: true,
+        template: "<div ng-transclude></div>",
+        link: function($scope, $element, $attrs, $ctrl) {
+          $log.debug("Going to add carousel pane with id " + $scope.$id + " to carousel");
+          $element.addClass("wl-carousel-item");
+          $scope.setWidth = function(size) {
+            return $element.css('width', size + "px");
+          };
+          $scope.$on('$destroy', function() {
+            $log.debug("Destroy " + $scope.$id);
+            return $ctrl.unregisterPane($scope);
+          });
+          return $ctrl.registerPane($scope, $element);
+        }
+      };
+    }
+  ]);
+
+  angular.module('wordlift.utils.directives', []).directive('wlOnError', [
+    '$parse', '$window', '$log', function($parse, $window, $log) {
+      return {
+        restrict: 'A',
+        compile: function($element, $attrs) {
+          return function(scope, element) {
+            var fn;
+            fn = $parse($attrs.wlOnError);
+            return element.on('error', function(event) {
+              var callback;
+              callback = function() {
+                return fn(scope, {
+                  $event: event
+                });
+              };
+              return scope.$apply(callback);
+            });
+          };
+        }
+      };
+    }
+  ]).directive('wlFallback', [
+    '$window', '$log', function($window, $log) {
+      return {
+        restrict: 'A',
+        priority: 99,
+        link: function($scope, $element, $attrs, $ctrl) {
+          return $element.bind('error', function() {
+            if ($attrs.src !== $attrs.wlFallback) {
+              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlFallback);
+              return $attrs.$set('src', $attrs.wlFallback);
+            }
+          });
+        }
+      };
+    }
+  ]);
+
+  $ = jQuery;
+
+  angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives']).provider("configuration", function() {
+    var _configuration, provider;
+    _configuration = void 0;
+    provider = {
+      setConfiguration: function(configuration) {
+        return _configuration = configuration;
+      },
+      $get: function() {
+        return _configuration;
+      }
+    };
+    return provider;
+  }).controller('NavigatorWidgetController', [
+    'DataRetrieverService', 'configuration', '$scope', '$log', function(DataRetrieverService, configuration, $scope, $log) {
+      $scope.items = [];
+      $scope.configuration = configuration;
+      return $scope.$on("itemsLoaded", function(event, items) {
+        $log.debug("Rertieved items for post " + configuration.post_id + " ...");
+        $log.debug(items);
+        return $scope.items = items;
+      });
+    }
+  ]).service('DataRetrieverService', [
+    'configuration', '$log', '$http', '$rootScope', function(configuration, $log, $http, $rootScope) {
+      var service;
+      service = {};
+      service.load = function() {
+        var uri;
+        uri = configuration.ajax_url + "?action=" + configuration.action + "&post_id=" + configuration.post_id;
+        $log.debug("Going to load navigator items from " + uri);
+        return $http({
+          method: 'get',
+          url: uri
+        }).success(function(data) {
+          return $rootScope.$broadcast("itemsLoaded", data);
+        }).error(function(data, status) {
+          return $log.warn("Error loading items, statut " + status);
+        });
+      };
+      return service;
+    }
+  ]).config([
+    'configurationProvider', function(configurationProvider) {
+      return configurationProvider.setConfiguration(window.wl_navigator_params);
+    }
+  ]);
+
+  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card wl-item-wrapper\" ng-repeat=\"item in items\" wl-carousel-pane>\n            <div class=\"wl-card-header wl-entity-wrapper\"> \n              <h6>\n                <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n              </h6>\n            </div>\n            <div class=\"wl-card-image\"> \n              <img ng-src=\"{{item.post.thumbnail}}\" />\n            </div>\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
+    'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
+      return $rootScope.$apply(function() {
+        return DataRetrieverService.load();
+      });
+    }
+  ]));
 
 }).call(this);
 
