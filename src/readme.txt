@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.5.0 (???) =
+* Enhancement: [#232](https://github.com/insideout10/wordlift-plugin/issues/232): Navigator widget refactoring. 
 
 = 3.4.0 (???) =
 * Fix: [#244](https://github.com/insideout10/wordlift-plugin/issues/244): Tinymce does not remain idle anymore switching between Visual and Text mode.
