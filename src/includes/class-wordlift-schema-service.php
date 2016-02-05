@@ -581,7 +581,7 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Organization',
 					'constraints' => array(
-						'uri_type' => 'Organization',
+						'uri_type' => array( 'Organization', 'LocalBusiness' ),
 						'cardinality' => INF
 					)
 				),

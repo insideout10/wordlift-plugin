@@ -86,6 +86,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.3.4 (2016-02-04) =
+* Fix: [#248](https://github.com/insideout10/wordlift-plugin/issues/248): include also LocalBusiness entities as suggestion for affiliation property for entities of type Person
+
 = 3.3.3 (2016-01-17) =
 * Fix: [#243](https://github.com/insideout10/wordlift-plugin/issues/243): Post status for published entities is properly preserved when used to disambiguate a post draft.
 
