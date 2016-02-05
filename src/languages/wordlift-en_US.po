@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2016-01-19 17:32+0100\n"
-"PO-Revision-Date: 2016-01-19 17:39+0100\n"
+"POT-Creation-Date: 2016-02-05 07:38+0100\n"
+"PO-Revision-Date: 2016-02-05 07:39+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -107,11 +107,11 @@ msgstr ""
 msgid "Wordlift"
 msgstr ""
 
-#: ../includes/class-wordlift-entity-service.php:381
+#: ../includes/class-wordlift-entity-service.php:459
 msgid "Add more titles"
-msgstr ""
+msgstr "Add synonym"
 
-#: ../includes/class-wordlift-entity-service.php:619
+#: ../includes/class-wordlift-entity-service.php:697
 msgid "Delete"
 msgstr ""
 
@@ -225,11 +225,17 @@ msgstr ""
 msgid "The Redlink Application Name"
 msgstr ""
 
-#: ../modules/configuration/wordlift_configuration.php:443
+#: ../modules/configuration/wordlift_configuration.php:440
 msgid "application-key-not-set"
 msgstr ""
 "WordLift application key is not set. Please <a target=\"_blank\" href=\"%1$s"
 "\">signup</a> and we will get in contact with you to send you the key."
+
+#: ../modules/configuration/wordlift_configuration.php:446
+msgid "Dataset URI missing in configuration"
+msgstr ""
+"WordLift Dataset URI is missing in configuration. Please check your WordLift "
+"key."
 
 #: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
 msgid "Prefixes"

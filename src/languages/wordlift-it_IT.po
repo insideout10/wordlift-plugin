@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2016-01-19 17:39+0100\n"
-"PO-Revision-Date: 2016-01-19 17:46+0100\n"
+"POT-Creation-Date: 2016-02-05 07:34+0100\n"
+"PO-Revision-Date: 2016-02-05 07:40+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: it\n"
@@ -107,11 +107,11 @@ msgstr "Non hai i permessi per accedere a questa pagina."
 msgid "Wordlift"
 msgstr ""
 
-#: ../includes/class-wordlift-entity-service.php:381
+#: ../includes/class-wordlift-entity-service.php:459
 msgid "Add more titles"
-msgstr ""
+msgstr "Aggiungi un sinonimo"
 
-#: ../includes/class-wordlift-entity-service.php:619
+#: ../includes/class-wordlift-entity-service.php:697
 msgid "Delete"
 msgstr ""
 
@@ -226,11 +226,17 @@ msgstr ""
 msgid "The Redlink Application Name"
 msgstr ""
 
-#: ../modules/configuration/wordlift_configuration.php:443
+#: ../modules/configuration/wordlift_configuration.php:440
 msgid "application-key-not-set"
 msgstr ""
 "La chiave di WordLift non é impostata. <a target=\"_blank\" href=\"%1$s"
 "\">Iscriviti</a> e ti contatteremo per fornirtene una."
+
+#: ../modules/configuration/wordlift_configuration.php:446
+msgid "Dataset URI missing in configuration"
+msgstr ""
+"La URI del tuo dataset WordLift non è configurata correttamente. Controlla "
+"la validità della tea chiave WordLift."
 
 #: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
 msgid "Prefixes"
