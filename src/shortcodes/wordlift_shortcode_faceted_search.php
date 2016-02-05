@@ -21,9 +21,7 @@ function wl_shortcode_faceted_search( $atts ) {
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
 	wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css' );
-
-	wp_enqueue_script( 'angularjs', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/angular/angular.min.js' );
-
+	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 	wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.min.js' );
 
 	wp_localize_script( 'wordlift-faceted-search', 'wl_faceted_search_params', array(
