@@ -415,7 +415,7 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/PostalAddress',
 					'constraints' => array(
-						'uri_type'    => 'Place',
+						'uri_type'    => array( 'Place', 'LocalBusiness' ),
 						'cardinality' => INF
 					)
 				)
