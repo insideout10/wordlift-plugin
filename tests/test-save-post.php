@@ -122,11 +122,11 @@ EOF;
 		$this->assertCount( 10, $lines );
 		// check all entities published
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 4, $lines );
+		$this->assertCount( 5, $lines );
 		$this->assertEquals( 'publish', get_post_status( $entity_1_id ) );
 
 		$lines = $this->getPostTriples( $entity_2_id );
-		$this->assertCount( 4, $lines );
+		$this->assertCount( 5, $lines );
 		$this->assertEquals( 'publish', get_post_status( $entity_2_id ) );
 
 		// unpublish the post.
@@ -163,10 +163,10 @@ EOF;
 		$this->assertCount( 10, $lines );
 
 		$lines = $this->getPostTriples( $entity_1_id );
-		$this->assertCount( 4, $lines );
+		$this->assertCount( 5, $lines );
 
 		$lines = $this->getPostTriples( $entity_2_id );
-		$this->assertCount( 4, $lines );
+		$this->assertCount( 5, $lines );
 
 		// unpublish post 1
 
@@ -181,7 +181,7 @@ EOF;
 		$this->assertCount( 1, $lines );
 
 		$lines = $this->getPostTriples( $entity_2_id );
-		$this->assertCount( 4, $lines );
+		$this->assertCount( 5, $lines );
 
 	}
        
@@ -208,8 +208,11 @@ EOF;
         
         // Verify the post triples does no more contain a reference to the entity
         $lines = $this->getPostTriples( $p_id );
-        
         $this->assertCount( 8, $lines );
+		// Verify the post triples does no more contain a reference to the entity
+        $lines = $this->getPostTriples( $e_id );
+		// Verify the post triples does no more contain a reference to the entity
+        $this->assertCount( 1, $lines );
         
     }
 
