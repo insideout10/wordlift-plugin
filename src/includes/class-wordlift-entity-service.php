@@ -255,16 +255,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_entity_uri( $title, $entity_type_slug, $increment_digit = 0 ) {
-
-		// TODO Look for a given entity with the same title and type
-
-		// Get a sanitized uri for a given title
-		return $this->inner_build_entity_uri( $title, $increment_digit );
-
-	}
-
-	public function inner_build_entity_uri( $title, $increment_digit = 0 ) {
+	public function build_entity_uri( $title, $post_type, $increment_digit = 0 ) {
 
 		// Get a sanitized uri for a given title
 		$entity_slug = ( 0 === $increment_digit ) ? 
@@ -274,7 +265,7 @@ class Wordlift_Entity_Service {
 		// Compose a candidated uri
 		$new_entity_uri = sprintf( '%s/%s/%s', 
 			wl_configuration_get_redlink_dataset_uri(), 
-			self::TYPE_NAME, 
+			$post_type, 
 			wl_sanitize_uri_path( $type ) 
 		); 
 		// Check if the candidated uri already is used
@@ -285,7 +276,7 @@ class Wordlift_Entity_Service {
     		WL_ENTITY_URL_META_NAME,
     		$new_entity_uri
     	);
-    	
+
     	// Perform the query
 		$meta_instances = (int) $wpdb->get_var( $stmt ); 		
 		// If the post does not exist, then the new uri is returned 

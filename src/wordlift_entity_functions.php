@@ -67,15 +67,12 @@ function wl_build_entity_uri( $post_id ) {
 	}
 
 	// Create an ID given the title.
-	$path = wl_sanitize_uri_path( $post->post_title );
-
-	// If the path is empty, i.e. there's no title, use the post ID as path.
-	if ( empty( $path ) ) {
-		$path = "id/$post->ID";
+	$entity_slug = wl_sanitize_uri_path( $post->post_title );
+	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
+	if ( empty( $entity_slug ) ) {
+		$entity_slug = "id/$post->ID";
 	}
-
-	// Create the URL (dataset base URI has a trailing slash).
-	$url = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), $post->post_type, $path );
+	$url = Wordlift_Entity_Service::get_instance()->build_entity_uri( $entity_slug, $post->post_type );
 
 	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
 
