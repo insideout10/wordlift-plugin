@@ -944,8 +944,16 @@ function wl_schema_get_property_expected_type( $property_name ) {
 
 				// Does the property accept a specific schema type?
 				if( isset( $field['constraints'] ) && isset( $field['constraints']['uri_type'] ) ) {
+					
 					// Take note of expected schema type
-					$expected_types[] = wl_build_full_schema_uri_from_schema_slug( $field['constraints']['uri_type'] );
+					$uri_types = ( is_array( $field['constraints']['uri_type'] ) ) ?
+						$field['constraints']['uri_type'] : 
+						array( $field['constraints']['uri_type'] );
+
+					foreach ( $uri_types as $uri_type ) {
+						$expected_types[] = wl_build_full_schema_uri_from_schema_slug( $uri_type );
+					}
+
 				} else {
 					// Take note of expected type
 					$expected_types[] = $field['type'];
