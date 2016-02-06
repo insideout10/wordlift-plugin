@@ -159,6 +159,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// set the label
+	$sparql .= "<$uri_e> dct:title \"$label\"@$site_language . \n";
 	$sparql .= "<$uri_e> rdfs:label \"$label\"@$site_language . \n";
 
 	// Set the alternative labels.
@@ -250,6 +251,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	$query = rl_sparql_prefixes() . <<<EOF
     $delete_stmt
     DELETE { <$uri_e> rdfs:label ?o } WHERE  { <$uri_e> rdfs:label ?o };
+    DELETE { <$uri_e> dct:title ?o } WHERE  { <$uri_e> dct:title ?o };
     DELETE { <$uri_e> owl:sameAs ?o . } WHERE  { <$uri_e> owl:sameAs ?o . };
     DELETE { <$uri_e> schema:description ?o . } WHERE  { <$uri_e> schema:description ?o . };
     DELETE { <$uri_e> schema:url ?o . } WHERE  { <$uri_e> schema:url ?o . };
