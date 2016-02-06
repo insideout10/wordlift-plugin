@@ -71,39 +71,39 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-			// Local entities have a tmp uri with 'local-entity-'
+
+			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				// Build the proper uri
-				$uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
+				
+				$uri = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity[ 'label' ], $entity[ 'main_type' ] )  
 				// Populate the mapping
 				$entities_uri_mapping[ $entity_uri ] = $uri;
 				// Override the entity obj
 				$entities_via_post[ $entity_uri ]['uri'] = $uri;
 			}
+
+			// Update entity data with related post
+			$entity[ 'related_post_id' ] = $post_id;
+			// Save the entity.
+			$entity_post = wl_save_entity( $entity );
+
 		}
 
 		// Populate the $entities_predicates_mapping
-		// Local Redlink uris need to be used here
 		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
 			foreach ( $entity_uris as $entity_uri ) {
-				// Retrieve the entity label needed to build the uri
-				// If the current uri is an internal uri, then entity uri is preserved:
-				// the current label could be an alternative label that has not to impact on entity uri
-				if ( 0 !== strrpos( $entity_uri, wl_configuration_get_redlink_dataset_uri() ) ) {	
-					$label	= $entities_via_post[ stripslashes( $entity_uri ) ]['label'];
-					$uri	= sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
-				} else {			
-					$uri	= stripslashes( $entity_uri );
-				}
+
+				if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
+					$uri = $entities_uri_mapping[ $entity_uri ];
+				} else {
+					$uri = stripslashes( $entity_uri );
+				}				
 				
-				$entities_predicates_mapping[ $uri ][] = $predicate;
-				
+				$entities_predicates_mapping[ $uri ][] = $predicate;	
 			}
 		}
 		
-		// Save entities (properties included) and push them to Redlink
-		wl_save_entities( array_values( $entities_via_post ), $post_id );
 	}
 
 	// Replace tmp uris in content post if needed
@@ -149,8 +149,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
 		}
 
-		// TODO Check if is needed
-		wl_linked_data_push_to_redlink( $referenced_entity_id );
 	}
 
 	// Push the post to Redlink.
@@ -179,39 +177,6 @@ function wordlift_save_post_add_default_schema_type( $entity_id ) {
 // Priority 1 (default is 10) because we want the default type to be set as soon as possible
 // Attatched to save_post because *wl_linked_data_save_post* does not always fire
 add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
-
-/**
- * Save the specified entities to the local storage.
- *
- * @param array $entities An array of entities.
- * @param int $related_post_id A related post ID.
- *
- * @return array An array of posts.
- */
-function wl_save_entities( $entities, $related_post_id = null ) {
-
-	// wl_write_log( "[ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
-
-	// Prepare the return array.
-	$posts = array();
-
-	// Save each entity and store the post id.
-	foreach ( $entities as $entity ) {
-		
-		// Update entity data with related post
-		$entity['related_post_id'] = $related_post_id;
-	
-		// Save the entity.
-		$entity_post = wl_save_entity( $entity );
-
-		// Store the post in the return array if successful.
-		if ( null !== $entity_post ) {
-			array_push( $posts, $entity_post );
-		}
-	}
-
-	return $posts;
-}
 
 /**
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
