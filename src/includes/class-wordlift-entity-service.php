@@ -262,7 +262,7 @@ class Wordlift_Entity_Service {
 		// Get a sanitized uri for a given title
 		$entity_slug = ( 0 == $increment_digit ) ? 
 			wl_sanitize_uri_path( $title ) :
-			wl_sanitize_uri_path( "$title-$suffix_digit" );
+			wl_sanitize_uri_path( $title . '_'. $suffix_digit );
 
 		// Compose a candidated uri
 		$new_entity_uri = sprintf( '%s/%s/%s', 
