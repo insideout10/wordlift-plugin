@@ -70,13 +70,17 @@ function wl_build_entity_uri( $post_id ) {
 	$entity_slug = wl_sanitize_uri_path( $post->post_title );
 	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
 	if ( empty( $entity_slug ) ) {
-		$entity_slug = "id/$post->ID";
+		return sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			$post->post_type, 
+			"id/$post->ID" 
+		); 
 	}
-	$url = Wordlift_Entity_Service::get_instance()->build_uri( $entity_slug, $post->post_type );
+	
+	return Wordlift_Entity_Service::get_instance()->build_uri( 
+		$entity_slug, 
+		$post->post_type );
 
-	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
-
-	return $url;
 }
 
 /**
