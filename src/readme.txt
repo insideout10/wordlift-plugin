@@ -91,7 +91,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 * Enhancement: [#147](https://github.com/insideout10/wordlift-plugin/issues/147): Navigator widget works also on entity pages. 
 * Enhancement: [#232](https://github.com/insideout10/wordlift-plugin/issues/232): Navigator widget refactoring. 
 * Enhancement: [#224](https://github.com/insideout10/wordlift-plugin/issues/224): Enable entity partial match in autocomplete.
-* Enhancement: [#224](https://github.com/insideout10/wordlift-plugin/issues/224): Enable entity partial match in autocomplete.  
+* Enhancement: [#215](https://github.com/insideout10/wordlift-plugin/issues/215): Allow to create multiple entities with same label and different entity types safely (without any overlapping).  
 * Enhancement: [#130](https://github.com/insideout10/wordlift-plugin/issues/130): Remove angularjs bower dependency. CDN is used instead. 
 
 = 3.4.0 (???) =
