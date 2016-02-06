@@ -209,7 +209,11 @@ class PostTest extends WP_UnitTestCase {
 		}
 
 		// Save the entities in the array.
-		$entity_posts = wl_save_entities( $entities );
+		$entity_posts = array();
+		foreach ( $entities as $uri => $entity )  {
+			$entity_posts[] = wl_save_entity( $entity );
+
+		}
 		// Publish
 		$entity_post_ids = array_map( function ( $item ) {
 			return $item->ID;

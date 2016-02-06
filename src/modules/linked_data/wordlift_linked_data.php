@@ -72,26 +72,27 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
+			$uri = Wordlift_Entity_Service::get_instance()->build_uri( 
+				$entity[ 'label' ], 
+				Wordlift_Entity_Service::TYPE_NAME 
+			);
+
+			if ( !Wordlift_Entity_Service::get_instance()->is_internal_uri( $entity_uri ) ) {
+				// Populate the mapping
+				$entities_uri_mapping[ $entity_uri ] = $uri;
+			}
+
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				
-				$uri = Wordlift_Entity_Service::get_instance()->build_uri( 
-					$entity[ 'label' ], 
-					Wordlift_Entity_Service::TYPE_NAME 
-				);
-
-				// Populate the mapping
-				$entities_uri_mapping[ $entity_uri ] = $uri;
 				// Override the entity obj
 				$entity[ 'uri' ] = $uri;
-
 			}
 
 			// Update entity data with related post
 			$entity[ 'related_post_id' ] = $post_id;
 			// Save the entity if is a new entity
-			$entity_post = wl_save_entity( $entity );
+			wl_save_entity( $entity );
 
 		}
 
@@ -99,11 +100,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
 			foreach ( $entity_uris as $entity_uri ) {
 
-				if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
+				$uri = stripslashes( $entity_uri );
+				
+				if ( !Wordlift_Entity_Service::get_instance()->is_internal_uri( $entity_uri ) ) {
 					$uri = $entities_uri_mapping[ $entity_uri ];
-				} else {
-					$uri = stripslashes( $entity_uri );
-				}				
+				} 				
 
 				$entities_predicates_mapping[ $uri ][] = $predicate;	
 			}
@@ -136,11 +137,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 			// Retrieve the entity uri
 			$referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
-					
 			// Retrieve predicates for the current uri
 			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
 				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-					wl_write_log(" Going to add relation with predicate $predicate");
+					wl_write_log("Going to add relation with predicate $predicate");
 					wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
 				}
 			} else {
@@ -225,7 +225,7 @@ function wl_save_entity( $entity_data ) {
 	$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
 
 	if ( null !== $post ) {
-		return;
+		return $post;
 	}
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
