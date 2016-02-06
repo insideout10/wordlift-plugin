@@ -76,16 +76,21 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
 				
-				$uri = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity[ 'label' ], $entity[ 'main_type' ] );  
+				$uri = Wordlift_Entity_Service::get_instance()->build_uri( 
+					$entity[ 'label' ], 
+					Wordlift_Entity_Service::TYPE_NAME 
+				);
+
 				// Populate the mapping
 				$entities_uri_mapping[ $entity_uri ] = $uri;
 				// Override the entity obj
-				$entities_via_post[ $entity_uri ]['uri'] = $uri;
+				$entity[ 'uri' ] = $uri;
+
 			}
 
 			// Update entity data with related post
 			$entity[ 'related_post_id' ] = $post_id;
-			// Save the entity.
+			// Save the entity if is a new entity
 			$entity_post = wl_save_entity( $entity );
 
 		}
@@ -120,7 +125,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-
+	
 	// Reset previously saved instances
 	wl_core_delete_relation_instances( $post_id );
 
@@ -129,10 +134,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		if ( $entities_predicates_mapping ) {
 
-			// wl_write_log(" Going to manage relation instances according to the following mapping");
-
 			// Retrieve the entity uri
 			$referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
+					
 			// Retrieve predicates for the current uri
 			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
 				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
@@ -393,6 +397,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	$entities = array();
 	foreach ( $matches[1] as $uri ) {
 		$uri_d  = html_entity_decode( $uri );
+		
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
 
 		if ( null !== $entity ) {
