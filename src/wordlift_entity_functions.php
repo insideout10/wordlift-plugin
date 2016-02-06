@@ -72,7 +72,7 @@ function wl_build_entity_uri( $post_id ) {
 	if ( empty( $entity_slug ) ) {
 		$entity_slug = "id/$post->ID";
 	}
-	$url = Wordlift_Entity_Service::get_instance()->build_entity_uri( $entity_slug, $post->post_type );
+	$url = Wordlift_Entity_Service::get_instance()->build_uri( $entity_slug, $post->post_type );
 
 	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
 
@@ -101,7 +101,7 @@ function wl_get_entity_uri( $post_id ) {
 	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
-		$uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+		$uri = wl_build_entity_uri( $post_id ); 
 		wl_set_entity_uri( $post_id, $uri );
 	}
 

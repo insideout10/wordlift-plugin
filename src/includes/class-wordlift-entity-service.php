@@ -255,37 +255,42 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_entity_uri( $title, $post_type, $increment_digit = 0 ) {
-
+	public function build_uri( $title, $post_type, $increment_digit = 0 ) {
+		
+		// Get the entity slug suffix digit
+		$suffix_digit = $increment_digit + 1;
 		// Get a sanitized uri for a given title
-		$entity_slug = ( 0 === $increment_digit ) ? 
+		$entity_slug = ( 0 == $increment_digit ) ? 
 			wl_sanitize_uri_path( $title ) :
-			wl_sanitize_uri_path( "$title-$increment_digit" );
+			wl_sanitize_uri_path( "$title-$suffix_digit" );
 
 		// Compose a candidated uri
 		$new_entity_uri = sprintf( '%s/%s/%s', 
 			wl_configuration_get_redlink_dataset_uri(), 
 			$post_type, 
-			wl_sanitize_uri_path( $type ) 
+			$entity_slug 
 		); 
-		// Check if the candidated uri already is used
+		
+		$this->log_service->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
+		
 		global $wpdb;
-    	// Check if the entity uri is used as meta_value
+    	// Check if the candidated uri already is used
 		$stmt = $wpdb->prepare( 
-    		"SELECT COUNT(*) FROM $wpdb->postmeta WHERE meta_key = %s meta_value = %s", 
+    		"SELECT COUNT(*) FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s", 
     		WL_ENTITY_URL_META_NAME,
     		$new_entity_uri
     	);
 
     	// Perform the query
 		$meta_instances = (int) $wpdb->get_var( $stmt ); 		
-		// If the post does not exist, then the new uri is returned 
+		// If the post does not exist, then the new uri is returned 	
 		if ( 0 === $meta_instances ) {
+			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
 			return $new_entity_uri;
 		}
 
 		// Otherwise the same function is called recorsively
-		$this->inner_build_entity_uri( $title, $increment_digit++ );
+		return $this->build_uri( $title, $post_type, ++$increment_digit );
 	}
 
 	public function is_used( $post_id ) {

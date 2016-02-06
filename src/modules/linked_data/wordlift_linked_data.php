@@ -76,7 +76,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
 				
-				$uri = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity[ 'label' ], $entity[ 'main_type' ] )  
+				$uri = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity[ 'label' ], $entity[ 'main_type' ] );  
 				// Populate the mapping
 				$entities_uri_mapping[ $entity_uri ] = $uri;
 				// Override the entity obj
@@ -99,7 +99,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 				} else {
 					$uri = stripslashes( $entity_uri );
 				}				
-				
+
 				$entities_predicates_mapping[ $uri ][] = $predicate;	
 			}
 		}
