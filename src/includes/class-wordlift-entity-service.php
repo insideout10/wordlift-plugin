@@ -244,18 +244,59 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Determines whether an entity post is used or not.
-	 * An entity is used if:
-	 * 1. Is referenced by a post OR
-	 * 2. Is related to another entity OR
-	 * 3. Is used as value for an entity / post property
+	 * Build the an entity uri for a given title
+	 * If already exists an entity e2 with the same title and a same type, then e2 uri is returned
+	 * Otherwise a new uri for a new entity is composed adding an increment digit to the label if needed 
 	 *
-	 * @since 3.4.0
+	 * @since 3.5.0
 	 *
-	 * @param int $post_id A post id.
+	 * @param string $title A post title.
+	 * @param string $entity_type_slug An entity type slug.
 	 *
-	 * @return bool | null Returns true if the entity is used. False otherwise... If the given post is does not match an entity posts NULL is returned instead.
+	 * @return string Returns an uri.
 	 */
+	public function build_entity_uri( $title, $entity_type_slug, $increment_digit = 0 ) {
+
+		// TODO Look for a given entity with the same title and type
+
+		// Get a sanitized uri for a given title
+		return $this->inner_build_entity_uri( $title, $increment_digit );
+
+	}
+
+	public function inner_build_entity_uri( $title, $increment_digit = 0 ) {
+
+		// Get a sanitized uri for a given title
+		$entity_slug = ( 0 === $increment_digit ) ? 
+			wl_sanitize_uri_path( $title ) :
+			wl_sanitize_uri_path( "$title-$increment_digit" );
+
+		// Compose a candidated uri
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			self::TYPE_NAME, 
+			wl_sanitize_uri_path( $type ) 
+		); 
+		// Check if the candidated uri already is used
+		global $wpdb;
+    	// Check if the entity uri is used as meta_value
+		$stmt = $wpdb->prepare( 
+    		"SELECT COUNT(*) FROM $wpdb->postmeta WHERE meta_key = %s meta_value = %s", 
+    		WL_ENTITY_URL_META_NAME,
+    		$new_entity_uri
+    	);
+    	
+    	// Perform the query
+		$meta_instances = (int) $wpdb->get_var( $stmt ); 		
+		// If the post does not exist, then the new uri is returned 
+		if ( 0 === $meta_instances ) {
+			return $new_entity_uri;
+		}
+
+		// Otherwise the same function is called recorsively
+		$this->inner_build_entity_uri( $title, $increment_digit++ );
+	}
+
 	public function is_used( $post_id ) {
 
 		if ( FALSE === $this->is_entity( $post_id ) ) {
