@@ -60,9 +60,7 @@ function wl_build_entity_uri( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( null === $post ) {
-
 		wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
-
 		return null;
 	}
 
