@@ -244,18 +244,19 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Build the an entity uri for a given title
-	 * If already exists an entity e2 with the same title and a same type, then e2 uri is returned
-	 * Otherwise a new uri for a new entity is composed adding an increment digit to the label if needed 
+	 * Build an entity uri for a given title
+	 * The uri is composed using a given post_type and a title
+	 * If already exists an entity e2 with a given uri a numeric suffix is added
 	 *
 	 * @since 3.5.0
 	 *
 	 * @param string $title A post title.
-	 * @param string $entity_type_slug An entity type slug.
+	 * @param string $post_type A post type. Default value is 'entity'
+	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_uri( $title, $post_type, $increment_digit = 0 ) {
+	public function build_uri( $title, $post_type = self::TYPE_NAME, $increment_digit = 0 ) {
 		
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
