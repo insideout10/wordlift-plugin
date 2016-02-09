@@ -256,7 +256,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_uri( $title, $post_type = self::TYPE_NAME, $increment_digit = 0 ) {
+	public function build_uri( $title, $post_type, $increment_digit = 0 ) {
 		
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
