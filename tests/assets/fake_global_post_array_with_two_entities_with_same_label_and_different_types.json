@@ -6,8 +6,8 @@
          "description":"Just a person",
          "main_type":"wl-person"
       },
-      "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt2":{
-         "uri":"local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt2",
+      "local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr":{
+         "uri":"local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr",
          "label":"Ryan Carson",
          "description":"Just an organization",
          "main_type":"wl-organization"
@@ -16,7 +16,7 @@
    "wl_boxes":{
       "who":[
          "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt",
-         "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt2"
+         "local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr"
       ]
    }
 }

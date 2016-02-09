@@ -74,7 +74,7 @@ EOF;
 
 		$content = <<<EOF
     <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Ryan Carson</span>
-    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt2">Ryan Carson</span>
+    <span itemid="local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr">Ryan Carson</span>
 EOF;
 
 		// Create a post referincing to the created entity
@@ -459,7 +459,7 @@ EOF;
 			$json_data 
 		);
 
-		foreach ( $placeholders as $ph => $value) {
+		foreach ( $placeholders as $ph => $value ) {
 			$json_data = preg_replace( 
 				sprintf('/{{%s}}/', $ph), $value, $json_data 
 			);

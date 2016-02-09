@@ -115,9 +115,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
 	// Save each entity and store the post id.
-	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {	
 		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
 	}
+	
 	// Update the post content
 	wp_update_post( array(
 		'ID'           => $post->ID,
@@ -134,9 +135,9 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
 
 		if ( $entities_predicates_mapping ) {
-
 			// Retrieve the entity uri
 			$referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
+			
 			// Retrieve predicates for the current uri
 			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
 				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
