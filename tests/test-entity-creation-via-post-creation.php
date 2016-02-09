@@ -61,6 +61,53 @@ EOF;
 		
 	}
 
+	// In this case we are testing this workflow: 
+	// 2 entities with the same label but different types are
+	// created trough the disambiguation workflow
+	// We expect they are properly created and linked to the post
+	function testTwoEntitiesWithTheSameLabelsAreProperlyCreatedAndLinkedToThePost() {
+
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_two_entities_with_same_label_and_different_types.json' 
+		);
+		$_POST = $fake;
+
+		$content = <<<EOF
+    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Ryan Carson</span>
+    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt2">Ryan Carson</span>
+EOF;
+
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( 'Ryan Carson' )
+		); 
+
+		// And it should be related to the post as what predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
+		$this->assertCount( 2, $related_entity_ids );
+		// Ensure there are no other relation instances
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 2, $relation_instances );
+
+		$entity_1 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( 
+			$new_entity_uri 
+		);
+		$this->assertNotNull( $entity_1 );
+		$this->assertContains( $entity_1->ID, $related_entity_ids );
+
+		$entity_2 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( 
+			$new_entity_uri . '_2' 
+		);
+		$this->assertNotNull( $entity_2 );
+		$this->assertContains( $entity_2->ID, $related_entity_ids );
+		
+		$this->assertNotEquals( $entity_1->ID, $entity_2->ID );
+	}
+
 	// Same test of the previous one but with escaped chars in the entity label
 	function testNewEntityWithEscapedCharsIsCreatedAndLinkedToThePost() {
 
