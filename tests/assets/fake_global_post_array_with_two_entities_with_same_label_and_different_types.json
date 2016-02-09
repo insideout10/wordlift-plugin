@@ -11,12 +11,27 @@
          "label":"Ryan Carson",
          "description":"Just an organization",
          "main_type":"wl-organization"
+      },
+      "http:\/\/dbpedia.org\/resource\/Ryan_Carson":{
+         "uri":"http:\/\/dbpedia.org\/resource\/Ryan_Carson",
+         "label":"Ryan Carson",
+         "description":"La ragione, in filosofia, \u00e8 la facolt\u00e0 per mezzo della quale si esercita il pensiero, soprattutto quello rivolto ad argomenti astratti. La ragione \u00e8 ritenuta dalla maggior parte dei filosofi una facolt\u00e0 universale, tale da essere condivisa tanto dagli umani quanto, teoricamente, da animali (per i quali si preferisce parlare di istinto), o intelligenze artificiali che userebbero la ragione intesa come calcolo.",
+         "main_type":"wl-thing",
+         "image":[
+            "http:\/\/upload.wikimedia.org\/wikipedia\/commons\/a\/a2\/Goya_Caprichos3.jpg"
+         ],
+         "sameas":[
+            "http:\/\/rdf.freebase.com\/ns\/m.0bn32"
+         ]
       }
    },
    "wl_boxes":{
       "who":[
          "local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt",
          "local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr"
+      ],
+      "what":[
+         "http:\/\/dbpedia.org\/resource\/Ryan_Carson"
       ]
    }
 }
