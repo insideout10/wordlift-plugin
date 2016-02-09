@@ -125,7 +125,7 @@
         var currentPostId = wlEntityTitleLiveSearchParams.post_id;
         
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $( '<div class="wl-notice notice error" id="wl-same-title-error" ></div>' )
+        var duplicatedEntityErrorDiv = $( '<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>' )
             .insertBefore( 'div.wrap [name=post]' )
             .hide();
         
@@ -148,7 +148,7 @@
                 // Write an error notice with a link for every duplicated entity            
                 if( response && response.results.length > 0 ) {
 
-                    duplicatedEntityErrorDiv.html( function(){
+                    $('#wl-same-title-error p').html( function(){
                         var html = '';
 
                         for( var i=0; i<response.results.length; i++ ){
@@ -161,10 +161,10 @@
                                 var title     = response.results[i].title;
                                 var edit_link = response.edit_link.replace('%d', response.results[i].id);
 
-                                html += 'Error: you already published an entity with the same name: ';
+                                html += 'You already published an entity with the same name: ';
                                 html += '<a target="_blank" href="' + edit_link + '">';
                                 html += title;
-                                html += '</a></br>';
+                                html += '</a><br />';
                             }
                         }
 
