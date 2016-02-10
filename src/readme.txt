@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.3.5 (2016-02-10) =
+* Fix: [#260](https://github.com/insideout10/wordlift-plugin/issues/260): Autosave disabled for entity posts to avoid unexpected entities duplication
 * Fix: [#259](https://github.com/insideout10/wordlift-plugin/issues/259): Fix php notice on media library
 
 

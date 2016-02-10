@@ -218,6 +218,10 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'angularjs', plugin_dir_url( __FILE__ ) . 'bower_components/angular/angular.min.js' );
 
+	// Disable auto-save for custom entity posts only
+	if( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ){
+		wp_dequeue_script('autosave');
+	}
 }
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
