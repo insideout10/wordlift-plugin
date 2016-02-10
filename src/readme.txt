@@ -86,6 +86,10 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.3.5 (2016-02-10) =
+* Fix: [#259](https://github.com/insideout10/wordlift-plugin/issues/259): Fix php notice on media library
+
+
 = 3.3.4 (2016-02-06) =
 * Fix: [#252](https://github.com/insideout10/wordlift-plugin/issues/252): Disable scrollInput on entities metaboxes datetimepickers
 * Fix: [#248](https://github.com/insideout10/wordlift-plugin/issues/248): Include also LocalBusiness entities as suggestion for affiliation property for entities of type Person

@@ -417,9 +417,15 @@ class Wordlift_Entity_Service {
 		if ( FALSE === function_exists( 'get_current_screen' ) ) {
 			return;
 		}
+		
+		$screen = get_current_screen();
+		// If there is any valid screen nothing to do
+		if ( NULL === $screen ) {
+			return $clauses;
+		}
 
 		// If you're not in the entity post edit page, return.
-		if ( self::TYPE_NAME !== get_current_screen()->id ) {
+		if ( self::TYPE_NAME !== $screen->id ) {
 			return;
 		}
 		// Retrieve the current global post
