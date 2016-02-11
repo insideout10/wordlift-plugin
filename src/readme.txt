@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.4.0 (2016-02-02) =
+* Enhancement: [#263](https://github.com/insideout10/wordlift-plugin/issues/263): Sorting and smart auto-limit added for entities in faceted search widget.
 * Enhancement: [#255](https://github.com/insideout10/wordlift-plugin/issues/255): Disable entity url editing. 
 * Fix: [#251](https://github.com/insideout10/wordlift-plugin/issues/251): avoid entity duplication for entities with an updated label used in disambiguation.
 * Fix: [#244](https://github.com/insideout10/wordlift-plugin/issues/244): Tinymce does not remain idle anymore switching between Visual and Text mode.
