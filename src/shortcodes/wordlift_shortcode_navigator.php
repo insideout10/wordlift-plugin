@@ -30,11 +30,13 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 
 	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
 	// TODO Replace with a single query if it is possible
-	foreach ( array( 
-		WL_WHO_RELATION,
-		WL_WHAT_RELATION,
+	// We select in inverse order to give priority to less used entities 
+	foreach ( array(
+		WL_WHEN_RELATION, 
 		WL_WHERE_RELATION,
-		WL_WHEN_RELATION ) as $predicate ) {
+		WL_WHAT_RELATION,
+		WL_WHO_RELATION
+		) as $predicate ) {
 
 		$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
 			'predicate' => $predicate,
@@ -51,7 +53,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 		) );
 
 		// loop over them and take the first one which is not already in the $related_posts
-		foreach ( $referencing_post_ids as $referencing_post_id ) {
+		foreach ( $referencing_post_ids as $index => $referencing_post_id ) {
 
 			if ( ! in_array( $referencing_post_id, $blacklist_ids ) ) {
 				
@@ -73,12 +75,17 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 						'permalink'	=> get_post_permalink( $related_entity->ID )
 					) 
 				);
+
+				if ( 0 < $index ) {
+					break;
+				}
+
 			}
 		}
 	}
 
 	// Return results in json
-	wl_core_send_json( $results );
+	wl_core_send_json(  array_reverse( $results ) );
 }
 
 /**
