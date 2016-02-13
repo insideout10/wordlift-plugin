@@ -597,6 +597,7 @@ $(
   container = $("""
   	<div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
       <div class="wl-posts">
+        <h4>{{configuration.title}}</h4>
         <div wl-carousel>
           <div class="wl-post wl-card wl-item-wrapper" ng-repeat="item in items" wl-carousel-pane>
             <div class="wl-card-header wl-entity-wrapper"> 

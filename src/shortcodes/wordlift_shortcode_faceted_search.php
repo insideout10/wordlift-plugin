@@ -5,6 +5,11 @@
  */
 function wl_shortcode_faceted_search( $atts ) {
 
+	// Extract attributes and set default values.
+    $shortcode_atts = shortcode_atts( array(
+        'title'  => __( 'Related articles', 'wordlift' )
+    ), $atts );
+
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
 	// TODO Add an alert visibile only for connected admin users
@@ -24,14 +29,16 @@ function wl_shortcode_faceted_search( $atts ) {
 	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 	wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.min.js' );
 
-	wp_localize_script( 'wordlift-faceted-search', 'wl_faceted_search_params', array(
+	wp_localize_script( 
+		'wordlift-faceted-search', 
+		'wl_faceted_search_params', array_merge( array(
 			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
 			'action'				=> 'wl_faceted_search',
 			'post_id'				=> $current_post->ID,
 			'entity_ids'			=> $entity_ids,
 			'div_id'				=> $div_id,
-			'defaultThumbnailPath'	=> WL_DEFAULT_THUMBNAIL_PATH
-		)
+			'defaultThumbnailPath'	=> WL_DEFAULT_THUMBNAIL_PATH,
+		), $shortcode_atts )
 	);
 
 	return '<div id="' . $div_id . '" style="width:100%"></div>';

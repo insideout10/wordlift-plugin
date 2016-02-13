@@ -102,6 +102,7 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 $(
   container = $("""
   	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
+      <h4>{{configuration.title}}</h4>
       <div class="wl-facets" ng-show="filteringEnabled">
         <div class="wl-facets-container" ng-repeat="box in supportedTypes">
           <h6>{{box.scope}}</h6>

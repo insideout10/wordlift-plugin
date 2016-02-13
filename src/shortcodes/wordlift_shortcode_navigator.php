@@ -93,7 +93,12 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
  *
  * @return string HTML of the navigator.
  */
-function wordlift_shortcode_navigator() {
+function wordlift_shortcode_navigator( $atts ) {
+
+		// Extract attributes and set default values.
+    $shortcode_atts = shortcode_atts( array(
+        'title'  => __( 'Related articles', 'wordlift' )
+    ), $atts );
 
 	// avoid building the widget when there is a list of posts.
 	if ( ! is_single() ) {
@@ -108,11 +113,11 @@ function wordlift_shortcode_navigator() {
 
 	$navigator_id = uniqid( 'wl-navigator-widget-' );
 
-	wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array(
+	wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array_merge( array(
 			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
 			'action'				=> 'wl_navigator',
 			'post_id'				=> $current_post->ID
-		)
+		), $shortcode_atts )
 	);
 	return <<<EOF
             <div id="$navigator_id" class="wl-navigator-widget"></div>

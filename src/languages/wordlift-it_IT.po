@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2016-02-05 07:34+0100\n"
-"PO-Revision-Date: 2016-02-05 07:40+0100\n"
+"POT-Creation-Date: 2016-02-13 13:30+0100\n"
+"PO-Revision-Date: 2016-02-13 13:31+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: it\n"
@@ -107,11 +107,11 @@ msgstr "Non hai i permessi per accedere a questa pagina."
 msgid "Wordlift"
 msgstr ""
 
-#: ../includes/class-wordlift-entity-service.php:459
+#: ../includes/class-wordlift-entity-service.php:497
 msgid "Add more titles"
 msgstr "Aggiungi un sinonimo"
 
-#: ../includes/class-wordlift-entity-service.php:697
+#: ../includes/class-wordlift-entity-service.php:735
 msgid "Delete"
 msgstr ""
 
@@ -241,6 +241,11 @@ msgstr ""
 #: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
 msgid "Prefixes"
 msgstr ""
+
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:10
+#: ../shortcodes/wordlift_shortcode_navigator.php:100
+msgid "Related articles"
+msgstr "Articoli collegati"
 
 #: ../widgets/wordlift_widget_chord.php:12
 msgid "Chord Widget"
