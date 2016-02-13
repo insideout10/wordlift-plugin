@@ -20,7 +20,7 @@ angular.module('wordlift.ui.carousel', [])
 
     $scope.visibleElements = ()->
       if $element.width() > 460
-        return 4
+        return 3
       return 1
 
     $scope.setItemWidth = ()->

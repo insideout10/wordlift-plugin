@@ -7,8 +7,14 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	// Extract attributes and set default values.
     $shortcode_atts = shortcode_atts( array(
-        'title'  => __( 'Related articles', 'wordlift' )
+        'title'			=>	__( 'Related articles', 'wordlift' ),
+        'show_facets'	=> true
     ), $atts );
+
+    // See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+    $shortcode_atts[ 'show_facets' ] = filter_var( 
+    	$shortcode_atts[ 'show_facets' ], FILTER_VALIDATE_BOOLEAN 
+    );
 
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
@@ -31,14 +37,15 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	wp_localize_script( 
 		'wordlift-faceted-search', 
-		'wl_faceted_search_params', array_merge( array(
+		'wl_faceted_search_params', array(
 			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
 			'action'				=> 'wl_faceted_search',
 			'post_id'				=> $current_post->ID,
 			'entity_ids'			=> $entity_ids,
 			'div_id'				=> $div_id,
 			'defaultThumbnailPath'	=> WL_DEFAULT_THUMBNAIL_PATH,
-		), $shortcode_atts )
+			'attrs'					=> $shortcode_atts
+		)
 	);
 
 	return '<div id="' . $div_id . '" style="width:100%"></div>';

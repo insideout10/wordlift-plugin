@@ -15,7 +15,7 @@
             w = angular.element($window);
             $scope.visibleElements = function() {
               if ($element.width() > 460) {
-                return 4;
+                return 3;
               }
               return 1;
             };
@@ -194,8 +194,9 @@
       ];
       $scope.configuration = configuration;
       $scope.filteringEnabled = true;
-      $scope.toggleFiltering = function() {
-        return $scope.filteringEnabled = !$scope.filteringEnabled;
+      $scope.toggleFacets = function() {
+        $log.debug("Clicked!");
+        return $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets;
       };
       $scope.isInConditions = function(entity) {
         if ($scope.conditions[entity.id]) {
@@ -250,7 +251,7 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <h4>{{configuration.title}}</h4>\n      <div class=\"wl-facets\" ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"box in supportedTypes\">\n          <h6>{{box.scope}}</h6>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | filterEntitiesByType:box.types\" ng-click=\"addCondition(entity)\">     \n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">\n                  <i class=\"wl-checkbox\"></i>\n                  <i class=\"wl-type\" ng-class=\"'wl-fs-' + entity.mainType\"></i>  \n                  {{entity.label}}\n                  <span class=\"wl-counter\">({{entity.counter}})</span>\n                </span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card\" ng-repeat=\"post in posts\" wl-carousel-pane>\n            <div class=\"wl-card-image\"> \n              <img ng-src=\"{{post.thumbnail}}\" />\n            </div>\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
+  $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <h4>\n        {{configuration.attrs.title}}\n        <i class=\"wl-toggle\" ng-hide=\"configuration.attrs.show_facets\" ng-click=\"toggleFacets()\">*</i>\n      </h4>\n      <div ng-show=\"configuration.attrs.show_facets\" class=\"wl-facets\" ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"box in supportedTypes\">\n          <h6>{{box.scope}}</h6>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | filterEntitiesByType:box.types\" ng-click=\"addCondition(entity)\">     \n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">\n                  <i class=\"wl-checkbox\"></i>\n                  <i class=\"wl-type\" ng-class=\"'wl-fs-' + entity.mainType\"></i>  \n                  {{entity.label}}\n                  <span class=\"wl-counter\">({{entity.counter}})</span>\n                </span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card\" ng-repeat=\"post in posts\" wl-carousel-pane>\n            <div class=\"wl-card-image\"> \n              <img ng-src=\"{{post.thumbnail}}\" />\n            </div>\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         DataRetrieverService.load('posts');

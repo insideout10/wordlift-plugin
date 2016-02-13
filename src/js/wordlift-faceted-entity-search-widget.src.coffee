@@ -20,7 +20,7 @@ angular.module('wordlift.ui.carousel', [])
 
     $scope.visibleElements = ()->
       if $element.width() > 460
-        return 4
+        return 3
       return 1
 
     $scope.setItemWidth = ()->
@@ -167,8 +167,9 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.configuration = configuration
     $scope.filteringEnabled = true
 
-    $scope.toggleFiltering = ()->
-      $scope.filteringEnabled = !$scope.filteringEnabled
+    $scope.toggleFacets = ()->
+      $log.debug "Clicked!"
+      $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets
 
     $scope.isInConditions = (entity)->
       if $scope.conditions[ entity.id ]
@@ -226,8 +227,11 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 $(
   container = $("""
   	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
-      <h4>{{configuration.title}}</h4>
-      <div class="wl-facets" ng-show="filteringEnabled">
+      <h4>
+        {{configuration.attrs.title}}
+        <i class="wl-toggle" ng-hide="configuration.attrs.show_facets" ng-click="toggleFacets()">*</i>
+      </h4>
+      <div ng-show="configuration.attrs.show_facets" class="wl-facets" ng-show="filteringEnabled">
         <div class="wl-facets-container" ng-repeat="box in supportedTypes">
           <h6>{{box.scope}}</h6>
           <ul>

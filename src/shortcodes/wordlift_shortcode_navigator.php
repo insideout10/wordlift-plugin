@@ -113,11 +113,12 @@ function wordlift_shortcode_navigator( $atts ) {
 
 	$navigator_id = uniqid( 'wl-navigator-widget-' );
 
-	wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array_merge( array(
+	wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array(
 			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
 			'action'				=> 'wl_navigator',
-			'post_id'				=> $current_post->ID
-		), $shortcode_atts )
+			'post_id'				=> $current_post->ID,
+			'attrs'					=> $shortcode_atts 
+		) 
 	);
 	return <<<EOF
             <div id="$navigator_id" class="wl-navigator-widget"></div>
