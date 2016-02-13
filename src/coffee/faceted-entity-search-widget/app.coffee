@@ -2,10 +2,7 @@
 $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
-angular.module('wordlift.facetedsearch.widget', [
-  'wordlift.ui.carousel'
-  'wordlift.utils.directives'
-])
+angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordlift.utils.directives' ])
 .provider("configuration", ()->
   
   _configuration = undefined
@@ -19,11 +16,11 @@ angular.module('wordlift.facetedsearch.widget', [
   provider
 )
 .filter('filterEntitiesByType', [ '$log', 'configuration', ($log, configuration)->
-  return (items, type)->
+  return (items, types)->
     
     filtered = []
     for id, entity of items
-      if  entity.mainType is type and entity.id != configuration.entity_uri
+      if entity.mainType in types
         filtered.push entity
     filtered
 
@@ -35,9 +32,18 @@ angular.module('wordlift.facetedsearch.widget', [
     $scope.posts = []
     $scope.facets = []
     $scope.conditions = {}
-    $scope.supportedTypes = ['thing', 'person', 'organization', 'place', 'event', 'local-business', 'creative-work']
+    $scope.entityLimit = 5
+
+    # TODO Load dynamically 
+    $scope.supportedTypes = [
+      { 'scope' : 'what', 'types' : [ 'thing', 'creative-work' ] }
+      { 'scope' : 'who', 'types' : [ 'person', 'organization', 'local-business' ] }
+      { 'scope' : 'where', 'types' : [ 'place' ] }
+      { 'scope' : 'when', 'types' : [ 'event' ] }
+    ]
+      
     $scope.configuration = configuration
-    $scope.filteringEnabled = false
+    $scope.filteringEnabled = true
 
     $scope.toggleFiltering = ()->
       $scope.filteringEnabled = !$scope.filteringEnabled
@@ -59,15 +65,11 @@ angular.module('wordlift.facetedsearch.widget', [
 
         
     $scope.$on "postsLoaded", (event, posts) -> 
-      $log.debug "Referencing posts for entity #{configuration.entity_id} ..."
+      $log.debug "Referencing posts for item #{configuration.post_id} ..."
       $scope.posts = posts
       
     $scope.$on "facetsLoaded", (event, facets) -> 
-      $log.debug "Referencing facets for entity #{configuration.entity_id} ..."
-      for entity in facets
-        if entity.id is configuration.entity_uri
-          $scope.entity = entity
-
+      $log.debug "Referencing facets for item #{configuration.post_id} ..."
       $scope.facets = facets
 
 ])
@@ -76,7 +78,7 @@ angular.module('wordlift.facetedsearch.widget', [
   
   service = {}
   service.load = ( type, conditions = [] )->
-    uri = "#{configuration.ajax_url}?action=#{configuration.action}&entity_id=#{configuration.entity_id}&type=#{type}"
+    uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}&type=#{type}"
     
     $log.debug "Going to search #{type} with conditions"
     
@@ -94,27 +96,25 @@ angular.module('wordlift.facetedsearch.widget', [
   service
 
 ])
-.config((configurationProvider)->
+# Configuration provider
+.config([ 'configurationProvider', (configurationProvider)->
   configurationProvider.setConfiguration window.wl_faceted_search_params
-)
+])
 
 $(
   container = $("""
-  	<div ng-controller="FacetedSearchWidgetController">
-      <div class="wl-filters wl-selected-items-wrapper">
-        <span ng-class="'wl-' + entity.mainType" ng-repeat="(condition, entity) in conditions" class="wl-selected-item">
-          {{ entity.label}}
-          <i class="wl-deselect" ng-click="addCondition(entity)"></i>
-        </span>
-        <span class="wl-filter-button" ng-class="{ 'selected' : filteringEnabled }" ng-click="toggleFiltering()"><i></i>Add a filter</span>
-      </div>
-      <div class="wl-facets" wl-carousel ng-show="filteringEnabled">
-        <div class="wl-facets-container" ng-repeat="type in supportedTypes" wl-carousel-pane>
-          <h6 ng-class="'wl-fs-' + type"><i class="type" />{{type}}</h6>
+  	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
+      <div class="wl-facets" ng-show="filteringEnabled">
+        <div class="wl-facets-container" ng-repeat="box in supportedTypes">
+          <h6>{{box.scope}}</h6>
           <ul>
-            <li class="entity" ng-repeat="entity in facets | filterEntitiesByType:type" ng-click="addCondition(entity)">     
-                <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">{{entity.label}}</span>
-                <span class="wl-counter">({{entity.counter}})</span>
+            <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
+                <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
+                  <i class="wl-checkbox"></i>
+                  <i class="wl-type" ng-class="'wl-fs-' + entity.mainType"></i>  
+                  {{entity.label}}
+                  <span class="wl-counter">({{entity.counter}})</span>
+                </span>
             </li>
           </ul>
         </div>
@@ -122,7 +122,9 @@ $(
       <div class="wl-posts">
         <div wl-carousel>
           <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
-            <img ng-src="{{post.thumbnail}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+            <div class="wl-card-image"> 
+              <img ng-src="{{post.thumbnail}}" />
+            </div>
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
             </div>
@@ -135,7 +137,7 @@ $(
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')
 
-injector = angular.bootstrap $('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget'] )
+injector = angular.bootstrap $('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget'] 
 injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
   # execute the following commands in the angular js context.
   $rootScope.$apply(->    
@@ -143,5 +145,7 @@ injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverSer
     DataRetrieverService.load('facets') 
   )
 ])
+
+)
 
 

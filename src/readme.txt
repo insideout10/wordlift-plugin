@@ -4,7 +4,7 @@ Plugin URL: https://join.wordlift.it
 Contributors: wordlift
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
-Tested up to: 4.3.1
+Tested up to: 4.4.1
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -86,11 +86,22 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
 
 == Changelog ==
+= 3.4.0 (2016-02-12) =
+* Enhancement: [#263](https://github.com/insideout10/wordlift-plugin/issues/263): Sorting and smart auto-limit added for entities in faceted search widget.
+* Enhancement: [#255](https://github.com/insideout10/wordlift-plugin/issues/255): Disable entity url editing. 
+* Fix: [#251](https://github.com/insideout10/wordlift-plugin/issues/251): avoid entity duplication for entities with an updated label used in disambiguation.
+* Fix: [#244](https://github.com/insideout10/wordlift-plugin/issues/244): Tinymce does not remain idle anymore switching between Visual and Text mode.
+* Enhancement: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget. 
+* Enhancement: [#231](https://github.com/insideout10/wordlift-plugin/issues/231): Faceted search widget is now available also for standard posts 
+* Enhancement: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
+* Enhancement: [#214](https://github.com/insideout10/wordlift-plugin/issues/214): Faceted search 4W revamp.
+* Enhancement: [#180](https://github.com/insideout10/wordlift-plugin/issues/180): Enable minified js files for faceted search shortcode.
+* Enhancement: [#115](https://github.com/insideout10/wordlift-plugin/issues/115): Filter out the current entity from the analysis results to avoid to link a given entity with itself.
+
 = 3.3.5 (2016-02-10) =
 * Fix: [#260](https://github.com/insideout10/wordlift-plugin/issues/260): Autosave disabled for entity posts to avoid unexpected entities duplication
 * Fix: [#259](https://github.com/insideout10/wordlift-plugin/issues/259): Fix php notice on media library
 * Fix: [#256](https://github.com/insideout10/wordlift-plugin/issues/256): Fix compatibility issue with truemag theme
-
 
 = 3.3.4 (2016-02-06) =
 * Fix: [#252](https://github.com/insideout10/wordlift-plugin/issues/252): Disable scrollInput on entities metaboxes datetimepickers

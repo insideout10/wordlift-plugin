@@ -256,17 +256,7 @@ function wl_save_entity( $entity_data ) {
 	$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
 
 	if ( null !== $post ) {
-		// We insert into the params the entity ID, so it will be updated and not inserted.
-		$params[ 'ID' ] = $post->ID;
-		// Preserve the current entity status
-		if ( 'publish' === $post->post_status ) {
-			$params[ 'post_status' ] = $post->post_status;
-		}
-		// Preserve the current entity post_content.
-		$params['post_content'] = $post->post_content;
-		// Preserve the entity post_title to avoid de-synch between WP and RL
-		// See: https://github.com/insideout10/wordlift-plugin/issues/221
-		$params['post_title'] = $post->post_title;	 
+		return $post;
 	}
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"

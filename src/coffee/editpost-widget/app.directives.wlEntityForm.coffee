@@ -9,7 +9,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     template: """
       <div name="wordlift" class="wl-entity-form">
       <div ng-show="entity.images.length > 0">
-          <img ng-src="{{entity.images[0]}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <img ng-src="{{entity.images[0]}}" wl-on-error="removeCurrentImage()" />
       </div>
       <div>
           <label class="wl-required">Entity label</label>
@@ -49,6 +49,10 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.configuration = configuration
 
+      $scope.removeCurrentImage = ()->
+        removed = $scope.entity.images.shift()
+        $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
+        
       $scope.getCurrentTypeUri = ()->
         for type in configuration.types
           if type.css is "wl-#{$scope.entity.mainType}"

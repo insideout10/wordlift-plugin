@@ -140,4 +140,81 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$this->assertEquals( $entity_1_id, $retrieved_entity->ID );
 
 	}
+
+	/**
+	 * Test the {@link is_used} function 
+	 *
+	 * @since 3.4.0
+	 */
+	function test_entity_usage_on_related_entities() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		// Create the first entity
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		// It should be not used now
+		$this->assertFalse( $entity_service->is_used( $entity_1_id ) );
+		// Create the first entity
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		// Create a relation instance between these 2 entities
+		wl_core_add_relation_instance( $entity_2_id, WL_WHAT_RELATION, $entity_1_id );
+		// It should be not used now
+		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
+            
+	}
+
+	/**
+	 * Test the {@link is_used} function 
+	 *
+	 * @since 3.4.0
+	 */
+	function test_entity_usage_on_entities_used_as_meta_value() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		// Create the first entity
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		// It should be not used now
+		$this->assertFalse( $entity_service->is_used( $entity_1_id ) );
+		// Create the first entity
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		// Set the current entity as same as for another entity
+		wl_schema_set_value( $entity_2_id, 'sameAs', wl_get_entity_uri( $entity_1_id ) );
+		// It should be used now
+		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
+            
+	}
+
+	/**
+	 * Test the {@link is_used} function 
+	 *
+	 * @since 3.4.0
+	 */
+	function test_entity_usage_on_referenced_entities() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		// Create the first entity
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		// It should be not used now
+		$this->assertFalse( $entity_service->is_used( $entity_1_id ) );
+		// Create the first entity
+		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		// Create a relation instance between these 2 entities
+		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_1_id );
+		// It should be used now
+		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
+            
+	}
+
+	/**
+	 * Test the {@link is_used} function 
+	 *
+	 * @since 3.4.0
+	 */
+	function test_entity_usage_on_a_standard_post() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+		// Create the first entity
+		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$this->assertNull( $entity_service->is_used( $post_id ) );
+            
+	}
 }

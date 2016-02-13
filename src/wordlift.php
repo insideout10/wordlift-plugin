@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
  * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud. <strong>We are currently in private beta</strong> and we're allowing a closed number of users testing the plugin. <strong>Please signup to <a href="http://join.wordlift.it">join.wordlift.it</a></strong> and we will get in contact with you anytime soon.
- * Version:           3.3.5
+ * Version:           3.4.0
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it
  * License:           GPL-2.0+
@@ -608,7 +608,6 @@ require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
 require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
-require_once( 'shortcodes/wordlift_shortcode_blog_map.php' );
 
 // disable In-Depth Articles
 //require_once('wordlift_indepth_articles.php');

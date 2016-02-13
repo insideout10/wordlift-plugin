@@ -68,16 +68,13 @@
                             {
                                 text: 'Navigator',
                                 onclick: this.navigatorClick
+                            }, 
+                            {
+                                text: 'FacetedSearch',
+                                onclick: this.facetedSearchClick
                             }
                         ];
                         
-                        // Only show faceted search in the entity editor
-                        if( typenow && typenow == 'entity' ) {
-                            menu4.push({
-                                text: 'FacetedSearch',
-                                onclick: this.facetedSearchClick
-                            });
-                        }
                         
                     
         		var btn = ed.addButton('wl_shortcodes_menu', {
@@ -142,13 +139,10 @@
                     	onclick: pluginRef.navigatorClick
                     });
                     
-                    // Only show faceted search in the entity editor
-                    if( typenow && typenow == 'entity' ) {
-                        m.add({
-                            title: 'FacetedSearch',
-                            onclick: pluginRef.facetedSearchClick
-                        });
-                    }
+                    m.add({
+                        title: 'FacetedSearch',
+                        onclick: pluginRef.facetedSearchClick
+                    });
                     
             	});
 

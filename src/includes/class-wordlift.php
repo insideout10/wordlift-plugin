@@ -166,6 +166,15 @@ class Wordlift {
 	private $primashop_adapter;
 
 	/**
+	 * The WordLift Dashboard adapter.
+	 *
+	 * @since 3.4.0
+	 * @access private
+	 * @var \Wordlift_Dashboard_Service $dashboard_service The WordLift Dashboard service;
+	 */
+	private $dashboard_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -177,7 +186,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version = '3.3.5';
+		$this->version = '3.4.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -291,6 +300,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-primashop-adapter.php';
 
 		/**
+		 * The WordLift Dashboard service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -335,6 +349,9 @@ class Wordlift {
 
 		// Create a new instance of the Redirect service.
 		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
+
+		// Create a new instance of the Redirect service.
+		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->entity_service );
 
 		// Create an instance of the Timeline shortcode.
 		new Wordlift_Timeline_Shortcode();
@@ -399,6 +416,10 @@ class Wordlift {
 		$this->loader->add_filter( 'allowed_redirect_hosts', $this->redirect_service, 'allowed_redirect_hosts' );
 		// Hook the AJAX wordlift_redirect action to the Redirect service.
 		$this->loader->add_action( 'wp_ajax_wordlift_redirect', $this->redirect_service, 'ajax_redirect' );
+		// Hook the AJAX wordlift_redirect action to the Redirect service.
+		$this->loader->add_action( 'wp_ajax_wordlift_get_stats', $this->dashboard_service, 'ajax_get_stats' );
+		// Hook the AJAX wordlift_redirect action to the Redirect service.
+		$this->loader->add_action( 'wp_dashboard_setup', $this->dashboard_service, 'add_dashboard_widgets' );
 
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.

@@ -1,35 +1,35 @@
 .wl-card {
 
-	height: 120px;
-	max-height: 120px;
-	position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden;
-    font-size: 11px !important;
-    
-    img {
-   		position: absolute;
-    	margin: auto;
-    	top: 0;
-    	left: 0;
-    	right: 0;
-    	bottom: 0;
+	font-size: 11px !important;
+        
+    .wl-card-image {
+        
+        position: relative;
+        overflow: hidden;
+        max-height: 80px;
+        height: 80px;
+
+        img {
+   		   position: absolute;
+    	   margin: auto;
+    	   top: 0;
+    	   left: 0;
+    	   right: 0;
+    	   bottom: 0;
+        }
     }
 
     .wl-card-title {
-        position:absolute;
-        bottom:0;
-        left:0;
-        right:0;
+
+        padding: 0.6em;
+        position: relative;
+        font-size: 1em;
         line-height: 1.2em;
-        height:40px;
-        padding: 3px 5px;
-        background-color:#fff; 
+        min-height: 3.6em;
 
         a {
-            text-decoration:none !important;
-            border-bottom:none !important;
+            text-decoration: none;
+            border-bottom: none;
         }
     }
 }

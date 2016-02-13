@@ -140,14 +140,26 @@ class Traslator
     @_text
 window.Traslator = Traslator
 angular.module('wordlift.utils.directives', [])
-.directive('wlSrc', ['$window', '$log', ($window, $log)->
+# See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
+.directive('wlOnError', ['$parse', '$window', '$log', ($parse, $window, $log)->
+  restrict: 'A'
+  compile: ($element, $attrs) ->  
+    return (scope, element)->
+      fn = $parse($attrs.wlOnError)
+      element.on('error', (event)->
+        callback = ()->
+      	  fn(scope, { $event: event })
+        scope.$apply(callback)
+      )
+])
+.directive('wlFallback', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   priority: 99 # it needs to run after the attributes are interpolated
   link: ($scope, $element, $attrs, $ctrl) ->  
     $element.bind('error', ()->
-      unless $attrs.src is $attrs.wlSrc
-        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlSrc}"
-        $attrs.$set 'src', $attrs.wlSrc
+      unless $attrs.src is $attrs.wlFallback
+        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlFallback}"
+        $attrs.$set 'src', $attrs.wlFallback
     )
 ])
 angular.module('wordlift.ui.carousel', [])
@@ -166,15 +178,13 @@ angular.module('wordlift.ui.carousel', [])
         </div>
       </div>
   """
-  controller: ($scope, $element, $attrs) ->
+  controller: [ '$scope', '$element', '$attrs', ($scope, $element, $attrs) ->
       
     w = angular.element $window
 
     $scope.visibleElements = ()->
       if $element.width() > 460
-        return 3
-      if $element.width() > 1024
-        return 5
+        return 4
       return 1
 
     $scope.setItemWidth = ()->
@@ -230,7 +240,7 @@ angular.module('wordlift.ui.carousel', [])
 
       $scope.panes.splice unregisterPaneIndex, 1
       $scope.setPanesWrapperWidth()
-      
+  ]   
 ])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
@@ -552,7 +562,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     template: """
       <div name="wordlift" class="wl-entity-form">
       <div ng-show="entity.images.length > 0">
-          <img ng-src="{{entity.images[0]}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <img ng-src="{{entity.images[0]}}" wl-on-error="removeCurrentImage()" />
       </div>
       <div>
           <label class="wl-required">Entity label</label>
@@ -592,6 +602,10 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.configuration = configuration
 
+      $scope.removeCurrentImage = ()->
+        removed = $scope.entity.images.shift()
+        $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
+        
       $scope.getCurrentTypeUri = ()->
         for type in configuration.types
           if type.css is "wl-#{$scope.entity.mainType}"
@@ -833,7 +847,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       annotation.id = id
       annotation.entities = {}
       
-      for ea, index in annotation.entityMatches
+      # Filter out entity matches referring the current entity
+      data.annotations[ id ].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId isnt configuration.currentPostUri )
+      
+      for ea, index in data.annotations[ id ].entityMatches
         
         if not data.entities[ ea.entityId ].label 
           data.entities[ ea.entityId ].label = annotation.text
@@ -850,7 +867,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
           if em.entityId? and em.entityId is id
             local_confidence = em.confidence
         entity.confidence = entity.confidence * local_confidence
-    
+
     data
 
   service.getSuggestedSameAs = (content)->
@@ -885,6 +902,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     
     if service._currentAnalysis
       $log.warn "Analysis already runned! Nothing to do ..."
+      service._updateStatus false
+
       return
 
     service._updateStatus true
@@ -1293,14 +1312,18 @@ $(
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{image}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <div class="wl-card-image"> 
+            <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+          </div>
         </div>
       </div>
 
       <h3 class="wl-widget-headline"><span>Related posts</span></h3>
       <div wl-carousel>
         <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{post.thumbnail}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <div class="wl-card-image"> 
+            <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+          </div>
           <div class="wl-card-title">
             <a ng-href="{{post.link}}">{{post.post_title}}</a>
           </div>

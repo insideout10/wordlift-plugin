@@ -77,10 +77,12 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	public function walk( $elements, $max_depth, $args = array() ) {
 
 		$output = parent::walk( $elements, $max_depth, $args );
-
+		
+		global $post; 
+		
 		$output = str_replace(
-			array( 'type="checkbox"', "type='checkbox'" ),
-			array( 'type="radio"', "type='radio'" ),
+			array( "type=\"checkbox\"", "type='checkbox'" ),
+			array( "type=\"radio\"", "type='radio'" ),
 			$output
 		);
 

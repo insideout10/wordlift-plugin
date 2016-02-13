@@ -130,7 +130,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       annotation.id = id
       annotation.entities = {}
       
-      for ea, index in annotation.entityMatches
+      # Filter out entity matches referring the current entity
+      data.annotations[ id ].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId isnt configuration.currentPostUri )
+      
+      for ea, index in data.annotations[ id ].entityMatches
         
         if not data.entities[ ea.entityId ].label 
           data.entities[ ea.entityId ].label = annotation.text
@@ -147,7 +150,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
           if em.entityId? and em.entityId is id
             local_confidence = em.confidence
         entity.confidence = entity.confidence * local_confidence
-    
+
     data
 
   service.getSuggestedSameAs = (content)->
@@ -182,6 +185,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     
     if service._currentAnalysis
       $log.warn "Analysis already runned! Nothing to do ..."
+      service._updateStatus false
+
       return
 
     service._updateStatus true

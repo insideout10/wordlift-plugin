@@ -55,14 +55,18 @@ $(
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{image}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <div class="wl-card-image"> 
+            <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+          </div>
         </div>
       </div>
 
       <h3 class="wl-widget-headline"><span>Related posts</span></h3>
       <div wl-carousel>
         <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-          <img ng-src="{{post.thumbnail}}" wl-src="{{configuration.defaultThumbnailPath}}" />
+          <div class="wl-card-image"> 
+            <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+          </div>
           <div class="wl-card-title">
             <a ng-href="{{post.link}}">{{post.post_title}}</a>
           </div>

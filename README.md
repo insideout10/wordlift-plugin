@@ -1,3 +1,4 @@
+[![Gitter](https://badges.gitter.im/wordlift/wordlift.svg)](https://gitter.im/wordlift/wordlift?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <a href="https://travis-ci.org/insideout10/wordlift-plugin"><img align="right" src="https://travis-ci.org/insideout10/wordlift-plugin.png?branch=develop" /></a><br/>
 <a href="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/?branch=develop"><img align="right" src="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/badges/quality-score.png?b=develop" /></a><br/>
 <a href="https://codeclimate.com/github/insideout10/wordlift-plugin/coverage"><img align="right" src="https://codeclimate.com/github/insideout10/wordlift-plugin/badges/coverage.svg" /></a>

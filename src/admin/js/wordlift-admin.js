@@ -184,4 +184,59 @@
 
     } );
 
+    /**
+     * Draw dashboard if needed
+     * 
+     * @since 3.4.0
+     */
+    $( function () {
+        
+        // return if not needed
+        if( ! $( '#wl-dashboard-widget-inner-wrapper' ).length ){
+            return;
+        }
+        
+        $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
+            
+            // Calculate wikidata ratio
+            stats.wikidata = ( ( stats.triples * 100 ) / 947690143 ).toFixed(5) + '%';
+            // Calculate wikidata ratio
+            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1) + '%';
+
+            // Populate annotated posts pie chart
+            $( '#wl-posts-pie-chart circle').css(
+                'stroke-dasharray', 
+                ( ( stats.annotated_posts * 100 ) / stats.posts ) + ' 100' 
+            );
+            // Populate avarage entity ratings gauge chart
+            $( '#wl-entities-gauge-chart .stat').css(
+                'stroke-dasharray', 
+                ( stats.rating / 2 ) + ' 100' 
+            );
+
+            stats.rating = stats.rating + '%';
+            // populate value placeholders
+            for ( var property in stats ) {
+                $( '#wl-dashboard-widget-' + property ).text( stats[ property ] );
+            }
+
+            // Finally show the widget
+            $( '#wl-dashboard-widget-inner-wrapper' ).show();
+
+            // Set the same height for stat graph wrappers
+            // Links not working with css alternatives
+            var minHeight = 0;
+            $('.wl-stat-graph-wrapper').each( function( index ) {
+                var stat = $( this );
+                if ( stat.height() > minHeight ) {
+                    minHeight = stat.height();
+                }
+            } );
+
+            $('.wl-stat-graph-wrapper').css( 'min-height', minHeight );
+         
+        });
+
+    } );
+
 })( jQuery );

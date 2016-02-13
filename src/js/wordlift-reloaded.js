@@ -121,16 +121,37 @@
 
   window.Traslator = Traslator;
 
-  angular.module('wordlift.utils.directives', []).directive('wlSrc', [
+  angular.module('wordlift.utils.directives', []).directive('wlOnError', [
+    '$parse', '$window', '$log', function($parse, $window, $log) {
+      return {
+        restrict: 'A',
+        compile: function($element, $attrs) {
+          return function(scope, element) {
+            var fn;
+            fn = $parse($attrs.wlOnError);
+            return element.on('error', function(event) {
+              var callback;
+              callback = function() {
+                return fn(scope, {
+                  $event: event
+                });
+              };
+              return scope.$apply(callback);
+            });
+          };
+        }
+      };
+    }
+  ]).directive('wlFallback', [
     '$window', '$log', function($window, $log) {
       return {
         restrict: 'A',
         priority: 99,
         link: function($scope, $element, $attrs, $ctrl) {
           return $element.bind('error', function() {
-            if ($attrs.src !== $attrs.wlSrc) {
-              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlSrc);
-              return $attrs.$set('src', $attrs.wlSrc);
+            if ($attrs.src !== $attrs.wlFallback) {
+              $log.warn("Error on " + $attrs.src + "! Going to fallback on " + $attrs.wlFallback);
+              return $attrs.$set('src', $attrs.wlFallback);
             }
           });
         }
@@ -145,78 +166,77 @@
         scope: true,
         transclude: true,
         template: "<div class=\"wl-carousel\" ng-show=\"panes.length > 0\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-right=\"next()\"></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"currentPaneIndex > 0\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
-        controller: function($scope, $element, $attrs) {
-          var ctrl, w;
-          w = angular.element($window);
-          $scope.visibleElements = function() {
-            if ($element.width() > 460) {
-              return 3;
-            }
-            if ($element.width() > 1024) {
-              return 5;
-            }
-            return 1;
-          };
-          $scope.setItemWidth = function() {
-            return $element.width() / $scope.visibleElements();
-          };
-          $scope.itemWidth = $scope.setItemWidth();
-          $scope.panesWidth = void 0;
-          $scope.panes = [];
-          $scope.position = 0;
-          $scope.currentPaneIndex = 0;
-          $scope.isNextArrowVisible = function() {
-            return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
-          };
-          $scope.next = function() {
-            $scope.position = $scope.position - $scope.itemWidth;
-            return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
-          };
-          $scope.prev = function() {
-            $scope.position = $scope.position + $scope.itemWidth;
-            return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
-          };
-          $scope.setPanesWrapperWidth = function() {
-            $scope.panesWidth = $scope.panes.length * $scope.itemWidth;
-            $scope.position = 0;
-            return $scope.currentPaneIndex = 0;
-          };
-          w.bind('resize', function() {
-            var j, len, pane, ref;
-            $scope.itemWidth = $scope.setItemWidth();
-            $scope.setPanesWrapperWidth();
-            ref = $scope.panes;
-            for (j = 0, len = ref.length; j < len; j++) {
-              pane = ref[j];
-              pane.scope.setWidth($scope.itemWidth);
-            }
-            return $scope.$apply();
-          });
-          ctrl = this;
-          ctrl.registerPane = function(scope, element) {
-            var pane;
-            scope.setWidth($scope.itemWidth);
-            pane = {
-              'scope': scope,
-              'element': element
-            };
-            $scope.panes.push(pane);
-            return $scope.setPanesWrapperWidth();
-          };
-          return ctrl.unregisterPane = function(scope) {
-            var index, j, len, pane, ref, unregisterPaneIndex;
-            unregisterPaneIndex = void 0;
-            ref = $scope.panes;
-            for (index = j = 0, len = ref.length; j < len; index = ++j) {
-              pane = ref[index];
-              if (pane.scope.$id === scope.$id) {
-                unregisterPaneIndex = index;
+        controller: [
+          '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+            var ctrl, w;
+            w = angular.element($window);
+            $scope.visibleElements = function() {
+              if ($element.width() > 460) {
+                return 4;
               }
-            }
-            $scope.panes.splice(unregisterPaneIndex, 1);
-            return $scope.setPanesWrapperWidth();
-          };
-        }
+              return 1;
+            };
+            $scope.setItemWidth = function() {
+              return $element.width() / $scope.visibleElements();
+            };
+            $scope.itemWidth = $scope.setItemWidth();
+            $scope.panesWidth = void 0;
+            $scope.panes = [];
+            $scope.position = 0;
+            $scope.currentPaneIndex = 0;
+            $scope.isNextArrowVisible = function() {
+              return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
+            };
+            $scope.next = function() {
+              $scope.position = $scope.position - $scope.itemWidth;
+              return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
+            };
+            $scope.prev = function() {
+              $scope.position = $scope.position + $scope.itemWidth;
+              return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
+            };
+            $scope.setPanesWrapperWidth = function() {
+              $scope.panesWidth = $scope.panes.length * $scope.itemWidth;
+              $scope.position = 0;
+              return $scope.currentPaneIndex = 0;
+            };
+            w.bind('resize', function() {
+              var j, len, pane, ref;
+              $scope.itemWidth = $scope.setItemWidth();
+              $scope.setPanesWrapperWidth();
+              ref = $scope.panes;
+              for (j = 0, len = ref.length; j < len; j++) {
+                pane = ref[j];
+                pane.scope.setWidth($scope.itemWidth);
+              }
+              return $scope.$apply();
+            });
+            ctrl = this;
+            ctrl.registerPane = function(scope, element) {
+              var pane;
+              scope.setWidth($scope.itemWidth);
+              pane = {
+                'scope': scope,
+                'element': element
+              };
+              $scope.panes.push(pane);
+              return $scope.setPanesWrapperWidth();
+            };
+            return ctrl.unregisterPane = function(scope) {
+              var index, j, len, pane, ref, unregisterPaneIndex;
+              unregisterPaneIndex = void 0;
+              ref = $scope.panes;
+              for (index = j = 0, len = ref.length; j < len; index = ++j) {
+                pane = ref[index];
+                if (pane.scope.$id === scope.$id) {
+                  unregisterPaneIndex = index;
+                }
+              }
+              $scope.panes.splice(unregisterPaneIndex, 1);
+              return $scope.setPanesWrapperWidth();
+            };
+          }
+        ]
       };
     }
   ]).directive('wlCarouselPane', [
@@ -560,10 +580,15 @@
           onSubmit: '&',
           box: '='
         },
-        template: "<div name=\"wordlift\" class=\"wl-entity-form\">\n<div ng-show=\"entity.images.length > 0\">\n    <img ng-src=\"{{entity.images[0]}}\" wl-src=\"{{configuration.defaultThumbnailPath}}\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity label</label>\n    <input type=\"text\" ng-model=\"entity.label\" ng-disabled=\"checkEntityId(entity.id)\" />\n</div>\n<div ng-hide=\"isInternal()\">\n    <label class=\"wl-required\">Entity type</label>\n    <select ng-hide=\"hasOccurences()\" ng-model=\"entity.mainType\" ng-options=\"type.id as type.name for type in supportedTypes\" ></select>\n    <input ng-show=\"hasOccurences()\" type=\"text\" ng-value=\"getCurrentTypeUri()\" disabled=\"true\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity Description</label>\n    <textarea ng-model=\"entity.description\" rows=\"6\" ng-disabled=\"isInternal()\"></textarea>\n</div>\n<div ng-hide=\"isInternal()\">\n    <label ng-show=\"checkEntityId(entity.id)\" class=\"wl-required\">Entity Id</label>\n    <input ng-show=\"checkEntityId(entity.id)\" type=\"text\" ng-model=\"entity.id\" disabled=\"true\" />\n</div>\n<div ng-hide=\"isInternal()\">\n    <label>Entity Same as</label>\n    <input type=\"text\" ng-model=\"entity.sameAs\" />\n    <div ng-show=\"entity.suggestedSameAs.length > 0\" class=\"wl-suggested-sameas-wrapper\">\n      <h5>same as suggestions</h5>\n      <div ng-click=\"setSameAs(sameAs)\" ng-class=\"{ 'active': entity.sameAs == sameAs }\" class=\"wl-sameas\" ng-repeat=\"sameAs in entity.suggestedSameAs\">{{sameAs}}</div>\n    </div>\n</div>\n<div ng-hide=\"isInternal()\" class=\"wl-buttons-wrapper\">\n  <span class=\"button button-primary wl-button\" ng-click=\"onSubmit()\">Add</span>\n</div>\n<div ng-show=\"isInternal()\" class=\"wl-buttons-wrapper\">\n  <span class=\"button button-primary wl-button\" ng-click=\"linkTo('lod')\">View Linked Data<i class=\"wl-link\"></i></span>\n  <span class=\"button button-primary wl-button\" ng-click=\"linkTo('edit')\">Edit<i class=\"wl-link\"></i></span>\n</div>\n</div>",
+        template: "<div name=\"wordlift\" class=\"wl-entity-form\">\n<div ng-show=\"entity.images.length > 0\">\n    <img ng-src=\"{{entity.images[0]}}\" wl-on-error=\"removeCurrentImage()\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity label</label>\n    <input type=\"text\" ng-model=\"entity.label\" ng-disabled=\"checkEntityId(entity.id)\" />\n</div>\n<div ng-hide=\"isInternal()\">\n    <label class=\"wl-required\">Entity type</label>\n    <select ng-hide=\"hasOccurences()\" ng-model=\"entity.mainType\" ng-options=\"type.id as type.name for type in supportedTypes\" ></select>\n    <input ng-show=\"hasOccurences()\" type=\"text\" ng-value=\"getCurrentTypeUri()\" disabled=\"true\" />\n</div>\n<div>\n    <label class=\"wl-required\">Entity Description</label>\n    <textarea ng-model=\"entity.description\" rows=\"6\" ng-disabled=\"isInternal()\"></textarea>\n</div>\n<div ng-hide=\"isInternal()\">\n    <label ng-show=\"checkEntityId(entity.id)\" class=\"wl-required\">Entity Id</label>\n    <input ng-show=\"checkEntityId(entity.id)\" type=\"text\" ng-model=\"entity.id\" disabled=\"true\" />\n</div>\n<div ng-hide=\"isInternal()\">\n    <label>Entity Same as</label>\n    <input type=\"text\" ng-model=\"entity.sameAs\" />\n    <div ng-show=\"entity.suggestedSameAs.length > 0\" class=\"wl-suggested-sameas-wrapper\">\n      <h5>same as suggestions</h5>\n      <div ng-click=\"setSameAs(sameAs)\" ng-class=\"{ 'active': entity.sameAs == sameAs }\" class=\"wl-sameas\" ng-repeat=\"sameAs in entity.suggestedSameAs\">{{sameAs}}</div>\n    </div>\n</div>\n<div ng-hide=\"isInternal()\" class=\"wl-buttons-wrapper\">\n  <span class=\"button button-primary wl-button\" ng-click=\"onSubmit()\">Add</span>\n</div>\n<div ng-show=\"isInternal()\" class=\"wl-buttons-wrapper\">\n  <span class=\"button button-primary wl-button\" ng-click=\"linkTo('lod')\">View Linked Data<i class=\"wl-link\"></i></span>\n  <span class=\"button button-primary wl-button\" ng-click=\"linkTo('edit')\">Edit<i class=\"wl-link\"></i></span>\n</div>\n</div>",
         link: function($scope, $element, $attrs, $ctrl) {
           var availableTypes, j, len, ref, type;
           $scope.configuration = configuration;
+          $scope.removeCurrentImage = function() {
+            var removed;
+            removed = $scope.entity.images.shift();
+            return $log.warn("Removed " + removed + " from entity " + $scope.entity.id + " images collection");
+          };
           $scope.getCurrentTypeUri = function() {
             var j, len, ref, type;
             ref = configuration.types;
@@ -850,7 +875,19 @@
           annotation = ref7[id];
           annotation.id = id;
           annotation.entities = {};
-          ref8 = annotation.entityMatches;
+          data.annotations[id].entityMatches = (function() {
+            var l, len2, ref8, results;
+            ref8 = annotation.entityMatches;
+            results = [];
+            for (l = 0, len2 = ref8.length; l < len2; l++) {
+              ea = ref8[l];
+              if (ea.entityId !== configuration.currentPostUri) {
+                results.push(ea);
+              }
+            }
+            return results;
+          })();
+          ref8 = data.annotations[id].entityMatches;
           for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
             ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
@@ -911,6 +948,7 @@
         var promise;
         if (service._currentAnalysis) {
           $log.warn("Analysis already runned! Nothing to do ...");
+          service._updateStatus(false);
           return;
         }
         service._updateStatus(true);
@@ -1267,7 +1305,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div id=\"wordlift-edit-post-wrapper\" ng-controller=\"EditPostWidgetController\">\n	\n      <div class=\"wl-error\" ng-repeat=\"item in errors\">\n        <span class=\"wl-msg\">{{ item.msg }}</span>\n      </div>\n\n      <h3 class=\"wl-widget-headline\">\n        <span>Semantic tagging</span>\n        <span ng-show=\"isRunning\" class=\"wl-spinner\"></span>\n      </h3>\n      \n      <div ng-show=\"annotation\">\n        <h4 class=\"wl-annotation-label\">\n          <i class=\"wl-annotation-label-icon\"></i>\n          {{ analysis.annotations[ annotation ].text }} \n          <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>\n          <i class=\"wl-annotation-label-remove-icon\" ng-click=\"selectAnnotation(undefined)\"></i>\n        </h4>\n      </div>\n\n      <wl-classification-box ng-repeat=\"box in configuration.classificationBoxes\">\n        <div ng-hide=\"annotation\" class=\"wl-without-annotation\">\n          <wl-entity-tile is-selected=\"isEntitySelected(entity, box)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes\"></wl-entity>\n        </div>  \n        <div ng-show=\"annotation\" class=\"wl-with-annotation\">\n          <wl-entity-tile is-selected=\"isLinkedToCurrentAnnotation(entity)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes\"\" ></wl-entity>\n        </div>  \n      </wl-classification-box>\n\n      <h3 class=\"wl-widget-headline\"><span>Suggested images</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"(image, label) in images\" class=\"wl-card\" wl-carousel-pane>\n          <img ng-src=\"{{image}}\" wl-src=\"{{configuration.defaultThumbnailPath}}\" />\n        </div>\n      </div>\n\n      <h3 class=\"wl-widget-headline\"><span>Related posts</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"post in relatedPosts\" class=\"wl-card\" wl-carousel-pane>\n          <img ng-src=\"{{post.thumbnail}}\" wl-src=\"{{configuration.defaultThumbnailPath}}\" />\n          <div class=\"wl-card-title\">\n            <a ng-href=\"{{post.link}}\">{{post.post_title}}</a>\n          </div>\n        </div>\n      </div>\n      \n      <div class=\"wl-entity-input-boxes\">\n        <wl-entity-input-box annotation=\"annotation\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | isEntitySelected\"></wl-entity-input-box>\n        <div ng-repeat=\"(box, entities) in selectedEntities\">\n          <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat=\"(id, entity) in entities\">\n        </div> \n      </div>   \n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
+  $(container = $("<div id=\"wordlift-edit-post-wrapper\" ng-controller=\"EditPostWidgetController\">\n	\n      <div class=\"wl-error\" ng-repeat=\"item in errors\">\n        <span class=\"wl-msg\">{{ item.msg }}</span>\n      </div>\n\n      <h3 class=\"wl-widget-headline\">\n        <span>Semantic tagging</span>\n        <span ng-show=\"isRunning\" class=\"wl-spinner\"></span>\n      </h3>\n      \n      <div ng-show=\"annotation\">\n        <h4 class=\"wl-annotation-label\">\n          <i class=\"wl-annotation-label-icon\"></i>\n          {{ analysis.annotations[ annotation ].text }} \n          <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>\n          <i class=\"wl-annotation-label-remove-icon\" ng-click=\"selectAnnotation(undefined)\"></i>\n        </h4>\n      </div>\n\n      <wl-classification-box ng-repeat=\"box in configuration.classificationBoxes\">\n        <div ng-hide=\"annotation\" class=\"wl-without-annotation\">\n          <wl-entity-tile is-selected=\"isEntitySelected(entity, box)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes\"></wl-entity>\n        </div>  \n        <div ng-show=\"annotation\" class=\"wl-with-annotation\">\n          <wl-entity-tile is-selected=\"isLinkedToCurrentAnnotation(entity)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes\"\" ></wl-entity>\n        </div>  \n      </wl-classification-box>\n\n      <h3 class=\"wl-widget-headline\"><span>Suggested images</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"(image, label) in images\" class=\"wl-card\" wl-carousel-pane>\n          <div class=\"wl-card-image\"> \n            <img ng-src=\"{{image}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n          </div>\n        </div>\n      </div>\n\n      <h3 class=\"wl-widget-headline\"><span>Related posts</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"post in relatedPosts\" class=\"wl-card\" wl-carousel-pane>\n          <div class=\"wl-card-image\"> \n            <img ng-src=\"{{post.thumbnail}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n          </div>\n          <div class=\"wl-card-title\">\n            <a ng-href=\"{{post.link}}\">{{post.post_title}}</a>\n          </div>\n        </div>\n      </div>\n      \n      <div class=\"wl-entity-input-boxes\">\n        <wl-entity-input-box annotation=\"annotation\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | isEntitySelected\"></wl-entity-input-box>\n        <div ng-repeat=\"(box, entities) in selectedEntities\">\n          <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat=\"(id, entity) in entities\">\n        </div> \n      </div>   \n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
     var fireEvent;
     if (editor.id !== "content") {
       return;
