@@ -1431,8 +1431,7 @@
 .wl-card .wl-card-image {
   position: relative;
   overflow: hidden;
-  max-height: 120px;
-  height: 120px;
+  padding-top: 50%;
 }
 .wl-card .wl-card-image img {
   position: absolute;
