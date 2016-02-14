@@ -1426,13 +1426,13 @@
   content: "\f0da";
 }
 .wl-card {
-  font-size: 11px !important;
+  font-size: 0.8em;
 }
 .wl-card .wl-card-image {
   position: relative;
   overflow: hidden;
-  max-height: 80px;
-  height: 80px;
+  max-height: 120px;
+  height: 120px;
 }
 .wl-card .wl-card-image img {
   position: absolute;

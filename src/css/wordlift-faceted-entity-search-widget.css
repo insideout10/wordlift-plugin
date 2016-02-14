@@ -1426,13 +1426,13 @@
   content: "\f0da";
 }
 .wl-card {
-  font-size: 11px !important;
+  font-size: 0.8em;
 }
 .wl-card .wl-card-image {
   position: relative;
   overflow: hidden;
-  max-height: 80px;
-  height: 80px;
+  max-height: 120px;
+  height: 120px;
 }
 .wl-card .wl-card-image img {
   position: absolute;
@@ -1524,11 +1524,46 @@
   }
 }
 #wordlift-faceted-entity-search-widget {
-  font-size: 14px !important;
-  /* border:#e2e2e2 1px solid; */
+  font-size: inherit;
   padding: 0.6em;
   margin: 0.6em 0em;
   background-color: #eee;
+}
+#wordlift-faceted-entity-search-widget .wl-headline {
+  position: relative;
+}
+#wordlift-faceted-entity-search-widget .wl-headline i {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  font-size: inherit !important;
+}
+#wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-on {
+  color: 666;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+#wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-on:before {
+  content: "\f0b0";
+}
+#wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-off {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+}
+#wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-off:before {
+  content: "\f0b0";
 }
 #wordlift-faceted-entity-search-widget ul {
   margin: 0;
@@ -1558,6 +1593,7 @@
   border-left: #ccc 1px solid !important;
   padding: 0 0 0 0.6em;
   margin: 0.6em 0;
+  font-size: 14px;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li {
   padding: 0em;
