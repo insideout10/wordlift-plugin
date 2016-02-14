@@ -1619,6 +1619,7 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
   padding: 0px 3px;
+  padding: 0 1px !important;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label.selected .wl-checkbox:before {
   content: "\f05d";
@@ -1633,12 +1634,14 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
   padding: 0px 3px;
+  padding: 0 1px !important;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label .wl-checkbox:before {
   content: "\f10c";
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-type {
   font-size: inherit !important;
+  padding: 0 1px !important;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-type.wl-fs-creative-work {
   font-family: FontAwesome;
