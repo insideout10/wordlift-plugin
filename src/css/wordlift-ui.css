@@ -1520,9 +1520,8 @@
 }
 .wl-navigator-widget {
   font-size: inherit;
-  padding: 0.6em;
-  margin: 0.6em 0em;
-  background-color: #eee;
+  padding: 0em;
+  margin: 0.6em 0;
 }
 .wl-navigator-widget .wl-headline {
   margin: 0.4em 0;
