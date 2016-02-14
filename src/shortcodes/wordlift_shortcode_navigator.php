@@ -48,23 +48,23 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 	foreach ( $related_entities as $related_entity ) {
 
 		// take the id of posts referencing the entity
-		$referencing_post_ids = wl_core_get_related_post_ids( $related_entity->ID, array(
+		$referencing_posts = wl_core_get_related_posts( $related_entity->ID, array(
 			'status' => 'publish'
 		) );
 
 		// loop over them and take the first one which is not already in the $related_posts
-		foreach ( $referencing_post_ids as $index => $referencing_post_id ) {
+		foreach ( $referencing_posts as $index => $referencing_post ) {
 
-			if ( ! in_array( $referencing_post_id, $blacklist_ids ) ) {
+			if ( ! in_array( $referencing_post->ID, $blacklist_ids ) ) {
 				
-				$blacklist_ids[] = $referencing_post_id;
+				$blacklist_ids[] = $referencing_post->ID;
 				$serialized_entity = wl_serialize_entity( $related_entity );
-				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post_id, 'thumbnail' ) );		 
+				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post->ID, 'thumbnail' ) );		 
 			
 				$results[]     = array( 
 					'post' =>	array( 
 						'permalink' => get_post_permalink( $referencing_post_id ),
-						'title'		=> get_the_title( $referencing_post_id ),
+						'title'		=> $referencing_post->post_title,
 						'thumbnail'	=>  ( $thumbnail ) ?
 							$thumbnail : 
 							WL_DEFAULT_THUMBNAIL_PATH
