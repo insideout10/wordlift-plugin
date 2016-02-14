@@ -1519,10 +1519,13 @@
   cursor: pointer;
 }
 .wl-navigator-widget {
-  font-size: 14px !important;
+  font-size: inherit;
   padding: 0.6em;
   margin: 0.6em 0em;
   background-color: #eee;
+}
+.wl-navigator-widget .wl-headline {
+  margin: 0.4em 0;
 }
 .wl-navigator-widget .wl-posts {
   padding: 0em;
@@ -1539,9 +1542,8 @@
 .wl-navigator-widget .wl-posts .wl-entity-wrapper h6 {
   text-transform: uppercase;
   font-size: 0.86em;
-  padding: 0 0.6em;
+  padding: 0;
   margin: 0 0.6em;
-  border-left: #ccc 10px solid;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper h6 a {
   text-decoration: underline;

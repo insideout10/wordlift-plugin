@@ -1531,6 +1531,7 @@
 }
 #wordlift-faceted-entity-search-widget .wl-headline {
   position: relative;
+  margin: 0.4em 0;
 }
 #wordlift-faceted-entity-search-widget .wl-headline i {
   position: absolute;
@@ -1539,7 +1540,7 @@
   font-size: inherit !important;
 }
 #wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-on {
-  color: 666;
+  opacity: 0.7;
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
