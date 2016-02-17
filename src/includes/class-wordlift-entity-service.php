@@ -247,16 +247,18 @@ class Wordlift_Entity_Service {
 	 * Build an entity uri for a given title
 	 * The uri is composed using a given post_type and a title
 	 * If already exists an entity e2 with a given uri a numeric suffix is added
+	 * If a schema type is given entities with same label and same type are overridden 
 	 *
 	 * @since 3.5.0
 	 *
 	 * @param string $title A post title.
 	 * @param string $post_type A post type. Default value is 'entity'
+	 * @param string $schema_type A schema org type. 
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_uri( $title, $post_type, $increment_digit = 0 ) {
+	public function build_uri( $title, $post_type, $schema_type = '', $increment_digit = 0 ) {
 		
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
@@ -276,22 +278,30 @@ class Wordlift_Entity_Service {
 		
 		global $wpdb;
     	// Check if the candidated uri already is used
+    	// TODO Get post ids instead of count()
 		$stmt = $wpdb->prepare( 
-    		"SELECT COUNT(*) FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s", 
+    		"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1", 
     		WL_ENTITY_URL_META_NAME,
     		$new_entity_uri
     	);
 
     	// Perform the query
-		$meta_instances = (int) $wpdb->get_var( $stmt ); 		
+		$post_id = $wpdb->get_var( $stmt ); 		
 		// If the post does not exist, then the new uri is returned 	
-		if ( 0 === $meta_instances ) {
+		if ( ! is_numeric( $post_id ) ) {
+			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
+			return $new_entity_uri;
+		}
+		// If schema_type is equal to schema org type of post x, then the new uri is returned 
+		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
+		
+		if ( $schema_type === $schema_post_type ) {
 			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
 			return $new_entity_uri;
 		}
 
 		// Otherwise the same function is called recorsively
-		return $this->build_uri( $title, $post_type, ++$increment_digit );
+		return $this->build_uri( $title, $post_type, $schema_type, ++$increment_digit );
 	}
 
 	public function is_used( $post_id ) {
