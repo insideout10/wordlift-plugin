@@ -141,7 +141,7 @@ class SchemaApiTest extends WP_UnitTestCase {
         
         // Test properties expecting a schema type
         $this->assertEquals( array( 'http://schema.org/Person' ), wl_schema_get_property_expected_type( 'founder' ) );
-        $this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_property_expected_type( 'location' ) );
+        $this->assertEquals( array( 'http://schema.org/Place', 'http://schema.org/LocalBusiness' ), wl_schema_get_property_expected_type( 'location' ) );
         
         // Negative tests
         $this->assertEquals( null, wl_schema_get_property_expected_type( 'Yuppidoooo' ) );

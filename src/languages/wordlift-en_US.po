@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
-"POT-Creation-Date: 2016-02-05 07:38+0100\n"
-"PO-Revision-Date: 2016-02-05 07:39+0100\n"
+"POT-Creation-Date: 2016-02-19 21:49+0100\n"
+"PO-Revision-Date: 2016-02-19 21:49+0100\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: en_US\n"
@@ -81,7 +81,7 @@ msgstr "Related Posts"
 msgid "Rating"
 msgstr ""
 
-#: ../admin/class-wordlift-admin-entity-list.php:138
+#: ../admin/class-wordlift-admin-entity-list.php:143
 msgid "All 'W'"
 msgstr ""
 
@@ -107,11 +107,11 @@ msgstr ""
 msgid "Wordlift"
 msgstr ""
 
-#: ../includes/class-wordlift-entity-service.php:459
+#: ../includes/class-wordlift-entity-service.php:508
 msgid "Add more titles"
 msgstr "Add synonym"
 
-#: ../includes/class-wordlift-entity-service.php:697
+#: ../includes/class-wordlift-entity-service.php:752
 msgid "Delete"
 msgstr ""
 
@@ -241,6 +241,11 @@ msgstr ""
 msgid "Prefixes"
 msgstr ""
 
+#: ../shortcodes/wordlift_shortcode_faceted_search.php:10
+#: ../shortcodes/wordlift_shortcode_navigator.php:100
+msgid "Related articles"
+msgstr ""
+
 #: ../widgets/wordlift_widget_chord.php:12
 msgid "Chord Widget"
 msgstr ""
@@ -324,14 +329,6 @@ msgstr ""
 msgid "Vocabulary"
 msgstr ""
 
-#: ../wordlift_entity_type.php:46
-msgid "Entity URL"
-msgstr "Entity URL"
-
-#: ../wordlift_entity_type.php:70
-msgid "entity-url-label"
-msgstr "The entity URL:"
-
 #: ../wordlift_entity_type_taxonomy.php:13
 msgctxt "taxonomy general name"
 msgid "Entity Types"
@@ -412,6 +409,12 @@ msgstr ""
 #: ../wordlift_manual_translations.php:12
 msgid "Schema.org metadata for this entity are not completed."
 msgstr "Complete all the properties of the entity to increase its visibility."
+
+#~ msgid "Entity URL"
+#~ msgstr "Entity URL"
+
+#~ msgid "entity-url-label"
+#~ msgstr "The entity URL:"
 
 #, fuzzy
 #~ msgid "Dataset"

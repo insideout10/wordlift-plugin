@@ -20,7 +20,7 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     
     filtered = []
     for id, entity of items
-      if  entity.mainType in types
+      if entity.mainType in types
         filtered.push entity
     filtered
 
@@ -32,6 +32,8 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.posts = []
     $scope.facets = []
     $scope.conditions = {}
+    $scope.entityLimit = 5
+
     # TODO Load dynamically 
     $scope.supportedTypes = [
       { 'scope' : 'what', 'types' : [ 'thing', 'creative-work' ] }
@@ -112,7 +114,7 @@ $(
         <div class="wl-facets-container" ng-repeat="box in supportedTypes">
           <h6>{{box.scope}}</h6>
           <ul>
-            <li class="entity" ng-repeat="entity in facets | filterEntitiesByType:box.types" ng-click="addCondition(entity)">     
+            <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
                   <i class="wl-checkbox"></i>
                   <i class="wl-type" ng-class="'wl-fs-' + entity.mainType"></i>  

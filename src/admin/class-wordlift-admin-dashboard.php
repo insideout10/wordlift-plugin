@@ -67,8 +67,8 @@ class Wordlift_Dashboard_Service {
 			array(  'a' => array( 'href' => array() ) ) ), 
 			$this->render_stat_param( 'annotated_posts_percentage' ),
 			esc_url( admin_url( 'edit.php' ) ),
-			$this->render_stat_param( 'posts' ),
-			$this->render_stat_param( 'annotated_posts' )  
+			$this->render_stat_param( 'annotated_posts' ),
+			$this->render_stat_param( 'posts' )  
 		); 
 
 		$rating_title = __( 'avarage entity rating', 'wordlift' ); 
@@ -94,21 +94,21 @@ class Wordlift_Dashboard_Service {
 	<div id="wl-dashboard-widget-inner-wrapper">
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
-				<h4>$enriched_posts_title <a href=""><i class="wl-info"></i></a></h4>
+				<h4>$enriched_posts_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-is-content-enrichment" target="_blank"><i class="wl-info"></i></a></h4>
 				<svg id="wl-posts-pie-chart" viewBox="0 0 32 32"><circle r="16" cx="16" cy="16" /></svg>
 			</div>
 			<p>$enriched_posts_caption</p>
 		</div>
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
-				<h4>$rating_title <a href=""><i class="wl-info"></i></a></h4>
+				<h4>$rating_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-factors-determine-the-rating-of-an-entity" target="_blank"><i class="wl-info"></i></a></h4>
 				<svg id="wl-entities-gauge-chart" viewBox="0 0 32 32"><circle r="16" cx="16" cy="16" class="baseline" /><circle r="16" cx="16" cy="16" class="stat" /></svg>
 			</div>
 			<p>$rating_caption</p>
 		</div>
 		<div class="wl-stat-card">
 			<div class="wl-stat-graph-wrapper">
-				<h4>$graph_title <a href=""><i class="wl-info"></i></a></h4>
+				<h4>$graph_title <a href="http://docs.wordlift.it/en/latest/faq.html#what-is-a-triple" target="_blank"><i class="wl-info"></i></a></h4>
 				<div class="wl-triples">
 					<span id="wl-dashboard-widget-triples"></span>
 					<span class="wl-triples-label">$triples_label</span>
@@ -142,6 +142,11 @@ EOF;
 	 */
 	public function ajax_get_stats() {
 		
+		// If needed, the transient is force to reloaed
+		if ( isset( $_GET[ 'force_reload'] ) ) {
+			delete_transient( self::TRANSIENT_NAME );
+		}
+
 		// Try to retrieve the transient
 		$stats = get_transient( self::TRANSIENT_NAME );
 
@@ -187,7 +192,7 @@ EOF;
     	$table_name = wl_core_get_relation_instances_table_name();
     	// Calculate sql statement
 		$sql_statement = <<<EOF
-    		SELECT COUNT(*) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
+    		SELECT COUNT(distinct(p.id)) FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.subject_id AND p.post_type = 'post' AND p.post_status = 'publish';
 EOF;
 		// Perform the query
 		return (int) $wpdb->get_var( $sql_statement ); 

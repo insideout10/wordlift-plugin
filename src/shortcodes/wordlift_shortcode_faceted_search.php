@@ -161,8 +161,13 @@ EOF;
 		foreach ( $entities as $obj ) {
 
 			$entity 		   = get_post( $obj->ID );
+			$created_at 	   = $entity->post_date;
+			
 			$entity            = wl_serialize_entity( $entity );
+
 			$entity[ 'counter' ] = $obj->counter;
+			$entity[ 'createdAt' ] = $created_at;
+			
 			$results[]         = $entity;
 
 		}
