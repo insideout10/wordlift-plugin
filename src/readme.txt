@@ -87,8 +87,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.5.0 (???) =
-* Enhancement: [#253](https://github.com/insideout10/wordlift-plugin/issues/253): Introduce navigator and faceted search configuration.
+* Enhancement: [#267](https://github.com/insideout10/wordlift-plugin/issues/267): Force override for entities with same schema type and label within disambiguation workflow.
 * Enhancement: [#264](https://github.com/insideout10/wordlift-plugin/issues/264): Improve data selection strategy for navigation widget.
+* Enhancement: [#253](https://github.com/insideout10/wordlift-plugin/issues/253): Introduce navigator and faceted search configuration.
 * Enhancement: [#258](https://github.com/insideout10/wordlift-plugin/issues/258): Entity titles are now also published in the graph as dc:title. 
 * Enhancement: [#147](https://github.com/insideout10/wordlift-plugin/issues/147): Navigator widget works also on entity pages. 
 * Enhancement: [#232](https://github.com/insideout10/wordlift-plugin/issues/232): Navigator widget refactoring. 
