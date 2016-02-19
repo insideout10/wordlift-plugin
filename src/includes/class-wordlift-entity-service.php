@@ -258,7 +258,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_uri( $title, $post_type, $schema_type = '', $increment_digit = 0 ) {
+	public function build_uri( $title, $post_type, $schema_type = NULL, $increment_digit = 0 ) {
 		
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
@@ -287,6 +287,7 @@ class Wordlift_Entity_Service {
 
     	// Perform the query
 		$post_id = $wpdb->get_var( $stmt ); 		
+			
 		// If the post does not exist, then the new uri is returned 	
 		if ( ! is_numeric( $post_id ) ) {
 			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
@@ -294,9 +295,9 @@ class Wordlift_Entity_Service {
 		}
 		// If schema_type is equal to schema org type of post x, then the new uri is returned 
 		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
-		
+			
 		if ( $schema_type === $schema_post_type[ 'css_class' ] ) {
-			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
+			$this->log_service->trace( "An entity with the same title and type already exists! Return uri [ new_entity_uri :: $new_entity_uri ]" );
 			return $new_entity_uri;
 		}
 

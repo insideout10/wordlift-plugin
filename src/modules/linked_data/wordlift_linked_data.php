@@ -71,10 +71,11 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-
+		
 			$uri = Wordlift_Entity_Service::get_instance()->build_uri( 
 				$entity[ 'label' ], 
-				Wordlift_Entity_Service::TYPE_NAME 
+				Wordlift_Entity_Service::TYPE_NAME,
+				$entity[ 'main_type' ] 
 			);
 
 			if ( !Wordlift_Entity_Service::get_instance()->is_internal_uri( $entity_uri ) ) {

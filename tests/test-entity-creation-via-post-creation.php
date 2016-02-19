@@ -62,6 +62,55 @@ EOF;
 	}
 
 	// In this case we are testing this workflow: 
+	// 1 entities with the same label and type of an existing one
+	// is created trough the disambiguation workflow
+	function testEntitiesWithSameLabelAndTypeOverride() {
+		
+		// Create a post referincing to the created entity
+		$entity_id = wl_create_post( '', 'tex_willer', 'Tex Willer', 'draft', 'entity' );
+		wl_set_entity_main_type( $entity_id, 'wl-person' );
+		
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_tex_willer_as_who.json' 
+		);
+		$_POST = $fake;
+
+		$content = <<<EOF
+    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>
+EOF;
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( 'Tex Willer' )
+		); 
+
+		$this->assertEquals(
+		 	$new_entity_uri,
+		 	wl_get_entity_uri( $entity_id )
+		);
+
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		wl_write_log("+++ Post id $post_id");
+		
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
+		$this->assertCount( 1, $related_entity_ids );
+		
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 1, $relation_instances );
+
+		$this->assertEquals(
+			wl_get_entity_uri( $entity_id ),
+			wl_get_entity_uri( $related_entity_ids[0] )
+		);
+
+		// Check the already existing entity is linked
+		$this->assertContains( $entity_id, $related_entity_ids );
+
+
+	}
+
+	// In this case we are testing this workflow: 
 	// 3 entities with the same label but different types are
 	// created trough the disambiguation workflow
 	// We expect they are properly created and linked to the post
