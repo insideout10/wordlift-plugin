@@ -823,7 +823,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       data.categories = [
         { 'label': 'Matematica', 'uri': 'http://dbpedia.org/resource/Category:Mathematics', 'relevance':0.75 }
         { 'label': 'Filosofia', 'uri': 'http://dbpedia.org/resource/Category:Philosophy', 'relevance':0.55 }
-        { 'label': 'Semantica', 'uri': 'http://dbpedia.org/resource/Category:Semantics', 'relevance':0.95 }
+        { 'label': 'Semantica', 'uri': 'http://dbpedia.org/resource/Category:Semantics', 'relevance':0.85 }
       ]
 
     for id, entity of data.entities
@@ -1319,6 +1319,19 @@ $(
       <h3 class="wl-widget-headline">
         <span>Article Details</span>
       </h3>
+
+      <h5 class="wl-widget-sub-headline">What</h5>
+      <div class="wl-widget-wrapper">
+        <div ng-repeat="category in analysis.categories | orderBy :'-relevance'" class="wl-category-wrapper">
+          <i class="wl-toggle-off" />
+          <span class="entity wl-thing"><i class="type" />
+            {{category.label}}
+          </span>
+          <div class="wl-category-progress-background">
+            <div class="wl-category-progress-current" style="width:{{category.relevance*100}}%"></div>
+          </div>      
+        </div>
+      </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />

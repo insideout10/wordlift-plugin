@@ -55,6 +55,19 @@ $(
       <h3 class="wl-widget-headline">
         <span>Article Details</span>
       </h3>
+
+      <h5 class="wl-widget-sub-headline">What</h5>
+      <div class="wl-widget-wrapper">
+        <div ng-repeat="category in analysis.categories | orderBy :'-relevance'" class="wl-category-wrapper">
+          <i class="wl-toggle-off" />
+          <span class="entity wl-thing"><i class="type" />
+            {{category.label}}
+          </span>
+          <div class="wl-category-progress-background">
+            <div class="wl-category-progress-current" style="width:{{category.relevance*100}}%"></div>
+          </div>      
+        </div>
+      </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />

@@ -188,7 +188,26 @@
     margin: 0;
     margin-bottom:4px;
   }
+  .wl-category-wrapper {
+    margin:0.3em 0;
+    position: relative;
 
+    .wl-category-progress-background {
+      position: absolute;
+      top:10px;
+      right:0;
+      width: 50px;
+      height: 6px;
+      background-color:#e2e2e2;
+      padding: 0;
+
+      .wl-category-progress-current {
+        height: 6px;
+        background-color: @wl-brand-color;
+      }
+    }
+
+  }
   #wl-add-entity-button-wrapper {
     padding: 4px 0px 0px 0px;
     text-align: right;
