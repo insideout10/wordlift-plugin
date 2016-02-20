@@ -1720,6 +1720,7 @@ a.wl-entity-page-link {
 }
 .wl-floating-wrapper {
   border-top: #ccc 1px solid;
+  padding-top: 1em;
 }
 @media screen and (max-width: 460px) {
   .wl-floating-item-wrapper {

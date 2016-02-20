@@ -9,7 +9,7 @@ function wl_shortcode_faceted_search( $atts ) {
     $shortcode_atts = shortcode_atts( array(
         'title'				=>	__( 'Related articles', 'wordlift' ),
         'show_facets'		=> true,
-    	'with_carousel'		=> true,
+    	'with_carousel'		=> false,
      	'squared_thumbs'	=> false
 
     ), $atts );
@@ -22,7 +22,6 @@ function wl_shortcode_faceted_search( $atts ) {
     	$shortcode_atts[ $att ] = filter_var( 
     		$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN 
     	);
-    
     }
 
 

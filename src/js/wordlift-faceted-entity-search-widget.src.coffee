@@ -149,6 +149,42 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     filtered
 
 ])
+.directive('wlFacetedPosts', ['configuration', '$window', '$log', (configuration, $window, $log)->
+  restrict: 'E'
+  scope: true
+  template: (tElement, tAttrs)->
+    
+    wrapperClasses = 'wl-wrapper'
+    wrapperAttrs = ' wl-carousel'
+    itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
+    itemWrapperAttrs = ' wl-carousel-pane'
+    thumbClasses = 'wl-card-image'
+    
+    unless configuration.attrs.with_carousel
+      wrapperClasses = 'wl-floating-wrapper'
+      wrapperAttrs = ''
+      itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
+      itemWrapperAttrs = ''
+    
+    if configuration.attrs.squared_thumbs
+      thumbClasses = 'wl-card-image wl-square'
+      
+    """
+      <div class="wl-posts">
+        <div class="#{wrapperClasses}" #{wrapperAttrs}>
+          <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
+            <div class="#{thumbClasses}"> 
+              <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
+            </div>
+            <div class="wl-card-title"> 
+              <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  """
+
+])
 
 .controller('FacetedSearchWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)-> 
 
@@ -249,20 +285,8 @@ $(
           </ul>
         </div>
       </div>
-      <div class="wl-posts">
-        <div wl-carousel>
-          <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
-            <div class="wl-card-image"> 
-                <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
-            </div>
-            <div class="wl-card-title"> 
-              <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-     
+      <wl-faceted-posts></wl-faceted-posts>
+      
     </div>
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')
