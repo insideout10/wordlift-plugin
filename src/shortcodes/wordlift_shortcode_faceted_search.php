@@ -9,7 +9,7 @@ function wl_shortcode_faceted_search( $atts ) {
     $shortcode_atts = shortcode_atts( array(
         'title'				=>	__( 'Related articles', 'wordlift' ),
         'show_facets'		=> true,
-    	'with_carousel'		=> false,
+    	'with_carousel'		=> true,
      	'squared_thumbs'	=> false
 
     ), $atts );
