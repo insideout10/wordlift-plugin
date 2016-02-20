@@ -839,6 +839,21 @@
         for (id in ref2) {
           localEntity = ref2[id];
           data.entities[id] = localEntity;
+          data.categories = [
+            {
+              'label': 'Matematica',
+              'uri': 'http://dbpedia.org/resource/Category:Mathematics',
+              'relevance': 0.75
+            }, {
+              'label': 'Filosofia',
+              'uri': 'http://dbpedia.org/resource/Category:Philosophy',
+              'relevance': 0.55
+            }, {
+              'label': 'Semantica',
+              'uri': 'http://dbpedia.org/resource/Category:Semantics',
+              'relevance': 0.95
+            }
+          ];
         }
         ref3 = data.entities;
         for (id in ref3) {

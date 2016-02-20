@@ -817,7 +817,14 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add annotation references to each entity
     
     for id, localEntity of configuration.entities
+      
       data.entities[ id ] = localEntity
+      # TMP 
+      data.categories = [
+        { 'label': 'Matematica', 'uri': 'http://dbpedia.org/resource/Category:Mathematics', 'relevance':0.75 }
+        { 'label': 'Filosofia', 'uri': 'http://dbpedia.org/resource/Category:Philosophy', 'relevance':0.55 }
+        { 'label': 'Semantica', 'uri': 'http://dbpedia.org/resource/Category:Semantics', 'relevance':0.95 }
+      ]
 
     for id, entity of data.entities
       
