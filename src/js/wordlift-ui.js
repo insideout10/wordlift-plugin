@@ -532,7 +532,28 @@
       }
     };
     return provider;
-  }).controller('NavigatorWidgetController', [
+  }).directive('wlNavigatorItems', [
+    'configuration', '$window', '$log', function(configuration, $window, $log) {
+      return {
+        restrict: 'E',
+        scope: true,
+        template: function(tElement, tAttrs) {
+          var itemWrapperAttrs, itemWrapperClasses, wrapperAttrs, wrapperClasses;
+          wrapperClasses = '';
+          wrapperAttrs = ' wl-carousel';
+          itemWrapperClasses = 'wl-post wl-card wl-item-wrapper';
+          itemWrapperAttrs = ' wl-carousel-pane';
+          if (!configuration.attrs.with_carousel) {
+            wrapperClasses = '';
+            wrapperAttrs = '';
+            itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper';
+            itemWrapperAttrs = '';
+          }
+          return "<div class=\"wl-posts\">\n  <div" + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\"> \n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"wl-card-image\"> \n        <img ng-src=\"{{item.post.thumbnail}}\" />\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
+        }
+      };
+    }
+  ]).controller('NavigatorWidgetController', [
     'DataRetrieverService', 'configuration', '$scope', '$log', function(DataRetrieverService, configuration, $scope, $log) {
       $scope.items = [];
       $scope.configuration = configuration;
@@ -567,7 +588,7 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <div class=\"wl-posts\">\n        <div wl-carousel>\n          <div class=\"wl-post wl-card wl-item-wrapper\" ng-repeat=\"item in items\" wl-carousel-pane>\n            <div class=\"wl-card-header wl-entity-wrapper\"> \n              <h6>\n                <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n              </h6>\n            </div>\n            <div class=\"wl-card-image\"> \n              <img ng-src=\"{{item.post.thumbnail}}\" />\n            </div>\n            <div class=\"wl-card-title\"> \n              <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n            </div>\n          </div>\n        </div>\n  \n      </div>\n     \n    </div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
+  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         return DataRetrieverService.load();

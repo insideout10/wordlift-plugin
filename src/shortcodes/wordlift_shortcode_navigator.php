@@ -97,8 +97,15 @@ function wordlift_shortcode_navigator( $atts ) {
 
 		// Extract attributes and set default values.
     $shortcode_atts = shortcode_atts( array(
-        'title'  => __( 'Related articles', 'wordlift' )
+        'title'  		=> __( 'Related articles', 'wordlift' ),
+    	'with_carousel'	=> true
     ), $atts );
+
+    // See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+    $shortcode_atts[ 'with_carousel' ] = filter_var( 
+    	$shortcode_atts[ 'with_carousel' ], FILTER_VALIDATE_BOOLEAN 
+    );
+
 
 	// avoid building the widget when there is a list of posts.
 	if ( ! is_single() ) {

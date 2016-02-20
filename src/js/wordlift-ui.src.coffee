@@ -554,7 +554,43 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
 
   provider
 )
+.directive('wlNavigatorItems', ['configuration', '$window', '$log', (configuration, $window, $log)->
+  restrict: 'E'
+  scope: true
+  template: (tElement, tAttrs)->
+    
+    wrapperClasses = ''
+    wrapperAttrs = ' wl-carousel'
+    itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
+    itemWrapperAttrs = ' wl-carousel-pane'
+    
+    unless configuration.attrs.with_carousel
+      wrapperClasses = ''
+      wrapperAttrs = ''
+      itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
+      itemWrapperAttrs = ''
+    
+    """
+      <div class="wl-posts">
+        <div#{wrapperAttrs}>
+          <div class="#{itemWrapperClasses}" ng-repeat="item in items"#{itemWrapperAttrs}>
+            <div class="wl-card-header wl-entity-wrapper"> 
+              <h6>
+                <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
+              </h6>
+            </div>
+            <div class="wl-card-image"> 
+              <img ng-src="{{item.post.thumbnail}}" />
+            </div>
+            <div class="wl-card-title"> 
+              <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  """
 
+])
 .controller('NavigatorWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)-> 
 
     $scope.items = []
@@ -597,25 +633,7 @@ $(
   container = $("""
   	<div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
       <h4 class="wl-headline">{{configuration.attrs.title}}</h4>
-      <div class="wl-posts">
-        <div wl-carousel>
-          <div class="wl-post wl-card wl-item-wrapper" ng-repeat="item in items" wl-carousel-pane>
-            <div class="wl-card-header wl-entity-wrapper"> 
-              <h6>
-                <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
-              </h6>
-            </div>
-            <div class="wl-card-image"> 
-              <img ng-src="{{item.post.thumbnail}}" />
-            </div>
-            <div class="wl-card-title"> 
-              <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-     
+      <wl-navigator-items></wl-navigator-items>
     </div>
   """)
   .appendTo('.wl-navigator-widget')
