@@ -1525,13 +1525,19 @@
 .wl-navigator-widget .wl-headline {
   margin: 0.4em 0;
 }
+.wl-navigator-widget .wl-wrapper {
+  position: relative;
+  overflow: hidden;
+}
 .wl-navigator-widget .wl-posts {
   padding: 0em;
   margin: 0em;
   background-color: #fff;
 }
-.wl-navigator-widget .wl-posts .wl-item-wrapper {
-  /*position: relative;*/
+.wl-navigator-widget .wl-posts .wl-floating-item-wrapper {
+  width: 33%;
+  display: inline-block;
+  vertical-align: top;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper {
   padding: 1em 0em;

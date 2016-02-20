@@ -63,7 +63,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 			
 				$results[]     = array( 
 					'post' =>	array( 
-						'permalink' => get_post_permalink( $referencing_post_id ),
+						'permalink' => get_post_permalink( $referencing_post->ID ),
 						'title'		=> $referencing_post->post_title,
 						'thumbnail'	=>  ( $thumbnail ) ?
 							$thumbnail : 
