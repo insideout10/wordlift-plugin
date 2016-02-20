@@ -102,13 +102,15 @@ function wordlift_shortcode_navigator( $atts ) {
      	'squared_thumbs'	=> false
     ), $atts );
 
-    // See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
-    $shortcode_atts[ 'with_carousel' ] = filter_var( 
-    	$shortcode_atts[ 'with_carousel' ], FILTER_VALIDATE_BOOLEAN 
-    );
-    $shortcode_atts[ 'squared_thumbs' ] = filter_var( 
-    	$shortcode_atts[ 'squared_thumbs' ], FILTER_VALIDATE_BOOLEAN 
-    );
+    foreach ( array( 
+    	'with_carousel', 'squared_thumbs' 
+    	) as $att ) {
+	
+		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+    	$shortcode_atts[ $att ] = filter_var( 
+    		$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN 
+    	);
+    }
 
 	// avoid building the widget when there is a list of posts.
 	if ( ! is_single() ) {

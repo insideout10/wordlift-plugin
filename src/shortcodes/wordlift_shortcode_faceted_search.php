@@ -7,14 +7,24 @@ function wl_shortcode_faceted_search( $atts ) {
 
 	// Extract attributes and set default values.
     $shortcode_atts = shortcode_atts( array(
-        'title'			=>	__( 'Related articles', 'wordlift' ),
-        'show_facets'	=> true
+        'title'				=>	__( 'Related articles', 'wordlift' ),
+        'show_facets'		=> true,
+    	'with_carousel'		=> true,
+     	'squared_thumbs'	=> false
+
     ), $atts );
 
-    // See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
-    $shortcode_atts[ 'show_facets' ] = filter_var( 
-    	$shortcode_atts[ 'show_facets' ], FILTER_VALIDATE_BOOLEAN 
-    );
+    foreach ( array( 
+    	'show_facets', 'with_carousel', 'squared_thumbs' 
+    	) as $att ) {
+	
+		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+    	$shortcode_atts[ $att ] = filter_var( 
+    		$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN 
+    	);
+    
+    }
+
 
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
