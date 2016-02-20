@@ -435,12 +435,17 @@ function wl_config_get_recursion_depth() {
 function wl_configuration_validate() {
 
 	// Check that the WordLift key has been set or show a notice.
-	if ( '' !== wl_configuration_get_key() ) {
+	if ( '' === wl_configuration_get_key() ) {
+		Wordlift_Notice_Service::get_instance()
+	                       ->add_error( sprintf( __( 'application-key-not-set', 'wordlift' ), 'http://join.wordlift.it' ) );
 		return;
 	}
 
-	Wordlift_Notice_Service::get_instance()
-	                       ->add_error( sprintf( __( 'application-key-not-set', 'wordlift' ), 'http://join.wordlift.it' ) );
+	if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+		Wordlift_Notice_Service::get_instance()
+	                       ->add_error( __( 'Dataset URI missing in configuration', 'wordlift' ) );
+		return;
+	}
 
 }
 

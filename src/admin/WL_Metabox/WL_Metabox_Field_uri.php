@@ -18,7 +18,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$absent_from_db = is_null( get_post( $value ) );                           // search by ID
 		} else {
 			$absent_from_db =
-				is_null( wl_get_entity_post_by_uri( $value ) ) &&                      // search by uri
+				is_null( Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $value ) ) &&                      // search by uri
 				is_null( get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::TYPE_NAME ) );   // search by name
 		}
 
@@ -80,7 +80,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$entity = get_post( $default_entity_identifier );
 		} else {
 			// It is an URI
-			$entity = wl_get_entity_post_by_uri( $default_entity_identifier );
+			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $default_entity_identifier );
 		}
 
 		if ( ! is_null( $entity ) ) {

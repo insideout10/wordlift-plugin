@@ -65,6 +65,7 @@ EOF;
 					$( function() {
 
 						$( '.$this->meta_name[type=text]' ).datetimepicker( {
+							scrollInput: false,			
 							format: '$this->date_format',
 							timepicker:$timepicker,
 							onChangeDateTime:function(dp, input){

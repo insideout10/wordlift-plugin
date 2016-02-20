@@ -4,49 +4,6 @@
  */
 
 /**
- * Find entity posts by the entity URI. Entity as searched by their entity URI or same as.
- *
- * @param string $uri The entity URI.
- *
- * @return WP_Post|null A WP_Post instance or null if not found.
- */
-function wl_get_entity_post_by_uri( $uri ) {
-
-	$query = new WP_Query( array(
-			'posts_per_page' => 1,
-			'post_status'    => 'any',
-			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
-			'meta_query'     => array(
-				'relation' => 'OR',
-				array(
-					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-					'value'   => $uri,
-					'compare' => '='
-				),
-				array(
-					'key'     => WL_ENTITY_URL_META_NAME,
-					'value'   => $uri,
-					'compare' => '='
-				)
-			)
-		)
-	);
-
-	// Get the matching entity posts.
-	$posts = $query->get_posts();
-
-	// wl_write_log( "wl_get_entity_post_by_uri [ uri :: $uri ][ count :: " . count( $posts ) . " ]\n" );
-
-	// Return null if no post is found.
-	if ( 0 === count( $posts ) ) {
-		return null;
-	}
-
-	// Return the found post.
-	return $posts[0];
-}
-
-/**
  * Find entity posts by the entity URIs. Entity as searched by their entity URI or same as.
  *
  * @param array $uris A collection of entity URIs.
@@ -103,26 +60,25 @@ function wl_build_entity_uri( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( null === $post ) {
-
 		wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
-
 		return null;
 	}
 
 	// Create an ID given the title.
-	$path = wl_sanitize_uri_path( $post->post_title );
-
-	// If the path is empty, i.e. there's no title, use the post ID as path.
-	if ( empty( $path ) ) {
-		$path = "id/$post->ID";
+	$entity_slug = wl_sanitize_uri_path( $post->post_title );
+	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
+	if ( empty( $entity_slug ) ) {
+		return sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			$post->post_type, 
+			"id/$post->ID" 
+		); 
 	}
+	
+	return Wordlift_Entity_Service::get_instance()->build_uri( 
+		$entity_slug, 
+		$post->post_type );
 
-	// Create the URL (dataset base URI has a trailing slash).
-	$url = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), $post->post_type, $path );
-
-	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
-
-	return $url;
 }
 
 /**
@@ -147,7 +103,7 @@ function wl_get_entity_uri( $post_id ) {
 	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
-		$uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+		$uri = wl_build_entity_uri( $post_id ); 
 		wl_set_entity_uri( $post_id, $uri );
 	}
 

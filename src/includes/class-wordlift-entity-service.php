@@ -236,11 +236,130 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param int $post_id A post id.
 	 *
-	 * @return true if the post is an entity otherwise false.
+	 * @return bool Return true if the post is an entity otherwise false.
 	 */
 	public function is_entity( $post_id ) {
 
 		return ( self::TYPE_NAME === get_post_type( $post_id ) );
+	}
+
+	/**
+	 * Build an entity uri for a given title
+	 * The uri is composed using a given post_type and a title
+	 * If already exists an entity e2 with a given uri a numeric suffix is added
+	 * If a schema type is given entities with same label and same type are overridden 
+	 *
+	 * @since 3.5.0
+	 *
+	 * @param string $title A post title.
+	 * @param string $post_type A post type. Default value is 'entity'
+	 * @param string $schema_type A schema org type. 
+	 * @param integer $increment_digit A digit used to call recursively the same function.
+	 *
+	 * @return string Returns an uri.
+	 */
+	public function build_uri( $title, $post_type, $schema_type = NULL, $increment_digit = 0 ) {
+		
+		// Get the entity slug suffix digit
+		$suffix_digit = $increment_digit + 1;
+		// Get a sanitized uri for a given title
+		$entity_slug = ( 0 == $increment_digit ) ? 
+			wl_sanitize_uri_path( $title ) :
+			wl_sanitize_uri_path( $title . '_'. $suffix_digit );
+
+		// Compose a candidated uri
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			$post_type, 
+			$entity_slug 
+		); 
+		
+		$this->log_service->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
+		
+		global $wpdb;
+    	// Check if the candidated uri already is used
+    	// TODO Get post ids instead of count()
+		$stmt = $wpdb->prepare( 
+    		"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1", 
+    		WL_ENTITY_URL_META_NAME,
+    		$new_entity_uri
+    	);
+
+    	// Perform the query
+		$post_id = $wpdb->get_var( $stmt ); 		
+			
+		// If the post does not exist, then the new uri is returned 	
+		if ( ! is_numeric( $post_id ) ) {
+			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
+			return $new_entity_uri;
+		}
+		// If schema_type is equal to schema org type of post x, then the new uri is returned 
+		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
+			
+		if ( $schema_type === $schema_post_type[ 'css_class' ] ) {
+			$this->log_service->trace( "An entity with the same title and type already exists! Return uri [ new_entity_uri :: $new_entity_uri ]" );
+			return $new_entity_uri;
+		}
+
+		// Otherwise the same function is called recorsively
+		return $this->build_uri( $title, $post_type, $schema_type, ++$increment_digit );
+	}
+
+	public function is_used( $post_id ) {
+
+		if ( FALSE === $this->is_entity( $post_id ) ) {
+			return null;
+		}
+		// Retrieve the post
+		$entity = get_post( $post_id ); 
+
+		global $wpdb;
+    	// Retrieve Wordlift relation instances table name
+    	$table_name = wl_core_get_relation_instances_table_name();
+
+		// Check is it's referenced / related to another post / entity
+    	$stmt = $wpdb->prepare( 
+    		"SELECT COUNT(*) FROM $table_name WHERE  object_id = %d", 
+    		$entity->ID
+    	);
+		
+		// Perform the query
+		$relation_instances = (int) $wpdb->get_var( $stmt ); 
+		// If there is at least one relation instance for the current entity, then it's used
+		if ( 0 < $relation_instances ) {		
+			return TRUE;
+		}
+
+    	// Check if the entity uri is used as meta_value
+		$stmt = $wpdb->prepare( 
+    		"SELECT COUNT(*) FROM $wpdb->postmeta WHERE post_id != %d AND meta_value = %s", 
+    		$entity->ID,
+    		wl_get_entity_uri( $entity->ID )
+    	);
+    	// Perform the query
+		$meta_instances = (int) $wpdb->get_var( $stmt ); 
+		
+		// If there is at least one meta that refers the current entity uri, then current entity is used
+		if ( 0 < $meta_instances ) {
+			return TRUE;
+		}
+
+		// If we are here, it means the current entity is not used at the moment
+		return FALSE;
+	}
+
+	/**
+	 * Determines whether a given uri is an internal uri or not.
+	 *
+	 * @since 3.3.2
+	 *
+	 * @param int $uri An uri.
+	 *
+	 * @return true if the uri internal to the current dataset otherwise false.
+	 */
+	public function is_internal_uri( $uri ) {
+
+		return ( 0 === strrpos( $uri, wl_configuration_get_redlink_dataset_uri() ) );
 	}
 
 	/**
@@ -254,25 +373,33 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
-		$query = new WP_Query( array(
-				'posts_per_page' => 1,
-				'post_status'    => 'any',
-				'post_type'      => self::TYPE_NAME,
-				'meta_query'     => array(
-					'relation' => 'OR',
-					array(
-						'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
-						'value'   => $uri,
-						'compare' => '='
-					),
-					array(
-						'key'     => WL_ENTITY_URL_META_NAME,
-						'value'   => $uri,
-						'compare' => '='
-					)
+		$query_args = array(
+			'posts_per_page'	=> 1,
+			'post_status'		=> 'any',
+			'post_type'			=> self::TYPE_NAME,
+			'meta_query'		=> array(
+				array(
+					'key'     => WL_ENTITY_URL_META_NAME,
+					'value'   => $uri,
+					'compare' => '='
 				)
 			)
 		);
+
+		// Only if the current uri is not an internal uri 
+		// entity search is performed also looking at sameAs values
+		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
+		if ( !$this->is_internal_uri( $uri ) ) {
+		
+			$query_args[ 'meta_query' ][ 'relation' ] = 'OR';
+			$query_args[ 'meta_query' ][] = array(
+				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
+				'value'   => $uri,
+				'compare' => '='
+			);
+		} 
+
+		$query = new WP_Query( $query_args );
 
 		// Get the matching entity posts.
 		$posts = $query->get_posts();
@@ -395,9 +522,15 @@ class Wordlift_Entity_Service {
 		if ( FALSE === function_exists( 'get_current_screen' ) ) {
 			return;
 		}
+		
+		$screen = get_current_screen();
+		// If there is any valid screen nothing to do
+		if ( NULL === $screen ) {
+			return $clauses;
+		}
 
 		// If you're not in the entity post edit page, return.
-		if ( self::TYPE_NAME !== get_current_screen()->id ) {
+		if ( self::TYPE_NAME !== $screen->id ) {
 			return;
 		}
 		// Retrieve the current global post
@@ -600,7 +733,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string The input HTML code.
 	 */
-	private function convert_raw_score_to_percentage( $score ) {
+	public function convert_raw_score_to_percentage( $score ) {
 		// RATING_MAX : $score = 100 : x 
 		return round( ( $score * 100) / self::get_rating_max(), 0, PHP_ROUND_HALF_UP );
 	}

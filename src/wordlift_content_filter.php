@@ -88,7 +88,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		return '';
 	}
 
-	$post = wl_get_entity_post_by_uri( $uri );
+	$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
 
 	// Entity not found or not published. Delete <span> tags but leave their content on page.
 	if ( null === $post || $post->post_status !== 'publish' ) {
@@ -227,7 +227,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 					$field_value = wl_get_entity_uri( $field_value );
 				}
 				// Just if the linked entity does exist I can go further with template compiling
-				$nested_entity = wl_get_entity_post_by_uri( $field_value );
+				$nested_entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $field_value );
 				if ( ! is_null( $nested_entity ) ) {
 					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
 					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $field_name, ++ $recursion_level );

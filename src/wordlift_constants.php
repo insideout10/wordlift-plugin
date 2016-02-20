@@ -61,6 +61,7 @@ function wl_predicates() {
 		'a',
 		'dct:references',
 		'dct:relation',
+		'dct:title',
 		'owl:sameAs',
 		'rdfs:label',
 		'schema:author',

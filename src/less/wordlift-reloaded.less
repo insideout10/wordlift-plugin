@@ -4,6 +4,19 @@
 @import 'wordlift-carousel.less';
 @import 'wordlift-card.less';
 @import 'wordlift-label.less';
+@import 'wordlift-dashboard-widget.less';
+
+
+.inline-edit-entity {
+  .inline-edit-categories {
+    display: none;
+  }
+}
+#wl_entity_type-tabs {
+  .hide-if-no-js {
+    display: none;
+  }
+}
 
 .wl-button {
   background-color: @wl-brand-color;
@@ -156,11 +169,13 @@
   }
 
   .wl-widget-headline {
-    padding-left:28px;
     margin: 10px -12px;
     border-top:#eee 1px solid;
     border-bottom:#eee 1px solid;
     background: #f5f5f5 data-uri('../images/pink-logo-16x16.png') 6px 50% no-repeat !important;
+    font-size: 14px; 
+    padding: 8px 12px 8px 28px;
+    line-height: 1.4em;
   }
 
   .wl-widget-sub-headline {

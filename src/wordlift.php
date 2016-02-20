@@ -14,8 +14,8 @@
  * @wordpress-plugin
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
- * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud.
- * Version:           3.4.0-dev
+ * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud. <strong>We are currently in private beta</strong> and we're allowing a closed number of users testing the plugin. <strong>Please signup to <a href="http://join.wordlift.it">join.wordlift.it</a></strong> and we will get in contact with you anytime soon.
+ * Version:           3.5.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it
  * License:           GPL-2.0+
@@ -216,8 +216,12 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'angularjs', plugin_dir_url( __FILE__ ) . 'bower_components/angular/angular.min.js' );
+	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 
+	// Disable auto-save for custom entity posts only
+	if( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ){
+		wp_dequeue_script('autosave');
+	}
 }
 
 add_action( 'admin_enqueue_scripts', 'wordlift_admin_enqueue_scripts' );
@@ -546,7 +550,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			$item_id = $match[1];
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
-			$post = wl_get_entity_post_by_uri( $item_id );
+			$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
 			if ( null === $post ) {
@@ -604,7 +608,6 @@ require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
 require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
-require_once( 'shortcodes/wordlift_shortcode_blog_map.php' );
 
 // disable In-Depth Articles
 //require_once('wordlift_indepth_articles.php');

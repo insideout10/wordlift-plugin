@@ -6,80 +6,86 @@ function wordlift_register_shortcode_navigator() {
 	add_shortcode( 'wl_navigator', 'wordlift_shortcode_navigator' );
 }
 
-/**
- * Get list of posts that will populate the navigator.
- *
- * @param int $post_id Id of the post.
- *
- * @return Array List of tuples organized in this way:
- *      Array(
- *          [0] => Array(
- *              [0] => related post Object
- *              [1] => related entity Object (main post and the post above are related via this entity)
- *          )
- *          [1] => another tuple
- * [2] => ...
- *      )
- */
-function wordlift_shortcode_navigator_populate( $post_id ) {
+function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
+	
+	// Post ID must be defined
+	if ( ! isset( $_GET[ 'post_id' ] ) ) {
+		wp_die( 'No post_id given' );
+		return;
+	}
+
+	$current_post_id = $_GET[ 'post_id' ];
+	$current_post = get_post( $current_post_id );	
+	
+	// Post ID has to match an existing item
+	if ( null === $current_post ) {
+		wp_die( 'No valid post_id given' );
+		return;
+	}
 
 	// prepare structures to memorize other related posts
-	$related_posts_ids = array();
-	$related_posts     = array();
+	$results     = array();
+	$blacklist_ids = array( $current_post_id );
+	$related_entities = array();
 
-	// get the related entities, ordered by WHO-WHAT-WHERE-WHEN (as established the 29/7/2015 12:45 in the grottino)
-	// TODO: should be a single query
-	$related_entities = wl_core_get_related_entities( $post_id, array(
-		'predicate' => WL_WHO_RELATION,
-		'status'    => 'publish'
-	) );
-	$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $post_id, array(
-		'predicate' => WL_WHAT_RELATION,
-		'status'    => 'publish'
-	) ) );
-	$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $post_id, array(
-		'predicate' => WL_WHERE_RELATION,
-		'status'    => 'publish'
-	) ) );
-	$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $post_id, array(
-		'predicate' => WL_WHEN_RELATION,
-		'status'    => 'publish'
-	) ) );
+	// Get the related entities, ordering them by WHO, WHAT, WHERE, WHEN 
+	// TODO Replace with a single query if it is possible
+	// We select in inverse order to give priority to less used entities 
+	foreach ( array(
+		WL_WHEN_RELATION, 
+		WL_WHERE_RELATION,
+		WL_WHAT_RELATION,
+		WL_WHO_RELATION
+		) as $predicate ) {
 
-	foreach ( $related_entities as $rel_entity ) {
+		$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
+			'predicate' => $predicate,
+			'status'    => 'publish'
+		) ) );
+	
+	}
 
-		wl_write_log( "Looking for posts related to entity $rel_entity->ID" );
+	foreach ( $related_entities as $related_entity ) {
 
 		// take the id of posts referencing the entity
-		$referencing_posts = wl_core_get_related_posts( $rel_entity->ID, array(
+		$referencing_posts = wl_core_get_related_posts( $related_entity->ID, array(
 			'status' => 'publish'
 		) );
 
 		// loop over them and take the first one which is not already in the $related_posts
-		foreach ( $referencing_posts as $referencing_post ) {
+		foreach ( $referencing_posts as $index => $referencing_post ) {
 
-			if ( ! in_array( $referencing_post->ID, $related_posts_ids ) && $referencing_post->ID != $post_id ) {
-				$related_posts_ids[] = $referencing_post->ID;
-				$related_posts[]     = array( $referencing_post, $rel_entity );
+			if ( ! in_array( $referencing_post->ID, $blacklist_ids ) ) {
+				
+				$blacklist_ids[] = $referencing_post->ID;
+				$serialized_entity = wl_serialize_entity( $related_entity );
+				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post->ID, 'thumbnail' ) );		 
+			
+				$results[]     = array( 
+					'post' =>	array( 
+						'permalink' => get_post_permalink( $referencing_post->ID ),
+						'title'		=> $referencing_post->post_title,
+						'thumbnail'	=>  ( $thumbnail ) ?
+							$thumbnail : 
+							WL_DEFAULT_THUMBNAIL_PATH
+						),
+					'entity' => array( 
+						'label' 	=> $serialized_entity[ 'label' ],
+						'mainType' 	=> $serialized_entity[ 'mainType' ],
+						'permalink'	=> get_post_permalink( $related_entity->ID )
+					) 
+				);
+
+				if ( 0 < $index ) {
+					break;
+				}
+
 			}
 		}
 	}
 
-	wl_write_log( "Related posts for $post_id" );
-	wl_write_log( $related_posts );
-
-	return $related_posts;
-}
-
-/**
- * Extract image URL from the output of *get_the_post_thumbnail*.
- *
- * @param string $img Output of *get_the_post_thumbnail*.
- *
- * @return string Url of the image.
- */
-function wl_get_the_post_thumbnail_src( $img ) {
-	return ( preg_match( '~\bsrc="([^"]++)"~', $img, $matches ) ) ? $matches[1] : '';
+	// Return results in json
+	wl_core_send_json(  array_reverse( $results ) );
 }
 
 /**
@@ -87,84 +93,51 @@ function wl_get_the_post_thumbnail_src( $img ) {
  *
  * @return string HTML of the navigator.
  */
-function wordlift_shortcode_navigator() {
+function wordlift_shortcode_navigator( $atts ) {
+
+	// Extract attributes and set default values.
+    $shortcode_atts = shortcode_atts( array(
+        'title'  			=> __( 'Related articles', 'wordlift' ),
+    	'with_carousel'		=> true,
+     	'squared_thumbs'	=> false
+    ), $atts );
+
+    foreach ( array( 
+    	'with_carousel', 'squared_thumbs' 
+    	) as $att ) {
+	
+		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+    	$shortcode_atts[ $att ] = filter_var( 
+    		$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN 
+    	);
+    }
 
 	// avoid building the widget when there is a list of posts.
 	if ( ! is_single() ) {
 		return '';
 	}
 
-	// include slick on page
-	wp_enqueue_script( 'slick', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/slick.min.js' );
-	wp_enqueue_style( 'slick', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick.css' );
-	wp_enqueue_style( 'slick-theme', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick-theme.css' );
-	wp_enqueue_style( 'slick-theme-wordlift', dirname( plugin_dir_url( __FILE__ ) ) . '/public/css/slick-theme-wordlift.css' );
+	$current_post = get_post();
 
+	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
+	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
+	wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );	
 
-	// get posts that will populate the navigator (criteria may vary, see function *wordlift_shortcode_navigator_populate*)
-	// The result array will contains tuples (post_object, entity_object)
-	$related_posts_and_entities = wordlift_shortcode_navigator_populate( get_the_ID() );
+	$navigator_id = uniqid( 'wl-navigator-widget-' );
 
-	// build the HTML
-	$navigator_css_id = uniqid( 'wl-navigator-widget-' );
-	$content		  = "<div class='wl-navigator-widget' id='$navigator_css_id'>";
-
-	foreach ( $related_posts_and_entities as $related_post_entity ) {
-
-		$related_post   = $related_post_entity[0];
-		$related_entity = $related_post_entity[1];
-
-		$thumb = wl_get_the_post_thumbnail_src( get_the_post_thumbnail( $related_post->ID, 'medium' ) );
-		if ( empty( $thumb ) ) {
-			$thumb = WL_DEFAULT_THUMBNAIL_PATH;
-		}
-
-		$context_link = get_permalink( $related_entity->ID );
-		$context_name = $related_entity->post_title;
-
-		// build card HTML
-        $permalink = get_permalink( $related_post->ID );
-        $content .= <<<EOF
-            <div class="wl-navigator-card">
-                <div class="wl-navigator-lens" style="background-image:url( $thumb )">
-                    <span class="wl-navigator-trigger">
-                        <a href="$permalink">$related_post->post_title</a>
-                    </span>
-                </div>
-                <div class="wl-navigator-context">
-                    <a href="$context_link">$context_name</a>
-                </div>
-            </div>
+	wp_localize_script( 'wordlift-ui', 'wl_navigator_params', array(
+			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
+			'action'				=> 'wl_navigator',
+			'post_id'				=> $current_post->ID,
+			'attrs'					=> $shortcode_atts 
+		) 
+	);
+	return <<<EOF
+            <div id="$navigator_id" class="wl-navigator-widget"></div>
 EOF;
-        
-	}
-    
-	$content .= '</div>';
-	// how many cards
-	$num_cards_on_front = count( $related_posts_and_entities );
-
-	if ( $num_cards_on_front > 3 ) {
-		$num_cards_on_front = 3;
-	}
-	// add js
-	$content .= <<<EOF
-        <script>
-        ( jQuery( function($){ 
-            $(document).ready(function(){
-                // Launch navigator
-                $('#$navigator_css_id').slick({
-                    dots: false,
-                    arrows: true,
-                    infinite: true,
-                    slidesToShow: $num_cards_on_front,
-                    slidesToScroll: 1
-                });
-            });
-        } ) );
-    </script>
-EOF;
-
-	return $content;
 }
 
 add_action( 'init', 'wordlift_register_shortcode_navigator' );
+add_action( 'wp_ajax_wl_navigator', 'wl_shortcode_navigator_ajax' );
+add_action( 'wp_ajax_nopriv_wl_navigator', 'wl_shortcode_navigator_ajax' );
+

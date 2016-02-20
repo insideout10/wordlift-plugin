@@ -412,3 +412,242 @@ jQuery ($) ->
 
     element.geomap
       dataEndpoint: url
+
+angular.module('wordlift.ui.carousel', [])
+.directive('wlCarousel', ['$window', '$log', ($window, $log)->
+  restrict: 'A'
+  scope: true
+  transclude: true      
+  template: """
+      <div class="wl-carousel" ng-show="panes.length > 0">
+        <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-right="next()"></div>
+        <div class="wl-carousel-arrow wl-prev" ng-click="prev()" ng-show="currentPaneIndex > 0">
+          <i class="wl-angle-left" />
+        </div>
+        <div class="wl-carousel-arrow wl-next" ng-click="next()" ng-show="isNextArrowVisible()">
+          <i class="wl-angle-right" />
+        </div>
+      </div>
+  """
+  controller: [ '$scope', '$element', '$attrs', ($scope, $element, $attrs) ->
+      
+    w = angular.element $window
+
+    $scope.visibleElements = ()->
+      if $element.width() > 460
+        return 3
+      return 1
+
+    $scope.setItemWidth = ()->
+      $element.width() / $scope.visibleElements() 
+
+    $scope.itemWidth =  $scope.setItemWidth()
+    $scope.panesWidth = undefined
+    $scope.panes = []
+    $scope.position = 0;
+    $scope.currentPaneIndex = 0
+
+    $scope.isNextArrowVisible = ()->
+      ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
+    
+    $scope.next = ()->
+      $scope.position = $scope.position - $scope.itemWidth
+      $scope.currentPaneIndex = $scope.currentPaneIndex + 1
+    $scope.prev = ()->
+      $scope.position = $scope.position + $scope.itemWidth
+      $scope.currentPaneIndex = $scope.currentPaneIndex - 1
+    
+    $scope.setPanesWrapperWidth = ()->
+      $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
+      $scope.position = 0;
+      $scope.currentPaneIndex = 0
+
+    w.bind 'resize', ()->
+        
+      $scope.itemWidth = $scope.setItemWidth();
+      $scope.setPanesWrapperWidth()
+      for pane in $scope.panes
+        pane.scope.setWidth $scope.itemWidth
+      $scope.$apply()
+
+    ctrl = @
+    ctrl.registerPane = (scope, element)->
+      # Set the proper width for the element
+      scope.setWidth $scope.itemWidth
+        
+      pane =
+        'scope': scope
+        'element': element
+
+      $scope.panes.push pane
+      $scope.setPanesWrapperWidth()
+
+    ctrl.unregisterPane = (scope)->
+        
+      unregisterPaneIndex = undefined
+      for pane, index in $scope.panes
+        if pane.scope.$id is scope.$id
+          unregisterPaneIndex = index
+
+      $scope.panes.splice unregisterPaneIndex, 1
+      $scope.setPanesWrapperWidth()
+  ]   
+])
+.directive('wlCarouselPane', ['$log', ($log)->
+  require: '^wlCarousel'
+  restrict: 'EA'
+  transclude: true 
+  template: """
+      <div ng-transclude></div>
+  """
+  link: ($scope, $element, $attrs, $ctrl) ->
+
+    $log.debug "Going to add carousel pane with id #{$scope.$id} to carousel"
+    $element.addClass "wl-carousel-item"
+      
+    $scope.setWidth = (size)->
+      $element.css('width', "#{size}px")
+
+    $scope.$on '$destroy', ()->
+      $log.debug "Destroy #{$scope.$id}"
+      $ctrl.unregisterPane $scope
+
+    $ctrl.registerPane $scope, $element
+])
+angular.module('wordlift.utils.directives', [])
+# See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
+.directive('wlOnError', ['$parse', '$window', '$log', ($parse, $window, $log)->
+  restrict: 'A'
+  compile: ($element, $attrs) ->  
+    return (scope, element)->
+      fn = $parse($attrs.wlOnError)
+      element.on('error', (event)->
+        callback = ()->
+      	  fn(scope, { $event: event })
+        scope.$apply(callback)
+      )
+])
+.directive('wlFallback', ['$window', '$log', ($window, $log)->
+  restrict: 'A'
+  priority: 99 # it needs to run after the attributes are interpolated
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    $element.bind('error', ()->
+      unless $attrs.src is $attrs.wlFallback
+        $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlFallback}"
+        $attrs.$set 'src', $attrs.wlFallback
+    )
+])
+# Set the well-known $ reference to jQuery.
+$ = jQuery
+
+# Create the main AngularJS module, and set it dependent on controllers and directives.
+angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.utils.directives' ])
+.provider("configuration", ()->
+  
+  _configuration = undefined
+  
+  provider =
+    setConfiguration: (configuration)->
+      _configuration = configuration
+    $get: ()->
+      _configuration
+
+  provider
+)
+.directive('wlNavigatorItems', ['configuration', '$window', '$log', (configuration, $window, $log)->
+  restrict: 'E'
+  scope: true
+  template: (tElement, tAttrs)->
+    
+    wrapperClasses = 'wl-wrapper'
+    wrapperAttrs = ' wl-carousel'
+    itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
+    itemWrapperAttrs = ' wl-carousel-pane'
+    thumbClasses = 'wl-card-image'
+    
+    unless configuration.attrs.with_carousel
+      wrapperClasses = 'wl-floating-wrapper'
+      wrapperAttrs = ''
+      itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
+      itemWrapperAttrs = ''
+    
+    if configuration.attrs.squared_thumbs
+      thumbClasses = 'wl-card-image wl-square'
+      
+    """
+      <div class="wl-posts">
+        <div class="#{wrapperClasses}" #{wrapperAttrs}>
+          <div class="#{itemWrapperClasses}" ng-repeat="item in items"#{itemWrapperAttrs}>
+            <div class="wl-card-header wl-entity-wrapper"> 
+              <h6>
+                <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
+              </h6>
+            </div>
+            <div class="#{thumbClasses}"> 
+              <span style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
+            </div>
+            <div class="wl-card-title"> 
+              <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  """
+
+])
+.controller('NavigatorWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)-> 
+
+    $scope.items = []
+    $scope.configuration = configuration
+        
+    $scope.$on "itemsLoaded", (event, items) -> 
+      $scope.items = items
+      
+])
+# Retrieve post
+.service('DataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)-> 
+  
+  service = {}
+  service.load = ()->
+    
+    uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}"
+    $log.debug "Going to load navigator items from #{uri}"
+
+    $http(
+      method: 'get'
+      url: uri
+    )
+    # If successful, broadcast an *analysisReceived* event.
+    .success (data) ->
+      $rootScope.$broadcast "itemsLoaded", data
+    .error (data, status) ->
+       $log.warn "Error loading items, statut #{status}"
+
+  service
+
+])
+# Configuration provider
+.config([ 'configurationProvider', (configurationProvider)->
+  configurationProvider.setConfiguration window.wl_navigator_params
+])
+
+$(
+  container = $("""
+  	<div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
+      <h4 class="wl-headline">{{configuration.attrs.title}}</h4>
+      <wl-navigator-items></wl-navigator-items>
+    </div>
+  """)
+  .appendTo('.wl-navigator-widget')
+
+injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget'] 
+injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
+  # execute the following commands in the angular js context.
+  $rootScope.$apply(->    
+    DataRetrieverService.load() 
+  )
+])
+
+)
+
+

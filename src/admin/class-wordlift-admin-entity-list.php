@@ -124,14 +124,19 @@ class Wordlift_Entity_List_Service {
 			return;
 		}
 
-		// Only show on entity list page
 		$screen = get_current_screen();
+		// If there is any valid screen nothing to do
+		if ( NULL === $screen ) {
+			return;
+		}
+
 		if( $screen->post_type !== Wordlift_Entity_Service::TYPE_NAME ){
 			return;
 		}
 		
 		// Was a W already selected?
-		$selected = isset( $_GET['wl-classification-scope'] ) ? $_GET['wl-classification-scope'] : '' ;
+		$selected = isset( $_GET[ 'wl-classification-scope' ] ) ? 
+			$_GET['wl-classification-scope'] : '' ;
 		
 		// Print select box with the 4W
 		$all_w = array(
@@ -167,11 +172,17 @@ class Wordlift_Entity_List_Service {
 
 		// Return safely if get_current_screen() is not defined (yet)
 		if ( FALSE === function_exists( 'get_current_screen' ) ) {
-			return;
+			return $clauses;
 		}
 		
 		// Only apply on entity list page, only if this is the main query and if the wl-classification-scope query param is set
 		$screen = get_current_screen();
+
+		// If there is any valid screen nothing to do
+		if ( NULL === $screen ) {
+			return $clauses;
+		}
+
 		if( ! ( $screen->post_type === Wordlift_Entity_Service::TYPE_NAME && is_main_query() && isset( $_GET['wl-classification-scope'] ) ) ) {
 			return $clauses;
 		}
