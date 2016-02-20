@@ -538,18 +538,22 @@
         restrict: 'E',
         scope: true,
         template: function(tElement, tAttrs) {
-          var itemWrapperAttrs, itemWrapperClasses, wrapperAttrs, wrapperClasses;
-          wrapperClasses = '';
+          var itemWrapperAttrs, itemWrapperClasses, thumbClasses, wrapperAttrs, wrapperClasses;
+          wrapperClasses = 'wl-wrapper';
           wrapperAttrs = ' wl-carousel';
           itemWrapperClasses = 'wl-post wl-card wl-item-wrapper';
           itemWrapperAttrs = ' wl-carousel-pane';
+          thumbClasses = 'wl-card-image';
           if (!configuration.attrs.with_carousel) {
-            wrapperClasses = '';
+            wrapperClasses = 'wl-floating-wrapper';
             wrapperAttrs = '';
             itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper';
             itemWrapperAttrs = '';
           }
-          return "<div class=\"wl-posts\">\n  <div" + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\"> \n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"wl-card-image\"> \n        <img ng-src=\"{{item.post.thumbnail}}\" />\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
+          if (configuration.attrs.squared_thumbs) {
+            thumbClasses = 'wl-card-image wl-square';
+          }
+          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\"> \n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\"> \n        <span style=\"background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;\"></span>\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
         }
       };
     }
@@ -558,8 +562,6 @@
       $scope.items = [];
       $scope.configuration = configuration;
       return $scope.$on("itemsLoaded", function(event, items) {
-        $log.debug("Rertieved items for post " + configuration.post_id + " ...");
-        $log.debug(items);
         return $scope.items = items;
       });
     }

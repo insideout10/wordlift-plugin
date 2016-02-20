@@ -20,28 +20,32 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
   scope: true
   template: (tElement, tAttrs)->
     
-    wrapperClasses = ''
+    wrapperClasses = 'wl-wrapper'
     wrapperAttrs = ' wl-carousel'
     itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
     itemWrapperAttrs = ' wl-carousel-pane'
+    thumbClasses = 'wl-card-image'
     
     unless configuration.attrs.with_carousel
-      wrapperClasses = ''
+      wrapperClasses = 'wl-floating-wrapper'
       wrapperAttrs = ''
       itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
       itemWrapperAttrs = ''
     
+    if configuration.attrs.squared_thumbs
+      thumbClasses = 'wl-card-image wl-square'
+      
     """
       <div class="wl-posts">
-        <div#{wrapperAttrs}>
+        <div class="#{wrapperClasses}" #{wrapperAttrs}>
           <div class="#{itemWrapperClasses}" ng-repeat="item in items"#{itemWrapperAttrs}>
             <div class="wl-card-header wl-entity-wrapper"> 
               <h6>
                 <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
               </h6>
             </div>
-            <div class="wl-card-image"> 
-              <img ng-src="{{item.post.thumbnail}}" />
+            <div class="#{thumbClasses}"> 
+              <span style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
@@ -58,8 +62,6 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
     $scope.configuration = configuration
         
     $scope.$on "itemsLoaded", (event, items) -> 
-      $log.debug "Rertieved items for post #{configuration.post_id} ..."
-      $log.debug items
       $scope.items = items
       
 ])

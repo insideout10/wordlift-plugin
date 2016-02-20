@@ -129,7 +129,7 @@ $(
         <div wl-carousel>
           <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
             <div class="wl-card-image"> 
-              <img ng-src="{{post.thumbnail}}" />
+                <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>

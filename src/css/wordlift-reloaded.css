@@ -1433,6 +1433,10 @@
   overflow: hidden;
   padding-top: 50%;
 }
+.wl-card .wl-card-image.wl-square {
+  padding-top: 100%;
+}
+.wl-card .wl-card-image span,
 .wl-card .wl-card-image img {
   position: absolute;
   margin: auto;

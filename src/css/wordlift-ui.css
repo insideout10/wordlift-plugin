@@ -1433,6 +1433,10 @@
   overflow: hidden;
   padding-top: 50%;
 }
+.wl-card .wl-card-image.wl-square {
+  padding-top: 100%;
+}
+.wl-card .wl-card-image span,
 .wl-card .wl-card-image img {
   position: absolute;
   margin: auto;
@@ -1533,11 +1537,6 @@
   padding: 0em;
   margin: 0em;
   background-color: #fff;
-}
-.wl-navigator-widget .wl-posts .wl-floating-item-wrapper {
-  width: 33%;
-  display: inline-block;
-  vertical-align: top;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper {
   padding: 1em 0em;
@@ -1718,4 +1717,24 @@ path.wl-thing {
 a.wl-entity-page-link {
   text-decoration: none !important;
   border-bottom: #666 1px dotted;
+}
+.wl-floating-wrapper {
+  border-top: #ccc 1px solid;
+}
+@media screen and (max-width: 460px) {
+  .wl-floating-item-wrapper {
+    width: 100% !important;
+  }
+}
+.wl-floating-item-wrapper {
+  width: 33%;
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 0.3em;
+}
+.wl-floating-item-wrapper h6 {
+  margin: 0em !important;
+}
+.wl-floating-item-wrapper .wl-card-title {
+  padding: 0.6em 0 !important;
 }
