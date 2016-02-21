@@ -58,13 +58,13 @@ $(
 
       <h5 class="wl-widget-sub-headline">What</h5>
       <div class="wl-widget-wrapper">
-        <div ng-repeat="category in analysis.categories | orderBy :'-relevance'" class="wl-category-wrapper">
+        <div ng-repeat="topic in analysis.topics | orderBy :'-relevance'" class="wl-category-wrapper">
           <i class="wl-toggle-off" />
           <span class="entity wl-thing"><i class="type" />
-            {{category.label}}
+            {{topic.label}}
           </span>
           <div class="wl-category-progress-background">
-            <div class="wl-category-progress-current" style="width:{{category.relevance*100}}%"></div>
+            <div class="wl-category-progress-current" style="width:{{topic.relevance*100}}%"></div>
           </div>      
         </div>
       </div>  
