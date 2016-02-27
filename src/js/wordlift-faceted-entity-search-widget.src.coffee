@@ -275,8 +275,8 @@ $(
           <h6>{{box.scope}}</h6>
           <ul>
             <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
+                <i class="wl-checkbox" ng-class=" { 'selected' : isInConditions(entity) }"></i>
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
-                  <i class="wl-checkbox"></i>
                   {{entity.label}}
                 </span>
             </li>
