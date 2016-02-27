@@ -88,6 +88,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 == Changelog ==
 = 3.5.0 (???) =
 * Enhancement: [#276](https://github.com/insideout10/wordlift-plugin/issues/276): Fix facets layout with entities long titles.
+* Enhancement: [#274](https://github.com/insideout10/wordlift-plugin/issues/274): Simplify facets layout grid. 
 * Enhancement: [#273](https://github.com/insideout10/wordlift-plugin/issues/273): Remove entity type icon and counter from facets within faceted search widget to simplify the layout.
 * Enhancement: [#268](https://github.com/insideout10/wordlift-plugin/issues/268): Flaoting configurable layout is now available both for navigator and faceted search.
 * Enhancement: [#267](https://github.com/insideout10/wordlift-plugin/issues/267): Force override for entities with same schema type and label within disambiguation workflow.
