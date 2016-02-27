@@ -1340,6 +1340,9 @@
   overflow: hidden;
   width: 100%;
   position: relative;
+  border: transparent 1px solid !important;
+}
+.wl-carousel.active {
   border: #ccc 1px solid !important;
 }
 .wl-carousel .wl-panes {

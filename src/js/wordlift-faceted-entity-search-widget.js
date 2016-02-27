@@ -8,26 +8,36 @@
         restrict: 'A',
         scope: true,
         transclude: true,
-        template: "<div class=\"wl-carousel\" ng-show=\"panes.length > 0\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-right=\"next()\"></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"currentPaneIndex > 0\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
+        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
         controller: [
-          '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
             var ctrl, w;
             w = angular.element($window);
-            $scope.visibleElements = function() {
-              if ($element.width() > 460) {
-                return 3;
-              }
-              return 1;
-            };
             $scope.setItemWidth = function() {
               return $element.width() / $scope.visibleElements();
             };
-            $scope.itemWidth = $scope.setItemWidth();
-            $scope.panesWidth = void 0;
-            $scope.panes = [];
-            $scope.position = 0;
-            $scope.currentPaneIndex = 0;
+            $scope.showControls = function() {
+              return $scope.areControlsVisible = true;
+            };
+            $scope.hideControls = function() {
+              return $scope.areControlsVisible = false;
+            };
+            $scope.visibleElements = function() {
+              if ($element.width() > 460) {
+                return 4;
+              }
+              return 1;
+            };
+            $scope.isPrevArrowVisible = function() {
+              if (!$scope.areControlsVisible) {
+                return false;
+              }
+              return $scope.currentPaneIndex > 0;
+            };
             $scope.isNextArrowVisible = function() {
+              if (!$scope.areControlsVisible) {
+                return false;
+              }
               return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
             };
             $scope.next = function() {
@@ -43,6 +53,12 @@
               $scope.position = 0;
               return $scope.currentPaneIndex = 0;
             };
+            $scope.itemWidth = $scope.setItemWidth();
+            $scope.panesWidth = void 0;
+            $scope.panes = [];
+            $scope.position = 0;
+            $scope.currentPaneIndex = 0;
+            $scope.areControlsVisible = false;
             w.bind('resize', function() {
               var i, len, pane, ref;
               $scope.itemWidth = $scope.setItemWidth();
