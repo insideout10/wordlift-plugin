@@ -272,7 +272,7 @@ $(
       </h4>
       <div ng-show="configuration.attrs.show_facets" class="wl-facets" ng-show="filteringEnabled">
         <div class="wl-facets-container" ng-repeat="box in supportedTypes">
-          <h6>{{box.scope}}</h6>
+          <h5>{{box.scope}}</h5>
           <ul>
             <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
                 <i class="wl-checkbox" ng-class=" { 'selected' : isInConditions(entity) }"></i>

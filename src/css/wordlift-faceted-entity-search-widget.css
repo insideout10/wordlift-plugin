@@ -1534,11 +1534,12 @@
 #wordlift-faceted-entity-search-widget .wl-headline {
   position: relative;
   margin: 0.4em 0;
+  font-weight: bold;
 }
 #wordlift-faceted-entity-search-widget .wl-headline i {
   position: absolute;
   right: 0;
-  top: 50%;
+  top: 0;
   font-size: inherit !important;
 }
 #wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-on {
@@ -1582,11 +1583,11 @@
   width: 25%;
   float: left;
 }
-#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container h6 {
+#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container h5 {
   text-transform: uppercase;
-  font-size: 0.8em;
   padding: 0.3em 0 0 0;
   margin: 0;
+  font-weight: bold;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container ul {
   padding: 0 0 0 0.2em;
@@ -1601,6 +1602,9 @@
   line-height: 1.2em;
   position: relative;
   color: #666;
+}
+#wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li:before {
+  content: '';
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-checkbox {
   top: 0;

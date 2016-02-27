@@ -19,11 +19,12 @@
 	.wl-headline {
 		position: relative;
 		margin:0.4em 0;
+		font-weight: bold;
 
 		i {
 			position: absolute;
 			right:0;
-			top:50%;
+			top:0;
 			font-size: inherit !important;
 		}
 		.wl-toggle-on { 
@@ -50,11 +51,12 @@
 			width:25%;
 			float:left;	
 			
-			h6 {
+			h5 {
   				text-transform: uppercase;
-				font-size: 0.8em;
 				padding: 0.3em 0 0 0;
 				margin: 0;
+				font-weight: bold;
+
 			}
 
 			ul {
@@ -75,6 +77,9 @@
 				
 				color:#666;
 
+				&:before {
+					content: '';
+				}
 
 				.wl-checkbox {
 					
