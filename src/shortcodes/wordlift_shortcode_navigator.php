@@ -60,26 +60,25 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 				$blacklist_ids[] = $referencing_post->ID;
 				$serialized_entity = wl_serialize_entity( $related_entity );
 				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post->ID, 'thumbnail' ) );		 
-			
-				$results[]     = array( 
-					'post' =>	array( 
-						'permalink' => get_post_permalink( $referencing_post->ID ),
-						'title'		=> $referencing_post->post_title,
-						'thumbnail'	=>  ( $thumbnail ) ?
-							$thumbnail : 
-							WL_DEFAULT_THUMBNAIL_PATH
-						),
-					'entity' => array( 
-						'label' 	=> $serialized_entity[ 'label' ],
-						'mainType' 	=> $serialized_entity[ 'mainType' ],
-						'permalink'	=> get_post_permalink( $related_entity->ID )
-					) 
-				);
+	
+			    if ( $thumbnail ) {
+					$results[]     = array( 
+						'post' =>	array( 
+							'permalink' => get_post_permalink( $referencing_post->ID ),
+							'title'		=> $referencing_post->post_title,
+							'thumbnail'	=> $thumbnail 
+							),
+						'entity' => array( 
+							'label' 	=> $serialized_entity[ 'label' ],
+							'mainType' 	=> $serialized_entity[ 'mainType' ],
+							'permalink'	=> get_post_permalink( $related_entity->ID )
+						) 
+					);
 
-				if ( 0 < $index ) {
-					break;
+					if ( 0 < $index ) {
+						break;
+					}
 				}
-
 			}
 		}
 	}
