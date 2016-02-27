@@ -83,6 +83,12 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 		}
 	}
 
+	// Results has to fit also with the layout that has 4 columns
+	$mod = ( count( $results ) % 4 );
+	while ( $mod-- ) {
+		array_pop( $results ); 
+	}
+
 	// Return results in json
 	wl_core_send_json(  array_reverse( $results ) );
 }
