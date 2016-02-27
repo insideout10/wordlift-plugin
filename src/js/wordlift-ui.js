@@ -383,7 +383,7 @@
         restrict: 'A',
         scope: true,
         transclude: true,
-        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
+        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\">\n    <i class=\"wl-angle-left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle-right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
           '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
             var ctrl, w;
@@ -404,15 +404,9 @@
               return 1;
             };
             $scope.isPrevArrowVisible = function() {
-              if (!$scope.areControlsVisible) {
-                return false;
-              }
               return $scope.currentPaneIndex > 0;
             };
             $scope.isNextArrowVisible = function() {
-              if (!$scope.areControlsVisible) {
-                return false;
-              }
               return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
             };
             $scope.next = function() {

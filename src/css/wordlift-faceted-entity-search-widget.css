@@ -1343,7 +1343,8 @@
   border: transparent 1px solid !important;
 }
 .wl-carousel.active {
-  border: #ccc 1px solid !important;
+  border-top: #ccc 1px solid !important;
+  border-bottom: #ccc 1px solid !important;
 }
 .wl-carousel .wl-panes {
   position: relative;
@@ -1356,41 +1357,27 @@
 .wl-carousel .wl-panes .wl-carousel-item {
   float: left;
   margin: 0;
-  padding: 0;
+  padding: 0.6em 0.3em;
 }
 .wl-carousel img {
   display: block;
   width: 100%;
   max-width: 100%;
 }
-.wl-carousel .wl-carousel-arrow {
+.wl-carousel .wl-carousel-arrows {
   position: absolute;
   cursor: pointer;
-  width: 24px;
-  font-size: 24px !important;
   text-align: center;
   font-weight: bold;
-  display: inline-block;
-  height: 100%;
-  opacity: 0.4;
-  background-color: #fff;
+  padding: 0.3em;
+  right: 0;
+  bottom: 0.6em;
+  border: #ccc 1px solid !important;
 }
-.wl-carousel .wl-carousel-arrow:hover {
+.wl-carousel .wl-carousel-arrows:hover {
   color: #2ea2cc !important;
 }
-.wl-carousel .wl-carousel-arrow.wl-next {
-  right: 0px;
-  top: 0px;
-  z-index: 1;
-  border-left: #999 1px solid !important;
-}
-.wl-carousel .wl-carousel-arrow.wl-prev {
-  left: 0px;
-  top: 0px;
-  z-index: 2;
-  border-right: #999 1px solid !important;
-}
-.wl-carousel .wl-carousel-arrow .wl-angle-left {
+.wl-carousel .wl-carousel-arrows .wl-angle-left {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
@@ -1400,16 +1387,11 @@
   font-size: 14px;
   padding: 0px 3px;
   color: inherit;
-  position: absolute;
-  top: 45%;
-  left: 0;
-  right: 0;
-  font-size: 24px !important;
 }
-.wl-carousel .wl-carousel-arrow .wl-angle-left:before {
+.wl-carousel .wl-carousel-arrows .wl-angle-left:before {
   content: "\f0d9";
 }
-.wl-carousel .wl-carousel-arrow .wl-angle-right {
+.wl-carousel .wl-carousel-arrows .wl-angle-right {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
@@ -1419,13 +1401,8 @@
   font-size: 14px;
   padding: 0px 3px;
   color: inherit;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 45%;
-  font-size: 24px !important;
 }
-.wl-carousel .wl-carousel-arrow .wl-angle-right:before {
+.wl-carousel .wl-carousel-arrows .wl-angle-right:before {
   content: "\f0da";
 }
 .wl-card {

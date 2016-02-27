@@ -170,11 +170,9 @@ angular.module('wordlift.ui.carousel', [])
   template: """
       <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
         <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude></div>
-        <div class="wl-carousel-arrow wl-prev" ng-click="prev()" ng-show="isPrevArrowVisible()">
-          <i class="wl-angle-left" />
-        </div>
-        <div class="wl-carousel-arrow wl-next" ng-click="next()" ng-show="isNextArrowVisible()">
-          <i class="wl-angle-right" />
+        <div class="wl-carousel-arrows" ng-show="areControlsVisible">
+          <i class="wl-angle-left" ng-click="prev()" ng-show="isPrevArrowVisible()" />
+          <i class="wl-angle-right" ng-click="next()" ng-show="isNextArrowVisible()" />
         </div>
       </div>
   """
@@ -197,13 +195,9 @@ angular.module('wordlift.ui.carousel', [])
       return 1
 
     $scope.isPrevArrowVisible = ()->
-      unless $scope.areControlsVisible 
-        return false
-      $scope.currentPaneIndex > 0
+      ($scope.currentPaneIndex > 0)
     
     $scope.isNextArrowVisible = ()->
-      unless $scope.areControlsVisible 
-        return false
       ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
     
     $scope.next = ()->
