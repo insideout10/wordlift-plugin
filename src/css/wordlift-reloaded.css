@@ -1369,8 +1369,6 @@
   text-align: center;
   font-weight: bold;
   padding: 0em 0.3em;
-  background-color: #fff;
-  opacity: 0.4;
   right: 0;
   bottom: 0.6em;
   border: #ccc 1px solid !important;
@@ -2013,6 +2011,9 @@
   font-size: 14px;
   padding: 8px 12px 8px 28px;
   line-height: 1.4em;
+}
+#wordlift-edit-post-wrapper .wl-carousel-item {
+  padding: 0;
 }
 #wordlift-edit-post-wrapper #wl-add-entity-button-wrapper {
   padding: 4px 0px 0px 0px;
