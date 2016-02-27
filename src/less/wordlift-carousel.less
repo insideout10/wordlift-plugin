@@ -36,10 +36,11 @@
     .wl-carousel-arrows {
 
         position: absolute;
-        cursor: pointer;
         text-align: center;
         font-weight: bold;
-        padding:0.3em;
+        padding:0em 0.3em;
+        background-color:#fff;
+        opacity:0.4;
         
         right:0;
         bottom:0.6em;
@@ -50,13 +51,18 @@
         }
 
 
-        .wl-angle-left { 
-            .fa-icon(@fa-var-caret-left);
+        .wl-angle { 
+            font-size: 18px !important;
             color:inherit;
-        }
-        .wl-angle-right { 
-            .fa-icon(@fa-var-caret-right);
-            color:inherit;
+            cursor: pointer;
+
+            &.left {
+                .fa-icon(@fa-var-caret-left);    
+            }
+            &.right {
+                .fa-icon(@fa-var-caret-right);    
+            }
+
         }
     }
 }

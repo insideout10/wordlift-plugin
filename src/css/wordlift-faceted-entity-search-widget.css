@@ -1366,10 +1366,11 @@
 }
 .wl-carousel .wl-carousel-arrows {
   position: absolute;
-  cursor: pointer;
   text-align: center;
   font-weight: bold;
-  padding: 0.3em;
+  padding: 0em 0.3em;
+  background-color: #fff;
+  opacity: 0.4;
   right: 0;
   bottom: 0.6em;
   border: #ccc 1px solid !important;
@@ -1377,7 +1378,12 @@
 .wl-carousel .wl-carousel-arrows:hover {
   color: #2ea2cc !important;
 }
-.wl-carousel .wl-carousel-arrows .wl-angle-left {
+.wl-carousel .wl-carousel-arrows .wl-angle {
+  font-size: 18px !important;
+  color: inherit;
+  cursor: pointer;
+}
+.wl-carousel .wl-carousel-arrows .wl-angle.left {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
@@ -1386,12 +1392,11 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
   padding: 0px 3px;
-  color: inherit;
 }
-.wl-carousel .wl-carousel-arrows .wl-angle-left:before {
+.wl-carousel .wl-carousel-arrows .wl-angle.left:before {
   content: "\f0d9";
 }
-.wl-carousel .wl-carousel-arrows .wl-angle-right {
+.wl-carousel .wl-carousel-arrows .wl-angle.right {
   font-family: FontAwesome;
   font-style: normal;
   font-weight: normal;
@@ -1400,9 +1405,8 @@
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
   padding: 0px 3px;
-  color: inherit;
 }
-.wl-carousel .wl-carousel-arrows .wl-angle-right:before {
+.wl-carousel .wl-carousel-arrows .wl-angle.right:before {
   content: "\f0da";
 }
 .wl-card {
@@ -1428,9 +1432,8 @@
 .wl-card .wl-card-title {
   padding: 0.6em;
   position: relative;
-  font-size: 1em;
-  line-height: 1.2em;
-  min-height: 3.6em;
+  font-size: 14px;
+  line-height: 16px;
 }
 .wl-card .wl-card-title a {
   text-decoration: none;
@@ -1726,5 +1729,4 @@
 #wordlift-faceted-entity-search-widget .wl-posts {
   padding: 0em;
   margin: 0em;
-  background-color: #fff;
 }
