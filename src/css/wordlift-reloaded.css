@@ -1371,6 +1371,8 @@
   padding: 0em 0.3em;
   right: 0;
   bottom: 0.6em;
+}
+.wl-carousel .wl-carousel-arrows.active {
   border: #ccc 1px solid !important;
 }
 .wl-carousel .wl-carousel-arrows:hover {
