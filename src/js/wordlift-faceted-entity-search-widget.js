@@ -35,10 +35,16 @@
               return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
             };
             $scope.next = function() {
+              if (($scope.currentPaneIndex + $scope.visibleElements() + 1) > $scope.panes.length) {
+                return;
+              }
               $scope.position = $scope.position - $scope.itemWidth;
               return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
             };
             $scope.prev = function() {
+              if ($scope.currentPaneIndex === 0) {
+                return;
+              }
               $scope.position = $scope.position + $scope.itemWidth;
               return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
             };
@@ -100,7 +106,6 @@
         transclude: true,
         template: "<div ng-transclude></div>",
         link: function($scope, $element, $attrs, $ctrl) {
-          $log.debug("Going to add carousel pane with id " + $scope.$id + " to carousel");
           $element.addClass("wl-carousel-item");
           $scope.setWidth = function(size) {
             return $element.css('width', size + "px");

@@ -452,9 +452,14 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
     
     $scope.next = ()->
+      if ( $scope.currentPaneIndex + $scope.visibleElements() + 1 ) > $scope.panes.length
+        return 
       $scope.position = $scope.position - $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex + 1
+
     $scope.prev = ()->
+      if $scope.currentPaneIndex is 0
+        return 
       $scope.position = $scope.position + $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
@@ -510,7 +515,6 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   """
   link: ($scope, $element, $attrs, $ctrl) ->
 
-    $log.debug "Going to add carousel pane with id #{$scope.$id} to carousel"
     $element.addClass "wl-carousel-item"
       
     $scope.setWidth = (size)->
