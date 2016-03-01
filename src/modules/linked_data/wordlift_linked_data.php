@@ -104,7 +104,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 				$uri = stripslashes( $entity_uri );
 				
 				if ( !Wordlift_Entity_Service::get_instance()->is_internal_uri( $entity_uri ) ) {
-					$uri = $entities_uri_mapping[ $entity_uri ];
+					$uri = $entities_uri_mapping[ $uri ];
 				} 				
 
 				$entities_predicates_mapping[ $uri ][] = $predicate;	
@@ -229,7 +229,7 @@ function wl_save_entity( $entity_data ) {
 	if ( null !== $post ) {
 		return $post;
 	}
-
+	
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
 	// the local SEO form values to the created entity (https://github.com/insideout10/wordlift-plugin/issues/156)
 	// Same thing applies to SEO Ultimate (https://github.com/insideout10/wordlift-plugin/issues/148)
