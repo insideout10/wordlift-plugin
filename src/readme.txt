@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.5.0 (???) =
+* Enhancement: [#280](https://github.com/insideout10/wordlift-plugin/issues/280): Fix disambiguation failure use case. 
 * Enhancement: [#279](https://github.com/insideout10/wordlift-plugin/issues/279): Disambiguation fixed for entities with escaped chars contained in the uri.
 * Enhancement: [#276](https://github.com/insideout10/wordlift-plugin/issues/276): Fix facets layout with entities long titles.
 * Enhancement: [#275](https://github.com/insideout10/wordlift-plugin/issues/275): Exclude posts without featured image from navigator results.

@@ -61,6 +61,41 @@ EOF;
 		
 	}
 
+	function testEntityWithEscapedCharsInUriIsCreatedAndLinkedToThePost2() {
+
+		// Create a post referincing to the created entity
+		$existing_entity_id = wl_create_post( '', 'gran-sasso', 'Gran Sasso' , 'draft', 'entity');
+		wl_set_entity_main_type( $existing_entity_id, 'wl-place' );
+		
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json' 
+		);
+		$_POST = $fake;
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$original_entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Reference the entity to the post content 
+		
+		$content    = <<<EOF
+    <span itemid="$original_entity_uri">Gran Sasso</span>
+EOF;
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		// Here the entity should be created instead
+		
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
+		
+		// And it should be related to the post as where predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );
+		$this->assertCount( 1, $related_entity_ids );
+
+		$this->assertNotContains( $existing_entity_id, $related_entity_ids );
+		$this->assertContains( $entity->ID, $related_entity_ids );
+		// Ensure there are no other relation instances
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 1, $relation_instances );
+		
+	}
+
 	function testEntityWithEscapedCharsInUriIsCreatedAndLinkedToThePost() {
 
 		$fake = $this->prepareFakeGlobalPostArrayFromFile(
