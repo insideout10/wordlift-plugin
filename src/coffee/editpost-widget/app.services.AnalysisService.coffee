@@ -152,8 +152,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
             local_confidence = em.confidence
         entity.confidence = entity.confidence * local_confidence
 
-    data
-
+    data    
+  
   service.getSuggestedSameAs = (content)->
   
     promise = @._innerPerform content

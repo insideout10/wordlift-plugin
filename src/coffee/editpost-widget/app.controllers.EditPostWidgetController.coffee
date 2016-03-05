@@ -154,6 +154,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Here we are in #{locality}"
+    AnalysisService._innerPerform locality
+    .then (response)->
+      $log.debug response.data
+      
   
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId

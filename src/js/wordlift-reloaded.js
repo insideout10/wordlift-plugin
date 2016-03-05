@@ -419,7 +419,10 @@
         return AnalysisService.getSuggestedSameAs(annotation.text);
       });
       $scope.$on("currentUserLocalityDetected", function(event, locality) {
-        return $log.debug("Here we are in " + locality);
+        $log.debug("Here we are in " + locality);
+        return AnalysisService._innerPerform(locality).then(function(response) {
+          return $log.debug(response.data);
+        });
       });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
         var id, ref1, results1;
@@ -1339,31 +1342,15 @@
                 'lng': data.coords.longitude
               }
             }, function(results, status) {
-              var component, j, len, result, results1;
+              var j, len, result;
               if (status === google.maps.GeocoderStatus.OK) {
-                results1 = [];
                 for (j = 0, len = results.length; j < len; j++) {
                   result = results[j];
                   if (indexOf.call(result.types, GOOGLE_MAPS_LEVEL) >= 0) {
-                    results1.push((function() {
-                      var k, len1, ref, results2;
-                      ref = result.address_components;
-                      results2 = [];
-                      for (k = 0, len1 = ref.length; k < len1; k++) {
-                        component = ref[k];
-                        if (indexOf.call(component.types, GOOGLE_MAPS_LEVEL) >= 0) {
-                          results2.push($rootScope.$broadcast("currentUserLocalityDetected", component.long_name));
-                        } else {
-                          results2.push(void 0);
-                        }
-                      }
-                      return results2;
-                    })());
-                  } else {
-                    results1.push(void 0);
+                    $rootScope.$broadcast("currentUserLocalityDetected", result.formatted_address);
+                    return;
                   }
                 }
-                return results1;
               }
             });
           });

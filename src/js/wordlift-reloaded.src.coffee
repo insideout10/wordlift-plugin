@@ -419,6 +419,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Here we are in #{locality}"
+    AnalysisService._innerPerform locality
+    .then (response)->
+      $log.debug response.data
+      
   
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
@@ -874,8 +878,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
             local_confidence = em.confidence
         entity.confidence = entity.confidence * local_confidence
 
-    data
-
+    data    
+  
   service.getSuggestedSameAs = (content)->
   
     promise = @._innerPerform content
@@ -1311,9 +1315,9 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
-                  for component in result.address_components
-                    if GOOGLE_MAPS_LEVEL in component.types
-                      $rootScope.$broadcast "currentUserLocalityDetected", component.long_name             
+                  $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address                                   
+                  return    
+             
   service
 
 ])
