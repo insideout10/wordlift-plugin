@@ -48,6 +48,7 @@ module.exports = function ( grunt ) {
         SOURCE_DIR + 'coffee/editpost-widget/app.services.AnalysisService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.EditorService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.RelatedPostDataRetrieverService.coffee',
+        SOURCE_DIR + 'coffee/editpost-widget/app.services.GeoLocationService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.providers.ConfigurationProvider.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.coffee'
     ];

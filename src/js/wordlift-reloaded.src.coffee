@@ -266,6 +266,7 @@ angular.module('wordlift.ui.carousel', [])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
   'wordlift.editpost.widget.services.EditorService'
+  'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
 ])
 .filter('filterEntitiesByTypesAndRelevance', [ 'configuration', '$log', (configuration, $log)->
@@ -323,7 +324,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
+.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
 
   $scope.isRunning = false
   $scope.analysis = undefined
@@ -416,6 +417,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     # Look for SameAs suggestions
     AnalysisService.getSuggestedSameAs annotation.text
 
+  $scope.$on "currentUserLocalityDetected", (event, locality) ->
+    $log.debug "Here we are in #{locality}"
+  
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
     # Close new entity creation forms if needed
@@ -480,9 +484,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.$emit "entityDeselected", entity, $scope.annotation
 
     $scope.updateRelatedPosts()
+
+  $scope.getLocation = ()->
+    GeoLocationService.getLocation()
       
-    
- 
       
 ])
 angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
@@ -1240,6 +1245,80 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
   service
 
 ])
+angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation'])
+# Retrieve GeoLocation coordinates and process them trough reverse geocoding
+.service('GeoLocationService', [ 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', ( geolocation, $log, $rootScope, $document, $q, $timeout )-> 
+  
+  GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js'
+  GOOGLE_MAPS_LEVEL = 'locality'
+
+  # Following code is inspired by
+  # https://github.com/urish/angular-load/blob/master/angular-load.js
+
+  @googleApiLoaded = false
+  @googleApiPromise = undefined
+
+  loadGoogleAPI = ()->
+
+    if @googleApiPromise?
+      return @googleApiPromise
+
+    deferred = $q.defer()
+    # Load Google API asynchronously
+    element = $document[0].createElement('script')
+    element.src = GOOGLE_MAPS_API_ENDPOINT
+    $document[0].body.appendChild element
+    
+
+    callback = (e) ->  
+      if element.readyState and element.readyState not in ['complete', 'loaded'] 
+        return
+      
+      $timeout(()->
+        deferred.resolve(e)
+      )
+
+    element.onload = callback
+    element.onreadystatechange = callback
+    element.onerror = (e)->
+
+      $timeout(()-> 
+        deferred.reject(e)
+      )
+
+    @googleApiPromise = deferred.promise
+    @googleApiPromise
+
+  service = {}
+  
+  service.getLocation = ()->
+
+    geolocation.getLocation()
+    .then (data) ->
+      
+      $log.debug "Detected position: latitude #{data.coords.latitude}, longitude #{data.coords.longitude}"
+      loadGoogleAPI()
+      .then ()->
+
+        geocoder = new google.maps.Geocoder()
+        # Perform reverse geocode
+        geocoder.geocode
+          'location':
+             'lat': data.coords.latitude
+             'lng': data.coords.longitude
+          , (results, status)->
+            
+            if status is google.maps.GeocoderStatus.OK
+              for result in results
+                if GOOGLE_MAPS_LEVEL in result.types
+                  for component in result.address_components
+                    if GOOGLE_MAPS_LEVEL in component.types
+                      $rootScope.$broadcast "currentUserLocalityDetected", component.long_name             
+  service
+
+])
+
+
 angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 .provider("configuration", ()->
   
@@ -1282,8 +1361,7 @@ angular.module('wordlift.editpost.widget', [
 $(
   container = $("""
   	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
-  		
-      <div class="wl-error" ng-repeat="item in errors">
+  		<div class="wl-error" ng-repeat="item in errors">
         <span class="wl-msg">{{ item.msg }}</span>
       </div>
 
@@ -1291,7 +1369,7 @@ $(
         <span>Content classification</span>
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
-      
+    
       <div ng-show="annotation">
         <h4 class="wl-annotation-label">
           <i class="wl-annotation-label-icon"></i>
@@ -1339,7 +1417,7 @@ $(
         <i class="wl-toggle-off" />
         <span class="entity wl-place"><i class="type" />
           <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
-          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta">Get Current Location</span>
+          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
           <span class="wl-role">publishing place</span>
         </span>
       </div>

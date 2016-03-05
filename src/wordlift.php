@@ -98,7 +98,7 @@ function wl_write_log_handler( $log, $caller = null ) {
  * @return string A text with the key hidden.
  */
 function wl_write_log_hide_key( $text ) {
-	
+
 	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
 }
 
@@ -217,7 +217,7 @@ function wordlift_admin_enqueue_scripts() {
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
-	wp_enqueue_script( 'angularjs-geolocation', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' );
+	wp_enqueue_script( 'angularjs-geolocation', plugin_dir_url( __FILE__ ) . '/bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' );
 
 	// Disable auto-save for custom entity posts only
 	if( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ){

@@ -262,7 +262,7 @@
     }
   ]);
 
-  angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
+  angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
     'configuration', '$log', function(configuration, $log) {
       return function(items, types) {
         var annotations_count, entity, filtered, id, ref, treshold;
@@ -323,7 +323,7 @@
       };
     }
   ]).controller('EditPostWidgetController', [
-    'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', function(RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile) {
+    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile) {
       var box, j, len, ref;
       $scope.isRunning = false;
       $scope.analysis = void 0;
@@ -391,17 +391,17 @@
         return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
-        var entities, ref1, results;
+        var entities, ref1, results1;
         $log.debug("Occurrences " + occurrences.length + " for " + entityId);
         $scope.analysis.entities[entityId].occurrences = occurrences;
         if (occurrences.length === 0) {
           ref1 = $scope.selectedEntities;
-          results = [];
+          results1 = [];
           for (box in ref1) {
             entities = ref1[box];
-            results.push(delete $scope.selectedEntities[box][entityId]);
+            results1.push(delete $scope.selectedEntities[box][entityId]);
           }
-          return results;
+          return results1;
         }
       });
       $scope.$watch("annotation", function(newAnnotationId) {
@@ -418,16 +418,19 @@
         $scope.newEntity.label = annotation.text;
         return AnalysisService.getSuggestedSameAs(annotation.text);
       });
+      $scope.$on("currentUserLocalityDetected", function(event, locality) {
+        return $log.debug("Here we are in " + locality);
+      });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
-        var id, ref1, results;
+        var id, ref1, results1;
         $scope.annotation = annotationId;
         ref1 = $scope.boxes;
-        results = [];
+        results1 = [];
         for (id in ref1) {
           box = ref1[id];
-          results.push(box.addEntityFormIsVisible = false);
+          results1.push(box.addEntityFormIsVisible = false);
         }
-        return results;
+        return results1;
       });
       $scope.$on("textAnnotationAdded", function(event, annotation) {
         $log.debug("added a new annotation with Id " + annotation.id);
@@ -441,16 +444,16 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, k, len1, ref1, results, uri;
+        var entity, entityId, k, len1, ref1, results1, uri;
         $scope.analysis = analysis;
         ref1 = $scope.configuration.classificationBoxes;
-        results = [];
+        results1 = [];
         for (k = 0, len1 = ref1.length; k < len1; k++) {
           box = ref1[k];
-          results.push((function() {
-            var l, len2, ref2, results1;
+          results1.push((function() {
+            var l, len2, ref2, results2;
             ref2 = box.selectedEntities;
-            results1 = [];
+            results2 = [];
             for (l = 0, len2 = ref2.length; l < len2; l++) {
               entityId = ref2[l];
               if (entity = analysis.entities[entityId]) {
@@ -459,24 +462,24 @@
                   continue;
                 }
                 $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-                results1.push((function() {
-                  var len3, m, ref3, results2;
+                results2.push((function() {
+                  var len3, m, ref3, results3;
                   ref3 = entity.images;
-                  results2 = [];
+                  results3 = [];
                   for (m = 0, len3 = ref3.length; m < len3; m++) {
                     uri = ref3[m];
-                    results2.push($scope.images[uri] = entity.label);
+                    results3.push($scope.images[uri] = entity.label);
                   }
-                  return results2;
+                  return results3;
                 })());
               } else {
-                results1.push($log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing"));
+                results2.push($log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing"));
               }
             }
-            return results1;
+            return results2;
           })());
         }
-        return results;
+        return results1;
       });
       $scope.updateRelatedPosts = function() {
         var entities, entity, entityIds, id, ref1;
@@ -492,7 +495,7 @@
         }
         return RelatedPostDataRetrieverService.load(entityIds);
       };
-      return $scope.onSelectedEntityTile = function(entity, scope) {
+      $scope.onSelectedEntityTile = function(entity, scope) {
         var k, l, len1, len2, ref1, ref2, uri;
         $log.debug("Entity tile selected for entity " + entity.id + " within '" + scope.id + "' scope");
         $log.debug(entity);
@@ -515,6 +518,9 @@
           $scope.$emit("entityDeselected", entity, $scope.annotation);
         }
         return $scope.updateRelatedPosts();
+      };
+      return $scope.getLocation = function() {
+        return GeoLocationService.getLocation();
       };
     }
   ]);
@@ -557,14 +563,14 @@
             return $scope.tiles.push(tile);
           };
           return ctrl.closeTiles = function() {
-            var j, len, ref, results, tile;
+            var j, len, ref, results1, tile;
             ref = $scope.tiles;
-            results = [];
+            results1 = [];
             for (j = 0, len = ref.length; j < len; j++) {
               tile = ref[j];
-              results.push(tile.close());
+              results1.push(tile.close());
             }
-            return results;
+            return results1;
           };
         }
       };
@@ -624,31 +630,31 @@
             availableTypes[type.css.replace('wl-', '')] = type.uri;
           }
           $scope.supportedTypes = (function() {
-            var k, len1, ref1, results;
+            var k, len1, ref1, results1;
             ref1 = configuration.types;
-            results = [];
+            results1 = [];
             for (k = 0, len1 = ref1.length; k < len1; k++) {
               type = ref1[k];
-              results.push({
+              results1.push({
                 id: type.css.replace('wl-', ''),
                 name: type.uri
               });
             }
-            return results;
+            return results1;
           })();
           if ($scope.box) {
             return $scope.supportedTypes = (function() {
-              var k, len1, ref1, results;
+              var k, len1, ref1, results1;
               ref1 = $scope.box.registeredTypes;
-              results = [];
+              results1 = [];
               for (k = 0, len1 = ref1.length; k < len1; k++) {
                 type = ref1[k];
-                results.push({
+                results1.push({
                   id: type,
                   name: availableTypes[type]
                 });
               }
-              return results;
+              return results1;
             })();
           }
         }
@@ -744,7 +750,7 @@
         _defaultType: "thing"
       };
       service.cleanAnnotations = function(analysis, positions) {
-        var annotation, annotationId, annotationRange, isOverlapping, j, k, len, pos, ref, ref1, ref2, results;
+        var annotation, annotationId, annotationRange, isOverlapping, j, k, len, pos, ref, ref1, ref2, results1;
         if (positions == null) {
           positions = [];
         }
@@ -753,9 +759,9 @@
           annotation = ref[annotationId];
           if (annotation.start > 0 && annotation.end > annotation.start) {
             annotationRange = (function() {
-              results = [];
-              for (var j = ref1 = annotation.start, ref2 = annotation.end; ref1 <= ref2 ? j <= ref2 : j >= ref2; ref1 <= ref2 ? j++ : j--){ results.push(j); }
-              return results;
+              results1 = [];
+              for (var j = ref1 = annotation.start, ref2 = annotation.end; ref1 <= ref2 ? j <= ref2 : j >= ref2; ref1 <= ref2 ? j++ : j--){ results1.push(j); }
+              return results1;
             }).apply(this);
             isOverlapping = false;
             for (k = 0, len = annotationRange.length; k < len; k++) {
@@ -876,16 +882,16 @@
           annotation.id = id;
           annotation.entities = {};
           data.annotations[id].entityMatches = (function() {
-            var l, len2, ref8, results;
+            var l, len2, ref8, results1;
             ref8 = annotation.entityMatches;
-            results = [];
+            results1 = [];
             for (l = 0, len2 = ref8.length; l < len2; l++) {
               ea = ref8[l];
               if (ea.entityId !== configuration.currentPostUri) {
-                results.push(ea);
+                results1.push(ea);
               }
             }
-            return results;
+            return results1;
           })();
           ref8 = data.annotations[id].entityMatches;
           for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
@@ -966,9 +972,9 @@
         });
       };
       service.preselect = function(analysis, annotations) {
-        var annotation, e, entity, id, l, len2, ref2, ref3, results, textAnnotation;
+        var annotation, e, entity, id, l, len2, ref2, ref3, results1, textAnnotation;
         $log.debug("Going to perform annotations preselection");
-        results = [];
+        results1 = [];
         for (l = 0, len2 = annotations.length; l < len2; l++) {
           annotation = annotations[l];
           if (annotation.start === annotation.end) {
@@ -1004,12 +1010,12 @@
               entityId: entity.id,
               confidence: 1
             });
-            results.push(analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]);
+            results1.push(analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]);
           } else {
-            results.push(void 0);
+            results1.push(void 0);
           }
         }
-        return results;
+        return results1;
       };
       return service;
     }
@@ -1020,10 +1026,10 @@
       var INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
       INVISIBLE_CHAR = '\uFEFF';
       findEntities = function(html) {
-        var annotation, match, pattern, results, traslator;
+        var annotation, match, pattern, results1, traslator;
         traslator = Traslator.create(html);
         pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
-        results = [];
+        results1 = [];
         while (match = pattern.exec(html)) {
           annotation = {
             start: traslator.html2text(match.index),
@@ -1031,19 +1037,19 @@
             uri: match[2],
             label: match[3]
           };
-          results.push(annotation);
+          results1.push(annotation);
         }
-        return results;
+        return results1;
       };
       findPositions = function(entities) {
-        var entityAnnotation, j, k, len, positions, ref, ref1, results;
+        var entityAnnotation, j, k, len, positions, ref, ref1, results1;
         positions = [];
         for (j = 0, len = entities.length; j < len; j++) {
           entityAnnotation = entities[j];
           positions = positions.concat((function() {
-            results = [];
-            for (var k = ref = entityAnnotation.start, ref1 = entityAnnotation.end; ref <= ref1 ? k <= ref1 : k >= ref1; ref <= ref1 ? k++ : k--){ results.push(k); }
-            return results;
+            results1 = [];
+            for (var k = ref = entityAnnotation.start, ref1 = entityAnnotation.end; ref <= ref1 ? k <= ref1 : k >= ref1; ref <= ref1 ? k++ : k--){ results1.push(k); }
+            return results1;
           }).apply(this));
         }
         return positions;
@@ -1285,6 +1291,88 @@
     }
   ]);
 
+  angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation']).service('GeoLocationService', [
+    'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', function(geolocation, $log, $rootScope, $document, $q, $timeout) {
+      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
+      GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js';
+      GOOGLE_MAPS_LEVEL = 'locality';
+      this.googleApiLoaded = false;
+      this.googleApiPromise = void 0;
+      loadGoogleAPI = function() {
+        var callback, deferred, element;
+        if (this.googleApiPromise != null) {
+          return this.googleApiPromise;
+        }
+        deferred = $q.defer();
+        element = $document[0].createElement('script');
+        element.src = GOOGLE_MAPS_API_ENDPOINT;
+        $document[0].body.appendChild(element);
+        callback = function(e) {
+          var ref;
+          if (element.readyState && ((ref = element.readyState) !== 'complete' && ref !== 'loaded')) {
+            return;
+          }
+          return $timeout(function() {
+            return deferred.resolve(e);
+          });
+        };
+        element.onload = callback;
+        element.onreadystatechange = callback;
+        element.onerror = function(e) {
+          return $timeout(function() {
+            return deferred.reject(e);
+          });
+        };
+        this.googleApiPromise = deferred.promise;
+        return this.googleApiPromise;
+      };
+      service = {};
+      service.getLocation = function() {
+        return geolocation.getLocation().then(function(data) {
+          $log.debug("Detected position: latitude " + data.coords.latitude + ", longitude " + data.coords.longitude);
+          return loadGoogleAPI().then(function() {
+            var geocoder;
+            geocoder = new google.maps.Geocoder();
+            return geocoder.geocode({
+              'location': {
+                'lat': data.coords.latitude,
+                'lng': data.coords.longitude
+              }
+            }, function(results, status) {
+              var component, j, len, result, results1;
+              if (status === google.maps.GeocoderStatus.OK) {
+                results1 = [];
+                for (j = 0, len = results.length; j < len; j++) {
+                  result = results[j];
+                  if (indexOf.call(result.types, GOOGLE_MAPS_LEVEL) >= 0) {
+                    results1.push((function() {
+                      var k, len1, ref, results2;
+                      ref = result.address_components;
+                      results2 = [];
+                      for (k = 0, len1 = ref.length; k < len1; k++) {
+                        component = ref[k];
+                        if (indexOf.call(component.types, GOOGLE_MAPS_LEVEL) >= 0) {
+                          results2.push($rootScope.$broadcast("currentUserLocalityDetected", component.long_name));
+                        } else {
+                          results2.push(void 0);
+                        }
+                      }
+                      return results2;
+                    })());
+                  } else {
+                    results1.push(void 0);
+                  }
+                }
+                return results1;
+              }
+            });
+          });
+        });
+      };
+      return service;
+    }
+  ]);
+
   angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', []).provider("configuration", function() {
     var _configuration, provider;
     _configuration = void 0;
@@ -1305,7 +1393,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div id=\"wordlift-edit-post-wrapper\" ng-controller=\"EditPostWidgetController\">\n	\n      <div class=\"wl-error\" ng-repeat=\"item in errors\">\n        <span class=\"wl-msg\">{{ item.msg }}</span>\n      </div>\n\n      <h3 class=\"wl-widget-headline\">\n        <span>Content classification</span>\n        <span ng-show=\"isRunning\" class=\"wl-spinner\"></span>\n      </h3>\n      \n      <div ng-show=\"annotation\">\n        <h4 class=\"wl-annotation-label\">\n          <i class=\"wl-annotation-label-icon\"></i>\n          {{ analysis.annotations[ annotation ].text }} \n          <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>\n          <i class=\"wl-annotation-label-remove-icon\" ng-click=\"selectAnnotation(undefined)\"></i>\n        </h4>\n      </div>\n\n      <wl-classification-box ng-repeat=\"box in configuration.classificationBoxes\">\n        <div ng-hide=\"annotation\" class=\"wl-without-annotation\">\n          <wl-entity-tile is-selected=\"isEntitySelected(entity, box)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes\"></wl-entity>\n        </div>  \n        <div ng-show=\"annotation\" class=\"wl-with-annotation\">\n          <wl-entity-tile is-selected=\"isLinkedToCurrentAnnotation(entity)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes\"\" ></wl-entity>\n        </div>  \n      </wl-classification-box>\n\n      <h3 class=\"wl-widget-headline\">\n        <span>Article Details</span>\n      </h3>\n\n      <h5 class=\"wl-widget-sub-headline\">What</h5>\n      <div class=\"wl-widget-wrapper\">\n        <div ng-repeat=\"topic in analysis.topics | orderBy :'-confidence'\" class=\"wl-category-wrapper\">\n          <i class=\"wl-toggle-off\" />\n          <span class=\"entity wl-thing\"><i class=\"type\" />\n            {{topic.label}}\n          </span>\n          <div class=\"wl-category-progress-background\">\n            <div class=\"wl-category-progress-current\" style=\"width:{{topic.confidence*100}}%\"></div>\n          </div>      \n        </div>\n      </div>  \n      <h5 class=\"wl-widget-sub-headline\">Who</h5>\n      <div class=\"wl-widget-wrapper\">\n        <i class=\"wl-toggle-on\" />\n        <span class=\"entity wl-person\"><i class=\"type\" />\n          {{configuration.currentUser}}\n          <span class=\"wl-role\">author</span>\n        </span>\n      </div>  \n      <h5 class=\"wl-widget-sub-headline\">Where</h5>\n      <div class=\"wl-widget-wrapper\">\n        <i class=\"wl-toggle-off\" />\n        <span class=\"entity wl-place\"><i class=\"type\" />\n          <span ng-show=\"configuration.publishedPlace\">{{configuration.publishedPlace}}</span>\n          <span ng-hide=\"configuration.publishedPlace\" class=\"wl-geolocation-cta\">Get Current Location</span>\n          <span class=\"wl-role\">publishing place</span>\n        </span>\n      </div>\n      <h5 class=\"wl-widget-sub-headline\">When</h5>\n      <div class=\"wl-widget-wrapper\">\n        <i class=\"wl-toggle-on\" />\n        <span class=\"entity wl-event\"><i class=\"type\" />\n          {{configuration.publishedDate}}\n          <span class=\"wl-role\">publishing date</span>\n        </span>\n      </div>\n\n      <h3 class=\"wl-widget-headline\"><span>Suggested images</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"(image, label) in images\" class=\"wl-card\" wl-carousel-pane>\n          <div class=\"wl-card-image\"> \n            <img ng-src=\"{{image}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n          </div>\n        </div>\n      </div>\n\n      <h3 class=\"wl-widget-headline\"><span>Related posts</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"post in relatedPosts\" class=\"wl-card\" wl-carousel-pane>\n          <div class=\"wl-card-image\"> \n            <img ng-src=\"{{post.thumbnail}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n          </div>\n          <div class=\"wl-card-title\">\n            <a ng-href=\"{{post.link}}\">{{post.post_title}}</a>\n          </div>\n        </div>\n      </div>\n      \n      <div class=\"wl-entity-input-boxes\">\n        <wl-entity-input-box annotation=\"annotation\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | isEntitySelected\"></wl-entity-input-box>\n        <div ng-repeat=\"(box, entities) in selectedEntities\">\n          <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat=\"(id, entity) in entities\">\n        </div> \n      </div>   \n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
+  $(container = $("<div id=\"wordlift-edit-post-wrapper\" ng-controller=\"EditPostWidgetController\">\n	<div class=\"wl-error\" ng-repeat=\"item in errors\">\n        <span class=\"wl-msg\">{{ item.msg }}</span>\n      </div>\n\n      <h3 class=\"wl-widget-headline\">\n        <span>Content classification</span>\n        <span ng-show=\"isRunning\" class=\"wl-spinner\"></span>\n      </h3>\n    \n      <div ng-show=\"annotation\">\n        <h4 class=\"wl-annotation-label\">\n          <i class=\"wl-annotation-label-icon\"></i>\n          {{ analysis.annotations[ annotation ].text }} \n          <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>\n          <i class=\"wl-annotation-label-remove-icon\" ng-click=\"selectAnnotation(undefined)\"></i>\n        </h4>\n      </div>\n\n      <wl-classification-box ng-repeat=\"box in configuration.classificationBoxes\">\n        <div ng-hide=\"annotation\" class=\"wl-without-annotation\">\n          <wl-entity-tile is-selected=\"isEntitySelected(entity, box)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes\"></wl-entity>\n        </div>  \n        <div ng-show=\"annotation\" class=\"wl-with-annotation\">\n          <wl-entity-tile is-selected=\"isLinkedToCurrentAnnotation(entity)\" on-entity-select=\"onSelectedEntityTile(entity, box)\" entity=\"entity\" ng-repeat=\"entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes\"\" ></wl-entity>\n        </div>  \n      </wl-classification-box>\n\n      <h3 class=\"wl-widget-headline\">\n        <span>Article Details</span>\n      </h3>\n\n      <h5 class=\"wl-widget-sub-headline\">What</h5>\n      <div class=\"wl-widget-wrapper\">\n        <div ng-repeat=\"topic in analysis.topics | orderBy :'-confidence'\" class=\"wl-category-wrapper\">\n          <i class=\"wl-toggle-off\" />\n          <span class=\"entity wl-thing\"><i class=\"type\" />\n            {{topic.label}}\n          </span>\n          <div class=\"wl-category-progress-background\">\n            <div class=\"wl-category-progress-current\" style=\"width:{{topic.confidence*100}}%\"></div>\n          </div>      \n        </div>\n      </div>  \n      <h5 class=\"wl-widget-sub-headline\">Who</h5>\n      <div class=\"wl-widget-wrapper\">\n        <i class=\"wl-toggle-on\" />\n        <span class=\"entity wl-person\"><i class=\"type\" />\n          {{configuration.currentUser}}\n          <span class=\"wl-role\">author</span>\n        </span>\n      </div>  \n      <h5 class=\"wl-widget-sub-headline\">Where</h5>\n      <div class=\"wl-widget-wrapper\">\n        <i class=\"wl-toggle-off\" />\n        <span class=\"entity wl-place\"><i class=\"type\" />\n          <span ng-show=\"configuration.publishedPlace\">{{configuration.publishedPlace}}</span>\n          <span ng-hide=\"configuration.publishedPlace\" class=\"wl-geolocation-cta\" ng-click=\"getLocation()\">Get Current Location</span>\n          <span class=\"wl-role\">publishing place</span>\n        </span>\n      </div>\n      <h5 class=\"wl-widget-sub-headline\">When</h5>\n      <div class=\"wl-widget-wrapper\">\n        <i class=\"wl-toggle-on\" />\n        <span class=\"entity wl-event\"><i class=\"type\" />\n          {{configuration.publishedDate}}\n          <span class=\"wl-role\">publishing date</span>\n        </span>\n      </div>\n\n      <h3 class=\"wl-widget-headline\"><span>Suggested images</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"(image, label) in images\" class=\"wl-card\" wl-carousel-pane>\n          <div class=\"wl-card-image\"> \n            <img ng-src=\"{{image}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n          </div>\n        </div>\n      </div>\n\n      <h3 class=\"wl-widget-headline\"><span>Related posts</span></h3>\n      <div wl-carousel>\n        <div ng-repeat=\"post in relatedPosts\" class=\"wl-card\" wl-carousel-pane>\n          <div class=\"wl-card-image\"> \n            <img ng-src=\"{{post.thumbnail}}\" wl-fallback=\"{{configuration.defaultThumbnailPath}}\" />\n          </div>\n          <div class=\"wl-card-title\">\n            <a ng-href=\"{{post.link}}\">{{post.post_title}}</a>\n          </div>\n        </div>\n      </div>\n      \n      <div class=\"wl-entity-input-boxes\">\n        <wl-entity-input-box annotation=\"annotation\" entity=\"entity\" ng-repeat=\"entity in analysis.entities | isEntitySelected\"></wl-entity-input-box>\n        <div ng-repeat=\"(box, entities) in selectedEntities\">\n          <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat=\"(id, entity) in entities\">\n        </div> \n      </div>   \n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
     var fireEvent;
     if (editor.id !== "content") {
       return;
@@ -1320,9 +1408,9 @@
     };
     injector.invoke([
       'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
-        var j, len, method, originalMethod, ref, results;
+        var j, len, method, originalMethod, ref, results1;
         ref = ['setMarkers', 'toViews'];
-        results = [];
+        results1 = [];
         for (j = 0, len = ref.length; j < len; j++) {
           method = ref[j];
           if (wp.mce.views[method] != null) {
@@ -1341,10 +1429,10 @@
             });
             break;
           } else {
-            results.push(void 0);
+            results1.push(void 0);
           }
         }
-        return results;
+        return results1;
       }
     ]);
     fireEvent(editor, "LoadContent", function(e) {

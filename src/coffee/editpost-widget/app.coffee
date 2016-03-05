@@ -24,8 +24,7 @@ angular.module('wordlift.editpost.widget', [
 $(
   container = $("""
   	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
-  		
-      <div class="wl-error" ng-repeat="item in errors">
+  		<div class="wl-error" ng-repeat="item in errors">
         <span class="wl-msg">{{ item.msg }}</span>
       </div>
 
@@ -33,7 +32,7 @@ $(
         <span>Content classification</span>
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
-      
+    
       <div ng-show="annotation">
         <h4 class="wl-annotation-label">
           <i class="wl-annotation-label-icon"></i>
@@ -81,7 +80,7 @@ $(
         <i class="wl-toggle-off" />
         <span class="entity wl-place"><i class="type" />
           <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
-          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta">Get Current Location</span>
+          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
           <span class="wl-role">publishing place</span>
         </span>
       </div>

@@ -1,6 +1,7 @@
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
   'wordlift.editpost.widget.services.EditorService'
+  'wordlift.editpost.widget.services.GeoLocationService'
   'wordlift.editpost.widget.providers.ConfigurationProvider'
 ])
 .filter('filterEntitiesByTypesAndRelevance', [ 'configuration', '$log', (configuration, $log)->
@@ -58,7 +59,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', ['RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
+.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
 
   $scope.isRunning = false
   $scope.analysis = undefined
@@ -151,6 +152,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     # Look for SameAs suggestions
     AnalysisService.getSuggestedSameAs annotation.text
 
+  $scope.$on "currentUserLocalityDetected", (event, locality) ->
+    $log.debug "Here we are in #{locality}"
+  
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
     # Close new entity creation forms if needed
@@ -215,8 +219,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.$emit "entityDeselected", entity, $scope.annotation
 
     $scope.updateRelatedPosts()
+
+  $scope.getLocation = ()->
+    GeoLocationService.getLocation()
       
-    
- 
       
 ])
