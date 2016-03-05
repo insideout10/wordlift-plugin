@@ -98,7 +98,7 @@ function wl_write_log_handler( $log, $caller = null ) {
  * @return string A text with the key hidden.
  */
 function wl_write_log_hide_key( $text ) {
-
+	
 	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
 }
 

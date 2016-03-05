@@ -102,12 +102,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     for id, localEntity of configuration.entities
       
       data.entities[ id ] = localEntity
-      # TMP 
-      data.topics = [
-        { 'label': 'Matematica', 'uri': 'http://dbpedia.org/resource/Category:Mathematics', 'relevance':0.75 }
-        { 'label': 'Filosofia', 'uri': 'http://dbpedia.org/resource/Category:Philosophy', 'relevance':0.55 }
-        { 'label': 'Semantica', 'uri': 'http://dbpedia.org/resource/Category:Semantics', 'relevance':0.85 }
-      ]
 
     for id, entity of data.entities
       

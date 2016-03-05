@@ -819,12 +819,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     for id, localEntity of configuration.entities
       
       data.entities[ id ] = localEntity
-      # TMP 
-      data.topics = [
-        { 'label': 'Matematica', 'uri': 'http://dbpedia.org/resource/Category:Mathematics', 'relevance':0.75 }
-        { 'label': 'Filosofia', 'uri': 'http://dbpedia.org/resource/Category:Philosophy', 'relevance':0.55 }
-        { 'label': 'Semantica', 'uri': 'http://dbpedia.org/resource/Category:Semantics', 'relevance':0.85 }
-      ]
 
     for id, entity of data.entities
       
@@ -1322,13 +1316,13 @@ $(
 
       <h5 class="wl-widget-sub-headline">What</h5>
       <div class="wl-widget-wrapper">
-        <div ng-repeat="topic in analysis.topics | orderBy :'-relevance'" class="wl-category-wrapper">
+        <div ng-repeat="topic in analysis.topics | orderBy :'-confidence'" class="wl-category-wrapper">
           <i class="wl-toggle-off" />
           <span class="entity wl-thing"><i class="type" />
             {{topic.label}}
           </span>
           <div class="wl-category-progress-background">
-            <div class="wl-category-progress-current" style="width:{{topic.relevance*100}}%"></div>
+            <div class="wl-category-progress-current" style="width:{{topic.confidence*100}}%"></div>
           </div>      
         </div>
       </div>  
