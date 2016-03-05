@@ -52,7 +52,7 @@ $(
       </wl-classification-box>
 
       <h3 class="wl-widget-headline">
-        <span>Article Details</span>
+        <span>Article Metadata</span>
       </h3>
 
       <h5 class="wl-widget-sub-headline">What</h5>
@@ -77,12 +77,20 @@ $(
       </div>  
       <h5 class="wl-widget-sub-headline">Where</h5>
       <div class="wl-widget-wrapper">
-        <i class="wl-toggle-off" />
-        <span class="entity wl-place"><i class="type" />
-          <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
-          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
-          <span class="wl-role">publishing place</span>
-        </span>
+        <div>
+          <i class="wl-toggle-off" />
+          <span class="entity wl-place"><i class="type" />
+            <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
+            <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
+            <span class="wl-role">publishing place</span>
+          </span>
+        </div>
+        <div ng-repeat="(id, entity) in suggestedPlaces">
+          <i class="wl-toggle-off" />
+          <span class="entity wl-place"><i class="type" />
+            {{entity.label}} <small>{{id}}</small>
+          </span>
+        </div>
       </div>
       <h5 class="wl-widget-sub-headline">When</h5>
       <div class="wl-widget-wrapper">

@@ -66,6 +66,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
+  $scope.suggestedPlaces = {}
+  
   $scope.annotation = undefined
   $scope.boxes = []
   $scope.images = {}
@@ -153,10 +155,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     AnalysisService.getSuggestedSameAs annotation.text
 
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
-    $log.debug "Here we are in #{locality}"
+    $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
     .then (response)->
-      $log.debug response.data
+      for id, entity of response.data.entities
+        if 'place' is entity.mainType 
+          $scope.suggestedPlaces[ id ] = entity
       
   
   $scope.$on "textAnnotationClicked", (event, annotationId) ->

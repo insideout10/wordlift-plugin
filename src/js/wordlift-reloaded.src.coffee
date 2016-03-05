@@ -331,6 +331,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
+  $scope.suggestedPlaces = {}
+  
   $scope.annotation = undefined
   $scope.boxes = []
   $scope.images = {}
@@ -418,10 +420,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     AnalysisService.getSuggestedSameAs annotation.text
 
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
-    $log.debug "Here we are in #{locality}"
+    $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
     .then (response)->
-      $log.debug response.data
+      for id, entity of response.data.entities
+        if 'place' is entity.mainType 
+          $scope.suggestedPlaces[ id ] = entity
       
   
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
@@ -1393,7 +1397,7 @@ $(
       </wl-classification-box>
 
       <h3 class="wl-widget-headline">
-        <span>Article Details</span>
+        <span>Article Metadata</span>
       </h3>
 
       <h5 class="wl-widget-sub-headline">What</h5>
@@ -1418,12 +1422,20 @@ $(
       </div>  
       <h5 class="wl-widget-sub-headline">Where</h5>
       <div class="wl-widget-wrapper">
-        <i class="wl-toggle-off" />
-        <span class="entity wl-place"><i class="type" />
-          <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
-          <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
-          <span class="wl-role">publishing place</span>
-        </span>
+        <div>
+          <i class="wl-toggle-off" />
+          <span class="entity wl-place"><i class="type" />
+            <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
+            <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
+            <span class="wl-role">publishing place</span>
+          </span>
+        </div>
+        <div ng-repeat="(id, entity) in suggestedPlaces">
+          <i class="wl-toggle-off" />
+          <span class="entity wl-place"><i class="type" />
+            {{entity.label}} <small>{{id}}</small>
+          </span>
+        </div>
       </div>
       <h5 class="wl-widget-sub-headline">When</h5>
       <div class="wl-widget-wrapper">
