@@ -68,36 +68,28 @@ $(
         </div>
       </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
+      <label class="wl-role">author</label>     
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />
         <span class="entity wl-person"><i class="type" />
           {{configuration.currentUser}}
-          <span class="wl-role">author</span>
         </span>
       </div>  
+
       <h5 class="wl-widget-sub-headline">Where</h5>
-      <div class="wl-widget-wrapper">
-        <div>
-          <i class="wl-toggle-off" />
-          <span class="entity wl-place"><i class="type" />
-            <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
-            <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
-            <span class="wl-role">publishing place</span>
-          </span>
-        </div>
-        <div ng-repeat="(id, entity) in suggestedPlaces">
-          <i class="wl-toggle-off" />
-          <span class="entity wl-place"><i class="type" />
-            {{entity.label}} <small>{{id}}</small>
-          </span>
-        </div>
+      <label class="wl-role">publishing place</label>
+      <i class="wl-location-arrow" ng-click="getLocation()"></i>
+      <div class="wl-without-annotation">
+        <wl-entity is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity>
       </div>
+
       <h5 class="wl-widget-sub-headline">When</h5>
+      <label class="wl-role">publishing date</label>
+      
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />
         <span class="entity wl-event"><i class="type" />
           {{configuration.publishedDate}}
-          <span class="wl-role">publishing date</span>
         </span>
       </div>
 

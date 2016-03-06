@@ -66,8 +66,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  $scope.suggestedPlaces = {}
   
+  $scope.suggestedPlaces = {}
+  $scope.publishedPlace = undefined
+
   $scope.annotation = undefined
   $scope.boxes = []
   $scope.images = {}
@@ -160,6 +162,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     .then (response)->
       for id, entity of response.data.entities
         if 'place' is entity.mainType 
+          entity.id = id
           $scope.suggestedPlaces[ id ] = entity
       
   
@@ -230,6 +233,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.getLocation = ()->
     GeoLocationService.getLocation()
-      
+  $scope.isPublishedPlace = (entity)->
+    entity.id is $scope.publishedPlace?.id    
+  $scope.onPublishedPlaceSelected = (entity)->
+    if $scope.publishedPlace?.id is entity.id
+      $scope.publishedPlace = undefined
+      return
+    $scope.publishedPlace = entity   
       
 ])

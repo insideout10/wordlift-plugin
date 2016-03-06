@@ -331,8 +331,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  $scope.suggestedPlaces = {}
   
+  $scope.suggestedPlaces = {}
+  $scope.publishedPlace = undefined
+
   $scope.annotation = undefined
   $scope.boxes = []
   $scope.images = {}
@@ -425,6 +427,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     .then (response)->
       for id, entity of response.data.entities
         if 'place' is entity.mainType 
+          entity.id = id
           $scope.suggestedPlaces[ id ] = entity
       
   
@@ -495,7 +498,13 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.getLocation = ()->
     GeoLocationService.getLocation()
-      
+  $scope.isPublishedPlace = (entity)->
+    entity.id is $scope.publishedPlace?.id    
+  $scope.onPublishedPlaceSelected = (entity)->
+    if $scope.publishedPlace?.id is entity.id
+      $scope.publishedPlace = undefined
+      return
+    $scope.publishedPlace = entity   
       
 ])
 angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
@@ -698,6 +707,31 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
         $scope.isOpened = !$scope.isOpened
         
   ])
+.directive('wlEntity', [ 'configuration','$log', (configuration, $log)->
+    restrict: 'E'
+    scope:
+      entity: '='
+      isSelected: '='
+      onEntitySelect: '&'
+    template: """
+      <div ng-class="'wl-' + entity.mainType" class="entity">
+        <div class="entity-header">
+          
+          <i ng-click="onEntitySelect()" ng-hide="annotation" ng-class="{ 'wl-selected' : isSelected, 'wl-unselected' : !isSelected }"></i>
+          <i ng-click="onEntitySelect()" class="type"></i>
+          <span class="label" ng-click="onEntitySelect()">{{entity.label}}</span>
+
+          <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
+        </div>
+      </div>
+    """
+    link: ($scope, $element, $attrs) ->             
+      
+      $scope.isInternal = ()->
+        if $scope.entity.id.startsWith configuration.datasetUri
+          return true
+        return false         
+  ])
 
 angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
 # The wlEntityInputBoxes prints the inputs and textareas with entities data.
@@ -828,6 +862,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add id to annotation obj
     # Add occurences as a blank array
     # Add annotation references to each entity
+    $log.debug data.topics
     
     for id, localEntity of configuration.entities
       
@@ -1413,36 +1448,28 @@ $(
         </div>
       </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
+      <label class="wl-role">author</label>     
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />
         <span class="entity wl-person"><i class="type" />
           {{configuration.currentUser}}
-          <span class="wl-role">author</span>
         </span>
       </div>  
+
       <h5 class="wl-widget-sub-headline">Where</h5>
-      <div class="wl-widget-wrapper">
-        <div>
-          <i class="wl-toggle-off" />
-          <span class="entity wl-place"><i class="type" />
-            <span ng-show="configuration.publishedPlace">{{configuration.publishedPlace}}</span>
-            <span ng-hide="configuration.publishedPlace" class="wl-geolocation-cta" ng-click="getLocation()">Get Current Location</span>
-            <span class="wl-role">publishing place</span>
-          </span>
-        </div>
-        <div ng-repeat="(id, entity) in suggestedPlaces">
-          <i class="wl-toggle-off" />
-          <span class="entity wl-place"><i class="type" />
-            {{entity.label}} <small>{{id}}</small>
-          </span>
-        </div>
+      <label class="wl-role">publishing place</label>
+      <i class="wl-location-arrow" ng-click="getLocation()"></i>
+      <div class="wl-without-annotation">
+        <wl-entity is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity>
       </div>
+
       <h5 class="wl-widget-sub-headline">When</h5>
+      <label class="wl-role">publishing date</label>
+      
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on" />
         <span class="entity wl-event"><i class="type" />
           {{configuration.publishedDate}}
-          <span class="wl-role">publishing date</span>
         </span>
       </div>
 

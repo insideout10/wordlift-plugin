@@ -45,3 +45,28 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
         $scope.isOpened = !$scope.isOpened
         
   ])
+.directive('wlEntity', [ 'configuration','$log', (configuration, $log)->
+    restrict: 'E'
+    scope:
+      entity: '='
+      isSelected: '='
+      onEntitySelect: '&'
+    template: """
+      <div ng-class="'wl-' + entity.mainType" class="entity">
+        <div class="entity-header">
+          
+          <i ng-click="onEntitySelect()" ng-hide="annotation" ng-class="{ 'wl-selected' : isSelected, 'wl-unselected' : !isSelected }"></i>
+          <i ng-click="onEntitySelect()" class="type"></i>
+          <span class="label" ng-click="onEntitySelect()">{{entity.label}}</span>
+
+          <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
+        </div>
+      </div>
+    """
+    link: ($scope, $element, $attrs) ->             
+      
+      $scope.isInternal = ()->
+        if $scope.entity.id.startsWith configuration.datasetUri
+          return true
+        return false         
+  ])

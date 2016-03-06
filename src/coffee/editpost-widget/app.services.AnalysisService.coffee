@@ -98,6 +98,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add id to annotation obj
     # Add occurences as a blank array
     # Add annotation references to each entity
+    $log.debug data.topics
     
     for id, localEntity of configuration.entities
       

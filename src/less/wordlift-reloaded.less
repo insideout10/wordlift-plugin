@@ -446,6 +446,12 @@
 
   }
 
+  .wl-location-arrow { 
+    color:@wl-brand-color;
+    .fa-icon(@fa-var-location-arrow);
+    cursor: pointer;
+  }
+
   .wl-toggle-on { 
     color:#444;
     .fa-icon(@fa-var-check-circle-o);
@@ -469,18 +475,10 @@
     right:0px;
     top:0px;
   }
-  .wl-geolocation-cta {
-    padding: 2px 4px;
-    color:#888;
-    cursor: pointer;
-    text-transform: capitalize;
-    border-bottom:@wl-place-color 1px dotted;
-    font-size: 0.8em;
-  }
+
   .wl-role {
-    padding: 2px 4px;
+    padding: 2px;
     color:#888;
-    background-color: #eee;
     text-transform: uppercase;
     font-size: 0.8em;
   }
