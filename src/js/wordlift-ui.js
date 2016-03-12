@@ -377,39 +377,49 @@
     });
   });
 
-  angular.module('wordlift.ui.carousel', []).directive('wlCarousel', [
+  angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
     '$window', '$log', function($window, $log) {
       return {
         restrict: 'A',
         scope: true,
         transclude: true,
-        template: "<div class=\"wl-carousel\" ng-show=\"panes.length > 0\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-right=\"next()\"></div>\n  <div class=\"wl-carousel-arrow wl-prev\" ng-click=\"prev()\" ng-show=\"currentPaneIndex > 0\">\n    <i class=\"wl-angle-left\" />\n  </div>\n  <div class=\"wl-carousel-arrow wl-next\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\">\n    <i class=\"wl-angle-right\" />\n  </div>\n</div>",
+        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : ( panes.length > 1 ) }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
-          '$scope', '$element', '$attrs', function($scope, $element, $attrs) {
+          '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
             var ctrl, w;
             w = angular.element($window);
-            $scope.visibleElements = function() {
-              if ($element.width() > 460) {
-                return 3;
-              }
-              return 1;
-            };
             $scope.setItemWidth = function() {
               return $element.width() / $scope.visibleElements();
             };
-            $scope.itemWidth = $scope.setItemWidth();
-            $scope.panesWidth = void 0;
-            $scope.panes = [];
-            $scope.position = 0;
-            $scope.currentPaneIndex = 0;
+            $scope.showControls = function() {
+              return $scope.areControlsVisible = true;
+            };
+            $scope.hideControls = function() {
+              return $scope.areControlsVisible = false;
+            };
+            $scope.visibleElements = function() {
+              if ($element.width() > 460) {
+                return 4;
+              }
+              return 1;
+            };
+            $scope.isPrevArrowVisible = function() {
+              return $scope.currentPaneIndex > 0;
+            };
             $scope.isNextArrowVisible = function() {
               return ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements();
             };
             $scope.next = function() {
+              if (($scope.currentPaneIndex + $scope.visibleElements() + 1) > $scope.panes.length) {
+                return;
+              }
               $scope.position = $scope.position - $scope.itemWidth;
               return $scope.currentPaneIndex = $scope.currentPaneIndex + 1;
             };
             $scope.prev = function() {
+              if ($scope.currentPaneIndex === 0) {
+                return;
+              }
               $scope.position = $scope.position + $scope.itemWidth;
               return $scope.currentPaneIndex = $scope.currentPaneIndex - 1;
             };
@@ -418,6 +428,12 @@
               $scope.position = 0;
               return $scope.currentPaneIndex = 0;
             };
+            $scope.itemWidth = $scope.setItemWidth();
+            $scope.panesWidth = void 0;
+            $scope.panes = [];
+            $scope.position = 0;
+            $scope.currentPaneIndex = 0;
+            $scope.areControlsVisible = false;
             w.bind('resize', function() {
               var j, len, pane, ref;
               $scope.itemWidth = $scope.setItemWidth();
@@ -465,7 +481,6 @@
         transclude: true,
         template: "<div ng-transclude></div>",
         link: function($scope, $element, $attrs, $ctrl) {
-          $log.debug("Going to add carousel pane with id " + $scope.$id + " to carousel");
           $element.addClass("wl-carousel-item");
           $scope.setWidth = function(size) {
             return $element.css('width', size + "px");
