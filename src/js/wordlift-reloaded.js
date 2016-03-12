@@ -726,12 +726,6 @@
             }
             return false;
           };
-          $scope.open = function() {
-            return $scope.isOpened = true;
-          };
-          $scope.close = function() {
-            return $scope.isOpened = false;
-          };
           return $scope.toggle = function() {
             if (!$scope.isOpened) {
               $boxCtrl.closeTiles();

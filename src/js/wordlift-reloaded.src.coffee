@@ -708,11 +708,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
         if $scope.entity.id.startsWith configuration.datasetUri
           return true
         return false 
-      
-      $scope.open = ()->
-      	$scope.isOpened = true
-      $scope.close = ()->
-      	$scope.isOpened = false  	
+       	
       $scope.toggle = ()->
         if !$scope.isOpened 
           $boxCtrl.closeTiles()    
