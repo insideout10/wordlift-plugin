@@ -2283,6 +2283,12 @@
   padding: 2px 6px;
   font-size: 0.8em;
 }
+#wordlift-edit-post-wrapper .wl-cta-location {
+  cursor: pointer;
+  color: #999;
+  border-bottom: #ff9a2e 1px dotted;
+  padding: 2px;
+}
 #wordlift-edit-post-wrapper .wl-spinner {
   background: url('/wp-admin/images/spinner.gif') no-repeat;
   background-size: 16px 16px;
@@ -2309,21 +2315,6 @@
 }
 #wordlift-edit-post-wrapper .wl-edit.active {
   color: #2ea2cc;
-}
-#wordlift-edit-post-wrapper .wl-location-arrow {
-  color: #f20f62;
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 14px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
-  padding: 0px 3px;
-  cursor: pointer;
-}
-#wordlift-edit-post-wrapper .wl-location-arrow:before {
-  content: "\f124";
 }
 #wordlift-edit-post-wrapper .wl-disabled {
   color: #888 !important;

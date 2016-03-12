@@ -69,7 +69,12 @@ $(
       </div>  
 
       <h5 class="wl-widget-sub-headline">Where <small>Publishing Place</small></h5>
-      <i class="wl-location-arrow" ng-click="getLocation()"></i>
+      <div class="wl-widget-wrapper" ng-hide="hasPublishedPlace()">
+        <i class="wl-toggle-off" />
+        <span class="entity wl-place"><i class="type" />
+          <span ng-click="getLocation()" class="wl-cta-location">Get current location</span>
+        </span>
+      </div> 
       <div class="wl-without-annotation">
         <wl-entity-tile show-confidence="false" is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
       </div>

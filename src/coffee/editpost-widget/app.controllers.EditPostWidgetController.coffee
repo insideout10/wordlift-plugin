@@ -67,7 +67,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
   
-  $scope.suggestedPlaces = {}
+  $scope.suggestedPlaces = undefined
   $scope.publishedPlace = undefined
   $scope.topic = undefined
 
@@ -161,6 +161,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
     .then (response)->
+      $scope.suggestedPlaces = {}
       for id, entity of response.data.entities
         if 'place' is entity.mainType 
           entity.id = id
@@ -236,6 +237,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     GeoLocationService.getLocation()
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
+  $scope.hasPublishedPlace = ()->
+    $scope.publishedPlace? or $scope.suggestedPlaces?
+  
   $scope.onPublishedPlaceSelected = (entity)->
     if $scope.publishedPlace?.id is entity.id
       $scope.publishedPlace = undefined

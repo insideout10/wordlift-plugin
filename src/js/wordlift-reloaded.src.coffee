@@ -344,7 +344,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
   
-  $scope.suggestedPlaces = {}
+  $scope.suggestedPlaces = undefined
   $scope.publishedPlace = undefined
   $scope.topic = undefined
 
@@ -438,6 +438,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
     .then (response)->
+      $scope.suggestedPlaces = {}
       for id, entity of response.data.entities
         if 'place' is entity.mainType 
           entity.id = id
@@ -513,6 +514,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     GeoLocationService.getLocation()
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
+  $scope.hasPublishedPlace = ()->
+    $scope.publishedPlace? or $scope.suggestedPlaces?
+  
   $scope.onPublishedPlaceSelected = (entity)->
     if $scope.publishedPlace?.id is entity.id
       $scope.publishedPlace = undefined
@@ -1456,7 +1460,12 @@ $(
       </div>  
 
       <h5 class="wl-widget-sub-headline">Where <small>Publishing Place</small></h5>
-      <i class="wl-location-arrow" ng-click="getLocation()"></i>
+      <div class="wl-widget-wrapper" ng-hide="hasPublishedPlace()">
+        <i class="wl-toggle-off" />
+        <span class="entity wl-place"><i class="type" />
+          <span ng-click="getLocation()" class="wl-cta-location">Get current location</span>
+        </span>
+      </div> 
       <div class="wl-without-annotation">
         <wl-entity-tile show-confidence="false" is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
       </div>
