@@ -1494,7 +1494,9 @@ $(
       </div>
       
       <div class="wl-entity-input-boxes">
-        <wl-entity-input-box annotation="annotation" entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
+        <wl-entity-input-box entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
+        <wl-entity-input-box entity="topic" ng-if="topic"></wl-entity-input-box>
+        <wl-entity-input-box entity="publishedPlace" ng-if="publishedPlace"></wl-entity-input-box>
         <div ng-repeat="(box, entities) in selectedEntities">
           <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat="(id, entity) in entities">
         </div> 
