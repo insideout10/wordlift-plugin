@@ -734,11 +734,21 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
           <span class="label" ng-click="onEntitySelect()">{{entity.label}}</span>
 
           <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
+          <i ng-class="{ 'wl-more': isOpened == false, 'wl-less': isOpened == true }" ng-click="toggle()"></i>
+  
+        </div>
+        <div class="details" ng-show="isOpened">
+          <wl-entity-form entity="entity" on-submit="toggle()"></wl-entity-form>
         </div>
       </div>
     """
     link: ($scope, $element, $attrs) ->             
       
+      $scope.isOpened = false
+      
+      $scope.toggle = ()->
+        $scope.isOpened = !$scope.isOpened
+
       $scope.isInternal = ()->
         if $scope.entity.id.startsWith configuration.datasetUri
           return true

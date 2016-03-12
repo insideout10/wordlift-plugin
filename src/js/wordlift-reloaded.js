@@ -750,8 +750,12 @@
           isSelected: '=',
           onEntitySelect: '&'
         },
-        template: "<div ng-class=\"'wl-' + entity.mainType\" class=\"entity\">\n  <div class=\"entity-header\">\n    \n    <i ng-click=\"onEntitySelect()\" ng-hide=\"annotation\" ng-class=\"{ 'wl-selected' : isSelected, 'wl-unselected' : !isSelected }\"></i>\n    <i ng-click=\"onEntitySelect()\" class=\"type\"></i>\n    <span class=\"label\" ng-click=\"onEntitySelect()\">{{entity.label}}</span>\n\n    <span ng-show=\"isInternal()\" class=\"dashicons dashicons-tag wl-internal\"></span>  \n  </div>\n</div>",
+        template: "<div ng-class=\"'wl-' + entity.mainType\" class=\"entity\">\n  <div class=\"entity-header\">\n    \n    <i ng-click=\"onEntitySelect()\" ng-hide=\"annotation\" ng-class=\"{ 'wl-selected' : isSelected, 'wl-unselected' : !isSelected }\"></i>\n    <i ng-click=\"onEntitySelect()\" class=\"type\"></i>\n    <span class=\"label\" ng-click=\"onEntitySelect()\">{{entity.label}}</span>\n\n    <span ng-show=\"isInternal()\" class=\"dashicons dashicons-tag wl-internal\"></span>  \n    <i ng-class=\"{ 'wl-more': isOpened == false, 'wl-less': isOpened == true }\" ng-click=\"toggle()\"></i>\n  \n  </div>\n  <div class=\"details\" ng-show=\"isOpened\">\n    <wl-entity-form entity=\"entity\" on-submit=\"toggle()\"></wl-entity-form>\n  </div>\n</div>",
         link: function($scope, $element, $attrs) {
+          $scope.isOpened = false;
+          $scope.toggle = function() {
+            return $scope.isOpened = !$scope.isOpened;
+          };
           return $scope.isInternal = function() {
             if ($scope.entity.id.startsWith(configuration.datasetUri)) {
               return true;
