@@ -5,6 +5,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
     scope:
       entity: '='
       isSelected: '='
+      showConfidence: '='
       onEntitySelect: '&'
     template: """
   	  <div ng-class="'wl-' + entity.mainType" class="entity">
@@ -17,7 +18,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
           <small ng-show="entity.occurrences.length > 0">({{entity.occurrences.length}})</small>
           <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
           
-          <div class="wl-progress-background">
+          <div class="wl-progress-background" ng-show="showConfidence">
             <div class="wl-progress-current" style="width:{{entity.confidence*100}}%"></div>
           </div>
 

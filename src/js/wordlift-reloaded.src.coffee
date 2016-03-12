@@ -688,6 +688,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
     scope:
       entity: '='
       isSelected: '='
+      showConfidence: '='
       onEntitySelect: '&'
     template: """
   	  <div ng-class="'wl-' + entity.mainType" class="entity">
@@ -700,7 +701,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
           <small ng-show="entity.occurrences.length > 0">({{entity.occurrences.length}})</small>
           <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
           
-          <div class="wl-progress-background">
+          <div class="wl-progress-background" ng-show="showConfidence">
             <div class="wl-progress-current" style="width:{{entity.confidence*100}}%"></div>
           </div>
 
@@ -1430,10 +1431,10 @@ $(
 
       <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
         <div ng-hide="annotation" class="wl-without-annotation">
-          <wl-entity-tile is-selected="isEntitySelected(entity, box)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes"></wl-entity>
+          <wl-entity-tile show-confidence="false" is-selected="isEntitySelected(entity, box)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes"></wl-entity>
         </div>  
         <div ng-show="annotation" class="wl-with-annotation">
-          <wl-entity-tile is-selected="isLinkedToCurrentAnnotation(entity)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes"" ></wl-entity>
+          <wl-entity-tile show-confidence="false" is-selected="isLinkedToCurrentAnnotation(entity)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes"" ></wl-entity>
         </div>  
       </wl-classification-box>
 
@@ -1443,7 +1444,7 @@ $(
 
       <h5 class="wl-widget-sub-headline">What</h5>
       <div class="wl-without-annotation">
-        <wl-entity-tile is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'"></wl-entity-tile>
+        <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'"></wl-entity-tile>
       </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
       <label class="wl-role">author</label>     
@@ -1458,7 +1459,7 @@ $(
       <label class="wl-role">publishing place</label>
       <i class="wl-location-arrow" ng-click="getLocation()"></i>
       <div class="wl-without-annotation">
-        <wl-entity-tile is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
+        <wl-entity-tile show-confidence="false" is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
       </div>
 
       <h5 class="wl-widget-sub-headline">When</h5>
