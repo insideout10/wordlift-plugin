@@ -1677,6 +1677,22 @@
   font-size: 0.9em;
   position: relative;
 }
+.entity .entity-header {
+  position: relative;
+}
+.entity .entity-header .wl-progress-background {
+  position: absolute;
+  top: 5px;
+  right: 20px;
+  width: 50px;
+  height: 6px;
+  background-color: #e2e2e2;
+  padding: 0;
+}
+.entity .entity-header .wl-progress-background .wl-progress-current {
+  height: 6px;
+  background-color: #f20f62;
+}
 .entity .wl-internal {
   color: #f20f62;
   font-size: 1.1em;
@@ -2023,23 +2039,6 @@
   border-bottom: #eee 1px solid;
   margin: 0;
   margin-bottom: 4px;
-}
-#wordlift-edit-post-wrapper .wl-category-wrapper {
-  margin: 0.3em 0;
-  position: relative;
-}
-#wordlift-edit-post-wrapper .wl-category-wrapper .wl-category-progress-background {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  width: 50px;
-  height: 6px;
-  background-color: #e2e2e2;
-  padding: 0;
-}
-#wordlift-edit-post-wrapper .wl-category-wrapper .wl-category-progress-background .wl-category-progress-current {
-  height: 6px;
-  background-color: #f20f62;
 }
 #wordlift-edit-post-wrapper .wl-carousel-item {
   padding: 0;
