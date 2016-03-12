@@ -56,16 +56,8 @@ $(
       </h3>
 
       <h5 class="wl-widget-sub-headline">What</h5>
-      <div class="wl-widget-wrapper">
-        <div ng-repeat="topic in analysis.topics | orderBy :'-confidence'" class="wl-category-wrapper">
-          <i class="wl-toggle-off" />
-          <span class="entity wl-thing"><i class="type" />
-            {{topic.label}}
-          </span>
-          <div class="wl-category-progress-background">
-            <div class="wl-category-progress-current" style="width:{{topic.confidence*100}}%"></div>
-          </div>      
-        </div>
+      <div class="wl-without-annotation">
+        <wl-entity-tile is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'"></wl-entity-tile>
       </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
       <label class="wl-role">author</label>     

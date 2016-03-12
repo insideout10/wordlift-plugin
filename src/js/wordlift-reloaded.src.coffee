@@ -346,6 +346,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   
   $scope.suggestedPlaces = {}
   $scope.publishedPlace = undefined
+  $scope.topic = undefined
 
   $scope.annotation = undefined
   $scope.boxes = []
@@ -516,7 +517,15 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if $scope.publishedPlace?.id is entity.id
       $scope.publishedPlace = undefined
       return
-    $scope.publishedPlace = entity   
+    $scope.publishedPlace = entity  
+
+  $scope.isTopic = (topic)->
+    topic.id is $scope.topic?.id 
+  $scope.onTopicSelected = (topic)->
+    if $scope.topic?.id is topic.id
+      $scope.topic = undefined
+      return
+    $scope.topic = topic  
       
 ])
 angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
@@ -690,6 +699,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
 
           <small ng-show="entity.occurrences.length > 0">({{entity.occurrences.length}})</small>
           <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
+          
+          <div class="wl-progress-background">
+            <div class="wl-progress-current" style="width:{{entity.confidence*100}}%"></div>
+          </div>
+
           <i ng-class="{ 'wl-more': isOpened == false, 'wl-less': isOpened == true }" ng-click="toggle()"></i>
   	    </div>
         <div class="details" ng-show="isOpened">
@@ -844,8 +858,18 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add id to annotation obj
     # Add occurences as a blank array
     # Add annotation references to each entity
-    $log.debug data.topics
-    
+
+    # TMP ... Should be done on WLS side
+    originalTopics = data.topics
+    data.topics = {}
+
+    for topic in originalTopics
+      
+      topic.id = topic.uri
+      topic.occurrences = []
+      topic.mainType =  @._defaultType
+      data.topics[ topic.id ] = topic
+
     for id, localEntity of configuration.entities
       
       data.entities[ id ] = localEntity
@@ -1418,16 +1442,8 @@ $(
       </h3>
 
       <h5 class="wl-widget-sub-headline">What</h5>
-      <div class="wl-widget-wrapper">
-        <div ng-repeat="topic in analysis.topics | orderBy :'-confidence'" class="wl-category-wrapper">
-          <i class="wl-toggle-off" />
-          <span class="entity wl-thing"><i class="type" />
-            {{topic.label}}
-          </span>
-          <div class="wl-category-progress-background">
-            <div class="wl-category-progress-current" style="width:{{topic.confidence*100}}%"></div>
-          </div>      
-        </div>
+      <div class="wl-without-annotation">
+        <wl-entity-tile is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'"></wl-entity-tile>
       </div>  
       <h5 class="wl-widget-sub-headline">Who</h5>
       <label class="wl-role">author</label>     

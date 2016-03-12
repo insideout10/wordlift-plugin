@@ -98,8 +98,18 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add id to annotation obj
     # Add occurences as a blank array
     # Add annotation references to each entity
-    $log.debug data.topics
-    
+
+    # TMP ... Should be done on WLS side
+    originalTopics = data.topics
+    data.topics = {}
+
+    for topic in originalTopics
+      
+      topic.id = topic.uri
+      topic.occurrences = []
+      topic.mainType =  @._defaultType
+      data.topics[ topic.id ] = topic
+
     for id, localEntity of configuration.entities
       
       data.entities[ id ] = localEntity

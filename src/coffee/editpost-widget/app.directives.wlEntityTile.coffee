@@ -16,6 +16,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
 
           <small ng-show="entity.occurrences.length > 0">({{entity.occurrences.length}})</small>
           <span ng-show="isInternal()" class="dashicons dashicons-tag wl-internal"></span>  
+          
+          <div class="wl-progress-background">
+            <div class="wl-progress-current" style="width:{{entity.confidence*100}}%"></div>
+          </div>
+
           <i ng-class="{ 'wl-more': isOpened == false, 'wl-less': isOpened == true }" ng-click="toggle()"></i>
   	    </div>
         <div class="details" ng-show="isOpened">
