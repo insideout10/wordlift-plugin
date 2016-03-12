@@ -199,9 +199,15 @@
         $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
             
             // Calculate wikidata ratio
+            // TODO percentage should be added via css
             stats.wikidata = ( ( stats.triples * 100 ) / 947690143 ).toFixed(5) + '%';
-            // Calculate wikidata ratio
-            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1) + '%';
+            // Calculate annotated posts ratio
+            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1);
+            // Convert NaN to zero if needed
+            // See https://github.com/insideout10/wordlift-plugin/issues/269
+            stats.annotated_posts_percentage = +stats.annotated_posts_percentage || 0;
+            // TODO percentage should be added via css
+            stats.annotated_posts_percentage = stats.annotated_posts_percentage + '%';
 
             // Populate annotated posts pie chart
             $( '#wl-posts-pie-chart circle').css(
@@ -214,6 +220,7 @@
                 ( stats.rating / 2 ) + ' 100' 
             );
 
+            // TODO percentage should be added via css
             stats.rating = stats.rating + '%';
             // populate value placeholders
             for ( var property in stats ) {

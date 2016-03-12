@@ -89,6 +89,14 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 = 3.6.0 (???) =
 
 = 3.5.0 (???) =
+* Enhancement: [#280](https://github.com/insideout10/wordlift-plugin/issues/280): Fix disambiguation failure use case. 
+* Enhancement: [#279](https://github.com/insideout10/wordlift-plugin/issues/279): Disambiguation fixed for entities with escaped chars contained in the uri.
+* Enhancement: [#276](https://github.com/insideout10/wordlift-plugin/issues/276): Fix facets layout with entities long titles.
+* Enhancement: [#275](https://github.com/insideout10/wordlift-plugin/issues/275): Exclude posts without featured image from navigator results.
+* Enhancement: [#274](https://github.com/insideout10/wordlift-plugin/issues/274): Simplify facets layout grid. 
+* Enhancement: [#273](https://github.com/insideout10/wordlift-plugin/issues/273): Remove entity type icon and counter from facets within faceted search widget to simplify the layout.
+* Enhancement: [#270](https://github.com/insideout10/wordlift-plugin/issues/270): Show wl-carousel controls on mouseover only.
+* Enhancement: [#269](https://github.com/insideout10/wordlift-plugin/issues/269): Fix NaN in WL dashboard.
 * Enhancement: [#268](https://github.com/insideout10/wordlift-plugin/issues/268): Flaoting configurable layout is now available both for navigator and faceted search.
 * Enhancement: [#267](https://github.com/insideout10/wordlift-plugin/issues/267): Force override for entities with same schema type and label within disambiguation workflow.
 * Enhancement: [#264](https://github.com/insideout10/wordlift-plugin/issues/264): Improve data selection strategy for navigation widget.
