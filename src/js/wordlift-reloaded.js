@@ -625,7 +625,7 @@
             results1 = [];
             for (j = 0, len = ref.length; j < len; j++) {
               tile = ref[j];
-              results1.push(tile.close());
+              results1.push(tile.isOpened = false);
             }
             return results1;
           };

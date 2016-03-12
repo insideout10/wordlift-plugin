@@ -591,7 +591,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
         $scope.tiles.push tile
       ctrl.closeTiles = ()->
         for tile in $scope.tiles
-          tile.close()
+          tile.isOpened = false
       
   ])
 angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
