@@ -1462,7 +1462,7 @@ $(
       <h5 class="wl-widget-sub-headline">Who</h5>
       <label class="wl-role">author</label>     
       <div class="wl-widget-wrapper">
-        <i class="wl-toggle-on" />
+        <i class="wl-toggle-on wl-disabled" />
         <span class="entity wl-person"><i class="type" />
           {{configuration.currentUser}}
         </span>
@@ -1479,7 +1479,7 @@ $(
       <label class="wl-role">publishing date</label>
       
       <div class="wl-widget-wrapper">
-        <i class="wl-toggle-on" />
+        <i class="wl-toggle-on wl-disabled" />
         <span class="entity wl-event"><i class="type" />
           {{configuration.publishedDate}}
         </span>

@@ -2315,6 +2315,10 @@
 #wordlift-edit-post-wrapper .wl-location-arrow:before {
   content: "\f124";
 }
+#wordlift-edit-post-wrapper .wl-disabled {
+  color: #888 !important;
+  cursor: not-allowed;
+}
 #wordlift-edit-post-wrapper .wl-toggle-on {
   color: #444;
   font-family: FontAwesome;
