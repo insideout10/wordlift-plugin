@@ -52,15 +52,15 @@ $(
       </wl-classification-box>
 
       <h3 class="wl-widget-headline">
-        <span>Article Metadata</span>
+        <span>Article metadata</span>
       </h3>
 
-      <h5 class="wl-widget-sub-headline">What</h5>
+      <h5 class="wl-widget-sub-headline">What <small>Topic</small></h5>
       <div class="wl-without-annotation">
         <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'"></wl-entity-tile>
-      </div>  
-      <h5 class="wl-widget-sub-headline">Who</h5>
-      <label class="wl-role">author</label>     
+      </div>
+
+      <h5 class="wl-widget-sub-headline">Who <small>Author</small></h5>
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on wl-disabled" />
         <span class="entity wl-person"><i class="type" />
@@ -68,16 +68,13 @@ $(
         </span>
       </div>  
 
-      <h5 class="wl-widget-sub-headline">Where</h5>
-      <label class="wl-role">publishing place</label>
+      <h5 class="wl-widget-sub-headline">Where <small>Publishing Place</small></h5>
       <i class="wl-location-arrow" ng-click="getLocation()"></i>
       <div class="wl-without-annotation">
         <wl-entity-tile show-confidence="false" is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
       </div>
 
-      <h5 class="wl-widget-sub-headline">When</h5>
-      <label class="wl-role">publishing date</label>
-      
+      <h5 class="wl-widget-sub-headline">When <small>Publishing Date</small></h5>
       <div class="wl-widget-wrapper">
         <i class="wl-toggle-on wl-disabled" />
         <span class="entity wl-event"><i class="type" />

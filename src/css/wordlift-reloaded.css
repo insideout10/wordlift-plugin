@@ -2039,6 +2039,17 @@
   border-bottom: #eee 1px solid;
   margin: 0;
   margin-bottom: 4px;
+  position: relative;
+}
+#wordlift-edit-post-wrapper .wl-widget-sub-headline small {
+  position: absolute;
+  right: 0px;
+  top: 5px;
+  padding: 0px 4px;
+  color: #888;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  border-left: #ccc 2px solid;
 }
 #wordlift-edit-post-wrapper .wl-carousel-item {
   padding: 0;
@@ -2379,12 +2390,6 @@
 }
 #wordlift-edit-post-wrapper .wl-less:before {
   content: "\f0d8";
-}
-#wordlift-edit-post-wrapper .wl-role {
-  padding: 2px;
-  color: #888;
-  text-transform: uppercase;
-  font-size: 0.8em;
 }
 #wordlift-edit-post-wrapper .wl-without-annotation .wl-selected {
   color: #444;
