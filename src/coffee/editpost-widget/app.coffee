@@ -80,7 +80,7 @@ $(
       <label class="wl-role">publishing place</label>
       <i class="wl-location-arrow" ng-click="getLocation()"></i>
       <div class="wl-without-annotation">
-        <wl-entity is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity>
+        <wl-entity-tile is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
       </div>
 
       <h5 class="wl-widget-sub-headline">When</h5>
