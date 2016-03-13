@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.6.0 (???) =
+* Enhancement: [#229](https://github.com/insideout10/wordlift-plugin/issues/229): Add article classification. 
 
 = 3.5.0 (???) =
 * Enhancement: [#280](https://github.com/insideout10/wordlift-plugin/issues/280): Fix disambiguation failure use case. 
