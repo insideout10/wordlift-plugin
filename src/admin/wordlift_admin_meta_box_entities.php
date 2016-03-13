@@ -101,6 +101,20 @@ function wl_entities_box_content( $post ) {
     $referenced_entities_obj = empty($referenced_entities_obj) ? 
         '{}' : json_encode( $referenced_entities_obj );
 	
+    $published_place_id = get_post_meta( 
+        $post->ID, Wordlift_Schema_Service::FIELD_LOCATION_CREATED, true
+    ); 
+    $published_place_obj = ( $published_place_id ) ?  
+        json_encode( wl_serialize_entity( $published_place_id ) ) : 
+        'undefined';
+    
+    $topic_id = get_post_meta( 
+        $post->ID, Wordlift_Schema_Service::FIELD_TOPIC, true
+    ); 
+    $topic_obj = ( $topic_id ) ?  
+        json_encode( wl_serialize_entity( $topic_id ) ) : 
+        'undefined';
+
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 	$dataset_uri = wl_configuration_get_redlink_dataset_uri();
     $current_post_uri = wl_get_entity_uri( $post->ID );
@@ -122,10 +136,14 @@ function wl_entities_box_content( $post ) {
         	window.wordlift.entities = $referenced_entities_obj;
         	window.wordlift.currentPostId = $post->ID;
 			window.wordlift.currentPostUri = '$current_post_uri';
+            window.wordlift.currentPostType = $post->post_type;
             window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
 			window.wordlift.datasetUri = '$dataset_uri';
             window.wordlift.currentUser = '$current_user->display_name';
             window.wordlift.publishedDate = '$published_date';
+            window.wordlift.publishedPlace = $published_place_obj;
+            window.wordlift.topic = $topic_obj;
+
         });
     </script>
 EOF;
