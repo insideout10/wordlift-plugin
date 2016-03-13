@@ -5,6 +5,10 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
   GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js'
   GOOGLE_MAPS_LEVEL = 'locality'
 
+  $rootScope.$on 'error', (event, msg)->
+    $log.warn "Geolocation error: #{msg}"
+    $rootScope.$broadcast 'geoLocationError', msg
+
   # Following code is inspired by
   # https://github.com/urish/angular-load/blob/master/angular-load.js
 

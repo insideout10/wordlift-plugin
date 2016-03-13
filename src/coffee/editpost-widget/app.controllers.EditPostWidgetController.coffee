@@ -176,6 +176,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
           $scope.suggestedPlaces[ id ] = entity
       $scope.isGeolocationRunning = false    
   
+  $scope.$on "geoLocationError", (event, error) ->
+    $scope.isGeolocationRunning = false
+    
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
     # Close new entity creation forms if needed

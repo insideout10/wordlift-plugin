@@ -459,6 +459,9 @@
           return $scope.isGeolocationRunning = false;
         });
       });
+      $scope.$on("geoLocationError", function(event, error) {
+        return $scope.isGeolocationRunning = false;
+      });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
         var id, ref1, results1;
         $scope.annotation = annotationId;
@@ -1384,6 +1387,10 @@
       var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
       GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js';
       GOOGLE_MAPS_LEVEL = 'locality';
+      $rootScope.$on('error', function(event, msg) {
+        $log.warn("Geolocation error: " + msg);
+        return $rootScope.$broadcast('geoLocationError', msg);
+      });
       this.googleApiLoaded = false;
       this.googleApiPromise = void 0;
       loadGoogleAPI = function() {
