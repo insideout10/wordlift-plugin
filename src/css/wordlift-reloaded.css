@@ -2029,6 +2029,7 @@
   font-size: 14px;
   padding: 8px 12px 8px 28px;
   line-height: 1.4em;
+  position: relative;
 }
 #wordlift-edit-post-wrapper .wl-widget-sub-headline {
   font-size: 1.04em;

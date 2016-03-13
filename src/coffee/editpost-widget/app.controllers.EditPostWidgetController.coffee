@@ -66,7 +66,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  
+  $scope.articleMetadataOpened = false
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = undefined
   $scope.topic = undefined
@@ -252,6 +252,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if $scope.topic?.id is topic.id
       $scope.topic = undefined
       return
-    $scope.topic = topic  
+    $scope.topic = topic 
+
+  $scope.toggleArticleMetadataOpened = ()->
+    $scope.articleMetadataOpened = !$scope.articleMetadataOpened
+   
       
 ])

@@ -53,8 +53,9 @@ $(
 
       <h3 class="wl-widget-headline">
         <span>Article metadata</span>
+        <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleArticleMetadataOpened()"></i>
       </h3>
-
+      <div ng-show="articleMetadataOpened">
       <h5 class="wl-widget-sub-headline">What <small>Topic</small></h5>
       <div class="wl-without-annotation">
         <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'"></wl-entity-tile>
@@ -86,7 +87,8 @@ $(
           {{configuration.publishedDate}}
         </span>
       </div>
-
+      </div>
+      
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
