@@ -93,6 +93,11 @@ function wl_build_entity_uri( $post_id ) {
  */
 function wl_get_entity_uri( $post_id ) {
 
+	// If a null is given, nothing to do
+	if ( null == $post_id ) {
+		return null;
+	}
+
 	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
 
 	// If the dataset uri is not properly configured, null is returned

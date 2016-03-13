@@ -69,6 +69,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		$entities_via_post = $_POST['wl_entities'];
 		$boxes_via_post    = $_POST['wl_boxes'];
+		$metadata_via_post    = $_POST['wl_metadata'];
+
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 			
@@ -162,6 +164,27 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		}
 
 	}
+
+	// Save post metadata if available
+	$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ? 
+		$_POST['wl_metadata'] : array();
+
+	$fields = array(
+		Wordlift_Schema_Service::FIELD_LOCATION_CREATED,
+		Wordlift_Schema_Service::FIELD_TOPIC
+	);
+	foreach ( $fields as $field ) {
+
+		// Delete current values
+		delete_post_meta( $post->ID, $field );
+		$uri 	= stripslashes( $metadata_via_post[ $field ] );
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+		
+		if ( $entity ) {
+			add_post_meta( $post->ID, $field, $entity->ID, true );
+		}
+	}
+	
 
 	// Push the post to Redlink.
 	wl_linked_data_push_to_redlink( $post->ID );
