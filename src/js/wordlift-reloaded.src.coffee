@@ -343,6 +343,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
+  $scope.contentClassificationOpened = true
   $scope.articleMetadataOpened = false
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = configuration.publishedPlace
@@ -477,7 +478,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       for id, topic of analysis.topics
         if id in $scope.configuration.topic.sameAs
           $scope.topic = topic
-          
+
     # Preselect 
     for box in $scope.configuration.classificationBoxes
       for entityId in box.selectedEntities  
@@ -542,8 +543,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       return
     $scope.topic = topic 
 
-  $scope.toggleArticleMetadataOpened = ()->
+  $scope.toggleCurrentSection = ()->
     $scope.articleMetadataOpened = !$scope.articleMetadataOpened
+    $scope.contentClassificationOpened = !$scope.contentClassificationOpened
    
       
 ])
@@ -1436,10 +1438,11 @@ $(
 
       <h3 class="wl-widget-headline">
         <span>Content classification</span>
-        <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleArticleMetadataOpened()"></i>      
+        <i ng-class="{ 'wl-more': contentClassificationOpened == false, 'wl-less': contentClassificationOpened == true }" ng-click="toggleCurrentSection()"></i>      
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
-    
+     <div ng-show="contentClassificationOpened">
+      
       <div ng-show="annotation">
         <h4 class="wl-annotation-label">
           <i class="wl-annotation-label-icon"></i>
@@ -1458,9 +1461,11 @@ $(
         </div>  
       </wl-classification-box>
 
+    </div>
+
       <h3 class="wl-widget-headline">
         <span>Article metadata</span>
-        <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleArticleMetadataOpened()"></i>
+        <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleCurrentSection()"></i>
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
       <div ng-show="articleMetadataOpened">

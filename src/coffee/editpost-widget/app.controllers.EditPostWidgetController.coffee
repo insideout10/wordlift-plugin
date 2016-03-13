@@ -66,6 +66,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
+  $scope.contentClassificationOpened = true
   $scope.articleMetadataOpened = false
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = configuration.publishedPlace
@@ -200,7 +201,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       for id, topic of analysis.topics
         if id in $scope.configuration.topic.sameAs
           $scope.topic = topic
-          
+
     # Preselect 
     for box in $scope.configuration.classificationBoxes
       for entityId in box.selectedEntities  
@@ -265,8 +266,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       return
     $scope.topic = topic 
 
-  $scope.toggleArticleMetadataOpened = ()->
+  $scope.toggleCurrentSection = ()->
     $scope.articleMetadataOpened = !$scope.articleMetadataOpened
+    $scope.contentClassificationOpened = !$scope.contentClassificationOpened
    
       
 ])
