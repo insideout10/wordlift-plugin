@@ -472,6 +472,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.$on "analysisPerformed", (event, analysis) -> 
     $scope.analysis = analysis
 
+    # Topic Preselect
+    if $scope.configuration.topic?
+      for id, topic of analysis.topics
+        if id in $scope.configuration.topic.sameAs
+          $scope.topic = topic
+          
     # Preselect 
     for box in $scope.configuration.classificationBoxes
       for entityId in box.selectedEntities  

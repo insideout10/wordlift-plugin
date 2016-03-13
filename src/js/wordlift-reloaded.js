@@ -483,18 +483,27 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, k, len1, ref1, results1, uri;
+        var entity, entityId, id, k, len1, ref1, ref2, results1, topic, uri;
         $scope.analysis = analysis;
-        ref1 = $scope.configuration.classificationBoxes;
+        if ($scope.configuration.topic != null) {
+          ref1 = analysis.topics;
+          for (id in ref1) {
+            topic = ref1[id];
+            if (indexOf.call($scope.configuration.topic.sameAs, id) >= 0) {
+              $scope.topic = topic;
+            }
+          }
+        }
+        ref2 = $scope.configuration.classificationBoxes;
         results1 = [];
-        for (k = 0, len1 = ref1.length; k < len1; k++) {
-          box = ref1[k];
+        for (k = 0, len1 = ref2.length; k < len1; k++) {
+          box = ref2[k];
           results1.push((function() {
-            var l, len2, ref2, results2;
-            ref2 = box.selectedEntities;
+            var l, len2, ref3, results2;
+            ref3 = box.selectedEntities;
             results2 = [];
-            for (l = 0, len2 = ref2.length; l < len2; l++) {
-              entityId = ref2[l];
+            for (l = 0, len2 = ref3.length; l < len2; l++) {
+              entityId = ref3[l];
               if (entity = analysis.entities[entityId]) {
                 if (entity.occurrences.length === 0) {
                   $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
@@ -502,11 +511,11 @@
                 }
                 $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
                 results2.push((function() {
-                  var len3, m, ref3, results3;
-                  ref3 = entity.images;
+                  var len3, m, ref4, results3;
+                  ref4 = entity.images;
                   results3 = [];
-                  for (m = 0, len3 = ref3.length; m < len3; m++) {
-                    uri = ref3[m];
+                  for (m = 0, len3 = ref4.length; m < len3; m++) {
+                    uri = ref4[m];
                     results3.push($scope.images[uri] = entity.label);
                   }
                   return results3;
