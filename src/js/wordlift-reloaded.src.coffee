@@ -1483,7 +1483,7 @@ $(
         </span>
       </div>
       </div>
-      
+
       <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
       <div wl-carousel>
         <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
@@ -1511,7 +1511,9 @@ $(
         <wl-entity-input-box entity="publishedPlace" ng-if="publishedPlace"></wl-entity-input-box>
         <div ng-repeat="(box, entities) in selectedEntities">
           <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat="(id, entity) in entities">
-        </div> 
+        </div>
+        <input type='text' name='wl_metadata[wl_topic]' value='{{topic.id}}' ng-if="topic">
+        <input type='text' name='wl_metadata[wl_location_created]' value='{{publishedPlace.id}}' ng-if="publishedPlace">
       </div>   
     </div>
   """)
