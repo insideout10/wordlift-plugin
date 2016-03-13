@@ -62,6 +62,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 .controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
 
   $scope.isRunning = false
+  $scope.isGeolocationRunning = false
+
   $scope.analysis = undefined
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
@@ -172,7 +174,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if 'place' is entity.mainType 
           entity.id = id
           $scope.suggestedPlaces[ id ] = entity
-      
+      $scope.isGeolocationRunning = false    
   
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
@@ -246,6 +248,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.updateRelatedPosts()
 
   $scope.getLocation = ()->
+    $scope.isGeolocationRunning = true
     GeoLocationService.getLocation()
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    

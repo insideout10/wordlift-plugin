@@ -58,7 +58,7 @@ $(
       <h3 class="wl-widget-headline">
         <span>Article metadata</span>
         <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleCurrentSection()"></i>
-        <span ng-show="isRunning" class="wl-spinner"></span>
+        <span ng-show="isGeolocationRunning" class="wl-spinner"></span>
       </h3>
       <div ng-show="articleMetadataOpened">
       <h5 class="wl-widget-sub-headline">What <small>Topic</small></h5>
