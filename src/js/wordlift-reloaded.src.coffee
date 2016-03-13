@@ -345,8 +345,13 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.selectedEntities = {}
   $scope.articleMetadataOpened = false
   $scope.suggestedPlaces = undefined
-  $scope.publishedPlace = undefined
+  $scope.publishedPlace = configuration.publishedPlace
   $scope.topic = undefined
+
+  if configuration.publishedPlace?
+    $scope.suggestedPlaces = {}
+    $scope.suggestedPlaces[ configuration.publishedPlace.id ] = configuration.publishedPlace
+
 
   $scope.annotation = undefined
   $scope.boxes = []

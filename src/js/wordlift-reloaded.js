@@ -347,8 +347,12 @@
       $scope.selectedEntities = {};
       $scope.articleMetadataOpened = false;
       $scope.suggestedPlaces = void 0;
-      $scope.publishedPlace = void 0;
+      $scope.publishedPlace = configuration.publishedPlace;
       $scope.topic = void 0;
+      if (configuration.publishedPlace != null) {
+        $scope.suggestedPlaces = {};
+        $scope.suggestedPlaces[configuration.publishedPlace.id] = configuration.publishedPlace;
+      }
       $scope.annotation = void 0;
       $scope.boxes = [];
       $scope.images = {};
