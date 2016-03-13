@@ -2031,6 +2031,40 @@
   line-height: 1.4em;
   position: relative;
 }
+#wordlift-edit-post-wrapper .wl-widget-headline .wl-more {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+  color: #aaa;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+#wordlift-edit-post-wrapper .wl-widget-headline .wl-more:before {
+  content: "\f150";
+}
+#wordlift-edit-post-wrapper .wl-widget-headline .wl-less {
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  padding: 0px 3px;
+  color: #aaa;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+#wordlift-edit-post-wrapper .wl-widget-headline .wl-less:before {
+  content: "\f151";
+}
 #wordlift-edit-post-wrapper .wl-widget-sub-headline {
   font-size: 1.04em;
   line-height: 1.04em;
