@@ -682,7 +682,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
       
       $scope.hasOccurences = ()->
-        $scope.entity.occurrences.length > 0
+        $scope.entity.occurrences?.length > 0
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
       
@@ -1436,6 +1436,7 @@ $(
 
       <h3 class="wl-widget-headline">
         <span>Content classification</span>
+        <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleArticleMetadataOpened()"></i>      
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
     
@@ -1460,6 +1461,7 @@ $(
       <h3 class="wl-widget-headline">
         <span>Article metadata</span>
         <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleArticleMetadataOpened()"></i>
+        <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
       <div ng-show="articleMetadataOpened">
       <h5 class="wl-widget-sub-headline">What <small>Topic</small></h5>

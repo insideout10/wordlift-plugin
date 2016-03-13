@@ -67,7 +67,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
       
       $scope.hasOccurences = ()->
-        $scope.entity.occurrences.length > 0
+        $scope.entity.occurrences?.length > 0
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
       

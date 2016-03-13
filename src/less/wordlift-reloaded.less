@@ -188,6 +188,7 @@
   }
 
   .wl-widget-headline {
+
     margin: 10px -12px;
     border-top:#eee 1px solid;
     border-bottom:#eee 1px solid;
@@ -197,19 +198,31 @@
     line-height: 1.4em;
     position: relative;
 
+      .wl-spinner {
+        position: absolute;
+        right:30px;
+        top:8px;
+        background: url('/wp-admin/images/spinner.gif') no-repeat;
+        background-size: 16px 16px;
+        opacity: .7;
+        filter: alpha(opacity=70);
+        width: 16px;
+        height: 16px;
+      }
+
       .wl-more { 
         .fa-icon(@fa-var-caret-square-o-down);
         color:#aaa;
         position: absolute;
         right:10px;
-        top:10px;
+        top:11px;
       }
       .wl-less { 
         .fa-icon(@fa-var-caret-square-o-up);
         color:#aaa;
         position: absolute;
         right:10px;
-        top:10px;
+        top:11px;
       }
   }
 
@@ -466,16 +479,6 @@
   padding:2px;
 }
 
-.wl-spinner {
-  background: url('/wp-admin/images/spinner.gif') no-repeat;
-  background-size: 16px 16px;
-  float: right;
-  opacity: .7;
-  filter: alpha(opacity=70);
-  width: 16px;
-  height: 16px;
-  margin: 2px -3px 0;
-}
 
   .wl-edit { 
     .fa-icon(@fa-var-pencil);
