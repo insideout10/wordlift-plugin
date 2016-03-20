@@ -72,7 +72,6 @@ class Wordlift_Topic_Taxonomy_Service {
 		return self::$instance;
 	}
 
-
 	/**
 	 * Just register the topic taxonomy.
 	 * 
@@ -119,6 +118,62 @@ class Wordlift_Topic_Taxonomy_Service {
 			self::TAXONOMY_NAME, self::TAXONOMY_OBJECT_TYPE, $args 
 		);
 
+	}
+
+	/**
+	 * Just register the topic taxonomy.
+	 * 
+	 * @since 3.6.0
+	 *
+	 */
+	public function get_or_create_term_from_topic_entity( $topic ) {
+		
+		// Define taxonomy term slug 
+		$term_slug = sanitize_title( $topic->post_title );
+		// Look for an existing taxonomy term with a given slug 
+		if ( $term = get_term_by( 'slug', $term_slug, self::TAXONOMY_NAME ) ) {
+			return (int) $term->term_id;
+		}
+		// Otherwise create a new term and return it
+		$result = wp_insert_term( 
+			$topic->post_title, 
+			self::TAXONOMY_NAME, 
+			array(
+				'slug'			=>	$term_slug,
+				'description'	=>	$topic->post_content
+			) 
+		);
+
+		return  (int) $result[ 'term_id' ];
+	}
+
+	/**
+	 * Just register the topic taxonomy.
+	 * 
+	 * @since 3.6.0
+	 *
+	 */
+	public function set_topic_for( $post_id, $topic_id ) {
+		// Retrieve the topic entity post 
+		$topic_entity_post = get_post( $topic_id );
+		// If current topic does not exist in db false is returned
+		if ( NULL === $topic_entity_post ) {
+			return false;
+		}
+		// Create the proper taxonomy term if needed
+		$term_id = get_or_create_term_from_topic_entity( $topic_entity_post );
+		// Link the term to the current post
+		wp_set_post_terms( $post_id, $term_id, self::TAXONOMY_NAME, false );
+	}
+
+	/**
+	 * Just register the topic taxonomy.
+	 * 
+	 * @since 3.6.0
+	 *
+	 */
+	public function unlink_topic_for( $post_id ) {
+		wp_delete_object_term_relationships( $post_id, self::TAXONOMY_NAME );
 	}
 
 }
