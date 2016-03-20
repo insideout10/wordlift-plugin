@@ -121,7 +121,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	}
 
 	/**
-	 * Just register the topic taxonomy.
+	 * Get or create a taxonomy term from a given entity topic.
 	 * 
 	 * @since 3.6.0
 	 *
@@ -148,7 +148,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	}
 
 	/**
-	 * Just register the topic taxonomy.
+	 * Set a topic for a given post.
 	 * 
 	 * @since 3.6.0
 	 *
@@ -168,7 +168,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	}
 
 	/**
-	 * Just register the topic taxonomy.
+	 * Unlink any topic for a given post.
 	 * 
 	 * @since 3.6.0
 	 *
