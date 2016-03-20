@@ -106,7 +106,7 @@ class Wordlift_Topic_Taxonomy_Service {
 			'labels'            => $labels,
 			'capabilities'      => $capabilities,
 			'hierarchical'      => true,
-			'show_admin_column' => true,
+			'show_admin_column' => false,
 			'show_ui'			=> false,
 			'rewrite'			=> array(
 				'slug'	=> self::TAXONOMY_SLUG
