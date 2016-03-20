@@ -172,10 +172,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		Wordlift_Schema_Service::FIELD_TOPIC
 	);
 	
+	// Unlink topic taxonomy terms
+	Wordlift_Topic_Taxonomy_Service::get_instance()->unlink_topic_for( $post->ID );
+		
 	foreach ( $fields as $field ) {
 
 		// Delete current values
 		delete_post_meta( $post->ID, $field );
+		// Retrieve the entity uri
 		$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ? 
 			stripslashes( $metadata_via_post[ $field ] ) : '';
 
@@ -183,6 +187,10 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		
 		if ( $entity ) {
 			add_post_meta( $post->ID, $field, $entity->ID, true );
+			// Set also the topic taxonomy
+			if ( $field === Wordlift_Schema_Service::FIELD_TOPIC ) {
+				Wordlift_Topic_Taxonomy_Service::get_instance()->set_topic_for( $post->ID, $entity );
+			}
 		}
 	}
 	

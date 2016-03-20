@@ -161,7 +161,7 @@ class Wordlift_Topic_Taxonomy_Service {
 			return false;
 		}
 		// Create the proper taxonomy term if needed
-		$term_id = get_or_create_term_from_topic_entity( $topic_entity_post );
+		$term_id = $this->get_or_create_term_from_topic_entity( $topic_entity_post );
 		// Link the term to the current post
 		wp_set_post_terms( $post_id, $term_id, self::TAXONOMY_NAME, false );
 	}
