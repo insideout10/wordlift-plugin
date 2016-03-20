@@ -70,6 +70,38 @@ class TopicTaxonomyServiceTest extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * Test the {@link set_topic_for} function 
+	 *
+	 * @since 3.6.0
+	 */
+	function test_set_topic_for() {
 
-
+		// Create a fake topic
+		$topic = uniqid( 'topic', true );
+		// Create a post to be related to that topic entity
+		$post_id = wl_create_post( 'foo', 'a-post', uniqid( 'post', true ), 'draft', 'post' );
+		
+		// Create a reference to the service
+		$topic_taxonomy_service = Wordlift_Topic_Taxonomy_Service::get_instance();
+		// Check that with a null topic_id false is returned
+		$this->assertFalse( $topic_taxonomy_service->set_topic_for( $post_id, null ) );
+		// Create a fake topic entity
+		$topic_id = wl_create_post( 'foo', sanitize_title( $topic ), $topic, 'draft', 'entity' );
+		// Ensure any terms is related to the current post yer
+		$term_list = wp_get_post_terms( 
+			$post_id, $topic_taxonomy_service::TAXONOMY_NAME );
+		$this->assertEmpty( $term_list );
+		// Pass the proper topic id and and check true is returned
+		$this->assertTrue( $topic_taxonomy_service->set_topic_for( $post_id, $topic_id ) );
+		// Ensure a single term is now related
+		$term_list = wp_get_post_terms( 
+			$post_id, $topic_taxonomy_service::TAXONOMY_NAME );
+		$this->assertNotEmpty( $term_list );
+		$this->assertCount( 1, $term_list );
+		// Check related term is what we expect to be
+		$this->assertEquals( $topic, $term_list[0]->name );
+		$this->assertEquals( sanitize_title( $topic ), $term_list[0]->slug );
+					
+	}
 }
