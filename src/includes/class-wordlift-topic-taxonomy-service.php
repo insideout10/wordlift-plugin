@@ -35,7 +35,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	 *
 	 * @since 3.6.0
 	 */
-	const TAXONOMY_SLUG = 'topic';
+	const TAXONOMY_SLUG = 'wl_topic';
 
 	/**
 	 * A singleton instance of the Wordlift_Topic_Taxonomy_Service service.
