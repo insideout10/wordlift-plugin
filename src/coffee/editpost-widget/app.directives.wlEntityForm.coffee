@@ -37,7 +37,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           </div>
       </div>
       <div ng-hide="isInternal()" class="wl-buttons-wrapper">
-        <span class="button button-primary wl-button" ng-click="onSubmit()">Add</span>
+        <span class="button button-primary wl-button wl-add-entity-button" ng-click="onSubmit()">+</span>
       </div>
       <div ng-show="isInternal()" class="wl-buttons-wrapper">
         <span class="button button-primary wl-button" ng-click="linkTo('lod')">View Linked Data<i class="wl-link"></i></span>
@@ -45,14 +45,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       </div>
       </div>
     """
-    link: ($scope, $element, $attrs, $ctrl) ->  
+    link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.configuration = configuration
 
       $scope.removeCurrentImage = ()->
         removed = $scope.entity.images.shift()
         $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
-        
+
       $scope.getCurrentTypeUri = ()->
         for type in configuration.types
           if type.css is "wl-#{$scope.entity.mainType}"
@@ -61,26 +61,26 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       $scope.isInternal = ()->
         if $scope.entity.id.startsWith configuration.datasetUri
           return true
-        return false 
-      
+        return false
+
       $scope.linkTo = (linkType)->
         $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
-      
+
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
-      
+
       $scope.checkEntityId = (uri)->
         /^(f|ht)tps?:\/\//i.test(uri)
 
-      availableTypes = [] 
+      availableTypes = []
       for type in configuration.types
         availableTypes[ type.css.replace('wl-','') ] = type.uri
 
       $scope.supportedTypes = ({ id: type.css.replace('wl-',''), name: type.uri } for type in configuration.types)
       if $scope.box
         $scope.supportedTypes = ({ id: type, name: availableTypes[ type ] } for type in $scope.box.registeredTypes)
-        
+
 
 ])

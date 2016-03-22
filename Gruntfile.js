@@ -180,23 +180,24 @@ module.exports = function ( grunt ) {
         /* Watch for changes */
         watch: {
             /* Enable when using a build folder */
-            //all: {
-            //    files: [
-            //        SOURCE_DIR + '**',
-            //        // Ignore version control directories.
-            //        '!' + SOURCE_DIR + '**/.{svn,git}/**',
-            //        '!' + SOURCE_DIR + 'less/**',
-            //        '!' + SOURCE_DIR + 'coffee/**',
-            //        '!' + SOURCE_DIR + '**/*.coffee',
-            //        '!' + SOURCE_DIR + '**/*.less'
-            //    ],
-            //    //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
-            //    options: {
-            //        dot: true,
-            //        spawn: false,
-            //        interval: 2000
-            //    }
-            //},
+            all: {
+               files: [
+                   SOURCE_DIR + '**',
+                   // Ignore version control directories.
+                   '!' + SOURCE_DIR + '**/.{svn,git}/**',
+                   '!' + SOURCE_DIR + 'less/**',
+                   '!' + SOURCE_DIR + 'coffee/**',
+                   '!' + SOURCE_DIR + '**/*.coffee',
+                   '!' + SOURCE_DIR + '**/*.less',
+               ],
+               //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
+               options: {
+                   dot: true,
+                   spawn: false,
+                   interval: 2000,
+                   livereload: true,
+               }
+            },
             coffee: {
                 files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
                 tasks: [ 'coffee' ]

@@ -62,7 +62,7 @@
 }
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eeeeee;
+  border: solid 0.08em #eee;
   border-radius: .1em;
 }
 .pull-right {
@@ -185,7 +185,7 @@
   font-size: 2em;
 }
 .fa-inverse {
-  color: #ffffff;
+  color: #fff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
@@ -1363,7 +1363,7 @@
 .mce-widget.mce-btn.mce-wordlift button {
   background-position: center center;
   background-repeat: no-repeat;
-  color: #f20f62 !important;
+  color: #007AFF !important;
   font-size: 14px !important;
   font-family: FontAwesome !important;
   font-style: normal;
@@ -1392,7 +1392,7 @@
 }
 .wp_themeSkin .mceIcon.mce_wordlift_add_entity,
 .mce-widget.mce-btn.mce-wordlift_add_entity button {
-  color: #f20f62 !important;
+  color: #007AFF !important;
   font-size: 18px !important;
   font-family: FontAwesome !important;
   font-style: normal;
@@ -1431,7 +1431,7 @@
   content: 'W';
 }
 .entity .label {
-  top: 0px;
+  top: 0;
   position: absolute;
   left: 50px;
   margin-left: 4px;
@@ -1449,12 +1449,12 @@
   position: absolute;
   left: 50px;
   margin-left: 4px;
-  bottom: 0px;
+  bottom: 0;
   font-size: 8px;
 }
 .entity .type {
-  bottom: 0px;
-  right: 0px;
+  bottom: 0;
+  right: 0;
   position: absolute;
   font-family: FontAwesome;
   font-style: normal;
@@ -1563,7 +1563,7 @@
 }
 .entity .source {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   right: 40px;
   font-size: 8px;
 }
@@ -1599,14 +1599,14 @@
   height: 0;
   width: 0;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   left: 30px;
 }
 #wordlift-disambiguation-popover input,
 #wordlift-disambiguation-popover select {
   width: 100%;
   font-size: 11px;
-  margin: 3px 0px;
+  margin: 3px 0;
 }
 #wordlift-disambiguation-popover .button-container {
   text-align: right;
@@ -1624,7 +1624,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
-  padding: 0px 3px;
+  padding: 0 3px;
   -webkit-animation: spin 2s infinite linear;
   -moz-animation: spin 2s infinite linear;
   -o-animation: spin 2s infinite linear;
@@ -1794,7 +1794,7 @@ body#tinymce[contenteditable=false] {
 .toolbar .wl-active-tab {
   position: absolute;
   left: 11px;
-  border-left: #f20f62 12px solid;
+  border-left: #007AFF 12px solid;
   padding-left: 6px;
 }
 .toolbar .wl-search-toolbar-icon {
@@ -1805,13 +1805,13 @@ body#tinymce[contenteditable=false] {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
-  padding: 0px 3px;
+  padding: 0 3px;
 }
 .toolbar .wl-search-toolbar-icon:before {
   content: "\f002";
 }
 .toolbar .wl-search-toolbar-icon.selected {
-  color: #f20f62;
+  color: #007AFF;
 }
 .toolbar .wl-add-entity-toolbar-icon {
   font-family: FontAwesome;
@@ -1821,13 +1821,13 @@ body#tinymce[contenteditable=false] {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
-  padding: 0px 3px;
+  padding: 0 3px;
 }
 .toolbar .wl-add-entity-toolbar-icon:before {
   content: "\f040";
 }
 .toolbar .wl-add-entity-toolbar-icon.selected {
-  color: #f20f62;
+  color: #007AFF;
 }
 .wl-event-info .date {
   font-family: FontAwesome;

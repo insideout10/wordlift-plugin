@@ -29,16 +29,25 @@ $(
       </div>
 
       <h3 class="wl-widget-headline">
+        <span class="wl-widget-headline-logo">
+          <svg class="wl-logo-svg wl-logo-16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" xml:space="preserve">
+          <g class="wl-logo-inner">
+          	<circle class="wl-logo-circle" cx="20" cy="20" r="20"/>
+          	<path class="wl-logo-letter" d="M5.9,13.3l4.7,0l3.9,10.8l5.3-11.7H20L25.1,24l4.1-10.6l4.4,0l-8.1,18.3h-0.2L20,20.1l-5.6,11.7h-0.3L5.9,13.3
+          		z"/>
+          </g>
+          </svg>
+        </span>
         <span>Content classification</span>
-        <i ng-class="{ 'wl-more': contentClassificationOpened == false, 'wl-less': contentClassificationOpened == true }" ng-click="toggleCurrentSection()"></i>      
+        <i ng-class="{ 'wl-more': contentClassificationOpened == false, 'wl-less': contentClassificationOpened == true }" ng-click="toggleCurrentSection()"></i>
         <span ng-show="isRunning" class="wl-spinner"></span>
       </h3>
      <div ng-show="contentClassificationOpened">
-      
+
       <div ng-show="annotation">
         <h4 class="wl-annotation-label">
           <i class="wl-annotation-label-icon"></i>
-          {{ analysis.annotations[ annotation ].text }} 
+          {{ analysis.annotations[ annotation ].text }}
           <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>
           <i class="wl-annotation-label-remove-icon" ng-click="selectAnnotation(undefined)"></i>
         </h4>
@@ -47,15 +56,24 @@ $(
       <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
         <div ng-hide="annotation" class="wl-without-annotation">
           <wl-entity-tile show-confidence="false" is-selected="isEntitySelected(entity, box)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes"></wl-entity>
-        </div>  
+        </div>
         <div ng-show="annotation" class="wl-with-annotation">
           <wl-entity-tile show-confidence="false" is-selected="isLinkedToCurrentAnnotation(entity)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes"" ></wl-entity>
-        </div>  
+        </div>
       </wl-classification-box>
 
     </div>
 
       <h3 class="wl-widget-headline">
+        <span class="wl-widget-headline-logo">
+          <svg class="wl-logo-svg wl-logo-16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" xml:space="preserve">
+          <g class="wl-logo-inner">
+            <circle class="wl-logo-circle" cx="20" cy="20" r="20"/>
+            <path class="wl-logo-letter" d="M5.9,13.3l4.7,0l3.9,10.8l5.3-11.7H20L25.1,24l4.1-10.6l4.4,0l-8.1,18.3h-0.2L20,20.1l-5.6,11.7h-0.3L5.9,13.3
+              z"/>
+          </g>
+          </svg>
+        </span>
         <span>Article metadata</span>
         <i ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }" ng-click="toggleCurrentSection()"></i>
         <span ng-show="isGeolocationRunning" class="wl-spinner"></span>
@@ -72,7 +90,7 @@ $(
         <span class="entity wl-person"><i class="type" />
           {{configuration.currentUser}}
         </span>
-      </div>  
+      </div>
 
       <h5 class="wl-widget-sub-headline">Where <small>Publishing Place</small></h5>
       <div class="wl-widget-wrapper" ng-hide="hasPublishedPlace()">
@@ -80,7 +98,7 @@ $(
         <span class="entity wl-place"><i class="type" />
           <span ng-click="getLocation()" class="wl-cta-location">Get current location</span>
         </span>
-      </div> 
+      </div>
       <div class="wl-without-annotation">
         <wl-entity-tile show-confidence="false" is-selected="isPublishedPlace(entity)" on-entity-select="onPublishedPlaceSelected(entity)" entity="entity" ng-repeat="entity in suggestedPlaces"></wl-entity-tile>
       </div>
@@ -94,19 +112,39 @@ $(
       </div>
       </div>
 
-      <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
-      <div wl-carousel>
-        <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-          <div class="wl-card-image"> 
-            <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+      <h3 class="wl-widget-headline">
+        <span class="wl-widget-headline-logo">
+          <svg class="wl-logo-svg wl-logo-16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" xml:space="preserve">
+          <g class="wl-logo-inner">
+            <circle class="wl-logo-circle" cx="20" cy="20" r="20"/>
+            <path class="wl-logo-letter" d="M5.9,13.3l4.7,0l3.9,10.8l5.3-11.7H20L25.1,24l4.1-10.6l4.4,0l-8.1,18.3h-0.2L20,20.1l-5.6,11.7h-0.3L5.9,13.3
+              z"/>
+          </g>
+          </svg>
+        </span>
+        <span>Suggested images</span></h3>
+        <div wl-carousel>
+          <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
+            <div class="wl-card-image">
+              <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+            </div>
           </div>
         </div>
-      </div>
 
-      <h3 class="wl-widget-headline"><span>Related posts</span></h3>
+      <h3 class="wl-widget-headline">
+      <span class="wl-widget-headline-logo">
+        <svg class="wl-logo-svg wl-logo-16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40" xml:space="preserve">
+        <g class="wl-logo-inner">
+          <circle class="wl-logo-circle" cx="20" cy="20" r="20"/>
+          <path class="wl-logo-letter" d="M5.9,13.3l4.7,0l3.9,10.8l5.3-11.7H20L25.1,24l4.1-10.6l4.4,0l-8.1,18.3h-0.2L20,20.1l-5.6,11.7h-0.3L5.9,13.3
+            z"/>
+        </g>
+        </svg>
+      </span>
+      <span>Related posts</span></h3>
       <div wl-carousel>
         <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-          <div class="wl-card-image"> 
+          <div class="wl-card-image">
             <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
           </div>
           <div class="wl-card-title">
@@ -114,7 +152,7 @@ $(
           </div>
         </div>
       </div>
-      
+
       <div class="wl-entity-input-boxes">
         <wl-entity-input-box entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
         <wl-entity-input-box entity="topic" ng-if="topic"></wl-entity-input-box>
@@ -124,7 +162,7 @@ $(
         </div>
         <input type='text' name='wl_metadata[wl_topic]' value='{{topic.id}}' ng-if="topic">
         <input type='text' name='wl_metadata[wl_location_created]' value='{{publishedPlace.id}}' ng-if="publishedPlace">
-      </div>   
+      </div>
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
