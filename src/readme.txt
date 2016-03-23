@@ -87,7 +87,9 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.6.0 (???) =
-* Enhancement: [#283](https://github.com/insideout10/wordlift-plugin/issues/283): Dbpedia topics are now mapped also on a custom taxonomy. 
+
+* Enhancement: [#288](https://github.com/insideout10/wordlift-plugin/issues/288): Removed selected entities tags from disambiguation widget.
+* Enhancement: [#283](https://github.com/insideout10/wordlift-plugin/issues/283): Dbpedia topics are now mapped also on a custom taxonomy.
 * Enhancement: [#229](https://github.com/insideout10/wordlift-plugin/issues/229): Add article classification. 
 
 = 3.5.0 (???) =
