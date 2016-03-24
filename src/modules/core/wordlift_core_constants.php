@@ -1,6 +1,7 @@
 <?php
 
 define( 'WL_DEFAULT_THUMBNAIL_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/public/images/missing-image-150x150.png' );
+define( 'WL_DEFAULT_ANGULAR_TEMPLATES_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/templates/' );
 
 // Database version 
 define( 'WL_DB_VERSION', '1.0' );

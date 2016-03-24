@@ -116,6 +116,7 @@ function wl_entities_box_content( $post ) {
         'undefined';
 
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
+    $default_angular_templates_path = WL_DEFAULT_ANGULAR_TEMPLATES_PATH;
 	$dataset_uri = wl_configuration_get_redlink_dataset_uri();
     $current_post_uri = wl_get_entity_uri( $post->ID );
 
@@ -136,9 +137,10 @@ function wl_entities_box_content( $post ) {
         	window.wordlift.entities = $referenced_entities_obj;
         	window.wordlift.currentPostId = $post->ID;
 			window.wordlift.currentPostUri = '$current_post_uri';
-            window.wordlift.currentPostType = $post->post_type;
+            window.wordlift.currentPostType = '$post->post_type';
             window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
-			window.wordlift.datasetUri = '$dataset_uri';
+			window.wordlift.defaultAngularTemplatesPath = '$default_angular_templates_path';
+            window.wordlift.datasetUri = '$dataset_uri';
             window.wordlift.currentUser = '$current_user->display_name';
             window.wordlift.publishedDate = '$published_date';
             window.wordlift.publishedPlace = $published_place_obj;
