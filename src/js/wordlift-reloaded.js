@@ -608,12 +608,14 @@
   ]);
 
   angular.module('wordlift.editpost.widget.directives.wlClassificationBox', []).directive('wlClassificationBox', [
-    '$log', function($log) {
+    'configuration', '$log', function(configuration, $log) {
       return {
         restrict: 'E',
         scope: true,
         transclude: true,
-        template: "<div class=\"classification-box\">\n	<div class=\"box-header\">\n          <h5 class=\"label\">\n            {{box.label}}\n            <span ng-hide=\"addEntityFormIsVisible\" ng-click=\"openAddEntityForm()\" class=\"button\" ng-class=\"{ 'button-primary selected wl-button' : hasAnalysis(), 'preview' : !hasAnalysis() }\">Add entity</span>\n          </h5>\n          <wl-entity-form ng-show=\"addEntityFormIsVisible\" entity=\"newEntity\" box=\"box\" on-submit=\"closeAddEntityForm()\"></wl-entity-form>\n        </div>\n  			<div class=\"box-tiles\">\n          <div ng-transclude></div>\n  		  </div>\n      </div>	",
+        templateUrl: function() {
+          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-classification-box.html';
+        },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.addEntityFormIsVisible = false;
           $scope.openAddEntityForm = function() {
