@@ -759,7 +759,9 @@
           showConfidence: '=',
           onEntitySelect: '&'
         },
-        template: "<div ng-class=\"'wl-' + entity.mainType\" class=\"entity\">\n        <div class=\"entity-header\">\n    \n          <i ng-click=\"onEntitySelect()\" ng-hide=\"annotation\" ng-class=\"{ 'wl-selected' : isSelected, 'wl-unselected' : !isSelected }\"></i>\n          <i ng-click=\"onEntitySelect()\" class=\"type\"></i>\n          <span class=\"label\" ng-click=\"onEntitySelect()\">{{entity.label}}</span>\n\n          <small ng-show=\"entity.occurrences.length > 0\">({{entity.occurrences.length}})</small>\n          <span ng-show=\"isInternal()\" class=\"dashicons dashicons-tag wl-internal\"></span>  \n          \n          <div class=\"wl-progress-background\" ng-show=\"showConfidence\">\n            <div class=\"wl-progress-current\" style=\"width:{{entity.confidence*100}}%\"></div>\n          </div>\n\n          <i ng-class=\"{ 'wl-more': isOpened == false, 'wl-less': isOpened == true }\" ng-click=\"toggle()\"></i>\n  </div>\n        <div class=\"details\" ng-show=\"isOpened\">\n          <wl-entity-form entity=\"entity\" on-submit=\"toggle()\"></wl-entity-form>\n        </div>\n</div>",
+        templateUrl: function() {
+          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-tile.html';
+        },
         link: function($scope, $element, $attrs, $boxCtrl) {
           if ($boxCtrl != null) {
             $boxCtrl.addTile($scope);
