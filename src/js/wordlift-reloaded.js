@@ -784,15 +784,19 @@
     }
   ]);
 
-  angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).directive('wlEntityInputBox', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        entity: '='
-      },
-      template: "        <div>\n\n          <input type='text' name='wl_entities[{{entity.id}}][uri]' value='{{entity.id}}'>\n          <input type='text' name='wl_entities[{{entity.id}}][label]' value='{{entity.label}}'>\n          <textarea name='wl_entities[{{entity.id}}][description]'>{{entity.description}}</textarea>\n          <input type='text' name='wl_entities[{{entity.id}}][main_type]' value='wl-{{entity.mainType}}'>\n\n          <input ng-repeat=\"type in entity.types\" type='text'\n          	name='wl_entities[{{entity.id}}][type][]' value='{{type}}' />\n          <input ng-repeat=\"image in entity.images\" type='text'\n            name='wl_entities[{{entity.id}}][image][]' value='{{image}}' />\n          <input ng-repeat=\"sameAs in entity.sameAs\" type='text'\n            name='wl_entities[{{entity.id}}][sameas][]' value='{{sameAs}}' />\n          \n          <div ng-repeat=\"(property, values) in entity.properties\">\n            <input ng-repeat=\"propertyValue in values\" type='text'\n              name='wl_entities[{{entity.id}}][properties][{{property}}][]' value='{{propertyValue}}' />\n          </div>\n         \n</div>"
-    };
-  });
+  angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', []).directive('wlEntityInputBox', [
+    'configuration', '$log', function(configuration, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          entity: '='
+        },
+        templateUrl: function() {
+          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-input-box.html';
+        }
+      };
+    }
+  ]);
 
   angular.module('wordlift.editpost.widget.services.AnalysisService', []).service('AnalysisService', [
     'configuration', '$log', '$http', '$rootScope', function(configuration, $log, $http, $rootScope) {
