@@ -1371,7 +1371,7 @@ h1.wl-tab-lead-text {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  width: 260px;
+  min-width: 260px;
   height: 35px;
   box-sizing: border-box;
   background-color: #FFFFFF;
@@ -1463,7 +1463,7 @@ h1.wl-tab-lead-text {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  width: 260px;
+  min-width: 260px;
   height: 35px;
   box-sizing: border-box;
   background-color: #007AFF;
@@ -1481,6 +1481,82 @@ h1.wl-tab-lead-text {
   background-color: #0075f5;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   transform: scale(1);
+}
+.wl-widget-posts {
+  width: 250px;
+  margin: auto;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
+}
+.wl-widget-posts .wl-widget-post-wrap {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  height: 80px;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img {
+  position: relative;
+  margin-right: 5px;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img img {
+  width: 80px;
+  height: 80px;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link {
+  position: absolute;
+  z-index: 20;
+  top: 30px;
+  left: 40px;
+  transform: translateX(-50%);
+  padding: 3px 5px;
+  margin: 0;
+  background-color: #007AFF;
+  border: none;
+  white-space: nowrap;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 10px;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details h3.wl-widget-post-author {
+  margin: 0;
+  padding: 0;
+  color: #000000;
+  opacity: 50%;
+  font-size: 10px;
+  line-height: 1;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details h1.wl-widget-post-title {
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+  font-size: 13px;
+  color: #000000;
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details p.wl-widget-post-prev {
+  padding: 0;
+  margin: 0;
+  font-weight: 200;
+  font-size: 10px;
+  line-height: 1.2;
 }
 .wl-container {
   display: inline-block;
