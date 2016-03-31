@@ -1,10 +1,62 @@
 // global be widget
+#wordlift_entities_box{
+  background-color: @wl-widget-be-bg-color;
+}
+h1.wl-tab-lead-text {
+  color: @wl-black-color;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.wl-tab-lead {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 5px;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
+
+  .wl-tab-lead-wrap {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    margin: auto;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 260px;
+    height: 35px;
+    box-sizing: border-box;
+    background-color: @wl-white-color;
+    box-shadow: 0 1px 1px @wl-shadow-color;
+    transition: @wl-anime-global-time;
+
+    .wl-tab-lead-text.wl-tab-lead-btn {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid @wl-brand-color;
+    }
+  }
+}
 
 
 // importing parts
 @import "wordlift-widget-be/wordlift-widget-be-error.less";
-@import "wordlift-widget-be/wordlift-widget-be-create-identity.less";
-@import "wordlift-widget-be/wordlift-widget-be-modal.less";
+@import "wordlift-widget-be/wordlift-widget-be-create-entity-btn.less";
 @import "wordlift-widget-be/wordlift-widget-be-classification-box.less";
 @import "wordlift-widget-be/wordlift-widget-be-article-metadata.less";
 @import "wordlift-widget-be/wordlift-widget-be-suggest-images.less";

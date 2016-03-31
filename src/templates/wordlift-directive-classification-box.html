@@ -2,14 +2,14 @@
 	<div class="box-header">
     <h5 class="label">
       {{box.label}}
-      <span 
+      <span
         ng-hide="addEntityFormIsVisible"
         ng-click="openAddEntityForm()"
-        class="button" 
+        class="button"
         ng-class="{ 'button-primary selected wl-button' : hasAnalysis(), 'preview' : !hasAnalysis() }">Add entity
       </span>
     </h5>
-    <wl-entity-form 
+    <wl-entity-form
       ng-show="addEntityFormIsVisible"
       entity="newEntity"
       box="box"
@@ -19,4 +19,4 @@
 	<div class="box-tiles">
     <div ng-transclude></div>
   </div>
-</div>	
+</div>
