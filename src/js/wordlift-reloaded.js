@@ -614,7 +614,7 @@
         scope: true,
         transclude: true,
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-classification-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-classification-box.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.addEntityFormIsVisible = false;
@@ -671,7 +671,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-form.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-form.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           var availableTypes, j, len, ref, type;
@@ -760,7 +760,7 @@
           onEntitySelect: '&'
         },
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-tile.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-tile.html';
         },
         link: function($scope, $element, $attrs, $boxCtrl) {
           if ($boxCtrl != null) {
@@ -794,7 +794,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-input-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-input-box.html';
         }
       };
     }
@@ -1481,7 +1481,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultAngularTemplatesPath + 'wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
     var fireEvent;
     if (editor.id !== "content") {
       return;
