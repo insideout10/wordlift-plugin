@@ -102,6 +102,107 @@
   <span ng-show="isGeolocationRunning" class="wl-spinner"></span>
 </h3> -->
 
+<div class="wl-widget-article-metadata">
+
+  <div class="wl-widget-article-metadata-wrap">
+
+    <!-- TOP SECTION -->
+    <div class="wl-widget-article-metadata-top">
+
+      <!-- AUTHOR -->
+      <div class="wl-widget-article-metadata-author">
+        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-author-icon.svg" alt="">
+        <p>
+          {{configuration.currentUser}}
+        </p>
+      </div>
+
+      <!-- LOCATION -->
+      <div class="wl-widget-article-metadata-location">
+        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-location-icon.svg" alt="">
+        <p>
+          Rome
+        </p>
+      </div>
+
+      <!-- DATE -->
+      <div class="wl-widget-article-metadata-date">
+        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-calendar-icon.svg" alt="">
+        <p>
+          {{configuration.publishedDate}}
+        </p>
+      </div>
+
+    </div>
+
+      <!-- BOTTOM-TOPIC SECTION  -->
+    <div class="wl-widget-article-metadata-bottom">
+      <h2 class="wl-widget-article-metadata-topic-lead">
+        Topic
+      </h2>
+
+      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+        <h3>
+          Chef Rubio
+          {{entity.label}}
+        </h3>
+        <div class="wl-widget-article-metadata-topic-bar">
+          <!-- display the progress bar  -->
+          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+        </div>
+      </div>
+
+      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+        <h3>
+          Chef Rubio longer title
+          {{entity.label}}
+        </h3>
+        <div class="wl-widget-article-metadata-topic-bar">
+          <!-- display the progress bar  -->
+          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+        </div>
+      </div>
+
+      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+        <h3>
+          Chef
+          {{entity.label}}
+        </h3>
+        <div class="wl-widget-article-metadata-topic-bar">
+          <!-- display the progress bar  -->
+          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+        </div>
+      </div>
+
+      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+        <h3>
+          Chef
+          {{entity.label}}
+        </h3>
+        <div class="wl-widget-article-metadata-topic-bar">
+          <!-- display the progress bar  -->
+          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+        </div>
+      </div>
+
+      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+        <h3>
+          Chef
+          {{entity.label}}
+        </h3>
+        <div class="wl-widget-article-metadata-topic-bar">
+          <!-- display the progress bar  -->
+          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+        </div>
+      </div>
+
+      <!-- <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'">
+      </wl-entity-tile> -->
+
+    </div>
+
+  </div>
+</div>
 <div ng-show="articleMetadataOpened">
   <h5 class="wl-widget-sub-headline">What <small>Topic</small></h5>
 
