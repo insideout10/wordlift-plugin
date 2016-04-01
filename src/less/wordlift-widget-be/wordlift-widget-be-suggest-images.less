@@ -7,7 +7,7 @@
   display: -o-flex;
   display: flex;
   flex-direction: row;
-  margin-top: 15px;
+  margin: 15px 0 20px 0;
 
   .wl-widget-suggested-images-wrap {
     display: -webkit-flex;
@@ -71,7 +71,8 @@
           display: inline-flex;
 
           &.wl-widget-suggested-images-carousel-open {
-            filter: blur(10px);
+            -webkit-filter: blur(1px) !important;
+            filter: blur(1px) !important;
           }
         }
 
@@ -109,8 +110,8 @@
 
           .wl-widget-suggested-images-big-img {
             img {
-              width: 150px;
-              height: 150px;
+              width: 180px;
+              height: 180px;
             }
           }
         }
