@@ -561,7 +561,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     scope: true
     transclude: true
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-classification-box.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-directive-classification-box.html'
     link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.addEntityFormIsVisible = false
@@ -612,7 +612,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onSubmit: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-form.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-form.html'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
@@ -662,7 +662,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       showConfidence: '='
       onEntitySelect: '&'
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-tile.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-tile.html'
     link: ($scope, $element, $attrs, $boxCtrl) ->				      
       
       # Add tile to related container scope
@@ -688,7 +688,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-input-box.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-input-box.html'
 ])
 angular.module('wordlift.editpost.widget.services.AnalysisService', [])
 # Manage redlink analysis responses
@@ -1348,7 +1348,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultAngularTemplatesPath + 'wordlift-editpost-widget.html'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

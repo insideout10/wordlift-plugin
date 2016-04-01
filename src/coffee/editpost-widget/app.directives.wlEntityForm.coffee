@@ -6,7 +6,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onSubmit: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-form.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-form.html'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
