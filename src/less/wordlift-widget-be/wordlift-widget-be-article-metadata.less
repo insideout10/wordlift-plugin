@@ -97,10 +97,18 @@
           padding: 5px 8px;
           box-sizing: border-box;
           transition: @wl-anime-global-time;
+          box-shadow: 0 1px 1px @wl-shadow-color;
+
 
           &:hover {
             transform: scale(1.01);
+            box-shadow: 0 2px 2px @wl-shadow-color;
+          }
+
+          &:active {
+            background-color: darken(@wl-white-color, 2%);
             box-shadow: 0 1px 1px @wl-shadow-color;
+            transform: scale(1);
           }
 
         h3 {

@@ -1466,6 +1466,7 @@ h1.wl-tab-lead-text {
   min-width: 260px;
   height: 35px;
   box-sizing: border-box;
+  cursor: pointer;
   background-color: #007AFF;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   transition: all 200ms ease-out;
@@ -1576,10 +1577,16 @@ h1.wl-tab-lead-text {
   padding: 5px 8px;
   box-sizing: border-box;
   transition: all 200ms ease-out;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single:hover {
   transform: scale(1.01);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+.wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single:active {
+  background-color: #fafafa;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  transform: scale(1);
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single h3 {
   margin: 0;
@@ -1666,6 +1673,7 @@ h1.wl-tab-lead-text {
   justify-content: space-around;
   flex-wrap: wrap;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap img.wl-widget-suggested-images {
   width: 80px;
@@ -1679,11 +1687,7 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-carousel {
   position: absolute;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
+  display: none;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -1748,9 +1752,19 @@ h1.wl-tab-lead-text {
   text-transform: uppercase;
   font-weight: 600;
   font-size: 10px;
+  transition: all 200ms ease-out;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link:focus {
+  outline: none;
+}
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link:hover {
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%) scale(1.01);
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link:active {
-  outline: none;
+  background-color: #0075f5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%) scale(1);
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details {
   display: -webkit-flex;
@@ -1762,8 +1776,8 @@ h1.wl-tab-lead-text {
   justify-content: space-between;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details h3.wl-widget-post-author {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   color: #000000;
   opacity: 50%;
   font-size: 10px;

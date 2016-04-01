@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: row;
   margin: 15px 0 20px 0;
-  
+
   .wl-widget-post-wrap {
     display: -webkit-flex;
     display: -moz-flex;
@@ -39,9 +39,21 @@
         text-transform: uppercase;
         font-weight: 600;
         font-size: 10px;
+        transition: @wl-anime-global-time;
 
-        &:active {
+
+        &:focus {
           outline: none;
+        }
+
+        &:hover {
+          box-shadow: 0 2px 2px @wl-shadow-color;
+          transform: translateX(-50%) scale(1.01);
+        }
+        &:active {
+          background-color: darken(@wl-brand-color, 2%);
+          box-shadow: 0 1px 1px @wl-shadow-color;
+          transform: translateX(-50%) scale(1);
         }
       }
     }
@@ -56,8 +68,8 @@
       justify-content: space-between;
 
       h3.wl-widget-post-author {
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
         color: @wl-black-color;
         opacity: 50%;
         font-size: 10px;
