@@ -1,7 +1,7 @@
 <!--  ERROR MESSAGE  -->
 <div class="wl-error" ng-repeat="item in errors">
   <div class="wl-error-wrap-icon">
-    <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-error-icon.svg" alt="" class="wl-error-icon">
+    <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-error-icon.svg" class="wl-error-icon">
   </div>
   <div class="wl-error-wrap-msg">
     <p class="wl-error-msg">
@@ -111,7 +111,7 @@
 
       <!-- AUTHOR -->
       <div class="wl-widget-article-metadata-author">
-        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-author-icon.svg" alt="">
+        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-author-icon.svg">
         <p>
           {{configuration.currentUser}}
         </p>
@@ -119,7 +119,7 @@
 
       <!-- LOCATION -->
       <div class="wl-widget-article-metadata-location">
-        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-location-icon.svg" alt="">
+        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-location-icon.svg">
         <p>
           Rome
         </p>
@@ -127,7 +127,7 @@
 
       <!-- DATE -->
       <div class="wl-widget-article-metadata-date">
-        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-calendar-icon.svg" alt="">
+        <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-calendar-icon.svg">
         <p>
           {{configuration.publishedDate}}
         </p>
@@ -252,15 +252,59 @@
   </div>
 </div>
 
+<div class="wl-widget-suggested-images">
+  <!-- SUGGESTED IMAGES WRAP -->
+  <div class="wl-widget-suggested-images-wrap">
+    <!-- SUGGESTED IMAGES TOP SECTION -->
+    <div class="wl-widget-suggested-images-top">
+      <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-drag-icon.svg" class="wl-widget-suggested-images-drag-icon">
+      <h2 class="wl-widget-suggested-images-drag">
+        drag &#38; drop
+      </h2>
+
+      <!-- SUGGESTED IMAGES BOTTOM SECTION -->
+      <div class="wl-widget-suggested-images-bottom">
+
+        <!-- SUGGESTED IMAGES GRID WRAP -->
+        <div class="wl-widget-suggested-images-grid-wrap">
+
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-1.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-2.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-3.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-4.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-5.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-6.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-7.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-8.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+          <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-9.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
+
+          <!-- SUGGESTED IMAGES FOCUS CAROUSEL -->
+          <div class="wl-widget-suggested-images-carousel">
+
+            <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-arrow-icon.svg" class="wl-widget-suggested-images-arrow-left">
+
+            <div class="wl-widget-suggested-images-big-img">
+              <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-big.png">
+            </div>
+
+            <img src="/wp-demo/wordpress/wp-content/plugins/src/images/svg/wl-arrow-icon.svg" class="wl-widget-suggested-images-arrow-right">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- <h3 class="wl-widget-headline"><span>Suggested images</span></h3> -->
-<div wl-carousel>
+<!-- <div wl-carousel>
   <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
     <div class="wl-card-image">
       <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
     </div>
   </div>
-</div>
+</div> -->
 
 <!-- RELATED POSTS -->
 
@@ -278,7 +322,7 @@
 <div class="wl-widget-posts">
   <div class="wl-widget-post-wrap">
     <div class="wl-widget-post-img">
-      <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev.png">
+      <img src="/wp-demo/wordpress/wp-content/plugins/src/images/prev-1.png">
       <button class="wl-widget-post-link">
         COPY LINK
       </button>

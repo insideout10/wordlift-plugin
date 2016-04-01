@@ -9,7 +9,7 @@
       }
       .b,
       .c {
-        stroke: #0a61fe;
+        stroke: #FE0A0A;
         stroke-width: 1px;
       }
       .c,

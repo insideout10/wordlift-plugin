@@ -88,14 +88,20 @@
       .wl-widget-article-metadata-topic-single {
           position: relative;
           display: inline-block;
-          height: 35px;
+          height: 40px;
           min-width: 75px;
           flex-direction: column;
           background-color: @wl-white-color;
           margin-right: 5px;
           margin-bottom: 5px;
-          padding: 5px;
+          padding: 5px 8px;
           box-sizing: border-box;
+          transition: @wl-anime-global-time;
+
+          &:hover {
+            transform: scale(1.01);
+            box-shadow: 0 1px 1px @wl-shadow-color;
+          }
 
         h3 {
           margin: 0;

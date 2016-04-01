@@ -8,7 +8,7 @@
         fill: #fff;
       }
       .b {
-        stroke: #0a61fe;
+        stroke: #007AFF;
         stroke-width: 1px;
       }
     </style>
