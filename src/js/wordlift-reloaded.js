@@ -157,6 +157,40 @@
         }
       };
     }
+  ]).directive('wlClipboard', [
+    '$document', '$log', function($document, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          text: '=',
+          onSuccess: '&',
+          onError: '&'
+        },
+        transclude: true,
+        template: "<span class=\"wl-widget-post-link\" ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+        link: function($scope, $element, $attrs, $ctrl) {
+          $scope.node = $element.find('input');
+          $scope.node.css('position', 'absolute');
+          $scope.node.css('left', '-10000px');
+          return $scope.copyToClipboard = function() {
+            var selection;
+            try {
+              $log.debug("Going to copy " + $scope.text);
+              $document[0].body.style.webkitUserSelect = 'initial';
+              selection = $document[0].getSelection();
+              selection.removeAllRanges();
+              $scope.node.select();
+              if (!$document[0].execCommand('copy')) {
+                $log.debug("Going to copy " + $scope.text);
+              }
+              return selection.removeAllRanges();
+            } finally {
+              $document[0].body.style.webkitUserSelect = '';
+            }
+          };
+        }
+      };
+    }
   ]);
 
   angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [

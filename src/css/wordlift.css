@@ -62,7 +62,7 @@
 }
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eee;
+  border: solid 0.08em #eeeeee;
   border-radius: .1em;
 }
 .pull-right {
@@ -185,7 +185,7 @@
   font-size: 2em;
 }
 .fa-inverse {
-  color: #fff;
+  color: #ffffff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
@@ -1337,7 +1337,7 @@
   content: "\f196";
 }
 #wordlift_entities_box {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
 }
 h1.wl-tab-lead-text {
   color: #000000;
@@ -1374,7 +1374,7 @@ h1.wl-tab-lead-text {
   min-width: 260px;
   height: 35px;
   box-sizing: border-box;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   transition: all 200ms ease-out;
 }
@@ -1383,7 +1383,7 @@ h1.wl-tab-lead-text {
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-top: 5px solid #007AFF;
+  border-top: 5px solid #007aff;
 }
 .wl-error {
   position: relative;
@@ -1467,12 +1467,12 @@ h1.wl-tab-lead-text {
   height: 35px;
   box-sizing: border-box;
   cursor: pointer;
-  background-color: #007AFF;
+  background-color: #007aff;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   transition: all 200ms ease-out;
 }
 .wl-create-entity .wl-create-entity-wrap .wl-crate-entity-lead {
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .wl-create-entity .wl-create-entity-wrap:hover {
   box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
@@ -1515,7 +1515,7 @@ h1.wl-tab-lead-text {
   flex-wrap: wrap;
   padding-bottom: 10px;
   margin-bottom: 15px;
-  border-bottom: 1px solid #007AFF;
+  border-bottom: 1px solid #007aff;
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-top .wl-widget-article-metadata-author {
   min-width: 60%;
@@ -1562,7 +1562,7 @@ h1.wl-tab-lead-text {
   padding: 0 !important;
   font-weight: 600;
   font-size: 14px;
-  color: #007AFF;
+  color: #007aff;
   margin-bottom: 10px;
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single {
@@ -1571,7 +1571,7 @@ h1.wl-tab-lead-text {
   height: 40px;
   min-width: 75px;
   flex-direction: column;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   margin-right: 5px;
   margin-bottom: 5px;
   padding: 5px 8px;
@@ -1602,11 +1602,11 @@ h1.wl-tab-lead-text {
   display: block;
   height: 5px;
   width: 60px;
-  border: 1px solid #007AFF;
+  border: 1px solid #007aff;
   border-radius: 8px;
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single .wl-widget-article-metadata-topic-bar .wl-widget-article-metadata-topic-bar-progress {
-  background-color: #007AFF;
+  background-color: #007aff;
   border-radius: 8px;
   min-width: 10px;
   max-width: 60px;
@@ -1655,7 +1655,7 @@ h1.wl-tab-lead-text {
   display: -o-flex;
   display: flex;
   justify-content: center;
-  color: #007AFF;
+  color: #007aff;
   font-size: 14px;
   font-weight: 600;
   text-transform: capitalize;
@@ -1745,10 +1745,10 @@ h1.wl-tab-lead-text {
   transform: translateX(-50%);
   padding: 3px 5px;
   margin: 0;
-  background-color: #007AFF;
+  background-color: #007aff;
   border: none;
   white-space: nowrap;
-  color: #FFFFFF;
+  color: #ffffff;
   text-transform: uppercase;
   font-weight: 600;
   font-size: 10px;
@@ -1826,7 +1826,7 @@ h1.wl-tab-lead-text {
 .mce-widget.mce-btn.mce-wordlift button {
   background-position: center center;
   background-repeat: no-repeat;
-  color: #007AFF !important;
+  color: #007aff !important;
   font-size: 14px !important;
   font-family: FontAwesome !important;
   font-style: normal;
@@ -1855,7 +1855,7 @@ h1.wl-tab-lead-text {
 }
 .wp_themeSkin .mceIcon.mce_wordlift_add_entity,
 .mce-widget.mce-btn.mce-wordlift_add_entity button {
-  color: #007AFF !important;
+  color: #007aff !important;
   font-size: 18px !important;
   font-family: FontAwesome !important;
   font-style: normal;
@@ -2257,7 +2257,7 @@ body#tinymce[contenteditable=false] {
 .toolbar .wl-active-tab {
   position: absolute;
   left: 11px;
-  border-left: #007AFF 12px solid;
+  border-left: #007aff 12px solid;
   padding-left: 6px;
 }
 .toolbar .wl-search-toolbar-icon {
@@ -2274,7 +2274,7 @@ body#tinymce[contenteditable=false] {
   content: "\f002";
 }
 .toolbar .wl-search-toolbar-icon.selected {
-  color: #007AFF;
+  color: #007aff;
 }
 .toolbar .wl-add-entity-toolbar-icon {
   font-family: FontAwesome;
@@ -2290,7 +2290,7 @@ body#tinymce[contenteditable=false] {
   content: "\f040";
 }
 .toolbar .wl-add-entity-toolbar-icon.selected {
-  color: #007AFF;
+  color: #007aff;
 }
 .wl-event-info .date {
   font-family: FontAwesome;

@@ -290,7 +290,7 @@
 <div class="wl-tab-lead">
   <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('related-posts')">
     <h1 class="wl-tab-lead-text">
-      Related Posts
+      Related posts
     </h1>
     <div class="wl-tab-lead-text wl-tab-lead-btn" 
       ng-class="{ 'wl-open' : !isCurrentSection('related-posts'), 'wl-close' : isCurrentSection('related-posts') }">
@@ -299,18 +299,25 @@
   </div>
 </div>
 
-<div class="wl-widget-posts wl-tab-wrap" ng-show="isCurrentSection('related-posts')">
-  <div class="wl-widget-post-wrap">
+<div 
+  class="wl-widget-posts wl-tab-wrap"
+  ng-show="isCurrentSection('related-posts')">
+  <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
-      <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-1.png">
-      <button class="wl-widget-post-link">
-        COPY LINK
-      </button>
+      <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+      <wl-clipboard 
+        text="post.link"
+        class="wl-widget-post-link">
+        COPY LINK 2
+      </wl-clipboard>
     </div>
     <div class="wl-widget-post-details">
-      <h3 class="wl-widget-post-author">Pinco Pallino</h3>
-      <h1 class="wl-widget-post-title">La tempesta delle marianne nere</h1>
-      <p class="wl-widget-post-prev">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+      <h3 class="wl-widget-post-author">
+        {{post.author}}
+      </h3>
+      <h1 class="wl-widget-post-title">
+        {{post.post_title}}
+      </h1>
     </div>
   </div>
 </div>
