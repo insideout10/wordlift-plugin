@@ -163,8 +163,7 @@
         restrict: 'E',
         scope: {
           text: '=',
-          onSuccess: '&',
-          onError: '&'
+          onCopied: '&'
         },
         transclude: true,
         template: "<span class=\"wl-widget-post-link\" ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
@@ -175,15 +174,17 @@
           return $scope.copyToClipboard = function() {
             var selection;
             try {
-              $log.debug("Going to copy " + $scope.text);
               $document[0].body.style.webkitUserSelect = 'initial';
               selection = $document[0].getSelection();
               selection.removeAllRanges();
               $scope.node.select();
               if (!$document[0].execCommand('copy')) {
-                $log.debug("Going to copy " + $scope.text);
+                $log.warn("Error on clipboard copy for " + text);
               }
-              return selection.removeAllRanges();
+              selection.removeAllRanges();
+              if (angular.isFunction($scope.onCopied)) {
+                return $scope.$evalAsync($scope.onCopied());
+              }
             } finally {
               $document[0].body.style.webkitUserSelect = '';
             }
@@ -381,6 +382,9 @@
       $scope.newEntity = AnalysisService.createEntity();
       $scope.selectedEntities = {};
       $scope.currentSection = void 0;
+      $scope.copiedOnClipboard = function() {
+        return $log.debug("Something copied on clipboard");
+      };
       $scope.toggleCurrentSection = function(section) {
         if ($scope.currentSection === section) {
           return $scope.currentSection = void 0;

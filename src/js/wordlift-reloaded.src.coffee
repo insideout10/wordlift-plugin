@@ -166,8 +166,7 @@ angular.module('wordlift.utils.directives', [])
   restrict: 'E'
   scope:
     text: '='
-    onSuccess: '&'
-    onError: '&'
+    onCopied: '&'
   transclude: true
   template: """
     <span class="wl-widget-post-link" ng-click="copyToClipboard()">
@@ -184,17 +183,21 @@ angular.module('wordlift.utils.directives', [])
     # $element
     $scope.copyToClipboard = ()->
       try
+        
         # Set inline style to override css styles
-        $log.debug "Going to copy #{$scope.text}"
         $document[0].body.style.webkitUserSelect = 'initial'
         selection = $document[0].getSelection()
         selection.removeAllRanges()
         # Fake node selection
         $scope.node.select()
+        # Perform the task
         unless $document[0].execCommand 'copy'
-           $log.debug "Going to copy #{$scope.text}"
-
+           $log.warn "Error on clipboard copy for #{text}"
         selection.removeAllRanges()
+        # Execute onCopied callback
+        if angular.isFunction($scope.onCopied)
+          $scope.$evalAsync $scope.onCopied()
+                        
       finally
         $document[0].body.style.webkitUserSelect = ''
 ])
@@ -384,6 +387,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   
   # A reference to the current section in the widget
   $scope.currentSection = undefined
+  
+  # TMP
+  $scope.copiedOnClipboard = ()->
+    $log.debug "Something copied on clipboard"
+
   # Toggle the current section
   $scope.toggleCurrentSection = (section)->
     if $scope.currentSection is section

@@ -68,9 +68,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  
+    
+  # TMP
+  $scope.copiedOnClipboard = ()->
+    $log.debug "Something copied on clipboard"
+
   # A reference to the current section in the widget
   $scope.currentSection = undefined
+
   # Toggle the current section
   $scope.toggleCurrentSection = (section)->
     if $scope.currentSection is section
