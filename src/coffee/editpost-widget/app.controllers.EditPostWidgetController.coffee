@@ -68,8 +68,19 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  $scope.contentClassificationOpened = true
-  $scope.articleMetadataOpened = false
+  
+  # A reference to the current section in the widget
+  $scope.currentSection = undefined
+  # Toggle the current section
+  $scope.toggleCurrentSection = (section)->
+    if $scope.currentSection is section
+      $scope.currentSection = undefined
+    else
+      $scope.currentSection = section
+  # Check current section
+  $scope.isCurrentSection = (section)->
+    $scope.currentSection is section
+
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = configuration.publishedPlace
   $scope.topic = undefined
@@ -222,7 +233,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
             $scope.images[ uri ] = entity.label
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
-    
+    # Open content classification box
+    $scope.currentSection = 'content-classification'
+
   $scope.updateRelatedPosts = ()->
     $log.debug "Going to update related posts box ..."
     entityIds = []
@@ -270,11 +283,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if $scope.topic?.id is topic.id
       $scope.topic = undefined
       return
-    $scope.topic = topic 
-
-  $scope.toggleCurrentSection = ()->
-    $scope.articleMetadataOpened = !$scope.articleMetadataOpened
-    $scope.contentClassificationOpened = !$scope.contentClassificationOpened
-   
+    $scope.topic = topic    
       
 ])

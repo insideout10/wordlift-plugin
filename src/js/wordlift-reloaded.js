@@ -346,8 +346,17 @@
       $scope.relatedPosts = void 0;
       $scope.newEntity = AnalysisService.createEntity();
       $scope.selectedEntities = {};
-      $scope.contentClassificationOpened = true;
-      $scope.articleMetadataOpened = false;
+      $scope.currentSection = void 0;
+      $scope.toggleCurrentSection = function(section) {
+        if ($scope.currentSection === section) {
+          return $scope.currentSection = void 0;
+        } else {
+          return $scope.currentSection = section;
+        }
+      };
+      $scope.isCurrentSection = function(section) {
+        return $scope.currentSection === section;
+      };
       $scope.suggestedPlaces = void 0;
       $scope.publishedPlace = configuration.publishedPlace;
       $scope.topic = void 0;
@@ -485,7 +494,7 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, id, k, len1, ref1, ref2, results1, topic, uri;
+        var entity, entityId, id, k, l, len1, len2, len3, m, ref1, ref2, ref3, ref4, topic, uri;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
@@ -497,39 +506,28 @@
           }
         }
         ref2 = $scope.configuration.classificationBoxes;
-        results1 = [];
         for (k = 0, len1 = ref2.length; k < len1; k++) {
           box = ref2[k];
-          results1.push((function() {
-            var l, len2, ref3, results2;
-            ref3 = box.selectedEntities;
-            results2 = [];
-            for (l = 0, len2 = ref3.length; l < len2; l++) {
-              entityId = ref3[l];
-              if (entity = analysis.entities[entityId]) {
-                if (entity.occurrences.length === 0) {
-                  $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
-                  continue;
-                }
-                $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-                results2.push((function() {
-                  var len3, m, ref4, results3;
-                  ref4 = entity.images;
-                  results3 = [];
-                  for (m = 0, len3 = ref4.length; m < len3; m++) {
-                    uri = ref4[m];
-                    results3.push($scope.images[uri] = entity.label);
-                  }
-                  return results3;
-                })());
-              } else {
-                results2.push($log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing"));
+          ref3 = box.selectedEntities;
+          for (l = 0, len2 = ref3.length; l < len2; l++) {
+            entityId = ref3[l];
+            if (entity = analysis.entities[entityId]) {
+              if (entity.occurrences.length === 0) {
+                $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
+                continue;
               }
+              $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
+              ref4 = entity.images;
+              for (m = 0, len3 = ref4.length; m < len3; m++) {
+                uri = ref4[m];
+                $scope.images[uri] = entity.label;
+              }
+            } else {
+              $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
-            return results2;
-          })());
+          }
         }
-        return results1;
+        return $scope.currentSection = 'content-classification';
       });
       $scope.updateRelatedPosts = function() {
         var entities, entity, entityIds, id, ref1;
@@ -592,17 +590,13 @@
         var ref1;
         return topic.id === ((ref1 = $scope.topic) != null ? ref1.id : void 0);
       };
-      $scope.onTopicSelected = function(topic) {
+      return $scope.onTopicSelected = function(topic) {
         var ref1;
         if (((ref1 = $scope.topic) != null ? ref1.id : void 0) === topic.id) {
           $scope.topic = void 0;
           return;
         }
         return $scope.topic = topic;
-      };
-      return $scope.toggleCurrentSection = function() {
-        $scope.articleMetadataOpened = !$scope.articleMetadataOpened;
-        return $scope.contentClassificationOpened = !$scope.contentClassificationOpened;
       };
     }
   ]);
