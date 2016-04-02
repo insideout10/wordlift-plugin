@@ -50,20 +50,6 @@
 
 <div ng-show="contentClassificationOpened">
 
-  <div ng-show="annotation">
-    <h4 class="wl-annotation-label">
-      <i class="wl-annotation-label-icon"></i>
-      {{ analysis.annotations[ annotation ].text }}
-      <small>
-        [ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]
-      </small>
-      <i
-        class="wl-annotation-label-remove-icon"
-        ng-click="selectAnnotation(undefined)">
-      </i>
-    </h4>
-  </div>
-
   <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
 
     <div ng-hide="annotation" class="wl-without-annotation">
