@@ -381,10 +381,14 @@
       $scope.relatedPosts = void 0;
       $scope.newEntity = AnalysisService.createEntity();
       $scope.selectedEntities = {};
-      $scope.currentSection = void 0;
       $scope.copiedOnClipboard = function() {
         return $log.debug("Something copied on clipboard");
       };
+      $scope.currentImage = void 0;
+      $scope.setCurrentImage = function(image) {
+        return $scope.currentImage = image;
+      };
+      $scope.currentSection = void 0;
       $scope.toggleCurrentSection = function(section) {
         if ($scope.currentSection === section) {
           return $scope.currentSection = void 0;
@@ -404,7 +408,7 @@
       }
       $scope.annotation = void 0;
       $scope.boxes = [];
-      $scope.images = {};
+      $scope.images = [];
       $scope.isThereASelection = false;
       $scope.configuration = configuration;
       $scope.errors = [];
@@ -532,7 +536,7 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, id, k, l, len1, len2, len3, m, ref1, ref2, ref3, ref4, topic, uri;
+        var entity, entityId, id, k, l, len1, len2, ref1, ref2, ref3, topic;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
@@ -555,11 +559,7 @@
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              ref4 = entity.images;
-              for (m = 0, len3 = ref4.length; m < len3; m++) {
-                uri = ref4[m];
-                $scope.images[uri] = entity.label;
-              }
+              $scope.images = $scope.images.concat(entity.images);
             } else {
               $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
@@ -582,25 +582,16 @@
         return RelatedPostDataRetrieverService.load(entityIds);
       };
       $scope.onSelectedEntityTile = function(entity, scope) {
-        var k, l, len1, len2, ref1, ref2, uri;
-        $log.debug("Entity tile selected for entity " + entity.id + " within '" + scope.id + "' scope");
-        $log.debug(entity);
-        $log.debug(scope);
+        $log.debug("Entity tile selected for entity " + entity.id + " within " + scope.id + " scope");
         if ($scope.selectedEntities[scope.id][entity.id] == null) {
           $scope.selectedEntities[scope.id][entity.id] = entity;
-          ref1 = entity.images;
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            uri = ref1[k];
-            $scope.images[uri] = entity.label;
-          }
+          $scope.images = $scope.images.concat(entity.images);
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
         } else {
-          ref2 = entity.images;
-          for (l = 0, len2 = ref2.length; l < len2; l++) {
-            uri = ref2[l];
-            delete $scope.images[uri];
-          }
+          $scope.images = $scope.images.filter(function(img) {
+            return indexOf.call(entity.images, img) < 0;
+          });
           $scope.$emit("entityDeselected", entity, $scope.annotation);
         }
         return $scope.updateRelatedPosts();

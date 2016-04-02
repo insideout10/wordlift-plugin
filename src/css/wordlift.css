@@ -1687,7 +1687,6 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-carousel {
   position: absolute;
-  display: none;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;

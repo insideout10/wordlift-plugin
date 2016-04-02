@@ -247,45 +247,26 @@
         <!-- SUGGESTED IMAGES GRID WRAP -->
         <div class="wl-widget-suggested-images-grid-wrap">
 
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-1.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-2.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-3.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-4.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-5.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-6.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-7.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-8.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-9.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-
-          <!-- SUGGESTED IMAGES FOCUS CAROUSEL -->
-          <div class="wl-widget-suggested-images-carousel">
-
-            <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-arrow-icon.svg" class="wl-widget-suggested-images-arrow-left">
-
-            <div class="wl-widget-suggested-images-big-img">
-              <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-big.png">
+          <img ng-src="{{image}}" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" ng-repeat="image in images" ng-click="setCurrentImage(image)" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+          
+          <div class="wl-widget-suggested-images-carousel" 
+            wl-carousel 
+            ng-if="currentImage">
+            <div class="wl-widget-suggested-images-big-img" 
+              ng-repeat="image in images" 
+              ng-click="setCurrentImage(undefined)"
+              wl-carousel-pane>
+              <img ng-src="{{image}}" 
+                class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" 
+                wl-fallback="{{configuration.defaultThumbnailPath}}" />
             </div>
-
-            <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-arrow-icon.svg" class="wl-widget-suggested-images-arrow-right">
-
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-<!-- <h3 class="wl-widget-headline"><span>Suggested images</span></h3> -->
-<!-- <div wl-carousel>
-  <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-    <div class="wl-card-image">
-      <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-    </div>
-  </div>
-</div> -->
-
-<!-- RELATED POSTS -->
 
 <div class="wl-tab-lead">
   <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('related-posts')">
@@ -322,20 +303,6 @@
     </div>
   </div>
 </div>
-
-<!-- 
-  <h3 class="wl-widget-headline"><span>Related posts</span></h3> 
-<div wl-carousel>
-  <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-    <div class="wl-card-image">
-      <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-    </div>
-    <div class="wl-card-title">
-      <a ng-href="{{post.link}}">{{post.post_title}}</a>
-    </div>
-  </div>
-</div>
--->
 
 <div class="wl-entity-input-boxes">
   <wl-entity-input-box entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>

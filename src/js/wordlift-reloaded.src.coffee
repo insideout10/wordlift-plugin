@@ -384,13 +384,19 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  
-  # A reference to the current section in the widget
-  $scope.currentSection = undefined
-  
+    
   # TMP
   $scope.copiedOnClipboard = ()->
     $log.debug "Something copied on clipboard"
+
+  # A reference to the current suggested image in the widget
+  $scope.currentImage = undefined
+  # Set the current image
+  $scope.setCurrentImage = (image)->
+    $scope.currentImage = image
+
+  # A reference to the current section in the widget
+  $scope.currentSection = undefined
 
   # Toggle the current section
   $scope.toggleCurrentSection = (section)->
@@ -413,7 +419,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.annotation = undefined
   $scope.boxes = []
-  $scope.images = {}
+  $scope.images = []
   $scope.isThereASelection = false
   $scope.configuration = configuration
   $scope.errors = []
@@ -549,9 +555,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
             continue
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
-          
-          for uri in entity.images
-            $scope.images[ uri ] = entity.label
+          # Concat entity images to suggested images collection
+          $scope.images = $scope.images.concat entity.images
+
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
     # Open content classification box
@@ -566,20 +572,21 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity, scope)->
-    $log.debug "Entity tile selected for entity #{entity.id} within '#{scope.id}' scope"
-    $log.debug entity
-    $log.debug scope
+    $log.debug "Entity tile selected for entity #{entity.id} within #{scope.id} scope"
 
     if not $scope.selectedEntities[ scope.id ][ entity.id ]?
-      $scope.selectedEntities[ scope.id ][ entity.id ] = entity
-      for uri in entity.images
-        $scope.images[ uri ] = entity.label
+      $scope.selectedEntities[ scope.id ][ entity.id ] = entity      
+      # Concat entity images to suggested images collection
+      $scope.images = $scope.images.concat entity.images
+      # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
       $scope.selectAnnotation undefined
     else
-      for uri in entity.images
-        delete $scope.images[ uri ]
+      # Filter entity images to suggested images collection
+      $scope.images = $scope.images.filter (img)-> 
+        img not in entity.images  
+      # Notify entity deselection
       $scope.$emit "entityDeselected", entity, $scope.annotation
 
     $scope.updateRelatedPosts()
