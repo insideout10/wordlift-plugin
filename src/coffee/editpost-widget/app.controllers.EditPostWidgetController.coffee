@@ -78,6 +78,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # Set the current image
   $scope.setCurrentImage = (image)->
     $scope.currentImage = image
+  # Check current image
+  $scope.isCurrentImage = (image)->
+    $scope.currentImage is image
 
   # A reference to the current section in the widget
   $scope.currentSection = undefined

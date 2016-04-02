@@ -272,7 +272,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.$apply()
 
     ctrl = @
-    ctrl.registerPane = (scope, element)->
+    ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
         
@@ -282,6 +282,12 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
+      
+      #if first
+      #  $log.debug "Eccolo"
+      #  $log.debug $scope.panes.length
+      #  $scope.position = $scope.panes.length * $scope.itemWidth
+      #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
         
@@ -297,6 +303,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
   restrict: 'EA'
+  scope:
+    wlFirstPane: '='
   transclude: true 
   template: """
       <div ng-transclude></div>
@@ -304,7 +312,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   link: ($scope, $element, $attrs, $ctrl) ->
 
     $element.addClass "wl-carousel-item"
-      
+    $scope.isFirst = $scope.wlFirstPane || false
+
     $scope.setWidth = (size)->
       $element.css('width', "#{size}px")
 
@@ -312,7 +321,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $log.debug "Destroy #{$scope.$id}"
       $ctrl.unregisterPane $scope
 
-    $ctrl.registerPane $scope, $element
+    $ctrl.registerPane $scope, $element, $scope.isFirst
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
@@ -394,6 +403,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # Set the current image
   $scope.setCurrentImage = (image)->
     $scope.currentImage = image
+  # Check current image
+  $scope.isCurrentImage = (image)->
+    $scope.currentImage is image
 
   # A reference to the current section in the widget
   $scope.currentSection = undefined

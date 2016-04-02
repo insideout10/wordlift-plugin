@@ -71,7 +71,7 @@
               return $scope.$apply();
             });
             ctrl = this;
-            ctrl.registerPane = function(scope, element) {
+            ctrl.registerPane = function(scope, element, first) {
               var pane;
               scope.setWidth($scope.itemWidth);
               pane = {
@@ -103,10 +103,14 @@
       return {
         require: '^wlCarousel',
         restrict: 'EA',
+        scope: {
+          wlFirstPane: '='
+        },
         transclude: true,
         template: "<div ng-transclude></div>",
         link: function($scope, $element, $attrs, $ctrl) {
           $element.addClass("wl-carousel-item");
+          $scope.isFirst = $scope.wlFirstPane || false;
           $scope.setWidth = function(size) {
             return $element.css('width', size + "px");
           };
@@ -114,7 +118,7 @@
             $log.debug("Destroy " + $scope.$id);
             return $ctrl.unregisterPane($scope);
           });
-          return $ctrl.registerPane($scope, $element);
+          return $ctrl.registerPane($scope, $element, $scope.isFirst);
         }
       };
     }

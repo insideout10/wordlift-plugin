@@ -252,8 +252,9 @@
           <div class="wl-widget-suggested-images-carousel" 
             wl-carousel 
             ng-if="currentImage">
-            <div class="wl-widget-suggested-images-big-img" 
+            <div class="wl-widget-suggested-images-big-img"
               ng-repeat="image in images" 
+              wl-first-pane="isCurrentImage(image)"
               ng-click="setCurrentImage(undefined)"
               wl-carousel-pane>
               <img ng-src="{{image}}" 
