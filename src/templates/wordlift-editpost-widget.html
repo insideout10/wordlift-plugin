@@ -288,7 +288,7 @@
     <div class="wl-widget-post-img">
       <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
       <wl-clipboard 
-        text="post.link"
+        text="post.permalink"
         on-copied="copiedOnClipboard()"
         class="wl-widget-post-link">
         COPY LINK
