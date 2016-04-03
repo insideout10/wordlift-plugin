@@ -174,6 +174,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         delete $scope.selectedEntities[ box ][ entityId ]
         
   # Observe current annotation changed
+  # TODO la creazione di una nuova entità non andrebbe qui
   $scope.$watch "annotation", (newAnnotationId)->
     
     $log.debug "Current annotation id changed to #{newAnnotationId}"
@@ -189,7 +190,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.newEntity.label = annotation.text
     # Look for SameAs suggestions
     AnalysisService.getSuggestedSameAs annotation.text
-
+    
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality

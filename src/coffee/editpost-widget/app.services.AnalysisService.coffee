@@ -166,7 +166,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     data    
   
   service.getSuggestedSameAs = (content)->
-  
     promise = @._innerPerform content
     # If successful, broadcast an *sameAsReceived* event.
     .then (response) ->
@@ -174,9 +173,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       suggestions = []
 
       for id, entity of response.data.entities
-        if id.startsWith('http')
-          suggestions.push id
-      
+       
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            soource: matches[1]
+          }
+      $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
     
   service._innerPerform = (content)->

@@ -1056,15 +1056,21 @@
       service.getSuggestedSameAs = function(content) {
         var promise;
         return promise = this._innerPerform(content).then(function(response) {
-          var entity, id, ref2, suggestions;
+          var entity, id, matches, ref2, suggestions;
           suggestions = [];
           ref2 = response.data.entities;
           for (id in ref2) {
             entity = ref2[id];
-            if (id.startsWith('http')) {
-              suggestions.push(id);
+            if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
+              suggestions.push({
+                id: id,
+                label: entity.label,
+                mainType: entity.mainType,
+                soource: matches[1]
+              });
             }
           }
+          $log.debug(suggestions);
           return $rootScope.$broadcast("sameAsRetrieved", suggestions);
         });
       };

@@ -32,7 +32,7 @@ function wl_admin_add_entities_meta_box( $post_type ) {
 
 	// Add main meta box for related entities and 4W
 	add_meta_box(
-		'wordlift_entities_box', __( 'Wordlift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
+		'wordlift_entities_box', __( 'WordLift', 'wordlift' ), 'wl_entities_box_content', $post_type, 'side', 'high'
 	);
 }
 add_action( 'add_meta_boxes', 'wl_admin_add_entities_meta_box' );
