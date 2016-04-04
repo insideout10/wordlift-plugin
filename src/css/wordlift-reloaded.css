@@ -1787,8 +1787,8 @@ h1.wl-tab-lead-text {
   overflow-y: hidden;
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-images-wrap img.wl-widget-entity-panel-images {
-  height: 80px;
-  width: 80px;
+  min-height: 80px;
+  min-width: 80px;
   display: -webkit-inline-flex;
   display: -moz-inline-flex;
   display: -ms-inline-flex;
@@ -1804,8 +1804,7 @@ h1.wl-tab-lead-text {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 15px;
-  margin-bottom: 20px;
+  margin: 5px 0;
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card-wrap .wl-widget-entity-panel-card {
   display: -webkit-inline-flex;
