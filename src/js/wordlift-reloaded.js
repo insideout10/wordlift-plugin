@@ -157,6 +157,41 @@
         }
       };
     }
+  ]).directive('wlClipboard', [
+    '$document', '$log', function($document, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          text: '=',
+          onCopied: '&'
+        },
+        transclude: true,
+        template: "<span class=\"wl-widget-post-link\" ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+        link: function($scope, $element, $attrs, $ctrl) {
+          $scope.node = $element.find('input');
+          $scope.node.css('position', 'absolute');
+          $scope.node.css('left', '-10000px');
+          return $scope.copyToClipboard = function() {
+            var selection;
+            try {
+              $document[0].body.style.webkitUserSelect = 'initial';
+              selection = $document[0].getSelection();
+              selection.removeAllRanges();
+              $scope.node.select();
+              if (!$document[0].execCommand('copy')) {
+                $log.warn("Error on clipboard copy for " + text);
+              }
+              selection.removeAllRanges();
+              if (angular.isFunction($scope.onCopied)) {
+                return $scope.$evalAsync($scope.onCopied());
+              }
+            } finally {
+              $document[0].body.style.webkitUserSelect = '';
+            }
+          };
+        }
+      };
+    }
   ]);
 
   angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
@@ -228,7 +263,7 @@
               return $scope.$apply();
             });
             ctrl = this;
-            ctrl.registerPane = function(scope, element) {
+            ctrl.registerPane = function(scope, element, first) {
               var pane;
               scope.setWidth($scope.itemWidth);
               pane = {
@@ -260,10 +295,14 @@
       return {
         require: '^wlCarousel',
         restrict: 'EA',
+        scope: {
+          wlFirstPane: '='
+        },
         transclude: true,
         template: "<div ng-transclude></div>",
         link: function($scope, $element, $attrs, $ctrl) {
           $element.addClass("wl-carousel-item");
+          $scope.isFirst = $scope.wlFirstPane || false;
           $scope.setWidth = function(size) {
             return $element.css('width', size + "px");
           };
@@ -271,7 +310,7 @@
             $log.debug("Destroy " + $scope.$id);
             return $ctrl.unregisterPane($scope);
           });
-          return $ctrl.registerPane($scope, $element);
+          return $ctrl.registerPane($scope, $element, $scope.isFirst);
         }
       };
     }
@@ -346,8 +385,27 @@
       $scope.relatedPosts = void 0;
       $scope.newEntity = AnalysisService.createEntity();
       $scope.selectedEntities = {};
-      $scope.contentClassificationOpened = true;
-      $scope.articleMetadataOpened = false;
+      $scope.copiedOnClipboard = function() {
+        return $log.debug("Something copied on clipboard");
+      };
+      $scope.currentImage = void 0;
+      $scope.setCurrentImage = function(image) {
+        return $scope.currentImage = image;
+      };
+      $scope.isCurrentImage = function(image) {
+        return $scope.currentImage === image;
+      };
+      $scope.currentSection = void 0;
+      $scope.toggleCurrentSection = function(section) {
+        if ($scope.currentSection === section) {
+          return $scope.currentSection = void 0;
+        } else {
+          return $scope.currentSection = section;
+        }
+      };
+      $scope.isCurrentSection = function(section) {
+        return $scope.currentSection === section;
+      };
       $scope.suggestedPlaces = void 0;
       $scope.publishedPlace = configuration.publishedPlace;
       $scope.topic = void 0;
@@ -357,7 +415,7 @@
       }
       $scope.annotation = void 0;
       $scope.boxes = [];
-      $scope.images = {};
+      $scope.images = [];
       $scope.isThereASelection = false;
       $scope.configuration = configuration;
       $scope.errors = [];
@@ -485,7 +543,7 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, id, k, len1, ref1, ref2, results1, topic, uri;
+        var entity, entityId, id, k, l, len1, len2, ref1, ref2, ref3, topic;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
@@ -497,39 +555,24 @@
           }
         }
         ref2 = $scope.configuration.classificationBoxes;
-        results1 = [];
         for (k = 0, len1 = ref2.length; k < len1; k++) {
           box = ref2[k];
-          results1.push((function() {
-            var l, len2, ref3, results2;
-            ref3 = box.selectedEntities;
-            results2 = [];
-            for (l = 0, len2 = ref3.length; l < len2; l++) {
-              entityId = ref3[l];
-              if (entity = analysis.entities[entityId]) {
-                if (entity.occurrences.length === 0) {
-                  $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
-                  continue;
-                }
-                $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-                results2.push((function() {
-                  var len3, m, ref4, results3;
-                  ref4 = entity.images;
-                  results3 = [];
-                  for (m = 0, len3 = ref4.length; m < len3; m++) {
-                    uri = ref4[m];
-                    results3.push($scope.images[uri] = entity.label);
-                  }
-                  return results3;
-                })());
-              } else {
-                results2.push($log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing"));
+          ref3 = box.selectedEntities;
+          for (l = 0, len2 = ref3.length; l < len2; l++) {
+            entityId = ref3[l];
+            if (entity = analysis.entities[entityId]) {
+              if (entity.occurrences.length === 0) {
+                $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
+                continue;
               }
+              $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
+              $scope.images = $scope.images.concat(entity.images);
+            } else {
+              $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
-            return results2;
-          })());
+          }
         }
-        return results1;
+        return $scope.currentSection = 'content-classification';
       });
       $scope.updateRelatedPosts = function() {
         var entities, entity, entityIds, id, ref1;
@@ -546,25 +589,16 @@
         return RelatedPostDataRetrieverService.load(entityIds);
       };
       $scope.onSelectedEntityTile = function(entity, scope) {
-        var k, l, len1, len2, ref1, ref2, uri;
-        $log.debug("Entity tile selected for entity " + entity.id + " within '" + scope.id + "' scope");
-        $log.debug(entity);
-        $log.debug(scope);
+        $log.debug("Entity tile selected for entity " + entity.id + " within " + scope.id + " scope");
         if ($scope.selectedEntities[scope.id][entity.id] == null) {
           $scope.selectedEntities[scope.id][entity.id] = entity;
-          ref1 = entity.images;
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            uri = ref1[k];
-            $scope.images[uri] = entity.label;
-          }
+          $scope.images = $scope.images.concat(entity.images);
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
         } else {
-          ref2 = entity.images;
-          for (l = 0, len2 = ref2.length; l < len2; l++) {
-            uri = ref2[l];
-            delete $scope.images[uri];
-          }
+          $scope.images = $scope.images.filter(function(img) {
+            return indexOf.call(entity.images, img) < 0;
+          });
           $scope.$emit("entityDeselected", entity, $scope.annotation);
         }
         return $scope.updateRelatedPosts();
@@ -592,17 +626,13 @@
         var ref1;
         return topic.id === ((ref1 = $scope.topic) != null ? ref1.id : void 0);
       };
-      $scope.onTopicSelected = function(topic) {
+      return $scope.onTopicSelected = function(topic) {
         var ref1;
         if (((ref1 = $scope.topic) != null ? ref1.id : void 0) === topic.id) {
           $scope.topic = void 0;
           return;
         }
         return $scope.topic = topic;
-      };
-      return $scope.toggleCurrentSection = function() {
-        $scope.articleMetadataOpened = !$scope.articleMetadataOpened;
-        return $scope.contentClassificationOpened = !$scope.contentClassificationOpened;
       };
     }
   ]);
@@ -1026,15 +1056,21 @@
       service.getSuggestedSameAs = function(content) {
         var promise;
         return promise = this._innerPerform(content).then(function(response) {
-          var entity, id, ref2, suggestions;
+          var entity, id, matches, ref2, suggestions;
           suggestions = [];
           ref2 = response.data.entities;
           for (id in ref2) {
             entity = ref2[id];
-            if (id.startsWith('http')) {
-              suggestions.push(id);
+            if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
+              suggestions.push({
+                id: id,
+                label: entity.label,
+                mainType: entity.mainType,
+                soource: matches[1]
+              });
             }
           }
+          $log.debug(suggestions);
           return $rootScope.$broadcast("sameAsRetrieved", suggestions);
         });
       };

@@ -21,3 +21,42 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
+.directive('wlClipboard', ['$document', '$log', ($document, $log)->
+  restrict: 'E'
+  scope:
+    text: '='
+    onCopied: '&'
+  transclude: true
+  template: """
+    <span class="wl-widget-post-link" ng-click="copyToClipboard()">
+      <ng-transclude></ng-transclude>
+      <input type="text" ng-value="text" />
+    </span>
+  """
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    
+    $scope.node = $element.find 'input'
+    $scope.node.css 'position', 'absolute'
+    $scope.node.css 'left', '-10000px'
+    
+    # $element
+    $scope.copyToClipboard = ()->
+      try
+        
+        # Set inline style to override css styles
+        $document[0].body.style.webkitUserSelect = 'initial'
+        selection = $document[0].getSelection()
+        selection.removeAllRanges()
+        # Fake node selection
+        $scope.node.select()
+        # Perform the task
+        unless $document[0].execCommand 'copy'
+           $log.warn "Error on clipboard copy for #{text}"
+        selection.removeAllRanges()
+        # Execute onCopied callback
+        if angular.isFunction($scope.onCopied)
+          $scope.$evalAsync $scope.onCopied()
+                        
+      finally
+        $document[0].body.style.webkitUserSelect = ''
+])

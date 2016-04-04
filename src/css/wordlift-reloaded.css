@@ -1982,11 +1982,6 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-carousel {
   position: absolute;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -2037,7 +2032,7 @@ h1.wl-tab-lead-text {
   width: 80px;
   height: 80px;
 }
-.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link {
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img span.wl-widget-post-link {
   position: absolute;
   z-index: 20;
   top: 30px;
@@ -2054,14 +2049,14 @@ h1.wl-tab-lead-text {
   font-size: 10px;
   transition: all 200ms ease-out;
 }
-.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link:focus {
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img span.wl-widget-post-link:focus {
   outline: none;
 }
-.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link:hover {
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img span.wl-widget-post-link:hover {
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
   transform: translateX(-50%) scale(1.01);
 }
-.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img button.wl-widget-post-link:active {
+.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img span.wl-widget-post-link:active {
   background-color: #0075f5;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   transform: translateX(-50%) scale(1);

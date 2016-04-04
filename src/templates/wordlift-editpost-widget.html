@@ -110,7 +110,13 @@
 
 <!-- CREATE NEW ENTITY BTN  -->
 <div class="wl-create-entity">
-  <div class="wl-create-entity-wrap" ng-hide="addEntityFormIsVisible" ng-click="openAddEntityForm()" ng-class="{ 'button-primary selected wl-button' : hasAnalysis(), 'preview' : !hasAnalysis() }">
+  
+  <div 
+    class="wl-create-entity-wrap" 
+    ng-hide="addEntityFormIsVisible" 
+    ng-click="openAddEntityForm()" 
+    ng-class="{ 'wl-create-entity-enabled' : hasAnalysis(), 'wl-create-entity-disabled' : !hasAnalysis() }">
+
     <h1 class="wl-tab-lead-text wl-crate-entity-lead">
 			Create new entity
 		</h1>
@@ -123,41 +129,19 @@
 <!-- CLASSIFICATION BOX  -->
 
 <div class="wl-tab-lead">
-  <div class="wl-tab-lead-wrap">
+  <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('content-classification')">
     <h1 class="wl-tab-lead-text">
 			Content classification
 		</h1>
-    <div class="wl-tab-lead-text wl-tab-lead-btn">
+      <!-- isRunning can be used to show / hide a loader accordngly to the analysis status -->
+    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+      ng-class="{ 'wl-open' : !isCurrentSection('content-classification'), 'wl-close' : isCurrentSection('content-classification') }">
       <!-- display a triangle -->
     </div>
   </div>
 </div>
 
-<!-- <h3 class="wl-widget-headline">
-  <span>Content classification</span>
-  <i
-    ng-class="{ 'wl-more': contentClassificationOpened == false, 'wl-less': contentClassificationOpened == true }"
-    ng-click="toggleCurrentSection()">
-  </i>
-  <span ng-show="isRunning" class="wl-spinner"></span>
-</h3> -->
-
-<div ng-show="contentClassificationOpened">
-
-  <div ng-show="annotation">
-    <h4 class="wl-annotation-label">
-      <i class="wl-annotation-label-icon"></i>
-      {{ analysis.annotations[ annotation ].text }}
-      <small>
-        [ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]
-      </small>
-      <i
-        class="wl-annotation-label-remove-icon"
-        ng-click="selectAnnotation(undefined)">
-      </i>
-    </h4>
-  </div>
-
+<div class="wl-tab-wrap" ng-show="isCurrentSection('content-classification')">
   <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
 
     <div ng-hide="annotation" class="wl-without-annotation">
@@ -177,127 +161,120 @@
 <!-- ARTICLE METADATA -->
 
 <div class="wl-tab-lead">
-  <div class="wl-tab-lead-wrap">
+  <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('article-metadata')">
     <h1 class="wl-tab-lead-text">
       Article metadata
 		</h1>
-    <div class="wl-tab-lead-text wl-tab-lead-btn">
+    <!-- isGeolocationRunning can be used to show/hide a loader whene geolcation is running -->
+    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+      ng-class="{ 'wl-open' : !isCurrentSection('article-metadata'), 'wl-close' : isCurrentSection('article-metadata') }">
       <!-- display a triangle -->
     </div>
   </div>
 </div>
 
-<!-- <h3 class="wl-widget-headline">
-  <span>Article metadata</span>
-  <i
-    ng-class="{ 'wl-more': articleMetadataOpened == false, 'wl-less': articleMetadataOpened == true }"
-    ng-click="toggleCurrentSection()">
-  </i>
-  <span ng-show="isGeolocationRunning" class="wl-spinner"></span>
-</h3> -->
+<div class="wl-widget-article-metadata wl-tab-wrap" ng-show="isCurrentSection('article-metadata')">
+<div class="wl-widget-article-metadata-wrap">
 
-<div class="wl-widget-article-metadata">
+  <!-- TOP SECTION -->
+  <div class="wl-widget-article-metadata-top">
 
-  <div class="wl-widget-article-metadata-wrap">
-
-    <!-- TOP SECTION -->
-    <div class="wl-widget-article-metadata-top">
-
-      <!-- AUTHOR -->
-      <div class="wl-widget-article-metadata-author">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-author-icon.svg">
-        <p>
-          {{configuration.currentUser}}
-        </p>
-      </div>
-
-      <!-- LOCATION -->
-      <div class="wl-widget-article-metadata-location">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-location-icon.svg">
-        <p>
-          Rome
-        </p>
-      </div>
-
-      <!-- DATE -->
-      <div class="wl-widget-article-metadata-date">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-calendar-icon.svg">
-        <p>
-          {{configuration.publishedDate}}
-        </p>
-      </div>
-
+    <!-- AUTHOR -->
+    <div class="wl-widget-article-metadata-author">
+      <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-author-icon.svg">
+      <p>
+        {{configuration.currentUser}}
+      </p>
     </div>
 
-      <!-- BOTTOM-TOPIC SECTION  -->
-    <div class="wl-widget-article-metadata-bottom">
-      <h2 class="wl-widget-article-metadata-topic-lead">
-        Topic
-      </h2>
+    <!-- LOCATION -->
+    <div class="wl-widget-article-metadata-location">
+      <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-location-icon.svg">
+      <p>
+        Rome
+      </p>
+    </div>
 
-      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-        <h3>
-          Chef Rubio
-          {{entity.label}}
-        </h3>
-        <div class="wl-widget-article-metadata-topic-bar">
-          <!-- display the progress bar  -->
-          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-        </div>
-      </div>
-
-      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-        <h3>
-          Chef Rubio longer title
-          {{entity.label}}
-        </h3>
-        <div class="wl-widget-article-metadata-topic-bar">
-          <!-- display the progress bar  -->
-          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-        </div>
-      </div>
-
-      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-        <h3>
-          Chef
-          {{entity.label}}
-        </h3>
-        <div class="wl-widget-article-metadata-topic-bar">
-          <!-- display the progress bar  -->
-          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-        </div>
-      </div>
-
-      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-        <h3>
-          Chef
-          {{entity.label}}
-        </h3>
-        <div class="wl-widget-article-metadata-topic-bar">
-          <!-- display the progress bar  -->
-          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-        </div>
-      </div>
-
-      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-        <h3>
-          Chef
-          {{entity.label}}
-        </h3>
-        <div class="wl-widget-article-metadata-topic-bar">
-          <!-- display the progress bar  -->
-          <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-        </div>
-      </div>
-
-      <!-- <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'">
-      </wl-entity-tile> -->
-
+    <!-- DATE -->
+    <div class="wl-widget-article-metadata-date">
+      <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-calendar-icon.svg">
+      <p>
+        {{configuration.publishedDate}}
+      </p>
     </div>
 
   </div>
+
+    <!-- BOTTOM-TOPIC SECTION  -->
+  <div class="wl-widget-article-metadata-bottom">
+    <h2 class="wl-widget-article-metadata-topic-lead">
+      Topic
+    </h2>
+
+    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+      <h3>
+        Chef Rubio
+        {{entity.label}}
+      </h3>
+      <div class="wl-widget-article-metadata-topic-bar">
+        <!-- display the progress bar  -->
+        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+      </div>
+    </div>
+
+    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+      <h3>
+        Chef Rubio longer title
+        {{entity.label}}
+      </h3>
+      <div class="wl-widget-article-metadata-topic-bar">
+        <!-- display the progress bar  -->
+        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+      </div>
+    </div>
+
+    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+      <h3>
+        Chef
+        {{entity.label}}
+      </h3>
+      <div class="wl-widget-article-metadata-topic-bar">
+        <!-- display the progress bar  -->
+        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+      </div>
+    </div>
+
+    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+      <h3>
+        Chef
+        {{entity.label}}
+      </h3>
+      <div class="wl-widget-article-metadata-topic-bar">
+        <!-- display the progress bar  -->
+        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+      </div>
+    </div>
+
+    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+      <h3>
+        Chef
+        {{entity.label}}
+      </h3>
+      <div class="wl-widget-article-metadata-topic-bar">
+        <!-- display the progress bar  -->
+        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+      </div>
+    </div>
+
+    <!-- <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'">
+    </wl-entity-tile> -->
+
+  </div>
+
 </div>
-<div ng-show="articleMetadataOpened">
+</div>
+<!--
+<div>
   <h5 class="wl-widget-sub-headline">What <small>Topic</small></h5>
 
   <div class="wl-without-annotation">
@@ -333,20 +310,22 @@
   </span>
   </div>
 </div>
+-->
 
-<!-- SUGGESTED IMAGES -->
 <div class="wl-tab-lead">
-  <div class="wl-tab-lead-wrap">
+  <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('suggested-images')">
     <h1 class="wl-tab-lead-text">
       Suggested images
-		</h1>
-    <div class="wl-tab-lead-text wl-tab-lead-btn">
+    </h1>
+    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+      ng-class="{ 'wl-open' : !isCurrentSection('suggested-images'), 'wl-close' : isCurrentSection('suggested-images') }">
       <!-- display a triangle -->
     </div>
   </div>
 </div>
 
-<div class="wl-widget-suggested-images">
+
+<div class="wl-widget-suggested-images wl-tab-wrap" ng-show="isCurrentSection('suggested-images')">
   <!-- SUGGESTED IMAGES WRAP -->
   <div class="wl-widget-suggested-images-wrap">
     <!-- SUGGESTED IMAGES TOP SECTION -->
@@ -362,81 +341,60 @@
         <!-- SUGGESTED IMAGES GRID WRAP -->
         <div class="wl-widget-suggested-images-grid-wrap">
 
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-1.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-2.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-3.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-4.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-5.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-6.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-7.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-8.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-9.png" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open">
-
-          <!-- SUGGESTED IMAGES FOCUS CAROUSEL -->
-          <div class="wl-widget-suggested-images-carousel">
-
-            <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-arrow-icon.svg" class="wl-widget-suggested-images-arrow-left">
-
-            <div class="wl-widget-suggested-images-big-img">
-              <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-big.png">
+          <img ng-src="{{image}}" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" ng-repeat="image in images" ng-click="setCurrentImage(image)" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+          
+          <div class="wl-widget-suggested-images-carousel" 
+            wl-carousel 
+            ng-if="currentImage">
+            <div class="wl-widget-suggested-images-big-img"
+              ng-repeat="image in images" 
+              wl-first-pane="isCurrentImage(image)"
+              ng-click="setCurrentImage(undefined)"
+              wl-carousel-pane>
+              <img ng-src="{{image}}" 
+                class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" 
+                wl-fallback="{{configuration.defaultThumbnailPath}}" />
             </div>
-
-            <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-arrow-icon.svg" class="wl-widget-suggested-images-arrow-right">
-
           </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-
-<!-- <h3 class="wl-widget-headline"><span>Suggested images</span></h3> -->
-<!-- <div wl-carousel>
-  <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-    <div class="wl-card-image">
-      <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-    </div>
-  </div>
-</div> -->
-
-<!-- RELATED POSTS -->
-
 <div class="wl-tab-lead">
-  <div class="wl-tab-lead-wrap">
+  <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('related-posts')">
     <h1 class="wl-tab-lead-text">
       Related posts
-		</h1>
-    <div class="wl-tab-lead-text wl-tab-lead-btn">
+    </h1>
+    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+      ng-class="{ 'wl-open' : !isCurrentSection('related-posts'), 'wl-close' : isCurrentSection('related-posts') }">
       <!-- display a triangle -->
     </div>
   </div>
 </div>
 
-<div class="wl-widget-posts">
-  <div class="wl-widget-post-wrap">
+<div 
+  class="wl-widget-posts wl-tab-wrap"
+  ng-show="isCurrentSection('related-posts')">
+  <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
-      <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-1.png">
-      <button class="wl-widget-post-link">
+      <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+      <wl-clipboard 
+        text="post.permalink"
+        on-copied="copiedOnClipboard()"
+        class="wl-widget-post-link">
         COPY LINK
-      </button>
+      </wl-clipboard>
     </div>
     <div class="wl-widget-post-details">
-      <h3 class="wl-widget-post-author">Pinco Pallino</h3>
-      <h1 class="wl-widget-post-title">La tempesta delle marianne nere</h1>
-      <p class="wl-widget-post-prev">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-    </div>
-  </div>
-</div>
-
-<!-- <h3 class="wl-widget-headline"><span>Related posts</span></h3> -->
-<div wl-carousel>
-  <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-    <div class="wl-card-image">
-      <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-    </div>
-    <div class="wl-card-title">
-      <a ng-href="{{post.link}}">{{post.post_title}}</a>
+      <h3 class="wl-widget-post-author">
+        {{post.author}}
+      </h3>
+      <h1 class="wl-widget-post-title">
+        {{post.post_title}}
+      </h1>
     </div>
   </div>
 </div>

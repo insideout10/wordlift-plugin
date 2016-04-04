@@ -68,8 +68,33 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  $scope.contentClassificationOpened = true
-  $scope.articleMetadataOpened = false
+    
+  # TMP
+  $scope.copiedOnClipboard = ()->
+    $log.debug "Something copied on clipboard"
+
+  # A reference to the current suggested image in the widget
+  $scope.currentImage = undefined
+  # Set the current image
+  $scope.setCurrentImage = (image)->
+    $scope.currentImage = image
+  # Check current image
+  $scope.isCurrentImage = (image)->
+    $scope.currentImage is image
+
+  # A reference to the current section in the widget
+  $scope.currentSection = undefined
+
+  # Toggle the current section
+  $scope.toggleCurrentSection = (section)->
+    if $scope.currentSection is section
+      $scope.currentSection = undefined
+    else
+      $scope.currentSection = section
+  # Check current section
+  $scope.isCurrentSection = (section)->
+    $scope.currentSection is section
+
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = configuration.publishedPlace
   $scope.topic = undefined
@@ -81,7 +106,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.annotation = undefined
   $scope.boxes = []
-  $scope.images = {}
+  $scope.images = []
   $scope.isThereASelection = false
   $scope.configuration = configuration
   $scope.errors = []
@@ -149,6 +174,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         delete $scope.selectedEntities[ box ][ entityId ]
         
   # Observe current annotation changed
+  # TODO la creazione di una nuova entità non andrebbe qui
   $scope.$watch "annotation", (newAnnotationId)->
     
     $log.debug "Current annotation id changed to #{newAnnotationId}"
@@ -164,7 +190,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.newEntity.label = annotation.text
     # Look for SameAs suggestions
     AnalysisService.getSuggestedSameAs annotation.text
-
+    
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
@@ -217,12 +243,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
             continue
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
-          
-          for uri in entity.images
-            $scope.images[ uri ] = entity.label
+          # Concat entity images to suggested images collection
+          $scope.images = $scope.images.concat entity.images
+
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
-    
+    # Open content classification box
+    $scope.currentSection = 'content-classification'
+
   $scope.updateRelatedPosts = ()->
     $log.debug "Going to update related posts box ..."
     entityIds = []
@@ -232,20 +260,21 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity, scope)->
-    $log.debug "Entity tile selected for entity #{entity.id} within '#{scope.id}' scope"
-    $log.debug entity
-    $log.debug scope
+    $log.debug "Entity tile selected for entity #{entity.id} within #{scope.id} scope"
 
     if not $scope.selectedEntities[ scope.id ][ entity.id ]?
-      $scope.selectedEntities[ scope.id ][ entity.id ] = entity
-      for uri in entity.images
-        $scope.images[ uri ] = entity.label
+      $scope.selectedEntities[ scope.id ][ entity.id ] = entity      
+      # Concat entity images to suggested images collection
+      $scope.images = $scope.images.concat entity.images
+      # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
       $scope.selectAnnotation undefined
     else
-      for uri in entity.images
-        delete $scope.images[ uri ]
+      # Filter entity images to suggested images collection
+      $scope.images = $scope.images.filter (img)-> 
+        img not in entity.images  
+      # Notify entity deselection
       $scope.$emit "entityDeselected", entity, $scope.annotation
 
     $scope.updateRelatedPosts()
@@ -270,11 +299,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if $scope.topic?.id is topic.id
       $scope.topic = undefined
       return
-    $scope.topic = topic 
-
-  $scope.toggleCurrentSection = ()->
-    $scope.articleMetadataOpened = !$scope.articleMetadataOpened
-    $scope.contentClassificationOpened = !$scope.contentClassificationOpened
-   
+    $scope.topic = topic    
       
 ])

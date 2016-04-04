@@ -446,7 +446,7 @@
               return $scope.$apply();
             });
             ctrl = this;
-            ctrl.registerPane = function(scope, element) {
+            ctrl.registerPane = function(scope, element, first) {
               var pane;
               scope.setWidth($scope.itemWidth);
               pane = {
@@ -478,10 +478,14 @@
       return {
         require: '^wlCarousel',
         restrict: 'EA',
+        scope: {
+          wlFirstPane: '='
+        },
         transclude: true,
         template: "<div ng-transclude></div>",
         link: function($scope, $element, $attrs, $ctrl) {
           $element.addClass("wl-carousel-item");
+          $scope.isFirst = $scope.wlFirstPane || false;
           $scope.setWidth = function(size) {
             return $element.css('width', size + "px");
           };
@@ -489,7 +493,7 @@
             $log.debug("Destroy " + $scope.$id);
             return $ctrl.unregisterPane($scope);
           });
-          return $ctrl.registerPane($scope, $element);
+          return $ctrl.registerPane($scope, $element, $scope.isFirst);
         }
       };
     }
@@ -528,6 +532,41 @@
               return $attrs.$set('src', $attrs.wlFallback);
             }
           });
+        }
+      };
+    }
+  ]).directive('wlClipboard', [
+    '$document', '$log', function($document, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          text: '=',
+          onCopied: '&'
+        },
+        transclude: true,
+        template: "<span class=\"wl-widget-post-link\" ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+        link: function($scope, $element, $attrs, $ctrl) {
+          $scope.node = $element.find('input');
+          $scope.node.css('position', 'absolute');
+          $scope.node.css('left', '-10000px');
+          return $scope.copyToClipboard = function() {
+            var selection;
+            try {
+              $document[0].body.style.webkitUserSelect = 'initial';
+              selection = $document[0].getSelection();
+              selection.removeAllRanges();
+              $scope.node.select();
+              if (!$document[0].execCommand('copy')) {
+                $log.warn("Error on clipboard copy for " + text);
+              }
+              selection.removeAllRanges();
+              if (angular.isFunction($scope.onCopied)) {
+                return $scope.$evalAsync($scope.onCopied());
+              }
+            } finally {
+              $document[0].body.style.webkitUserSelect = '';
+            }
+          };
         }
       };
     }

@@ -162,6 +162,45 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
+.directive('wlClipboard', ['$document', '$log', ($document, $log)->
+  restrict: 'E'
+  scope:
+    text: '='
+    onCopied: '&'
+  transclude: true
+  template: """
+    <span class="wl-widget-post-link" ng-click="copyToClipboard()">
+      <ng-transclude></ng-transclude>
+      <input type="text" ng-value="text" />
+    </span>
+  """
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    
+    $scope.node = $element.find 'input'
+    $scope.node.css 'position', 'absolute'
+    $scope.node.css 'left', '-10000px'
+    
+    # $element
+    $scope.copyToClipboard = ()->
+      try
+        
+        # Set inline style to override css styles
+        $document[0].body.style.webkitUserSelect = 'initial'
+        selection = $document[0].getSelection()
+        selection.removeAllRanges()
+        # Fake node selection
+        $scope.node.select()
+        # Perform the task
+        unless $document[0].execCommand 'copy'
+           $log.warn "Error on clipboard copy for #{text}"
+        selection.removeAllRanges()
+        # Execute onCopied callback
+        if angular.isFunction($scope.onCopied)
+          $scope.$evalAsync $scope.onCopied()
+                        
+      finally
+        $document[0].body.style.webkitUserSelect = ''
+])
 angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarousel', ['$window', '$log', ($window, $log)->
   restrict: 'A'
@@ -233,7 +272,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.$apply()
 
     ctrl = @
-    ctrl.registerPane = (scope, element)->
+    ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
         
@@ -243,6 +282,12 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
+      
+      #if first
+      #  $log.debug "Eccolo"
+      #  $log.debug $scope.panes.length
+      #  $scope.position = $scope.panes.length * $scope.itemWidth
+      #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
         
@@ -258,6 +303,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
   restrict: 'EA'
+  scope:
+    wlFirstPane: '='
   transclude: true 
   template: """
       <div ng-transclude></div>
@@ -265,7 +312,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   link: ($scope, $element, $attrs, $ctrl) ->
 
     $element.addClass "wl-carousel-item"
-      
+    $scope.isFirst = $scope.wlFirstPane || false
+
     $scope.setWidth = (size)->
       $element.css('width', "#{size}px")
 
@@ -273,7 +321,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $log.debug "Destroy #{$scope.$id}"
       $ctrl.unregisterPane $scope
 
-    $ctrl.registerPane $scope, $element
+    $ctrl.registerPane $scope, $element, $scope.isFirst
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
@@ -345,8 +393,33 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
   $scope.selectedEntities = {}
-  $scope.contentClassificationOpened = true
-  $scope.articleMetadataOpened = false
+    
+  # TMP
+  $scope.copiedOnClipboard = ()->
+    $log.debug "Something copied on clipboard"
+
+  # A reference to the current suggested image in the widget
+  $scope.currentImage = undefined
+  # Set the current image
+  $scope.setCurrentImage = (image)->
+    $scope.currentImage = image
+  # Check current image
+  $scope.isCurrentImage = (image)->
+    $scope.currentImage is image
+
+  # A reference to the current section in the widget
+  $scope.currentSection = undefined
+
+  # Toggle the current section
+  $scope.toggleCurrentSection = (section)->
+    if $scope.currentSection is section
+      $scope.currentSection = undefined
+    else
+      $scope.currentSection = section
+  # Check current section
+  $scope.isCurrentSection = (section)->
+    $scope.currentSection is section
+
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = configuration.publishedPlace
   $scope.topic = undefined
@@ -358,7 +431,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.annotation = undefined
   $scope.boxes = []
-  $scope.images = {}
+  $scope.images = []
   $scope.isThereASelection = false
   $scope.configuration = configuration
   $scope.errors = []
@@ -426,6 +499,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         delete $scope.selectedEntities[ box ][ entityId ]
         
   # Observe current annotation changed
+  # TODO la creazione di una nuova entità non andrebbe qui
   $scope.$watch "annotation", (newAnnotationId)->
     
     $log.debug "Current annotation id changed to #{newAnnotationId}"
@@ -441,7 +515,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.newEntity.label = annotation.text
     # Look for SameAs suggestions
     AnalysisService.getSuggestedSameAs annotation.text
-
+    
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
@@ -494,12 +568,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
             continue
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
-          
-          for uri in entity.images
-            $scope.images[ uri ] = entity.label
+          # Concat entity images to suggested images collection
+          $scope.images = $scope.images.concat entity.images
+
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
-    
+    # Open content classification box
+    $scope.currentSection = 'content-classification'
+
   $scope.updateRelatedPosts = ()->
     $log.debug "Going to update related posts box ..."
     entityIds = []
@@ -509,20 +585,21 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     RelatedPostDataRetrieverService.load entityIds
 
   $scope.onSelectedEntityTile = (entity, scope)->
-    $log.debug "Entity tile selected for entity #{entity.id} within '#{scope.id}' scope"
-    $log.debug entity
-    $log.debug scope
+    $log.debug "Entity tile selected for entity #{entity.id} within #{scope.id} scope"
 
     if not $scope.selectedEntities[ scope.id ][ entity.id ]?
-      $scope.selectedEntities[ scope.id ][ entity.id ] = entity
-      for uri in entity.images
-        $scope.images[ uri ] = entity.label
+      $scope.selectedEntities[ scope.id ][ entity.id ] = entity      
+      # Concat entity images to suggested images collection
+      $scope.images = $scope.images.concat entity.images
+      # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
       $scope.selectAnnotation undefined
     else
-      for uri in entity.images
-        delete $scope.images[ uri ]
+      # Filter entity images to suggested images collection
+      $scope.images = $scope.images.filter (img)-> 
+        img not in entity.images  
+      # Notify entity deselection
       $scope.$emit "entityDeselected", entity, $scope.annotation
 
     $scope.updateRelatedPosts()
@@ -547,12 +624,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if $scope.topic?.id is topic.id
       $scope.topic = undefined
       return
-    $scope.topic = topic 
-
-  $scope.toggleCurrentSection = ()->
-    $scope.articleMetadataOpened = !$scope.articleMetadataOpened
-    $scope.contentClassificationOpened = !$scope.contentClassificationOpened
-   
+    $scope.topic = topic    
       
 ])
 angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
@@ -858,7 +930,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     data    
   
   service.getSuggestedSameAs = (content)->
-  
     promise = @._innerPerform content
     # If successful, broadcast an *sameAsReceived* event.
     .then (response) ->
@@ -866,9 +937,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       suggestions = []
 
       for id, entity of response.data.entities
-        if id.startsWith('http')
-          suggestions.push id
-      
+       
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            soource: matches[1]
+          }
+      $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
     
   service._innerPerform = (content)->
