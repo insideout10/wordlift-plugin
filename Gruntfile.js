@@ -131,6 +131,17 @@ module.exports = function ( grunt ) {
                 ]
             }
         },
+        autoprefixer: {
+          options: {
+            browsers: ['last 20 versions', 'ie 8', 'ie 9']          },
+          main: {
+            expand: true,
+            flatten: true,
+            cwd: SOURCE_DIR + 'css/',
+            src: ['*.css', '!*.min.css'],
+            dest: SOURCE_DIR + 'css/',
+          }
+        },
         /* Minify css */
         cssmin: {
             all: {

@@ -43,10 +43,11 @@
     <!-- RELATED POST -->
     <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html'">
     </div>
+    
   </div>
 </div>
 
-<!-- NON SO COSA SIA -->
+<!-- POST DATA BOX -->
 <div class="wl-entity-input-boxes">
   <wl-entity-input-box entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
   <wl-entity-input-box entity="topic" ng-if="topic"></wl-entity-input-box>

@@ -1,10 +1,37 @@
 @wl-anime-global-time: all 200ms ease-out;
 
-.wl-open {
+@wl-tab-anime-time: 8s;
+
+@keyframe wl-tab-open-anime {
+  0%   { height: 0%; }
+  100% { height: 100%; }
+}
+
+@keyframe wl-tab-close-anime {
+  0%   { height: 100%; }
+  100% { height: 0%; }
+}
+
+
+.wl-close {
   transition: @wl-anime-global-time;
 }
 
-.wl-close {
+.wl-open {
   transform: rotate(180deg);
   transition: @wl-anime-global-time;
+}
+.wl-tab-open {
+  overflow: visible;
+  animation: wl-tab-open-anime;
+  animation-duration: @wl-tab-anime-time;
+}
+
+.wl-tab-close {
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden;
+  animation: wl-tab-close-anime;
+  animation-duration: @wl-tab-anime-time;
 }
