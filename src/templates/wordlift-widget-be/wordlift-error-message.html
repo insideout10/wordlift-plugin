@@ -1,0 +1,15 @@
+<!--  ERROR MESSAGE  -->
+<div class="wl-error" ng-repeat="item in errors">
+  <div class="wl-error-wrap-icon">
+    <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-error-icon.svg" class="wl-error-icon">
+  </div>
+  <div class="wl-error-wrap-msg">
+    <p class="wl-error-msg">
+      {{ item.msg }}
+    </p>
+  </div>
+  <div class="wl-error-close-btn">
+    <span></span>
+    <span></span>
+  </div>
+</div>

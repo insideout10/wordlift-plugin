@@ -1336,6 +1336,13 @@
 .fa-plus-square-o:before {
   content: "\f196";
 }
+.wl-open {
+  transition: all 200ms ease-out;
+}
+.wl-close {
+  transform: rotate(180deg);
+  transition: all 200ms ease-out;
+}
 #wordlift_entities_box {
   background-color: #F5F5F5;
 }
@@ -1944,7 +1951,6 @@ h1.wl-tab-lead-text {
   border-radius: 8px;
   min-width: 10px;
   max-width: 60px;
-  width: 25px;
   height: 5px;
 }
 .wl-widget-suggested-images {
