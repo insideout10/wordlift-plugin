@@ -12,7 +12,9 @@
 </div>
 
 
-<div class="wl-widget-suggested-images wl-tab-wrap" ng-show="isCurrentSection('suggested-images')">
+<div class="wl-widget-suggested-images wl-tab-wrap" 
+  ng-class="{ 'wl-tab-opened' : !isCurrentSection('suggested-images'), 'wl-tab-closed' : isCurrentSection('suggested-images') }">
+  
   <!-- SUGGESTED IMAGES WRAP -->
   <div class="wl-widget-suggested-images-wrap">
     <!-- SUGGESTED IMAGES TOP SECTION -->

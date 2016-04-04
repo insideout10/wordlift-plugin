@@ -13,7 +13,10 @@
   </div>
 </div>
 
-<div class="wl-widget-article-metadata wl-tab-wrap" ng-show="isCurrentSection('article-metadata')">
+<div 
+  class="wl-widget-article-metadata wl-tab-wrap"
+  ng-class="{ 'wl-tab-opened' : !isCurrentSection('article-metadata'), 'wl-tab-closed' : isCurrentSection('article-metadata') }">
+   
   <div class="wl-widget-article-metadata-wrap">
 
     <!-- TOP SECTION -->

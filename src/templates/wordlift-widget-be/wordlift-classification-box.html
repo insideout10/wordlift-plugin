@@ -13,7 +13,9 @@
   </div>
 </div>
 
-<div class="wl-tab-wrap" ng-show="isCurrentSection('content-classification')">
+<div class="wl-tab-wrap" 
+  ng-class="{ 'wl-tab-opened' : !isCurrentSection('content-classification'), 'wl-tab-closed' : isCurrentSection('content-classification') }">
+  
   <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
 
     <div ng-hide="annotation" class="wl-without-annotation">
