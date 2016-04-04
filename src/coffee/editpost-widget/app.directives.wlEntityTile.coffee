@@ -6,7 +6,8 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       entity: '='
       isSelected: '='
       showConfidence: '='
-      onEntitySelect: '&'
+      onSelect: '&'
+      onMore: '&'
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-tile.html'
     link: ($scope, $element, $attrs, $boxCtrl) ->				      
