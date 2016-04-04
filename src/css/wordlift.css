@@ -1303,69 +1303,6 @@
 .fa-plus-square-o:before {
   content: "\f196";
 }
-@-webkit-keyframes wlTabOpenAnime {
-  from {
-    height: 0%;
-  }
-  to {
-    height: 100%;
-    -webkit-transform: translateY(100%);
-            transform: translateY(100%);
-  }
-}
-@keyframes wlTabOpenAnime {
-  from {
-    height: 0%;
-  }
-  to {
-    height: 100%;
-    -webkit-transform: translateY(100%);
-            transform: translateY(100%);
-  }
-}
-@-webkit-keyframes wlTabCloseAnime {
-  from {
-    height: 100%;
-  }
-  to {
-    height: 0% !important;
-  }
-}
-@keyframes wlTabCloseAnime {
-  from {
-    height: 100%;
-  }
-  to {
-    height: 0% !important;
-  }
-}
-.wl-close {
-  -webkit-transition: all 200ms ease-out;
-          transition: all 200ms ease-out;
-}
-.wl-open {
-  -webkit-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-          transform: rotate(180deg);
-  -webkit-transition: all 200ms ease-out;
-          transition: all 200ms ease-out;
-}
-.wl-tab-open {
-  -webkit-animation-name: wlTabOpenAnime;
-          animation-name: wlTabOpenAnime;
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-}
-.wl-tab-close {
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
-  -webkit-animation-name: wlTabCloseAnime;
-          animation-name: wlTabCloseAnime;
-  -webkit-animation-duration: 0.3s;
-          animation-duration: 0.3s;
-}
 #wordlift_entities_box {
   background-color: #F5F5F5;
 }
@@ -1457,6 +1394,10 @@ h1.wl-tab-lead-text {
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 5px solid #007AFF;
+}
+.wl-tab-wrap-inner {
+  height: 0 !important;
+  overflow: hidden;
 }
 .wl-widget-entity-panel {
   display: -webkit-flex;

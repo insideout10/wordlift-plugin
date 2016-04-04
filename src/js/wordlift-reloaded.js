@@ -377,13 +377,24 @@
       };
     }
   ]).controller('EditPostWidgetController', [
-    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile) {
+    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$parse', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $parse) {
       var box, j, len, ref;
       $scope.isRunning = false;
       $scope.isGeolocationRunning = false;
       $scope.analysis = void 0;
       $scope.relatedPosts = void 0;
       $scope.newEntity = AnalysisService.createEntity();
+      $scope.currentEntity = void 0;
+      $scope.setCurrentEntity = function(targetEntity) {
+        var entity;
+        entity = $parse(targetEntity)($scope);
+        $log.debug("Going to set current entity ...");
+        $log.debug(entity);
+        return $scope.currentEntity = entity;
+      };
+      $scope.resetCurrentEntity = function() {
+        return $scope.currentEntity = void 0;
+      };
       $scope.selectedEntities = {};
       $scope.copiedOnClipboard = function() {
         return $log.debug("Something copied on clipboard");

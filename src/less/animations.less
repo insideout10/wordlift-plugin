@@ -1,45 +1,4 @@
+// TIMING VARS
 @wl-anime-global-time: all 200ms ease-out;
 
-@wl-tab-anime-time: 0.3s;
-
-@keyframes wlTabOpenAnime {
-  from {
-    height: 0%;
-  }
-  to {
-    height: 100%;
-    transform: translateY(100%);
-  }
-}
-
-@keyframes wlTabCloseAnime {
-  from {
-    height: 100%;
-  }
-  to {
-    height: 0% !important;
-  }
-}
-
-
-.wl-close {
-  transition: @wl-anime-global-time;
-}
-
-.wl-open {
-  transform: rotate(180deg);
-  transition: @wl-anime-global-time;
-}
-.wl-tab-open {
-  animation-name: wlTabOpenAnime;
-  animation-duration: @wl-tab-anime-time;
-}
-
-.wl-tab-close {
-  height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow: hidden;
-  animation-name: wlTabCloseAnime;
-  animation-duration: @wl-tab-anime-time;
-}
+// TAB PANEL ANIMATIONS
