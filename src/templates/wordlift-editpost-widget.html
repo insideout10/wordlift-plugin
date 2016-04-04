@@ -9,25 +9,22 @@
         <h2 class="wl-widget-entity-panel-top-category-label">
           Category
         </h2>
-        <!-- AFTER FOR THE > -->
+        <!-- AFTER FOR THE ">" -->
       </div>
+
       <div class="wl-widget-entity-panel-top-category-opt">
         <span class="wl-widget-entity-panel-top-options">
           what
         </span>
-        <!-- AFTER FOR THE > -->
         <span class="wl-widget-entity-panel-top-options">
           what
         </span>
-        <!-- AFTER FOR THE > -->
         <span class="wl-widget-entity-panel-top-options">
           what
         </span>
-        <!-- AFTER FOR THE > -->
         <span class="wl-widget-entity-panel-top-options">
           what
         </span>
-        <!-- AFTER FOR THE > -->
       </div>
     </div>
 
@@ -239,14 +236,33 @@
       Topic
     </h2>
 
+    <!-- SINGLE TOPIC -->
     <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-      <h3>
-        Chef Rubio
-        {{entity.label}}
-      </h3>
-      <div class="wl-widget-article-metadata-topic-bar">
-        <!-- display the progress bar  -->
-        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
+
+      <!-- TOPIC CHECKBOX -->
+      <input type="radio" name="a" id="1">
+
+      <!-- TOPIC DETAILS -->
+      <div class="wl-widget-article-metadata-topic-single-details">
+
+        <!-- TOPIC TITLE -->
+        <h3>
+          {{entity.label}}
+        </h3>
+
+        <div class="wl-widget-article-metadata-topic-single-details-bottom">
+
+          <!-- TOPIC PROGRESS BAR -->
+          <div class="wl-widget-article-metadata-topic-bar">
+
+            <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%">
+              <!-- display the progress bar  -->
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
     </div>
 
