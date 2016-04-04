@@ -71,19 +71,18 @@
           display: inline-flex;
 
           &.wl-widget-suggested-images-carousel-open {
-            -webkit-filter: blur(1px) !important;
-            filter: blur(1px) !important;
+            -webkit-filter: blur(1px);
+            filter: blur(1px);
           }
         }
 
         .wl-widget-suggested-images-carousel {
           position: absolute;
-          // display: -webkit-flex;
-          // display: -moz-flex;
-          // display: -ms-flex;
-          // display: -o-flex;
-          // display: flex;
-          display: none;
+          display: -webkit-flex;
+          display: -moz-flex;
+          display: -ms-flex;
+          display: -o-flex;
+          display: flex;
           flex-direction: row;
           align-items: center;
           justify-content: space-around;
@@ -113,6 +112,7 @@
             img {
               width: 180px;
               height: 180px;
+              box-shadow: 0 2px 2px @wl-shadow-color;
             }
           }
         }

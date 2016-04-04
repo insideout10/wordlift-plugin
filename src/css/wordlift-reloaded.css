@@ -1677,6 +1677,9 @@ h1.wl-tab-lead-text {
   border-right: 5px solid transparent;
   border-top: 5px solid #007AFF;
 }
+.wl-widget-entity-panel {
+  background-color: lime;
+}
 .wl-error {
   position: relative;
   display: -webkit-flex;
@@ -1974,12 +1977,16 @@ h1.wl-tab-lead-text {
   display: inline-flex;
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap img.wl-widget-suggested-images.wl-widget-suggested-images-carousel-open {
-  -webkit-filter: blur(1px) !important;
-  filter: blur(1px) !important;
+  -webkit-filter: blur(1px);
+  filter: blur(1px);
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-carousel {
   position: absolute;
-  display: none;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -2001,6 +2008,7 @@ h1.wl-tab-lead-text {
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-carousel .wl-widget-suggested-images-big-img img {
   width: 180px;
   height: 180px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 .wl-widget-posts {
   width: 250px;
