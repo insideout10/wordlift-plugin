@@ -10,19 +10,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
-      $scope.removeCurrentImage = ()->
-        removed = $scope.entity.images.shift()
+      $scope.configuration = configuration
+
+      $scope.getCurrentCategory = ()->
+        return configuration.getCategoryForType $scope.entity.mainType
+      
+      $scope.removeCurrentImage = (index)->
+        removed = $scope.entity.images.splice index, 1
         $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
-
-      $scope.getCurrentTypeUri = ()->
-        for type in configuration.types
-          if type.css is "wl-#{$scope.entity.mainType}"
-            return type.uri
-
-      $scope.isInternal = ()->
-        if $scope.entity.id.startsWith configuration.datasetUri
-          return true
-        return false
 
       $scope.linkTo = (linkType)->
         $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
@@ -32,16 +27,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
 
-      $scope.checkEntityId = (uri)->
-        /^(f|ht)tps?:\/\//i.test(uri)
-
-      availableTypes = []
-      for type in configuration.types
-        availableTypes[ type.css.replace('wl-','') ] = type.uri
-
-      $scope.supportedTypes = ({ id: type.css.replace('wl-',''), name: type.uri } for type in configuration.types)
-      if $scope.box
-        $scope.supportedTypes = ({ id: type, name: availableTypes[ type ] } for type in $scope.box.registeredTypes)
-
+      $scope.isNew = (uri)->
+        return !/^(f|ht)tps?:\/\//i.test $scope.entity.id 
 
 ])
