@@ -1303,38 +1303,40 @@
 .fa-plus-square-o:before {
   content: "\f196";
 }
-@-webkit-keyframes wl-tab-open-anime {
-  0% {
+@-webkit-keyframes wlTabOpenAnime {
+  from {
     height: 0%;
   }
-  100% {
+  to {
     height: 100%;
-    background-color: pink;
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
   }
 }
-@keyframes wl-tab-open-anime {
-  0% {
+@keyframes wlTabOpenAnime {
+  from {
     height: 0%;
   }
-  100% {
+  to {
     height: 100%;
-    background-color: pink;
+    -webkit-transform: translateY(100%);
+            transform: translateY(100%);
   }
 }
-@-webkit-keyframes wl-tab-close-anime {
-  0% {
+@-webkit-keyframes wlTabCloseAnime {
+  from {
     height: 100%;
   }
-  100% {
-    height: 0%;
+  to {
+    height: 0% !important;
   }
 }
-@keyframes wl-tab-close-anime {
-  0% {
+@keyframes wlTabCloseAnime {
+  from {
     height: 100%;
   }
-  100% {
-    height: 0%;
+  to {
+    height: 0% !important;
   }
 }
 .wl-close {
@@ -1349,21 +1351,20 @@
           transition: all 200ms ease-out;
 }
 .wl-tab-open {
-  overflow: visible;
-  -webkit-animation: wl-tab-open-anime;
-          animation: wl-tab-open-anime;
-  -webkit-animation-duration: 8s;
-          animation-duration: 8s;
+  -webkit-animation-name: wlTabOpenAnime;
+          animation-name: wlTabOpenAnime;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
 }
 .wl-tab-close {
   height: 0 !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden;
-  -webkit-animation: wl-tab-close-anime;
-          animation: wl-tab-close-anime;
-  -webkit-animation-duration: 8s;
-          animation-duration: 8s;
+  -webkit-animation-name: wlTabCloseAnime;
+          animation-name: wlTabCloseAnime;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s;
 }
 .wl-carousel {
   overflow: hidden;

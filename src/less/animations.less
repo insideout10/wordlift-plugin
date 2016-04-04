@@ -1,20 +1,24 @@
 @wl-anime-global-time: all 200ms ease-out;
 
-@wl-tab-anime-time: 8s;
+@wl-tab-anime-time: 0.3s;
 
-@keyframes wl-tab-open-anime {
-  0%   {
+@keyframes wlTabOpenAnime {
+  from {
     height: 0%;
   }
-  100% {
+  to {
     height: 100%;
-    background-color: pink;
+    transform: translateY(100%);
   }
 }
 
-@keyframes wl-tab-close-anime {
-  0%   { height: 100%; }
-  100% { height: 0%; }
+@keyframes wlTabCloseAnime {
+  from {
+    height: 100%;
+  }
+  to {
+    height: 0% !important;
+  }
 }
 
 
@@ -27,8 +31,7 @@
   transition: @wl-anime-global-time;
 }
 .wl-tab-open {
-  overflow: visible;
-  animation: wl-tab-open-anime;
+  animation-name: wlTabOpenAnime;
   animation-duration: @wl-tab-anime-time;
 }
 
@@ -37,6 +40,6 @@
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden;
-  animation: wl-tab-close-anime;
+  animation-name: wlTabCloseAnime;
   animation-duration: @wl-tab-anime-time;
 }
