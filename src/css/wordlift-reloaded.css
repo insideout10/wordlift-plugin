@@ -1641,6 +1641,18 @@
   margin: 0;
   padding: 0;
 }
+#wordlift_entities_box h2.hndle.ui-sortable-handle {
+  margin: auto;
+  padding: 8px 12px;
+}
+#wordlift_entities_box h2.hndle.ui-sortable-handle span::after {
+  content: " ";
+}
+#wordlift_entities_box h2.hndle.ui-sortable-handle span::after div {
+  height: 5px;
+  width: 5px;
+  background-color: pink;
+}
 h1.wl-tab-lead-text {
   color: #000000;
   font-size: 14px;
@@ -2014,6 +2026,32 @@ h1.wl-tab-lead-text {
   width: 100%;
   margin-bottom: 20px;
 }
+.wl-create-entity .wl-create-entity-wrap.wl-create-entity-disabled {
+  background-color: #CBCBCB;
+}
+.wl-create-entity .wl-create-entity-wrap.wl-create-entity-disabled:hover {
+  box-shadow: none;
+  transform: none;
+}
+.wl-create-entity .wl-create-entity-wrap.wl-create-entity-disabled:active {
+  background-color: none;
+  box-shadow: none;
+  transform: none;
+}
+.wl-create-entity .wl-create-entity-wrap.wl-create-entity-enabled {
+  background-color: #007AFF;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+.wl-create-entity .wl-create-entity-wrap.wl-create-entity-enabled:hover {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
+  transform: scale(1.01);
+}
+.wl-create-entity .wl-create-entity-wrap.wl-create-entity-enabled:active {
+  background-color: #0075f5;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  transform: scale(1);
+}
 .wl-create-entity .wl-create-entity-wrap {
   display: -webkit-flex;
   display: -moz-flex;
@@ -2028,22 +2066,10 @@ h1.wl-tab-lead-text {
   min-width: 260px;
   height: 35px;
   box-sizing: border-box;
-  cursor: pointer;
-  background-color: #007AFF;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   transition: all 200ms ease-out;
 }
 .wl-create-entity .wl-create-entity-wrap .wl-crate-entity-lead {
   color: #FFFFFF;
-}
-.wl-create-entity .wl-create-entity-wrap:hover {
-  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
-  transform: scale(1.01);
-}
-.wl-create-entity .wl-create-entity-wrap:active {
-  background-color: #0075f5;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  transform: scale(1);
 }
 .wl-widget-article-metadata {
   width: 250px;

@@ -325,6 +325,7 @@
 
         <!-- SUGGESTED IMAGES GRID WRAP -->
         <div class="wl-widget-suggested-images-grid-wrap">
+          <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-error-icon.svg" class="wl-error-icon">
 
           <img ng-src="{{image}}" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" ng-repeat="image in images" ng-click="setCurrentImage(image)" wl-fallback="{{configuration.defaultThumbnailPath}}" />
 

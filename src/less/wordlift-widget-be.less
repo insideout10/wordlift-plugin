@@ -5,6 +5,21 @@
     margin: 0;
     padding: 0;
   }
+  h2.hndle.ui-sortable-handle{
+    margin: auto;
+    padding: 8px 12px;
+
+    span {
+      &::after {
+        content: " ";
+        div {
+          height: 5px;
+          width: 5px;
+          background-color: pink;
+        }
+      }
+    }
+  }
 }
 h1.wl-tab-lead-text {
   color: @wl-black-color;
