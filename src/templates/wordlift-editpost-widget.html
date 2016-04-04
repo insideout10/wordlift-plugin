@@ -24,7 +24,10 @@
     ng-class="{ 'wl-global-wrap-open': currentEntity, 'wl-global-wrap-close': !currentEntity  }">
 
     <!-- ENTITY PANEL -->
-    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'">
+    <wl-entity-form 
+      entity="currentEntity" 
+      on-submit="resetCurrentEntity()">
+    </wl-entity-form>
     </div>
   </div>
 

@@ -712,7 +712,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-form.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           var availableTypes, j, len, ref, type;
@@ -798,7 +798,8 @@
           entity: '=',
           isSelected: '=',
           showConfidence: '=',
-          onEntitySelect: '&'
+          onSelect: '&',
+          onMore: '&'
         },
         templateUrl: function() {
           return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-tile.html';

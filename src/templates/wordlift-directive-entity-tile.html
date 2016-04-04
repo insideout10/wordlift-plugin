@@ -17,10 +17,10 @@
     <wl-entity-form entity="entity" on-submit="toggle()"></wl-entity-form>
   </div>
 </div> -->
-
-<div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+<div class="wl-widget-article-metadata-topic-single" >
   <h3>
-    {{entity.label}}
+    <span ng-click="onSelect()">{{entity.label}}</span>
+    <strong ng-click="onMore()">open</strong>
   </h3>
   <div class="wl-widget-article-metadata-topic-bar">
     <!-- display the progress bar  -->
