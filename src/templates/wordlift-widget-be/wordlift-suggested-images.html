@@ -5,7 +5,7 @@
       Suggested images
     </h1>
     <div class="wl-tab-lead-text wl-tab-lead-btn"
-      ng-class="{ 'wl-open' : !isCurrentSection('suggested-images'), 'wl-close' : isCurrentSection('suggested-images') }">
+      ng-class="{ 'wl-open' : isCurrentSection('suggested-images'), 'wl-close' : !isCurrentSection('suggested-images') }">
       <!-- display a triangle -->
     </div>
   </div>
@@ -13,7 +13,7 @@
 
 
 <div class="wl-widget-suggested-images wl-tab-wrap" 
-  ng-class="{ 'wl-tab-opened' : !isCurrentSection('suggested-images'), 'wl-tab-closed' : isCurrentSection('suggested-images') }">
+  ng-class="{ 'wl-tab-open' : isCurrentSection('suggested-images'), 'wl-tab-close' : !isCurrentSection('suggested-images') }">
   
   <!-- SUGGESTED IMAGES WRAP -->
   <div class="wl-widget-suggested-images-wrap">

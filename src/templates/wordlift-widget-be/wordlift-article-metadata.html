@@ -7,7 +7,7 @@
 		</h1>
     <!-- isGeolocationRunning can be used to show/hide a loader whene geolcation is running -->
     <div class="wl-tab-lead-text wl-tab-lead-btn"
-      ng-class="{ 'wl-open' : !isCurrentSection('article-metadata'), 'wl-close' : isCurrentSection('article-metadata') }">
+      ng-class="{ 'wl-open' : isCurrentSection('article-metadata'), 'wl-close' : !isCurrentSection('article-metadata') }">
       <!-- display a triangle -->
     </div>
   </div>
@@ -15,7 +15,7 @@
 
 <div 
   class="wl-widget-article-metadata wl-tab-wrap"
-  ng-class="{ 'wl-tab-opened' : !isCurrentSection('article-metadata'), 'wl-tab-closed' : isCurrentSection('article-metadata') }">
+  ng-class="{ 'wl-tab-open' : isCurrentSection('article-metadata'), 'wl-tab-close' : !isCurrentSection('article-metadata') }">
    
   <div class="wl-widget-article-metadata-wrap">
 

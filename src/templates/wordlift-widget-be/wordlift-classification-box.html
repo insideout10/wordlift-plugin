@@ -7,14 +7,14 @@
 		</h1>
       <!-- isRunning can be used to show / hide a loader accordngly to the analysis status -->
     <div class="wl-tab-lead-text wl-tab-lead-btn"
-      ng-class="{ 'wl-open' : !isCurrentSection('content-classification'), 'wl-close' : isCurrentSection('content-classification') }">
+      ng-class="{ 'wl-open' : isCurrentSection('content-classification'), 'wl-close' : !isCurrentSection('content-classification') }">
       <!-- display a triangle -->
     </div>
   </div>
 </div>
 
 <div class="wl-tab-wrap" 
-  ng-class="{ 'wl-tab-opened' : !isCurrentSection('content-classification'), 'wl-tab-closed' : isCurrentSection('content-classification') }">
+  ng-class="{ 'wl-tab-open' : isCurrentSection('content-classification'), 'wl-tab-close' : !isCurrentSection('content-classification') }">
   
   <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
 

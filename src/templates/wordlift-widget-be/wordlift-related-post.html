@@ -5,7 +5,7 @@
       Related posts
     </h1>
     <div class="wl-tab-lead-text wl-tab-lead-btn"
-      ng-class="{ 'wl-open' : !isCurrentSection('related-posts'), 'wl-close' : isCurrentSection('related-posts') }">
+      ng-class="{ 'wl-open' : isCurrentSection('related-posts'), 'wl-close' : !isCurrentSection('related-posts') }">
       <!-- display a triangle -->
     </div>
   </div>
@@ -13,7 +13,7 @@
 
 <div
   class="wl-widget-posts wl-tab-wrap"
-  ng-class="{ 'wl-tab-opened' : !isCurrentSection('related-posts'), 'wl-tab-closed' : isCurrentSection('related-posts') }">
+  ng-class="{ 'wl-tab-open' : isCurrentSection('related-posts'), 'wl-tab-close' : !isCurrentSection('related-posts') }">
 
   <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
