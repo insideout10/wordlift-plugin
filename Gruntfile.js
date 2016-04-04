@@ -217,6 +217,10 @@ module.exports = function ( grunt ) {
                 files: [ SOURCE_DIR + 'less/**/*.less' ],
                 tasks: [ 'less' ]
             },
+            autoprefixer: {
+              files: [ SOURCE_DIR + 'css/**/*.css' ],
+              tasks: [ 'autoprefixer' ]
+            },
             config: {
                 files: 'Gruntfile.js'
             }
@@ -250,6 +254,7 @@ module.exports = function ( grunt ) {
     grunt.registerTask( 'build', [
         'coffee',
         'less',
+        'autoprefixer',
         'cssmin',
         'copy:fonts',
         'copy:build'

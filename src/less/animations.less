@@ -2,12 +2,17 @@
 
 @wl-tab-anime-time: 8s;
 
-@keyframe wl-tab-open-anime {
-  0%   { height: 0%; }
-  100% { height: 100%; }
+@keyframes wl-tab-open-anime {
+  0%   {
+    height: 0%;
+  }
+  100% {
+    height: 100%;
+    background-color: pink;
+  }
 }
 
-@keyframe wl-tab-close-anime {
+@keyframes wl-tab-close-anime {
   0%   { height: 100%; }
   100% { height: 0%; }
 }
