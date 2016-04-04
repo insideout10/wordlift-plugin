@@ -104,6 +104,22 @@
   </div>
 </div>
 
+<!--  CREATE ENTITY MESSAGE  -->
+<div class="wl-positive">
+  <div class="wl-positive-wrap-icon">
+    <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-thumb-icon.svg" class="wl-positive-icon">
+  </div>
+  <div class="wl-positive-wrap-msg">
+    <p class="wl-positive-msg">
+      Your entity has been created
+    </p>
+  </div>
+  <div class="wl-positive-close-btn">
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
 <!--  ERROR MESSAGE  -->
 <div class="wl-error" ng-repeat="item in errors">
   <div class="wl-error-wrap-icon">
@@ -234,49 +250,6 @@
       </div>
     </div>
 
-    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-      <h3>
-        Chef Rubio longer title
-        {{entity.label}}
-      </h3>
-      <div class="wl-widget-article-metadata-topic-bar">
-        <!-- display the progress bar  -->
-        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-      </div>
-    </div>
-
-    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-      <h3>
-        Chef
-        {{entity.label}}
-      </h3>
-      <div class="wl-widget-article-metadata-topic-bar">
-        <!-- display the progress bar  -->
-        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-      </div>
-    </div>
-
-    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-      <h3>
-        Chef
-        {{entity.label}}
-      </h3>
-      <div class="wl-widget-article-metadata-topic-bar">
-        <!-- display the progress bar  -->
-        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-      </div>
-    </div>
-
-    <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
-      <h3>
-        Chef
-        {{entity.label}}
-      </h3>
-      <div class="wl-widget-article-metadata-topic-bar">
-        <!-- display the progress bar  -->
-        <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%"></div>
-      </div>
-    </div>
 
     <!-- <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'">
     </wl-entity-tile> -->

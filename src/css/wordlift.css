@@ -1647,6 +1647,71 @@ h1.wl-tab-lead-text {
 .wl-error .wl-error-close-btn span:last-of-type {
   transform: rotate(-45deg);
 }
+.wl-positive {
+  position: relative;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(112, 194, 7, 0.7);
+  margin: 15px 0;
+  padding: 0;
+  min-height: 50px;
+  border: none;
+}
+.wl-positive .wl-positive-wrap-icon {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.wl-positive .wl-positive-wrap-icon img.wl-positive-icon {
+  width: 35px;
+  margin: 0 15px;
+}
+.wl-positive .wl-positive-wrap-msg {
+  width: 70%;
+  padding: 10px 0;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  align-items: center;
+}
+.wl-positive .wl-positive-wrap-msg p.wl-positive-msg {
+  font-weight: 200;
+  line-height: 1.4;
+  font-size: 10px;
+  margin-right: 10px;
+}
+.wl-positive .wl-positive-close-btn {
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin: 5px;
+}
+.wl-positive .wl-positive-close-btn span {
+  position: absolute;
+  bottom: 5px;
+  display: block;
+  height: 1px;
+  width: 10px;
+  background-color: #000000;
+  opacity: 0.5;
+  transform: rotate(45deg);
+  transform-origin: center;
+}
+.wl-positive .wl-positive-close-btn span:last-of-type {
+  transform: rotate(-45deg);
+}
 .wl-create-entity {
   display: -webkit-flex;
   display: -moz-flex;
