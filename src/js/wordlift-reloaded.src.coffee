@@ -384,7 +384,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
+.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$parse', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $parse)-> 
 
   $scope.isRunning = false
   $scope.isGeolocationRunning = false
@@ -392,6 +392,18 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.analysis = undefined
   $scope.relatedPosts = undefined
   $scope.newEntity = AnalysisService.createEntity()
+
+  # A reference to the current entity 
+  $scope.currentEntity = undefined
+  $scope.setCurrentEntity = (targetEntity)->
+    entity = $parse(targetEntity)($scope)
+    $log.debug "Going to set current entity ..."
+    $log.debug entity
+    $scope.currentEntity = entity
+
+  $scope.resetCurrentEntity = ()->
+    $scope.currentEntity = undefined
+
   $scope.selectedEntities = {}
     
   # TMP

@@ -14,11 +14,14 @@
   </div>
 
   <!-- CREATE NEW ENTITY BTN -->
-  <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html'">
+  <div 
+    ng-click="setCurrentEntity('newEntity')"
+    ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html'">
   </div>
 
   <!-- WL TOP WRAP -->
-  <div class="wl-widget-global-top-wrap">
+  <div class="wl-widget-global-top-wrap" 
+    ng-class="{ 'wl-global-wrap-open': currentEntity, 'wl-global-wrap-close': !currentEntity  }">
 
     <!-- ENTITY PANEL -->
     <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'">
@@ -26,7 +29,8 @@
   </div>
 
   <!-- WL BOTTOM WRAP -->
-  <div class="wl-widget-global-bottom-wrap">
+  <div class="wl-widget-global-bottom-wrap"
+    ng-class="{ 'wl-global-wrap-open': !currentEntity, 'wl-global-wrap-close': currentEntity  }">
 
     <!-- CLASSIFICATION BOX  -->
     <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html'">
