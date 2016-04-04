@@ -1339,6 +1339,16 @@
 #wordlift_entities_box {
   background-color: #F5F5F5;
 }
+#wordlift_entities_box h1,
+#wordlift_entities_box h2,
+#wordlift_entities_box h3,
+#wordlift_entities_box h4,
+#wordlift_entities_box h5,
+#wordlift_entities_box h6,
+#wordlift_entities_box p {
+  margin: 0;
+  padding: 0;
+}
 h1.wl-tab-lead-text {
   color: #000000;
   font-size: 14px;
@@ -1386,7 +1396,164 @@ h1.wl-tab-lead-text {
   border-top: 5px solid #007AFF;
 }
 .wl-widget-entity-panel {
-  background-color: lime;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  background-color: #007AFF;
+  color: #FFFFFF;
+  padding: 8px;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label {
+  font-weight: 600;
+  margin-bottom: 5px !important;
+  color: #FFFFFF;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label::after {
+  content: "";
+  opacity: 0.5;
+  border-top: 4px solid transparent;
+  border-left: 4px solid #FFFFFF;
+  border-bottom: 4px solid transparent;
+  display: inline-block;
+  box-sizing: border-box;
+  margin: auto 4px;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt span.wl-widget-entity-panel-top-options {
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flex;
+  display: -o-inline-flex;
+  display: inline-flex;
+  margin-right: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  transition: all 200ms ease-out;
+  text-transform: capitalize;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt span.wl-widget-entity-panel-top-options:last-of-type {
+  margin-right: 0;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt span.wl-widget-entity-panel-top-options:hover {
+  border-bottom: 2px solid #FFFFFF;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input h3.wl-widget-entity-panel-input-label {
+  color: #007AFF;
+  font-size: 10px;
+  font-weight: 400;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input input[type=text] {
+  border: none;
+  outline: none;
+  height: 30px;
+  padding: 4px 8px;
+  box-sizing: border-box;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input input[type=text]:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-images-wrap {
+  flex-direction: row;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  flex-wrap: nowrap;
+  height: 90px;
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-images-wrap img.wl-widget-entity-panel-images {
+  height: 80px;
+  width: 80px;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flex;
+  display: -o-inline-flex;
+  display: inline-flex;
+  margin: 1px;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card {
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flex;
+  display: -o-inline-flex;
+  display: inline-flex;
+  flex-direction: row;
+  background-color: #FFFFFF;
+  margin: 5px 5px 0 0;
+  padding: 8px;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card:hover {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card:active {
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  background-color: #fafafa;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card input[type=radio] {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13px !important;
+  min-width: 13px !important;
+  height: 13px;
+  margin: 3px ;
+  box-sizing: border-box;
+  border: 0.5px solid #CBCBCB;
+  box-shadow: none !important;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card input[type=radio]:checked {
+  border-color: #007AFF;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input .wl-widget-entity-panel-card input[type=radio]:checked:before {
+  content: " " !important;
+  height: 2.5px;
+  width: 4.5px;
+  margin: 0;
+  margin-top: -1px;
+  border: 0.5px solid #007AFF;
+  border-top: none;
+  border-right: none;
+  border-radius: 0px;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  background-color: transparent;
 }
 .wl-error {
   position: relative;
@@ -1416,6 +1583,7 @@ h1.wl-tab-lead-text {
 }
 .wl-error .wl-error-wrap-msg {
   width: 70%;
+  padding: 10px 0;
 }
 .wl-error .wl-error-wrap-msg p.wl-error-msg {
   font-weight: 200;

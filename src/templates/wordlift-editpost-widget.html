@@ -48,7 +48,8 @@
       <input type="text" name="" id="">
 
       <div class="wl-widget-entity-panel-card">
-        <input type="radio" name="" id="">
+        <input type="radio" name="a" id="1" checked>
+        <input type="radio" name="a" id="1">
         <div class="wl-widget-entity-panel-card-details">
           <h3>
             New York
@@ -63,29 +64,28 @@
       </div>
     </div>
 
-        <!-- ENTITY DESCRIPTION -->
-        <div class="wl-widget-entity-panel-input">
-          <div class="wl-widget-entity-panel-input-label">
-            <h3>
-              Entity description
-            </h3>
-          </div>
-          <input type="text" name="" id="">
-        </div>
+    <!-- ENTITY DESCRIPTION -->
+    <div class="wl-widget-entity-panel-input">
+        <h3 class="wl-widget-entity-panel-input-label">
+          Entity description
+        </h3>
+      <input type="text" name="" id="">
+    </div>
 
-        <!-- ENTITY IMAGES -->
-        <div class="wl-widget-entity-panel-input">
-          <div class="wl-widget-entity-panel-input-label">
-            <h3>
-              Entity images
-            </h3>
-          </div>
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-5.png" class="wl-widget-entity-panel-images">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-7.png" class="wl-widget-entity-panel-images">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-8.png" class="wl-widget-entity-panel-images">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-2.png" class="wl-widget-entity-panel-images">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-4.png" class="wl-widget-entity-panel-images">
-        </div>
+    <!-- ENTITY IMAGES -->
+    <div class="wl-widget-entity-panel-input">
+      <h3 class="wl-widget-entity-panel-input-label">
+          Entity images
+      </h3>
+
+      <div class="wl-widget-entity-panel-images-wrap">
+        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-5.png" class="wl-widget-entity-panel-images">
+        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-7.png" class="wl-widget-entity-panel-images">
+        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-8.png" class="wl-widget-entity-panel-images">
+        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-2.png" class="wl-widget-entity-panel-images">
+        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-4.png" class="wl-widget-entity-panel-images">
+      </div>
+    </div>
 
 
 
@@ -110,11 +110,11 @@
 
 <!-- CREATE NEW ENTITY BTN  -->
 <div class="wl-create-entity">
-  
-  <div 
-    class="wl-create-entity-wrap" 
-    ng-hide="addEntityFormIsVisible" 
-    ng-click="openAddEntityForm()" 
+
+  <div
+    class="wl-create-entity-wrap"
+    ng-hide="addEntityFormIsVisible"
+    ng-click="openAddEntityForm()"
     ng-class="{ 'wl-create-entity-enabled' : hasAnalysis(), 'wl-create-entity-disabled' : !hasAnalysis() }">
 
     <h1 class="wl-tab-lead-text wl-crate-entity-lead">
@@ -134,7 +134,7 @@
 			Content classification
 		</h1>
       <!-- isRunning can be used to show / hide a loader accordngly to the analysis status -->
-    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+    <div class="wl-tab-lead-text wl-tab-lead-btn"
       ng-class="{ 'wl-open' : !isCurrentSection('content-classification'), 'wl-close' : isCurrentSection('content-classification') }">
       <!-- display a triangle -->
     </div>
@@ -166,7 +166,7 @@
       Article metadata
 		</h1>
     <!-- isGeolocationRunning can be used to show/hide a loader whene geolcation is running -->
-    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+    <div class="wl-tab-lead-text wl-tab-lead-btn"
       ng-class="{ 'wl-open' : !isCurrentSection('article-metadata'), 'wl-close' : isCurrentSection('article-metadata') }">
       <!-- display a triangle -->
     </div>
@@ -317,7 +317,7 @@
     <h1 class="wl-tab-lead-text">
       Suggested images
     </h1>
-    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+    <div class="wl-tab-lead-text wl-tab-lead-btn"
       ng-class="{ 'wl-open' : !isCurrentSection('suggested-images'), 'wl-close' : isCurrentSection('suggested-images') }">
       <!-- display a triangle -->
     </div>
@@ -342,17 +342,17 @@
         <div class="wl-widget-suggested-images-grid-wrap">
 
           <img ng-src="{{image}}" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" ng-repeat="image in images" ng-click="setCurrentImage(image)" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-          
-          <div class="wl-widget-suggested-images-carousel" 
-            wl-carousel 
+
+          <div class="wl-widget-suggested-images-carousel"
+            wl-carousel
             ng-if="currentImage">
             <div class="wl-widget-suggested-images-big-img"
-              ng-repeat="image in images" 
+              ng-repeat="image in images"
               wl-first-pane="isCurrentImage(image)"
               ng-click="setCurrentImage(undefined)"
               wl-carousel-pane>
-              <img ng-src="{{image}}" 
-                class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" 
+              <img ng-src="{{image}}"
+                class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open"
                 wl-fallback="{{configuration.defaultThumbnailPath}}" />
             </div>
           </div>
@@ -368,20 +368,20 @@
     <h1 class="wl-tab-lead-text">
       Related posts
     </h1>
-    <div class="wl-tab-lead-text wl-tab-lead-btn" 
+    <div class="wl-tab-lead-text wl-tab-lead-btn"
       ng-class="{ 'wl-open' : !isCurrentSection('related-posts'), 'wl-close' : isCurrentSection('related-posts') }">
       <!-- display a triangle -->
     </div>
   </div>
 </div>
 
-<div 
+<div
   class="wl-widget-posts wl-tab-wrap"
   ng-show="isCurrentSection('related-posts')">
   <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
       <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-      <wl-clipboard 
+      <wl-clipboard
         text="post.permalink"
         on-copied="copiedOnClipboard()"
         class="wl-widget-post-link">
