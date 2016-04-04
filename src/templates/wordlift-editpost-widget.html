@@ -1,37 +1,52 @@
-<!-- ENTITY PANEL -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'">
+<div class="wl-widget-global-wrap">
+
+  <!-- WL MESSAGE PANEL -->
+  <div class="wl-widget-message-panel">
+
+    <!-- CREATE ENTITY MESSAGE -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-message.html'">
+    </div>
+
+    <!-- ERROR MESSAGE -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-error-message.html'">
+    </div>
+
+  </div>
+
+  <!-- CREATE NEW ENTITY BTN -->
+  <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html'">
+  </div>
+
+  <!-- WL TOP WRAP -->
+  <div class="wl-widget-global-top-wrap">
+
+    <!-- ENTITY PANEL -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'">
+    </div>
+  </div>
+
+  <!-- WL BOTTOM WRAP -->
+  <div class="wl-widget-global-bottom-wrap">
+
+    <!-- CLASSIFICATION BOX  -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html'">
+    </div>
+
+    <!-- ARTICLE METADATA -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-article-metadata.html'">
+    </div>
+
+    <!-- SUGGESTED IMAGES -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-suggested-images.html'">
+    </div>
+
+    <!-- RELATED POST -->
+    <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html'">
+    </div>
+  </div>
 </div>
 
-<!-- CREATE ENTITY MESSAGE -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-message.html'">
-</div>
-
-<!-- ERROR MESSAGE -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-error-message.html'">
-</div>
-
-<!-- CREATE NEW ENTITY BTN -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html'">
-</div>
-
-<!-- CLASSIFICATION BOX  -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html'">
-</div>
-
-<!-- ARTICLE METADATA -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-article-metadata.html'">
-</div>
-
-<!-- SUGGESTED IMAGES -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-suggested-images.html'">
-</div>
-
-<!-- RELATED POST -->
-<div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html'">
-</div>
-
-
-
+<!-- NON SO COSA SIA -->
 <div class="wl-entity-input-boxes">
   <wl-entity-input-box entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
   <wl-entity-input-box entity="topic" ng-if="topic"></wl-entity-input-box>
