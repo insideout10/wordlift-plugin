@@ -14,7 +14,7 @@
 </div>
 
 <div class="wl-tab-wrap" 
-  ng-class="{ 'wl-tab-open' : isCurrentSection('content-classification'), 'wl-tab-close' : !isCurrentSection('content-classification') }">
+  ng-show="isCurrentSection('content-classification')">
   
   <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
 

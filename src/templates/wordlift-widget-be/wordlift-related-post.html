@@ -13,7 +13,7 @@
 
 <div
   class="wl-widget-posts wl-tab-wrap"
-  ng-class="{ 'wl-tab-open' : isCurrentSection('related-posts'), 'wl-tab-close' : !isCurrentSection('related-posts') }">
+  ng-show="isCurrentSection('related-posts')">
 
   <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">

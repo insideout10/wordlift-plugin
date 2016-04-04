@@ -20,8 +20,7 @@
   </div>
 
   <!-- WL TOP WRAP -->
-  <div class="wl-widget-global-top-wrap" 
-    ng-class="{ 'wl-global-wrap-open': currentEntity, 'wl-global-wrap-close': !currentEntity  }">
+  <div class="wl-widget-global-top-wrap" ng-show="currentEntity">
 
     <!-- ENTITY PANEL -->
     <wl-entity-form 
@@ -32,8 +31,7 @@
   </div>
 
   <!-- WL BOTTOM WRAP -->
-  <div class="wl-widget-global-bottom-wrap"
-    ng-class="{ 'wl-global-wrap-open': !currentEntity, 'wl-global-wrap-close': currentEntity  }">
+  <div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity">
 
     <!-- CLASSIFICATION BOX  -->
     <div ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html'">
