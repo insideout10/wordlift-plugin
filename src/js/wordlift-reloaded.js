@@ -401,22 +401,22 @@
             $log.debug("A new entity");
             if (!$scope.isThereASelection && ($scope.annotation == null)) {
               $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation");
-              $scope.destroyCurrentEntity();
+              $scope.unsetCurrentEntity();
               return;
             }
             if ($scope.annotation != null) {
               $log.debug("There is a current annotation already. Nothing to do");
-              $scope.destroyCurrentEntity();
+              $scope.unsetCurrentEntity();
               return;
             }
             return $scope.createTextAnnotationFromCurrentSelection();
         }
       };
-      $scope.destroyCurrentEntity = function() {
+      $scope.unsetCurrentEntity = function() {
         $scope.currentEntity = void 0;
         return $scope.currentEntityType = void 0;
       };
-      $scope.unsetCurrentEntity = function() {
+      $scope.storeCurrentEntity = function() {
         switch ($scope.currentEntityType) {
           case 'entity':
             $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
@@ -431,7 +431,7 @@
             $log.debug("Unset a new entity");
             $scope.addNewEntityToAnalysis();
         }
-        return $scope.destroyCurrentEntity();
+        return $scope.unsetCurrentEntity();
       };
       $scope.selectedEntities = {};
       $scope.copiedOnClipboard = function() {

@@ -91,21 +91,21 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $log.debug "A new entity"
         if !$scope.isThereASelection and !$scope.annotation?
           $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation"
-          $scope.destroyCurrentEntity()
+          $scope.unsetCurrentEntity()
           return
         if $scope.annotation?
           $log.debug "There is a current annotation already. Nothing to do"
-          $scope.destroyCurrentEntity()
+          $scope.unsetCurrentEntity()
           return
 
         $scope.createTextAnnotationFromCurrentSelection()
 
 
-  $scope.destroyCurrentEntity = ()->
+  $scope.unsetCurrentEntity = ()->
     $scope.currentEntity = undefined
     $scope.currentEntityType = undefined
 
-  $scope.unsetCurrentEntity = ()->
+  $scope.storeCurrentEntity = ()->
 
     switch $scope.currentEntityType
       when 'entity' 
@@ -118,7 +118,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $log.debug "Unset a new entity"
         $scope.addNewEntityToAnalysis()
 
-    $scope.destroyCurrentEntity()
+    $scope.unsetCurrentEntity()
 
   $scope.selectedEntities = {}
   

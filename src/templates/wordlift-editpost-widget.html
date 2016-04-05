@@ -25,7 +25,8 @@
     <!-- ENTITY PANEL -->
     <wl-entity-form 
       entity="currentEntity" 
-      on-submit="unsetCurrentEntity()">
+      on-reset="unsetCurrentEntity()"
+      on-submit="storeCurrentEntity()">
     </wl-entity-form>
     </div>
   </div>
