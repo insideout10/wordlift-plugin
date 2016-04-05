@@ -1,9 +1,11 @@
 <!-- ENTITY TILE SELECTED -->
-<div class="wl-widget-classification-box-entity-tile wl-selected">
+<div 
+  class="wl-widget-classification-box-entity-tile"
+  ng-class="{'wl-selected': isSelected }">
 
   <!-- ENTITY NAME -->
-  <div class="wl-widget-classification-box-entity-tile-name ">
-    <h3>
+  <div class="wl-widget-classification-box-entity-tile-name">
+    <h3 ng-click="onSelect()">
       {{entity.label}}
     </h3>
   </div>
@@ -26,7 +28,7 @@
   </div>
 
   <!-- LINK TO VOC -->
-  <div class="wl-widget-classification-box-entity-tile-voc">
+  <div class="wl-widget-classification-box-entity-tile-voc" ng-click="onMore()">
     <img
      ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon-blue.svg">
   </div>

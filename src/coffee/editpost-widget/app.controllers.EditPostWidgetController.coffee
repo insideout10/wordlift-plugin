@@ -215,8 +215,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
     $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
     
-    scopeId = configuration.getCategoryForType $scope.newEntity.mainType
-    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scopeId
+    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ]
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -315,7 +314,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entityIds.push id
     RelatedPostDataRetrieverService.load entityIds
 
-  $scope.onSelectedEntityTile = (entity, scopeId)->
+  $scope.onSelectedEntityTile = (entity)->
+
+    scopeId = configuration.getCategoryForType entity.mainType
     $log.debug "Entity tile selected for entity #{entity.id} within #{scopeId} scope"
 
     if not $scope.selectedEntities[ scopeId ][ entity.id ]?

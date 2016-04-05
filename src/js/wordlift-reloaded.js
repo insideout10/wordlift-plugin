@@ -507,7 +507,7 @@
         return (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0);
       };
       $scope.addNewEntityToAnalysis = function() {
-        var annotation, scopeId;
+        var annotation;
         if ($scope.newEntity.sameAs) {
           $scope.newEntity.sameAs = [$scope.newEntity.sameAs];
         }
@@ -520,8 +520,7 @@
         });
         $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
         $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
-        scopeId = configuration.getCategoryForType($scope.newEntity.mainType);
-        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scopeId);
+        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id]);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
@@ -639,7 +638,9 @@
         }
         return RelatedPostDataRetrieverService.load(entityIds);
       };
-      $scope.onSelectedEntityTile = function(entity, scopeId) {
+      $scope.onSelectedEntityTile = function(entity) {
+        var scopeId;
+        scopeId = configuration.getCategoryForType(entity.mainType);
         $log.debug("Entity tile selected for entity " + entity.id + " within " + scopeId + " scope");
         if ($scope.selectedEntities[scopeId][entity.id] == null) {
           $scope.selectedEntities[scopeId][entity.id] = entity;
