@@ -28,14 +28,17 @@
 
         <!-- SUGGESTED IMAGES GRID WRAP -->
         <div class="wl-widget-suggested-images-grid-wrap">
+          <div 
+            class="wl-widget-suggested-images-grid-row" 
+            ng-repeat="row in (images.length/3 | filterSplitInRows)">
       
-          <div ng-repeat="image in images" >
-            <img 
-              ng-src="{{image}}"
-              class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open"  
-              wl-fallback="{{configuration.defaultThumbnailPath}}" />
+            <div ng-repeat="image in images.slice(3*$index, 3*$index + 3)" >
+              <img 
+                ng-src="{{image}}"
+                class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open"  
+                wl-fallback="{{configuration.defaultThumbnailPath}}" />
+            </div>
           </div>
-
         </div>
       </div>
     </div>
