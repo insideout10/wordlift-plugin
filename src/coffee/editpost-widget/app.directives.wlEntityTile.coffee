@@ -11,7 +11,8 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
     link: ($scope, $element, $attrs, $boxCtrl) ->
-      $scope.configuration=configuration
+      
+      $scope.configuration = configuration
       # Add tile to related container scope
       $boxCtrl?.addTile $scope
 
