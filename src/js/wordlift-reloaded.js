@@ -405,13 +405,13 @@
       $scope.unsetCurrentEntity = function() {
         switch ($scope.currentEntityType) {
           case 'entity':
-            $log.debug("Unset a standard entity");
+            $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
             break;
           case 'topic':
-            $log.debug("Unset an entity used as topic");
+            $scope.topics[$scope.currentEntity.id] = $scope.currentEntity;
             break;
           case 'publishingPlace':
-            $log.debug("Unset an entity used as publishing place");
+            $scope.suggestedPlaces[$scope.currentEntity.id] = $scope.currentEntity;
             break;
           default:
             $log.debug("Unset a new entity");

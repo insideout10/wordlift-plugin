@@ -95,11 +95,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     switch $scope.currentEntityType
       when 'entity' 
-        $log.debug "Unset a standard entity"
+        $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
       when 'topic' 
-        $log.debug "Unset an entity used as topic"
+        $scope.topics[ $scope.currentEntity.id ] = $scope.currentEntity
       when 'publishingPlace' 
-        $log.debug "Unset an entity used as publishing place"
+        $scope.suggestedPlaces[ $scope.currentEntity.id ] = $scope.currentEntity
       else # New entity
         $log.debug "Unset a new entity"
         $scope.addNewEntityToAnalysis()
