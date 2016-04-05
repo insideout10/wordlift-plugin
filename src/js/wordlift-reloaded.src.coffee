@@ -540,9 +540,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
     $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
     
-    $scopeId = configuration.getCategoryForType $scope.newEntity.mainType
-    $log.debug "Going to select "
-    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
+    scopeId = configuration.getCategoryForType $scope.newEntity.mainType
+    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scopeId
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -719,6 +718,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     scope:
       entity: '='
       onSubmit: '&'
+      onReset: '&'
       box: '='
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'
@@ -735,6 +735,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           $log.debug "Going to update current category to #{category}"
           $scope.currentCategory = category
 
+      $scope.onSubmitWrapper = (e)->
+        e.preventDefault()
+        $scope.onSubmit()
+
+      $scope.onResetWrapper = (e)->
+        e.preventDefault()
+        $scope.onReset()
+
       $scope.setCurrentCategory = (categoryId)->
         $scope.currentCategory = categoryId
 
@@ -743,6 +751,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         # Entity type has to be reset too        
         $scope.entity?.mainType = undefined
 
+      $scope.addSameAs = (sameAs)->
+        unless $scope.entity?.sameAs
+          $scope.entity?.sameAs = []
+        $scope.entity?.sameAs.push sameAs.id
+      
       $scope.setType = (entityType)->
         return if entityType is $scope.entity?.mainType
         $scope.entity?.mainType = entityType
@@ -757,8 +770,9 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         removed = $scope.entity.images.splice index, 1
         $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
 
-      $scope.linkTo = (linkType)->
-        $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
+      $scope.linkToEdit = (e)->
+        e.preventDefault()
+        $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=edit"
 
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
@@ -766,8 +780,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
 
+      $scope.isInternal = ()->
+        configuration.isInternal $scope.entity?.id 
+
       $scope.isNew = (uri)->
-        return !/^(f|ht)tps?:\/\//i.test $scope.entity.id 
+        return !/^(f|ht)tps?:\/\//i.test $scope.entity?.id 
 
 ])
 
@@ -991,7 +1008,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
             id: id
             label: entity.label
             mainType: entity.mainType
-            soource: matches[1]
+            source: matches[1]
           }
       $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
