@@ -399,10 +399,24 @@
             return $log.debug("An entity used as publishing place");
           default:
             $log.debug("A new entity");
-            return $scope.prepareNewEntity();
+            if (!$scope.isThereASelection && ($scope.annotation == null)) {
+              $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation");
+              $scope.unsetCurrentEntity();
+              return;
+            }
+            if ($scope.annotation != null) {
+              $log.debug("There is a current annotation already. Nothing to do");
+              $scope.unsetCurrentEntity();
+              return;
+            }
+            return $scope.createTextAnnotationFromCurrentSelection();
         }
       };
       $scope.unsetCurrentEntity = function() {
+        $scope.currentEntity = void 0;
+        return $scope.currentEntityType = void 0;
+      };
+      $scope.storeCurrentEntity = function() {
         switch ($scope.currentEntityType) {
           case 'entity':
             $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
@@ -417,21 +431,9 @@
             $log.debug("Unset a new entity");
             $scope.addNewEntityToAnalysis();
         }
-        $scope.currentEntity = void 0;
-        return $scope.currentEntityType = void 0;
+        return $scope.unsetCurrentEntity();
       };
       $scope.selectedEntities = {};
-      $scope.prepareNewEntity = function() {
-        if (!$scope.isThereASelection && ($scope.annotation == null)) {
-          $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation");
-          return;
-        }
-        if ($scope.annotation != null) {
-          $log.debug("There is a current annotation already. Nothing to do");
-          return;
-        }
-        return $scope.createTextAnnotationFromCurrentSelection();
-      };
       $scope.copiedOnClipboard = function() {
         return $log.debug("Something copied on clipboard");
       };
@@ -505,7 +507,7 @@
         return (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0);
       };
       $scope.addNewEntityToAnalysis = function() {
-        var annotation, scope;
+        var $scopeId, annotation;
         if ($scope.newEntity.sameAs) {
           $scope.newEntity.sameAs = [$scope.newEntity.sameAs];
         }
@@ -518,9 +520,8 @@
         });
         $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
         $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
-        scope = {
-          id: 'label'
-        };
+        $scopeId = configuration.getCategoryForType($scope.newEntity.mainType);
+        $log.debug("Going to select ");
         return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
@@ -549,6 +550,7 @@
         $scope.newEntity = AnalysisService.createEntity();
         annotation = $scope.analysis.annotations[newAnnotationId];
         $scope.newEntity.label = annotation.text;
+        $scope.currentEntity = $scope.newEntity;
         return AnalysisService.getSuggestedSameAs(annotation.text);
       });
       $scope.$on("currentUserLocalityDetected", function(event, locality) {
@@ -638,10 +640,10 @@
         }
         return RelatedPostDataRetrieverService.load(entityIds);
       };
-      $scope.onSelectedEntityTile = function(entity, scope) {
-        $log.debug("Entity tile selected for entity " + entity.id + " within " + scope.id + " scope");
-        if ($scope.selectedEntities[scope.id][entity.id] == null) {
-          $scope.selectedEntities[scope.id][entity.id] = entity;
+      $scope.onSelectedEntityTile = function(entity, scopeId) {
+        $log.debug("Entity tile selected for entity " + entity.id + " within " + scopeId + " scope");
+        if ($scope.selectedEntities[scopeId][entity.id] == null) {
+          $scope.selectedEntities[scopeId][entity.id] = entity;
           $scope.images = $scope.images.concat(entity.images);
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
