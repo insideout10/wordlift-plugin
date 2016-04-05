@@ -158,7 +158,7 @@
       };
     }
   ]).directive('wlClipboard', [
-    '$document', '$log', function($document, $log) {
+    '$timeout', '$document', '$log', function($timeout, $document, $log) {
       return {
         restrict: 'E',
         scope: {
@@ -166,8 +166,9 @@
           onCopied: '&'
         },
         transclude: true,
-        template: "<span class=\"wl-widget-post-link\" ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+        template: "<span \n  class=\"wl-widget-post-link\" \n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
         link: function($scope, $element, $attrs, $ctrl) {
+          $scope.$copied = false;
           $scope.node = $element.find('input');
           $scope.node.css('position', 'absolute');
           $scope.node.css('left', '-10000px');
@@ -182,6 +183,11 @@
                 $log.warn("Error on clipboard copy for " + text);
               }
               selection.removeAllRanges();
+              $scope.$copied = true;
+              $timeout(function() {
+                $log.debug("Going to reset $copied status");
+                return $scope.$copied = false;
+              }, 3000);
               if (angular.isFunction($scope.onCopied)) {
                 return $scope.$evalAsync($scope.onCopied());
               }
