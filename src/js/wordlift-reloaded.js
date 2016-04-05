@@ -348,6 +348,22 @@
         return filtered;
       };
     }
+  ]).filter('filterSplitInRows', [
+    '$log', function($log) {
+      return function(arrayLength) {
+        var arr, j, results1;
+        if (arrayLength) {
+          arrayLength = Math.ceil(arrayLength);
+          arr = (function() {
+            results1 = [];
+            for (var j = 0; 0 <= arrayLength ? j <= arrayLength : j >= arrayLength; 0 <= arrayLength ? j++ : j--){ results1.push(j); }
+            return results1;
+          }).apply(this);
+          $log.debug("Going to return " + arr);
+          return arr;
+        }
+      };
+    }
   ]).filter('filterEntitiesByTypes', [
     '$log', function($log) {
       return function(items, types) {

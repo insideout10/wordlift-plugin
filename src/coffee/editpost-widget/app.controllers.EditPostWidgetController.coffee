@@ -35,7 +35,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     filtered
 
 ])
-
+.filter('filterSplitInRows', [ '$log', ($log)->
+  return (arrayLength)->
+    if arrayLength
+      arrayLength = Math.ceil arrayLength
+      arr = [0..arrayLength]
+      $log.debug "Going to return #{arr}"
+      arr
+])
 .filter('filterEntitiesByTypes', [ '$log', ($log)->
   return (items, types)->
     
