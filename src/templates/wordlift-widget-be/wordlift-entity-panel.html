@@ -155,11 +155,12 @@
       </div>
     </div>
 
-    <!-- <h3 ng-click="onSubmit()">Chiudi</h3> -->
     <!-- FOOTER BUTTONS -->
     <div class="wl-widget-entity-panel-bottom">
       <!-- DELETE/ABORT BTN  -->
-      <button class="wl-widget-entity-panel-del-btn">
+      <button 
+        ng-click="onResetWrapper($event)"
+        class="wl-widget-entity-panel-del-btn">
         Delete
       </button>
       <!-- OPEN DETAILS BTN -->
@@ -170,7 +171,7 @@
       </button>
       <!-- POSITIVE BTN -->
       <button
-      ng-click="onSubmit()"
+      ng-click="onSubmitWrapper($event)"
       class="wl-widget-entity-panel-positive-btn">
         Create
       </button>

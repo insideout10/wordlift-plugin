@@ -719,6 +719,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     scope:
       entity: '='
       onSubmit: '&'
+      onReset: '&'
       box: '='
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'
@@ -734,6 +735,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
           category = configuration.getCategoryForType $scope.entity?.mainType
           $log.debug "Going to update current category to #{category}"
           $scope.currentCategory = category
+
+      $scope.onSubmitWrapper = (e)->
+        e.preventDefault()
+        $scope.onSubmit()
+
+      $scope.onResetWrapper = (e)->
+        e.preventDefault()
+        $scope.onReset()
 
       $scope.setCurrentCategory = (categoryId)->
         $scope.currentCategory = categoryId

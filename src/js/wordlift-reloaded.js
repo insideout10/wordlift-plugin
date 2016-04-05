@@ -733,6 +733,7 @@
         scope: {
           entity: '=',
           onSubmit: '&',
+          onReset: '&',
           box: '='
         },
         templateUrl: function() {
@@ -750,6 +751,14 @@
               return $scope.currentCategory = category;
             }
           });
+          $scope.onSubmitWrapper = function(e) {
+            e.preventDefault();
+            return $scope.onSubmit();
+          };
+          $scope.onResetWrapper = function(e) {
+            e.preventDefault();
+            return $scope.onReset();
+          };
           $scope.setCurrentCategory = function(categoryId) {
             return $scope.currentCategory = categoryId;
           };
