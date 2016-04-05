@@ -215,9 +215,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
     $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
     
-    $scopeId = configuration.getCategoryForType $scope.newEntity.mainType
-    $log.debug "Going to select "
-    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
+    scopeId = configuration.getCategoryForType $scope.newEntity.mainType
+    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scopeId
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     

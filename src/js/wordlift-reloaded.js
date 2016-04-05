@@ -507,7 +507,7 @@
         return (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0);
       };
       $scope.addNewEntityToAnalysis = function() {
-        var $scopeId, annotation;
+        var annotation, scopeId;
         if ($scope.newEntity.sameAs) {
           $scope.newEntity.sameAs = [$scope.newEntity.sameAs];
         }
@@ -520,9 +520,8 @@
         });
         $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
         $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
-        $scopeId = configuration.getCategoryForType($scope.newEntity.mainType);
-        $log.debug("Going to select ");
-        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
+        scopeId = configuration.getCategoryForType($scope.newEntity.mainType);
+        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scopeId);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
@@ -766,6 +765,15 @@
             var ref;
             $scope.currentCategory = void 0;
             return (ref = $scope.entity) != null ? ref.mainType = void 0 : void 0;
+          };
+          $scope.addSameAs = function(sameAs) {
+            var ref, ref1, ref2;
+            if (!((ref = $scope.entity) != null ? ref.sameAs : void 0)) {
+              if ((ref1 = $scope.entity) != null) {
+                ref1.sameAs = [];
+              }
+            }
+            return (ref2 = $scope.entity) != null ? ref2.sameAs.push(sameAs.id) : void 0;
           };
           $scope.setType = function(entityType) {
             var ref, ref1;
@@ -1093,7 +1101,7 @@
                 id: id,
                 label: entity.label,
                 mainType: entity.mainType,
-                soource: matches[1]
+                source: matches[1]
               });
             }
           }

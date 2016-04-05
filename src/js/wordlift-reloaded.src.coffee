@@ -540,9 +540,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
     $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
     
-    $scopeId = configuration.getCategoryForType $scope.newEntity.mainType
-    $log.debug "Going to select "
-    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
+    scopeId = configuration.getCategoryForType $scope.newEntity.mainType
+    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scopeId
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -752,6 +751,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         # Entity type has to be reset too        
         $scope.entity?.mainType = undefined
 
+      $scope.addSameAs = (sameAs)->
+        unless $scope.entity?.sameAs
+          $scope.entity?.sameAs = []
+        $scope.entity?.sameAs.push sameAs.id
+      
       $scope.setType = (entityType)->
         return if entityType is $scope.entity?.mainType
         $scope.entity?.mainType = entityType
@@ -1000,7 +1004,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
             id: id
             label: entity.label
             mainType: entity.mainType
-            soource: matches[1]
+            source: matches[1]
           }
       $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions

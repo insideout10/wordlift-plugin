@@ -67,38 +67,13 @@
       <input type="text" ng-value="sameAs" disabled ng-repeat="sameAs in entity.sameAs" />
 
       <!-- ENTITY CARD WRAP -->
-      <div class="wl-widget-entity-panel-card-wrap">
+      <div class="wl-widget-entity-panel-card-wrap" ng-hide="entity.sameAs">
 
         <!-- SINGLE CARD -->
-        <div class="wl-widget-entity-panel-card">
-          <div class="wl-widget-entity-panel-card-radio wl-radio-disabled">
+        <div class="wl-widget-entity-panel-card"
+          ng-click="addSameAs(sameAs)" 
+          ng-repeat="sameAs in entity.suggestedSameAs">
 
-          </div>
-          <div class="wl-widget-entity-panel-card-details">
-
-            <!-- ENTITY LABEL -->
-            <h3>
-              New York
-            </h3>
-            <div class="wl-widget-entity-panel-card-details-bottom">
-
-              <!-- DB ID -->
-              <p>
-                dbpedia
-              </p>
-
-              <!-- OUTPUT ICON -->
-              <a href="">
-                <img
-                  ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg"
-                  class="wl-widget-entity-panel-card-detail-icon" />
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- SINGLE CARD -->
-        <div class="wl-widget-entity-panel-card">
           <div class="wl-widget-entity-panel-card-radio wl-radio-enabled">
 
           </div>
@@ -107,17 +82,15 @@
 
             <!-- ENTITY LABEL -->
             <h3>
-              New York
+              {{sameAs.label}}
             </h3>
             <div class="wl-widget-entity-panel-card-details-bottom">
-
               <!-- DB ID -->
               <p>
-                dbpedia
+                {{sameAs.source}}
               </p>
-
               <!-- OUTPUT ICON -->
-              <a href="">
+              <a ng-href="{{sameAs.id}}">
                 <img
                   ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg"
                   class="wl-widget-entity-panel-card-detail-icon" />
@@ -171,8 +144,8 @@
       </button>
       <!-- POSITIVE BTN -->
       <button
-      ng-click="onSubmitWrapper($event)"
-      class="wl-widget-entity-panel-positive-btn">
+        ng-click="onSubmitWrapper($event)"
+        class="wl-widget-entity-panel-positive-btn">
         Create
       </button>
     </div>

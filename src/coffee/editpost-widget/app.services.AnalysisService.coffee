@@ -179,7 +179,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
             id: id
             label: entity.label
             mainType: entity.mainType
-            soource: matches[1]
+            source: matches[1]
           }
       $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
