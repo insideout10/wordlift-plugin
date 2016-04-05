@@ -481,6 +481,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.annotation = undefined
   $scope.boxes = []
   $scope.images = []
+
   $scope.isThereASelection = false
   $scope.configuration = configuration
   $scope.errors = []

@@ -29,22 +29,12 @@
 
         <!-- SUGGESTED IMAGES GRID WRAP -->
         <div class="wl-widget-suggested-images-grid-wrap">
-          <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-error-icon.svg" class="wl-error-icon">
-
-          <img ng-src="{{image}}" class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open" ng-repeat="image in images" ng-click="setCurrentImage(image)" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-
-          <div class="wl-widget-suggested-images-carousel"
-            wl-carousel
-            ng-if="currentImage">
-            <div class="wl-widget-suggested-images-big-img"
-              ng-repeat="image in images"
-              wl-first-pane="isCurrentImage(image)"
-              ng-click="setCurrentImage(undefined)"
-              wl-carousel-pane>
-              <img ng-src="{{image}}"
-                class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open"
-                wl-fallback="{{configuration.defaultThumbnailPath}}" />
-            </div>
+      
+          <div ng-repeat="image in images" >
+            <img 
+              ng-src="{{image}}"
+              class="wl-widget-suggested-images wl-widget-suggested-images-carousel-open"  
+              wl-fallback="{{configuration.defaultThumbnailPath}}" />
           </div>
 
         </div>
