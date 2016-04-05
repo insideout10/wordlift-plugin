@@ -107,7 +107,7 @@
         <h3 class="wl-widget-entity-panel-input-label">
           Entity description
         </h3>
-      <textarea ng-model="entity.description" />
+        <textarea ng-model="entity.description" />
     </div>
 
     <!-- ENTITY IMAGES -->
@@ -137,7 +137,10 @@
         Delete
       </button>
       <!-- OPEN DETAILS BTN -->
-      <button class="wl-widget-entity-panel-voc-btn">
+      <button 
+        ng-hide="isNew()"
+        ng-click="linkToEdit($event)"
+        class="wl-widget-entity-panel-voc-btn">
         Open in vocabulary
         <img
         ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon-blue.svg">

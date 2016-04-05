@@ -794,8 +794,9 @@
             removed = $scope.entity.images.splice(index, 1);
             return $log.warn("Removed " + removed + " from entity " + $scope.entity.id + " images collection");
           };
-          $scope.linkTo = function(linkType) {
-            return $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType;
+          $scope.linkToEdit = function(e) {
+            e.preventDefault();
+            return $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=edit";
           };
           $scope.hasOccurences = function() {
             var ref;
@@ -804,8 +805,13 @@
           $scope.setSameAs = function(uri) {
             return $scope.entity.sameAs = uri;
           };
+          $scope.isInternal = function() {
+            var ref;
+            return configuration.isInternal((ref = $scope.entity) != null ? ref.id : void 0);
+          };
           return $scope.isNew = function(uri) {
-            return !/^(f|ht)tps?:\/\//i.test($scope.entity.id);
+            var ref;
+            return !/^(f|ht)tps?:\/\//i.test((ref = $scope.entity) != null ? ref.id : void 0);
           };
         }
       };
