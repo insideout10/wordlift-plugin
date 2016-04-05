@@ -1,4 +1,11 @@
 .wl-widget-classification-box{
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 
 	h3.wl-widget-classification-box-lead {
     color: @wl-brand-color;
@@ -8,6 +15,13 @@
   }
 
 	.wl-widget-classification-box-entity-tile-wrap {
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 
 		.wl-widget-classification-box-entity-tile {
 			display: -webkit-flex;
@@ -18,7 +32,8 @@
 			flex-direction: row;
 			justify-content: flex-start;
 			align-items: center;
-			width: 240px;
+			box-sizing: border-box;
+			width: 254px;
 			height: 25px;
 			background-color: @wl-white-color;
 			margin: 5px 0;

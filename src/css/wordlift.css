@@ -2105,11 +2105,47 @@ h1.wl-tab-lead-text {
 .wl-create-entity .wl-create-entity-wrap .wl-crate-entity-lead {
   color: #FFFFFF;
 }
+.wl-widget-classification-box {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
 .wl-widget-classification-box h3.wl-widget-classification-box-lead {
   color: #007AFF;
   font-size: 12px;
   font-weight: 400;
   margin: 10px 0 5px 0 !important;
+}
+.wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap {
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile {
   display: -webkit-flex;
@@ -2132,7 +2168,10 @@ h1.wl-tab-lead-text {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 240px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 254px;
   height: 25px;
   background-color: #FFFFFF;
   margin: 5px 0;
