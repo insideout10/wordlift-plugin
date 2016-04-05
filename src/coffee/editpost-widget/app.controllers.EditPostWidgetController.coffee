@@ -87,9 +87,23 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       when 'publishingPlace' 
         $log.debug "An entity used as publishing place"
       else # New entity
+        
         $log.debug "A new entity"
-        $scope.prepareNewEntity()
-      
+        if !$scope.isThereASelection and !$scope.annotation?
+          $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation"
+          $scope.destroyCurrentEntity()
+          return
+        if $scope.annotation?
+          $log.debug "There is a current annotation already. Nothing to do"
+          $scope.destroyCurrentEntity()
+          return
+
+        $scope.createTextAnnotationFromCurrentSelection()
+
+
+  $scope.destroyCurrentEntity = ()->
+    $scope.currentEntity = undefined
+    $scope.currentEntityType = undefined
 
   $scope.unsetCurrentEntity = ()->
 
@@ -104,20 +118,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $log.debug "Unset a new entity"
         $scope.addNewEntityToAnalysis()
 
-    $scope.currentEntity = undefined
-    $scope.currentEntityType = undefined
+    $scope.destroyCurrentEntity()
 
   $scope.selectedEntities = {}
   
-  $scope.prepareNewEntity = ()->
-    if !$scope.isThereASelection and !$scope.annotation?
-      $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation"
-      return
-    if $scope.annotation?
-      $log.debug "There is a current annotation already. Nothing to do"
-      return
-    $scope.createTextAnnotationFromCurrentSelection()
-
   # TMP
   $scope.copiedOnClipboard = ()->
     $log.debug "Something copied on clipboard"
@@ -211,12 +215,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
     $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
     
-    # Select the new entity
-    # TODO detect scope from type
-    scope = {
-      id: 'label'
-    }
-
+    $scopeId = configuration.getCategoryForType $scope.newEntity.mainType
+    $log.debug "Going to select "
     $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
@@ -244,6 +244,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     # Set the entity label accordingly to the current annotation
     $scope.newEntity.label = annotation.text
     # Look for SameAs suggestions
+    # TMP
+    $scope.currentEntity = $scope.newEntity
     AnalysisService.getSuggestedSameAs annotation.text
     
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
@@ -262,7 +264,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
-    # Close new entity creation forms if needed
+    # TODO
     for id, box of $scope.boxes 
       box.addEntityFormIsVisible = false
     
@@ -314,11 +316,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entityIds.push id
     RelatedPostDataRetrieverService.load entityIds
 
-  $scope.onSelectedEntityTile = (entity, scope)->
-    $log.debug "Entity tile selected for entity #{entity.id} within #{scope.id} scope"
+  $scope.onSelectedEntityTile = (entity, scopeId)->
+    $log.debug "Entity tile selected for entity #{entity.id} within #{scopeId} scope"
 
-    if not $scope.selectedEntities[ scope.id ][ entity.id ]?
-      $scope.selectedEntities[ scope.id ][ entity.id ] = entity      
+    if not $scope.selectedEntities[ scopeId ][ entity.id ]?
+      $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
       # Concat entity images to suggested images collection
       $scope.images = $scope.images.concat entity.images
       # Notify entity selection
