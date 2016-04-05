@@ -10,14 +10,41 @@
           Category
         </h2>
         <!-- AFTER FOR THE ">" -->
+
+        <!-- CATEGORIA SELEZIONATA -->
+        <span 
+          class="wl-widget-entity-panel-top-options"
+          ng-click="unsetCurrentCategory()"
+          ng-show="currentCategory">
+          {{currentCategory}}
+        </span>
       </div>
 
-      <div class="wl-widget-entity-panel-top-category-opt">
-        <span class="wl-widget-entity-panel-top-options" ng-repeat="box in configuration.classificationBoxes">
+      <!-- LISTA DELLE CATEGORIE -->
+      <div 
+        class="wl-widget-entity-panel-top-category-opt" 
+        ng-hide="currentCategory">
+        <span 
+          class="wl-widget-entity-panel-top-options"
+          ng-click="setCurrentCategory(box.id)"
+          ng-repeat="box in configuration.classificationBoxes">
           {{box.id}}
         </span>
       </div>
+      <div 
+        class="wl-widget-entity-panel-top-category-opt" 
+        ng-show="currentCategory">
+        <!-- TIPI COLLEGATI ALLA CATEGORIA SELEZIONATA -->
+        <span 
+          class="wl-widget-entity-panel-top-options" 
+          ng-class="{ 'wl-selected': isCurrentType(type) }"
+          ng-click="setType(type)"
+          ng-repeat="type in getAvailableTypes()">
+          {{type}}
+        </span>
+      </div>
     </div>
+
 
     <!-- INPUT CENTRAL SECTION -->
     <!-- ENTITY LABEL INPUT -->

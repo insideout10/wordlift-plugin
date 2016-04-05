@@ -723,10 +723,33 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
     link: ($scope, $element, $attrs, $ctrl) ->  
 
       $scope.configuration = configuration
+      $scope.currentCategory = undefined
 
-      $scope.getCurrentCategory = ()->
-        return configuration.getCategoryForType $scope.entity.mainType
+      $scope.$watch 'entity.id', (entityId)->
+        if entityId?
+          $log.debug "Entity updated to #{entityId}"
+          category = configuration.getCategoryForType $scope.entity?.mainType
+          $log.debug "Going to update current category to #{category}"
+          $scope.currentCategory = category
+
+      $scope.setCurrentCategory = (categoryId)->
+        $scope.currentCategory = categoryId
+
+      $scope.unsetCurrentCategory = ()->
+        $scope.currentCategory = undefined 
+        # Entity type has to be reset too        
+        $scope.entity?.mainType = undefined
+
+      $scope.setType = (entityType)->
+        return if entityType is $scope.entity?.mainType
+        $scope.entity?.mainType = entityType
       
+      $scope.isCurrentType = (entityType)->
+        return $scope.entity?.mainType is entityType
+        
+      $scope.getAvailableTypes = ()->
+        return configuration.getTypesForCategoryId $scope.currentCategory
+
       $scope.removeCurrentImage = (index)->
         removed = $scope.entity.images.splice index, 1
         $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
@@ -736,6 +759,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
+      
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
 
@@ -1418,14 +1442,16 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
       	unless entityType
       	  return undefined
-      	
       	for category in @classificationBoxes 
       	  if entityType in category.registeredTypes
       	    return category.id 
       
       # Return registered types for a given category
       _configuration.getTypesForCategoryId = (categoryId)->
-      	for category in @classificationBoxes.map 
+      	
+      	unless categoryId
+      	  return []
+      	for category in @classificationBoxes 
       	  if categoryId is category.id 
       	  	return category.registeredTypes
       

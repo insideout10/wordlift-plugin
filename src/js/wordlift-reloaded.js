@@ -738,8 +738,37 @@
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.configuration = configuration;
-          $scope.getCurrentCategory = function() {
-            return configuration.getCategoryForType($scope.entity.mainType);
+          $scope.currentCategory = void 0;
+          $scope.$watch('entity.id', function(entityId) {
+            var category, ref;
+            if (entityId != null) {
+              $log.debug("Entity updated to " + entityId);
+              category = configuration.getCategoryForType((ref = $scope.entity) != null ? ref.mainType : void 0);
+              $log.debug("Going to update current category to " + category);
+              return $scope.currentCategory = category;
+            }
+          });
+          $scope.setCurrentCategory = function(categoryId) {
+            return $scope.currentCategory = categoryId;
+          };
+          $scope.unsetCurrentCategory = function() {
+            var ref;
+            $scope.currentCategory = void 0;
+            return (ref = $scope.entity) != null ? ref.mainType = void 0 : void 0;
+          };
+          $scope.setType = function(entityType) {
+            var ref, ref1;
+            if (entityType === ((ref = $scope.entity) != null ? ref.mainType : void 0)) {
+              return;
+            }
+            return (ref1 = $scope.entity) != null ? ref1.mainType = entityType : void 0;
+          };
+          $scope.isCurrentType = function(entityType) {
+            var ref;
+            return ((ref = $scope.entity) != null ? ref.mainType : void 0) === entityType;
+          };
+          $scope.getAvailableTypes = function() {
+            return configuration.getTypesForCategoryId($scope.currentCategory);
           };
           $scope.removeCurrentImage = function(index) {
             var removed;
@@ -1505,7 +1534,10 @@
         };
         _configuration.getTypesForCategoryId = function(categoryId) {
           var category, j, len, ref;
-          ref = this.classificationBoxes.map;
+          if (!categoryId) {
+            return [];
+          }
+          ref = this.classificationBoxes;
           for (j = 0, len = ref.length; j < len; j++) {
             category = ref[j];
             if (categoryId === category.id) {

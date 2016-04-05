@@ -14,14 +14,16 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
 
       	unless entityType
       	  return undefined
-      	
       	for category in @classificationBoxes 
       	  if entityType in category.registeredTypes
       	    return category.id 
       
       # Return registered types for a given category
       _configuration.getTypesForCategoryId = (categoryId)->
-      	for category in @classificationBoxes.map 
+      	
+      	unless categoryId
+      	  return []
+      	for category in @classificationBoxes 
       	  if categoryId is category.id 
       	  	return category.registeredTypes
       
