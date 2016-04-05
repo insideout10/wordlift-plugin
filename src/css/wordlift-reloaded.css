@@ -2507,8 +2507,8 @@ h1.wl-tab-lead-text {
   border-right: 0.5px solid #007AFF;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-voc img {
-  height: 15px;
-  width: 15px;
+  height: 18px;
+  width: 18px;
   -webkit-transform: translate(1px, -1px);
       -ms-transform: translate(1px, -1px);
           transform: translate(1px, -1px);
