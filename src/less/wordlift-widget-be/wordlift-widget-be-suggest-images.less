@@ -49,6 +49,7 @@
     }
 
     .wl-widget-suggested-images-bottom {
+
       .wl-widget-suggested-images-grid-wrap {
         position: relative;
         width: 250px;
@@ -64,56 +65,44 @@
         overflow-x: hidden;
         overflow-y: auto;
 
-        img.wl-widget-suggested-images {
-          width: 80px;
-          height: 80px;
-          margin: 1px;
-          display: inline-flex;
-
-          &.wl-widget-suggested-images-carousel-open {
-            -webkit-filter: blur(1px);
-            filter: blur(1px);
-          }
-        }
-
-        .wl-widget-suggested-images-carousel {
-          position: absolute;
-          // display: -webkit-flex;
-          // display: -moz-flex;
-          // display: -ms-flex;
-          // display: -o-flex;
-          // display: flex;
-          // display: none;
+        .wl-widget-suggested-images-grid-row {
+          display: -webkit-flex;
+          display: -moz-flex;
+          display: -ms-flex;
+          display: -o-flex;
+          display: flex;
           flex-direction: row;
-          align-items: center;
-          justify-content: space-around;
-          z-index: 20;
-          top: 0;
-          left: 0;
-          width: 250px;
-          height: 250px;
-          background-color: @wl-overlay-color;
+          box-sizing: border-box;
+          height: 82px;
 
+          .wl-widget-suggested-images-grid-single {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            display: block;
+            margin: 1px;
+            overflow: hidden;
 
-          img.wl-widget-suggested-images-arrow-left,
-          img.wl-widget-suggested-images-arrow-right {
-            width: 14px;
-            height: 35px;
-          }
-
-          img.wl-widget-suggested-images-arrow-left {
-            transform: rotate(180deg)
-          }
-
-          img.wl-widget-suggested-images-arrow-right {
-
-          }
-
-          .wl-widget-suggested-images-big-img {
-            img {
-              width: 180px;
-              height: 180px;
-              box-shadow: 0 2px 2px @wl-shadow-color;
+            img.wl-widget-suggested-images-inner {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              min-height: 100%;
+              min-width: 100%;
+              width: auto;
+              height: auto;
+              max-width: 160px;
+              max-height: 160px;
+            }
+            &:hover {
+              width: 160px;
+              height: 160px;
+              margin: 1px;
+              &.wl-widget-suggested-images {
+                max-width: 260px;
+                max-height: 260px;
+              }
             }
           }
         }
