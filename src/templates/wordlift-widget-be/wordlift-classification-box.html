@@ -23,7 +23,7 @@
         show-confidence="false" 
         is-selected="isEntitySelected(entity, box)" 
         on-select="onSelectedEntityTile(entity, box)" 
-        on-more="setCurrentEntity('analysis.entities', entity.id)" 
+        on-more="setCurrentEntity(entity, 'entity')" 
         
         entity="entity" 
         ng-repeat="entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes">

@@ -385,17 +385,53 @@
       $scope.relatedPosts = void 0;
       $scope.newEntity = AnalysisService.createEntity();
       $scope.currentEntity = void 0;
-      $scope.setCurrentEntity = function(targetEntity) {
-        var entity;
-        entity = $parse(targetEntity)($scope);
-        $log.debug("Going to set current entity ...");
-        $log.debug(entity);
-        return $scope.currentEntity = entity;
+      $scope.currentEntityType = void 0;
+      $scope.setCurrentEntity = function(entity, entityType) {
+        $log.debug("Going to set current entity " + entity.id + " as " + entityType);
+        $scope.currentEntity = entity;
+        $scope.currentEntityType = entityType;
+        switch (entityType) {
+          case 'entity':
+            return $log.debug("A standard entity");
+          case 'topic':
+            return $log.debug("An entity used as topic");
+          case 'publishingPlace':
+            return $log.debug("An entity used as publishing place");
+          default:
+            $log.debug("A new entity");
+            return $scope.prepareNewEntity();
+        }
       };
-      $scope.resetCurrentEntity = function() {
-        return $scope.currentEntity = void 0;
+      $scope.unsetCurrentEntity = function() {
+        switch ($scope.currentEntityType) {
+          case 'entity':
+            $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
+            break;
+          case 'topic':
+            $scope.topics[$scope.currentEntity.id] = $scope.currentEntity;
+            break;
+          case 'publishingPlace':
+            $scope.suggestedPlaces[$scope.currentEntity.id] = $scope.currentEntity;
+            break;
+          default:
+            $log.debug("Unset a new entity");
+            $scope.addNewEntityToAnalysis();
+        }
+        $scope.currentEntity = void 0;
+        return $scope.currentEntityType = void 0;
       };
       $scope.selectedEntities = {};
+      $scope.prepareNewEntity = function() {
+        if (!$scope.isThereASelection && ($scope.annotation == null)) {
+          $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation");
+          return;
+        }
+        if ($scope.annotation != null) {
+          $log.debug("There is a current annotation already. Nothing to do");
+          return;
+        }
+        return $scope.createTextAnnotationFromCurrentSelection();
+      };
       $scope.copiedOnClipboard = function() {
         return $log.debug("Something copied on clipboard");
       };
@@ -468,8 +504,8 @@
         var ref1;
         return (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0);
       };
-      $scope.addNewEntityToAnalysis = function(scope) {
-        var annotation;
+      $scope.addNewEntityToAnalysis = function() {
+        var annotation, scope;
         if ($scope.newEntity.sameAs) {
           $scope.newEntity.sameAs = [$scope.newEntity.sameAs];
         }
@@ -482,6 +518,9 @@
         });
         $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
         $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
+        scope = {
+          id: 'label'
+        };
         return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
@@ -658,23 +697,6 @@
           return configuration.defaultWordLiftPath + 'templates/wordlift-directive-classification-box.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
-          $scope.addEntityFormIsVisible = false;
-          $scope.openAddEntityForm = function() {
-            if (!$scope.isThereASelection && ($scope.annotation == null)) {
-              $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotations.");
-              return;
-            }
-            $scope.addEntityFormIsVisible = true;
-            if ($scope.annotation != null) {
-              $log.debug("There is a current annotation already. Nothing to do");
-              return;
-            }
-            return $scope.createTextAnnotationFromCurrentSelection();
-          };
-          $scope.closeAddEntityForm = function() {
-            $scope.addEntityFormIsVisible = false;
-            return $scope.addNewEntityToAnalysis($scope.box);
-          };
           return $scope.hasSelectedEntities = function() {
             return Object.keys($scope.selectedEntities[$scope.box.id]).length > 0;
           };
@@ -715,27 +737,43 @@
           return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
-          var availableTypes, j, len, ref, type;
-          $scope.removeCurrentImage = function() {
+          $scope.configuration = configuration;
+          $scope.currentCategory = void 0;
+          $scope.$watch('entity.id', function(entityId) {
+            var category, ref;
+            if (entityId != null) {
+              $log.debug("Entity updated to " + entityId);
+              category = configuration.getCategoryForType((ref = $scope.entity) != null ? ref.mainType : void 0);
+              $log.debug("Going to update current category to " + category);
+              return $scope.currentCategory = category;
+            }
+          });
+          $scope.setCurrentCategory = function(categoryId) {
+            return $scope.currentCategory = categoryId;
+          };
+          $scope.unsetCurrentCategory = function() {
+            var ref;
+            $scope.currentCategory = void 0;
+            return (ref = $scope.entity) != null ? ref.mainType = void 0 : void 0;
+          };
+          $scope.setType = function(entityType) {
+            var ref, ref1;
+            if (entityType === ((ref = $scope.entity) != null ? ref.mainType : void 0)) {
+              return;
+            }
+            return (ref1 = $scope.entity) != null ? ref1.mainType = entityType : void 0;
+          };
+          $scope.isCurrentType = function(entityType) {
+            var ref;
+            return ((ref = $scope.entity) != null ? ref.mainType : void 0) === entityType;
+          };
+          $scope.getAvailableTypes = function() {
+            return configuration.getTypesForCategoryId($scope.currentCategory);
+          };
+          $scope.removeCurrentImage = function(index) {
             var removed;
-            removed = $scope.entity.images.shift();
+            removed = $scope.entity.images.splice(index, 1);
             return $log.warn("Removed " + removed + " from entity " + $scope.entity.id + " images collection");
-          };
-          $scope.getCurrentTypeUri = function() {
-            var j, len, ref, type;
-            ref = configuration.types;
-            for (j = 0, len = ref.length; j < len; j++) {
-              type = ref[j];
-              if (type.css === ("wl-" + $scope.entity.mainType)) {
-                return type.uri;
-              }
-            }
-          };
-          $scope.isInternal = function() {
-            if ($scope.entity.id.startsWith(configuration.datasetUri)) {
-              return true;
-            }
-            return false;
           };
           $scope.linkTo = function(linkType) {
             return $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType;
@@ -747,43 +785,9 @@
           $scope.setSameAs = function(uri) {
             return $scope.entity.sameAs = uri;
           };
-          $scope.checkEntityId = function(uri) {
-            return /^(f|ht)tps?:\/\//i.test(uri);
+          return $scope.isNew = function(uri) {
+            return !/^(f|ht)tps?:\/\//i.test($scope.entity.id);
           };
-          availableTypes = [];
-          ref = configuration.types;
-          for (j = 0, len = ref.length; j < len; j++) {
-            type = ref[j];
-            availableTypes[type.css.replace('wl-', '')] = type.uri;
-          }
-          $scope.supportedTypes = (function() {
-            var k, len1, ref1, results1;
-            ref1 = configuration.types;
-            results1 = [];
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              type = ref1[k];
-              results1.push({
-                id: type.css.replace('wl-', ''),
-                name: type.uri
-              });
-            }
-            return results1;
-          })();
-          if ($scope.box) {
-            return $scope.supportedTypes = (function() {
-              var k, len1, ref1, results1;
-              ref1 = $scope.box.registeredTypes;
-              results1 = [];
-              for (k = 0, len1 = ref1.length; k < len1; k++) {
-                type = ref1[k];
-                results1.push({
-                  id: type,
-                  name: availableTypes[type]
-                });
-              }
-              return results1;
-            })();
-          }
         }
       };
     }
@@ -1514,7 +1518,46 @@
     _configuration = void 0;
     provider = {
       setConfiguration: function(configuration) {
-        return _configuration = configuration;
+        _configuration = configuration;
+        _configuration.getCategoryForType = function(entityType) {
+          var category, j, len, ref;
+          if (!entityType) {
+            return void 0;
+          }
+          ref = this.classificationBoxes;
+          for (j = 0, len = ref.length; j < len; j++) {
+            category = ref[j];
+            if (indexOf.call(category.registeredTypes, entityType) >= 0) {
+              return category.id;
+            }
+          }
+        };
+        _configuration.getTypesForCategoryId = function(categoryId) {
+          var category, j, len, ref;
+          if (!categoryId) {
+            return [];
+          }
+          ref = this.classificationBoxes;
+          for (j = 0, len = ref.length; j < len; j++) {
+            category = ref[j];
+            if (categoryId === category.id) {
+              return category.registeredTypes;
+            }
+          }
+        };
+        _configuration.isInternal = function(uri) {
+          return uri.startsWith(this.datasetUri);
+        };
+        return _configuration.getUriForType = function(mainType) {
+          var j, len, ref, type;
+          ref = this.types;
+          for (j = 0, len = ref.length; j < len; j++) {
+            type = ref[j];
+            if (type.css === ("wl-" + mainType)) {
+              return type.uri;
+            }
+          }
+        };
       },
       $get: function() {
         return _configuration;

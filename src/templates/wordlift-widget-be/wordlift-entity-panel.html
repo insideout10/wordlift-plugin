@@ -10,23 +10,41 @@
           Category
         </h2>
         <!-- AFTER FOR THE ">" -->
+
+        <!-- CATEGORIA SELEZIONATA -->
+        <span 
+          class="wl-widget-entity-panel-top-options"
+          ng-click="unsetCurrentCategory()"
+          ng-show="currentCategory">
+          {{currentCategory}}
+        </span>
       </div>
 
-      <div class="wl-widget-entity-panel-top-category-opt">
-        <span class="wl-widget-entity-panel-top-options">
-          what
+      <!-- LISTA DELLE CATEGORIE -->
+      <div 
+        class="wl-widget-entity-panel-top-category-opt" 
+        ng-hide="currentCategory">
+        <span 
+          class="wl-widget-entity-panel-top-options"
+          ng-click="setCurrentCategory(box.id)"
+          ng-repeat="box in configuration.classificationBoxes">
+          {{box.id}}
         </span>
-        <span class="wl-widget-entity-panel-top-options">
-          what
-        </span>
-        <span class="wl-widget-entity-panel-top-options">
-          what
-        </span>
-        <span class="wl-widget-entity-panel-top-options">
-          what
+      </div>
+      <div 
+        class="wl-widget-entity-panel-top-category-opt" 
+        ng-show="currentCategory">
+        <!-- TIPI COLLEGATI ALLA CATEGORIA SELEZIONATA -->
+        <span 
+          class="wl-widget-entity-panel-top-options" 
+          ng-class="{ 'wl-selected': isCurrentType(type) }"
+          ng-click="setType(type)"
+          ng-repeat="type in getAvailableTypes()">
+          {{type}}
         </span>
       </div>
     </div>
+
 
     <!-- INPUT CENTRAL SECTION -->
     <!-- ENTITY LABEL INPUT -->
@@ -34,19 +52,17 @@
       <h3 class="wl-widget-entity-panel-input-label">
         Entity label
       </h3>
-      <input type="text" ng-model="entity.label">
+      <input type="text" ng-model="entity.label" />
     </div>
 
     <!-- SAME ENTITY AS -->
     <div class="wl-widget-entity-panel-input">
       <h3 class="wl-widget-entity-panel-input-label">
-        Same entity as
+        Entity sameAs
       </h3>
-      <input type="text" name="" id="">
-
+      <input type="text" ng-value="sameAs" disabled ng-repeat="sameAs in entity.sameAs" />
       <!-- ENTITY CARD WRAP -->
       <div class="wl-widget-entity-panel-card-wrap">
-
         <!-- SINGLE CARD -->
         <div class="wl-widget-entity-panel-card">
           <input type="radio" name="a" id="1">
@@ -65,7 +81,9 @@
 
               <!-- OUTPUT ICON -->
               <a href="">
-                <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg" class="wl-widget-entity-panel-card-detail-icon">
+                <img 
+                  ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg" 
+                  class="wl-widget-entity-panel-card-detail-icon" />
               </a>
             </div>
           </div>
@@ -78,21 +96,21 @@
         <h3 class="wl-widget-entity-panel-input-label">
           Entity description
         </h3>
-      <input type="text" name="" id="">
+      <input type="text" ng-model="entity.description" />
     </div>
 
     <!-- ENTITY IMAGES -->
-    <div class="wl-widget-entity-panel-input">
+    <div class="wl-widget-entity-panel-input" ng-show="entity.images.length > 0">
       <h3 class="wl-widget-entity-panel-input-label">
           Entity images
       </h3>
 
       <div class="wl-widget-entity-panel-images-wrap">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-5.png" class="wl-widget-entity-panel-images">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-7.png" class="wl-widget-entity-panel-images">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-8.png" class="wl-widget-entity-panel-images">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-2.png" class="wl-widget-entity-panel-images">
-        <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-4.png" class="wl-widget-entity-panel-images">
+        <img 
+          ng-src="{{image}}" 
+          wl-on-error="removeCurrentImage($index)"
+          ng-repeat="image in entity.images" 
+          class="wl-widget-entity-panel-images" />
       </div>
     </div>
 

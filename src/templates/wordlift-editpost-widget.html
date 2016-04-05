@@ -15,7 +15,7 @@
 
   <!-- CREATE NEW ENTITY BTN -->
   <div 
-    ng-click="setCurrentEntity('newEntity')"
+    ng-click="setCurrentEntity(newEntity)"
     ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html'">
   </div>
 
@@ -25,7 +25,7 @@
     <!-- ENTITY PANEL -->
     <wl-entity-form 
       entity="currentEntity" 
-      on-submit="resetCurrentEntity()">
+      on-submit="unsetCurrentEntity()">
     </wl-entity-form>
     </div>
   </div>

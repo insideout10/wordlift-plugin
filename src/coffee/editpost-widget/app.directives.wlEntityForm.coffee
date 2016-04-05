@@ -10,38 +10,48 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
-      $scope.removeCurrentImage = ()->
-        removed = $scope.entity.images.shift()
+      $scope.configuration = configuration
+      $scope.currentCategory = undefined
+
+      $scope.$watch 'entity.id', (entityId)->
+        if entityId?
+          $log.debug "Entity updated to #{entityId}"
+          category = configuration.getCategoryForType $scope.entity?.mainType
+          $log.debug "Going to update current category to #{category}"
+          $scope.currentCategory = category
+
+      $scope.setCurrentCategory = (categoryId)->
+        $scope.currentCategory = categoryId
+
+      $scope.unsetCurrentCategory = ()->
+        $scope.currentCategory = undefined 
+        # Entity type has to be reset too        
+        $scope.entity?.mainType = undefined
+
+      $scope.setType = (entityType)->
+        return if entityType is $scope.entity?.mainType
+        $scope.entity?.mainType = entityType
+      
+      $scope.isCurrentType = (entityType)->
+        return $scope.entity?.mainType is entityType
+        
+      $scope.getAvailableTypes = ()->
+        return configuration.getTypesForCategoryId $scope.currentCategory
+
+      $scope.removeCurrentImage = (index)->
+        removed = $scope.entity.images.splice index, 1
         $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
-
-      $scope.getCurrentTypeUri = ()->
-        for type in configuration.types
-          if type.css is "wl-#{$scope.entity.mainType}"
-            return type.uri
-
-      $scope.isInternal = ()->
-        if $scope.entity.id.startsWith configuration.datasetUri
-          return true
-        return false
 
       $scope.linkTo = (linkType)->
         $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
 
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
+      
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
 
-      $scope.checkEntityId = (uri)->
-        /^(f|ht)tps?:\/\//i.test(uri)
-
-      availableTypes = []
-      for type in configuration.types
-        availableTypes[ type.css.replace('wl-','') ] = type.uri
-
-      $scope.supportedTypes = ({ id: type.css.replace('wl-',''), name: type.uri } for type in configuration.types)
-      if $scope.box
-        $scope.supportedTypes = ({ id: type, name: availableTypes[ type ] } for type in $scope.box.registeredTypes)
-
+      $scope.isNew = (uri)->
+        return !/^(f|ht)tps?:\/\//i.test $scope.entity.id 
 
 ])
