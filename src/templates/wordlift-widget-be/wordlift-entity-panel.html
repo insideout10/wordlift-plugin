@@ -61,11 +61,15 @@
         Entity sameAs
       </h3>
       <input type="text" ng-value="sameAs" disabled ng-repeat="sameAs in entity.sameAs" />
+
       <!-- ENTITY CARD WRAP -->
       <div class="wl-widget-entity-panel-card-wrap">
+
         <!-- SINGLE CARD -->
         <div class="wl-widget-entity-panel-card">
-          <input type="radio" name="a" id="1">
+          <div class="wl-widget-entity-panel-card-radio wl-radio-disabled">
+
+          </div>
           <div class="wl-widget-entity-panel-card-details">
 
             <!-- ENTITY LABEL -->
@@ -88,6 +92,36 @@
             </div>
           </div>
         </div>
+
+        <!-- SINGLE CARD -->
+        <div class="wl-widget-entity-panel-card">
+          <div class="wl-widget-entity-panel-card-radio wl-radio-enabled">
+
+          </div>
+
+          <div class="wl-widget-entity-panel-card-details">
+
+            <!-- ENTITY LABEL -->
+            <h3>
+              New York
+            </h3>
+            <div class="wl-widget-entity-panel-card-details-bottom">
+
+              <!-- DB ID -->
+              <p>
+                dbpedia
+              </p>
+
+              <!-- OUTPUT ICON -->
+              <a href="">
+                <img
+                  ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg"
+                  class="wl-widget-entity-panel-card-detail-icon" />
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -106,11 +140,14 @@
       </h3>
 
       <div class="wl-widget-entity-panel-images-wrap">
-        <img
+        <div
+        ng-repeat="image in entity.images"
+        class="wl-widget-entity-panel-images-outer">
+          <img
           ng-src="{{image}}"
           wl-on-error="removeCurrentImage($index)"
-          ng-repeat="image in entity.images"
           class="wl-widget-entity-panel-images" />
+        </div>
       </div>
     </div>
 
