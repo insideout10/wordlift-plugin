@@ -16,7 +16,6 @@
       display: -o-flex;
       display: flex;
       flex-direction: column;
-      align-items: center;
       background-color: @wl-brand-color;
       color: @wl-white-color;
       padding: 8px;
@@ -102,6 +101,19 @@
           box-shadow: none !important;
         }
       }
+      textarea {
+        border: none;
+        outline: none;
+        height: 120px;
+        padding: 8px;
+        box-sizing: border-box;
+        resize: none;
+        overflow-y: auto;
+        &:focus {
+          outline: none;
+          box-shadow: none !important;
+        }
+      }
       .wl-widget-entity-panel-images-wrap {
         flex-direction: row;
         display: -webkit-flex;
@@ -179,7 +191,7 @@
           }
 
           &:checked:before {
-            content:   !important;
+            content: !important;
             height: 3px;
             width: 4px;
             margin: 0;
@@ -237,7 +249,7 @@
       justify-content: space-between;
       flex-wrap: nowrap;
       width: 100%;
-      margin: 10px 0;
+      margin-top: 10px;
 
         button{
           display: -webkit-flex;
@@ -270,7 +282,7 @@
               background-color: darken(@wl-enterprise-color, 2%);
               transform: scale(1);
               outline: none;
-
+              box-shadow: none !important;
             }
           }
 
@@ -290,6 +302,7 @@
               // background-color: darken(@wl-widget-be-bg-color, 2%);
               transform: scale(1);
               outline: none;
+              box-shadow: none !important;
             }
 
             img {
@@ -312,11 +325,10 @@
               background-color: darken(@wl-brand-color, 2%);
               transform: scale(1);
               outline: none;
+              box-shadow: none !important;
             }
           }
         }
-
-
     }
   }
 }
