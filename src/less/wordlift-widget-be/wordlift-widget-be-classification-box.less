@@ -2,12 +2,9 @@
 
 	h3.wl-widget-classification-box-lead {
     color: @wl-brand-color;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 400;
     margin: 10px 0 5px 0 !important;
-    &:first-of-type{
-      margin-top: 5px !important;
-    }
   }
 
 	.wl-widget-classification-box-entity-tile-wrap {
@@ -23,9 +20,12 @@
 			align-items: center;
 			width: 240px;
 			height: 25px;
-			border: 0.5px solid @wl-brand-color;
 			background-color: @wl-white-color;
 			margin: 5px 0;
+
+			&.wl-selected {
+				border: 0.5px solid @wl-brand-color;
+			}
 
 
 		  .wl-widget-classification-box-entity-tile-name {
@@ -37,16 +37,12 @@
 				align-items: center;
 				flex-grow: 1;
 				height: 25px;
-				border-right: 0.5px solid @wl-brand-color;
-				padding: 0 4px;
+				padding: 0 6px;
 				box-sizing: border-box;
 
-				&.wl-selected {
-					background-color: @wl-brand-light-color;
-				}
 
 				h3 {
-					color: @wl-brand-color;
+					color: @wl-gray-color;
 					font-size: 11px;
 					font-weight: 400;
 				}
@@ -62,6 +58,7 @@
 				display: -o-inline-flex;
 				display: inline-flex;
 				align-items: center;
+				justify-content: center;
 				height: 25px;
 				min-width: 25px;
 				max-width: 25px;
@@ -72,20 +69,19 @@
 			}
 
 		  .wl-widget-classification-box-entity-tile-occurences {
-				border-right: 0.5px solid @wl-brand-color;
 		    h4 {
-
+					color: @wl-gray-color;
+					font-size: 11px;
+					font-weight: 400;
 				}
 			}
 		  .wl-widget-classification-box-entity-tile-storing{
-				border-right: 0.5px solid @wl-brand-color;
 		    img {
 
 				}
 			}
 
 		  .wl-widget-classification-box-entity-tile-type {
-				border-right: 0.5px solid @wl-brand-color;
 		    img {
 
 				}
