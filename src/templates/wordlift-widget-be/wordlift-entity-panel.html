@@ -12,7 +12,7 @@
         <!-- AFTER FOR THE ">" -->
 
         <!-- CATEGORIA SELEZIONATA -->
-        <span 
+        <span
           class="wl-widget-entity-panel-top-options"
           ng-click="unsetCurrentCategory()"
           ng-show="currentCategory">
@@ -21,22 +21,22 @@
       </div>
 
       <!-- LISTA DELLE CATEGORIE -->
-      <div 
-        class="wl-widget-entity-panel-top-category-opt" 
+      <div
+        class="wl-widget-entity-panel-top-category-opt"
         ng-hide="currentCategory">
-        <span 
+        <span
           class="wl-widget-entity-panel-top-options"
           ng-click="setCurrentCategory(box.id)"
           ng-repeat="box in configuration.classificationBoxes">
           {{box.id}}
         </span>
       </div>
-      <div 
-        class="wl-widget-entity-panel-top-category-opt" 
+      <div
+        class="wl-widget-entity-panel-top-category-opt"
         ng-show="currentCategory">
         <!-- TIPI COLLEGATI ALLA CATEGORIA SELEZIONATA -->
-        <span 
-          class="wl-widget-entity-panel-top-options" 
+        <span
+          class="wl-widget-entity-panel-top-options"
           ng-class="{ 'wl-selected': isCurrentType(type) }"
           ng-click="setType(type)"
           ng-repeat="type in getAvailableTypes()">
@@ -81,8 +81,8 @@
 
               <!-- OUTPUT ICON -->
               <a href="">
-                <img 
-                  ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg" 
+                <img
+                  ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon.svg"
                   class="wl-widget-entity-panel-card-detail-icon" />
               </a>
             </div>
@@ -106,16 +106,34 @@
       </h3>
 
       <div class="wl-widget-entity-panel-images-wrap">
-        <img 
-          ng-src="{{image}}" 
+        <img
+          ng-src="{{image}}"
           wl-on-error="removeCurrentImage($index)"
-          ng-repeat="image in entity.images" 
+          ng-repeat="image in entity.images"
           class="wl-widget-entity-panel-images" />
       </div>
     </div>
 
-    <h3 ng-click="onSubmit()">Chiudi</h3>
-
+    <!-- <h3 ng-click="onSubmit()">Chiudi</h3> -->
+    <!-- FOOTER BUTTONS -->
+    <div class="wl-widget-entity-panel-bottom">
+      <!-- DELETE/ABORT BTN  -->
+      <button class="wl-widget-entity-panel-del-btn">
+        Delete
+      </button>
+      <!-- OPEN DETAILS BTN -->
+      <button class="wl-widget-entity-panel-voc-btn">
+        Open in vocabulary
+        <img
+        ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon-blue.svg">
+      </button>
+      <!-- POSITIVE BTN -->
+      <button
+      ng-click="onSubmit()"
+      class="wl-widget-entity-panel-positive-btn">
+        Create
+      </button>
+    </div>
 
   </div>
 </div>
