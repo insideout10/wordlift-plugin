@@ -690,7 +690,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     scope: true
     transclude: true
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-directive-classification-box.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html'
     link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.hasSelectedEntities = ()->
@@ -782,25 +782,26 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       onSelect: '&'
       onMore: '&'
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-tile.html'
-    link: ($scope, $element, $attrs, $boxCtrl) ->				      
-      
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
+    link: ($scope, $element, $attrs, $boxCtrl) ->
+      $scope.configuration=configuration
       # Add tile to related container scope
       $boxCtrl?.addTile $scope
 
       $scope.isOpened = false
-      
+
       $scope.isInternal = ()->
         if $scope.entity.id.startsWith configuration.datasetUri
           return true
-        return false 
-       	
+        return false
+
       $scope.toggle = ()->
-        if !$scope.isOpened 
-          $boxCtrl?.closeTiles()    
+        if !$scope.isOpened
+          $boxCtrl?.closeTiles()
         $scope.isOpened = !$scope.isOpened
-        
+
   ])
+
 angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
 # The wlEntityInputBoxes prints the inputs and textareas with entities data.
 .directive('wlEntityInputBox', ['configuration', '$log', (configuration, $log)->

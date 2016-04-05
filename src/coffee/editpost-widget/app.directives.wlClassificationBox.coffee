@@ -4,7 +4,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
     scope: true
     transclude: true
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-directive-classification-box.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html'
     link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.hasSelectedEntities = ()->

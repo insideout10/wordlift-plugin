@@ -1,0 +1,33 @@
+<!-- ENTITY TILE SELECTED -->
+<div class="wl-widget-classification-box-entity-tile">
+
+  <!-- ENTITY NAME -->
+  <div class="wl-widget-classification-box-entity-tile-name wl-selected">
+    <h3>
+      {{entity.label}}
+    </h3>
+  </div>
+
+  <!-- ENTITY OCCURRENCES -->
+  <div class="wl-widget-classification-box-entity-tile-occurences">
+    <h4>
+      {{entity.occurrences.length}}
+    </h4>
+  </div>
+
+  <!-- ENTITY STORING: GLOBAL-LOCAL -->
+  <div class="wl-widget-classification-box-entity-tile-storing">
+    <img src="">
+  </div>
+
+  <!-- ENTITY TYPE -->
+  <div class="wl-widget-classification-box-entity-tile-type">
+    <img src="">
+  </div>
+
+  <!-- LINK TO VOC -->
+  <div class="wl-widget-classification-box-entity-tile-voc">
+    <img
+     ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon-blue.svg">
+  </div>
+</div>

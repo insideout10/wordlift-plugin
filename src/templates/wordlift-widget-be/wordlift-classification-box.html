@@ -1,5 +1,4 @@
 <!-- CLASSIFICATION BOX  -->
-
 <div class="wl-tab-lead">
   <div class="wl-tab-lead-wrap" ng-click="toggleCurrentSection('content-classification')">
     <h1 class="wl-tab-lead-text">
@@ -13,19 +12,20 @@
   </div>
 </div>
 
-<div class="wl-tab-wrap" 
+
+<div class="wl-tab-wrap"
   ng-show="isCurrentSection('content-classification')">
-  
+
   <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
 
     <div ng-hide="annotation" class="wl-without-annotation">
-      <wl-entity-tile 
-        show-confidence="false" 
-        is-selected="isEntitySelected(entity, box)" 
-        on-select="onSelectedEntityTile(entity, box)" 
-        on-more="setCurrentEntity(entity, 'entity')" 
-        
-        entity="entity" 
+      <wl-entity-tile
+        show-confidence="false"
+        is-selected="isEntitySelected(entity, box)"
+        on-select="onSelectedEntityTile(entity, box)"
+        on-more="setCurrentEntity(entity, 'entity')"
+
+        entity="entity"
         ng-repeat="entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes">
       </wl-entity-tile>
     </div>

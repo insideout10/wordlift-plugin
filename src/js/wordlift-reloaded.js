@@ -696,7 +696,7 @@
         scope: true,
         transclude: true,
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-classification-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           return $scope.hasSelectedEntities = function() {
@@ -808,9 +808,10 @@
           onMore: '&'
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-tile.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html';
         },
         link: function($scope, $element, $attrs, $boxCtrl) {
+          $scope.configuration = configuration;
           if ($boxCtrl != null) {
             $boxCtrl.addTile($scope);
           }
