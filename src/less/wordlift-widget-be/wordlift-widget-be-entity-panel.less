@@ -221,9 +221,13 @@
             margin: 2px;
             margin-right: 5px;
             box-sizing: border-box;
-            border: 0.5px solid @wl-input-no-active-color;
             border-radius: 50%;
+            border: 0.5px solid;
             box-shadow: none !important;
+
+            &.wl-radio-disabled {
+              border-color: @wl-input-no-active-color;
+            }
 
             &.wl-radio-enabled {
               border-color: @wl-brand-color;

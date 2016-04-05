@@ -109,7 +109,7 @@
             transform: scale(1);
           }
 
-          input[type=radio] {
+          .wl-widget-article-metadata-topic-radio  {
             display: -webkit-flex;
             display: -moz-flex;
             display: -ms-flex;
@@ -123,28 +123,34 @@
             margin: 2px;
             margin-right: 5px;
             box-sizing: border-box;
-            border: 0.5px solid @wl-input-no-active-color;
+            border-radius: 50%;
+            border: 0.5px solid;
             box-shadow: none !important;
 
-            &:checked {
-              border-color: @wl-brand-color;
+            &.wl-radio-disabled {
+              border-color: @wl-input-no-active-color;
             }
 
-            &:checked:before {
-              content: " " !important;
-              height: 3px;
-              width: 4px;
-              margin: 0;
-              margin-top: -1px;
-              border: 0.5px solid @wl-brand-color;
-              border-top: none;
-              border-right: none;
-              border-radius: 0px;
-              transform: rotate(-45deg);
-              transform-origin: center;
-              background-color: transparent;
+            &.wl-radio-enabled {
+              border-color: @wl-brand-color;
+
+              &:before {
+                content: "" !important;
+                height: 3px;
+                width: 4px;
+                margin: 0;
+                margin-top: -1px;
+                border: 0.5px solid @wl-brand-color;
+                border-top: none;
+                border-right: none;
+                border-radius: 0px;
+                transform: rotate(-45deg);
+                transform-origin: center;
+                background-color: transparent;
+              }
             }
           }
+
 
         .wl-widget-article-metadata-topic-single-details {
           display: -webkit-flex;
