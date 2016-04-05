@@ -19,42 +19,23 @@
 
     .wl-widget-post-img {
       position: relative;
-      margin-right: 5px;
+      min-width: 80px;
+      max-width: 80px;
+      min-height: 80px;
+      max-height: 80px;
+      display: block;
+      overflow: hidden;
+      margin-right: 8px;
+
       img {
-        width: 80px;
-        height: 80px;
-      }
-      span.wl-widget-post-link {
         position: absolute;
-        z-index: 20;
-        top: 30px;
-        left: 40px;
-        transform: translateX(-50%);
-        padding: 3px 5px;
-        margin: 0;
-        background-color: @wl-brand-color;
-        border: none;
-        white-space: nowrap;
-        color: @wl-white-color;
-        text-transform: uppercase;
-        font-weight: 600;
-        font-size: 10px;
-        transition: @wl-anime-global-time;
-
-
-        &:focus {
-          outline: none;
-        }
-
-        &:hover {
-          box-shadow: 0 2px 2px @wl-shadow-color;
-          transform: translateX(-50%) scale(1.01);
-        }
-        &:active {
-          background-color: darken(@wl-brand-color, 2%);
-          box-shadow: 0 1px 1px @wl-shadow-color;
-          transform: translateX(-50%) scale(1);
-        }
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        min-height: 100%;
+        min-width: 100%;
+        max-width: 140px;
+        max-height: 140px;
       }
     }
 
@@ -85,12 +66,62 @@
         line-height: 1.2;
         margin-bottom: 5px;
       }
-      p.wl-widget-post-prev {
-        padding: 0;
+
+      span.wl-widget-post-link {
+        display: -webkit-flex;
+        display: -moz-flex;
+        display: -ms-flex;
+        display: -o-flex;
+        display: flex;
+        justify-content: center;
+        cursor: pointer;
+        width: 100%;
+        height: 20px;
+        box-sizing: border-box;
         margin: 0;
-        font-weight: 200;
+        background-color: @wl-brand-color;
+        white-space: nowrap;
+        color: @wl-white-color;
+        text-transform: uppercase;
+        font-weight: 600;
         font-size: 10px;
-        line-height: 1.2;
+        transition: @wl-anime-global-time;
+
+        span.wl-widget-post-link-text-copied {
+          display: none;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          box-shadow: 0 2px 2px @wl-shadow-color;
+          transform: scale(1.01);
+        }
+
+        &:active {
+          background-color: darken(@wl-brand-color, 2%);
+          box-shadow: 0 1px 1px @wl-shadow-color;
+          transform: scale(1);
+        }
+
+        &.wl-widget-post-link-copied {
+          background-color: @wl-editorial-color;
+          color: @wl-brand-color;
+
+          span.wl-widget-post-link-text-copy{
+            display: none;
+          }
+
+          span.wl-widget-post-link-text-copied {
+            display: -webkit-inline-flex;
+            display: -moz-inline-flex;
+            display: -ms-inline-flex;
+            display: -o-inline-flex;
+            display: inline-flex;
+          }
+        }
       }
     }
   }

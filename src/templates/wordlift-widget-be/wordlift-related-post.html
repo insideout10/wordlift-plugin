@@ -18,12 +18,6 @@
   <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
       <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-      <wl-clipboard
-        text="post.permalink"
-        on-copied="copiedOnClipboard()"
-        class="wl-widget-post-link">
-        COPY LINK
-      </wl-clipboard>
     </div>
     <div class="wl-widget-post-details">
       <h3 class="wl-widget-post-author">
@@ -32,6 +26,81 @@
       <h1 class="wl-widget-post-title">
         {{post.post_title}}
       </h1>
+      <wl-clipboard
+        text="post.permalink"
+        on-copied="copiedOnClipboard()"
+        class="wl-widget-post-link">
+        COPY LINK
+      </wl-clipboard>
     </div>
+  </div>
+</div>
+
+<div
+  class="wl-widget-posts wl-tab-wrap">
+
+  <div class="wl-widget-post-wrap">
+    <div class="wl-widget-post-img">
+      <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-1.png" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+    </div>
+    <div class="wl-widget-post-details">
+      <h3 class="wl-widget-post-author">
+        Pinco Pallino
+        {{post.author}}
+      </h3>
+      <h1 class="wl-widget-post-title">
+        L’inchiesta Panama papers coinvolge Marine Le Pen
+        {{post.post_title}}
+      </h1>
+      <wl-clipboard
+        text="post.permalink"
+        on-copied="copiedOnClipboard()"
+        class="wl-widget-post-link">
+        COPY LINK
+      </wl-clipboard>
+    </div>
+  </div>
+</div>
+
+<div
+  class="wl-widget-posts wl-tab-wrap">
+  <div class="wl-widget-post-wrap">
+    <div class="wl-widget-post-img">
+      <img ng-src="{{configuration.defaultWordLiftPath}}images/prev-1.png" wl-fallback="{{configuration.defaultThumbnailPath}}" />
+    </div>
+
+    <!-- POST DETAILS -->
+    <div class="wl-widget-post-details">
+
+      <!-- POST AUTHOR -->
+      <h3 class="wl-widget-post-author">
+        Pinco Pallino
+        {{post.author}}
+      </h3>
+
+      <!-- POST TITLE -->
+      <h1 class="wl-widget-post-title">
+        L’inchiesta Panama papers coinvolge Marine Le Pen
+        {{post.post_title}}
+      </h1>
+
+      <!-- COPY LINK -->
+      <wl-clipboard
+      text="post.permalink"
+      on-copied="copiedOnClipboard()"
+      class="wl-widget-post-link wl-widget-post-link-copied ">
+
+      <span class="wl-widget-post-link-text-copy">
+        COPY LINK
+      </span>
+
+      <span class="wl-widget-post-link-text-copied">
+        LINK COPIED
+      </span>
+
+      </wl-clipboard>
+
+    </div>
+
   </div>
 </div>
