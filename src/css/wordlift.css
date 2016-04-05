@@ -1455,8 +1455,8 @@ h1.wl-tab-lead-text {
   margin-bottom: 5px !important;
   color: #FFFFFF;
 }
-.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label::after {
-  content: ;
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label span.wl-widget-entity-panel-top-category-label-main:after {
+  content: " ";
   opacity: 0.5;
   border-top: 4px solid transparent;
   border-left: 4px solid #FFFFFF;
@@ -1466,6 +1466,24 @@ h1.wl-tab-lead-text {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin: auto 4px;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label span.wl-widget-entity-panel-top-category-label-sub {
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label span.wl-widget-entity-panel-top-category-label-sub:after {
+  -webkit-transform: translateY(1px);
+      -ms-transform: translateY(1px);
+          transform: translateY(1px);
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+  content: url("../images/svg/wl-close-icon.svg");
+  display: inline-block;
+  margin: auto 0;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category h2.wl-widget-entity-panel-top-category-label span.wl-widget-entity-panel-top-category-label-sub:hover:after {
+  opacity: 1;
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt {
   display: -webkit-flex;
@@ -1497,6 +1515,7 @@ h1.wl-tab-lead-text {
   -webkit-transition: all 200ms ease-out;
           transition: all 200ms ease-out;
   text-transform: capitalize;
+  cursor: pointer;
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt span.wl-widget-entity-panel-top-options:last-of-type {
   margin-right: 0;

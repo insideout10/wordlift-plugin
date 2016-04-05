@@ -7,17 +7,20 @@
       <!-- LABEL DELLA CATEGORIA -->
       <div class="wl-widget-entity-panel-top-category">
         <h2 class="wl-widget-entity-panel-top-category-label">
-          Category
+          <span
+          class="wl-widget-entity-panel-top-category-label-main">
+            Category
+          </span>
+          <span
+          class="wl-widget-entity-panel-top-category-label-sub"
+          ng-click="unsetCurrentCategory()"
+          ng-show="currentCategory">
+            {{currentCategory}}
+          </span>
         </h2>
         <!-- AFTER FOR THE ">" -->
 
         <!-- CATEGORIA SELEZIONATA -->
-        <span
-          class="wl-widget-entity-panel-top-options"
-          ng-click="unsetCurrentCategory()"
-          ng-show="currentCategory">
-          {{currentCategory}}
-        </span>
       </div>
 
       <!-- LISTA DELLE CATEGORIE -->
@@ -31,6 +34,7 @@
           {{box.id}}
         </span>
       </div>
+
       <div
         class="wl-widget-entity-panel-top-category-opt"
         ng-show="currentCategory">
