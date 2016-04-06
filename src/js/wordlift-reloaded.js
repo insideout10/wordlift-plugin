@@ -456,16 +456,6 @@
         return $scope.unsetCurrentEntity();
       };
       $scope.selectedEntities = {};
-      $scope.copiedOnClipboard = function() {
-        return $log.debug("Something copied on clipboard");
-      };
-      $scope.currentImage = void 0;
-      $scope.setCurrentImage = function(image) {
-        return $scope.currentImage = image;
-      };
-      $scope.isCurrentImage = function(image) {
-        return $scope.currentImage === image;
-      };
       $scope.currentSection = void 0;
       $scope.toggleCurrentSection = function(section) {
         if ($scope.currentSection === section) {

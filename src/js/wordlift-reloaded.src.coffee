@@ -466,19 +466,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.selectedEntities = {}
   
-  # TMP
-  $scope.copiedOnClipboard = ()->
-    $log.debug "Something copied on clipboard"
-
-  # A reference to the current suggested image in the widget
-  $scope.currentImage = undefined
-  # Set the current image
-  $scope.setCurrentImage = (image)->
-    $scope.currentImage = image
-  # Check current image
-  $scope.isCurrentImage = (image)->
-    $scope.currentImage is image
-
   # A reference to the current section in the widget
   $scope.currentSection = undefined
 
