@@ -33,9 +33,19 @@
       <!-- LOCATION -->
       <div class="wl-widget-article-metadata-location">
         <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-location-icon.svg">
-        <p>
-          Rome
+        <p 
+          ng-click="onPublishedPlaceSelected(place)"
+          ng-repeat="place in suggestedPlaces">
+          {{place.label}} 
+          <!-- TMP -->
+          <strong ng-show="isPublishedPlace(place)">*</strong>
         </p>
+        <p 
+          class="wl-get-location"
+          ng-click="getLocation()"
+          ng-hide="hasPublishedPlace()">
+          Get Location
+        <p>
       </div>
 
       <!-- DATE -->
