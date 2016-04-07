@@ -30,6 +30,24 @@ $(
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
+  
+  # Add svg based spinner code
+  spinner = $("""
+    <div class="wl-widget-spinner">
+      <svg transform-origin="10 10" class="wl-widget-spinner-blogger">
+        <circle cx="10" cy="10" r="6" class="wl-blogger-shape"></circle>
+      </svg>
+      <svg transform-origin="10 10" class="wl-widget-spinner-editorial">
+        <rect x="4" y="4" width="12" height="12" class="wl-editorial-shape"></rect>
+      </svg>
+      <svg transform-origin="10 10" class="wl-widget-spinner-enterprise">
+        <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
+      </svg>
+    </div> 
+  """)
+  .appendTo('#wordlift_entities_box h3')
+
+
 
   injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
 

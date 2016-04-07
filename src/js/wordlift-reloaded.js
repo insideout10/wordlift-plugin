@@ -1,5 +1,5 @@
 (function() {
-  var $, Traslator, container, injector,
+  var $, Traslator, container, injector, spinner,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Traslator = (function() {
@@ -1613,7 +1613,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" class=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" class=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" class=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box h3'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
     var fireEvent;
     if (editor.id !== "content") {
       return;
