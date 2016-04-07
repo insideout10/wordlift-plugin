@@ -1019,7 +1019,7 @@
         var annotation, annotationId, ea, em, entity, id, index, l, len2, len3, len4, localEntity, local_confidence, m, n, originalTopics, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, topic;
         originalTopics = data.topics;
         data.topics = {};
-        if (originalTopics) {
+        if (originalTopics != null) {
           for (l = 0, len2 = originalTopics.length; l < len2; l++) {
             topic = originalTopics[l];
             topic.id = topic.uri;
