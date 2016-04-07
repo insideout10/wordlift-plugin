@@ -941,10 +941,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
   
     originalTopics = data.topics
     data.topics = {}
-    $log.debug "++++++++++++++++++++"
-    $log.debug data.entities
 
-    if originalTopics
+    if originalTopics?
       for topic in originalTopics
         
         topic.id = topic.uri

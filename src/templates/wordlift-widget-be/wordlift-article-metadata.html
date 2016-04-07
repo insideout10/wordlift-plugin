@@ -55,25 +55,30 @@
       </h2>
 
       <!-- SINGLE TOPIC -->
-      <div class="wl-widget-article-metadata-topic-single" ng-click="onEntitySelect()">
+      <div 
+        class="wl-widget-article-metadata-topic-single" 
+        ng-click="onTopicSelected(topic)"
+        ng-repeat="(id, topic) in analysis.topics">
 
         <!-- TOPIC RADIO BTN -->
-        <div class="wl-widget-article-metadata-topic-radio wl-radio-enabled"></div>
+        <div 
+          class="wl-widget-article-metadata-topic-radio"
+          ng-class="{ 'wl-radio-enabled' : isTopic(topic) }"
+          ></div>
 
         <!-- TOPIC DETAILS -->
         <div class="wl-widget-article-metadata-topic-single-details">
 
           <!-- TOPIC TITLE -->
           <h3>
-            {{entity.label}}
+            {{topic.label}}
           </h3>
 
           <div class="wl-widget-article-metadata-topic-single-details-bottom">
 
             <!-- TOPIC PROGRESS BAR -->
             <div class="wl-widget-article-metadata-topic-bar">
-
-              <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{entity.confidence*100}}%">
+              <div class="wl-widget-article-metadata-topic-bar-progress" style="width:{{topic.confidence*100}}%">
                 <!-- display the progress bar  -->
               </div>
 
