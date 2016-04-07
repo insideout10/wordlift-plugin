@@ -21,20 +21,25 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
-.directive('wlClipboard', ['$document', '$log', ($document, $log)->
+.directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
   restrict: 'E'
   scope:
     text: '='
     onCopied: '&'
   transclude: true
   template: """
-    <span class="wl-widget-post-link" ng-click="copyToClipboard()">
+    <span 
+      class="wl-widget-post-link" 
+      ng-class="{'wl-widget-post-link-copied' : $copied}"
+      ng-click="copyToClipboard()">
       <ng-transclude></ng-transclude>
       <input type="text" ng-value="text" />
     </span>
   """
   link: ($scope, $element, $attrs, $ctrl) ->  
     
+    $scope.$copied = false
+
     $scope.node = $element.find 'input'
     $scope.node.css 'position', 'absolute'
     $scope.node.css 'left', '-10000px'
@@ -53,10 +58,17 @@ angular.module('wordlift.utils.directives', [])
         unless $document[0].execCommand 'copy'
            $log.warn "Error on clipboard copy for #{text}"
         selection.removeAllRanges()
+        # Update copied status and reset after 3 seconds
+        $scope.$copied = true
+        $timeout(()->
+          $log.debug "Going to reset $copied status"
+          $scope.$copied = false
+        , 3000)
+
         # Execute onCopied callback
         if angular.isFunction($scope.onCopied)
           $scope.$evalAsync $scope.onCopied()
-                        
+          
       finally
         $document[0].body.style.webkitUserSelect = ''
 ])
