@@ -34,13 +34,13 @@ $(
   # Add svg based spinner code
   spinner = $("""
     <div class="wl-widget-spinner">
-      <svg transform-origin="10 10" class="wl-widget-spinner-blogger">
+      <svg transform-origin="10 10" class="wl-widget-spinner-blogger wl-spinner-running">
         <circle cx="10" cy="10" r="6" class="wl-blogger-shape"></circle>
       </svg>
-      <svg transform-origin="10 10" class="wl-widget-spinner-editorial">
+      <svg transform-origin="10 10" class="wl-widget-spinner-editorial wl-spinner-running">
         <rect x="4" y="4" width="12" height="12" class="wl-editorial-shape"></rect>
       </svg>
-      <svg transform-origin="10 10" class="wl-widget-spinner-enterprise">
+      <svg transform-origin="10 10" class="wl-widget-spinner-enterprise wl-spinner-running">
         <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
       </svg>
     </div> 
@@ -67,9 +67,9 @@ $(
     # starts before the analysis is properly embedded
     injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
 
-# wp.mce.views uses toViews() method from WP 3.8 to 4.1
-# and setMarkers() method from WP 4.2 to 4.3 to replace
-# available shortcodes with coresponding views markup
+      # wp.mce.views uses toViews() method from WP 3.8 to 4.1
+      # and setMarkers() method from WP 4.2 to 4.3 to replace
+      # available shortcodes with coresponding views markup
       for method in ['setMarkers', 'toViews']
         if wp.mce.views[method]?
 
@@ -81,10 +81,12 @@ $(
           $rootScope.$on "analysisEmbedded", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
+            $('wl-widget-spinner svg').removeClass('wl-spinner-running')
 
           $rootScope.$on "analysisFailed", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
+            $('wl-widget-spinner svg').removeClass('wl-spinner-running')
 
           break
     ])
