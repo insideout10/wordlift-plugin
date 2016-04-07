@@ -45,7 +45,7 @@ $(
       </svg>
     </div> 
   """)
-  .appendTo('#wordlift_entities_box h3')
+  .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
 
 
