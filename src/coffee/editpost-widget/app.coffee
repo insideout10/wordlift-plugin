@@ -52,7 +52,10 @@ $(
   # Update spinner
   injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
     $rootScope.$on 'analysisServiceStatusUpdated', (event, status) ->
-      $log.debug "Analysis status changed in #{status}"
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
+
+    $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
   ])

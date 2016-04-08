@@ -576,11 +576,13 @@
               $scope.suggestedPlaces[id] = entity;
             }
           }
-          return $scope.isGeolocationRunning = false;
+          $scope.isGeolocationRunning = false;
+          return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         });
       });
       $scope.$on("geoLocationError", function(event, error) {
-        return $scope.isGeolocationRunning = false;
+        $scope.isGeolocationRunning = false;
+        return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
       });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
         var id, ref1, results1;
@@ -669,6 +671,7 @@
       };
       $scope.getLocation = function() {
         $scope.isGeolocationRunning = true;
+        $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         return GeoLocationService.getLocation();
       };
       $scope.isPublishedPlace = function(entity) {
@@ -1615,9 +1618,13 @@
 
   $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
     '$rootScope', '$log', function($rootScope, $log) {
-      return $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
+      $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
         var css;
-        $log.debug("Analysis status changed in " + status);
+        css = status ? 'wl-spinner-running' : '';
+        return $('.wl-widget-spinner svg').attr('class', css);
+      });
+      return $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
+        var css;
         css = status ? 'wl-spinner-running' : '';
         return $('.wl-widget-spinner svg').attr('class', css);
       });
