@@ -2176,6 +2176,8 @@ h1.wl-tab-lead-text {
 .wl-spinner-running {
   -webkit-animation-play-state: running !important;
   animation-play-state: running !important;
+  -webkit-animation: wlTHink;
+  animation: wlTHink;
 }
 .wl-widget-spinner {
   display: -webkit-inline-flex;
@@ -2202,46 +2204,34 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-spinner svg#wl-widget-spinner-blogger {
   fill: #007AFF;
-  -webkit-animation: wlTHink;
-  animation: wlTHink;
   -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-play-state: paused;
-  animation-play-state: paused;
+          animation-iteration-count: infinite;
   -webkit-animation-timing-function: ease-in-out;
-  animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
   -webkit-animation-duration: 1.2s;
-  animation-duration: 1.2s;
+          animation-duration: 1.2s;
 }
 .wl-widget-spinner svg#wl-widget-spinner-editorial {
   fill: #FCC207;
-  -webkit-animation: wlTHink;
-  animation: wlTHink;
   -webkit-animation-delay: 0.4s;
-  animation-delay: 0.4s;
+          animation-delay: 0.4s;
   -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-play-state: paused;
-  animation-play-state: paused;
+          animation-iteration-count: infinite;
   -webkit-animation-timing-function: ease-in-out;
-  animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
   -webkit-animation-duration: 1.2s;
-  animation-duration: 1.2s;
+          animation-duration: 1.2s;
 }
 .wl-widget-spinner svg#wl-widget-spinner-enterprise {
   fill: #FF2222;
-  -webkit-animation: wlTHink;
-  animation: wlTHink;
   -webkit-animation-delay: 0.8s;
-  animation-delay: 0.8s;
+          animation-delay: 0.8s;
   -webkit-animation-iteration-count: infinite;
-  animation-iteration-count: infinite;
-  -webkit-animation-play-state: paused;
-  animation-play-state: paused;
+          animation-iteration-count: infinite;
   -webkit-animation-timing-function: ease-in-out;
-  animation-timing-function: ease-in-out;
+          animation-timing-function: ease-in-out;
   -webkit-animation-duration: 1.2s;
-  animation-duration: 1.2s;
+          animation-duration: 1.2s;
 }
 .wl-error {
   position: relative;
