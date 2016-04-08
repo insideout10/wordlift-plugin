@@ -586,10 +586,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if 'place' is entity.mainType 
           entity.id = id
           $scope.suggestedPlaces[ id ] = entity
-      $scope.isGeolocationRunning = false    
+      $scope.isGeolocationRunning = false
+      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+    
   
   $scope.$on "geoLocationError", (event, error) ->
     $scope.isGeolocationRunning = false
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+
     
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
@@ -669,6 +673,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+
     GeoLocationService.getLocation()
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
@@ -1510,6 +1516,7 @@ $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget', [
+  'ngAnimate'
   'wordlift.ui.carousel'
   'wordlift.utils.directives'
   'wordlift.editpost.widget.providers.ConfigurationProvider',
@@ -1521,7 +1528,6 @@ angular.module('wordlift.editpost.widget', [
   'wordlift.editpost.widget.services.AnalysisService',
   'wordlift.editpost.widget.services.EditorService',
   'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
-
 ])
 
 .config((configurationProvider)->
@@ -1541,27 +1547,36 @@ $(
   # Add svg based spinner code
   spinner = $("""
     <div class="wl-widget-spinner">
-      <svg transform-origin="10 10" class="wl-widget-spinner-blogger wl-spinner-running">
+      <svg transform-origin="10 10" id="wl-widget-spinner-blogger">
         <circle cx="10" cy="10" r="6" class="wl-blogger-shape"></circle>
       </svg>
-      <svg transform-origin="10 10" class="wl-widget-spinner-editorial wl-spinner-running">
+      <svg transform-origin="10 10" id="wl-widget-spinner-editorial">
         <rect x="4" y="4" width="12" height="12" class="wl-editorial-shape"></rect>
       </svg>
-      <svg transform-origin="10 10" class="wl-widget-spinner-enterprise wl-spinner-running">
+      <svg transform-origin="10 10" id="wl-widget-spinner-enterprise">
         <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
       </svg>
     </div> 
   """)
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
-
-
   injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
+  
+  # Update spinner
+  injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
+    $rootScope.$on 'analysisServiceStatusUpdated', (event, status) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
 
-# Add WordLift as a plugin of the TinyMCE editor.
+    $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
+  ])
+
+  # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
-# This plugin has to be loaded only with the main WP "content" editor
+    # This plugin has to be loaded only with the main WP "content" editor
     return unless editor.id is "content"
 
     # Register event depending on tinymce major version
@@ -1588,12 +1603,10 @@ $(
           $rootScope.$on "analysisEmbedded", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
-            $('wl-widget-spinner svg').removeClass('wl-spinner-running')
-
+            
           $rootScope.$on "analysisFailed", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
-            $('wl-widget-spinner svg').removeClass('wl-spinner-running')
 
           break
     ])

@@ -2200,7 +2200,7 @@ h1.wl-tab-lead-text {
   height: 20px;
   width: 20px;
 }
-.wl-widget-spinner svg.wl-widget-spinner-blogger {
+.wl-widget-spinner svg#wl-widget-spinner-blogger {
   fill: #007AFF;
   -webkit-animation: wlTHink;
   animation: wlTHink;
@@ -2213,7 +2213,7 @@ h1.wl-tab-lead-text {
   -webkit-animation-duration: 1.2s;
   animation-duration: 1.2s;
 }
-.wl-widget-spinner svg.wl-widget-spinner-editorial {
+.wl-widget-spinner svg#wl-widget-spinner-editorial {
   fill: #FCC207;
   -webkit-animation: wlTHink;
   animation: wlTHink;
@@ -2228,7 +2228,7 @@ h1.wl-tab-lead-text {
   -webkit-animation-duration: 1.2s;
   animation-duration: 1.2s;
 }
-.wl-widget-spinner svg.wl-widget-spinner-enterprise {
+.wl-widget-spinner svg#wl-widget-spinner-enterprise {
   fill: #FF2222;
   -webkit-animation: wlTHink;
   animation: wlTHink;
@@ -2839,14 +2839,19 @@ h1.wl-tab-lead-text {
   border-color: #CBCBCB;
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single .wl-widget-article-metadata-topic-radio.wl-radio-enabled {
+  position: relative;
   border-color: #007AFF;
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single .wl-widget-article-metadata-topic-radio.wl-radio-enabled:before {
+  position: absolute;
+  top: 3px;
+  left: 3px;
   content: "" !important;
+  line-height: 0;
+  font-size: 0px;
   height: 3px;
   width: 4px;
   margin: 0;
-  margin-top: -1px;
   border: 0.5px solid #007AFF;
   border-top: none;
   border-right: none;
