@@ -3,6 +3,7 @@ $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget', [
+  'ngAnimate'
   'wordlift.ui.carousel'
   'wordlift.utils.directives'
   'wordlift.editpost.widget.providers.ConfigurationProvider',
@@ -14,7 +15,6 @@ angular.module('wordlift.editpost.widget', [
   'wordlift.editpost.widget.services.AnalysisService',
   'wordlift.editpost.widget.services.EditorService',
   'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
-
 ])
 
 .config((configurationProvider)->
