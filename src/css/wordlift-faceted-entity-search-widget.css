@@ -1436,25 +1436,25 @@
   text-align: left;
 }
 .wl-selected-item.wl-person {
-  border-left: #ff0000 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-place {
-  border-left: #ff9a2e 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-thing {
-  border-left: #0073aa 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-creative-work {
-  border-left: #f9f81e 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-event {
-  border-left: #642994 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-organization {
-  border-left: #8fd22a 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-local-business {
-  border-left: #8fd22a 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item .wl-deselect {
   font-family: FontAwesome;

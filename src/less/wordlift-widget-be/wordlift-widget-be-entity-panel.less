@@ -9,6 +9,42 @@
 
   .wl-widget-entity-panel-wrap {
 
+    .wl-widget-entity-panel-label {
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 100%;
+      height: 30px;
+      border: 1px solid @wl-brand-color;
+      padding: 3px;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+
+      h2.wl-widget-entity-panel-label-text {
+        color: @wl-brand-color;
+        font-size: 16px !important;
+        font-weight: 400;
+
+      }
+      .wl-widget-entity-panel-label-back {
+        margin-right: 3px;
+        cursor: pointer;
+
+        .wl-widget-entity-panel-label-back-arrow{
+          width: 0;
+					height: 0;
+					border-top: 8px solid transparent;
+					border-bottom: 8px solid transparent;
+					border-right: 8px solid @wl-input-no-active-color;
+        }
+      }
+    }
+
     .wl-widget-entity-panel-top {
       display: -webkit-flex;
       display: -moz-flex;
@@ -37,7 +73,7 @@
               border-bottom: 4px solid transparent;
               display: inline-block;
               box-sizing: border-box;
-              margin: auto 4px;
+              margin: auto 5px;
             }
           }
 
@@ -133,6 +169,13 @@
         box-sizing: border-box;
         resize: none;
         overflow-y: auto;
+        color: @wl-gray-color;
+        line-height: 1.8;
+        font-size: 11px !important;
+
+        &::select {
+          background-color: @wl-brand-light-color;
+        }
 
         &:focus {
           outline: none;
@@ -148,11 +191,15 @@
         display: -ms-flex;
         display: -o-flex;
         display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 5px;
         flex-wrap: nowrap;
         height: 90px;
-        width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
+        background-color: @wl-white-color;
 
         .wl-widget-entity-panel-images-outer {
           position: relative;
@@ -287,7 +334,7 @@
       display: -ms-flex;
       display: -o-flex;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       justify-content: space-between;
       flex-wrap: nowrap;
       width: 100%;
@@ -304,7 +351,8 @@
         color: @wl-white-color;
         white-space: nowrap;
         font-size: 10px;
-        margin-right: 10px;
+        margin: 5px 0;
+        height: 25px;
         border: none;
         cursor: pointer;
 
@@ -324,18 +372,7 @@
           margin-right: 0;
         }
 
-        &.wl-widget-entity-panel-del-btn{
-          background-color: @wl-enterprise-color;
-          width: 45px;
-
-          &:active {
-            background-color: darken(@wl-enterprise-color, 2%);
-          }
-        }
-
         &.wl-widget-entity-panel-voc-btn {
-          flex-grow: 1;
-          width: 128px;
           background-color: transparent;
           // border: 1px solid @wl-brand-color;
           color: @wl-brand-color;
@@ -343,17 +380,10 @@
           &:active {
             // background-color: darken(@wl-widget-be-bg-color, 2%);
           }
-
-          img {
-            width: 10px;
-            height: 10px;
-            margin-left: 5px;
-          }
         }
 
         &.wl-widget-entity-panel-positive-btn {
           background-color: @wl-brand-color;
-          width: 45px;
 
           &:active {
             background-color: darken(@wl-brand-color, 2%);

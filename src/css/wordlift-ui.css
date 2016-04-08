@@ -1436,25 +1436,25 @@
   text-align: left;
 }
 .wl-selected-item.wl-person {
-  border-left: #ff0000 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-place {
-  border-left: #ff9a2e 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-thing {
-  border-left: #0073aa 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-creative-work {
-  border-left: #f9f81e 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-event {
-  border-left: #642994 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-organization {
-  border-left: #8fd22a 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-local-business {
-  border-left: #8fd22a 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item .wl-deselect {
   font-family: FontAwesome;
@@ -1615,58 +1615,58 @@
   content: "\f016";
 }
 path.wl-person {
-  fill: #ff0000;
+  fill: #007AFF;
 }
 path.wl-place {
-  fill: #ff9a2e;
+  fill: #007AFF;
 }
 path.wl-creative-work {
-  fill: #f9f81e;
+  fill: #007AFF;
 }
 path.wl-organization {
-  fill: #8fd22a;
+  fill: #007AFF;
 }
 path.wl-local-business {
-  fill: #8fd22a;
+  fill: #007AFF;
 }
 path.wl-event {
-  fill: #642994;
+  fill: #007AFF;
 }
 path.wl-thing {
-  fill: #0073aa;
+  fill: #007AFF;
 }
 .wl-person {
-  background-color: #ff0000;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-place {
-  background-color: #ff9a2e;
-  color: #000000;
+  background-color: #007AFF;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-creative-work {
-  background-color: #f9f81e;
-  color: #000000;
+  background-color: #007AFF;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-organization {
-  background-color: #8fd22a;
-  color: #000000;
+  background-color: #007AFF;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-local-business {
-  background-color: #8fd22a;
-  color: #000000;
+  background-color: #007AFF;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-event {
-  background-color: #642994;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-thing {
-  background-color: #0073aa;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }

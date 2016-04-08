@@ -1,6 +1,23 @@
 <!-- ENTITY PANEL -->
 <div class="wl-widget-entity-panel">
   <div class="wl-widget-entity-panel-wrap">
+    <!-- ENTITY LABEL -->
+    <div class="wl-widget-entity-panel-label">
+      <h2
+      class="wl-widget-entity-panel-label-text"
+      ng-model="entity.label">
+        Camera dei deputati
+      </h2>
+      <div
+      class="wl-widget-entity-panel-label-back"
+      ng-click="onResetWrapper($event)">
+        <div class="wl-widget-entity-panel-label-back-arrow">
+          <!-- DISPLAY ARROW -->
+        </div>
+      </div>
+    </div>
+
+
     <!-- ENTITY TOP BLUEBOX -->
     <div class="wl-widget-entity-panel-top">
 
@@ -51,13 +68,7 @@
 
 
     <!-- INPUT CENTRAL SECTION -->
-    <!-- ENTITY LABEL INPUT -->
-    <div class="wl-widget-entity-panel-input">
-      <h3 class="wl-widget-entity-panel-input-label">
-        Entity label
-      </h3>
-      <input type="text" ng-model="entity.label" />
-    </div>
+
 
     <!-- SAME ENTITY AS -->
     <div class="wl-widget-entity-panel-input">
@@ -71,7 +82,7 @@
 
         <!-- SINGLE CARD -->
         <div class="wl-widget-entity-panel-card"
-          ng-click="addSameAs(sameAs)" 
+          ng-click="addSameAs(sameAs)"
           ng-repeat="sameAs in entity.suggestedSameAs">
 
           <div class="wl-widget-entity-panel-card-radio wl-radio-enabled">
@@ -130,21 +141,15 @@
 
     <!-- FOOTER BUTTONS -->
     <div class="wl-widget-entity-panel-bottom">
-      <!-- DELETE/ABORT BTN  -->
-      <button 
-        ng-click="onResetWrapper($event)"
-        class="wl-widget-entity-panel-del-btn">
-        Delete
-      </button>
+
       <!-- OPEN DETAILS BTN -->
-      <button 
+      <button
         ng-hide="isNew()"
         ng-click="linkToEdit($event)"
         class="wl-widget-entity-panel-voc-btn">
         Open in vocabulary
-        <img
-        ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-output-icon-blue.svg">
       </button>
+
       <!-- POSITIVE BTN -->
       <button
         ng-click="onSubmitWrapper($event)"
