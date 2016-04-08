@@ -54,7 +54,7 @@
       .wl-widget-suggested-images-grid-wrap {
         position: relative;
         width: 250px;
-        height: 250px;
+        max-height: 250px;
         display: -webkit-flex;
         display: -moz-flex;
         display: -ms-flex;
@@ -75,19 +75,19 @@
           justify-content: flex-start;
           flex-direction: column;
           flex-wrap: wrap;
-          height: 81px;
+          height: 82.5px;
           width: 250px;
           max-width: 250px;
           &:hover{
-            height: 162px;
+            height: 167px;
             max-width: 250px;
             flex-wrap: wrap;
           }
 
           .wl-widget-suggested-images-grid-single {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 82.5px;
+            height: 82.5px;
             display: -webkit-inline-flex;
             display: -moz-inline-flex;
             display: -ms-inline-flex;
@@ -113,15 +113,15 @@
               }
             }
             &:hover {
-              width: 160px;
-              height: 160px;
+              width: 165px;
+              height: 165px;
               z-index: 22;
               transform-origin: top left;
 
             }
 
             &:nth-of-type(2):hover {
-              order: -1;
+              order: 3;
             }
             &:last-of-type{
               margin: 0;

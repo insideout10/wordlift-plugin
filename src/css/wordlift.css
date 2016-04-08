@@ -2688,7 +2688,7 @@ h1.wl-tab-lead-text {
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap {
   position: relative;
   width: 250px;
-  height: 250px;
+  max-height: 250px;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flex;
@@ -2730,12 +2730,12 @@ h1.wl-tab-lead-text {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
-  height: 81px;
+  height: 82.5px;
   width: 250px;
   max-width: 250px;
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-grid-row:hover {
-  height: 162px;
+  height: 167px;
   max-width: 250px;
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
@@ -2743,8 +2743,8 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-grid-row .wl-widget-suggested-images-grid-single {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 82.5px;
+  height: 82.5px;
   display: -webkit-inline-flex;
   display: -moz-inline-flex;
   display: -ms-inline-flex;
@@ -2774,18 +2774,18 @@ h1.wl-tab-lead-text {
   max-height: 300px;
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-grid-row .wl-widget-suggested-images-grid-single:hover {
-  width: 160px;
-  height: 160px;
+  width: 165px;
+  height: 165px;
   z-index: 22;
   -webkit-transform-origin: top left;
       -ms-transform-origin: top left;
           transform-origin: top left;
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-grid-row .wl-widget-suggested-images-grid-single:nth-of-type(2):hover {
-  -webkit-box-ordinal-group: 0;
-  -webkit-order: -1;
-      -ms-flex-order: -1;
-          order: -1;
+  -webkit-box-ordinal-group: 4;
+  -webkit-order: 3;
+      -ms-flex-order: 3;
+          order: 3;
 }
 .wl-widget-suggested-images .wl-widget-suggested-images-wrap .wl-widget-suggested-images-bottom .wl-widget-suggested-images-grid-wrap .wl-widget-suggested-images-grid-row .wl-widget-suggested-images-grid-single:last-of-type {
   margin: 0;
