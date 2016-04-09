@@ -1,5 +1,5 @@
 <!--  ERROR MESSAGE  -->
-<div class="wl-{{item.level}}" ng-repeat="item in messages">
+<div class="wl-{{item.level}}" ng-repeat="item in messages" wl-hide-after="6000">
   <div class="wl-{{item.level}}-wrap-icon">
     <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-error-icon.svg" class="wl-{{item.level}}-icon">
   </div>

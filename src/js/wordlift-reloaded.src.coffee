@@ -162,6 +162,15 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
+.directive('wlHideAfter', ['$timeout', '$log', ($timeout, $log)->
+  restrict: 'A'
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    delay = +$attrs.wlHideAfter
+    $timeout(()->
+      $log.debug "Remove msg after #{delay} ms"
+      $element.hide()
+    , delay)
+])
 .directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
   restrict: 'E'
   scope:
@@ -417,7 +426,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$parse', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $parse)-> 
+.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope)-> 
 
   $scope.isRunning = false
   $scope.isGeolocationRunning = false

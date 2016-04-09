@@ -157,6 +157,20 @@
         }
       };
     }
+  ]).directive('wlHideAfter', [
+    '$timeout', '$log', function($timeout, $log) {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, $attrs, $ctrl) {
+          var delay;
+          delay = +$attrs.wlHideAfter;
+          return $timeout(function() {
+            $log.debug("Remove msg after " + delay + " ms");
+            return $element.hide();
+          }, delay);
+        }
+      };
+    }
   ]).directive('wlClipboard', [
     '$timeout', '$document', '$log', function($timeout, $document, $log) {
       return {
@@ -417,7 +431,7 @@
       };
     }
   ]).controller('EditPostWidgetController', [
-    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$parse', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $parse) {
+    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope) {
       var box, j, len, ref;
       $scope.isRunning = false;
       $scope.isGeolocationRunning = false;

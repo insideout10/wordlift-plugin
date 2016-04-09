@@ -558,6 +558,15 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
+.directive('wlHideAfter', ['$timeout', '$log', ($timeout, $log)->
+  restrict: 'A'
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    delay = +$attrs.wlHideAfter
+    $timeout(()->
+      $log.debug "Remove msg after #{delay} ms"
+      $element.hide()
+    , delay)
+])
 .directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
   restrict: 'E'
   scope:
