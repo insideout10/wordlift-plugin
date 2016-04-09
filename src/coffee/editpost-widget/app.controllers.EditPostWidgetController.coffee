@@ -93,7 +93,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         $scope.currentEntity = AnalysisService.createEntity()
 
         if !$scope.isThereASelection and !$scope.annotation?
-          $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation"
+          $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
           $scope.unsetCurrentEntity()
           return
         if $scope.annotation?
@@ -115,9 +115,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     switch $scope.currentEntityType
       when 'entity' 
         $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
+        $scope.addMsg 'The entity was updated!', 'positive'
+
       else # New entity
-        $log.debug "Unset a new entity"
+        $log.debug 'Unset a new entity'
         $scope.addNewEntityToAnalysis()
+        $scope.addMsg 'The entity was created!', 'positive'
 
     $scope.unsetCurrentEntity()
 
@@ -151,13 +154,13 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.isThereASelection = false
   $scope.configuration = configuration
-  $scope.errors = []
+  $scope.messages = []
   
   # Load related posts starting from local storage entities ids
   RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
 
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
-    $scope.addError errorMsg
+    $scope.addMsg errorMsg, 'error'
 
   $rootScope.$on "analysisServiceStatusUpdated", (event, newStatus) ->
     $scope.isRunning = newStatus
@@ -171,8 +174,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   for box in $scope.configuration.classificationBoxes
     $scope.selectedEntities[ box.id ] = {}
           
-  $scope.addError = (errorMsg)->
-    $scope.errors.unshift { type: 'error', msg: errorMsg } 
+  $scope.removeMsg = (index)->
+    $scope.messages.splice index, 1
+
+  $scope.addMsg = (msg, level)->
+    $scope.messages.unshift { level: level, text: msg } 
 
   # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->

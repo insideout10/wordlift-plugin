@@ -418,7 +418,7 @@
             $log.debug("A new entity");
             $scope.currentEntity = AnalysisService.createEntity();
             if (!$scope.isThereASelection && ($scope.annotation == null)) {
-              $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation");
+              $scope.addMsg('Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error');
               $scope.unsetCurrentEntity();
               return;
             }
@@ -438,10 +438,12 @@
         switch ($scope.currentEntityType) {
           case 'entity':
             $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
+            $scope.addMsg('The entity was updated!', 'positive');
             break;
           default:
-            $log.debug("Unset a new entity");
+            $log.debug('Unset a new entity');
             $scope.addNewEntityToAnalysis();
+            $scope.addMsg('The entity was created!', 'positive');
         }
         return $scope.unsetCurrentEntity();
       };
@@ -469,10 +471,10 @@
       $scope.images = [];
       $scope.isThereASelection = false;
       $scope.configuration = configuration;
-      $scope.errors = [];
+      $scope.messages = [];
       RelatedPostDataRetrieverService.load(Object.keys($scope.configuration.entities));
       $rootScope.$on("analysisFailed", function(event, errorMsg) {
-        return $scope.addError(errorMsg);
+        return $scope.addMsg(errorMsg, 'error');
       });
       $rootScope.$on("analysisServiceStatusUpdated", function(event, newStatus) {
         $scope.isRunning = newStatus;
@@ -486,10 +488,13 @@
         box = ref[j];
         $scope.selectedEntities[box.id] = {};
       }
-      $scope.addError = function(errorMsg) {
-        return $scope.errors.unshift({
-          type: 'error',
-          msg: errorMsg
+      $scope.removeMsg = function(index) {
+        return $scope.messages.splice(index, 1);
+      };
+      $scope.addMsg = function(msg, level) {
+        return $scope.messages.unshift({
+          level: level,
+          text: msg
         });
       };
       $scope.selectAnnotation = function(annotationId) {
