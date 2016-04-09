@@ -415,10 +415,6 @@
         switch (entityType) {
           case 'entity':
             return $log.debug("A standard entity");
-          case 'topic':
-            return $log.debug("An entity used as topic");
-          case 'publishingPlace':
-            return $log.debug("An entity used as publishing place");
           default:
             $log.debug("A new entity");
             if (!$scope.isThereASelection && ($scope.annotation == null)) {
@@ -442,12 +438,6 @@
         switch ($scope.currentEntityType) {
           case 'entity':
             $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
-            break;
-          case 'topic':
-            $scope.topics[$scope.currentEntity.id] = $scope.currentEntity;
-            break;
-          case 'publishingPlace':
-            $scope.suggestedPlaces[$scope.currentEntity.id] = $scope.currentEntity;
             break;
           default:
             $log.debug("Unset a new entity");
@@ -560,7 +550,6 @@
         $scope.newEntity = AnalysisService.createEntity();
         annotation = $scope.analysis.annotations[newAnnotationId];
         $scope.newEntity.label = annotation.text;
-        $scope.currentEntity = $scope.newEntity;
         return AnalysisService.getSuggestedSameAs(annotation.text);
       });
       $scope.$on("currentUserLocalityDetected", function(event, locality) {

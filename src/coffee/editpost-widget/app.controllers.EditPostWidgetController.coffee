@@ -89,10 +89,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     switch entityType
       when 'entity' 
         $log.debug "A standard entity"
-      when 'topic' 
-        $log.debug "An entity used as topic"
-      when 'publishingPlace' 
-        $log.debug "An entity used as publishing place"
       else # New entity
         
         $log.debug "A new entity"
@@ -117,10 +113,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     switch $scope.currentEntityType
       when 'entity' 
         $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
-      when 'topic' 
-        $scope.topics[ $scope.currentEntity.id ] = $scope.currentEntity
-      when 'publishingPlace' 
-        $scope.suggestedPlaces[ $scope.currentEntity.id ] = $scope.currentEntity
       else # New entity
         $log.debug "Unset a new entity"
         $scope.addNewEntityToAnalysis()
@@ -237,7 +229,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.newEntity.label = annotation.text
     # Look for SameAs suggestions
     # TMP
-    $scope.currentEntity = $scope.newEntity
+    # $scope.currentEntity = $scope.newEntity
     AnalysisService.getSuggestedSameAs annotation.text
     
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
