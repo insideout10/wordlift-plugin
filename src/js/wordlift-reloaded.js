@@ -782,14 +782,23 @@
             $scope.currentCategory = void 0;
             return (ref = $scope.entity) != null ? ref.mainType = void 0 : void 0;
           };
+          $scope.isSameAsOf = function(sameAs) {
+            var ref;
+            return ref = sameAs.id, indexOf.call($scope.entity.sameAs, ref) >= 0;
+          };
           $scope.addSameAs = function(sameAs) {
-            var ref, ref1, ref2;
+            var index, ref, ref1, ref2, ref3;
             if (!((ref = $scope.entity) != null ? ref.sameAs : void 0)) {
               if ((ref1 = $scope.entity) != null) {
                 ref1.sameAs = [];
               }
             }
-            return (ref2 = $scope.entity) != null ? ref2.sameAs.push(sameAs.id) : void 0;
+            if (ref2 = sameAs.id, indexOf.call($scope.entity.sameAs, ref2) >= 0) {
+              index = $scope.entity.sameAs.indexOf(sameAs.id);
+              return $scope.entity.sameAs.splice(index, 1);
+            } else {
+              return (ref3 = $scope.entity) != null ? ref3.sameAs.push(sameAs.id) : void 0;
+            }
           };
           $scope.setType = function(entityType) {
             var ref, ref1;

@@ -37,10 +37,19 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         # Entity type has to be reset too        
         $scope.entity?.mainType = undefined
 
+      $scope.isSameAsOf = (sameAs)->
+        sameAs.id in $scope.entity.sameAs
+      
       $scope.addSameAs = (sameAs)->
+        
         unless $scope.entity?.sameAs
           $scope.entity?.sameAs = []
-        $scope.entity?.sameAs.push sameAs.id
+        
+        if sameAs.id in $scope.entity.sameAs 
+          index = $scope.entity.sameAs.indexOf sameAs.id
+          $scope.entity.sameAs.splice index, 1
+        else
+          $scope.entity?.sameAs.push sameAs.id
       
       $scope.setType = (entityType)->
         return if entityType is $scope.entity?.mainType
