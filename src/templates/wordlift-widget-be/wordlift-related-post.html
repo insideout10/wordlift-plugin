@@ -30,7 +30,7 @@
 
       <!-- POST TITLE -->
       <h1 class="wl-widget-post-title">
-        {{post.post_title}}
+        {{post.post_title | filterTruncate: 5 }}
       </h1>
 
       <!-- COPY LINK -->

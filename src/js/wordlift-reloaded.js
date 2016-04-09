@@ -354,6 +354,25 @@
         return filtered;
       };
     }
+  ]).filter('filterTruncate', [
+    '$log', function($log) {
+      return function(input, words) {
+        var inputWords;
+        if (isNaN(words)) {
+          return input;
+        }
+        if (words <= 0) {
+          return '';
+        }
+        if (input) {
+          inputWords = input.split(/\s+/);
+          if (inputWords.length > words) {
+            input = inputWords.slice(0, words).join(' ') + '…';
+          }
+        }
+        return input;
+      };
+    }
   ]).filter('filterSplitInRows', [
     '$log', function($log) {
       return function(arrayLength) {
