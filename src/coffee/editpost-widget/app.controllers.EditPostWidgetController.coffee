@@ -126,6 +126,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.storeCurrentEntity = ()->
 
+    unless $scope.currentEntity.mainType
+      $scope.addMsg 'Please do not forgive to specify a type for this entity!', 'error'
+      return
+      
     switch $scope.currentEntityType
       when 'entity' 
         $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity

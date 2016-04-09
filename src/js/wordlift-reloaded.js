@@ -467,6 +467,10 @@
         return $scope.currentEntityType = void 0;
       };
       $scope.storeCurrentEntity = function() {
+        if (!$scope.currentEntity.mainType) {
+          $scope.addMsg('Please do not forgive to specify a type for this entity!', 'error');
+          return;
+        }
         switch ($scope.currentEntityType) {
           case 'entity':
             $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
