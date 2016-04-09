@@ -768,10 +768,11 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
         sameAs.id in $scope.entity.sameAs
       
       $scope.addSameAs = (sameAs)->
+        
         unless $scope.entity?.sameAs
           $scope.entity?.sameAs = []
+        
         if sameAs.id in $scope.entity.sameAs 
-          # cancello
           index = $scope.entity.sameAs.indexOf sameAs.id
           $scope.entity.sameAs.splice index, 1
         else
@@ -910,7 +911,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       id: 'local-entity-' + uniqueId 32
       label: ''
       description: ''
-      mainType: 'thing' # DefaultType
+      mainType: '' # No DefaultType
       types: []
       images: []
       confidence: 1

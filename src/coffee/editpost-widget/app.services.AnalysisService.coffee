@@ -58,7 +58,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       id: 'local-entity-' + uniqueId 32
       label: ''
       description: ''
-      mainType: 'thing' # DefaultType
+      mainType: '' # No DefaultType
       types: []
       images: []
       confidence: 1

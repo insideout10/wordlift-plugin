@@ -990,7 +990,7 @@
           id: 'local-entity-' + uniqueId(32),
           label: '',
           description: '',
-          mainType: 'thing',
+          mainType: '',
           types: [],
           images: [],
           confidence: 1,
