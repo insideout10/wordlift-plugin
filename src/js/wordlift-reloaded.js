@@ -775,7 +775,14 @@
             return $scope.onReset();
           };
           $scope.setCurrentCategory = function(categoryId) {
-            return $scope.currentCategory = categoryId;
+            var types;
+            $scope.currentCategory = categoryId;
+            types = configuration.getTypesForCategoryId(categoryId);
+            $log.debug("Going to check types");
+            $log.debug(types);
+            if (types.length === 1) {
+              return $scope.setType(types[0]);
+            }
           };
           $scope.unsetCurrentCategory = function() {
             var ref;

@@ -31,6 +31,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.setCurrentCategory = (categoryId)->
         $scope.currentCategory = categoryId
+        # If there is only one type related the new category
+        # Type selection is forced
+        types = configuration.getTypesForCategoryId( categoryId )
+        $log.debug "Going to check types"
+        $log.debug types
+        if types.length is 1
+          $scope.setType( types[0] )
+
 
       $scope.unsetCurrentCategory = ()->
         $scope.currentCategory = undefined 
