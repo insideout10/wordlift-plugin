@@ -39,8 +39,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   return (arrayLength)->
     if arrayLength
       arrayLength = Math.ceil arrayLength
-      arr = [0..arrayLength]
-      $log.debug "Going to return #{arr}"
+      arr = [0..(arrayLength-1)]
       arr
 ])
 .filter('filterEntitiesByTypes', [ '$log', ($log)->

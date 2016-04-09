@@ -357,15 +357,14 @@
   ]).filter('filterSplitInRows', [
     '$log', function($log) {
       return function(arrayLength) {
-        var arr, j, results1;
+        var arr, j, ref, results1;
         if (arrayLength) {
           arrayLength = Math.ceil(arrayLength);
           arr = (function() {
             results1 = [];
-            for (var j = 0; 0 <= arrayLength ? j <= arrayLength : j >= arrayLength; 0 <= arrayLength ? j++ : j--){ results1.push(j); }
+            for (var j = 0, ref = arrayLength - 1; 0 <= ref ? j <= ref : j >= ref; 0 <= ref ? j++ : j--){ results1.push(j); }
             return results1;
           }).apply(this);
-          $log.debug("Going to return " + arr);
           return arr;
         }
       };
