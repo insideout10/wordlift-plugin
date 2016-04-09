@@ -405,29 +405,29 @@
       $scope.isGeolocationRunning = false;
       $scope.analysis = void 0;
       $scope.relatedPosts = void 0;
-      $scope.newEntity = AnalysisService.createEntity();
       $scope.currentEntity = void 0;
       $scope.currentEntityType = void 0;
       $scope.setCurrentEntity = function(entity, entityType) {
-        $log.debug("Going to set current entity " + entity.id + " as " + entityType);
+        var annotation;
         $scope.currentEntity = entity;
         $scope.currentEntityType = entityType;
         switch (entityType) {
           case 'entity':
-            return $log.debug("A standard entity");
+            return $log.debug("An existing entity. Nothing to do");
           default:
             $log.debug("A new entity");
+            $scope.currentEntity = AnalysisService.createEntity();
             if (!$scope.isThereASelection && ($scope.annotation == null)) {
               $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation");
               $scope.unsetCurrentEntity();
               return;
             }
             if ($scope.annotation != null) {
-              $log.debug("There is a current annotation already. Nothing to do");
-              $scope.unsetCurrentEntity();
+              annotation = $scope.analysis.annotations[$scope.annotation];
+              $scope.currentEntity.label = annotation.text;
               return;
             }
-            return $scope.createTextAnnotationFromCurrentSelection();
+            return EditorService.createTextAnnotationFromCurrentSelection();
         }
       };
       $scope.unsetCurrentEntity = function() {
@@ -492,9 +492,6 @@
           msg: errorMsg
         });
       };
-      $scope.createTextAnnotationFromCurrentSelection = function() {
-        return EditorService.createTextAnnotationFromCurrentSelection();
-      };
       $scope.selectAnnotation = function(annotationId) {
         return EditorService.selectAnnotation(annotationId);
       };
@@ -510,19 +507,16 @@
       };
       $scope.addNewEntityToAnalysis = function() {
         var annotation;
-        if ($scope.newEntity.sameAs) {
-          $scope.newEntity.sameAs = [$scope.newEntity.sameAs];
-        }
-        delete $scope.newEntity.suggestedSameAs;
-        $scope.analysis.entities[$scope.newEntity.id] = $scope.newEntity;
+        delete $scope.currentEntity.suggestedSameAs;
+        $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
         annotation = $scope.analysis.annotations[$scope.annotation];
         annotation.entityMatches.push({
-          entityId: $scope.newEntity.id,
+          entityId: $scope.currentEntity.id,
           confidence: 1
         });
-        $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
-        $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
-        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id]);
+        $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
+        $scope.analysis.annotations[$scope.annotation].entities[$scope.currentEntity.id] = $scope.currentEntity;
+        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.currentEntity.id]);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
@@ -547,10 +541,11 @@
         if (newAnnotationId == null) {
           return;
         }
-        $scope.newEntity = AnalysisService.createEntity();
-        annotation = $scope.analysis.annotations[newAnnotationId];
-        $scope.newEntity.label = annotation.text;
-        return AnalysisService.getSuggestedSameAs(annotation.text);
+        if ($scope.currentEntity != null) {
+          annotation = $scope.analysis.annotations[newAnnotationId];
+          $scope.currentEntity.label = annotation.text;
+          return AnalysisService.getSuggestedSameAs(annotation.text);
+        }
       });
       $scope.$on("currentUserLocalityDetected", function(event, locality) {
         $log.debug("Looking for entities matching with " + locality);
@@ -574,15 +569,8 @@
         return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
       });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
-        var id, ref1, results1;
         $scope.annotation = annotationId;
-        ref1 = $scope.boxes;
-        results1 = [];
-        for (id in ref1) {
-          box = ref1[id];
-          results1.push(box.addEntityFormIsVisible = false);
-        }
-        return results1;
+        return $scope.unsetCurrentEntity();
       });
       $scope.$on("textAnnotationAdded", function(event, annotation) {
         $log.debug("added a new annotation with Id " + annotation.id);
@@ -590,7 +578,7 @@
         return $scope.annotation = annotation.id;
       });
       $scope.$on("sameAsRetrieved", function(event, sameAs) {
-        return $scope.newEntity.suggestedSameAs = sameAs;
+        return $scope.currentEntity.suggestedSameAs = sameAs;
       });
       $scope.$on("relatedPostsLoaded", function(event, posts) {
         return $scope.relatedPosts = posts;

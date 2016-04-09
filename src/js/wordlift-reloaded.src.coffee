@@ -411,34 +411,36 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.analysis = undefined
   $scope.relatedPosts = undefined
 
-  $scope.newEntity = AnalysisService.createEntity()
-
   # A reference to the current entity 
   $scope.currentEntity = undefined
   $scope.currentEntityType = undefined
 
   $scope.setCurrentEntity = (entity, entityType)->
 
-    $log.debug "Going to set current entity #{entity.id} as #{entityType}"
     $scope.currentEntity = entity
     $scope.currentEntityType = entityType
 
     switch entityType
       when 'entity' 
-        $log.debug "A standard entity"
+        $log.debug "An existing entity. Nothing to do"
       else # New entity
         
         $log.debug "A new entity"
+        # Create a new entity
+        $scope.currentEntity = AnalysisService.createEntity()
+
         if !$scope.isThereASelection and !$scope.annotation?
           $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation"
           $scope.unsetCurrentEntity()
           return
         if $scope.annotation?
-          $log.debug "There is a current annotation already. Nothing to do"
-          $scope.unsetCurrentEntity()
+          # Retrieve the current annotation
+          annotation = $scope.analysis.annotations[ $scope.annotation ]
+          # Set the entity label accordingly to the current annotation
+          $scope.currentEntity.label = annotation.text
           return
 
-        $scope.createTextAnnotationFromCurrentSelection()
+        EditorService.createTextAnnotationFromCurrentSelection()
 
 
   $scope.unsetCurrentEntity = ()->
@@ -510,9 +512,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.errors.unshift { type: 'error', msg: errorMsg } 
 
   # Delegate to EditorService
-  $scope.createTextAnnotationFromCurrentSelection = ()->
-    EditorService.createTextAnnotationFromCurrentSelection()
-  # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->
     EditorService.selectAnnotation annotationId
 
@@ -526,19 +525,16 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.addNewEntityToAnalysis = ()->
     
-    if $scope.newEntity.sameAs
-      $scope.newEntity.sameAs = [ $scope.newEntity.sameAs ]
-    
-    delete $scope.newEntity.suggestedSameAs
+    delete $scope.currentEntity.suggestedSameAs
     
     # Add new entity to the analysis
-    $scope.analysis.entities[ $scope.newEntity.id ] = $scope.newEntity
+    $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
     annotation = $scope.analysis.annotations[ $scope.annotation ]
-    annotation.entityMatches.push { entityId: $scope.newEntity.id, confidence: 1 }
-    $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
-    $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
+    annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
+    $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
+    $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.currentEntity.id ] = $scope.currentEntity
     
-    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ]
+    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.currentEntity.id ]
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -558,16 +554,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     return if $scope.isRunning
     # Execute just if the current annotation id is defined
     return unless newAnnotationId?
-    # Create new entity object
-    $scope.newEntity = AnalysisService.createEntity()
-    # Retrieve the current annotation
-    annotation = $scope.analysis.annotations[ newAnnotationId ]
-    # Set the entity label accordingly to the current annotation
-    $scope.newEntity.label = annotation.text
-    # Look for SameAs suggestions
-    # TMP
-    # $scope.currentEntity = $scope.newEntity
-    AnalysisService.getSuggestedSameAs annotation.text
+    # Execute just if any current entity ise set
+    if $scope.currentEntity?
+      # Retrieve the current annotation
+      annotation = $scope.analysis.annotations[ newAnnotationId ]
+      # Set the entity label accordingly to the current annotation
+      $scope.currentEntity.label = annotation.text
+      # Look for sameAs suggestions
+      AnalysisService.getSuggestedSameAs annotation.text
     
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Looking for entities matching with #{locality}"
@@ -589,9 +583,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
-    # TODO
-    for id, box of $scope.boxes 
-      box.addEntityFormIsVisible = false
+    $scope.unsetCurrentEntity()
     
   $scope.$on "textAnnotationAdded", (event, annotation) ->
     $log.debug "added a new annotation with Id #{annotation.id}"  
@@ -601,7 +593,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.annotation = annotation.id
     
   $scope.$on "sameAsRetrieved", (event, sameAs) ->
-    $scope.newEntity.suggestedSameAs = sameAs
+    $scope.currentEntity.suggestedSameAs = sameAs
   
   $scope.$on "relatedPostsLoaded", (event, posts) ->
     $scope.relatedPosts = posts
