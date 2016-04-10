@@ -162,6 +162,15 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
+.directive('wlHideAfter', ['$timeout', '$log', ($timeout, $log)->
+  restrict: 'A'
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    delay = +$attrs.wlHideAfter
+    $timeout(()->
+      $log.debug "Remove msg after #{delay} ms"
+      $element.hide()
+    , delay)
+])
 .directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
   restrict: 'E'
   scope:
@@ -417,7 +426,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$parse', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $parse)-> 
+.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope)-> 
 
   $scope.isRunning = false
   $scope.isGeolocationRunning = false
@@ -463,6 +472,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.storeCurrentEntity = ()->
 
+    unless $scope.currentEntity.mainType
+      $scope.addMsg 'Please do not forgive to specify a type for this entity!', 'error'
+      return
+      
     switch $scope.currentEntityType
       when 'entity' 
         $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
@@ -762,6 +775,14 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 
       $scope.setCurrentCategory = (categoryId)->
         $scope.currentCategory = categoryId
+        # If there is only one type related the new category
+        # Type selection is forced
+        types = configuration.getTypesForCategoryId( categoryId )
+        $log.debug "Going to check types"
+        $log.debug types
+        if types.length is 1
+          $scope.setType( types[0] )
+
 
       $scope.unsetCurrentCategory = ()->
         $scope.currentCategory = undefined 

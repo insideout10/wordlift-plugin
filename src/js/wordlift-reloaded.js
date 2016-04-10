@@ -157,6 +157,20 @@
         }
       };
     }
+  ]).directive('wlHideAfter', [
+    '$timeout', '$log', function($timeout, $log) {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, $attrs, $ctrl) {
+          var delay;
+          delay = +$attrs.wlHideAfter;
+          return $timeout(function() {
+            $log.debug("Remove msg after " + delay + " ms");
+            return $element.hide();
+          }, delay);
+        }
+      };
+    }
   ]).directive('wlClipboard', [
     '$timeout', '$document', '$log', function($timeout, $document, $log) {
       return {
@@ -417,7 +431,7 @@
       };
     }
   ]).controller('EditPostWidgetController', [
-    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$parse', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $parse) {
+    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope) {
       var box, j, len, ref;
       $scope.isRunning = false;
       $scope.isGeolocationRunning = false;
@@ -453,6 +467,10 @@
         return $scope.currentEntityType = void 0;
       };
       $scope.storeCurrentEntity = function() {
+        if (!$scope.currentEntity.mainType) {
+          $scope.addMsg('Please do not forgive to specify a type for this entity!', 'error');
+          return;
+        }
         switch ($scope.currentEntityType) {
           case 'entity':
             $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
@@ -775,7 +793,14 @@
             return $scope.onReset();
           };
           $scope.setCurrentCategory = function(categoryId) {
-            return $scope.currentCategory = categoryId;
+            var types;
+            $scope.currentCategory = categoryId;
+            types = configuration.getTypesForCategoryId(categoryId);
+            $log.debug("Going to check types");
+            $log.debug(types);
+            if (types.length === 1) {
+              return $scope.setType(types[0]);
+            }
           };
           $scope.unsetCurrentCategory = function() {
             var ref;

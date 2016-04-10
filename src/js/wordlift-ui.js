@@ -535,6 +535,20 @@
         }
       };
     }
+  ]).directive('wlHideAfter', [
+    '$timeout', '$log', function($timeout, $log) {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, $attrs, $ctrl) {
+          var delay;
+          delay = +$attrs.wlHideAfter;
+          return $timeout(function() {
+            $log.debug("Remove msg after " + delay + " ms");
+            return $element.hide();
+          }, delay);
+        }
+      };
+    }
   ]).directive('wlClipboard', [
     '$timeout', '$document', '$log', function($timeout, $document, $log) {
       return {
