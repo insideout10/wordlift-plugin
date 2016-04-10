@@ -71,23 +71,27 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-			
+				
 			// Only if the current entity is created from scratch let's avoid to create 
 			// more than one entity with same label & entity type
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
 				$entity[ 'main_type' ] : NULL;
 
-			$uri = Wordlift_Entity_Service::get_instance()->build_uri( 
-				$entity[ 'label' ], 
-				Wordlift_Entity_Service::TYPE_NAME,
-				$entity_type 
-			);
+			// Look if current entity uri matchs an internal existing entity, meaning:
+			// 1. when $entity_uri is an internal uri 
+			// 2. when $entity_uri is an external uri used as sameAs of an internal entity	
+			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
+			
+			// Detect the uri depending if is an existing or a new entity
+			$uri = ( NULL === $ie ) ?
+				Wordlift_Entity_Service::get_instance()->build_uri( 
+					$entity[ 'label' ], 
+					Wordlift_Entity_Service::TYPE_NAME,
+					$entity_type 
+				) : wl_get_entity_uri( $ie->ID );
 
-			// Entity uri is preserved for internal entities
-			if ( !Wordlift_Entity_Service::get_instance()->is_internal_uri( $entity_uri ) ) {
-				// Populate the mapping
-				$entities_uri_mapping[ $entity_uri ] = $uri;
-			}
+			wl_write_log("Map $entity_uri on $uri");
+			$entities_uri_mapping[ $entity_uri ] = $uri;
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
@@ -98,21 +102,20 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 			// Update entity data with related post
 			$entity[ 'related_post_id' ] = $post_id;
+
 			// Save the entity if is a new entity
-			wl_save_entity( $entity );
+			if ( NULL === $ie ) {
+				wl_save_entity( $entity );
+			}
 
 		}
 
 		// Populate the $entities_predicates_mapping
 		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
 			foreach ( $entity_uris as $entity_uri ) {
-
-				$uri = stripslashes( $entity_uri );
-				
-				if ( !Wordlift_Entity_Service::get_instance()->is_internal_uri( $entity_uri ) ) {
-					$uri = $entities_uri_mapping[ $uri ];
-				} 				
-
+		
+				$uri = $entities_uri_mapping[ stripslashes( $entity_uri ) ];				 				
+                wl_write_log("Going to map predicate $predicate to uri $uri");
 				$entities_predicates_mapping[ $uri ][] = $predicate;	
 			}
 		}
@@ -148,7 +151,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Retrieve predicates for the current uri
 			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
 				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-					wl_write_log("Going to add relation with predicate $predicate");
 					wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
 				}
 			} else {
