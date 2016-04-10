@@ -259,6 +259,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if 'place' is entity.mainType 
           entity.id = id
           $scope.suggestedPlaces[ id ] = entity
+
+      # Force place selection 
+      placeId =  Object.keys($scope.suggestedPlaces)[0]
+      place = $scope.suggestedPlaces[ placeId ]
+      $scope.onPublishedPlaceSelected place
+
       $scope.isGeolocationRunning = false
       $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
     
@@ -355,6 +361,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.onPublishedPlaceSelected = (entity)->
     if $scope.publishedPlace?.id is entity.id
       $scope.publishedPlace = undefined
+      $scope.suggestedPlaces = undefined
       return
     $scope.publishedPlace = entity  
 

@@ -605,6 +605,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if 'place' is entity.mainType 
           entity.id = id
           $scope.suggestedPlaces[ id ] = entity
+
+      # Force place selection 
+      placeId =  Object.keys($scope.suggestedPlaces)[0]
+      place = $scope.suggestedPlaces[ placeId ]
+      $scope.onPublishedPlaceSelected place
+
       $scope.isGeolocationRunning = false
       $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
     
@@ -701,6 +707,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.onPublishedPlaceSelected = (entity)->
     if $scope.publishedPlace?.id is entity.id
       $scope.publishedPlace = undefined
+      $scope.suggestedPlaces = undefined
       return
     $scope.publishedPlace = entity  
 
@@ -1401,8 +1408,6 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
   service = {}
   service.load = ( entityIds = [] )->
     uri = "admin-ajax.php?action=wordlift_related_posts&post_id=#{configuration.currentPostId}"
-    $log.debug "Going to find related posts"
-    $log.debug entityIds
     
     $http(
       method: 'post'
@@ -1411,7 +1416,6 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
     )
     # If successful, broadcast an *analysisReceived* event.
     .success (data) ->
-      $log.debug data
       $rootScope.$broadcast "relatedPostsLoaded", data
     .error (data, status) ->
       $log.warn "Error loading related posts"

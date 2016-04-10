@@ -591,7 +591,7 @@
       $scope.$on("currentUserLocalityDetected", function(event, locality) {
         $log.debug("Looking for entities matching with " + locality);
         return AnalysisService._innerPerform(locality).then(function(response) {
-          var entity, id, ref1;
+          var entity, id, place, placeId, ref1;
           $scope.suggestedPlaces = {};
           ref1 = response.data.entities;
           for (id in ref1) {
@@ -601,6 +601,9 @@
               $scope.suggestedPlaces[id] = entity;
             }
           }
+          placeId = Object.keys($scope.suggestedPlaces)[0];
+          place = $scope.suggestedPlaces[placeId];
+          $scope.onPublishedPlaceSelected(place);
           $scope.isGeolocationRunning = false;
           return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         });
@@ -703,6 +706,7 @@
         var ref1;
         if (((ref1 = $scope.publishedPlace) != null ? ref1.id : void 0) === entity.id) {
           $scope.publishedPlace = void 0;
+          $scope.suggestedPlaces = void 0;
           return;
         }
         return $scope.publishedPlace = entity;
@@ -1504,14 +1508,11 @@
           entityIds = [];
         }
         uri = "admin-ajax.php?action=wordlift_related_posts&post_id=" + configuration.currentPostId;
-        $log.debug("Going to find related posts");
-        $log.debug(entityIds);
         return $http({
           method: 'post',
           url: uri,
           data: entityIds
         }).success(function(data) {
-          $log.debug(data);
           return $rootScope.$broadcast("relatedPostsLoaded", data);
         }).error(function(data, status) {
           return $log.warn("Error loading related posts");
