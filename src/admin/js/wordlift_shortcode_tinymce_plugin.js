@@ -110,7 +110,7 @@
 				//var c = cm.createSplitButton('wl_shortcodes_menu', {	//split button not working properly
                 var c = cm.createMenuButton('wl_shortcodes_menu', {
                     title : 'WordLift Widgets',
-                    image : tinymce.plugins.wl_shortcodes.pluginUrl + '/../images/wordlift-logo-20x20.png',
+                    image : tinymce.plugins.wl_shortcodes.pluginUrl + '/../images/svg/wl-logo-icon.svg',
                 	// If SplitButton, must define onclick to avoid error
                 	//onclick: function(){ /* OPEN YOURSELF ?? */  }
                 });
