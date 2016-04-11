@@ -28,7 +28,7 @@ function wl_entity_type_register() {
 		'menu_position' => 20, // after the pages menu.
 		'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
 		'has_archive'   => true,
-		'menu_icon'		=> WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-local-storage-icon.svg'
+		'menu_icon'		=> WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg'
 	);
 
 	register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );
