@@ -156,8 +156,15 @@
       <!-- POSITIVE BTN -->
       <button
         ng-click="onSubmitWrapper($event)"
+        ng-if="!isInternal()"
         class="wl-widget-entity-panel-positive-btn">
         Create
+      </button>
+      <button
+        ng-click="onSubmitWrapper($event)"
+        ng-if="isInternal()"
+        class="wl-widget-entity-panel-positive-btn">
+        Update
       </button>
     </div>
 
