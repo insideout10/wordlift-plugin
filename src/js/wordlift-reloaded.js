@@ -1,5 +1,5 @@
 (function() {
-  var $, Traslator, container, injector,
+  var $, Traslator, container, injector, spinner,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   Traslator = (function() {
@@ -157,6 +157,61 @@
         }
       };
     }
+  ]).directive('wlHideAfter', [
+    '$timeout', '$log', function($timeout, $log) {
+      return {
+        restrict: 'A',
+        link: function($scope, $element, $attrs, $ctrl) {
+          var delay;
+          delay = +$attrs.wlHideAfter;
+          return $timeout(function() {
+            $log.debug("Remove msg after " + delay + " ms");
+            return $element.hide();
+          }, delay);
+        }
+      };
+    }
+  ]).directive('wlClipboard', [
+    '$timeout', '$document', '$log', function($timeout, $document, $log) {
+      return {
+        restrict: 'E',
+        scope: {
+          text: '=',
+          onCopied: '&'
+        },
+        transclude: true,
+        template: "<span \n  class=\"wl-widget-post-link\" \n  ng-class=\"{'wl-widget-post-link-copied' : $copied}\"\n  ng-click=\"copyToClipboard()\">\n  <ng-transclude></ng-transclude>\n  <input type=\"text\" ng-value=\"text\" />\n</span>",
+        link: function($scope, $element, $attrs, $ctrl) {
+          $scope.$copied = false;
+          $scope.node = $element.find('input');
+          $scope.node.css('position', 'absolute');
+          $scope.node.css('left', '-10000px');
+          return $scope.copyToClipboard = function() {
+            var selection;
+            try {
+              $document[0].body.style.webkitUserSelect = 'initial';
+              selection = $document[0].getSelection();
+              selection.removeAllRanges();
+              $scope.node.select();
+              if (!$document[0].execCommand('copy')) {
+                $log.warn("Error on clipboard copy for " + text);
+              }
+              selection.removeAllRanges();
+              $scope.$copied = true;
+              $timeout(function() {
+                $log.debug("Going to reset $copied status");
+                return $scope.$copied = false;
+              }, 3000);
+              if (angular.isFunction($scope.onCopied)) {
+                return $scope.$evalAsync($scope.onCopied());
+              }
+            } finally {
+              $document[0].body.style.webkitUserSelect = '';
+            }
+          };
+        }
+      };
+    }
   ]);
 
   angular.module('wordlift.ui.carousel', ['ngTouch']).directive('wlCarousel', [
@@ -228,7 +283,7 @@
               return $scope.$apply();
             });
             ctrl = this;
-            ctrl.registerPane = function(scope, element) {
+            ctrl.registerPane = function(scope, element, first) {
               var pane;
               scope.setWidth($scope.itemWidth);
               pane = {
@@ -260,10 +315,14 @@
       return {
         require: '^wlCarousel',
         restrict: 'EA',
+        scope: {
+          wlFirstPane: '='
+        },
         transclude: true,
         template: "<div ng-transclude></div>",
         link: function($scope, $element, $attrs, $ctrl) {
           $element.addClass("wl-carousel-item");
+          $scope.isFirst = $scope.wlFirstPane || false;
           $scope.setWidth = function(size) {
             return $element.css('width', size + "px");
           };
@@ -271,7 +330,7 @@
             $log.debug("Destroy " + $scope.$id);
             return $ctrl.unregisterPane($scope);
           });
-          return $ctrl.registerPane($scope, $element);
+          return $ctrl.registerPane($scope, $element, $scope.isFirst);
         }
       };
     }
@@ -309,6 +368,40 @@
         return filtered;
       };
     }
+  ]).filter('filterTruncate', [
+    '$log', function($log) {
+      return function(input, words) {
+        var inputWords;
+        if (isNaN(words)) {
+          return input;
+        }
+        if (words <= 0) {
+          return '';
+        }
+        if (input) {
+          inputWords = input.split(/\s+/);
+          if (inputWords.length > words) {
+            input = inputWords.slice(0, words).join(' ') + '…';
+          }
+        }
+        return input;
+      };
+    }
+  ]).filter('filterSplitInRows', [
+    '$log', function($log) {
+      return function(arrayLength) {
+        var arr, j, ref, results1;
+        if (arrayLength) {
+          arrayLength = Math.ceil(arrayLength);
+          arr = (function() {
+            results1 = [];
+            for (var j = 0, ref = arrayLength - 1; 0 <= ref ? j <= ref : j >= ref; 0 <= ref ? j++ : j--){ results1.push(j); }
+            return results1;
+          }).apply(this);
+          return arr;
+        }
+      };
+    }
   ]).filter('filterEntitiesByTypes', [
     '$log', function($log) {
       return function(items, types) {
@@ -338,16 +431,70 @@
       };
     }
   ]).controller('EditPostWidgetController', [
-    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile) {
+    'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', function(GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope) {
       var box, j, len, ref;
       $scope.isRunning = false;
       $scope.isGeolocationRunning = false;
       $scope.analysis = void 0;
       $scope.relatedPosts = void 0;
-      $scope.newEntity = AnalysisService.createEntity();
+      $scope.currentEntity = void 0;
+      $scope.currentEntityType = void 0;
+      $scope.setCurrentEntity = function(entity, entityType) {
+        var annotation;
+        $scope.currentEntity = entity;
+        $scope.currentEntityType = entityType;
+        switch (entityType) {
+          case 'entity':
+            return $log.debug("An existing entity. Nothing to do");
+          default:
+            $log.debug("A new entity");
+            $scope.currentEntity = AnalysisService.createEntity();
+            if (!$scope.isThereASelection && ($scope.annotation == null)) {
+              $scope.addMsg('Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error');
+              $scope.unsetCurrentEntity();
+              return;
+            }
+            if ($scope.annotation != null) {
+              annotation = $scope.analysis.annotations[$scope.annotation];
+              $scope.currentEntity.label = annotation.text;
+              return;
+            }
+            return EditorService.createTextAnnotationFromCurrentSelection();
+        }
+      };
+      $scope.unsetCurrentEntity = function() {
+        $scope.currentEntity = void 0;
+        return $scope.currentEntityType = void 0;
+      };
+      $scope.storeCurrentEntity = function() {
+        if (!$scope.currentEntity.mainType) {
+          $scope.addMsg('Please do not forgive to specify a type for this entity!', 'error');
+          return;
+        }
+        switch ($scope.currentEntityType) {
+          case 'entity':
+            $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
+            $scope.addMsg('The entity was updated!', 'positive');
+            break;
+          default:
+            $log.debug('Unset a new entity');
+            $scope.addNewEntityToAnalysis();
+            $scope.addMsg('The entity was created!', 'positive');
+        }
+        return $scope.unsetCurrentEntity();
+      };
       $scope.selectedEntities = {};
-      $scope.contentClassificationOpened = true;
-      $scope.articleMetadataOpened = false;
+      $scope.currentSection = void 0;
+      $scope.toggleCurrentSection = function(section) {
+        if ($scope.currentSection === section) {
+          return $scope.currentSection = void 0;
+        } else {
+          return $scope.currentSection = section;
+        }
+      };
+      $scope.isCurrentSection = function(section) {
+        return $scope.currentSection === section;
+      };
       $scope.suggestedPlaces = void 0;
       $scope.publishedPlace = configuration.publishedPlace;
       $scope.topic = void 0;
@@ -357,13 +504,13 @@
       }
       $scope.annotation = void 0;
       $scope.boxes = [];
-      $scope.images = {};
+      $scope.images = [];
       $scope.isThereASelection = false;
       $scope.configuration = configuration;
-      $scope.errors = [];
+      $scope.messages = [];
       RelatedPostDataRetrieverService.load(Object.keys($scope.configuration.entities));
       $rootScope.$on("analysisFailed", function(event, errorMsg) {
-        return $scope.addError(errorMsg);
+        return $scope.addMsg(errorMsg, 'error');
       });
       $rootScope.$on("analysisServiceStatusUpdated", function(event, newStatus) {
         $scope.isRunning = newStatus;
@@ -377,14 +524,14 @@
         box = ref[j];
         $scope.selectedEntities[box.id] = {};
       }
-      $scope.addError = function(errorMsg) {
-        return $scope.errors.unshift({
-          type: 'error',
-          msg: errorMsg
-        });
+      $scope.removeMsg = function(index) {
+        return $scope.messages.splice(index, 1);
       };
-      $scope.createTextAnnotationFromCurrentSelection = function() {
-        return EditorService.createTextAnnotationFromCurrentSelection();
+      $scope.addMsg = function(msg, level) {
+        return $scope.messages.unshift({
+          level: level,
+          text: msg
+        });
       };
       $scope.selectAnnotation = function(annotationId) {
         return EditorService.selectAnnotation(annotationId);
@@ -399,21 +546,18 @@
         var ref1;
         return (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0);
       };
-      $scope.addNewEntityToAnalysis = function(scope) {
+      $scope.addNewEntityToAnalysis = function() {
         var annotation;
-        if ($scope.newEntity.sameAs) {
-          $scope.newEntity.sameAs = [$scope.newEntity.sameAs];
-        }
-        delete $scope.newEntity.suggestedSameAs;
-        $scope.analysis.entities[$scope.newEntity.id] = $scope.newEntity;
+        delete $scope.currentEntity.suggestedSameAs;
+        $scope.analysis.entities[$scope.currentEntity.id] = $scope.currentEntity;
         annotation = $scope.analysis.annotations[$scope.annotation];
         annotation.entityMatches.push({
-          entityId: $scope.newEntity.id,
+          entityId: $scope.currentEntity.id,
           confidence: 1
         });
-        $scope.analysis.entities[$scope.newEntity.id].annotations[annotation.id] = annotation;
-        $scope.analysis.annotations[$scope.annotation].entities[$scope.newEntity.id] = $scope.newEntity;
-        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.newEntity.id], scope);
+        $scope.analysis.entities[$scope.currentEntity.id].annotations[annotation.id] = annotation;
+        $scope.analysis.annotations[$scope.annotation].entities[$scope.currentEntity.id] = $scope.currentEntity;
+        return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.currentEntity.id]);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
@@ -438,15 +582,16 @@
         if (newAnnotationId == null) {
           return;
         }
-        $scope.newEntity = AnalysisService.createEntity();
-        annotation = $scope.analysis.annotations[newAnnotationId];
-        $scope.newEntity.label = annotation.text;
-        return AnalysisService.getSuggestedSameAs(annotation.text);
+        if ($scope.currentEntity != null) {
+          annotation = $scope.analysis.annotations[newAnnotationId];
+          $scope.currentEntity.label = annotation.text;
+          return AnalysisService.getSuggestedSameAs(annotation.text);
+        }
       });
       $scope.$on("currentUserLocalityDetected", function(event, locality) {
         $log.debug("Looking for entities matching with " + locality);
         return AnalysisService._innerPerform(locality).then(function(response) {
-          var entity, id, ref1;
+          var entity, id, place, placeId, ref1;
           $scope.suggestedPlaces = {};
           ref1 = response.data.entities;
           for (id in ref1) {
@@ -456,22 +601,20 @@
               $scope.suggestedPlaces[id] = entity;
             }
           }
-          return $scope.isGeolocationRunning = false;
+          placeId = Object.keys($scope.suggestedPlaces)[0];
+          place = $scope.suggestedPlaces[placeId];
+          $scope.onPublishedPlaceSelected(place);
+          $scope.isGeolocationRunning = false;
+          return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         });
       });
       $scope.$on("geoLocationError", function(event, error) {
-        return $scope.isGeolocationRunning = false;
+        $scope.isGeolocationRunning = false;
+        return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
       });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
-        var id, ref1, results1;
         $scope.annotation = annotationId;
-        ref1 = $scope.boxes;
-        results1 = [];
-        for (id in ref1) {
-          box = ref1[id];
-          results1.push(box.addEntityFormIsVisible = false);
-        }
-        return results1;
+        return $scope.unsetCurrentEntity();
       });
       $scope.$on("textAnnotationAdded", function(event, annotation) {
         $log.debug("added a new annotation with Id " + annotation.id);
@@ -479,13 +622,13 @@
         return $scope.annotation = annotation.id;
       });
       $scope.$on("sameAsRetrieved", function(event, sameAs) {
-        return $scope.newEntity.suggestedSameAs = sameAs;
+        return $scope.currentEntity.suggestedSameAs = sameAs;
       });
       $scope.$on("relatedPostsLoaded", function(event, posts) {
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, id, k, len1, ref1, ref2, results1, topic, uri;
+        var entity, entityId, id, k, l, len1, len2, ref1, ref2, ref3, topic;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
@@ -497,39 +640,24 @@
           }
         }
         ref2 = $scope.configuration.classificationBoxes;
-        results1 = [];
         for (k = 0, len1 = ref2.length; k < len1; k++) {
           box = ref2[k];
-          results1.push((function() {
-            var l, len2, ref3, results2;
-            ref3 = box.selectedEntities;
-            results2 = [];
-            for (l = 0, len2 = ref3.length; l < len2; l++) {
-              entityId = ref3[l];
-              if (entity = analysis.entities[entityId]) {
-                if (entity.occurrences.length === 0) {
-                  $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
-                  continue;
-                }
-                $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-                results2.push((function() {
-                  var len3, m, ref4, results3;
-                  ref4 = entity.images;
-                  results3 = [];
-                  for (m = 0, len3 = ref4.length; m < len3; m++) {
-                    uri = ref4[m];
-                    results3.push($scope.images[uri] = entity.label);
-                  }
-                  return results3;
-                })());
-              } else {
-                results2.push($log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing"));
+          ref3 = box.selectedEntities;
+          for (l = 0, len2 = ref3.length; l < len2; l++) {
+            entityId = ref3[l];
+            if (entity = analysis.entities[entityId]) {
+              if (entity.occurrences.length === 0) {
+                $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
+                continue;
               }
+              $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
+              $scope.images = $scope.images.concat(entity.images);
+            } else {
+              $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
-            return results2;
-          })());
+          }
         }
-        return results1;
+        return $scope.currentSection = 'content-classification';
       });
       $scope.updateRelatedPosts = function() {
         var entities, entity, entityIds, id, ref1;
@@ -545,32 +673,26 @@
         }
         return RelatedPostDataRetrieverService.load(entityIds);
       };
-      $scope.onSelectedEntityTile = function(entity, scope) {
-        var k, l, len1, len2, ref1, ref2, uri;
-        $log.debug("Entity tile selected for entity " + entity.id + " within '" + scope.id + "' scope");
-        $log.debug(entity);
-        $log.debug(scope);
-        if ($scope.selectedEntities[scope.id][entity.id] == null) {
-          $scope.selectedEntities[scope.id][entity.id] = entity;
-          ref1 = entity.images;
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            uri = ref1[k];
-            $scope.images[uri] = entity.label;
-          }
+      $scope.onSelectedEntityTile = function(entity) {
+        var scopeId;
+        scopeId = configuration.getCategoryForType(entity.mainType);
+        $log.debug("Entity tile selected for entity " + entity.id + " within " + scopeId + " scope");
+        if ($scope.selectedEntities[scopeId][entity.id] == null) {
+          $scope.selectedEntities[scopeId][entity.id] = entity;
+          $scope.images = $scope.images.concat(entity.images);
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
         } else {
-          ref2 = entity.images;
-          for (l = 0, len2 = ref2.length; l < len2; l++) {
-            uri = ref2[l];
-            delete $scope.images[uri];
-          }
+          $scope.images = $scope.images.filter(function(img) {
+            return indexOf.call(entity.images, img) < 0;
+          });
           $scope.$emit("entityDeselected", entity, $scope.annotation);
         }
         return $scope.updateRelatedPosts();
       };
       $scope.getLocation = function() {
         $scope.isGeolocationRunning = true;
+        $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         return GeoLocationService.getLocation();
       };
       $scope.isPublishedPlace = function(entity) {
@@ -584,6 +706,7 @@
         var ref1;
         if (((ref1 = $scope.publishedPlace) != null ? ref1.id : void 0) === entity.id) {
           $scope.publishedPlace = void 0;
+          $scope.suggestedPlaces = void 0;
           return;
         }
         return $scope.publishedPlace = entity;
@@ -592,17 +715,13 @@
         var ref1;
         return topic.id === ((ref1 = $scope.topic) != null ? ref1.id : void 0);
       };
-      $scope.onTopicSelected = function(topic) {
+      return $scope.onTopicSelected = function(topic) {
         var ref1;
         if (((ref1 = $scope.topic) != null ? ref1.id : void 0) === topic.id) {
           $scope.topic = void 0;
           return;
         }
         return $scope.topic = topic;
-      };
-      return $scope.toggleCurrentSection = function() {
-        $scope.articleMetadataOpened = !$scope.articleMetadataOpened;
-        return $scope.contentClassificationOpened = !$scope.contentClassificationOpened;
       };
     }
   ]);
@@ -614,26 +733,9 @@
         scope: true,
         transclude: true,
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-classification-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
-          $scope.addEntityFormIsVisible = false;
-          $scope.openAddEntityForm = function() {
-            if (!$scope.isThereASelection && ($scope.annotation == null)) {
-              $scope.addError("Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotations.");
-              return;
-            }
-            $scope.addEntityFormIsVisible = true;
-            if ($scope.annotation != null) {
-              $log.debug("There is a current annotation already. Nothing to do");
-              return;
-            }
-            return $scope.createTextAnnotationFromCurrentSelection();
-          };
-          $scope.closeAddEntityForm = function() {
-            $scope.addEntityFormIsVisible = false;
-            return $scope.addNewEntityToAnalysis($scope.box);
-          };
           return $scope.hasSelectedEntities = function() {
             return Object.keys($scope.selectedEntities[$scope.box.id]).length > 0;
           };
@@ -668,36 +770,87 @@
         scope: {
           entity: '=',
           onSubmit: '&',
+          onReset: '&',
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-form.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
-          var availableTypes, j, len, ref, type;
-          $scope.removeCurrentImage = function() {
-            var removed;
-            removed = $scope.entity.images.shift();
-            return $log.warn("Removed " + removed + " from entity " + $scope.entity.id + " images collection");
+          $scope.configuration = configuration;
+          $scope.currentCategory = void 0;
+          $scope.$watch('entity.id', function(entityId) {
+            var category, ref;
+            if (entityId != null) {
+              $log.debug("Entity updated to " + entityId);
+              category = configuration.getCategoryForType((ref = $scope.entity) != null ? ref.mainType : void 0);
+              $log.debug("Going to update current category to " + category);
+              return $scope.currentCategory = category;
+            }
+          });
+          $scope.onSubmitWrapper = function(e) {
+            e.preventDefault();
+            return $scope.onSubmit();
           };
-          $scope.getCurrentTypeUri = function() {
-            var j, len, ref, type;
-            ref = configuration.types;
-            for (j = 0, len = ref.length; j < len; j++) {
-              type = ref[j];
-              if (type.css === ("wl-" + $scope.entity.mainType)) {
-                return type.uri;
+          $scope.onResetWrapper = function(e) {
+            e.preventDefault();
+            return $scope.onReset();
+          };
+          $scope.setCurrentCategory = function(categoryId) {
+            var types;
+            $scope.currentCategory = categoryId;
+            types = configuration.getTypesForCategoryId(categoryId);
+            $log.debug("Going to check types");
+            $log.debug(types);
+            if (types.length === 1) {
+              return $scope.setType(types[0]);
+            }
+          };
+          $scope.unsetCurrentCategory = function() {
+            var ref;
+            $scope.currentCategory = void 0;
+            return (ref = $scope.entity) != null ? ref.mainType = void 0 : void 0;
+          };
+          $scope.isSameAsOf = function(sameAs) {
+            var ref;
+            return ref = sameAs.id, indexOf.call($scope.entity.sameAs, ref) >= 0;
+          };
+          $scope.addSameAs = function(sameAs) {
+            var index, ref, ref1, ref2, ref3;
+            if (!((ref = $scope.entity) != null ? ref.sameAs : void 0)) {
+              if ((ref1 = $scope.entity) != null) {
+                ref1.sameAs = [];
               }
             }
-          };
-          $scope.isInternal = function() {
-            if ($scope.entity.id.startsWith(configuration.datasetUri)) {
-              return true;
+            if (ref2 = sameAs.id, indexOf.call($scope.entity.sameAs, ref2) >= 0) {
+              index = $scope.entity.sameAs.indexOf(sameAs.id);
+              return $scope.entity.sameAs.splice(index, 1);
+            } else {
+              return (ref3 = $scope.entity) != null ? ref3.sameAs.push(sameAs.id) : void 0;
             }
-            return false;
           };
-          $scope.linkTo = function(linkType) {
-            return $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType;
+          $scope.setType = function(entityType) {
+            var ref, ref1;
+            if (entityType === ((ref = $scope.entity) != null ? ref.mainType : void 0)) {
+              return;
+            }
+            return (ref1 = $scope.entity) != null ? ref1.mainType = entityType : void 0;
+          };
+          $scope.isCurrentType = function(entityType) {
+            var ref;
+            return ((ref = $scope.entity) != null ? ref.mainType : void 0) === entityType;
+          };
+          $scope.getAvailableTypes = function() {
+            return configuration.getTypesForCategoryId($scope.currentCategory);
+          };
+          $scope.removeCurrentImage = function(index) {
+            var removed;
+            removed = $scope.entity.images.splice(index, 1);
+            return $log.warn("Removed " + removed + " from entity " + $scope.entity.id + " images collection");
+          };
+          $scope.linkToEdit = function(e) {
+            e.preventDefault();
+            return $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=edit";
           };
           $scope.hasOccurences = function() {
             var ref;
@@ -706,43 +859,14 @@
           $scope.setSameAs = function(uri) {
             return $scope.entity.sameAs = uri;
           };
-          $scope.checkEntityId = function(uri) {
-            return /^(f|ht)tps?:\/\//i.test(uri);
+          $scope.isInternal = function() {
+            var ref;
+            return configuration.isInternal((ref = $scope.entity) != null ? ref.id : void 0);
           };
-          availableTypes = [];
-          ref = configuration.types;
-          for (j = 0, len = ref.length; j < len; j++) {
-            type = ref[j];
-            availableTypes[type.css.replace('wl-', '')] = type.uri;
-          }
-          $scope.supportedTypes = (function() {
-            var k, len1, ref1, results1;
-            ref1 = configuration.types;
-            results1 = [];
-            for (k = 0, len1 = ref1.length; k < len1; k++) {
-              type = ref1[k];
-              results1.push({
-                id: type.css.replace('wl-', ''),
-                name: type.uri
-              });
-            }
-            return results1;
-          })();
-          if ($scope.box) {
-            return $scope.supportedTypes = (function() {
-              var k, len1, ref1, results1;
-              ref1 = $scope.box.registeredTypes;
-              results1 = [];
-              for (k = 0, len1 = ref1.length; k < len1; k++) {
-                type = ref1[k];
-                results1.push({
-                  id: type,
-                  name: availableTypes[type]
-                });
-              }
-              return results1;
-            })();
-          }
+          return $scope.isNew = function(uri) {
+            var ref;
+            return !/^(f|ht)tps?:\/\//i.test((ref = $scope.entity) != null ? ref.id : void 0);
+          };
         }
       };
     }
@@ -757,12 +881,14 @@
           entity: '=',
           isSelected: '=',
           showConfidence: '=',
-          onEntitySelect: '&'
+          onSelect: '&',
+          onMore: '&'
         },
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-tile.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html';
         },
         link: function($scope, $element, $attrs, $boxCtrl) {
+          $scope.configuration = configuration;
           if ($boxCtrl != null) {
             $boxCtrl.addTile($scope);
           }
@@ -794,7 +920,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-input-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-input-box.html';
         }
       };
     }
@@ -893,7 +1019,7 @@
           id: 'local-entity-' + uniqueId(32),
           label: '',
           description: '',
-          mainType: 'thing',
+          mainType: '',
           types: [],
           images: [],
           confidence: 1,
@@ -934,12 +1060,14 @@
         var annotation, annotationId, ea, em, entity, id, index, l, len2, len3, len4, localEntity, local_confidence, m, n, originalTopics, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, topic;
         originalTopics = data.topics;
         data.topics = {};
-        for (l = 0, len2 = originalTopics.length; l < len2; l++) {
-          topic = originalTopics[l];
-          topic.id = topic.uri;
-          topic.occurrences = [];
-          topic.mainType = this._defaultType;
-          data.topics[topic.id] = topic;
+        if (originalTopics != null) {
+          for (l = 0, len2 = originalTopics.length; l < len2; l++) {
+            topic = originalTopics[l];
+            topic.id = topic.uri;
+            topic.occurrences = [];
+            topic.mainType = this._defaultType;
+            data.topics[topic.id] = topic;
+          }
         }
         ref2 = configuration.entities;
         for (id in ref2) {
@@ -1026,15 +1154,21 @@
       service.getSuggestedSameAs = function(content) {
         var promise;
         return promise = this._innerPerform(content).then(function(response) {
-          var entity, id, ref2, suggestions;
+          var entity, id, matches, ref2, suggestions;
           suggestions = [];
           ref2 = response.data.entities;
           for (id in ref2) {
             entity = ref2[id];
-            if (id.startsWith('http')) {
-              suggestions.push(id);
+            if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
+              suggestions.push({
+                id: id,
+                label: entity.label,
+                mainType: entity.mainType,
+                source: matches[1]
+              });
             }
           }
+          $log.debug(suggestions);
           return $rootScope.$broadcast("sameAsRetrieved", suggestions);
         });
       };
@@ -1374,14 +1508,11 @@
           entityIds = [];
         }
         uri = "admin-ajax.php?action=wordlift_related_posts&post_id=" + configuration.currentPostId;
-        $log.debug("Going to find related posts");
-        $log.debug(entityIds);
         return $http({
           method: 'post',
           url: uri,
           data: entityIds
         }).success(function(data) {
-          $log.debug(data);
           return $rootScope.$broadcast("relatedPostsLoaded", data);
         }).error(function(data, status) {
           return $log.warn("Error loading related posts");
@@ -1466,7 +1597,46 @@
     _configuration = void 0;
     provider = {
       setConfiguration: function(configuration) {
-        return _configuration = configuration;
+        _configuration = configuration;
+        _configuration.getCategoryForType = function(entityType) {
+          var category, j, len, ref;
+          if (!entityType) {
+            return void 0;
+          }
+          ref = this.classificationBoxes;
+          for (j = 0, len = ref.length; j < len; j++) {
+            category = ref[j];
+            if (indexOf.call(category.registeredTypes, entityType) >= 0) {
+              return category.id;
+            }
+          }
+        };
+        _configuration.getTypesForCategoryId = function(categoryId) {
+          var category, j, len, ref;
+          if (!categoryId) {
+            return [];
+          }
+          ref = this.classificationBoxes;
+          for (j = 0, len = ref.length; j < len; j++) {
+            category = ref[j];
+            if (categoryId === category.id) {
+              return category.registeredTypes;
+            }
+          }
+        };
+        _configuration.isInternal = function(uri) {
+          return uri.startsWith(this.datasetUri);
+        };
+        return _configuration.getUriForType = function(mainType) {
+          var j, len, ref, type;
+          ref = this.types;
+          for (j = 0, len = ref.length; j < len; j++) {
+            type = ref[j];
+            if (type.css === ("wl-" + mainType)) {
+              return type.uri;
+            }
+          }
+        };
       },
       $get: function() {
         return _configuration;
@@ -1477,11 +1647,24 @@
 
   $ = jQuery;
 
-  angular.module('wordlift.editpost.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
+  angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div \n      id=\"wordlift-edit-post-wrapper\" \n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultAngularTemplatesPath + 'wordlift-editpost-widget.html'\">\n    </div>  ").appendTo('#wordlift-edit-post-outer-wrapper'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), tinymce.PluginManager.add('wordlift', function(editor, url) {
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
+    '$rootScope', '$log', function($rootScope, $log) {
+      $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
+        var css;
+        css = status ? 'wl-spinner-running' : '';
+        return $('.wl-widget-spinner svg').attr('class', css);
+      });
+      return $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
+        var css;
+        css = status ? 'wl-spinner-running' : '';
+        return $('.wl-widget-spinner svg').attr('class', css);
+      });
+    }
+  ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
     var fireEvent;
     if (editor.id !== "content") {
       return;

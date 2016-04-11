@@ -69,7 +69,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.$apply()
 
     ctrl = @
-    ctrl.registerPane = (scope, element)->
+    ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
         
@@ -79,6 +79,12 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
+      
+      #if first
+      #  $log.debug "Eccolo"
+      #  $log.debug $scope.panes.length
+      #  $scope.position = $scope.panes.length * $scope.itemWidth
+      #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
         
@@ -94,6 +100,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
   restrict: 'EA'
+  scope:
+    wlFirstPane: '='
   transclude: true 
   template: """
       <div ng-transclude></div>
@@ -101,7 +109,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   link: ($scope, $element, $attrs, $ctrl) ->
 
     $element.addClass "wl-carousel-item"
-      
+    $scope.isFirst = $scope.wlFirstPane || false
+
     $scope.setWidth = (size)->
       $element.css('width', "#{size}px")
 
@@ -109,7 +118,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $log.debug "Destroy #{$scope.$id}"
       $ctrl.unregisterPane $scope
 
-    $ctrl.registerPane $scope, $element
+    $ctrl.registerPane $scope, $element, $scope.isFirst
 ])
 angular.module('wordlift.utils.directives', [])
 # See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
@@ -133,6 +142,66 @@ angular.module('wordlift.utils.directives', [])
         $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlFallback}"
         $attrs.$set 'src', $attrs.wlFallback
     )
+])
+.directive('wlHideAfter', ['$timeout', '$log', ($timeout, $log)->
+  restrict: 'A'
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    delay = +$attrs.wlHideAfter
+    $timeout(()->
+      $log.debug "Remove msg after #{delay} ms"
+      $element.hide()
+    , delay)
+])
+.directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
+  restrict: 'E'
+  scope:
+    text: '='
+    onCopied: '&'
+  transclude: true
+  template: """
+    <span 
+      class="wl-widget-post-link" 
+      ng-class="{'wl-widget-post-link-copied' : $copied}"
+      ng-click="copyToClipboard()">
+      <ng-transclude></ng-transclude>
+      <input type="text" ng-value="text" />
+    </span>
+  """
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    
+    $scope.$copied = false
+
+    $scope.node = $element.find 'input'
+    $scope.node.css 'position', 'absolute'
+    $scope.node.css 'left', '-10000px'
+    
+    # $element
+    $scope.copyToClipboard = ()->
+      try
+        
+        # Set inline style to override css styles
+        $document[0].body.style.webkitUserSelect = 'initial'
+        selection = $document[0].getSelection()
+        selection.removeAllRanges()
+        # Fake node selection
+        $scope.node.select()
+        # Perform the task
+        unless $document[0].execCommand 'copy'
+           $log.warn "Error on clipboard copy for #{text}"
+        selection.removeAllRanges()
+        # Update copied status and reset after 3 seconds
+        $scope.$copied = true
+        $timeout(()->
+          $log.debug "Going to reset $copied status"
+          $scope.$copied = false
+        , 3000)
+
+        # Execute onCopied callback
+        if angular.isFunction($scope.onCopied)
+          $scope.$evalAsync $scope.onCopied()
+          
+      finally
+        $document[0].body.style.webkitUserSelect = ''
 ])
 # Set the well-known $ reference to jQuery.
 $ = jQuery

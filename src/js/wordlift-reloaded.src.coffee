@@ -162,6 +162,66 @@ angular.module('wordlift.utils.directives', [])
         $attrs.$set 'src', $attrs.wlFallback
     )
 ])
+.directive('wlHideAfter', ['$timeout', '$log', ($timeout, $log)->
+  restrict: 'A'
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    delay = +$attrs.wlHideAfter
+    $timeout(()->
+      $log.debug "Remove msg after #{delay} ms"
+      $element.hide()
+    , delay)
+])
+.directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
+  restrict: 'E'
+  scope:
+    text: '='
+    onCopied: '&'
+  transclude: true
+  template: """
+    <span 
+      class="wl-widget-post-link" 
+      ng-class="{'wl-widget-post-link-copied' : $copied}"
+      ng-click="copyToClipboard()">
+      <ng-transclude></ng-transclude>
+      <input type="text" ng-value="text" />
+    </span>
+  """
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    
+    $scope.$copied = false
+
+    $scope.node = $element.find 'input'
+    $scope.node.css 'position', 'absolute'
+    $scope.node.css 'left', '-10000px'
+    
+    # $element
+    $scope.copyToClipboard = ()->
+      try
+        
+        # Set inline style to override css styles
+        $document[0].body.style.webkitUserSelect = 'initial'
+        selection = $document[0].getSelection()
+        selection.removeAllRanges()
+        # Fake node selection
+        $scope.node.select()
+        # Perform the task
+        unless $document[0].execCommand 'copy'
+           $log.warn "Error on clipboard copy for #{text}"
+        selection.removeAllRanges()
+        # Update copied status and reset after 3 seconds
+        $scope.$copied = true
+        $timeout(()->
+          $log.debug "Going to reset $copied status"
+          $scope.$copied = false
+        , 3000)
+
+        # Execute onCopied callback
+        if angular.isFunction($scope.onCopied)
+          $scope.$evalAsync $scope.onCopied()
+          
+      finally
+        $document[0].body.style.webkitUserSelect = ''
+])
 angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarousel', ['$window', '$log', ($window, $log)->
   restrict: 'A'
@@ -233,7 +293,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.$apply()
 
     ctrl = @
-    ctrl.registerPane = (scope, element)->
+    ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
         
@@ -243,6 +303,12 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
+      
+      #if first
+      #  $log.debug "Eccolo"
+      #  $log.debug $scope.panes.length
+      #  $scope.position = $scope.panes.length * $scope.itemWidth
+      #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
         
@@ -258,6 +324,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
   restrict: 'EA'
+  scope:
+    wlFirstPane: '='
   transclude: true 
   template: """
       <div ng-transclude></div>
@@ -265,7 +333,8 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   link: ($scope, $element, $attrs, $ctrl) ->
 
     $element.addClass "wl-carousel-item"
-      
+    $scope.isFirst = $scope.wlFirstPane || false
+
     $scope.setWidth = (size)->
       $element.css('width', "#{size}px")
 
@@ -273,7 +342,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $log.debug "Destroy #{$scope.$id}"
       $ctrl.unregisterPane $scope
 
-    $ctrl.registerPane $scope, $element
+    $ctrl.registerPane $scope, $element, $scope.isFirst
 ])
 angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', [
   'wordlift.editpost.widget.services.AnalysisService'
@@ -313,6 +382,27 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
 ])
 
+.filter('filterTruncate', [ '$log', ($log)->
+
+  return (input, words) ->
+    if isNaN(words)
+      return input
+    if words <= 0
+      return ''
+    if input
+      inputWords = input.split(/\s+/)
+      if inputWords.length > words
+        input = inputWords.slice(0, words).join(' ') + '…'
+    input
+])
+
+.filter('filterSplitInRows', [ '$log', ($log)->
+  return (arrayLength)->
+    if arrayLength
+      arrayLength = Math.ceil arrayLength
+      arr = [0..(arrayLength-1)]
+      arr
+])
 .filter('filterEntitiesByTypes', [ '$log', ($log)->
   return (items, types)->
     
@@ -336,17 +426,83 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     filtered
 ])
-.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', '$compile', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope, $compile)-> 
+.controller('EditPostWidgetController', [ 'GeoLocationService', 'RelatedPostDataRetrieverService', 'EditorService', 'AnalysisService', 'configuration', '$log', '$scope', '$rootScope', (GeoLocationService, RelatedPostDataRetrieverService, EditorService, AnalysisService, configuration, $log, $scope, $rootScope)-> 
 
   $scope.isRunning = false
   $scope.isGeolocationRunning = false
 
   $scope.analysis = undefined
   $scope.relatedPosts = undefined
-  $scope.newEntity = AnalysisService.createEntity()
+
+  # A reference to the current entity 
+  $scope.currentEntity = undefined
+  $scope.currentEntityType = undefined
+
+  $scope.setCurrentEntity = (entity, entityType)->
+
+    $scope.currentEntity = entity
+    $scope.currentEntityType = entityType
+
+    switch entityType
+      when 'entity' 
+        $log.debug "An existing entity. Nothing to do"
+      else # New entity
+        
+        $log.debug "A new entity"
+        # Create a new entity
+        $scope.currentEntity = AnalysisService.createEntity()
+
+        if !$scope.isThereASelection and !$scope.annotation?
+          $scope.addMsg 'Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotation', 'error'
+          $scope.unsetCurrentEntity()
+          return
+        if $scope.annotation?
+          # Retrieve the current annotation
+          annotation = $scope.analysis.annotations[ $scope.annotation ]
+          # Set the entity label accordingly to the current annotation
+          $scope.currentEntity.label = annotation.text
+          return
+
+        EditorService.createTextAnnotationFromCurrentSelection()
+
+
+  $scope.unsetCurrentEntity = ()->
+    $scope.currentEntity = undefined
+    $scope.currentEntityType = undefined
+
+  $scope.storeCurrentEntity = ()->
+
+    unless $scope.currentEntity.mainType
+      $scope.addMsg 'Please do not forgive to specify a type for this entity!', 'error'
+      return
+      
+    switch $scope.currentEntityType
+      when 'entity' 
+        $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
+        $scope.addMsg 'The entity was updated!', 'positive'
+
+      else # New entity
+        $log.debug 'Unset a new entity'
+        $scope.addNewEntityToAnalysis()
+        $scope.addMsg 'The entity was created!', 'positive'
+
+    $scope.unsetCurrentEntity()
+
   $scope.selectedEntities = {}
-  $scope.contentClassificationOpened = true
-  $scope.articleMetadataOpened = false
+  
+  # A reference to the current section in the widget
+  $scope.currentSection = undefined
+
+  # Toggle the current section
+  $scope.toggleCurrentSection = (section)->
+    if $scope.currentSection is section
+      $scope.currentSection = undefined
+    else
+      $scope.currentSection = section
+  # Check current section
+  $scope.isCurrentSection = (section)->
+    $scope.currentSection is section
+
   $scope.suggestedPlaces = undefined
   $scope.publishedPlace = configuration.publishedPlace
   $scope.topic = undefined
@@ -358,16 +514,17 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.annotation = undefined
   $scope.boxes = []
-  $scope.images = {}
+  $scope.images = []
+
   $scope.isThereASelection = false
   $scope.configuration = configuration
-  $scope.errors = []
+  $scope.messages = []
   
   # Load related posts starting from local storage entities ids
   RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
 
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
-    $scope.addError errorMsg
+    $scope.addMsg errorMsg, 'error'
 
   $rootScope.$on "analysisServiceStatusUpdated", (event, newStatus) ->
     $scope.isRunning = newStatus
@@ -381,12 +538,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   for box in $scope.configuration.classificationBoxes
     $scope.selectedEntities[ box.id ] = {}
           
-  $scope.addError = (errorMsg)->
-    $scope.errors.unshift { type: 'error', msg: errorMsg } 
+  $scope.removeMsg = (index)->
+    $scope.messages.splice index, 1
 
-  # Delegate to EditorService
-  $scope.createTextAnnotationFromCurrentSelection = ()->
-    EditorService.createTextAnnotationFromCurrentSelection()
+  $scope.addMsg = (msg, level)->
+    $scope.messages.unshift { level: level, text: msg } 
+
   # Delegate to EditorService
   $scope.selectAnnotation = (annotationId)->
     EditorService.selectAnnotation annotationId
@@ -399,22 +556,18 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.isLinkedToCurrentAnnotation = (entity)->
     return ($scope.annotation in entity.occurrences)
 
-  $scope.addNewEntityToAnalysis = (scope)->
+  $scope.addNewEntityToAnalysis = ()->
     
-    if $scope.newEntity.sameAs
-      $scope.newEntity.sameAs = [ $scope.newEntity.sameAs ]
-    
-    delete $scope.newEntity.suggestedSameAs
+    delete $scope.currentEntity.suggestedSameAs
     
     # Add new entity to the analysis
-    $scope.analysis.entities[ $scope.newEntity.id ] = $scope.newEntity
+    $scope.analysis.entities[ $scope.currentEntity.id ] = $scope.currentEntity
     annotation = $scope.analysis.annotations[ $scope.annotation ]
-    annotation.entityMatches.push { entityId: $scope.newEntity.id, confidence: 1 }
-    $scope.analysis.entities[ $scope.newEntity.id ].annotations[ annotation.id ] = annotation
-    $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.newEntity.id ] = $scope.newEntity
+    annotation.entityMatches.push { entityId: $scope.currentEntity.id, confidence: 1 }
+    $scope.analysis.entities[ $scope.currentEntity.id ].annotations[ annotation.id ] = annotation
+    $scope.analysis.annotations[ $scope.annotation ].entities[ $scope.currentEntity.id ] = $scope.currentEntity
     
-    # Select the new entity
-    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.newEntity.id ], scope
+    $scope.onSelectedEntityTile $scope.analysis.entities[ $scope.currentEntity.id ]
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
     
@@ -426,6 +579,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         delete $scope.selectedEntities[ box ][ entityId ]
         
   # Observe current annotation changed
+  # TODO la creazione di una nuova entità non andrebbe qui
   $scope.$watch "annotation", (newAnnotationId)->
     
     $log.debug "Current annotation id changed to #{newAnnotationId}"
@@ -433,15 +587,15 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     return if $scope.isRunning
     # Execute just if the current annotation id is defined
     return unless newAnnotationId?
-    # Create new entity object
-    $scope.newEntity = AnalysisService.createEntity()
-    # Retrieve the current annotation
-    annotation = $scope.analysis.annotations[ newAnnotationId ]
-    # Set the entity label accordingly to the current annotation
-    $scope.newEntity.label = annotation.text
-    # Look for SameAs suggestions
-    AnalysisService.getSuggestedSameAs annotation.text
-
+    # Execute just if any current entity ise set
+    if $scope.currentEntity?
+      # Retrieve the current annotation
+      annotation = $scope.analysis.annotations[ newAnnotationId ]
+      # Set the entity label accordingly to the current annotation
+      $scope.currentEntity.label = annotation.text
+      # Look for sameAs suggestions
+      AnalysisService.getSuggestedSameAs annotation.text
+    
   $scope.$on "currentUserLocalityDetected", (event, locality) ->
     $log.debug "Looking for entities matching with #{locality}"
     AnalysisService._innerPerform locality
@@ -451,16 +605,24 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if 'place' is entity.mainType 
           entity.id = id
           $scope.suggestedPlaces[ id ] = entity
-      $scope.isGeolocationRunning = false    
+
+      # Force place selection 
+      placeId =  Object.keys($scope.suggestedPlaces)[0]
+      place = $scope.suggestedPlaces[ placeId ]
+      $scope.onPublishedPlaceSelected place
+
+      $scope.isGeolocationRunning = false
+      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+    
   
   $scope.$on "geoLocationError", (event, error) ->
     $scope.isGeolocationRunning = false
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+
     
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
-    # Close new entity creation forms if needed
-    for id, box of $scope.boxes 
-      box.addEntityFormIsVisible = false
+    $scope.unsetCurrentEntity()
     
   $scope.$on "textAnnotationAdded", (event, annotation) ->
     $log.debug "added a new annotation with Id #{annotation.id}"  
@@ -470,7 +632,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     $scope.annotation = annotation.id
     
   $scope.$on "sameAsRetrieved", (event, sameAs) ->
-    $scope.newEntity.suggestedSameAs = sameAs
+    $scope.currentEntity.suggestedSameAs = sameAs
   
   $scope.$on "relatedPostsLoaded", (event, posts) ->
     $scope.relatedPosts = posts
@@ -494,12 +656,14 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
             continue
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
-          
-          for uri in entity.images
-            $scope.images[ uri ] = entity.label
+          # Concat entity images to suggested images collection
+          $scope.images = $scope.images.concat entity.images
+
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
-    
+    # Open content classification box
+    $scope.currentSection = 'content-classification'
+
   $scope.updateRelatedPosts = ()->
     $log.debug "Going to update related posts box ..."
     entityIds = []
@@ -508,27 +672,32 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entityIds.push id
     RelatedPostDataRetrieverService.load entityIds
 
-  $scope.onSelectedEntityTile = (entity, scope)->
-    $log.debug "Entity tile selected for entity #{entity.id} within '#{scope.id}' scope"
-    $log.debug entity
-    $log.debug scope
+  $scope.onSelectedEntityTile = (entity)->
 
-    if not $scope.selectedEntities[ scope.id ][ entity.id ]?
-      $scope.selectedEntities[ scope.id ][ entity.id ] = entity
-      for uri in entity.images
-        $scope.images[ uri ] = entity.label
+    scopeId = configuration.getCategoryForType entity.mainType
+    $log.debug "Entity tile selected for entity #{entity.id} within #{scopeId} scope"
+
+    if not $scope.selectedEntities[ scopeId ][ entity.id ]?
+      $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
+      # Concat entity images to suggested images collection
+      $scope.images = $scope.images.concat entity.images
+      # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
       $scope.selectAnnotation undefined
     else
-      for uri in entity.images
-        delete $scope.images[ uri ]
+      # Filter entity images to suggested images collection
+      $scope.images = $scope.images.filter (img)-> 
+        img not in entity.images  
+      # Notify entity deselection
       $scope.$emit "entityDeselected", entity, $scope.annotation
 
     $scope.updateRelatedPosts()
 
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+
     GeoLocationService.getLocation()
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
@@ -538,6 +707,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.onPublishedPlaceSelected = (entity)->
     if $scope.publishedPlace?.id is entity.id
       $scope.publishedPlace = undefined
+      $scope.suggestedPlaces = undefined
       return
     $scope.publishedPlace = entity  
 
@@ -547,107 +717,128 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if $scope.topic?.id is topic.id
       $scope.topic = undefined
       return
-    $scope.topic = topic 
-
-  $scope.toggleCurrentSection = ()->
-    $scope.articleMetadataOpened = !$scope.articleMetadataOpened
-    $scope.contentClassificationOpened = !$scope.contentClassificationOpened
-   
+    $scope.topic = topic    
       
 ])
 angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
 .directive('wlClassificationBox', ['configuration', '$log', (configuration, $log)->
     restrict: 'E'
     scope: true
-    transclude: true      
+    transclude: true
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-classification-box.html'
-    link: ($scope, $element, $attrs, $ctrl) ->  	  
-  	  
-      $scope.addEntityFormIsVisible = false
-
-      $scope.openAddEntityForm = ()->
-        
-        if !$scope.isThereASelection and !$scope.annotation?
-          $scope.addError "Select a text or an existing annotation in order to create a new entity. Text selections are valid only if they do not overlap other existing annotations."
-          return
-        
-        $scope.addEntityFormIsVisible = true
-        
-        if $scope.annotation?
-          $log.debug "There is a current annotation already. Nothing to do"
-          return
-
-        $scope.createTextAnnotationFromCurrentSelection()
-      
-      $scope.closeAddEntityForm = ()->
-        $scope.addEntityFormIsVisible = false
-        $scope.addNewEntityToAnalysis $scope.box
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html'
+    link: ($scope, $element, $attrs, $ctrl) ->
 
       $scope.hasSelectedEntities = ()->
         Object.keys( $scope.selectedEntities[ $scope.box.id ] ).length > 0
 
     controller: ($scope, $element, $attrs) ->
-      
+
       # Mantain a reference to nested entity tiles $scope
       # TODO manage on scope distruction event
       $scope.tiles = []
 
       $scope.boxes[ $scope.box.id ] = $scope
-            
+
       ctrl = @
       ctrl.addTile = (tile)->
         $scope.tiles.push tile
       ctrl.closeTiles = ()->
         for tile in $scope.tiles
           tile.isOpened = false
-      
+
   ])
+
 angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 .directive('wlEntityForm', ['configuration', '$window', '$log', (configuration, $window, $log)->
     restrict: 'E'
     scope:
       entity: '='
       onSubmit: '&'
+      onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-form.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
-      $scope.removeCurrentImage = ()->
-        removed = $scope.entity.images.shift()
-        $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
-        
-      $scope.getCurrentTypeUri = ()->
-        for type in configuration.types
-          if type.css is "wl-#{$scope.entity.mainType}"
-            return type.uri
+      $scope.configuration = configuration
+      $scope.currentCategory = undefined
 
-      $scope.isInternal = ()->
-        if $scope.entity.id.startsWith configuration.datasetUri
-          return true
-        return false 
+      $scope.$watch 'entity.id', (entityId)->
+        if entityId?
+          $log.debug "Entity updated to #{entityId}"
+          category = configuration.getCategoryForType $scope.entity?.mainType
+          $log.debug "Going to update current category to #{category}"
+          $scope.currentCategory = category
+
+      $scope.onSubmitWrapper = (e)->
+        e.preventDefault()
+        $scope.onSubmit()
+
+      $scope.onResetWrapper = (e)->
+        e.preventDefault()
+        $scope.onReset()
+
+      $scope.setCurrentCategory = (categoryId)->
+        $scope.currentCategory = categoryId
+        # If there is only one type related the new category
+        # Type selection is forced
+        types = configuration.getTypesForCategoryId( categoryId )
+        $log.debug "Going to check types"
+        $log.debug types
+        if types.length is 1
+          $scope.setType( types[0] )
+
+
+      $scope.unsetCurrentCategory = ()->
+        $scope.currentCategory = undefined 
+        # Entity type has to be reset too        
+        $scope.entity?.mainType = undefined
+
+      $scope.isSameAsOf = (sameAs)->
+        sameAs.id in $scope.entity.sameAs
       
-      $scope.linkTo = (linkType)->
-        $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=" + linkType
+      $scope.addSameAs = (sameAs)->
+        
+        unless $scope.entity?.sameAs
+          $scope.entity?.sameAs = []
+        
+        if sameAs.id in $scope.entity.sameAs 
+          index = $scope.entity.sameAs.indexOf sameAs.id
+          $scope.entity.sameAs.splice index, 1
+        else
+          $scope.entity?.sameAs.push sameAs.id
       
+      $scope.setType = (entityType)->
+        return if entityType is $scope.entity?.mainType
+        $scope.entity?.mainType = entityType
+      
+      $scope.isCurrentType = (entityType)->
+        return $scope.entity?.mainType is entityType
+        
+      $scope.getAvailableTypes = ()->
+        return configuration.getTypesForCategoryId $scope.currentCategory
+
+      $scope.removeCurrentImage = (index)->
+        removed = $scope.entity.images.splice index, 1
+        $log.warn "Removed #{removed} from entity #{$scope.entity.id} images collection"
+
+      $scope.linkToEdit = (e)->
+        e.preventDefault()
+        $window.location.href = ajaxurl + '?action=wordlift_redirect&uri=' + $window.encodeURIComponent($scope.entity.id) + "&to=edit"
+
       $scope.hasOccurences = ()->
         $scope.entity.occurrences?.length > 0
+      
       $scope.setSameAs = (uri)->
         $scope.entity.sameAs = uri
-      
-      $scope.checkEntityId = (uri)->
-        /^(f|ht)tps?:\/\//i.test(uri)
 
-      availableTypes = [] 
-      for type in configuration.types
-        availableTypes[ type.css.replace('wl-','') ] = type.uri
+      $scope.isInternal = ()->
+        configuration.isInternal $scope.entity?.id 
 
-      $scope.supportedTypes = ({ id: type.css.replace('wl-',''), name: type.uri } for type in configuration.types)
-      if $scope.box
-        $scope.supportedTypes = ({ id: type, name: availableTypes[ type ] } for type in $scope.box.registeredTypes)
-        
+      $scope.isNew = (uri)->
+        return !/^(f|ht)tps?:\/\//i.test $scope.entity?.id 
 
 ])
 
@@ -659,27 +850,30 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       entity: '='
       isSelected: '='
       showConfidence: '='
-      onEntitySelect: '&'
+      onSelect: '&'
+      onMore: '&'
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-tile.html'
-    link: ($scope, $element, $attrs, $boxCtrl) ->				      
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
+    link: ($scope, $element, $attrs, $boxCtrl) ->
       
+      $scope.configuration = configuration
       # Add tile to related container scope
       $boxCtrl?.addTile $scope
 
       $scope.isOpened = false
-      
+
       $scope.isInternal = ()->
         if $scope.entity.id.startsWith configuration.datasetUri
           return true
-        return false 
-       	
+        return false
+
       $scope.toggle = ()->
-        if !$scope.isOpened 
-          $boxCtrl?.closeTiles()    
+        if !$scope.isOpened
+          $boxCtrl?.closeTiles()
         $scope.isOpened = !$scope.isOpened
-        
+
   ])
+
 angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
 # The wlEntityInputBoxes prints the inputs and textareas with entities data.
 .directive('wlEntityInputBox', ['configuration', '$log', (configuration, $log)->
@@ -687,7 +881,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultAngularTemplatesPath + 'wordlift-directive-entity-input-box.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-input-box.html'
 ])
 angular.module('wordlift.editpost.widget.services.AnalysisService', [])
 # Manage redlink analysis responses
@@ -749,7 +943,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       id: 'local-entity-' + uniqueId 32
       label: ''
       description: ''
-      mainType: 'thing' # DefaultType
+      mainType: '' # No DefaultType
       types: []
       images: []
       confidence: 1
@@ -791,15 +985,17 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add annotation references to each entity
 
     # TMP ... Should be done on WLS side
+  
     originalTopics = data.topics
     data.topics = {}
 
-    for topic in originalTopics
-      
-      topic.id = topic.uri
-      topic.occurrences = []
-      topic.mainType =  @._defaultType
-      data.topics[ topic.id ] = topic
+    if originalTopics?
+      for topic in originalTopics
+        
+        topic.id = topic.uri
+        topic.occurrences = []
+        topic.mainType =  @._defaultType
+        data.topics[ topic.id ] = topic
 
     for id, localEntity of configuration.entities
       
@@ -857,7 +1053,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     data    
   
   service.getSuggestedSameAs = (content)->
-  
     promise = @._innerPerform content
     # If successful, broadcast an *sameAsReceived* event.
     .then (response) ->
@@ -865,9 +1060,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       suggestions = []
 
       for id, entity of response.data.entities
-        if id.startsWith('http')
-          suggestions.push id
-      
+       
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            source: matches[1]
+          }
+      $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
     
   service._innerPerform = (content)->
@@ -1207,8 +1408,6 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
   service = {}
   service.load = ( entityIds = [] )->
     uri = "admin-ajax.php?action=wordlift_related_posts&post_id=#{configuration.currentPostId}"
-    $log.debug "Going to find related posts"
-    $log.debug entityIds
     
     $http(
       method: 'post'
@@ -1217,7 +1416,6 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
     )
     # If successful, broadcast an *analysisReceived* event.
     .success (data) ->
-      $log.debug data
       $rootScope.$broadcast "relatedPostsLoaded", data
     .error (data, status) ->
       $log.warn "Error loading related posts"
@@ -1311,6 +1509,38 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
   provider =
     setConfiguration: (configuration)->
       _configuration = configuration
+
+      # Add utilities methods to work classification boxes
+
+      # Return the proper category for a given entity type
+      _configuration.getCategoryForType = (entityType)->
+
+      	unless entityType
+      	  return undefined
+      	for category in @classificationBoxes 
+      	  if entityType in category.registeredTypes
+      	    return category.id 
+      
+      # Return registered types for a given category
+      _configuration.getTypesForCategoryId = (categoryId)->
+      	
+      	unless categoryId
+      	  return []
+      	for category in @classificationBoxes 
+      	  if categoryId is category.id 
+      	  	return category.registeredTypes
+      
+      # Check if a given entity id refers to an internal entity
+      _configuration.isInternal = (uri)->
+      	return uri.startsWith @datasetUri
+      
+      # Check if a given entity id refers to an internal entity
+      _configuration.getUriForType = (mainType)->
+        for type in @types
+          if type.css is "wl-#{mainType}"
+            return type.uri
+
+      	    
     $get: ()->
       _configuration
 
@@ -1324,6 +1554,7 @@ $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget', [
+  'ngAnimate'
   'wordlift.ui.carousel'
   'wordlift.utils.directives'
   'wordlift.editpost.widget.providers.ConfigurationProvider',
@@ -1335,7 +1566,6 @@ angular.module('wordlift.editpost.widget', [
   'wordlift.editpost.widget.services.AnalysisService',
   'wordlift.editpost.widget.services.EditorService',
   'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
-
 ])
 
 .config((configurationProvider)->
@@ -1344,20 +1574,47 @@ angular.module('wordlift.editpost.widget', [
 
 $(
   container = $("""
-  	<div 
-      id="wordlift-edit-post-wrapper" 
+  	<div
+      id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultAngularTemplatesPath + 'wordlift-editpost-widget.html'">
-    </div>  
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'">
+    </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
+  
+  # Add svg based spinner code
+  spinner = $("""
+    <div class="wl-widget-spinner">
+      <svg transform-origin="10 10" id="wl-widget-spinner-blogger">
+        <circle cx="10" cy="10" r="6" class="wl-blogger-shape"></circle>
+      </svg>
+      <svg transform-origin="10 10" id="wl-widget-spinner-editorial">
+        <rect x="4" y="4" width="12" height="12" class="wl-editorial-shape"></rect>
+      </svg>
+      <svg transform-origin="10 10" id="wl-widget-spinner-enterprise">
+        <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
+      </svg>
+    </div> 
+  """)
+  .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
   injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
+  
+  # Update spinner
+  injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
+    $rootScope.$on 'analysisServiceStatusUpdated', (event, status) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
 
-# Add WordLift as a plugin of the TinyMCE editor.
+    $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
+  ])
+
+  # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
-# This plugin has to be loaded only with the main WP "content" editor
+    # This plugin has to be loaded only with the main WP "content" editor
     return unless editor.id is "content"
 
     # Register event depending on tinymce major version
@@ -1370,9 +1627,9 @@ $(
     # starts before the analysis is properly embedded
     injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
 
-# wp.mce.views uses toViews() method from WP 3.8 to 4.1
-# and setMarkers() method from WP 4.2 to 4.3 to replace
-# available shortcodes with coresponding views markup
+      # wp.mce.views uses toViews() method from WP 3.8 to 4.1
+      # and setMarkers() method from WP 4.2 to 4.3 to replace
+      # available shortcodes with coresponding views markup
       for method in ['setMarkers', 'toViews']
         if wp.mce.views[method]?
 
@@ -1384,7 +1641,7 @@ $(
           $rootScope.$on "analysisEmbedded", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
-
+            
           $rootScope.$on "analysisFailed", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod

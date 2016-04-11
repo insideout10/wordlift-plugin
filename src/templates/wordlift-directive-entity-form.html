@@ -24,7 +24,7 @@
     <input type="text" ng-model="entity.sameAs" />
     <div ng-show="entity.suggestedSameAs.length > 0" class="wl-suggested-sameas-wrapper">
       <h5>same as suggestions</h5>
-      <div ng-click="setSameAs(sameAs)" ng-class="{ 'active': entity.sameAs == sameAs }" class="wl-sameas" ng-repeat="sameAs in entity.suggestedSameAs">{{sameAs}}</div>
+      <div ng-click="setSameAs(sameAs.id)" ng-class="{ 'active': entity.sameAs == sameAs }" class="wl-sameas" ng-repeat="sameAs in entity.suggestedSameAs">{{sameAs.id}}</div>
     </div>
 </div>
 <div ng-hide="isInternal()" class="wl-buttons-wrapper">

@@ -131,6 +131,17 @@ module.exports = function ( grunt ) {
                 ]
             }
         },
+        autoprefixer: {
+          options: {
+            browsers: ['last 20 versions', 'ie 8', 'ie 9']          },
+          main: {
+            expand: true,
+            flatten: true,
+            cwd: SOURCE_DIR + 'css/',
+            src: ['*.css', '!*.min.css'],
+            dest: SOURCE_DIR + 'css/',
+          }
+        },
         /* Minify css */
         cssmin: {
             all: {
@@ -180,23 +191,24 @@ module.exports = function ( grunt ) {
         /* Watch for changes */
         watch: {
             /* Enable when using a build folder */
-            //all: {
-            //    files: [
-            //        SOURCE_DIR + '**',
-            //        // Ignore version control directories.
-            //        '!' + SOURCE_DIR + '**/.{svn,git}/**',
-            //        '!' + SOURCE_DIR + 'less/**',
-            //        '!' + SOURCE_DIR + 'coffee/**',
-            //        '!' + SOURCE_DIR + '**/*.coffee',
-            //        '!' + SOURCE_DIR + '**/*.less'
-            //    ],
-            //    //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
-            //    options: {
-            //        dot: true,
-            //        spawn: false,
-            //        interval: 2000
-            //    }
-            //},
+            all: {
+               files: [
+                   SOURCE_DIR + '**',
+                   // Ignore version control directories.
+                   '!' + SOURCE_DIR + '**/.{svn,git}/**',
+                   '!' + SOURCE_DIR + 'less/**',
+                   '!' + SOURCE_DIR + 'coffee/**',
+                   '!' + SOURCE_DIR + '**/*.coffee',
+                   '!' + SOURCE_DIR + '**/*.less',
+               ],
+               //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
+               options: {
+                   dot: true,
+                   spawn: false,
+                   interval: 2000,
+                   livereload: true,
+               }
+            },
             coffee: {
                 files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
                 tasks: [ 'coffee' ]
@@ -204,6 +216,10 @@ module.exports = function ( grunt ) {
             less: {
                 files: [ SOURCE_DIR + 'less/**/*.less' ],
                 tasks: [ 'less' ]
+            },
+            autoprefixer: {
+              files: [ SOURCE_DIR + 'css/**/*.css' ],
+              tasks: [ 'autoprefixer' ]
             },
             config: {
                 files: 'Gruntfile.js'
@@ -238,6 +254,7 @@ module.exports = function ( grunt ) {
     grunt.registerTask( 'build', [
         'coffee',
         'less',
+        'autoprefixer',
         'cssmin',
         'copy:fonts',
         'copy:build'
