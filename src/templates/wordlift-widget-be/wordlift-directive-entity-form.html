@@ -58,7 +58,7 @@
         <!-- TIPI COLLEGATI ALLA CATEGORIA SELEZIONATA -->
         <span
           class="wl-widget-entity-panel-top-options"
-          ng-class="{ 'wl-selected': isCurrentType(type) }"
+          ng-class="{ 'wl-selected': isCurrentType(type), 'wl-unselected': !isCurrentType(type) }"
           ng-click="setType(type)"
           ng-repeat="type in getAvailableTypes()">
           {{type}}
