@@ -1532,7 +1532,7 @@ angular.module('wordlift.editpost.widget.providers.ConfigurationProvider', [])
       
       # Check if a given entity id refers to an internal entity
       _configuration.isInternal = (uri)->
-      	return uri.startsWith @datasetUri
+      	return uri?.startsWith @datasetUri
       
       # Check if a given entity id refers to an internal entity
       _configuration.getUriForType = (mainType)->

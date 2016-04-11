@@ -1625,7 +1625,7 @@
           }
         };
         _configuration.isInternal = function(uri) {
-          return uri.startsWith(this.datasetUri);
+          return uri != null ? uri.startsWith(this.datasetUri) : void 0;
         };
         return _configuration.getUriForType = function(mainType) {
           var j, len, ref, type;
