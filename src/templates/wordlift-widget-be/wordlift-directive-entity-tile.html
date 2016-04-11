@@ -7,6 +7,14 @@
   <div class="wl-widget-classification-box-entity-tile-name">
     <h3 ng-click="onSelect()">
       {{entity.label}}
+
+      <!-- ENTITY OCCURENCES -->
+      <span 
+        ng-show="entity.occurrences.length > 0"
+        class="wl-widget-classification-box-entity-tile-occurrences">
+        {{entity.occurrences.length}}
+      </span>
+    
     </h3>
   </div>
 
