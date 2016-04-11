@@ -1603,10 +1603,6 @@
   stroke-width: 14;
   stroke-dasharray: 50 100;
 }
-.wl-selected {
-  border: none !important;
-  font-weight: 600;
-}
 #wordlift_entities_box {
   background-color: #F5F5F5;
 }
@@ -1871,6 +1867,10 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt span.wl-widget-entity-panel-top-options:hover {
   border-bottom: 2px solid #FFFFFF;
+}
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt .wl-selected {
+  border: none !important;
+  font-weight: 600;
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input {
   display: -webkit-flex;
