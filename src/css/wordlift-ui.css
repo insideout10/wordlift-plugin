@@ -62,7 +62,7 @@
 }
 .fa-border {
   padding: .2em .25em .15em;
-  border: solid 0.08em #eeeeee;
+  border: solid 0.08em #eee;
   -webkit-border-radius: .1em;
           border-radius: .1em;
 }
@@ -152,7 +152,7 @@
   font-size: 2em;
 }
 .fa-inverse {
-  color: #ffffff;
+  color: #fff;
 }
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
@@ -1436,25 +1436,25 @@
   text-align: left;
 }
 .wl-selected-item.wl-person {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-place {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-thing {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-creative-work {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-event {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-organization {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item.wl-local-business {
-  border-left: #007aff 5px solid;
+  border-left: #007AFF 5px solid;
 }
 .wl-selected-item .wl-deselect {
   font-family: FontAwesome;
@@ -1472,7 +1472,7 @@
   content: "\f00d";
 }
 .wl-selected-item .wl-deselect:hover {
-  color: #aa0000;
+  color: #a00;
   cursor: pointer;
 }
 .wl-navigator-widget {
@@ -1615,58 +1615,58 @@
   content: "\f016";
 }
 path.wl-person {
-  fill: #007aff;
+  fill: #007AFF;
 }
 path.wl-place {
-  fill: #007aff;
+  fill: #007AFF;
 }
 path.wl-creative-work {
-  fill: #007aff;
+  fill: #007AFF;
 }
 path.wl-organization {
-  fill: #007aff;
+  fill: #007AFF;
 }
 path.wl-local-business {
-  fill: #007aff;
+  fill: #007AFF;
 }
 path.wl-event {
-  fill: #007aff;
+  fill: #007AFF;
 }
 path.wl-thing {
-  fill: #007aff;
+  fill: #007AFF;
 }
 .wl-person {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-place {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-creative-work {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-organization {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-local-business {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-event {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
 .wl-thing {
-  background-color: #007aff;
+  background-color: #007AFF;
   color: #ffffff;
   padding: 2px;
 }
