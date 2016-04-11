@@ -21,9 +21,11 @@
   <!-- ENTITY STORING: GLOBAL-LOCAL -->
   <div class="wl-widget-classification-box-entity-tile-storing">
     <img
+      title="Internal entity"
       ng-show="isInternal()"
       ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-local-storage-icon.svg" />
     <img
+      title="External entity"
       ng-hide="isInternal()"
       ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-global-storage-icon.svg" />
   </div>
@@ -31,7 +33,8 @@
   <!-- ENTITY TYPE -->
   <div class="wl-widget-classification-box-entity-tile-type">
     <img
-    ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-{{entity.mainType}}-icon.svg">
+      title="Entity of type {{entity.mainType}}"
+      ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-{{entity.mainType}}-icon.svg">
   </div>
 
   <!-- LINK TO VOC -->
