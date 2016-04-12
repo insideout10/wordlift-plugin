@@ -124,6 +124,9 @@ function wl_entities_box_content( $post ) {
     $current_user = wp_get_current_user();
     // Retrive the published date
     $published_date = get_the_time( 'Y-m-d', $post->ID );
+    // Current language
+    $current_language = wl_configuration_get_site_language();
+
 	echo <<<EOF
     <script type="text/javascript">
         jQuery( function() {
@@ -145,6 +148,7 @@ function wl_entities_box_content( $post ) {
             window.wordlift.publishedDate = '$published_date';
             window.wordlift.publishedPlace = $published_place_obj;
             window.wordlift.topic = $topic_obj;
+            window.wordlift.currentLanguage = '$current_language';
 
         });
     </script>

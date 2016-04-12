@@ -1425,11 +1425,11 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
 ])
 angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation'])
 # Retrieve GeoLocation coordinates and process them trough reverse geocoding
-.service('GeoLocationService', [ 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', ( geolocation, $log, $rootScope, $document, $q, $timeout )-> 
+.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout )-> 
   
   GOOGLE_MAPS_LEVEL = 'locality'
   GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM'
-  GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_KEY
+  GOOGLE_MAPS_API_ENDPOINT = "https://maps.googleapis.com/maps/api/js?language=#{configuration.currentLanguage}&key=#{GOOGLE_MAPS_KEY}"
   
   $rootScope.$on 'error', (event, msg)->
     $log.warn "Geolocation error: #{msg}"
@@ -1449,6 +1449,7 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     deferred = $q.defer()
     # Load Google API asynchronously
     element = $document[0].createElement('script')
+    # $log.debug "Going to load #{GOOGLE_MAPS_API_ENDPOINT}"
     element.src = GOOGLE_MAPS_API_ENDPOINT
     $document[0].body.appendChild element
     
