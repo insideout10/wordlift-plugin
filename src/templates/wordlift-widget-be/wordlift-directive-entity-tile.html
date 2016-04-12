@@ -8,18 +8,21 @@
     <h3>
       {{entity.label}}
 
-      <!-- ENTITY OCCURENCES -->
-      <span 
-        ng-show="entity.occurrences.length > 0"
-        class="wl-widget-classification-box-entity-tile-occurrences">
-        {{entity.occurrences.length}}
-      </span>
-    
+
     </h3>
   </div>
 
+    <!-- ENTITY OCCURENCES -->
+    <div class="wl-widget-classification-box-entity-tile-occurences"
+    ng-show="entity.occurrences.length > 0"
+    class="wl-widget-classification-box-entity-tile-occurrences">
+      <h4>
+        {{entity.occurrences.length}}
+      </h4>
+    </div>
+
   <!-- ENTITY STORING: GLOBAL-LOCAL -->
-  <div class="wl-widget-classification-box-entity-tile-storing">
+  <div class="wl-widget-classification-box-entity-tile-storage">
     <img
       title="Internal entity"
       ng-show="isInternal()"
