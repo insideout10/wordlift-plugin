@@ -774,7 +774,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.configuration = configuration;
@@ -920,7 +920,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-input-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html';
         }
       };
     }
@@ -1524,9 +1524,10 @@
 
   angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation']).service('GeoLocationService', [
     'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', function(geolocation, $log, $rootScope, $document, $q, $timeout) {
-      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
-      GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js';
+      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_KEY, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
       GOOGLE_MAPS_LEVEL = 'locality';
+      GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM';
+      GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_KEY;
       $rootScope.$on('error', function(event, msg) {
         $log.warn("Geolocation error: " + msg);
         return $rootScope.$broadcast('geoLocationError', msg);
@@ -1625,7 +1626,7 @@
           }
         };
         _configuration.isInternal = function(uri) {
-          return uri.startsWith(this.datasetUri);
+          return uri != null ? uri.startsWith(this.datasetUri) : void 0;
         };
         return _configuration.getUriForType = function(mainType) {
           var j, len, ref, type;
@@ -1651,7 +1652,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
     '$rootScope', '$log', function($rootScope, $log) {
       $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
         var css;

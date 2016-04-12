@@ -4,18 +4,28 @@
   ng-class="{'wl-selected': isSelected }">
 
   <!-- ENTITY NAME -->
-  <div class="wl-widget-classification-box-entity-tile-name">
-    <h3 ng-click="onSelect()">
+  <div class="wl-widget-classification-box-entity-tile-name" ng-click="onSelect()">
+    <h3>
       {{entity.label}}
+
+      <!-- ENTITY OCCURENCES -->
+      <span 
+        ng-show="entity.occurrences.length > 0"
+        class="wl-widget-classification-box-entity-tile-occurrences">
+        {{entity.occurrences.length}}
+      </span>
+    
     </h3>
   </div>
 
   <!-- ENTITY STORING: GLOBAL-LOCAL -->
   <div class="wl-widget-classification-box-entity-tile-storing">
     <img
+      title="Internal entity"
       ng-show="isInternal()"
       ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-local-storage-icon.svg" />
     <img
+      title="External entity"
       ng-hide="isInternal()"
       ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-global-storage-icon.svg" />
   </div>
@@ -23,7 +33,8 @@
   <!-- ENTITY TYPE -->
   <div class="wl-widget-classification-box-entity-tile-type">
     <img
-    ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-{{entity.mainType}}-icon.svg">
+      title="Entity of type {{entity.mainType}}"
+      ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-{{entity.mainType}}-icon.svg">
   </div>
 
   <!-- LINK TO VOC -->

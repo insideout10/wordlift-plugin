@@ -58,7 +58,7 @@
         <!-- TIPI COLLEGATI ALLA CATEGORIA SELEZIONATA -->
         <span
           class="wl-widget-entity-panel-top-options"
-          ng-class="{ 'wl-selected': isCurrentType(type) }"
+          ng-class="{ 'wl-selected': isCurrentType(type), 'wl-unselected': !isCurrentType(type) }"
           ng-click="setType(type)"
           ng-repeat="type in getAvailableTypes()">
           {{type}}
@@ -147,7 +147,7 @@
 
       <!-- OPEN DETAILS BTN -->
       <button
-        ng-hide="isNew()"
+        ng-show="isInternal()"
         ng-click="linkToEdit($event)"
         class="wl-widget-entity-panel-voc-btn">
         Open in vocabulary
@@ -156,8 +156,15 @@
       <!-- POSITIVE BTN -->
       <button
         ng-click="onSubmitWrapper($event)"
+        ng-if="!isInternal()"
         class="wl-widget-entity-panel-positive-btn">
         Create
+      </button>
+      <button
+        ng-click="onSubmitWrapper($event)"
+        ng-if="isInternal()"
+        class="wl-widget-entity-panel-positive-btn">
+        Update
       </button>
     </div>
 
