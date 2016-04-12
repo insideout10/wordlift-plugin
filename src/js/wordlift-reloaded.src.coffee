@@ -1427,9 +1427,10 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
 # Retrieve GeoLocation coordinates and process them trough reverse geocoding
 .service('GeoLocationService', [ 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', ( geolocation, $log, $rootScope, $document, $q, $timeout )-> 
   
-  GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js'
   GOOGLE_MAPS_LEVEL = 'locality'
-
+  GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM'
+  GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_KEY
+  
   $rootScope.$on 'error', (event, msg)->
     $log.warn "Geolocation error: #{msg}"
     $rootScope.$broadcast 'geoLocationError', msg

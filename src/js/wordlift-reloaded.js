@@ -1524,9 +1524,10 @@
 
   angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation']).service('GeoLocationService', [
     'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', function(geolocation, $log, $rootScope, $document, $q, $timeout) {
-      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
-      GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js';
+      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_KEY, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
       GOOGLE_MAPS_LEVEL = 'locality';
+      GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM';
+      GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js?key=' + GOOGLE_MAPS_KEY;
       $rootScope.$on('error', function(event, msg) {
         $log.warn("Geolocation error: " + msg);
         return $rootScope.$broadcast('geoLocationError', msg);
