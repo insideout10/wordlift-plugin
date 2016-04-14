@@ -14,8 +14,7 @@
 <div
   ng-show="isCurrentSection('related-posts')"
   class="wl-widget-posts wl-tab-wrap">
-  <!-- ng-repeat="post in relatedPosts" -->
-  <div class="wl-widget-post-wrap" >
+  <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
       <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
     </div>
@@ -25,7 +24,6 @@
 
       <!-- POST TITLE -->
       <h1 class="wl-widget-post-title">
-          bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla
           {{post.post_title | filterTruncate: 5 }}
       </h1>
 
