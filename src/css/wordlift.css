@@ -2863,6 +2863,7 @@ h1.wl-tab-lead-text {
   display: -ms-flexbox;
   display: flex;
   height: 80px;
+  margin-bottom: 5px;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img {
   position: relative;
@@ -2903,6 +2904,7 @@ h1.wl-tab-lead-text {
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
+  width: 100%;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details h3.wl-widget-post-author {
   margin: 0 !important;
