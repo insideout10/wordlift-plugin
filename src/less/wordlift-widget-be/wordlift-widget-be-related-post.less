@@ -50,14 +50,15 @@
       justify-content: space-between;
       width: 100%;
 
-      h3.wl-widget-post-author {
-        margin: 0 !important;
-        padding: 0 !important;
-        color: @wl-black-color;
-        opacity: 50%;
-        font-size: 10px;
-        line-height: 1;
-      }
+      // Removed in v 3.5
+      // h3.wl-widget-post-author {
+      //   margin: 0 !important;
+      //   padding: 0 !important;
+      //   color: @wl-black-color;
+      //   opacity: 50%;
+      //   font-size: 10px;
+      //   line-height: 1;
+      // }
 
       h1.wl-widget-post-title {
         margin: 0;
@@ -67,6 +68,8 @@
         color: @wl-black-color;
         line-height: 1.2;
         margin-bottom: 5px;
+        height: 65px;
+        overflow: hidden;
       }
 
       span.wl-widget-post-link {
