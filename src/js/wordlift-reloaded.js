@@ -588,30 +588,6 @@
           return AnalysisService.getSuggestedSameAs(annotation.text);
         }
       });
-      $scope.$on("currentUserLocalityDetected", function(event, locality) {
-        $log.debug("Looking for entities matching with " + locality);
-        return AnalysisService._innerPerform(locality).then(function(response) {
-          var entity, id, place, placeId, ref1;
-          $scope.suggestedPlaces = {};
-          ref1 = response.data.entities;
-          for (id in ref1) {
-            entity = ref1[id];
-            if ('place' === entity.mainType) {
-              entity.id = id;
-              $scope.suggestedPlaces[id] = entity;
-            }
-          }
-          placeId = Object.keys($scope.suggestedPlaces)[0];
-          place = $scope.suggestedPlaces[placeId];
-          $scope.onPublishedPlaceSelected(place);
-          $scope.isGeolocationRunning = false;
-          return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
-        });
-      });
-      $scope.$on("geoLocationError", function(event, error) {
-        $scope.isGeolocationRunning = false;
-        return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
-      });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
         $scope.annotation = annotationId;
         return $scope.unsetCurrentEntity();
@@ -711,6 +687,27 @@
         }
         return $scope.publishedPlace = entity;
       };
+      $scope.$on("currentUserLocalityDetected", function(event, match, locality) {
+        $log.debug("Looking for entities matching " + match + " for locality " + locality);
+        return AnalysisService._innerPerform(match).then(function(response) {
+          var entity, id, ref1;
+          $scope.suggestedPlaces = {};
+          ref1 = response.data.entities;
+          for (id in ref1) {
+            entity = ref1[id];
+            if ('place' === entity.mainType && locality === entity.label) {
+              entity.id = id;
+              $scope.onPublishedPlaceSelected(entity);
+            }
+          }
+          $scope.isGeolocationRunning = false;
+          return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
+        });
+      });
+      $scope.$on("geoLocationError", function(event, error) {
+        $scope.isGeolocationRunning = false;
+        return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
+      });
       $scope.isTopic = function(topic) {
         var ref1;
         return topic.id === ((ref1 = $scope.topic) != null ? ref1.id : void 0);
@@ -1575,13 +1572,19 @@
                 'lng': data.coords.longitude
               }
             }, function(results, status) {
-              var j, len, result;
+              var ac, j, k, len, len1, ref, result;
               if (status === google.maps.GeocoderStatus.OK) {
                 for (j = 0, len = results.length; j < len; j++) {
                   result = results[j];
                   if (indexOf.call(result.types, GOOGLE_MAPS_LEVEL) >= 0) {
-                    $rootScope.$broadcast("currentUserLocalityDetected", result.formatted_address);
-                    return;
+                    ref = result.address_components;
+                    for (k = 0, len1 = ref.length; k < len1; k++) {
+                      ac = ref[k];
+                      if (indexOf.call(ac.types, GOOGLE_MAPS_LEVEL) >= 0) {
+                        $rootScope.$broadcast("currentUserLocalityDetected", result.formatted_address, ac.long_name);
+                        return;
+                      }
+                    }
                   }
                 }
               }

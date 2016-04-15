@@ -70,8 +70,10 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
-                  $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address                                   
-                  return    
+                  for ac in result.address_components
+                    if GOOGLE_MAPS_LEVEL in ac.types
+                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name                                   
+                      return    
              
   service
 

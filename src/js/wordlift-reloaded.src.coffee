@@ -595,31 +595,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.currentEntity.label = annotation.text
       # Look for sameAs suggestions
       AnalysisService.getSuggestedSameAs annotation.text
-    
-  $scope.$on "currentUserLocalityDetected", (event, locality) ->
-    $log.debug "Looking for entities matching with #{locality}"
-    AnalysisService._innerPerform locality
-    .then (response)->
-      $scope.suggestedPlaces = {}
-      for id, entity of response.data.entities
-        if 'place' is entity.mainType 
-          entity.id = id
-          $scope.suggestedPlaces[ id ] = entity
-
-      # Force place selection 
-      placeId =  Object.keys($scope.suggestedPlaces)[0]
-      place = $scope.suggestedPlaces[ placeId ]
-      $scope.onPublishedPlaceSelected place
-
-      $scope.isGeolocationRunning = false
-      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-    
-  
-  $scope.$on "geoLocationError", (event, error) ->
-    $scope.isGeolocationRunning = false
-    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-
-    
+        
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
     $scope.unsetCurrentEntity()
@@ -697,10 +673,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-
     GeoLocationService.getLocation()
+
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
+
   $scope.hasPublishedPlace = ()->
     $scope.publishedPlace? or $scope.suggestedPlaces?
   
@@ -710,6 +687,26 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.suggestedPlaces = undefined
       return
     $scope.publishedPlace = entity  
+
+  $scope.$on "currentUserLocalityDetected", (event, match, locality) ->
+    $log.debug "Looking for entities matching #{match} for locality #{locality}"
+    
+    AnalysisService._innerPerform match
+    .then (response)->
+      $scope.suggestedPlaces = {}
+      for id, entity of response.data.entities
+        # Evaluate similarity
+        if 'place' is entity.mainType and locality is entity.label
+          entity.id = id
+          $scope.onPublishedPlaceSelected entity
+
+      $scope.isGeolocationRunning = false
+      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+    
+  
+  $scope.$on "geoLocationError", (event, error) ->
+    $scope.isGeolocationRunning = false
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
 
   $scope.isTopic = (topic)->
     topic.id is $scope.topic?.id 
@@ -1495,8 +1492,10 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
-                  $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address                                   
-                  return    
+                  for ac in result.address_components
+                    if GOOGLE_MAPS_LEVEL in ac.types
+                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name                                   
+                      return    
              
   service
 
