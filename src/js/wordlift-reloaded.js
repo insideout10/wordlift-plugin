@@ -604,23 +604,23 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, id, k, l, len1, len2, ref1, ref2, ref3, topic;
+        var entity, entityId, k, l, len1, len2, len3, m, ref1, ref2, ref3, ref4, topic;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
-          for (id in ref1) {
-            topic = ref1[id];
-            if (indexOf.call($scope.configuration.topic.sameAs, id) >= 0) {
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            topic = ref1[k];
+            if (ref2 = topic.id, indexOf.call($scope.configuration.topic.sameAs, ref2) >= 0) {
               $scope.topic = topic;
             }
           }
         }
-        ref2 = $scope.configuration.classificationBoxes;
-        for (k = 0, len1 = ref2.length; k < len1; k++) {
-          box = ref2[k];
-          ref3 = box.selectedEntities;
-          for (l = 0, len2 = ref3.length; l < len2; l++) {
-            entityId = ref3[l];
+        ref3 = $scope.configuration.classificationBoxes;
+        for (l = 0, len2 = ref3.length; l < len2; l++) {
+          box = ref3[l];
+          ref4 = box.selectedEntities;
+          for (m = 0, len3 = ref4.length; m < len3; m++) {
+            entityId = ref4[m];
             if (entity = analysis.entities[entityId]) {
               if (entity.occurrences.length === 0) {
                 $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
@@ -987,7 +987,6 @@
             }
             if (isOverlapping) {
               $log.warn("Annotation with id: " + annotationId + " start: " + annotation.start + " end: " + annotation.end + " overlaps an existing annotation");
-              $log.debug(annotation);
               this.deleteAnnotation(analysis, annotationId);
             } else {
               positions = positions.concat(annotationRange);
@@ -1054,18 +1053,17 @@
         return merge(defaults, params);
       };
       service.parse = function(data) {
-        var annotation, annotationId, ea, em, entity, id, index, l, len2, len3, len4, localEntity, local_confidence, m, n, originalTopics, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, topic;
-        originalTopics = data.topics;
-        data.topics = {};
-        if (originalTopics != null) {
-          for (l = 0, len2 = originalTopics.length; l < len2; l++) {
-            topic = originalTopics[l];
-            topic.id = topic.uri;
-            topic.occurrences = [];
-            topic.mainType = this._defaultType;
-            data.topics[topic.id] = topic;
-          }
+        var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
+        if (data.topics == null) {
+          data.topics = [];
         }
+        dt = this._defaultType;
+        data.topics = data.topics.map(function(topic) {
+          topic.id = topic.uri;
+          topic.occurrences = [];
+          topic.mainType = dt;
+          return topic;
+        });
         ref2 = configuration.entities;
         for (id in ref2) {
           localEntity = ref2[id];
@@ -1107,11 +1105,11 @@
           annotation.id = id;
           annotation.entities = {};
           data.annotations[id].entityMatches = (function() {
-            var len3, m, ref8, results1;
+            var l, len2, ref8, results1;
             ref8 = annotation.entityMatches;
             results1 = [];
-            for (m = 0, len3 = ref8.length; m < len3; m++) {
-              ea = ref8[m];
+            for (l = 0, len2 = ref8.length; l < len2; l++) {
+              ea = ref8[l];
               if (ea.entityId !== configuration.currentPostUri) {
                 results1.push(ea);
               }
@@ -1119,7 +1117,7 @@
             return results1;
           })();
           ref8 = data.annotations[id].entityMatches;
-          for (index = m = 0, len3 = ref8.length; m < len3; index = ++m) {
+          for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
             ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
               data.entities[ea.entityId].label = annotation.text;
@@ -1137,8 +1135,8 @@
             annotation = ref10[annotationId];
             local_confidence = 1;
             ref11 = annotation.entityMatches;
-            for (n = 0, len4 = ref11.length; n < len4; n++) {
-              em = ref11[n];
+            for (m = 0, len3 = ref11.length; m < len3; m++) {
+              em = ref11[m];
               if ((em.entityId != null) && em.entityId === id) {
                 local_confidence = em.confidence;
               }

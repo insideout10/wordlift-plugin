@@ -39,7 +39,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
         
         if isOverlapping
           $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
-          $log.debug annotation
           @.deleteAnnotation analysis, annotationId
         else 
           positions = positions.concat annotationRange 
@@ -101,16 +100,18 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
 
     # TMP ... Should be done on WLS side
   
-    originalTopics = data.topics
-    data.topics = {}
+    
+    unless data.topics?
+      data.topics = []
 
-    if originalTopics?
-      for topic in originalTopics
-        
-        topic.id = topic.uri
-        topic.occurrences = []
-        topic.mainType =  @._defaultType
-        data.topics[ topic.id ] = topic
+    dt = @._defaultType
+
+    data.topics = data.topics.map (topic)->
+      
+      topic.id = topic.uri
+      topic.occurrences = []
+      topic.mainType = dt
+      topic
 
     for id, localEntity of configuration.entities
       

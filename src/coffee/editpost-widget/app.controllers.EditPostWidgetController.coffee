@@ -272,8 +272,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Topic Preselect
     if $scope.configuration.topic?
-      for id, topic of analysis.topics
-        if id in $scope.configuration.topic.sameAs
+      for topic in analysis.topics
+        if topic.id in $scope.configuration.topic.sameAs
           $scope.topic = topic
 
     # Preselect 

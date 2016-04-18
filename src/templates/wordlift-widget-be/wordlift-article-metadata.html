@@ -66,7 +66,7 @@
       <div 
         class="wl-widget-article-metadata-topic-single" 
         ng-click="onTopicSelected(topic)"
-        ng-repeat="(id, topic) in analysis.topics">
+        ng-repeat="topic in analysis.topics | orderBy:'-confidence'">
 
         <!-- TOPIC RADIO BTN -->
         <div 
