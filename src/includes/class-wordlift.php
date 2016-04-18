@@ -96,7 +96,7 @@ class Wordlift {
 	/**
 	 * The Topic Taxonomy service.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 * @access private
 	 * @var \Wordlift_Topic_Taxonomy_Service The Topic Taxonomy service.
 	 */
