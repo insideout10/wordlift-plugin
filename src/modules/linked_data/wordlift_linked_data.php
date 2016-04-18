@@ -54,9 +54,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
-	// Store classification box mapping
-	$entities_predicates_mapping = null;
-
+	
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) && isset( $_POST['wl_boxes'] ) ) {
 
@@ -109,16 +107,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 
 		}
-
-		// Populate the $entities_predicates_mapping
-		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
-			foreach ( $entity_uris as $entity_uri ) {
-		
-				$uri = $entities_uri_mapping[ stripslashes( $entity_uri ) ];				 				
-                wl_write_log("Going to map predicate $predicate to uri $uri");
-				$entities_predicates_mapping[ $uri ][] = $predicate;	
-			}
-		}
 		
 	}
 
@@ -144,27 +132,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	// Save relation instances
 	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
 
-		if ( $entities_predicates_mapping ) {
-			// Retrieve the entity uri
-			$referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
-			
-			// Retrieve predicates for the current uri
-			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
-				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-					wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
-				}
-			} else {
-				wl_write_log( "Entity uri $referenced_entity_uri missing in the mapping" );
-				wl_write_log( $entities_predicates_mapping );
-			}
-
-		} else {
-			// Just for unit tests
-			wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
-		}
+		wl_core_add_relation_instance( 
+			$post_id, 
+			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ), 
+			$referenced_entity_id
+		);
 
 	}
-
+    
 	// Save post metadata if available
 	$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ? 
 		$_POST['wl_metadata'] : array();
