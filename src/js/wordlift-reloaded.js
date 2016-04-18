@@ -604,7 +604,7 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, k, l, len1, len2, len3, m, ref1, ref2, ref3, ref4, topic;
+        var entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, ref5, topic;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
@@ -627,7 +627,13 @@
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              $scope.images = $scope.images.concat(entity.images);
+              ref5 = entity.images;
+              for (n = 0, len4 = ref5.length; n < len4; n++) {
+                image = ref5[n];
+                if (indexOf.call($scope.images, image) < 0) {
+                  $scope.images.push(image);
+                }
+              }
             } else {
               $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
@@ -650,12 +656,18 @@
         return RelatedPostDataRetrieverService.load(entityIds);
       };
       $scope.onSelectedEntityTile = function(entity) {
-        var scopeId;
+        var image, k, len1, ref1, scopeId;
         scopeId = configuration.getCategoryForType(entity.mainType);
         $log.debug("Entity tile selected for entity " + entity.id + " within " + scopeId + " scope");
         if ($scope.selectedEntities[scopeId][entity.id] == null) {
           $scope.selectedEntities[scopeId][entity.id] = entity;
-          $scope.images = $scope.images.concat(entity.images);
+          ref1 = entity.images;
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            image = ref1[k];
+            if (indexOf.call($scope.images, image) < 0) {
+              $scope.images.push(image);
+            }
+          }
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
         } else {

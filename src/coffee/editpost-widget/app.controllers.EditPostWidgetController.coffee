@@ -287,8 +287,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
           # Concat entity images to suggested images collection
-          $scope.images = $scope.images.concat entity.images
-
+          for image in entity.images
+            unless image in $scope.images 
+              $scope.images.push image  
+          
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
     # Open content classification box
@@ -310,7 +312,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if not $scope.selectedEntities[ scopeId ][ entity.id ]?
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
       # Concat entity images to suggested images collection
-      $scope.images = $scope.images.concat entity.images
+      for image in entity.images
+        unless image in $scope.images 
+          $scope.images.push image  
       # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
