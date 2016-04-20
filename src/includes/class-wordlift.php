@@ -423,7 +423,10 @@ class Wordlift {
 		$this->loader->add_action( 'deleted_post_meta', $this->thumbnail_service, 'deleted_post_meta', 10, 4 );
 
 		// Hook the added_post_meta action to the Thumbnail service.
-		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_post_meta', 10, 4 );
+		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
+		
+		// Hook the updated_post_meta action to the Thumbnail service.
+		$this->loader->add_action( 'updated_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
 
 		// Hook posts inserts (or updates) to the user service.
 		$this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
