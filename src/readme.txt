@@ -87,6 +87,7 @@ More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) ca
 
 == Changelog ==
 = 3.5.0 (???) =
+* Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
 * Fix: [#299](https://github.com/insideout10/wordlift-plugin/issues/299): Featured images are now properly updated on RL.
 * Enhancement: [#295](https://github.com/insideout10/wordlift-plugin/issues/295): New UI refinements.
 * Enhancement: [#297](https://github.com/insideout10/wordlift-plugin/issues/297): Detect classification scope from current entity type.
