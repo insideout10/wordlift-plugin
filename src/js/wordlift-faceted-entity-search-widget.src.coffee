@@ -287,10 +287,15 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.filteringEnabled = true
 
     $scope.toggleFacets = ()->
-      $log.debug "Clicked!"
       $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets
+      # Reset conditions
+      $scope.conditions = {}
+      DataRetrieverService.load( 'posts' )
+
 
     $scope.isInConditions = (entity)->
+      if Object.keys($scope.conditions).length is 0
+        return true
       if $scope.conditions[ entity.id ]
         return true
       return false
@@ -356,7 +361,6 @@ $(
           <h5>{{box.scope}}</h5>
           <ul>
             <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
-                <i class="wl-checkbox" ng-class=" { 'selected' : isInConditions(entity) }"></i>
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
                   {{entity.label}}
                 </span>

@@ -1508,7 +1508,7 @@
   padding: 0px 3px;
 }
 #wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-on:before {
-  content: "\f0b0";
+  content: "\f00e";
 }
 #wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-off {
   font-family: FontAwesome;
@@ -1521,7 +1521,7 @@
   padding: 0px 3px;
 }
 #wordlift-faceted-entity-search-widget .wl-headline .wl-toggle-off:before {
-  content: "\f0b0";
+  content: "\f010";
 }
 #wordlift-faceted-entity-search-widget ul {
   margin: 0;
@@ -1551,7 +1551,7 @@
   border-left: #ccc 1px dashed;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li {
-  padding: 0 0 0 1.5em;
+  padding: 0;
   margin: 0em 0em 0.2em 0em;
   line-height: 1.2em;
   position: relative;
@@ -1594,10 +1594,11 @@
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label {
   text-transform: capitalize;
   cursor: pointer;
+  color: #000;
+  opacity: 0.3;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-label.selected {
-  font-weight: bold;
-  color: #000;
+  opacity: 1;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-type {
   font-size: inherit !important;
