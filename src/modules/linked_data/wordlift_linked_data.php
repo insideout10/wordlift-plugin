@@ -140,37 +140,38 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	}
     
-	// Save post metadata if available
-	$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ? 
-		$_POST['wl_metadata'] : array();
+    if ( isset( $_POST['wl_entities'] ) ) {
+		// Save post metadata if available
+		$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ? 
+			$_POST['wl_metadata'] : array();
 
-	$fields = array(
-		Wordlift_Schema_Service::FIELD_LOCATION_CREATED,
-		Wordlift_Schema_Service::FIELD_TOPIC
-	);
-	
-	// Unlink topic taxonomy terms
-	Wordlift_Topic_Taxonomy_Service::get_instance()->unlink_topic_for( $post->ID );
+		$fields = array(
+			Wordlift_Schema_Service::FIELD_LOCATION_CREATED,
+			Wordlift_Schema_Service::FIELD_TOPIC
+		);
 		
-	foreach ( $fields as $field ) {
+		// Unlink topic taxonomy terms
+		Wordlift_Topic_Taxonomy_Service::get_instance()->unlink_topic_for( $post->ID );
+			
+		foreach ( $fields as $field ) {
 
-		// Delete current values
-		delete_post_meta( $post->ID, $field );
-		// Retrieve the entity uri
-		$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ? 
-			stripslashes( $metadata_via_post[ $field ] ) : '';
+			// Delete current values
+			delete_post_meta( $post->ID, $field );
+			// Retrieve the entity uri
+			$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ? 
+				stripslashes( $metadata_via_post[ $field ] ) : '';
 
-		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
-		
-		if ( $entity ) {
-			add_post_meta( $post->ID, $field, $entity->ID, true );
-			// Set also the topic taxonomy
-			if ( $field === Wordlift_Schema_Service::FIELD_TOPIC ) {
-				Wordlift_Topic_Taxonomy_Service::get_instance()->set_topic_for( $post->ID, $entity );
+			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+			
+			if ( $entity ) {
+				add_post_meta( $post->ID, $field, $entity->ID, true );
+				// Set also the topic taxonomy
+				if ( $field === Wordlift_Schema_Service::FIELD_TOPIC ) {
+					Wordlift_Topic_Taxonomy_Service::get_instance()->set_topic_for( $post->ID, $entity );
+				}
 			}
 		}
 	}
-	
 
 	// Push the post to Redlink.
 	wl_linked_data_push_to_redlink( $post->ID );
