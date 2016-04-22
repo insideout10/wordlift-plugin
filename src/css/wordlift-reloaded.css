@@ -1346,7 +1346,7 @@
   border: #ccc 1px solid !important;
 }
 .wl-carousel .wl-carousel-arrows:hover {
-  color: #2ea2cc !important;
+  color: #000 !important;
 }
 .wl-carousel .wl-carousel-arrows .wl-angle {
   font-size: 18px !important;
