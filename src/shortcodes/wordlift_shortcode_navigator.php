@@ -53,7 +53,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 		) );
 
 		// loop over them and take the first one which is not already in the $related_posts
-		foreach ( $referencing_posts as $index => $referencing_post ) {
+		foreach ( $referencing_posts as $referencing_post ) {
 
 			if ( ! in_array( $referencing_post->ID, $blacklist_ids ) ) {
 				
@@ -62,6 +62,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $referencing_post->ID, 'thumbnail' ) );		 
 	
 			    if ( $thumbnail ) {
+
 					$results[]     = array( 
 						'post' =>	array( 
 							'permalink' => get_post_permalink( $referencing_post->ID ),
@@ -75,22 +76,17 @@ function wl_shortcode_navigator_ajax( $http_raw_data = null ) {
 						) 
 					);
 
-					if ( 0 < $index ) {
-						break;
-					}
+					// Be sure no more than 1 post for entity is returned
+					break;
 				}
 			}
 		}
 	}
 
-	// Results has to fit also with the layout that has 4 columns
-	$mod = ( count( $results ) % 4 );
-	while ( $mod-- ) {
-		array_pop( $results ); 
-	}
-
-	// Return results in json
-	wl_core_send_json(  array_reverse( $results ) );
+	// Return first 4 results in json accordingly to 4 columns layout
+	wl_core_send_json( 
+		array_slice( array_reverse( $results ), 0, 4 ) 
+		);
 }
 
 /**
