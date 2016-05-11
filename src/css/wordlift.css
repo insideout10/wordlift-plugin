@@ -2863,7 +2863,7 @@ h1.wl-tab-lead-text {
   display: -ms-flexbox;
   display: flex;
   height: 80px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img {
   position: relative;
