@@ -244,6 +244,35 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
+	 * Get the proper classification scope for a given entity post
+	 *
+	 * @since 3.5.0
+	 *
+	 * @param integer $post_id An entity post id.
+	 *
+	 * @return string Returns an uri.
+	 */
+	public function get_classification_scope_for( $post_id ) {
+		
+		if ( FALSE === $this->is_entity( $post_id ) ) {
+			return null;
+		}
+		// Retrieve the entity type
+		$entity_type_arr = wl_entity_type_taxonomy_get_type( $post_id );
+		$entity_type = 	str_replace( 'wl-', '', $entity_type_arr[ 'css_class' ] );
+		// Retrieve classification boxes configuration
+		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
+		foreach ( $classification_boxes as $cb ) {
+			if ( in_array( $entity_type , $cb[ 'registeredTypes' ] ) ) {
+				return $cb[ 'id' ];
+			}
+		}
+		// or null
+		return null;
+
+	}
+
+	/**
 	 * Build an entity uri for a given title
 	 * The uri is composed using a given post_type and a title
 	 * If already exists an entity e2 with a given uri a numeric suffix is added
@@ -278,8 +307,7 @@ class Wordlift_Entity_Service {
 		
 		global $wpdb;
     	// Check if the candidated uri already is used
-    	// TODO Get post ids instead of count()
-		$stmt = $wpdb->prepare( 
+    	$stmt = $wpdb->prepare( 
     		"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1", 
     		WL_ENTITY_URL_META_NAME,
     		$new_entity_uri

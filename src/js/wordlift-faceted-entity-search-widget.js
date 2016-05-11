@@ -8,7 +8,7 @@
         restrict: 'A',
         scope: true,
         transclude: true,
-        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : ( panes.length > 1 ) }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
+        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : isActive() }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
           '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
             var ctrl, w;
@@ -27,6 +27,9 @@
                 return 4;
               }
               return 1;
+            };
+            $scope.isActive = function() {
+              return $scope.isPrevArrowVisible() || $scope.isNextArrowVisible();
             };
             $scope.isPrevArrowVisible = function() {
               return $scope.currentPaneIndex > 0;
@@ -295,10 +298,14 @@
       $scope.configuration = configuration;
       $scope.filteringEnabled = true;
       $scope.toggleFacets = function() {
-        $log.debug("Clicked!");
-        return $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets;
+        $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets;
+        $scope.conditions = {};
+        return DataRetrieverService.load('posts');
       };
       $scope.isInConditions = function(entity) {
+        if (Object.keys($scope.conditions).length === 0) {
+          return true;
+        }
         if ($scope.conditions[entity.id]) {
           return true;
         }
@@ -351,7 +358,7 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <h4 class=\"wl-headline\">\n        {{configuration.attrs.title}}\n        <i class=\"wl-toggle-on\" ng-hide=\"configuration.attrs.show_facets\" ng-click=\"toggleFacets()\"></i>\n        <i class=\"wl-toggle-off\" ng-show=\"configuration.attrs.show_facets\" ng-click=\"toggleFacets()\"></i>\n      </h4>\n      <div ng-show=\"configuration.attrs.show_facets\" class=\"wl-facets\" ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"box in supportedTypes\">\n          <h5>{{box.scope}}</h5>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit\" ng-click=\"addCondition(entity)\">     \n                <i class=\"wl-checkbox\" ng-class=\" { 'selected' : isInConditions(entity) }\"></i>\n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">\n                  {{entity.label}}\n                </span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <wl-faceted-posts></wl-faceted-posts>\n      \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
+  $(container = $("<div ng-controller=\"FacetedSearchWidgetController\" ng-show=\"posts.length > 0\">\n      <h4 class=\"wl-headline\">\n        {{configuration.attrs.title}}\n        <i class=\"wl-toggle-on\" ng-hide=\"configuration.attrs.show_facets\" ng-click=\"toggleFacets()\"></i>\n        <i class=\"wl-toggle-off\" ng-show=\"configuration.attrs.show_facets\" ng-click=\"toggleFacets()\"></i>\n      </h4>\n      <div ng-show=\"configuration.attrs.show_facets\" class=\"wl-facets\" ng-show=\"filteringEnabled\">\n        <div class=\"wl-facets-container\" ng-repeat=\"box in supportedTypes\">\n          <h5>{{box.scope}}</h5>\n          <ul>\n            <li class=\"entity\" ng-repeat=\"entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit\" ng-click=\"addCondition(entity)\">     \n                <span class=\"wl-label\" ng-class=\" { 'selected' : isInConditions(entity) }\">\n                  {{entity.label}}\n                </span>\n            </li>\n          </ul>\n        </div>\n      </div>\n      <wl-faceted-posts></wl-faceted-posts>\n      \n    </div>").appendTo('#wordlift-faceted-entity-search-widget'), injector = angular.bootstrap($('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         DataRetrieverService.load('posts');

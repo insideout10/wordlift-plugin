@@ -421,7 +421,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   template: """
       <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
         <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
-        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : ( panes.length > 1 ) }">
+        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : isActive() }">
           <i class="wl-angle left" ng-click="prev()" ng-show="isPrevArrowVisible()" />
           <i class="wl-angle right" ng-click="next()" ng-show="isNextArrowVisible()" />
         </div>
@@ -445,6 +445,9 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
         return 4
       return 1
 
+    $scope.isActive = ()->
+      $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
+        
     $scope.isPrevArrowVisible = ()->
       ($scope.currentPaneIndex > 0)
     

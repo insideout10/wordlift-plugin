@@ -230,7 +230,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   template: """
       <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
         <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
-        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : ( panes.length > 1 ) }">
+        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : isActive() }">
           <i class="wl-angle left" ng-click="prev()" ng-show="isPrevArrowVisible()" />
           <i class="wl-angle right" ng-click="next()" ng-show="isNextArrowVisible()" />
         </div>
@@ -254,6 +254,9 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
         return 4
       return 1
 
+    $scope.isActive = ()->
+      $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
+        
     $scope.isPrevArrowVisible = ()->
       ($scope.currentPaneIndex > 0)
     
@@ -595,31 +598,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.currentEntity.label = annotation.text
       # Look for sameAs suggestions
       AnalysisService.getSuggestedSameAs annotation.text
-    
-  $scope.$on "currentUserLocalityDetected", (event, locality) ->
-    $log.debug "Looking for entities matching with #{locality}"
-    AnalysisService._innerPerform locality
-    .then (response)->
-      $scope.suggestedPlaces = {}
-      for id, entity of response.data.entities
-        if 'place' is entity.mainType 
-          entity.id = id
-          $scope.suggestedPlaces[ id ] = entity
-
-      # Force place selection 
-      placeId =  Object.keys($scope.suggestedPlaces)[0]
-      place = $scope.suggestedPlaces[ placeId ]
-      $scope.onPublishedPlaceSelected place
-
-      $scope.isGeolocationRunning = false
-      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-    
-  
-  $scope.$on "geoLocationError", (event, error) ->
-    $scope.isGeolocationRunning = false
-    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-
-    
+        
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
     $scope.unsetCurrentEntity()
@@ -642,8 +621,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Topic Preselect
     if $scope.configuration.topic?
-      for id, topic of analysis.topics
-        if id in $scope.configuration.topic.sameAs
+      for topic in analysis.topics
+        if topic.id in $scope.configuration.topic.sameAs
           $scope.topic = topic
 
     # Preselect 
@@ -657,8 +636,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
           # Concat entity images to suggested images collection
-          $scope.images = $scope.images.concat entity.images
-
+          for image in entity.images
+            unless image in $scope.images 
+              $scope.images.push image  
+          
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
     # Open content classification box
@@ -680,7 +661,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if not $scope.selectedEntities[ scopeId ][ entity.id ]?
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
       # Concat entity images to suggested images collection
-      $scope.images = $scope.images.concat entity.images
+      for image in entity.images
+        unless image in $scope.images 
+          $scope.images.push image  
       # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
@@ -697,10 +680,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-
     GeoLocationService.getLocation()
+
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
+
   $scope.hasPublishedPlace = ()->
     $scope.publishedPlace? or $scope.suggestedPlaces?
   
@@ -710,6 +694,26 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.suggestedPlaces = undefined
       return
     $scope.publishedPlace = entity  
+
+  $scope.$on "currentUserLocalityDetected", (event, match, locality) ->
+    $log.debug "Looking for entities matching #{match} for locality #{locality}"
+    
+    AnalysisService._innerPerform match
+    .then (response)->
+      $scope.suggestedPlaces = {}
+      for id, entity of response.data.entities
+        # Evaluate similarity
+        if 'place' is entity.mainType and locality is entity.label
+          entity.id = id
+          $scope.onPublishedPlaceSelected entity
+
+      $scope.isGeolocationRunning = false
+      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+    
+  
+  $scope.$on "geoLocationError", (event, error) ->
+    $scope.isGeolocationRunning = false
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
 
   $scope.isTopic = (topic)->
     topic.id is $scope.topic?.id 
@@ -924,7 +928,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
         
         if isOverlapping
           $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
-          $log.debug annotation
           @.deleteAnnotation analysis, annotationId
         else 
           positions = positions.concat annotationRange 
@@ -986,16 +989,18 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
 
     # TMP ... Should be done on WLS side
   
-    originalTopics = data.topics
-    data.topics = {}
+    
+    unless data.topics?
+      data.topics = []
 
-    if originalTopics?
-      for topic in originalTopics
-        
-        topic.id = topic.uri
-        topic.occurrences = []
-        topic.mainType =  @._defaultType
-        data.topics[ topic.id ] = topic
+    dt = @._defaultType
+
+    data.topics = data.topics.map (topic)->
+      
+      topic.id = topic.uri
+      topic.occurrences = []
+      topic.mainType = dt
+      topic
 
     for id, localEntity of configuration.entities
       
@@ -1495,8 +1500,10 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
-                  $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address                                   
-                  return    
+                  for ac in result.address_components
+                    if GOOGLE_MAPS_LEVEL in ac.types
+                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name                                   
+                      return    
              
   service
 

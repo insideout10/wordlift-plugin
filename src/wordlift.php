@@ -308,6 +308,14 @@ function wl_get_post_modified_time( $post ) {
  */
 function wl_get_image_urls( $post_id ) {
 
+	
+	// If there is a featured image it has the priority
+	$featured_image_id = get_post_thumbnail_id( $post_id );
+	if ( is_numeric( $featured_image_id ) ) {
+		$image_url = wp_get_attachment_url( $featured_image_id );
+		return array( $image_url );
+	}
+
 	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
 
 	$images = get_children( array(

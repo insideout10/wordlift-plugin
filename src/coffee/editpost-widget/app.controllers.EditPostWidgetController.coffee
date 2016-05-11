@@ -249,31 +249,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.currentEntity.label = annotation.text
       # Look for sameAs suggestions
       AnalysisService.getSuggestedSameAs annotation.text
-    
-  $scope.$on "currentUserLocalityDetected", (event, locality) ->
-    $log.debug "Looking for entities matching with #{locality}"
-    AnalysisService._innerPerform locality
-    .then (response)->
-      $scope.suggestedPlaces = {}
-      for id, entity of response.data.entities
-        if 'place' is entity.mainType 
-          entity.id = id
-          $scope.suggestedPlaces[ id ] = entity
-
-      # Force place selection 
-      placeId =  Object.keys($scope.suggestedPlaces)[0]
-      place = $scope.suggestedPlaces[ placeId ]
-      $scope.onPublishedPlaceSelected place
-
-      $scope.isGeolocationRunning = false
-      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-    
-  
-  $scope.$on "geoLocationError", (event, error) ->
-    $scope.isGeolocationRunning = false
-    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-
-    
+        
   $scope.$on "textAnnotationClicked", (event, annotationId) ->
     $scope.annotation = annotationId
     $scope.unsetCurrentEntity()
@@ -296,8 +272,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Topic Preselect
     if $scope.configuration.topic?
-      for id, topic of analysis.topics
-        if id in $scope.configuration.topic.sameAs
+      for topic in analysis.topics
+        if topic.id in $scope.configuration.topic.sameAs
           $scope.topic = topic
 
     # Preselect 
@@ -311,8 +287,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
           # Concat entity images to suggested images collection
-          $scope.images = $scope.images.concat entity.images
-
+          for image in entity.images
+            unless image in $scope.images 
+              $scope.images.push image  
+          
         else
           $log.warn "Entity with id #{entityId} should be linked to #{box.id} but is missing"
     # Open content classification box
@@ -334,7 +312,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     if not $scope.selectedEntities[ scopeId ][ entity.id ]?
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
       # Concat entity images to suggested images collection
-      $scope.images = $scope.images.concat entity.images
+      for image in entity.images
+        unless image in $scope.images 
+          $scope.images.push image  
       # Notify entity selection
       $scope.$emit "entitySelected", entity, $scope.annotation
       # Reset current annotation
@@ -351,10 +331,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
-
     GeoLocationService.getLocation()
+
   $scope.isPublishedPlace = (entity)->
     entity.id is $scope.publishedPlace?.id    
+
   $scope.hasPublishedPlace = ()->
     $scope.publishedPlace? or $scope.suggestedPlaces?
   
@@ -364,6 +345,26 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $scope.suggestedPlaces = undefined
       return
     $scope.publishedPlace = entity  
+
+  $scope.$on "currentUserLocalityDetected", (event, match, locality) ->
+    $log.debug "Looking for entities matching #{match} for locality #{locality}"
+    
+    AnalysisService._innerPerform match
+    .then (response)->
+      $scope.suggestedPlaces = {}
+      for id, entity of response.data.entities
+        # Evaluate similarity
+        if 'place' is entity.mainType and locality is entity.label
+          entity.id = id
+          $scope.onPublishedPlaceSelected entity
+
+      $scope.isGeolocationRunning = false
+      $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
+    
+  
+  $scope.$on "geoLocationError", (event, error) ->
+    $scope.isGeolocationRunning = false
+    $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
 
   $scope.isTopic = (topic)->
     topic.id is $scope.topic?.id 
