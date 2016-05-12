@@ -1418,6 +1418,15 @@ h1.wl-tab-lead-text {
   border-right: 5px solid transparent;
   border-top: 5px solid #007AFF;
 }
+h3.ui-sortable-handle {
+  padding: 8px 12px !important;
+}
+#poststuff .wl-widget-classification-box-entity-tile h3 {
+  font-size: 11px !important;
+}
+#poststuff h2 {
+  font-size: 14px !important;
+}
 .wl-widget-entity-panel {
   display: -webkit-flex;
   display: -moz-flex;
@@ -2272,7 +2281,7 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-classification-box h3.wl-widget-classification-box-lead {
   color: #007AFF;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   margin: 5px 0 !important;
 }
