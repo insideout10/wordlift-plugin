@@ -69,7 +69,10 @@ The Plug-in is built on **open source software**.
 
 = Why shall I use WordLift? = 
 
-The purpose of using WordLift is to (1) categorize your content, (2) help people find content of interest to them, and (3) help WordLift describe your contents in *machine-readable* format so that other computers can re-use it. 
+The purpose of using WordLift is to:
+1. organize your content, <br />
+2. help people find content of interest to them, and <br />
+3. help WordLift describe your contents in *machine-readable* format so that other computers can re-use it. <br />
 
 = Why shall I publish my contents as Linked Data? =
 
