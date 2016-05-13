@@ -8,7 +8,7 @@ WordLift Plug-in for WordPress
 
 ## Overview
 
-The official WordLift Web Site: [wordlift.it](http://wordlift.it)
+The official WordLift Web Site: [wordlift.io](http://wordlift.io)
 
 ## Development
 
