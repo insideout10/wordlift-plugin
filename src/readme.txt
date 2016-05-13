@@ -1,6 +1,6 @@
 === WordLift - Ordering Knowledge ===
-Author URL: https://blog.insideout.io/about-us
-Plugin URL: https://join.wordlift.it
+Author URL: https://wordlift.io
+Plugin URL: https://wordlift.io
 Contributors: wordlift
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
@@ -13,9 +13,10 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 == Description ==
 
 > #### WordLift - Activating the Plugin
-> To activate the plugin you will need a WordLift key. <br />
-> We are currently in **private beta** and we're allowing a closed number of users testing the plugin. <br />
-> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you anytime soon. <br /> 
+> WordLift is a lightweight plugin that runs semantic processing of our own hand-crafted API to help you produce richer content and <br />
+> organize it around your audience. It is a paid (monthly) service that you can [activate from our website](https://wordlift.io). <br />
+
+[vimeo http://vimeo.com/164538710]
 
 **WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
 **WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
@@ -23,9 +24,15 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 
 = Features =
 
-**WordLift** adds [semantic annotations](http://docs.wordlift.it/en/latest/key-concepts.html#semantic-fingerprint) and combines information publicly available as [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to support the editorial workflow by suggesting relevant information, images and links.
+**WordLift** is a plug-in for online content creators to:
 
-= WordLift brings to content editors =
+* Support your writing process with *additional facts* and *contextual information* <br />
+* Enrich content with *images*, *links* and *visualizations* <br />
+* Keep readers engaged with relevant *content recommendations* <br />
+* Produce content compatible with *new requirements* of the *search engine industry* <br />
+* Find your *tribe* by creating your own *personal Wikipedia* <br />
+
+= WordLift brings to your publishing workflow =
 _____________
 
 * support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph)
@@ -52,13 +59,11 @@ The Plug-in is built on **open source software**.
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You might receive this key from us or from an automatic email system. Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
+3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a WordLift key. <br />
-> We are currently in **private beta** and we're allowing a closed number of users testing the plugin. <br />
-> Please signup to [join.wordlift.it](http://join.wordlift.it) and we will get in contact with you anytime soon. <br /> 
-
+> It is a paid (monthly) service and you can [activate it from our website](https://wordlift.io). <br />
 
 == Frequently Asked Questions ==
 
@@ -393,4 +398,8 @@ WordLift is **happily developed** by [InSideOut10](http://blog.insideout.io/abou
 
 [InSideOut10](http://blog.insideout.io/about-us) uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
 
+<<<<<<< Updated upstream
 WordLift is built on **open source software**.
+=======
+WordLift is built on **open source software**. 
+>>>>>>> Stashed changes
