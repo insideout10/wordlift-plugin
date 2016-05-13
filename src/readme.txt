@@ -14,7 +14,7 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 
 > #### WordLift - Activating the Plugin
 > WordLift is a lightweight plugin that runs semantic processing of our own hand-crafted API to help you produce richer content and <br />
-> organize it around your audience. It is a paid (monthly) service that you can [activate from our website](https://wordlift.io). <br />
+> organize it around your audience. It is a **paid** (monthly) **service** that you can [activate from our website](https://wordlift.io). <br />
 
 [vimeo http://vimeo.com/164538710]
 
