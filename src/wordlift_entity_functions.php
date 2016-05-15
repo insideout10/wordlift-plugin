@@ -60,26 +60,25 @@ function wl_build_entity_uri( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( null === $post ) {
-
 		wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
-
 		return null;
 	}
 
 	// Create an ID given the title.
-	$path = wl_sanitize_uri_path( $post->post_title );
-
-	// If the path is empty, i.e. there's no title, use the post ID as path.
-	if ( empty( $path ) ) {
-		$path = "id/$post->ID";
+	$entity_slug = wl_sanitize_uri_path( $post->post_title );
+	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
+	if ( empty( $entity_slug ) ) {
+		return sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			$post->post_type, 
+			"id/$post->ID" 
+		); 
 	}
+	
+	return Wordlift_Entity_Service::get_instance()->build_uri( 
+		$entity_slug, 
+		$post->post_type );
 
-	// Create the URL (dataset base URI has a trailing slash).
-	$url = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), $post->post_type, $path );
-
-	// wl_write_log( "wl_build_entity_uri [ post_id :: $post->ID ][ type :: $post->post_type ][ title :: $post->post_title ][ url :: $url ]" );
-
-	return $url;
 }
 
 /**
@@ -94,6 +93,11 @@ function wl_build_entity_uri( $post_id ) {
  */
 function wl_get_entity_uri( $post_id ) {
 
+	// If a null is given, nothing to do
+	if ( null == $post_id ) {
+		return null;
+	}
+
 	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
 
 	// If the dataset uri is not properly configured, null is returned
@@ -104,7 +108,7 @@ function wl_get_entity_uri( $post_id ) {
 	// Set the URI if it isn't set yet.
 	$post_status = get_post_status( $post_id );
 	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
-		$uri = wl_build_entity_uri( $post_id ); //  "http://data.redlink.io/$user_id/$dataset_id/post/$post->ID";
+		$uri = wl_build_entity_uri( $post_id ); 
 		wl_set_entity_uri( $post_id, $uri );
 	}
 

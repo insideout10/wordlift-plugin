@@ -3,6 +3,7 @@ $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget', [
+  'ngAnimate'
   'wordlift.ui.carousel'
   'wordlift.utils.directives'
   'wordlift.editpost.widget.providers.ConfigurationProvider',
@@ -14,7 +15,6 @@ angular.module('wordlift.editpost.widget', [
   'wordlift.editpost.widget.services.AnalysisService',
   'wordlift.editpost.widget.services.EditorService',
   'wordlift.editpost.widget.services.RelatedPostDataRetrieverService'
-
 ])
 
 .config((configurationProvider)->
@@ -23,72 +23,47 @@ angular.module('wordlift.editpost.widget', [
 
 $(
   container = $("""
-  	<div id="wordlift-edit-post-wrapper" ng-controller="EditPostWidgetController">
-  		
-      <div class="wl-error" ng-repeat="item in errors">
-        <span class="wl-msg">{{ item.msg }}</span>
-      </div>
-
-      <h3 class="wl-widget-headline">
-        <span>Semantic tagging</span>
-        <span ng-show="isRunning" class="wl-spinner"></span>
-      </h3>
-      
-      <div ng-show="annotation">
-        <h4 class="wl-annotation-label">
-          <i class="wl-annotation-label-icon"></i>
-          {{ analysis.annotations[ annotation ].text }} 
-          <small>[ {{ analysis.annotations[ annotation ].start }}, {{ analysis.annotations[ annotation ].end }} ]</small>
-          <i class="wl-annotation-label-remove-icon" ng-click="selectAnnotation(undefined)"></i>
-        </h4>
-      </div>
-
-      <wl-classification-box ng-repeat="box in configuration.classificationBoxes">
-        <div ng-hide="annotation" class="wl-without-annotation">
-          <wl-entity-tile is-selected="isEntitySelected(entity, box)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.entities | filterEntitiesByTypesAndRelevance:box.registeredTypes"></wl-entity>
-        </div>  
-        <div ng-show="annotation" class="wl-with-annotation">
-          <wl-entity-tile is-selected="isLinkedToCurrentAnnotation(entity)" on-entity-select="onSelectedEntityTile(entity, box)" entity="entity" ng-repeat="entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes"" ></wl-entity>
-        </div>  
-      </wl-classification-box>
-
-      <h3 class="wl-widget-headline"><span>Suggested images</span></h3>
-      <div wl-carousel>
-        <div ng-repeat="(image, label) in images" class="wl-card" wl-carousel-pane>
-          <div class="wl-card-image"> 
-            <img ng-src="{{image}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-          </div>
-        </div>
-      </div>
-
-      <h3 class="wl-widget-headline"><span>Related posts</span></h3>
-      <div wl-carousel>
-        <div ng-repeat="post in relatedPosts" class="wl-card" wl-carousel-pane>
-          <div class="wl-card-image"> 
-            <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
-          </div>
-          <div class="wl-card-title">
-            <a ng-href="{{post.link}}">{{post.post_title}}</a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="wl-entity-input-boxes">
-        <wl-entity-input-box annotation="annotation" entity="entity" ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
-        <div ng-repeat="(box, entities) in selectedEntities">
-          <input type='text' name='wl_boxes[{{box}}][]' value='{{id}}' ng-repeat="(id, entity) in entities">
-        </div> 
-      </div>   
+  	<div
+      id="wordlift-edit-post-wrapper"
+      ng-controller="EditPostWidgetController"
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
+  
+  # Add svg based spinner code
+  spinner = $("""
+    <div class="wl-widget-spinner">
+      <svg transform-origin="10 10" id="wl-widget-spinner-blogger">
+        <circle cx="10" cy="10" r="6" class="wl-blogger-shape"></circle>
+      </svg>
+      <svg transform-origin="10 10" id="wl-widget-spinner-editorial">
+        <rect x="4" y="4" width="12" height="12" class="wl-editorial-shape"></rect>
+      </svg>
+      <svg transform-origin="10 10" id="wl-widget-spinner-enterprise">
+        <polygon points="3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16" class="wl-enterprise-shape"></polygon>
+      </svg>
+    </div> 
+  """)
+  .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
   injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
+  
+  # Update spinner
+  injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
+    $rootScope.$on 'analysisServiceStatusUpdated', (event, status) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
 
-# Add WordLift as a plugin of the TinyMCE editor.
+    $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
+      css = if status then 'wl-spinner-running' else ''
+      $('.wl-widget-spinner svg').attr 'class', css
+  ])
+
+  # Add WordLift as a plugin of the TinyMCE editor.
   tinymce.PluginManager.add 'wordlift', (editor, url) ->
 
-# This plugin has to be loaded only with the main WP "content" editor
+    # This plugin has to be loaded only with the main WP "content" editor
     return unless editor.id is "content"
 
     # Register event depending on tinymce major version
@@ -101,9 +76,9 @@ $(
     # starts before the analysis is properly embedded
     injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
 
-# wp.mce.views uses toViews() method from WP 3.8 to 4.1
-# and setMarkers() method from WP 4.2 to 4.3 to replace
-# available shortcodes with coresponding views markup
+      # wp.mce.views uses toViews() method from WP 3.8 to 4.1
+      # and setMarkers() method from WP 4.2 to 4.3 to replace
+      # available shortcodes with coresponding views markup
       for method in ['setMarkers', 'toViews']
         if wp.mce.views[method]?
 
@@ -115,7 +90,7 @@ $(
           $rootScope.$on "analysisEmbedded", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
-
+            
           $rootScope.$on "analysisFailed", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
@@ -127,14 +102,14 @@ $(
     fireEvent(editor, "LoadContent", (e) ->
       injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
         (AnalysisService, EditorService, $rootScope, $log) ->
-# execute the following commands in the angular js context.
+          # execute the following commands in the angular js context.
           $rootScope.$apply(->
-# Get the html content of the editor.
+            # Get the html content of the editor.
             html = editor.getContent format: 'raw'
             # Get the text content from the Html.
             text = Traslator.create(html).getText()
             if text.match /[a-zA-Z0-9]+/
-# Disable tinymce editing
+              # Disable tinymce editing
               EditorService.updateContentEditableStatus false
               AnalysisService.perform text
             else

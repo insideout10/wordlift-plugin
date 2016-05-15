@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
  * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud. <strong>We are currently in private beta</strong> and we're allowing a closed number of users testing the plugin. <strong>Please signup to <a href="http://join.wordlift.it">join.wordlift.it</a></strong> and we will get in contact with you anytime soon.
- * Version:           3.4.0
+ * Version:           3.5.0
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it
  * License:           GPL-2.0+
@@ -216,8 +216,11 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_style( 'wordlift-reloaded', plugin_dir_url( __FILE__ ) . 'css/wordlift-reloaded.min.css' );
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
-	wp_enqueue_script( 'angularjs', plugin_dir_url( __FILE__ ) . 'bower_components/angular/angular.min.js' );
-
+	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
+	wp_enqueue_script( 'angularjs-geolocation', plugin_dir_url( __FILE__ ) . '/bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' );
+	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
+    wp_enqueue_script( 'angularjs-animate', 'https://code.angularjs.org/1.3.11/angular-animate.min.js' );
+	
 	// Disable auto-save for custom entity posts only
 	if( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ){
 		wp_dequeue_script('autosave');
@@ -304,6 +307,14 @@ function wl_get_post_modified_time( $post ) {
  * @return array An array of image URLs.
  */
 function wl_get_image_urls( $post_id ) {
+
+	
+	// If there is a featured image it has the priority
+	$featured_image_id = get_post_thumbnail_id( $post_id );
+	if ( is_numeric( $featured_image_id ) ) {
+		$image_url = wp_get_attachment_url( $featured_image_id );
+		return array( $image_url );
+	}
 
 	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
 

@@ -53,9 +53,33 @@ function wl_push_post_to_redlink( $post ) {
 	$sparql .= "<$uri> schema:url <$permalink> . \n";
 	$sparql .= "<$uri> schema:datePublished $date_published . \n";
 	$sparql .= "<$uri> schema:dateModified $date_modified . \n";
+
+	// Add Location Created
+	$location_created_entity_id = get_post_meta( 
+		$post->ID,  Wordlift_Schema_Service::FIELD_LOCATION_CREATED, true 
+	);
+	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $location_created_entity_id ]" );		
+	if ( $location_created_entity_id ) {
+		$escaped_uri = wl_sparql_escape_uri( wl_get_entity_uri( $location_created_entity_id ) );
+		wl_write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ locationCreated :: $escaped_uri ]" );
+		$sparql .= "<$uri> schema:locationCreated <$escaped_uri> . \n";
+	}
+	// Add Topic
+	$topic_entity_id = get_post_meta( 
+		$post->ID,  Wordlift_Schema_Service::FIELD_TOPIC, true 
+	);
+	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $topic_entity_id ]" );		
+
+	if ( $topic_entity_id ) {
+		$escaped_uri = wl_sparql_escape_uri( wl_get_entity_uri( $topic_entity_id ) );
+		wl_write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ topic :: $escaped_uri ]" );
+		$sparql .= "<$uri> dct:subject <$escaped_uri> . \n";
+	}
+			
 	if ( ! empty( $author_uri ) ) {
 		$sparql .= "<$uri> schema:author <$author_uri> . \n";
 	}
+	
 	$sparql .= "<$uri> schema:interactionCount 'UserComments:$user_comments_count' . \n";
 
 
@@ -71,12 +95,16 @@ function wl_push_post_to_redlink( $post ) {
 	$query = rl_sparql_prefixes() . <<<EOF
             DELETE { <$uri> dct:references ?o . }
             WHERE  { <$uri> dct:references ?o . };
+            DELETE { <$uri> dct:subject ?o . }
+            WHERE  { <$uri> dct:subject ?o . };
             DELETE { <$uri> schema:url ?o . }
             WHERE  { <$uri> schema:url ?o . };
             DELETE { <$uri> schema:datePublished ?o . }
             WHERE  { <$uri> schema:datePublished ?o . };
             DELETE { <$uri> schema:dateModified ?o . }
             WHERE  { <$uri> schema:dateModified ?o . };
+            DELETE { <$uri> schema:locationCreated ?o . }
+            WHERE  { <$uri> schema:locationCreated ?o . };
             DELETE { <$uri> a ?o . }
             WHERE  { <$uri> a ?o . };
             DELETE { <$uri> rdfs:label ?o . }
@@ -159,6 +187,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	}
 
 	// set the label
+	$sparql .= "<$uri_e> dct:title \"$label\"@$site_language . \n";
 	$sparql .= "<$uri_e> rdfs:label \"$label\"@$site_language . \n";
 
 	// Set the alternative labels.
@@ -250,6 +279,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	$query = rl_sparql_prefixes() . <<<EOF
     $delete_stmt
     DELETE { <$uri_e> rdfs:label ?o } WHERE  { <$uri_e> rdfs:label ?o };
+    DELETE { <$uri_e> dct:title ?o } WHERE  { <$uri_e> dct:title ?o };
     DELETE { <$uri_e> owl:sameAs ?o . } WHERE  { <$uri_e> owl:sameAs ?o . };
     DELETE { <$uri_e> schema:description ?o . } WHERE  { <$uri_e> schema:description ?o . };
     DELETE { <$uri_e> schema:url ?o . } WHERE  { <$uri_e> schema:url ?o . };

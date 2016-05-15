@@ -5,6 +5,26 @@
  */
 function wl_shortcode_faceted_search( $atts ) {
 
+	// Extract attributes and set default values.
+    $shortcode_atts = shortcode_atts( array(
+        'title'				=>	__( 'Related articles', 'wordlift' ),
+        'show_facets'		=> true,
+    	'with_carousel'		=> true,
+     	'squared_thumbs'	=> false
+
+    ), $atts );
+
+    foreach ( array( 
+    	'show_facets', 'with_carousel', 'squared_thumbs' 
+    	) as $att ) {
+	
+		// See http://wordpress.stackexchange.com/questions/119294/pass-boolean-value-in-shortcode
+    	$shortcode_atts[ $att ] = filter_var( 
+    		$shortcode_atts[ $att ], FILTER_VALIDATE_BOOLEAN 
+    	);
+    }
+
+
 	// If the current post is not an entity and has no related entities
 	// than the shortcode cannot be rendered
 	// TODO Add an alert visibile only for connected admin users
@@ -21,18 +41,21 @@ function wl_shortcode_faceted_search( $atts ) {
 	$div_id = 'wordlift-faceted-entity-search-widget';
 
 	wp_enqueue_style( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-faceted-entity-search-widget.min.css' );
-
-	wp_enqueue_script( 'angularjs', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/angular/angular.min.js' );
+	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
+	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
 
 	wp_enqueue_script( 'wordlift-faceted-search', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-faceted-entity-search-widget.min.js' );
 
-	wp_localize_script( 'wordlift-faceted-search', 'wl_faceted_search_params', array(
+	wp_localize_script( 
+		'wordlift-faceted-search', 
+		'wl_faceted_search_params', array(
 			'ajax_url'				=> admin_url( 'admin-ajax.php' ),
 			'action'				=> 'wl_faceted_search',
 			'post_id'				=> $current_post->ID,
 			'entity_ids'			=> $entity_ids,
 			'div_id'				=> $div_id,
-			'defaultThumbnailPath'	=> WL_DEFAULT_THUMBNAIL_PATH
+			'defaultThumbnailPath'	=> WL_DEFAULT_THUMBNAIL_PATH,
+			'attrs'					=> $shortcode_atts
 		)
 	);
 
@@ -93,7 +116,6 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 	) );
 
 	$referencing_post_ids = array_map( function( $p ) { return $p->ID; }, $referencing_posts );
-
 	$results              = array();
 
 	if ( 'posts' === $required_type ) {
@@ -111,17 +133,17 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 				'as'             => 'subject',
 			) );
 
-		foreach ( $filtered_posts as $post_obj ) {
+		if ( $filtered_posts ) {
+			foreach ( $filtered_posts as $post_obj ) {
 
-			$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
-			$post_obj->thumbnail = ( $thumbnail ) ?
-			$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
-			$post_obj->permalink = get_post_permalink( $post_obj->ID );
+				$thumbnail           = wp_get_attachment_url( get_post_thumbnail_id( $post_obj->ID, 'thumbnail' ) );
+				$post_obj->thumbnail = ( $thumbnail ) ?
+				$thumbnail : WL_DEFAULT_THUMBNAIL_PATH;
+				$post_obj->permalink = get_post_permalink( $post_obj->ID );
 
-			$results[] = $post_obj;
-
+				$results[] = $post_obj;
+			}
 		}
-
 	} else {
 
 		global $wpdb;
@@ -133,7 +155,6 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
 
 		$subject_ids = implode( ',', $referencing_post_ids );
 		
-		// TODO - if an entity is related with different predicates each predicate impacts on counter
 		$query = <<<EOF
             SELECT object_id as ID, count( object_id ) as counter 
             FROM $table_name 
@@ -141,23 +162,23 @@ function wl_shortcode_faceted_search_ajax( $http_raw_data = null ) {
             GROUP BY object_id;
 EOF;
 		wl_write_log( "Going to find related entities for the current post [ post ID :: $current_post_id ] [ query :: $query ]" );
-
+		
 		$entities = $wpdb->get_results( $query, OBJECT );
 
 		wl_write_log( "Entities found " . count( $entities ) );
 
 		foreach ( $entities as $obj ) {
 
-			$entity 		   = get_post( $obj->ID );
-			$created_at 	   = $entity->post_date;
-			
-			$entity            = wl_serialize_entity( $entity );
-
-			$entity[ 'counter' ] = $obj->counter;
-			$entity[ 'createdAt' ] = $created_at;
-			
-			$results[]         = $entity;
-
+			$entity = get_post( $obj->ID );
+			// Ensure only valid and published entities are returned
+			if ( ( NULL !== $entity ) && ( 'publish' === $entity->post_status ) ) {
+					
+				$serialized_entity  = wl_serialize_entity( $entity );
+				$serialized_entity[ 'counter' ] = $obj->counter;
+				$serialized_entity[ 'createdAt' ] = $entity->post_date;
+				
+				$results[] = $serialized_entity;
+			}
 		}
 
 	}

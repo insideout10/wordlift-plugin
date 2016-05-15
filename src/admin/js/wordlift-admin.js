@@ -125,7 +125,7 @@
         var currentPostId = wlEntityTitleLiveSearchParams.post_id;
         
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $( '<div class="wl-notice notice error" id="wl-same-title-error" ></div>' )
+        var duplicatedEntityErrorDiv = $( '<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>' )
             .insertBefore( 'div.wrap [name=post]' )
             .hide();
         
@@ -148,7 +148,7 @@
                 // Write an error notice with a link for every duplicated entity            
                 if( response && response.results.length > 0 ) {
 
-                    duplicatedEntityErrorDiv.html( function(){
+                    $('#wl-same-title-error p').html( function(){
                         var html = '';
 
                         for( var i=0; i<response.results.length; i++ ){
@@ -161,10 +161,10 @@
                                 var title     = response.results[i].title;
                                 var edit_link = response.edit_link.replace('%d', response.results[i].id);
 
-                                html += 'Error: you already published an entity with the same name: ';
+                                html += 'You already published an entity with the same name: ';
                                 html += '<a target="_blank" href="' + edit_link + '">';
                                 html += title;
-                                html += '</a></br>';
+                                html += '</a><br />';
                             }
                         }
 
@@ -199,9 +199,15 @@
         $.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ){
             
             // Calculate wikidata ratio
+            // TODO percentage should be added via css
             stats.wikidata = ( ( stats.triples * 100 ) / 947690143 ).toFixed(5) + '%';
-            // Calculate wikidata ratio
-            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1) + '%';
+            // Calculate annotated posts ratio
+            stats.annotated_posts_percentage = ( ( stats.annotated_posts * 100 ) / stats.posts ).toFixed(1);
+            // Convert NaN to zero if needed
+            // See https://github.com/insideout10/wordlift-plugin/issues/269
+            stats.annotated_posts_percentage = +stats.annotated_posts_percentage || 0;
+            // TODO percentage should be added via css
+            stats.annotated_posts_percentage = stats.annotated_posts_percentage + '%';
 
             // Populate annotated posts pie chart
             $( '#wl-posts-pie-chart circle').css(
@@ -214,6 +220,7 @@
                 ( stats.rating / 2 ) + ' 100' 
             );
 
+            // TODO percentage should be added via css
             stats.rating = stats.rating + '%';
             // populate value placeholders
             for ( var property in stats ) {

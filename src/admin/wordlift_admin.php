@@ -58,7 +58,6 @@ function wl_remove_text_annotations( $data ) {
 	while ( 1 === preg_match( $pattern, $data['post_content'] ) ) {		
 		$data['post_content'] = preg_replace( $pattern, '$2', $data['post_content'], -1, $count ); 
 	}
-
 	return $data;
 }
 

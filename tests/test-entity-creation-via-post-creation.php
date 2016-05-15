@@ -61,6 +61,184 @@ EOF;
 		
 	}
 
+	function testEntityWithEscapedCharsInUriIsCreatedAndLinkedToThePost2() {
+
+		// Create a post referincing to the created entity
+		$existing_entity_id = wl_create_post( '', 'gran-sasso', 'Gran Sasso' , 'draft', 'entity');
+		wl_set_entity_main_type( $existing_entity_id, 'wl-place' );
+		
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json' 
+		);
+		$_POST = $fake;
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$original_entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Reference the entity to the post content 
+		
+		$content    = <<<EOF
+    <span itemid="$original_entity_uri">Gran Sasso</span>
+EOF;
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		// Here the entity should be created instead
+		
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
+		
+		// And it should be related to the post as where predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );
+		$this->assertCount( 1, $related_entity_ids );
+
+		$this->assertNotContains( $existing_entity_id, $related_entity_ids );
+		$this->assertContains( $entity->ID, $related_entity_ids );
+		// Ensure there are no other relation instances
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 1, $relation_instances );
+		
+	}
+
+	function testEntityWithEscapedCharsInUriIsCreatedAndLinkedToThePost() {
+
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_gran_sasso_linked_as_where.json' 
+		);
+		$_POST = $fake;
+		// Retrieve the entity uri (the first key in wl_entities associative aray)
+		$original_entity_uri = current( array_keys ( $fake['wl_entities' ] ) );
+		// Reference the entity to the post content 
+		$content    = <<<EOF
+    <span itemid="$original_entity_uri">Gran Sasso</span>
+EOF;
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		// Here the entity should be created instead
+		
+		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
+		$this->assertNotNull( $entity );
+		// Here the original uri should be properly as same_as 
+		$same_as = wl_schema_get_value( $entity->ID, 'sameAs' );
+		$this->assertContains( $original_entity_uri, $same_as );
+		
+		// And it should be related to the post as where predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );
+		$this->assertCount( 1, $related_entity_ids );
+		$this->assertContains( $entity->ID, $related_entity_ids );
+		// Ensure there are no other relation instances
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 1, $relation_instances );
+		
+	}
+
+	// In this case we are testing this workflow: 
+	// 1 entities with the same label and type of an existing one
+	// is created trough the disambiguation workflow
+	function testEntitiesWithSameLabelAndTypeOverride() {
+		
+		// Create a post referincing to the created entity
+		$entity_id = wl_create_post( '', 'tex_willer', 'Tex Willer', 'draft', 'entity' );
+		wl_set_entity_main_type( $entity_id, 'wl-person' );
+		
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_tex_willer_as_who.json' 
+		);
+		$_POST = $fake;
+
+		$content = <<<EOF
+    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Tex Willer</span>
+EOF;
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( 'Tex Willer' )
+		); 
+
+		$this->assertEquals(
+		 	$new_entity_uri,
+		 	wl_get_entity_uri( $entity_id )
+		);
+
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		wl_write_log("+++ Post id $post_id");
+		
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
+		$this->assertCount( 1, $related_entity_ids );
+		
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 1, $relation_instances );
+
+		$this->assertEquals(
+			wl_get_entity_uri( $entity_id ),
+			wl_get_entity_uri( $related_entity_ids[0] )
+		);
+
+		// Check the already existing entity is linked
+		$this->assertContains( $entity_id, $related_entity_ids );
+
+
+	}
+
+	// In this case we are testing this workflow: 
+	// 3 entities with the same label but different types are
+	// created trough the disambiguation workflow
+	// We expect they are properly created and linked to the post
+	function testThreeEntitiesWithTheSameLabelsAreProperlyCreatedAndLinkedToThePost() {
+
+		$fake = $this->prepareFakeGlobalPostArrayFromFile(
+			'/assets/fake_global_post_array_with_two_entities_with_same_label_and_different_types.json' 
+		);
+		$_POST = $fake;
+
+		$content = <<<EOF
+    <span itemid="local-entity-n3n5c5ql1yycik9zu55mq0miox0f6rgt">Ryan Carson</span>
+    <span itemid="local-entity-ld7uu78v23z69a4iivmf1io4m2h5b3xr">Ryan Carson</span>
+    <span itemid="http://dbpedia.org/resource/Ryan_Carson">Ryan Carson</span>
+EOF;
+
+		// Create a post referincing to the created entity
+		$post_id = wl_create_post( $content, 'my-post', 'A post' , 'draft');
+		
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( 'Ryan Carson' )
+		); 
+
+		// And it should be related to the post as what predicate
+		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
+		$related_entity_ids = array_merge( 
+			$related_entity_ids, 
+			wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) )
+				);
+
+		$this->assertCount( 3, $related_entity_ids );
+		// Ensure there are no other relation instances
+		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
+		$this->assertCount( 3, $relation_instances );
+
+		$entity_1 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( 
+			$new_entity_uri 
+		);
+		$this->assertNotNull( $entity_1 );
+		$this->assertContains( $entity_1->ID, $related_entity_ids );
+
+		$entity_2 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( 
+			$new_entity_uri . '_2' 
+		);
+		$this->assertNotNull( $entity_2 );
+		$this->assertContains( $entity_2->ID, $related_entity_ids );
+
+		$entity_3 = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( 
+			$new_entity_uri . '_3' 
+		);
+		$this->assertNotNull( $entity_3 );
+		$this->assertContains( $entity_3->ID, $related_entity_ids );
+		
+		$this->assertNotEquals( $entity_1->ID, $entity_2->ID );
+		$this->assertNotEquals( $entity_2->ID, $entity_3->ID );
+		$this->assertNotEquals( $entity_1->ID, $entity_3->ID );
+
+	}
+
 	// Same test of the previous one but with escaped chars in the entity label
 	function testNewEntityWithEscapedCharsIsCreatedAndLinkedToThePost() {
 
@@ -216,13 +394,12 @@ EOF;
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
 		$this->assertCount( 1, $related_entity_ids );
 		$this->assertContains( $entity->ID, $related_entity_ids );
-		// And it should be related to the post as what predicate
+		// But it should NOT be related to the post as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
-		$this->assertCount( 1, $related_entity_ids );
-		$this->assertContains( $entity->ID, $related_entity_ids );
+		$this->assertCount( 0, $related_entity_ids );
 		// Ensure there are no other relation instances
 		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
-		$this->assertCount( 2, $relation_instances );
+		$this->assertCount( 1, $relation_instances );
 
 	}
 
@@ -412,7 +589,7 @@ EOF;
 			$json_data 
 		);
 
-		foreach ( $placeholders as $ph => $value) {
+		foreach ( $placeholders as $ph => $value ) {
 			$json_data = preg_replace( 
 				sprintf('/{{%s}}/', $ph), $value, $json_data 
 			);

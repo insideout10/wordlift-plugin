@@ -54,9 +54,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
-	// Store classification box mapping
-	$entities_predicates_mapping = null;
-
+	
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) && isset( $_POST['wl_boxes'] ) ) {
 
@@ -71,47 +69,54 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-			// Local entities have a tmp uri with 'local-entity-'
+				
+			// Only if the current entity is created from scratch let's avoid to create 
+			// more than one entity with same label & entity type
+			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
+				$entity[ 'main_type' ] : NULL;
+
+			// Look if current entity uri matchs an internal existing entity, meaning:
+			// 1. when $entity_uri is an internal uri 
+			// 2. when $entity_uri is an external uri used as sameAs of an internal entity	
+			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
+			
+			// Detect the uri depending if is an existing or a new entity
+			$uri = ( NULL === $ie ) ?
+				Wordlift_Entity_Service::get_instance()->build_uri( 
+					$entity[ 'label' ], 
+					Wordlift_Entity_Service::TYPE_NAME,
+					$entity_type 
+				) : wl_get_entity_uri( $ie->ID );
+
+			wl_write_log("Map $entity_uri on $uri");
+			$entities_uri_mapping[ $entity_uri ] = $uri;
+
+			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
-				// Build the proper uri
-				$uri = sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $entity['label'] ) );
-				// Populate the mapping
-				$entities_uri_mapping[ $entity_uri ] = $uri;
 				// Override the entity obj
-				$entities_via_post[ $entity_uri ]['uri'] = $uri;
+				$entity[ 'uri' ] = $uri;
 			}
-		}
 
-		// Populate the $entities_predicates_mapping
-		// Local Redlink uris need to be used here
-		foreach ( $boxes_via_post as $predicate => $entity_uris ) {
-			foreach ( $entity_uris as $entity_uri ) {
-				// Retrieve the entity label needed to build the uri
-				// If the current uri is an internal uri, then entity uri is preserved:
-				// the current label could be an alternative label that has not to impact on entity uri
-				if ( 0 !== strrpos( $entity_uri, wl_configuration_get_redlink_dataset_uri() ) ) {	
-					$label	= $entities_via_post[ stripslashes( $entity_uri ) ]['label'];
-					$uri	= sprintf( '%s/%s/%s', wl_configuration_get_redlink_dataset_uri(), 'entity', wl_sanitize_uri_path( $label ) );
-				} else {			
-					$uri	= stripslashes( $entity_uri );
-				}
-				
-				$entities_predicates_mapping[ $uri ][] = $predicate;
-				
+			// Update entity data with related post
+			$entity[ 'related_post_id' ] = $post_id;
+
+			// Save the entity if is a new entity
+			if ( NULL === $ie ) {
+				wl_save_entity( $entity );
 			}
+
 		}
 		
-		// Save entities (properties included) and push them to Redlink
-		wl_save_entities( array_values( $entities_via_post ), $post_id );
 	}
 
 	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
 	// Save each entity and store the post id.
-	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
+	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {	
 		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
 	}
+	
 	// Update the post content
 	wp_update_post( array(
 		'ID'           => $post->ID,
@@ -120,37 +125,52 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-
+	
 	// Reset previously saved instances
 	wl_core_delete_relation_instances( $post_id );
 
 	// Save relation instances
 	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
 
-		if ( $entities_predicates_mapping ) {
+		wl_core_add_relation_instance( 
+			$post_id, 
+			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ), 
+			$referenced_entity_id
+		);
 
-			// wl_write_log(" Going to manage relation instances according to the following mapping");
+	}
+    
+    if ( isset( $_POST['wl_entities'] ) ) {
+		// Save post metadata if available
+		$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ? 
+			$_POST['wl_metadata'] : array();
 
+		$fields = array(
+			Wordlift_Schema_Service::FIELD_LOCATION_CREATED,
+			Wordlift_Schema_Service::FIELD_TOPIC
+		);
+		
+		// Unlink topic taxonomy terms
+		Wordlift_Topic_Taxonomy_Service::get_instance()->unlink_topic_for( $post->ID );
+			
+		foreach ( $fields as $field ) {
+
+			// Delete current values
+			delete_post_meta( $post->ID, $field );
 			// Retrieve the entity uri
-			$referenced_entity_uri = wl_get_entity_uri( $referenced_entity_id );
-			// Retrieve predicates for the current uri
-			if ( isset( $entities_predicates_mapping[ $referenced_entity_uri ] ) ) {
-				foreach ( $entities_predicates_mapping[ $referenced_entity_uri ] as $predicate ) {
-					wl_write_log(" Going to add relation with predicate $predicate");
-					wl_core_add_relation_instance( $post_id, $predicate, $referenced_entity_id );
+			$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ? 
+				stripslashes( $metadata_via_post[ $field ] ) : '';
+
+			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+			
+			if ( $entity ) {
+				add_post_meta( $post->ID, $field, $entity->ID, true );
+				// Set also the topic taxonomy
+				if ( $field === Wordlift_Schema_Service::FIELD_TOPIC ) {
+					Wordlift_Topic_Taxonomy_Service::get_instance()->set_topic_for( $post->ID, $entity );
 				}
-			} else {
-				wl_write_log( "Entity uri $referenced_entity_uri missing in the mapping" );
-				wl_write_log( $entities_predicates_mapping );
 			}
-
-		} else {
-			// Just for unit tests
-			wl_core_add_relation_instance( $post_id, 'what', $referenced_entity_id );
 		}
-
-		// TODO Check if is needed
-		wl_linked_data_push_to_redlink( $referenced_entity_id );
 	}
 
 	// Push the post to Redlink.
@@ -179,39 +199,6 @@ function wordlift_save_post_add_default_schema_type( $entity_id ) {
 // Priority 1 (default is 10) because we want the default type to be set as soon as possible
 // Attatched to save_post because *wl_linked_data_save_post* does not always fire
 add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
-
-/**
- * Save the specified entities to the local storage.
- *
- * @param array $entities An array of entities.
- * @param int $related_post_id A related post ID.
- *
- * @return array An array of posts.
- */
-function wl_save_entities( $entities, $related_post_id = null ) {
-
-	// wl_write_log( "[ entities count :: " . count( $entities ) . " ][ related post id :: $related_post_id ]" );
-
-	// Prepare the return array.
-	$posts = array();
-
-	// Save each entity and store the post id.
-	foreach ( $entities as $entity ) {
-		
-		// Update entity data with related post
-		$entity['related_post_id'] = $related_post_id;
-	
-		// Save the entity.
-		$entity_post = wl_save_entity( $entity );
-
-		// Store the post in the return array if successful.
-		if ( null !== $entity_post ) {
-			array_push( $posts, $entity_post );
-		}
-	}
-
-	return $posts;
-}
 
 /**
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
@@ -258,7 +245,7 @@ function wl_save_entity( $entity_data ) {
 	if ( null !== $post ) {
 		return $post;
 	}
-
+	
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
 	// the local SEO form values to the created entity (https://github.com/insideout10/wordlift-plugin/issues/156)
 	// Same thing applies to SEO Ultimate (https://github.com/insideout10/wordlift-plugin/issues/148)
@@ -428,6 +415,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	$entities = array();
 	foreach ( $matches[1] as $uri ) {
 		$uri_d  = html_entity_decode( $uri );
+		
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
 
 		if ( null !== $entity ) {

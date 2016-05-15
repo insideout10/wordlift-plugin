@@ -94,6 +94,15 @@ class Wordlift {
 	private $entity_service;
 
 	/**
+	 * The Topic Taxonomy service.
+	 *
+	 * @since 3.5.0
+	 * @access private
+	 * @var \Wordlift_Topic_Taxonomy_Service The Topic Taxonomy service.
+	 */
+	private $topic_taxonomy_service;
+
+	/**
 	 * The User service.
 	 *
 	 * @since 3.1.7
@@ -186,7 +195,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version = '3.4.0';
+		$this->version = '3.5.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -275,6 +284,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-timeline-service.php';
 
 		/**
+		 * The Topic Taxonomy service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
@@ -361,6 +375,8 @@ class Wordlift {
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
+		$this->topic_taxonomy_service = new Wordlift_Topic_Taxonomy_Service();
+
 		// Create an instance of the ShareThis service, later we hook it to the_content and the_excerpt filters.
 		$this->sharethis_service = new Wordlift_ShareThis_Service();
 
@@ -400,11 +416,17 @@ class Wordlift {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
+		// Hook the init action to the Topic Taxonomy service.
+		$this->loader->add_action( 'init', $this->topic_taxonomy_service, 'init', 0 );
+
 		// Hook the deleted_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'deleted_post_meta', $this->thumbnail_service, 'deleted_post_meta', 10, 4 );
 
 		// Hook the added_post_meta action to the Thumbnail service.
-		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_post_meta', 10, 4 );
+		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
+		
+		// Hook the updated_post_meta action to the Thumbnail service.
+		$this->loader->add_action( 'updated_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
 
 		// Hook posts inserts (or updates) to the user service.
 		$this->loader->add_action( 'wp_insert_post', $this->user_service, 'wp_insert_post', 10, 3 );
@@ -464,6 +486,7 @@ class Wordlift {
 		// Hook the ShareThis service.
 		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
+
 	}
 
 	/**

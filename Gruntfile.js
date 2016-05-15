@@ -48,6 +48,7 @@ module.exports = function ( grunt ) {
         SOURCE_DIR + 'coffee/editpost-widget/app.services.AnalysisService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.EditorService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.RelatedPostDataRetrieverService.coffee',
+        SOURCE_DIR + 'coffee/editpost-widget/app.services.GeoLocationService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.providers.ConfigurationProvider.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.coffee'
     ];
@@ -56,7 +57,10 @@ module.exports = function ( grunt ) {
     config[ SOURCE_DIR + 'js/wordlift-ui.js' ] = [
         SOURCE_DIR + 'coffee/ui/chord.coffee',
         SOURCE_DIR + 'coffee/ui/timeline.coffee',
-        SOURCE_DIR + 'coffee/ui/geomap.coffee'
+        SOURCE_DIR + 'coffee/ui/geomap.coffee',
+        SOURCE_DIR + 'coffee/ui/carousel.coffee',
+        SOURCE_DIR + 'coffee/utils/app.utils.directives.coffee',
+        SOURCE_DIR + 'coffee/navigator-widget/app.coffee'
     ];
 
     // wordlift-faceted-entity-search-widget.js
@@ -127,6 +131,17 @@ module.exports = function ( grunt ) {
                 ]
             }
         },
+        autoprefixer: {
+          options: {
+            browsers: ['last 20 versions', 'ie 8', 'ie 9']          },
+          main: {
+            expand: true,
+            flatten: true,
+            cwd: SOURCE_DIR + 'css/',
+            src: ['*.css', '!*.min.css'],
+            dest: SOURCE_DIR + 'css/',
+          }
+        },
         /* Minify css */
         cssmin: {
             all: {
@@ -176,23 +191,24 @@ module.exports = function ( grunt ) {
         /* Watch for changes */
         watch: {
             /* Enable when using a build folder */
-            //all: {
-            //    files: [
-            //        SOURCE_DIR + '**',
-            //        // Ignore version control directories.
-            //        '!' + SOURCE_DIR + '**/.{svn,git}/**',
-            //        '!' + SOURCE_DIR + 'less/**',
-            //        '!' + SOURCE_DIR + 'coffee/**',
-            //        '!' + SOURCE_DIR + '**/*.coffee',
-            //        '!' + SOURCE_DIR + '**/*.less'
-            //    ],
-            //    //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
-            //    options: {
-            //        dot: true,
-            //        spawn: false,
-            //        interval: 2000
-            //    }
-            //},
+            all: {
+               files: [
+                   SOURCE_DIR + '**',
+                   // Ignore version control directories.
+                   '!' + SOURCE_DIR + '**/.{svn,git}/**',
+                   '!' + SOURCE_DIR + 'less/**',
+                   '!' + SOURCE_DIR + 'coffee/**',
+                   '!' + SOURCE_DIR + '**/*.coffee',
+                   '!' + SOURCE_DIR + '**/*.less',
+               ],
+               //tasks: [ 'clean:dynamic', 'copy:dynamic' ],
+               options: {
+                   dot: true,
+                   spawn: false,
+                   interval: 2000,
+                   livereload: true,
+               }
+            },
             coffee: {
                 files: [ SOURCE_DIR + 'coffee/**/*.coffee' ],
                 tasks: [ 'coffee' ]
@@ -200,6 +216,10 @@ module.exports = function ( grunt ) {
             less: {
                 files: [ SOURCE_DIR + 'less/**/*.less' ],
                 tasks: [ 'less' ]
+            },
+            autoprefixer: {
+              files: [ SOURCE_DIR + 'css/**/*.css' ],
+              tasks: [ 'autoprefixer' ]
             },
             config: {
                 files: 'Gruntfile.js'
@@ -234,6 +254,7 @@ module.exports = function ( grunt ) {
     grunt.registerTask( 'build', [
         'coffee',
         'less',
+        'autoprefixer',
         'cssmin',
         'copy:fonts',
         'copy:build'

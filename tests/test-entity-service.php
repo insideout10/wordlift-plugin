@@ -217,4 +217,119 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$this->assertNull( $entity_service->is_used( $post_id ) );
             
 	}
+
+	/**
+	 * Test the {@link build_uri} function 
+	 *
+	 * @since 3.5.0
+	 */
+	function test_build_uri_when_there_is_no_entity_with_the_same_label() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		$entity_name = uniqid( 'entity', true );
+		
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( $entity_name )
+		); 
+
+		$this->assertEquals( 
+			$new_entity_uri, 
+			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME ) 
+		);            
+	}
+
+	/**
+	 * Test the {@link build_uri} function 
+	 *
+	 * @since 3.5.0
+	 */
+	function test_build_uri_when_there_is_already_an_entity_with_the_same_label() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		$entity_name = uniqid( 'entity', true );
+		
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( $entity_name )
+		); 
+
+		// Create the first entity
+		$entity_id = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
+		// Check the new entity uri
+		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
+		// Check that the uri for a new entity contains a numeric suffix
+		$this->assertEquals( 
+			$new_entity_uri . '_2', 
+			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME ) 
+		);
+		      
+	}
+
+	/**
+	 * Test the {@link build_uri} function 
+	 *
+	 * @since 3.5.0
+	 */
+	function test_build_uri_override_when_there_is_already_an_entity_with_the_same_label_and_type() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		$entity_name = uniqid( 'entity', true );
+		
+		$new_entity_uri = sprintf( '%s/%s/%s', 
+			wl_configuration_get_redlink_dataset_uri(), 
+			Wordlift_Entity_Service::TYPE_NAME, 
+			wl_sanitize_uri_path( $entity_name )
+		); 
+
+		// Create the first entity
+		$entity_id = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
+		$schema_type   = wl_entity_type_taxonomy_get_type( $entity_id );
+
+		$this->assertEquals( $schema_type[ 'css_class' ], 'wl-thing' );
+		
+		// Check the new entity uri
+		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
+		// Check that the uri for a new entity contains a numeric suffix
+		$this->assertEquals( 
+			$new_entity_uri, 
+			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' ) 
+		);
+		      
+	}
+
+	/**
+	 * Test the {@link get_classification_scope_for} function 
+	 *
+	 * @since 3.5.0
+	 */
+	function test_get_classification_scope_for() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$this->assertNull( $entity_service->get_classification_scope_for( 'post_id' ) );
+		$entity_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Thing' );
+        $this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/CreativeWork' );
+        $this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+        $this->assertEquals( 'where', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Event' );
+        $this->assertEquals( 'when', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Person' );
+        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Organization' );
+        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/LocalBusiness' );
+        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+			
+	}
 }

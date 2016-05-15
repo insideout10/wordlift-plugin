@@ -1,44 +1,53 @@
-angular.module('wordlift.ui.carousel', [])
+angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarousel', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   scope: true
   transclude: true      
   template: """
-      <div class="wl-carousel" ng-show="panes.length > 0">
-        <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-right="next()"></div>
-        <div class="wl-carousel-arrow wl-prev" ng-click="prev()" ng-show="currentPaneIndex > 0">
-          <i class="wl-angle-left" />
-        </div>
-        <div class="wl-carousel-arrow wl-next" ng-click="next()" ng-show="isNextArrowVisible()">
-          <i class="wl-angle-right" />
+      <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
+        <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
+        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : isActive() }">
+          <i class="wl-angle left" ng-click="prev()" ng-show="isPrevArrowVisible()" />
+          <i class="wl-angle right" ng-click="next()" ng-show="isNextArrowVisible()" />
         </div>
       </div>
   """
-  controller: [ '$scope', '$element', '$attrs', ($scope, $element, $attrs) ->
+  controller: [ '$scope', '$element', '$attrs', '$log', ($scope, $element, $attrs, $log) ->
       
     w = angular.element $window
+
+    $scope.setItemWidth = ()->
+      $element.width() / $scope.visibleElements() 
+
+    $scope.showControls = ()->
+      $scope.areControlsVisible = true
+
+    $scope.hideControls = ()->
+      $scope.areControlsVisible = false
 
     $scope.visibleElements = ()->
       if $element.width() > 460
         return 4
       return 1
 
-    $scope.setItemWidth = ()->
-      $element.width() / $scope.visibleElements() 
-
-    $scope.itemWidth =  $scope.setItemWidth()
-    $scope.panesWidth = undefined
-    $scope.panes = []
-    $scope.position = 0;
-    $scope.currentPaneIndex = 0
-
+    $scope.isActive = ()->
+      $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
+        
+    $scope.isPrevArrowVisible = ()->
+      ($scope.currentPaneIndex > 0)
+    
     $scope.isNextArrowVisible = ()->
       ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
     
     $scope.next = ()->
+      if ( $scope.currentPaneIndex + $scope.visibleElements() + 1 ) > $scope.panes.length
+        return 
       $scope.position = $scope.position - $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex + 1
+
     $scope.prev = ()->
+      if $scope.currentPaneIndex is 0
+        return 
       $scope.position = $scope.position + $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
@@ -46,6 +55,13 @@ angular.module('wordlift.ui.carousel', [])
       $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
       $scope.position = 0;
       $scope.currentPaneIndex = 0
+
+    $scope.itemWidth =  $scope.setItemWidth()
+    $scope.panesWidth = undefined
+    $scope.panes = []
+    $scope.position = 0;
+    $scope.currentPaneIndex = 0
+    $scope.areControlsVisible = false
 
     w.bind 'resize', ()->
         
@@ -56,7 +72,7 @@ angular.module('wordlift.ui.carousel', [])
       $scope.$apply()
 
     ctrl = @
-    ctrl.registerPane = (scope, element)->
+    ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
         
@@ -66,6 +82,12 @@ angular.module('wordlift.ui.carousel', [])
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
+      
+      #if first
+      #  $log.debug "Eccolo"
+      #  $log.debug $scope.panes.length
+      #  $scope.position = $scope.panes.length * $scope.itemWidth
+      #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
         
@@ -81,15 +103,17 @@ angular.module('wordlift.ui.carousel', [])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
   restrict: 'EA'
+  scope:
+    wlFirstPane: '='
   transclude: true 
   template: """
       <div ng-transclude></div>
   """
   link: ($scope, $element, $attrs, $ctrl) ->
 
-    $log.debug "Going to add carousel pane with id #{$scope.$id} to carousel"
     $element.addClass "wl-carousel-item"
-      
+    $scope.isFirst = $scope.wlFirstPane || false
+
     $scope.setWidth = (size)->
       $element.css('width', "#{size}px")
 
@@ -97,5 +121,5 @@ angular.module('wordlift.ui.carousel', [])
       $log.debug "Destroy #{$scope.$id}"
       $ctrl.unregisterPane $scope
 
-    $ctrl.registerPane $scope, $element
+    $ctrl.registerPane $scope, $element, $scope.isFirst
 ])

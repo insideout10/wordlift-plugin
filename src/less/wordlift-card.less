@@ -1,18 +1,22 @@
 .wl-card {
 
-	font-size: 11px !important;
+	font-size: 0.8em;
         
     .wl-card-image {
         
         position: relative;
         overflow: hidden;
-        max-height: 80px;
-        height: 80px;
+        padding-top:50%;
 
-        img {
+        &.wl-square {
+            padding-top:100%;
+        }
+
+        span, img {
    		   position: absolute;
     	   margin: auto;
-    	   top: 0;
+    	   
+           top: 0;
     	   left: 0;
     	   right: 0;
     	   bottom: 0;
@@ -23,13 +27,24 @@
 
         padding: 0.6em;
         position: relative;
-        font-size: 1em;
-        line-height: 1.2em;
-        min-height: 3.6em;
-
+        font-size: 14px;
+        line-height: 16px;
+ 
         a {
             text-decoration: none;
             border-bottom: none;
         }
     }
+
+    .wl-card-header {
+
+        padding: 0.6em;
+        position: relative;
+        
+        a {
+            text-decoration: none;
+            border-bottom: none;
+        }
+    }
+
 }

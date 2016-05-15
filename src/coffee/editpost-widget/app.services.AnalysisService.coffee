@@ -39,7 +39,6 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
         
         if isOverlapping
           $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
-          $log.debug annotation
           @.deleteAnnotation analysis, annotationId
         else 
           positions = positions.concat annotationRange 
@@ -58,7 +57,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       id: 'local-entity-' + uniqueId 32
       label: ''
       description: ''
-      mainType: 'thing' # DefaultType
+      mainType: '' # No DefaultType
       types: []
       images: []
       confidence: 1
@@ -98,8 +97,24 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
     # Add id to annotation obj
     # Add occurences as a blank array
     # Add annotation references to each entity
+
+    # TMP ... Should be done on WLS side
+  
     
+    unless data.topics?
+      data.topics = []
+
+    dt = @._defaultType
+
+    data.topics = data.topics.map (topic)->
+      
+      topic.id = topic.uri
+      topic.occurrences = []
+      topic.mainType = dt
+      topic
+
     for id, localEntity of configuration.entities
+      
       data.entities[ id ] = localEntity
 
     for id, entity of data.entities
@@ -151,10 +166,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
             local_confidence = em.confidence
         entity.confidence = entity.confidence * local_confidence
 
-    data
-
-  service.getSuggestedSameAs = (content)->
+    data    
   
+  service.getSuggestedSameAs = (content)->
     promise = @._innerPerform content
     # If successful, broadcast an *sameAsReceived* event.
     .then (response) ->
@@ -162,9 +176,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       suggestions = []
 
       for id, entity of response.data.entities
-        if id.startsWith('http')
-          suggestions.push id
-      
+       
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            source: matches[1]
+          }
+      $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
     
   service._innerPerform = (content)->

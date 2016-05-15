@@ -1,44 +1,53 @@
-angular.module('wordlift.ui.carousel', [])
+angular.module('wordlift.ui.carousel', ['ngTouch'])
 .directive('wlCarousel', ['$window', '$log', ($window, $log)->
   restrict: 'A'
   scope: true
   transclude: true      
   template: """
-      <div class="wl-carousel" ng-show="panes.length > 0">
-        <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-right="next()"></div>
-        <div class="wl-carousel-arrow wl-prev" ng-click="prev()" ng-show="currentPaneIndex > 0">
-          <i class="wl-angle-left" />
-        </div>
-        <div class="wl-carousel-arrow wl-next" ng-click="next()" ng-show="isNextArrowVisible()">
-          <i class="wl-angle-right" />
+      <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
+        <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
+        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : isActive() }">
+          <i class="wl-angle left" ng-click="prev()" ng-show="isPrevArrowVisible()" />
+          <i class="wl-angle right" ng-click="next()" ng-show="isNextArrowVisible()" />
         </div>
       </div>
   """
-  controller: [ '$scope', '$element', '$attrs', ($scope, $element, $attrs) ->
+  controller: [ '$scope', '$element', '$attrs', '$log', ($scope, $element, $attrs, $log) ->
       
     w = angular.element $window
+
+    $scope.setItemWidth = ()->
+      $element.width() / $scope.visibleElements() 
+
+    $scope.showControls = ()->
+      $scope.areControlsVisible = true
+
+    $scope.hideControls = ()->
+      $scope.areControlsVisible = false
 
     $scope.visibleElements = ()->
       if $element.width() > 460
         return 4
       return 1
 
-    $scope.setItemWidth = ()->
-      $element.width() / $scope.visibleElements() 
-
-    $scope.itemWidth =  $scope.setItemWidth()
-    $scope.panesWidth = undefined
-    $scope.panes = []
-    $scope.position = 0;
-    $scope.currentPaneIndex = 0
-
+    $scope.isActive = ()->
+      $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
+        
+    $scope.isPrevArrowVisible = ()->
+      ($scope.currentPaneIndex > 0)
+    
     $scope.isNextArrowVisible = ()->
       ($scope.panes.length - $scope.currentPaneIndex) > $scope.visibleElements()
     
     $scope.next = ()->
+      if ( $scope.currentPaneIndex + $scope.visibleElements() + 1 ) > $scope.panes.length
+        return 
       $scope.position = $scope.position - $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex + 1
+
     $scope.prev = ()->
+      if $scope.currentPaneIndex is 0
+        return 
       $scope.position = $scope.position + $scope.itemWidth
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
@@ -46,6 +55,13 @@ angular.module('wordlift.ui.carousel', [])
       $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
       $scope.position = 0;
       $scope.currentPaneIndex = 0
+
+    $scope.itemWidth =  $scope.setItemWidth()
+    $scope.panesWidth = undefined
+    $scope.panes = []
+    $scope.position = 0;
+    $scope.currentPaneIndex = 0
+    $scope.areControlsVisible = false
 
     w.bind 'resize', ()->
         
@@ -56,7 +72,7 @@ angular.module('wordlift.ui.carousel', [])
       $scope.$apply()
 
     ctrl = @
-    ctrl.registerPane = (scope, element)->
+    ctrl.registerPane = (scope, element, first)->
       # Set the proper width for the element
       scope.setWidth $scope.itemWidth
         
@@ -66,6 +82,12 @@ angular.module('wordlift.ui.carousel', [])
 
       $scope.panes.push pane
       $scope.setPanesWrapperWidth()
+      
+      #if first
+      #  $log.debug "Eccolo"
+      #  $log.debug $scope.panes.length
+      #  $scope.position = $scope.panes.length * $scope.itemWidth
+      #  $scope.currentPaneIndex = $scope.panes.length
 
     ctrl.unregisterPane = (scope)->
         
@@ -81,15 +103,17 @@ angular.module('wordlift.ui.carousel', [])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
   restrict: 'EA'
+  scope:
+    wlFirstPane: '='
   transclude: true 
   template: """
       <div ng-transclude></div>
   """
   link: ($scope, $element, $attrs, $ctrl) ->
 
-    $log.debug "Going to add carousel pane with id #{$scope.$id} to carousel"
     $element.addClass "wl-carousel-item"
-      
+    $scope.isFirst = $scope.wlFirstPane || false
+
     $scope.setWidth = (size)->
       $element.css('width', "#{size}px")
 
@@ -97,7 +121,7 @@ angular.module('wordlift.ui.carousel', [])
       $log.debug "Destroy #{$scope.$id}"
       $ctrl.unregisterPane $scope
 
-    $ctrl.registerPane $scope, $element
+    $ctrl.registerPane $scope, $element, $scope.isFirst
 ])
 angular.module('wordlift.utils.directives', [])
 # See https://github.com/angular/angular.js/blob/master/src/ng/directive/ngEventDirs.js
@@ -121,6 +145,66 @@ angular.module('wordlift.utils.directives', [])
         $log.warn "Error on #{$attrs.src}! Going to fallback on #{$attrs.wlFallback}"
         $attrs.$set 'src', $attrs.wlFallback
     )
+])
+.directive('wlHideAfter', ['$timeout', '$log', ($timeout, $log)->
+  restrict: 'A'
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    delay = +$attrs.wlHideAfter
+    $timeout(()->
+      $log.debug "Remove msg after #{delay} ms"
+      $element.hide()
+    , delay)
+])
+.directive('wlClipboard', ['$timeout', '$document', '$log', ($timeout, $document, $log)->
+  restrict: 'E'
+  scope:
+    text: '='
+    onCopied: '&'
+  transclude: true
+  template: """
+    <span 
+      class="wl-widget-post-link" 
+      ng-class="{'wl-widget-post-link-copied' : $copied}"
+      ng-click="copyToClipboard()">
+      <ng-transclude></ng-transclude>
+      <input type="text" ng-value="text" />
+    </span>
+  """
+  link: ($scope, $element, $attrs, $ctrl) ->  
+    
+    $scope.$copied = false
+
+    $scope.node = $element.find 'input'
+    $scope.node.css 'position', 'absolute'
+    $scope.node.css 'left', '-10000px'
+    
+    # $element
+    $scope.copyToClipboard = ()->
+      try
+        
+        # Set inline style to override css styles
+        $document[0].body.style.webkitUserSelect = 'initial'
+        selection = $document[0].getSelection()
+        selection.removeAllRanges()
+        # Fake node selection
+        $scope.node.select()
+        # Perform the task
+        unless $document[0].execCommand 'copy'
+           $log.warn "Error on clipboard copy for #{text}"
+        selection.removeAllRanges()
+        # Update copied status and reset after 3 seconds
+        $scope.$copied = true
+        $timeout(()->
+          $log.debug "Going to reset $copied status"
+          $scope.$copied = false
+        , 3000)
+
+        # Execute onCopied callback
+        if angular.isFunction($scope.onCopied)
+          $scope.$evalAsync $scope.onCopied()
+          
+      finally
+        $document[0].body.style.webkitUserSelect = ''
 ])
 # Set the well-known $ reference to jQuery.
 $ = jQuery
@@ -149,6 +233,42 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     filtered
 
 ])
+.directive('wlFacetedPosts', ['configuration', '$window', '$log', (configuration, $window, $log)->
+  restrict: 'E'
+  scope: true
+  template: (tElement, tAttrs)->
+    
+    wrapperClasses = 'wl-wrapper'
+    wrapperAttrs = ' wl-carousel'
+    itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
+    itemWrapperAttrs = ' wl-carousel-pane'
+    thumbClasses = 'wl-card-image'
+    
+    unless configuration.attrs.with_carousel
+      wrapperClasses = 'wl-floating-wrapper'
+      wrapperAttrs = ''
+      itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
+      itemWrapperAttrs = ''
+    
+    if configuration.attrs.squared_thumbs
+      thumbClasses = 'wl-card-image wl-square'
+      
+    """
+      <div class="wl-posts">
+        <div class="#{wrapperClasses}" #{wrapperAttrs}>
+          <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
+            <div class="#{thumbClasses}"> 
+              <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
+            </div>
+            <div class="wl-card-title"> 
+              <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  """
+
+])
 
 .controller('FacetedSearchWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)-> 
 
@@ -169,10 +289,16 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.configuration = configuration
     $scope.filteringEnabled = true
 
-    $scope.toggleFiltering = ()->
-      $scope.filteringEnabled = !$scope.filteringEnabled
+    $scope.toggleFacets = ()->
+      $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets
+      # Reset conditions
+      $scope.conditions = {}
+      DataRetrieverService.load( 'posts' )
+
 
     $scope.isInConditions = (entity)->
+      if Object.keys($scope.conditions).length is 0
+        return true
       if $scope.conditions[ entity.id ]
         return true
       return false
@@ -228,35 +354,25 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 $(
   container = $("""
   	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
-      <div class="wl-facets" ng-show="filteringEnabled">
+      <h4 class="wl-headline">
+        {{configuration.attrs.title}}
+        <i class="wl-toggle-on" ng-hide="configuration.attrs.show_facets" ng-click="toggleFacets()"></i>
+        <i class="wl-toggle-off" ng-show="configuration.attrs.show_facets" ng-click="toggleFacets()"></i>
+      </h4>
+      <div ng-show="configuration.attrs.show_facets" class="wl-facets" ng-show="filteringEnabled">
         <div class="wl-facets-container" ng-repeat="box in supportedTypes">
-          <h6>{{box.scope}}</h6>
+          <h5>{{box.scope}}</h5>
           <ul>
             <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
-                  <i class="wl-checkbox"></i>
-                  <i class="wl-type" ng-class="'wl-fs-' + entity.mainType"></i>  
                   {{entity.label}}
-                  <span class="wl-counter">({{entity.counter}})</span>
                 </span>
             </li>
           </ul>
         </div>
       </div>
-      <div class="wl-posts">
-        <div wl-carousel>
-          <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
-            <div class="wl-card-image"> 
-              <img ng-src="{{post.thumbnail}}" />
-            </div>
-            <div class="wl-card-title"> 
-              <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-     
+      <wl-faceted-posts></wl-faceted-posts>
+      
     </div>
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')

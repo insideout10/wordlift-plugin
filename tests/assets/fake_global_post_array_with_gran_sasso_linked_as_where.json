@@ -1,0 +1,19 @@
+{
+   "wl_entities":{
+      "http://dbpedia.org/resource/Gran_Sasso_d'Italia":{
+         "uri":"http:\/\/dbpedia.org\/resource\/Gran_Sasso_d\\'Italia",
+         "label":"Gran Sasso",
+         "description":"Il Gran Sasso",
+         "main_type":"wl-place",
+         "image":[
+            "http:\/\/upload.wikimedia.org\/wikipedia\/commons\/a\/a2\/Goya_Caprichos3.jpg"
+         ],
+         "sameas":[]
+      }
+   },
+   "wl_boxes":{
+      "where":[
+         "http:\/\/dbpedia.org\/resource\/Gran_Sasso_d\\'Italia"
+      ]
+   }
+}

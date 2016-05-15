@@ -25,6 +25,42 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     filtered
 
 ])
+.directive('wlFacetedPosts', ['configuration', '$window', '$log', (configuration, $window, $log)->
+  restrict: 'E'
+  scope: true
+  template: (tElement, tAttrs)->
+    
+    wrapperClasses = 'wl-wrapper'
+    wrapperAttrs = ' wl-carousel'
+    itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
+    itemWrapperAttrs = ' wl-carousel-pane'
+    thumbClasses = 'wl-card-image'
+    
+    unless configuration.attrs.with_carousel
+      wrapperClasses = 'wl-floating-wrapper'
+      wrapperAttrs = ''
+      itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
+      itemWrapperAttrs = ''
+    
+    if configuration.attrs.squared_thumbs
+      thumbClasses = 'wl-card-image wl-square'
+      
+    """
+      <div class="wl-posts">
+        <div class="#{wrapperClasses}" #{wrapperAttrs}>
+          <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
+            <div class="#{thumbClasses}"> 
+              <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
+            </div>
+            <div class="wl-card-title"> 
+              <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+  """
+
+])
 
 .controller('FacetedSearchWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)-> 
 
@@ -45,10 +81,16 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.configuration = configuration
     $scope.filteringEnabled = true
 
-    $scope.toggleFiltering = ()->
-      $scope.filteringEnabled = !$scope.filteringEnabled
+    $scope.toggleFacets = ()->
+      $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets
+      # Reset conditions
+      $scope.conditions = {}
+      DataRetrieverService.load( 'posts' )
+
 
     $scope.isInConditions = (entity)->
+      if Object.keys($scope.conditions).length is 0
+        return true
       if $scope.conditions[ entity.id ]
         return true
       return false
@@ -104,35 +146,25 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 $(
   container = $("""
   	<div ng-controller="FacetedSearchWidgetController" ng-show="posts.length > 0">
-      <div class="wl-facets" ng-show="filteringEnabled">
+      <h4 class="wl-headline">
+        {{configuration.attrs.title}}
+        <i class="wl-toggle-on" ng-hide="configuration.attrs.show_facets" ng-click="toggleFacets()"></i>
+        <i class="wl-toggle-off" ng-show="configuration.attrs.show_facets" ng-click="toggleFacets()"></i>
+      </h4>
+      <div ng-show="configuration.attrs.show_facets" class="wl-facets" ng-show="filteringEnabled">
         <div class="wl-facets-container" ng-repeat="box in supportedTypes">
-          <h6>{{box.scope}}</h6>
+          <h5>{{box.scope}}</h5>
           <ul>
             <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
-                  <i class="wl-checkbox"></i>
-                  <i class="wl-type" ng-class="'wl-fs-' + entity.mainType"></i>  
                   {{entity.label}}
-                  <span class="wl-counter">({{entity.counter}})</span>
                 </span>
             </li>
           </ul>
         </div>
       </div>
-      <div class="wl-posts">
-        <div wl-carousel>
-          <div class="wl-post wl-card" ng-repeat="post in posts" wl-carousel-pane>
-            <div class="wl-card-image"> 
-              <img ng-src="{{post.thumbnail}}" />
-            </div>
-            <div class="wl-card-title"> 
-              <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
-            </div>
-          </div>
-        </div>
-  
-      </div>
-     
+      <wl-faceted-posts></wl-faceted-posts>
+      
     </div>
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')

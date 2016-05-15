@@ -1,27 +1,100 @@
+@import '../bower_components/components-font-awesome/less/font-awesome.less';
 @import 'colors.less';
+@import 'wordlift-functions.less';
+@import 'wordlift-carousel.less';
+@import 'wordlift-card.less';
+@import 'wordlift-label.less';
+@import 'wordlift-navigator-widget.less';
 
-path.wl-person { fill: @wl-person-color; }
-path.wl-place  { fill: @wl-place-color; }
-path.wl-creative-work { fill: @wl-creative-work-color; }
-path.wl-organization { fill: @wl-organization-color; }
-path.wl-local-business { fill: @wl-organization-color; }
-path.wl-event { fill: @wl-event-color; }
-path.wl-thing { fill: @wl-thing-color; }
+path.wl-person {
+  fill: @wl-person-color;
+}
+
+path.wl-place {
+  fill: @wl-place-color;
+}
+
+path.wl-creative-work {
+  fill: @wl-creative-work-color;
+}
+
+path.wl-organization {
+  fill: @wl-organization-color;
+}
+
+path.wl-local-business {
+  fill: @wl-organization-color;
+}
+
+path.wl-event {
+  fill: @wl-event-color;
+}
+
+path.wl-thing {
+  fill: @wl-thing-color;
+}
 
 .wl-highlight(@background-color) {
   background-color: @background-color;
-  color: contrast(@background-color);
-  padding: 2px; }
+  color           : contrast(@background-color);
+  padding         : 2px;
+}
 
-.wl-person { .wl-highlight(@wl-person-color); }
-.wl-place  { .wl-highlight(@wl-place-color); }
-.wl-creative-work { .wl-highlight(@wl-creative-work-color); }
-.wl-organization { .wl-highlight(@wl-organization-color); }
-.wl-local-business { .wl-highlight(@wl-organization-color); }
-.wl-event { .wl-highlight(@wl-event-color); }
-.wl-thing { .wl-highlight(@wl-thing-color); }
+.wl-person {
+  .wl-highlight(@wl-person-color);
+}
+
+.wl-place {
+  .wl-highlight(@wl-place-color);
+}
+
+.wl-creative-work {
+  .wl-highlight(@wl-creative-work-color);
+}
+
+.wl-organization {
+  .wl-highlight(@wl-organization-color);
+}
+
+.wl-local-business {
+  .wl-highlight(@wl-organization-color);
+}
+
+.wl-event {
+  .wl-highlight(@wl-event-color);
+}
+
+.wl-thing {
+  .wl-highlight(@wl-thing-color);
+}
 
 a.wl-entity-page-link {
-	text-decoration: none !important;
-	border-bottom:#666 1px dotted; 
+  text-decoration: none !important;
+  border-bottom  : #666 1px dotted;
+}
+
+.wl-floating-wrapper {
+  border-top : #ccc 1px solid;
+  padding-top: 1em;
+}
+
+@media screen and (max-width: 460px) {
+  .wl-floating-item-wrapper {
+    width: 100% !important;
+  }
+}
+
+.wl-floating-item-wrapper {
+  width         : 25%;
+  display       : inline-block;
+  vertical-align: top;
+  padding       : 0 0.3em;
+
+  h6 {
+    margin: 0 !important;
+  }
+
+  .wl-card-title {
+    padding: 0.6em 0 !important;
+  }
 }
