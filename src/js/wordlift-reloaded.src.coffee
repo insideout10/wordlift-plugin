@@ -711,7 +711,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
     
   
-  $scope.$on "geoLocationError", (event, error) ->
+  $scope.$on "geoLocationError", (event, msg) ->
+    # Show error to the user
+    $scope.addMsg "Sorry. Looks like something went wrong and WordLift cannot detect your current position. Make sure the ​location services​ of your browser are turned on.", 'error'
+    # Stop geolocation loader
     $scope.isGeolocationRunning = false
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
 

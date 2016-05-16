@@ -719,7 +719,8 @@
           return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         });
       });
-      $scope.$on("geoLocationError", function(event, error) {
+      $scope.$on("geoLocationError", function(event, msg) {
+        $scope.addMsg("Sorry. Looks like something went wrong and WordLift cannot detect your current position. Make sure the ​location services​ of your browser are turned on.", 'error');
         $scope.isGeolocationRunning = false;
         return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
       });
