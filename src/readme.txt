@@ -13,43 +13,39 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 == Description ==
 
 > #### WordLift - Activating the Plugin
-> WordLift is a lightweight plugin that runs semantic processing of our own hand-crafted API to help you produce richer content and <br />
-> organize it around your audience. It is a **paid** (monthly) **service** that you can [activate from our website](https://wordlift.io). <br />
+> WordLift is a lightweight plugin that runs semantic processing of our own hand-crafted API to help you produce richer content and 
+> organize it around your audience. <br /> It is a **paid (monthly) service** that you can [activate from our website](https://wordlift.io). <br />
 
 [vimeo http://vimeo.com/164538710]
 
-**WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites.
-**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).
-**WordLift** is a **semantic editor** for WordPress.
+**WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites. <br />
+**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html). <br />
+**WordLift** is a **semantic editor** for WordPress. <br />
 
 = Features =
 
 **WordLift** is a plug-in for online content creators to:
 
-* Support your writing process with *additional facts* and *contextual information* <br />
-* Enrich content with *images*, *links* and *visualizations* <br />
+* Support your writing process with *trustworthy and contextual facts* <br />
+* Enrich content with *images*, *links* and *interactive visualizations* <br />
 * Keep readers engaged with relevant *content recommendations* <br />
-* Produce content compatible with *new requirements* of the *search engine industry* <br />
-* Find your *tribe* by creating your own *personal Wikipedia* <br />
+* Produce content compatible with the *schema.org markup*, allowing search engines to index your site at best <br />
+* Engage readers with *relevant content recommendations* <br />
+* Help you create your own *personal Wikipedia* <br />
+* Publish metadata to share, sell And distribute content <br />
 
 = WordLift brings to your publishing workflow =
 _____________
 
-* support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph)
-* an easy way to **build a dataset** made of *web content*, *semantic annotations* and a *custom vocabulary* 
-* support for creating web content using **contextually relevant fact-based information**
-* valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more
-* insightful **visualisations to engage the reader**
-* new means to drive business growth with **meaningful content discovery paths**
-* content tagging for **better SEO**
+* Support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) <br />
+* An easy way to **build a dataset** and **full data ownership** <br />
+* Support for creating web content using **contextually relevant information** <br />
+* Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
+* New means to drive business growth with **meaningful content discovery paths** <br />
+* Content tagging for **better SEO** <br />
 
-= Websites built with WordLift bring to readers =
+= Supported Languages =
 _____________
-
-* multiple means of searching and accessing **editorial contents around a specific topic** 
-* **contextual information** helping readers with limited domain understanding
-* an **intuitive overview of all content being written** *on the site* and *around a specific topic* or graph of topics
-* meaningful **content recommendations** 
 
 WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
@@ -69,19 +65,17 @@ The Plug-in is built on **open source software**.
 
 = Why shall I use WordLift? = 
 
-The purpose of using WordLift is to:
-1. organize your content, <br />
-2. help people find content of interest to them, and <br />
-3. help WordLift describe your contents in *machine-readable* format so that other computers can re-use it. <br />
+Throwing content online without context and analysis simply doesn’t work when the focus for digital news is on *interactivity*, *engagement* and *community*. <br />
+**WordLift** organizes knowledge, **reducing the complexity of content management and digital marketing operations**, letting bloggers and site owner **focus on stories and communities**. It offers meaningful *cross-media discovery* and *recommendations* that **increases content quality, exposure, trustworthiness and readership engagement**. 
+**WordLift** also publishes *linked data* as a new way to syndicate content and create new business models.
 
-= Why shall I publish my contents as Linked Data? =
 
-Richer metadata helps making content discoverable, searchable, and provides new means to reaching your audience.
-Organising web contents around concepts or entities rather than traditional web pages helps improve navigation, content re-use, content re-purposing and search engine rankings.
+= How does it work? =
 
-Having content aggregations based on semantic annotations that use unambiguous Linked Data identifiers creates a richer navigation bringing the user experience to new levels of engagement. 
+**WordLift** is a semantic editor and works in subsequent stages. The first step provides a full text analysis and suggests entities and relationships to the user, classifying contents according to concepts stored in the *semantic graph* (DBpedia, Wikidata, GeoNames, etc.) and using schema.org vocabulary. Textual contents are structured: they can now be processed by machines and be connected to other datasets. Users can then create new entities, to complement the entities suggested automatically and form a proprietary vocabulary, according to the editorial plan. 
+**WordLift** provides means to record all these relationships in a graph database combining structured, semistructured and unstructured data, which allows queries like *“find all contents related to concept_y and relevant for target_z”*. <br />
 
-More [Frequently Asked Questions](http://docs.wordlift.it/en/latest/faq.html) can be found on [docs.wordlift.it](http://docs.wordlift.it).  
+Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](https://wordlift.io). <br />
 
 == Screenshots ==
 
@@ -403,8 +397,14 @@ WordLift is **happily developed** by [InSideOut10](http://blog.insideout.io/abou
 
 [InSideOut10](http://blog.insideout.io/about-us) uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
 
-<<<<<<< Updated upstream
-WordLift is built on **open source software**.
-=======
-WordLift is built on **open source software**. 
->>>>>>> Stashed changes
+Our goal is to **help journalists connect and share experiences with their readers** as well as **structuring knowledge in machine-readable form**. 
+
+= Why we are doing this =
+
+Our goal is an *utopian one* and has to do with **organizing the World’s information knowledge** by providing tools that everyone can use.
+
+= In Open Source We Trust =
+
+**WordLift** is built on **open source software**. <br /> 
+
+**WordLift** uses **open source tools for natural language and semantic processing**. <br />
