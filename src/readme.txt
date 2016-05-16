@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
-Tested up to: 4.4.1
+Tested up to: 4.5.2
 Stable tag: {version}
 License: GPLv2 or later
 
