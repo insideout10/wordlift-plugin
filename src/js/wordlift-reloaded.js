@@ -681,6 +681,9 @@
         }
         return $scope.updateRelatedPosts();
       };
+      $scope.isGeoLocationAllowed = function() {
+        return GeoLocationService.isAllowed();
+      };
       $scope.getLocation = function() {
         $scope.isGeolocationRunning = true;
         $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
@@ -719,7 +722,8 @@
           return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
         });
       });
-      $scope.$on("geoLocationError", function(event, error) {
+      $scope.$on("geoLocationError", function(event, msg) {
+        $scope.addMsg("Sorry. Looks like something went wrong and WordLift cannot detect your current position. Make sure the ​location services​ of your browser are turned on.", 'error');
         $scope.isGeolocationRunning = false;
         return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
       });
@@ -1533,8 +1537,8 @@
   ]);
 
   angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation']).service('GeoLocationService', [
-    'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', function(configuration, geolocation, $log, $rootScope, $document, $q, $timeout) {
-      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_KEY, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
+    'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', function(configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window) {
+      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_KEY, GOOGLE_MAPS_LEVEL, currentBrowser, loadGoogleAPI, service;
       GOOGLE_MAPS_LEVEL = 'locality';
       GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM';
       GOOGLE_MAPS_API_ENDPOINT = "https://maps.googleapis.com/maps/api/js?language=" + configuration.currentLanguage + "&key=" + GOOGLE_MAPS_KEY;
@@ -1572,7 +1576,29 @@
         this.googleApiPromise = deferred.promise;
         return this.googleApiPromise;
       };
+      currentBrowser = function() {
+        var browsers, key, userAgent;
+        userAgent = $window.navigator.userAgent;
+        browsers = {
+          chrome: /chrome/i,
+          safari: /safari/i,
+          firefox: /firefox/i,
+          ie: /internet explorer/i
+        };
+        for (key in browsers) {
+          if (browsers[key].test(userAgent)) {
+            return key;
+          }
+        }
+        return 'unknown';
+      };
       service = {};
+      service.isAllowed = function() {
+        if (currentBrowser() === 'chrome') {
+          return $window.location.protocol === 'https:';
+        }
+        return true;
+      };
       service.getLocation = function() {
         return geolocation.getLocation().then(function(data) {
           $log.debug("Detected position: latitude " + data.coords.latitude + ", longitude " + data.coords.longitude);

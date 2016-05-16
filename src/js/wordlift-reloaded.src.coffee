@@ -677,6 +677,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     $scope.updateRelatedPosts()
 
+  $scope.isGeoLocationAllowed = ()->
+    GeoLocationService.isAllowed()
+    
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
@@ -711,7 +714,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
       $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
     
   
-  $scope.$on "geoLocationError", (event, error) ->
+  $scope.$on "geoLocationError", (event, msg) ->
+    # Show error to the user
+    $scope.addMsg "Sorry. Looks like something went wrong and WordLift cannot detect your current position. Make sure the ​location services​ of your browser are turned on.", 'error'
+    # Stop geolocation loader
     $scope.isGeolocationRunning = false
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
 
@@ -1430,7 +1436,7 @@ angular.module('wordlift.editpost.widget.services.RelatedPostDataRetrieverServic
 ])
 angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation'])
 # Retrieve GeoLocation coordinates and process them trough reverse geocoding
-.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout )-> 
+.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window)-> 
   
   GOOGLE_MAPS_LEVEL = 'locality'
   GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM'
@@ -1478,8 +1484,29 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     @googleApiPromise = deferred.promise
     @googleApiPromise
 
+  # Detect Current Browser
+  currentBrowser = ()->
+    userAgent = $window.navigator.userAgent
+    browsers = 
+      chrome: /chrome/i
+      safari: /safari/i
+      firefox: /firefox/i
+      ie: /internet explorer/i
+    for key of browsers
+      if browsers[key].test(userAgent)
+        return key
+    'unknown'
+
   service = {}
   
+  # Used to temporaly manage this scenario 
+  # https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only?hl=en
+  service.isAllowed = ()->
+    # $log.debug "Current browser #{currentBrowser()}, current protocol: #{$window.location.protocol}"
+    if currentBrowser() is 'chrome'
+      return $window.location.protocol is 'https:'
+    true
+    
   service.getLocation = ()->
 
     geolocation.getLocation()
