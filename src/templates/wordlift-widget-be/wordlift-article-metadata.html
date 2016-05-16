@@ -31,7 +31,7 @@
       </div>
 
       <!-- LOCATION -->
-      <div class="wl-widget-article-metadata-location">
+      <div class="wl-widget-article-metadata-location" ng-show="isGeoLocationAllowed()">
         <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-location-icon.svg">
         <p 
           ng-click="onPublishedPlaceSelected(publishedPlace)"

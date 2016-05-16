@@ -328,6 +328,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     $scope.updateRelatedPosts()
 
+  $scope.isGeoLocationAllowed = ()->
+    GeoLocationService.isAllowed()
+    
   $scope.getLocation = ()->
     $scope.isGeolocationRunning = true
     $rootScope.$broadcast 'geoLocationStatusUpdated', $scope.isGeolocationRunning
