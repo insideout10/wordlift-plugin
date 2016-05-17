@@ -26,13 +26,13 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 
 **WordLift** is a plug-in for online content creators to:
 
-* Support your writing process with *trustworthy and contextual facts* <br />
-* Enrich content with *images*, *links* and *interactive visualizations* <br />
-* Keep readers engaged with relevant *content recommendations* <br />
-* Produce content compatible with the *schema.org markup*, allowing search engines to index your site at best <br />
-* Engage readers with *relevant content recommendations* <br />
-* Help you create your own *personal Wikipedia* <br />
-* Publish metadata to share, sell And distribute content <br />
+* Support your writing process with **trustworthy and contextual facts** <br />
+* Enrich content with **images**, **links** and **interactive visualizations** <br />
+* Keep readers engaged with relevant **content recommendations** <br />
+* Produce content compatible with the **schema.org markup**, allowing search engines to index your site at best <br />
+* Engage readers with **relevant content recommendations** <br />
+* Help you create your own **personal Wikipedia** <br />
+* Publish metadata to **share, sell and distribute content** <br />
 
 = WordLift brings to your publishing workflow =
 _____________
@@ -44,7 +44,7 @@ _____________
 * New means to drive business growth with **meaningful content discovery paths** <br />
 * Content tagging for **better SEO** <br />
 
-= Supported Languages =
+= Supported languages =
 _____________
 
 WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
@@ -66,13 +66,14 @@ The Plug-in is built on **open source software**.
 = Why shall I use WordLift? = 
 
 Throwing content online without context and analysis simply doesn’t work when the focus for digital news is on *interactivity*, *engagement* and *community*. <br />
-**WordLift** organizes knowledge, **reducing the complexity of content management and digital marketing operations**, letting bloggers and site owner **focus on stories and communities**. It offers meaningful *cross-media discovery* and *recommendations* that **increases content quality, exposure, trustworthiness and readership engagement**. 
-**WordLift** also publishes *linked data* as a new way to syndicate content and create new business models.
+**WordLift** organizes knowledge, **reducing the complexity of content management and digital marketing operations**, letting bloggers and site owner **focus on stories and communities**. It offers meaningful *cross-media discovery* and *recommendations* that **increases content quality, exposure, trustworthiness and readership engagement**. <br />
+**WordLift** also publishes *linked data* as a new way to syndicate content and create new business models. <br />
 
 
 = How does it work? =
 
-**WordLift** is a semantic editor and works in subsequent stages. The first step provides a full text analysis and suggests entities and relationships to the user, classifying contents according to concepts stored in the *semantic graph* (DBpedia, Wikidata, GeoNames, etc.) and using schema.org vocabulary. Textual contents are structured: they can now be processed by machines and be connected to other datasets. Users can then create new entities, to complement the entities suggested automatically and form a proprietary vocabulary, according to the editorial plan. 
+**WordLift** is a semantic editor and works in subsequent stages. The first step provides a full text analysis and suggests entities and relationships to the user, classifying contents according to concepts stored in the *semantic graph* (DBpedia, Wikidata, GeoNames, etc.) and using schema.org vocabulary. Textual contents are structured: they can now be processed by machines and be connected to other datasets. Users can then create new entities, to complement the entities suggested automatically and form a proprietary vocabulary, according to the editorial plan. <br />
+
 **WordLift** provides means to record all these relationships in a graph database combining structured, semistructured and unstructured data, which allows queries like *“find all contents related to concept_y and relevant for target_z”*. <br />
 
 Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](https://wordlift.io). <br />
@@ -401,8 +402,7 @@ Our goal is to **help journalists connect and share experiences with their reade
 
 Our goal is an *utopian one* and has to do with **organizing the World’s information knowledge** by providing tools that everyone can use.
 
-= In Open Source We Trust =
+= In open source we trust =
 
 **WordLift** is built on **open source software**. <br /> 
-
 **WordLift** uses **open source tools for natural language and semantic processing**. <br />
