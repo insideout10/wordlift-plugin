@@ -220,7 +220,7 @@
         restrict: 'A',
         scope: true,
         transclude: true,
-        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : ( panes.length > 1 ) }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
+        template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : isActive() }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
           '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
             var ctrl, w;
@@ -239,6 +239,9 @@
                 return 4;
               }
               return 1;
+            };
+            $scope.isActive = function() {
+              return $scope.isPrevArrowVisible() || $scope.isNextArrowVisible();
             };
             $scope.isPrevArrowVisible = function() {
               return $scope.currentPaneIndex > 0;
@@ -588,30 +591,6 @@
           return AnalysisService.getSuggestedSameAs(annotation.text);
         }
       });
-      $scope.$on("currentUserLocalityDetected", function(event, locality) {
-        $log.debug("Looking for entities matching with " + locality);
-        return AnalysisService._innerPerform(locality).then(function(response) {
-          var entity, id, place, placeId, ref1;
-          $scope.suggestedPlaces = {};
-          ref1 = response.data.entities;
-          for (id in ref1) {
-            entity = ref1[id];
-            if ('place' === entity.mainType) {
-              entity.id = id;
-              $scope.suggestedPlaces[id] = entity;
-            }
-          }
-          placeId = Object.keys($scope.suggestedPlaces)[0];
-          place = $scope.suggestedPlaces[placeId];
-          $scope.onPublishedPlaceSelected(place);
-          $scope.isGeolocationRunning = false;
-          return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
-        });
-      });
-      $scope.$on("geoLocationError", function(event, error) {
-        $scope.isGeolocationRunning = false;
-        return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
-      });
       $scope.$on("textAnnotationClicked", function(event, annotationId) {
         $scope.annotation = annotationId;
         return $scope.unsetCurrentEntity();
@@ -628,30 +607,36 @@
         return $scope.relatedPosts = posts;
       });
       $scope.$on("analysisPerformed", function(event, analysis) {
-        var entity, entityId, id, k, l, len1, len2, ref1, ref2, ref3, topic;
+        var entity, entityId, image, k, l, len1, len2, len3, len4, m, n, ref1, ref2, ref3, ref4, ref5, topic;
         $scope.analysis = analysis;
         if ($scope.configuration.topic != null) {
           ref1 = analysis.topics;
-          for (id in ref1) {
-            topic = ref1[id];
-            if (indexOf.call($scope.configuration.topic.sameAs, id) >= 0) {
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            topic = ref1[k];
+            if (ref2 = topic.id, indexOf.call($scope.configuration.topic.sameAs, ref2) >= 0) {
               $scope.topic = topic;
             }
           }
         }
-        ref2 = $scope.configuration.classificationBoxes;
-        for (k = 0, len1 = ref2.length; k < len1; k++) {
-          box = ref2[k];
-          ref3 = box.selectedEntities;
-          for (l = 0, len2 = ref3.length; l < len2; l++) {
-            entityId = ref3[l];
+        ref3 = $scope.configuration.classificationBoxes;
+        for (l = 0, len2 = ref3.length; l < len2; l++) {
+          box = ref3[l];
+          ref4 = box.selectedEntities;
+          for (m = 0, len3 = ref4.length; m < len3; m++) {
+            entityId = ref4[m];
             if (entity = analysis.entities[entityId]) {
               if (entity.occurrences.length === 0) {
                 $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
-              $scope.images = $scope.images.concat(entity.images);
+              ref5 = entity.images;
+              for (n = 0, len4 = ref5.length; n < len4; n++) {
+                image = ref5[n];
+                if (indexOf.call($scope.images, image) < 0) {
+                  $scope.images.push(image);
+                }
+              }
             } else {
               $log.warn("Entity with id " + entityId + " should be linked to " + box.id + " but is missing");
             }
@@ -674,12 +659,18 @@
         return RelatedPostDataRetrieverService.load(entityIds);
       };
       $scope.onSelectedEntityTile = function(entity) {
-        var scopeId;
+        var image, k, len1, ref1, scopeId;
         scopeId = configuration.getCategoryForType(entity.mainType);
         $log.debug("Entity tile selected for entity " + entity.id + " within " + scopeId + " scope");
         if ($scope.selectedEntities[scopeId][entity.id] == null) {
           $scope.selectedEntities[scopeId][entity.id] = entity;
-          $scope.images = $scope.images.concat(entity.images);
+          ref1 = entity.images;
+          for (k = 0, len1 = ref1.length; k < len1; k++) {
+            image = ref1[k];
+            if (indexOf.call($scope.images, image) < 0) {
+              $scope.images.push(image);
+            }
+          }
           $scope.$emit("entitySelected", entity, $scope.annotation);
           $scope.selectAnnotation(void 0);
         } else {
@@ -689,6 +680,9 @@
           $scope.$emit("entityDeselected", entity, $scope.annotation);
         }
         return $scope.updateRelatedPosts();
+      };
+      $scope.isGeoLocationAllowed = function() {
+        return GeoLocationService.isAllowed();
       };
       $scope.getLocation = function() {
         $scope.isGeolocationRunning = true;
@@ -711,6 +705,28 @@
         }
         return $scope.publishedPlace = entity;
       };
+      $scope.$on("currentUserLocalityDetected", function(event, match, locality) {
+        $log.debug("Looking for entities matching " + match + " for locality " + locality);
+        return AnalysisService._innerPerform(match).then(function(response) {
+          var entity, id, ref1;
+          $scope.suggestedPlaces = {};
+          ref1 = response.data.entities;
+          for (id in ref1) {
+            entity = ref1[id];
+            if ('place' === entity.mainType && locality === entity.label) {
+              entity.id = id;
+              $scope.onPublishedPlaceSelected(entity);
+            }
+          }
+          $scope.isGeolocationRunning = false;
+          return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
+        });
+      });
+      $scope.$on("geoLocationError", function(event, msg) {
+        $scope.addMsg("Sorry. Looks like something went wrong and WordLift cannot detect your current position. Make sure the ​location services​ of your browser are turned on.", 'error');
+        $scope.isGeolocationRunning = false;
+        return $rootScope.$broadcast('geoLocationStatusUpdated', $scope.isGeolocationRunning);
+      });
       $scope.isTopic = function(topic) {
         var ref1;
         return topic.id === ((ref1 = $scope.topic) != null ? ref1.id : void 0);
@@ -774,7 +790,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-entity-panel.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.configuration = configuration;
@@ -920,7 +936,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-directive-entity-input-box.html';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html';
         }
       };
     }
@@ -990,7 +1006,6 @@
             }
             if (isOverlapping) {
               $log.warn("Annotation with id: " + annotationId + " start: " + annotation.start + " end: " + annotation.end + " overlaps an existing annotation");
-              $log.debug(annotation);
               this.deleteAnnotation(analysis, annotationId);
             } else {
               positions = positions.concat(annotationRange);
@@ -1057,18 +1072,17 @@
         return merge(defaults, params);
       };
       service.parse = function(data) {
-        var annotation, annotationId, ea, em, entity, id, index, l, len2, len3, len4, localEntity, local_confidence, m, n, originalTopics, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, topic;
-        originalTopics = data.topics;
-        data.topics = {};
-        if (originalTopics != null) {
-          for (l = 0, len2 = originalTopics.length; l < len2; l++) {
-            topic = originalTopics[l];
-            topic.id = topic.uri;
-            topic.occurrences = [];
-            topic.mainType = this._defaultType;
-            data.topics[topic.id] = topic;
-          }
+        var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
+        if (data.topics == null) {
+          data.topics = [];
         }
+        dt = this._defaultType;
+        data.topics = data.topics.map(function(topic) {
+          topic.id = topic.uri;
+          topic.occurrences = [];
+          topic.mainType = dt;
+          return topic;
+        });
         ref2 = configuration.entities;
         for (id in ref2) {
           localEntity = ref2[id];
@@ -1110,11 +1124,11 @@
           annotation.id = id;
           annotation.entities = {};
           data.annotations[id].entityMatches = (function() {
-            var len3, m, ref8, results1;
+            var l, len2, ref8, results1;
             ref8 = annotation.entityMatches;
             results1 = [];
-            for (m = 0, len3 = ref8.length; m < len3; m++) {
-              ea = ref8[m];
+            for (l = 0, len2 = ref8.length; l < len2; l++) {
+              ea = ref8[l];
               if (ea.entityId !== configuration.currentPostUri) {
                 results1.push(ea);
               }
@@ -1122,7 +1136,7 @@
             return results1;
           })();
           ref8 = data.annotations[id].entityMatches;
-          for (index = m = 0, len3 = ref8.length; m < len3; index = ++m) {
+          for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
             ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
               data.entities[ea.entityId].label = annotation.text;
@@ -1140,8 +1154,8 @@
             annotation = ref10[annotationId];
             local_confidence = 1;
             ref11 = annotation.entityMatches;
-            for (n = 0, len4 = ref11.length; n < len4; n++) {
-              em = ref11[n];
+            for (m = 0, len3 = ref11.length; m < len3; m++) {
+              em = ref11[m];
               if ((em.entityId != null) && em.entityId === id) {
                 local_confidence = em.confidence;
               }
@@ -1523,10 +1537,11 @@
   ]);
 
   angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation']).service('GeoLocationService', [
-    'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', function(geolocation, $log, $rootScope, $document, $q, $timeout) {
-      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_LEVEL, loadGoogleAPI, service;
-      GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js';
+    'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', function(configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window) {
+      var GOOGLE_MAPS_API_ENDPOINT, GOOGLE_MAPS_KEY, GOOGLE_MAPS_LEVEL, currentBrowser, loadGoogleAPI, service;
       GOOGLE_MAPS_LEVEL = 'locality';
+      GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM';
+      GOOGLE_MAPS_API_ENDPOINT = "https://maps.googleapis.com/maps/api/js?language=" + configuration.currentLanguage + "&key=" + GOOGLE_MAPS_KEY;
       $rootScope.$on('error', function(event, msg) {
         $log.warn("Geolocation error: " + msg);
         return $rootScope.$broadcast('geoLocationError', msg);
@@ -1561,7 +1576,29 @@
         this.googleApiPromise = deferred.promise;
         return this.googleApiPromise;
       };
+      currentBrowser = function() {
+        var browsers, key, userAgent;
+        userAgent = $window.navigator.userAgent;
+        browsers = {
+          chrome: /chrome/i,
+          safari: /safari/i,
+          firefox: /firefox/i,
+          ie: /internet explorer/i
+        };
+        for (key in browsers) {
+          if (browsers[key].test(userAgent)) {
+            return key;
+          }
+        }
+        return 'unknown';
+      };
       service = {};
+      service.isAllowed = function() {
+        if (currentBrowser() === 'chrome') {
+          return $window.location.protocol === 'https:';
+        }
+        return true;
+      };
       service.getLocation = function() {
         return geolocation.getLocation().then(function(data) {
           $log.debug("Detected position: latitude " + data.coords.latitude + ", longitude " + data.coords.longitude);
@@ -1574,13 +1611,19 @@
                 'lng': data.coords.longitude
               }
             }, function(results, status) {
-              var j, len, result;
+              var ac, j, k, len, len1, ref, result;
               if (status === google.maps.GeocoderStatus.OK) {
                 for (j = 0, len = results.length; j < len; j++) {
                   result = results[j];
                   if (indexOf.call(result.types, GOOGLE_MAPS_LEVEL) >= 0) {
-                    $rootScope.$broadcast("currentUserLocalityDetected", result.formatted_address);
-                    return;
+                    ref = result.address_components;
+                    for (k = 0, len1 = ref.length; k < len1; k++) {
+                      ac = ref[k];
+                      if (indexOf.call(ac.types, GOOGLE_MAPS_LEVEL) >= 0) {
+                        $rootScope.$broadcast("currentUserLocalityDetected", result.formatted_address, ac.long_name);
+                        return;
+                      }
+                    }
                   }
                 }
               }
@@ -1625,7 +1668,7 @@
           }
         };
         _configuration.isInternal = function(uri) {
-          return uri.startsWith(this.datasetUri);
+          return uri != null ? uri.startsWith(this.datasetUri) : void 0;
         };
         return _configuration.getUriForType = function(mainType) {
           var j, len, ref, type;
@@ -1651,7 +1694,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
     '$rootScope', '$log', function($rootScope, $log) {
       $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
         var css;

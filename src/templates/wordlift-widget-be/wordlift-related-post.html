@@ -14,7 +14,6 @@
 <div
   ng-show="isCurrentSection('related-posts')"
   class="wl-widget-posts wl-tab-wrap">
-
   <div class="wl-widget-post-wrap" ng-repeat="post in relatedPosts">
     <div class="wl-widget-post-img">
       <img ng-src="{{post.thumbnail}}" wl-fallback="{{configuration.defaultThumbnailPath}}" />
@@ -23,14 +22,9 @@
     <!-- POST DETAILS -->
     <div class="wl-widget-post-details">
 
-      <!-- POST AUTHOR -->
-      <h3 class="wl-widget-post-author">
-        {{post.author}}
-      </h3>
-
       <!-- POST TITLE -->
       <h1 class="wl-widget-post-title">
-        {{post.post_title | filterTruncate: 5 }}
+          {{post.post_title}}
       </h1>
 
       <!-- COPY LINK -->

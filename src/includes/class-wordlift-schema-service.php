@@ -10,14 +10,14 @@ class Wordlift_Schema_Service {
 	/**
 	 * The 'location created' field name.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 */
 	const FIELD_LOCATION_CREATED = 'wl_location_created';
 
 	/**
 	 * The 'topic' field name.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 */
 	const FIELD_TOPIC = 'wl_topic';
 

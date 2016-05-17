@@ -6,7 +6,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
   template: """
       <div class="wl-carousel" ng-class="{ 'active' : areControlsVisible }" ng-show="panes.length > 0" ng-mouseover="showControls()" ng-mouseleave="hideControls()">
         <div class="wl-panes" ng-style="{ width: panesWidth, left: position }" ng-transclude ng-swipe-left="next()" ng-swipe-right="prev()" ></div>
-        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : ( panes.length > 1 ) }">
+        <div class="wl-carousel-arrows" ng-show="areControlsVisible" ng-class="{ 'active' : isActive() }">
           <i class="wl-angle left" ng-click="prev()" ng-show="isPrevArrowVisible()" />
           <i class="wl-angle right" ng-click="next()" ng-show="isNextArrowVisible()" />
         </div>
@@ -30,6 +30,9 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
         return 4
       return 1
 
+    $scope.isActive = ()->
+      $scope.isPrevArrowVisible() or $scope.isNextArrowVisible()
+        
     $scope.isPrevArrowVisible = ()->
       ($scope.currentPaneIndex > 0)
     
@@ -287,10 +290,15 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     $scope.filteringEnabled = true
 
     $scope.toggleFacets = ()->
-      $log.debug "Clicked!"
       $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets
+      # Reset conditions
+      $scope.conditions = {}
+      DataRetrieverService.load( 'posts' )
+
 
     $scope.isInConditions = (entity)->
+      if Object.keys($scope.conditions).length is 0
+        return true
       if $scope.conditions[ entity.id ]
         return true
       return false
@@ -356,7 +364,6 @@ $(
           <h5>{{box.scope}}</h5>
           <ul>
             <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
-                <i class="wl-checkbox" ng-class=" { 'selected' : isInConditions(entity) }"></i>
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
                   {{entity.label}}
                 </span>

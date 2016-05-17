@@ -120,10 +120,13 @@ function wl_entities_box_content( $post ) {
 	$dataset_uri = wl_configuration_get_redlink_dataset_uri();
     $current_post_uri = wl_get_entity_uri( $post->ID );
 
-    // Retrieve the current user
-    $current_user = wp_get_current_user();
+    // Retrieve the current post author
+    $post_author = get_userdata( $post->post_author )->display_name;
     // Retrive the published date
     $published_date = get_the_time( 'Y-m-d', $post->ID );
+    // Current language
+    $current_language = wl_configuration_get_site_language();
+
 	echo <<<EOF
     <script type="text/javascript">
         jQuery( function() {
@@ -141,10 +144,11 @@ function wl_entities_box_content( $post ) {
             window.wordlift.defaultThumbnailPath = '$default_thumbnail_path';
 			window.wordlift.defaultWordLiftPath = '$default_path';
             window.wordlift.datasetUri = '$dataset_uri';
-            window.wordlift.currentUser = '$current_user->display_name';
+            window.wordlift.currentUser = '$post_author';
             window.wordlift.publishedDate = '$published_date';
             window.wordlift.publishedPlace = $published_place_obj;
             window.wordlift.topic = $topic_obj;
+            window.wordlift.currentLanguage = '$current_language';
 
         });
     </script>

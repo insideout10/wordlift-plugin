@@ -394,13 +394,12 @@ EOF;
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "what" ) );
 		$this->assertCount( 1, $related_entity_ids );
 		$this->assertContains( $entity->ID, $related_entity_ids );
-		// And it should be related to the post as what predicate
+		// But it should NOT be related to the post as what predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "who" ) );
-		$this->assertCount( 1, $related_entity_ids );
-		$this->assertContains( $entity->ID, $related_entity_ids );
+		$this->assertCount( 0, $related_entity_ids );
 		// Ensure there are no other relation instances
 		$relation_instances = wl_tests_get_relation_instances_for( $post_id ); 
-		$this->assertCount( 2, $relation_instances );
+		$this->assertCount( 1, $relation_instances );
 
 	}
 

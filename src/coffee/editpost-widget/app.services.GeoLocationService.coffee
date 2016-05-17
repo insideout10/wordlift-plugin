@@ -1,10 +1,11 @@
 angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geolocation'])
 # Retrieve GeoLocation coordinates and process them trough reverse geocoding
-.service('GeoLocationService', [ 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', ( geolocation, $log, $rootScope, $document, $q, $timeout )-> 
+.service('GeoLocationService', [ 'configuration', 'geolocation', '$log', '$rootScope', '$document', '$q', '$timeout', '$window', ( configuration, geolocation, $log, $rootScope, $document, $q, $timeout, $window)-> 
   
-  GOOGLE_MAPS_API_ENDPOINT = 'https://maps.googleapis.com/maps/api/js'
   GOOGLE_MAPS_LEVEL = 'locality'
-
+  GOOGLE_MAPS_KEY = 'AIzaSyAhsajbqNVd7ABlkZvskWIPdiX6M3OaaNM'
+  GOOGLE_MAPS_API_ENDPOINT = "https://maps.googleapis.com/maps/api/js?language=#{configuration.currentLanguage}&key=#{GOOGLE_MAPS_KEY}"
+  
   $rootScope.$on 'error', (event, msg)->
     $log.warn "Geolocation error: #{msg}"
     $rootScope.$broadcast 'geoLocationError', msg
@@ -23,6 +24,7 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     deferred = $q.defer()
     # Load Google API asynchronously
     element = $document[0].createElement('script')
+    # $log.debug "Going to load #{GOOGLE_MAPS_API_ENDPOINT}"
     element.src = GOOGLE_MAPS_API_ENDPOINT
     $document[0].body.appendChild element
     
@@ -46,8 +48,29 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
     @googleApiPromise = deferred.promise
     @googleApiPromise
 
+  # Detect Current Browser
+  currentBrowser = ()->
+    userAgent = $window.navigator.userAgent
+    browsers = 
+      chrome: /chrome/i
+      safari: /safari/i
+      firefox: /firefox/i
+      ie: /internet explorer/i
+    for key of browsers
+      if browsers[key].test(userAgent)
+        return key
+    'unknown'
+
   service = {}
   
+  # Used to temporaly manage this scenario 
+  # https://developers.google.com/web/updates/2016/04/geolocation-on-secure-contexts-only?hl=en
+  service.isAllowed = ()->
+    # $log.debug "Current browser #{currentBrowser()}, current protocol: #{$window.location.protocol}"
+    if currentBrowser() is 'chrome'
+      return $window.location.protocol is 'https:'
+    true
+    
   service.getLocation = ()->
 
     geolocation.getLocation()
@@ -68,8 +91,10 @@ angular.module('wordlift.editpost.widget.services.GeoLocationService', ['geoloca
             if status is google.maps.GeocoderStatus.OK
               for result in results
                 if GOOGLE_MAPS_LEVEL in result.types
-                  $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address                                   
-                  return    
+                  for ac in result.address_components
+                    if GOOGLE_MAPS_LEVEL in ac.types
+                      $rootScope.$broadcast "currentUserLocalityDetected", result.formatted_address, ac.long_name                                   
+                      return    
              
   service
 

@@ -1327,7 +1327,7 @@
 .wl-carousel .wl-panes .wl-carousel-item {
   float: left;
   margin: 0;
-  padding: 0.6em 0.3em;
+  padding: 0.6em 0em;
 }
 .wl-carousel img {
   display: block;
@@ -1346,7 +1346,7 @@
   border: #ccc 1px solid !important;
 }
 .wl-carousel .wl-carousel-arrows:hover {
-  color: #2ea2cc !important;
+  color: #000 !important;
 }
 .wl-carousel .wl-carousel-arrows .wl-angle {
   font-size: 18px !important;
@@ -1476,7 +1476,7 @@
   cursor: pointer;
 }
 #wordlift-dashboard-widget h3 {
-  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2019.2.1%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%09%20viewBox%3D%220%200%2020%2020%22%20style%3D%22enable-background%3Anew%200%200%2020%2020%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cstyle%20type%3D%22text%2Fcss%22%3E%0A%09.st0%7Bfill%3A%23007AFF%3B%7D%0A%09.st1%7Bfill%3A%23FFFFFF%3B%7D%0A%3C%2Fstyle%3E%0A%3Cg%3E%0A%09%3Ccircle%20class%3D%22st0%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%228.8%22%2F%3E%0A%09%3Cpath%20class%3D%22st1%22%20d%3D%22M3.8%2C6.8h2.1l1.8%2C4.9l2.4-5.3h0.1l2.3%2C5.3l1.9-4.8h2l-3.7%2C8.3h-0.1l-2.5-5.3l-2.5%2C5.3H7.4L3.8%2C6.8z%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A") 6px 50% no-repeat !important;
+  background: url("data:image/svg+xml,%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2020%2024%22%20style%3D%22enable-background%3Anew%200%200%2020%2020%3B%22%20xml%3Aspace%3D%22preserve%22%20width%3D%2220px%22%20height%3D%2220px%22%3E%0A%3Cstyle%20type%3D%22text%2Fcss%22%3E%0A%09.st0%7Bfill%3A%23007AFF%3B%7D%0A%09.st1%7Bfill%3A%23FFFFFF%3B%7D%0A%3C%2Fstyle%3E%0A%3Cg%3E%0A%09%3Ccircle%20class%3D%22st0%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%228.8%22%2F%3E%0A%09%3Cpath%20class%3D%22st1%22%20d%3D%22M3.8%2C6.8h2.1l1.8%2C4.9l2.4-5.3h0.1l2.3%2C5.3l1.9-4.8h2l-3.7%2C8.3h-0.1l-2.5-5.3l-2.5%2C5.3H7.4L3.8%2C6.8z%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A") 6px 50% no-repeat !important;
   padding-left: 45px;
 }
 #wl-dashboard-widget-inner-wrapper {
@@ -1718,6 +1718,15 @@ h1.wl-tab-lead-text {
   border-right: 5px solid transparent;
   border-top: 5px solid #007AFF;
 }
+h3.ui-sortable-handle {
+  padding: 8px 12px !important;
+}
+#poststuff .wl-widget-classification-box-entity-tile h3 {
+  font-size: 11px !important;
+}
+#poststuff h2 {
+  font-size: 14px !important;
+}
 .wl-widget-entity-panel {
   display: -webkit-flex;
   display: -moz-flex;
@@ -1754,7 +1763,7 @@ h1.wl-tab-lead-text {
       -ms-flex-align: center;
           align-items: center;
   max-width: 100%;
-  height: 30px;
+  min-height: 30px;
   border: 1px solid #007AFF;
   padding: 3px;
   -webkit-box-sizing: border-box;
@@ -1872,6 +1881,10 @@ h1.wl-tab-lead-text {
   border: none !important;
   font-weight: 600;
 }
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-top .wl-widget-entity-panel-top-category-opt .wl-unselected {
+  border: none !important;
+  font-weight: 200;
+}
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input {
   display: -webkit-flex;
   display: -moz-flex;
@@ -1913,7 +1926,7 @@ h1.wl-tab-lead-text {
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input textarea {
   border: none;
   outline: none;
-  height: 120px;
+  height: 200px;
   padding: 8px;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -2056,7 +2069,7 @@ h1.wl-tab-lead-text {
           box-sizing: border-box;
   -webkit-border-radius: 50%;
           border-radius: 50%;
-  border: 0.5px solid;
+  border: 1px solid;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
 }
@@ -2072,7 +2085,7 @@ h1.wl-tab-lead-text {
   width: 4px;
   margin: 0;
   margin-top: -1px;
-  border: 0.5px solid #007AFF;
+  border: 1px solid #007AFF;
   border-top: none;
   border-right: none;
   -webkit-border-radius: 0px;
@@ -2568,7 +2581,7 @@ h1.wl-tab-lead-text {
 }
 .wl-widget-classification-box h3.wl-widget-classification-box-lead {
   color: #007AFF;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   margin: 5px 0 !important;
 }
@@ -2607,20 +2620,18 @@ h1.wl-tab-lead-text {
   -webkit-justify-content: flex-start;
       -ms-flex-pack: start;
           justify-content: flex-start;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
   cursor: pointer;
   width: 244px;
-  height: 25px;
+  min-height: 25px;
+  border: 1px solid #FFFFFF;
   margin: 5px 0;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile.wl-selected {
-  border: 0.5px solid #007AFF;
+  border: 1px solid #007AFF;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-name {
   display: -webkit-inline-flex;
@@ -2638,8 +2649,7 @@ h1.wl-tab-lead-text {
   -webkit-flex-grow: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
-  height: 25px;
-  padding: 0 6px;
+  padding: 4px 6px;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;
@@ -2650,7 +2660,7 @@ h1.wl-tab-lead-text {
   font-weight: 400;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-occurences,
-.wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-storing,
+.wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-storage,
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-type,
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-voc {
   display: -webkit-inline-flex;
@@ -2683,7 +2693,7 @@ h1.wl-tab-lead-text {
   font-size: 11px;
   font-weight: 400;
 }
-.wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-storing img,
+.wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-storage img,
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-type img {
   height: 20px;
   width: 20px;
@@ -2872,7 +2882,7 @@ h1.wl-tab-lead-text {
           box-sizing: border-box;
   -webkit-border-radius: 50%;
           border-radius: 50%;
-  border: 0.5px solid;
+  border: 1px solid;
   -webkit-box-shadow: none !important;
           box-shadow: none !important;
 }
@@ -2893,7 +2903,7 @@ h1.wl-tab-lead-text {
   height: 3px;
   width: 4px;
   margin: 0;
-  border: 0.5px solid #007AFF;
+  border: 1px solid #007AFF;
   border-top: none;
   border-right: none;
   -webkit-border-radius: 0px;
@@ -2935,7 +2945,7 @@ h1.wl-tab-lead-text {
   width: 60px;
   -webkit-border-radius: 8px;
           border-radius: 8px;
-  border: 0.5px solid #CBCBCB;
+  border: 1px solid #CBCBCB;
 }
 .wl-widget-article-metadata .wl-widget-article-metadata-wrap .wl-widget-article-metadata-bottom .wl-widget-article-metadata-topic-single .wl-widget-article-metadata-topic-single-details .wl-widget-article-metadata-topic-bar .wl-widget-article-metadata-topic-bar-progress {
   background-color: #CBCBCB;
@@ -3162,6 +3172,7 @@ h1.wl-tab-lead-text {
   display: -ms-flexbox;
   display: flex;
   height: 80px;
+  margin-bottom: 10px;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-img {
   position: relative;
@@ -3202,14 +3213,7 @@ h1.wl-tab-lead-text {
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between;
-}
-.wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details h3.wl-widget-post-author {
-  margin: 0 !important;
-  padding: 0 !important;
-  color: #000000;
-  opacity: 50%;
-  font-size: 10px;
-  line-height: 1;
+  width: 100%;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details h1.wl-widget-post-title {
   margin: 0;
@@ -3219,6 +3223,8 @@ h1.wl-tab-lead-text {
   color: #000000;
   line-height: 1.2;
   margin-bottom: 5px;
+  height: 65px;
+  overflow: hidden;
 }
 .wl-widget-posts .wl-widget-post-wrap .wl-widget-post-details span.wl-widget-post-link {
   display: -webkit-flex;
@@ -3337,7 +3343,7 @@ h1.wl-tab-lead-text {
   border-left: #007AFF 4px solid;
 }
 .mce-wl-button button {
-  background: url("data:image/svg+xml,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3C!--%20Generator%3A%20Adobe%20Illustrator%2019.2.1%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200)%20%20--%3E%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%09%20viewBox%3D%220%200%2020%2020%22%20style%3D%22enable-background%3Anew%200%200%2020%2020%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cstyle%20type%3D%22text%2Fcss%22%3E%0A%09.st0%7Bfill%3A%23007AFF%3B%7D%0A%09.st1%7Bfill%3A%23FFFFFF%3B%7D%0A%3C%2Fstyle%3E%0A%3Cg%3E%0A%09%3Ccircle%20class%3D%22st0%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%228.8%22%2F%3E%0A%09%3Cpath%20class%3D%22st1%22%20d%3D%22M3.8%2C6.8h2.1l1.8%2C4.9l2.4-5.3h0.1l2.3%2C5.3l1.9-4.8h2l-3.7%2C8.3h-0.1l-2.5-5.3l-2.5%2C5.3H7.4L3.8%2C6.8z%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A") 6px 50% no-repeat !important;
+  background: url("data:image/svg+xml,%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2020%2024%22%20style%3D%22enable-background%3Anew%200%200%2020%2020%3B%22%20xml%3Aspace%3D%22preserve%22%20width%3D%2220px%22%20height%3D%2220px%22%3E%0A%3Cstyle%20type%3D%22text%2Fcss%22%3E%0A%09.st0%7Bfill%3A%23007AFF%3B%7D%0A%09.st1%7Bfill%3A%23FFFFFF%3B%7D%0A%3C%2Fstyle%3E%0A%3Cg%3E%0A%09%3Ccircle%20class%3D%22st0%22%20cx%3D%2210%22%20cy%3D%2210%22%20r%3D%228.8%22%2F%3E%0A%09%3Cpath%20class%3D%22st1%22%20d%3D%22M3.8%2C6.8h2.1l1.8%2C4.9l2.4-5.3h0.1l2.3%2C5.3l1.9-4.8h2l-3.7%2C8.3h-0.1l-2.5-5.3l-2.5%2C5.3H7.4L3.8%2C6.8z%22%2F%3E%0A%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A") 6px 3px no-repeat !important;
   padding-left: 28px !important;
   height: 20px;
 }
@@ -4330,12 +4336,4 @@ svg.wl-logo-svg .wl-logo-letter {
 }
 #wl_entity_type-tabs .hide-if-no-js {
   display: none;
-}
-.menu-icon-entity img {
-  width: 20px;
-  height: 20px;
-}
-.toplevel_page_wl_admin_menu img {
-  width: 20px;
-  height: 20px;
 }

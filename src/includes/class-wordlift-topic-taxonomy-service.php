@@ -3,14 +3,14 @@
 /**
  * Provide custom taxonomy topic related services.
  *
- * @since 3.6.0
+ * @since 3.5.0
  */
 class Wordlift_Topic_Taxonomy_Service {
 
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -19,28 +19,28 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Taxonomy name.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 */
 	const TAXONOMY_NAME = 'wl_topic';
 
 	/**
 	 * Taxonomy object type.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 */
 	const TAXONOMY_OBJECT_TYPE = 'post';
 
 	/**
 	 * Taxonomy slug.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 */
 	const TAXONOMY_SLUG = 'wl_topic';
 
 	/**
 	 * A singleton instance of the Wordlift_Topic_Taxonomy_Service service.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 * @access private
 	 * @var \Wordlift_Topic_Taxonomy_Service $instance A singleton instance of Wordlift_Topic_Taxonomy_Service.
 	 */
@@ -49,7 +49,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Create a Wordlift_Topic_Taxonomy_Service instance.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 *
 	 */
 	public function __construct() {
@@ -64,7 +64,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Get the singleton instance of the Entity service.
 	 *
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 * @return \Wordlift_Entity_Service The singleton instance of the Entity service.
 	 */
 	public static function get_instance() {
@@ -75,7 +75,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Just register the topic taxonomy.
 	 * 
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 *
 	 */
 	public function init() {
@@ -123,7 +123,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Get or create a taxonomy term from a given entity topic.
 	 * 
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 *
 	 */
 	public function get_or_create_term_from_topic_entity( $topic ) {
@@ -150,7 +150,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Set a topic for a given post.
 	 * 
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 *
 	 */
 	public function set_topic_for( $post_id, $topic_id ) {
@@ -170,7 +170,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	/**
 	 * Unlink any topic for a given post.
 	 * 
-	 * @since 3.6.0
+	 * @since 3.5.0
 	 *
 	 */
 	public function unlink_topic_for( $post_id ) {

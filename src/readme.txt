@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift
 Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
 Requires at least: 4.2
-Tested up to: 4.4.1
+Tested up to: 4.5.2
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -69,7 +69,6 @@ Throwing content online without context and analysis simply doesn’t work when 
 **WordLift** organizes knowledge, **reducing the complexity of content management and digital marketing operations**, letting bloggers and site owner **focus on stories and communities**. It offers meaningful *cross-media discovery* and *recommendations* that **increases content quality, exposure, trustworthiness and readership engagement**. <br />
 **WordLift** also publishes *linked data* as a new way to syndicate content and create new business models. <br />
 
-
 = How does it work? =
 
 **WordLift** is a semantic editor and works in subsequent stages. The first step provides a full text analysis and suggests entities and relationships to the user, classifying contents according to concepts stored in the *semantic graph* (DBpedia, Wikidata, GeoNames, etc.) and using schema.org vocabulary. Textual contents are structured: they can now be processed by machines and be connected to other datasets. Users can then create new entities, to complement the entities suggested automatically and form a proprietary vocabulary, according to the editorial plan. <br />
@@ -90,13 +89,17 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 
 == Changelog ==
 = 3.6.0 (???) =
+
+= 3.5.0 (2016-05-16) =
+* Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
+* Fix: [#299](https://github.com/insideout10/wordlift-plugin/issues/299): Featured images are now properly updated on RL.
+* Enhancement: [#295](https://github.com/insideout10/wordlift-plugin/issues/295): New UI refinements.
+* Enhancement: [#297](https://github.com/insideout10/wordlift-plugin/issues/297): Detect classification scope from current entity type.
 * Enhancement: [#284](https://github.com/insideout10/wordlift-plugin/issues/284): Disambiguation widget UI refactoring.
 * Enhancement: [#289](https://github.com/insideout10/wordlift-plugin/issues/289): Introduced html static templates for angularjs layer components.
 * Enhancement: [#288](https://github.com/insideout10/wordlift-plugin/issues/288): Removed selected entities tags from disambiguation widget.
 * Enhancement: [#283](https://github.com/insideout10/wordlift-plugin/issues/283): Dbpedia topics are now mapped also on a custom taxonomy.
 * Enhancement: [#229](https://github.com/insideout10/wordlift-plugin/issues/229): Add article classification. 
-
-= 3.5.0 (???) =
 * Enhancement: [#294](https://github.com/insideout10/wordlift-plugin/issues/294): Fix disambiguation failure use case. 
 * Enhancement: [#280](https://github.com/insideout10/wordlift-plugin/issues/280): Fix disambiguation failure use case. 
 * Enhancement: [#279](https://github.com/insideout10/wordlift-plugin/issues/279): Disambiguation fixed for entities with escaped chars contained in the uri.

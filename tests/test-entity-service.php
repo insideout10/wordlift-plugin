@@ -302,4 +302,34 @@ class EntityServiceTest extends WP_UnitTestCase {
 		);
 		      
 	}
+
+	/**
+	 * Test the {@link get_classification_scope_for} function 
+	 *
+	 * @since 3.5.0
+	 */
+	function test_get_classification_scope_for() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$this->assertNull( $entity_service->get_classification_scope_for( 'post_id' ) );
+		$entity_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Thing' );
+        $this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/CreativeWork' );
+        $this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
+        $this->assertEquals( 'where', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Event' );
+        $this->assertEquals( 'when', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Person' );
+        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Organization' );
+        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/LocalBusiness' );
+        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+			
+	}
 }

@@ -31,12 +31,12 @@
       </div>
 
       <!-- LOCATION -->
-      <div class="wl-widget-article-metadata-location">
+      <div class="wl-widget-article-metadata-location" ng-show="isGeoLocationAllowed()">
         <img ng-src="{{configuration.defaultWordLiftPath}}images/svg/wl-location-icon.svg">
         <p 
-          ng-click="onPublishedPlaceSelected(place)"
-          ng-repeat="place in suggestedPlaces">
-          {{place.label}} 
+          ng-click="onPublishedPlaceSelected(publishedPlace)"
+          ng-show="hasPublishedPlace()">
+          {{publishedPlace.label}} 
         </p>
         <p 
           class="wl-get-location"
@@ -57,7 +57,10 @@
     </div>
 
       <!-- BOTTOM-TOPIC SECTION  -->
-    <div class="wl-widget-article-metadata-bottom">
+    <div 
+      ng-if="configuration.currentPostType != 'entity'"
+      class="wl-widget-article-metadata-bottom">
+      
       <h2 class="wl-widget-article-metadata-topic-lead">
         Topic
       </h2>
@@ -66,7 +69,7 @@
       <div 
         class="wl-widget-article-metadata-topic-single" 
         ng-click="onTopicSelected(topic)"
-        ng-repeat="(id, topic) in analysis.topics">
+        ng-repeat="topic in analysis.topics | orderBy:'-confidence'">
 
         <!-- TOPIC RADIO BTN -->
         <div 
@@ -96,10 +99,6 @@
 
         </div>
       </div>
-
-
-      <!-- <wl-entity-tile show-confidence="true" is-selected="isTopic(topic)" on-entity-select="onTopicSelected(topic)" entity="topic" ng-repeat="topic in analysis.topics | orderBy :'-confidence'">
-      </wl-entity-tile> -->
 
     </div>
 
