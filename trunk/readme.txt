@@ -407,9 +407,4 @@ Our goal is an *utopian one* and has to do with **organizing the World’s infor
 = In open source we trust =
 
 **WordLift** is built on **open source software**. <br /> 
-<<<<<<< HEAD
-
 **WordLift** uses **open source tools for natural language and semantic processing**. <br />
-=======
-**WordLift** uses **open source tools for natural language and semantic processing**. <br />
->>>>>>> aa65054... update readme.txt
