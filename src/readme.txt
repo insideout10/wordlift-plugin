@@ -14,7 +14,7 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 
 > #### WordLift - Activating the Plugin
 > **WordLift** is a lightweight plugin that brings **state-of-the-art semantic technologies** to the hands of any bloggers and publishers. <br />
-> **WordLift** without requiring any technical skills, it helps you produce richer content and organize it around your audience. <br />
+> **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
 > **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
 [vimeo http://vimeo.com/164538710]
@@ -37,6 +37,7 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 
 = WordLift brings to your publishing workflow =
 _____________
+
 
 * The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) <br />
 * An easy way to **build datasets** and **full data ownership** <br />
@@ -61,7 +62,7 @@ The Plug-in is built on **open source software**.
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a *WordLift key*. <br />
 > **WordLift** is now available to all for a monthly fee. <br />
-> Find out more and [get your activation key]](https://wordlift.io) directly on our website. <br />
+> Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
 == Frequently Asked Questions ==
 
