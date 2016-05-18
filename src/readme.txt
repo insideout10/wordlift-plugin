@@ -2,25 +2,26 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift
-Tags: artificial intelligence, semantic editor, linked open data, structured data, content recommendation, knowledge graph, seo,schema.org, google rich snippets, interactive widgets, apache stanbol, iks, semantic web, wikipedia
+Tags: artificial intelligence, content recommendation, semantic editor, linked open data, structured data, knowledge graph, seo, semantic seo, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
 Requires at least: 4.2
 Tested up to: 4.5.2
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to WordPress. Beautifully helps you reach your maximum potential audience.
+WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention. 
 
 == Description ==
 
 > #### WordLift - Activating the Plugin
-> WordLift is a lightweight plugin that runs semantic processing of our own hand-crafted API to help you produce richer content and 
-> organize it around your audience. <br /> It is a **paid (monthly) service** that you can [activate from our website](https://wordlift.io). <br />
+> **WordLift** is a lightweight plugin that brings **state-of-the-art semantic technologies** to the hands of any bloggers and publishers. <br />
+> **WordLift** without requiring any technical skills, it helps you produce richer content and organize it around your audience. <br />
+> **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
 [vimeo http://vimeo.com/164538710]
 
-**WordLift** is a WordPress Plug-in to organise post and pages adding facts, text and media to build beautifully structured web sites. <br />
-**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html). <br />
-**WordLift** is a **semantic editor** for WordPress. <br />
+**WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
+**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph).<br />
+**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
 
 = Features =
 
@@ -29,7 +30,7 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 * Support your writing process with **trustworthy and contextual facts** <br />
 * Enrich content with **images**, **links** and **interactive visualizations** <br />
 * Keep readers engaged with relevant **content recommendations** <br />
-* Produce content compatible with the **schema.org markup**, allowing search engines to index your site at best <br />
+* Produce content compatible with **schema.org markup**, allowing search engines to **best index and display your website**.  <br />
 * Engage readers with **relevant content recommendations** <br />
 * Help you create your own **personal Wikipedia** <br />
 * Publish metadata to **share, sell and distribute content** <br />
@@ -37,8 +38,8 @@ WordLift brings the power of Artificial Intelligence to WordPress. Beautifully h
 = WordLift brings to your publishing workflow =
 _____________
 
-* Support for **self-organising** (or structuring) **contents** using publicly (or privately) available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) <br />
-* An easy way to **build a dataset** and **full data ownership** <br />
+* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) <br />
+* An easy way to **build datasets** and **full data ownership** <br />
 * Support for creating web content using **contextually relevant information** <br />
 * Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
 * New means to drive business growth with **meaningful content discovery paths** <br />
@@ -58,8 +59,9 @@ The Plug-in is built on **open source software**.
 3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there. 
 
 > #### WordLift - Activating the Plugin
-> To activate the plugin you will need a WordLift key. <br />
-> It is a paid (monthly) service and you can [activate it from our website](https://wordlift.io). <br />
+> To activate the plugin you will need a *WordLift key*. <br />
+> **WordLift** is now available to all for a monthly fee. <br />
+> Find out more and [get your activation key]](https://wordlift.io) directly on our website. <br />
 
 == Frequently Asked Questions ==
 
@@ -86,7 +88,8 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 4. The WordLift Place Entity.
 5. The [Navigator Widget](http://docs.wordlift.it/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
 6. The [Faceted Search Widget](http://docs.wordlift.it/en/latest/discover.html#the-faceted-search-widget).
-7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget)
+7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget).
+8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
 = 3.5.0 (2016-05-16) =
@@ -394,17 +397,21 @@ Change wording for invalid or missing text selection on entity creation workflow
 == More Information ==
 WordLift is **happily developed** by [InSideOut10](http://blog.insideout.io/about-us).
 
-[InSideOut10](http://blog.insideout.io/about-us) delivers strategic digital communication tools for enterprises and organisations. 
+InSideOut10 delivers strategic digital communication tools for enterprises and organisations. 
 
-[InSideOut10](http://blog.insideout.io/about-us) uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
+InSideOut10 uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
 
-Our goal is to **help journalists connect and share experiences with their readers** as well as **structuring knowledge in machine-readable form**. 
+Our goal is to **help blogger, journalists and content creators connect and share experiences with their readers** as well as **structuring knowledge in machine-readable form**. 
 
 = Why we are doing this =
 
-Our goal is an *utopian one* and has to do with **organizing the World’s information knowledge** by providing tools that everyone can use.
+Our mission is an *utopian one*: **organize the world general knowledge** by providing tools that everyone can use.
 
 = In open source we trust =
 
 **WordLift** is built on **open source software**. <br /> 
 **WordLift** uses **open source tools for natural language and semantic processing**. <br />
+
+= In data ownership we trust =
+
+We believe content creators should **own, retain and exploit** the **value of the metadata they create**. 
