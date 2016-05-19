@@ -32,7 +32,7 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 * Keep readers engaged with relevant **content recommendations** <br />
 * Produce content compatible with **schema.org markup**, allowing search engines to **best index and display your website**.  <br />
 * Engage readers with **relevant content recommendations** <br />
-* Help you create your own **personal Wikipedia** <br />
+* Create your own **personal Wikipedia** <br />
 * Publish metadata to **share, sell and distribute content** <br />
 
 = WordLift brings to your publishing workflow =
