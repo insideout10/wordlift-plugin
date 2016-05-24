@@ -49,7 +49,7 @@ _____________
 = Supported languages =
 _____________
 
-WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
+WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Français (French), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
 
 The Plug-in is built on **open source software**. 
 
@@ -91,7 +91,9 @@ Online publishers and broadcasters like BBC, Financial Times, New York Times, Wa
 
 To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/#how-it-works) on our [website](https://wordlift.io). <br /> 
 **WordLift** works in subsequent stages. The first step provides a full text analysis and suggests entities and relationships to the user, classifying contents according to concepts stored in the *semantic graph* (DBpedia, Wikidata, GeoNames, etc.) and using schema.org vocabulary. Textual contents are structured: they can now be processed by machines and be connected to other datasets. Users can also create new entities, to complement the entities suggested automatically and form a proprietary vocabulary, according to the editorial plans. <br />
+
 **WordLift** also assists writers suggesting links, media and providing a set of powerful visualization widgets to connect and recommend alternative content. <br />
+
 Finally **WordLift** provides means to record all these relationships in a graph database combining structured, semistructured and unstructured data, which allows queries like *“find all contents related to concept_y and relevant for target_z”*. <br />
 
 = Why is WordLift innovative =
