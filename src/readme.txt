@@ -93,6 +93,9 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+= 3.5.1 (2016-06-16) =
+* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities trashold to improve widget usability.
+
 = 3.5.0 (2016-05-16) =
 * Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
 * Fix: [#299](https://github.com/insideout10/wordlift-plugin/issues/299): Featured images are now properly updated on RL.
