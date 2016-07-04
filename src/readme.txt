@@ -121,6 +121,9 @@ This is stated in our [Terms of Service](https://wordlift.io/terms-of-service) a
 == Changelog ==
 = 3.6.0 (???) =
 
+= 3.5.1 (2016-06-16) =
+* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities trashold to improve widget usability.
+
 = 3.5.0 (2016-05-16) =
 * Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
 * Fix: [#299](https://github.com/insideout10/wordlift-plugin/issues/299): Featured images are now properly updated on RL.
@@ -443,4 +446,8 @@ Our mission is an *utopian one*: **organize the world general knowledge** by pro
 
 = In data ownership we trust =
 
+<<<<<<< HEAD
 We believe content creators should **own, retain and exploit** the **value of the metadata they create**. 
+=======
+We believe content creators should **own, retain and exploit** the **value of the metadata they create**. 
+>>>>>>> master
