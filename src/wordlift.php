@@ -430,7 +430,7 @@ function wl_set_source_url( $post_id, $source_url ) {
 function wl_flush_rewrite_rules_hard( $hard ) {
 
 	// If WL is not yet configured, we cannot perform any update, so we exit.
-	if ( empty( wl_configuration_get_key() ) ) {
+	if ( '' === wl_configuration_get_key() ) {
 		return;
 	}
 
