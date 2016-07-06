@@ -93,6 +93,10 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.5.2 (2016-07-06)
+* Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
+
 = 3.5.1 (2016-06-16) =
 * Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities trashold to improve widget usability.
 
