@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift
 Tags: artificial intelligence, content recommendation, semantic editor, linked open data, structured data, knowledge graph, seo, semantic seo, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
 Requires at least: 4.2
-Tested up to: 4.5.2
+Tested up to: 4.5.3
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -119,7 +119,11 @@ This is stated in our [Terms of Service](https://wordlift.io/terms-of-service) a
 8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
 = 3.6.0 (???) =
+
+= 3.5.2 (2016-07-06)
+* Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
 
 = 3.5.1 (2016-06-16) =
 * Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities trashold to improve widget usability.
@@ -446,8 +450,4 @@ Our mission is an *utopian one*: **organize the world general knowledge** by pro
 
 = In data ownership we trust =
 
-<<<<<<< HEAD
-We believe content creators should **own, retain and exploit** the **value of the metadata they create**. 
-=======
-We believe content creators should **own, retain and exploit** the **value of the metadata they create**. 
->>>>>>> master
+We believe content creators should **own, retain and exploit** the **value of the metadata they create**.
