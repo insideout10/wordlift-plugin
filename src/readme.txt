@@ -95,6 +95,7 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 == Changelog ==
 
 = 3.5.2 (2016-07-06)
+* Fix: [#319](https://github.com/insideout10/wordlift-plugin/issues/319): Fix chord widget content filtering limit
 * Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
 
 = 3.5.1 (2016-06-16) =
