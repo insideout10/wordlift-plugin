@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.5.1
+ * Version:           3.5.2
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it
  * License:           GPL-2.0+
@@ -47,7 +47,7 @@ require_once( 'modules/configuration/wordlift_configuration.php' );
  */
 function wl_write_log( $log ) {
 
-	$handler = apply_filters( 'wl_write_log_handler', null );
+	$handler = apply_filters( 'wl_write_log_handler', NULL );
 
 	$callers         = debug_backtrace();
 	$caller_function = $callers[1]['function'];
@@ -69,14 +69,14 @@ function wl_write_log( $log ) {
  * @param string|array $log The log data.
  * @param string $caller The calling function.
  */
-function wl_write_log_handler( $log, $caller = null ) {
+function wl_write_log_handler( $log, $caller = NULL ) {
 
 	global $wl_logger;
 
-	if ( true === WP_DEBUG ) {
+	if ( TRUE === WP_DEBUG ) {
 
 		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
+		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, TRUE ) : wl_write_log_hide_key( $log ) );
 
 		if ( isset( $wl_logger ) ) {
 			$wl_logger->info( $message );
@@ -139,7 +139,7 @@ function wl_execute_saved_sparql_update_query( $request_id ) {
 	$query = file_get_contents( $filename );
 
 	// Execute the SPARQL query.
-	rl_execute_sparql_update_query( $query, false );
+	rl_execute_sparql_update_query( $query, FALSE );
 
 	// Reindex the triple store.
 	wordlift_reindex_triple_store();
@@ -219,11 +219,11 @@ function wordlift_admin_enqueue_scripts() {
 	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 	wp_enqueue_script( 'angularjs-geolocation', plugin_dir_url( __FILE__ ) . '/bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' );
 	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
-    wp_enqueue_script( 'angularjs-animate', 'https://code.angularjs.org/1.3.11/angular-animate.min.js' );
-	
+	wp_enqueue_script( 'angularjs-animate', 'https://code.angularjs.org/1.3.11/angular-animate.min.js' );
+
 	// Disable auto-save for custom entity posts only
-	if( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ){
-		wp_dequeue_script('autosave');
+	if ( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ) {
+		wp_dequeue_script( 'autosave' );
 	}
 }
 
@@ -251,10 +251,10 @@ function wordlift_allowed_html( $allowedtags, $context ) {
 
 	return array_merge_recursive( $allowedtags, array(
 		'span' => array(
-			'itemscope' => true,
-			'itemtype'  => true,
-			'itemid'    => true,
-			'itemprop'  => true
+			'itemscope' => TRUE,
+			'itemtype'  => TRUE,
+			'itemid'    => TRUE,
+			'itemprop'  => TRUE
 		)
 	) );
 }
@@ -290,7 +290,7 @@ function wl_get_coordinates( $post_id ) {
  */
 function wl_get_post_modified_time( $post ) {
 
-	$date_modified = get_post_modified_time( 'c', true, $post );
+	$date_modified = get_post_modified_time( 'c', TRUE, $post );
 
 	if ( '-' === substr( $date_modified, 0, 1 ) ) {
 		return get_the_time( 'c', $post );
@@ -308,11 +308,12 @@ function wl_get_post_modified_time( $post ) {
  */
 function wl_get_image_urls( $post_id ) {
 
-	
+
 	// If there is a featured image it has the priority
 	$featured_image_id = get_post_thumbnail_id( $post_id );
 	if ( is_numeric( $featured_image_id ) ) {
 		$image_url = wp_get_attachment_url( $featured_image_id );
+
 		return array( $image_url );
 	}
 
@@ -398,7 +399,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 	}
 
 	// Return null.
-	return null;
+	return NULL;
 }
 
 /**
@@ -428,43 +429,67 @@ function wl_set_source_url( $post_id, $source_url ) {
  */
 function wl_flush_rewrite_rules_hard( $hard ) {
 
-	// Get all published posts.
-	$posts = get_posts( array(
-		'posts_per_page' => - 1,
-		'post_type'      => 'any',
-		'post_status'    => 'publish'
-	) );
-
-	// Holds the delete part of the query.
-	$delete_query = rl_sparql_prefixes();
-	// Holds the insert part of the query.
-	$insert_query = 'INSERT DATA { ';
-
-	// Cycle in each post to build the query.
-	foreach ( $posts as $post ) {
-
-		// Ignore revisions.
-		if ( wp_is_post_revision( $post->ID ) ) {
-			continue;
-		}
-
-		// Get the entity URI.
-		$uri = wl_sparql_escape_uri( wl_get_entity_uri( $post->ID ) );
-
-		// Get the post URL.
-		$url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
-
-		// Prepare the DELETE and INSERT commands.
-		$delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
-		$insert_query .= " <$uri> schema:url <$url> . \n";
-
-		// wl_write_log( "[ uri :: $uri ][ url :: $url ]" );
+	// If WL is not yet configured, we cannot perform any update, so we exit.
+	if ( '' === wl_configuration_get_key() ) {
+		return;
 	}
 
-	$insert_query .= ' };';
+	// Set the initial offset and limit each call to 100 posts to avoid memory errors.
+	$offset = 0;
+	$limit  = 100;
 
-	// Execute the query.
-	rl_execute_sparql_update_query( $delete_query . $insert_query );
+	// Get more posts if the number of returned posts matches the limit.
+	while ( $limit === ( $posts = get_posts( array(
+			'offset'      => $offset,
+			'numberposts' => $limit,
+			'orderby'     => 'ID',
+			'post_type'   => 'any',
+			'post_status' => 'publish'
+		) ) ) ) {
+
+		// Holds the delete part of the query.
+		$delete_query = rl_sparql_prefixes();
+
+		// Holds the insert part of the query.
+		$insert_query = 'INSERT DATA { ';
+
+		// Cycle in each post to build the query.
+		foreach ( $posts as $post ) {
+
+			// Ignore revisions.
+			if ( wp_is_post_revision( $post->ID ) ) {
+				continue;
+			}
+
+			// Get the entity URI.
+			$uri = wl_sparql_escape_uri( wl_get_entity_uri( $post->ID ) );
+
+			// Get the post URL.
+			$url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
+
+			// Prepare the DELETE and INSERT commands.
+			$delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
+			$insert_query .= " <$uri> schema:url <$url> . \n";
+
+		}
+
+		$insert_query .= ' };';
+
+		// Execute the query.
+		rl_execute_sparql_update_query( $delete_query . $insert_query );
+
+		// Advance to the next posts.
+		$offset += $limit;
+
+	}
+
+//	// Get all published posts.
+//	$posts = get_posts( array(
+//		'posts_per_page' => - 1,
+//		'post_type'      => 'any',
+//		'post_status'    => 'publish'
+//	) );
+
 }
 
 add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
@@ -494,17 +519,17 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 
 /**
  * Utility function to check if a variable is set and force it to be an array
- * 
+ *
  * @package mixed $value Any value
- * 
- * @return array Array containing $value (if $value was not an array) 
+ *
+ * @return array Array containing $value (if $value was not an array)
  */
 function wl_force_to_array( $value ) {
-	
+
 	if ( ! is_array( $value ) ) {
 		return array( $value );
 	}
-	
+
 	return $value;
 }
 
@@ -561,10 +586,11 @@ function wl_replace_item_id_with_uri( $content ) {
 			$item_id = $match[1];
 
 			// Get the post bound to that item ID (looking both in the 'official' URI and in the 'same-as' .
-			$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
+			$post = Wordlift_Entity_Service::get_instance()
+			                               ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
-			if ( null === $post ) {
+			if ( NULL === $post ) {
 				continue;
 			}
 
@@ -654,7 +680,7 @@ require_once( 'admin/wordlift_admin_sync.php' );
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
-load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
+load_plugin_textdomain( 'wordlift', FALSE, '/wordlift/languages' );
 
 
 /**
