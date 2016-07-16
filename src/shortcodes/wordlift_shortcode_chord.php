@@ -74,7 +74,7 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 	) );
 
 	// If the current node is an entity, add related posts too
-	$related_post_ids = ( Wordlift_Entity_Service::is_entity( $entity_id ) ) ?
+	$related_post_ids = ( Wordlift_Entity_Service::get_instance()->is_entity( $entity_id ) ) ?
 		wl_core_get_related_post_ids( $entity_id, array(
 			'status' => 'publish'
 		) ) :
