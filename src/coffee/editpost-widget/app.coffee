@@ -72,10 +72,16 @@ $(
         when '4' then editor.on eventName, callback
         when '3' then editor["on#{eventName}"].add callback
 
-    # Hack wp.mce.views to prevent shorcodes rendering
-    # starts before the analysis is properly embedded
     injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
 
+      # Override wp.autosave.server.postChanged method
+      # in order to avoid unexpected warning to the user
+      if wp.autosave?
+        wp.autosave.server.postChanged = ()->
+          return false
+      
+      # Hack wp.mce.views to prevent shorcodes rendering
+      # starts before the analysis is properly embedded
       # wp.mce.views uses toViews() method from WP 3.8 to 4.1
       # and setMarkers() method from WP 4.2 to 4.3 to replace
       # available shortcodes with coresponding views markup

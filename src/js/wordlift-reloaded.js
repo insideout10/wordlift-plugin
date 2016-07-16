@@ -1723,6 +1723,11 @@
     injector.invoke([
       'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
         var j, len, method, originalMethod, ref, results1;
+        if (wp.autosave != null) {
+          wp.autosave.server.postChanged = function() {
+            return false;
+          };
+        }
         ref = ['setMarkers', 'toViews'];
         results1 = [];
         for (j = 0, len = ref.length; j < len; j++) {
