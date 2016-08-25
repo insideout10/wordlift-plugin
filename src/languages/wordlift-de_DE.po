@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-08-25 17:58+0200\n"
+"PO-Revision-Date: 2016-08-25 18:27+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -46,15 +46,15 @@ msgstr "Übergeordnetes  Thema:"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:91
 msgid "Edit Topic"
-msgstr "Thema Bearbeiten"
+msgstr "Thema bearbeiten"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:92
 msgid "Update Topic"
-msgstr "Thema Aktualisieren"
+msgstr "Thema aktualisieren"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:93
 msgid "Add New Topic"
-msgstr "Neues Thema Hinzufügen"
+msgstr "Neues Thema hinzufügen"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:94
 msgid "New Topic"
@@ -79,7 +79,7 @@ msgstr "Angereicherten Beiträge"
 
 #: admin/class-wordlift-admin-dashboard.php:66
 msgid "%1$s, of your <a href=\"%2$s\">posts</a> are annotated. This means %3$s annotated posts on %4$s."
-msgstr "%1$s, aus dein <a href=\"%2$s\">Beiträge</a> kommentierte sind. Das bedeutet, % 3 $ s kommentiert Beiträge auf % 4$s."
+msgstr "%1$s, aus dein <a href=\"%2$s\">Beiträge</a> kommentierte sind. Das bedeutet, %3$s kommentiert Beiträge auf %4$s."
 
 #: admin/class-wordlift-admin-dashboard.php:74
 msgid "avarage entity rating"
@@ -111,7 +111,7 @@ msgstr "Es gibt keine verwandten Beiträge für die aktuelle Entität."
 
 #: wordlift_manual_translations.php:7
 msgid "This entity has not description."
-msgstr "Diese Entität gibt es keine Beschreibung."
+msgstr "Es gibt keine Beschreibung für diese Entität ."
 
 #: wordlift_manual_translations.php:8
 msgid "There are no related entities for the current entity."
@@ -341,11 +341,11 @@ msgstr "Entität"
 #: wordlift_entity_type.php:11
 msgctxt "entity"
 msgid "Add New Entity"
-msgstr "Neue Entität Hinzufügen"
+msgstr "Neue Entität hinzufügen"
 
 #: wordlift_entity_type.php:12
 msgid "Add New Entity"
-msgstr "Neue Entität Hinzufügen"
+msgstr "Neue Entität hinzufügen"
 
 #: wordlift_entity_type.php:13
 msgid "Edit Entity"
@@ -361,7 +361,7 @@ msgstr "Alle Entitäten"
 
 #: wordlift_entity_type.php:16
 msgid "View Entity"
-msgstr "Entität Ansichten"
+msgstr "Entität ansichten"
 
 #: wordlift_entity_type.php:17
 msgid "Search in Vocabulary"
@@ -391,7 +391,7 @@ msgstr "Entitätstyp"
 
 #: wordlift_entity_type_taxonomy.php:15
 msgid "Search Entity Types"
-msgstr "Entitätstypen Suchen"
+msgstr "Entitätstypen suchen"
 
 #: wordlift_entity_type_taxonomy.php:16
 msgid "All Entity Types"
