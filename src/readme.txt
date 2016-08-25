@@ -94,6 +94,9 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 
 == Changelog ==
 
+= 3.5.3 (????-??-??) =
+* Fix: [#333](https://github.com/insideout10/wordlift-plugin/issues/333) Germanic umlaut causing troubles when saving sameAs links
+
 = 3.5.2 (2016-07-16) =
 * Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): 
 Avoid unexpected alerts after content disambiguation
