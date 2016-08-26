@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3.0\n"
 "POT-Creation-Date: 2016-02-19 21:48+0100\n"
-"PO-Revision-Date: 2016-02-19 21:48+0100\n"
+"PO-Revision-Date: 2016-08-26 10:34+0200\n"
 "Last-Translator: David Riccitelli <david@insideout.io>\n"
 "Language-Team: InsideOut10 <wordpress@insideout.io>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.8\n"
 "X-Poedit-Basepath: .\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c\n"
@@ -18,15 +18,15 @@ msgstr ""
 
 #: ../admin/WL_Metabox/WL_Metabox.php:55
 msgid "properties"
-msgstr ""
+msgstr "proprietà"
 
 #: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:42
 msgid "Latitude"
-msgstr ""
+msgstr "Latitudine"
 
 #: ../admin/WL_Metabox/WL_Metabox_Field_coordinates.php:45
 msgid "Longitude"
-msgstr ""
+msgstr "Longitudine"
 
 #: ../admin/class-wordlift-admin-dashboard.php:64
 msgid "enriched posts"
@@ -67,11 +67,11 @@ msgstr ""
 
 #: ../admin/class-wordlift-admin-dashboard.php:91
 msgid "triples"
-msgstr ""
+msgstr "triple"
 
 #: ../admin/class-wordlift-admin-entity-list.php:67
 msgid "Image"
-msgstr ""
+msgstr "Immagine"
 
 #: ../admin/class-wordlift-admin-entity-list.php:69
 msgid "Related Posts"
@@ -79,11 +79,11 @@ msgstr "Articoli collegati"
 
 #: ../admin/class-wordlift-admin-entity-list.php:70
 msgid "Rating"
-msgstr ""
+msgstr "Rating"
 
 #: ../admin/class-wordlift-admin-entity-list.php:143
 msgid "All 'W'"
-msgstr ""
+msgstr "Tutte le \"W\""
 
 #: ../admin/wordlift_admin_edit_post.php:25
 msgid "View Linked Data"
@@ -105,7 +105,7 @@ msgstr "Non hai i permessi per accedere a questa pagina."
 
 #: ../admin/wordlift_admin_meta_box_entities.php:35
 msgid "Wordlift"
-msgstr ""
+msgstr "Wordlift"
 
 #: ../includes/class-wordlift-entity-service.php:508
 msgid "Add more titles"
@@ -113,13 +113,15 @@ msgstr "Aggiungi un sinonimo"
 
 #: ../includes/class-wordlift-entity-service.php:752
 msgid "Delete"
-msgstr ""
+msgstr "Cancella"
 
 #: ../modules/analyzer/wordlift_analyzer.php:20
 msgid ""
 "An error occurred while request an analysis to the remote service. Please "
 "try again later."
 msgstr ""
+"Si è verificato un errore durante la richiesta di analisi al servizio "
+"remoto. Per favore riprova più tardi."
 
 #: ../modules/configuration/configuration.php:12
 #: ../modules/configuration/configuration.php:16
@@ -130,7 +132,7 @@ msgstr "WordLift Settings"
 #: ../modules/configuration/configuration.php:51
 #: ../modules/prefixes/prefixes.php:51
 msgid "Overview"
-msgstr ""
+msgstr "Panoramica"
 
 #: ../modules/configuration/configuration.php:53
 #: ../modules/prefixes/prefixes.php:53
@@ -155,7 +157,7 @@ msgstr ""
 #: ../modules/configuration/wordlift_configuration.php:24
 #: ../modules/configuration/wordlift_configuration.php:25
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 #: ../modules/configuration/wordlift_configuration.php:126
 #, fuzzy
@@ -178,15 +180,15 @@ msgstr "Lingua del sito:"
 
 #: ../modules/configuration/wordlift_configuration.php:171
 msgid "API URL"
-msgstr ""
+msgstr "API URL"
 
 #: ../modules/configuration/wordlift_configuration.php:179
 msgid "The API URL"
-msgstr ""
+msgstr "API URL"
 
 #: ../modules/configuration/wordlift_configuration.php:185
 msgid "Redlink Key"
-msgstr ""
+msgstr "Apri su Redlink"
 
 #: ../modules/configuration/wordlift_configuration.php:193
 #, fuzzy
@@ -195,11 +197,11 @@ msgstr "Apri su Redlink"
 
 #: ../modules/configuration/wordlift_configuration.php:199
 msgid "Redlink User Id"
-msgstr ""
+msgstr "Identità utente Redlink"
 
 #: ../modules/configuration/wordlift_configuration.php:207
 msgid "The Redlink User Id"
-msgstr ""
+msgstr "Identità utente Redlink"
 
 #: ../modules/configuration/wordlift_configuration.php:213
 #, fuzzy
@@ -208,23 +210,23 @@ msgstr "Nome del dataset:"
 
 #: ../modules/configuration/wordlift_configuration.php:221
 msgid "The Redlink Dataset Name"
-msgstr ""
+msgstr "Nome del dataset:"
 
 #: ../modules/configuration/wordlift_configuration.php:227
 msgid "Redlink Dataset URI"
-msgstr ""
+msgstr "Redlink Dataset URI"
 
 #: ../modules/configuration/wordlift_configuration.php:235
 msgid "The Redlink Dataset URI"
-msgstr ""
+msgstr "Redlink Dataset URI"
 
 #: ../modules/configuration/wordlift_configuration.php:241
 msgid "Redlink Application Name"
-msgstr ""
+msgstr "Redlink Application Name"
 
 #: ../modules/configuration/wordlift_configuration.php:249
 msgid "The Redlink Application Name"
-msgstr ""
+msgstr "Redlink Application Name"
 
 #: ../modules/configuration/wordlift_configuration.php:440
 msgid "application-key-not-set"
@@ -236,11 +238,11 @@ msgstr ""
 msgid "Dataset URI missing in configuration"
 msgstr ""
 "La URI del tuo dataset WordLift non è configurata correttamente. Controlla "
-"la validità della tea chiave WordLift."
+"la validità della tua chiave WordLift."
 
 #: ../modules/prefixes/prefixes.php:12 ../modules/prefixes/prefixes.php:16
 msgid "Prefixes"
-msgstr ""
+msgstr "Prefissi"
 
 #: ../shortcodes/wordlift_shortcode_faceted_search.php:10
 #: ../shortcodes/wordlift_shortcode_navigator.php:100
@@ -249,35 +251,37 @@ msgstr "Articoli collegati"
 
 #: ../widgets/wordlift_widget_chord.php:12
 msgid "Chord Widget"
-msgstr ""
+msgstr "Chord Widget"
 
 #: ../widgets/wordlift_widget_chord.php:13
 msgid "The Chord Widget depicts the main topics of your blog in concise graph."
 msgstr ""
+"Il Chord Widget riporta gli argomenti principali del tuo blog in un grafico "
+"riassuntivo."
 
 #: ../widgets/wordlift_widget_geo.php:19
 msgid "Geo Widget"
-msgstr ""
+msgstr "Geo Widget"
 
 #: ../widgets/wordlift_widget_geo.php:20
 msgid "Geo Widget description"
-msgstr ""
+msgstr "Descrizione Geo Widget:"
 
 #: ../widgets/wordlift_widget_geo.php:60
 msgid "New title"
-msgstr ""
+msgstr "Nuovo titolo"
 
 #: ../widgets/wordlift_widget_geo.php:64
 msgid "Title:"
-msgstr ""
+msgstr "Titolo:"
 
 #: ../widgets/wordlift_widget_timeline.php:13
 msgid "Timeline Widget"
-msgstr ""
+msgstr "Timeline Widget"
 
 #: ../widgets/wordlift_widget_timeline.php:14
 msgid "The Timeline widget displays event-entities on a timeline."
-msgstr ""
+msgstr "Il Timeline Widget mostra eventi-entità su una timeline."
 
 #: ../wordlift_entity_type.php:9
 msgctxt "post type general name"
