@@ -63,7 +63,7 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 		// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
 		'fields'     => 'all'
 	) );
-	
+
 	// Check which term matches the specified URI.
 	foreach ( $terms as $term ) {
 
