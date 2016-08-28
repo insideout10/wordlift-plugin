@@ -1,5 +1,8 @@
 <?php
 
+// Define the default entity type slug if it's not defined already. The entity type slug is used in permalinks.
+defined( 'WL_ENTITY_TYPE_SLUG' ) || define( 'WL_ENTITY_TYPE_SLUG', Wordlift_Entity_Service::TYPE_NAME );
+
 /**
  * Provide entity-related services.
  *

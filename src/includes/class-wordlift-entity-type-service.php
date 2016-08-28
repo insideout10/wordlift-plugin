@@ -7,6 +7,15 @@
 class Wordlift_Entity_Type_Service {
 
 	/**
+	 * The entity post type.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var string $post_type The entity post type.
+	 */
+	private $post_type;
+
+	/**
 	 * The entity type slug.
 	 *
 	 * @since 3.6.0
@@ -29,11 +38,17 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $slug The entity type slug.
+	 * @param string $post_type The post type, e.g. entity.
+	 * @param string $slug The entity type slug, if the slug is empty, the default slug will be used.
 	 */
-	public function __construct( $slug ) {
+	public function __construct( $post_type, $slug ) {
 
-		$this->slug = $slug;
+
+		$this->post_type = $post_type;
+
+		// We cannot assign an empty slug to the register_post_type function, therefore if the slug is empty we default
+		// to the type name.
+		$this->slug = $slug ?: $post_type;
 
 		self::$instance = $this;
 
@@ -50,6 +65,31 @@ class Wordlift_Entity_Type_Service {
 
 		return self::$instance;
 	}
+
+	/**
+	 * Get the entity type slug.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @return string The entity type slug.
+	 */
+	public function get_slug() {
+
+		return $this->slug;
+	}
+
+	/**
+	 * Get the entity post type name.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @return string The entity post type.
+	 */
+	public function get_post_type() {
+
+		return $this->post_type;
+	}
+
 
 	/**
 	 * Register the WordLift entity post type. This method is hooked to WordPress' init action.
@@ -78,16 +118,17 @@ class Wordlift_Entity_Type_Service {
 			'labels'        => $labels,
 			'description'   => 'Holds our vocabulary (set of entities) and entity specific data',
 			'public'        => true,
-			'menu_position' => 20, // after the pages menu.
+			'menu_position' => 20,
+			// after the pages menu.
 			'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
 			'has_archive'   => true,
 			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
+			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
 			'rewrite'       => array( 'slug' => $this->slug )
 		);
 
-		register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );
+		register_post_type( $this->post_type, $args );
 
 	}
-
 
 }

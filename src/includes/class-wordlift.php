@@ -193,6 +193,15 @@ class Wordlift {
 	private $entity_type_service;
 
 	/**
+	 * The entity link service used to mangle links to entities with a custom slug or even w/o a slug.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Entity_Link_Service
+	 */
+	private $entity_link_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -256,6 +265,11 @@ class Wordlift {
 		 * The entity post type service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
+
+		/**
+		 * The entity link service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
 
 		/**
 		 * The Query builder.
@@ -355,7 +369,10 @@ class Wordlift {
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
 		// Create an entity type service instance. It'll be later bound to the init action.
-		$this->entity_type_service = new Wordlift_Entity_Type_Service( WL_ENTITY_TYPE_SLUG );
+		$this->entity_type_service = new Wordlift_Entity_Type_Service( Wordlift_Entity_Service::TYPE_NAME, WL_ENTITY_TYPE_SLUG );
+
+		// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
+		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_type_service, WL_ENTITY_TYPE_SLUG );
 
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
@@ -496,6 +513,12 @@ class Wordlift {
 
 		// Register the entity post type.
 		$this->loader->add_action( 'init', $this->entity_type_service, 'register' );
+
+		// Bind the link generation and handling hooks to the entity link service.
+		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
+		$this->loader->add_action( 'pre_get_posts', $this->entity_link_service, 'pre_get_posts', 10, 1 );
+		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
+		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
