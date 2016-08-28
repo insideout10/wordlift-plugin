@@ -6,6 +6,14 @@
  */
 class Wordlift_Entity_Type_Service {
 
+	/**
+	 * The entity type slug.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var string $slug The entity type slug.
+	 */
+	private $slug;
 
 	/**
 	 * A singleton instance of the entity type service.
@@ -20,8 +28,12 @@ class Wordlift_Entity_Type_Service {
 	 * Create an entity type service instance.
 	 *
 	 * @since 3.6.0
+	 *
+	 * @param string $slug The entity type slug.
 	 */
-	public function __construct() {
+	public function __construct( $slug ) {
+
+		$this->slug = $slug;
 
 		self::$instance = $this;
 
@@ -69,7 +81,8 @@ class Wordlift_Entity_Type_Service {
 			'menu_position' => 20, // after the pages menu.
 			'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
 			'has_archive'   => true,
-			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg'
+			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
+			'rewrite'       => array( 'slug' => $this->slug )
 		);
 
 		register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );

@@ -355,7 +355,7 @@ class Wordlift {
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
 		// Create an entity type service instance. It'll be later bound to the init action.
-		$this->entity_type_service = new Wordlift_Entity_Type_Service();
+		$this->entity_type_service = new Wordlift_Entity_Type_Service( WL_ENTITY_TYPE_SLUG );
 
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();

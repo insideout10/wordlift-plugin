@@ -29,6 +29,8 @@ define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
+// Define the default entity type slug if it's not defined already. The entity type slug is used in permalinks.
+defined( 'WL_ENTITY_TYPE_SLUG' ) || define( 'WL_ENTITY_TYPE_SLUG', Wordlift_Entity_Service::TYPE_NAME );
 
 /**
  * Get an array with commonly supported prefixes.
