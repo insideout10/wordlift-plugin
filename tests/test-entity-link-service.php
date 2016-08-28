@@ -1,0 +1,122 @@
+<?php
+
+require_once( 'class-wordlift-unit-test-case.php' );
+
+/**
+ *
+ */
+class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
+
+	/**
+	 * Try creating a post then an entity with the same title and check that the entity post name receives the -2 suffix.
+	 */
+	public function test_post_then_entity() {
+
+		$post_title = rand_str();
+
+		// insert a post and make sure the ID is ok
+		$post = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'post'
+		) ) );
+
+		$entity = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'entity'
+		) ) );
+
+		// Check that the entity title has the -2 suffix
+		$this->assertEquals( $post->post_name . '-2', $entity->post_name );
+
+	}
+
+	/**
+	 * Try creating an entity then a post with the same title and check that the post name receives the -2 suffix.
+	 */
+	public function test_entity_then_post() {
+
+		$post_title = rand_str();
+
+		$entity = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'entity'
+		) ) );
+
+		// insert a post and make sure the ID is ok
+		$post = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => $post_title,
+			'post_type'    => 'post'
+		) ) );
+
+		// Check that the entity title has the -2 suffix
+		$this->assertEquals( $entity->post_name . '-2', $post->post_name );
+
+	}
+
+	/**
+	 * Test the entity link with an empty slug.
+	 */
+	public function test_post_link_with_empty_slug() {
+
+		$slug                = '';
+		$entity_type_service = new Wordlift_Entity_Type_Service( 'entity', $slug );
+		$entity_link_service = new Wordlift_Entity_Link_Service( $entity_type_service, $slug );
+
+		$entity = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => rand_str(),
+			'post_type'    => 'entity'
+		) ) );
+
+		// Simulate a standard post link, in the form of /entity-type-slug/entity-name
+		$post_link = "/{$entity_type_service->get_slug()}/$entity->post_name/";
+
+		// Get the revised post link, we expect /entity-name (because the slug is empty).
+		$new_post_link = $entity_link_service->post_type_link( $post_link, $entity, false, false );
+
+		$this->assertEquals( "/$entity->post_name/", $new_post_link );
+
+	}
+
+	/**
+	 * Test the entity link with a random slug.
+	 */
+	public function test_post_link_with_random_slug() {
+
+		$slug                = rand_str();
+		$entity_type_service = new Wordlift_Entity_Type_Service( 'entity', $slug );
+		$entity_link_service = new Wordlift_Entity_Link_Service( $entity_type_service, $slug );
+
+		$entity = get_post( wp_insert_post( array(
+			'post_author'  => 1,
+			'post_status'  => 'publish',
+			'post_content' => rand_str(),
+			'post_title'   => rand_str(),
+			'post_type'    => 'entity'
+		) ) );
+
+		// Simulate a standard post link, in the form of /entity-type-slug/entity-name
+		$post_link = "/{$entity_type_service->get_slug()}/$entity->post_name/";
+
+		// Get the revised post link, we expect /entity-name (because the slug is empty).
+		$new_post_link = $entity_link_service->post_type_link( $post_link, $entity, false, false );
+
+		$this->assertEquals( "/$slug/$entity->post_name/", $new_post_link );
+		
+	}
+
+}
