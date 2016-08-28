@@ -121,6 +121,7 @@ This is stated in our [Terms of Service](https://wordlift.io/terms-of-service) a
 == Changelog ==
 
 = 3.6.0 (???) =
+* Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path
 
 = 3.5.2 (2016-07-06)
 * Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
