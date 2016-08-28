@@ -97,6 +97,7 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 = 3.5.3 (2016-08-28) =
 * Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title
 * Fix: [#333](https://github.com/insideout10/wordlift-plugin/issues/333) Germanic umlaut causing troubles when saving sameAs links
+* Fix: [#334](https://github.com/insideout10/wordlift-plugin/issues/334): New Entities/Thing created without the sameAs attribute are duplicated as Entities/Person
 
 = 3.5.2 (2016-07-16) =
 * Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): Avoid unexpected alerts after content disambiguation
