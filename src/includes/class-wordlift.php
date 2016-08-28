@@ -498,7 +498,7 @@ class Wordlift {
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
 
 		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
-		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', PHP_INT_MIN );
+		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', -PHP_INT_MAX );
 
 	}
 
