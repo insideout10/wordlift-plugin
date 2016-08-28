@@ -137,7 +137,7 @@ class Wordlift {
 	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
 	 */
 	private $notice_service;
-	
+
 	/**
 	 * The Entity list customization.
 	 *
@@ -184,6 +184,15 @@ class Wordlift {
 	private $dashboard_service;
 
 	/**
+	 * The entity type service.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Entity_Type_Service
+	 */
+	private $entity_type_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -195,7 +204,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version = '3.6.0-dev';
+		$this->version     = '3.6.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -242,6 +251,11 @@ class Wordlift {
 		 * The Log service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
+
+		/**
+		 * The entity post type service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
 
 		/**
 		 * The Query builder.
@@ -292,7 +306,7 @@ class Wordlift {
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
-		
+
 		/**
 		 * The class to customize the entity list admin page.
 		 */
@@ -340,6 +354,9 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
+		// Create an entity type service instance. It'll be later bound to the init action.
+		$this->entity_type_service = new Wordlift_Entity_Type_Service();
+
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
 
@@ -369,7 +386,7 @@ class Wordlift {
 
 		// Create an instance of the Timeline shortcode.
 		new Wordlift_Timeline_Shortcode();
-		
+
 		// Create entity list customization (wp-admin/edit.php)
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
@@ -424,7 +441,7 @@ class Wordlift {
 
 		// Hook the added_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
-		
+
 		// Hook the updated_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'updated_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
 
@@ -447,7 +464,7 @@ class Wordlift {
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
 		$this->loader->add_action( 'save_post_entity', $this->entity_service, 'set_rating_for', 10, 1 );
-		
+
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
 
@@ -458,7 +475,7 @@ class Wordlift {
 		// Add 4W selection
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
-		
+
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
@@ -476,6 +493,9 @@ class Wordlift {
 	private function define_public_hooks() {
 
 		$plugin_public = new Wordlift_Public( $this->get_plugin_name(), $this->get_version() );
+
+		// Register the entity post type.
+		$this->loader->add_action( 'init', $this->entity_type_service, 'register' );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );

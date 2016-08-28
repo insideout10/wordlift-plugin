@@ -65,7 +65,7 @@ class Wordlift_Topic_Taxonomy_Service {
 	 * Get the singleton instance of the Entity service.
 	 *
 	 * @since 3.5.0
-	 * @return \Wordlift_Entity_Service The singleton instance of the Entity service.
+	 * @return Wordlift_Topic_Taxonomy_Service
 	 */
 	public static function get_instance() {
 

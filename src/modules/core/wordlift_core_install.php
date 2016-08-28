@@ -9,7 +9,9 @@ function wl_core_install_entity_type_data() {
 	// $wl_logger->trace( 'Installing entity type data...' );
 
 	// Ensure the custom type and the taxonomy are registered.
-	wl_entity_type_register();
+//	wl_entity_type_register();
+	Wordlift_Entity_Type_Service::get_instance()->register();
+
 	wl_entity_type_taxonomy_register();
 	// Ensure the custom taxonomy for dbpedia topics is registered
 	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
