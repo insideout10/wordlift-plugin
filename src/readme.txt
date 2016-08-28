@@ -123,11 +123,18 @@ This is stated in our [Terms of Service](https://wordlift.io/terms-of-service) a
 = 3.6.0 (???) =
 * Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path
 
-= 3.5.2 (2016-07-06)
+= 3.5.3 (2016-08-28) =
+* Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title
+* Fix: [#333](https://github.com/insideout10/wordlift-plugin/issues/333): Germanic umlaut causing troubles when saving sameAs links
+* Fix: [#334](https://github.com/insideout10/wordlift-plugin/issues/334): New Entities/Thing created without the sameAs attribute are duplicated as Entities/Person
+
+= 3.5.2 (2016-07-16) =
+* Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): Avoid unexpected alerts after content disambiguation
+* Fix: [#319](https://github.com/insideout10/wordlift-plugin/issues/319): Fix chord widget content filtering limit
 * Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
 
 = 3.5.1 (2016-06-16) =
-* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities trashold to improve widget usability.
+* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities threshold to improve widget usability.
 
 = 3.5.0 (2016-05-16) =
 * Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
