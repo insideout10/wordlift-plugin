@@ -94,9 +94,11 @@ Watch the [video tutorials](https://wordlift.io/#how-it-works) on our [website](
 
 == Changelog ==
 
+= 3.5.3 (2016-08-28) =
+* Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title
+
 = 3.5.2 (2016-07-16) =
-* Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): 
-Avoid unexpected alerts after content disambiguation
+* Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): Avoid unexpected alerts after content disambiguation
 * Fix: [#319](https://github.com/insideout10/wordlift-plugin/issues/319): Fix chord widget content filtering limit
 * Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
 
