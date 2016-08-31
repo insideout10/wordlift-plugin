@@ -342,7 +342,7 @@
   angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
     'configuration', '$log', function(configuration, $log) {
       return function(items, types) {
-        var annotations_count, entity, filtered, id, ref, treshold;
+        var entity, filtered, id, ref, treshold;
         filtered = [];
         if (items == null) {
           return filtered;
@@ -351,21 +351,7 @@
         for (id in items) {
           entity = items[id];
           if (ref = entity.mainType, indexOf.call(types, ref) >= 0) {
-            annotations_count = Object.keys(entity.annotations).length;
-            if (annotations_count === 0) {
-              continue;
-            }
-            if (annotations_count > treshold && entity.confidence === 1) {
-              filtered.push(entity);
-              continue;
-            }
-            if (entity.occurrences.length > 0) {
-              filtered.push(entity);
-              continue;
-            }
-            if (entity.id.startsWith(configuration.datasetUri)) {
-              filtered.push(entity);
-            }
+            filtered.push(entity);
           }
         }
         return filtered;

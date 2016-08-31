@@ -360,27 +360,26 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     if not items? 
       return filtered
-
+    
     treshold = Math.floor ( (1/120) * Object.keys(items).length ) + 0.75 
     
     for id, entity of items
       if  entity.mainType in types
-              
-        annotations_count = Object.keys( entity.annotations ).length
-        if annotations_count is 0
-          continue
+        filtered.push entity
 
-        if annotations_count > treshold and entity.confidence is 1
-          filtered.push entity
-          continue
-        if entity.occurrences.length > 0
-          filtered.push entity
-          continue
-        if entity.id.startsWith configuration.datasetUri
-          filtered.push entity
+        #annotations_count = Object.keys( entity.annotations ).length
+        #if annotations_count is 0
+        #  continue
+
+        #if annotations_count > treshold and entity.confidence is 1
+        #  filtered.push entity
+        #  continue
+        #if entity.occurrences.length > 0
+        #  filtered.push entity
+        #  continue
+        #if entity.id.startsWith configuration.datasetUri
+        #  filtered.push entity
         
-        # TODO se è una entità di wordlift la mostro
-
     filtered
 
 ])
