@@ -134,15 +134,16 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.5.3 (2016-08-28) =
-* Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title
-* Fix: [#333](https://github.com/insideout10/wordlift-plugin/issues/333): Germanic umlaut causing troubles when saving sameAs links
-* Fix: [#334](https://github.com/insideout10/wordlift-plugin/issues/334): New Entities/Thing created without the sameAs attribute are duplicated as Entities/Person
+= 3.5.3 (2016-08-31) =
+* Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title.
+* Fix: [#329](https://github.com/insideout10/wordlift-plugin/issues/329): Allow to disambiguate more than one occurrences for the same entity in bottom / up disambiguation mode.
+* Fix: [#333](https://github.com/insideout10/wordlift-plugin/issues/333): Germanic umlaut causing troubles when saving sameAs links.
+* Fix: [#334](https://github.com/insideout10/wordlift-plugin/issues/334): New Entities/Thing created without the sameAs attribute are duplicated as Entities/Person.
 
 = 3.5.2 (2016-07-16) =
-* Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): Avoid unexpected alerts after content disambiguation
-* Fix: [#319](https://github.com/insideout10/wordlift-plugin/issues/319): Fix chord widget content filtering limit
-* Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
+* Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): Avoid unexpected alerts after content disambiguation.
+* Fix: [#319](https://github.com/insideout10/wordlift-plugin/issues/319): Fix chord widget content filtering limit.
+* Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails.
 
 = 3.5.1 (2016-06-16) =
 * Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities threshold to improve widget usability.

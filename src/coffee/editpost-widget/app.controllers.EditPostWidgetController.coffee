@@ -306,28 +306,43 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.onSelectedEntityTile = (entity)->
 
+    # Detect if the entity has to be selected or unselected
+    action = 'entitySelected'
+    # If bottom / up disambiguation mode is on
+    # and the current annotation is already included in occurrences collaction
+    # then entity has to be deselected
+    if $scope.annotation?
+      if $scope.annotation in entity.occurrences 
+        action = 'entityDeselected'
+    # If top / down disambiguation mode is on
+    # and occurrences collection is not empty
+    # then entity has to be deselected
+    else
+      if entity.occurrences.length > 0
+        action = 'entityDeselected'
+      
     scopeId = configuration.getCategoryForType entity.mainType
-    $log.debug "Entity tile selected for entity #{entity.id} within #{scopeId} scope"
-
-    if not $scope.selectedEntities[ scopeId ][ entity.id ]?
+    $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
+    
+    if action is 'entitySelected'
+      # Ensure to mark the current entity to selected entities
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
       # Concat entity images to suggested images collection
       for image in entity.images
         unless image in $scope.images 
           $scope.images.push image  
-      # Notify entity selection
-      $scope.$emit "entitySelected", entity, $scope.annotation
-      # Reset current annotation
-      $scope.selectAnnotation undefined
     else
-      # Filter entity images to suggested images collection
+      # Remove current entity images from suggested images collection
       $scope.images = $scope.images.filter (img)-> 
         img not in entity.images  
-      # Notify entity deselection
-      $scope.$emit "entityDeselected", entity, $scope.annotation
-
+      
+    # Notify to EditorService
+    $scope.$emit action, entity, $scope.annotation
+    # Update related posts
     $scope.updateRelatedPosts()
-
+    # Reset current annotation
+    $scope.selectAnnotation undefined
+    
   $scope.isGeoLocationAllowed = ()->
     GeoLocationService.isAllowed()
     

@@ -35,23 +35,23 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   editor = ->
     tinyMCE.get('content')
     
-  disambiguate = ( annotation, entity )->
+  disambiguate = ( annotationId, entity )->
     ed = editor()
-    ed.dom.addClass annotation.id, "disambiguated"
+    ed.dom.addClass annotationId, "disambiguated"
     for type in configuration.types
-      ed.dom.removeClass annotation.id, type.css
-    ed.dom.removeClass annotation.id, "unlinked"
-    ed.dom.addClass annotation.id, "wl-#{entity.mainType}"
-    discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
-    ed.dom.setAttrib annotation.id, "itemid", entity.id
+      ed.dom.removeClass annotationId, type.css
+    ed.dom.removeClass annotationId, "unlinked"
+    ed.dom.addClass annotationId, "wl-#{entity.mainType}"
+    discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+    ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
 
-  dedisambiguate = ( annotation, entity )->
+  dedisambiguate = ( annotationId, entity )->
     ed = editor()
-    ed.dom.removeClass annotation.id, "disambiguated"
-    ed.dom.removeClass annotation.id, "wl-#{entity.mainType}"
-    discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
-    ed.dom.setAttrib annotation.id, "itemid", ""
+    ed.dom.removeClass annotationId, "disambiguated"
+    ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
+    discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+    ed.dom.setAttrib annotationId, "itemid", ""
     discardedItemId
 
   # TODO refactoring with regex
@@ -68,19 +68,15 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   $rootScope.$on "analysisPerformed", (event, analysis) ->
     service.embedAnalysis analysis if analysis? and analysis.annotations?
   
+  # Disambiguate a single annotation or every entity related ones
+  # Discarded entities are considered too
   $rootScope.$on "entitySelected", (event, entity, annotationId) ->
-    # per tutte le annotazioni o solo per quella corrente 
-    # recupero dal testo una struttura del tipo entityId: [ annotationId ]
-    # non considero solo la entity principale, ma anche le entity modificate
-    # il numero di elementi dell'array corrisponde alle occurences
-    # l'intero oggetto va salvato sulla proprietà likendAnnotations delle entity
-    # o potrebbe sostituire occurences? Fatto questo posso gestire lo stato linked /
     discarded = []
     if annotationId?
-      discarded.push disambiguate entity.annotations[ annotationId ], entity
+      discarded.push disambiguate annotationId, entity
     else    
       for id, annotation of entity.annotations
-        discarded.push disambiguate annotation, entity
+        discarded.push disambiguate annotation.id, entity
     
     for entityId in discarded
       if entityId
@@ -91,17 +87,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
       
   $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
-    discarded = []
     if annotationId?
-      dedisambiguate entity.annotations[ annotationId ], entity
+      dedisambiguate annotationId, entity
     else
       for id, annotation of entity.annotations
-        dedisambiguate annotation, entity
-    
-    for entityId in discarded
-      if entityId
-        occurrences = currentOccurencesForEntity entityId
-        $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
+        dedisambiguate annotation.id, entity
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
