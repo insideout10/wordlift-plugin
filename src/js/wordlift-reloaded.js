@@ -1310,7 +1310,6 @@
           ed.dom.removeClass(annotationId, type.css);
         }
         ed.dom.removeClass(annotationId, "unlinked");
-        ed.dom.addClass(annotationId, "wl-" + entity.mainType);
         discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
         ed.dom.setAttrib(annotationId, "itemid", entity.id);
         return discardedItemId;
@@ -1473,7 +1472,7 @@
                 em = ref1[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
-                  element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
+                  element += " disambiguated\" itemid=\"" + entity.id;
                 }
               }
               element += "\">";

@@ -38,10 +38,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   disambiguate = ( annotationId, entity )->
     ed = editor()
     ed.dom.addClass annotationId, "disambiguated"
+    
     for type in configuration.types
       ed.dom.removeClass annotationId, type.css
+    
     ed.dom.removeClass annotationId, "unlinked"
-    ed.dom.addClass annotationId, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
@@ -49,7 +50,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   dedisambiguate = ( annotationId, entity )->
     ed = editor()
     ed.dom.removeClass annotationId, "disambiguated"
+    
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
+    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", ""
     discardedItemId
@@ -211,7 +214,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           entity = analysis.entities[ em.entityId ] 
           
           if annotationId in entity.occurrences
-            element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
+            element += " disambiguated\" itemid=\"#{entity.id}"
         
         element += "\">"
               
