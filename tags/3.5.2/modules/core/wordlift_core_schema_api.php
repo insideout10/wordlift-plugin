@@ -186,11 +186,14 @@ function wl_schema_set_types( $post_id, $type_names ) {
 		$type_names = $type_names[0];
 	}
 
-	// Build full schema uri if necessary
+	// Get the schema URI (e.g. http://schema.org/Thing)
 	$type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
+
+	Wordlift_Log_Service::get_logger('wl_schema_set_types')->debug("[ type names :: $type_names ]");
 
 	// Actually sets the taxonomy type
 	wl_set_entity_main_type( $post_id, $type_names );
+
 }
 
 /**

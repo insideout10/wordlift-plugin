@@ -28,7 +28,7 @@ function wl_entity_type_register() {
 		'menu_position' => 20, // after the pages menu.
 		'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
 		'has_archive'   => true,
-		'menu_icon'		=> WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg'
+		'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg'
 	);
 
 	register_post_type( Wordlift_Entity_Service::TYPE_NAME, $args );
@@ -56,15 +56,27 @@ function wl_set_entity_main_type( $post_id, $type_uri ) {
 	// Get all the terms bound to the wl_entity_type taxonomy.
 	$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
 		'hide_empty' => false,
-		'fields'     => 'id=>slug'
+		// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+		// An issue has been opened with the AAM plugin author as well.
+		//
+		// see https://github.com/insideout10/wordlift-plugin/issues/334
+		// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+		'fields'     => 'all'
 	) );
 
 	// Check which term matches the specified URI.
-	foreach ( $terms as $term_id => $term_slug ) {
+	foreach ( $terms as $term ) {
+
+		$term_id   = $term->term_id;
+		$term_slug = $term->slug;
+
 		// Load the type data.
 		$type = Wordlift_Schema_Service::get_instance()->get_schema( $term_slug );
 		// Set the related term ID.
 		if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
+
+			Wordlift_Log_Service::get_logger( 'wl_set_entity_main_type' )->debug( "Setting entity type [ post id :: $post_id ][ term id :: $term_id ][ term slug :: $term_slug ][ type uri :: {$type['uri']} ][ type css class :: {$type['css_class']} ]" );
+
 			wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 			return;

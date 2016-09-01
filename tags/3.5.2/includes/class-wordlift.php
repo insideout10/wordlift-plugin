@@ -137,7 +137,7 @@ class Wordlift {
 	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
 	 */
 	private $notice_service;
-	
+
 	/**
 	 * The Entity list customization.
 	 *
@@ -184,6 +184,11 @@ class Wordlift {
 	private $dashboard_service;
 
 	/**
+	 * @var
+	 */
+	private $page_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -195,7 +200,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version = '3.5.2';
+		$this->version     = '3.5.2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -232,6 +237,11 @@ class Wordlift {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
+
+		/**
+		 * Provide support functions to sanitize data.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
 
 		/**
 		 * The Redirect service.
@@ -288,11 +298,14 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
 
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-page-service.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
-		
+
 		/**
 		 * The class to customize the entity list admin page.
 		 */
@@ -369,7 +382,7 @@ class Wordlift {
 
 		// Create an instance of the Timeline shortcode.
 		new Wordlift_Timeline_Shortcode();
-		
+
 		// Create entity list customization (wp-admin/edit.php)
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
@@ -382,6 +395,8 @@ class Wordlift {
 
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
+
+		$this->page_service = new Wordlift_Page_Service();
 	}
 
 	/**
@@ -424,7 +439,7 @@ class Wordlift {
 
 		// Hook the added_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'added_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
-		
+
 		// Hook the updated_post_meta action to the Thumbnail service.
 		$this->loader->add_action( 'updated_post_meta', $this->thumbnail_service, 'added_or_updated_post_meta', 10, 4 );
 
@@ -447,7 +462,7 @@ class Wordlift {
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
 		$this->loader->add_action( 'save_post_entity', $this->entity_service, 'set_rating_for', 10, 1 );
-		
+
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
 
@@ -458,7 +473,7 @@ class Wordlift {
 		// Add 4W selection
 		$this->loader->add_action( 'restrict_manage_posts', $this->entity_list_service, 'restrict_manage_posts_classification_scope' );
 		$this->loader->add_filter( 'posts_clauses', $this->entity_list_service, 'posts_clauses_classification_scope' );
-		
+
 		$this->loader->add_filter( 'wp_terms_checklist_args', $this->entity_types_taxonomy_walker, 'terms_checklist_args' );
 
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
@@ -486,6 +501,9 @@ class Wordlift {
 		// Hook the ShareThis service.
 		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
+
+		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
+		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', -PHP_INT_MAX );
 
 	}
 

@@ -54,7 +54,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Store mapping between tmp new entities uris and real new entities uri
 	$entities_uri_mapping = array();
-	
+
 	// Save the entities coming with POST data.
 	if ( isset( $_POST['wl_entities'] ) && isset( $_POST['wl_boxes'] ) ) {
 
@@ -69,7 +69,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 		$boxes_via_post    = $_POST['wl_boxes'];
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
-				
+
 			// Only if the current entity is created from scratch let's avoid to create 
 			// more than one entity with same label & entity type
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
@@ -79,13 +79,13 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// 1. when $entity_uri is an internal uri 
 			// 2. when $entity_uri is an external uri used as sameAs of an internal entity	
 			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
-			
+
 			// Detect the uri depending if is an existing or a new entity
 			$uri = ( NULL === $ie ) ?
-				Wordlift_Entity_Service::get_instance()->build_uri( 
-					$entity[ 'label' ], 
+				Wordlift_Entity_Service::get_instance()->build_uri(
+					$entity[ 'label' ],
 					Wordlift_Entity_Service::TYPE_NAME,
-					$entity_type 
+					$entity_type
 				) : wl_get_entity_uri( $ie->ID );
 
 			wl_write_log("Map $entity_uri on $uri");
@@ -107,16 +107,16 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			}
 
 		}
-		
+
 	}
 
 	// Replace tmp uris in content post if needed
 	$updated_post_content = $post->post_content;
 	// Save each entity and store the post id.
-	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {	
+	foreach ( $entities_uri_mapping as $tmp_uri => $uri ) {
 		$updated_post_content = str_replace( $tmp_uri, $uri, $updated_post_content );
 	}
-	
+
 	// Update the post content
 	wp_update_post( array(
 		'ID'           => $post->ID,
@@ -125,44 +125,44 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	// Extract related/referenced entities from text.
 	$disambiguated_entities = wl_linked_data_content_get_embedded_entities( $updated_post_content );
-	
+
 	// Reset previously saved instances
 	wl_core_delete_relation_instances( $post_id );
 
 	// Save relation instances
 	foreach ( array_unique( $disambiguated_entities ) as $referenced_entity_id ) {
 
-		wl_core_add_relation_instance( 
-			$post_id, 
-			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ), 
+		wl_core_add_relation_instance(
+			$post_id,
+			Wordlift_Entity_Service::get_instance()->get_classification_scope_for( $referenced_entity_id ),
 			$referenced_entity_id
 		);
 
 	}
-    
+
     if ( isset( $_POST['wl_entities'] ) ) {
 		// Save post metadata if available
-		$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ? 
+		$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ?
 			$_POST['wl_metadata'] : array();
 
 		$fields = array(
 			Wordlift_Schema_Service::FIELD_LOCATION_CREATED,
 			Wordlift_Schema_Service::FIELD_TOPIC
 		);
-		
+
 		// Unlink topic taxonomy terms
 		Wordlift_Topic_Taxonomy_Service::get_instance()->unlink_topic_for( $post->ID );
-			
+
 		foreach ( $fields as $field ) {
 
 			// Delete current values
 			delete_post_meta( $post->ID, $field );
 			// Retrieve the entity uri
-			$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ? 
+			$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ?
 				stripslashes( $metadata_via_post[ $field ] ) : '';
 
 			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
-			
+
 			if ( $entity ) {
 				add_post_meta( $post->ID, $field, $entity->ID, true );
 				// Set also the topic taxonomy
@@ -191,9 +191,9 @@ function wordlift_save_post_add_default_schema_type( $entity_id ) {
 
 	// Assign type 'Thing' if we are dealing with an entity without type
 	if ( $entity->post_type == Wordlift_Entity_Service::TYPE_NAME && is_null( $entity_type ) ) {
-
 		wl_schema_set_types( $entity_id, 'Thing' );
 	}
+
 }
 
 // Priority 1 (default is 10) because we want the default type to be set as soon as possible
@@ -204,7 +204,7 @@ add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
  * found (by its URI), then the original post is returned.
  *
- * @param array $entity_data, associative array containing: 
+ * @param array $entity_data, associative array containing:
  * string 'uri'             The entity URI.
  * string 'label'           The entity label.
  * string 'main_type'       The entity type URI.
@@ -217,7 +217,7 @@ add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
  * @return null|WP_Post A post instance or null in case of failure.
  */
 function wl_save_entity( $entity_data ) {
-	
+
 	$uri              = $entity_data['uri'];
 	$label            = $entity_data['label'];
 	$type_uri         = $entity_data['main_type'];
@@ -245,7 +245,7 @@ function wl_save_entity( $entity_data ) {
 	if ( null !== $post ) {
 		return $post;
 	}
-	
+
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
 	// the local SEO form values to the created entity (https://github.com/insideout10/wordlift-plugin/issues/156)
 	// Same thing applies to SEO Ultimate (https://github.com/insideout10/wordlift-plugin/issues/148)
@@ -314,7 +314,7 @@ function wl_save_entity( $entity_data ) {
 
 	// Save the sameAs data for the entity.
 	wl_schema_set_value( $post_id, 'sameAs', $same_as );
-	
+
 	// Save the other properties (latitude, langitude, startDate, endDate, etc.)
 	foreach ( $other_properties as $property_name => $property_value ) {
 		wl_schema_set_value( $post_id, $property_name, $property_value );
@@ -415,7 +415,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	$entities = array();
 	foreach ( $matches[1] as $uri ) {
 		$uri_d  = html_entity_decode( $uri );
-		
+
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
 
 		if ( null !== $entity ) {
