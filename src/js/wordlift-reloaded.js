@@ -1110,6 +1110,7 @@
           }
           entity.id = id;
           entity.occurrences = [];
+          entity.blindOccurrences = [];
           entity.annotations = {};
           entity.confidence = 1;
         }
@@ -1247,6 +1248,9 @@
             continue;
           }
           analysis.entities[entity.id].occurrences.push(textAnnotation.id);
+          if (annotation.isBlind) {
+            analysis.entities[entity.id].blindOccurrences.push(textAnnotation.id);
+          }
           if (analysis.entities[entity.id].annotations[textAnnotation.id] == null) {
             analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation;
             analysis.annotations[textAnnotation.id].entityMatches.push({
@@ -1266,8 +1270,9 @@
 
   angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
     'configuration', 'AnalysisService', '$log', '$http', '$rootScope', function(configuration, AnalysisService, $log, $http, $rootScope) {
-      var INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
+      var BLIND_ANNOTATION_CSS_CLASS, INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
       INVISIBLE_CHAR = '\uFEFF';
+      BLIND_ANNOTATION_CSS_CLASS = 'no-entity-page-link';
       findEntities = function(html) {
         var annotation, match, pattern, results1, traslator;
         traslator = Traslator.create(html);
@@ -1278,8 +1283,10 @@
             start: traslator.html2text(match.index),
             end: traslator.html2text(match.index + match[0].length),
             uri: match[2],
-            label: match[3]
+            label: match[3],
+            isBlind: match[0].indexOf(BLIND_ANNOTATION_CSS_CLASS) !== -1
           };
+          $log.debug(annotation);
           results1.push(annotation);
         }
         return results1;
@@ -1452,6 +1459,7 @@
             html = ed.getContent({
               format: 'raw'
             });
+            $log.debug(html);
             entities = findEntities(html);
             AnalysisService.cleanAnnotations(analysis, findPositions(entities));
             AnalysisService.preselect(analysis, entities);
@@ -1472,6 +1480,9 @@
                 em = ref1[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
+                  if (indexOf.call(entity.blindOccurrences, annotationId) >= 0) {
+                    element += " " + BLIND_ANNOTATION_CSS_CLASS;
+                  }
                   element += " disambiguated\" itemid=\"" + entity.id;
                 }
               }
