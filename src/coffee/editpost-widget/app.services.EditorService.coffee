@@ -49,6 +49,8 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       ed.dom.removeClass annotationId, type.css
     
     ed.dom.removeClass annotationId, "unlinked"
+    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
@@ -56,7 +58,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   dedisambiguate = ( annotationId, entity )->
     ed = editor()
     ed.dom.removeClass annotationId, "disambiguated"
-    
+    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
     
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
@@ -104,7 +106,14 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-        
+  
+  $rootScope.$on "entityBlindnessToggled", (event, entity) ->
+    ed = editor()
+    for annotationId in entity.occurrences
+      ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+    for annotationId in entity.blindOccurrences
+      ed.dom.addClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+
   service =
     # Detect if there is a current selection
     hasSelection: ()->

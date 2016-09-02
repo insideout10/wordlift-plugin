@@ -575,8 +575,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     $log.debug "Occurrences #{occurrences.length} for #{entityId}"
     $scope.analysis.entities[ entityId ].occurrences = occurrences
+    # Update blind occurences accordingly
+    bo = $scope.analysis.entities[ entityId ].blindOccurrences
+    $scope.analysis.entities[ entityId ].blindOccurrences = bo.filter (oc) ->
+      return (oc in occurrences)
     
-    if occurrences.length is 0
+    if occurrences.length is 0      
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
         
@@ -652,6 +656,30 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entityIds.push id
     RelatedPostDataRetrieverService.load entityIds
 
+  $scope.onEntityPageLinkingToggle = (entity)->
+
+      # Blind occurrences for the current entity
+      bo = entity.blindOccurrences
+      # If we are in bottom / up mode toggle specific annotation
+      if $scope.annotation?
+        if $scope.annotation in bo
+          
+          bo = bo.filter (annotationId)->
+            $scope.annotation isnt annotationId
+        else
+          bo.push $scope.annotation
+      # Otherwise the whole selected occurences collaction
+      else
+        if bo.length > 0
+          bo = []
+        else
+          bo = entity.occurrences
+
+      # Update blind occurences collection
+      $scope.analysis.entities[ entity.id ].blindOccurrences = bo     
+      # Notify to EditorService
+      $scope.$emit "entityBlindnessToggled", $scope.analysis.entities[ entity.id ]
+    
   $scope.onSelectedEntityTile = (entity)->
 
     # Detect if the entity has to be selected or unselected
@@ -875,6 +903,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       isSelected: '='
       showConfidence: '='
       onSelect: '&'
+      onBlind: '&'
       onMore: '&'
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
@@ -1238,6 +1267,8 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       ed.dom.removeClass annotationId, type.css
     
     ed.dom.removeClass annotationId, "unlinked"
+    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
@@ -1245,7 +1276,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   dedisambiguate = ( annotationId, entity )->
     ed = editor()
     ed.dom.removeClass annotationId, "disambiguated"
-    
+    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
     
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
@@ -1293,7 +1324,14 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-        
+  
+  $rootScope.$on "entityBlindnessToggled", (event, entity) ->
+    ed = editor()
+    for annotationId in entity.occurrences
+      ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+    for annotationId in entity.blindOccurrences
+      ed.dom.addClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+
   service =
     # Detect if there is a current selection
     hasSelection: ()->

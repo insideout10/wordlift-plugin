@@ -7,19 +7,20 @@
   <div class="wl-widget-classification-box-entity-tile-name" ng-click="onSelect()">
     <h3>
       {{entity.label}}
-
-
     </h3>
   </div>
 
-    <!-- ENTITY OCCURENCES -->
-    <div class="wl-widget-classification-box-entity-tile-occurences"
+  <!-- ENTITY OCCURENCES -->
+  <div class="wl-widget-classification-box-entity-tile-occurences"
     ng-show="entity.occurrences.length > 0"
     class="wl-widget-classification-box-entity-tile-occurrences">
-      <h4>
-        {{entity.occurrences.length}}
-      </h4>
-    </div>
+    <h4>
+        {{entity.occurrences.length}} / 
+        <small 
+          class="wl-widget-classification-box-entity-tile-blind-occurrences"
+          ng-click="onBlind()">{{entity.blindOccurrences.length}}</small>
+    </h4>
+  </div>
 
   <!-- ENTITY STORING: GLOBAL-LOCAL -->
   <div class="wl-widget-classification-box-entity-tile-storage">
