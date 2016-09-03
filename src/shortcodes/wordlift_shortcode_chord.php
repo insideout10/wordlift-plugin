@@ -20,7 +20,7 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 	) );
 
 	if ( empty( $post_ids ) ) {
-		return null;
+		return NULL;
 	}
 
 	$entities = array();
@@ -50,7 +50,7 @@ function wl_shortcode_chord_most_referenced_entity_id() {
  *
  * @return array
  */
-function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null,  $max_size = 9 ) {
+function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = NULL, $max_size = 9 ) {
 
 	if ( ! is_null( $related ) ) {
 		if ( 0 === $depth ) {
@@ -74,7 +74,8 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 	) );
 
 	// If the current node is an entity, add related posts too
-	$related_post_ids = ( Wordlift_Entity_Service::get_instance()->is_entity( $entity_id ) ) ?
+	$related_post_ids = ( Wordlift_Entity_Service::get_instance()
+	                                             ->is_entity( $entity_id ) ) ?
 		wl_core_get_related_post_ids( $entity_id, array(
 			'status' => 'publish'
 		) ) :
@@ -82,17 +83,17 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 
 	// Merge results and remove duplicated entries
 	$related_ids = array_unique( array_merge( $related_post_ids, $related_entity_ids ) );
-	
+
 	// TODO: List of entities ($rel) should be ordered by interest factors.
 	shuffle( $related_ids );
 
 	// Now we have all the related IDs.
 	foreach ( $related_ids as $related_id ) {
 
-		if( count( $related['entities'] ) >= $max_size ) {
+		if ( count( $related['entities'] ) >= $max_size ) {
 			return $related;
 		}
-		
+
 		$related['relations'][] = array( $entity_id, $related_id );
 
 		if ( ! in_array( $related_id, $related['entities'] ) ) {
@@ -132,14 +133,14 @@ function wl_shortcode_chord_get_graph( $data ) {
 		// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
 		$term = wl_entity_type_taxonomy_get_type( $item );
 
-		wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
+		wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, TRUE ) . " ]" );
 
 		// TODO: get all images
-		$thumbnail    = null;
+		$thumbnail    = NULL;
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
 		if ( '' !== $thumbnail_id ) {
 			$attachment = wp_get_attachment_image_src( $thumbnail_id );
-			if ( false !== $attachment ) {
+			if ( FALSE !== $attachment ) {
 				$thumbnail = esc_attr( $attachment[0] );
 			}
 		}
@@ -190,86 +191,86 @@ function wl_shortcode_chord_ajax() {
 add_action( 'wp_ajax_wl_chord', 'wl_shortcode_chord_ajax' );
 add_action( 'wp_ajax_nopriv_wl_chord', 'wl_shortcode_chord_ajax' );
 
-
-/**
- * Sets-up the widget. This is called by WordPress when the shortcode is inserted in the body.
- *
- * @uses wl_shortcode_chord_most_referenced_entity_id() to get the most connected entity.
- *
- * @param array $atts An array of parameters set by the editor to customize the shortcode behaviour.
- *
- * @return string
- */
-function wl_shortcode_chord( $atts ) {
-
-	//extract attributes and set default values
-	$chord_atts = shortcode_atts( array(
-		'width'      => '100%',
-		'height'     => '500px',
-		'main_color' => '000',
-		'depth'      => 2,
-		'global'     => false
-	), $atts );
-
-	if ( $chord_atts['global'] ) {
-		$post_id = wl_shortcode_chord_most_referenced_entity_id();
-		if ( $post_id == null ) {
-			return "WordLift Chord: no entities found.";
-		}
-		$widget_id            = 'wl_chord_global';
-		$chord_atts['height'] = '200px';
-	} else {
-		$post_id   = get_the_ID();
-		$widget_id = 'wl_chord_' . $post_id;
-	}
-
-	// Adding css
-	wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
-
-	// Adding javascript code
-	wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js' );
-
-	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
-
-	wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'action'   => 'wl_chord'
-		)
-	);
-
-	// Escaping atts.
-	$esc_class  = esc_attr( 'wl-chord' );
-	$esc_id     = esc_attr( $widget_id );
-	$esc_width  = esc_attr( $chord_atts['width'] );
-	$esc_height = esc_attr( $chord_atts['height'] );
-
-	$esc_post_id    = esc_attr( $post_id );
-	$esc_depth      = esc_attr( $chord_atts['depth'] );
-	$esc_main_color = esc_attr( $chord_atts['main_color'] );
-
-	// Building template.
-	// TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-	return <<<EOF
-<div class="$esc_class" 
-	id="$esc_id"
-	data-post-id="$esc_post_id"
-    data-depth="$esc_depth"
-    data-main-color="$esc_main_color"
-	style="width:$esc_width;
-        height:$esc_height;
-        background-color:white;
-        margin-top:10px;
-        margin-bottom:10px">
-</div>
-EOF;
-
-}
-
-/**
- * Registers the *wl_chord* shortcode.
- */
-function wl_shortcode_chord_register() {
-	add_shortcode( 'wl_chord', 'wl_shortcode_chord' );
-}
-
-add_action( 'init', 'wl_shortcode_chord_register' );
+//
+///**
+// * Sets-up the widget. This is called by WordPress when the shortcode is inserted in the body.
+// *
+// * @uses wl_shortcode_chord_most_referenced_entity_id() to get the most connected entity.
+// *
+// * @param array $atts An array of parameters set by the editor to customize the shortcode behaviour.
+// *
+// * @return string
+// */
+//function wl_shortcode_chord( $atts ) {
+//
+//	//extract attributes and set default values
+//	$chord_atts = shortcode_atts( array(
+//		'width'      => '100%',
+//		'height'     => '500px',
+//		'main_color' => '000',
+//		'depth'      => 2,
+//		'global'     => FALSE
+//	), $atts );
+//
+//	if ( $chord_atts['global'] ) {
+//		$post_id = wl_shortcode_chord_most_referenced_entity_id();
+//		if ( $post_id == NULL ) {
+//			return "WordLift Chord: no entities found.";
+//		}
+//		$widget_id            = 'wl_chord_global';
+//		$chord_atts['height'] = '200px';
+//	} else {
+//		$post_id   = get_the_ID();
+//		$widget_id = 'wl_chord_' . $post_id;
+//	}
+//
+//	// Adding css
+//	wp_enqueue_style( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+//
+//	// Adding javascript code
+//	wp_enqueue_script( 'd3', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/d3/d3.min.js' );
+//
+//	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
+//
+//	wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
+//			'ajax_url' => admin_url( 'admin-ajax.php' ),
+//			'action'   => 'wl_chord'
+//		)
+//	);
+//
+//	// Escaping atts.
+//	$esc_class  = esc_attr( 'wl-chord' );
+//	$esc_id     = esc_attr( $widget_id );
+//	$esc_width  = esc_attr( $chord_atts['width'] );
+//	$esc_height = esc_attr( $chord_atts['height'] );
+//
+//	$esc_post_id    = esc_attr( $post_id );
+//	$esc_depth      = esc_attr( $chord_atts['depth'] );
+//	$esc_main_color = esc_attr( $chord_atts['main_color'] );
+//
+//	// Building template.
+//	// TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
+//	return <<<EOF
+//<div class="$esc_class"
+//	id="$esc_id"
+//	data-post-id="$esc_post_id"
+//    data-depth="$esc_depth"
+//    data-main-color="$esc_main_color"
+//	style="width:$esc_width;
+//        height:$esc_height;
+//        background-color:white;
+//        margin-top:10px;
+//        margin-bottom:10px">
+//</div>
+//EOF;
+//
+//}
+//
+///**
+// * Registers the *wl_chord* shortcode.
+// */
+//function wl_shortcode_chord_register() {
+//	add_shortcode( 'wl_chord', 'wl_shortcode_chord' );
+//}
+//
+//add_action( 'init', 'wl_shortcode_chord_register' );

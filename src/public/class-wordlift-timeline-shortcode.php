@@ -5,7 +5,7 @@
  *
  * @since 3.1.0
  */
-class Wordlift_Timeline_Shortcode {
+class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 	/**
 	 * The Log service.
@@ -22,11 +22,9 @@ class Wordlift_Timeline_Shortcode {
 	 * @since 3.1.0
 	 */
 	public function __construct() {
+		parent::__construct();
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Shortcode' );
-
-		// Add the wl_timeline shortcode.
-		add_shortcode( 'wl_timeline', array( $this, 'render' ) );
 
 	}
 
@@ -45,9 +43,17 @@ class Wordlift_Timeline_Shortcode {
 			'global' => false
 		), $atts );
 
+		// Add timeline library.
+		wp_enqueue_script( 'timelinejs-storyjs-embed', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/storyjs-embed.js' );
+		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/timeline-min.js' );
 
 		// Enqueue the scripts for the timeline.
 		$this->enqueue_scripts();
+
+		wp_localize_script( 'wordlift-ui', 'wl_timeline_params', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ), // TODO: this parameter is already provided by WP
+			'action'   => 'wl_timeline'
+		) );
 
 		// Get the current post id or set null if global is set to true.
 		$post_id = ( $timeline_atts['global'] ? null : get_the_ID() );
@@ -71,28 +77,6 @@ class Wordlift_Timeline_Shortcode {
 	style="width:$esc_width; height:$esc_height; margin-top:10px; margin-bottom:10px">
 </div>
 EOF;
-
-	}
-
-	/**
-	 * Enqueue the scripts for the Timeline.
-	 *
-	 * @since 3.1.0
-	 */
-	private function enqueue_scripts() {
-
-		// Add timeline library.
-		wp_enqueue_script( 'timelinejs-storyjs-embed', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/storyjs-embed.js' );
-		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/timeline-min.js' );
-
-		// Add wordlift-ui script.
-		wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.js', array( 'jquery' ) );
-
-		//
-		wp_localize_script( 'wordlift-ui', 'wl_timeline_params', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ), // TODO: this parameter is already provided by WP
-			'action'   => 'wl_timeline'
-		) );
 
 	}
 
