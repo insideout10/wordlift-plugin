@@ -10,7 +10,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 	public function sanitize_data_filter( $value ) {
 
 		if ( empty( $value ) ) {
-			return null;
+			return NULL;
 		}
 
 		// Check that the inserted URI, ID or name does not point to a saved entity.
@@ -18,7 +18,8 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$absent_from_db = is_null( get_post( $value ) );                           // search by ID
 		} else {
 			$absent_from_db =
-				is_null( Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $value ) ) &&                      // search by uri
+				is_null( Wordlift_Entity_Service::get_instance()
+				                                ->get_entity_post_by_uri( $value ) ) &&                      // search by uri
 				is_null( get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::TYPE_NAME ) );   // search by name
 		}
 
@@ -75,12 +76,15 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 
 	public function html_input( $default_entity_identifier ) {
 
-		// The entity can be referenced as URI or ID.
-		if ( is_numeric( $default_entity_identifier ) ) {
+		if ( empty( $default_entity_identifier ) ) {
+			$entity = NULL;
+		} elseif ( is_numeric( $default_entity_identifier ) ) {
 			$entity = get_post( $default_entity_identifier );
 		} else {
+			// @todo: we cannot be so sure this is a URI.
 			// It is an URI
-			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $default_entity_identifier );
+			$entity = Wordlift_Entity_Service::get_instance()
+			                                 ->get_entity_post_by_uri( $default_entity_identifier );
 		}
 
 		if ( ! is_null( $entity ) ) {
@@ -92,20 +96,18 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$value = $default_entity_identifier;
 		}
 
-		/*
-		 * Write saved value in page
-		 * The <input> tags host the meta value.
-		 * The visible <input> has the human readable value (i.e. entity name or uri)
-		 * and is accompained by an hidden <input> tag, passed to the server,
-		 * that contains the raw value (i.e. the uri or entity id).
-		 */
+		// Write saved value in page
+		// The <input> tags host the meta value.
+		// The visible <input> has the human readable value (i.e. entity name or uri)
+		// and is accompained by an hidden <input> tag, passed to the server,
+		// that contains the raw value (i.e. the uri or entity id).
 		$html = <<<EOF
 			<div class="wl-input-wrapper wl-autocomplete-wrapper">
 				<input type="text" class="$this->meta_name wl-autocomplete" value="$label" style="width:88%" />
 				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" />
 				<button class="button wl-remove-input wl-button" type="button" style="width:10%">Remove</button>
 				<div class="wl-input-notice"></div>
-			</div>
+			</div>		
 EOF;
 
 		return $html;

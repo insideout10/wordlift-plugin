@@ -134,8 +134,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.6.0 (???) =
+= 3.6.0 (????-??-??) =
 * Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path
+
+= 3.5.4 (????-??-??) =
+* Fix: [#265](https://github.com/insideout10/wordlift-plugin/issues/265): Entity type:Person are being created before actually saving an organization's entity.
 
 = 3.5.3 (2016-08-31) =
 * Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title.
