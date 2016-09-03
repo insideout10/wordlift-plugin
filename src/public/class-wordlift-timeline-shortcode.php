@@ -7,6 +7,8 @@
  */
 class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
+	const SHORTCODE = 'wl_timeline';
+
 	/**
 	 * The Log service.
 	 *
