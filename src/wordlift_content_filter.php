@@ -59,12 +59,19 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 		return $content;
 	}
 
-	// TODO: Retrieve here just one time entities type structure to avoid multiple queries.
-	foreach ( $matches as $match ) {
-		$item_id = $match[2];
+	#$is_blind = ( preg_match( '/'. WL_BLIND_ANNOTATION_CSS_CLASS .'/', $match[2] ) ) ? TRUE : FALSE;
+		
+	
+	// Retrive item_ids removing deuplicates
+	$item_ids = array_unique( array_map( function( $match ) {
+		return $match[2];
+	}, $matches ) );
+
+	// Embed microdata
+	foreach ( $item_ids as $item_id ) {
+		wl_write_log( 'foo dai cazzo' );
 
 		// wl_write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
-
 		$content = wl_content_embed_item_microdata( $content, $item_id );
 	}
 
@@ -130,17 +137,24 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	$permalink = get_permalink( $post->ID );
 	$url       = '<link itemprop="url" href="' . $permalink . '" />';
 
+	// Only print name inside <span> for top-level entities
+	$title_or_link = '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a>';
+	
 	// Replace the original tagging with the new tagging.
 	$regex   = wl_content_embed_build_regex_from_uri( $uri );
+	wl_write_log( $regex );
+	
 	$content = preg_replace( $regex,
 		'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
-		. $same_as
-		. $additional_properties
-		. $url
-		. '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
+		.	$same_as
+		.	$additional_properties
+		.	$url
+		.	$title_or_link
+		.	'</$1>',
 		$content
 	);
 
+	
 	// wl_write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
 
 	return $content;
