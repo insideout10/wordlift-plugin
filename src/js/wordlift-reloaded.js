@@ -342,7 +342,7 @@
   angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', ['wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.GeoLocationService', 'wordlift.editpost.widget.providers.ConfigurationProvider']).filter('filterEntitiesByTypesAndRelevance', [
     'configuration', '$log', function(configuration, $log) {
       return function(items, types) {
-        var annotations_count, entity, filtered, id, ref, treshold;
+        var entity, filtered, id, ref, treshold;
         filtered = [];
         if (items == null) {
           return filtered;
@@ -351,21 +351,7 @@
         for (id in items) {
           entity = items[id];
           if (ref = entity.mainType, indexOf.call(types, ref) >= 0) {
-            annotations_count = Object.keys(entity.annotations).length;
-            if (annotations_count === 0) {
-              continue;
-            }
-            if (annotations_count > treshold && entity.confidence === 1) {
-              filtered.push(entity);
-              continue;
-            }
-            if (entity.occurrences.length > 0) {
-              filtered.push(entity);
-              continue;
-            }
-            if (entity.id.startsWith(configuration.datasetUri)) {
-              filtered.push(entity);
-            }
+            filtered.push(entity);
           }
         }
         return filtered;
@@ -659,27 +645,36 @@
         return RelatedPostDataRetrieverService.load(entityIds);
       };
       $scope.onSelectedEntityTile = function(entity) {
-        var image, k, len1, ref1, scopeId;
+        var action, image, k, len1, ref1, ref2, scopeId;
+        action = 'entitySelected';
+        if ($scope.annotation != null) {
+          if (ref1 = $scope.annotation, indexOf.call(entity.occurrences, ref1) >= 0) {
+            action = 'entityDeselected';
+          }
+        } else {
+          if (entity.occurrences.length > 0) {
+            action = 'entityDeselected';
+          }
+        }
         scopeId = configuration.getCategoryForType(entity.mainType);
-        $log.debug("Entity tile selected for entity " + entity.id + " within " + scopeId + " scope");
-        if ($scope.selectedEntities[scopeId][entity.id] == null) {
+        $log.debug("Action '" + action + "' on entity " + entity.id + " within " + scopeId + " scope");
+        if (action === 'entitySelected') {
           $scope.selectedEntities[scopeId][entity.id] = entity;
-          ref1 = entity.images;
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            image = ref1[k];
+          ref2 = entity.images;
+          for (k = 0, len1 = ref2.length; k < len1; k++) {
+            image = ref2[k];
             if (indexOf.call($scope.images, image) < 0) {
               $scope.images.push(image);
             }
           }
-          $scope.$emit("entitySelected", entity, $scope.annotation);
-          $scope.selectAnnotation(void 0);
         } else {
           $scope.images = $scope.images.filter(function(img) {
             return indexOf.call(entity.images, img) < 0;
           });
-          $scope.$emit("entityDeselected", entity, $scope.annotation);
         }
-        return $scope.updateRelatedPosts();
+        $scope.$emit(action, entity, $scope.annotation);
+        $scope.updateRelatedPosts();
+        return $scope.selectAnnotation(void 0);
       };
       $scope.isGeoLocationAllowed = function() {
         return GeoLocationService.isAllowed();
@@ -1305,28 +1300,28 @@
       editor = function() {
         return tinyMCE.get('content');
       };
-      disambiguate = function(annotation, entity) {
+      disambiguate = function(annotationId, entity) {
         var discardedItemId, ed, j, len, ref, type;
         ed = editor();
-        ed.dom.addClass(annotation.id, "disambiguated");
+        ed.dom.addClass(annotationId, "disambiguated");
         ref = configuration.types;
         for (j = 0, len = ref.length; j < len; j++) {
           type = ref[j];
-          ed.dom.removeClass(annotation.id, type.css);
+          ed.dom.removeClass(annotationId, type.css);
         }
-        ed.dom.removeClass(annotation.id, "unlinked");
-        ed.dom.addClass(annotation.id, "wl-" + entity.mainType);
-        discardedItemId = ed.dom.getAttrib(annotation.id, "itemid");
-        ed.dom.setAttrib(annotation.id, "itemid", entity.id);
+        ed.dom.removeClass(annotationId, "unlinked");
+        ed.dom.addClass(annotationId, "wl-" + entity.mainType);
+        discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
+        ed.dom.setAttrib(annotationId, "itemid", entity.id);
         return discardedItemId;
       };
-      dedisambiguate = function(annotation, entity) {
+      dedisambiguate = function(annotationId, entity) {
         var discardedItemId, ed;
         ed = editor();
-        ed.dom.removeClass(annotation.id, "disambiguated");
-        ed.dom.removeClass(annotation.id, "wl-" + entity.mainType);
-        discardedItemId = ed.dom.getAttrib(annotation.id, "itemid");
-        ed.dom.setAttrib(annotation.id, "itemid", "");
+        ed.dom.removeClass(annotationId, "disambiguated");
+        ed.dom.removeClass(annotationId, "wl-" + entity.mainType);
+        discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
+        ed.dom.setAttrib(annotationId, "itemid", "");
         return discardedItemId;
       };
       currentOccurencesForEntity = function(entityId) {
@@ -1355,12 +1350,12 @@
         var annotation, discarded, entityId, id, j, len, occurrences, ref;
         discarded = [];
         if (annotationId != null) {
-          discarded.push(disambiguate(entity.annotations[annotationId], entity));
+          discarded.push(disambiguate(annotationId, entity));
         } else {
           ref = entity.annotations;
           for (id in ref) {
             annotation = ref[id];
-            discarded.push(disambiguate(annotation, entity));
+            discarded.push(disambiguate(annotation.id, entity));
           }
         }
         for (j = 0, len = discarded.length; j < len; j++) {
@@ -1374,22 +1369,14 @@
         return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
       });
       $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
-        var annotation, discarded, entityId, id, j, len, occurrences, ref;
-        discarded = [];
+        var annotation, id, occurrences, ref;
         if (annotationId != null) {
-          dedisambiguate(entity.annotations[annotationId], entity);
+          dedisambiguate(annotationId, entity);
         } else {
           ref = entity.annotations;
           for (id in ref) {
             annotation = ref[id];
-            dedisambiguate(annotation, entity);
-          }
-        }
-        for (j = 0, len = discarded.length; j < len; j++) {
-          entityId = discarded[j];
-          if (entityId) {
-            occurrences = currentOccurencesForEntity(entityId);
-            $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
+            dedisambiguate(annotation.id, entity);
           }
         }
         occurrences = currentOccurencesForEntity(entity.id);
@@ -1723,6 +1710,11 @@
     injector.invoke([
       'EditorService', '$rootScope', '$log', function(EditorService, $rootScope, $log) {
         var j, len, method, originalMethod, ref, results1;
+        if (wp.autosave != null) {
+          wp.autosave.server.postChanged = function() {
+            return false;
+          };
+        }
         ref = ['setMarkers', 'toViews'];
         results1 = [];
         for (j = 0, len = ref.length; j < len; j++) {

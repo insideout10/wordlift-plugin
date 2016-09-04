@@ -404,6 +404,11 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
+		// Check if we've been provided with a value otherwise return null.
+		if ( empty( $uri ) ) {
+			return NULL;
+		}
+
 		$query_args = array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',

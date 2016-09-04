@@ -4,7 +4,7 @@ require_once( 'functions.php' );
 
 /**
  */
-class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
+abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

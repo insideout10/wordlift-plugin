@@ -44,18 +44,16 @@ function wl_shortcode_chord_most_referenced_entity_id() {
  * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
  *
  * @param int $entity_id The entity post ID.
- * @param int $depth Max number of entities in output.
+ * @param int $depth Max number of nesting levels in output.
  * @param array $related An existing array of related entities.
+ * @param int $max_size Max number of items.
  *
  * @return array
  */
-function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null ) {
+function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null,  $max_size = 9 ) {
 
-	// Search for more entities only if we did not exceed $depth or $max_size
-	$max_size = 9;
-	
 	if ( ! is_null( $related ) ) {
-		if ( count( $related['entities'] ) > $max_size || $depth <= 0 ) {
+		if ( 0 === $depth ) {
 			return $related;
 		}
 	}
@@ -75,35 +73,33 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = nu
 		'status' => 'publish'
 	) );
 
-	// Get related posts (only id the current node is an entity)
-	$related_post_ids = array();
-	if ( get_post_type( $entity_id ) == Wordlift_Entity_Service::TYPE_NAME ) {
-
-		$related_post_ids = wl_core_get_related_post_ids( $entity_id, array(
+	// If the current node is an entity, add related posts too
+	$related_post_ids = ( Wordlift_Entity_Service::get_instance()->is_entity( $entity_id ) ) ?
+		wl_core_get_related_post_ids( $entity_id, array(
 			'status' => 'publish'
-		) );
-	}
+		) ) :
+		array();
 
-	// Merge results.
-	$related_ids = array_merge( $related_post_ids, $related_entity_ids );
-	$related_ids = array_unique( $related_ids );
-
+	// Merge results and remove duplicated entries
+	$related_ids = array_unique( array_merge( $related_post_ids, $related_entity_ids ) );
+	
 	// TODO: List of entities ($rel) should be ordered by interest factors.
 	shuffle( $related_ids );
 
 	// Now we have all the related IDs.
 	foreach ( $related_ids as $related_id ) {
 
-		// TODO: does it make sense to set an array post ID > related ID? The *wl_shortcode_chord_get_graph*
-		// method is going anyway to *refactor* the data structure. So here the structure may be optimized in terms
-		// of readability and performance.
+		if( count( $related['entities'] ) >= $max_size ) {
+			return $related;
+		}
+		
 		$related['relations'][] = array( $entity_id, $related_id );
 
 		if ( ! in_array( $related_id, $related['entities'] ) ) {
-			//Found new related entity!
+			// Found new related entity!
 			$related['entities'][] = $related_id;
 
-			$related = wl_shortcode_chord_get_relations( $related_id, ( $depth - 1 ), $related );
+			$related = wl_shortcode_chord_get_relations( $related_id, ( $depth - 1 ), $related, $max_size );
 		}
 	}
 

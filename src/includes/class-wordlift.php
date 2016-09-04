@@ -202,6 +202,17 @@ class Wordlift {
 	private $entity_link_service;
 
 	/**
+	 * The page service instance which processes the page output in order to insert schema.org microdata to export the
+	 * correct page title to Google+.
+	 *
+	 * @since 3.5.3
+	 * @access private
+	 * @var \Wordlift_Page_Service
+	 */
+	private $page_service;
+
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -250,6 +261,11 @@ class Wordlift {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
+
+		/**
+		 * Provide support functions to sanitize data.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
 
 		/**
 		 * The Redirect service.
@@ -320,6 +336,9 @@ class Wordlift {
 		 * The Topic Taxonomy service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
+
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-page-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -424,6 +443,8 @@ class Wordlift {
 
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
+
+		$this->page_service = new Wordlift_Page_Service();
 	}
 
 	/**
@@ -537,6 +558,9 @@ class Wordlift {
 		// Hook the ShareThis service.
 		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
+
+		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
+		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', -PHP_INT_MAX );
 
 	}
 

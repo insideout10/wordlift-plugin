@@ -360,27 +360,26 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     if not items? 
       return filtered
-
+    
     treshold = Math.floor ( (1/120) * Object.keys(items).length ) + 0.75 
     
     for id, entity of items
       if  entity.mainType in types
-              
-        annotations_count = Object.keys( entity.annotations ).length
-        if annotations_count is 0
-          continue
+        filtered.push entity
 
-        if annotations_count > treshold and entity.confidence is 1
-          filtered.push entity
-          continue
-        if entity.occurrences.length > 0
-          filtered.push entity
-          continue
-        if entity.id.startsWith configuration.datasetUri
-          filtered.push entity
+        #annotations_count = Object.keys( entity.annotations ).length
+        #if annotations_count is 0
+        #  continue
+
+        #if annotations_count > treshold and entity.confidence is 1
+        #  filtered.push entity
+        #  continue
+        #if entity.occurrences.length > 0
+        #  filtered.push entity
+        #  continue
+        #if entity.id.startsWith configuration.datasetUri
+        #  filtered.push entity
         
-        # TODO se è una entità di wordlift la mostro
-
     filtered
 
 ])
@@ -655,28 +654,43 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.onSelectedEntityTile = (entity)->
 
+    # Detect if the entity has to be selected or unselected
+    action = 'entitySelected'
+    # If bottom / up disambiguation mode is on
+    # and the current annotation is already included in occurrences collaction
+    # then entity has to be deselected
+    if $scope.annotation?
+      if $scope.annotation in entity.occurrences 
+        action = 'entityDeselected'
+    # If top / down disambiguation mode is on
+    # and occurrences collection is not empty
+    # then entity has to be deselected
+    else
+      if entity.occurrences.length > 0
+        action = 'entityDeselected'
+      
     scopeId = configuration.getCategoryForType entity.mainType
-    $log.debug "Entity tile selected for entity #{entity.id} within #{scopeId} scope"
-
-    if not $scope.selectedEntities[ scopeId ][ entity.id ]?
+    $log.debug "Action '#{action}' on entity #{entity.id} within #{scopeId} scope"
+    
+    if action is 'entitySelected'
+      # Ensure to mark the current entity to selected entities
       $scope.selectedEntities[ scopeId ][ entity.id ] = entity      
       # Concat entity images to suggested images collection
       for image in entity.images
         unless image in $scope.images 
           $scope.images.push image  
-      # Notify entity selection
-      $scope.$emit "entitySelected", entity, $scope.annotation
-      # Reset current annotation
-      $scope.selectAnnotation undefined
     else
-      # Filter entity images to suggested images collection
+      # Remove current entity images from suggested images collection
       $scope.images = $scope.images.filter (img)-> 
         img not in entity.images  
-      # Notify entity deselection
-      $scope.$emit "entityDeselected", entity, $scope.annotation
-
+      
+    # Notify to EditorService
+    $scope.$emit action, entity, $scope.annotation
+    # Update related posts
     $scope.updateRelatedPosts()
-
+    # Reset current annotation
+    $scope.selectAnnotation undefined
+    
   $scope.isGeoLocationAllowed = ()->
     GeoLocationService.isAllowed()
     
@@ -1204,23 +1218,23 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   editor = ->
     tinyMCE.get('content')
     
-  disambiguate = ( annotation, entity )->
+  disambiguate = ( annotationId, entity )->
     ed = editor()
-    ed.dom.addClass annotation.id, "disambiguated"
+    ed.dom.addClass annotationId, "disambiguated"
     for type in configuration.types
-      ed.dom.removeClass annotation.id, type.css
-    ed.dom.removeClass annotation.id, "unlinked"
-    ed.dom.addClass annotation.id, "wl-#{entity.mainType}"
-    discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
-    ed.dom.setAttrib annotation.id, "itemid", entity.id
+      ed.dom.removeClass annotationId, type.css
+    ed.dom.removeClass annotationId, "unlinked"
+    ed.dom.addClass annotationId, "wl-#{entity.mainType}"
+    discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+    ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
 
-  dedisambiguate = ( annotation, entity )->
+  dedisambiguate = ( annotationId, entity )->
     ed = editor()
-    ed.dom.removeClass annotation.id, "disambiguated"
-    ed.dom.removeClass annotation.id, "wl-#{entity.mainType}"
-    discardedItemId = ed.dom.getAttrib annotation.id, "itemid"
-    ed.dom.setAttrib annotation.id, "itemid", ""
+    ed.dom.removeClass annotationId, "disambiguated"
+    ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
+    discardedItemId = ed.dom.getAttrib annotationId, "itemid"
+    ed.dom.setAttrib annotationId, "itemid", ""
     discardedItemId
 
   # TODO refactoring with regex
@@ -1237,19 +1251,15 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   $rootScope.$on "analysisPerformed", (event, analysis) ->
     service.embedAnalysis analysis if analysis? and analysis.annotations?
   
+  # Disambiguate a single annotation or every entity related ones
+  # Discarded entities are considered too
   $rootScope.$on "entitySelected", (event, entity, annotationId) ->
-    # per tutte le annotazioni o solo per quella corrente 
-    # recupero dal testo una struttura del tipo entityId: [ annotationId ]
-    # non considero solo la entity principale, ma anche le entity modificate
-    # il numero di elementi dell'array corrisponde alle occurences
-    # l'intero oggetto va salvato sulla proprietà likendAnnotations delle entity
-    # o potrebbe sostituire occurences? Fatto questo posso gestire lo stato linked /
     discarded = []
     if annotationId?
-      discarded.push disambiguate entity.annotations[ annotationId ], entity
+      discarded.push disambiguate annotationId, entity
     else    
       for id, annotation of entity.annotations
-        discarded.push disambiguate annotation, entity
+        discarded.push disambiguate annotation.id, entity
     
     for entityId in discarded
       if entityId
@@ -1260,17 +1270,11 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
       
   $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
-    discarded = []
     if annotationId?
-      dedisambiguate entity.annotations[ annotationId ], entity
+      dedisambiguate annotationId, entity
     else
       for id, annotation of entity.annotations
-        dedisambiguate annotation, entity
-    
-    for entityId in discarded
-      if entityId
-        occurrences = currentOccurencesForEntity entityId
-        $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
+        dedisambiguate annotation.id, entity
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
@@ -1659,10 +1663,16 @@ $(
         when '4' then editor.on eventName, callback
         when '3' then editor["on#{eventName}"].add callback
 
-    # Hack wp.mce.views to prevent shorcodes rendering
-    # starts before the analysis is properly embedded
     injector.invoke(['EditorService', '$rootScope', '$log', (EditorService, $rootScope, $log) ->
 
+      # Override wp.autosave.server.postChanged method
+      # in order to avoid unexpected warning to the user
+      if wp.autosave?
+        wp.autosave.server.postChanged = ()->
+          return false
+      
+      # Hack wp.mce.views to prevent shorcodes rendering
+      # starts before the analysis is properly embedded
       # wp.mce.views uses toViews() method from WP 3.8 to 4.1
       # and setMarkers() method from WP 4.2 to 4.3 to replace
       # available shortcodes with coresponding views markup

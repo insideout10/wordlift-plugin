@@ -66,46 +66,60 @@ The Plug-in is built on **open source software**.
 
 == Frequently Asked Questions ==
 
-= Why shall I use WordLift? = 
-
-Throwing content online without context and analysis simply doesn’t work when the focus for digital news is on *interactivity*, *engagement* and *community*. <br />
-**WordLift** organizes knowledge, **reducing the complexity of content management and digital marketing operations**, letting bloggers and site owner **focus on stories and communities**. It offers meaningful *cross-media discovery* and *recommendations* that **increases content quality, exposure, trustworthiness and readership engagement**. <br />
-**WordLift** also publishes *linked data* as a new way to syndicate content and create new business models. <br />
-
-= Why is it important to organize my content and publish it as Linked Data? =
-
-Organizing web content around concepts rather than traditional web pages helps both users and machines finding and accessing it, improves **navigation**, **content re-use**, **content repurposing** and **search engine rankings**. <br /> 
-**Enriching content** with *contextual information*, *links* and *media*, from custom vocabularies and/or the wealth of **open data** available on the web, brings the user experience to a new level of engagement. <br />
-Structuring content with **richer metadata** and publishing it as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) makes it **discoverable and searchable**, providing new ways of reaching targets.
-
 = Who is WordLift for? =
 
-**WordLift** is for all *bloggers*, *journalists*, and *content creators* publishing and fighting for readers’ attention on the web. <br /> 
-Online publishers and broadcasters like BBC, Financial Times, New York Times, Washington Post, Reuters and Associated Press are investing in **dynamic semantic publishing** and use [linked open data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) to organise their news portals and content applications. <br />
+**WordLift** is for all *bloggers*, *journalists*, and *content marketers* publishing and fighting for readers’ attention on the web. <br />
+**WordLift** democratizes the field, bringing to the hands of all web content creators the technology that web publisher giants such as *Google*, *Facebook* and the *BBC* are using to organize and monetize their content. <br />
+**WordLift** helps you create richer and more engaging content, optimizes it for all search engines and efficiently organizes your content creation process, allowing you to reach and speak directly to your tribe. <br />
 
-**WordLift** democratizes the field, bringing to the hands of all web content creators and publishers the technology to efficiently organize their content creation process and reach their tribes. <br />
+= Why shall I use WordLift? = 
 
-**WordLift** helps you create your own **knowledge graph** using the same technologies that giants like *Facebook*, *IBM* and *Google* are using to monetise their vast amount of data.
+Organizing web content around an internal vocabulary rather than traditional web pages helps both users and machines finding and accessing it, improving navigation, content re-use, content repurposing, and search engine rankings. <br />
+**WordLift** **organizes** content, reducing the complexity of content management and content marketing operations, letting bloggers and site owners focus on stories and communities. <br />
+**WordLift** **enriches** your content with *contextual information*, *links*, and *media*, from custom vocabularies and/or the wealth of open data available on the web, bringing your user experience to a new level of engagement. <br />
+**WordLift** **connects** content with cross-media *discovery* and *recommendations* widgets, increasing content quality, exposure, trustworthiness and readership engagement. <br />
+**WordLift** **optimizes** content, complementing the offer of plug-ins such as *SEO Ultimate* or *Yoast*, automatically adding schema.org markups to your text, allowing all search engines to properly index your pages and deliver more traffic to your site. <br />
 
 = How does it work? =
 
 To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/#how-it-works) on our [website](https://wordlift.io). <br /> 
-**WordLift** works in subsequent stages. The first step provides a full text analysis and suggests entities and relationships to the user, classifying contents according to concepts stored in the *semantic graph* (DBpedia, Wikidata, GeoNames, etc.) and using schema.org vocabulary. Textual contents are structured: they can now be processed by machines and be connected to other datasets. Users can also create new entities, to complement the entities suggested automatically and form a proprietary vocabulary, according to the editorial plans. <br />
+**WordLift** works in subsequent stages. <br /> 
 
-**WordLift** also assists writers suggesting links, media and providing a set of powerful visualization widgets to connect and recommend alternative content. <br />
+1. The first step provides a **full text analysis** and suggests concepts and relationships found in open vocabularies (such as *DBpedia*, *Wikidata*, *GeoNames*, etc) to help writers **classify** and **enrich** their content and structure it for search engines like Google, according to schema.org vocabulary. <br /> 
 
-Finally **WordLift** provides means to record all these relationships in a graph database combining structured, semistructured and unstructured data, which allows queries like *“find all contents related to concept_y and relevant for target_z”*. <br />
+2. Writers can then create new entities, to complement the ones suggested automatically, and to be published as part of a **proprietary vocabulary**, acting both as a **reference** and a **search magnet** for their readers, according to the editorial plans. <br /> 
 
-= Why is WordLift innovative =
+3. **WordLift** also assists writers suggesting **links**, **media** and providing a set of powerful **visualization widgets** to connect and recommend alternative content, to boost readers’ engagement. <br />  
 
-**WordLift** is **first-to-market** following a **“content organization” approach** which allows the classification and direct exploitation of proprietary content and structured metadata. <br />
-**Wordlift** helps publishers create their **knowledge graph**, *exploit it* and *monetize it*. <br /> 
-Finally **WordLift** complements the offer of plug-ins such as *SEO Ultimate* or *Yoast* **automatically adding schema.org mark-ups** to content, allowing search engines to properly index pages, increasing traffic from organic searches.
+4. Finally **WordLift** provides means to record all these relationships in a graph database allowing search queries like *“find all contents related to concept_y and relevant for target_z”*. <br /> 
+
+= What are the languages supported by WordLift? =
+
+WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Français (French), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish). 
+
+= Is there a free trial? =
+
+No. We do not offer a *free trial* but your monthly subscription comes with a **14-day 100% money back guarantee**. If after two weeks you are not happy with WordLift, [contact us](mailto:support@wordlift.io) and we will refund you right away, no questions asked. <br />
+We do offer **free additional months** though, with the purchase of our 6-month or 12-month packages. [Check it out](https://wordlift.io/#plan-and-price)
 
 = Who owns the structured metadata created with WordLift? = 
 
-**You do!** We believe content creators should retain the commercial value of their content and all the data they create, and exploit it through new business models based on **content syndication**, **data-as-a-service** and a stronger **relationship with their audience**. <br />
-This is stated in our [Terms of Service](https://wordlift.io/terms-of-service) and our [Privacy Policy](https://wordlift.io/privacy/) as well!
+**You do!** We believe content creators should retain the commercial value of their content and all the data they create and exploit it through **new business models** based on **content syndication**, **data-as-a-service** and a stronger **relationship with their audience**. <br />
+You can open your datasets to the public, attaching to it a free or a commercial licence. Otherwise, use your data to feed **chat bots** on Facebook Messenger or Telegram, providing live feed updates on your activity and/or automatic customer service in real time.
+
+= What happens if I stop using WordLift? =
+
+1. If you stop paying for your subscription, but keep the plugin on your site, all the entities, metadata and pages you created with wordlift will still be available on your site - you won't be able to update it any longer, but they will still work just fine as they were at the moment you removed the key. The data you’ve created belongs to you and you can always request to us a data dump that is available in various machine-readable formats. <br />
+
+2. if you deactivate the plugin instead, the vocabulary (metadata, entity and pages) will disappear from your dashboard, but everything you created is stored in your website Database in WordPress, and you will be able to download it, transfer it or re-activate it again anytime from the plugin menu. <br />
+
+3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
+
+4. WordLift's technology is entirely open source: it takes development skills, infrastructure and some wisdom to nicely bring all the pieces together without our support. <br />
+
+5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
+
+> Find more FAQ in our [Wiki](http://docs.wordlift.it/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
 == Screenshots ==
 
@@ -120,14 +134,25 @@ This is stated in our [Terms of Service](https://wordlift.io/terms-of-service) a
 
 == Changelog ==
 
-= 3.6.0 (???) =
+= 3.6.0 (????-??-??) =
 * Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path
 
-= 3.5.2 (2016-07-06)
-* Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails
+= 3.5.4 (????-??-??) =
+* Fix: [#265](https://github.com/insideout10/wordlift-plugin/issues/265): Entity type:Person are being created before actually saving an organization's entity.
+
+= 3.5.3 (2016-08-31) =
+* Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title.
+* Fix: [#329](https://github.com/insideout10/wordlift-plugin/issues/329): Allow to disambiguate more than one occurrences for the same entity in bottom / up disambiguation mode.
+* Fix: [#333](https://github.com/insideout10/wordlift-plugin/issues/333): Germanic umlaut causing troubles when saving sameAs links.
+* Fix: [#334](https://github.com/insideout10/wordlift-plugin/issues/334): New Entities/Thing created without the sameAs attribute are duplicated as Entities/Person.
+
+= 3.5.2 (2016-07-16) =
+* Fix: [#285](https://github.com/insideout10/wordlift-plugin/issues/285): Avoid unexpected alerts after content disambiguation.
+* Fix: [#319](https://github.com/insideout10/wordlift-plugin/issues/319): Fix chord widget content filtering limit.
+* Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails.
 
 = 3.5.1 (2016-06-16) =
-* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities trashold to improve widget usability.
+* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities threshold to improve widget usability.
 
 = 3.5.0 (2016-05-16) =
 * Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
