@@ -15,6 +15,8 @@
 engines:
   phpcodesniffer:
     enabled: true
+    config:
+      standard: "Wordpress"
   fixme:
     enabled: false
 
