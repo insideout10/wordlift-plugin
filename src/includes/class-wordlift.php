@@ -262,6 +262,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
 
 		/**
+		 * The configuration service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
+
+		/**
 		 * The entity post type service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
@@ -368,11 +373,14 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
+		// Create the configuration service.
+		$configuration_service = new Wordlift_Configuration_Service();
+
 		// Create an entity type service instance. It'll be later bound to the init action.
-		$this->entity_type_service = new Wordlift_Entity_Type_Service( Wordlift_Entity_Service::TYPE_NAME, WL_ENTITY_TYPE_SLUG );
+		$this->entity_type_service = new Wordlift_Entity_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $configuration_service->get_entity_base_path() );
 
 		// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
-		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_type_service, WL_ENTITY_TYPE_SLUG );
+		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_type_service, $configuration_service->get_entity_base_path() );
 
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
