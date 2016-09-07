@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       WordLift
  * Plugin URI:        http://wordlift.it
- * Description:       Supercharge your WordPress Site with Smart Tagging and #Schemaorg support - a brand new way to write, organise and publish your contents to the Linked Data Cloud. <strong>We are currently in private beta</strong> and we're allowing a closed number of users testing the plugin. <strong>Please signup to <a href="http://join.wordlift.it">join.wordlift.it</a></strong> and we will get in contact with you anytime soon.
+ * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
  * Version:           3.6.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        http://wordlift.it

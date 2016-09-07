@@ -185,73 +185,73 @@ function wl_shortcode_geomap_ajax() {
 add_action( 'wp_ajax_wl_geomap', 'wl_shortcode_geomap_ajax' );
 add_action( 'wp_ajax_nopriv_wl_geomap', 'wl_shortcode_geomap_ajax' );
 
-/**
- * Print geomap shortcode
- *
- * @param array $atts An array of shortcode attributes.
- *
- * @return string A dom element represneting a geomap.
- */
-function wl_shortcode_geomap( $atts ) {
-
-	// Extract attributes and set default values.
-	$geomap_atts = shortcode_atts( array(
-		'width'  => '100%',
-		'height' => '300px',
-		'global' => false
-	), $atts );
-
-	// Get id of the post
-	$post_id = get_the_ID();
-
-	if ( $geomap_atts['global'] || is_null( $post_id ) ) {
-		// Global geomap
-		$geomap_id = 'wl_geomap_global';
-		$post_id   = null;
-	} else {
-		// Post-specific geomap
-		$geomap_id = 'wl_geomap_' . $post_id;
-	}
-
-	// Add leaflet css and library.
-	wp_enqueue_style(
-		'leaflet',
-		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.css'
-	);
-	wp_enqueue_script(
-		'leaflet',
-		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.js'
-	);
-
-	// Add wordlift-ui css and library.
-	wp_enqueue_style( 'wordlift-ui-css', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
-
-	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
-
-	wp_localize_script( 'wordlift-ui', 'wl_geomap_params', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' ),    // Global param
-		'action'   => 'wl_geomap'            // Global param
-	) );
-
-	// Escaping atts.
-	$esc_class   = esc_attr( 'wl-geomap' );
-	$esc_id      = esc_attr( $geomap_id );
-	$esc_width   = esc_attr( $geomap_atts['width'] );
-	$esc_height  = esc_attr( $geomap_atts['height'] );
-	$esc_post_id = esc_attr( $post_id );
-
-	// Return HTML template.
-	return <<<EOF
-<div class="$esc_class" 
-	id="$esc_id"
-	data-post-id="$esc_post_id"
-	style="width:$esc_width;
-        height:$esc_height;
-        background-color:gray
-        ">
-</div>
-EOF;
-
-}
-
-add_shortcode( 'wl_geomap', 'wl_shortcode_geomap' );
+///**
+// * Print geomap shortcode
+// *
+// * @param array $atts An array of shortcode attributes.
+// *
+// * @return string A dom element represneting a geomap.
+// */
+//function wl_shortcode_geomap( $atts ) {
+//
+//	// Extract attributes and set default values.
+//	$geomap_atts = shortcode_atts( array(
+//		'width'  => '100%',
+//		'height' => '300px',
+//		'global' => false
+//	), $atts );
+//
+//	// Get id of the post
+//	$post_id = get_the_ID();
+//
+//	if ( $geomap_atts['global'] || is_null( $post_id ) ) {
+//		// Global geomap
+//		$geomap_id = 'wl_geomap_global';
+//		$post_id   = null;
+//	} else {
+//		// Post-specific geomap
+//		$geomap_id = 'wl_geomap_' . $post_id;
+//	}
+//
+//	// Add leaflet css and library.
+//	wp_enqueue_style(
+//		'leaflet',
+//		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.css'
+//	);
+//	wp_enqueue_script(
+//		'leaflet',
+//		dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/leaflet/dist/leaflet.js'
+//	);
+//
+//	// Add wordlift-ui css and library.
+//	wp_enqueue_style( 'wordlift-ui-css', dirname( plugin_dir_url( __FILE__ ) ) . '/css/wordlift-ui.min.css' );
+//
+//	wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui.min.js', array( 'jquery' ) );
+//
+//	wp_localize_script( 'wordlift-ui', 'wl_geomap_params', array(
+//		'ajax_url' => admin_url( 'admin-ajax.php' ),    // Global param
+//		'action'   => 'wl_geomap'            // Global param
+//	) );
+//
+//	// Escaping atts.
+//	$esc_class   = esc_attr( 'wl-geomap' );
+//	$esc_id      = esc_attr( $geomap_id );
+//	$esc_width   = esc_attr( $geomap_atts['width'] );
+//	$esc_height  = esc_attr( $geomap_atts['height'] );
+//	$esc_post_id = esc_attr( $post_id );
+//
+//	// Return HTML template.
+//	return <<<EOF
+//<div class="$esc_class"
+//	id="$esc_id"
+//	data-post-id="$esc_post_id"
+//	style="width:$esc_width;
+//        height:$esc_height;
+//        background-color:gray
+//        ">
+//</div>
+//EOF;
+//
+//}
+//
+//add_shortcode( 'wl_geomap', 'wl_shortcode_geomap' );
