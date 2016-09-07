@@ -200,7 +200,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.5.3';
+		$this->version     = '3.5.4';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -338,9 +338,29 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-public.php';
 
 		/**
+		 * The shortcode abstract class.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-shortcode.php';
+
+		/**
 		 * The Timeline shortcode.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-timeline-shortcode.php';
+
+		/**
+		 * The Navigator shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-navigator-shortcode.php';
+
+		/**
+		 * The chord shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-chord-shortcode.php';
+
+		/**
+		 * The geomap shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-geomap-shortcode.php';
 
 		/**
 		 * The ShareThis service.
@@ -380,7 +400,10 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->entity_service );
 
-		// Create an instance of the Timeline shortcode.
+		// Initialize the shortcodes.
+		new Wordlift_Navigator_Shortcode();
+		new Wordlift_Chord_Shortcode();
+		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
 
 		// Create entity list customization (wp-admin/edit.php)
@@ -503,7 +526,7 @@ class Wordlift {
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
 
 		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
-		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', -PHP_INT_MAX );
+		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', - PHP_INT_MAX );
 
 	}
 

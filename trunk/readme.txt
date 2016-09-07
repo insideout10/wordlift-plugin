@@ -134,6 +134,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.5.4 (2016-09-07) =
+* Fix: [#265](https://github.com/insideout10/wordlift-plugin/issues/265): Entity type:Person are being created before actually saving an organization's entity.
+* Fix: [#336](https://github.com/insideout10/wordlift-plugin/issues/336): Navigator widget doesn't show at the end of the article unless it is also in the middle.
+
 = 3.5.3 (2016-08-31) =
 * Fix: [#262](https://github.com/insideout10/wordlift-plugin/issues/262): Posting a site URL on Google+ uses an entity title instead of the post title.
 * Fix: [#329](https://github.com/insideout10/wordlift-plugin/issues/329): Allow to disambiguate more than one occurrences for the same entity in bottom / up disambiguation mode.
