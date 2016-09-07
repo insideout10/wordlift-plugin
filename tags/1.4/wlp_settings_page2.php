@@ -1,1 +1,0 @@
-<div class="wrap"><h2><?php print WLP_PUGIN_NAME ." ". WLP_CURRENT_VERSION. "<sub>(Build ".WLP_CURRENT_BUILD.")</sub>"; ?></h2>more settings</div>
