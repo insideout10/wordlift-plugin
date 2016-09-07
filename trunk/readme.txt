@@ -5,7 +5,7 @@ Contributors: wordlift
 Tags: artificial intelligence, content recommendation, semantic editor, linked open data, structured data, knowledge graph, seo, semantic seo, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
 Requires at least: 4.2
 Tested up to: 4.5.3
-Stable tag: 3.5.3
+Stable tag: 3.5.4
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention. 
