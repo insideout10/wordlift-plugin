@@ -82,6 +82,10 @@ function _wl_content_embed_microdata( $post_id, $content ) {
  */
 function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $recursion_level = 0 ) {
 
+	// The recursion level is set by `wl_content_embed_compile_microdata_template`
+	// which is loading referenced entities and calling again this function to print
+	// additional properties. By default WordLift doesn't print more than 3 nested
+	// entities.
 	if ( $recursion_level > wl_config_get_recursion_depth() ) {
 		wl_write_log( "recursion depth limit exceeded [ level :: $recursion_level ][ max :: " . wl_config_get_recursion_depth() . " ]" );
 
