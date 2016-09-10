@@ -269,7 +269,7 @@
           if (configuration.attrs.squared_thumbs) {
             thumbClasses = 'wl-card-image wl-square';
           }
-          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"post in posts\"" + itemWrapperAttrs + ">\n      <div class=\"" + thumbClasses + "\"> \n        <span style=\"background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;\"></span>\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"post in posts track by $index\"" + itemWrapperAttrs + ">\n      <div class=\"" + thumbClasses + "\"> \n        <span style=\"background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;\"></span>\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{post.permalink}}\">{{post.post_title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
         }
       };
     }

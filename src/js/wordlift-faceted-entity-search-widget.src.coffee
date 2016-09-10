@@ -252,11 +252,11 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
     
     if configuration.attrs.squared_thumbs
       thumbClasses = 'wl-card-image wl-square'
-      
+
     """
       <div class="wl-posts">
         <div class="#{wrapperClasses}" #{wrapperAttrs}>
-          <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
+          <div class="#{itemWrapperClasses}" ng-repeat="post in posts track by $index"#{itemWrapperAttrs}>
             <div class="#{thumbClasses}"> 
               <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
             </div>

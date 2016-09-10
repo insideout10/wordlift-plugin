@@ -667,13 +667,13 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
+  $($('.wl-navigator-widget').length ? (container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n  <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n  <wl-navigator-items></wl-navigator-items>\n</div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         return DataRetrieverService.load();
       });
     }
-  ]));
+  ])) : void 0);
 
 }).call(this);
 
