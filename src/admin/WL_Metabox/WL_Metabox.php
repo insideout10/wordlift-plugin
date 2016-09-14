@@ -37,7 +37,10 @@ class WL_Metabox {
 
 		// Add hooks to print metaboxes and save submitted data.
 		add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ) );
-		add_action( 'wl_linked_data_save_post', array( &$this, 'save_form_data' ) );
+		add_action( 'wl_linked_data_save_post', array(
+			&$this,
+			'save_form_data'
+		) );
 
 		// Enqueue js and css
 		$this->enqueue_scripts_and_styles();
@@ -51,13 +54,13 @@ class WL_Metabox {
 	public function add_main_metabox() {
 
 		// Add main metabox (will print also the inner fields)
-		$id		= uniqid( 'wl-metabox-' );
-		$title	= get_the_title() . ' ' . __('properties', 'wordlift');
+		$id    = uniqid( 'wl-metabox-' );
+		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
 		add_meta_box( $id, $title, array(
 			$this,
 			'html'
 		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
-		
+
 		// Add filter to change the metabox CSS class
 		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
 	}
@@ -136,7 +139,7 @@ class WL_Metabox {
 				$info[ $key ] = $property;
 
 				// Build the requested field group as WL_Metabox_Field_ object
-				$this->add_field( $info, true );
+				$this->add_field( $info, TRUE );
 			}
 
 		}
@@ -184,7 +187,7 @@ class WL_Metabox {
 	 * @param type $args
 	 * @param type $grouped Flag to distinguish between simple and grouped Fields
 	 */
-	public function add_field( $args, $grouped = false ) {
+	public function add_field( $args, $grouped = FALSE ) {
 
 		if ( $grouped ) {
 			// Special fields (sameas, coordinates, etc.)
@@ -252,7 +255,8 @@ class WL_Metabox {
 		// dateTimePicker
 		wp_enqueue_style( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/css/jquery.datetimepicker.css' );
 		wp_enqueue_script( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
-		
+		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array( 'jquery-ui-timepicker' ) );
+
 		// Leaflet.
 		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );
 		wp_enqueue_script( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.js', __FILE__ );
