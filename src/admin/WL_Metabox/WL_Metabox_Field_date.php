@@ -62,6 +62,10 @@ EOF;
 		// Should the widget include time picker?
 		$timepicker = json_encode( $this->timepicker );
 
+		// The wlDateTimePicker is actually the xdsoft datetimepicker function
+		// which we renamed to avoid conflicts with datetime libraries installed
+		// by other WP plugins (such as the media-from-ftp plugin).
+		// see https://github.com/insideout10/wordlift-plugin/issues/340
 		$html = <<<EOF
 			<script type='text/javascript'>
 				( function( $ ) {

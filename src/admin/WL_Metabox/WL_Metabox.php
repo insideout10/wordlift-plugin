@@ -255,6 +255,9 @@ class WL_Metabox {
 		// dateTimePicker
 		wp_enqueue_style( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/css/jquery.datetimepicker.css' );
 		wp_enqueue_script( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
+
+		// We rename the xdsoft datetimepicker function name to avoid conflicts to the jQuery UI derived datetimepicker library.
+		// see https://github.com/insideout10/wordlift-plugin/issues/340
 		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array( 'jquery-ui-timepicker' ) );
 
 		// Leaflet.
