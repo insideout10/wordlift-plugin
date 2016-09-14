@@ -1403,7 +1403,6 @@ h1.wl-tab-lead-text {
   min-width: 260px;
   height: 35px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   background-color: #FFFFFF;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -1467,7 +1466,6 @@ h3.ui-sortable-handle {
   border: 1px solid #007AFF;
   padding: 3px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin-bottom: 10px;
 }
@@ -1517,7 +1515,6 @@ h3.ui-sortable-handle {
   border-bottom: 4px solid transparent;
   display: inline-block;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin: auto 5px;
 }
@@ -1615,7 +1612,6 @@ h3.ui-sortable-handle {
   height: 30px;
   padding: 4px 8px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
 .wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-input input[type=text]:focus {
@@ -1629,7 +1625,6 @@ h3.ui-sortable-handle {
   height: 200px;
   padding: 8px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   resize: none;
   overflow-y: auto;
@@ -1667,7 +1662,6 @@ h3.ui-sortable-handle {
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   padding: 5px;
   -webkit-flex-wrap: nowrap;
@@ -1765,7 +1759,6 @@ h3.ui-sortable-handle {
   margin: 2px;
   margin-right: 5px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-border-radius: 50%;
           border-radius: 50%;
@@ -2248,7 +2241,6 @@ h3.ui-sortable-handle {
   min-width: 260px;
   height: 35px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-transition: all 200ms ease-out;
           transition: all 200ms ease-out;
@@ -2351,7 +2343,6 @@ h3.ui-sortable-handle {
           flex-grow: 1;
   padding: 4px 6px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-name h3 {
@@ -2385,7 +2376,6 @@ h3.ui-sortable-handle {
   font-weight: 400;
   font-size: 11px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
 .wl-widget-classification-box .wl-widget-classification-box-entity-tile-wrap .wl-widget-classification-box-entity-tile .wl-widget-classification-box-entity-tile-occurences h4 {
@@ -2578,7 +2568,6 @@ h3.ui-sortable-handle {
   margin: 2px;
   margin-right: 5px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-border-radius: 50%;
           border-radius: 50%;
@@ -2942,7 +2931,6 @@ h3.ui-sortable-handle {
   width: 100%;
   height: 20px;
   -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
           box-sizing: border-box;
   margin: 0;
   background-color: #007AFF;
@@ -3130,11 +3118,11 @@ h3.ui-sortable-handle {
 .entity.wl-creative-work:hover,
 .entity.wl-creative-work.selected {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-creative-work .thumbnail {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-event {
   border-color: #007AFF;
@@ -3146,11 +3134,11 @@ h3.ui-sortable-handle {
 .entity.wl-event:hover,
 .entity.wl-event.selected {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-event .thumbnail {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-organization {
   border-color: #007AFF;
@@ -3162,11 +3150,11 @@ h3.ui-sortable-handle {
 .entity.wl-organization:hover,
 .entity.wl-organization.selected {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-organization .thumbnail {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-person {
   border-color: #007AFF;
@@ -3178,11 +3166,11 @@ h3.ui-sortable-handle {
 .entity.wl-person:hover,
 .entity.wl-person.selected {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-person .thumbnail {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-place {
   border-color: #007AFF;
@@ -3194,11 +3182,11 @@ h3.ui-sortable-handle {
 .entity.wl-place:hover,
 .entity.wl-place.selected {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-place .thumbnail {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-thing {
   border-color: #007AFF;
@@ -3210,11 +3198,11 @@ h3.ui-sortable-handle {
 .entity.wl-thing:hover,
 .entity.wl-thing.selected {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity.wl-thing .thumbnail {
   background-color: #007AFF;
-  color: #ffffff;
+  color: #000000;
 }
 .entity .source {
   position: absolute;
@@ -3398,37 +3386,37 @@ body#tinymce .textannotation {
 }
 body#tinymce .textannotation.wl-creative-work {
   border: 0 !important;
-  color: #ffffff;
+  color: #000000;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-event {
   border: 0 !important;
-  color: #ffffff;
+  color: #000000;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-organization {
   border: 0 !important;
-  color: #ffffff;
+  color: #000000;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-person {
   border: 0 !important;
-  color: #ffffff;
+  color: #000000;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-place {
   border: 0 !important;
-  color: #ffffff;
+  color: #000000;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-thing {
   border: 0 !important;
-  color: #ffffff;
+  color: #000000;
   background-color: #007AFF;
   vertical-align: center;
 }
