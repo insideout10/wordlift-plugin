@@ -363,6 +363,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-geomap-shortcode.php';
 
 		/**
+		 * The geomap shortcode.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-faceted-search-shortcode.php';
+
+		/**
 		 * The ShareThis service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
@@ -405,6 +410,7 @@ class Wordlift {
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
+		new Wordlift_Faceted_Search_Shortcode();
 
 		// Create entity list customization (wp-admin/edit.php)
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
