@@ -211,6 +211,14 @@ class Wordlift {
 	 */
 	private $page_service;
 
+	/**
+	 * A {@link Wordlift_Import_Service} instance.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Import_Service $import_service A {@link Wordlift_Import_Service} instance.
+	 */
+	private $import_service;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -334,6 +342,11 @@ class Wordlift {
 
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-page-service.php';
+
+		/**
+		 * The WordLift import service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-import-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -460,6 +473,9 @@ class Wordlift {
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 
 		$this->page_service = new Wordlift_Page_Service();
+
+		// Create an import service instance to hook later to WP's import function.
+		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, wl_configuration_get_redlink_dataset_uri() );
 	}
 
 	/**
@@ -542,6 +558,9 @@ class Wordlift {
 		// Hook the PrimaShop adapter to <em>prima_metabox_entity_header_args</em> in order to add header support for
 		// entities.
 		$this->loader->add_filter( 'prima_metabox_entity_header_args', $this->primashop_adapter, 'prima_metabox_entity_header_args', 10, 2 );
+
+		$this->loader->add_action( 'wp_import_post_meta', $this->import_service, 'wp_import_post_meta', 10, 3 );
+
 	}
 
 	/**
