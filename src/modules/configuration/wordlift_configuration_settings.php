@@ -253,7 +253,8 @@ function wl_configuration_get_analyzer_url() {
 	// If the WordLift Key is set, we use WordLift.
 	$key = wl_configuration_get_key();
 	if ( ! empty( $key ) ) {
-		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "analyses?key=$key";
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "analyses?key=$key"
+		       . ( defined( 'WL_EXCLUDE_IMAGES_REGEX' ) ? '&exclimage=' . urlencode( WL_EXCLUDE_IMAGES_REGEX ) : '' );
 	}
 
 	// Otherwise use Redlink.
@@ -299,7 +300,7 @@ function wl_configuration_get_accounts_by_key_dataset_uri( $key ) {
  *
  * @return string The URL to call to perform the SELECT query.
  */
-function wl_configuration_get_query_select_url( $output, $dataset = null ) {
+function wl_configuration_get_query_select_url( $output, $dataset = NULL ) {
 
 	// If the WordLift Key is set, we use WordLift.
 	$key = wl_configuration_get_key();
