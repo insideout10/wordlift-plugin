@@ -39,7 +39,7 @@ add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
  *
  * @param boolean $display_page_title If true, prints out the page title.
  */
-function wl_configuration_admin_menu_callback( $display_page_title = true ) {
+function wl_configuration_admin_menu_callback( $display_page_title = TRUE ) {
 
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -88,7 +88,8 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 			?>
 		</form>
 
-		<div style="margin-top: 100px; font-size: 10px;">The entities blocks are designed by Lukasz M. Pogoda from the
+		<div style="margin-top: 100px; font-size: 10px;">The entities blocks are
+			designed by Lukasz M. Pogoda from the
 			Noun Project
 		</div>
 	</div>
@@ -135,6 +136,33 @@ function wl_configuration_settings() {
 		)
 	);
 
+
+	// Entity Base Path input.
+
+	$entity_base_path_args = array(                              // The array of arguments to pass to the callback. In this case, just a description.
+		'id'          => 'wl-entity-base-path',
+		'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
+		'value'       => Wordlift_Configuration_Service::get_instance()
+		                                               ->get_entity_base_path(),
+		'description' => __( 'Insert the Entity Base Path', 'wordlift' ),
+	);
+
+	if ( Wordlift_Entity_Service::get_instance()->count() ) {
+		// Mark the field readonly, the value can be anything.
+		$entity_base_path_args['readonly'] = '';
+	}
+
+	add_settings_field(
+		Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY,             // ID used to identify the field throughout the theme
+		__( 'Entity Base Path', 'wordlift' ),   // The label to the left of the option interface element
+		'wl_configuration_input_box',       // The name of the function responsible for rendering the option interface
+		'wl_general_settings',         // The page on which this option will be displayed
+		'wl_general_settings_section',      // The name of the section to which this field belongs
+		$entity_base_path_args
+	);
+
+	// Site Language input.
+
 	add_settings_field(
 		WL_CONFIG_SITE_LANGUAGE_NAME,
 		__( 'Site Language', 'wordlift' ),
@@ -149,7 +177,6 @@ function wl_configuration_settings() {
 			'options'     => wl_configuration_get_languages()
 		)
 	);
-
 
 	if ( defined( 'WL_ENABLE_ADVANCED_CONFIGURATION' ) && WL_ENABLE_ADVANCED_CONFIGURATION ) {
 
@@ -305,10 +332,11 @@ function wl_configuration_sanitize_settings( $input ) {
  */
 function wl_configuration_input_box( $args ) {
 	?>
-
 	<input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
 	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="<?php echo esc_attr( $args['value'] ); ?>"/>
+	       value="<?php echo esc_attr( $args['value'] ); ?>"
+	       <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
+	/>
 
 	<?php
 }
@@ -326,7 +354,8 @@ function wl_configuration_select( $args ) {
 	<select id="<?php echo esc_attr( $args['id'] ); ?>"
 	        name="<?php echo esc_attr( $args['name'] ); ?>">
 		<?php foreach ( $args['options'] as $value => $label ) { ?>
-			<option value="<?php echo esc_attr( $value ); ?>" <?php if ( $args['value'] === $value ) {
+			<option
+				value="<?php echo esc_attr( $value ); ?>" <?php if ( $args['value'] === $value ) {
 				echo 'selected';
 			}
 			?>><?php echo esc_html( $label ); ?></option>
@@ -348,7 +377,7 @@ function wl_configuration_checkbox( $args ) {
 
 	<input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
 	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="1" <?php checked( 1, $args['value'], true ); ?>/>
+	       value="1" <?php checked( 1, $args['value'], TRUE ); ?>/>
 
 	<?php
 }
@@ -365,7 +394,7 @@ function wl_configuration_checkbox( $args ) {
 function wl_configuration_settings_links( $links ) {
 
 	// TODO: this link is different within SEO Ultimate.
-	array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
+	array_push( $links, '<a href="' . get_admin_url( NULL, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
 
 	return $links;
 }
@@ -389,8 +418,8 @@ function wl_configuration_get_languages() {
 	// set the path to the language file.
 	$filename = dirname( __FILE__ ) . '/ISO-639-2_utf-8.txt';
 
-	if ( ( $handle = fopen( $filename, 'r' ) ) !== false ) {
-		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== false ) {
+	if ( ( $handle = fopen( $filename, 'r' ) ) !== FALSE ) {
+		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== FALSE ) {
 			if ( ! empty( $data[2] ) ) {
 				$code           = $data[2];
 				$label          = htmlentities( $data[3] );
@@ -437,13 +466,15 @@ function wl_configuration_validate() {
 	// Check that the WordLift key has been set or show a notice.
 	if ( '' === wl_configuration_get_key() ) {
 		Wordlift_Notice_Service::get_instance()
-	                       ->add_error( sprintf( __( 'application-key-not-set', 'wordlift' ), 'http://join.wordlift.it' ) );
+		                       ->add_error( sprintf( __( 'application-key-not-set', 'wordlift' ), 'http://join.wordlift.it' ) );
+
 		return;
 	}
 
 	if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
 		Wordlift_Notice_Service::get_instance()
-	                       ->add_error( __( 'Dataset URI missing in configuration', 'wordlift' ) );
+		                       ->add_error( __( 'Dataset URI missing in configuration', 'wordlift' ) );
+
 		return;
 	}
 
@@ -490,7 +521,7 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 		wl_configuration_set_redlink_dataset_uri( $response['body'] );
 
 	} else {
-		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, true ) . " ]" );
+		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, TRUE ) . " ]" );
 	}
 
 }

@@ -1,8 +1,5 @@
 <?php
 
-// Define the default entity type slug if it's not defined already. The entity type slug is used in permalinks.
-defined( 'WL_ENTITY_TYPE_SLUG' ) || define( 'WL_ENTITY_TYPE_SLUG', Wordlift_Entity_Service::TYPE_NAME );
-
 /**
  * Provide entity-related services.
  *
@@ -827,6 +824,20 @@ class Wordlift_Entity_Service {
 	private function get_alternative_label_input( $value = '' ) {
 
 		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
+	}
+
+	/**
+	 * Get the number of entity posts published in this blog.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @return int The number of published entity posts.
+	 */
+	public function count() {
+
+		$count = wp_count_posts( self::TYPE_NAME );
+
+		return $count->publish;
 	}
 
 }
