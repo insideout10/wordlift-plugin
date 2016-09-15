@@ -750,6 +750,39 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
+	 * Get the URI for the entity with the specified post id.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @param int $post_id The entity post id.
+	 *
+	 * @return null|string The entity URI or NULL if not found or the dataset URI is not configured.
+	 */
+	public function get_uri( $post_id ) {
+
+		// If a null is given, nothing to do
+		if ( NULL == $post_id ) {
+			return NULL;
+		}
+
+		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, TRUE );
+
+		// If the dataset uri is not properly configured, null is returned
+		if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
+			return NULL;
+		}
+
+		// Set the URI if it isn't set yet.
+		$post_status = get_post_status( $post_id );
+		if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
+			$uri = wl_build_entity_uri( $post_id );
+			wl_set_entity_uri( $post_id, $uri );
+		}
+
+		return $uri;
+	}
+
+	/**
 	 * Get as rating as input and convert in a traffic-light rating
 	 *
 	 * @since 3.3.0
@@ -795,4 +828,5 @@ class Wordlift_Entity_Service {
 
 		return sprintf( self::ALTERNATIVE_LABEL_INPUT_TEMPLATE, esc_attr( $value ), __( 'Delete', 'wordlift' ) );
 	}
+
 }

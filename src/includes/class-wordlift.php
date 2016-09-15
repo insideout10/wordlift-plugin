@@ -212,6 +212,15 @@ class Wordlift {
 	private $page_service;
 
 	/**
+	 * A {@link Wordlift_Sparql_Service} instance.
+	 *
+	 * @var 3.6.0
+	 * @access private
+	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
+	 */
+	private $sparql_service;
+
+	/**
 	 * A {@link Wordlift_Import_Service} instance.
 	 *
 	 * @since 3.6.0
@@ -344,6 +353,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-page-service.php';
 
 		/**
+		 * The SPARQL service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sparql-service.php';
+
+		/**
 		 * The WordLift import service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-import-service.php';
@@ -474,8 +488,10 @@ class Wordlift {
 
 		$this->page_service = new Wordlift_Page_Service();
 
+		$this->sparql_service = new Wordlift_Sparql_Service();
+
 		// Create an import service instance to hook later to WP's import function.
-		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, wl_configuration_get_redlink_dataset_uri() );
+		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
 	}
 
 	/**
@@ -559,7 +575,13 @@ class Wordlift {
 		// entities.
 		$this->loader->add_filter( 'prima_metabox_entity_header_args', $this->primashop_adapter, 'prima_metabox_entity_header_args', 10, 2 );
 
-		$this->loader->add_action( 'wp_import_post_meta', $this->import_service, 'wp_import_post_meta', 10, 3 );
+		// Filter imported post meta.
+		$this->loader->add_filter( 'wp_import_post_meta', $this->import_service, 'wp_import_post_meta', 10, 3 );
+
+		// Notify the import service when an import starts and ends.
+		$this->loader->add_action( 'import_start', $this->import_service, 'import_start', 10, 0 );
+		$this->loader->add_action( 'import_end', $this->import_service, 'import_end', 10, 0 );
+
 
 	}
 

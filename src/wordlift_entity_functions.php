@@ -59,30 +59,32 @@ function wl_build_entity_uri( $post_id ) {
 	// Get the post.
 	$post = get_post( $post_id );
 
-	if ( null === $post ) {
+	if ( NULL === $post ) {
 		wl_write_log( "wl_build_entity_uri : error [ post ID :: $post_id ][ post :: null ]" );
-		return null;
+
+		return NULL;
 	}
 
 	// Create an ID given the title.
 	$entity_slug = wl_sanitize_uri_path( $post->post_title );
 	// If the entity slug is empty, i.e. there's no title, use the post ID as path.
 	if ( empty( $entity_slug ) ) {
-		return sprintf( '%s/%s/%s', 
-			wl_configuration_get_redlink_dataset_uri(), 
-			$post->post_type, 
-			"id/$post->ID" 
-		); 
+		return sprintf( '%s/%s/%s',
+			wl_configuration_get_redlink_dataset_uri(),
+			$post->post_type,
+			"id/$post->ID"
+		);
 	}
-	
-	return Wordlift_Entity_Service::get_instance()->build_uri( 
-		$entity_slug, 
+
+	return Wordlift_Entity_Service::get_instance()->build_uri(
+		$entity_slug,
 		$post->post_type );
 
 }
 
 /**
  * Get the entity URI of the provided post.
+ * @deprecated use Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
  *
  * @uses wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
  * @uses wl_set_entity_uri() to set a newly create URI.
@@ -93,26 +95,7 @@ function wl_build_entity_uri( $post_id ) {
  */
 function wl_get_entity_uri( $post_id ) {
 
-	// If a null is given, nothing to do
-	if ( null == $post_id ) {
-		return null;
-	}
-
-	$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
-
-	// If the dataset uri is not properly configured, null is returned
-	if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
-		return null;
-	}
-
-	// Set the URI if it isn't set yet.
-	$post_status = get_post_status( $post_id );
-	if ( empty( $uri ) && 'auto-draft' !== $post_status && 'revision' !== $post_status ) {
-		$uri = wl_build_entity_uri( $post_id ); 
-		wl_set_entity_uri( $post_id, $uri );
-	}
-
-	return $uri;
+	return Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
 }
 
 /**
@@ -181,7 +164,7 @@ function wl_get_meta_type( $property_name ) {
 
 	// Property name must be defined.
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
-		return null;
+		return NULL;
 	}
 
 	// store eventual schema name in  different variable
@@ -205,7 +188,7 @@ function wl_get_meta_type( $property_name ) {
 		}
 	}
 
-	return null;
+	return NULL;
 }
 
 /**
@@ -220,7 +203,7 @@ function wl_get_meta_constraints( $property_name ) {
 
 	// Property name must be defined.
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
-		return null;
+		return NULL;
 	}
 
 	// store eventual schema name in  different variable
@@ -242,7 +225,7 @@ function wl_get_meta_constraints( $property_name ) {
 		}
 	}
 
-	return null;
+	return NULL;
 }
 
 /**
@@ -252,7 +235,7 @@ function wl_get_meta_constraints( $property_name ) {
  *
  * @return array|null if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
  */
-function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
+function wl_entity_taxonomy_get_custom_fields( $entity_id = NULL ) {
 
 	if ( is_null( $entity_id ) ) {
 
@@ -261,13 +244,14 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
 
 		if ( is_wp_error( $terms ) ) {
-			return null;
+			return NULL;
 		}
 
 		$custom_fields = array();
 		foreach ( $terms as $term ) {
 			// Get custom_fields
-			$term_options                          = Wordlift_Schema_Service::get_instance()->get_schema( $term->slug );
+			$term_options                          = Wordlift_Schema_Service::get_instance()
+			                                                                ->get_schema( $term->slug );
 			$custom_fields[ $term_options['uri'] ] = $term_options['custom_fields'];
 		}
 

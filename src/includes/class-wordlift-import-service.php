@@ -31,6 +31,26 @@ class Wordlift_Import_Service {
 	private $entity_type_service;
 
 	/**
+	 * The entity service instance.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The entity service instance.
+	 */
+	private $entity_service;
+
+	/**
+	 * The schema service instance.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $schema_service The schema service instance.
+	 */
+	private $schema_service;
+
+	private $sparql_service;
+
+	/**
 	 * The dataset URI for this WordPress web site.
 	 *
 	 * @since 3.6.0
@@ -44,14 +64,22 @@ class Wordlift_Import_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param $entity_type_service
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service
+	 * @param \Wordlift_Entity_Service $entity_service
+	 * @param \Wordlift_Schema_Service $schema_service
+	 * @param \Wordlift_Sparql_Service $sparql_service
+	 * @param string $dataset_uri
 	 */
-	public function __construct( $entity_type_service, $dataset_uri ) {
+	public function __construct( $entity_type_service, $entity_service, $schema_service, $sparql_service, $dataset_uri ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Import_Service' );
 
 		$this->entity_type_service = $entity_type_service;
+		$this->entity_service      = $entity_service;
+		$this->schema_service      = $schema_service;
+		$this->sparql_service      = $sparql_service;
 		$this->dataset_uri         = $dataset_uri;
+
 	}
 
 	/**
@@ -96,6 +124,69 @@ class Wordlift_Import_Service {
 		$entity_url_meta['key'] = 'entity_same_as';
 
 		return $postmeta;
+	}
+
+	/**
+	 * Catch post meta updates.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @param int $mid The meta ID after successful update.
+	 * @param int $object_id Object ID.
+	 * @param string $meta_key Meta key.
+	 * @param mixed $meta_value Meta value.
+	 */
+	public function added_post_meta( $mid, $object_id, $meta_key, $meta_value ) {
+
+		// Get the entity URI.
+		$s = $this->entity_service->get_uri( $object_id );
+
+		// Get the field with the specified meta key. Return if the field is not defined.
+		if ( NULL === ( $field = $this->schema_service->get_field( $meta_key ) ) ) {
+			return;
+		}
+
+		// Get the field predicate.
+		$p = $field['predicate'];
+
+		// Format the object value according to the field type.
+		$o = $this->sparql_service->format( $meta_value, $field['type'] );
+
+		// Create the statement.
+		$stmt = sprintf( 'INSERT DATA { <%s> <%s> %s };', $this->sparql_service->escape_uri( $s ), $this->sparql_service->escape_uri( $p ), $o );
+
+		// Finally queue the statement.
+		$this->sparql_service->queue( $stmt );
+
+	}
+
+	/**
+	 * When an import is running, hook the {@link added_post_meta} function in order
+	 * to insert metadata from an import in Linked Data.
+	 *
+	 * @since 3.6.0
+	 */
+	public function import_start() {
+
+		add_action( 'added_post_meta', array(
+			$this,
+			'added_post_meta'
+		), 10, 4 );
+
+	}
+
+	/**
+	 * When an import ends, remove the hook previously added by {@link import_start}.
+	 *
+	 * @since 3.6.0
+	 */
+	public function import_end() {
+
+		remove_action( 'added_post_meta', array(
+			$this,
+			'added_post_meta'
+		), 10 );
+
 	}
 
 }

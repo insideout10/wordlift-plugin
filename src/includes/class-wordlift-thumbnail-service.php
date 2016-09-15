@@ -90,7 +90,7 @@ class Wordlift_Thumbnail_Service {
 	 */
 	public function added_or_updated_post_meta( $mid, $object_id, $meta_key, $_meta_value ) {
 
-		$this->log_service->trace( "A post meta has been updated [ meta id :: $mid ][ object id :: $object_id ][ meta key :: $meta_key ][ meta value :: " . var_export( $_meta_value, true ) . " ]" );
+		// $this->log_service->trace( "A post meta has been updated [ meta id :: $mid ][ object id :: $object_id ][ meta key :: $meta_key ][ meta value :: " . var_export( $_meta_value, true ) . " ]" );
 
 		// Return if it's not the Thumbnail id meta key.
 		if ( self::THUMBNAIL_ID_META_KEY !== $meta_key ) {

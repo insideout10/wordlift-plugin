@@ -32,7 +32,8 @@ function wl_push_post_to_redlink( $post ) {
 	$site_language = wl_configuration_get_site_language();
 
 	// save the author and get the author URI.
-	$author_uri = wl_sparql_escape_uri( Wordlift_User_Service::get_instance()->get_uri( $post->post_author ) );
+	$author_uri = wl_sparql_escape_uri( Wordlift_User_Service::get_instance()
+	                                                         ->get_uri( $post->post_author ) );
 
 	// Get other post properties.
 	$date_published      = wl_get_sparql_time( get_the_time( 'c', $post ) );
@@ -55,31 +56,31 @@ function wl_push_post_to_redlink( $post ) {
 	$sparql .= "<$uri> schema:dateModified $date_modified . \n";
 
 	// Add Location Created
-	$location_created_entity_id = get_post_meta( 
-		$post->ID,  Wordlift_Schema_Service::FIELD_LOCATION_CREATED, true 
+	$location_created_entity_id = get_post_meta(
+		$post->ID, Wordlift_Schema_Service::FIELD_LOCATION_CREATED, TRUE
 	);
-	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $location_created_entity_id ]" );		
+	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $location_created_entity_id ]" );
 	if ( $location_created_entity_id ) {
 		$escaped_uri = wl_sparql_escape_uri( wl_get_entity_uri( $location_created_entity_id ) );
 		wl_write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ locationCreated :: $escaped_uri ]" );
 		$sparql .= "<$uri> schema:locationCreated <$escaped_uri> . \n";
 	}
 	// Add Topic
-	$topic_entity_id = get_post_meta( 
-		$post->ID,  Wordlift_Schema_Service::FIELD_TOPIC, true 
+	$topic_entity_id = get_post_meta(
+		$post->ID, Wordlift_Schema_Service::FIELD_TOPIC, TRUE
 	);
-	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $topic_entity_id ]" );		
+	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $topic_entity_id ]" );
 
 	if ( $topic_entity_id ) {
 		$escaped_uri = wl_sparql_escape_uri( wl_get_entity_uri( $topic_entity_id ) );
 		wl_write_log( "wl_push_post_to_redlink [ post_id :: $post->ID ][ topic :: $escaped_uri ]" );
 		$sparql .= "<$uri> dct:subject <$escaped_uri> . \n";
 	}
-			
+
 	if ( ! empty( $author_uri ) ) {
 		$sparql .= "<$uri> schema:author <$author_uri> . \n";
 	}
-	
+
 	$sparql .= "<$uri> schema:interactionCount 'UserComments:$user_comments_count' . \n";
 
 
@@ -206,7 +207,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	$main_type = wl_entity_type_taxonomy_get_type( $entity_post->ID );
 
-	if ( null != $main_type ) {
+	if ( NULL != $main_type ) {
 		$main_type_uri = wl_sparql_escape_uri( $main_type['uri'] );
 		$sparql .= " <$uri_e> a <$main_type_uri> . \n";
 
@@ -224,7 +225,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				$predicate = wordlift_esc_sparql( $settings['predicate'] );
 				if ( ! isset( $settings['export_type'] ) || empty( $settings['export_type'] ) ) {
-					$type = null;
+					$type = NULL;
 				} else {
 					$type = $settings['export_type'];
 				}
@@ -335,35 +336,21 @@ function rl_sparql_prefixes() {
 /**
  * Escape a sparql literal.
  *
+ * @deprecated use Wordlift_Sparql_Service::get_instance()->escape( $string )
+ *
  * @param string $string The string to escape.
  *
  * @return string The escaped string.
  */
 function wordlift_esc_sparql( $string ) {
-	// see http://www.w3.org/TR/rdf-sparql-query/
-	//    '\t'	U+0009 (tab)
-	//    '\n'	U+000A (line feed)
-	//    '\r'	U+000D (carriage return)
-	//    '\b'	U+0008 (backspace)
-	//    '\f'	U+000C (form feed)
-	//    '\"'	U+0022 (quotation mark, double quote mark)
-	//    "\'"	U+0027 (apostrophe-quote, single quote mark)
-	//    '\\'	U+005C (backslash)
 
-	$string = str_replace( '\\', '\\\\', $string );
-	$string = str_replace( '\'', '\\\'', $string );
-	$string = str_replace( '"', '\\"', $string );
-	$string = str_replace( "\f", '\\f', $string );
-	$string = str_replace( "\b", '\\b', $string );
-	$string = str_replace( "\r", '\\r', $string );
-	$string = str_replace( "\n", '\\n', $string );
-	$string = str_replace( "\t", '\\t', $string );
-
-	return $string;
+	return Wordlift_Sparql_Service::get_instance()->escape( $string );
 }
 
 /**
  * Escapes an URI for a SPARQL query.
+ *
+ * @deprecated use return Wordlift_Sparql_Service::get_instance()->escape_uri($string)
  *
  * @since 3.0.0
  *
@@ -373,14 +360,7 @@ function wordlift_esc_sparql( $string ) {
  */
 function wl_sparql_escape_uri( $string ) {
 
-	// Should we validate the IRI?
-	// http://www.w3.org/TR/sparql11-query/#QSynIRI
-
-	$string = str_replace( '<', '\<', $string );
-	$string = str_replace( '>', '\>', $string );
-
-	return $string;
-
+	return Wordlift_Sparql_Service::get_instance()->escape_uri( $string );
 }
 
 /**
@@ -408,15 +388,15 @@ function wordlift_reindex_triple_store() {
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
 		wl_write_log( "wordlift_reindex_triple_store : error [ url :: $url ][ args :: " );
-		wl_write_log( "\n" . var_export( $args, true ) );
+		wl_write_log( "\n" . var_export( $args, TRUE ) );
 		wl_write_log( "[ response :: " );
-		wl_write_log( "\n" . var_export( $response, true ) );
+		wl_write_log( "\n" . var_export( $response, TRUE ) );
 		wl_write_log( "][ body :: " );
 		wl_write_log( "\n" . $body );
 		wl_write_log( "]" );
 
-		return false;
+		return FALSE;
 	}
 
-	return true;
+	return TRUE;
 }

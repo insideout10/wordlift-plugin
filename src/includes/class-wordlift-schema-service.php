@@ -104,22 +104,22 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	const FIELD_ADDRESS = 'wl_address';
-	
+
 	/**
 	 * The 'postOfficeBoxNumber' field name.
 	 *
 	 * @since 3.3.0
 	 */
 	const FIELD_ADDRESS_PO_BOX = 'wl_address_post_office_box';
-	
-		/**
+
+	/**
 	 * The 'postalCode' field name.
 	 *
 	 * @since 3.3.0
 	 */
 	const FIELD_ADDRESS_POSTAL_CODE = 'wl_address_postal_code';
-	
-		/**
+
+	/**
 	 * The 'addressLocality' field name.
 	 *
 	 * @since 3.3.0
@@ -131,7 +131,7 @@ class Wordlift_Schema_Service {
 	 * @since 3.3.0
 	 */
 	const FIELD_ADDRESS_REGION = 'wl_address_region';
-	
+
 	/**
 	 * The 'addressCountry' field name.
 	 *
@@ -145,14 +145,14 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	const FIELD_ENTITY_TYPE = 'wl_entity_type_uri';
-	
+
 	/**
 	 * The 'email' field name.
 	 *
 	 * @since 3.2.0
 	 */
 	const FIELD_EMAIL = 'wl_email';
-	
+
 	/**
 	 * The 'affiliation' field name.
 	 *
@@ -275,6 +275,36 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
+	 * Get the properties for a field with the specified key. The key is used as
+	 * meta key when the field's value is stored in WordPress meta data table.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @param string $key The field's key.
+	 *
+	 * @return null|array An array of field's properties or null if the field is not found.
+	 */
+	public function get_field( $key ) {
+
+		// Parse each schema's fields until we find the one we're looking for, then
+		// return its properties.
+		foreach ( $this->schema as $_ => $schema ) {
+
+			if ( ! isset( $schema['custom_fields'] ) ) {
+				break;
+			}
+
+			foreach ( $schema['custom_fields'] as $field => $props ) {
+				if ( $key === $field ) {
+					return $props;
+				}
+			}
+		}
+
+		return NULL;
+	}
+
+	/**
 	 * Get the WordLift's schema.
 	 *
 	 * @param string $name The schema name.
@@ -289,7 +319,7 @@ class Wordlift_Schema_Service {
 
 		// Check if the schema exists and, if not, return NULL.
 		if ( ! isset( $this->schema[ $name ] ) ) {
-			return null;
+			return NULL;
 		}
 
 		// Return the requested schema.
@@ -308,11 +338,12 @@ class Wordlift_Schema_Service {
 	public function get_schema_by_uri( $uri ) {
 
 		foreach ( $this->schema as $name => $schema ) {
-			if ( $schema[ 'uri' ] === $uri ) {
+			if ( $schema['uri'] === $uri ) {
 				return $schema;
 			}
 		}
-		return null;
+
+		return NULL;
 
 		// Return the requested schema.
 		return $this->schema[ $name ];
@@ -330,7 +361,8 @@ class Wordlift_Schema_Service {
 		return array(
 			'css_class'          => 'wl-thing',
 			'uri'                => 'http://schema.org/Thing',
-			'same_as'            => array( '*' ), // set as default.
+			'same_as'            => array( '*' ),
+			// set as default.
 			'custom_fields'      => array(
 				self::FIELD_SAME_AS => array(
 					'predicate'   => 'http://schema.org/sameAs',
@@ -364,7 +396,8 @@ class Wordlift_Schema_Service {
 		$schema = array(
 			'label'              => 'CreativeWork',
 			'description'        => 'A creative work (or a Music Album).',
-			'parents'            => array( 'thing' ), // give term slug as parent
+			'parents'            => array( 'thing' ),
+			// give term slug as parent
 			'css_class'          => 'wl-creative-work',
 			'uri'                => 'http://schema.org/CreativeWork',
 			'same_as'            => array(
@@ -471,7 +504,7 @@ class Wordlift_Schema_Service {
 				'http://schema.org/Newspaper'
 			),
 			'custom_fields'      => array(
-				self::FIELD_FOUNDER => array(
+				self::FIELD_FOUNDER             => array(
 					'predicate'   => 'http://schema.org/founder',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Person',
@@ -480,49 +513,49 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF
 					)
 				),
-				self::FIELD_ADDRESS       => array(
+				self::FIELD_ADDRESS             => array(
 					'predicate'   => 'http://schema.org/streetAddress',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_PO_BOX => array(
+				self::FIELD_ADDRESS_PO_BOX      => array(
 					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_POSTAL_CODE       => array(
+				self::FIELD_ADDRESS_POSTAL_CODE => array(
 					'predicate'   => 'http://schema.org/postalCode',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_LOCALITY       => array(
+				self::FIELD_ADDRESS_LOCALITY    => array(
 					'predicate'   => 'http://schema.org/addressLocality',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_REGION       => array(
+				self::FIELD_ADDRESS_REGION      => array(
 					'predicate'   => 'http://schema.org/addressRegion',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_COUNTRY       => array(
+				self::FIELD_ADDRESS_COUNTRY     => array(
 					'predicate'   => 'http://schema.org/addressCountry',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_EMAIL => array(
+				self::FIELD_EMAIL               => array(
 					'predicate'   => 'http://schema.org/email',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -595,11 +628,14 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Organization',
 					'constraints' => array(
-						'uri_type' => array( 'Organization', 'LocalBusiness' ),
+						'uri_type'    => array(
+							'Organization',
+							'LocalBusiness'
+						),
 						'cardinality' => INF
 					)
 				),
-				self::FIELD_EMAIL => array(
+				self::FIELD_EMAIL       => array(
 					'predicate'   => 'http://schema.org/email',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -647,62 +683,62 @@ class Wordlift_Schema_Service {
 				'http://www.opengis.net/gml/_Feature'
 			),
 			'custom_fields'      => array(
-				self::FIELD_GEO_LATITUDE  => array(
+				self::FIELD_GEO_LATITUDE        => array(
 					'predicate'   => 'http://schema.org/latitude',
 					'type'        => self::DATA_TYPE_DOUBLE,
 					'export_type' => 'xsd:double',
 					'constraints' => '',
 					'input_field' => 'coordinates'   // to build custom metabox
 				),
-				self::FIELD_GEO_LONGITUDE => array(
+				self::FIELD_GEO_LONGITUDE       => array(
 					'predicate'   => 'http://schema.org/longitude',
 					'type'        => self::DATA_TYPE_DOUBLE,
 					'export_type' => 'xsd:double',
 					'constraints' => '',
 					'input_field' => 'coordinates'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS       => array(
+				self::FIELD_ADDRESS             => array(
 					'predicate'   => 'http://schema.org/streetAddress',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_PO_BOX => array(
+				self::FIELD_ADDRESS_PO_BOX      => array(
 					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_POSTAL_CODE       => array(
+				self::FIELD_ADDRESS_POSTAL_CODE => array(
 					'predicate'   => 'http://schema.org/postalCode',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_LOCALITY       => array(
+				self::FIELD_ADDRESS_LOCALITY    => array(
 					'predicate'   => 'http://schema.org/addressLocality',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_REGION       => array(
+				self::FIELD_ADDRESS_REGION      => array(
 					'predicate'   => 'http://schema.org/addressRegion',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
 				),
-				self::FIELD_ADDRESS_COUNTRY       => array(
+				self::FIELD_ADDRESS_COUNTRY     => array(
 					'predicate'   => 'http://schema.org/addressCountry',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
-				)				
+				)
 			),
 			'microdata_template' =>
 				'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
