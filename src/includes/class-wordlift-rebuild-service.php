@@ -59,6 +59,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	public function rebuild() {
 
+		// Give ourselves some time to process the data.
+		set_time_limit( 21600 ); // 6 hours
+
 		// Clear out all generated URIs, since the dataset URI might have changed
 		// in the process.
 		$this->uri_service->delete_all();
@@ -77,6 +80,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'post_status' => 'publish',
 			'post_type'   => array( 'entity', 'post' )
 		) );
+
+		// If we're being called as AJAX, die here.
+		if ( DOING_AJAX ) {
+			wp_die();
+		}
 
 	}
 
