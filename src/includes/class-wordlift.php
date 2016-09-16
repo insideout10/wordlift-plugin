@@ -230,6 +230,15 @@ class Wordlift {
 	private $import_service;
 
 	/**
+	 * A {@link Wordlift_Rebuild_Service} instance.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Rebuild_Service $rebuild_service A {@link Wordlift_Rebuild_Service} instance.
+	 */
+	private $rebuild_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -367,6 +376,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-import-service.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-listable.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rebuild-service.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -500,6 +512,9 @@ class Wordlift {
 
 		// Create an import service instance to hook later to WP's import function.
 		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
+
+		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
+		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $GLOBALS['wpdb'] );
 	}
 
 	/**
@@ -590,6 +605,8 @@ class Wordlift {
 		$this->loader->add_action( 'import_start', $this->import_service, 'import_start', 10, 0 );
 		$this->loader->add_action( 'import_end', $this->import_service, 'import_end', 10, 0 );
 
+		// Hook the AJAX wl_rebuild action to the Rebuild Service.
+		$this->loader->add_action( 'wp_ajax_wl_rebuild', $this->rebuild_service, 'rebuild' );
 
 	}
 
