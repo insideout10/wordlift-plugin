@@ -13,6 +13,13 @@
  */
 class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
+	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
 	private $log;
 
 	/**
@@ -24,29 +31,24 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	private $sparql_service;
 
 	/**
-	 * The global WordPress database connection.
-	 *
-	 * @since 3.6.0
-	 * @access private
-	 * @var \wpdb $wpdb The global WordPress database connection.
+	 * @var \Wordlift_Uri_Service
 	 */
-	private $wpdb;
+	private $uri_service;
 
 	/**
-	 * Wordlift_Rebuild_Service constructor.
+	 * Create an instance of Wordlift_Rebuild_Service.
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param \Wordlift_Sparql_Service $sparql_service
-	 * @param wpdb $wpdb The global WordPress database connection.
+	 * @param \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
+	 * @param \Wordlift_Uri_Service $uri_service
 	 */
-	public function __construct( $sparql_service, $wpdb ) {
+	public function __construct( $sparql_service, $uri_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Rebuild_Service' );
 
 		$this->sparql_service = $sparql_service;
-		$this->wpdb           = $wpdb;
-
+		$this->uri_service    = $uri_service;
 	}
 
 	/**
@@ -57,12 +59,18 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	public function rebuild() {
 
+		// Clear out all generated URIs, since the dataset URI might have changed
+		// in the process.
+		$this->uri_service->delete_all();
+
+		// Delete all the triples in the remote dataset.
 		$this->sparql_service->queue( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
 
-		// Clear out all local entity URIs.
-		$this->delete_entity_uris();
-
-		// Parse entities.
+		// Go through the list of published entities and posts and call the (legacy)
+		// `wl_linked_data_save_post` function for each one. We're using the `process`
+		// function which is provided by the parent `Wordlift_Listable` abstract class
+		// and will cycle through all the posts w/ a very small memory footprint
+		// in order to avoid memory errors.
 		$this->process( function ( $post ) {
 			wl_linked_data_save_post( $post->ID );
 		}, array(
@@ -72,18 +80,10 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 	}
 
-	private function delete_entity_uris() {
-
-		$count = $this->wpdb->delete( $this->wpdb->postmeta, array( 'meta_key' => 'entity_url' ) );
-
-		$this->log->info( "$count entity URI(s) deleted." );
-
-		$count = $this->wpdb->delete( $this->wpdb->usermeta, array( 'meta_key' => '_wl_uri' ) );
-
-	}
-
 	/**
 	 * List the items starting at the specified offset and up to the specified limit.
+	 *
+	 * @since 3.6.0
 	 *
 	 * @param int $offset The start offset.
 	 * @param int $limit The maximum number of items to return.
@@ -103,4 +103,5 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'post_type'   => 'post'
 		) ) );
 	}
+
 }

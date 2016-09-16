@@ -376,7 +376,16 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-import-service.php';
 
+		/**
+		 * The WordLift URI service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-uri-service.php';
+
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-listable.php';
+
+		/**
+		 * The WordLift rebuild service, used to rebuild the remote dataset using the local data.
+		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rebuild-service.php';
 
 		/**
@@ -513,8 +522,10 @@ class Wordlift {
 		// Create an import service instance to hook later to WP's import function.
 		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
 
+		$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
+
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
-		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $GLOBALS['wpdb'] );
+		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 	}
 
 	/**
