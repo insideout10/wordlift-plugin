@@ -51,28 +51,30 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 	}
 
 	// Now search in the text entity mentions
-	$regex   = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+	$regex = '/<(\\w+)[^<]* id=\"([^"]+)\" class=\"([^"]+)\" itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+	
 	$matches = array();
 
 	// Return the content if not item IDs have been found.
 	if ( false === preg_match_all( $regex, $content, $matches, PREG_SET_ORDER ) ) {
 		return $content;
 	}
-
-	#$is_blind = ( preg_match( '/'. WL_BLIND_ANNOTATION_CSS_CLASS .'/', $match[2] ) ) ? TRUE : FALSE;
-		
 	
-	// Retrive item_ids removing deuplicates
+	// Retrieve item_ids removing deuplicates
 	$item_ids = array_unique( array_map( function( $match ) {
-		return $match[2];
+		return $match[4];
 	}, $matches ) );
 
-	// Embed microdata
-	foreach ( $item_ids as $item_id ) {
-		wl_write_log( 'foo dai cazzo' );
+	// Build annotations
+	$annotations = array();
+	foreach ( $matches as $match ) {
+		$annotations[ $match[4] ][ $match[2] ] = preg_match( '/'. WL_BLIND_ANNOTATION_CSS_CLASS .'/', $match[3] );
+	}
 
+	// Embed microdata removing deuplicated item ids
+	foreach ( array_unique( $item_ids ) as $item_id ) {
 		// wl_write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
-		$content = wl_content_embed_item_microdata( $content, $item_id );
+		$content = wl_content_embed_item_microdata( $content, $item_id, $annotations[ $item_id ] );
 	}
 
 	return $content;
@@ -83,11 +85,12 @@ function _wl_content_embed_microdata( $post_id, $content ) {
  *
  * @param string $content A content.
  * @param string $uri An entity URI.
+ * @param array  $annotations Mapping annotation ids => blindness
  * @param string $itemprop Specifies which property this entity is for another entity. Useful for recursive markup.
  *
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $recursion_level = 0 ) {
+function wl_content_embed_item_microdata( $content, $uri, $annotations = array(), $itemprop = null, $recursion_level = 0 ) {
 
 	if ( $recursion_level > wl_config_get_recursion_depth() ) {
 		wl_write_log( "recursion depth limit exceeded [ level :: $recursion_level ][ max :: " . wl_config_get_recursion_depth() . " ]" );
@@ -137,23 +140,27 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	$permalink = get_permalink( $post->ID );
 	$url       = '<link itemprop="url" href="' . $permalink . '" />';
 
-	// Only print name inside <span> for top-level entities
-	$title_or_link = '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a>';
-	
-	// Replace the original tagging with the new tagging.
-	$regex   = wl_content_embed_build_regex_from_uri( $uri );
-	wl_write_log( $regex );
-	
-	$content = preg_replace( $regex,
-		'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
-		.	$same_as
-		.	$additional_properties
-		.	$url
-		.	$title_or_link
-		.	'</$1>',
-		$content
-	);
+	foreach ( $annotations as $annotation_id => $is_blind ) {
 
+		// Replace the original tagging with the new tagging.
+		$regex = '/<(\\w+)[^<]* id=\"' . $annotation_id . '"[^>]*>([^<]*)<\\/\\1>/i';
+	
+		// Only print name inside <span> for top-level entities
+		$title_or_link = $is_blind ? 
+			'<span class="wl-blind-annotation" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</span>' :
+			'<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a>';
+		
+		$content = preg_replace( $regex,
+			'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
+			.	$same_as
+			.	$additional_properties
+			.	$url
+			.	$title_or_link
+			.	'</$1>',
+			$content
+		);
+
+	}
 	
 	// wl_write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
 
@@ -244,7 +251,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 				$nested_entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $field_value );
 				if ( ! is_null( $nested_entity ) ) {
 					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
-					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $field_name, ++ $recursion_level );
+					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, array(), $field_name, ++ $recursion_level );
 					$template          = str_replace( $placeholder, $compiled_template, $template );
 				} else {
 					$template = str_replace( $placeholder, '', $template );
