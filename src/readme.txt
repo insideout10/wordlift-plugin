@@ -140,8 +140,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#339](https://github.com/insideout10/wordlift-plugin/issues/339): Improving the Import/Export of the user Vocabulary.
 * Enhancement: [#342](https://github.com/insideout10/wordlift-plugin/issues/342): Data migration.
 * Enhancement: [#343](https://github.com/insideout10/wordlift-plugin/issues/343): Disable Wikipedia images.
-
-= 3.5.5 (????-??-??) =
 * Fix: [#340](https://github.com/insideout10/wordlift-plugin/issues/340): Incompatible date widget.
 
 = 3.5.4 (2016-09-07) =
