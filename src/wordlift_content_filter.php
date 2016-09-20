@@ -128,7 +128,7 @@ function wl_content_embed_item_microdata( $content, $uri, $annotations = array()
 	}
 
 	// Get additional properties (this may imply a recursion of this method on a sub-entity).
-	$additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type, $annotations, $recursion_level );
+	$additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type, $recursion_level );
 
 	$same_as = '';
 	// Get the array of sameAs uris.
@@ -180,7 +180,7 @@ add_filter( 'the_content', 'wl_content_embed_microdata' );
  *
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $annotations = array(), $recursion_level = 0 ) {
+function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $recursion_level = 0 ) {
 	global $wl_logger;
 
 	if ( WP_DEBUG ) {
@@ -252,8 +252,11 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 				// Just if the linked entity does exist I can go further with template compiling
 				$nested_entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $field_value );
 				if ( ! is_null( $nested_entity ) ) {
-					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
-					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $annotations, $field_name, ++ $recursion_level );
+
+					// Create a fake and randomic annotation id
+					$annotation_id = uniqid( 'urn:' );		
+					$content           = '<span id="' . $annotation_id . '" class="textannotation disambiguated" itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
+					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, array( $annotation_id => false ), $field_name, ++ $recursion_level );
 					$template          = str_replace( $placeholder, $compiled_template, $template );
 				} else {
 					$template = str_replace( $placeholder, '', $template );
