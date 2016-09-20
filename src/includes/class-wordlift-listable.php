@@ -18,15 +18,16 @@ abstract class Wordlift_Listable {
 	/**
 	 * @param callable $callback
 	 * @param array $args
+	 * @param int $offset
+	 * @param int $max
 	 */
-	public function process( $callback, $args = array() ) {
+	public function process( $callback, $args = array(), $offset = 0, $max = PHP_INT_MAX ) {
 
 		// We process users in chunks in order to avoid using too much memory,
 		// starting at offset 0, 10 users at a time.
-		$offset = 0;
-		$limit  = 10;
+		$limit = 10;
 
-		while ( 0 < sizeof( $items = $this->find( $offset, $limit, $args ) ) ) {
+		while ( 0 < sizeof( $items = $this->find( $offset, $limit, $args ) ) && $offset < $max ) {
 
 			// Cycle through items and call the callback function.
 			foreach ( $items as $item ) {
@@ -40,7 +41,6 @@ abstract class Wordlift_Listable {
 			$offset += $limit;
 
 		}
-
 
 	}
 

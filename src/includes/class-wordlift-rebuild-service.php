@@ -62,24 +62,48 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		// Give ourselves some time to process the data.
 		set_time_limit( 21600 ); // 6 hours
 
-		// Clear out all generated URIs, since the dataset URI might have changed
-		// in the process.
-		$this->uri_service->delete_all();
+		// Send textual output.
+		header( 'Content-type: text/plain; charset=utf-8' );
 
-		// Delete all the triples in the remote dataset.
-		$this->sparql_service->queue( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
+		// We start at 0 by default and get to max.
+		$offset = $_GET['offset'] ?: 0;
+		$limit  = $_GET['limit'] ?: PHP_INT_MAX;
+		$max    = $offset + $limit;
+
+		// If we're starting at offset 0, then delete existing URIs and data from
+		// the remote dataset.
+		if ( 0 === $offset ) {
+
+			// Clear out all generated URIs, since the dataset URI might have changed
+			// in the process.
+			$this->uri_service->delete_all();
+
+			// Delete all the triples in the remote dataset.
+			$this->sparql_service->queue( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
+
+		}
 
 		// Go through the list of published entities and posts and call the (legacy)
 		// `wl_linked_data_save_post` function for each one. We're using the `process`
 		// function which is provided by the parent `Wordlift_Listable` abstract class
 		// and will cycle through all the posts w/ a very small memory footprint
 		// in order to avoid memory errors.
-		$this->process( function ( $post ) {
+
+		$count = 0;
+		$this->process( function ( $post ) use ( &$count ) {
+			$count ++;
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
 			'post_type'   => array( 'entity', 'post' )
-		) );
+		), $offset, $max );
+
+		// Redirect to the next chunk.
+		if ( $count == $limit ) {
+			wp_redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
+		} else {
+			echo( "done [ count :: $count ][ limit :: $limit ]" );
+		}
 
 		// If we're being called as AJAX, die here.
 		if ( DOING_AJAX ) {
