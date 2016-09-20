@@ -62,6 +62,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       images: []
       confidence: 1
       occurrences: []
+      blindOccurrences: []
       annotations: {}
     
     merge defaults, params

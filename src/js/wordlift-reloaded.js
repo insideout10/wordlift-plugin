@@ -1060,6 +1060,7 @@
           images: [],
           confidence: 1,
           occurrences: [],
+          blindOccurrences: [],
           annotations: {}
         };
         return merge(defaults, params);
