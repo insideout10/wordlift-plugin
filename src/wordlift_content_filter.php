@@ -47,7 +47,9 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 	// If it is an entity, add its own microdata to the content.
 	if ( get_post_type( $post_id ) == Wordlift_Entity_Service::TYPE_NAME ) {
 		$own_uri = wl_get_entity_uri( $post_id );
-		$content .= '<span itemid="' . $own_uri . '"></span>';
+		// Create a fake and randomic annotation id
+		$annotation_id = uniqid( 'urn:' );		
+		$content .= "<span id=\"$annotation_id\" class=\"textannotation disambiguated\" itemid=\"$own_uri\"></span>";
 	}
 
 	// Now search in the text entity mentions
@@ -126,7 +128,7 @@ function wl_content_embed_item_microdata( $content, $uri, $annotations = array()
 	}
 
 	// Get additional properties (this may imply a recursion of this method on a sub-entity).
-	$additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type, $recursion_level );
+	$additional_properties = wl_content_embed_compile_microdata_template( $post->ID, $main_type, $annotations, $recursion_level );
 
 	$same_as = '';
 	// Get the array of sameAs uris.
@@ -178,7 +180,7 @@ add_filter( 'the_content', 'wl_content_embed_microdata' );
  *
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $recursion_level = 0 ) {
+function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, $annotations = array(), $recursion_level = 0 ) {
 	global $wl_logger;
 
 	if ( WP_DEBUG ) {
@@ -251,7 +253,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 				$nested_entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $field_value );
 				if ( ! is_null( $nested_entity ) ) {
 					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
-					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, array(), $field_name, ++ $recursion_level );
+					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $annotations, $field_name, ++ $recursion_level );
 					$template          = str_replace( $placeholder, $compiled_template, $template );
 				} else {
 					$template = str_replace( $placeholder, '', $template );
