@@ -560,7 +560,13 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => ''
-				)
+				),
+				'phone'                         => array(
+					'predicate'   => 'http://schema.org/telephone',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => ''
+				),
 			),
 			'microdata_template' =>
 				'{{founder}}
