@@ -481,8 +481,10 @@ class Wordlift {
 		// Create an instance of the Thumbnail service. Later it'll be hooked to post meta events.
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
+		$this->sparql_service = new Wordlift_Sparql_Service();
+
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Url_Property_Service();
+		new Wordlift_Schema_Url_Property_Service($this->sparql_service);
 		$this->schema_service = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.
@@ -523,8 +525,6 @@ class Wordlift {
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 
 		$this->page_service = new Wordlift_Page_Service();
-
-		$this->sparql_service = new Wordlift_Sparql_Service();
 
 		// Create an import service instance to hook later to WP's import function.
 		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
