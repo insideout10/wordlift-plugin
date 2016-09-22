@@ -91,31 +91,31 @@ class Wordlift_Sparql_Service {
 
 			case Wordlift_Schema_Service::DATA_TYPE_DATE:
 
-				return sprintf( '"%s"^^xsd:date', $this->escape( $value ) );
+				return sprintf( '"%s"^^xsd:date', self::escape( $value ) );
 
 
 			case Wordlift_Schema_Service::DATA_TYPE_DOUBLE:
 
-				return sprintf( '"%s"^^xsd:double', $this->escape( $value ) );
+				return sprintf( '"%s"^^xsd:double', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_INTEGER:
 
-				return sprintf( '"%s"^^xsd:integer', $this->escape( $value ) );
+				return sprintf( '"%s"^^xsd:integer', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_STRING:
 
-				return sprintf( '"%s"^^xsd:string', $this->escape( $value ) );
+				return sprintf( '"%s"^^xsd:string', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_URI:
 
-				return sprintf( '<%s>', $this->escape_uri( $value ) );
+				return sprintf( '<%s>', self::escape_uri( $value ) );
 
 			default:
 
 				$this->log->warn( "Unknown data type [ type :: $type ]" );
 
 				// Try to insert the value anyway.
-				return sprintf( '"%s"', $this->escape( $value ) );
+				return sprintf( '"%s"', self::escape( $value ) );
 		}
 
 	}
@@ -129,7 +129,7 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @return string The escaped URI.
 	 */
-	public function escape_uri( $uri ) {
+	public static function escape_uri( $uri ) {
 
 		// Should we validate the IRI?
 		// http://www.w3.org/TR/sparql11-query/#QSynIRI
@@ -149,7 +149,7 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @return string The escaped string.
 	 */
-	public function escape( $string ) {
+	public static function escape( $string ) {
 
 		// see http://www.w3.org/TR/rdf-sparql-query/
 		//    '\t'	U+0009 (tab)
