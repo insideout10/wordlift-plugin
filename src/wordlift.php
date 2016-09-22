@@ -451,7 +451,7 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 		$delete_query = rl_sparql_prefixes();
 
 		// Holds the insert part of the query.
-		$insert_query = 'INSERT DATA { ';
+		$insert_query = '';
 
 		// Cycle in each post to build the query.
 		foreach ( $posts as $post ) {
@@ -462,18 +462,20 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 			}
 
 			// Get the entity URI.
-			$uri = wl_sparql_escape_uri( wl_get_entity_uri( $post->ID ) );
+			$s = Wordlift_Sparql_Service::escape_uri( Wordlift_Entity_Service::get_instance()
+			                                                                 ->get_uri( $post->ID ) );
 
 			// Get the post URL.
-			$url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
+			// $url = wl_sparql_escape_uri( get_permalink( $post->ID ) );
 
 			// Prepare the DELETE and INSERT commands.
-			$delete_query .= "DELETE { <$uri> schema:url ?u . } WHERE  { <$uri> schema:url ?u . };\n";
-			$insert_query .= " <$uri> schema:url <$url> . \n";
+			$delete_query .= "DELETE { <$s> schema:url ?u . } WHERE  { <$s> schema:url ?u . };\n";
+
+			$insert_query .= Wordlift_Schema_Url_Property_Service::get_instance()
+			                                                     ->get_insert_query( $s, $post->ID );
 
 		}
 
-		$insert_query .= ' };';
 
 		// Execute the query.
 		rl_execute_sparql_update_query( $delete_query . $insert_query );
