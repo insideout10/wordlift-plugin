@@ -153,7 +153,7 @@ class Wordlift_Import_Service {
 		$o = $this->sparql_service->format( $meta_value, $field['type'] );
 
 		// Create the statement.
-		$stmt = sprintf( 'INSERT DATA { <%s> <%s> %s };', $this->sparql_service->escape_uri( $s ), $this->sparql_service->escape_uri( $p ), $o );
+		$stmt = sprintf( 'INSERT DATA { <%s> <%s> %s };', Wordlift_Sparql_Service::escape_uri( $s ), Wordlift_Sparql_Service::escape_uri( $p ), $o );
 
 		// Finally queue the statement.
 		$this->sparql_service->queue( $stmt );
