@@ -329,6 +329,12 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-service.php';
 
 		/**
+		 * The schema:url property service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-schema-url-property-service.php';
+
+		/**
 		 * The UI service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-ui-service.php';
@@ -476,6 +482,7 @@ class Wordlift {
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		// Create an instance of the Schema service.
+		new Wordlift_Schema_Url_Property_Service();
 		$this->schema_service = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.

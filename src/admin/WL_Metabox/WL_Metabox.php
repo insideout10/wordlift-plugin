@@ -184,8 +184,8 @@ class WL_Metabox {
 	 * Add a Field to the current Metabox, based on the description of the Field.
 	 * This method is a rude factory for Field objects.
 	 *
-	 * @param type $args
-	 * @param type $grouped Flag to distinguish between simple and grouped Fields
+	 * @param array $args
+	 * @param bool $grouped Flag to distinguish between simple and grouped Fields
 	 */
 	public function add_field( $args, $grouped = FALSE ) {
 
@@ -199,13 +199,30 @@ class WL_Metabox {
 			// Simple fields (string, uri, boolean, etc.)
 
 			// Which field? We want to use the class that is specific for the field.
-			$meta = key( $args );
-			if ( ! isset( $args[ $meta ]['type'] ) || ( $args[ $meta ]['type'] == Wordlift_Schema_Service::DATA_TYPE_STRING ) ) {
+			$meta      = key( $args );
+			$this_meta = $args[ $meta ];
+
+			// If the field declares what metabox it wants, use that one.
+			if ( isset( $this_meta['metabox'] ) ) {
+
+				$field_class = $this_meta['metabox'];
+
+			} elseif ( ! isset( $this_meta['type'] ) || ( $this_meta['type'] == Wordlift_Schema_Service::DATA_TYPE_STRING ) ) {
+
+				// TODO: all fields should explicitly declare the required WL_Metabox.
+				// When they will remove this.
+
 				// Use default WL_Metabox_Field (manages strings)
 				$field_class = 'WL_Metabox_Field';
+
 			} else {
+
+				// TODO: all fields should explicitly declare the required WL_Metabox.
+				// When they will remove this.
+
 				// Build Field with a custom class (e.g. WL_Metabox_Field_date)
-				$field_class = 'WL_Metabox_Field_' . $args[ $meta ]['type'];
+				$field_class = 'WL_Metabox_Field_' . $this_meta['type'];
+
 			}
 		}
 

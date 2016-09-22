@@ -85,7 +85,7 @@ class WL_Metabox_Field {
 	 */
 	public function html_nonce() {
 
-		return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', true, false );
+		return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', TRUE, FALSE );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class WL_Metabox_Field {
 		$nonce_verify = 'wordlift_' . $this->meta_name . '_entity_box';
 
 		if ( ! isset( $_POST[ $nonce_name ] ) ) {
-			return false;
+			return FALSE;
 		}
 
 		// Verify that the nonce is valid.
@@ -157,11 +157,17 @@ class WL_Metabox_Field {
 	 */
 	public function sanitize_data_filter( $value ) {
 
+		// TODO: all fields should provide their own sanitize which shouldn't be part of a UI class.
+		// If the field provides its own validation, use it.
+		if ( isset( $this->raw_custom_field['sanitize'] ) ) {
+			return call_user_func( $this->raw_custom_field['sanitize'], $value );
+		}
+
 		if ( ! is_null( $value ) && $value !== '' ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/
 			return $value;
 		}
 
-		return null;
+		return NULL;
 	}
 
 	/**
@@ -222,7 +228,7 @@ class WL_Metabox_Field {
 		}
 
 		// Print the empty <input> to add new values
-		if ( $count === 0 || $count < $this->cardinality ) {
+		if ( $count === 0 ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
 			$html .= $this->html_input( '' );    // Will print an empty <input>
 			$count ++;
 		}

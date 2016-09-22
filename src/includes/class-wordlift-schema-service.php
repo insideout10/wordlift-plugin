@@ -364,7 +364,7 @@ class Wordlift_Schema_Service {
 			'same_as'            => array( '*' ),
 			// set as default.
 			'custom_fields'      => array(
-				self::FIELD_SAME_AS => array(
+				self::FIELD_SAME_AS                            => array(
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Thing',
@@ -372,7 +372,10 @@ class Wordlift_Schema_Service {
 						'cardinality' => INF
 					),
 					'input_field' => 'sameas'   // we need a custom metabox
-				)
+				),
+				// Add the schema:url property.
+				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
+				                                                                                      ->get_params()
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*
@@ -561,7 +564,7 @@ class Wordlift_Schema_Service {
 					'export_type' => 'xsd:string',
 					'constraints' => ''
 				),
-				'phone'                         => array(
+				'wl_schema_telephone'           => array(
 					'predicate'   => 'http://schema.org/telephone',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
