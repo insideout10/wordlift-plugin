@@ -51,7 +51,7 @@ function wl_push_post_to_redlink( $post ) {
 	}
 
 	$sparql .= "<$uri> a <http://schema.org/BlogPosting> . \n";
-	$sparql .= "<$uri> schema:url <$permalink> . \n";
+//	$sparql .= "<$uri> schema:url <$permalink> . \n";
 	$sparql .= "<$uri> schema:datePublished $date_published . \n";
 	$sparql .= "<$uri> schema:dateModified $date_modified . \n";
 
@@ -118,6 +118,10 @@ function wl_push_post_to_redlink( $post ) {
             WHERE  { <$uri> schema:author ?o . };
             INSERT DATA { $sparql };
 EOF;
+
+	// Add schema:url.
+	$query .= Wordlift_Schema_Url_Property_Service::get_instance()
+	                                              ->get_insert_query( $uri, $post->ID );
 
 	// execute the query.
 	rl_execute_sparql_update_query( $query );
@@ -194,11 +198,12 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// Set the alternative labels.
 	$alt_labels = $entity_service->get_alternative_labels( $entity_post->ID );
 	foreach ( $alt_labels as $alt_label ) {
-		$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Query_Builder::escape_value( $alt_label ), $site_language );
+		$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Sparql_Service::escape( $alt_label ), $site_language );
 	}
 
 	// set the URL
-	$sparql .= "<$uri_e> schema:url <$permalink> . \n";
+//	$sparql .= "<$uri_e> schema:url <$permalink> . \n";
+
 
 	// set the description.
 	if ( ! empty( $descr ) ) {
@@ -220,6 +225,11 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 		if ( isset( $main_type['custom_fields'] ) ) {
 			foreach ( $main_type['custom_fields'] as $field => $settings ) {
+
+				// schema:url uses the new Property Service. Hopefully all others will follow suit.
+				if ( Wordlift_Schema_Url_Property_Service::META_KEY === $field ) {
+					continue;
+				}
 
 				// wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
 
@@ -290,6 +300,10 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
     INSERT DATA { $sparql };
 EOF;
 
+	// Add schema:url.
+	$query .= Wordlift_Schema_Url_Property_Service::get_instance()
+	                                              ->get_insert_query( $uri, $entity_post->ID );
+
 	rl_execute_sparql_update_query( $query );
 }
 
@@ -344,7 +358,7 @@ function rl_sparql_prefixes() {
  */
 function wordlift_esc_sparql( $string ) {
 
-	return Wordlift_Sparql_Service::get_instance()->escape( $string );
+	return Wordlift_Sparql_Service::escape( $string );
 }
 
 /**
@@ -360,7 +374,7 @@ function wordlift_esc_sparql( $string ) {
  */
 function wl_sparql_escape_uri( $string ) {
 
-	return Wordlift_Sparql_Service::get_instance()->escape_uri( $string );
+	return Wordlift_Sparql_Service::escape_uri( $string );
 }
 
 /**
