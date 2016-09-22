@@ -21,6 +21,10 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 */
 	const META_KEY = 'wl_schema_url';
 
+	const RDF_PREDICATE = 'http://schema.org/url';
+
+	const DATA_TYPE = Wordlift_Schema_Service::DATA_TYPE_URI;
+
 	/**
 	 * A field has the following parameters:
 	 *  * predicate: the RDF predicate as expanded URI,
@@ -34,8 +38,8 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 * @var array
 	 */
 	protected $params = array(
-		'predicate'   => 'http://schema.org/url',
-		'type'        => Wordlift_Schema_Service::DATA_TYPE_URI,
+		'predicate'   => self::RDF_PREDICATE,
+		'type'        => self::DATA_TYPE,
 		'export_type' => 'xsd:anyURI',
 		'constraints' => array(
 			'cardinality' => INF
@@ -43,17 +47,30 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 		// Use the standard metabox for these URI (the URI metabox creates local entities).
 		'metabox'     => 'WL_Metabox_Field'
 	);
+	/**
+	 * @var \Wordlift_Entity_Service
+	 */
+	private $entity_service;
+	/**
+	 * @var
+	 */
+	private $sparql_service;
 
 	/**
 	 * Create a Wordlift_Schema_Url_Property_Service instance.
 	 * @since 3.6.0
+	 *
+	 * @param Wordlift_Entity_Service $entity_service
+	 * @param Wordlift_Sparql_Service $sparql_service
 	 */
-	public function __construct() {
+	public function __construct( $sparql_service ) {
 		parent::__construct();
 
 		// Finally listen for metadata requests for this field.
 		$this->add_filter_get_post_metadata();
 
+//		$this->entity_service = $entity_service;
+		$this->sparql_service = $sparql_service;
 	}
 
 	/**
@@ -153,6 +170,36 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 			'get_post_metadata'
 		), 10 );
 
+	}
+
+	/**
+	 * Generate an insert query that inserts the schema:url values for the specified
+	 * post.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @param string $s The subject URI.
+	 * @param int $post_id The post id.
+	 *
+	 * @return string The insert query or an empty string.
+	 */
+	public function get_insert_query( $s, $post_id ) {
+
+		// If we have no value, return an empty string (no query).
+		if ( NULL === ( $values = $this->get( $post_id ) ) ) {
+			return '';
+		}
+
+		// Create the insert query.
+		$q = Wordlift_Query_Builder::new_instance()->insert();
+
+		// Add each schema:url, replacing <permalink> with the actual post permalink.
+		foreach ( $values as $value ) {
+			$q = $q->statement( $s, self::RDF_PREDICATE, '<permalink>' === $value ? get_permalink( $post_id ) : $value, Wordlift_Query_Builder::OBJECT_URI );
+		}
+
+		// Build and return the query.
+		return $q->build();
 	}
 
 }
