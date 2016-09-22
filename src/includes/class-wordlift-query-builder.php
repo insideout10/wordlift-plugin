@@ -124,7 +124,7 @@ class Wordlift_Query_Builder {
 	 * Set the query to INSERT.
 	 *
 	 * @since 3.1.7
-	 * @return $this \Wordlift_Query_Builder The Query builder.
+	 * @return Wordlift_Query_Builder The Query builder.
 	 */
 	public function insert() {
 
@@ -168,7 +168,7 @@ class Wordlift_Query_Builder {
 		}
 
 		// Get the object type if set, otherwise try to guess it.
-		$object_value_type = ( self::OBJECT_AUTO !== $object_type ?: $this->guess_object_type( $predicate, $object ) );
+		$object_value_type = ( self::OBJECT_AUTO === $object_type ? $this->guess_object_type( $predicate, $object ) : $object_type );
 
 		// Prepare the statement template.
 		$template = '<%1$s> <%2$s> ' . (
@@ -178,9 +178,9 @@ class Wordlift_Query_Builder {
 				'"%3$s"' . ( isset( $data_type ) ? '^^%4$s' : '' ) . ( isset( $language ) ? '@%5$s' : '' ) ) );
 
 		// Escape the subject, predicate and object.
-		$escaped_subject   = $this->escape_uri( $subject );
-		$escaped_predicate = $this->escape_uri( $predicate );
-		$escaped_object    = ( self::OBJECT_URI === $object_value_type ? $this->escape_uri( $object ) : self::escape_value( $object ) );
+		$escaped_subject   = Wordlift_Sparql_Service::escape_uri( $subject );
+		$escaped_predicate = Wordlift_Sparql_Service::escape_uri( $predicate );
+		$escaped_object    = ( self::OBJECT_URI === $object_value_type ? Wordlift_Sparql_Service::escape_uri( $object ) : Wordlift_Sparql_Service::escape( $object ) );
 
 		// Prepare the statement and add it to the list of statements.
 		$this->statements[] = sprintf( $template, $escaped_subject, $escaped_predicate, $escaped_object, $data_type, $language );
@@ -195,6 +195,11 @@ class Wordlift_Query_Builder {
 	 * @return string The query string.
 	 */
 	public function build() {
+
+		// If there are no statements return an empty string.
+		if (0 === count($this->statements)) {
+			return '';
+		}
 
 		return sprintf( $this->template, implode( ' . ', $this->statements ) ) . "\n";
 	}
@@ -226,59 +231,6 @@ class Wordlift_Query_Builder {
 		}
 
 		return self::OBJECT_VALUE;
-	}
-
-	/**
-	 * Escape a URI.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param string $uri The URI to escape.
-	 *
-	 * @return string The escaped URI.
-	 */
-	private function escape_uri( $uri ) {
-
-		// Should we validate the IRI?
-		// http://www.w3.org/TR/sparql11-query/#QSynIRI
-
-		$escaped_uri = str_replace( '<', '\<', $uri );
-		$escaped_uri = str_replace( '>', '\>', $escaped_uri );
-
-		return $escaped_uri;
-	}
-
-	/**
-	 * Escape a value.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param string $value The value to escape.
-	 *
-	 * @return string The escaped value.
-	 */
-	public static function escape_value( $value ) {
-
-		// see http://www.w3.org/TR/rdf-sparql-query/
-		//    '\t'	U+0009 (tab)
-		//    '\n'	U+000A (line feed)
-		//    '\r'	U+000D (carriage return)
-		//    '\b'	U+0008 (backspace)
-		//    '\f'	U+000C (form feed)
-		//    '\"'	U+0022 (quotation mark, double quote mark)
-		//    "\'"	U+0027 (apostrophe-quote, single quote mark)
-		//    '\\'	U+005C (backslash)
-
-		$escaped_value = str_replace( '\\', '\\\\', $value );
-		$escaped_value = str_replace( '\'', '\\\'', $escaped_value );
-		$escaped_value = str_replace( '"', '\\"', $escaped_value );
-		$escaped_value = str_replace( "\f", '\\f', $escaped_value );
-		$escaped_value = str_replace( "\b", '\\b', $escaped_value );
-		$escaped_value = str_replace( "\r", '\\r', $escaped_value );
-		$escaped_value = str_replace( "\n", '\\n', $escaped_value );
-		$escaped_value = str_replace( "\t", '\\t', $escaped_value );
-
-		return $escaped_value;
 	}
 
 }
