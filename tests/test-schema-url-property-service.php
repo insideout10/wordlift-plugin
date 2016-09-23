@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Test the {@link Wordlift_Schema_Url_Property_Service} class.
+ *
  * @since 3.6.0
  */
 class Wordlift_Schema_Url_Property_Service_Test extends WP_UnitTestCase {
@@ -10,13 +12,15 @@ class Wordlift_Schema_Url_Property_Service_Test extends WP_UnitTestCase {
 	 */
 	private $schema_url_property_service;
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function setUp() {
 		parent::setUp();
 
 		$this->schema_url_property_service = Wordlift_Schema_Url_Property_Service::get_instance();
 	}
-
-
+	
 	/**
 	 * Test getting/setting the post meta.
 	 *
@@ -45,6 +49,7 @@ class Wordlift_Schema_Url_Property_Service_Test extends WP_UnitTestCase {
 		$query = $this->schema_url_property_service->get_insert_query( 'http://example.org', $id );
 
 		$this->assertNotEmpty( $query );
+		$this->assertFalse( strpos( $query, '<permalink>' ) );
 
 		// 2. Now add an empty string post meta.
 		add_post_meta( $id, Wordlift_Schema_Url_Property_Service::META_KEY, '' );
@@ -90,6 +95,25 @@ class Wordlift_Schema_Url_Property_Service_Test extends WP_UnitTestCase {
 		$query = $this->schema_url_property_service->get_insert_query( 'http://example.org', $id );
 
 		$this->assertNotEmpty( $query );
+		$this->assertFalse( strpos( $query, '<permalink>' ) );
+
+	}
+
+	/**
+	 * Test the metabox created for this property.
+	 *
+	 * @since 3.6.0
+	 */
+	public function testMetabox() {
+
+		// Create a new metabox and add this property.
+		$metabox = new WL_Metabox();
+		$metabox->add_field( array( Wordlift_Schema_Url_Property_Service::META_KEY => $this->schema_url_property_service->get_compat_definition() ) );
+
+		// Check that we have one metabox field with the class and label set by this property.
+		$this->assertCount( 1, $metabox->fields );
+		$this->assertEquals( $this->schema_url_property_service->get_metabox_class(), get_class( $metabox->fields[0] ) );
+		$this->assertEquals( $this->schema_url_property_service->get_metabox_label(), $metabox->fields[0]->label );
 
 	}
 
