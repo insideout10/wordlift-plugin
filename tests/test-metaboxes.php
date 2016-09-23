@@ -71,9 +71,13 @@ class MetaboxTest extends WP_UnitTestCase {
 		$address_field_obj     = new WL_Metabox_Field_address( $address_field );
 
 		// Verify the correct fields have been built.
-		$this->assertEquals( $coordinates_field_obj, $metabox->fields[0] );
-		$this->assertEquals( $address_field_obj, $metabox->fields[1] );
-		$this->assertEquals( $sameAs_field_obj, $metabox->fields[2] );
+		//
+		// Now the first field is the URL field.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/346
+		$this->assertEquals( $coordinates_field_obj, $metabox->fields[1] );
+		$this->assertEquals( $address_field_obj, $metabox->fields[2] );
+		$this->assertEquals( $sameAs_field_obj, $metabox->fields[3] );
 	}
 
 	/*
