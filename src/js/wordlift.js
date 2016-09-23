@@ -432,6 +432,7 @@
           entityAnnotations = EntityAnnotationService.find(textAnnotation.entityAnnotations, {
             uri: annotation.uri
           });
+          $log.info(entityAnnotations.length + " entity annotation(s) found");
           if (0 < entityAnnotations.length) {
             results.push(entityAnnotations[0].selected = true);
           } else {

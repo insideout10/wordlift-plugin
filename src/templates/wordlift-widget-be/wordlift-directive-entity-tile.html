@@ -1,7 +1,7 @@
 <!-- ENTITY TILE SELECTED -->
 <div
   class="wl-widget-classification-box-entity-tile"
-  ng-class="{'wl-selected': isSelected }">
+  ng-class="{'wl-selected': entity.occurrences.length > 0 }">
 
   <!-- ENTITY NAME -->
   <div class="wl-widget-classification-box-entity-tile-name" ng-click="onSelect()">

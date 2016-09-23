@@ -521,12 +521,22 @@ angular.module('AnalysisService', ['wordlift.tinymce.plugin.services.EntityServi
 
           # Find the existing entities in the html
           for annotation in annotations
+
+            # Find ore create a text annotation.
             textAnnotation = TextAnnotationService.findOrCreate analysis.textAnnotations, annotation
+
+            #
             entityAnnotations = EntityAnnotationService.find textAnnotation.entityAnnotations, uri: annotation.uri
+
+            $log.info "#{entityAnnotations.length} entity annotation(s) found"
+
             if 0 < entityAnnotations.length
+
               # We don't expect more than one entity annotation for an URI inside a text annotation.
               entityAnnotations[0].selected = true
+
             else
+
               # Retrieve entity from analysis or from the entity storage if needed
               entities = EntityService.find analysis.entities, uri: annotation.uri
               entities = EntityService.find @_entities, uri: annotation.uri if 0 is entities.length
