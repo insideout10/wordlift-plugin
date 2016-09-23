@@ -141,6 +141,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#342](https://github.com/insideout10/wordlift-plugin/issues/342): Data migration.
 * Enhancement: [#343](https://github.com/insideout10/wordlift-plugin/issues/343): Disable Wikipedia images.
 * Fix: [#340](https://github.com/insideout10/wordlift-plugin/issues/340): Incompatible date widget.
+* Fix: [#347](https://github.com/insideout10/wordlift-plugin/issues/347): Annotations mysteriously disappeared.
 
 = 3.5.4 (2016-09-07) =
 * Fix: [#265](https://github.com/insideout10/wordlift-plugin/issues/265): Entity type:Person are being created before actually saving an organization's entity.
