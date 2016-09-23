@@ -230,7 +230,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
   # Preselect entity annotations in the provided analysis using the provided collection of annotations.
   service.preselect = (analysis, annotations) ->
 
-    $log.debug "Going to perform annotations preselection"
+    $log.debug "Selecting entity annotations (#{annotations.length})..."
+
     # Find the existing entities in the html
     for annotation in annotations
 
@@ -244,7 +245,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       # If there is no textAnnotation then create it and add to the current analysis
       # It can be normal for new entities that are queued for Redlink re-indexing
       if not textAnnotation?
-        $log.warn "Annotation #{annotation.start}:#{annotation.end} for entityId #{annotation.uri} misses in the analysis"
+
+        $log.warn "Text annotation #{annotation.start}:#{annotation.end} for entityId #{annotation.uri} misses in the analysis"
+
         textAnnotation = @createAnnotation({
           start: annotation.start
           end: annotation.end

@@ -1216,7 +1216,7 @@
       };
       service.preselect = function(analysis, annotations) {
         var annotation, e, entity, id, l, len2, ref2, ref3, results1, textAnnotation;
-        $log.debug("Going to perform annotations preselection");
+        $log.debug("Selecting entity annotations (" + annotations.length + ")...");
         results1 = [];
         for (l = 0, len2 = annotations.length; l < len2; l++) {
           annotation = annotations[l];
@@ -1226,7 +1226,7 @@
           }
           textAnnotation = findAnnotation(analysis.annotations, annotation.start, annotation.end);
           if (textAnnotation == null) {
-            $log.warn("Annotation " + annotation.start + ":" + annotation.end + " for entityId " + annotation.uri + " misses in the analysis");
+            $log.warn("Text annotation " + annotation.start + ":" + annotation.end + " for entityId " + annotation.uri + " misses in the analysis");
             textAnnotation = this.createAnnotation({
               start: annotation.start,
               end: annotation.end,
