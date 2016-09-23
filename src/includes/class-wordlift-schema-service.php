@@ -375,7 +375,7 @@ class Wordlift_Schema_Service {
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-				                                                                                      ->get_params()
+				                                                                                      ->get_compat_definition()
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*

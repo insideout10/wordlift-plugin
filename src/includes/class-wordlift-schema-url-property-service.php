@@ -25,31 +25,61 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 
 	const DATA_TYPE = Wordlift_Schema_Service::DATA_TYPE_URI;
 
-	/**
-	 * A field has the following parameters:
-	 *  * predicate: the RDF predicate as expanded URI,
-	 *  * type: a WL type keyword (from the ones available in Wordlift_Schema_Service),
-	 *  * export_type: an XSD data type,
-	 *  * constraints: such as cardinality,
-	 *  * metabox: the metabox class to use to display edit the field.
-	 *  * validate: the validation function.
-	 *
-	 * @since 3.6.0
-	 * @var array
-	 */
-	protected $params = array(
-		'predicate' => self::RDF_PREDICATE,
-		'type' => self::DATA_TYPE,
-		'export_type' => 'xsd:anyURI',
-		'constraints' => array(
-			'cardinality' => INF
-		),
-		// Use the standard metabox for these URI (the URI metabox creates local entities).
-		'metabox' => array(
-			'class' => 'WL_Metabox_Field',
-			'label' => 'Web Site(s)'
-		)
-	);
+//	/**
+//	 * A field has the following parameters:
+//	 *  * predicate: the RDF predicate as expanded URI,
+//	 *  * type: a WL type keyword (from the ones available in Wordlift_Schema_Service),
+//	 *  * export_type: an XSD data type,
+//	 *  * constraints: such as cardinality,
+//	 *  * metabox: the metabox class to use to display edit the field.
+//	 *  * validate: the validation function.
+//	 *
+//	 * @since 3.6.0
+//	 * @var array
+//	 */
+//	protected $params = array(
+//		'predicate'   => self::RDF_PREDICATE,
+//		'type'        => self::DATA_TYPE,
+//		'export_type' => 'xsd:anyURI',
+//		'constraints' => array(
+//			'cardinality' => INF
+//		),
+//		// Use the standard metabox for these URI (the URI metabox creates local entities).
+//		'metabox'     => array(
+//			'class' => 'WL_Metabox_Field',
+//			'label' => 'Web Site(s)'
+//		)
+//	);
+
+	public function get_rdf_predicate() {
+
+		return 'http://schema.org/url';
+	}
+
+	public function get_rdf_data_type() {
+
+		return 'xsd:anyURI';
+	}
+
+	public function get_data_type() {
+
+		return Wordlift_Schema_Service::DATA_TYPE_URI;
+	}
+
+	public function get_cardinality() {
+
+		return INF;
+	}
+
+	public function get_metabox_class() {
+
+		return 'WL_Metabox_Field';
+	}
+
+	public function get_metabox_label() {
+
+		return 'Web Site(s)';
+	}
 
 	/**
 	 * @var

@@ -14,14 +14,10 @@
  */
 abstract class Wordlift_Property_Service {
 
-	protected $params;
-
 	// TODO: check that this is relative to the extending class.
 	protected static $instance;
 
 	public function __construct() {
-		// Add a reference to the validation function.
-		$this->params['sanitize'] = array( $this, 'sanitize' );
 
 		static::$instance = $this;
 	}
@@ -60,14 +56,76 @@ abstract class Wordlift_Property_Service {
 	public abstract function sanitize( $value );
 
 	/**
-	 * Get the field parameters.
+	 * The RDF predicate for the property.
 	 *
 	 * @since 3.6.0
-	 * @return array An array of parameters.
+	 * @return string The RDF predicate.
 	 */
-	public function get_params() {
+	public abstract function get_rdf_predicate();
 
-		return $this->params;
+	/**
+	 * The RDF data type.
+	 *
+	 * @since 3.6.0
+	 * @return string The RDF data type.
+	 */
+	public abstract function get_rdf_data_type();
+
+	/**
+	 * The internal data type.
+	 *
+	 * @since 3.6.0
+	 * @return string The internal data type.
+	 */
+	public abstract function get_data_type();
+
+	/**
+	 * The cardinality.
+	 *
+	 * @since 3.6.0
+	 * @return mixed The cardinality.
+	 */
+	public abstract function get_cardinality();
+
+	/**
+	 * The metabox field class name.
+	 *
+	 * @since 3.6.0
+	 * @return string The metabox field class name.
+	 */
+	public abstract function get_metabox_class();
+
+	/**
+	 * The untranslated metabox field label.
+	 *
+	 * @since 3.6.0
+	 * @return string The untranslated metabox field label.
+	 */
+	public abstract function get_metabox_label();
+
+	/**
+	 * The definition of the property returned as a compatible array.
+	 *
+	 * @deprecated
+	 * @since 3.6.0
+	 * @return array An array of property definitions.
+	 */
+	public function get_compat_definition() {
+
+		return array(
+			'type'        => $this->get_data_type(),
+			'predicate'   => $this->get_rdf_predicate(),
+			'export_type' => $this->get_rdf_data_type(),
+			'constraints' => array(
+				'cardinality' => $this->get_cardinality()
+			),
+			// Use the standard metabox for these URI (the URI metabox creates local entities).
+			'metabox'     => array(
+				'class' => $this->get_metabox_class(),
+				'label' => $this->get_metabox_label()
+			),
+			'sanitize'    => array( $this, 'sanitize' )
+		);
 	}
 
 }
