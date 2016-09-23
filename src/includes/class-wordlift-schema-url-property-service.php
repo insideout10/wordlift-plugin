@@ -21,61 +21,49 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 */
 	const META_KEY = 'wl_schema_url';
 
-	const RDF_PREDICATE = 'http://schema.org/url';
-
-	const DATA_TYPE = Wordlift_Schema_Service::DATA_TYPE_URI;
-
-//	/**
-//	 * A field has the following parameters:
-//	 *  * predicate: the RDF predicate as expanded URI,
-//	 *  * type: a WL type keyword (from the ones available in Wordlift_Schema_Service),
-//	 *  * export_type: an XSD data type,
-//	 *  * constraints: such as cardinality,
-//	 *  * metabox: the metabox class to use to display edit the field.
-//	 *  * validate: the validation function.
-//	 *
-//	 * @since 3.6.0
-//	 * @var array
-//	 */
-//	protected $params = array(
-//		'predicate'   => self::RDF_PREDICATE,
-//		'type'        => self::DATA_TYPE,
-//		'export_type' => 'xsd:anyURI',
-//		'constraints' => array(
-//			'cardinality' => INF
-//		),
-//		// Use the standard metabox for these URI (the URI metabox creates local entities).
-//		'metabox'     => array(
-//			'class' => 'WL_Metabox_Field',
-//			'label' => 'Web Site(s)'
-//		)
-//	);
-
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_rdf_predicate() {
 
 		return 'http://schema.org/url';
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_rdf_data_type() {
 
 		return 'xsd:anyURI';
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_data_type() {
 
 		return Wordlift_Schema_Service::DATA_TYPE_URI;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_cardinality() {
 
 		return INF;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_metabox_class() {
 
 		return 'WL_Metabox_Field';
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function get_metabox_label() {
 
 		return 'Web Site(s)';
@@ -142,6 +130,36 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	}
 
 	/**
+	 * Generate an insert query that inserts the schema:url values for the specified
+	 * post.
+	 *
+	 * @since 3.6.0
+	 *
+	 * @param string $s The subject URI.
+	 * @param int $post_id The post id.
+	 *
+	 * @return string The insert query or an empty string.
+	 */
+	public function get_insert_query( $s, $post_id ) {
+
+		// If we have no value, return an empty string (no query).
+		if ( NULL === ( $values = $this->get( $post_id ) ) ) {
+			return '';
+		}
+
+		// Create the insert query.
+		$q = Wordlift_Query_Builder::new_instance()->insert();
+
+		// Add each schema:url, replacing <permalink> with the actual post permalink.
+		foreach ( $values as $value ) {
+			$q = $q->statement( $s, $this->get_rdf_predicate(), '<permalink>' === $value ? get_permalink( $post_id ) : $value, Wordlift_Query_Builder::OBJECT_URI );
+		}
+
+		// Build and return the query.
+		return $q->build();
+	}
+
+	/**
 	 * Get direct calls to read this meta and alter the response according to our
 	 * own strategy, i.e. if a value has never been set for this meta, then return
 	 * <permalink>.
@@ -198,36 +216,6 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 			'get_post_metadata'
 		), 10 );
 
-	}
-
-	/**
-	 * Generate an insert query that inserts the schema:url values for the specified
-	 * post.
-	 *
-	 * @since 3.6.0
-	 *
-	 * @param string $s The subject URI.
-	 * @param int $post_id The post id.
-	 *
-	 * @return string The insert query or an empty string.
-	 */
-	public function get_insert_query( $s, $post_id ) {
-
-		// If we have no value, return an empty string (no query).
-		if ( NULL === ( $values = $this->get( $post_id ) ) ) {
-			return '';
-		}
-
-		// Create the insert query.
-		$q = Wordlift_Query_Builder::new_instance()->insert();
-
-		// Add each schema:url, replacing <permalink> with the actual post permalink.
-		foreach ( $values as $value ) {
-			$q = $q->statement( $s, self::RDF_PREDICATE, '<permalink>' === $value ? get_permalink( $post_id ) : $value, Wordlift_Query_Builder::OBJECT_URI );
-		}
-
-		// Build and return the query.
-		return $q->build();
 	}
 
 }

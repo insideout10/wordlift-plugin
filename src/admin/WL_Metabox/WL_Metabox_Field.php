@@ -42,7 +42,7 @@ class WL_Metabox_Field {
 		$exploded_predicate = explode( '/', $this->predicate );
 
 		// Use the label defined for the property if set, otherwise the last part of the schema.org/xyz predicate.
-		$this->label = $this->raw_custom_field['metabox']['label'] ? __( $this->raw_custom_field['metabox']['label'] ) : end( $exploded_predicate );
+		$this->label = isset( $this->raw_custom_field['metabox']['label'] ) ? __( $this->raw_custom_field['metabox']['label'] ) : end( $exploded_predicate );
 
 		// Extract field constraints (numerosity, expected type)
 		// Default constaints: accept one string.
