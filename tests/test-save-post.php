@@ -21,8 +21,8 @@ class SavePostTest extends WP_UnitTestCase {
 	function testSavePostAndReferencedEntities() {
 
 		// create two entities
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', TRUE ), 'draft', 'entity' );
 
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
@@ -33,7 +33,7 @@ class SavePostTest extends WP_UnitTestCase {
 EOF;
 
 		// Create a post in draft
-		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
 		// Post in draft: should be not pushed on Redlink
 		$lines = $this->getPostTriples( $post_1_id );
 
@@ -50,8 +50,8 @@ EOF;
 	function testReferencedEntities() {
 
 		// create two entities
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', TRUE ), 'draft', 'entity' );
 
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
@@ -61,7 +61,7 @@ EOF;
             <span itemid="$entity_2_uri">Entity 2</span>
 EOF;
 
-		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
 		$lines     = $this->getPostTriples( $post_1_id );
 		$this->assertCount( 1, $lines );
 
@@ -82,11 +82,13 @@ EOF;
 	function testPublishingUnpublishingPosts() {
 
 		// create two entities
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', TRUE ), 'draft', 'entity' );
 
-		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
-		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
+		$entity_1_uri = Wordlift_Entity_Service::get_instance()
+		                                       ->get_uri( $entity_1_id );
+		$entity_2_uri = Wordlift_Entity_Service::get_instance()
+		                                       ->get_uri( $entity_2_id );
 
 		$body_1 = <<<EOF
             <span itemid="$entity_1_uri">Entity 1</span>
@@ -98,7 +100,7 @@ EOF;
 EOF;
 
 		// create a post as a draft.
-		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
+		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
 
 		// check the post is not published on Redlink.
 		$lines = $this->getPostTriples( $post_1_id );
@@ -138,7 +140,7 @@ EOF;
 		$this->assertCount( 1, $lines );
 
 		// create another post
-		$post_2_id = wl_create_post( $body_2, 'post-2', uniqid( 'post', true ), 'draft', 'post' );
+		$post_2_id = wl_create_post( $body_2, 'post-2', uniqid( 'post', TRUE ), 'draft', 'post' );
 
 		// check all entities published
 		$lines = $this->getPostTriples( $entity_1_id );
@@ -184,46 +186,46 @@ EOF;
 		$this->assertCount( 5, $lines );
 
 	}
-       
-    function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed(){
-        
-        // Create draft entity
-        $e_id = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
-        $e_uri = wl_get_entity_uri( $e_id );
-        $body = <<<EOF
+
+	function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed() {
+
+		// Create draft entity
+		$e_id  = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$e_uri = wl_get_entity_uri( $e_id );
+		$body  = <<<EOF
             <span itemid="$e_uri">Entity 1</span>
 EOF;
-        // Create draft post mentioning the entity
-        $p_id = wl_create_post( $body, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
-        // Publish the post (and related entities)
-        wl_update_post_status( $p_id, 'publish' );
+		// Create draft post mentioning the entity
+		$p_id = wl_create_post( $body, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
+		// Publish the post (and related entities)
+		wl_update_post_status( $p_id, 'publish' );
 
-        // Verify the post triples contain a reference to the entity
-        $lines = $this->getPostTriples( $p_id );
+		// Verify the post triples contain a reference to the entity
+		$lines = $this->getPostTriples( $p_id );
 
-        $this->assertCount( 9, $lines );
-        
-        // Trash the entity
-        wl_update_post_status( $e_id, 'trash' );
-        
-        // Verify the post triples does no more contain a reference to the entity
-        $lines = $this->getPostTriples( $p_id );
-        $this->assertCount( 8, $lines );
+		$this->assertCount( 9, $lines );
+
+		// Trash the entity
+		wl_update_post_status( $e_id, 'trash' );
+
 		// Verify the post triples does no more contain a reference to the entity
-        $lines = $this->getPostTriples( $e_id );
+		$lines = $this->getPostTriples( $p_id );
+		$this->assertCount( 8, $lines );
 		// Verify the post triples does no more contain a reference to the entity
-        $this->assertCount( 1, $lines );
-        
-    }
+		$lines = $this->getPostTriples( $e_id );
+		// Verify the post triples does no more contain a reference to the entity
+		$this->assertCount( 1, $lines );
+
+	}
 
 	function getPostTriples( $post_id ) {
 
 		// Get the post Redlink URI.
-		$uri     = wl_get_entity_uri( $post_id );
-		$uri_esc = wordlift_esc_sparql( $uri );
+		$uri     = Wordlift_Entity_Service::get_instance()->get_uri( $post_id );
+		$uri_esc = Wordlift_Sparql_Service::escape( $uri );
 
 		// Prepare the SPARQL query to select label and URL.
-		$sparql = "SELECT DISTINCT ?p ?o WHERE { <$uri_esc> ?p ?o . }";
+		$sparql = "SELECT DISTINCT ?p ?o WHERE { <$uri_esc> ?p ?o . }\n";
 
 		// Send the query and get the response.
 		$response = rl_sparql_select( $sparql );

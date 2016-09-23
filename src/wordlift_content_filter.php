@@ -165,7 +165,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 	global $wl_logger;
 
 	if ( WP_DEBUG ) {
-		$wl_logger->trace( "Embedding microdata [ entity id :: $entity_id ][ entity type :: " . var_export( $entity_type, true ) . " ][ recursion level :: $recursion_level ]" );
+		$wl_logger->trace( "Embedding microdata [ entity id :: $entity_id ][ recursion level :: $recursion_level ]" );
 	}
 
 	$regex   = '/{{(.*?)}}/';
