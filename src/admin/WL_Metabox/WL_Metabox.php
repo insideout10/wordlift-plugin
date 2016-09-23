@@ -17,23 +17,11 @@ class WL_Metabox {
 	public $fields;
 
 	/**
-	 * The Log service.
-	 *
-	 * @since 3.1.0
-	 * @access private
-	 * @var Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
 	 * WL_Metabox constructor.
 	 *
 	 * @since 3.1.0
 	 */
 	public function __construct() {
-
-		// Create a logger instance.
-		$this->log_service = Wordlift_Log_Service::get_logger( 'WL_Metabox' );
 
 		// Add hooks to print metaboxes and save submitted data.
 		add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ) );
@@ -203,9 +191,9 @@ class WL_Metabox {
 			$this_meta = $args[ $meta ];
 
 			// If the field declares what metabox it wants, use that one.
-			if ( isset( $this_meta['metabox'] ) ) {
+			if ( isset( $this_meta['metabox']['class'] ) ) {
 
-				$field_class = $this_meta['metabox'];
+				$field_class = $this_meta['metabox']['class'];
 
 			} elseif ( ! isset( $this_meta['type'] ) || ( $this_meta['type'] == Wordlift_Schema_Service::DATA_TYPE_STRING ) ) {
 

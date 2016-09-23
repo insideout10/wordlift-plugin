@@ -17,20 +17,9 @@ class WL_Metabox_Field {
 	public $data;
 
 	/**
-	 * The Log service.
-	 *
-	 * @since 3.1.0
-	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
-	 * Constructor. Recevies.... TODO write docs
+	 * @param array $args
 	 */
 	public function __construct( $args ) {
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'WL_Metabox_Field' );
 
 		if ( empty( $args ) ) {
 			return;
@@ -51,7 +40,9 @@ class WL_Metabox_Field {
 
 		// Extract human readable label
 		$exploded_predicate = explode( '/', $this->predicate );
-		$this->label        = end( $exploded_predicate );
+
+		// Use the label defined for the property if set, otherwise the last part of the schema.org/xyz predicate.
+		$this->label = $this->raw_custom_field['metabox']['label'] ? __( $this->raw_custom_field['metabox']['label'] ) : end( $exploded_predicate );
 
 		// Extract field constraints (numerosity, expected type)
 		// Default constaints: accept one string.

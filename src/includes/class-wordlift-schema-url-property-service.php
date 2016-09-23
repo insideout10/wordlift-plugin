@@ -38,19 +38,19 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 * @var array
 	 */
 	protected $params = array(
-		'predicate'   => self::RDF_PREDICATE,
-		'type'        => self::DATA_TYPE,
+		'predicate' => self::RDF_PREDICATE,
+		'type' => self::DATA_TYPE,
 		'export_type' => 'xsd:anyURI',
 		'constraints' => array(
 			'cardinality' => INF
 		),
 		// Use the standard metabox for these URI (the URI metabox creates local entities).
-		'metabox'     => 'WL_Metabox_Field'
+		'metabox' => array(
+			'class' => 'WL_Metabox_Field',
+			'label' => 'Web Site(s)'
+		)
 	);
-	/**
-	 * @var \Wordlift_Entity_Service
-	 */
-	private $entity_service;
+
 	/**
 	 * @var
 	 */
@@ -60,7 +60,6 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 * Create a Wordlift_Schema_Url_Property_Service instance.
 	 * @since 3.6.0
 	 *
-	 * @param Wordlift_Entity_Service $entity_service
 	 * @param Wordlift_Sparql_Service $sparql_service
 	 */
 	public function __construct( $sparql_service ) {
@@ -69,7 +68,6 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 		// Finally listen for metadata requests for this field.
 		$this->add_filter_get_post_metadata();
 
-//		$this->entity_service = $entity_service;
 		$this->sparql_service = $sparql_service;
 	}
 
