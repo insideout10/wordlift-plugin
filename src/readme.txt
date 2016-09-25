@@ -143,6 +143,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#346](https://github.com/insideout10/wordlift-plugin/issues/346): Add Telephone and URL properties.
 * Fix: [#340](https://github.com/insideout10/wordlift-plugin/issues/340): Incompatible date widget.
 * Fix: [#347](https://github.com/insideout10/wordlift-plugin/issues/347): Annotations mysteriously disappeared.
+* Fix: [#346](https://github.com/insideout10/wordlift-plugin/issues/346): Double link in front-end entities.
 
 = 3.5.4 (2016-09-07) =
 * Fix: [#265](https://github.com/insideout10/wordlift-plugin/issues/265): Entity type:Person are being created before actually saving an organization's entity.

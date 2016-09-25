@@ -55,7 +55,7 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 	$matches = array();
 
 	// Return the content if not item IDs have been found.
-	if ( false === preg_match_all( $regex, $content, $matches, PREG_SET_ORDER ) ) {
+	if ( FALSE === preg_match_all( $regex, $content, $matches, PREG_SET_ORDER ) ) {
 		return $content;
 	}
 
@@ -80,7 +80,7 @@ function _wl_content_embed_microdata( $post_id, $content ) {
  *
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $recursion_level = 0 ) {
+function wl_content_embed_item_microdata( $content, $uri, $itemprop = NULL, $recursion_level = 0 ) {
 
 	// The recursion level is set by `wl_content_embed_compile_microdata_template`
 	// which is loading referenced entities and calling again this function to print
@@ -92,10 +92,11 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		return '';
 	}
 
-	$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
+	$post = Wordlift_Entity_Service::get_instance()
+	                               ->get_entity_post_by_uri( $uri );
 
 	// Entity not found or not published. Delete <span> tags but leave their content on page.
-	if ( null === $post || $post->post_status !== 'publish' ) {
+	if ( NULL === $post || $post->post_status !== 'publish' ) {
 
 		// wl_write_log( "wl_content_embed_item_microdata : entity not found or not published [ uri :: $uri ]" );
 
@@ -112,7 +113,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	$main_type = wl_entity_type_taxonomy_get_type( $post->ID );
 
 	// Set the item type if available.
-	$item_type = ( null === $main_type ? '' : ' itemtype="' . esc_attr( $main_type['uri'] ) . '"' );
+	$item_type = ( NULL === $main_type ? '' : ' itemtype="' . esc_attr( $main_type['uri'] ) . '"' );
 
 	// Define attribute itemprop if this entity is nested.
 	if ( ! is_null( $itemprop ) ) {
@@ -134,6 +135,13 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 	$permalink = get_permalink( $post->ID );
 	$url       = '<link itemprop="url" href="' . $permalink . '" />';
 
+
+	// If entity is nested, we do not show a link, but a hidden meta.
+	// See https://github.com/insideout10/wordlift-plugin/issues/348
+	$name = ! is_null( $itemprop )
+		? "<meta itemprop='name' content='$post->post_title' /></$1>"
+		: '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>';
+
 	// Replace the original tagging with the new tagging.
 	$regex   = wl_content_embed_build_regex_from_uri( $uri );
 	$content = preg_replace( $regex,
@@ -141,7 +149,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = null, $rec
 		. $same_as
 		. $additional_properties
 		. $url
-		. '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>',    //Only print name inside <span> for top-level entities
+		. $name,
 		$content
 	);
 
@@ -171,13 +179,13 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 	$regex   = '/{{(.*?)}}/';
 	$matches = array();
 
-	if ( null === $entity_type ) {
+	if ( NULL === $entity_type ) {
 		return '';
 	}
 
 	$template = $entity_type['microdata_template'];
 	// Return empty string if template fields have not been found.
-	if ( false === preg_match_all( $regex, $template, $matches, PREG_SET_ORDER ) ) {
+	if ( FALSE === preg_match_all( $regex, $template, $matches, PREG_SET_ORDER ) ) {
 		return '';
 	}
 
@@ -190,7 +198,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		$meta_collection = wl_schema_get_value( $entity_id, $field_name );
 
 		// If no value is given, just remove the placeholder from the template
-		if ( null == $meta_collection ) {
+		if ( NULL == $meta_collection ) {
 			$template = str_replace( $placeholder, '', $template );
 			continue;
 		}
@@ -200,7 +208,7 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 		$expected_type = wl_get_meta_type( $field_name );
 
 		if ( WP_DEBUG ) {
-			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ][ meta collection :: " . ( is_array( $meta_collection ) ? var_export( $meta_collection, true ) : $meta_collection ) . " ][ expected type :: $expected_type ]" );
+			$wl_logger->trace( "Embedding microdata [ placeholder :: $placeholder ][ field name :: $field_name ][ meta collection :: " . ( is_array( $meta_collection ) ? var_export( $meta_collection, TRUE ) : $meta_collection ) . " ][ expected type :: $expected_type ]" );
 		}
 
 		foreach ( $meta_collection as $field_value ) {
@@ -231,7 +239,8 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 					$field_value = wl_get_entity_uri( $field_value );
 				}
 				// Just if the linked entity does exist I can go further with template compiling
-				$nested_entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $field_value );
+				$nested_entity = Wordlift_Entity_Service::get_instance()
+				                                        ->get_entity_post_by_uri( $field_value );
 				if ( ! is_null( $nested_entity ) ) {
 					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
 					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $field_name, ++ $recursion_level );
