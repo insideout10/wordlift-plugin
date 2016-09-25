@@ -135,7 +135,7 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = NULL, $rec
 	// If entity is nested, we do not show a link, but a hidden meta.
 	// See https://github.com/insideout10/wordlift-plugin/issues/348
 	$name = ! is_null( $itemprop )
-		? "<meta itemprop='name' content='$post->post_title' />"
+		? "<meta itemprop='name' content='$post->post_title' /></$1>"
 		: '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>';
 
 	// Replace the original tagging with the new tagging.
