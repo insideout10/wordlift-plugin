@@ -134,7 +134,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.6.0 (????-??-??) =
+= 3.6.0 (2016-09-25) =
 * Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path.
 * Enhancement: [#230](https://github.com/insideout10/wordlift-plugin/issues/230): Download your data.
 * Enhancement: [#338](https://github.com/insideout10/wordlift-plugin/issues/338): Custom domains and dataset names
