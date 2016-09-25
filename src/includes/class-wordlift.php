@@ -239,6 +239,15 @@ class Wordlift {
 	private $rebuild_service;
 
 	/**
+	 * The 'Download Your Data' page.
+	 *
+	 * @since 3.6.0
+	 * @access private
+	 * @var \Wordlift_Admin_Download_Your_Data_Page $download_your_data_page The 'Download Your Data' page.
+	 */
+	private $download_your_data_page;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -425,6 +434,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
 
 		/**
+		 * The admin 'Download Your Data' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -484,7 +498,7 @@ class Wordlift {
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Url_Property_Service($this->sparql_service);
+		new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
 		$this->schema_service = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.
@@ -533,6 +547,10 @@ class Wordlift {
 
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
+
+		//** WordPress Admin */
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
+
 	}
 
 	/**
@@ -625,6 +643,12 @@ class Wordlift {
 
 		// Hook the AJAX wl_rebuild action to the Rebuild Service.
 		$this->loader->add_action( 'wp_ajax_wl_rebuild', $this->rebuild_service, 'rebuild' );
+
+		// Hook the menu to the Download Your Data page.
+		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
+
+		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
+		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
 	}
 
