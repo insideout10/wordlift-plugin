@@ -630,7 +630,7 @@
           if (configuration.attrs.squared_thumbs) {
             thumbClasses = 'wl-card-image wl-square';
           }
-          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\"> \n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\"> \n        <span style=\"background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;\"></span>\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
+          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\">\n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\">\n        <a ng-href=\"{{item.post.permalink}}\" style=\"background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;\"></a>\n      </div>\n      <div class=\"wl-card-title\">\n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
         }
       };
     }
