@@ -1,61 +1,71 @@
-<!-- ENTITY TILE SELECTED -->
-<div class="wl__widget--entity-tile" ng-class="{'wl-selected': entity.occurrences.length > 0 }">
+<div class="wl__widget--entity-tile-outer">
+  <!-- ENTITY TILE SELECTED -->
+  <div class="wl__widget--entity-tile" ng-class="{'wl-selected': entity.occurrences.length > 0 }">
 
-  <!-- ENTITY NAME -->
-  <div class="wl__widget--entity-tile-name" ng-click="onSelect()">
-    <h3>
-      {{entity.label}}
-    </h3>
+    <!-- ENTITY NAME -->
+    <div class="wl__widget--entity-tile-name" ng-click="onSelect()">
+      <h3>
+        {{entity.label}}
+      </h3>
+    </div>
+
+    <!-- ENTITY STORING: GLOBAL-LOCAL -->
+    <div class="wl__widget--entity-tile-trigger">
+
+      <svg width="14px" height="14px" viewBox="194 9 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+          <path d="M204.71,20.2 C205.9,19.15 206.6,17.68 206.6,16 C206.6,12.9072054 204.092795,10.4 201,10.4 C197.907205,10.4 195.4,12.9072054 195.4,16 C195.4,17.68 196.1,19.15 197.29,20.2 C198.34,19.29 199.6,18.8 201,18.8 C202.4,18.8 203.73,19.29 204.71,20.2 L204.71,20.2 Z M201,9 C202.856515,9 204.636993,9.73749788 205.949747,11.0502525 C207.262502,12.3630072 208,14.1434846 208,16 C208,19.8659932 204.865993,23 201,23 C199.143485,23 197.363007,22.2625021 196.050253,20.9497475 C194.737498,19.6369928 194,17.8565154 194,16 C194,14.1434846 194.737498,12.3630072 196.050253,11.0502525 C197.363007,9.73749788 199.143485,9 201,9 L201,9 Z M197.5,13.9 C197.886599,13.9 198.2,14.2134007 198.2,14.6 C198.2,14.9865993 197.886599,15.3 197.5,15.3 C197.113401,15.3 196.8,14.9865993 196.8,14.6 C196.8,14.2134007 197.113401,13.9 197.5,13.9 L197.5,13.9 Z M199.6,11.8 C199.986599,11.8 200.3,12.1134007 200.3,12.5 C200.3,12.8865993 199.986599,13.2 199.6,13.2 C199.213401,13.2 198.9,12.8865993 198.9,12.5 C198.9,12.1134007 199.213401,11.8 199.6,11.8 L199.6,11.8 Z M204.5,13.9 C204.886599,13.9 205.2,14.2134007 205.2,14.6 C205.2,14.9865993 204.886599,15.3 204.5,15.3 C204.113401,15.3 203.8,14.9865993 203.8,14.6 C203.8,14.2134007 204.113401,13.9 204.5,13.9 L204.5,13.9 Z M202.68,11.87 C203.03,12.01 203.17,12.43 203.1,12.78 L202.12,15.16 C202.26,15.37 202.4,15.65 202.4,16 C202.4,16.7731986 201.773199,17.4 201,17.4 C200.226801,17.4 199.6,16.7731986 199.6,16 C199.6,15.3 200.09,14.67 200.79,14.6 L201.77,12.29 C201.91,11.87 202.33,11.73 202.68,11.87 L202.68,11.87 Z"
+            id="path-1"></path>
+          <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox"
+            id="filter-2">
+            <feGaussianBlur stdDeviation="0.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1"
+              k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.163265306   0 0 0 0 0.00742437126   0 0 0 0 0.0629906062  0 0 0 0.499971694 0"
+              type="matrix" in="shadowInnerInner1"></feColorMatrix>
+          </filter>
+        </defs>
+        <g id="Shape" stroke="none" fill="none" opacity="0.25" style="mix-blend-mode: multiply;">
+          <use fill="#848484" fill-rule="evenodd" xlink:href="#path-1"></use>
+          <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+        </g>
+      </svg>
+    </div>
+
+    <div class="wl__widget--entity-tile-trigger">
+
+      <svg width="14px" height="14px" viewBox="216 9 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+        <desc>Created with Sketch.</desc>
+        <defs>
+          <path d="M223.001589,18.45 C221.610533,18.45 220.482859,17.3530976 220.482859,16 C220.482859,14.6469024 221.610533,13.55 223.001589,13.55 C224.392646,13.55 225.52032,14.6469024 225.52032,16 C225.52032,17.3530976 224.392646,18.45 223.001589,18.45 L223.001589,18.45 Z M228.348494,16.679 C228.37728,16.455 228.398869,16.231 228.398869,16 C228.398869,15.769 228.37728,15.538 228.348494,15.3 L229.866929,14.159 C230.00366,14.054 230.039642,13.865 229.953285,13.711 L228.514011,11.289 C228.427654,11.135 228.233352,11.072 228.075032,11.135 L226.283135,11.835 C225.908924,11.562 225.52032,11.324 225.066948,11.149 L224.800683,9.294 C224.771897,9.126 224.620773,9 224.440864,9 L221.562315,9 C221.382406,9 221.231282,9.126 221.202496,9.294 L220.936231,11.149 C220.482859,11.324 220.094255,11.562 219.720044,11.835 L217.928147,11.135 C217.769827,11.072 217.575525,11.135 217.489168,11.289 L216.049894,13.711 C215.956341,13.865 215.999519,14.054 216.13625,14.159 L217.654685,15.3 C217.625899,15.538 217.60431,15.769 217.60431,16 C217.60431,16.231 217.625899,16.455 217.654685,16.679 L216.13625,17.841 C215.999519,17.946 215.956341,18.135 216.049894,18.289 L217.489168,20.711 C217.575525,20.865 217.769827,20.921 217.928147,20.865 L219.720044,20.158 C220.094255,20.438 220.482859,20.676 220.936231,20.851 L221.202496,22.706 C221.231282,22.874 221.382406,23 221.562315,23 L224.440864,23 C224.620773,23 224.771897,22.874 224.800683,22.706 L225.066948,20.851 C225.52032,20.669 225.908924,20.438 226.283135,20.158 L228.075032,20.865 C228.233352,20.921 228.427654,20.865 228.514011,20.711 L229.953285,18.289 C230.039642,18.135 230.00366,17.946 229.866929,17.841 L228.348494,16.679 L228.348494,16.679 Z"
+            id="path-1"></path>
+          <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox"
+            id="filter-2">
+            <feGaussianBlur stdDeviation="0.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1"
+              k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.163265306   0 0 0 0 0.00742437126   0 0 0 0 0.0629906062  0 0 0 0.499971694 0"
+              type="matrix" in="shadowInnerInner1"></feColorMatrix>
+          </filter>
+        </defs>
+        <g id="settings" stroke="none" fill="none" opacity="0.25" style="mix-blend-mode: multiply;">
+          <use fill="#848484" fill-rule="evenodd" xlink:href="#path-1"></use>
+          <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+        </g>
+      </svg>
+    </div>
   </div>
 
-  <!-- ENTITY STORING: GLOBAL-LOCAL -->
-  <div class="wl__widget--entity-tile-trigger">
-
-    <svg width="14px" height="14px" viewBox="194 9 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink">
-      <defs>
-        <path d="M204.71,20.2 C205.9,19.15 206.6,17.68 206.6,16 C206.6,12.9072054 204.092795,10.4 201,10.4 C197.907205,10.4 195.4,12.9072054 195.4,16 C195.4,17.68 196.1,19.15 197.29,20.2 C198.34,19.29 199.6,18.8 201,18.8 C202.4,18.8 203.73,19.29 204.71,20.2 L204.71,20.2 Z M201,9 C202.856515,9 204.636993,9.73749788 205.949747,11.0502525 C207.262502,12.3630072 208,14.1434846 208,16 C208,19.8659932 204.865993,23 201,23 C199.143485,23 197.363007,22.2625021 196.050253,20.9497475 C194.737498,19.6369928 194,17.8565154 194,16 C194,14.1434846 194.737498,12.3630072 196.050253,11.0502525 C197.363007,9.73749788 199.143485,9 201,9 L201,9 Z M197.5,13.9 C197.886599,13.9 198.2,14.2134007 198.2,14.6 C198.2,14.9865993 197.886599,15.3 197.5,15.3 C197.113401,15.3 196.8,14.9865993 196.8,14.6 C196.8,14.2134007 197.113401,13.9 197.5,13.9 L197.5,13.9 Z M199.6,11.8 C199.986599,11.8 200.3,12.1134007 200.3,12.5 C200.3,12.8865993 199.986599,13.2 199.6,13.2 C199.213401,13.2 198.9,12.8865993 198.9,12.5 C198.9,12.1134007 199.213401,11.8 199.6,11.8 L199.6,11.8 Z M204.5,13.9 C204.886599,13.9 205.2,14.2134007 205.2,14.6 C205.2,14.9865993 204.886599,15.3 204.5,15.3 C204.113401,15.3 203.8,14.9865993 203.8,14.6 C203.8,14.2134007 204.113401,13.9 204.5,13.9 L204.5,13.9 Z M202.68,11.87 C203.03,12.01 203.17,12.43 203.1,12.78 L202.12,15.16 C202.26,15.37 202.4,15.65 202.4,16 C202.4,16.7731986 201.773199,17.4 201,17.4 C200.226801,17.4 199.6,16.7731986 199.6,16 C199.6,15.3 200.09,14.67 200.79,14.6 L201.77,12.29 C201.91,11.87 202.33,11.73 202.68,11.87 L202.68,11.87 Z"
-          id="path-1"></path>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox"
-          id="filter-2">
-          <feGaussianBlur stdDeviation="0.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
-          <feOffset dx="0" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
-          <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1"
-            k3="1" result="shadowInnerInner1"></feComposite>
-          <feColorMatrix values="0 0 0 0 0.163265306   0 0 0 0 0.00742437126   0 0 0 0 0.0629906062  0 0 0 0.499971694 0"
-            type="matrix" in="shadowInnerInner1"></feColorMatrix>
-        </filter>
-      </defs>
-      <g id="Shape" stroke="none" fill="none" opacity="0.25" style="mix-blend-mode: multiply;">
-        <use fill="#848484" fill-rule="evenodd" xlink:href="#path-1"></use>
-        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-      </g>
-    </svg>
+  <div class="wl__widget--entity-tile-box">
+    <i class="fa fa-rocket"></i>
+    <i class="fa fa-rocket"></i>
+    <i class="fa fa-rocket"></i>
+    <i class="fa fa-rocket"></i>
   </div>
 
-  <div class="wl__widget--entity-tile-trigger">
-
-    <svg width="14px" height="14px" viewBox="216 9 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink">
-      <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
-      <desc>Created with Sketch.</desc>
-      <defs>
-        <path d="M223.001589,18.45 C221.610533,18.45 220.482859,17.3530976 220.482859,16 C220.482859,14.6469024 221.610533,13.55 223.001589,13.55 C224.392646,13.55 225.52032,14.6469024 225.52032,16 C225.52032,17.3530976 224.392646,18.45 223.001589,18.45 L223.001589,18.45 Z M228.348494,16.679 C228.37728,16.455 228.398869,16.231 228.398869,16 C228.398869,15.769 228.37728,15.538 228.348494,15.3 L229.866929,14.159 C230.00366,14.054 230.039642,13.865 229.953285,13.711 L228.514011,11.289 C228.427654,11.135 228.233352,11.072 228.075032,11.135 L226.283135,11.835 C225.908924,11.562 225.52032,11.324 225.066948,11.149 L224.800683,9.294 C224.771897,9.126 224.620773,9 224.440864,9 L221.562315,9 C221.382406,9 221.231282,9.126 221.202496,9.294 L220.936231,11.149 C220.482859,11.324 220.094255,11.562 219.720044,11.835 L217.928147,11.135 C217.769827,11.072 217.575525,11.135 217.489168,11.289 L216.049894,13.711 C215.956341,13.865 215.999519,14.054 216.13625,14.159 L217.654685,15.3 C217.625899,15.538 217.60431,15.769 217.60431,16 C217.60431,16.231 217.625899,16.455 217.654685,16.679 L216.13625,17.841 C215.999519,17.946 215.956341,18.135 216.049894,18.289 L217.489168,20.711 C217.575525,20.865 217.769827,20.921 217.928147,20.865 L219.720044,20.158 C220.094255,20.438 220.482859,20.676 220.936231,20.851 L221.202496,22.706 C221.231282,22.874 221.382406,23 221.562315,23 L224.440864,23 C224.620773,23 224.771897,22.874 224.800683,22.706 L225.066948,20.851 C225.52032,20.669 225.908924,20.438 226.283135,20.158 L228.075032,20.865 C228.233352,20.921 228.427654,20.865 228.514011,20.711 L229.953285,18.289 C230.039642,18.135 230.00366,17.946 229.866929,17.841 L228.348494,16.679 L228.348494,16.679 Z"
-          id="path-1"></path>
-        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox"
-          id="filter-2">
-          <feGaussianBlur stdDeviation="0.5" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
-          <feOffset dx="0" dy="1" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
-          <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1"
-            k3="1" result="shadowInnerInner1"></feComposite>
-          <feColorMatrix values="0 0 0 0 0.163265306   0 0 0 0 0.00742437126   0 0 0 0 0.0629906062  0 0 0 0.499971694 0"
-            type="matrix" in="shadowInnerInner1"></feColorMatrix>
-        </filter>
-      </defs>
-      <g id="settings" stroke="none" fill="none" opacity="0.25" style="mix-blend-mode: multiply;">
-        <use fill="#848484" fill-rule="evenodd" xlink:href="#path-1"></use>
-        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
-      </g>
-    </svg>
-  </div>
 </div>

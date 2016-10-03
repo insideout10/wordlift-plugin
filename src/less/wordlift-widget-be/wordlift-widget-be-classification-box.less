@@ -1,8 +1,4 @@
 .wl-widget-classification-box{
-	display: -webkit-flex;
-	display: -moz-flex;
-	display: -ms-flex;
-	display: -o-flex;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -21,19 +17,20 @@
   }
 
 	.wl-widget-classification-box-entity-tile-wrap {
-		display: -webkit-flex;
-		display: -moz-flex;
-		display: -ms-flex;
-		display: -o-flex;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+
+		.wl__widget--entity-tile-outer{
+			margin-bottom: 8px;
+		}
 
 		.wl__widget--entity-tile {
 			display: table;
 			cursor: pointer;
 			margin: auto;
-			margin-bottom: 8px;
+			position: relative;
+			z-index: 3;
 			padding: 4px;
 			box-sizing: border-box;
 			width: 240px;
@@ -41,7 +38,6 @@
 			background: @wl-barely-white-color;
 			box-shadow: 0px 2px 4px 0px @wl-shadow-color, 0px 1px 1px 0px @wl-shadow-color;
 			&.wl-selected {
-				/* Rectangle 2: */
 				background: @wl-white-color;
 				box-shadow: 0px 2px 4px 0px @wl-shadow-color, 0px 1px 1px 0px @wl-shadow-color, inset 0 0 0 1px @wl-blogger-color;
 				h3 {
@@ -72,4 +68,35 @@
 			}
 		}
   }
+}
+.wl__widget--entity-tile-box {
+	position: relative;
+	display: table;
+	z-index: 2;
+	width: 240px;
+	height: 32px;
+	margin: auto;
+	padding: 4px;
+	background: @wl-medium-gray-color;
+	box-shadow: 0px 1px 1px 0px @wl-shadow-color;
+	box-sizing: border-box;
+	// positioning the box under the tile\
+	margin-top: -32px;
+	transition: all 350ms ease-in-out;
+	&.animate-in {
+		margin-top: 0;
+	}
+	
+	i {
+		display: table-cell;
+		text-align: center;
+		height: 16px;
+		width: 16px;
+		color: #9B9B9B;
+		&:before {
+			position: relative;
+			top: 4px;
+			font-size: 16px;
+		}
+	}
 }
