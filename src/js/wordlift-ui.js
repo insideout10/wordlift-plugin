@@ -3,14 +3,6 @@
 
   $ = jQuery;
 
-  // HERE STARTS MY SH**T ––––––– NICOLA
-  $('.wl__widget--entity-tile').on({
-    click: function() {
-      $(this).parent().find('.wl__widget--entity-tile-box').addClass('animate-in');
-    }
-  });
-  // HERE ENDS MY SH**T ––––––– NICOLA
-
   $.fn.extend({
     chord: function(options) {
       var buildChord, container, init, log, retrieveChordData, settings;
