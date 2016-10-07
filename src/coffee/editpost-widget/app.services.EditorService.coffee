@@ -6,6 +6,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 .service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
   
   INVISIBLE_CHAR = '\uFEFF'
+  BLIND_ANNOTATION_CSS_CLASS = 'no-entity-page-link'
 
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
   findEntities = (html) ->
@@ -17,12 +18,17 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Get the matches and return them.
     (while match = pattern.exec html
       
+      
       annotation = 
         start: traslator.html2text match.index
         end: traslator.html2text (match.index + match[0].length)
         uri: match[2]
         label: match[3]
+        # Detect if this annotation has link related entity page or not
+        isBlind: (match[0].indexOf(BLIND_ANNOTATION_CSS_CLASS) isnt -1)
       
+      $log.debug annotation
+
       annotation
     )
 
@@ -38,10 +44,13 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   disambiguate = ( annotationId, entity )->
     ed = editor()
     ed.dom.addClass annotationId, "disambiguated"
+    
     for type in configuration.types
       ed.dom.removeClass annotationId, type.css
+    
     ed.dom.removeClass annotationId, "unlinked"
-    ed.dom.addClass annotationId, "wl-#{entity.mainType}"
+    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
@@ -49,7 +58,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   dedisambiguate = ( annotationId, entity )->
     ed = editor()
     ed.dom.removeClass annotationId, "disambiguated"
+    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
+    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", ""
     discardedItemId
@@ -95,7 +106,14 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-        
+  
+  $rootScope.$on "entityBlindnessToggled", (event, entity) ->
+    ed = editor()
+    for annotationId in entity.occurrences
+      ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+    for annotationId in entity.blindOccurrences
+      ed.dom.addClass annotationId, BLIND_ANNOTATION_CSS_CLASS
+
   service =
     # Detect if there is a current selection
     hasSelection: ()->
@@ -181,7 +199,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       ed = editor()
       # Get the TinyMCE editor html content.
       html = ed.getContent format: 'raw'
-
+      $log.debug html
       # Find existing entities.
       entities = findEntities html
       # Remove overlapping annotations preserving selected entities
@@ -211,7 +229,13 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           entity = analysis.entities[ em.entityId ] 
           
           if annotationId in entity.occurrences
-            element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
+            # Preserve css classes for blind annotations
+            
+            if annotationId in entity.blindOccurrences
+              element += " #{BLIND_ANNOTATION_CSS_CLASS}"
+            
+            # Mark the annotation as disambiguated    
+            element += " disambiguated\" itemid=\"#{entity.id}"
         
         element += "\">"
               

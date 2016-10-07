@@ -23,6 +23,7 @@
         show-confidence="false"
         is-selected="isEntitySelected(entity, box)"
         on-select="onSelectedEntityTile(entity)"
+        on-blind="onEntityPageLinkingToggle(entity)"
         on-more="setCurrentEntity(entity, 'entity')"
 
         entity="entity"
@@ -36,6 +37,7 @@
         is-selected="isLinkedToCurrentAnnotation(entity)" 
         on-select="onSelectedEntityTile(entity, box)"
         on-more="setCurrentEntity(entity, 'entity')" 
+        on-blind="onEntityPageLinkingToggle(entity)"
         entity="entity" 
         ng-repeat="entity in analysis.annotations[annotation].entities | filterEntitiesByTypes:box.registeredTypes">
       </wl-entity-tile>
