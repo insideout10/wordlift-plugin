@@ -92,11 +92,7 @@ function _wl_content_embed_microdata( $post_id, $content ) {
  *
  * @return string The content with embedded microdata.
  */
-<<<<<<< HEAD
-function wl_content_embed_item_microdata( $content, $uri, $itemprop = NULL, $recursion_level = 0 ) {
-=======
-function wl_content_embed_item_microdata( $content, $uri, $annotations = array(), $itemprop = null, $recursion_level = 0 ) {
->>>>>>> feature/309_disable_entity_linking_on_selected_entities
+function wl_content_embed_item_microdata( $content, $uri, $annotations = array(), $itemprop = NULL, $recursion_level = 0 ) {
 
 	// The recursion level is set by `wl_content_embed_compile_microdata_template`
 	// which is loading referenced entities and calling again this function to print
@@ -151,42 +147,25 @@ function wl_content_embed_item_microdata( $content, $uri, $annotations = array()
 	$permalink = get_permalink( $post->ID );
 	$url       = '<link itemprop="url" href="' . $permalink . '" />';
 
-<<<<<<< HEAD
-
-	// If entity is nested, we do not show a link, but a hidden meta.
-	// See https://github.com/insideout10/wordlift-plugin/issues/348
-	$name = ! is_null( $itemprop )
-		? "<meta itemprop='name' content='$post->post_title' /></$1>"
-		: '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>';
-
-	// Replace the original tagging with the new tagging.
-	$regex   = wl_content_embed_build_regex_from_uri( $uri );
-	$content = preg_replace( $regex,
-		'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
-		. $same_as
-		. $additional_properties
-		. $url
-		. $name,
-		$content
-	);
-=======
 	foreach ( $annotations as $annotation_id => $is_blind ) {
->>>>>>> feature/309_disable_entity_linking_on_selected_entities
 
 		// Replace the original tagging with the new tagging.
 		$regex = '/<(\\w+)[^<]* id=\"' . $annotation_id . '"[^>]*>([^<]*)<\\/\\1>/i';
 	
-		// Only print name inside <span> for top-level entities
-		$title_or_link = $is_blind ? 
-			'<span class="wl-blind-annotation" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</span>' :
-			'<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a>';
+		// If entity is nested, we do not show a link, but a hidden meta.
+		// See https://github.com/insideout10/wordlift-plugin/issues/348
+		$name = ( ! is_null( $itemprop ) )
+			? "<meta itemprop='name' content='$post->post_title' />"
+			: ( $is_blind )
+				? '<span class="wl-blind-annotation" itemprop="name" content="' . $post->post_title . '">$2</span>' :
+				'<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">$2</a>';
 		
 		$content = preg_replace( $regex,
 			'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
 			.	$same_as
 			.	$additional_properties
 			.	$url
-			.	$title_or_link
+			.	$name
 			.	'</$1>',
 			$content
 		);
