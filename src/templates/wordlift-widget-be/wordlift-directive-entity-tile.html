@@ -8,6 +8,18 @@
     </h3>
   </div>
 
+  <!-- ENTITY OCCURENCES -->
+  <div class="wl-widget-classification-box-entity-tile-occurences"
+    ng-show="entity.occurrences.length > 0"
+    class="wl-widget-classification-box-entity-tile-occurrences">
+    <h4>
+        {{entity.occurrences.length}} / 
+        <small 
+          class="wl-widget-classification-box-entity-tile-blind-occurrences"
+          ng-click="onBlind()">{{entity.blindOccurrences.length}}</small>
+    </h4>
+  </div>
+
   <!-- ENTITY STORING: GLOBAL-LOCAL -->
   <div class="wl__widget--entity-tile-trigger">
 

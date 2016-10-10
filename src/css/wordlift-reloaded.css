@@ -4134,6 +4134,12 @@ body#tinymce .textannotation {
   cursor: pointer;
   cursor: hand;
 }
+body#tinymce .textannotation.disambiguated {
+  border-color: #007AFF !important;
+}
+body#tinymce .textannotation.disambiguated.no-entity-page-link {
+  border-color: #FCC207 !important;
+}
 body#tinymce .textannotation.unlinked {
   border: #999 1px dashed;
   padding: 2px;
@@ -4149,69 +4155,6 @@ body#tinymce .textannotation.selected {
   color: #ffffff;
   background-color: #A4A3A3;
   vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-creative-work {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-event {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-organization {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-local-business {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-person {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-place {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-thing {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.wl-creative-work {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-event {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-organization {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-local-business {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-person {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-place {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-thing {
-  border-color: #007AFF !important;
 }
 body#tinymce[contenteditable=false] {
   background-color: #f1f1f1;

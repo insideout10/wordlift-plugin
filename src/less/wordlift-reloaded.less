@@ -697,6 +697,14 @@ body#tinymce {
     cursor       : pointer;
     cursor       : hand;
 
+    &.disambiguated {
+      .disambiguate(@wl-brand-color);
+      
+      &.no-entity-page-link {
+        .disambiguate(@wl-editorial-color);
+      }
+    }
+
     &.unlinked {
       border : #999 1px dashed;
       padding: 2px;
@@ -711,63 +719,8 @@ body#tinymce {
 
     &.selected {
       .highlight(@wl-default-color);
-
-      &.wl-creative-work {
-        .highlight(@wl-creative-work-color)
-      }
-
-      &.wl-event {
-        .highlight(@wl-event-color)
-      }
-
-      &.wl-organization {
-        .highlight(@wl-organization-color)
-      }
-
-      &.wl-local-business {
-        .highlight(@wl-organization-color)
-      }
-
-      &.wl-person {
-        .highlight(@wl-person-color)
-      }
-
-      &.wl-place {
-        .highlight(@wl-place-color)
-      }
-
-      &.wl-thing {
-        .highlight(@wl-thing-color)
-      }
     }
 
-    &.wl-creative-work {
-      .disambiguate(@wl-creative-work-color)
-    }
-
-    &.wl-event {
-      .disambiguate(@wl-event-color)
-    }
-
-    &.wl-organization {
-      .disambiguate(@wl-organization-color)
-    }
-
-    &.wl-local-business {
-      .disambiguate(@wl-organization-color)
-    }
-
-    &.wl-person {
-      .disambiguate(@wl-person-color)
-    }
-
-    &.wl-place {
-      .disambiguate(@wl-place-color)
-    }
-
-    &.wl-thing {
-      .disambiguate(@wl-thing-color)
-    }
   }
 
   &[contenteditable=false] {

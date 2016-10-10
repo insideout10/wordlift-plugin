@@ -62,6 +62,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       images: []
       confidence: 1
       occurrences: []
+      blindOccurrences: []
       annotations: {}
     
     merge defaults, params
@@ -138,6 +139,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
         
       entity.id = id
       entity.occurrences = []
+      entity.blindOccurrences = []
       entity.annotations = {}
       entity.confidence = 1 
 
@@ -265,8 +267,13 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
       if not entity?
          $log.warn "Entity with uri #{annotation.uri} is missing both in analysis results and in local storage"
          continue
+
       # Enhance analysis accordingly
-      analysis.entities[ entity.id ].occurrences.push  textAnnotation.id
+      # Mark the current annotation as a disambiguated occurrence
+      analysis.entities[ entity.id ].occurrences.push textAnnotation.id
+      # Mark the current annotation as a blind occurrence if needed
+      analysis.entities[ entity.id ].blindOccurrences.push textAnnotation.id if annotation.isBlind
+      
       if not analysis.entities[ entity.id ].annotations[ textAnnotation.id ]?
         analysis.entities[ entity.id ].annotations[ textAnnotation.id ] = textAnnotation 
         analysis.annotations[ textAnnotation.id ].entityMatches.push { entityId: entity.id, confidence: 1 } 

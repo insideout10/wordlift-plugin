@@ -226,8 +226,12 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     $log.debug "Occurrences #{occurrences.length} for #{entityId}"
     $scope.analysis.entities[ entityId ].occurrences = occurrences
+    # Update blind occurences accordingly
+    bo = $scope.analysis.entities[ entityId ].blindOccurrences
+    $scope.analysis.entities[ entityId ].blindOccurrences = bo.filter (oc) ->
+      return (oc in occurrences)
     
-    if occurrences.length is 0
+    if occurrences.length is 0      
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
         
@@ -303,6 +307,30 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entityIds.push id
     RelatedPostDataRetrieverService.load entityIds
 
+  $scope.onEntityPageLinkingToggle = (entity)->
+
+      # Blind occurrences for the current entity
+      bo = entity.blindOccurrences
+      # If we are in bottom / up mode toggle specific annotation
+      if $scope.annotation?
+        if $scope.annotation in bo
+          
+          bo = bo.filter (annotationId)->
+            $scope.annotation isnt annotationId
+        else
+          bo.push $scope.annotation
+      # Otherwise the whole selected occurences collaction
+      else
+        if bo.length > 0
+          bo = []
+        else
+          bo = entity.occurrences
+
+      # Update blind occurences collection
+      $scope.analysis.entities[ entity.id ].blindOccurrences = bo     
+      # Notify to EditorService
+      $scope.$emit "entityBlindnessToggled", $scope.analysis.entities[ entity.id ]
+    
   $scope.onSelectedEntityTile = (entity)->
 
     # Detect if the entity has to be selected or unselected

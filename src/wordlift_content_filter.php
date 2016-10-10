@@ -47,25 +47,36 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 	// If it is an entity, add its own microdata to the content.
 	if ( get_post_type( $post_id ) == Wordlift_Entity_Service::TYPE_NAME ) {
 		$own_uri = wl_get_entity_uri( $post_id );
-		$content .= '<span itemid="' . $own_uri . '"></span>';
+		// Create a fake and randomic annotation id
+		$annotation_id = uniqid( 'urn:' );		
+		$content .= "<span id=\"$annotation_id\" class=\"textannotation disambiguated\" itemid=\"$own_uri\"></span>";
 	}
 
 	// Now search in the text entity mentions
-	$regex   = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+	$regex = '/<(\\w+)[^<]* id=\"([^"]+)\" class=\"([^"]+)\" itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+	
 	$matches = array();
 
 	// Return the content if not item IDs have been found.
 	if ( FALSE === preg_match_all( $regex, $content, $matches, PREG_SET_ORDER ) ) {
 		return $content;
 	}
+	
+	// Retrieve item_ids removing deuplicates
+	$item_ids = array_unique( array_map( function( $match ) {
+		return $match[4];
+	}, $matches ) );
 
-	// TODO: Retrieve here just one time entities type structure to avoid multiple queries.
+	// Build annotations
+	$annotations = array();
 	foreach ( $matches as $match ) {
-		$item_id = $match[2];
+		$annotations[ $match[4] ][ $match[2] ] = preg_match( '/'. WL_BLIND_ANNOTATION_CSS_CLASS .'/', $match[3] );
+	}
 
+	// Embed microdata removing deuplicated item ids
+	foreach ( array_unique( $item_ids ) as $item_id ) {
 		// wl_write_log( "_wl_content_embed_microdata [ item ID :: $item_id ]" );
-
-		$content = wl_content_embed_item_microdata( $content, $item_id );
+		$content = wl_content_embed_item_microdata( $content, $item_id, $annotations[ $item_id ] );
 	}
 
 	return $content;
@@ -76,11 +87,12 @@ function _wl_content_embed_microdata( $post_id, $content ) {
  *
  * @param string $content A content.
  * @param string $uri An entity URI.
+ * @param array  $annotations Mapping annotation ids => blindness
  * @param string $itemprop Specifies which property this entity is for another entity. Useful for recursive markup.
  *
  * @return string The content with embedded microdata.
  */
-function wl_content_embed_item_microdata( $content, $uri, $itemprop = NULL, $recursion_level = 0 ) {
+function wl_content_embed_item_microdata( $content, $uri, $annotations = array(), $itemprop = NULL, $recursion_level = 0 ) {
 
 	// The recursion level is set by `wl_content_embed_compile_microdata_template`
 	// which is loading referenced entities and calling again this function to print
@@ -135,24 +147,31 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = NULL, $rec
 	$permalink = get_permalink( $post->ID );
 	$url       = '<link itemprop="url" href="' . $permalink . '" />';
 
+	foreach ( $annotations as $annotation_id => $is_blind ) {
 
-	// If entity is nested, we do not show a link, but a hidden meta.
-	// See https://github.com/insideout10/wordlift-plugin/issues/348
-	$name = ! is_null( $itemprop )
-		? "<meta itemprop='name' content='$post->post_title' /></$1>"
-		: '<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">' . ( is_null( $itemprop ) ? '$2' : '' ) . '</a></$1>';
+		// Replace the original tagging with the new tagging.
+		$regex = '/<(\\w+)[^<]* id=\"' . $annotation_id . '"[^>]*>([^<]*)<\\/\\1>/i';
+	
+		// If entity is nested, we do not show a link, but a hidden meta.
+		// See https://github.com/insideout10/wordlift-plugin/issues/348
+		$name = ( ! is_null( $itemprop ) )
+			? "<meta itemprop='name' content='$post->post_title' />"
+			: ( $is_blind )
+				? '<span class="wl-blind-annotation" itemprop="name" content="' . $post->post_title . '">$2</span>' :
+				'<a class="wl-entity-page-link" href="' . $permalink . '" itemprop="name" content="' . $post->post_title . '">$2</a>';
+		
+		$content = preg_replace( $regex,
+			'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
+			.	$same_as
+			.	$additional_properties
+			.	$url
+			.	$name
+			.	'</$1>',
+			$content
+		);
 
-	// Replace the original tagging with the new tagging.
-	$regex   = wl_content_embed_build_regex_from_uri( $uri );
-	$content = preg_replace( $regex,
-		'<$1' . $itemprop . ' itemscope' . $item_type . ' itemid="' . esc_attr( $entity_uri ) . '">'
-		. $same_as
-		. $additional_properties
-		. $url
-		. $name,
-		$content
-	);
-
+	}
+	
 	// wl_write_log( "wl_content_embed_item_microdata [ uri :: $uri ][ regex :: $regex ]" );
 
 	return $content;
@@ -242,8 +261,11 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 				$nested_entity = Wordlift_Entity_Service::get_instance()
 				                                        ->get_entity_post_by_uri( $field_value );
 				if ( ! is_null( $nested_entity ) ) {
-					$content           = '<span itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
-					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, $field_name, ++ $recursion_level );
+
+					// Create a fake and randomic annotation id
+					$annotation_id = uniqid( 'urn:' );		
+					$content           = '<span id="' . $annotation_id . '" class="textannotation disambiguated" itemid="' . esc_attr( $field_value ) . '">' . $nested_entity->post_title . '</span>';
+					$compiled_template = wl_content_embed_item_microdata( $content, $field_value, array( $annotation_id => false ), $field_name, ++ $recursion_level );
 					$template          = str_replace( $placeholder, $compiled_template, $template );
 				} else {
 					$template = str_replace( $placeholder, '', $template );
