@@ -450,7 +450,10 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Fires once a post has been saved.
+	 * Fires once a post has been saved. This function uses the $_REQUEST, therefore
+	 * we check that the post we're saving is the current post.
+	 *
+	 * @see https://github.com/insideout10/wordlift-plugin/issues/363
 	 *
 	 * @since 3.2.0
 	 *
@@ -460,8 +463,13 @@ class Wordlift_Entity_Service {
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
-		// If it's not an entity, return.
-		if ( ! $this->is_entity( $post_id ) ) {
+		// We're setting the alternative label that have been provided via the UI
+		// (in fact we're using $_REQUEST), while save_post may be also called
+		// programmatically by some other function: we need to check therefore if
+		// the $post_id in the save_post call matches the post id set in the request.
+		//
+		// If this is not the current post being saved or if it's not an entity, return.
+		if ( $_REQUEST['post_ID'] != $post_id || ! $this->is_entity( $post_id ) ) {
 			return;
 		}
 
