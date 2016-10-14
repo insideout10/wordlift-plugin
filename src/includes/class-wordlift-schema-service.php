@@ -650,12 +650,7 @@ class Wordlift_Schema_Service {
 					)
 				)
 			),
-			'microdata_template' =>
-				'{{birthDate}}
-                 {{birthPlace}}
-                 {{knows}}
-				 {{affiliation}}
-				 {{email}}',
+			'microdata_template' => '{{birthDate}}{{birthPlace}}{{knows}}{{affiliation}}{{email}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
