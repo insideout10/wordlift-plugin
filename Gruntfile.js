@@ -45,6 +45,8 @@ module.exports = function ( grunt ) {
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityForm.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityTile.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityInputBox.coffee',
+        SOURCE_DIR + 'coffee/editpost-widget/app.services.EditorAdapter.coffee',
+        SOURCE_DIR + 'coffee/editpost-widget/app.services.AnnotationParser.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.AnalysisService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.EditorService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.RelatedPostDataRetrieverService.coffee',

@@ -40,12 +40,15 @@ function wl_analyze_content( $content ) {
 	// Get the analyzer URL.
 	$url = wl_configuration_get_analyzer_url();
 
+	// Set the content type to the request content type or to text/plain by default.
+	$content_type = $_SERVER['CONTENT_TYPE'] ?: 'text/plain';
+
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 		'method'      => 'POST',
 		'headers'     => array(
 			'Accept'       => 'application/json',
-			'Content-type' => 'text/plain'
+			'Content-type' => $content_type
 		),
 		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
 		'httpversion' => '1.0',
