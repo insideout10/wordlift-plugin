@@ -217,7 +217,7 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array An array containing year, month and day values.
 	 */
-	private static function date( $value ) {
+	public static function date( $value ) {
 
 		return array(
 			'year'  => date( 'Y', $value ),
