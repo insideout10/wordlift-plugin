@@ -210,11 +210,10 @@ angular.module('wordlift.utils.directives', [])
 $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
-angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordlift.utils.directives' ])
+angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives'])
 .provider("configuration", ()->
-  
   _configuration = undefined
-  
+
   provider =
     setConfiguration: (configuration)->
       _configuration = configuration
@@ -223,9 +222,8 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 
   provider
 )
-.filter('filterEntitiesByType', [ '$log', 'configuration', ($log, configuration)->
+.filter('filterEntitiesByType', ['$log', 'configuration', ($log, configuration)->
   return (items, types)->
-    
     filtered = []
     for id, entity of items
       if entity.mainType in types
@@ -237,28 +235,27 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
   restrict: 'E'
   scope: true
   template: (tElement, tAttrs)->
-    
     wrapperClasses = 'wl-wrapper'
     wrapperAttrs = ' wl-carousel'
     itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
     itemWrapperAttrs = ' wl-carousel-pane'
     thumbClasses = 'wl-card-image'
-    
+
     unless configuration.attrs.with_carousel
       wrapperClasses = 'wl-floating-wrapper'
       wrapperAttrs = ''
       itemWrapperClasses = 'wl-post wl-card wl-floating-item-wrapper'
       itemWrapperAttrs = ''
-    
+
     if configuration.attrs.squared_thumbs
       thumbClasses = 'wl-card-image wl-square'
-      
+
     """
       <div class="wl-posts">
         <div class="#{wrapperClasses}" #{wrapperAttrs}>
           <div class="#{itemWrapperClasses}" ng-repeat="post in posts"#{itemWrapperAttrs}>
             <div class="#{thumbClasses}"> 
-              <span style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
+              <a ng-href="{{post.permalink}}" style="background: url({{post.thumbnail}}) no-repeat center center; background-size: cover;"></a>
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{post.permalink}}">{{post.post_title}}</a>
@@ -270,8 +267,8 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 
 ])
 
-.controller('FacetedSearchWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)-> 
-
+.controller('FacetedSearchWidgetController', ['DataRetrieverService', 'configuration', '$scope', '$log',
+  (DataRetrieverService, configuration, $scope, $log)->
     $scope.entity = undefined
     $scope.posts = []
     $scope.facets = []
@@ -280,12 +277,12 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
 
     # TODO Load dynamically 
     $scope.supportedTypes = [
-      { 'scope' : 'what', 'types' : [ 'thing', 'creative-work' ] }
-      { 'scope' : 'who', 'types' : [ 'person', 'organization', 'local-business' ] }
-      { 'scope' : 'where', 'types' : [ 'place' ] }
-      { 'scope' : 'when', 'types' : [ 'event' ] }
+      {'scope': 'what', 'types': ['thing', 'creative-work']}
+      {'scope': 'who', 'types': ['person', 'organization', 'local-business']}
+      {'scope': 'where', 'types': ['place']}
+      {'scope': 'when', 'types': ['event']}
     ]
-      
+
     $scope.configuration = configuration
     $scope.filteringEnabled = true
 
@@ -293,61 +290,61 @@ angular.module('wordlift.facetedsearch.widget', [ 'wordlift.ui.carousel', 'wordl
       $scope.configuration.attrs.show_facets = !$scope.configuration.attrs.show_facets
       # Reset conditions
       $scope.conditions = {}
-      DataRetrieverService.load( 'posts' )
+      DataRetrieverService.load('posts')
 
 
     $scope.isInConditions = (entity)->
       if Object.keys($scope.conditions).length is 0
         return true
-      if $scope.conditions[ entity.id ]
+      if $scope.conditions[entity.id]
         return true
       return false
 
     $scope.addCondition = (entity)->
       $log.debug "Add entity #{entity.id} to conditions array"
 
-      if $scope.conditions[ entity.id ]
-        delete $scope.conditions[ entity.id ]
+      if $scope.conditions[entity.id]
+        delete $scope.conditions[entity.id]
       else
-        $scope.conditions[ entity.id ] = entity
-      
-      DataRetrieverService.load( 'posts', Object.keys( $scope.conditions ) )
+        $scope.conditions[entity.id] = entity
 
-        
-    $scope.$on "postsLoaded", (event, posts) -> 
+      DataRetrieverService.load('posts', Object.keys($scope.conditions))
+
+
+    $scope.$on "postsLoaded", (event, posts) ->
       $log.debug "Referencing posts for item #{configuration.post_id} ..."
       $scope.posts = posts
-      
-    $scope.$on "facetsLoaded", (event, facets) -> 
+
+    $scope.$on "facetsLoaded", (event, facets) ->
       $log.debug "Referencing facets for item #{configuration.post_id} ..."
       $scope.facets = facets
 
 ])
 # Retrieve post
-.service('DataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)-> 
-  
-  service = {}
-  service.load = ( type, conditions = [] )->
-    uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}&type=#{type}"
-    
-    $log.debug "Going to search #{type} with conditions"
-    
-    $http(
-      method: 'post'
-      url: uri
-      data: conditions
-    )
-    # If successful, broadcast an *analysisReceived* event.
-    .success (data) ->
-      $rootScope.$broadcast "#{type}Loaded", data
-    .error (data, status) ->
-       $log.warn "Error loading #{type}, statut #{status}"
+.service('DataRetrieverService', ['configuration', '$log', '$http', '$rootScope',
+  (configuration, $log, $http, $rootScope)->
+    service = {}
+    service.load = (type, conditions = [])->
+      uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}&type=#{type}"
 
-  service
+      $log.debug "Going to search #{type} with conditions"
+
+      $http(
+        method: 'post'
+        url: uri
+        data: conditions
+      )
+# If successful, broadcast an *analysisReceived* event.
+      .success (data) ->
+        $rootScope.$broadcast "#{type}Loaded", data
+      .error (data, status) ->
+        $log.warn "Error loading #{type}, statut #{status}"
+
+    service
 
 ])
 # Configuration provider
-.config([ 'configurationProvider', (configurationProvider)->
+.config(['configurationProvider', (configurationProvider)->
   configurationProvider.setConfiguration window.wl_faceted_search_params
 ])
 
@@ -377,15 +374,14 @@ $(
   """)
   .appendTo('#wordlift-faceted-entity-search-widget')
 
-injector = angular.bootstrap $('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget'] 
-injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
-  # execute the following commands in the angular js context.
-  $rootScope.$apply(->    
-    DataRetrieverService.load('posts') 
-    DataRetrieverService.load('facets') 
-  )
-])
-
+  injector = angular.bootstrap $('#wordlift-faceted-entity-search-widget'), ['wordlift.facetedsearch.widget']
+  injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
+# execute the following commands in the angular js context.
+    $rootScope.$apply(->
+      DataRetrieverService.load('posts')
+      DataRetrieverService.load('facets')
+    )
+  ])
 )
 
 

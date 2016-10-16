@@ -1391,7 +1391,9 @@
   padding-top: 100%;
 }
 .wl-card .wl-card-image span,
-.wl-card .wl-card-image img {
+.wl-card .wl-card-image img,
+.wl-card .wl-card-image a {
+  display: block;
   position: absolute;
   margin: auto;
   top: 0;
