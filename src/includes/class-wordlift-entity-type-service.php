@@ -2,6 +2,7 @@
 
 /**
  * Define a class that provides function related to the entity post type.
+ *
  * @since 3.6.0
  */
 class Wordlift_Entity_Type_Service {

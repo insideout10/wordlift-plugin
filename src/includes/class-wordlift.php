@@ -239,6 +239,15 @@ class Wordlift {
 	private $rebuild_service;
 
 	/**
+	 * A {@link Wordlift_Jsonld_Service} instance.
+	 *
+	 * @since 3.7.0
+	 * @access private
+	 * @var \Wordlift_Jsonld_Service $jsonld_service A {@link Wordlift_Jsonld_Service} instance.
+	 */
+	private $jsonld_service;
+
+	/**
 	 * The 'Download Your Data' page.
 	 *
 	 * @since 3.6.0
@@ -404,6 +413,13 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rebuild-service.php';
 
 		/**
+		 * Load the JSON-LD service to publish entities using JSON-LD.s
+		 *
+		 * @since 3.7.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
@@ -548,6 +564,9 @@ class Wordlift {
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
+		// Instantiate the JSON-LD service.
+		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->entity_type_service, $this->schema_service );
+
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 
@@ -650,6 +669,9 @@ class Wordlift {
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
 
+		// Hook the AJAX wl_jsonld action to the JSON-LD service.
+		$this->loader->add_action( 'wp_ajax_wl_jsonld', $this->jsonld_service, 'get' );
+
 	}
 
 	/**
@@ -684,6 +706,9 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
 		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', - PHP_INT_MAX );
+
+		// Hook the AJAX wl_jsonld action to the JSON-LD service.
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
 
 	}
 

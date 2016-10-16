@@ -84,6 +84,7 @@ function wl_build_entity_uri( $post_id ) {
 
 /**
  * Get the entity URI of the provided post.
+ *
  * @deprecated use Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
  *
  * @uses wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
