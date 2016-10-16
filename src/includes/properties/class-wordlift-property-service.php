@@ -18,9 +18,11 @@ class Wordlift_Property_Service_2 {
 
 	}
 
-	public function register( $meta_key, $property_service ) {
+	public function register( $property_service, $meta_keys ) {
 
-		$this->services[ $meta_key ] = $property_service;
+		foreach ( $meta_keys as $meta_key ) {
+			$this->services[ $meta_key ] = $property_service;
+		}
 
 	}
 

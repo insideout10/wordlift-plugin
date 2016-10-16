@@ -1,21 +1,16 @@
 <?php
 
-class Wordlift_Location_Property_Service extends Wordlift_Simple_Property_Service {
-
-	const META_KEY = 'wl_location';
+class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service {
 
 	public function get( $post_id, $meta_key ) {
 
-		$value = get_post_meta( $post_id, $meta_key );
+		$value = array_map( function ( $item ) {
+			return Wordlift_Entity_Property_Service::expand( $item );
+		}, get_post_meta( $post_id, $meta_key ) );
 
 		if ( 0 === count( $value ) ) {
 			return NULL;
 		}
-
-		$value = array_map( function ( $item ) {
-
-			return Wordlift_Location_Property_Service::expand( $item );
-		}, $value );
 
 		if ( 1 === count( $value ) ) {
 			return $value[0];

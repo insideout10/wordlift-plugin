@@ -2,8 +2,9 @@
 
 require_once( 'properties/class-wordlift-property-service.php' );
 require_once( 'properties/class-wordlift-simple-property-service.php' );
-require_once( 'properties/class-wordlift-location-property-service.php' );
+require_once( 'properties/class-wordlift-entity-property-service.php' );
 require_once( 'properties/class-wordlift-url-property-service.php' );
+require_once( 'properties/class-wordlift-double-property-service.php' );
 
 /**
  * Define the Wordlift_Jsonld_Service class to support JSON-LD.
@@ -17,6 +18,8 @@ require_once( 'properties/class-wordlift-url-property-service.php' );
  * @since 3.7.0
  */
 class Wordlift_Jsonld_Service {
+
+	const CONTEXT = 'http://schema.org';
 
 	/**
 	 * @since 3.7.0
@@ -64,8 +67,15 @@ class Wordlift_Jsonld_Service {
 		$this->property_factory    = $property_factory;
 
 		$this->property_service = new Wordlift_Property_Service_2( new Wordlift_Simple_Property_Service() );
-		$this->property_service->register( Wordlift_Location_Property_Service::META_KEY, new Wordlift_Location_Property_Service() );
-		$this->property_service->register( Wordlift_Url_Property_Service::META_KEY, new Wordlift_Url_Property_Service() );
+		$this->property_service->register( new Wordlift_Entity_Property_Service(), array(
+			Wordlift_Schema_Service::FIELD_LOCATION,
+			Wordlift_Schema_Service::FIELD_FOUNDER
+		) );
+		$this->property_service->register( new Wordlift_Url_Property_Service(), array( Wordlift_Url_Property_Service::META_KEY ) );
+		$this->property_service->register( new Wordlift_Double_Property_Service(), array(
+			Wordlift_Schema_Service::FIELD_GEO_LATITUDE,
+			Wordlift_Schema_Service::FIELD_GEO_LONGITUDE
+		) );
 
 		self::$instance = $this;
 	}
@@ -89,7 +99,7 @@ class Wordlift_Jsonld_Service {
 		}
 
 
-		$jsonld = $this->get_by_post( $post );
+		$jsonld = array( '@context' => self::CONTEXT ) + $this->get_by_post( $post );
 
 		wp_send_json( $jsonld );
 
@@ -110,24 +120,29 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = array(
 			'@id'   => $id,
-			'@type' => substr( $type['uri'], strlen( 'http://schema.org/' ) ),
+			'@type' => $this->relative_to_context( $type['uri'] ),
 			'name'  => $name,
 		);
 
 		foreach ( $fields as $key => $value ) {
-			$name  = substr( $value['predicate'], strlen( 'http://schema.org/' ) );
+			$name  = $this->relative_to_context( $value['predicate'] );
 			$value = $this->property_service->get( $post->ID, $key );
 
 			if ( NULL === $value ) {
 				continue;
 			}
 
-			$jsonld[ $name ] = $value;
+			$jsonld[ $name ] = $this->relative_to_context( $value );
 		}
 
 
 		return $jsonld;
 
+	}
+
+	private function relative_to_context( $value ) {
+
+		return ( 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value );
 	}
 
 }
