@@ -248,6 +248,14 @@ class Wordlift {
 	private $jsonld_service;
 
 	/**
+	 *
+	 * @since 3.7.0
+	 * @access private
+	 * @var \Wordlift_Property_Factory $property_factory
+	 */
+	private $property_factory;
+
+	/**
 	 * The 'Download Your Data' page.
 	 *
 	 * @since 3.6.0
@@ -521,8 +529,8 @@ class Wordlift {
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
-		$this->schema_service = new Wordlift_Schema_Service();
+		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
+		$this->schema_service        = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.
 		$this->notice_service = new Wordlift_Notice_Service();
@@ -573,8 +581,11 @@ class Wordlift {
 
 		$entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
+		$this->property_factory = new Wordlift_Property_Factory( $schema_url_property_service );
+		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
+
 		// Instantiate the JSON-LD service.
-		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $entity_type_service, $this->schema_service );
+		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $entity_type_service, $this->schema_service, $this->property_factory );
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
