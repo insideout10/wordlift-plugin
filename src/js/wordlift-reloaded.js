@@ -549,13 +549,9 @@
         return $scope.onSelectedEntityTile($scope.analysis.entities[$scope.currentEntity.id]);
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
-        var bo, entities, ref1, results1;
+        var entities, ref1, results1;
         $log.debug("Occurrences " + occurrences.length + " for " + entityId);
         $scope.analysis.entities[entityId].occurrences = occurrences;
-        bo = $scope.analysis.entities[entityId].blindOccurrences;
-        $scope.analysis.entities[entityId].blindOccurrences = bo.filter(function(oc) {
-          return (indexOf.call(occurrences, oc) >= 0);
-        });
         if (occurrences.length === 0) {
           ref1 = $scope.selectedEntities;
           results1 = [];
@@ -647,27 +643,6 @@
           }
         }
         return RelatedPostDataRetrieverService.load(entityIds);
-      };
-      $scope.onEntityPageLinkingToggle = function(entity) {
-        var bo, ref1;
-        bo = entity.blindOccurrences;
-        if ($scope.annotation != null) {
-          if (ref1 = $scope.annotation, indexOf.call(bo, ref1) >= 0) {
-            bo = bo.filter(function(annotationId) {
-              return $scope.annotation !== annotationId;
-            });
-          } else {
-            bo.push($scope.annotation);
-          }
-        } else {
-          if (bo.length > 0) {
-            bo = [];
-          } else {
-            bo = entity.occurrences;
-          }
-        }
-        $scope.analysis.entities[entity.id].blindOccurrences = bo;
-        return $scope.$emit("entityBlindnessToggled", $scope.analysis.entities[entity.id]);
       };
       $scope.onSelectedEntityTile = function(entity) {
         var action, image, k, len1, ref1, ref2, scopeId;
@@ -918,7 +893,6 @@
           isSelected: '=',
           showConfidence: '=',
           onSelect: '&',
-          onBlind: '&',
           onMore: '&'
         },
         templateUrl: function() {
@@ -1060,7 +1034,6 @@
           images: [],
           confidence: 1,
           occurrences: [],
-          blindOccurrences: [],
           annotations: {}
         };
         return merge(defaults, params);
@@ -1137,7 +1110,6 @@
           }
           entity.id = id;
           entity.occurrences = [];
-          entity.blindOccurrences = [];
           entity.annotations = {};
           entity.confidence = 1;
         }
@@ -1275,9 +1247,6 @@
             continue;
           }
           analysis.entities[entity.id].occurrences.push(textAnnotation.id);
-          if (annotation.isBlind) {
-            analysis.entities[entity.id].blindOccurrences.push(textAnnotation.id);
-          }
           if (analysis.entities[entity.id].annotations[textAnnotation.id] == null) {
             analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation;
             analysis.annotations[textAnnotation.id].entityMatches.push({
@@ -1297,9 +1266,8 @@
 
   angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
     'configuration', 'AnalysisService', '$log', '$http', '$rootScope', function(configuration, AnalysisService, $log, $http, $rootScope) {
-      var BLIND_ANNOTATION_CSS_CLASS, INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
+      var INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
       INVISIBLE_CHAR = '\uFEFF';
-      BLIND_ANNOTATION_CSS_CLASS = 'no-entity-page-link';
       findEntities = function(html) {
         var annotation, match, pattern, results1, traslator;
         traslator = Traslator.create(html);
@@ -1310,10 +1278,8 @@
             start: traslator.html2text(match.index),
             end: traslator.html2text(match.index + match[0].length),
             uri: match[2],
-            label: match[3],
-            isBlind: match[0].indexOf(BLIND_ANNOTATION_CSS_CLASS) !== -1
+            label: match[3]
           };
-          $log.debug(annotation);
           results1.push(annotation);
         }
         return results1;
@@ -1344,7 +1310,7 @@
           ed.dom.removeClass(annotationId, type.css);
         }
         ed.dom.removeClass(annotationId, "unlinked");
-        ed.dom.removeClass(annotationId, BLIND_ANNOTATION_CSS_CLASS);
+        ed.dom.addClass(annotationId, "wl-" + entity.mainType);
         discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
         ed.dom.setAttrib(annotationId, "itemid", entity.id);
         return discardedItemId;
@@ -1353,7 +1319,6 @@
         var discardedItemId, ed;
         ed = editor();
         ed.dom.removeClass(annotationId, "disambiguated");
-        ed.dom.removeClass(annotationId, BLIND_ANNOTATION_CSS_CLASS);
         ed.dom.removeClass(annotationId, "wl-" + entity.mainType);
         discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
         ed.dom.setAttrib(annotationId, "itemid", "");
@@ -1416,22 +1381,6 @@
         }
         occurrences = currentOccurencesForEntity(entity.id);
         return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
-      });
-      $rootScope.$on("entityBlindnessToggled", function(event, entity) {
-        var annotationId, ed, j, k, len, len1, ref, ref1, results1;
-        ed = editor();
-        ref = entity.occurrences;
-        for (j = 0, len = ref.length; j < len; j++) {
-          annotationId = ref[j];
-          ed.dom.removeClass(annotationId, BLIND_ANNOTATION_CSS_CLASS);
-        }
-        ref1 = entity.blindOccurrences;
-        results1 = [];
-        for (k = 0, len1 = ref1.length; k < len1; k++) {
-          annotationId = ref1[k];
-          results1.push(ed.dom.addClass(annotationId, BLIND_ANNOTATION_CSS_CLASS));
-        }
-        return results1;
       });
       service = {
         hasSelection: function() {
@@ -1504,7 +1453,6 @@
             html = ed.getContent({
               format: 'raw'
             });
-            $log.debug(html);
             entities = findEntities(html);
             AnalysisService.cleanAnnotations(analysis, findPositions(entities));
             AnalysisService.preselect(analysis, entities);
@@ -1525,10 +1473,7 @@
                 em = ref1[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
-                  if (indexOf.call(entity.blindOccurrences, annotationId) >= 0) {
-                    element += " " + BLIND_ANNOTATION_CSS_CLASS;
-                  }
-                  element += " disambiguated\" itemid=\"" + entity.id;
+                  element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
                 }
               }
               element += "\">";

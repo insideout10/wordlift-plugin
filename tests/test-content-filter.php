@@ -22,11 +22,9 @@ class ContentFilterTest extends WP_UnitTestCase {
 	// Test <span> markup is cleaned out when referring to a non-existent entity
 	function testMicrodataCompilingForANonExistentEntity() {
 
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid('urn:');
 		// Create content for a post referencing a non existent entity
 		$content = <<<EOF
-                Let's talk about <span id="$annotation_id" class="textannotation disambiguated" itemid="http://nonExistent.yeah">Watzlawick</span>
+                Let's talk about <span itemid="http://nonExistent.yeah">Watzlawick</span>
 EOF;
 
 		// Create a post with above content
@@ -46,11 +44,9 @@ EOF;
 		$entity_id  = wl_create_post( 'A trashed entity about Paul Watzlawick', 'watzlawick', 'Paul Watzlawick', 'draft', 'entity' );
 		$entity_uri = wl_get_entity_uri( $entity_id );
 
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid('urn:');
 		// Create content for a post referencing the entity
 		$content = <<<EOF
-                Let's talk about <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">Watzlawick</span>
+                Let's talk about <span itemid="$entity_uri">Watzlawick</span>
 EOF;
 
 		// Create a post with above content
@@ -69,11 +65,8 @@ EOF;
 		// Create an entity without defining the schema.org type. WordLift will assume it is a Thing
 		$entity_id  = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		$entity_uri = wl_get_entity_uri( $entity_id );
-		
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid('urn:');
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyPlace</span>
+    <span itemid="$entity_uri">MyPlace</span>
 EOF;
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' );
@@ -97,11 +90,8 @@ EOF;
 		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
 		$entity_uri = wl_get_entity_uri( $entity_id );
-
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid('urn:');
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyPlace</span>
+    <span itemid="$entity_uri">MyPlace</span>
 EOF;
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' );
@@ -121,18 +111,14 @@ EOF;
 
 	// Test if the microdata compiling does not fail on an entity with an unexpected custom field
 	function testMicrodataCompilingForAnEntityWithUnexpectedCustomField() {
-		
 		// Create an entity without defining the schema.org type properly
 		$entity_id = wl_create_post( 'Just a place', 'my-place', 'MyPlace', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
 		// The field 'foo' is not included in the 'Place' type definition
 		add_post_meta( $entity_id, "foo", "bar", true );
 		$entity_uri = wl_get_entity_uri( $entity_id );
-		
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid( 'urn:' );
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyPlace</span>
+    <span itemid="$entity_uri">MyPlace</span>
 EOF;
 		// Create a post referincing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' );
@@ -162,10 +148,8 @@ EOF;
 		wl_schema_set_value( $entity_id, 'streetAddress', 'via del ciuccio 23' );
 
 		$entity_uri = wl_get_entity_uri( $entity_id );
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid( 'urn:' );
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyPlace</span>
+    <span itemid="$entity_uri">MyPlace</span>
 EOF;
 		// Create a post referencing to the created entity
 		$post_id = wl_create_post( $content, 'my-post', 'A post' );
@@ -207,10 +191,8 @@ EOF;
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid( 'urn:' );
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyEvent</span>
+    <span itemid="$entity_uri">MyEvent</span>
 EOF;
 		$post_id    = wl_create_post( $content, 'post', 'A post' );
 
@@ -262,10 +244,8 @@ EOF;
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid( 'urn:' );
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyEvent</span>
+    <span itemid="$entity_uri">MyEvent</span>
 EOF;
 		$post_id    = wl_create_post( $content, 'post', 'A post' );
 
@@ -309,10 +289,8 @@ EOF;
 
 		// Create an annotated post containing the entities
 		$entity_uri = wl_get_entity_uri( $event_id );
-		// Create a fake and randomic annotation id
-		$annotation_id = uniqid( 'urn:' );
 		$content    = <<<EOF
-    <span id="$annotation_id" class="textannotation disambiguated" itemid="$entity_uri">MyEvent</span>
+    <span itemid="$entity_uri">MyEvent</span>
 EOF;
 		$post_id    = wl_create_post( $content, 'post', 'A post' );
 
