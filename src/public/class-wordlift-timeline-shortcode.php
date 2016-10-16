@@ -9,7 +9,14 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 	const SHORTCODE = 'wl_timeline';
 
-	const SUPPORTED_LOCALES = array(
+	/**
+	 * The list of locales supported by TimelineJS (correspond to the list of
+	 * files in the locale subfolder).
+	 *
+	 * @since 3.7.0
+	 * @var array An array of two-letters language codes.
+	 */
+	private static $supported_locales = array(
 		'ur',
 		'uk',
 		'tr',
@@ -160,7 +167,7 @@ EOF;
 		$locale = substr( get_locale(), 0, 2 );
 
 		// Check that the specified locale is supported otherwise use English.
-		return in_array( $locale, self::SUPPORTED_LOCALES ) ? $locale : 'en';
+		return in_array( $locale, self::$supported_locales ) ? $locale : 'en';
 	}
 
 }
