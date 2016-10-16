@@ -327,9 +327,14 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
 
 		/**
-		 * The entity post type service.
+		 * The entity post type service (this is the WordPress post type, not the entity schema type).
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
+
+		/**
+		 * The entity type service (i.e. the schema type).
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
 
 		/**
 		 * The entity link service.
@@ -406,6 +411,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-uri-service.php';
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-listable.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-factory.php';
 
 		/**
 		 * The WordLift rebuild service, used to rebuild the remote dataset using the local data.
@@ -564,8 +571,10 @@ class Wordlift {
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
+		$entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
+
 		// Instantiate the JSON-LD service.
-		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->entity_post_type_service, $this->schema_service );
+		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $entity_type_service, $this->schema_service );
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();

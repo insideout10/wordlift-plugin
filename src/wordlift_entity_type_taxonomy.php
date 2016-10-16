@@ -26,21 +26,21 @@ function wl_entity_type_taxonomy_register() {
 	// Take away GUI for taxonomy editing.
 	// TODO: readd capabilities when editing of the WL <-> schema.org mapping is possible
 	$capabilities = array(
-		'manage_terms' => null,
-		'edit_terms'   => null,
-		'delete_terms' => null,
+		'manage_terms' => NULL,
+		'edit_terms'   => NULL,
+		'delete_terms' => NULL,
 		'assign_terms' => 'edit_posts'
 	);
 
 	$args = array(
 		'labels'            => $labels,
 		'capabilities'      => $capabilities,
-		'hierarchical'      => true,
-		'show_admin_column' => true
+		'hierarchical'      => TRUE,
+		'show_admin_column' => TRUE
 	);
 
 	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'entity', $args );
-	
+
 	// Add filter to change the metabox CSS class
 	add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
 }
@@ -48,26 +48,31 @@ function wl_entity_type_taxonomy_register() {
 /**
  * Get the entity main type for the specified post ID.
  *
+ * @deprecated use Wordlift_Entity_Type_Service::get_instance()->get( $post_id )
+ *
  * @param int $post_id The post ID
  *
  * @return array|null An array of type properties or null if no term is associated
  */
 function wl_entity_type_taxonomy_get_type( $post_id ) {
 
-	$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+	return Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 
-	if ( is_wp_error( $terms ) ) {
-		// TODO: handle error
-		return null;
-	}
-
-	// If there are not terms associated, return null.
-	if ( 0 === count( $terms ) ) {
-		return null;
-	}
-
-	// Return the entity type with the specified id.
-	return Wordlift_Schema_Service::get_instance()->get_schema( $terms[0]->slug );
+//	$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+//
+//	if ( is_wp_error( $terms ) ) {
+//		// TODO: handle error
+//		return NULL;
+//	}
+//
+//	// If there are not terms associated, return null.
+//	if ( 0 === count( $terms ) ) {
+//		return NULL;
+//	}
+//
+//	// Return the entity type with the specified id.
+//	return Wordlift_Schema_Service::get_instance()
+//	                              ->get_schema( $terms[0]->slug );
 }
 
 /**

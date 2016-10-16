@@ -20,7 +20,7 @@ class Wordlift_Jsonld_Service {
 	private $entity_service;
 
 	/**
-	 * @var Wordlift_Entity_Post_Type_Service $entity_type_service
+	 * @var Wordlift_Entity_Type_Service $entity_type_service
 	 */
 	private $entity_type_service;
 
@@ -30,11 +30,13 @@ class Wordlift_Jsonld_Service {
 	private $schema_service;
 
 	/**
-	 * Wordlift_Jsonld_Service constructor.
+	 * Create a JSON-LD service.
 	 *
-	 * @param $entity_service
-	 * @param $entity_type_service
-	 * @param $schema_service
+	 * @since 3.7.0
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Schema_Service $schema_service A {@link Wordlift_Schema_Service} instance.
 	 */
 	public function __construct( $entity_service, $entity_type_service, $schema_service ) {
 
@@ -56,7 +58,24 @@ class Wordlift_Jsonld_Service {
 			wp_send_json_error( 'Entity not found' );
 		}
 
-		$post_meta    = get_post_meta( $post->ID );
+//		$post_meta = get_post_meta( $post->ID );
+
+		$type   = $this->entity_type_service->get( $post->ID );
+		$id     = $this->entity_service->get_uri( $post->ID );
+		$name   = $post->post_title;
+		$fields = $type['custom_fields'];
+
+		$jsonld = array(
+			'@id'   => $id,
+			'@type' => substr( $type['uri'], strlen( 'http://schema.org/' ) ),
+			'name'  => $name,
+		);
+
+		var_dump( $fields );
+
+
+		return;
+
 		$schema_class = $this->schema_service->get_narrowest_schema( $this->get_type( $post->ID ) );
 		$fields       = $schema_class['custom_fields'];
 

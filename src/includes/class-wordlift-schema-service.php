@@ -327,29 +327,6 @@ class Wordlift_Schema_Service {
 	}
 
 	/**
-	 * Get the most specialized schema.org type matched using the provided array
-	 * of type URIs.
-	 *
-	 * @since 3.7.0
-	 *
-	 * @param array $type_uris An array of type URIs.
-	 *
-	 * @return NULL|array A schema class definition or NULL if not found.
-	 */
-	public function get_narrowest_schema( $type_uris ) {
-
-		foreach ( $type_uris as $uri ) {
-			foreach ( array_reverse( $this->schema ) as $key => $value ) {
-				if ( $uri === $value['uri'] ) {
-					return $value;
-				}
-			}
-		}
-
-		return NULL;
-	}
-
-	/**
 	 * Get the WordLift's schema trough schema type uri.
 	 *
 	 * @param string $uri The schema uri.
