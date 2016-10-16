@@ -5,7 +5,7 @@
  *
  * @since 3.6.0
  */
-class Wordlift_Entity_Type_Service {
+class Wordlift_Entity_Post_Type_Service {
 
 	/**
 	 * The entity post type.
@@ -30,7 +30,7 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @since 3.6.0
 	 * @access private
-	 * @var Wordlift_Entity_Type_Service
+	 * @var Wordlift_Entity_Post_Type_Service
 	 */
 	private static $instance;
 
@@ -60,7 +60,7 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @return Wordlift_Entity_Type_Service The entity type service singleton instance.
+	 * @return Wordlift_Entity_Post_Type_Service The entity type service singleton instance.
 	 */
 	public static function get_instance() {
 

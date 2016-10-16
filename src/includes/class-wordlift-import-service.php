@@ -26,7 +26,7 @@ class Wordlift_Import_Service {
 	 *
 	 * @since 3.6.0
 	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @var \Wordlift_Entity_Post_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 */
 	private $entity_type_service;
 
@@ -64,7 +64,7 @@ class Wordlift_Import_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service
+	 * @param \Wordlift_Entity_Post_Type_Service $entity_type_service
 	 * @param \Wordlift_Entity_Service $entity_service
 	 * @param \Wordlift_Schema_Service $schema_service
 	 * @param \Wordlift_Sparql_Service $sparql_service

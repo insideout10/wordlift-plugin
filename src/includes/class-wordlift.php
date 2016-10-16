@@ -188,9 +188,9 @@ class Wordlift {
 	 *
 	 * @since 3.6.0
 	 * @access private
-	 * @var \Wordlift_Entity_Type_Service
+	 * @var \Wordlift_Entity_Post_Type_Service
 	 */
-	private $entity_type_service;
+	private $entity_post_type_service;
 
 	/**
 	 * The entity link service used to mangle links to entities with a custom slug or even w/o a slug.
@@ -329,7 +329,7 @@ class Wordlift {
 		/**
 		 * The entity post type service.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
 
 		/**
 		 * The entity link service.
@@ -500,10 +500,10 @@ class Wordlift {
 		$configuration_service = new Wordlift_Configuration_Service();
 
 		// Create an entity type service instance. It'll be later bound to the init action.
-		$this->entity_type_service = new Wordlift_Entity_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $configuration_service->get_entity_base_path() );
+		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $configuration_service->get_entity_base_path() );
 
 		// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
-		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_type_service, $configuration_service->get_entity_base_path() );
+		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_post_type_service, $configuration_service->get_entity_base_path() );
 
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
@@ -557,7 +557,7 @@ class Wordlift {
 		$this->page_service = new Wordlift_Page_Service();
 
 		// Create an import service instance to hook later to WP's import function.
-		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
+		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
 
 		$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
@@ -565,7 +565,7 @@ class Wordlift {
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
 		// Instantiate the JSON-LD service.
-		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->entity_type_service, $this->schema_service );
+		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $this->entity_post_type_service, $this->schema_service );
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
@@ -686,7 +686,7 @@ class Wordlift {
 		$plugin_public = new Wordlift_Public( $this->get_plugin_name(), $this->get_version() );
 
 		// Register the entity post type.
-		$this->loader->add_action( 'init', $this->entity_type_service, 'register' );
+		$this->loader->add_action( 'init', $this->entity_post_type_service, 'register' );
 
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );

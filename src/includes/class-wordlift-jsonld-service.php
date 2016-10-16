@@ -20,7 +20,7 @@ class Wordlift_Jsonld_Service {
 	private $entity_service;
 
 	/**
-	 * @var Wordlift_Entity_Type_Service $entity_type_service
+	 * @var Wordlift_Entity_Post_Type_Service $entity_type_service
 	 */
 	private $entity_type_service;
 
