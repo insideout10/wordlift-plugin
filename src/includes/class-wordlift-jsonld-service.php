@@ -69,7 +69,11 @@ class Wordlift_Jsonld_Service {
 		$this->property_service = new Wordlift_Property_Service_2( new Wordlift_Simple_Property_Service() );
 		$this->property_service->register( new Wordlift_Entity_Property_Service(), array(
 			Wordlift_Schema_Service::FIELD_LOCATION,
-			Wordlift_Schema_Service::FIELD_FOUNDER
+			Wordlift_Schema_Service::FIELD_FOUNDER,
+			Wordlift_Schema_Service::FIELD_AUTHOR,
+			Wordlift_Schema_Service::FIELD_KNOWS,
+			Wordlift_Schema_Service::FIELD_BIRTH_PLACE,
+			Wordlift_Schema_Service::FIELD_AFFILIATION,
 		) );
 		$this->property_service->register( new Wordlift_Url_Property_Service(), array( Wordlift_Url_Property_Service::META_KEY ) );
 		$this->property_service->register( new Wordlift_Double_Property_Service(), array(
@@ -107,7 +111,6 @@ class Wordlift_Jsonld_Service {
 
 	public function get_by_id( $post_id ) {
 
-
 		return $this->get_by_post( get_post( $post_id ) );
 	}
 
@@ -135,14 +138,29 @@ class Wordlift_Jsonld_Service {
 			$jsonld[ $name ] = $this->relative_to_context( $value );
 		}
 
-
-		return $jsonld;
-
+		return $this->post_process( $jsonld );
 	}
 
 	private function relative_to_context( $value ) {
 
 		return ( 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value );
+	}
+
+	private function post_process( $jsonld ) {
+
+		foreach ( $jsonld as $key => $value ) {
+			if ( 'streetAddress' === $key || 'postalCode' === $key || 'addressLocality' === $key || 'addressRegion' === $key || 'addressCountry' === $key || 'postOfficeBoxNumber' === $key ) {
+				$jsonld['address'][ $key ] = $value;
+				unset( $jsonld[ $key ] );
+			}
+
+			if ( 'latitude' === $key || 'longitude' === $key ) {
+				$jsonld['geo'][ $key ] = $value;
+				unset( $jsonld[ $key ] );
+			}
+		}
+
+		return $jsonld;
 	}
 
 }
