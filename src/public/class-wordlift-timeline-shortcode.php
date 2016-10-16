@@ -10,6 +10,73 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 	const SHORTCODE = 'wl_timeline';
 
 	/**
+	 * The list of locales supported by TimelineJS (correspond to the list of
+	 * files in the locale subfolder).
+	 *
+	 * @since 3.7.0
+	 * @var array An array of two-letters language codes.
+	 */
+	private static $supported_locales = array(
+		'ur',
+		'uk',
+		'tr',
+		'tl',
+		'th',
+		'te',
+		'ta',
+		'sv',
+		'sr',
+		'sl',
+		'sk',
+		'si',
+		'ru',
+		'ro',
+		'rm',
+		'pt',
+		'pl',
+		'no',
+		'nl',
+		'ne',
+		'ms',
+		'lv',
+		'lt',
+		'lb',
+		'ko',
+		'ka',
+		'ja',
+		'iw',
+		'it',
+		'is',
+		'id',
+		'hy',
+		'hu',
+		'hr',
+		'hi',
+		'he',
+		'gl',
+		'ga',
+		'fy',
+		'fr',
+		'fo',
+		'fi',
+		'fa',
+		'eu',
+		'et',
+		'es',
+		'eo',
+		'en',
+		'el',
+		'de',
+		'da',
+		'cz',
+		'ca',
+		'bg',
+		'be',
+		'ar',
+		'af'
+	);
+
+	/**
 	 * The Log service.
 	 *
 	 * @since 3.1.0
@@ -42,31 +109,36 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		$timeline_atts = shortcode_atts( array(
 			'width'  => '100%',
 			'height' => '600px',
-			'global' => false
+			'global' => FALSE
 		), $atts );
 
-		// Add timeline library.
-		wp_enqueue_script( 'timelinejs-storyjs-embed', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/storyjs-embed.js' );
-		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/bower_components/TimelineJS.build/build/js/timeline-min.js' );
+		// Load the TimelineJS stylesheets and scripts.
+		wp_enqueue_style( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/css/timeline.css' );
+		wp_enqueue_script( 'timelinejs', dirname( plugin_dir_url( __FILE__ ) ) . '/timelinejs/js/timeline' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '-min' : '' ) . '.js' );
 
 		// Enqueue the scripts for the timeline.
 		$this->enqueue_scripts();
 
-		wp_localize_script( 'wordlift-ui', 'wl_timeline_params', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ), // TODO: this parameter is already provided by WP
-			'action'   => 'wl_timeline'
+		// Provide the script with options.
+		wp_localize_script( 'timelinejs', 'wl_timeline_params', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			// TODO: this parameter is already provided by WP
+			'action'   => 'wl_timeline',
+			// Enable debug in the client TimelineJS script.
+			'debug'    => ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? 'false' : 'true',
+			'language' => $this->get_locale(),
 		) );
 
 		// Get the current post id or set null if global is set to true.
-		$post_id = ( $timeline_atts['global'] ? null : get_the_ID() );
-
-		// Generate a unique ID for this timeline.
-		$element_id = uniqid( 'wl-timeline-' );
+		$post_id = ( $timeline_atts['global'] ? NULL : get_the_ID() );
 
 		// Escaping atts.
 		$esc_width    = esc_attr( $timeline_atts['width'] );
 		$esc_height   = esc_attr( $timeline_atts['height'] );
 		$data_post_id = ( isset( $post_id ) ? "data-post-id='$post_id'" : '' );
+
+		// Generate a unique ID for this timeline.
+		$element_id = uniqid( 'wl-timeline-' );
 
 		if ( WP_DEBUG ) {
 			$this->log_service->trace( "Creating a timeline widget [ element id :: $element_id ][ post id :: $post_id ]" );
@@ -80,6 +152,22 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 </div>
 EOF;
 
+	}
+
+	/**
+	 * Return the locale for the TimelineJS according to WP's configured locale and
+	 * support TimelineJS locales. If WP's locale is not supported, english is used.
+	 *
+	 * @since 3.7.0
+	 * @return string The locale (2 letters code).
+	 */
+	private function get_locale() {
+
+		// Get the first 2 letters.
+		$locale = substr( get_locale(), 0, 2 );
+
+		// Check that the specified locale is supported otherwise use English.
+		return in_array( $locale, self::$supported_locales ) ? $locale : 'en';
 	}
 
 }

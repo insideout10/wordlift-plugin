@@ -270,18 +270,19 @@ $ = jQuery
 $.fn.extend
 
   timeline: (options) ->
-    
-    # Default settings
+
+# Default settings
     settings = {
       dataEndpoint: undefined
       width: '100%'
       height: '600'
       debug: false
+      language: 'en'
     }
 
     # Merge default settings with options.
     settings = $.extend settings, options
-    
+
     # Create a reference to dom wrapper element
     container = $(@)
 
@@ -296,18 +297,26 @@ $.fn.extend
     # Build a Timeline obj via TimelineJS
     # See: https://github.com/NUKnightLab/TimelineJS
     buildTimeline = (data) ->
-      if data.timeline?
-        createStoryJS
-          type: 'timeline'
-          width: settings.width
-          height: settings.height
-          source: data
-          embed_id: container.attr('id')
-          start_at_slide: data.startAtSlide 
-      else
+      if not data.timeline?
         container.hide()
-        log "Timeline data missing: timeline cannot be rendered"
+        log "Timeline data missing"
         return
+
+      # TimelineJS v3 constructor.
+      new TL.Timeline(container.attr('id'), data.timeline, {
+        language: settings.language,
+        start_at_slide: data.start_at_slide
+      })
+
+    # TimelineJS v2.
+    #        createStoryJS
+    #          type: 'timeline'
+    #          width: settings.width
+    #          height: settings.height
+    #          source: data
+    #          embed_id: container.attr('id')
+    #          start_at_slide: data.startAtSlide
+    #          debug: settings.debug
 
     # Initialization method
     init = ->
@@ -322,14 +331,16 @@ $.fn.extend
 jQuery ($) ->
   $('.wl-timeline').each ->
     element = $(@)
-    
+
     params = element.data()
     $.extend params, wl_timeline_params
-    
-    url = "#{params.ajax_url}?" + $.param( 'action': params.action, 'post_id': params.postId )
+
+    url = "#{params.ajax_url}?" + $.param('action': params.action, 'post_id': params.postId)
 
     $(this).timeline
       dataEndpoint: url
+      debug: 'true' == params.debug
+      language: params.language
 $ = jQuery
 
 # Add a geomap plugin object to jQuery
@@ -666,7 +677,7 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
               </h6>
             </div>
             <div class="#{thumbClasses}"> 
-              <a ng-href="{{item.post.permalink}}" style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></a>
+              <span style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
@@ -721,13 +732,13 @@ $(
   """)
   .appendTo('.wl-navigator-widget')
 
-  injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
-  injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
+# If there are navigator widgets on the page activate them.
+  if 0 < $('.wl-navigator-widget').size
+    injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
+    injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
 # execute the following commands in the angular js context.
-    $rootScope.$apply(->
-      DataRetrieverService.load()
-    )
-  ])
+      $rootScope.$apply(-> DataRetrieverService.load())
+    ])
 )
 
 
