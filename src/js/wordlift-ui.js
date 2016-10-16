@@ -244,7 +244,8 @@
         dataEndpoint: void 0,
         width: '100%',
         height: '600',
-        debug: false
+        debug: false,
+        language: 'en'
       };
       settings = $.extend(settings, options);
       container = $(this);
@@ -258,19 +259,10 @@
         });
       };
       buildTimeline = function(data) {
-        if (data.timeline != null) {
-          return createStoryJS({
-            type: 'timeline',
-            width: settings.width,
-            height: settings.height,
-            source: data,
-            embed_id: container.attr('id'),
-            start_at_slide: data.startAtSlide
-          });
-        } else {
-          container.hide();
-          log("Timeline data missing: timeline cannot be rendered");
-        }
+        return new TL.Timeline(container.attr('id'), data.timeline, {
+          language: settings.language,
+          start_at_slide: data.start_at_slide
+        });
       };
       init = function() {
         return retrieveTimelineData();
@@ -295,7 +287,9 @@
         'post_id': params.postId
       });
       return $(this).timeline({
-        dataEndpoint: url
+        dataEndpoint: url,
+        debug: 'true' === params.debug,
+        language: params.language
       });
     });
   });
@@ -667,13 +661,13 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
+  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), 0 < $('.wl-navigator-widget').size ? (injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         return DataRetrieverService.load();
       });
     }
-  ]));
+  ])) : void 0);
 
 }).call(this);
 

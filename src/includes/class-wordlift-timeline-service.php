@@ -71,7 +71,7 @@ class Wordlift_Timeline_Service {
 	public function ajax_timeline() {
 
 		// Get the ID of the post who requested the timeline.
-		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
+		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL );
 
 		// Get the events and transform them for the JSON response, then send them to the client.
 		wp_send_json( $this->to_json( $this->get_events( $post_id ) ) );
@@ -89,7 +89,7 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array An array of event posts.
 	 */
-	public function get_events( $post_id = null ) {
+	public function get_events( $post_id = NULL ) {
 
 		// Get the entity IDs either from the entities related to the specified post or from the last 50 published
 		// posts if no post has been specified.
@@ -120,12 +120,12 @@ class Wordlift_Timeline_Service {
 				'relation' => 'AND',
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_START,
-					'value'   => null,
+					'value'   => NULL,
 					'compare' => '!='
 				),
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
-					'value'   => null,
+					'value'   => NULL,
 					'compare' => '!='
 				)
 			),
@@ -153,21 +153,18 @@ class Wordlift_Timeline_Service {
 			return '';
 		}
 
-		// Model data from:
-		// https://github.com/NUKnightLab/TimelineJS/blob/master/examples/example_json.json
-
-		$timeline         = array();
-		$timeline['type'] = 'default';
+		$timeline = array();
 
 		// Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
 		$start_at_slide = 0;
 		$event_index    = - 1;
 		$now            = time();
 
-		$timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
+		$timeline['events'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
 
-			$start_date = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
-			$end_date   = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
+			// Get the start and end dates.
+			$start_date = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
+			$end_date   = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
 
 			// Set the starting slide.
 			$event_index ++;
@@ -175,19 +172,20 @@ class Wordlift_Timeline_Service {
 				$start_at_slide = $event_index;
 			}
 
-			$date['startDate'] = date( 'Y,m,d', $start_date );
-			$date['endDate']   = date( 'Y,m,d', $end_date );
-			$date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-			$date['text']      = strip_shortcodes( $post->post_content );
+			// Set the start/end dates by converting them to TimelineJS required format.
+			$date['start_date'] = $this->date( $start_date );
+			$date['end_date']   = $this->date( $end_date );
+
+			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
+			$date['text'] = array( 'headline' => '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>', );
 
 			// Load thumbnail
 			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
-			     false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+			     FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
-				$date['asset'] = array(
-					'media' => $attachment[0]
-				);
+				// Set the thumbnail URL.
+				$date['media'] = array( 'url' => $attachment[0] );
 
 				// Add debug data.
 				if ( WP_DEBUG ) {
@@ -203,12 +201,20 @@ class Wordlift_Timeline_Service {
 
 		}, $posts );
 
-
-		// The *timeline* library expects the data to be encapsulated in a *timeline* element, e.g.:
-		//  {timeline: ...}
+		// The JSON format is defined here: https://timeline.knightlab.com/docs/json-format.html
 		return array(
-			'timeline'     => $timeline,
-			'startAtSlide' => $start_at_slide
+			'timeline'       => $timeline,
+			'start_at_slide' => $start_at_slide,
+		);
+	}
+
+	private function date( $value ) {
+
+		return array(
+			'year'  => date( 'Y', $value ),
+			'month' => date( 'm', $value ),
+			'day'   => date( 'd', $value ),
+
 		);
 	}
 
