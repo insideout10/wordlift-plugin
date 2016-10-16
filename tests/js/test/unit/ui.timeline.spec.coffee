@@ -19,9 +19,10 @@ describe "Timeline Ui Component Unit Test", ->
     spyOn(jQuery, "ajax").and.callFake((request)->
       request.success fakeResponse
     )
+
     # Initialize the plugin
     domElement.timeline()
- 
+
     # Jquery post() has been called during the initialization
     expect(jQuery.ajax).toHaveBeenCalled()
     # HTML container is hidden
