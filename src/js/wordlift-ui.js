@@ -259,6 +259,11 @@
         });
       };
       buildTimeline = function(data) {
+        if (data.timeline == null) {
+          container.hide();
+          log("Timeline data missing");
+          return;
+        }
         return new TL.Timeline(container.attr('id'), data.timeline, {
           language: settings.language,
           start_at_slide: data.start_at_slide

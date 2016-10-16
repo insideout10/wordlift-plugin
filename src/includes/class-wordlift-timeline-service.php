@@ -173,8 +173,8 @@ class Wordlift_Timeline_Service {
 			}
 
 			// Set the start/end dates by converting them to TimelineJS required format.
-			$date['start_date'] = $this->date( $start_date );
-			$date['end_date']   = $this->date( $end_date );
+			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
+			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
 
 			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
 			$date['text'] = array( 'headline' => '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>', );
@@ -208,7 +208,16 @@ class Wordlift_Timeline_Service {
 		);
 	}
 
-	private function date( $value ) {
+	/**
+	 * Convert the date to a date array.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param $value int A date value.
+	 *
+	 * @return array An array containing year, month and day values.
+	 */
+	public static function date( $value ) {
 
 		return array(
 			'year'  => date( 'Y', $value ),

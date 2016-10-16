@@ -31,17 +31,12 @@ $.fn.extend
     # Build a Timeline obj via TimelineJS
     # See: https://github.com/NUKnightLab/TimelineJS
     buildTimeline = (data) ->
-#      if not data.timeline?
-#        container.hide()
-#        log "Timeline data missing"
-#        return
-#
-#      if not settings.element?
-#        container.hide()
-#        log "Timeline data missing"
-#        return
+      if not data.timeline?
+        container.hide()
+        log "Timeline data missing"
+        return
 
-# TimelineJS v3 constructor.
+      # TimelineJS v3 constructor.
       new TL.Timeline(container.attr('id'), data.timeline, {
         language: settings.language,
         start_at_slide: data.start_at_slide
