@@ -1,5 +1,10 @@
 <?php
 
+require_once( 'properties/class-wordlift-property-service.php' );
+require_once( 'properties/class-wordlift-simple-property-service.php' );
+require_once( 'properties/class-wordlift-location-property-service.php' );
+require_once( 'properties/class-wordlift-url-property-service.php' );
+
 /**
  * Define the Wordlift_Jsonld_Service class to support JSON-LD.
  *
@@ -35,6 +40,13 @@ class Wordlift_Jsonld_Service {
 	private $property_factory;
 
 	/**
+	 * @var \Wordlift_Property_Service_2
+	 */
+	private $property_service;
+
+	private static $instance;
+
+	/**
 	 * Create a JSON-LD service.
 	 *
 	 * @since 3.7.0
@@ -50,6 +62,17 @@ class Wordlift_Jsonld_Service {
 		$this->schema_service      = $schema_service;
 		$this->entity_type_service = $entity_type_service;
 		$this->property_factory    = $property_factory;
+
+		$this->property_service = new Wordlift_Property_Service_2( new Wordlift_Simple_Property_Service() );
+		$this->property_service->register( Wordlift_Location_Property_Service::META_KEY, new Wordlift_Location_Property_Service() );
+		$this->property_service->register( Wordlift_Url_Property_Service::META_KEY, new Wordlift_Url_Property_Service() );
+
+		self::$instance = $this;
+	}
+
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
@@ -68,42 +91,17 @@ class Wordlift_Jsonld_Service {
 
 		$jsonld = $this->get_by_post( $post );
 
-		var_dump( $jsonld );
-
-		return;
-
-		$schema_class = $this->schema_service->get_narrowest_schema( $this->get_type( $post->ID ) );
-		$fields       = $schema_class['custom_fields'];
-
-		foreach ( $fields as $key => $value ) {
-
-			if ( Wordlift_Schema_Url_Property_Service::META_KEY === $key
-			     || ! isset( $post_meta[ $key ] )
-			) {
-				continue;
-			}
-
-			echo( $key . ' :: -' . $post_meta[ $key ][0] . '-<br/>' );
-		}
+		wp_send_json( $jsonld );
 
 	}
 
-	private function get_type( $id ) {
-
-		$types = get_post_meta( $id, 'wl_entity_type_uri' );
-
-		return $types;
-	}
-
-	private function get_by_id( $post_id ) {
+	public function get_by_id( $post_id ) {
 
 
 		return $this->get_by_post( get_post( $post_id ) );
 	}
 
-	private function get_by_post( $post ) {
-
-		$post_meta = get_post_meta( $post->ID );
+	public function get_by_post( $post ) {
 
 		$type   = $this->entity_type_service->get( $post->ID );
 		$id     = $this->entity_service->get_uri( $post->ID );
@@ -116,12 +114,15 @@ class Wordlift_Jsonld_Service {
 			'name'  => $name,
 		);
 
-		var_dump( $fields );
-
 		foreach ( $fields as $key => $value ) {
-			$name            = substr( $value['predicate'], strlen( 'http://schema.org/' ) );
-			$value           = is_numeric( $post_meta[ $key ] ) ? $this->get_by_id( $post_meta[ $key ] ) : $post_meta[ $key ];
-			$jsonld[ $name ] = 1 === count( $value ) ? $value[0] : $value;
+			$name  = substr( $value['predicate'], strlen( 'http://schema.org/' ) );
+			$value = $this->property_service->get( $post->ID, $key );
+
+			if ( NULL === $value ) {
+				continue;
+			}
+
+			$jsonld[ $name ] = $value;
 		}
 
 
