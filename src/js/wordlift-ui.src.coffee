@@ -275,7 +275,7 @@ $.fn.extend
     settings = {
       dataEndpoint: undefined
       width: '100%'
-      height: '600'
+      height: '400px'
       debug: false
       language: 'en'
     }
@@ -305,7 +305,10 @@ $.fn.extend
       # TimelineJS v3 constructor.
       new TL.Timeline(container.attr('id'), data.timeline, {
         language: settings.language,
-        start_at_slide: data.start_at_slide
+        start_at_slide: data.start_at_slide,
+#        width: settings.width,
+        slide_padding_lr: 50,
+        height: settings.height,
       })
 
     # TimelineJS v2.
@@ -341,6 +344,8 @@ jQuery ($) ->
       dataEndpoint: url
       debug: 'true' == params.debug
       language: params.language
+      width: params.width
+      height: params.height
 $ = jQuery
 
 # Add a geomap plugin object to jQuery

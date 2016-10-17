@@ -243,7 +243,7 @@
       settings = {
         dataEndpoint: void 0,
         width: '100%',
-        height: '600',
+        height: '400px',
         debug: false,
         language: 'en'
       };
@@ -266,7 +266,9 @@
         }
         return new TL.Timeline(container.attr('id'), data.timeline, {
           language: settings.language,
-          start_at_slide: data.start_at_slide
+          start_at_slide: data.start_at_slide,
+          slide_padding_lr: 50,
+          height: settings.height
         });
       };
       init = function() {
@@ -294,7 +296,9 @@
       return $(this).timeline({
         dataEndpoint: url,
         debug: 'true' === params.debug,
-        language: params.language
+        language: params.language,
+        width: params.width,
+        height: params.height
       });
     });
   });

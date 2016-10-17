@@ -107,9 +107,36 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 		//extract attributes and set default values
 		$timeline_atts = shortcode_atts( array(
-			'width'  => '100%',
-			'height' => '600px',
-			'global' => FALSE
+			'debug'                            => defined( 'WP_DEBUG' ) && WP_DEBUG,
+			'height'                           => NULL,
+			'width'                            => NULL,
+			'is_embed'                         => FALSE,
+			'hash_bookmark'                    => FALSE,
+			'default_bg_color'                 => 'white',
+			'scale_factor'                     => 2,
+			'initial_zoom'                     => NULL,
+			'zoom_sequence'                    => '[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]',
+			'timenav_position'                 => 'bottom',
+			'optimal_tick_width'               => 100,
+			'base_class'                       => 'tl-timeline',
+			'timenav_height'                   => 150,
+			'timenav_height_percentage'        => NULL,
+			'timenav_mobile_height_percentage' => 40,
+			'timenav_height_min'               => 150,
+			'marker_height_min'                => 30,
+			'marker_width_min'                 => 100,
+			'marker_padding'                   => 5,
+			'start_at_slide'                   => 0,
+			'start_at_end'                     => FALSE,
+			'menubar_height'                   => 0,
+			'use_bc'                           => FALSE,
+			'duration'                         => 1000,
+			'ease'                             => 'TL.Ease.easeInOutQuint',
+			'slide_default_fade'               => '0%',
+			'language'                         => $this->get_locale(),
+			'ga_property_id'                   => NULL,
+			'track_events'                     => "['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']",
+			'global'                           => FALSE
 		), $atts );
 
 		// Load the TimelineJS stylesheets and scripts.
@@ -127,6 +154,8 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			// Enable debug in the client TimelineJS script.
 			'debug'    => ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? 'false' : 'true',
 			'language' => $this->get_locale(),
+			'width'    => $timeline_atts['width'],
+			'height'   => $timeline_atts['height'],
 		) );
 
 		// Get the current post id or set null if global is set to true.

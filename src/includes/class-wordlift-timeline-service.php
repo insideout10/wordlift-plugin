@@ -138,7 +138,9 @@ class Wordlift_Timeline_Service {
 	}
 
 	/**
-	 * Convert timeline events to JSON.
+	 * Convert timeline events to JSON. This function sets the global post in order
+	 * to get an automatic excerpt. Since we're being called inside an AJAX request,
+	 * we're not taking care of restoring any previous post: there isn't any.
 	 *
 	 * @since 3.1.0
 	 *
@@ -153,18 +155,24 @@ class Wordlift_Timeline_Service {
 			return '';
 		}
 
-		$timeline = array();
+		// Add a filter to remove the [...] after excerpts, since we're adding
+		// a link to the post itself.
+		add_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
 
 		// Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
 		$start_at_slide = 0;
 		$event_index    = - 1;
 		$now            = time();
 
-		$timeline['events'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
+		// Prepare the timeline variable.
+		$timeline = array();
+
+		// Populate the arrays.
+		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
 
 			// Get the start and end dates.
-			$start_date = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
-			$end_date   = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
+			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
+			$end_date   = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
 
 			// Set the starting slide.
 			$event_index ++;
@@ -173,24 +181,18 @@ class Wordlift_Timeline_Service {
 			}
 
 			// Load thumbnail
-			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
+			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) ) &&
 			     FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
 				// Set the thumbnail URL.
 				$date['media'] = array(
-					'url'     => $attachment[0],
-					'caption' => ''
+					'url'       => $attachment[0],
+					'thumbnail' => $attachment[0],
 				);
 
-				// Add debug data.
-				if ( WP_DEBUG ) {
-					$date['debug'] = array(
-						'post'        => $post,
-						'thumbnailId' => $thumbnail_id,
-						'attachment'  => $attachment
-					);
-				}
+				// The following sets the image as background instead.
+				// $date['background'] = array( 'url' => $attachment[0], );
 
 			}
 
@@ -198,8 +200,23 @@ class Wordlift_Timeline_Service {
 			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
 			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
 
+			setup_postdata( $GLOBALS['post'] = &$item );
+
+			$more_link_text = sprintf(
+				'<span aria-label="%1$s">%2$s</span>',
+				sprintf(
+				/* translators: %s: Name of current post */
+					__( 'Continue reading %s' ),
+					the_title_attribute( array( 'echo' => FALSE ) )
+				),
+				__( '(more&hellip;)' )
+			);
+
 			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
-			$date['text'] = array( 'headline' => '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>', );
+			$date['text'] = array(
+				'headline' => '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>',
+				'text'     => sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text )
+			);
 
 			return $date;
 
@@ -210,6 +227,21 @@ class Wordlift_Timeline_Service {
 			'timeline'       => $timeline,
 			'start_at_slide' => $start_at_slide,
 		);
+	}
+
+	/**
+	 * This function filters {@link excerpt_more} by removing it, since we're
+	 * adding the 'read more' link. This filter is set by {@see to_json}.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param string $excerpt_more The excerpt more preset.
+	 *
+	 * @return string An empty string.
+	 */
+	public function excerpt_more( $excerpt_more ) {
+
+		return '';
 	}
 
 	/**

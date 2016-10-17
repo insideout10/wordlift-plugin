@@ -9601,6 +9601,8 @@ TL.Slide = TL.Class.extend({
 
 		content_width = this.options.width - (this.options.slide_padding_lr * 2);
 
+		console.log('[ content_width :: ' + content_width + '][ options.width :: ' + this.options.width + ' ][ options.slide_padding_lr :: ' + this.options.slide_padding_lr + ' ]');
+
 		if(TL.Browser.mobile && (this.options.width <= this.options.skinny_size)) {
 			content_padding_left = 0;
 			content_padding_right = 0;
