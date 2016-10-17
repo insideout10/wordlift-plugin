@@ -82,6 +82,52 @@ class Wordlift_Jsonld_Service {
 		) );
 
 		self::$instance = $this;
+
+		add_action( 'wp_footer', array( $this, 'wp_footer' ), PHP_INT_MAX );
+	}
+
+	public function wp_footer() {
+
+		if ( ! is_singular() ) {
+			return;
+		}
+
+		$post_id = get_the_ID();
+
+		$base_url = admin_url( 'admin-ajax.php?action=wl_jsonld&uri=' );
+
+		$ajaxs = implode( ',', array_map( function ( $item ) use ( $base_url ) {
+			return sprintf( '$.ajax("%s%s")', $base_url, urlencode( $this->entity_service->get_uri( $item ) ) );
+		}, array_unique( wl_core_get_related_entity_ids( $post_id, array(
+			'status' => 'publish'
+		) ) ) ) );
+
+//		var_dump( $uris );
+		echo <<<EOF
+<script type="text/javascript">
+(function($) {
+
+	$( window ).on( 'load', function() {
+		$.when( $ajaxs ).done(function() {
+			var contents = $.map( arguments, function( item ) {
+				return JSON.stringify( item[0] );
+			}).join();
+			$('head').append( '<script type="application/ld+json">[' + contents + ']</s' + 'cript>' );
+		});
+	});
+	
+})(jQuery);
+</script>
+EOF;
+
+
+//		echo( '<script type="text/javascript">' );
+//		echo( '$.when.apply($, my_array);
+//		echo( '[' );
+//		echo( implode( ',', $ajaxs ) );
+//		echo( ']' );
+//		echo( '</script>' );
+
 	}
 
 	public static function get_instance() {
@@ -149,12 +195,14 @@ class Wordlift_Jsonld_Service {
 
 		foreach ( $jsonld as $key => $value ) {
 			if ( 'streetAddress' === $key || 'postalCode' === $key || 'addressLocality' === $key || 'addressRegion' === $key || 'addressCountry' === $key || 'postOfficeBoxNumber' === $key ) {
-				$jsonld['address'][ $key ] = $value;
+				$jsonld['address']['@type'] = 'PostalAddress';
+				$jsonld['address'][ $key ]  = $value;
 				unset( $jsonld[ $key ] );
 			}
 
 			if ( 'latitude' === $key || 'longitude' === $key ) {
-				$jsonld['geo'][ $key ] = $value;
+				$jsonld['geo']['@type'] = 'GeoCoordinates';
+				$jsonld['geo'][ $key ]  = $value;
 				unset( $jsonld[ $key ] );
 			}
 		}
