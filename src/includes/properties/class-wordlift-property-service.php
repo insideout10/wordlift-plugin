@@ -26,9 +26,9 @@ class Wordlift_Property_Service_2 {
 
 	}
 
-	public function get( $post_id, $meta_key ) {
+	public function get( $post_id, $meta_key, $expand = TRUE ) {
 
-		return isset( $this->services[ $meta_key ] ) ? $this->services[ $meta_key ]->get( $post_id, $meta_key ) : $this->default->get( $post_id, $meta_key );
+		return isset( $this->services[ $meta_key ] ) ? $this->services[ $meta_key ]->get( $post_id, $meta_key, $expand ) : $this->default->get( $post_id, $meta_key, $expand );
 	}
 
 }

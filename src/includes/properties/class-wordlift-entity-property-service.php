@@ -2,7 +2,11 @@
 
 class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service {
 
-	public function get( $post_id, $meta_key ) {
+	public function get( $post_id, $meta_key, $expand = TRUE ) {
+
+		if ( ! $expand ) {
+			return NULL;
+		}
 
 		$value = array_map( function ( $item ) {
 			return Wordlift_Entity_Property_Service::expand( $item );
@@ -21,7 +25,8 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 
 	public function expand( $post_id ) {
 
-		return Wordlift_Jsonld_Service::get_instance()->get_by_id( $post_id );
+		return Wordlift_Jsonld_Service::get_instance()
+		                              ->get_by_id( $post_id, FALSE );
 	}
 
 }

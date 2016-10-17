@@ -102,19 +102,18 @@ class Wordlift_Jsonld_Service {
 			wp_send_json_error( 'Entity not found' );
 		}
 
-
 		$jsonld = array( '@context' => self::CONTEXT ) + $this->get_by_post( $post );
 
 		wp_send_json( $jsonld );
 
 	}
 
-	public function get_by_id( $post_id ) {
+	public function get_by_id( $post_id, $expand = TRUE ) {
 
-		return $this->get_by_post( get_post( $post_id ) );
+		return $this->get_by_post( get_post( $post_id ), $expand );
 	}
 
-	public function get_by_post( $post ) {
+	public function get_by_post( $post, $expand = TRUE ) {
 
 		$type   = $this->entity_type_service->get( $post->ID );
 		$id     = $this->entity_service->get_uri( $post->ID );
@@ -129,7 +128,7 @@ class Wordlift_Jsonld_Service {
 
 		foreach ( $fields as $key => $value ) {
 			$name  = $this->relative_to_context( $value['predicate'] );
-			$value = $this->property_service->get( $post->ID, $key );
+			$value = $this->property_service->get( $post->ID, $key, $expand );
 
 			if ( NULL === $value ) {
 				continue;

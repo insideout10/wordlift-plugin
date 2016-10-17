@@ -4,7 +4,7 @@ class Wordlift_Url_Property_Service {
 
 	const META_KEY = 'wl_schema_url';
 
-	public function get( $post_id, $meta_key ) {
+	public function get( $post_id, $meta_key, $expand = TRUE ) {
 
 		$value = get_post_meta( $post_id, $meta_key );
 

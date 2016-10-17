@@ -2,7 +2,7 @@
 
 class Wordlift_Double_Property_Service extends Wordlift_Simple_Property_Service {
 
-	function get( $post_id, $meta_key ) {
+	function get( $post_id, $meta_key, $expand = TRUE ) {
 
 		$value = array_map( function ( $value ) {
 			return is_numeric( $value ) ? (double) $value : $value;
