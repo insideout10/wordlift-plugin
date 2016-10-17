@@ -172,20 +172,16 @@ class Wordlift_Timeline_Service {
 				$start_at_slide = $event_index;
 			}
 
-			// Set the start/end dates by converting them to TimelineJS required format.
-			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
-			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
-
-			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
-			$date['text'] = array( 'headline' => '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>', );
-
 			// Load thumbnail
 			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
 			     FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
 				// Set the thumbnail URL.
-				$date['media'] = array( 'url' => $attachment[0] );
+				$date['media'] = array(
+					'url'     => $attachment[0],
+					'caption' => ''
+				);
 
 				// Add debug data.
 				if ( WP_DEBUG ) {
@@ -195,7 +191,15 @@ class Wordlift_Timeline_Service {
 						'attachment'  => $attachment
 					);
 				}
+
 			}
+
+			// Set the start/end dates by converting them to TimelineJS required format.
+			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
+			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
+
+			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
+			$date['text'] = array( 'headline' => '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>', );
 
 			return $date;
 
@@ -220,9 +224,9 @@ class Wordlift_Timeline_Service {
 	public static function date( $value ) {
 
 		return array(
-			'year'  => date( 'Y', $value ),
-			'month' => date( 'm', $value ),
-			'day'   => date( 'd', $value ),
+			'year'  => (int) date( 'Y', $value ),
+			'month' => (int) date( 'm', $value ),
+			'day'   => (int) date( 'd', $value ),
 
 		);
 	}
