@@ -1,9 +1,10 @@
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget.services.EditorService', [
+  'wordlift.editpost.widget.services.EditorAdapter',
   'wordlift.editpost.widget.services.AnalysisService'
   ])
 # Manage redlink analysis responses
-.service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
+.service('EditorService', [ 'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', (configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope)->
   
   INVISIBLE_CHAR = '\uFEFF'
 
@@ -32,11 +33,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       positions = positions.concat [ entityAnnotation.start..entityAnnotation.end ]
     positions   
 
+  # @deprecated use EditorAdapter.getEditor()
   editor = ->
     tinyMCE.get('content')
     
   disambiguate = ( annotationId, entity )->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     ed.dom.addClass annotationId, "disambiguated"
     for type in configuration.types
       ed.dom.removeClass annotationId, type.css
@@ -47,7 +49,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     discardedItemId
 
   dedisambiguate = ( annotationId, entity )->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     ed.dom.removeClass annotationId, "disambiguated"
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
@@ -56,7 +58,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
   # TODO refactoring with regex
   currentOccurencesForEntity = (entityId) ->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     occurrences = []    
     return occurrences if entityId is ""
     annotations = ed.dom.select "span.textannotation"
@@ -100,7 +102,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Detect if there is a current selection
     hasSelection: ()->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       if ed?
         if ed.selection.isCollapsed()
           return false
@@ -114,19 +116,19 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
     # Check if the given editor is the current editor
     isEditor: (editor)->
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       ed.id is editor.id
 
     # Update contenteditable status for the editor
     updateContentEditableStatus: (status)->
       # A reference to the editor.
-      ed = editor() 
+      ed = EditorAdapter.getEditor()
       ed.getBody().setAttribute 'contenteditable', status
 
     # Create a textAnnotation starting from the current selection
     createTextAnnotationFromCurrentSelection: ()->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # If the current selection is collapsed / blank, then nothing to do
       if ed.selection.isCollapsed()
         $log.warn "Invalid selection! The text annotation cannot be created"
@@ -146,7 +148,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       ed.selection.setContent textAnnotationSpan 
       
       # Retrieve the current heml content
-      content = ed.getContent format: 'raw'
+      content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
       # Create a Traslator instance
       traslator =  Traslator.create content
       # Retrieve the index position of the new span
@@ -164,7 +166,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Select annotation with a id annotationId if available
     selectAnnotation: (annotationId)->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # Unselect all annotations 
       for annotation in ed.dom.select "span.textannotation"
         ed.dom.removeClass annotation.id, "selected"
@@ -178,9 +180,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Embed the provided analysis in the editor.
     embedAnalysis: (analysis) =>
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # Get the TinyMCE editor html content.
-      html = ed.getContent format: 'raw'
+      html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
       # Find existing entities.
       entities = findEntities html
