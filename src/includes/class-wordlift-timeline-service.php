@@ -26,6 +26,16 @@ class Wordlift_Timeline_Service {
 	private $entity_service;
 
 	/**
+	 * The number of words to use for the excerpt, set in the `to_json` function
+	 * and used by a filter.
+	 *
+	 * @since 3.7.0
+	 * @access private
+	 * @var int $excerpt_length The number of words to use for the excerpt.
+	 */
+	private $excerpt_length;
+
+	/**
 	 * A singleton instance of the Timeline service (useful for unit tests).
 	 *
 	 * @since 3.1.0
@@ -155,6 +165,13 @@ class Wordlift_Timeline_Service {
 			return '';
 		}
 
+		// {media|thumbmail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
+		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
+
+		// The number of words for the excerpt (by default 55, as WordPress).
+		$this->excerpt_length = isset( $_REQUEST['excerpt_words'] ) && is_numeric( $_REQUEST['excerpt_words'] ) ? $_REQUEST['excerpt_words'] : 55;
+		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
+
 		// Add a filter to remove the [...] after excerpts, since we're adding
 		// a link to the post itself.
 		add_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
@@ -168,7 +185,7 @@ class Wordlift_Timeline_Service {
 		$timeline = array();
 
 		// Populate the arrays.
-		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
+		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as ) {
 
 			// Get the start and end dates.
 			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
@@ -181,18 +198,20 @@ class Wordlift_Timeline_Service {
 			}
 
 			// Load thumbnail
-			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) ) &&
-			     FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) )
+			     && FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
 				// Set the thumbnail URL.
-				$date['media'] = array(
-					'url'       => $attachment[0],
-					'thumbnail' => $attachment[0],
-				);
-
-				// The following sets the image as background instead.
-				// $date['background'] = array( 'url' => $attachment[0], );
+				if ( 'background' === $display_images_as ) {
+					$date['background'] = array( 'url' => $attachment[0], );
+					$date['media']      = array( 'thumbnail' => $attachment[0], );
+				} else {
+					$date['media'] = array(
+						'url'       => $attachment[0],
+						'thumbnail' => $attachment[0],
+					);
+				}
 
 			}
 
@@ -222,6 +241,9 @@ class Wordlift_Timeline_Service {
 
 		}, $posts );
 
+		// Finally remove the excerpt filter.
+		remove_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
+
 		// The JSON format is defined here: https://timeline.knightlab.com/docs/json-format.html
 		return array(
 			'timeline'       => $timeline,
@@ -243,6 +265,22 @@ class Wordlift_Timeline_Service {
 
 		return '';
 	}
+
+	/**
+	 * A filter for the excerpt length, set by the `to_json` function, to tailor
+	 * how many words to return according to the client setting.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param int $length The preset number of words.
+	 *
+	 * @return int The number of words for the preset.
+	 */
+	public function excerpt_length( $length ) {
+
+		return $this->excerpt_length;
+	}
+
 
 	/**
 	 * Convert the date to a date array.

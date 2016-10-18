@@ -5,26 +5,14 @@ $.fn.extend
 
   timeline: (options) ->
 
-# Default settings
-    settings = {
-      dataEndpoint: undefined
-      width: '100%'
-      height: '400px'
-      debug: false
-      language: 'en'
-    }
-
-    # Merge default settings with options.
-    settings = $.extend settings, options
-
-    # Create a reference to dom wrapper element
+# Create a reference to dom wrapper element
     container = $(@)
 
     # Retrieve data from for timeline rendering
     retrieveTimelineData = ->
       $.ajax
         type: 'GET'
-        url: settings.dataEndpoint
+        url: options.dataEndpoint
         success: (response) ->
           buildTimeline response
 
@@ -37,13 +25,7 @@ $.fn.extend
         return
 
       # TimelineJS v3 constructor.
-      new TL.Timeline(container.attr('id'), data.timeline, {
-        language: settings.language,
-        start_at_slide: data.start_at_slide,
-#        width: settings.width,
-        slide_padding_lr: 50,
-        height: settings.height,
-      })
+      new TL.Timeline(container.attr('id'), data.timeline, options.settings)
 
     # TimelineJS v2.
     #        createStoryJS
@@ -72,11 +54,8 @@ jQuery ($) ->
     params = element.data()
     $.extend params, wl_timeline_params
 
-    url = "#{params.ajax_url}?" + $.param('action': params.action, 'post_id': params.postId)
+    url = "#{params.ajax_url}?" + $.param('action': params.action, 'post_id': params.postId, 'display_images_as': params.display_images_as, 'excerpt_words': params.excerpt_words)
 
     $(this).timeline
       dataEndpoint: url
-      debug: 'true' == params.debug
-      language: params.language
-      width: params.width
-      height: params.height
+      settings: params.settings

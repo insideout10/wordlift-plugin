@@ -1695,3 +1695,9 @@ a.wl-entity-page-link {
 .wl-floating-item-wrapper .wl-card-title {
   padding: 0.6em 0 !important;
 }
+.wl-timeline-container {
+  width: 100%;
+  height: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

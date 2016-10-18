@@ -101,12 +101,15 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 	 * Renders the Timeline.
 	 *
 	 * @since 3.1.0
+	 *
+	 * @param array $atts An array of shortcode attributes.
+	 *
 	 * @return string The rendered HTML.
 	 */
 	public function render( $atts ) {
 
 		//extract attributes and set default values
-		$timeline_atts = shortcode_atts( array(
+		$settings = shortcode_atts( array(
 			'debug'                            => defined( 'WP_DEBUG' ) && WP_DEBUG,
 			'height'                           => NULL,
 			'width'                            => NULL,
@@ -136,7 +139,10 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'language'                         => $this->get_locale(),
 			'ga_property_id'                   => NULL,
 			'track_events'                     => "['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']",
-			'global'                           => FALSE
+			'global'                           => FALSE,
+			// The following settings are unrelated to TimelineJS script.
+			'display_images_as'                => 'media',
+			'excerpt_words'                    => 55,
 		), $atts );
 
 		// Load the TimelineJS stylesheets and scripts.
@@ -148,22 +154,24 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 
 		// Provide the script with options.
 		wp_localize_script( 'timelinejs', 'wl_timeline_params', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'ajax_url'          => admin_url( 'admin-ajax.php' ),
 			// TODO: this parameter is already provided by WP
-			'action'   => 'wl_timeline',
-			// Enable debug in the client TimelineJS script.
-			'debug'    => ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? 'false' : 'true',
-			'language' => $this->get_locale(),
-			'width'    => $timeline_atts['width'],
-			'height'   => $timeline_atts['height'],
+			'action'            => 'wl_timeline',
+			// These settings apply to our wl_timeline AJAX endpoint.
+			'display_images_as' => $settings['display_images_as'],
+			'excerpt_words'     => $settings['excerpt_words'],
+			// These settings apply to the timeline javascript client.
+			'settings'          => array_filter( $settings, function ( $value, $key ) {
+				// Do not set NULL values or settings which are not related to the client TimelineJS script.
+				return ( NULL !== $value && 'display_images_as' !== $key && 'excerpt_words' !== $key );
+			} )
 		) );
 
 		// Get the current post id or set null if global is set to true.
-		$post_id = ( $timeline_atts['global'] ? NULL : get_the_ID() );
+		$post_id = ( $settings['global'] ? NULL : get_the_ID() );
 
 		// Escaping atts.
-		$esc_width    = esc_attr( $timeline_atts['width'] );
-		$esc_height   = esc_attr( $timeline_atts['height'] );
+		$style        = sprintf( 'style="%s%s"', isset( $settings['width'] ) ? "width:{$settings['width']};" : '', isset( $settings['height'] ) ? "height:{$settings['height']};" : '' );
 		$data_post_id = ( isset( $post_id ) ? "data-post-id='$post_id'" : '' );
 
 		// Generate a unique ID for this timeline.
@@ -174,13 +182,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		}
 
 		// Building template.
-		// TODO: in the HTML code there are static CSS rules. Move them to the CSS file.
-		return <<<EOF
-<div class="wl-timeline" id="$element_id" $data_post_id
-	style="width:$esc_width; height:$esc_height; margin-top:10px; margin-bottom:10px">
-</div>
-EOF;
-
+		return sprintf( '<div class="wl-timeline-container" %s><div class="wl-timeline" id="%s" %s></div></div>', $style, $element_id, $data_post_id );
 	}
 
 	/**

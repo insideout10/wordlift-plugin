@@ -239,20 +239,12 @@
 
   $.fn.extend({
     timeline: function(options) {
-      var buildTimeline, container, init, log, retrieveTimelineData, settings;
-      settings = {
-        dataEndpoint: void 0,
-        width: '100%',
-        height: '400px',
-        debug: false,
-        language: 'en'
-      };
-      settings = $.extend(settings, options);
+      var buildTimeline, container, init, log, retrieveTimelineData;
       container = $(this);
       retrieveTimelineData = function() {
         return $.ajax({
           type: 'GET',
-          url: settings.dataEndpoint,
+          url: options.dataEndpoint,
           success: function(response) {
             return buildTimeline(response);
           }
@@ -264,12 +256,7 @@
           log("Timeline data missing");
           return;
         }
-        return new TL.Timeline(container.attr('id'), data.timeline, {
-          language: settings.language,
-          start_at_slide: data.start_at_slide,
-          slide_padding_lr: 50,
-          height: settings.height
-        });
+        return new TL.Timeline(container.attr('id'), data.timeline, options.settings);
       };
       init = function() {
         return retrieveTimelineData();
@@ -291,14 +278,13 @@
       $.extend(params, wl_timeline_params);
       url = (params.ajax_url + "?") + $.param({
         'action': params.action,
-        'post_id': params.postId
+        'post_id': params.postId,
+        'display_images_as': params.display_images_as,
+        'excerpt_words': params.excerpt_words
       });
       return $(this).timeline({
         dataEndpoint: url,
-        debug: 'true' === params.debug,
-        language: params.language,
-        width: params.width,
-        height: params.height
+        settings: params.settings
       });
     });
   });
