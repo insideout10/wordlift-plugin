@@ -161,9 +161,9 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'display_images_as' => $settings['display_images_as'],
 			'excerpt_words'     => $settings['excerpt_words'],
 			// These settings apply to the timeline javascript client.
-			'settings'          => array_filter( $settings, function ( $value, $key ) {
+			'settings'          => array_filter( $settings, function ( $value, $key = NULL ) {
 				// Do not set NULL values or settings which are not related to the client TimelineJS script.
-				return ( NULL !== $value && 'display_images_as' !== $key && 'excerpt_words' !== $key );
+				return ( NULL != $key && NULL !== $value && 'display_images_as' !== $key && 'excerpt_words' !== $key );
 			} )
 		) );
 

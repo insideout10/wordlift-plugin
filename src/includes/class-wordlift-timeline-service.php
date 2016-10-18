@@ -165,7 +165,7 @@ class Wordlift_Timeline_Service {
 			return '';
 		}
 
-		// {media|thumbmail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
+		// {media|thumbnail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
 		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
 
 		// The number of words for the excerpt (by default 55, as WordPress).
@@ -234,8 +234,12 @@ class Wordlift_Timeline_Service {
 			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
 			$date['text'] = array(
 				'headline' => '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>',
-				'text'     => sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text )
 			);
+
+			// If we have an excerpt, set it.
+			if ( 0 < $this->excerpt_length ) {
+				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text );
+			}
 
 			return $date;
 

@@ -1701,3 +1701,9 @@ a.wl-entity-page-link {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.wl-timeline-container *,
+.wl-timeline-container *:before,
+.wl-timeline-container *:after {
+  -webkit-box-sizing: initial;
+  box-sizing: initial;
+}
