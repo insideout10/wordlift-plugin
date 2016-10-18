@@ -137,6 +137,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.6.1 (2016-10-18) =
 * Fix: [#351](https://github.com/insideout10/wordlift-plugin/issues/351): Text annotations missing for found entities.
 * Fix: [#363](https://github.com/insideout10/wordlift-plugin/issues/363): Synonyms associated to other entities.
+* Fix: [#368](https://github.com/insideout10/wordlift-plugin/issues/368): Adding unneeded p tag for entity properties.
 
 = 3.6.0 (2016-09-25) =
 * Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path.

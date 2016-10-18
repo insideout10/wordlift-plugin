@@ -571,11 +571,8 @@ class Wordlift_Schema_Service {
 					'constraints' => ''
 				),
 			),
-			'microdata_template' =>
-				'{{founder}}
-				<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}
-				</span>',
+			'microdata_template' => '{{founder}}'
+			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}</span>',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -653,12 +650,7 @@ class Wordlift_Schema_Service {
 					)
 				)
 			),
-			'microdata_template' =>
-				'{{birthDate}}
-                 {{birthPlace}}
-                 {{knows}}
-				 {{affiliation}}
-				 {{email}}',
+			'microdata_template' => '{{birthDate}}{{birthPlace}}{{knows}}{{affiliation}}{{email}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -749,14 +741,8 @@ class Wordlift_Schema_Service {
 					'input_field' => 'address'   // to build custom metabox
 				)
 			),
-			'microdata_template' =>
-				'<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-					{{latitude}}
-					{{longitude}}
-				</span>
-				<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-					{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
-				</span>',
+			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
+			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
@@ -789,15 +775,10 @@ class Wordlift_Schema_Service {
 				'https://schema.org/Store'
 			),
 			'custom_fields'      => array(),
-			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
-                                    {{latitude}}
-                                    {{longitude}}
-                                </span>
-                                <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
-									{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}
-								</span>
-                                {{founder}}
-								{{email}}',
+			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
+			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>'
+			                        . '{{founder}}'
+			                        . '{{email}}',
 			'templates'          => array(
 				'subtitle' => '{{id}}'
 			)
