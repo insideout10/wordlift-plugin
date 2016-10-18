@@ -169,7 +169,7 @@ class Wordlift_Timeline_Service {
 		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
 
 		// The number of words for the excerpt (by default 55, as WordPress).
-		$this->excerpt_length = isset( $_REQUEST['excerpt_words'] ) && is_numeric( $_REQUEST['excerpt_words'] ) ? $_REQUEST['excerpt_words'] : 55;
+		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_words'] ) && is_numeric( $_REQUEST['excerpt_words'] ) ? $_REQUEST['excerpt_words'] : 55;
 		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 
 		// Add a filter to remove the [...] after excerpts, since we're adding
@@ -185,7 +185,7 @@ class Wordlift_Timeline_Service {
 		$timeline = array();
 
 		// Populate the arrays.
-		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as ) {
+		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
 
 			// Get the start and end dates.
 			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
@@ -237,7 +237,7 @@ class Wordlift_Timeline_Service {
 			);
 
 			// If we have an excerpt, set it.
-			if ( 0 < $this->excerpt_length ) {
+			if ( 0 < $excerpt_length ) {
 				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text );
 			}
 
