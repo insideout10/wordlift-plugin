@@ -239,9 +239,20 @@
 
   $.fn.extend({
     timeline: function(options) {
-      var buildTimeline, container, init, log, retrieveTimelineData;
+      var buildTimeline, container, init;
+      options = $.extend({
+        dataEndpoint: null,
+        settings: {}
+      }, options);
       container = $(this);
-      retrieveTimelineData = function() {
+      buildTimeline = function(data) {
+        if (data.timeline == null) {
+          container.hide();
+          return;
+        }
+        return new TL.Timeline(container.attr('id'), data.timeline, options.settings);
+      };
+      init = function() {
         return $.ajax({
           type: 'GET',
           url: options.dataEndpoint,
@@ -249,22 +260,6 @@
             return buildTimeline(response);
           }
         });
-      };
-      buildTimeline = function(data) {
-        if (data.timeline == null) {
-          container.hide();
-          log("Timeline data missing");
-          return;
-        }
-        return new TL.Timeline(container.attr('id'), data.timeline, options.settings);
-      };
-      init = function() {
-        return retrieveTimelineData();
-      };
-      log = function(msg) {
-        if (settings.debug) {
-          return typeof console !== "undefined" && console !== null ? console.log(msg) : void 0;
-        }
       };
       return init();
     }
