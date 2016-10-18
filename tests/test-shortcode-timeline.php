@@ -5,8 +5,18 @@ require_once 'functions.php';
  * Class TimelineShortcodeTest
  */
 class TimelineShortcodeTest extends WP_UnitTestCase {
-	private static $FIRST_POST_ID;
-	private static $MOST_CONNECTED_ENTITY_ID;
+
+//	private static $FIRST_POST_ID;
+//	private static $MOST_CONNECTED_ENTITY_ID;
+
+	/**
+	 * The {@link Wordlift_Timeline_Service} instance.
+	 *
+	 * @since 3.7.0
+	 * @access private
+	 * @var \Wordlift_Timeline_Service $timeline_service The {@link Wordlift_Timeline_Service} instance.
+	 */
+	private $timeline_service;
 
 	/**
 	 * Set up the test.
@@ -21,6 +31,48 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		wl_empty_blog();
 
 		add_theme_support( 'post-thumbnails' );
+
+		$this->timeline_service = Wordlift_Timeline_Service::get_instance();
+	}
+
+	/**
+	 * Create 4 test events of which 2 are related.
+	 *
+	 * @since 3.7.0
+	 * @return array An array of events' posts.
+	 */
+	private function create_2_test_related_events() {
+
+		$post_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
+
+		$entity_1_id    = wl_create_post( "Entity 1's\nText", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
+		$thumbnail_1_id = $this->createPostThumbnail( 'http://example.org/entity_1.png', 'Entity 1 Thumbnail', 'image/png', 'dummy/image_1.png', $entity_1_id );
+		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', TRUE );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', TRUE );
+
+		$entity_2_id    = wl_create_post( "Entity 2's\nText", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
+		$thumbnail_2_id = $this->createPostThumbnail( 'http://example.org/entity_2.png', 'Entity 2 Thumbnail', 'image/png', 'dummy/image_2.png', $entity_2_id );
+		wl_set_entity_main_type( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', TRUE );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', TRUE );
+
+		$entity_3_id = wl_create_post( '', 'entity-3', 'Entity 3', 'publish', 'entity' );
+		wl_set_entity_main_type( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', TRUE );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', TRUE );
+
+		$entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
+		wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
+
+		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array(
+			$entity_1_id,
+			$entity_2_id,
+			$entity_4_id
+		) );
+
+		// Call retrieving function with null argument (i.e. global timeline)
+		return $this->timeline_service->get_events( $post_id );
 	}
 
 	/**
@@ -87,22 +139,23 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		$entity_1_headline = '<a href="' . get_permalink( $entity_1_id ) . '">' . $entity_1->post_title . '</a>';
 		$entity_2_headline = '<a href="' . get_permalink( $entity_2_id ) . '">' . $entity_2->post_title . '</a>';
 
-		$entity_1_date_start = str_replace( '-', ',', get_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
-		$entity_1_date_end   = str_replace( '-', ',', get_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
-		$entity_2_date_start = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
-		$entity_2_date_end   = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
+		// We're using fixed content (see lines 100-103).
+		// $entity_1_date_start = str_replace( '-', ',', get_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
+		// $entity_1_date_end   = str_replace( '-', ',', get_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
+		// $entity_2_date_start = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
+		// $entity_2_date_end   = str_replace( '-', ',', get_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
 
 		// This is the right order, i.e. the event 1 is in the 2nd position in the dates array.
 		$date_1 = $response['timeline']['events'][1];
 		$date_2 = $response['timeline']['events'][0];
 
-		$this->assertEquals( $entity_1_date_start, implode( ',', array_values( $date_1['start_date'] ) ) );
-		$this->assertEquals( $entity_1_date_end, implode( ',', array_values( $date_1['end_date'] ) ) );
-		$this->assertEquals( $entity_2_date_start, implode( ',', array_values( $date_2['start_date'] ) ) );
-		$this->assertEquals( $entity_2_date_end, implode( ',', array_values( $date_2['end_date'] ) ) );
+		$this->assertEquals( '2014,1,1', implode( ',', array_values( $date_1['start_date'] ) ) );
+		$this->assertEquals( '2014,1,7', implode( ',', array_values( $date_1['end_date'] ) ) );
+		$this->assertEquals( '2014,1,2', implode( ',', array_values( $date_2['start_date'] ) ) );
+		$this->assertEquals( '2014,1,8', implode( ',', array_values( $date_2['end_date'] ) ) );
 
-		$this->assertFalse( isset( $date_1['text']['text'] ) );
-		$this->assertFalse( isset( $date_2['text']['text'] ) );
+		$this->assertTrue( isset( $date_1['text']['text'] ) );
+		$this->assertTrue( isset( $date_2['text']['text'] ) );
 
 		// We don't publish the post content anymore in the widget.
 		// $this->assertEquals( $entity_1->post_content, $date_1['text'] );
@@ -185,4 +238,183 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		$this->assertContains( $entity_1_id, $event_ids );
 		$this->assertContains( $entity_2_id, $event_ids );
 	}
+
+	/**
+	 * Test the that width and the height are set according to the provided shortcodes.
+	 *
+	 * @since 3.7.0
+	 */
+	function test_width_and_height() {
+
+		$width   = random_int( 100, 200 ) . 'px';
+		$height  = random_int( 100, 200 ) . 'px';
+		$content = do_shortcode( "[wl_timeline width='$width' height='$height']" );
+
+		$this->assertTrue( - 1 < strpos( $content, "width:$width" ) );
+		$this->assertTrue( - 1 < strpos( $content, "height:$height" ) );
+
+	}
+
+	/**
+	 * Test the JSON output when the request `display_image_as` parameter is set
+	 * to `media`.
+	 *
+	 * @since 3.7.0
+	 */
+	function test_images_as_media() {
+
+		// Set the display as 'media'.
+		$_REQUEST['display_images_as'] = 'media';
+
+		// Get the JSON from test events.
+		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );
+
+		// Check that we have a timeline.
+		$this->assertArrayHasKey( 'timeline', $json );
+
+		// Check that we have events.
+		$this->assertArrayHasKey( 'events', $json['timeline'] );
+
+		// Check that we have 4 events.
+		$this->assertCount( 2, $json['timeline']['events'] );
+
+		// Check that each event has a media and a thumbnail.
+		foreach ( $json['timeline']['events'] as $event ) {
+			$this->assertArrayHasKey( 'media', $event );
+			$this->assertArrayHasKey( 'url', $event['media'] );
+			$this->assertArrayHasKey( 'thumbnail', $event['media'] );
+			$this->assertFalse( array_key_exists( 'background', $event ) );
+		}
+
+	}
+
+	/**
+	 * Test the JSON output when the request `display_image_as` parameter is set
+	 * to anything else but `media` or `background` (it should default to `media`)s.
+	 *
+	 * @since 3.7.0
+	 */
+	function test_images_as_media_when_display_images_as_anything_else() {
+
+		// Set the display as 'media'.
+		$_REQUEST['display_images_as'] = 'anything_else';
+
+		// Get the JSON from test events.
+		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );
+
+		// Check that we have a timeline.
+		$this->assertArrayHasKey( 'timeline', $json );
+
+		// Check that we have events.
+		$this->assertArrayHasKey( 'events', $json['timeline'] );
+
+		// Check that we have 4 events.
+		$this->assertCount( 2, $json['timeline']['events'] );
+
+		// Check that each event has a media and a thumbnail.
+		foreach ( $json['timeline']['events'] as $event ) {
+			$this->assertArrayHasKey( 'media', $event );
+			$this->assertArrayHasKey( 'url', $event['media'] );
+			$this->assertArrayHasKey( 'thumbnail', $event['media'] );
+			$this->assertFalse( array_key_exists( 'background', $event ) );
+		}
+
+	}
+
+	/**
+	 * Test the JSON output when the request `display_image_as` parameter is set
+	 * to `background`.
+	 *
+	 * @since 3.7.0
+	 */
+	function test_images_as_background() {
+
+		// Set the display as 'background'.
+		$_REQUEST['display_images_as'] = 'background';
+
+		// Get the JSON from test events.
+		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );
+
+		// Check that we have a timeline.
+		$this->assertArrayHasKey( 'timeline', $json );
+
+		// Check that we have events.
+		$this->assertArrayHasKey( 'events', $json['timeline'] );
+
+		// Check that we have 2 events.
+		$this->assertCount( 2, $json['timeline']['events'] );
+
+		// Check that each event has a media and a thumbnail.
+		foreach ( $json['timeline']['events'] as $event ) {
+			$this->assertArrayHasKey( 'media', $event );
+			$this->assertFalse( array_key_exists( 'url', $event['media'] ) );
+			$this->assertArrayHasKey( 'thumbnail', $event['media'] );
+			$this->assertArrayHasKey( 'background', $event );
+			$this->assertArrayHasKey( 'url', $event['background'] );
+		}
+
+	}
+
+	/**
+	 * Test setting the excerpt to 0 words, that we have no text.
+	 *
+	 * @since 3.7.0
+	 */
+	function test_excerpt_set_to_zero() {
+
+		// Set the excerpt_words to zero.
+		$_REQUEST['excerpt_words'] = 0;
+
+		// Get the JSON from test events.
+		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );
+
+		// Check that we have a timeline.
+		$this->assertArrayHasKey( 'timeline', $json );
+
+		// Check that we have events.
+		$this->assertArrayHasKey( 'events', $json['timeline'] );
+
+		// Check that we have 2 events.
+		$this->assertCount( 2, $json['timeline']['events'] );
+
+		// Check that each event has a media and a thumbnail.
+		foreach ( $json['timeline']['events'] as $event ) {
+			$this->assertArrayHasKey( 'text', $event );
+			$this->assertArrayHasKey( 'headline', $event['text'] );
+			$this->assertFalse( array_key_exists( 'text', $event['text'] ) );
+		}
+
+	}
+
+	/**
+	 * Test setting the excerpt to 1 word, that we have a text.
+	 *
+	 * @since 3.7.0
+	 */
+	function test_excerpt_set_to_one() {
+
+		// Set the excerpt_words to zero.
+		$_REQUEST['excerpt_words'] = 1;
+
+		// Get the JSON from test events.
+		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );
+
+		// Check that we have a timeline.
+		$this->assertArrayHasKey( 'timeline', $json );
+
+		// Check that we have events.
+		$this->assertArrayHasKey( 'events', $json['timeline'] );
+
+		// Check that we have 2 events.
+		$this->assertCount( 2, $json['timeline']['events'] );
+
+		// Check that each event has a media and a thumbnail.
+		foreach ( $json['timeline']['events'] as $event ) {
+			$this->assertArrayHasKey( 'text', $event );
+			$this->assertArrayHasKey( 'headline', $event['text'] );
+			$this->assertArrayHasKey( 'text', $event['text'] );
+		}
+
+	}
+
 }
