@@ -362,8 +362,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 	 */
 	function test_excerpt_set_to_zero() {
 
-		// Set the excerpt_words to zero.
-		$_REQUEST['excerpt_words'] = 0;
+		// Set the excerpt_length to zero.
+		$_REQUEST['excerpt_length'] = 0;
 
 		// Get the JSON from test events.
 		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );
@@ -393,8 +393,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 	 */
 	function test_excerpt_set_to_one() {
 
-		// Set the excerpt_words to zero.
-		$_REQUEST['excerpt_words'] = 1;
+		// Set the excerpt_length to 1 word.
+		$_REQUEST['excerpt_length'] = 1;
 
 		// Get the JSON from test events.
 		$json = $this->timeline_service->to_json( $this->create_2_test_related_events() );

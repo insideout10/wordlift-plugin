@@ -169,7 +169,7 @@ class Wordlift_Timeline_Service {
 		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
 
 		// The number of words for the excerpt (by default 55, as WordPress).
-		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_words'] ) && is_numeric( $_REQUEST['excerpt_words'] ) ? $_REQUEST['excerpt_words'] : 55;
+		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? $_REQUEST['excerpt_length'] : 55;
 		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 
 		// Add a filter to remove the [...] after excerpts, since we're adding

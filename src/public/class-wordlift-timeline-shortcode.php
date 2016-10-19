@@ -142,7 +142,7 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'global'                           => FALSE,
 			// The following settings are unrelated to TimelineJS script.
 			'display_images_as'                => 'media',
-			'excerpt_words'                    => 55,
+			'excerpt_length'                   => 55,
 		), $atts );
 
 		// Load the TimelineJS stylesheets and scripts.
@@ -159,11 +159,11 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			'action'            => 'wl_timeline',
 			// These settings apply to our wl_timeline AJAX endpoint.
 			'display_images_as' => $settings['display_images_as'],
-			'excerpt_words'     => $settings['excerpt_words'],
+			'excerpt_length'    => $settings['excerpt_length'],
 			// These settings apply to the timeline javascript client.
-			'settings'          => array_filter( $settings, function ( $value, $key = NULL ) {
-				// Do not set NULL values or settings which are not related to the client TimelineJS script.
-				return ( NULL != $key && NULL !== $value && 'display_images_as' !== $key && 'excerpt_words' !== $key );
+			'settings'          => array_filter( $settings, function ( $value ) {
+				// Do not set NULL values.
+				return ( NULL !== $value );
 			} )
 		) );
 

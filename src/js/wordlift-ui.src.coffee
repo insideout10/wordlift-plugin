@@ -308,7 +308,7 @@ jQuery ($) ->
       'action': params.action,
       'post_id': params.postId,
       'display_images_as': params.display_images_as,
-      'excerpt_words': params.excerpt_words)
+      'excerpt_length': params.excerpt_length)
 
     $(this).timeline
       dataEndpoint: url
