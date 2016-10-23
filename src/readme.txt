@@ -2,7 +2,7 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift
-Tags: artificial intelligence, content recommendation, semantic editor, linked open data, structured data, knowledge graph, seo, semantic seo, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
+Tags: artificial intelligence, content recommendation, navigation, semantic editor, linked open data, open data, knowledge graph, seo, semantic seo, search engine optimization, schema.org, google rich snippets, microdata, json-ld, widget, semantic web, wikipedia, data visualization, link, content discovery
 Requires at least: 4.2
 Tested up to: 4.6.1
 Stable tag: {version}
@@ -133,6 +133,15 @@ You can open your datasets to the public, attaching to it a free or a commercial
 8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.7.0 (2016-10-23) =
+* Fix: [#351](https://github.com/insideout10/wordlift-plugin/issues/351): Text annotations missing for found entities.
+* Fix: [#363](https://github.com/insideout10/wordlift-plugin/issues/363): Synonyms associated to other entities.
+* Fix: [#368](https://github.com/insideout10/wordlift-plugin/issues/368): Adding unneeded p tag for entity properties.
+* Enhancement: [#370](https://github.com/insideout10/wordlift-plugin/issues/370): Upgrade to TimelineJS 3.x.
+* Enhancement: [#369](https://github.com/insideout10/wordlift-plugin/issues/369): Remove the unused In-Depth file.
+* Enhancement: [#354](https://github.com/insideout10/wordlift-plugin/issues/354): Improve the navigator Widget by adding links to the images.
+* Enhancement: [#352](https://github.com/insideout10/wordlift-plugin/issues/352): Improve design of the TimeLine Widget.
 
 = 3.6.0 (2016-09-25) =
 * Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path.

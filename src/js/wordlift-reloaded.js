@@ -937,8 +937,53 @@
     }
   ]);
 
-  angular.module('wordlift.editpost.widget.services.AnalysisService', []).service('AnalysisService', [
-    'configuration', '$log', '$http', '$rootScope', function(configuration, $log, $http, $rootScope) {
+  angular.module('wordlift.editpost.widget.services.EditorAdapter', ['wordlift.editpost.widget.services.EditorAdapter']).service('EditorAdapter', [
+    '$log', function($log) {
+      var service;
+      service = {
+        getEditor: function(id) {
+          if (id == null) {
+            id = 'content';
+          }
+          return tinyMCE.get(id);
+        },
+        getHTML: function(id) {
+          return service.getEditor(id).getContent({
+            format: 'raw'
+          });
+        }
+      };
+      return service;
+    }
+  ]);
+
+  angular.module('wordlift.editpost.widget.services.AnnotationParser', []).service('AnnotationParser', [
+    '$log', function($log) {
+      var service;
+      service = {
+        parse: function(html) {
+          var annotation, match, pattern, results1, traslator;
+          traslator = Traslator.create(html);
+          pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
+          results1 = [];
+          while (match = pattern.exec(html)) {
+            annotation = {
+              start: traslator.html2text(match.index),
+              end: traslator.html2text(match.index + match[0].length),
+              uri: match[2],
+              label: match[3]
+            };
+            results1.push(annotation);
+          }
+          return results1;
+        }
+      };
+      return service;
+    }
+  ]);
+
+  angular.module('wordlift.editpost.widget.services.AnalysisService', ['wordlift.editpost.widget.services.AnnotationParser', 'wordlift.editpost.widget.services.EditorAdapter']).service('AnalysisService', [
+    'AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope', function(AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope) {
       var box, extend, findAnnotation, j, k, len, len1, merge, ref, ref1, service, type, uniqueId;
       uniqueId = function(length) {
         var id;
@@ -1181,27 +1226,47 @@
           return $rootScope.$broadcast("sameAsRetrieved", suggestions);
         });
       };
-      service._innerPerform = function(content) {
-        $log.info("Start to performing analysis");
-        return $http({
+      service._innerPerform = function(content, annotations) {
+        var args;
+        if (annotations == null) {
+          annotations = null;
+        }
+        args = {
           method: 'post',
-          url: ajaxurl + '?action=wordlift_analyze',
-          data: content
-        });
+          url: ajaxurl + '?action=wordlift_analyze'
+        };
+        if (annotations != null) {
+          args.headers = {
+            'Content-Type': 'application/json'
+          };
+          args.data = {
+            content: content,
+            annotations: annotations
+          };
+        } else {
+          args.headers = {
+            'Content-Type': 'text/plain'
+          };
+          args.data = content;
+        }
+        $log.info("Analyzing content...");
+        return $http(args);
       };
       service._updateStatus = function(status) {
         service._isRunning = status;
         return $rootScope.$broadcast("analysisServiceStatusUpdated", status);
       };
       service.perform = function(content) {
-        var promise;
+        var annotations, promise;
         if (service._currentAnalysis) {
           $log.warn("Analysis already runned! Nothing to do ...");
           service._updateStatus(false);
           return;
         }
         service._updateStatus(true);
-        promise = this._innerPerform(content);
+        annotations = AnnotationParser.parse(EditorAdapter.getHTML());
+        $log.debug('Requesting analysis...');
+        promise = this._innerPerform(content, annotations);
         promise.then(function(response) {
           service._currentAnalysis = response.data;
           return $rootScope.$broadcast("analysisPerformed", service.parse(response.data));
@@ -1264,8 +1329,8 @@
     }
   ]);
 
-  angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
-    'configuration', 'AnalysisService', '$log', '$http', '$rootScope', function(configuration, AnalysisService, $log, $http, $rootScope) {
+  angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.EditorAdapter', 'wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
+    'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', function(configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope) {
       var INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
       INVISIBLE_CHAR = '\uFEFF';
       findEntities = function(html) {
@@ -1302,7 +1367,7 @@
       };
       disambiguate = function(annotationId, entity) {
         var discardedItemId, ed, j, len, ref, type;
-        ed = editor();
+        ed = EditorAdapter.getEditor();
         ed.dom.addClass(annotationId, "disambiguated");
         ref = configuration.types;
         for (j = 0, len = ref.length; j < len; j++) {
@@ -1317,7 +1382,7 @@
       };
       dedisambiguate = function(annotationId, entity) {
         var discardedItemId, ed;
-        ed = editor();
+        ed = EditorAdapter.getEditor();
         ed.dom.removeClass(annotationId, "disambiguated");
         ed.dom.removeClass(annotationId, "wl-" + entity.mainType);
         discardedItemId = ed.dom.getAttrib(annotationId, "itemid");
@@ -1326,7 +1391,7 @@
       };
       currentOccurencesForEntity = function(entityId) {
         var annotation, annotations, ed, itemId, j, len, occurrences;
-        ed = editor();
+        ed = EditorAdapter.getEditor();
         occurrences = [];
         if (entityId === "") {
           return occurrences;
@@ -1385,7 +1450,7 @@
       service = {
         hasSelection: function() {
           var ed, pattern;
-          ed = editor();
+          ed = EditorAdapter.getEditor();
           if (ed != null) {
             if (ed.selection.isCollapsed()) {
               return false;
@@ -1401,17 +1466,17 @@
         },
         isEditor: function(editor) {
           var ed;
-          ed = editor();
+          ed = EditorAdapter.getEditor();
           return ed.id === editor.id;
         },
         updateContentEditableStatus: function(status) {
           var ed;
-          ed = editor();
+          ed = EditorAdapter.getEditor();
           return ed.getBody().setAttribute('contenteditable', status);
         },
         createTextAnnotationFromCurrentSelection: function() {
           var content, ed, htmlPosition, text, textAnnotation, textAnnotationSpan, textPosition, traslator;
-          ed = editor();
+          ed = EditorAdapter.getEditor();
           if (ed.selection.isCollapsed()) {
             $log.warn("Invalid selection! The text annotation cannot be created");
             return;
@@ -1422,9 +1487,7 @@
           });
           textAnnotationSpan = "<span id=\"" + textAnnotation.id + "\" class=\"textannotation unlinked selected\">" + (ed.selection.getContent()) + "</span>" + INVISIBLE_CHAR;
           ed.selection.setContent(textAnnotationSpan);
-          content = ed.getContent({
-            format: 'raw'
-          });
+          content = EditorAdapter.getHTML();
           traslator = Traslator.create(content);
           htmlPosition = content.indexOf(textAnnotationSpan);
           textPosition = traslator.html2text(htmlPosition);
@@ -1434,7 +1497,7 @@
         },
         selectAnnotation: function(annotationId) {
           var annotation, ed, j, len, ref;
-          ed = editor();
+          ed = EditorAdapter.getEditor();
           ref = ed.dom.select("span.textannotation");
           for (j = 0, len = ref.length; j < len; j++) {
             annotation = ref[j];
@@ -1449,10 +1512,8 @@
         embedAnalysis: (function(_this) {
           return function(analysis) {
             var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, traslator;
-            ed = editor();
-            html = ed.getContent({
-              format: 'raw'
-            });
+            ed = EditorAdapter.getEditor();
+            html = EditorAdapter.getHTML();
             entities = findEntities(html);
             AnalysisService.cleanAnnotations(analysis, findPositions(entities));
             AnalysisService.preselect(analysis, entities);

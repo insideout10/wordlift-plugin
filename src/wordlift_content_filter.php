@@ -219,6 +219,8 @@ function wl_content_embed_compile_microdata_template( $entity_id, $entity_type, 
 			//  - check that the referenced post is published.
 			//  OR
 			//  - if the value is empty then we don't display it.
+			//
+			// see https://github.com/insideout10/wordlift-plugin/issues/163
 			if ( Wordlift_Schema_Service::DATA_TYPE_URI === $expected_type && is_numeric( $field_value ) && 'publish' !== ( $post_status = get_post_status( $field_value ) )
 			     || empty( $field_value )
 			) {

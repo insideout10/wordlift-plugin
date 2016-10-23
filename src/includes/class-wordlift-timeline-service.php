@@ -26,6 +26,16 @@ class Wordlift_Timeline_Service {
 	private $entity_service;
 
 	/**
+	 * The number of words to use for the excerpt, set in the `to_json` function
+	 * and used by a filter.
+	 *
+	 * @since 3.7.0
+	 * @access private
+	 * @var int $excerpt_length The number of words to use for the excerpt.
+	 */
+	private $excerpt_length;
+
+	/**
 	 * A singleton instance of the Timeline service (useful for unit tests).
 	 *
 	 * @since 3.1.0
@@ -71,7 +81,7 @@ class Wordlift_Timeline_Service {
 	public function ajax_timeline() {
 
 		// Get the ID of the post who requested the timeline.
-		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
+		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL );
 
 		// Get the events and transform them for the JSON response, then send them to the client.
 		wp_send_json( $this->to_json( $this->get_events( $post_id ) ) );
@@ -89,7 +99,7 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @return array An array of event posts.
 	 */
-	public function get_events( $post_id = null ) {
+	public function get_events( $post_id = NULL ) {
 
 		// Get the entity IDs either from the entities related to the specified post or from the last 50 published
 		// posts if no post has been specified.
@@ -120,12 +130,12 @@ class Wordlift_Timeline_Service {
 				'relation' => 'AND',
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_START,
-					'value'   => null,
+					'value'   => NULL,
 					'compare' => '!='
 				),
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
-					'value'   => null,
+					'value'   => NULL,
 					'compare' => '!='
 				)
 			),
@@ -138,7 +148,9 @@ class Wordlift_Timeline_Service {
 	}
 
 	/**
-	 * Convert timeline events to JSON.
+	 * Convert timeline events to JSON. This function sets the global post in order
+	 * to get an automatic excerpt. Since we're being called inside an AJAX request,
+	 * we're not taking care of restoring any previous post: there isn't any.
 	 *
 	 * @since 3.1.0
 	 *
@@ -153,21 +165,31 @@ class Wordlift_Timeline_Service {
 			return '';
 		}
 
-		// Model data from:
-		// https://github.com/NUKnightLab/TimelineJS/blob/master/examples/example_json.json
+		// {media|thumbnail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
+		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
 
-		$timeline         = array();
-		$timeline['type'] = 'default';
+		// The number of words for the excerpt (by default 55, as WordPress).
+		$this->excerpt_length = isset( $_REQUEST['excerpt_words'] ) && is_numeric( $_REQUEST['excerpt_words'] ) ? $_REQUEST['excerpt_words'] : 55;
+		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
+
+		// Add a filter to remove the [...] after excerpts, since we're adding
+		// a link to the post itself.
+		add_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
 
 		// Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
 		$start_at_slide = 0;
 		$event_index    = - 1;
 		$now            = time();
 
-		$timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
+		// Prepare the timeline variable.
+		$timeline = array();
 
-			$start_date = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
-			$end_date   = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
+		// Populate the arrays.
+		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as ) {
+
+			// Get the start and end dates.
+			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
+			$end_date   = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
 
 			// Set the starting slide.
 			$event_index ++;
@@ -175,40 +197,111 @@ class Wordlift_Timeline_Service {
 				$start_at_slide = $event_index;
 			}
 
-			$date['startDate'] = date( 'Y,m,d', $start_date );
-			$date['endDate']   = date( 'Y,m,d', $end_date );
-			$date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-			$date['text']      = strip_shortcodes( $post->post_content );
-
 			// Load thumbnail
-			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
-			     false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) )
+			     && FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
-				$date['asset'] = array(
-					'media' => $attachment[0]
-				);
-
-				// Add debug data.
-				if ( WP_DEBUG ) {
-					$date['debug'] = array(
-						'post'        => $post,
-						'thumbnailId' => $thumbnail_id,
-						'attachment'  => $attachment
+				// Set the thumbnail URL.
+				if ( 'background' === $display_images_as ) {
+					$date['background'] = array( 'url' => $attachment[0], );
+					$date['media']      = array( 'thumbnail' => $attachment[0], );
+				} else {
+					$date['media'] = array(
+						'url'       => $attachment[0],
+						'thumbnail' => $attachment[0],
 					);
 				}
+
+			}
+
+			// Set the start/end dates by converting them to TimelineJS required format.
+			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
+			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
+
+			setup_postdata( $GLOBALS['post'] = &$item );
+
+			$more_link_text = sprintf(
+				'<span aria-label="%1$s">%2$s</span>',
+				sprintf(
+				/* translators: %s: Name of current post */
+					__( 'Continue reading %s' ),
+					the_title_attribute( array( 'echo' => FALSE ) )
+				),
+				__( '(more&hellip;)' )
+			);
+
+			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
+			$date['text'] = array(
+				'headline' => '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>',
+			);
+
+			// If we have an excerpt, set it.
+			if ( 0 < $this->excerpt_length ) {
+				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text );
 			}
 
 			return $date;
 
 		}, $posts );
 
+		// Finally remove the excerpt filter.
+		remove_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 
-		// The *timeline* library expects the data to be encapsulated in a *timeline* element, e.g.:
-		//  {timeline: ...}
+		// The JSON format is defined here: https://timeline.knightlab.com/docs/json-format.html
 		return array(
-			'timeline'     => $timeline,
-			'startAtSlide' => $start_at_slide
+			'timeline'       => $timeline,
+			'start_at_slide' => $start_at_slide,
+		);
+	}
+
+	/**
+	 * This function filters {@link excerpt_more} by removing it, since we're
+	 * adding the 'read more' link. This filter is set by {@see to_json}.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param string $excerpt_more The excerpt more preset.
+	 *
+	 * @return string An empty string.
+	 */
+	public function excerpt_more( $excerpt_more ) {
+
+		return '';
+	}
+
+	/**
+	 * A filter for the excerpt length, set by the `to_json` function, to tailor
+	 * how many words to return according to the client setting.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param int $length The preset number of words.
+	 *
+	 * @return int The number of words for the preset.
+	 */
+	public function excerpt_length( $length ) {
+
+		return $this->excerpt_length;
+	}
+
+
+	/**
+	 * Convert the date to a date array.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param $value int A date value.
+	 *
+	 * @return array An array containing year, month and day values.
+	 */
+	public static function date( $value ) {
+
+		return array(
+			'year'  => (int) date( 'Y', $value ),
+			'month' => (int) date( 'm', $value ),
+			'day'   => (int) date( 'd', $value ),
+
 		);
 	}
 
