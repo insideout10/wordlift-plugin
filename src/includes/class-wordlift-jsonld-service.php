@@ -94,13 +94,20 @@ class Wordlift_Jsonld_Service {
 
 		$post_id = get_the_ID();
 
-		$base_url = admin_url( 'admin-ajax.php?action=wl_jsonld&uri=' );
-
-		$ajaxs = implode( ',', array_map( function ( $item ) use ( $base_url ) {
-			return sprintf( '$.ajax("%s%s")', $base_url, urlencode( $this->entity_service->get_uri( $item ) ) );
-		}, array_unique( wl_core_get_related_entity_ids( $post_id, array(
+		$posts = array_unique( wl_core_get_related_entity_ids( $post_id, array(
 			'status' => 'publish'
-		) ) ) ) );
+		) ) );
+
+		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )
+		       . array_reduce( $posts, function ( $carry, $item ) {
+				return $carry . '&uri[]=' . urlencode( $this->entity_service->get_uri( $item ) );
+			}, '' );
+
+//		$ajaxs = implode( ',', array_map( function ( $item ) use ( $base_url ) {
+//			return sprintf( '$.ajax("%s%s")', $base_url, urlencode( $this->entity_service->get_uri( $item ) ) );
+//		}, array_unique( wl_core_get_related_entity_ids( $post_id, array(
+//			'status' => 'publish'
+//		) ) ) ) );
 
 //		var_dump( $uris );
 		echo <<<EOF
@@ -108,7 +115,7 @@ class Wordlift_Jsonld_Service {
 (function($) {
 
 	$( window ).on( 'load', function() {
-		$.when( $ajaxs ).done(function() {
+		$.when( $url ).done(function() {
 			var contents = $.map( arguments, function( item ) {
 				return JSON.stringify( item[0] );
 			}).join();
@@ -140,15 +147,23 @@ EOF;
 	 */
 	public function get() {
 
-		$uri = $_GET['uri'];
+		// Get an array of URIs to parse
+		$uris = is_array( $_REQUEST['uri'] ) ? $_REQUEST['uri'] : array( $_REQUEST['uri'] );
 
-		$post = $this->entity_service->get_entity_post_by_uri( $uri );
+		// Prepare the response, i.e. an array of entities.
+		$jsonld = array();
 
-		if ( NULL === $post ) {
-			wp_send_json_error( 'Entity not found' );
+		foreach ( $uris as $uri ) {
+
+			// Get the post given its URI, or continue to the next post if this one is not found.
+			if ( NULL === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
+				continue;
+			};
+
+			// Add the post data to the jsonld array.
+			$jsonld[] = array( '@context' => self::CONTEXT ) + $this->get_by_post( $post );
+
 		}
-
-		$jsonld = array( '@context' => self::CONTEXT ) + $this->get_by_post( $post );
 
 		wp_send_json( $jsonld );
 
