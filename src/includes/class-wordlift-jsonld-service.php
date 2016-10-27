@@ -47,18 +47,23 @@ class Wordlift_Jsonld_Service {
 		add_action( 'wp_footer', array( $this, 'wp_footer' ), PHP_INT_MAX );
 	}
 
+	/**
+	 * Hook to WP's wp_footer action and load the JSON-LD data.
+	 * @since 3.8.0
+	 */
 	public function wp_footer() {
 
+		// We only care about singular pages.
 		if ( ! is_singular() ) {
 			return;
 		}
 
-		$post_id = get_the_ID();
-
-		$posts = array_unique( wl_core_get_related_entity_ids( $post_id, array(
+		// Get the entities related to the current post (and that are published).
+		$posts = array_unique( wl_core_get_related_entity_ids( get_the_ID(), array(
 			'status' => 'publish'
 		) ) );
 
+		// 
 		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )
 		       . array_reduce( $posts, function ( $carry, $item ) {
 				return $carry . '&uri[]=' . urlencode( $this->entity_service->get_uri( $item ) );
