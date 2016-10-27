@@ -63,7 +63,7 @@ class Wordlift_Jsonld_Service {
 			'status' => 'publish'
 		) ) );
 
-		// 
+		//
 		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )
 		       . array_reduce( $posts, function ( $carry, $item ) {
 				return $carry . '&uri[]=' . urlencode( $this->entity_service->get_uri( $item ) );
