@@ -114,7 +114,11 @@ class Wordlift_Entity_Link_Service {
 
 		// Add our own post type to the query.
 		$post_type = is_array( $query->get( 'post_type' ) ) ? $query->get( 'post_type' ) : array();
-		$query->set( 'post_type', array_merge( $post_type, array( 'post', $this->entity_type_service->get_post_type(), 'page' ) ) );
+		$query->set( 'post_type', array_merge( $post_type, array(
+			'post',
+			$this->entity_type_service->get_post_type(),
+			'page'
+		) ) );
 
 	}
 
@@ -132,7 +136,11 @@ class Wordlift_Entity_Link_Service {
 	public function wp_unique_post_slug_is_bad_flat_slug( $bad_slug, $slug, $post_type ) {
 
 		// The list of post types that might have conflicting slugs.
-		$post_types = array( 'post', 'page', $this->entity_type_service->get_post_type() );
+		$post_types = array(
+			'post',
+			'page',
+			$this->entity_type_service->get_post_type()
+		);
 
 		// Ignore post types different from the ones we need to check.
 		if ( ! in_array( $post_type, $post_types ) ) {
@@ -141,7 +149,7 @@ class Wordlift_Entity_Link_Service {
 
 		$exists = $this->slug_exists( $slug, array_diff( $post_types, array( $post_type ) ) );
 
-		$this->log->debug( "[ exists :: " . ( $exists ? "yes" : "no" ) . " ]" );
+		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? "yes" : "no" ) . " ]" );
 
 		return $exists;
 	}
@@ -187,7 +195,7 @@ class Wordlift_Entity_Link_Service {
 		// Post slugs must be unique across all posts.
 		$check_sql = "SELECT post_name FROM $wpdb->posts WHERE post_name = %s AND post_type IN ('" . implode( "', '", array_map( 'esc_sql', $post_types ) ) . "') LIMIT 1";
 
-		return null !== $wpdb->get_var( $wpdb->prepare( $check_sql, $slug ) );
+		return NULL !== $wpdb->get_var( $wpdb->prepare( $check_sql, $slug ) );
 	}
 
 }
