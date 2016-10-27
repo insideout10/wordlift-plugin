@@ -1,87 +1,48 @@
 <?php
 
-require_once( 'properties/class-wordlift-property-service.php' );
-require_once( 'properties/class-wordlift-simple-property-service.php' );
-require_once( 'properties/class-wordlift-entity-property-service.php' );
-require_once( 'properties/class-wordlift-url-property-service.php' );
-require_once( 'properties/class-wordlift-double-property-service.php' );
-
 /**
  * Define the Wordlift_Jsonld_Service class to support JSON-LD.
  *
- * @since 3.7.0
+ * @since 3.8.0
  */
 
 /**
  * This class exports an entity using JSON-LD.
  *
- * @since 3.7.0
+ * @since 3.8.0
  */
 class Wordlift_Jsonld_Service {
 
-	const CONTEXT = 'http://schema.org';
-
 	/**
-	 * @since 3.7.0
-	 * @var Wordlift_Entity_Service $entity_service
+	 * A {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since 3.8.0
+	 * @access private
+	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
 
 	/**
-	 * @var Wordlift_Entity_Type_Service $entity_type_service
+	 * A {@link Wordlift_Entity_To_Jsonld_Converter} instance.
+	 *
+	 * @since 3.8.0
+	 * @access private
+	 * @var \Wordlift_Entity_Post_To_Jsonld_Converter A {@link Wordlift_Entity_To_Jsonld_Converter} instance.
 	 */
-	private $entity_type_service;
-
-	/**
-	 * @var Wordlift_Schema_Service $schema_service
-	 */
-	private $schema_service;
-
-	/**
-	 * @var \Wordlift_Property_Factory
-	 */
-	private $property_factory;
-
-	/**
-	 * @var \Wordlift_Property_Service_2
-	 */
-	private $property_service;
-
-	private static $instance;
+	private $entity_to_jsonld_converter;
 
 	/**
 	 * Create a JSON-LD service.
 	 *
-	 * @since 3.7.0
+	 * @since 3.8.0
 	 *
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Schema_Service $schema_service A {@link Wordlift_Schema_Service} instance.
-	 * @param \Wordlift_Property_Factory $property_factory
+	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_to_jsonld_converter
 	 */
-	public function __construct( $entity_service, $entity_type_service, $schema_service, $property_factory ) {
+	public function __construct( $entity_service, $entity_to_jsonld_converter ) {
 
-		$this->entity_service      = $entity_service;
-		$this->schema_service      = $schema_service;
-		$this->entity_type_service = $entity_type_service;
-		$this->property_factory    = $property_factory;
-
-		$this->property_service = new Wordlift_Property_Service_2( new Wordlift_Simple_Property_Service() );
-		$this->property_service->register( new Wordlift_Entity_Property_Service(), array(
-			Wordlift_Schema_Service::FIELD_LOCATION,
-			Wordlift_Schema_Service::FIELD_FOUNDER,
-			Wordlift_Schema_Service::FIELD_AUTHOR,
-			Wordlift_Schema_Service::FIELD_KNOWS,
-			Wordlift_Schema_Service::FIELD_BIRTH_PLACE,
-			Wordlift_Schema_Service::FIELD_AFFILIATION,
-		) );
-		$this->property_service->register( new Wordlift_Url_Property_Service(), array( Wordlift_Url_Property_Service::META_KEY ) );
-		$this->property_service->register( new Wordlift_Double_Property_Service(), array(
-			Wordlift_Schema_Service::FIELD_GEO_LATITUDE,
-			Wordlift_Schema_Service::FIELD_GEO_LONGITUDE
-		) );
-
-		self::$instance = $this;
+		$this->entity_service             = $entity_service;
+		$this->entity_to_jsonld_converter = $entity_to_jsonld_converter;
 
 		add_action( 'wp_footer', array( $this, 'wp_footer' ), PHP_INT_MAX );
 	}
@@ -137,92 +98,31 @@ EOF;
 
 	}
 
-	public static function get_instance() {
-
-		return self::$instance;
-	}
-
 	/**
-	 * @since 3.7.0
+	 * @since 3.8.0
 	 */
 	public function get() {
 
 		// Get an array of URIs to parse
 		$uris = is_array( $_REQUEST['uri'] ) ? $_REQUEST['uri'] : array( $_REQUEST['uri'] );
 
-		// Prepare the response, i.e. an array of entities.
-		$jsonld = array();
+		// An array of references which is captured when converting an URI to a
+		// json which we gather to further expand our json-ld.
+		$references = array();
 
-		foreach ( $uris as $uri ) {
+		$jsonld = array_merge(
+			array_map( function ( $item ) use ( &$references ) {
 
-			// Get the post given its URI, or continue to the next post if this one is not found.
-			if ( NULL === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
-				continue;
-			};
+				return $this->entity_to_jsonld_converter->convert( $item, $references );
+			}, $uris ),
+			array_map( function ( $item ) use ( &$references ) {
 
-			// Add the post data to the jsonld array.
-			$jsonld[] = array( '@context' => self::CONTEXT ) + $this->get_by_post( $post );
-
-		}
+				return $this->entity_to_jsonld_converter->convert( $item, $references );
+			}, array_diff( $references, $uris ) )
+		);
 
 		wp_send_json( $jsonld );
 
-	}
-
-	public function get_by_id( $post_id, $expand = TRUE ) {
-
-		return $this->get_by_post( get_post( $post_id ), $expand );
-	}
-
-	public function get_by_post( $post, $expand = TRUE ) {
-
-		$type   = $this->entity_type_service->get( $post->ID );
-		$id     = $this->entity_service->get_uri( $post->ID );
-		$name   = $post->post_title;
-		$fields = $type['custom_fields'];
-
-		$jsonld = array(
-			'@id'   => $id,
-			'@type' => $this->relative_to_context( $type['uri'] ),
-			'name'  => $name,
-		);
-
-		foreach ( $fields as $key => $value ) {
-			$name  = $this->relative_to_context( $value['predicate'] );
-			$value = $this->property_service->get( $post->ID, $key, $expand );
-
-			if ( NULL === $value ) {
-				continue;
-			}
-
-			$jsonld[ $name ] = $this->relative_to_context( $value );
-		}
-
-		return $this->post_process( $jsonld );
-	}
-
-	private function relative_to_context( $value ) {
-
-		return ( 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value );
-	}
-
-	private function post_process( $jsonld ) {
-
-		foreach ( $jsonld as $key => $value ) {
-			if ( 'streetAddress' === $key || 'postalCode' === $key || 'addressLocality' === $key || 'addressRegion' === $key || 'addressCountry' === $key || 'postOfficeBoxNumber' === $key ) {
-				$jsonld['address']['@type'] = 'PostalAddress';
-				$jsonld['address'][ $key ]  = $value;
-				unset( $jsonld[ $key ] );
-			}
-
-			if ( 'latitude' === $key || 'longitude' === $key ) {
-				$jsonld['geo']['@type'] = 'GeoCoordinates';
-				$jsonld['geo'][ $key ]  = $value;
-				unset( $jsonld[ $key ] );
-			}
-		}
-
-		return $jsonld;
 	}
 
 }

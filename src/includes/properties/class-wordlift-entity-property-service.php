@@ -1,32 +1,39 @@
 <?php
 
+/**
+ * Process references to other entities, local or remote, by returning a
+ * {@link Wordlift_Property_Entity_Reference} with the URL of the referenced entity.
+ *
+ * @since 3.8.0
+ */
 class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service {
+	/**
+	 * @var \Wordlift_Entity_Service $entity_service
+	 */
+	private $entity_service;
 
-	public function get( $post_id, $meta_key, $expand = TRUE ) {
+	/**
+	 * Wordlift_Entity_Property_Service constructor.
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service
+	 */
+	public function __construct( $entity_service ) {
 
-		if ( ! $expand ) {
-			return NULL;
-		}
+		$this->entity_service = $entity_service;
 
-		$value = array_map( function ( $item ) {
-			return Wordlift_Entity_Property_Service::expand( $item );
-		}, get_post_meta( $post_id, $meta_key ) );
-
-		if ( 0 === count( $value ) ) {
-			return NULL;
-		}
-
-		if ( 1 === count( $value ) ) {
-			return $value[0];
-		}
-
-		return $value;
 	}
 
-	public function expand( $post_id ) {
+	/**
+	 * {@inheritdoc}
+	 */
+	public function get( $post_id, $meta_key ) {
 
-		return Wordlift_Jsonld_Service::get_instance()
-		                              ->get_by_id( $post_id, FALSE );
+		$entity_service = $this->entity_service;
+
+		// Map each returned value to a Wordlift_Property_Entity_Reference.
+		return array_map( function ( $item ) use ( $entity_service ) {
+			return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item ) );
+		}, get_post_meta( $post_id, $meta_key ) );
 	}
 
 }

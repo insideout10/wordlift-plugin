@@ -427,10 +427,18 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rebuild-service.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/properties/class-wordlift-property-getter-factory.php';
+
+		/**
+		 * Load the converters.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-uri-to-jsonld-converter.php';
+
 		/**
 		 * Load the JSON-LD service to publish entities using JSON-LD.s
 		 *
-		 * @since 3.7.0
+		 * @since 3.8.0
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
@@ -585,7 +593,9 @@ class Wordlift {
 		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
 		// Instantiate the JSON-LD service.
-		$this->jsonld_service = new Wordlift_Jsonld_Service( $this->entity_service, $entity_type_service, $this->schema_service, $this->property_factory );
+		$property_getter                = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$entity_uri_to_jsonld_converter = new Wordlift_Entity_Uri_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
+		$this->jsonld_service           = new Wordlift_Jsonld_Service( $this->entity_service, $entity_uri_to_jsonld_converter );
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
