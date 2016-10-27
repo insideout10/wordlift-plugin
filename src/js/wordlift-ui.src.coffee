@@ -308,7 +308,7 @@ jQuery ($) ->
       'action': params.action,
       'post_id': params.postId,
       'display_images_as': params.display_images_as,
-      'excerpt_words': params.excerpt_words)
+      'excerpt_length': params.excerpt_length)
 
     $(this).timeline
       dataEndpoint: url
@@ -649,7 +649,7 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
               </h6>
             </div>
             <div class="#{thumbClasses}"> 
-              <span style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></span>
+              <a ng-href="{{item.post.permalink}}" style="background: url({{item.post.thumbnail}}) no-repeat center center;background-size:cover;"></a>
             </div>
             <div class="wl-card-title"> 
               <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
@@ -705,7 +705,7 @@ $(
   .appendTo('.wl-navigator-widget')
 
 # If there are navigator widgets on the page activate them.
-  if 0 < $('.wl-navigator-widget').size
+  if 0 < $('.wl-navigator-widget').size()
     injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
     injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
 # execute the following commands in the angular js context.
