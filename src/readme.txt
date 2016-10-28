@@ -134,7 +134,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.7.1 (????-??-??) =
+= 3.7.1 (2016-10-28) =
 * Fix: [#382](https://github.com/insideout10/wordlift-plugin/issues/382): Analysis errors on coffee-brewing-methods.com.
 
 = 3.7.0 (2016-10-23) =
