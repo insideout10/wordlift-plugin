@@ -49,6 +49,7 @@ class Wordlift_Jsonld_Service {
 
 	/**
 	 * Hook to WP's wp_footer action and load the JSON-LD data.
+	 *
 	 * @since 3.8.0
 	 */
 	public function wp_footer() {
@@ -63,50 +64,33 @@ class Wordlift_Jsonld_Service {
 			'status' => 'publish'
 		) ) );
 
-		//
+		// Build the URL to load the JSON-LD asynchronously.
 		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )
 		       . array_reduce( $posts, function ( $carry, $item ) {
 				return $carry . '&uri[]=' . urlencode( $this->entity_service->get_uri( $item ) );
 			}, '' );
 
-//		$ajaxs = implode( ',', array_map( function ( $item ) use ( $base_url ) {
-//			return sprintf( '$.ajax("%s%s")', $base_url, urlencode( $this->entity_service->get_uri( $item ) ) );
-//		}, array_unique( wl_core_get_related_entity_ids( $post_id, array(
-//			'status' => 'publish'
-//		) ) ) ) );
-
-//		var_dump( $uris );
+		// Print the Javascript code.
 		echo <<<EOF
-<script type="text/javascript">
-(function($) {
-
-	$( window ).on( 'load', function() {
-		$.when( $url ).done(function() {
-			var contents = $.map( arguments, function( item ) {
-				return JSON.stringify( item[0] );
-			}).join();
-			$('head').append( '<script type="application/ld+json">[' + contents + ']</s' + 'cript>' );
-		});
-	});
-	
-})(jQuery);
-</script>
+<script type="text/javascript"><!--
+(function($) { $( window ).on( 'load', function() { $.ajax('$url').done(function(data) {
+	$('head').append( '<script type="application/ld+json">'+JSON.stringify(data)+'</s' + 'cript>' );
+}); }); })(jQuery);
+// --></script>
 EOF;
-
-
-//		echo( '<script type="text/javascript">' );
-//		echo( '$.when.apply($, my_array);
-//		echo( '[' );
-//		echo( implode( ',', $ajaxs ) );
-//		echo( ']' );
-//		echo( '</script>' );
-
 	}
 
 	/**
+	 * Process calls to the AJAX 'wl_jsonld' endpoint.
+	 *
 	 * @since 3.8.0
 	 */
 	public function get() {
+
+		// If no URI has been provided return an empty array.
+		if ( ! isset( $_REQUEST['uri'] ) ) {
+			wp_send_json( array() );
+		}
 
 		// Get an array of URIs to parse
 		$uris = is_array( $_REQUEST['uri'] ) ? $_REQUEST['uri'] : array( $_REQUEST['uri'] );
@@ -116,16 +100,21 @@ EOF;
 		$references = array();
 
 		$jsonld = array_merge(
+		// Convert each URI to a JSON-LD array, while gathering referenced entities
+		// in the references array.
 			array_map( function ( $item ) use ( &$references ) {
 
 				return $this->entity_to_jsonld_converter->convert( $item, $references );
 			}, $uris ),
+			// Convert each URI in the references array to JSON-LD. We don't output
+			// entities already output above (hence the array_diff).
 			array_map( function ( $item ) use ( &$references ) {
 
 				return $this->entity_to_jsonld_converter->convert( $item, $references );
 			}, array_diff( $references, $uris ) )
 		);
 
+		// Finally send the JSON-LD.
 		wp_send_json( $jsonld );
 
 	}

@@ -14,7 +14,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 * @access protected
 	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 */
-	protected  $entity_type_service;
+	protected $entity_type_service;
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
@@ -74,9 +74,10 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 
 		// Prepare the response.
 		$jsonld = array(
-			'@id'   => $id,
-			'@type' => $this->relative_to_context( $type['uri'] ),
-			'name'  => $name,
+			'@context' => self::CONTEXT,
+			'@id'      => $id,
+			'@type'    => $this->relative_to_context( $type['uri'] ),
+			'name'     => $name,
 		);
 
 		// Try each field on the entity.

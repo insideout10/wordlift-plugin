@@ -440,6 +440,7 @@ function wl_configuration_get_languages() {
 /**
  * Get the default recursion depth limitation on *entity metadata rendering*.
  *
+ * @deprecated
  * @return string The default setting.
  */
 function wl_config_get_recursion_depth() {

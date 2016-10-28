@@ -265,6 +265,16 @@ class Wordlift {
 	private $download_your_data_page;
 
 	/**
+	 * The Content Filter Service hooks up to the 'the_content' filter and provides
+	 * linking of entities to their pages.
+	 *
+	 * @since 3.8.0
+	 * @access private
+	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
+	 */
+	private $content_filter_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -276,7 +286,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.7.0';
+		$this->version     = '3.8.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -434,6 +444,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-uri-to-jsonld-converter.php';
+
+		/**
+		 * Load the content filter.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
 
 		/**
 		 * Load the JSON-LD service to publish entities using JSON-LD.s
@@ -600,6 +615,9 @@ class Wordlift {
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 
+		// Create an instance of the content filter service.
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
+
 	}
 
 	/**
@@ -726,6 +744,9 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		// Hook the content filter service to add entity links.
+		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content');
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );

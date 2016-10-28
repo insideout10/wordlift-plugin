@@ -2,10 +2,14 @@
 /**
  * This file contains functions that filter the post content before it is showed on the frontend.
  * For "microdata compiling" we refer to the process used to insert schema.org markup into the text.
+ *
+ * @deprecated this file is fully deprecated, since we transitioned from microdata to JSON-LD.
  */
 
 /**
  * Build the regex to find a <span> tag relative to a specific uri
+ *
+ * @deprecated
  *
  * @param string $uri Uri of the entity to search in the post content.
  */
@@ -15,6 +19,8 @@ function wl_content_embed_build_regex_from_uri( $uri ) {
 
 /**
  * Lift the post content with the microdata.
+ *
+ * @deprecated
  *
  * @param string $content The post content.
  *
@@ -36,6 +42,8 @@ function wl_content_embed_microdata( $content ) {
 
 /**
  * Lift the post content with the microdata (skipping the is_single check).
+ *
+ * @deprecated
  *
  * @param int $post_id The post ID.
  * @param string $content The post content.
@@ -73,6 +81,8 @@ function _wl_content_embed_microdata( $post_id, $content ) {
 
 /**
  * Embed the entity properties as microdata in the content.
+ *
+ * @deprecated
  *
  * @param string $content A content.
  * @param string $uri An entity URI.
@@ -158,10 +168,12 @@ function wl_content_embed_item_microdata( $content, $uri, $itemprop = NULL, $rec
 	return $content;
 }
 
-add_filter( 'the_content', 'wl_content_embed_microdata' );
+// add_filter( 'the_content', 'wl_content_embed_microdata' );
 
 /**
  * Fills up the microdata_template with entity's values.
+ *
+ * @deprecated
  *
  * @param string $entity_id An entity ID.
  * @param string $entity_type Entity type structure.
