@@ -1165,19 +1165,14 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         $log.debug suggestions
         $rootScope.$broadcast "sameAsRetrieved", suggestions
 
-    service._innerPerform = (content, annotations = null)->
+    service._innerPerform = (content, annotations = [])->
       args =
         method: 'post'
         url: ajaxurl + '?action=wordlift_analyze'
 
-      # Set the data as two parameters, content and annotations, if annotations have been provided,
-      # otherwise data matches the content.
-      if annotations?
-        args.headers = {'Content-Type': 'application/json'}
-        args.data = {content: content, annotations: annotations}
-      else
-        args.headers = {'Content-Type': 'text/plain'}
-        args.data = content
+      # Set the data as two parameters, content and annotations.
+      args.headers = {'Content-Type': 'application/json'}
+      args.data = {content: content, annotations: annotations}
 
       $log.info "Analyzing content..."
 

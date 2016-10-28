@@ -171,6 +171,7 @@ function wordlift_buttonhooks() {
 function wordlift_register_tinymce_javascript( $plugin_array ) {
 
 	// add the wordlift plugin.
+	// We can't use the minified version here.
 	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js';
 
 	return $plugin_array;
