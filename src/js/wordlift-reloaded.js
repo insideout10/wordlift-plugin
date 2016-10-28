@@ -1229,26 +1229,19 @@
       service._innerPerform = function(content, annotations) {
         var args;
         if (annotations == null) {
-          annotations = null;
+          annotations = [];
         }
         args = {
           method: 'post',
           url: ajaxurl + '?action=wordlift_analyze'
         };
-        if (annotations != null) {
-          args.headers = {
-            'Content-Type': 'application/json'
-          };
-          args.data = {
-            content: content,
-            annotations: annotations
-          };
-        } else {
-          args.headers = {
-            'Content-Type': 'text/plain'
-          };
-          args.data = content;
-        }
+        args.headers = {
+          'Content-Type': 'application/json'
+        };
+        args.data = {
+          content: content,
+          annotations: annotations
+        };
         $log.info("Analyzing content...");
         return $http(args);
       };

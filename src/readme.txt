@@ -134,6 +134,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.7.1 (????-??-??) =
+* Fix: [#382](https://github.com/insideout10/wordlift-plugin/issues/382): Analysis errors on coffee-brewing-methods.com.
+
 = 3.7.0 (2016-10-18) =
 * Fix: [#351](https://github.com/insideout10/wordlift-plugin/issues/351): Text annotations missing for found entities.
 * Fix: [#363](https://github.com/insideout10/wordlift-plugin/issues/363): Synonyms associated to other entities.
