@@ -116,18 +116,21 @@ EOF;
 		// json which we gather to further expand our json-ld.
 		$references = array();
 
+		// Set a reference to the entity_to_jsonld_converter to use in the closures.
+		$entity_to_jsonld_converter = $this->entity_to_jsonld_converter;
+
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
 		$jsonld = array_merge(
-			array_map( function ( $item ) use ( &$references ) {
+			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
 
-				return $this->entity_to_jsonld_converter->convert( $item, $references );
+				return $entity_to_jsonld_converter->convert( $item, $references );
 			}, $uris ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
-			array_map( function ( $item ) use ( &$references ) {
+			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
 
-				return $this->entity_to_jsonld_converter->convert( $item, $references );
+				return $entity_to_jsonld_converter->convert( $item, $references );
 			}, array_diff( $references, $uris ) )
 		);
 
