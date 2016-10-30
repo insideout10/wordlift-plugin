@@ -2,7 +2,7 @@
 /**
  * Define the Wordlift_Jsonld_Service class to support JSON-LD.
  *
- * @since 3.8.0
+ * @since   3.8.0
  * @package Wordlift
  */
 
@@ -16,7 +16,7 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
@@ -25,7 +25,7 @@ class Wordlift_Jsonld_Service {
 	/**
 	 * A {@link Wordlift_Entity_To_Jsonld_Converter} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var \Wordlift_Entity_Post_To_Jsonld_Converter A {@link Wordlift_Entity_To_Jsonld_Converter} instance.
 	 */
@@ -36,7 +36,7 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service                  $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Service                  $entity_service             A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_to_jsonld_converter A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
 	 */
 	public function __construct( $entity_service, $entity_to_jsonld_converter ) {
@@ -66,9 +66,7 @@ class Wordlift_Jsonld_Service {
 
 		// Build the URL to load the JSON-LD asynchronously.
 		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )
-		       . array_reduce( $posts, function ( $carry, $item ) {
-				return $carry . '&uri[]=' . urlencode( $this->entity_service->get_uri( $item ) );
-			}, '' );
+		       . array_reduce( $posts, array( $this, 'build_url' ), '' );
 
 		// Print the Javascript code.
 		echo <<<EOF
@@ -78,6 +76,22 @@ class Wordlift_Jsonld_Service {
 }); }); })(jQuery);
 // --></script>
 EOF;
+	}
+
+	/**
+	 * Build a URL to load JSON-LD from an {@see array_reduce} function.
+	 *
+	 * @since  3.8.0
+	 * @access private
+	 *
+	 * @param string $carry The carry value.
+	 * @param string $item  The current value.
+	 *
+	 * @return string The complete URL.
+	 */
+	private function build_url( $carry, $item ) {
+
+		return $carry . '&uri[]=' . rawurldecode( $this->entity_service->get_uri( $item ) );
 	}
 
 	/**
@@ -92,16 +106,16 @@ EOF;
 			wp_send_json( array() );
 		}
 
-		// Get an array of URIs to parse
+		// Get an array of URIs to parse.
 		$uris = is_array( $_REQUEST['uri'] ) ? $_REQUEST['uri'] : array( $_REQUEST['uri'] );
 
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
 		$references = array();
 
-		$jsonld = array_merge(
-		// Convert each URI to a JSON-LD array, while gathering referenced entities
+		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
+		$jsonld = array_merge(
 			array_map( function ( $item ) use ( &$references ) {
 
 				return $this->entity_to_jsonld_converter->convert( $item, $references );
