@@ -2,7 +2,7 @@
 /**
  * This file defines a converter from an entity {@link WP_Post} to a JSON-LD array.
  *
- * @since 3.8.0
+ * @since   3.8.0
  * @package Wordlift
  */
 
@@ -23,7 +23,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	/**
 	 * A {@link Wordlift_Entity_Type_Service} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access protected
 	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 */
@@ -32,7 +32,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access protected
 	 * @var \Wordlift_Entity_Service $entity_type_service A {@link Wordlift_Entity_Service} instance.
 	 */
@@ -41,7 +41,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	/**
 	 * A {@link Wordlift_Property_Getter} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var \Wordlift_Property_Getter $property_getter A {@link Wordlift_Property_Getter} instance.
 	 */
@@ -53,8 +53,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 * @since 3.8.0
 	 *
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service
-	 * @param \Wordlift_Entity_Service $entity_service
-	 * @param \Wordlift_Property_Getter $property_getter
+	 * @param \Wordlift_Entity_Service      $entity_service
+	 * @param \Wordlift_Property_Getter     $property_getter
 	 */
 	public function __construct( $entity_type_service, $entity_service, $property_getter ) {
 
@@ -69,9 +69,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param WP_Post $post The {@link WP_Post} to convert.
+	 * @param WP_Post $post       The {@link WP_Post} to convert.
 	 *
-	 * @param array $references An array of entity references.
+	 * @param array   $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
 	 */
@@ -98,6 +98,10 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 			'name'     => $name,
 		);
 
+
+		// Set a reference to use in closures.
+		$converter = $this;
+
 		// Try each field on the entity.
 		foreach ( $fields as $key => $value ) {
 
@@ -115,7 +119,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 			// Map the value to the property name.
 			// If we got an array with just one value, we return that one value.
 			// If we got a Wordlift_Property_Entity_Reference we get the URL.
-			$jsonld[ $name ] = $this->make_one( array_map( function ( $item ) use ( &$references ) {
+			$jsonld[ $name ] = $this->make_one( array_map( function ( $item ) use ( $converter, &$references ) {
 
 				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 
@@ -125,7 +129,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 					return array( "@id" => $url );
 				}
 
-				return $this->relative_to_context( $item );
+				return $converter->relative_to_context( $item );
 			}, $value ) );
 
 		}
