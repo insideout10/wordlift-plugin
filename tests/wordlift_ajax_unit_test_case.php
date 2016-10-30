@@ -9,7 +9,7 @@
  * in order to let the method accept an optional parameter that can be passed to the callback
  * Useful to inject php//input fake data into the the callbacks environment
  */
-class WL_Ajax_UnitTestCase extends WP_Ajax_UnitTestCase {
+abstract class WL_Ajax_UnitTestCase extends WP_Ajax_UnitTestCase {
 
 	protected function _handleAjax( $action, $http_raw_data = NULL ) {
 
