@@ -26,14 +26,14 @@ function wl_get_entity_post_ids_by_uris( $uris ) {
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 					'value'   => $uris,
-					'compare' => 'IN'
+					'compare' => 'IN',
 				),
 				array(
 					'key'     => 'entity_url',
 					'value'   => $uris,
-					'compare' => 'IN'
-				)
-			)
+					'compare' => 'IN',
+				),
+			),
 		)
 	);
 
@@ -87,8 +87,8 @@ function wl_build_entity_uri( $post_id ) {
  *
  * @deprecated use Wordlift_Entity_Service::get_instance()->get_uri( $post_id )
  *
- * @uses wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
- * @uses wl_set_entity_uri() to set a newly create URI.
+ * @uses       wl_build_entity_uri() to create a new URI if the entity doesn't have an URI yet.
+ * @uses       wl_set_entity_uri() to set a newly create URI.
  *
  * @param int $post_id The post ID.
  *
@@ -102,8 +102,8 @@ function wl_get_entity_uri( $post_id ) {
 /**
  * Save the entity URI for the provided post ID.
  *
- * @param int $post_id The post ID.
- * @param string $uri The post URI.
+ * @param int    $post_id The post ID.
+ * @param string $uri     The post URI.
  *
  * @return bool True if successful, otherwise false.
  */
@@ -131,7 +131,7 @@ function wl_get_entity_rdf_types( $post_id ) {
 /**
  * Set the types for the entity with the specified post ID.
  *
- * @param int $post_id The entity post ID.
+ * @param int   $post_id   The entity post ID.
  * @param array $type_uris An array of type URIs.
  */
 function wl_set_entity_rdf_types( $post_id, $type_uris = array() ) {
@@ -262,6 +262,11 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = NULL ) {
 
 	// Return custom fields for this specific entity's type.
 	$type = wl_entity_type_taxonomy_get_type( $entity_id );
+
+	if ( ! isset( $type['custom_fields'] ) ) {
+		Wordlift_Log_Service::get_logger( 'wl_entity_taxonomy_get_custom_fields' )
+		                    ->error( "custom_fields not set [ entity id :: $entity_id ]" );
+	}
 
 	return $type['custom_fields'];
 

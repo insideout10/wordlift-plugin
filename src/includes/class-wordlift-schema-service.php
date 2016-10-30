@@ -1,4 +1,10 @@
 <?php
+/**
+ * This file defines the Wordlift_Schema_Service class.
+ *
+ * @since   3.1.0
+ * @package Wordlift
+ */
 
 /**
  * Provides constants and methods related to WordLift's schema.
@@ -161,6 +167,13 @@ class Wordlift_Schema_Service {
 	const FIELD_AFFILIATION = 'wl_affiliation';
 
 	/**
+	 * The 'telephone' field name.
+	 *
+	 * @since 3.8.0
+	 */
+	const FIELD_TELEPHONE = 'wl_schema_telephone';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -212,7 +225,7 @@ class Wordlift_Schema_Service {
 	/**
 	 * The Schema service singleton instance.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Schema_Service $instance The Schema service singleton instance.
 	 */
@@ -221,7 +234,7 @@ class Wordlift_Schema_Service {
 	/**
 	 * WordLift's schema.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var array $schema WordLift's schema.
 	 */
@@ -230,7 +243,7 @@ class Wordlift_Schema_Service {
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -257,7 +270,7 @@ class Wordlift_Schema_Service {
 			'organization'  => $this->get_organization_schema(),
 			'person'        => $this->get_person_schema(),
 			'place'         => $this->get_place_schema(),
-			'localbusiness' => $this->get_local_business_schema()
+			'localbusiness' => $this->get_local_business_schema(),
 		);
 
 	}
@@ -359,30 +372,30 @@ class Wordlift_Schema_Service {
 	private function get_thing_schema() {
 
 		return array(
-			'css_class'          => 'wl-thing',
-			'uri'                => 'http://schema.org/Thing',
-			'same_as'            => array( '*' ),
+			'css_class'     => 'wl-thing',
+			'uri'           => 'http://schema.org/Thing',
+			'same_as'       => array( '*' ),
 			// set as default.
-			'custom_fields'      => array(
+			'custom_fields' => array(
 				self::FIELD_SAME_AS                            => array(
 					'predicate'   => 'http://schema.org/sameAs',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Thing',
 					'constraints' => array(
-						'cardinality' => INF
+						'cardinality' => INF,
 					),
 					'input_field' => 'sameas'   // we need a custom metabox
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
-				                                                                                      ->get_compat_definition()
+				                                                                                      ->get_compat_definition(),
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*
-			'microdata_template' => '',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+//			'microdata_template' => '',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 	}
@@ -397,31 +410,31 @@ class Wordlift_Schema_Service {
 	private function get_creative_work_schema() {
 
 		$schema = array(
-			'label'              => 'CreativeWork',
-			'description'        => 'A creative work (or a Music Album).',
-			'parents'            => array( 'thing' ),
+			'label'         => 'CreativeWork',
+			'description'   => 'A creative work (or a Music Album).',
+			'parents'       => array( 'thing' ),
 			// give term slug as parent
-			'css_class'          => 'wl-creative-work',
-			'uri'                => 'http://schema.org/CreativeWork',
-			'same_as'            => array(
+			'css_class'     => 'wl-creative-work',
+			'uri'           => 'http://schema.org/CreativeWork',
+			'same_as'       => array(
 				'http://schema.org/MusicAlbum',
-				'http://schema.org/Product'
+				'http://schema.org/Product',
 			),
-			'custom_fields'      => array(
+			'custom_fields' => array(
 				self::FIELD_AUTHOR => array(
 					'predicate'   => 'http://schema.org/author',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
 						'uri_type'    => array( 'Person', 'Organization' ),
-						'cardinality' => INF
-					)
+						'cardinality' => INF,
+					),
 				),
 			),
-			'microdata_template' => '{{author}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+//			'microdata_template' => '{{author}}',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
@@ -441,24 +454,24 @@ class Wordlift_Schema_Service {
 	private function get_event_schema() {
 
 		$schema = array(
-			'label'              => 'Event',
-			'description'        => 'An event . ',
-			'parents'            => array( 'thing' ),
-			'css_class'          => 'wl-event',
-			'uri'                => self::SCHEMA_EVENT_TYPE,
-			'same_as'            => array( 'http://dbpedia.org/ontology/Event' ),
-			'custom_fields'      => array(
+			'label'         => 'Event',
+			'description'   => 'An event . ',
+			'parents'       => array( 'thing' ),
+			'css_class'     => 'wl-event',
+			'uri'           => self::SCHEMA_EVENT_TYPE,
+			'same_as'       => array( 'http://dbpedia.org/ontology/Event' ),
+			'custom_fields' => array(
 				self::FIELD_DATE_START => array(
 					'predicate'   => 'http://schema.org/startDate',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:datetime',
-					'constraints' => ''
+					'constraints' => '',
 				),
 				self::FIELD_DATE_END   => array(
 					'predicate'   => 'http://schema.org/endDate',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:datetime',
-					'constraints' => ''
+					'constraints' => '',
 				),
 				self::FIELD_LOCATION   => array(
 					'predicate'   => 'http://schema.org/location',
@@ -466,17 +479,14 @@ class Wordlift_Schema_Service {
 					'export_type' => 'http://schema.org/PostalAddress',
 					'constraints' => array(
 						'uri_type'    => array( 'Place', 'LocalBusiness' ),
-						'cardinality' => INF
-					)
-				)
+						'cardinality' => INF,
+					),
+				),
 			),
-			'microdata_template' =>
-				'{{startDate}}
-                                {{endDate}}
-                                {{location}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+//			'microdata_template' => '{{startDate}}{{endDate}}{{location}}',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
@@ -496,25 +506,25 @@ class Wordlift_Schema_Service {
 	private function get_organization_schema() {
 
 		$schema = array(
-			'label'              => 'Organization',
-			'description'        => 'An organization, including a government or a newspaper.',
-			'parents'            => array( 'thing' ),
-			'css_class'          => 'wl-organization',
-			'uri'                => 'http://schema.org/Organization',
-			'same_as'            => array(
+			'label'         => 'Organization',
+			'description'   => 'An organization, including a government or a newspaper.',
+			'parents'       => array( 'thing' ),
+			'css_class'     => 'wl-organization',
+			'uri'           => 'http://schema.org/Organization',
+			'same_as'       => array(
 				'http://rdf.freebase.com/ns/organization.organization',
 				'http://rdf.freebase.com/ns/government.government',
-				'http://schema.org/Newspaper'
+				'http://schema.org/Newspaper',
 			),
-			'custom_fields'      => array(
+			'custom_fields' => array(
 				self::FIELD_FOUNDER             => array(
 					'predicate'   => 'http://schema.org/founder',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
 						'uri_type'    => 'Person',
-						'cardinality' => INF
-					)
+						'cardinality' => INF,
+					),
 				),
 				self::FIELD_ADDRESS             => array(
 					'predicate'   => 'http://schema.org/streetAddress',
@@ -562,20 +572,20 @@ class Wordlift_Schema_Service {
 					'predicate'   => 'http://schema.org/email',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
-					'constraints' => ''
+					'constraints' => '',
 				),
-				'wl_schema_telephone'           => array(
+				self::FIELD_TELEPHONE           => array(
 					'predicate'   => 'http://schema.org/telephone',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
-					'constraints' => ''
+					'constraints' => '',
 				),
 			),
-			'microdata_template' => '{{founder}}'
-			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}</span>',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+//			'microdata_template' => '{{founder}}'
+//			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}</span>',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
@@ -595,39 +605,39 @@ class Wordlift_Schema_Service {
 	private function get_person_schema() {
 
 		$schema = array(
-			'label'              => 'Person',
-			'description'        => 'A person (or a music artist).',
-			'parents'            => array( 'thing' ),
-			'css_class'          => 'wl-person',
-			'uri'                => 'http://schema.org/Person',
-			'same_as'            => array(
+			'label'         => 'Person',
+			'description'   => 'A person (or a music artist).',
+			'parents'       => array( 'thing' ),
+			'css_class'     => 'wl-person',
+			'uri'           => 'http://schema.org/Person',
+			'same_as'       => array(
 				'http://rdf.freebase.com/ns/people.person',
 				'http://rdf.freebase.com/ns/music.artist',
-				'http://dbpedia.org/class/yago/LivingPeople'
+				'http://dbpedia.org/class/yago/LivingPeople',
 			),
-			'custom_fields'      => array(
+			'custom_fields' => array(
 				self::FIELD_KNOWS       => array(
 					'predicate'   => 'http://schema.org/knows',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
 						'uri_type'    => 'Person',
-						'cardinality' => INF
-					)
+						'cardinality' => INF,
+					),
 				),
 				self::FIELD_BIRTH_DATE  => array(
 					'predicate'   => 'http://schema.org/birthDate',
 					'type'        => self::DATA_TYPE_DATE,
 					'export_type' => 'xsd:date',
-					'constraints' => ''
+					'constraints' => '',
 				),
 				self::FIELD_BIRTH_PLACE => array(
 					'predicate'   => 'http://schema.org/birthPlace',
 					'type'        => self::DATA_TYPE_URI,
 					'export_type' => 'http://schema.org/Place',
 					'constraints' => array(
-						'uri_type' => 'Place'
-					)
+						'uri_type' => 'Place',
+					),
 				),
 				self::FIELD_AFFILIATION => array(
 					'predicate'   => 'http://schema.org/affiliation',
@@ -636,24 +646,24 @@ class Wordlift_Schema_Service {
 					'constraints' => array(
 						'uri_type'    => array(
 							'Organization',
-							'LocalBusiness'
+							'LocalBusiness',
 						),
-						'cardinality' => INF
-					)
+						'cardinality' => INF,
+					),
 				),
 				self::FIELD_EMAIL       => array(
 					'predicate'   => 'http://schema.org/email',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => array(
-						'cardinality' => INF
-					)
-				)
+						'cardinality' => INF,
+					),
+				),
 			),
-			'microdata_template' => '{{birthDate}}{{birthPlace}}{{knows}}{{affiliation}}{{email}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+//			'microdata_template' => '{{birthDate}}{{birthPlace}}{{knows}}{{affiliation}}{{email}}',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
@@ -674,16 +684,16 @@ class Wordlift_Schema_Service {
 	private function get_place_schema() {
 
 		$schema = array(
-			'label'              => 'Place',
-			'description'        => 'A place.',
-			'parents'            => array( 'thing' ),
-			'css_class'          => 'wl-place',
-			'uri'                => 'http://schema.org/Place',
-			'same_as'            => array(
+			'label'         => 'Place',
+			'description'   => 'A place.',
+			'parents'       => array( 'thing' ),
+			'css_class'     => 'wl-place',
+			'uri'           => 'http://schema.org/Place',
+			'same_as'       => array(
 				'http://rdf.freebase.com/ns/location.location',
-				'http://www.opengis.net/gml/_Feature'
+				'http://www.opengis.net/gml/_Feature',
 			),
-			'custom_fields'      => array(
+			'custom_fields' => array(
 				self::FIELD_GEO_LATITUDE        => array(
 					'predicate'   => 'http://schema.org/latitude',
 					'type'        => self::DATA_TYPE_DOUBLE,
@@ -739,13 +749,13 @@ class Wordlift_Schema_Service {
 					'export_type' => 'xsd:string',
 					'constraints' => '',
 					'input_field' => 'address'   // to build custom metabox
-				)
+				),
 			),
-			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
-			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+//			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
+//			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
@@ -765,23 +775,23 @@ class Wordlift_Schema_Service {
 	private function get_local_business_schema() {
 
 		$schema = array(
-			'label'              => 'LocalBusiness',
-			'description'        => 'A local business.',
-			'parents'            => array( 'place', 'organization' ),
-			'css_class'          => 'wl-local-business',
-			'uri'                => 'http://schema.org/LocalBusiness',
-			'same_as'            => array(
+			'label'         => 'LocalBusiness',
+			'description'   => 'A local business.',
+			'parents'       => array( 'place', 'organization' ),
+			'css_class'     => 'wl-local-business',
+			'uri'           => 'http://schema.org/LocalBusiness',
+			'same_as'       => array(
 				'http://rdf.freebase.com/ns/business/business_location',
-				'https://schema.org/Store'
+				'https://schema.org/Store',
 			),
-			'custom_fields'      => array(),
-			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
-			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>'
-			                        . '{{founder}}'
-			                        . '{{email}}',
-			'templates'          => array(
-				'subtitle' => '{{id}}'
-			)
+			'custom_fields' => array(),
+//			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
+//			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>'
+//			                        . '{{founder}}'
+//			                        . '{{email}}',
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
 		);
 
 		// Merge the custom fields with those provided by the place and organization schema.

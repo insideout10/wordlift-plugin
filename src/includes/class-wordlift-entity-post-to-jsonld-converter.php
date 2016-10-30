@@ -1,10 +1,23 @@
 <?php
+/**
+ * This file defines a converter from an entity {@link WP_Post} to a JSON-LD array.
+ *
+ * @since 3.8.0
+ * @package Wordlift
+ */
 
 /**
+ * Define the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
  *
+ * @since 3.8.0
  */
 class Wordlift_Entity_Post_To_Jsonld_Converter {
 
+	/**
+	 * The JSON-LD context.
+	 *
+	 * @since 3.8.0
+	 */
 	const CONTEXT = 'http://schema.org';
 
 	/**
@@ -51,11 +64,16 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	}
 
 	/**
-	 * @param WP_Post $post
+	 * Convert the provided {@link WP_Post} to a JSON-LD array. Any entity reference
+	 * found while processing the post is set in the $references array.
 	 *
-	 * @param array $references
+	 * @since 3.8.0
 	 *
-	 * @return array
+	 * @param WP_Post $post The {@link WP_Post} to convert.
+	 *
+	 * @param array $references An array of entity references.
+	 *
+	 * @return array A JSON-LD array.
 	 */
 	public function convert( $post, &$references = array() ) {
 
@@ -141,7 +159,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	private function make_one( $value ) {
 
 		return 1 === count( $value ) ? $value[0] : $value;
-
 	}
 
 	/**

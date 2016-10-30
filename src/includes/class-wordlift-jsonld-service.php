@@ -1,9 +1,9 @@
 <?php
-
 /**
  * Define the Wordlift_Jsonld_Service class to support JSON-LD.
  *
  * @since 3.8.0
+ * @package Wordlift
  */
 
 /**
@@ -36,8 +36,8 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_to_jsonld_converter
+	 * @param \Wordlift_Entity_Service                  $entity_service A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_to_jsonld_converter A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
 	 */
 	public function __construct( $entity_service, $entity_to_jsonld_converter ) {
 
@@ -61,7 +61,7 @@ class Wordlift_Jsonld_Service {
 
 		// Get the entities related to the current post (and that are published).
 		$posts = array_unique( wl_core_get_related_entity_ids( get_the_ID(), array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) ) );
 
 		// Build the URL to load the JSON-LD asynchronously.

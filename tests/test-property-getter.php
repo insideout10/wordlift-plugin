@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define tests for the {@link Wordlift_Property_Getter}.
  */
@@ -90,28 +89,16 @@ class Wordlift_Property_Getter_Test extends WP_UnitTestCase {
 			) as $field_name
 		) {
 
-			$this->test_entity_reference( $field_name );
+			add_post_meta( $this->post_id, $field_name, $this->post_id );
+
+			/** @var Wordlift_Property_Entity_Reference[] $values */
+			$values = $this->property_getter->get( $this->post_id, $field_name );
+			$this->assertTrue( is_array( $values ) );
+			$this->assertCount( 1, $values );
+			$this->assertTrue( $values[0] instanceof Wordlift_Property_Entity_Reference );
+			$this->assertEquals( self::ENTITY_URI, $values[0]->getURL() );
+
 		}
-
-	}
-
-	/**
-	 * Interval call for entity reference's field.
-	 *
-	 * @since 3.8.0
-	 *
-	 * @param string $field_name The field name.
-	 */
-	private function test_entity_reference( $field_name ) {
-
-		add_post_meta( $this->post_id, $field_name, $this->post_id );
-
-		/** @var Wordlift_Property_Entity_Reference[] $values */
-		$values = $this->property_getter->get( $this->post_id, $field_name );
-		$this->assertTrue( is_array( $values ) );
-		$this->assertCount( 1, $values );
-		$this->assertTrue( $values[0] instanceof Wordlift_Property_Entity_Reference );
-		$this->assertEquals( self::ENTITY_URI, $values[0]->getURL() );
 
 	}
 
