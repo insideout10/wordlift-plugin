@@ -60,9 +60,12 @@ class Wordlift_Jsonld_Service {
 		}
 
 		// Get the entities related to the current post (and that are published).
-		$posts = array_unique( wl_core_get_related_entity_ids( get_the_ID(), array(
-			'status' => 'publish',
-		) ) );
+		$post_id = get_the_ID();
+		$posts   = $this->entity_service->is_entity( $post_id )
+			? array( get_the_ID() )
+			: array_unique( wl_core_get_related_entity_ids( $post_id, array(
+				'status' => 'publish',
+			) ) );
 
 		// Build the URL to load the JSON-LD asynchronously.
 		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )

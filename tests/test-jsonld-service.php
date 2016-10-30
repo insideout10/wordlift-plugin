@@ -153,7 +153,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		}
 
 		$response = json_decode( $this->_last_response );
-		
+
 		$this->assertTrue( is_array( $response ) );
 		$this->assertCount( 2, $response );
 
