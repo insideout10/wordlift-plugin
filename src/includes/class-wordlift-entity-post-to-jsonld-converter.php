@@ -147,7 +147,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 *
 	 * @return string The property value without the context.
 	 */
-	private function relative_to_context( $value ) {
+	public function relative_to_context( $value ) {
 
 		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
 	}
@@ -155,6 +155,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	/**
 	 * If the provided array of values contains only one value, then one single
 	 * value is returned, otherwise the original array is returned.
+	 *
+	 * @since  3.8.0
+	 * @access private
 	 *
 	 * @param array $value An array of values.
 	 *
