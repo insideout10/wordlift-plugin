@@ -1505,6 +1505,7 @@
   padding: 0;
   margin: 0 0.6em;
   font-weight: bold;
+  min-height: 46px;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper h6 a {
   text-decoration: underline;
