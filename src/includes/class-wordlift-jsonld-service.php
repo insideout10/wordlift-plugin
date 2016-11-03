@@ -68,13 +68,16 @@ class Wordlift_Jsonld_Service {
 			) ) );
 
 		// Build the URL to load the JSON-LD asynchronously.
-		$url = admin_url( 'admin-ajax.php?action=wl_jsonld' )
-		       . array_reduce( $posts, array( $this, 'build_url' ), '' );
+		$url            = admin_url( 'admin-ajax.php?action=wl_jsonld' );
+		$entity_service = $this->entity_service;
+		$data           = implode( '&', array_map( function ( $item ) use ( $entity_service ) {
+			return 'uri[]=' . rawurldecode( $entity_service->get_uri( $item ) );
+		}, $posts ) );
 
 		// Print the Javascript code.
 		echo <<<EOF
 <script type="text/javascript"><!--
-(function($) { $( window ).on( 'load', function() { $.ajax('$url').done(function(data) {
+(function($) { $( window ).on( 'load', function() { $.post('$url','$data').done(function(data) {
 	$('head').append( '<script type="application/ld+json">'+JSON.stringify(data)+'</s' + 'cript>' );
 }); }); })(jQuery);
 // --></script>

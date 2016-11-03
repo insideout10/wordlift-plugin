@@ -92,12 +92,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 
 		// Prepare the response.
 		$jsonld = array(
-			'@context' => self::CONTEXT,
-			'@id'      => $id,
-			'@type'    => $this->relative_to_context( $type['uri'] ),
-			'name'     => $name,
+			'@context'    => self::CONTEXT,
+			'@id'         => $id,
+			'@type'       => $this->relative_to_context( $type['uri'] ),
+			'name'        => $name,
+			'description' => $this->get_excerpt( $post ),
 		);
-
 
 		// Set a reference to use in closures.
 		$converter = $this;
@@ -195,6 +195,32 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 		}
 
 		return $jsonld;
+	}
+
+	/**
+	 * Get the excerpt for the provided {@link WP_Post}.
+	 *
+	 * @since 3.8.0
+	 *
+	 * @param WP_Post $post The {@link WP_Post}.
+	 *
+	 * @return string The excerpt.
+	 */
+	private function get_excerpt( $post ) {
+
+		// Temporary pop the previous post.
+		$original = $GLOBALS['post'];
+
+		// Setup our own post.
+		setup_postdata( $GLOBALS['post'] = &$post );
+
+		$excerpt = get_the_excerpt( $post );
+
+		// Restore the previous post.
+		setup_postdata( $GLOBALS['post'] = $original );
+
+		// Finally return the excerpt.
+		return html_entity_decode( $excerpt );
 	}
 
 }
