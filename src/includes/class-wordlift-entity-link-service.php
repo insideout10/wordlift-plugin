@@ -29,7 +29,7 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @since 3.6.0
 	 * @access private
-	 * @var Wordlift_Entity_Type_Service $entity_type_service The entity type service.
+	 * @var Wordlift_Entity_Post_Type_Service $entity_type_service The entity type service.
 	 */
 	private $entity_type_service;
 
@@ -56,7 +56,7 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param Wordlift_Entity_Type_Service $entity_type_service
+	 * @param Wordlift_Entity_Post_Type_Service $entity_type_service
 	 * @param string $slug The entity post type slug.
 	 */
 	public function __construct( $entity_type_service, $slug ) {

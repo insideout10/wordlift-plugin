@@ -3,7 +3,7 @@
 /**
  * Deletes the values for the specified property and post ID, where
  *
- * @param $post_id numeric The numeric post ID.
+ * @param $post_id       numeric The numeric post ID.
  * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
  *
  * @return boolean The method returns true if everything went ok, false otherwise.
@@ -12,7 +12,7 @@ function wl_schema_reset_value( $post_id, $property_name ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) || is_null( $property_name ) ) {
-		return false;
+		return FALSE;
 	}
 
 	// Build full schema uri if necessary
@@ -27,18 +27,18 @@ function wl_schema_reset_value( $post_id, $property_name ) {
 
 			delete_post_meta( $post_id, $wl_constant );
 
-			return true;
+			return TRUE;
 		}
 	}
 
-	return false;
+	return FALSE;
 }
 
 /**
  * Retrieves the value of the specified property for the entity, where
  *
- * @param $post_id numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param int    $post_id       The numeric post ID.
+ * @param string $property_name Name of the property (e.g. name, for the http://schema.org/name property).
  *
  * @return array An array of values or NULL in case of no values (or error).
  */
@@ -46,7 +46,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
 
 	// Property name must be defined.
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
-		return null;
+		return NULL;
 	}
 
 	// store eventual schema name in  different variable
@@ -56,7 +56,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
 	if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
 		$post_id = get_the_ID();
 		if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
-			return null;
+			return NULL;
 		}
 	}
 
@@ -71,15 +71,15 @@ function wl_schema_get_value( $post_id, $property_name ) {
 		}
 	}
 
-	return null;
+	return NULL;
 }
 
 /**
  * Add a value of the specified property for the entity, where
  *
- * @param $post_id numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property).
- * @param $property_value mixed Value to save into the property (adding to already saved).
+ * @param int    $post_id        The numeric post ID.
+ * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param mixed  $property_value Value to save into the property (adding to already saved).
  *
  * @return array An array of values or NULL in case of no values (or error).
  */
@@ -99,9 +99,9 @@ function wl_schema_add_value( $post_id, $property_name, $property_value ) {
 /**
  * Set the value for the specified property and post ID, deleting what was there before.
  *
- * @param $post_id numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
- * @param $property_value mixed Value to save into the property.
+ * @param int    $post_id        The numeric post ID.
+ * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property)
+ * @param mixed  $property_value Value to save into the property.
  *
  * @return boolean The method returns true if everything went ok, an error string otherwise.
  */
@@ -109,7 +109,7 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) || is_null( $property_name ) || empty( $property_value ) || is_null( $property_value ) ) {
-		return false;
+		return FALSE;
 	}
 
 	// Build full schema uri if necessary
@@ -134,11 +134,11 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 				add_post_meta( $post_id, $wl_constant, $value );
 			}
 
-			return true;
+			return TRUE;
 		}
 	}
 
-	return false;
+	return FALSE;
 }
 
 
@@ -154,7 +154,7 @@ function wl_schema_get_types( $post_id ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) ) {
-		return null;
+		return NULL;
 	}
 
 	$type = wl_entity_type_taxonomy_get_type( $post_id );
@@ -163,13 +163,13 @@ function wl_schema_get_types( $post_id ) {
 		return array( $type['uri'] );
 	}
 
-	return null;
+	return NULL;
 }
 
 /**
  * Sets the entity type(s) for the specified post ID. Support is now for only one type per entity.
  *
- * @param $post_id numeric The numeric post ID
+ * @param $post_id    numeric The numeric post ID
  * @param $type_names array An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
  *
  * @return boolean True if everything went ok, an error string otherwise.
@@ -178,7 +178,7 @@ function wl_schema_set_types( $post_id, $type_names ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
-		return null;
+		return NULL;
 	}
 
 	// TODO: support more than one type
@@ -189,7 +189,8 @@ function wl_schema_set_types( $post_id, $type_names ) {
 	// Get the schema URI (e.g. http://schema.org/Thing)
 	$type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
 
-	Wordlift_Log_Service::get_logger('wl_schema_set_types')->debug("[ type names :: $type_names ]");
+	Wordlift_Log_Service::get_logger( 'wl_schema_set_types' )
+	                    ->debug( "[ type names :: $type_names ]" );
 
 	// Actually sets the taxonomy type
 	wl_set_entity_main_type( $post_id, $type_names );
@@ -239,7 +240,7 @@ function wl_build_full_schema_uri_from_schema_slug( $schema_name ) {
 
 	$schema_root_address = 'http://schema.org/';
 
-	if ( strpos( $schema_name, $schema_root_address ) === false ) {   // === necessary
+	if ( strpos( $schema_name, $schema_root_address ) === FALSE ) {   // === necessary
 		$schema_name = $schema_root_address . $schema_name;
 	}
 
