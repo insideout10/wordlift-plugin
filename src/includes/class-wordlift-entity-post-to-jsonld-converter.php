@@ -209,7 +209,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	private function get_excerpt( $post ) {
 
 		// Temporary pop the previous post.
-		$original = $GLOBALS['post'];
+		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : NULL;
 
 		// Setup our own post.
 		setup_postdata( $GLOBALS['post'] = &$post );
@@ -217,7 +217,9 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 		$excerpt = get_the_excerpt( $post );
 
 		// Restore the previous post.
-		setup_postdata( $GLOBALS['post'] = $original );
+		if ( NULL !== $original ) {
+			setup_postdata( $GLOBALS['post'] = $original );
+		}
 
 		// Finally return the excerpt.
 		return html_entity_decode( $excerpt );
