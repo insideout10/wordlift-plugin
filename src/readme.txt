@@ -136,6 +136,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 = 3.8.0 (????-??-??) =
 * Enhancement: [#372](https://github.com/insideout10/wordlift-plugin/issues/372): The layout of the Navigator messes up with long entity titles.
+* Enhancement: [#365](https://github.com/insideout10/wordlift-plugin/issues/365): Stop words are analyzed too.
+* Enhancement: [#310](https://github.com/insideout10/wordlift-plugin/issues/310): Favour json-ld in place of microdata.
+* Fix: [#386](https://github.com/insideout10/wordlift-plugin/issues/386): Linked data not saved.
 
 = 3.7.1 (2016-10-28) =
 * Fix: [#382](https://github.com/insideout10/wordlift-plugin/issues/382): Analysis errors on coffee-brewing-methods.com.
