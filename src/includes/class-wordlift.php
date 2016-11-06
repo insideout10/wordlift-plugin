@@ -60,7 +60,7 @@ class Wordlift {
 	/**
 	 * The Thumbnail service.
 	 *
-	 * @since 3.1.5
+	 * @since  3.1.5
 	 * @access private
 	 * @var \Wordlift_Thumbnail_Service $thumbnail_service The Thumbnail service.
 	 */
@@ -69,7 +69,7 @@ class Wordlift {
 	/**
 	 * The UI service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_UI_Service $ui_service The UI service.
 	 */
@@ -78,7 +78,7 @@ class Wordlift {
 	/**
 	 * The Schema service.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
 	 */
@@ -87,7 +87,7 @@ class Wordlift {
 	/**
 	 * The Entity service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
 	 */
@@ -96,7 +96,7 @@ class Wordlift {
 	/**
 	 * The Topic Taxonomy service.
 	 *
-	 * @since 3.5.0
+	 * @since  3.5.0
 	 * @access private
 	 * @var \Wordlift_Topic_Taxonomy_Service The Topic Taxonomy service.
 	 */
@@ -105,7 +105,7 @@ class Wordlift {
 	/**
 	 * The User service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_User_Service $user_service The User service.
 	 */
@@ -114,7 +114,7 @@ class Wordlift {
 	/**
 	 * The Timeline service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Timeline_Service $timeline_service The Timeline service.
 	 */
@@ -123,7 +123,7 @@ class Wordlift {
 	/**
 	 * The Redirect service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
 	 */
@@ -132,7 +132,7 @@ class Wordlift {
 	/**
 	 * The Notice service.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
 	 */
@@ -141,7 +141,7 @@ class Wordlift {
 	/**
 	 * The Entity list customization.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
 	 */
@@ -150,7 +150,7 @@ class Wordlift {
 	/**
 	 * The Entity Types Taxonomy Walker.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Entity_Types_Taxonomy_Walker $entity_types_taxonomy_walker The Entity Types Taxonomy Walker
 	 */
@@ -159,7 +159,7 @@ class Wordlift {
 	/**
 	 * The ShareThis service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_ShareThis_Service $sharethis_service The ShareThis service.
 	 */
@@ -168,7 +168,7 @@ class Wordlift {
 	/**
 	 * The PrimaShop adapter.
 	 *
-	 * @since 3.2.3
+	 * @since  3.2.3
 	 * @access private
 	 * @var \Wordlift_PrimaShop_Adapter $primashop_adapter The PrimaShop adapter.
 	 */
@@ -177,7 +177,7 @@ class Wordlift {
 	/**
 	 * The WordLift Dashboard adapter.
 	 *
-	 * @since 3.4.0
+	 * @since  3.4.0
 	 * @access private
 	 * @var \Wordlift_Dashboard_Service $dashboard_service The WordLift Dashboard service;
 	 */
@@ -186,7 +186,7 @@ class Wordlift {
 	/**
 	 * The entity type service.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Entity_Type_Service
 	 */
@@ -195,7 +195,7 @@ class Wordlift {
 	/**
 	 * The entity link service used to mangle links to entities with a custom slug or even w/o a slug.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Entity_Link_Service
 	 */
@@ -205,7 +205,7 @@ class Wordlift {
 	 * The page service instance which processes the page output in order to insert schema.org microdata to export the
 	 * correct page title to Google+.
 	 *
-	 * @since 3.5.3
+	 * @since  3.5.3
 	 * @access private
 	 * @var \Wordlift_Page_Service
 	 */
@@ -214,7 +214,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
-	 * @var 3.6.0
+	 * @var    3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
@@ -223,7 +223,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Import_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Import_Service $import_service A {@link Wordlift_Import_Service} instance.
 	 */
@@ -232,7 +232,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Rebuild_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Rebuild_Service $rebuild_service A {@link Wordlift_Rebuild_Service} instance.
 	 */
@@ -241,7 +241,7 @@ class Wordlift {
 	/**
 	 * The 'Download Your Data' page.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Admin_Download_Your_Data_Page $download_your_data_page The 'Download Your Data' page.
 	 */
@@ -550,6 +550,12 @@ class Wordlift {
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
+
+		// Load the debug service if WP is in debug mode.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
+			new Wordlift_Debug_Service( $this->entity_service );
+		}
 
 	}
 

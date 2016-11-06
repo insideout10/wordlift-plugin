@@ -41,7 +41,7 @@ require_once( 'modules/configuration/wordlift_configuration.php' );
  *
  * @since 3.0.0
  *
- * @uses wl_write_log_handler() to write the log output.
+ * @uses  wl_write_log_handler() to write the log output.
  *
  * @param string|mixed $log The log data.
  */
@@ -66,8 +66,8 @@ function wl_write_log( $log ) {
  *
  * @since 3.0.0
  *
- * @param string|array $log The log data.
- * @param string $caller The calling function.
+ * @param string|array $log    The log data.
+ * @param string       $caller The calling function.
  */
 function wl_write_log_handler( $log, $caller = NULL ) {
 
@@ -189,7 +189,7 @@ function wordlift_allowed_post_tags() {
 		'itemscope' => array(),
 		'itemtype'  => array(),
 		'itemprop'  => array(),
-		'itemid'    => array()
+		'itemid'    => array(),
 	);
 
 	foreach ( $tags as $tag ) {
@@ -239,8 +239,8 @@ add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
- * @param array $allowedtags The array with the currently configured elements and attributes.
- * @param string $context The context.
+ * @param array  $allowedtags The array with the currently configured elements and attributes.
+ * @param string $context     The context.
  *
  * @return array An array which contains allowed microdata attributes.
  */
@@ -255,8 +255,8 @@ function wordlift_allowed_html( $allowedtags, $context ) {
 			'itemscope' => TRUE,
 			'itemtype'  => TRUE,
 			'itemid'    => TRUE,
-			'itemprop'  => TRUE
-		)
+			'itemprop'  => TRUE,
+		),
 	) );
 }
 
@@ -278,7 +278,7 @@ function wl_get_coordinates( $post_id ) {
 	// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
 	return array(
 		'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
-		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : ''
+		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : '',
 	);
 }
 
@@ -323,7 +323,7 @@ function wl_get_image_urls( $post_id ) {
 	$images = get_children( array(
 		'post_parent'    => $post_id,
 		'post_type'      => 'attachment',
-		'post_mime_type' => 'image'
+		'post_mime_type' => 'image',
 	) );
 
 	// Return an empty array if no image is found.
@@ -351,8 +351,8 @@ function wl_get_image_urls( $post_id ) {
 /**
  * Get a SPARQL fragment with schema:image predicates.
  *
- * @param string $uri The URI subject of the statements.
- * @param int $post_id The post ID.
+ * @param string $uri     The URI subject of the statements.
+ * @param int    $post_id The post ID.
  *
  * @return string The SPARQL fragment.
  */
@@ -376,8 +376,8 @@ function wl_get_sparql_images( $uri, $post_id ) {
 /**
  * Get an attachment with the specified parent post ID and source URL.
  *
- * @param int $parent_post_id The parent post ID.
- * @param string $source_url The source URL.
+ * @param int    $parent_post_id The parent post ID.
+ * @param string $source_url     The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
  */
@@ -391,7 +391,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 		'post_status'    => 'any',
 		'post_parent'    => $parent_post_id,
 		'meta_key'       => 'wl_source_url',
-		'meta_value'     => $source_url
+		'meta_value'     => $source_url,
 	) );
 
 	// Return the found post.
@@ -406,7 +406,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 /**
  * Set the source URL.
  *
- * @param int $post_id The post ID.
+ * @param int    $post_id    The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {
@@ -421,10 +421,10 @@ function wl_set_source_url( $post_id, $source_url ) {
  *
  * @since 3.0.0
  *
- * @uses rl_sparql_prefixes() to get the SPARQL prefixes.
- * @uses wordlift_esc_sparql() to escape the SPARQL query.
- * @uses wl_get_entity_uri() to get an entity URI.
- * @uses rl_execute_sparql_update_query() to post the DELETE and INSERT queries.
+ * @uses  rl_sparql_prefixes() to get the SPARQL prefixes.
+ * @uses  wordlift_esc_sparql() to escape the SPARQL query.
+ * @uses  wl_get_entity_uri() to get an entity URI.
+ * @uses  rl_execute_sparql_update_query() to post the DELETE and INSERT queries.
  *
  * @param bool $hard True if the rewrite involves configuration updates in Apache/IIS.
  */
@@ -445,7 +445,7 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 			'numberposts' => $limit,
 			'orderby'     => 'ID',
 			'post_type'   => 'any',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
 		) ) ) ) {
 
 		// Holds the delete part of the query.
@@ -499,15 +499,18 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
- * @uses sanitize_title() to manage not ASCII chars
- * @see https://codex.wordpress.org/Function_Reference/sanitize_title
+ * @uses       sanitize_title() to manage not ASCII chars
+ * @deprecated use Wordlift_Uri_Service::get_instance()->sanitize_path();
+ * @see        https://codex.wordpress.org/Function_Reference/sanitize_title
  *
  * @param string $path The path to sanitize.
  * @param string $char The replacement character (by default an underscore).
  *
- * @return The sanitized path.
+ * @return string The sanitized path.
  */
 function wl_sanitize_uri_path( $path, $char = '_' ) {
+
+	return Wordlift_Uri_Service::get_instance()->sanitize_path( $path, $char );
 
 	// wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
 
@@ -517,7 +520,7 @@ function wl_sanitize_uri_path( $path, $char = '_' ) {
 	// Plus the ' ' (space).
 	// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
 
-	return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) ) );
+//	return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) ) );
 }
 
 /**
