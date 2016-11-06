@@ -392,7 +392,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$uri = $this->entity_service->build_uri( $title, 'entity' );
 
 		// Check that the URI is good.
-		$this->assertEquals( 'http://data.wordlift.it/wl014/entity/mozarts__geburtshaus', $uri );
+		$this->assertStringEndsWith( '/entity/mozarts__geburtshaus', $uri );
 
 	}
 

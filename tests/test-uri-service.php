@@ -59,4 +59,27 @@ class UriServiceTest extends WP_UnitTestCase {
 
 	}
 
+	function test_simple() {
+
+		$this->assertEquals( 'david_riccitelli', $this->uri_service->sanitize_path( 'David Riccitelli' ) );
+		$this->assertEquals( 'david_luigi_riccitelli', $this->uri_service->sanitize_path( 'David Luigi Riccitelli' ) );
+
+		$this->assertEquals( 'david-riccitelli', $this->uri_service->sanitize_path( 'David Riccitelli', '-' ) );
+		$this->assertEquals( 'david-luigi-riccitelli', $this->uri_service->sanitize_path( 'David Luigi Riccitelli', '-' ) );
+	}
+
+	function test_with_parentheses() {
+
+		$this->assertEquals( 'david_riccitelli', $this->uri_service->sanitize_path( 'David (Riccitelli)' ) );
+		$this->assertEquals( 'david_luigi_riccitelli', $this->uri_service->sanitize_path( 'David (Luigi) Riccitelli' ) );
+
+		$this->assertEquals( 'david-riccitelli', $this->uri_service->sanitize_path( 'David (Riccitelli)', '-' ) );
+		$this->assertEquals( 'david-luigi-riccitelli', $this->uri_service->sanitize_path( 'David (Luigi) Riccitelli', '-' ) );
+	}
+
+	function test_ekkehard_bohmer() {
+
+		$this->assertEquals( 'ekkehard_bohmer', $this->uri_service->sanitize_path( 'Ekkehard Böhmer' ) );
+
+	}
 }

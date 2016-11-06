@@ -5,8 +5,24 @@
  */
 
 /**
+ * The {@link Wordlift_Uri_Service} class.
+ *
+ * @since 3.7.1
  */
 class Wordlift_Uri_Service {
+
+	/**
+	 * The title regex to sanitize titles in paths.
+	 *
+	 * According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
+	 * ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
+	 * "$" | ","
+	 *
+	 * We also remove the space and the UTF-8 BOM sequence.
+	 *
+	 * @since 3.7.1
+	 */
+	const INVALID_CHARACTERS = "/[ ;\\/?:@&=\\+\\\$,%]|(?:\\xEF\\xBB\\xBF)/";
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -95,17 +111,9 @@ class Wordlift_Uri_Service {
 
 		// Ensure the path is ASCII.
 		// see https://github.com/insideout10/wordlift-plugin/issues/386
-		$path_ascii = mb_convert_encoding( $path, 'ASCII' );
+//		$path_ascii = mb_convert_encoding( $path, 'ASCII' );
 
-		// wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
-
-		// According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
-		// ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
-		// "$" | ","
-		// Plus the ' ' (space).
-		// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
-
-		return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path_ascii ) ) );
+		return sanitize_title( preg_replace( self::INVALID_CHARACTERS, $char, stripslashes( $path ) ) );
 	}
 
 }

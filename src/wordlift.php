@@ -511,16 +511,6 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 function wl_sanitize_uri_path( $path, $char = '_' ) {
 
 	return Wordlift_Uri_Service::get_instance()->sanitize_path( $path, $char );
-
-	// wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
-
-	// According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
-	// ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
-	// "$" | ","
-	// Plus the ' ' (space).
-	// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
-
-//	return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) ) );
 }
 
 /**
