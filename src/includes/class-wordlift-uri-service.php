@@ -22,7 +22,7 @@ class Wordlift_Uri_Service {
 	 *
 	 * @since 3.7.1
 	 */
-	const INVALID_CHARACTERS = "/[ ;\\/?:@&=\\+\\\$,%]|(?:\\xEF\\xBB\\xBF)/";
+	const INVALID_CHARACTERS = "/[ ;\\/?:@&=\\+\\\$,]|(?:\\xEF\\xBB\\xBF)/";
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
