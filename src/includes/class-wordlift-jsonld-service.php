@@ -85,22 +85,6 @@ EOF;
 	}
 
 	/**
-	 * Build a URL to load JSON-LD from an {@see array_reduce} function.
-	 *
-	 * @since  3.8.0
-	 * @access private
-	 *
-	 * @param string $carry The carry value.
-	 * @param string $item  The current value.
-	 *
-	 * @return string The complete URL.
-	 */
-	private function build_url( $carry, $item ) {
-
-		return $carry . '&uri[]=' . rawurldecode( $this->entity_service->get_uri( $item ) );
-	}
-
-	/**
 	 * Process calls to the AJAX 'wl_jsonld' endpoint.
 	 *
 	 * @since 3.8.0
