@@ -99,6 +99,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 			'description' => $this->get_excerpt( $post ),
 		);
 
+		// Set the image URLs if there are images.
+		$images = wl_get_image_urls( $post->ID );
+		if ( 0 < count( $images ) ) {
+			$jsonld['image'] = $images;
+		}
+
 		// Set a reference to use in closures.
 		$converter = $this;
 

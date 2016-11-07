@@ -286,7 +286,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.9.0-dev';
+		$this->version     = '3.8.0';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -617,6 +617,7 @@ class Wordlift {
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
+
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
