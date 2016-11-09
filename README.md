@@ -13,13 +13,16 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
  * [Publishing Workflow](#workflow)
  * [Supported Languages](#languages)
  * [Installation](#installation)
+ 
 [Frequently Asked Questions](#faq)
  * [Who is WordLift for?](#who)
  * [Why shall I use WordLift?](#why)
  * [How does it work?](#how)
  * [What are the languages supported by WordLift?](#what)
  * [Who owns the structured metadata created with WordLift?](#data)
+ 
 [How to contribute](#contribute)
+
 [Further Info](#info)
 
 ## <a name="description"></a> Description
