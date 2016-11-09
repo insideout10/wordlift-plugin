@@ -1,3 +1,6 @@
+
+<a href="https://wordlift.io"><img src="WordLift__logo--5.png"/></a>
+
 # Contributing to WordLift
 
 Hello and welcome 🖖! We'd love for you to contribute to our source code and to make WordLift even better :tada:!
