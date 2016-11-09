@@ -1,13 +1,14 @@
 # Contributing to WordLift
 
-We'd love for you to contribute to our source code and to make WordLift even better! Here are the guidelines we'd like you to follow:
+Hello and welcome :spock-hand:! We'd love for you to contribute to our source code and to make WordLift even better :tada:!
+
+Here are the guidelines we'd like you to follow :pray::
 
  - [Question or Problem?](#question)
  - [Issues and Bugs](#issue)
  - [Submission Guidelines](#submit)
  - [Coding Rules](#rules)
- - [Commit Message Guidelines](#commit)
- - [Signing the CLA](#cla)
+ - [Releases and Commit Workflow](#releases)
  - [Further Info](#info)
  
 ## <a name="question"></a> Got a Question or Problem?
@@ -57,33 +58,40 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 * We use [Code Climate][code-climate] and [Scrutinizer][scrutinizer] to monitor the quality of code and code style consistency: check there for issues and fixes (**we're aiming to greatly improve our score**)
 * We believe in [DRY][dry] and [KISS][kiss] and somewhat in ["Don't Reinvent the Wheel"][dont-reinvent-the-wheel]
 
-## <a name="commit"></a> Git Commit Guidelines
+## <a name="releases"></a> Commit and Release Workflow
+
+We use [Semantic Versioning][semantic-versioning] and abide by the [GitFlow workflow][gitflow]: development happens
+in feature branches created from the develop branch. Once we're ready for a release, we merge the feature branches
+to develop and create a release branch which transitions into QA.
+
+Once the released is ready, we merge it to master and push it to [wordpress.org][wp-plugins-wordlift].
+
+Fix to [bugs][wl-open-bugs] are fixed in hotfixes branches created from the master branch to which they're merged back
+(and then to the develop branch).
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more
 readable messages** that are easy to follow when looking through the **project history**.
 
-The commit message formatting can be added using a typical git workflow.
+In summary:
+* new features are developed in feature branches:
+  * forked off the develop branch
+  * the name is **feature/xyz_title_of_the_issue**
+* fixes are developed in hotfix branches
+  * forked off the master branch
+  * the name is **hotfix/xyz_title_of_the_issue**
 
-### Commit Message Format
-Each commit message consists of a **header**, a **body** and a **footer**.  The header has a special
-format that includes a **type**, a **scope** and a **subject**:
+The commit message rule is very simple: 'see #xyz: small description of the change', where *xyz* is the issue
+number, e.g. 'see #1: updated changelog'.
 
-```
-<type>(<scope>): <subject>
-<BLANK LINE>
-<body>
-<BLANK LINE>
-<footer>
-```
+Once work is finished on an issue, **don't close issues**: label it **resolved**. Only after the work is published on
+wordpress.org we close the issue (typically the person that publishes the plugin to [wordpress.org][wp-plugins-wordlift]
+will close the issues).
 
-The **header** is mandatory and the **scope** of the header is optional.
-
-Any line of the commit message cannot be longer 100 characters! This allows the message to be easier
-to read on GitHub as well as in various git tools.
 
 [code-climate]: https://codeclimate.com/github/insideout10/wordlift-plugin
 [dont-reinvent-the-wheel]: https://blog.codinghorror.com/dont-reinvent-the-wheel-unless-you-plan-on-learning-more-about-wheels/
 [dry]: https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+[gitflow]: https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
 [github]: https://github.com/insideout10/wordlift-plugin
 [github-issues]: https://github.com/insideout10/wordlift-plugin/issues
 [gitter]: https://gitter.im/wordlift/wordlift
@@ -91,9 +99,11 @@ to read on GitHub as well as in various git tools.
 [phpstorm]: https://www.jetbrains.com/phpstorm/
 [phpstorm-wp-code-style]: https://www.jetbrains.com/help/phpstorm/2016.2/code-style-php.html
 [scrutinizer]: https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/
+[semantic-versioning]: http://semver.org/
 [stackoverflow]: http://stackoverflow.com/questions/tagged/wordlift
 [wl-sample-test]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/test-entity-service.php
 [wl-ajax-test-case]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/class-wordlift-ajax-unit-test-case.php
+[wl-open-bugs]: https://github.com/insideout10/wordlift-plugin/issues?q=is%3Aissue+is%3Aopen+label%3Abug
 [wl-unit-test-case]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/class-wordlift-unit-test-case.php
 [wp-coding-standards]: https://make.wordpress.org/core/handbook/best-practices/coding-standards/
 [wp-coding-php-standards]: https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
@@ -102,4 +112,5 @@ to read on GitHub as well as in various git tools.
 [wp-coding-css-standards]: https://make.wordpress.org/core/handbook/best-practices/coding-standards/css/
 [wp-documentation-standards]: https://make.wordpress.org/core/handbook/best-practices/inline-documentation-standards/php/
 [wp-plugin-boilerplate]: https://github.com/DevinVinson/WordPress-Plugin-Boilerplate
+[wp-plugins-wordlift]: https://wordpress.org/plugins/wordlift/
 [wp-testing]: https://make.wordpress.org/core/handbook/testing/automated-testing/phpunit/
