@@ -113,7 +113,8 @@ Are you ready to contribute? Head over our [Contributing Guide][contributing].
 
 ### <a name="info"></a> Further Info
 
-For further info please head to [WordLift's web site][wordlift].
+For further info please head to [WordLift's web site][wordlift] or to the [plugin's documentation][docs_wordlift]
 
 [contributing]: https://github.com/insideout10/wordlift-plugin/blob/develop/CONTRIBUTING.md
 [wordlift]: https://wordlift.io
+[docs_wordlift]: http://docs.wordlift.io
