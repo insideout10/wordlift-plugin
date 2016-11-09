@@ -53,6 +53,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
   * a [sample test class][wl-sample-test]
   * a convenient [unit test class][wl-unit-test-case]
   * a convenient [ajax test class][wl-ajax-test-case]
+  * [Travis][travis] runs automatically all unit tests
 * The project structure is based on the [WordPress Plugin Boilerplate][wp-plugin-boilerplate] with some legacy code still floating around (we **@deprecate** old code that we're going to remove soon)
 * If you're using [PhpStorm][phpstorm] for development, consider setting the [WordPress code style][phpstorm-wp-code-style]
 * We use [Code Climate][code-climate] and [Scrutinizer][scrutinizer] to monitor the quality of code and code style consistency: check there for issues and fixes (**we're aiming to greatly improve our score**)
@@ -104,6 +105,7 @@ For further info please head to [WordLift's web site][wordlift].
 [scrutinizer]: https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/
 [semantic-versioning]: http://semver.org/
 [stackoverflow]: http://stackoverflow.com/questions/tagged/wordlift
+[travis]: https://travis-ci.org/insideout10/wordlift-plugin
 [wl-sample-test]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/test-entity-service.php
 [wl-ajax-test-case]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/class-wordlift-ajax-unit-test-case.php
 [wl-open-bugs]: https://github.com/insideout10/wordlift-plugin/issues?q=is%3Aissue+is%3Aopen+label%3Abug
