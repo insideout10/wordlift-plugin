@@ -1,6 +1,6 @@
 # Contributing to WordLift
 
-Hello and welcome :spock-hand:! We'd love for you to contribute to our source code and to make WordLift even better :tada:!
+Hello and welcome 🖖! We'd love for you to contribute to our source code and to make WordLift even better :tada:!
 
 Here are the guidelines we'd like you to follow :pray::
 
