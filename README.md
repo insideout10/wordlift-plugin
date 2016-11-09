@@ -82,7 +82,7 @@ Organizing web content around an internal vocabulary rather than traditional web
 
 ### <a name="how"></a> How does it work?
 
-To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/#how-it-works) on our [website](https://wordlift.io). <br />
+To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/#how-it-works) on our [website][wordlift]. <br />
 **WordLift** works in subsequent stages. <br />
 
 1. The first step provides a **full text analysis** and suggests concepts and relationships found in open vocabularies (such as *DBpedia*, *Wikidata*, *GeoNames*, etc) to help writers **classify** and **enrich** their content and structure it for search engines like Google, according to schema.org vocabulary. <br />
@@ -113,3 +113,4 @@ Are you ready to contribute? Head over our [Contributing Guide][contributing]
 For further info please head to [WordLift's web site][wordlift].
 
 [contributing]: https://github.com/insideout10/wordlift-plugin/blob/develop/CONTRIBUTING.md
+[wordlift]: https://wordlift.io
