@@ -87,6 +87,9 @@ Once work is finished on an issue, **don't close issues**: label it **resolved**
 wordpress.org we close the issue (typically the person that publishes the plugin to [wordpress.org][wp-plugins-wordlift]
 will close the issues).
 
+## <a name="info"></a> Further Info
+
+For further info please head to [WordLift's web site][wordlift].
 
 [code-climate]: https://codeclimate.com/github/insideout10/wordlift-plugin
 [dont-reinvent-the-wheel]: https://blog.codinghorror.com/dont-reinvent-the-wheel-unless-you-plan-on-learning-more-about-wheels/
@@ -105,6 +108,7 @@ will close the issues).
 [wl-ajax-test-case]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/class-wordlift-ajax-unit-test-case.php
 [wl-open-bugs]: https://github.com/insideout10/wordlift-plugin/issues?q=is%3Aissue+is%3Aopen+label%3Abug
 [wl-unit-test-case]: https://github.com/insideout10/wordlift-plugin/blob/develop/tests/class-wordlift-unit-test-case.php
+[wordlift]: https://wordlift.io
 [wp-coding-standards]: https://make.wordpress.org/core/handbook/best-practices/coding-standards/
 [wp-coding-php-standards]: https://make.wordpress.org/core/handbook/best-practices/coding-standards/php/
 [wp-coding-javascript-standards]: https://make.wordpress.org/core/handbook/best-practices/coding-standards/javascript/
