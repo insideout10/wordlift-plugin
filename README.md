@@ -8,12 +8,12 @@ WordLift - Ordering Knowledge
 
 WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
 
-[Description][#description]
- * [Features][#features]
- * [Publishing Workflow][#workflow]
- * [Supported Languages][#languages]
- * [Installation][#installation]
-[Frequently Asked Questions][#faq]
+[Description](#description)
+ * [Features](#features)
+ * [Publishing Workflow](#workflow)
+ * [Supported Languages](#languages)
+ * [Installation](#installation)
+[Frequently Asked Questions](#faq)
  * [Who is WordLift for?](#who)
  * [Why shall I use WordLift?](#why)
  * [How does it work?](#how)
