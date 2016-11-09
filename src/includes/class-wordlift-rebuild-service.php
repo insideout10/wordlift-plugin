@@ -16,7 +16,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
@@ -24,7 +24,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
@@ -41,7 +41,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 * @since 3.6.0
 	 *
 	 * @param \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance used to query the remote dataset.
-	 * @param \Wordlift_Uri_Service $uri_service
+	 * @param \Wordlift_Uri_Service    $uri_service
 	 */
 	public function __construct( $sparql_service, $uri_service ) {
 
@@ -95,7 +95,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
-			'post_type'   => array( 'entity', 'post' )
+			'post_type'   => array( 'entity', 'post' ),
 		), $offset, $max );
 
 		// Redirect to the next chunk.
@@ -117,9 +117,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param int $offset The start offset.
-	 * @param int $limit The maximum number of items to return.
-	 * @param array $args Additional arguments.
+	 * @param int   $offset The start offset.
+	 * @param int   $limit  The maximum number of items to return.
+	 * @param array $args   Additional arguments.
 	 *
 	 * @return array A array of items (or an empty array if no items are found).
 	 */
@@ -132,7 +132,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'orderby'     => 'ID',
 			'order'       => 'ASC',
 			'post_status' => 'any',
-			'post_type'   => 'post'
+			'post_type'   => 'post',
 		) ) );
 	}
 
