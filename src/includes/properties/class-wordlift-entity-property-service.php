@@ -32,7 +32,12 @@ class Wordlift_Entity_Property_Service extends Wordlift_Simple_Property_Service 
 
 		// Map each returned value to a Wordlift_Property_Entity_Reference.
 		return array_map( function ( $item ) use ( $entity_service ) {
-			return new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item ) );
+
+			// If the $item is a number and it's an existing post, return the
+			// URI of the referenced entity. Otherwise return the value.
+			return is_numeric( $item ) && NULL !== get_post( $item )
+				? new Wordlift_Property_Entity_Reference( $entity_service->get_uri( $item ) )
+				: $item;
 		}, get_post_meta( $post_id, $meta_key ) );
 	}
 
