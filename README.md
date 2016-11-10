@@ -3,6 +3,9 @@
 <a href="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/?branch=develop"><img align="right" src="https://scrutinizer-ci.com/g/insideout10/wordlift-plugin/badges/quality-score.png?b=develop" /></a><br/>
 <a href="https://codeclimate.com/github/insideout10/wordlift-plugin/coverage"><img align="right" src="https://codeclimate.com/github/insideout10/wordlift-plugin/badges/coverage.svg" /></a>
 
+
+<a href="https://wordlift.io"><img src="WordLift__logo--5.png"/></a>
+
 WordLift - Ordering Knowledge
 =============================
 
@@ -110,7 +113,8 @@ Are you ready to contribute? Head over our [Contributing Guide][contributing].
 
 ### <a name="info"></a> Further Info
 
-For further info please head to [WordLift's web site][wordlift].
+For further info please head to [WordLift's web site][wordlift] or to the [plugin's documentation][docs_wordlift].
 
 [contributing]: https://github.com/insideout10/wordlift-plugin/blob/develop/CONTRIBUTING.md
 [wordlift]: https://wordlift.io
+[docs_wordlift]: http://docs.wordlift.io
