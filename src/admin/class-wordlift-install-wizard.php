@@ -41,6 +41,7 @@ class Wordlift_Install_wizard {
 			$this->step = $option;
 		
 		add_action( 'wp_loaded', array( $this, 'hide_notices' ) );
+		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
 		add_action( 'admin_init', array( $this, 'show_page' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
 	}
@@ -94,6 +95,16 @@ class Wordlift_Install_wizard {
 			$o['no_wizard'] = true;
 			update_option('wl_general_settings',$o);
 		}		
+	}
+
+	/**
+	 * Register the wizard page to be able to access it
+	 *
+	 * @since    3.9.0
+	 *
+	 */
+	public function admin_menu() {
+		add_dashboard_page( '', '', 'manage_options', 'wl-setup', '' );
 	}
 	
 	/**
