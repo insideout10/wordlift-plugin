@@ -265,6 +265,15 @@ class Wordlift {
 	private $download_your_data_page;
 
 	/**
+	 * The install wizard page.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var \Wordlift_Install_wizard $install_wizard The Install wizard.
+	 */
+	private $install_wizard;
+
+	/**
 	 * The Content Filter Service hooks up to the 'the_content' filter and provides
 	 * linking of entities to their pages.
 	 *
@@ -493,6 +502,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
 
 		/**
+		 * The admin 'Install wizard' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-install-wizard.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -614,6 +628,7 @@ class Wordlift {
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
+		$this->install_wizard = new Wordlift_Install_wizard();
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
