@@ -273,7 +273,7 @@ class Wordlift_Install_wizard {
 					color:white;
 				}
 								
-				input, select {
+				.input, .select {
 					display: block;
 					height: 40px;
 					/* width in deskop
@@ -294,7 +294,7 @@ class Wordlift_Install_wizard {
 					border-radius: 4px;
 				}  
 				
-				select {
+				.select {
 					background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=');
 					background-position: 100%;
 					background-repeat: no-repeat;
@@ -304,6 +304,23 @@ class Wordlift_Install_wizard {
 					text-overflow: '';
 				}
 				
+				#addlogo {
+					margin:10px 0;
+					text-align:center;
+				}
+				
+				#addlogo a, #addlogo a:visited {
+					color:white;
+				}
+				
+				#radio {
+					text-align:center;
+					margin:10px 0;
+				}
+				
+				#radio label {
+					margin-right:20px;
+				}
 			</style>
 		</head>
 		<body>
@@ -377,7 +394,7 @@ class Wordlift_Install_wizard {
 		?>
 		<div id="title"><?php _e('License Key','wordlift')?></div>
 		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
-		<div id="input"><input id="key" type="text" name="key" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
+		<div id="input"><input class="input" id="key" type="text" name="key" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
 		<div id="buttons">
 			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
@@ -395,7 +412,7 @@ class Wordlift_Install_wizard {
 		?>
 		<div id="title"><?php _e('Vocabulary','wordlift')?></div>
 		<div id="message"><?php _e('All new pages created with WordLift will be stored<br>inside yourinternal vocabulary. You can customize<br>the url pattern of these pages in the field below','wordlift')?></div>
-		<div id="input"><input id="key" type="text" name="key" value="/<?php _e('vocabulary','wordlift')?>/"></div>
+		<div id="input"><input class="input" id="key" type="text" name="key" value="/<?php _e('vocabulary','wordlift')?>/"></div>
 		<div id="buttons">
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
@@ -413,7 +430,7 @@ class Wordlift_Install_wizard {
 		<div id="title"><?php _e('Language','wordlift')?></div>
 		<div id="message"><?php _e('Each WordLift key can be used only in one language.<br>Pick yours.','wordlift')?></div>
 		<div id="input">
-			<select id="language">
+			<select class="select" id="language">
 				<option value=''>English</option>
 				<option value='cn'>中文</option>
 				<option value='es'>Español</option>
@@ -429,6 +446,28 @@ class Wordlift_Install_wizard {
 		</div>
 		<div id="buttons">
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=publisher' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Output the html for the publisher page
+	 *
+	 * @since    3.9.0
+	 *
+	 */
+	public function publisher_page() {
+		?>
+		<div id="title"><?php _e('Publisher','wordlift')?></div>
+		<div id="message"><?php _e('Are you going to publish as an individual<br>or as a company?','wordlift')?></div>
+		<div id="radio">
+			<label for="personal"><input id="personal" type="radio" name="user_type" value="personal"><?php _e('Personal','wordlift')?></label>
+			<label for="company"><input id="company" type="radio" name="user_type" value="company"><?php _e('Company','wordlift')?></label>
+		</div>
+		<div id="input"><input class="input" id="key" type="text" name="key" placeholder="<?php _e('Name','wordlift')?>"></div>
+		<div id="addlogo"><a href="#"><?php _e('Add your logo','wordlift')?></a></div>
+		<div id="buttons">
+			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=finish' ) ); ?>"><?php _e( 'Finish', 'wordlift' ); ?></a>
 		</div>
 		<?php
 	}
