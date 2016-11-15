@@ -168,11 +168,15 @@ class Wordlift_Install_wizard {
 				
 				.wl-setup {
 					color:white;
-					width:560px;				
 					padding:20px;
 					background: blue;
 					margin:100px auto;
 					position:relative;
+					width: 718px;
+					min-height: 400px;
+					/* mobile fallback */
+					max-width: 100%;
+					max-height: 100%;
 				}
 				
 				#close {
@@ -269,6 +273,20 @@ class Wordlift_Install_wizard {
 					color:white;
 				}
 				
+				#input {
+					width:400px;
+					margin:20px auto;
+					background:white;
+					height:30px;
+				}
+				
+				#key {
+					width:100%;
+					border:0;
+					height:20px;
+					padding:5px 10px;
+				}
+				
 			</style>
 		</head>
 		<body>
@@ -306,6 +324,12 @@ class Wordlift_Install_wizard {
 		<?php
 	}
 	
+	/**
+	 * Output the html for the welcome page
+	 *
+	 * @since    3.9.0
+	 *
+	 */
 	public function welcome_page() {
 		?>
 		<div id="title"><?php _e('Welcome','wordlift')?></div>
@@ -320,8 +344,26 @@ class Wordlift_Install_wizard {
 			<div style="clear:both">
 		</div>
 		<div id="buttons">
-			<a href=" https://wordlift.io/blogger" target="_tab" class="button-primary"><?php _e( 'Learn More', 'wordlift' ); ?></a>
+			<a href="https://wordlift.io/blogger" target="_tab" class="button-primary"><?php _e( 'Learn More', 'wordlift' ); ?></a>
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=license' ) ); ?>"><?php _e( 'Get started', 'wordlift' ); ?></a>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Output the html for the license page
+	 *
+	 * @since    3.9.0
+	 *
+	 */
+	public function license_page() {
+		?>
+		<div id="title"><?php _e('License Key','wordlift')?></div>
+		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
+		<div id="input"><input id="key" type="text" name="key"></div>
+		<div id="buttons">
+			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
+			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
 		<?php
 	}
