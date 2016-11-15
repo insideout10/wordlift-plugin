@@ -160,21 +160,135 @@ class Wordlift_Install_wizard {
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<title><?php _e( 'WordLift &rsaquo; Setup Wizard', 'wordlift' ); ?></title>
-			<?php wp_print_scripts( 'wl-setup' ); ?>
-			<?php do_action( 'admin_print_styles' ); ?>
-			<?php do_action( 'admin_head' ); ?>
+			<link rel="stylesheet" href="<?php echo plugins_url('css/wordlift-reloaded.min.css',dirname(__FILE__ ))?>" type="text/css">
+			<style>				
+				body {
+					background:white;
+				}
+				
+				.wl-setup {
+					color:white;
+					width:560px;				
+					padding:20px;
+					background: blue;
+					margin:100px auto;
+					position:relative;
+				}
+				
+				#close {
+					position:absolute;
+					top:-10px;
+					right:-6px;
+					background:white;
+					color:blue;
+					font-size: 20px;
+					border-radius: 20px;
+					border: 1px blue solid;
+					display: block;
+					padding: 0 2px;
+				}
+				
+				#title {
+					text-align:center;
+					font-size:24px;
+					font-weight:bold;
+					margin-bottom:30px;
+					margin-top:10px;
+				}
+
+				#wl-title {
+					display:flex;
+					line-height:30px;
+				}
+				
+				#message {
+					text-align:center;
+					font-size:18px;
+					margin-bottom:30px;
+				}
+				
+				#bullets {
+					text-align:center;
+					flex-grow:1;
+				}
+				
+				.bullet {
+					height: 8px;
+					width: 8px;
+					border: 1px solid #fff;
+					border-radius: 50%;
+					background-color: transparent;
+					display:inline-block;
+				}
+				
+				.bullet[data-step="<?php echo $this->step?>"] {
+					background-color: #fff;
+				}
+				
+				.bold {
+					font-weight:bold;
+				}
+
+				#wl-logo {
+					width:100px;
+					font-size:30px;
+				}
+				
+				#topright {
+					width:118px;
+					height:30px;
+					background:url('<?php echo plugins_url('images/wizard_top_right.png',dirname(__FILE__ ))?>')
+				}
+				
+				.buzz {
+					float:left;
+					width:33%;
+					margin-top:10px;
+				}
+				
+				.buzz .fa {
+					margin-right:10px;
+				}
+				
+				#buttons {
+					margin-top:40px;
+					text-align:center;
+				}
+				
+				#buttons a {
+					background: white;
+					color: black;
+					border-radius:5px;
+					padding:5px 10px;
+					margin-right:20px;
+					text-decoration:none;
+				}
+				
+				#buttons a#nextstep {
+					background:black;
+					color:white;
+				}
+				
+			</style>
 		</head>
-		<body class="wl-setup">
-			<div class="wl-title">
-				<span class=="wl-logo">
-					WordLift
-				</span>
-				<span class="wl-step"></span>
-				<span class="wl-step"></span>
-				<span class="wl-step"></span>
-				<span class="wl-step"></span>
-				<span class="wl-step"></span>
-			</div>
+		<body>
+			<div class="wl-setup">
+				<a id="close" title="<?php _e('Exit the wizard','wordlift')?>" href="<?php echo admin_url()?>"><span class="fa fa-times"></span></a>
+				<div id="wl-title">
+					<div id="wl-logo">
+						<span class="bold">Word</span>Lift
+					</div>
+					<div id="bullets">
+						<span class="bullet" data-step="welcome"></span>
+						<span class="bullet" data-step="license"></span>
+						<span class="bullet" data-step="vocabulary"></span>
+						<span class="bullet" data-step="language"></span>
+						<span class="bullet" data-step="publisher"></span>
+					</div>
+					<div id="topright">
+					</div>
+					<div style="clear:both"></div>
+				</div>
 		<?php
 	}
 
@@ -186,8 +300,29 @@ class Wordlift_Install_wizard {
 	 */
 	public function footer( ) {
 		?>
+			</div>
 			</body>
 		</html>
+		<?php
+	}
+	
+	public function welcome_page() {
+		?>
+		<div id="title"><?php _e('Welcome','wordlift')?></div>
+		<div id="message"><?php _e('Thank you for downloading WordLift. Now you can<br>boost your website with double digit growth.','wordlift')?></div>
+		<div id="buzzcont">
+			<div class="buzz"><span class="fa fa-university"></span><?php _e('Trustworthiness','wordlift')?></div>
+			<div class="buzz"><span class="fa fa-map-marker"></span><?php _e('Enrichment','wordlift')?></div>
+			<div class="buzz"><span class="fa fa-heart"></span><?php _e('Engagement','wordlift')?></div>
+			<div class="buzz"><span class="fa fa-hand-o-right"></span><?php _e('Smart Navigation','wordlift')?></div>
+			<div class="buzz"><span class="fa fa-google"></span><?php _e('SEO Optimization','wordlift')?></div>
+			<div class="buzz"><span class="fa fa-group"></span><?php _e('Content Marketing','wordlift')?></div>
+			<div style="clear:both">
+		</div>
+		<div id="buttons">
+			<a href=" https://wordlift.io/blogger" target="_tab" class="button-primary"><?php _e( 'Learn More', 'wordlift' ); ?></a>
+			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=license' ) ); ?>"><?php _e( 'Get started', 'wordlift' ); ?></a>
+		</div>
 		<?php
 	}
 }
