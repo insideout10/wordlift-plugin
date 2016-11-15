@@ -273,7 +273,7 @@ class Wordlift_Install_wizard {
 					color:white;
 				}
 								
-				input {
+				input, select {
 					display: block;
 					height: 40px;
 					/* width in deskop
@@ -293,6 +293,16 @@ class Wordlift_Install_wizard {
 					box-shadow: inset 0 0 0 2px #FFFFFF,  inset 0 0 0 4px #2E92FF;
 					border-radius: 4px;
 				}  
+				
+				select {
+					background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=');
+					background-position: 100%;
+					background-repeat: no-repeat;
+					-webkit-appearance: none;
+					-moz-appearance: none;
+					text-indent: 1px;
+					text-overflow: '';
+				}
 				
 			</style>
 		</head>
@@ -388,6 +398,37 @@ class Wordlift_Install_wizard {
 		<div id="input"><input id="key" type="text" name="key" value="/<?php _e('vocabulary','wordlift')?>/"></div>
 		<div id="buttons">
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Output the html for the language page
+	 *
+	 * @since    3.9.0
+	 *
+	 */
+	public function language_page() {
+		?>
+		<div id="title"><?php _e('Language','wordlift')?></div>
+		<div id="message"><?php _e('Each WordLift key can be used only in one language.<br>Pick yours.','wordlift')?></div>
+		<div id="input">
+			<select id="language">
+				<option value=''>English</option>
+				<option value='cn'>中文</option>
+				<option value='es'>Español</option>
+				<option value='ru'>Русский</option>
+				<option value='ps'>Português </option>
+				<option value='fr'>Français</option>
+				<option value='it'>Italiano</option>
+				<option value='nl'>Nederlands</option>
+				<option value='sw'>Svenska</option>
+				<option value='dk'>Dansk</option>
+				<option value='tr'>Türkçe</option>
+			</select>
+		</div>
+		<div id="buttons">
+			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=publisher' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
 		<?php
 	}
