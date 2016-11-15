@@ -163,13 +163,13 @@ class Wordlift_Install_wizard {
 			<link rel="stylesheet" href="<?php echo plugins_url('css/wordlift-reloaded.min.css?ver=3.9',dirname(__FILE__ ))?>" type="text/css">
 			<style>				
 				body {
-					background:white;
+					background:#f5f5f5;
 				}
 				
 				.wl-setup {
 					color:white;
 					padding:20px;
-					background: blue;
+					background: #2e92ff;
 					margin:100px auto;
 					position:relative;
 					width: 718px;
@@ -184,10 +184,10 @@ class Wordlift_Install_wizard {
 					top:-10px;
 					right:-6px;
 					background:white;
-					color:blue;
+					color:#2e92ff;
 					font-size: 20px;
 					border-radius: 20px;
-					border: 1px blue solid;
+					border: 1px #2e92ff solid;
 					display: block;
 					padding: 0 2px;
 				}
@@ -272,20 +272,27 @@ class Wordlift_Install_wizard {
 					background:black;
 					color:white;
 				}
-				
-				#input {
-					width:400px;
-					margin:20px auto;
-					background:white;
-					height:30px;
-				}
-				
-				#key {
-					width:100%;
-					border:0;
-					height:20px;
-					padding:5px 10px;
-				}
+								
+				input {
+					display: block;
+					height: 40px;
+					/* width in deskop
+					 in mobile must be 270px*/
+					width: 400px;
+					margin: 0 auto 8px;
+					/* defining internal child position */
+					box-sizing: border-box;
+					padding: 8px;
+					/*defining text */
+					font-size: 16px;
+					line-height: 24px;
+					/*reset default*/
+					outline: none; 
+					border: none;
+					background: #FFFFFF;
+					box-shadow: inset 0 0 0 2px #FFFFFF,  inset 0 0 0 4px #2E92FF;
+					border-radius: 4px;
+				}  
 				
 			</style>
 		</head>
@@ -359,6 +366,24 @@ class Wordlift_Install_wizard {
 	public function license_page() {
 		?>
 		<div id="title"><?php _e('License Key','wordlift')?></div>
+		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
+		<div id="input"><input id="key" type="text" name="key"></div>
+		<div id="buttons">
+			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
+			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+		</div>
+		<?php
+	}
+	
+	/**
+	 * Output the html for the vocabulary page
+	 *
+	 * @since    3.9.0
+	 *
+	 */
+	public function vocabulary_page() {
+		?>
+		<div id="title"><?php _e('Vocabulary','wordlift')?></div>
 		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
 		<div id="input"><input id="key" type="text" name="key"></div>
 		<div id="buttons">
