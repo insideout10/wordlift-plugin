@@ -160,7 +160,7 @@ class Wordlift_Install_wizard {
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 			<title><?php _e( 'WordLift &rsaquo; Setup Wizard', 'wordlift' ); ?></title>
-			<link rel="stylesheet" href="<?php echo plugins_url('css/wordlift-reloaded.min.css',dirname(__FILE__ ))?>" type="text/css">
+			<link rel="stylesheet" href="<?php echo plugins_url('css/wordlift-reloaded.min.css?ver=3.9',dirname(__FILE__ ))?>" type="text/css">
 			<style>				
 				body {
 					background:white;
