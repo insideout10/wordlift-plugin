@@ -367,7 +367,7 @@ class Wordlift_Install_wizard {
 		?>
 		<div id="title"><?php _e('License Key','wordlift')?></div>
 		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
-		<div id="input"><input id="key" type="text" name="key"></div>
+		<div id="input"><input id="key" type="text" name="key" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
 		<div id="buttons">
 			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
@@ -384,11 +384,10 @@ class Wordlift_Install_wizard {
 	public function vocabulary_page() {
 		?>
 		<div id="title"><?php _e('Vocabulary','wordlift')?></div>
-		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
-		<div id="input"><input id="key" type="text" name="key"></div>
+		<div id="message"><?php _e('All new pages created with WordLift will be stored<br>inside yourinternal vocabulary. You can customize<br>the url pattern of these pages in the field below','wordlift')?></div>
+		<div id="input"><input id="key" type="text" name="key" value="/<?php _e('vocabulary','wordlift')?>/"></div>
 		<div id="buttons">
-			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
-			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
 		<?php
 	}
