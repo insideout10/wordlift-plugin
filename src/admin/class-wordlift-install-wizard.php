@@ -304,6 +304,18 @@ class Wordlift_Install_wizard {
 					text-overflow: '';
 				}
 				
+				.input[data-verify="valid"] {
+					background-image: url('<?php echo plugins_url('images/valid.png',dirname(__FILE__ ))?>');
+					background-position: 98%;
+					background-repeat: no-repeat;					
+				}
+				
+				input[data-verify="invalid"] {
+					background-image: url('<?php echo plugins_url('images/invalid.png',dirname(__FILE__ ))?>');
+					background-position: 98%;
+					background-repeat: no-repeat;					
+				}
+
 				#addlogo {
 					margin:10px 0;
 					text-align:center;
@@ -391,10 +403,16 @@ class Wordlift_Install_wizard {
 	 *
 	 */
 	public function license_page() {
+		$key = '';
+		if (isset($_COOKIE['wl_key']))
+			$key = $_COOKIE['wl_key'];
+		$valid = 'invalid';
+		if ($this->validate_key($key))
+			$valid = 'invalid';
 		?>
 		<div id="title"><?php _e('License Key','wordlift')?></div>
 		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
-		<div id="input"><input class="input" id="key" type="text" name="key" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
+		<div id="input"><input class="input" id="key" type="text" name="key" data-verify="<?php echo esc_attr($valid)?>" value="<?php echo esc_attr($key)?>" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
 		<div id="buttons">
 			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
@@ -470,5 +488,18 @@ class Wordlift_Install_wizard {
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=finish' ) ); ?>"><?php _e( 'Finish', 'wordlift' ); ?></a>
 		</div>
 		<?php
+	}
+	
+	/**
+	 * Checks if a key is valid by using an API to communicate with the wordlift server
+	 *
+	 * @since    3.9.0
+	 *
+	 * @param	string	$key	The key to validate_key
+	 *
+	 * @return	bool	truue if the key is valid, false otherwise
+	 */
+	public function validate_key($key) {
+		return false;
 	}
 }
