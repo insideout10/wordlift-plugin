@@ -304,13 +304,13 @@ class Wordlift_Install_wizard {
 					text-overflow: '';
 				}
 				
-				.input[data-verify="valid"] {
+				.input[data-verify="valid"], .input:valid {
 					background-image: url('<?php echo plugins_url('images/valid.png',dirname(__FILE__ ))?>');
 					background-position: 98%;
 					background-repeat: no-repeat;					
 				}
 				
-				input[data-verify="invalid"] {
+				input[data-verify="invalid"], .input:invalid {
 					background-image: url('<?php echo plugins_url('images/invalid.png',dirname(__FILE__ ))?>');
 					background-position: 98%;
 					background-repeat: no-repeat;					
@@ -427,10 +427,13 @@ class Wordlift_Install_wizard {
 	 *
 	 */
 	public function vocabulary_page() {
+		$slug = '/'.__('vocabulary','wordlift').'/';
+		if (isset($_COOKIE['slug']))
+			$slug = $_COOKIE['slug'];
 		?>
 		<div id="title"><?php _e('Vocabulary','wordlift')?></div>
 		<div id="message"><?php _e('All new pages created with WordLift will be stored<br>inside yourinternal vocabulary. You can customize<br>the url pattern of these pages in the field below','wordlift')?></div>
-		<div id="input"><input class="input" id="key" type="text" name="key" value="/<?php _e('vocabulary','wordlift')?>/"></div>
+		<div id="input"><input class="input" id="key" type="text" name="key" pattern="/[a-zA-Z0-9/]+/" value="<?php echo esc_attr($slug)?>"></div>
 		<div id="buttons">
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
