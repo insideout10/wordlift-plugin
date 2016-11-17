@@ -243,6 +243,11 @@ class Wordlift_Install_wizard {
 					height:30px;
 					background:url('<?php echo plugins_url('images/wizard_top_right.png',dirname(__FILE__ ))?>')
 				}
+
+				#buzzcont {
+					width:500px;
+					margin:0 auto;
+				}
 				
 				.buzz {
 					float:left;
