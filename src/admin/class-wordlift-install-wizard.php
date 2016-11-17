@@ -446,12 +446,12 @@ class Wordlift_Install_wizard {
 	 */
 	public function vocabulary_page() {
 		$slug = '/'.__('vocabulary','wordlift').'/';
-		if (isset($_COOKIE['slug']))
-			$slug = $_COOKIE['slug'];
+		if (isset($_COOKIE['wl_slug']))
+			$slug = $_COOKIE['wl_slug'];
 		?>
 		<div id="title"><?php _e('Vocabulary','wordlift')?></div>
 		<div id="message"><?php _e('All new pages created with WordLift will be stored<br>inside yourinternal vocabulary. You can customize<br>the url pattern of these pages in the field below','wordlift')?></div>
-		<div id="input"><input class="input" id="key" type="text" name="key" pattern="/[a-zA-Z0-9/]+/" value="<?php echo esc_attr($slug)?>"></div>
+		<div id="input"><input class="input" id="key" type="text" name="key" pattern="/[a-zA-Z0-9/]+/" autocomplete="off" value="<?php echo esc_attr($slug)?>"></div>
 		<div id="buttons">
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
@@ -465,22 +465,40 @@ class Wordlift_Install_wizard {
 	 *
 	 */
 	public function language_page() {
+		
+		$langs = array(
+				'' => 'English',
+				'zh' => '中文',
+				'es' => 'Español',
+				'ru' => 'Русский',
+				'pt' => 'Português',
+				'fr' => 'Français',
+				'it' => 'Italiano',
+				'nl' => 'Nederlands',
+				'sv' => 'Svenska',
+				'da' => 'Dansk',
+				'tr' => 'Türkçe',
+				);
+
+		$locale = get_locale();
+		$parts = explode('_',$locale);
+		$lang = $parts[0];
+
+		if (isset($_COOKIE['wl_lang']))
+			$lang = $_COOKIE['wl_lang'];
+		
+		if (!isset($langs[$lang]))
+			$lang = '';
 		?>
 		<div id="title"><?php _e('Language','wordlift')?></div>
 		<div id="message"><?php _e('Each WordLift key can be used only in one language.<br>Pick yours.','wordlift')?></div>
 		<div id="input">
-			<select class="select" id="language">
-				<option value=''>English</option>
-				<option value='cn'>中文</option>
-				<option value='es'>Español</option>
-				<option value='ru'>Русский</option>
-				<option value='ps'>Português </option>
-				<option value='fr'>Français</option>
-				<option value='it'>Italiano</option>
-				<option value='nl'>Nederlands</option>
-				<option value='sw'>Svenska</option>
-				<option value='dk'>Dansk</option>
-				<option value='tr'>Türkçe</option>
+			<select class="select" id="language" autocomplete="off">
+				<?php 
+					foreach ($langs as $code => $label) {
+						echo '<option value="'.esc_attr($code).'" '.selected($code,$lang,false).'>'.esc_html($label).'</option>';
+					}
+				?>
 			</select>
 		</div>
 		<div id="buttons">
