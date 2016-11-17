@@ -282,7 +282,7 @@ class Wordlift_Install_wizard {
 					margin: 0 auto 8px;
 					/* defining internal child position */
 					box-sizing: border-box;
-					padding: 8px;
+					padding: 8px 40px 8px 8px;
 					/*defining text */
 					font-size: 16px;
 					line-height: 24px;
@@ -304,13 +304,13 @@ class Wordlift_Install_wizard {
 					text-overflow: '';
 				}
 				
-				.input[data-verify="valid"], .input:valid {
+				#input .input[data-verify="valid"], .input:valid {
 					background-image: url('<?php echo plugins_url('images/valid.png',dirname(__FILE__ ))?>');
 					background-position: 98%;
 					background-repeat: no-repeat;					
 				}
 				
-				input[data-verify="invalid"], .input:invalid {
+				#input input[data-verify="invalid"], .input:invalid {
 					background-image: url('<?php echo plugins_url('images/invalid.png',dirname(__FILE__ ))?>');
 					background-position: 98%;
 					background-repeat: no-repeat;					
@@ -334,6 +334,7 @@ class Wordlift_Install_wizard {
 					margin-right:20px;
 				}
 			</style>
+			<script type="text/javascript" src="<?php echo site_url('/wp-includes/js/jquery/jquery.js') ?>"></script>
 		</head>
 		<body>
 			<div class="wl-setup">
@@ -408,15 +409,27 @@ class Wordlift_Install_wizard {
 			$key = $_COOKIE['wl_key'];
 		$valid = 'invalid';
 		if ($this->validate_key($key))
-			$valid = 'invalid';
+			$valid = 'valid';
 		?>
 		<div id="title"><?php _e('License Key','wordlift')?></div>
 		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
-		<div id="input"><input class="input" id="key" type="text" name="key" data-verify="<?php echo esc_attr($valid)?>" value="<?php echo esc_attr($key)?>" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
+		<div id="input"><input oninput="keychange();" class="input" id="key" type="text" name="key" data-verify="<?php echo esc_attr($valid)?>" value="<?php echo esc_attr($key)?>" autocomplete="off" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
 		<div id="buttons">
 			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
 			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
+		<script type="text/javascript">
+			function keychange() {
+				var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
+				var key = jQuery('#key').val();
+				jQuery.post(ajaxurl , {'action':'wl_validate_key' ,'key':key}, function (data) {
+					if (data.valid)
+						jQuery('#key').attr('data-verify','valid');
+					else
+						jQuery('#key').attr('data-verify','invalid');
+					}, 'json');
+			}
+		</script>
 		<?php
 	}
 	
@@ -498,11 +511,41 @@ class Wordlift_Install_wizard {
 	 *
 	 * @since    3.9.0
 	 *
-	 * @param	string	$key	The key to validate_key
+	 * @param	string	$key	The key to validate
 	 *
 	 * @return	bool	truue if the key is valid, false otherwise
 	 */
-	public function validate_key($key) {
-		return false;
-	}
+	public static function validate_key($key) {
+		$valid = false;
+		
+		// Request the dataset URI as a way to validate the key
+		$response = wp_remote_get( wl_configuration_get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+
+		// If the response is valid, the key is valid
+		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+			$valid = true;
+		}
+
+		return $valid;
+	}	
 }
+
+/**
+ * Handle the ajax request to validate the key.
+ *
+ * Request should pass the key as the "key" parameter in a post request
+ * Output is a JSON object with a "valid" field which is a boolean indicating if the key is valid
+ *
+ * @since    3.9.0
+ *
+ */
+function wl_ajax_validate_key() {
+	
+	$valid = false;
+	if (isset($_POST['key']))
+		$valid = Wordlift_Install_wizard::validate_key($_POST['key']);
+	
+	wp_send_json(array('valid' => $valid));
+}
+
+add_action( 'wp_ajax_wl_validate_key', 'wl_ajax_validate_key');

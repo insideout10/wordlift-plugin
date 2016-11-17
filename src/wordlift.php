@@ -668,6 +668,11 @@ require_once( 'admin/wordlift_admin_shortcodes.php' );
 require_once( 'admin/wordlift_admin_sync.php' );
 //}
 
+/**
+ * The admin 'Install wizard' page.
+ */
+require_once ('admin/class-wordlift-install-wizard.php');
+
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
