@@ -366,6 +366,7 @@ class Wordlift_Install_wizard {
 			<?php 
 				wp_enqueue_script('jquery');
 				wp_enqueue_media(); 
+				wp_enqueue_style('common');
 				wp_print_styles();
 				wp_print_scripts();
 			?>
@@ -617,7 +618,7 @@ class Wordlift_Install_wizard {
 			}
 			
 			function deletelogo() {
-				  jQuery('#logo img').attr('src',attachment.url);
+				  jQuery('#logo img').attr('src','');
 				  jQuery('#logo img').attr('data-id','');
 				  jQuery('#logo').hide();
 				  jQuery('#addlogo').show();
