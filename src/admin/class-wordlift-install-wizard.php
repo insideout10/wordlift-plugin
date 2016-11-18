@@ -451,7 +451,7 @@ class Wordlift_Install_wizard {
 		<div id="input"><input oninput="keychange();" class="input" id="key" type="text" name="key" data-verify="<?php echo esc_attr($valid)?>" value="<?php echo esc_attr($key)?>" autocomplete="off" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
 		<div id="buttons">
 			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
-			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=vocabulary' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
 		<script type="text/javascript">
 			function keychange() {
@@ -464,6 +464,11 @@ class Wordlift_Install_wizard {
 						jQuery('#key').attr('data-verify','invalid');
 					}, 'json');
 			}
+			
+			function savevalue() {
+				var key = jQuery('#key').val();
+				document.cookie = "wl_key="+key+';path='+'<?php echo admin_url()?>';
+			} 
 		</script>
 		<?php
 	}
@@ -483,8 +488,14 @@ class Wordlift_Install_wizard {
 		<div id="message"><?php _e('All new pages created with WordLift will be stored<br>inside yourinternal vocabulary. You can customize<br>the url pattern of these pages in the field below','wordlift')?></div>
 		<div id="input"><input class="input" id="key" type="text" name="key" pattern="/[a-zA-Z0-9/]+/" autocomplete="off" value="<?php echo esc_attr($slug)?>"></div>
 		<div id="buttons">
-			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
+		<script type="text/javascript">
+			function savevalue() {
+				var slug = jQuery('#key').val();
+				document.cookie = "wl_slug="+slug+';path='+'<?php echo admin_url()?>';
+			} 
+		</script>
 		<?php
 	}
 	
@@ -532,8 +543,14 @@ class Wordlift_Install_wizard {
 			</select>
 		</div>
 		<div id="buttons">
-			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=publisher' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=publisher' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
 		</div>
+		<script type="text/javascript">
+			function savevalue() {
+				var lang = jQuery('#input select').val();
+				document.cookie = "wl_lang="+lang+';path='+'<?php echo admin_url()?>';
+			} 
+		</script>
 		<?php
 	}
 	
@@ -548,6 +565,10 @@ class Wordlift_Install_wizard {
 		if (isset($_COOKIE['wl_type']))
 			$type = $_COOKIE['wl_type'];
 		
+		$name = '';
+		if (isset($_COOKIE['wl_name']))
+			$name = $_COOKIE['wl_name'];
+
 		$image_id = 0;
 		if (isset($_COOKIE['wl_image_id']))
 			$image_id = $_COOKIE['wl_image_id'];
@@ -562,14 +583,14 @@ class Wordlift_Install_wizard {
 			<label for="personal"><input id="personal" type="radio" name="user_type" value="personal" <?php checked($type,'personal')?>><?php _e('Personal','wordlift')?></label>
 			<label for="company"><input id="company" type="radio" name="user_type" value="company" <?php checked($type,'company')?>><?php _e('Company','wordlift')?></label>
 		</div>
-		<div id="input"><input class="input" id="key" type="text" name="key" placeholder="<?php _e('Name','wordlift')?>"></div>
+		<div id="input"><input class="input" id="key" type="text" name="key" value="<?php echo esc_attr($name)?>" placeholder="<?php _e('Name','wordlift')?>"></div>
 		<div id="addlogo" <?php if ($image_id != 0) echo 'style="display:none"'?>><a href="#" onclick="return addlogo();"><?php _e('Add your logo','wordlift')?></a></div>
 		<div id="logo" <?php if ($image_id == 0) echo 'style="display:none"'?>>
-			<img src="<?php echo esc_attr($image_url)?>" width="100" height="100">
+			<img src="<?php echo esc_attr($image_url)?>" data-id="<?php echo esc_attr($image_id)?>" width="100" height="100">
 			<a id="deletelogo" onclick="return deletelogo()" href="#" title="<?php _e('Remove the logo','wordlift')?>"><span class="fa fa-times"></a>
 		</div>
 		<div id="buttons">
-			<a id="nextstep" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=finish' ) ); ?>"><?php _e( 'Finish', 'wordlift' ); ?></a>
+			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=finish' ) ); ?>"><?php _e( 'Finish', 'wordlift' ); ?></a>
 		</div>
 		<script type="text/javascript">
 			var mediaUploader;
@@ -602,6 +623,20 @@ class Wordlift_Install_wizard {
 				  jQuery('#addlogo').show();
 				return false;
 			}
+
+			function savevalue() {
+				var type = jQuery('input[name="user_type"]:checked').val();
+				document.cookie = "wl_type="+type+';path='+'<?php echo admin_url()?>';
+
+				var name = jQuery('#key').val();
+				document.cookie = "wl_name="+name+';path='+'<?php echo admin_url()?>';
+
+				var url = jQuery('#logo img').attr('src');
+				document.cookie = "wl_image_url="+url+';path='+'<?php echo admin_url()?>';
+
+				var id = jQuery('#logo img').attr('data-id');
+				document.cookie = "wl_image_id="+id+';path='+'<?php echo admin_url()?>';
+			} 
 		</script>
 		<?php
 	}
