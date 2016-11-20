@@ -123,7 +123,7 @@ class Wordlift_Install_wizard {
 		$step = 'welcome';
 		if (!empty( $_GET['step'] )) {
 			$step = $_GET['step'];
-			if (!in_array($step,array('welcome','license','vocabulary','language','publisher')))
+			if (!in_array($step,array('welcome','license','vocabulary','language','publisher','finish')))
 				$step = 'welcome';
 		}
 		
@@ -140,6 +140,8 @@ class Wordlift_Install_wizard {
 			case 'language' : $this->language_page();
 				break;
 			case 'publisher' : $this->publisher_page();
+				break;
+			case 'finish' : $this->finish();
 				break;
 		}
 		$this->footer();
@@ -591,7 +593,7 @@ class Wordlift_Install_wizard {
 			<a id="deletelogo" onclick="return deletelogo()" href="#" title="<?php _e('Remove the logo','wordlift')?>"><span class="fa fa-times"></a>
 		</div>
 		<div id="buttons">
-			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=finish' ) ); ?>"><?php _e( 'Finish', 'wordlift' ); ?></a>
+			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'step', 'finish' ), 'wordlift_finish_nonce', '_wl_finish_nonce' ) ); ?>"><?php _e( 'Finish', 'wordlift' ); ?></a>
 		</div>
 		<script type="text/javascript">
 			var mediaUploader;
@@ -642,6 +644,53 @@ class Wordlift_Install_wizard {
 		<?php
 	}
 	
+	/**
+	 * Finish the wizard, store all settings from the cookie into the DB
+	 *
+	 * @since    3.9.0
+	 *
+	 */
+	public function finish() {
+		if ( isset( $_GET['_wl_finish_nonce'] ) ) {
+			if ( ! wp_verify_nonce( $_GET['_wl_finish_nonce'], 'wordlift_finish_nonce' ) ) {
+				wp_die( __( 'Action failed. Please refresh the page and retry.', 'wordlift' ) );
+			}
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_die( __( 'sorry, you do not have a permission to save the settings', 'wordlift' ) );
+			}
+			
+			$option = array();
+			$option['key'] = $_COOKIE['wl_key'];
+			$option['site_language'] = $_COOKIE['wl_lang'];
+			$option['wl_entity_base_path'] = trim($_COOKIE['wl_slug'],'\\');
+			
+			// create an entity for the publisher
+			$args = array(
+						'post_type' => Wordlift_Entity_Service::TYPE_NAME,
+						'post_title' => $_COOKIE['wl_name'],
+						'post_status' => 'publish',
+						'post_content' => '',
+					);
+			$post_id = wp_insert_post($args);
+			
+			// set a thumbnail if a logo was selected
+			if (!empty((int) $_COOKIE['wl_image_id']))
+				set_post_thumbnail($post_id, (int) $_COOKIE['wl_image_id']);
+			
+			$type_uri = 'http://schema.org/Person';
+			if ('company' == $_COOKIE['wl_type'])
+				$type_uri = 'http://schema.org/Organization';
+			Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri );
+
+			$option['publisher_entity'] = $post_id;
+			update_option('wl_general_settings',$option);
+			
+			flush_rewrite_rules(); // needed because of possible chnge to the entity base path
+			wp_redirect(admin_url('admin.php?page=wl_configuration_admin_menu'));
+			die();
+		}				
+	}
 	/**
 	 * Checks if a key is valid by using an API to communicate with the wordlift server
 	 *
