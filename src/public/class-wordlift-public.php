@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift

@@ -14,7 +14,7 @@ require_once( 'wordlift_configuration_settings.php' );
  * @since 3.0.0
  *
  * @param string $parent_slug The parent slug for the menu.
- * @param string $capability The required capability to access the page.
+ * @param string $capability  The required capability to access the page.
  */
 function wl_configuration_admin_menu( $parent_slug, $capability ) {
 
@@ -39,7 +39,7 @@ add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
  *
  * @param boolean $display_page_title If true, prints out the page title.
  */
-function wl_configuration_admin_menu_callback( $display_page_title = TRUE ) {
+function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -129,10 +129,10 @@ function wl_configuration_settings() {
 		'wl_general_settings',         // The page on which this option will be displayed
 		'wl_general_settings_section',      // The name of the section to which this field belongs
 		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			'id'          => 'wl-key',
-			'name'        => 'wl_general_settings[key]',
-			'value'       => wl_configuration_get_key(),
-			'description' => __( 'Insert the WordLift Key', 'wordlift' )
+		                                    'id'          => 'wl-key',
+		                                    'name'        => 'wl_general_settings[key]',
+		                                    'value'       => wl_configuration_get_key(),
+		                                    'description' => __( 'Insert the WordLift Key', 'wordlift' ),
 		)
 	);
 
@@ -140,11 +140,11 @@ function wl_configuration_settings() {
 	// Entity Base Path input.
 
 	$entity_base_path_args = array(                              // The array of arguments to pass to the callback. In this case, just a description.
-		'id'          => 'wl-entity-base-path',
-		'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
-		'value'       => Wordlift_Configuration_Service::get_instance()
-		                                               ->get_entity_base_path(),
-		'description' => __( 'Insert the Entity Base Path', 'wordlift' ),
+	                                                             'id'          => 'wl-entity-base-path',
+	                                                             'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
+	                                                             'value'       => Wordlift_Configuration_Service::get_instance()
+	                                                                                                            ->get_entity_base_path(),
+	                                                             'description' => __( 'Insert the Entity Base Path', 'wordlift' ),
 	);
 
 	if ( Wordlift_Entity_Service::get_instance()->count() ) {
@@ -170,11 +170,11 @@ function wl_configuration_settings() {
 		'wl_general_settings',
 		'wl_general_settings_section',
 		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			'id'          => 'wl-site-language',
-			'name'        => 'wl_general_settings[site_language]',
-			'value'       => wl_configuration_get_site_language(),
-			'description' => __( 'The site language', 'wordlift' ),
-			'options'     => wl_configuration_get_languages()
+		                                    'id'          => 'wl-site-language',
+		                                    'name'        => 'wl_general_settings[site_language]',
+		                                    'value'       => wl_configuration_get_site_language(),
+		                                    'description' => __( 'The site language', 'wordlift' ),
+		                                    'options'     => wl_configuration_get_languages(),
 		)
 	);
 
@@ -200,10 +200,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-api-url',
-				'name'        => 'wl_advanced_settings[api_url]',
-				'value'       => wl_configuration_get_api_url(),
-				'description' => __( 'The API URL', 'wordlift' )
+			                                    'id'          => 'wl-api-url',
+			                                    'name'        => 'wl_advanced_settings[api_url]',
+			                                    'value'       => wl_configuration_get_api_url(),
+			                                    'description' => __( 'The API URL', 'wordlift' ),
 			)
 		);
 
@@ -214,10 +214,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-key',
-				'name'        => 'wl_advanced_settings[redlink_key]',
-				'value'       => wl_configuration_get_redlink_key(),
-				'description' => __( 'The Redlink key', 'wordlift' )
+			                                    'id'          => 'wl-redlink-key',
+			                                    'name'        => 'wl_advanced_settings[redlink_key]',
+			                                    'value'       => wl_configuration_get_redlink_key(),
+			                                    'description' => __( 'The Redlink key', 'wordlift' ),
 			)
 		);
 
@@ -228,10 +228,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-user-id',
-				'name'        => 'wl_advanced_settings[redlink_user_id]',
-				'value'       => wl_configuration_get_redlink_user_id(),
-				'description' => __( 'The Redlink User Id', 'wordlift' )
+			                                    'id'          => 'wl-redlink-user-id',
+			                                    'name'        => 'wl_advanced_settings[redlink_user_id]',
+			                                    'value'       => wl_configuration_get_redlink_user_id(),
+			                                    'description' => __( 'The Redlink User Id', 'wordlift' ),
 			)
 		);
 
@@ -242,10 +242,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-dataset-name',
-				'name'        => 'wl_advanced_settings[redlink_dataset_name]',
-				'value'       => wl_configuration_get_redlink_dataset_name(),
-				'description' => __( 'The Redlink Dataset Name', 'wordlift' )
+			                                    'id'          => 'wl-redlink-dataset-name',
+			                                    'name'        => 'wl_advanced_settings[redlink_dataset_name]',
+			                                    'value'       => wl_configuration_get_redlink_dataset_name(),
+			                                    'description' => __( 'The Redlink Dataset Name', 'wordlift' ),
 			)
 		);
 
@@ -256,10 +256,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-dataset-uri',
-				'name'        => 'wl_advanced_settings[redlink_dataset_uri]',
-				'value'       => wl_configuration_get_redlink_dataset_uri(),
-				'description' => __( 'The Redlink Dataset URI', 'wordlift' )
+			                                    'id'          => 'wl-redlink-dataset-uri',
+			                                    'name'        => 'wl_advanced_settings[redlink_dataset_uri]',
+			                                    'value'       => wl_configuration_get_redlink_dataset_uri(),
+			                                    'description' => __( 'The Redlink Dataset URI', 'wordlift' ),
 			)
 		);
 
@@ -270,10 +270,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-application-name',
-				'name'        => 'wl_advanced_settings[redlink_application_name]',
-				'value'       => wl_configuration_get_redlink_application_name(),
-				'description' => __( 'The Redlink Application Name', 'wordlift' )
+			                                    'id'          => 'wl-redlink-application-name',
+			                                    'name'        => 'wl_advanced_settings[redlink_application_name]',
+			                                    'value'       => wl_configuration_get_redlink_application_name(),
+			                                    'description' => __( 'The Redlink Application Name', 'wordlift' ),
 			)
 		);
 	}
@@ -377,7 +377,7 @@ function wl_configuration_checkbox( $args ) {
 
 	<input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
 	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="1" <?php checked( 1, $args['value'], TRUE ); ?>/>
+	       value="1" <?php checked( 1, $args['value'], true ); ?>/>
 
 	<?php
 }
@@ -394,7 +394,7 @@ function wl_configuration_checkbox( $args ) {
 function wl_configuration_settings_links( $links ) {
 
 	// TODO: this link is different within SEO Ultimate.
-	array_push( $links, '<a href="' . get_admin_url( NULL, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
+	array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
 
 	return $links;
 }
@@ -418,8 +418,8 @@ function wl_configuration_get_languages() {
 	// set the path to the language file.
 	$filename = dirname( __FILE__ ) . '/ISO-639-2_utf-8.txt';
 
-	if ( ( $handle = fopen( $filename, 'r' ) ) !== FALSE ) {
-		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== FALSE ) {
+	if ( ( $handle = fopen( $filename, 'r' ) ) !== false ) {
+		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== false ) {
 			if ( ! empty( $data[2] ) ) {
 				$code           = $data[2];
 				$label          = htmlentities( $data[3] );
@@ -453,35 +453,6 @@ function wl_config_get_recursion_depth() {
 		? $options[ WL_CONFIG_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING ]
 		: WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING );
 }
-
-
-/**
- * Check WordLift's configuration.
- *
- * @since 3.0.0
- *
- * @return bool True if the configuration is set otherwise false.
- */
-function wl_configuration_validate() {
-
-	// Check that the WordLift key has been set or show a notice.
-	if ( '' === wl_configuration_get_key() ) {
-		Wordlift_Notice_Service::get_instance()
-		                       ->add_error( sprintf( __( 'application-key-not-set', 'wordlift' ), 'http://join.wordlift.it' ) );
-
-		return;
-	}
-
-	if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
-		Wordlift_Notice_Service::get_instance()
-		                       ->add_error( __( 'Dataset URI missing in configuration', 'wordlift' ) );
-
-		return;
-	}
-
-}
-
-add_action( 'admin_init', 'wl_configuration_validate' );
 
 /**
  * Intercept the change of the WordLift key in order to set the dataset URI.
@@ -522,7 +493,7 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 		wl_configuration_set_redlink_dataset_uri( $response['body'] );
 
 	} else {
-		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, TRUE ) . " ]" );
+		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, true ) . " ]" );
 	}
 
 }

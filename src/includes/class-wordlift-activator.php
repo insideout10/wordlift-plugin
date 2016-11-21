@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift

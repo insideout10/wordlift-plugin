@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift
@@ -241,7 +241,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Jsonld_Service} instance.
 	 *
-	 * @since 3.7.0
+	 * @since  3.7.0
 	 * @access private
 	 * @var \Wordlift_Jsonld_Service $jsonld_service A {@link Wordlift_Jsonld_Service} instance.
 	 */
@@ -249,7 +249,7 @@ class Wordlift {
 
 	/**
 	 *
-	 * @since 3.7.0
+	 * @since  3.7.0
 	 * @access private
 	 * @var \Wordlift_Property_Factory $property_factory
 	 */
@@ -269,7 +269,7 @@ class Wordlift {
 	 *
 	 * @since  3.9.0
 	 * @access private
-	 * @var \Wordlift_Install_wizard $install_wizard The Install wizard.
+	 * @var \Wordlift_Admin_Install_Wizard $install_wizard The Install wizard.
 	 */
 	private $install_wizard;
 
@@ -277,7 +277,7 @@ class Wordlift {
 	 * The Content Filter Service hooks up to the 'the_content' filter and provides
 	 * linking of entities to their pages.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
 	 */
@@ -497,6 +497,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
 
 		/**
+		 * The admin 'Install wizard' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-install-wizard.php';
+
+		/**
 		 * The admin 'Download Your Data' page.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
@@ -623,7 +628,7 @@ class Wordlift {
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
-		$this->install_wizard = new Wordlift_Install_wizard();
+		$this->install_wizard          = new Wordlift_Admin_Install_Wizard();
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
@@ -762,7 +767,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Hook the content filter service to add entity links.
-		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content');
+		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
