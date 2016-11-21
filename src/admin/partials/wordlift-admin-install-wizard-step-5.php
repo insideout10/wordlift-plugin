@@ -10,6 +10,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/partials
  */
+
 ?>
 <div id="title"><?php _e( 'Publisher', 'wordlift' ) ?></div>
 <div id="message"><?php _e( 'Are you going to publish as an individual or as a company?', 'wordlift' ) ?></div>

@@ -10,6 +10,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/partials
  */
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>

@@ -10,6 +10,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/partials
  */
+
 ?>
 <div id="title"><?php _e( 'License Key', 'wordlift' ) ?></div>
 <div
