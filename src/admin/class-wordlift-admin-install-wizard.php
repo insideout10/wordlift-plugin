@@ -381,7 +381,7 @@ class Wordlift_Admin_Install_Wizard {
 			$post_id = wp_insert_post( $args );
 
 			// set a thumbnail if a logo was selected
-			if ( ! empty( (int) $_COOKIE['wl_image_id'] ) ) {
+			if ( ! empty( $_COOKIE['wl_image_id'] ) ) {
 				set_post_thumbnail( $post_id, (int) $_COOKIE['wl_image_id'] );
 			}
 
