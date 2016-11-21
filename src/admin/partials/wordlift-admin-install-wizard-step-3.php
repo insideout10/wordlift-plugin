@@ -12,14 +12,14 @@
  */
 
 ?>
-<div id="title"><?php _e( 'Vocabulary', 'wordlift' ) ?></div>
+<div id="title"><?php esc_html_e( 'Vocabulary', 'wordlift' ) ?></div>
 <div
-	id="message"><?php _e( 'All new pages created with WordLift will be stored inside yourinternal vocabulary. You can customize the url pattern of these pages in the field below', 'wordlift' ) ?></div>
+	id="message"><?php esc_html_e( 'All new pages created with WordLift will be stored inside yourinternal vocabulary. You can customize the url pattern of these pages in the field below', 'wordlift' ) ?></div>
 <div id="input"><input class="input" id="key" type="text" name="key" pattern="/[a-zA-Z0-9/]+/"
                        autocomplete="off" value="<?php echo esc_attr( $slug ) ?>"></div>
 <div id="buttons">
 	<a id="nextstep" onclick="savevalue()"
-	   href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+	   href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php esc_html_e( 'Next Step', 'wordlift' ); ?></a>
 </div>
 <script type="text/javascript">
 	function savevalue() {

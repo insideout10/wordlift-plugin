@@ -17,7 +17,7 @@
 <head>
 	<meta name="viewport" content="width=device-width"/>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title><?php _e( 'WordLift &rsaquo; Setup Wizard', 'wordlift' ); ?></title>
+	<title><?php esc_html_e( 'WordLift &rsaquo; Setup Wizard', 'wordlift' ); ?></title>
 	<?php
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_media();
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class="wl-setup">
-	<a id="close" title="<?php _e( 'Exit the wizard', 'wordlift' ) ?>" href="<?php echo admin_url() ?>"><span
+	<a id="close" title="<?php esc_html_e( 'Exit the wizard', 'wordlift' ) ?>" href="<?php echo admin_url() ?>"><span
 			class="fa fa-times"></span></a>
 	<div id="wl-title">
 		<div id="wl-logo">

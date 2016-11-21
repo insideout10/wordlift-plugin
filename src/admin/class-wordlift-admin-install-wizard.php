@@ -102,11 +102,11 @@ class Wordlift_Admin_Install_Wizard {
 		if ( '' === $this->configuration_service->get_key() && ! $this->configuration_service->is_skip_wizard() ) {
 			?>
 			<div id="wl-message" class="updated">
-				<p><?php _e( '<strong>Welcome to WordLift</strong> &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
+				<p><?php esc_html_e( '<strong>Welcome to WordLift</strong> &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
 				<p class="submit"><a href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup' ) ); ?>"
-				                     class="button-primary"><?php _e( 'Run the Setup Wizard', 'wordlift' ); ?></a> <a
+				                     class="button-primary"><?php esc_html_e( 'Run the Setup Wizard', 'wordlift' ); ?></a> <a
 						class="button-secondary skip"
-						href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php _e( 'Skip Setup', 'wordlift' ); ?></a>
+						href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'wl-hide-notice', 'install' ), 'wordlift_hide_notices_nonce', '_wl_notice_nonce' ) ); ?>"><?php esc_html_e( 'Skip Setup', 'wordlift' ); ?></a>
 				</p>
 			</div>
 			<?php

@@ -12,9 +12,9 @@
  */
 
 ?>
-<div id="title"><?php _e( 'Language', 'wordlift' ) ?></div>
+<div id="title"><?php esc_html_e( 'Language', 'wordlift' ) ?></div>
 <div
-	id="message"><?php _e( 'Each WordLift key can be used only in one language. Pick yours.', 'wordlift' ) ?></div>
+	id="message"><?php esc_html_e( 'Each WordLift key can be used only in one language. Pick yours.', 'wordlift' ) ?></div>
 <div id="input">
 	<select class="select" id="language" autocomplete="off">
 		<?php
@@ -26,7 +26,7 @@
 </div>
 <div id="buttons">
 	<a id="nextstep" onclick="savevalue()"
-	   href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=publisher' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
+	   href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=publisher' ) ); ?>"><?php esc_html_e( 'Next Step', 'wordlift' ); ?></a>
 </div>
 <script type="text/javascript">
 	function savevalue() {
