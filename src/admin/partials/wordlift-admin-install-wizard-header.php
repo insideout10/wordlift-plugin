@@ -28,7 +28,8 @@
 </head>
 <body>
 <div class="wl-setup">
-	<a id="close" title="<?php esc_html_e( 'Exit the wizard', 'wordlift' ) ?>" href="<?php echo admin_url() ?>"><span
+	<a id="close" title="<?php esc_html_e( 'Exit the wizard', 'wordlift' ) ?>"
+	   href="<?php esc_url( admin_url() ) ?>"><span
 			class="fa fa-times"></span></a>
 	<div id="wl-title">
 		<div id="wl-logo">

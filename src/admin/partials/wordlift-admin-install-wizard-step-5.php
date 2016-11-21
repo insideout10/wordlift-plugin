@@ -24,11 +24,11 @@
 </div>
 <div id="input"><input class="input" id="key" type="text" name="key" value="<?php echo esc_attr( $name ) ?>"
                        placeholder="<?php esc_html_e( 'Name', 'wordlift' ) ?>"></div>
-<div id="addlogo" <?php if ( $image_id != 0 )
+<div id="addlogo" <?php if ( 0 != $image_id )
 	echo 'style="display:none"' ?>><a href="#"
                                       onclick="return addlogo();"><?php esc_html_e( 'Add your logo', 'wordlift' ) ?></a>
 </div>
-<div id="logo" <?php if ( $image_id == 0 )
+<div id="logo" <?php if ( 0 == $image_id )
 	echo 'style="display:none"' ?>>
 	<img src="<?php echo esc_attr( $image_url ) ?>" data-id="<?php echo esc_attr( $image_id ) ?>" width="100"
 	     height="100">

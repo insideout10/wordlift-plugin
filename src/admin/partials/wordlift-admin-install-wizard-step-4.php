@@ -31,6 +31,6 @@
 <script type="text/javascript">
 	function savevalue() {
 		var lang = jQuery('#input select').val();
-		document.cookie = "wl_lang=" + lang + ';path=' + '<?php echo admin_url()?>';
+		document.cookie = "wl_lang=" + lang + ';path=' + '<?php echo esc_url( admin_url() ); ?>';
 	}
 </script>
