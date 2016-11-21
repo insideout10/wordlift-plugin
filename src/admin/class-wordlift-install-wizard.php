@@ -176,9 +176,15 @@ class Wordlift_Install_wizard {
 					position:relative;
 					width: 718px;
 					min-height: 400px;
-					/* mobile fallback */
-					max-width: 100%;
-					max-height: 100%;
+					max-width: calc(100% - 36px);
+				}
+				
+				@media only screen and (max-width:717px) {
+					.wl-setup {
+						padding:10px;
+						margin:8px;
+						min-height:calc(100% - 36px);
+					}
 				}
 				
 				#close {
@@ -192,6 +198,12 @@ class Wordlift_Install_wizard {
 					border: 1px #2e92ff solid;
 					display: block;
 					padding: 0 2px;
+				}
+				
+				@media only screen and (max-width:717px) {
+					#close {
+						display:none;
+					}
 				}
 				
 				#title {
@@ -210,7 +222,9 @@ class Wordlift_Install_wizard {
 				#message {
 					text-align:center;
 					font-size:18px;
-					margin-bottom:30px;
+					margin:0 auto 30px;
+					width:500px;
+					max-width:100%;
 				}
 				
 				#bullets {
@@ -247,13 +261,14 @@ class Wordlift_Install_wizard {
 				}
 
 				#buzzcont {
-					width:500px;
+					width:420px;
+					max-width:100%;
 					margin:0 auto;
 				}
 				
 				.buzz {
 					float:left;
-					width:33%;
+					width:140px;
 					margin-top:10px;
 				}
 				
@@ -280,12 +295,19 @@ class Wordlift_Install_wizard {
 					color:white;
 				}
 								
+				@media only screen and (max-width:717px) {
+						#buttons a {
+							display:block;
+							margin:10px auto;
+							width:100px;
+						}
+					}
+	
 				.input, .select {
 					display: block;
 					height: 40px;
-					/* width in deskop
-					 in mobile must be 270px*/
 					width: 400px;
+					max-width:100%;
 					margin: 0 auto 8px;
 					/* defining internal child position */
 					box-sizing: border-box;
@@ -343,7 +365,8 @@ class Wordlift_Install_wizard {
 				
 				#logo {
 					position:relative;
-					margin-top:20px;
+					margin:20px auto 0;
+					width:100px;
 				}
 				
 				#logo img {
@@ -354,7 +377,7 @@ class Wordlift_Install_wizard {
 				#deletelogo {
 					position:absolute;
 					top:-10px;
-					right:295px;
+					right:-10px;
 					background:white;
 					color:#2e92ff;
 					font-size: 20px;
@@ -418,7 +441,7 @@ class Wordlift_Install_wizard {
 	public function welcome_page() {
 		?>
 		<div id="title"><?php _e('Welcome','wordlift')?></div>
-		<div id="message"><?php _e('Thank you for downloading WordLift. Now you can<br>boost your website with double digit growth.','wordlift')?></div>
+		<div id="message"><?php _e('Thank you for downloading WordLift. Now you can boost your website with double digit growth.','wordlift')?></div>
 		<div id="buzzcont">
 			<div class="buzz"><span class="fa fa-university"></span><?php _e('Trustworthiness','wordlift')?></div>
 			<div class="buzz"><span class="fa fa-map-marker"></span><?php _e('Enrichment','wordlift')?></div>
@@ -450,7 +473,7 @@ class Wordlift_Install_wizard {
 			$valid = 'valid';
 		?>
 		<div id="title"><?php _e('License Key','wordlift')?></div>
-		<div id="message"><?php _e('If you already puchased a plan, check your email, get<br>the activation key from your inbox and insert it in<br>the field below. Otherwise ....','wordlift')?></div>
+		<div id="message"><?php _e('If you already puchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....','wordlift')?></div>
 		<div id="input"><input oninput="keychange();" class="input" id="key" type="text" name="key" data-verify="<?php echo esc_attr($valid)?>" value="<?php echo esc_attr($key)?>" autocomplete="off" placeholder="<?php _e('Activation Key','wordlift')?>"></div>
 		<div id="buttons">
 			<a href="https://wordlift.io/#plan-and-price" target="_tab" class="button-primary"><?php _e( 'Grab Key!', 'wordlift' ); ?></a>
@@ -488,7 +511,7 @@ class Wordlift_Install_wizard {
 			$slug = $_COOKIE['wl_slug'];
 		?>
 		<div id="title"><?php _e('Vocabulary','wordlift')?></div>
-		<div id="message"><?php _e('All new pages created with WordLift will be stored<br>inside yourinternal vocabulary. You can customize<br>the url pattern of these pages in the field below','wordlift')?></div>
+		<div id="message"><?php _e('All new pages created with WordLift will be stored inside yourinternal vocabulary. You can customize the url pattern of these pages in the field below','wordlift')?></div>
 		<div id="input"><input class="input" id="key" type="text" name="key" pattern="/[a-zA-Z0-9/]+/" autocomplete="off" value="<?php echo esc_attr($slug)?>"></div>
 		<div id="buttons">
 			<a id="nextstep" onclick="savevalue()" href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php _e( 'Next Step', 'wordlift' ); ?></a>
@@ -535,7 +558,7 @@ class Wordlift_Install_wizard {
 			$lang = '';
 		?>
 		<div id="title"><?php _e('Language','wordlift')?></div>
-		<div id="message"><?php _e('Each WordLift key can be used only in one language.<br>Pick yours.','wordlift')?></div>
+		<div id="message"><?php _e('Each WordLift key can be used only in one language. Pick yours.','wordlift')?></div>
 		<div id="input">
 			<select class="select" id="language" autocomplete="off">
 				<?php 
@@ -581,7 +604,7 @@ class Wordlift_Install_wizard {
 			$image_url = $_COOKIE['wl_image_url'];
 		?>
 		<div id="title"><?php _e('Publisher','wordlift')?></div>
-		<div id="message"><?php _e('Are you going to publish as an individual<br>or as a company?','wordlift')?></div>
+		<div id="message"><?php _e('Are you going to publish as an individual or as a company?','wordlift')?></div>
 		<div id="radio">
 			<label for="personal"><input id="personal" type="radio" name="user_type" value="personal" <?php checked($type,'personal')?>><?php _e('Personal','wordlift')?></label>
 			<label for="company"><input id="company" type="radio" name="user_type" value="company" <?php checked($type,'company')?>><?php _e('Company','wordlift')?></label>
