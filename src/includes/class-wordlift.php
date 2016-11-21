@@ -284,6 +284,15 @@ class Wordlift {
 	private $content_filter_service;
 
 	/**
+	 * A {@link Wordlift_Key_Validation_Service} instance.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
+	 */
+	private $key_validation_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -467,6 +476,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
 		/**
+		 * Load the WordLift key validation service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-key-validation-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
@@ -626,11 +640,14 @@ class Wordlift {
 		$entity_uri_to_jsonld_converter = new Wordlift_Entity_Uri_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
 		$this->jsonld_service           = new Wordlift_Jsonld_Service( $this->entity_service, $entity_uri_to_jsonld_converter );
 
+		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
+		$this->key_validation_service = new Wordlift_Key_Validation_Service();
+
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 
 		// Create an instance of the install wizard.
-		$this->install_wizard = new Wordlift_Admin_Install_Wizard( $configuration_service );
+		$this->install_wizard = new Wordlift_Admin_Install_Wizard( $configuration_service, $this->key_validation_service );
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
@@ -742,6 +759,9 @@ class Wordlift {
 
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_wl_jsonld', $this->jsonld_service, 'get' );
+
+		// Hook the AJAX wl_validate_key action to the Key Validation service.
+		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
 
 	}
 

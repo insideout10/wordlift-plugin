@@ -21,10 +21,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class Wordlift_Configuration_Service {
 
+	/**
+	 * The entity base path option name.
+	 *
+	 * @since 3.6.0
+	 */
 	const ENTITY_BASE_PATH_KEY = 'wl_entity_base_path';
 
 	/**
-	 * The skip wizard (admin installation wizard) option key.
+	 * The skip wizard (admin installation wizard) option name.
 	 *
 	 * @since 3.9.0
 	 */

@@ -38,6 +38,15 @@ class Wordlift_Admin_Install_Wizard {
 	private $configuration_service;
 
 	/**
+	 * A {@link Wordlift_Key_Validation_Service} instance.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var Wordlift_Key_Validation_Service A {@link Wordlift_Key_Validation_Service} instance.
+	 */
+	private $key_validation_service;
+
+	/**
 	 * The current step.
 	 *
 	 * @since  3.9.0
@@ -46,17 +55,22 @@ class Wordlift_Admin_Install_Wizard {
 	 */
 	private $step;
 
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    3.9.0
 	 *
-	 * @param Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 * @param Wordlift_Configuration_Service  $configuration_service  A {@link Wordlift_Configuration_Service} instance.
+	 * @param Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
 	 */
-	public function __construct( $configuration_service ) {
+	public function __construct( $configuration_service, $key_validation_service ) {
 
 		// Set a reference to the configuration service.
 		$this->configuration_service = $configuration_service;
+
+		// Set a reference to the key validation service.
+		$this->key_validation_service = $key_validation_service;
 
 		// Get the current step (or start by 1 if not set).
 		$this->step = get_option( 'wl_general_settings_wizard', 1 );
@@ -238,10 +252,8 @@ class Wordlift_Admin_Install_Wizard {
 		if ( isset( $_COOKIE['wl_key'] ) ) {
 			$key = $_COOKIE['wl_key'];
 		}
-		$valid = 'invalid';
-		if ( $this->validate_key( $key ) ) {
-			$valid = 'valid';
-		}
+
+		$valid = $this->key_validation_service->is_valid( $key ) ? 'valid' : 'invalid';
 
 		// Include the license page.
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-install-wizard-step-2.php';
@@ -412,24 +424,3 @@ class Wordlift_Admin_Install_Wizard {
 		return $valid;
 	}
 }
-
-/**
- * Handle the ajax request to validate the key.
- *
- * Request should pass the key as the "key" parameter in a post request
- * Output is a JSON object with a "valid" field which is a boolean indicating if the key is valid
- *
- * @since    3.9.0
- *
- */
-function wl_ajax_validate_key() {
-
-	$valid = false;
-	if ( isset( $_POST['key'] ) ) {
-		$valid = Wordlift_Admin_Install_Wizard::validate_key( $_POST['key'] );
-	}
-
-	wp_send_json( array( 'valid' => $valid ) );
-}
-
-add_action( 'wp_ajax_wl_validate_key', 'wl_ajax_validate_key' );
