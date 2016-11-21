@@ -628,7 +628,9 @@ class Wordlift {
 
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
-		$this->install_wizard          = new Wordlift_Admin_Install_Wizard();
+
+		// Create an instance of the install wizard.
+		$this->install_wizard = new Wordlift_Admin_Install_Wizard( $configuration_service );
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );

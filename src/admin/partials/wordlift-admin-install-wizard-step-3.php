@@ -2,7 +2,7 @@
 /**
  * Install Wizard Step #3.
  *
- * This file provides the step # for the install wizard.
+ * This file provides the step #3 for the install wizard.
  *
  * @link       https://wordlift.io
  * @since      3.9.0

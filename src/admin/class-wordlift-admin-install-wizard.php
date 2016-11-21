@@ -29,6 +29,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wordlift_Admin_Install_Wizard {
 
 	/**
+	 * A {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var Wordlift_Configuration_Service A {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
 	 * The current step.
 	 *
 	 * @since  3.9.0
@@ -41,8 +50,13 @@ class Wordlift_Admin_Install_Wizard {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    3.9.0
+	 *
+	 * @param Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct() {
+	public function __construct( $configuration_service ) {
+
+		// Set a reference to the configuration service.
+		$this->configuration_service = $configuration_service;
 
 		// Get the current step (or start by 1 if not set).
 		$this->step = get_option( 'wl_general_settings_wizard', 1 );
@@ -70,8 +84,8 @@ class Wordlift_Admin_Install_Wizard {
 	 */
 	public function admin_notices() {
 
-		// Use `wl_configuration_get_key` to check whether WL's key is set.
-		if ( empty( wl_configuration_get_key() ) ) {
+		// Use `wl_configuration_get_key` to check whether WL's key is set and that the user didn't disable the wizard.
+		if ( '' === $this->configuration_service->get_key() && ! $this->configuration_service->is_skip_wizard() ) {
 			?>
 			<div id="wl-message" class="updated">
 				<p><?php _e( '<strong>Welcome to WordLift</strong> &#8211; You&lsquo;re almost ready to start', 'wordlift' ); ?></p>
@@ -93,22 +107,23 @@ class Wordlift_Admin_Install_Wizard {
 	 */
 	public function hide_notices() {
 
-		if ( isset( $_GET['wl-hide-notice'] ) && isset( $_GET['_wl_notice_nonce'] ) ) {
-			if ( ! wp_verify_nonce( $_GET['_wl_notice_nonce'], 'wordlift_hide_notices_nonce' ) ) {
-				wp_die( __( 'Action failed. Please refresh the page and retry.', 'wordlift' ) );
-			}
-
-			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_die( __( 'Cheatin&#8217; huh?', 'wordlift' ) );
-			}
-
-			$o = get_option( 'wl_general_settings', false );
-			if ( ! is_array( $o ) ) {
-				$o = array();
-			}
-			$o['no_wizard'] = true;
-			update_option( 'wl_general_settings', $o );
+		// If it's not a `wl-hide-notice` or the nonce is not set, return.
+		if ( ! isset( $_GET['wl-hide-notice'] ) || ! isset( $_GET['_wl_notice_nonce'] ) ) {
+			return;
 		}
+
+		// If the nonce is invalid, return an error.
+		if ( ! wp_verify_nonce( $_GET['_wl_notice_nonce'], 'wordlift_hide_notices_nonce' ) ) {
+			wp_die( __( 'Action failed. Please refresh the page and retry.', 'wordlift' ) );
+		}
+
+		// If the user doesn't have the right privileges, return an error.
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( __( 'Cheatin&#8217; huh?', 'wordlift' ) );
+		}
+
+		// Store a flag telling to skip the wizard.
+		$this->configuration_service->set_skip_wizard( true );
 
 	}
 
@@ -383,6 +398,7 @@ class Wordlift_Admin_Install_Wizard {
 	 * @return    bool    truue if the key is valid, false otherwise
 	 */
 	public static function validate_key( $key ) {
+
 		$valid = false;
 
 		// Request the dataset URI as a way to validate the key
