@@ -18,7 +18,7 @@
  *
  * @package    Wordlift
  * @subpackage Wordlift/public
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift_Public {
 

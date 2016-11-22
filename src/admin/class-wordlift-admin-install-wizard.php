@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @package    Wordlift
  * @subpackage Wordlift/admin
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift_Admin_Install_Wizard {
 

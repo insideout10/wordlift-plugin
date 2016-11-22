@@ -11,6 +11,10 @@
  * @subpackage Wordlift/admin/partials
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div id="title"><?php esc_html_e( 'Publisher', 'wordlift' ) ?></div>
 <div id="message"><?php esc_html_e( 'Are you going to publish as an individual or as a company?', 'wordlift' ) ?></div>

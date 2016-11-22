@@ -10,6 +10,11 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin/partials
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 </div>
 <?php do_action( 'admin_footer' ); ?>

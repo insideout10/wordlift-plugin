@@ -35,6 +35,7 @@
                                     .removeClass('valid')
                                     .addClass('invalid');
                             }
+
                         });
 
                 }, 500));
@@ -64,7 +65,7 @@
 
                         $('#logo img')
                             .attr('src', attachment.url)
-                            .attr('data-id', attachment.id);
+                            .data('id', attachment.id);
 
                         $('#logo').show();
                         $('#addlogo').hide();

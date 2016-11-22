@@ -11,6 +11,10 @@
  * @subpackage Wordlift/admin/partials
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>

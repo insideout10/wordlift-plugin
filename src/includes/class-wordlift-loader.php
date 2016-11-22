@@ -19,7 +19,7 @@
  *
  * @package    Wordlift
  * @subpackage Wordlift/includes
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift_Loader {
 

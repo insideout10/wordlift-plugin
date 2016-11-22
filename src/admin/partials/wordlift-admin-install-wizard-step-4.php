@@ -11,6 +11,10 @@
  * @subpackage Wordlift/admin/partials
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div id="title"><?php esc_html_e( 'Language', 'wordlift' ) ?></div>
 <div
@@ -19,7 +23,7 @@
 	<select class="select" id="language" autocomplete="off">
 		<?php
 		foreach ( $langs as $code => $label ) {
-			echo '<option value="' . esc_attr( $code ) . '" ' . selected( $code, $lang, false ) . '>' . esc_html( $label ) . '</option>';
+			echo '<option value="' . esc_attr( $code ) . '" ' . selected( $code, $lang, FALSE ) . '>' . esc_html( $label ) . '</option>';
 		}
 		?>
 	</select>

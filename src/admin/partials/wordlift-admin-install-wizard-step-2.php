@@ -11,6 +11,10 @@
  * @subpackage Wordlift/admin/partials
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 ?>
 <div id="title"><?php esc_html_e( 'License Key', 'wordlift' ) ?></div>
 <div

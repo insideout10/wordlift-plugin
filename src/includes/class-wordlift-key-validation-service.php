@@ -46,12 +46,12 @@ class Wordlift_Key_Validation_Service {
 		ob_clean();
 
 		// Check if we have a key.
-		if ( ! isset( $_REQUEST['key'] ) ) {
+		if ( ! isset( $_POST['key'] ) ) {
 			wp_send_json_error( 'The key parameter is required.' );
 		}
 
 		// Set a response with valid set to true or false according to the key validity.
-		wp_send_json( array( 'valid' => $this->is_valid( $_REQUEST['key'] ) ) );
+		wp_send_json( array( 'valid' => $this->is_valid( $_POST['key'] ) ) );
 
 	}
 
