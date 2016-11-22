@@ -25,52 +25,21 @@
 <div id="input"><input class="input" id="key" type="text" name="key" value="<?php echo esc_attr( $name ) ?>"
                        placeholder="<?php esc_html_e( 'Name', 'wordlift' ) ?>"></div>
 <div id="addlogo" <?php if ( 0 != $image_id )
-	echo 'style="display:none"' ?>><a href="#"
-                                      onclick="return addlogo();"><?php esc_html_e( 'Add your logo', 'wordlift' ) ?></a>
+	echo 'style="display:none"' ?>><a class="wl-add-logo"
+                                      href="javascript:void(0);"><?php esc_html_e( 'Add your logo', 'wordlift' ) ?></a>
 </div>
-<div id="logo" <?php if ( 0 == $image_id )
-	echo 'style="display:none"' ?>>
-	<img src="<?php echo esc_attr( $image_url ) ?>" data-id="<?php echo esc_attr( $image_id ) ?>" width="100"
-	     height="100">
-	<a id="deletelogo" onclick="return deletelogo()" href="#"
-	   title="<?php esc_html_e( 'Remove the logo', 'wordlift' ) ?>"><span class="fa fa-times"></a>
+<div id="logo" style="<?php echo( 0 == $image_id ? 'display:none' : '' ); ?>">
+	<img src="<?php echo esc_attr( 0 == $image_id ? '' : $image_url ); ?>"
+	     data-id="<?php echo esc_attr( 0 == $image_id ? '' : $image_id ); ?>"
+	     width="100" height="100">
+	<a href="javascript:void(0);" title="<?php esc_html_e( 'Remove the logo', 'wordlift' ) ?>"><span
+			class="fa fa-times"></a>
 </div>
 <div id="buttons">
 	<a id="nextstep" onclick="savevalue()"
-	   href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'step', 'finish' ), 'wordlift_finish_nonce', '_wl_finish_nonce' ) ); ?>"><?php esc_html_e( 'Finish', 'wordlift' ); ?></a>
+	   href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'step', '5' ), 'wordlift_finish_nonce', '_wl_finish_nonce' ) ); ?>"><?php esc_html_e( 'Finish', 'wordlift' ); ?></a>
 </div>
 <script type="text/javascript">
-	var mediaUploader;
-
-	function addlogo() {
-		mediaUploader = wp.media({
-			title: '<?php esc_html_e( 'WordLift Choose Logo', 'wordlift' )?>',
-			button: {
-				text: '<?php esc_html_e( 'Choose Logo', 'wordlift' )?>'
-			}, multiple: false
-		});
-
-		// When a file is selected, grab the URL and set it as the text field's value
-		mediaUploader.on('select', function () {
-			attachment = mediaUploader.state().get('selection').first().toJSON();
-			jQuery('#logo img').attr('src', attachment.url);
-			jQuery('#logo img').attr('data-id', attachment.id);
-			jQuery('#logo').show();
-			jQuery('#addlogo').hide();
-		});
-		// Open the uploader dialog
-		mediaUploader.open();
-
-		return false;
-	}
-
-	function deletelogo() {
-		jQuery('#logo img').attr('src', '');
-		jQuery('#logo img').attr('data-id', '');
-		jQuery('#logo').hide();
-		jQuery('#addlogo').show();
-		return false;
-	}
 
 	function savevalue() {
 		var type = jQuery('input[name="user_type"]:checked').val();
@@ -85,4 +54,5 @@
 		var id = jQuery('#logo img').attr('data-id');
 		document.cookie = "wl_image_id=" + id + ';path=' + '<?php echo admin_url()?>';
 	}
+
 </script>

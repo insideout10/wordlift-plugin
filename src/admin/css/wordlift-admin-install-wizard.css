@@ -165,11 +165,11 @@ body {
     text-overflow: '';
 }
 
-#input .input[data-verify="valid"], .input:valid {
+input.valid {
     background: url('../../images/valid.png') no-repeat 98%;
 }
 
-#input input[data-verify="invalid"], .input:invalid {
+input.invalid {
     background: url('../../images/invalid.png') no-repeat 98%;
 }
 

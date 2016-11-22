@@ -36,11 +36,11 @@
 			<span class="bold">Word</span>Lift
 		</div>
 		<div id="bullets">
-			<span class="bullet" data-step="welcome"></span>
-			<span class="bullet" data-step="license"></span>
-			<span class="bullet" data-step="vocabulary"></span>
-			<span class="bullet" data-step="language"></span>
-			<span class="bullet" data-step="publisher"></span>
+			<span class="bullet <?php echo( 0 === $step ? 'active' : '' ); ?>" data-step="welcome"></span>
+			<span class="bullet <?php echo( 1 === $step ? 'active' : '' ); ?>" data-step="license"></span>
+			<span class="bullet <?php echo( 2 === $step ? 'active' : '' ); ?>" data-step="vocabulary"></span>
+			<span class="bullet <?php echo( 3 === $step ? 'active' : '' ); ?>" data-step="language"></span>
+			<span class="bullet <?php echo( 4 === $step ? 'active' : '' ); ?>" data-step="publisher"></span>
 		</div>
 		<div id="topright">
 		</div>

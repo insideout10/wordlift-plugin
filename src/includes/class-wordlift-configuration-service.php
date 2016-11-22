@@ -43,6 +43,20 @@ class Wordlift_Configuration_Service {
 	const KEY = 'key';
 
 	/**
+	 * WordLift's configured language option name.
+	 *
+	 * @since 3.9.0
+	 */
+	const LANGUAGE = 'site_language';
+
+	/**
+	 * The publisher entity post ID option name.
+	 *
+	 * @since 3.9.0
+	 */
+	const PUBLISHER_ID = 'publisher_id';
+
+	/**
 	 * The Wordlift_Configuration_Service's singleton instance.
 	 *
 	 * @since  3.6.0
@@ -112,7 +126,6 @@ class Wordlift_Configuration_Service {
 
 	}
 
-
 	/**
 	 * Get the entity base path, by default 'entity'.
 	 *
@@ -126,6 +139,18 @@ class Wordlift_Configuration_Service {
 	}
 
 	/**
+	 * Get the entity base path.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param string $value The entity base path.
+	 */
+	public function set_entity_base_path( $value ) {
+
+		$this->set( 'wl_general_settings', self::ENTITY_BASE_PATH_KEY, $value );
+	}
+
+	/**
 	 * Whether the installation skip wizard should be skipped.
 	 *
 	 * @since 3.9.0
@@ -134,7 +159,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function is_skip_wizard() {
 
-		return $this->get( 'wl_general_settings', self::SKIP_WIZARD, false );
+		return $this->get( 'wl_general_settings', self::SKIP_WIZARD, FALSE );
 	}
 
 	/**
@@ -146,7 +171,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function set_skip_wizard( $value ) {
 
-		$this->set( 'wl_general_settings', self::SKIP_WIZARD, $value === true );
+		$this->set( 'wl_general_settings', self::SKIP_WIZARD, $value === TRUE );
 
 	}
 
@@ -160,6 +185,73 @@ class Wordlift_Configuration_Service {
 	public function get_key() {
 
 		return $this->get( 'wl_general_settings', self::KEY, '' );
+	}
+
+	/**
+	 * Set WordLift's key.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param string $value WordLift's key.
+	 */
+	public function set_key( $value ) {
+
+		$this->set( 'wl_general_settings', self::KEY, $value );
+	}
+
+	/**
+	 * Get WordLift's configured language, by default 'en'.
+	 *
+	 * Note that WordLift's language is used when writing strings to the Linked Data dataset, not for the analysis.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @return string WordLift's configured language code ('en' by default).
+	 */
+	public function get_language_code() {
+
+		return $this->get( 'wl_general_settings', self::LANGUAGE, 'en' );
+	}
+
+	/**
+	 * Set WordLift's language code, used when storing strings to the Linked Data dataset.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param string $value WordLift's language code.
+	 */
+	public function set_language_code( $value ) {
+
+		$this->set( 'wl_general_settings', self::LANGUAGE, $value );
+
+	}
+
+	/**
+	 * Get the publisher entity post id.
+	 *
+	 * The publisher entity post id points to an entity post which contains the data for the publisher used in schema.org
+	 * Article markup.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @return int|NULL The publisher entity post id or NULL if not set.
+	 */
+	public function get_publisher_id() {
+
+		return $this->get( 'wl_general_settings', self::PUBLISHER_ID, NULL );
+	}
+
+	/**
+	 * Set the publisher entity post id.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param int $value The publisher entity post id.
+	 */
+	public function set_publisher_id( $value ) {
+
+		$this->set( 'wl_general_settings', self::PUBLISHER_ID, $value );
+
 	}
 
 }

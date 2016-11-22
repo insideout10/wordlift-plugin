@@ -19,7 +19,7 @@
                        autocomplete="off" value="<?php echo esc_attr( $slug ) ?>"></div>
 <div id="buttons">
 	<a id="nextstep" onclick="savevalue()"
-	   href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=language' ) ); ?>"><?php esc_html_e( 'Next Step', 'wordlift' ); ?></a>
+	   href="<?php echo esc_url( admin_url( 'admin.php?page=wl-setup&step=3' ) ); ?>"><?php esc_html_e( 'Next Step', 'wordlift' ); ?></a>
 </div>
 <script type="text/javascript">
 	function savevalue() {
