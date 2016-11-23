@@ -148,7 +148,7 @@ body {
   padding: 0;
   /* size and poitioning */
   max-width: 500px;
-  margin: 0 auto 64px auto;
+  margin: auto;
 }
 
 .buzz {
@@ -184,66 +184,93 @@ body {
 }
 
 #buttons {
-  margin-top: 40px;
+  /* positioning and size */
+  position: absolute;
+  bottom: 24px;
+  width: calc(100% - 48px);
+  /* positioning childs */
   text-align: center;
 }
 
 #buttons a {
-  background: white;
-  color: black;
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin-right: 20px;
+  /* reset default link */
   text-decoration: none;
+  display: inline-block;
+  /* positioning and size */
+  width: 110px;
+  border-radius: 5px;
+  padding: 10px 8px;
+  margin-right: 32px;
+  /* text job */
+  font-size: 12px;
+  font-weight: 400;
+  /* colouring */
+  background: #FFFFFF;
+  color: #000000;
 }
 
 #buttons a#nextstep {
-  background: black;
-  color: white;
+  background: #000000;
+  color: #FFFFFF;
+  /* last item do not need margin */
+  margin-right: 0;
 }
 
 @media only screen and (max-width: 717px) {
   #buttons a {
     display: block;
     margin: 10px auto;
-    width: 100px;
   }
 }
 
 .input, .select {
   display: block;
-  height: 40px;
+  height: 32px;
   width: 400px;
   max-width: 100%;
   margin: 0 auto 8px;
   /* defining internal child position */
   box-sizing: border-box;
-  padding: 8px 40px 8px 8px;
+  padding: 0 16px;
   /*defining text */
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 32px;
   /*reset default*/
   outline: none;
   border: none;
-  background: #FFFFFF;
+  background-color: #FFFFFF;
   box-shadow: inset 0 0 0 2px #FFFFFF, inset 0 0 0 4px #2E92FF;
   border-radius: 4px;
 }
 
 .select {
-  background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=') no-repeat 100%;
+  /* defining bg */
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=');
+  -webkit-background-size: 32px 32px;
+  background-size: 32px 32px;
+  background-position: 368px 0;
+  background-repeat: no-repeat;
   -webkit-appearance: none;
   -moz-appearance: none;
-  text-indent: 1px;
-  text-overflow: '';
+  /* prevent longer text */
+  text-overflow: ellipsis;
 }
 
 input.valid {
-  background: url('../../images/valid.png') no-repeat 98%;
+  background-image: url('../../images/valid.png');
+  background-repeat: no-repeat;
+  background-position: 375px 7px;
+  /* prevent text over the image*/
+  padding-right: 30px;
 }
 
 input.invalid {
-  background: url('../../images/invalid.png') no-repeat 98%;
+  background-image: url('../../images/invalid.png');
+  background-repeat: no-repeat;
+  background-position: 375px 7px;
+  /* prevent text over the image*/
+  padding-right: 30px;
 }
 
 #addlogo {
@@ -261,7 +288,55 @@ input.invalid {
 }
 
 #radio label {
-  margin-right: 20px;
+  margin: 0 22px;
+}
+
+#radio input {
+  /* substitue the default radio with a custom one */
+  display: none;
+}
+
+#radio input[type="radio"]:checked~.radio .check {
+  transform: scale(1)
+}
+
+#radio input[type="radio"]:not(:checked)~.radio .check {
+  transform: scale(0)
+}
+
+#radio .radio {
+  /* size and positioning */
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  margin-right: 8px;
+  /* style */
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+}
+
+#radio .radio .check {
+  /* size */
+  width: 8px;
+  height: 8px;
+  /* positioning */
+  display: inline-block;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  /* colouring */
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  /* animation */
+  /*transform: scale(0);*/
+  transition: all 200ms ease-out
+}
+
+#radio .label {
+  width: 80px;
+  display: inline-block;
+  text-align: left;
 }
 
 #logo {
@@ -286,4 +361,7 @@ input.invalid {
   border: 1px #2e92ff solid;
   display: block;
   padding: 0 2px;
+}
+
+
 }
