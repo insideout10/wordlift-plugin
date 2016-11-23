@@ -48,22 +48,20 @@ body {
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.50);
 }
 
-@media only screen and (max-width: 717px) {
-  #close {
-    display: none;
-  }
-}
-
 #wl-title {
-  line-height: 24px;
+  position: relative;
   display: table;
   width: 100%;
+  height: 24px;
+  line-height: 24px;
+  /* prevent new lines in smaller screens */
+  white-space: nowrap;
 }
 
 #wl-logo {
   /* size and positionining */
   display: inline-block;
-  width: 125px;
+  width: 100px;
   height: 24px;
   line-height: 24px;
   /* text job */
@@ -80,7 +78,7 @@ body {
 #bullets {
   /* size and positioning */
   display: inline-block;
-  min-width: calc(100% - 250px);
+  min-width: calc(100% - 200px);
   max-width: 400px;
   /* positionig childs */
   text-align: center;
@@ -102,13 +100,14 @@ body {
 #topright {
   /* size and positioning */
   display: inline-block;
-  width: 125px;
+  float: right;
+  width: 100px;
   height: 24px;
   line-height: 24px;
   /* defzine bg*/
   background-image: url('../../images/wizard_top_right.png');
-  background-position: 67px 5px;
-  -webkit-background-size: 58px 13px;
+  background-position: 42px 5px;
+  -webkit-background-size: 58px 14px;
   background-size: 58px 14px;
   background-repeat: no-repeat;
 }
@@ -197,7 +196,10 @@ body {
   text-decoration: none;
   display: inline-block;
   /* positioning and size */
-  width: 110px;
+  width: 112px;
+  height: 32px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   border-radius: 5px;
   padding: 10px 8px;
   margin-right: 32px;
@@ -214,13 +216,6 @@ body {
   color: #FFFFFF;
   /* last item do not need margin */
   margin-right: 0;
-}
-
-@media only screen and (max-width: 717px) {
-  #buttons a {
-    display: block;
-    margin: 10px auto;
-  }
 }
 
 .input, .select {
@@ -363,5 +358,74 @@ input.invalid {
   padding: 0 2px;
 }
 
+@media only screen and (max-width: 700px) {
+  .wl-setup {
+    padding: 20px;
+    padding-bottom: 120px;
+  }
+  #wl-title {
+    height: 48px;
+  }
+  #bullets {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    height: 12px;
+    min-width: 100%;
+    max-width: 100%;
+  }
+  #title {
+    line-height: 40px;
+  }
+  .buzz {
+    max-width: 45%;
+    margin-right: 4px;
+  }
+  /* resetting desktop margins */
+  .buzz:nth-of-type(3n) {
+    margin-right: 4px;
+  }
+  .buzz:nth-of-type(1n+3) {
+    margin-bottom: 8px;
+  }
+  /* new cols margins */
+  .buzz:nth-of-type(2n) {
+    margin-right: 0;
+  }
+  .buzz:nth-of-type(1n+4) {
+    margin-bottom: 0;
+  }
+  #radio {
+    text-align: left;
+  }
+  #radio label {
+    width: 100%;
+    display: block;
+    margin: 4px 16px;
+  }
+  #buttons {
+    bottom: 16px;
+  }
+  #buttons a {
+    display: block;
+    width: 200px;
+    height: 40px;
+    /* text job */
+    line-height: 24px;
+    font-weight: 600;
+    /* spacing */
+    margin: 8px auto;
+  }
+  #buttons a#nextstep {
+    margin-right: auto;
+  }
+}
 
+@media only screen and (max-width: 400px) {
+  .buzz {
+    margin: 0 16px;
+    width: 100%;
+    max-width: 100%;
+  }
 }
