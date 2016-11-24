@@ -42,6 +42,8 @@ body {
   line-height: 30px;
   text-align: center;
   border-radius: 50%;
+  /* changing pointer to match a btn setup */
+  cursor: pointer;
   /* coloruring and shadow */
   color: #2e92ff;
   background: #FFFFFF;
@@ -164,7 +166,7 @@ body {
   margin-right: 16px;
   margin-bottom: 8px;
   /* text job */
-  font-size: 12px;
+  font-size: 14px;
   color: #FFFFFF;
 }
 
@@ -204,16 +206,23 @@ body {
   padding: 10px 8px;
   margin-right: 32px;
   /* text job */
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 600;
   /* colouring */
-  background: #FFFFFF;
-  color: #000000;
+  /*background: rgba(0, 0, 0, .4);*/
+  background: rgba(255, 255, 255, .4);
+  color: #FFFFFF;
+  /* control the animation */
+  -webkit-transition: all 200ms ease-out;
+  -o-transition: all 200ms ease-out;
+  transition: all 200ms ease-out;
 }
 
 #buttons a#nextstep {
-  background: #000000;
-  color: #FFFFFF;
+  /*background: #000000;*/
+  background: #FFFFFF;
+  color: #2e92ff;
   /* last item do not need margin */
   margin-right: 0;
 }
@@ -428,4 +437,13 @@ input.invalid {
     width: 100%;
     max-width: 100%;
   }
+}
+
+#buttons a:hover, #buttons a#nextstep:hover {
+  transform: scale(1.01) translateY(-2px);
+  box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .25), 0 15px 20px -15px rgba(0, 0, 0, .25);
+}
+
+#buttons a:active, #buttons a#nextstep:active {
+  transform: scale(0.99) translateY(0px);
 }
