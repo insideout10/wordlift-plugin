@@ -58,7 +58,7 @@ exports.config = {
         // maxInstances can get overwritten per capability. So if you have an in-house Selenium
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
-        maxInstances: 5,
+        maxInstances: 10,
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
         name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')',
         build: process.env.TRAVIS_BUILD_NUMBER,
@@ -89,6 +89,13 @@ exports.config = {
                 browserName: 'firefox',
                 version: '50.0',
                 platform: 'Windows 10'
+            }
+        },
+        SL_IE_8_Windows_XP: {
+            desiredCapabilities: {
+                browserName: 'internetExplorer',
+                version: '8.0',
+                platform: 'Windows XP'
             }
         }
 
