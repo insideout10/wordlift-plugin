@@ -4,7 +4,7 @@ Plugin URL: https://wordlift.io
 Contributors: wordlift
 Tags: artificial intelligence, content recommendation, navigation, semantic editor, linked open data, open data, knowledge graph, seo, semantic seo, search engine optimization, schema.org, google rich snippets, microdata, json-ld, widget, semantic web, wikipedia, data visualization, link, content discovery
 Requires at least: 4.2
-Tested up to: 4.6.1
+Tested up to: 4.7.0
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -133,6 +133,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.8.1 (2016-12-09) =
+* Fix: [#415](https://github.com/insideout10/wordlift-plugin/issues/415): WordLift not working after updating to WP 4.7.
+* Fix: [#410](https://github.com/insideout10/wordlift-plugin/issues/410): Triples not showing on the WordLift dashboard.
+* Fix: [#406](https://github.com/insideout10/wordlift-plugin/issues/406): JSON-LD response corrupt.
 
 = 3.8.0 (2016-11-10) =
 * Enhancement: [#372](https://github.com/insideout10/wordlift-plugin/issues/372): The layout of the Navigator messes up with long entity titles.

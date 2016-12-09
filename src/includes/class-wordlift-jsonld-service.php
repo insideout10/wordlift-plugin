@@ -91,6 +91,12 @@ EOF;
 	 */
 	public function get() {
 
+		// Clear the buffer to be sure someone doesn't mess with our response.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/406.
+		// See https://codex.wordpress.org/AJAX_in_Plugins.
+		ob_clean();
+
 		// If no URI has been provided return an empty array.
 		if ( ! isset( $_REQUEST['uri'] ) ) {
 			wp_send_json( array() );
