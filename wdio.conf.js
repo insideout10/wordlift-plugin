@@ -54,21 +54,22 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://docs.saucelabs.com/reference/platforms-configurator
     //
-    capabilities: [{
-        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-        // grid with only 5 firefox instances available you can make sure that not more than
-        // 5 instances get started at a time.
-        maxInstances: 5,
+    capabilities: {
+        // // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+        // // grid with only 5 firefox instances available you can make sure that not more than
+        // // 5 instances get started at a time.
+        // maxInstances: 5,
         // name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')',
-        'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-        build: process.env.TRAVIS_BUILD_NUMBER,
+        // 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+        // build: process.env.TRAVIS_BUILD_NUMBER,
+
         // If using Open Sauce (https://saucelabs.com/opensauce/),
         // capabilities must be tagged as "public" for the jobs's status
         // to update (failed/passed). If omitted on Open Sauce, the job's
         // status will only be marked "Finished." This property can be
         // be omitted for commercial (private) Sauce Labs accounts.
         // Also see https://support.saucelabs.com/customer/portal/articles/2005331-why-do-my-tests-say-%22finished%22-instead-of-%22passed%22-or-%22failed%22-how-do-i-set-the-status-
-        'public': true,
+        // 'public': true,
 
         // See http://webdriver.io/guide/usage/multiremote.html
         //
@@ -82,7 +83,9 @@ exports.config = {
                 version: '54.0',
                 platform: 'Windows 10',
                 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-                build: process.env.TRAVIS_BUILD_NUMBER
+                build: process.env.TRAVIS_BUILD_NUMBER,
+                'public': true,
+                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
             }
         },
         SL_Firefox_50_Windows_10: {
@@ -91,7 +94,9 @@ exports.config = {
                 version: '50.0',
                 platform: 'Windows 10',
                 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-                build: process.env.TRAVIS_BUILD_NUMBER
+                build: process.env.TRAVIS_BUILD_NUMBER,
+                'public': true,
+                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
             }
         },
         SL_IE_8_Windows_XP: {
@@ -100,11 +105,12 @@ exports.config = {
                 version: '8.0',
                 platform: 'Windows XP',
                 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-                build: process.env.TRAVIS_BUILD_NUMBER
+                build: process.env.TRAVIS_BUILD_NUMBER,
+                'public': true,
+                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
             }
         }
-
-    }],
+    },
     //
     // ===================
     // Test Configurations
