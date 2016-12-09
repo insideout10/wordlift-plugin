@@ -59,16 +59,8 @@ exports.config = {
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
         maxInstances: 5,
-
-        // See:
-        // * https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
-        // * https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
-        // * https://github.com/webdriverio/webdriverio/blob/master/examples/cloudservices/webdriverio.saucelabs.js
-        browserName: 'chrome',
-        version: '54.0',
-        platform: 'Windows 10',
         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-        name: 'integration',
+        name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')',
         build: process.env.TRAVIS_BUILD_NUMBER,
 
         // If using Open Sauce (https://saucelabs.com/opensauce/),
@@ -77,7 +69,29 @@ exports.config = {
         // status will only be marked "Finished." This property can be
         // be omitted for commercial (private) Sauce Labs accounts.
         // Also see https://support.saucelabs.com/customer/portal/articles/2005331-why-do-my-tests-say-%22finished%22-instead-of-%22passed%22-or-%22failed%22-how-do-i-set-the-status-
-        'public': true
+        'public': true,
+
+        // See http://webdriver.io/guide/usage/multiremote.html
+        //
+        // See:
+        // * https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
+        // * https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
+        // * https://github.com/webdriverio/webdriverio/blob/master/examples/cloudservices/webdriverio.saucelabs.js
+        SL_Chrome_54_Windows_10: {
+            desiredCapabilities: {
+                browserName: 'chrome',
+                version: '54.0',
+                platform: 'Windows 10'
+            }
+        },
+        SL_Firefox_50_Windows_10: {
+            desiredCapabilities: {
+                browserName: 'firefox',
+                version: '50.0',
+                platform: 'Windows 10'
+            }
+        }
+
     }],
     //
     // ===================
