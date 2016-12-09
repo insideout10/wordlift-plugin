@@ -60,7 +60,6 @@ exports.config = {
         // 5 instances get started at a time.
         maxInstances: 10,
         name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')',
-        build: process.env.TRAVIS_BUILD_NUMBER,
 
         // If using Open Sauce (https://saucelabs.com/opensauce/),
         // capabilities must be tagged as "public" for the jobs's status
@@ -81,7 +80,8 @@ exports.config = {
                 browserName: 'chrome',
                 version: '54.0',
                 platform: 'Windows 10',
-                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+                build: process.env.TRAVIS_BUILD_NUMBER
             }
         },
         SL_Firefox_50_Windows_10: {
@@ -89,7 +89,8 @@ exports.config = {
                 browserName: 'firefox',
                 version: '50.0',
                 platform: 'Windows 10',
-                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+                build: process.env.TRAVIS_BUILD_NUMBER
             }
         },
         SL_IE_8_Windows_XP: {
@@ -97,7 +98,8 @@ exports.config = {
                 browserName: 'internetExplorer',
                 version: '8.0',
                 platform: 'Windows XP',
-                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+                build: process.env.TRAVIS_BUILD_NUMBER
             }
         }
 
