@@ -60,7 +60,8 @@ exports.config = {
         // 5 instances get started at a time.
         maxInstances: 5,
         // name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')',
-
+        'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+        build: process.env.TRAVIS_BUILD_NUMBER,
         // If using Open Sauce (https://saucelabs.com/opensauce/),
         // capabilities must be tagged as "public" for the jobs's status
         // to update (failed/passed). If omitted on Open Sauce, the job's
