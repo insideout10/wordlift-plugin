@@ -59,7 +59,6 @@ exports.config = {
         // grid with only 5 firefox instances available you can make sure that not more than
         // 5 instances get started at a time.
         maxInstances: 10,
-        'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
         name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')',
         build: process.env.TRAVIS_BUILD_NUMBER,
 
@@ -81,21 +80,24 @@ exports.config = {
             desiredCapabilities: {
                 browserName: 'chrome',
                 version: '54.0',
-                platform: 'Windows 10'
+                platform: 'Windows 10',
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
             }
         },
         SL_Firefox_50_Windows_10: {
             desiredCapabilities: {
                 browserName: 'firefox',
                 version: '50.0',
-                platform: 'Windows 10'
+                platform: 'Windows 10',
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
             }
         },
         SL_IE_8_Windows_XP: {
             desiredCapabilities: {
                 browserName: 'internetExplorer',
                 version: '8.0',
-                platform: 'Windows XP'
+                platform: 'Windows XP',
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
             }
         }
 
