@@ -1,42 +1,49 @@
-sudo: false
+# We need `sudo` because we're going to install Apache with PHP.
+# See https://docs.travis-ci.com/user/ci-environment/#Virtualization-environments
+sudo: required
+
+# Set the language to PHP since we're going to setup a WordPress web site.
 language: php
+
+php:
+  - "5.6"
+
+# Cache the node_modules folder.
+# See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
+cache:
+  directories:
+    - node_modules
+
+addons:
+  # Have Travis CI start a SauceLabs Connect instance for us.
+  sauce_connect: true
+
 env:
   global:
-  - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
-  - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
-  - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
-  - WL_SSL_VERIFY_ENABLED=true
-  - WL_SSL_V1_FORCED=true
-matrix:
-  include:
-  - php: 5.5
-    env: WP_TRAVISCI=travis:js
-  - php: 5.3
-    env: WP_TRAVISCI=travis:phpunit
-  - php: 5.4
-    env: WP_TRAVISCI=travis:phpunit
-  - php: 5.5
-    env: WP_TRAVISCI=travis:phpunit
-  - php: 5.6
-    env: WP_TRAVISCI=travis:phpunit
-  - php: 7.0
-    env: WP_TRAVISCI=travis:phpunit
-before_install:
-- |
-  if [[ "$WP_TRAVISCI" == "travis:phpunit" ]]; then
-    bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-    composer install --dev
-  fi
-- |
-  if [[ "$WP_TRAVISCI" == "travis:js" ]]; then
-    export CHROME_BIN=chromium-browser
-    export DISPLAY=:99.0
-    sh -e /etc/init.d/xvfb start
-  fi
+    # SauceLabs environment vars.
+    - secure: "xeBuLOq2kr8QEzHzMOG/3Xiq3EtlDRfULbqz0RMAIh69aNhi67bJ1K9/ICXxnVsZNqmB5zrYQyCt/B+3QSxEp2mDw7rwm4w3RDJYfkpENVU4I7Zkew+MRcQ9RZELRtGSNVGYFFx2JdwAWSVClnWOAatQN332ZCU/umnr1qZfjX1ym6ZJ+xMPQxUK+JhEcJG7N/sYZwpzOdwd+S+Vpg9ecZgNGteo3O0RTpqCZpCRKN0B15T/MyUrv3smzc43sUoGx44HtU5/JfeJnf2Fuv6xdbBg9vpvQjMSIkTqf4aJGm4aDAOKhltOb+keRGxacpJv2Tw3QIM5s0t5mw7f8QnGdN+GhipvINqDBhJ/vCk6lmmSFQahEzRjD4ej8MspAWhcEwH2aSZNVxuAuyM6bL+L8+qcQmdzweN+5+cLwp82YNDEm7KSLkekiMSbcTRvEAmSzNKEOSA+oyAjA3YujrFBpTalSTiyLl66eVdOYWAQp+AfNtTYRA49SEpvPpSQJZ3CjeSruuHP+QhAGCoLdyxJ2eM3WO7sD9T2ynSJOpKeSMeVlfN+FZkqhgfBOdl2NKafyJuoBGvTyhpTW4HExBnuRmWdwlMv4YcT4dI8Lgtgs2A6BnfeFmrBHpOwfdk3nQQdz2+Gqhk/Hcp9QedNivg7SDP4BTEBuqa0/VL1xI3WhSM="
+    - secure: "ZPfye+W5VUmTjcaz1wSQywjFdTZsvRjcPUXf+dRUOtVjprQSRA+XboTDB3vYBxFP7+45pFpAwB51BlOb1tGWaXmcrPLAKyutoZcjlWs8F32YgMjkBT0cHbF/K3zrDpS0jw2gIATXDsqr57KbtW63w4HohDaiWtj1yxfp5FY7/ULDgB0pv100MvXJvs0kGuVkfiv9/MxpkmhuNF8P1wEhWKXwzySLRdGxRzdp5wc2/KuetA7FoXgGrBrmUWvsDzH56TgJYxmh3BI9QqCJfjTFVS5rJ15CkZGT6LajfXNL1FtHXXDbMmgZx9h/Wrpdl0jxQd2F7eEWF3hhFG5br/7ufseAxiO90seyNOslyiMiKVhC6XrD6B0Q2trD1FpAsLPaDgaHYVRV75rP9w6I7j1xEJUWHPrrBS6FndaoeN0qQbnXJuz3jPNoxzWlbCLMNaEX8mLeRr+GB5AFLTWNox/yVDR5LAF6BoAvj+MPRQsiW+Gc+XdrZFiE20Yhgvmu/KTUiwOgWjsxRnylgzO5t/j5+SHa4MdgZgeYPe/6uCXTSeMRvmDsLtkcYPKzXSIUVqXJzLOA6GtFRFqRnRW10cjr9i6cDUVaH/CvwRH/ZkgvyqwMYXNE0vMFbITKr0Sorsi3dVovTwKex3nUoX3ajPoH36lma/JC6lLPPfDqn2/j238="
+
+services:
+  # Require MySQL.
+  - mysql
+
 before_script:
-  - npm install -g npm
-  - npm install -g grunt-cli
+  # Create WordPress' database.
+  - mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
+  # Install Apache.
+  - .ci/travis/install_apache.sh
+  # Install wp-cli.
+  - .ci/travis/install_wp_cli.sh
+  # Install WordPress.
+  - .ci/travis/install_wordpress.sh
+  # Install an update version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
+  - . $HOME/.nvm/nvm.sh
+  - nvm install 6 --reinstall-packages-from=node
+  - nvm use 6
+  - node --version
+  # Install Node dependencies.
   - npm install
-script: grunt $WP_TRAVISCI
-notifications:
-  slack: insideout10:NcslbQWVmD4YPInDq8TpBIno
+
+# Finally launch the script.
+script: npm run test:e2e
