@@ -204,7 +204,7 @@ class Wordlift_Admin_Install_Wizard {
 		wp_enqueue_style( 'wordlift-admin-install-wizard', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/wordlift-admin-install-wizard.css' );
 
 		wp_enqueue_script( 'wordlift-admin-install-wizard', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-install-wizard.js' );
-		wp_localize_script( 'wordlift-admin-install-wizard', '_wlAdminInstallWizard', array(
+		wp_localize_script( 'wordlift-admin-install-wizard', '_wlAdminSetup', array(
 			'ajaxUrl' => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
 			'action'  => 'wl_validate_key',
 			'media'   => array(
