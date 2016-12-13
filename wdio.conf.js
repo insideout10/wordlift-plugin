@@ -98,17 +98,17 @@ exports.config = {
                 'public': true,
                 name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
             }
-        // },
-        // SL_IE_8_Windows_XP: {
-        //     desiredCapabilities: {
-        //         browserName: 'internetExplorer',
-        //         version: '8.0',
-        //         platform: 'Windows XP',
-        //         'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-        //         build: process.env.TRAVIS_BUILD_NUMBER,
-        //         'public': true,
-        //         name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-        //     }
+        },
+        SL_IE_8_Windows_XP: {
+            desiredCapabilities: {
+                browserName: 'internet explorer',
+                version: '8.0',
+                platform: 'Windows XP',
+                'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+                build: process.env.TRAVIS_BUILD_NUMBER,
+                'public': true,
+                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
+            }
         }
     },
     //
