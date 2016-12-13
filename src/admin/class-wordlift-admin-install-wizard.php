@@ -151,36 +151,40 @@ class Wordlift_Admin_Install_Wizard {
 			return;
 		}
 
-		// Set the current step or 0 if not set (or invalid).
-		$step = ! isset( $_GET['step'] ) || 5 < absint( $_GET['step'] ) ? 0 : absint( $_GET['step'] );
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-setup.php';
 
-		// Print the header.
-		$this->header( $step );
-
-		// Print the page.
-		switch ( $step ) {
-			case 0:
-				$this->welcome_page();
-				break;
-			case 1:
-				$this->license_page();
-				break;
-			case 2:
-				$this->vocabulary_page();
-				break;
-			case 3:
-				$this->language_page();
-				break;
-			case 4:
-				$this->publisher_page();
-				break;
-			case 5:
-				$this->finish();
-				break;
-		}
-
-		// Print the footer.
-		$this->footer();
+//		return;
+//
+//		// Set the current step or 0 if not set (or invalid).
+//		$step = ! isset( $_GET['step'] ) || 5 < absint( $_GET['step'] ) ? 0 : absint( $_GET['step'] );
+//
+//		// Print the header.
+//		$this->header( $step );
+//
+//		// Print the page.
+//		switch ( $step ) {
+//			case 0:
+//				$this->welcome_page();
+//				break;
+//			case 1:
+//				$this->license_page();
+//				break;
+//			case 2:
+//				$this->vocabulary_page();
+//				break;
+//			case 3:
+//				$this->language_page();
+//				break;
+//			case 4:
+//				$this->publisher_page();
+//				break;
+//			case 5:
+//				$this->finish();
+//				break;
+//		}
+//
+//		// Print the footer.
+//		$this->footer();
 
 		// Finally exit.
 		exit;

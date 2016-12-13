@@ -1,0 +1,348 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800");
+/* line 3, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+body {
+  background-color: #F5F5F5;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  color: #FFFFFF;
+  font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* line 15, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+body * {
+  box-sizing: border-box;
+}
+
+/* line 19, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.container {
+  position: relative;
+  top: 25vh;
+  margin: auto;
+  width: 750px;
+  max-width: 100%;
+  height: 400px;
+  text-align: center;
+  padding: 24px 34px;
+  border: 16px solid #F5F5F5;
+  background-color: #519fff;
+}
+
+@media screen and (max-width: 550px) {
+  /* line 19, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+  .container {
+    top: 0;
+    height: 100%;
+  }
+}
+
+/* line 39, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+header {
+  display: table;
+  text-align: left;
+  width: 100%;
+  height: 24px;
+}
+
+/* line 47, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+header h1 {
+  display: inline-block;
+  font-size: 24px;
+  line-height: 24px;
+  margin: 0;
+  font-weight: 300;
+}
+
+/* line 57, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+header h1 strong {
+  font-weight: 900;
+}
+
+/* line 60, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+header img {
+  float: right;
+  margin-top: 4px;
+  width: 60px;
+  height: 16px;
+}
+
+/* line 68, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+ul.wl-pane-indicator {
+  position: relative;
+  top: -20px;
+  padding: 0;
+  margin: 0;
+  height: 24px;
+  list-style: none;
+}
+
+@media screen and (max-width: 550px) {
+  /* line 68, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+  ul.wl-pane-indicator {
+    top: 0;
+  }
+}
+
+/* line 83, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+ul.wl-pane-indicator li {
+  position: relative;
+  display: inline-block;
+  margin: 8px 3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+  transition: all 200ms ease-out;
+}
+
+/* line 98, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+ul.wl-pane-indicator li.active {
+  background-color: #FFFFFF;
+}
+
+/* line 101, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.btn-wrapper {
+  position: absolute;
+  bottom: 24px;
+  width: 100%;
+  text-align: center;
+}
+
+/* line 109, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+button,
+input[type="button"] {
+  border: 0;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 32px;
+  width: 112px;
+  height: 32px;
+  border-radius: 5px;
+  padding: 0 8px;
+  font-size: 14px;
+  line-height: 32px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.4);
+  color: #FFFFFF;
+  transition: all 200ms ease-out;
+}
+
+/* line 134, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+button.wl-next,
+input[type="button"].wl-next {
+  background: #FFFFFF;
+  color: #2e92ff;
+  margin-right: 0;
+}
+
+/* line 140, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+button:hover,
+input[type="button"]:hover {
+  transform: scale(1.01) translateY(-2px);
+  box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.25), 0 15px 20px -15px rgba(0, 0, 0, 0.25);
+}
+
+/* line 143, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+button:active,
+input[type="button"]:active {
+  transform: scale(0.99) translateY(0px);
+}
+
+/* line 147, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.viewport {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: auto;
+  margin-top: 8px;
+  width: 480px;
+  height: 288px;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 550px) {
+  /* line 147, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+  .viewport {
+    width: calc(100% - 32px);
+    height: calc(100vh - 136px);
+  }
+}
+
+/* line 166, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.viewport ul {
+  list-style: none;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  display: block;
+  transition: all 300ms ease-out;
+}
+
+/* line 177, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.viewport ul li {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  width: calc(100vw - 64px);
+  max-width: 480px;
+  height: 100%;
+}
+
+/* line 191, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.page-title {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 32px;
+  line-height: 32px;
+  margin-bottom: 8px;
+}
+
+/* line 202, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.page-txt {
+  white-space: normal;
+  position: relative;
+  margin: auto;
+  margin-bottom: 16px;
+  max-width: 400px;
+  font-weight: 200;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/* line 216, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+ul.page-list {
+  white-space: normal;
+  text-align: left;
+  height: 80px;
+  max-width: 480px;
+}
+
+/* line 223, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+ul.page-list li {
+  height: 40px;
+  width: 150px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 40px;
+}
+
+/* line 232, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+ul.page-list li span {
+  font-size: 20px;
+  margin-right: 4px;
+}
+
+/* line 236, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+input[type="text"],
+select {
+  border: none;
+  outline: none;
+  display: block;
+  margin: auto;
+  position: relative;
+  width: calc(100vw - 64px);
+  max-width: 400px;
+  height: 32px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 32px;
+  background: #FFFFFF;
+  box-shadow: inset 0 0 0 2px #FFFFFF, inset 0 0 0 4px #2E92FF;
+  border-radius: 4px;
+}
+
+/* line 260, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+select {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=");
+  background-size: 32px 32px;
+  background-position: 368px 0;
+  background-repeat: no-repeat;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -moz-appearance-text-overflow: ellipsis;
+}
+
+/* line 269, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+p.page-det {
+  display: block;
+  margin: 8px auto;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  white-space: normal;
+  width: calc(100vw - 64px);
+  max-width: 400px;
+}
+
+/* line 283, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper {
+  margin-bottom: 16px;
+}
+
+/* line 286, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper input {
+  display: none;
+}
+
+/* line 290, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper label {
+  width: 80px;
+  display: inline-block;
+  text-align: left;
+  margin: 0 22px;
+}
+
+/* line 296, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper .radio {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  margin-right: 8px;
+  border-radius: 50%;
+  border: 1px solid #FFFFFF;
+}
+
+/* line 307, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper .radio .check {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  transition: all 200ms ease-out;
+}
+
+/* line 322, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper input[type="radio"]:checked ~ .radio .check {
+  transform: scale(1);
+}
+
+/* line 325, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+.radio-wrapper input[type="radio"]:not(:checked) ~ .radio .check {
+  transform: scale(0);
+}
+
+/* line 328, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/first-activation/sass/style.sass */
+a.add-logo {
+  color: #FFFFFF;
+  font-weight: 600;
+  display: inline-block;
+  margin: auto;
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  text-decoration: none;
+  border-bottom: 2px solid #FFFFFF;
+  text-shadow: .03em 0 #519fff, -.03em 0 #519fff, 0 .03em #519fff, 0 -.03em #519fff, .06em 0 #519fff, -.06em 0 #519fff, .09em 0 #519fff, -.09em 0 #519fff, .12em 0 #519fff, -.12em 0 #519fff, .15em 0 #519fff, -.15em 0 #519fff;
+}
+
+/*# sourceMappingURL=style.css.map */
