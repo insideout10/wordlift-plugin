@@ -88,18 +88,18 @@ describe('Open the WordPress web site', function () {
             // Click next and wait for the 3rd pane.
             clickNextAndWaitForPane(2);
 
-            browser.click('input#vocabulary');
-
-            // Set an invalid vocabulary path.
-            browser.keys(['Backspace', '_']);
-
-            browser.saveScreenshot();
-
-            // Wait until the element becomes invalid.
-            browser.waitForExist('input#vocabulary.invalid');
-
-            // Set a valid vocabulary.
-            browser.keys('Backspace');
+            // browser.click('input#vocabulary');
+            //
+            // // Set an invalid vocabulary path.
+            // browser.keys(['Backspace', '_']);
+            //
+            // browser.saveScreenshot();
+            //
+            // // Wait until the element becomes invalid.
+            // browser.waitForExist('input#vocabulary.invalid');
+            //
+            // // Set a valid vocabulary.
+            // browser.keys('Backspace');
 
             // Wait until the element becomes valid.
             browser.waitForExist('input#vocabulary.valid');
