@@ -1,8 +1,8 @@
 'use strict';
 
-describe('On a WordPress site', function () {
+describe('Open the WordPress web site', function () {
 
-    it('admin should log in', function () {
+    it('admin logs in', function () {
 
         browser.url('http://localhost/wp-login.php');
         browser.setValue('#user_login', 'admin');
@@ -13,17 +13,27 @@ describe('On a WordPress site', function () {
 
     });
 
-    describe('in the admin area', function () {
+    describe('while in WordPress backend', function () {
 
-        it('should open the plugins page', function () {
+        it('admin opens the plugins page and activates WordLift', function () {
 
+            // Navigate to the plugins page.
             browser.url('http://localhost/wp-admin/plugins.php');
 
-            expect(browser.element('[data-slug="wordlift"][data-plugin="wordlift/wordlift.php"]')).not.toBeUndefined();
+            // Check the URL.
+            expect(browser.getUrl()).toBe('http://localhost/wp-admin/plugins.php');
 
-            browser.click('[data-slug="wordlift"][data-plugin="wordlift/wordlift.php"] .activate a');
+            // Get WordLift's row in the plugins' list.
+            var wordlift = browser.element('[data-slug="wordlift"]');
 
-            expect(browser.getUrl()).toBe('http://wordpress-46.localhost/wp-admin/admin.php?page=wl-setup');
+            // Check that WordLift's row is there.
+            expect(wordlift).not.toBeUndefined();
+
+            // Activate WordLift.
+            wordlift.click('.activate a');
+
+            // We got redirected to the `wl-setup` page.
+            expect(browser.getUrl()).toBe('http://localhost/wp-admin/admin.php?page=wl-setup');
 
         });
 
