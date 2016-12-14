@@ -23,6 +23,8 @@ env:
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
+    # WordLift's Key.
+    - secure: "exGT91J35T9zhTHMTmAkdAeMkUm+Xju8yrx3hyxHuAXt6rpwOGFPoeabRLlyj70+DmSMUK3b63yvwofqNtCoBgeNpRmXh9YIGmIZKYQdexD1vtYe6D1fvKM+7/08Z5dlIvQcSJX2gsDzZNQMVcRd0k9OrwrRN5TDZLjIWxBR70M="
 
 services:
   # Require MySQL.
