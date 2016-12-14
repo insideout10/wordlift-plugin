@@ -269,9 +269,9 @@ class Wordlift {
 	 *
 	 * @since  3.9.0
 	 * @access private
-	 * @var \Wordlift_Admin_Install_Wizard $install_wizard The Install wizard.
+	 * @var \Wordlift_Admin_Setup $admin_setup The Install wizard.
 	 */
-	private $install_wizard;
+	private $admin_setup;
 
 	/**
 	 * The Content Filter Service hooks up to the 'the_content' filter and provides
@@ -518,7 +518,7 @@ class Wordlift {
 		/**
 		 * The admin 'Install wizard' page.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-install-wizard.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-setup.php';
 
 		/**
 		 * The admin 'Download Your Data' page.
@@ -652,7 +652,7 @@ class Wordlift {
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 
 		// Create an instance of the install wizard.
-		$this->install_wizard = new Wordlift_Admin_Install_Wizard( $configuration_service, $this->key_validation_service );
+		$this->admin_setup = new Wordlift_Admin_Setup( $configuration_service, $this->key_validation_service, $this->entity_service );
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
@@ -767,6 +767,9 @@ class Wordlift {
 
 		// Hook the AJAX wl_validate_key action to the Key Validation service.
 		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
+
+		// Hook the `admin_init` function to the Admin Setup.
+		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
 	}
 

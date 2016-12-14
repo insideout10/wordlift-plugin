@@ -3,7 +3,7 @@
     <!-- Defining responsive ambient. -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>WordLift Setup</title>
+    <title><?php esc_html_e( 'WordLift Setup', 'wordlift' ); ?></title>
 
 	<?php
 
@@ -28,8 +28,8 @@
 	// Finally print styles and scripts.
 	wp_print_styles();
 	wp_print_scripts();
-//	do_action( 'admin_print_styles' );
-//	do_action( 'admin_print_scripts' );
+	//	do_action( 'admin_print_styles' );
+	//	do_action( 'admin_print_scripts' );
 
 	?>
 
@@ -148,25 +148,28 @@
         </p>
         <div class="radio-wrapper">
             <label for="personal">
-                <input id="personal" type="radio" name="user_type" value="personal" checked>
+                <input id="personal" type="radio" name="user_type" value="person" checked>
                 <span class="radio"><span class="check"></span></span>
-                <span class="label">
-          Personal
-        </span>
+                <span class="label"><?php esc_html_e( 'Personal', 'wordlift' ); ?></span>
             </label>
             <label for="company">
-                <input id="company" type="radio" name="user_type" value="company">
+                <input id="company" type="radio" name="user_type" value="organization">
                 <span class="radio"><span class="check"></span></span>
-                <span class="label">
-          Company
-        </span>
+                <span class="label"><?php esc_html_e( 'Company', 'wordlift' ); ?></span>
             </label>
         </div>
         <input type="text" name="name" data-wl-name="wl-name" value="" autocomplete="off"
                placeholder="<?php esc_attr_e( "What's your name?", 'wordlift' ); ?>">
-        <a data-wl-add-logo="wl-add-logo" class="add-logo" href="javascript:void(0);">
-			<?php esc_html_e( 'Add your logo', 'wordlift' ); ?>
-        </a>
+
+        <div data-wl-logo="wl-logo">
+            <input type="hidden" name="logo"/>
+            <div data-wl-logo-preview="wl-logo-preview" class="wl-logo-preview"><a
+                        data-wl-remove-logo="wl-remove-logo" href="javascript:void(0);">X</a>
+            </div>
+            <a data-wl-add-logo="wl-add-logo" class="add-logo" href="javascript:void(0);">
+				<?php esc_html_e( 'Add your logo', 'wordlift' ); ?>
+            </a>
+        </div>
         <div class="btn-wrapper">
             <input type="submit" value="<?php esc_attr_e( 'Finish', 'wordlift' ); ?>">
         </div>
@@ -183,6 +186,8 @@
     </header>
 
     <form method="post">
+		<?php wp_nonce_field( 'wl-save-configuration' ); ?>
+        <input type="hidden" name="action" value="wl-save-configuration"/>
         <div class="viewport"></div>
     </form>
 

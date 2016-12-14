@@ -27,7 +27,7 @@
             clearTimeout($elem.data('timeout'));
 
             // Validate the key, after a delay, so that another key is pressed, this validation is cancelled.
-            $elem.data('timeout', setTimeout(fn), 500);
+            $elem.data('timeout', setTimeout(fn, 500));
 
         };
 
@@ -124,7 +124,16 @@
                 });
 
             // Media upload.
-            $('a[data-wl-add-logo]').on('click', function () {
+            $('div[data-wl-logo]').each(function () {
+
+                // A jQuery reference to the "add logo" button.
+                var $add = $('a[data-wl-add-logo]', this);
+
+                // A jQuery reference to the logo preview.
+                var $preview = $('.wl-logo-preview', this);
+
+                // A jQuery reference to the logo input element.
+                var $input = $('input[name=logo]', this);
 
                 // Create a WP media uploader.
                 var uploader = wp.media({
@@ -133,20 +142,44 @@
                     multiple: false
                 });
 
-                // Catch `select` events on the uploader.
-                uploader
-                    .on('select', function () {
+                // Add logo.
+                $add.on('click', function () {
 
-                        var attachment = uploader.state().get('selection').first().toJSON();
+                    // Catch `select` events on the uploader.
+                    uploader
+                        .on('select', function () {
 
-                        $('#logo img')
-                            .attr('src', attachment.url)
-                            .data('id', attachment.id);
+                            // Get the selected attachment.
+                            var attachment = uploader.state().get('selection').first().toJSON();
 
-                        $('#logo').show();
-                        $('#addlogo').hide();
-                    })
-                    .open();
+                            // Set the selected image as background for the div. We use a background to keep the ratio
+                            // in a limited size constraint.
+                            $preview.css('background-image', 'url(' + attachment.url + ')').show();
+
+                            // Set the logo id.
+                            $input.val(attachment.id);
+
+                            // Hide the add logo button.
+                            $add.hide();
+
+                        })
+                        .open();
+
+                });
+
+                // Remove logo.
+                $('a[data-wl-remove-logo]').on('click', function () {
+
+                    // Remove the preview.
+                    $preview.css('background-image', 'none').hide();
+
+                    // Unset the logo id.
+                    $input.val('');
+
+                    // Show the add logo link.
+                    $add.show();
+
+                });
 
             });
 
@@ -180,8 +213,9 @@
             // Create a {@link PaneIndicator}.
             new PaneIndicator(this).$elem.insertBefore($container);
 
-            // Get the viewport width.
-            var width = that.$elem.width();
+            // The current pane index, set in the `goTo` function and used when the window resizes to reposition the
+            // current pane.
+            var currentIndex = 0;
 
             /**
              * Add a new {@link Pane} to the list of managed {@link Pane}s.
@@ -215,10 +249,14 @@
              */
             var goTo = function (index) {
 
+                // Ignore indexes outside of boundaries.
+                if (index < 0 || index >= panes.length) return;
+
                 // If the index is in the range move the viewport to it.
-                if (index >= 0 && index < panes.length) {
-                    that.$elem.css('margin-left', -width * index);
-                }
+                that.$elem.css('margin-left', -$container.width() * index);
+
+                // Update the current index.
+                currentIndex = index;
 
                 // Trigger an pane change event with the index of the current pane.
                 that.$elem.trigger('paneChange', index);
@@ -233,6 +271,20 @@
             // Catch 'next' events to move to the next pane.
             this.$elem.on('next', function (e, pane) {
                 goTo(panes.indexOf(pane) + 1);
+
+            });
+
+            // When the window resizes, also the viewport size might change, so we ask the container to go back to the
+            // current index.
+            $(window).on('resize', function () {
+
+                // Delay the execution to avoid repeated actions.
+                delay($container, function () {
+
+                    // Move again to the current index.
+                    goTo(currentIndex);
+
+                });
 
             });
 
@@ -301,10 +353,18 @@
         // Create a controller and attach it to the viewport.
         var controller = new Controller($('.viewport'));
 
+        /**
+         * Always return true to validation requests.
+         *
+         * @since 3.9.0
+         *
+         * @returns {boolean} Always true.
+         */
         var alwaysValid = function () {
             return true;
         };
 
+        // The list of validation, one for each step.
         var validations = [
             alwaysValid,
             function () {
