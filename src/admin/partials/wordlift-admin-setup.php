@@ -158,7 +158,7 @@
                 <span class="label"><?php esc_html_e( 'Company', 'wordlift' ); ?></span>
             </label>
         </div>
-        <input type="text" name="name" data-wl-name="wl-name" value="" autocomplete="off"
+        <input type="text" id="name" name="name" data-wl-name="wl-name" value="" autocomplete="off"
                placeholder="<?php esc_attr_e( "What's your name?", 'wordlift' ); ?>">
 
         <div data-wl-logo="wl-logo">
@@ -171,7 +171,7 @@
             </a>
         </div>
         <div class="btn-wrapper">
-            <input type="submit" value="<?php esc_attr_e( 'Finish', 'wordlift' ); ?>">
+            <input type="submit" id="btn-finish" value="<?php esc_attr_e( 'Finish', 'wordlift' ); ?>">
         </div>
     </script>
 

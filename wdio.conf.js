@@ -1,4 +1,4 @@
-exports.config = {
+var config = {
 
     //
     // =================
@@ -8,8 +8,8 @@ exports.config = {
     // should work too though). These services define specific user and key (or access key)
     // values you need to put in here in order to connect to these services.
     //
-    user: process.env.SAUCE_USERNAME,
-    key: process.env.SAUCE_ACCESS_KEY,
+    // user: process.env.SAUCE_USERNAME,
+    // key: process.env.SAUCE_ACCESS_KEY,
 
     // `sauceConnect` must be false when running in Travis-CI, since Travis-CI is providing SauceConnect.
     // Remember: !undefined === true
@@ -85,23 +85,6 @@ exports.config = {
             build: process.env.TRAVIS_BUILD_NUMBER,
             'public': true,
             name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-        }, {
-            browserName: 'firefox',
-            version: '50.0',
-            platform: 'Windows 10',
-            'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-            build: process.env.TRAVIS_BUILD_NUMBER,
-            'public': true,
-            name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-
-        }, {
-            browserName: 'internet explorer',
-            version: '8.0',
-            platform: 'Windows XP',
-            'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-            build: process.env.TRAVIS_BUILD_NUMBER,
-            'public': true,
-            name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
         }],
     //
     // ===================
@@ -125,7 +108,7 @@ exports.config = {
     //
     // Set a base URL in order to shorten url command calls. If your url parameter starts
     // with "/", then the base url gets prepended.
-    baseUrl: 'http://localhost',
+    baseUrl: 'http://wordpress.localhost',
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -159,7 +142,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['sauce'],
+    services: ['selenium-standalone'],
     //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -251,3 +234,47 @@ exports.config = {
     // onComplete: function(exitCode) {
     // }
 };
+
+
+// Tweak the configuration if we're in Travis-CI.
+if (process.env.CI) {
+
+    // Set the tests' base url.
+    config.baseUrl = 'http://localhost';
+
+    // Configure Sauce Labs.
+    config.user = process.env.SAUCE_USERNAME;
+    config.key = process.env.SAUCE_ACCESS_KEY;
+
+    // Use Sauce.
+    config.services = ['sauce'];
+
+    // Add browsers: Firefox, Internet Explorer.
+    // config.capabilities.push({
+    //     browserName: 'firefox',
+    //     version: '50.0',
+    //     platform: 'Windows 10',
+    //     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    //     build: process.env.TRAVIS_BUILD_NUMBER,
+    //     'public': true,
+    //     name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
+    //
+    // }, {
+    //     browserName: 'internet explorer',
+    //     version: '8.0',
+    //     platform: 'Windows XP',
+    //     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    //     build: process.env.TRAVIS_BUILD_NUMBER,
+    //     'public': true,
+    //     name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
+    // });
+
+    // Set Travis job and build numbers.
+    for (var i = 0; i < config.capabilities.length; i++) {
+        config.capabilities[i]['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
+        config.capabilities[i]['build'] = process.env.TRAVIS_BUILD_NUMBER;
+    }
+
+}
+
+exports.config = config;
