@@ -77,15 +77,7 @@ var config = {
         // * https://wiki.saucelabs.com/display/DOCS/Platform+Configurator#/
         // * https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
         // * https://github.com/webdriverio/webdriverio/blob/master/examples/cloudservices/webdriverio.saucelabs.js
-        {
-            browserName: 'chrome',
-            version: '54.0',
-            platform: 'Windows 10',
-            'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-            build: process.env.TRAVIS_BUILD_NUMBER,
-            'public': true,
-            name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-        }],
+        {browserName: 'firefox'}],
     //
     // ===================
     // Test Configurations
@@ -250,24 +242,33 @@ if (process.env.CI) {
     config.services = ['sauce'];
 
     // Add browsers: Firefox, Internet Explorer.
-    // config.capabilities.push({
-    //     browserName: 'firefox',
-    //     version: '50.0',
-    //     platform: 'Windows 10',
-    //     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    //     build: process.env.TRAVIS_BUILD_NUMBER,
-    //     'public': true,
-    //     name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-    //
-    // }, {
-    //     browserName: 'internet explorer',
-    //     version: '8.0',
-    //     platform: 'Windows XP',
-    //     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    //     build: process.env.TRAVIS_BUILD_NUMBER,
-    //     'public': true,
-    //     name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-    // });
+    config.capabilities = [
+        {
+            browserName: 'chrome',
+            version: '54.0',
+            platform: 'Windows 10',
+            'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+            build: process.env.TRAVIS_BUILD_NUMBER,
+            'public': true,
+            name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
+        // }, {
+        //     browserName: 'firefox',
+        //     version: '50.0',
+        //     platform: 'Windows 10',
+        //     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+        //     build: process.env.TRAVIS_BUILD_NUMBER,
+        //     'public': true,
+        //     name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
+        //
+        // }, {
+        //     browserName: 'internet explorer',
+        //     version: '8.0',
+        //     platform: 'Windows XP',
+        //     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+        //     build: process.env.TRAVIS_BUILD_NUMBER,
+        //     'public': true,
+        //     name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
+        }];
 
     // Set Travis job and build numbers.
     for (var i = 0; i < config.capabilities.length; i++) {

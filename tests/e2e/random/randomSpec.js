@@ -15,6 +15,30 @@ describe('Open the WordPress web site', function () {
 
     describe('while in WordPress backend, admin', function () {
 
+        // `paneX` represents the expected horizontal offset of the current pane. It is set the first time, when the
+        // _wl-setup_ page is opened.
+        var paneX;
+
+        /**
+         * Click on the next button in the pane at `index` (1-based).
+         *
+         * @since 3.9.0
+         *
+         * @param {Number} index The pane index (1-based).
+         */
+        var clickNextAndWaitForPane = function (index) {
+
+            // Click on the next button.
+            browser.click('.viewport > ul > li:nth-child(' + index + ') input.wl-next');
+
+            // Wait until the next pane is visible.
+            browser.waitUntil(function () {
+                // console.log(browser.getLocation('.viewport > ul > li:nth-child()', 'x'));
+                return paneX === browser.getLocation('.viewport > ul > li:nth-child(' + (index + 1) + ')', 'x');
+            }, 750, 'expected pane to be visible within 750ms');
+
+        };
+
         it('opens the plugins page and activates WordLift', function () {
 
             // Navigate to the plugins page.
@@ -35,67 +59,75 @@ describe('Open the WordPress web site', function () {
             // We got redirected to the `wl-setup` page.
             expect(browser.getUrl()).toMatch(/\/wp-admin\/index\.php\?page=wl-setup$/);
 
+            // Set the x offset for the current visible pane.
+            paneX = browser.getLocation('.viewport > ul > li:first-child', 'x');
+
         });
 
         it('continues to License Key', function () {
 
-            browser.click('.viewport > ul li:first-child input.wl-next');
+            // Click next and wait for the 2nd pane.
+            clickNextAndWaitForPane(1);
 
-            browser.setValue('input[name=key]', 'an-invalid-key');
+            // Set an invalid key.
+            browser.setValue('input#key', 'an-invalid-key');
 
-            expect(browser.element('input.invalid[name=key]')).not.toBeUndefined();
+            // Wait until the element becomes invalid.
+            browser.waitForExist('input#key.invalid');
 
-            browser.setValue('input[name=key]', process.env.WORDLIFT_KEY);
+            // Set a valid key.
+            browser.setValue('input#key', process.env.WORDLIFT_KEY);
 
             // Wait until the element becomes valid.
-            browser.waitForExist('input.valid[name=key]');
-
-            expect(browser.element('input.valid[name=key]')).not.toBeUndefined();
+            browser.waitForExist('input#key.valid');
 
         });
 
         it('continues to Vocabulary', function () {
 
-            browser.click('.viewport > ul li:nth-child(2) input.wl-next');
+            // Click next and wait for the 3rd pane.
+            clickNextAndWaitForPane(2);
 
-            browser.waitForVisible('input#vocabulary');
+            browser.click('input#vocabulary');
 
-            browser.setValue('input#vocabulary', '_an_invalid_vocabulary_');
+            // Set an invalid vocabulary path.
+            browser.keys(['Backspace', '_']);
 
-            expect(browser.element('input#vocabulary.invalid')).not.toBeUndefined();
+            browser.saveScreenshot();
 
-            browser.setValue('input#vocabulary', 'vocabulary');
+            // Wait until the element becomes invalid.
+            browser.waitForExist('input#vocabulary.invalid');
+
+            // Set a valid vocabulary.
+            browser.keys('Backspace');
 
             // Wait until the element becomes valid.
             browser.waitForExist('input#vocabulary.valid');
-
-            expect(browser.element('input#vocabulary.valid')).not.toBeUndefined();
 
         });
 
         it('continues to Language', function () {
 
-            browser.click('.viewport > ul li:nth-child(3) input.wl-next');
+            // Click next and wait for the 4th pane.
+            clickNextAndWaitForPane(3);
 
-            browser.waitForVisible('select#language');
         });
 
         it('continues to Publisher', function () {
 
-            browser.click('.viewport > ul li:nth-child(4) input.wl-next');
+            // Click next and wait for the 5th pane.
+            clickNextAndWaitForPane(4);
 
-            browser.waitForVisible('input#company');
-
-            // Click on the company button.
+            // Click on the company radio.
             browser.click('input#company');
 
             // Set the company name.
             browser.setValue('input#name', 'Acme Inc.');
 
-            // Finish.
+            // Click on finish.
             browser.click('input#btn-finish');
 
-            // We got redirected to the `wl-setup` page.
+            // Check that we got back to the admin area.
             expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
 
         });

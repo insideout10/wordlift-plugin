@@ -97,6 +97,8 @@
 
                     });
 
+                    console.log('validating...');
+
                 });
 
 
