@@ -8,6 +8,30 @@
     $(function ($) {
 
         /**
+         * Delay a function call by half a second.
+         *
+         * Any function can be delayed using `delay`. The timeout for the call is bound to the provided element. If another
+         * function call is delayed on the same element, any previous timeout is cancelled.
+         *
+         * This function is used to validate in real-time inputs when the user presses a key, but allowing the user to
+         * press more keys (hence the delay).
+         *
+         * @since 3.9.0
+         *
+         * @param {Object} $elem A jQuery element reference which will hold the timeout reference.
+         * @param {Function} fn The function to call.
+         */
+        var delay = function ($elem, fn) {
+
+            // Clear a validation timeout.
+            clearTimeout($elem.data('timeout'));
+
+            // Validate the key, after a delay, so that another key is pressed, this validation is cancelled.
+            $elem.data('timeout', setTimeout(fn), 500);
+
+        };
+
+        /**
          * Bind additional functions to DOM elements:
          * * `input.wl-key`s validation.
          *
@@ -16,10 +40,8 @@
         var bind = function () {
 
             // Key validation: attach to all the input with a `wl-key` class.
-            $('input.wl-key').each(function () {
-
-                // Catch changes.
-                $(this).on('keydown', function () {
+            $('input[data-wl-key]')
+                .on('keyup', function () {
 
                     // Get a jQuery reference to the object.
                     var $this = $(this);
@@ -27,11 +49,8 @@
                     // Remove any preexisting states.
                     $this.removeClass('valid invalid');
 
-                    // Clear a validation timeout.
-                    clearTimeout($this.data('timeout'));
-
-                    // Validate the key, after a delay, so that another key is pressed, this validation is cancelled.
-                    $this.data('timeout', setTimeout(function () {
+                    // Delay execution of the validation.
+                    delay($this, function () {
 
                         // Post the validation request.
                         $.post(settings.ajaxUrl, {'action': settings.action, 'key': $this.val()},
@@ -45,9 +64,97 @@
 
                             });
 
-                    }, 500));
+                    });
 
                 });
+
+            // Vocabulary path validation, only allow 'a-z', '0-9', '-' and '_'. Prevent non valid keys from being entered
+            // and perform a validation while user types (we don't want '-' and '_' as last characters, we require at least
+            // one valid character).
+            $('input[data-wl-vocabulary]')
+                .on('keypress', function (e) {
+
+                    // If the pressed key is invalid, cancel it.
+                    if (!/^[a-z0-9\-_]$/i.test(e.key)) return e.preventDefault();
+
+                })
+                .on('keyup', function () {
+
+                    // Set a jQuery reference to the element.
+                    var $this = $(this);
+
+                    // Remove any preexisting states.
+                    $this.removeClass('valid invalid');
+
+                    // Delay the check for a valid path.
+                    delay($this, function () {
+
+                        // An empty value or a value starting/ending with an alphanumeric character.
+                        if (0 === $this.val().length || /^[a-z0-9]+(?:[a-z0-9\-_]*[a-z0-9]+)?$/i.test($this.val()))
+                            $this.addClass('valid');
+                        else
+                            $this.addClass('invalid');
+
+                    });
+
+                });
+
+
+            // Check that a name has been provided.
+            $('input[data-wl-name]')
+                .on('keyup', function () {
+
+                    // Set a jQuery reference to the element.
+                    var $this = $(this);
+
+                    // Remove any preexisting states.
+                    $this.removeClass('valid invalid');
+
+                    // Delay the check for a valid path.
+                    delay($this, function () {
+
+                        // An empty value or a value starting/ending with an alphanumeric character.
+                        if (0 < $this.val().length)
+                            $this.addClass('valid');
+                        else
+                            $this.addClass('invalid');
+
+                    });
+
+                });
+
+            // Media upload.
+            $('a[data-wl-add-logo]').on('click', function () {
+
+                // Create a WP media uploader.
+                var uploader = wp.media({
+                    title: settings.media.title,
+                    button: settings.media.button,
+                    multiple: false
+                });
+
+                // Catch `select` events on the uploader.
+                uploader
+                    .on('select', function () {
+
+                        var attachment = uploader.state().get('selection').first().toJSON();
+
+                        $('#logo img')
+                            .attr('src', attachment.url)
+                            .data('id', attachment.id);
+
+                        $('#logo').show();
+                        $('#addlogo').hide();
+                    })
+                    .open();
+
+            });
+
+            // Catch form submits and cancel them if the name is not properly set.
+            $('form').on('submit', function (e) {
+
+                // Check that we have one valid name.
+                if (1 !== $('input.valid[data-wl-name]').length) e.preventDefault();
 
             });
 
@@ -137,7 +244,6 @@
          * @since 3.9.0
          *
          * @param {Controller} controller A {@link Pane}s {@link Controller}.
-         * @param {object} $container A jQuery reference to the container element.
          * @param {string} html The raw html code.
          * @param {Function} validate The validation function for the {@link Pane}.
          * @constructor creates a {@link Pane} instance.
@@ -203,10 +309,14 @@
             alwaysValid,
             function () {
                 // The WL key is valid when we have one `.wl-key` marked as valid.
-                return 1 === $('input.wl-key.valid').length;
+                return 1 === $('input.valid[data-wl-key]').length;
+            },
+            function () {
+                // The vocabulary path is valid when the input is marked valid.
+                return 1 === $('input.valid[data-wl-vocabulary]').length;
             },
             alwaysValid,
-            alwaysValid,
+            // Validation for the last step happens with the form submit, see the beginning of this file.
             alwaysValid
         ];
 

@@ -7,6 +7,9 @@
 
 	<?php
 
+	// Enqueue wp.media functions.
+	wp_enqueue_media();
+
 	// Enqueue styles and scripts.
 	wp_enqueue_style( 'wl-font-awesome', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'css/font-awesome.min.css' );
 	wp_enqueue_style( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-admin-setup.css', array( 'wl-font-awesome' ) );
@@ -23,8 +26,10 @@
 	) );
 
 	// Finally print styles and scripts.
-	do_action( 'admin_print_styles' );
-	do_action( 'admin_print_scripts' );
+	wp_print_styles();
+	wp_print_scripts();
+//	do_action( 'admin_print_styles' );
+//	do_action( 'admin_print_scripts' );
 
 	?>
 
@@ -66,7 +71,7 @@
             </li>
         </ul>
         <div class="btn-wrapper">
-            <a href="https://wordlift.io/blogger" target="_tab"
+            <a href="https://wordlift.io/blogger?utm_campaign=wl_activation_learn_more" target="_tab"
                class="button"><?php esc_html_e( 'Learn More', 'wordlift' ); ?></a>
             <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
@@ -78,9 +83,10 @@
         <p class="page-txt">
 			<?php esc_html_e( 'If you already puchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); ?>
         </p>
-        <input type="text" class="wl-key" id="key" name="key" value="" autocomplete="off" placeholder="Activation Key">
+        <input type="text" data-wl-key="wl-key" class="wl-key" id="key" name="key" value="" autocomplete="off"
+               placeholder="Activation Key">
         <div class="btn-wrapper">
-            <a href="https://wordlift.io/#plan-and-price" target="_tab"
+            <a href="https://wordlift.io/?utm_campaign=wl_activation_grab_the_key#plan-and-price" target="_tab"
                type="button"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a>
             <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
@@ -92,7 +98,7 @@
         <p class="page-txt">
 			<?php esc_html_e( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field below. Check our FAQs if you need more info.', 'wordlift' ); ?>
         </p>
-        <input type="text" id="vocabulary" name="vocabulary" autocomplete="off" value="vocabulary"
+        <input type="text" id="vocabulary" name="vocabulary" autocomplete="off" value="vocabulary" class="valid"
                data-wl-vocabulary="wl-vocabulary">
         <p class="page-det">
 			<?php esc_html_e( 'Leave it empty to place your entities in the root folder of your website', 'wordlift' ); ?>
@@ -108,15 +114,27 @@
         <p class="page-txt">
 			<?php esc_html_e( 'Each WordLift key can be used only in one language. Pick yours.', 'wordlift' ); ?>
         </p>
-        <select
-                id="language" name="language"
-                placeholder="<?php esc_attr_e( 'Choose your language', 'wordlift' ); ?>">
-            <option value="English">English</option>
-            <option value="Troll">Troll</option>
-            <option value="Jedi">Jedi</option>
-            <option value="Jubberish">Jubberish</option>
-            <option value="Verlant">Verlant</option>
+        <select id="language" name="language" placeholder="<?php esc_attr_e( 'Choose your language', 'wordlift' ); ?>">
+			<?php
+
+			// Get WordLift's supported languages.
+			$languages = Wordlift_Languages::get_languages();
+
+			// Get WP's locale.
+			$locale = get_locale();
+
+			// Get the language locale part.
+			$parts = explode( '_', $locale );
+
+			// If we support WP's configured language, then use that, otherwise use English by default.
+			$language = isset( $languages[ $parts[0] ] ) ? $parts[0] : 'en';
+
+			// Print all the supported language, preselecting the one configured in WP (or English if not supported).
+			foreach ( $languages as $code => $label ) { ?>
+                <option value="<?php esc_attr_e( $code ) ?>" <?php echo selected( $code, $language, FALSE ) ?>><?php esc_html_e( $label ) ?></option>
+			<?php } ?>
         </select>
+
         <div class="btn-wrapper">
             <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
@@ -144,13 +162,13 @@
         </span>
             </label>
         </div>
-        <input type="text" id="key" name="key" value="" autocomplete="off"
+        <input type="text" name="name" data-wl-name="wl-name" value="" autocomplete="off"
                placeholder="<?php esc_attr_e( "What's your name?", 'wordlift' ); ?>">
-        <a class="add-logo" href="javascript:void(0);">
+        <a data-wl-add-logo="wl-add-logo" class="add-logo" href="javascript:void(0);">
 			<?php esc_html_e( 'Add your logo', 'wordlift' ); ?>
         </a>
         <div class="btn-wrapper">
-            <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
+            <input type="submit" value="<?php esc_attr_e( 'Finish', 'wordlift' ); ?>">
         </div>
     </script>
 
@@ -164,9 +182,13 @@
         <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>"/>
     </header>
 
-    <div class="viewport"></div>
+    <form method="post">
+        <div class="viewport"></div>
+    </form>
 
 </div>
+
+<?php do_action( 'admin_footer' ); ?>
 
 </body>
 </html>
