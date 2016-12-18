@@ -254,45 +254,26 @@ if (process.env.CI) {
     // Add browsers: Firefox, Internet Explorer.
     config.capabilities = [
         {
-            desiredCapabilities: {
-                // baseUrl: BASE_URL + '/1/',
-                browserName: 'chrome',
-                version: '54.0',
-                platform: 'Windows 10',
-                // 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-                // build: process.env.TRAVIS_BUILD_NUMBER,
-                'public': true,
-                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-            }
+            browserName: 'chrome',
+            version: '54.0',
+            platform: 'Windows 10'
         }, {
-            desiredCapabilities: {
-                // baseUrl: BASE_URL + '/2/',
-                browserName: 'firefox',
-                version: '50.0',
-                platform: 'Windows 10',
-                // 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-                // build: process.env.TRAVIS_BUILD_NUMBER,
-                'public': true,
-                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-            }
+            browserName: 'firefox',
+            version: '50.0',
+            platform: 'Windows 10'
 
         }, {
-            desiredCapabilities: {
-                // baseUrl: BASE_URL + '/3/',
-                browserName: 'internet explorer',
-                version: '8.0',
-                platform: 'Windows XP',
-                // 'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-                // build: process.env.TRAVIS_BUILD_NUMBER,
-                'public': true,
-                name: 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')'
-            }
+            browserName: 'internet explorer',
+            version: '8.0',
+            platform: 'Windows XP'
         }];
 
     // Set Travis job and build numbers.
     for (var i = 0; i < config.capabilities.length; i++) {
         config.capabilities[i]['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
         config.capabilities[i].build = process.env.TRAVIS_BUILD_NUMBER;
+        config.capabilities[i].name = 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')';
+        config.capabilities[i].public = true;
         config.capabilities[i].baseUrl = BASE_URL + '/' + (i + 1);
     }
 
