@@ -20,7 +20,7 @@ install ()
     # See https://wp-cli.org/commands/core/download/
     wp core download
     wp core config --dbname=wordpress --dbuser=root --dbprefix="wp_${instance}_"
-    wp core install --url="http://localhost/${instance}" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
+    wp core install --url="http://wordpress.local/${instance}" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
 
     # Finally link the WordLift plugin in WordPress.
 
