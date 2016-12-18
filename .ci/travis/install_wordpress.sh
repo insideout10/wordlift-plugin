@@ -23,19 +23,20 @@ install ()
     local instance=$1
 
     # Create a directory for our WordPres instance and move into it.
-    mkdir "$cwd/htdocs/$instance"
-    cd "$cwd/htdocs/$instance"
+    local instance_dir="$cwd/htdocs/$instance"
+    mkdir $instance_dir
+    cd $instance_dir
 
     # Add --version=<version> to specify which version to download.
     # We should test at least with 4.5, 4.6, 4.7 and nightly test.
     # See https://wp-cli.org/commands/core/download/
     wp core download
     wp core config --dbname=wordpress --dbuser=root --dbprefix="wp_${instance}_"
-    wp core install --url="http://localhost/${instance}/" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
+    wp core install --url="http://localhost/${instance}" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
 
     # Finally link the WordLift plugin in WordPress.
 
-    ln -s "$HOME/src" htdocs/wp-content/plugins/wordlift
+    ln -s "$HOME/src" "$instance_dir/wp-content/plugins/wordlift"
 
     cd $cwd
 
