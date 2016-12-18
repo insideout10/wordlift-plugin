@@ -288,7 +288,7 @@ if (process.env.CI) {
     for (var i = 0; i < config.capabilities.length; i++) {
         config.capabilities[i].desiredCapabilities['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
         config.capabilities[i].desiredCapabilities['build'] = process.env.TRAVIS_BUILD_NUMBER;
-        config.capabilities[i].desiredCapabilities['baseUrl'] = BASE_URL + '/' + (i + 1);
+        config.capabilities[i].baseUrl = 'http://' + (i + 1) + '.localhost';
     }
 
 }
