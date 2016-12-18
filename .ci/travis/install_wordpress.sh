@@ -1,17 +1,5 @@
 #!/bin/bash
 
-i=1
-INSTANCES=4
-
-# Get the current folder.
-HOME=$(pwd)
-
-while [ $i -lt $INSTANCES ]
-do
-    install
-    let "i+=1"
-done
-
 # Install WordPress.
 install ()
 {
@@ -41,3 +29,15 @@ install ()
     cd $cwd
 
 }
+
+i=1
+INSTANCES=4
+
+# Get the current folder.
+HOME=$(pwd)
+
+while [ $i -lt $INSTANCES ]
+do
+    install
+    let "i+=1"
+done
