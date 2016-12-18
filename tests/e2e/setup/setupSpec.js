@@ -12,7 +12,7 @@ describe('Open the WordPress web site', function () {
         browser.setValue('#user_pass', 'admin');
         browser.click('#wp-submit');
 
-        // expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
+        browser.waitForExist('body.wp-admin');
 
     });
 

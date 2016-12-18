@@ -242,7 +242,7 @@ var config = {
 if (process.env.CI) {
 
     // Set the tests' base url.
-    const BASE_URL = 'http://localhost';
+    const BASE_URL = 'http://wordpress.localhost';
 
     // Remove any previously set baseUrl (we use one different URL for each browser).
     delete config.baseUrl;
@@ -255,33 +255,32 @@ if (process.env.CI) {
     config.services = ['sauce'];
 
     // Add browsers: Firefox, Internet Explorer.
-    config.capabilities = [
-        {
-            browserName: 'chrome',
-            version: 'latest',
-            platform: 'Windows 10'
-        }, {
-            browserName: 'chrome',
-            version: 'latest-1',
-            platform: 'Windows 10'
-        }, {
-            browserName: 'safari',
-            platform: 'OS X 10.11',
-            version: 'latest'
-        }, {
-            browserName: 'firefox',
-            version: 'latest',
-            platform: 'Windows 10'
+    config.capabilities = [{
+        browserName: 'chrome',
+        version: 'latest',
+        platform: 'Windows 10'
+    }, {
+        browserName: 'chrome',
+        version: 'latest-1',
+        platform: 'Windows 10'
+    }, {
+        browserName: 'safari',
+        platform: 'OS X 10.11',
+        version: 'latest'
+    }, {
+        browserName: 'firefox',
+        version: 'latest',
+        platform: 'Windows 10'
 
-        }, {
-            browserName: 'internet explorer',
-            version: 'latest',
-            platform: 'Windows 10'
-        }, {
-            browserName: 'MicrosoftEdge',
-            version: 'latest',
-            platform: 'Windows 10'
-        }];
+    }, {
+        browserName: 'internet explorer',
+        version: 'latest',
+        platform: 'Windows 10'
+    }, {
+        browserName: 'MicrosoftEdge',
+        version: 'latest',
+        platform: 'Windows 10'
+    }];
 
     // Set Travis job and build numbers.
     for (var i = 0; i < config.capabilities.length; i++) {
