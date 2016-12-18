@@ -242,7 +242,7 @@ var config = {
 if (process.env.CI) {
 
     // Set the tests' base url.
-    const BASE_URL = 'http://localhost:3000';
+    const BASE_URL = 'http://wordpress.localhost';
 
     // Remove any previously set baseUrl (we use one different URL for each browser).
     delete config.baseUrl;
