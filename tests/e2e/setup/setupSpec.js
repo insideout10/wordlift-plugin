@@ -59,6 +59,9 @@ describe('Open the WordPress web site', function () {
             // We got redirected to the `wl-setup` page.
             // expect(browser.getUrl()).toMatch(/\/wp-admin\/index\.php\?page=wl-setup$/);
 
+            // Wait until the element becomes invalid.
+            browser.waitForExist('.viewport > ul > li:first-child');
+
             // Set the x offset for the current visible pane.
             paneX = browser.getLocation('.viewport > ul > li:first-child', 'x');
 
