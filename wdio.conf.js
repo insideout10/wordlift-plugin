@@ -184,8 +184,9 @@ var config = {
     // variables, such as `browser`. It is the perfect place to define custom commands.
     before: function (capabilities, specs) {
 
-        // Set the browser's `baseUrl` from the `capabilities`'s `baseUrl`.
-        browser.options.baseUrl = capabilities.baseUrl;
+        // Set the browser's `baseUrl` from the `capabilities`'s `baseUrl` in order to have each browser go to a different
+        // WordPress setup.
+        if (capabilities.baseUrl) browser.options.baseUrl = capabilities.baseUrl;
 
     }
     //
@@ -264,8 +265,12 @@ if (process.env.CI) {
 
         }, {
             browserName: 'internet explorer',
-            version: '8.0',
-            platform: 'Windows XP'
+            version: '10.0',
+            platform: 'Windows 8'
+        }, {
+            browserName: 'MicrosoftEdge',
+            version: '14.14393',
+            platform: 'Windows 10'
         }];
 
     // Set Travis job and build numbers.

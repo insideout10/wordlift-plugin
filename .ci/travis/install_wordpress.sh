@@ -31,7 +31,7 @@ install ()
 }
 
 i=1
-INSTANCES=4
+INSTANCES=5
 
 # Get the current folder.
 HOME=$(pwd)
