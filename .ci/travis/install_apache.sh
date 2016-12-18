@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # see https://support.saucelabs.com/customer/en/portal/articles/2639448-issues-with-localhost-proxying-on-edge-and-safari-8-and-9-using-sauce-connect-proxy
-echo 127.0.1.1 wordpress.localhost >> /etc/hosts
+echo 127.0.0.1 wordpress.local >> /etc/hosts
 
 # see https://docs.travis-ci.com/user/languages/php#Apache-%2B-PHP
 
