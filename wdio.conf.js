@@ -183,6 +183,7 @@ var config = {
     // variables, such as `browser`. It is the perfect place to define custom commands.
     before: function (capabilities, specs) {
 
+        browser.options.baseUrl = 'http://testme.localhost';
         console.log('capabilities', capabilities);
         console.log('browser', browser);
 
@@ -292,7 +293,7 @@ if (process.env.CI) {
     for (var i = 0; i < config.capabilities.length; i++) {
         config.capabilities[i].desiredCapabilities['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
         config.capabilities[i].desiredCapabilities['build'] = process.env.TRAVIS_BUILD_NUMBER;
-        config.capabilities[i].baseUrl = 'http://' + (i + 1) + '.localhost';
+        config.capabilities[i].baseUrl = BASE_URL + '/' + (i + 1);
     }
 
 }
