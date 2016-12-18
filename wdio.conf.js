@@ -261,6 +261,14 @@ if (process.env.CI) {
             version: 'latest',
             platform: 'Windows 10'
         }, {
+            browserName: 'chrome',
+            version: 'latest-1',
+            platform: 'Windows 10'
+        }, {
+            browserName: 'safari',
+            platform: 'OS X 10.11',
+            version: 'latest'
+        }, {
             browserName: 'firefox',
             version: 'latest',
             platform: 'Windows 10'
@@ -273,13 +281,6 @@ if (process.env.CI) {
             browserName: 'MicrosoftEdge',
             version: 'latest',
             platform: 'Windows 10'
-        }, {
-            browserName: 'Safari',
-            appiumVersion: '1.5.3',
-            deviceName: 'iPhone 6s Plus Device',
-            deviceOrientation: 'portrait',
-            platformVersion: '9.3',
-            platformName: 'iOS'
         }];
 
     // Set Travis job and build numbers.
