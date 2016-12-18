@@ -156,7 +156,7 @@ var config = {
     jasmineNodeOpts: {
         //
         // Jasmine default timeout
-        defaultTimeoutInterval: 10000,
+        defaultTimeoutInterval: 20000,
         //
         // The Jasmine framework allows interception of each assertion in order to log the state of the application
         // or website depending on the result. For example, it is pretty handy to take a screenshot every time
@@ -187,6 +187,8 @@ var config = {
         // Set the browser's `baseUrl` from the `capabilities`'s `baseUrl` in order to have each browser go to a different
         // WordPress setup.
         if (capabilities.baseUrl) browser.options.baseUrl = capabilities.baseUrl;
+
+        browser.timeouts('implicit', 10000);
 
     }
     //
