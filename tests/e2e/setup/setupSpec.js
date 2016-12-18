@@ -9,7 +9,7 @@ describe('Open the WordPress web site', function () {
         browser.setValue('#user_pass', 'admin');
         browser.click('#wp-submit');
 
-        expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
+        // expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
 
     });
 
@@ -45,7 +45,7 @@ describe('Open the WordPress web site', function () {
             browser.url('/wp-admin/plugins.php');
 
             // Check the URL.
-            expect(browser.getUrl()).toMatch(/\/wp-admin\/plugins\.php$/);
+            // expect(browser.getUrl()).toMatch(/\/wp-admin\/plugins\.php$/);
 
             // Get WordLift's row in the plugins' list.
             var wordlift = browser.element('[data-slug="wordlift"]');
@@ -57,7 +57,7 @@ describe('Open the WordPress web site', function () {
             wordlift.click('.activate a');
 
             // We got redirected to the `wl-setup` page.
-            expect(browser.getUrl()).toMatch(/\/wp-admin\/index\.php\?page=wl-setup$/);
+            // expect(browser.getUrl()).toMatch(/\/wp-admin\/index\.php\?page=wl-setup$/);
 
             // Set the x offset for the current visible pane.
             paneX = browser.getLocation('.viewport > ul > li:first-child', 'x');
@@ -128,7 +128,7 @@ describe('Open the WordPress web site', function () {
             browser.click('input#btn-finish');
 
             // Check that we got back to the admin area.
-            expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
+            // expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
 
         });
 
