@@ -258,28 +258,28 @@ if (process.env.CI) {
     config.capabilities = [
         {
             browserName: 'chrome',
-            version: '54.0',
+            version: 'latest',
             platform: 'Windows 10'
         }, {
             browserName: 'firefox',
-            version: '50.0',
+            version: 'latest',
             platform: 'Windows 10'
 
         }, {
             browserName: 'internet explorer',
-            version: '11.0',
+            version: 'latest',
             platform: 'Windows 10'
         }, {
             browserName: 'MicrosoftEdge',
-            version: '14.14393',
+            version: 'latest',
             platform: 'Windows 10'
-        // }, {
-        //     browserName: 'Safari',
-        //     appiumVersion: '1.6.3',
-        //     deviceName: 'iPad Air 2 Simulator',
-        //     deviceOrientation: 'portrait',
-        //     platformVersion: '10.0',
-        //     platformName: 'iOS'
+        }, {
+            browserName: 'Safari',
+            appiumVersion: '1.5.3',
+            deviceName: 'iPhone 6s Plus Device',
+            deviceOrientation: 'portrait',
+            platformVersion: '9.3',
+            platformName: 'iOS'
         }];
 
     // Set Travis job and build numbers.
