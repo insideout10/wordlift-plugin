@@ -51,10 +51,12 @@ describe('Open the WordPress web site', function () {
             // expect(browser.getUrl()).toMatch(/\/wp-admin\/plugins\.php$/);
 
             // Get WordLift's row in the plugins' list.
+            browser.waitForExist('[data-slug="wordlift"]');
+
             var wordlift = browser.element('[data-slug="wordlift"]');
 
             // Check that WordLift's row is there.
-            expect(wordlift).not.toBeUndefined();
+            // expect(wordlift).not.toBeUndefined();
 
             // Activate WordLift.
             wordlift.click('.activate a');
@@ -124,10 +126,10 @@ describe('Open the WordPress web site', function () {
             // Click next and wait for the 5th pane.
             clickNextAndWaitForPane(4);
 
-            browser.waitForExist('input#company');
-
-            // Click on the company radio.
-            browser.click('input#company');
+            // browser.waitForExist('input#company');
+            //
+            // // Click on the company radio.
+            // browser.click('input#company');
 
             browser.waitForExist('input#name');
 

@@ -267,7 +267,7 @@ if (process.env.CI) {
 
         }, {
             browserName: 'internet explorer',
-            version: '10.0',
+            version: '11.0',
             platform: 'Windows 8'
         }, {
             browserName: 'MicrosoftEdge',
