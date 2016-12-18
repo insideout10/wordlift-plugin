@@ -38,6 +38,6 @@ HOME=$(pwd)
 
 while [ $i -lt $INSTANCES ]
 do
-    install
+    install $i
     let "i+=1"
 done
