@@ -17,6 +17,7 @@ cache:
 addons:
   # Have Travis CI start a SauceLabs Connect instance for us.
   sauce_connect: true
+  tunnel_domains: localhost, *.localhost, *.local
 
 env:
   global:
