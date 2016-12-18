@@ -236,6 +236,9 @@ if (process.env.CI) {
     // Set the tests' base url.
     const BASE_URL = 'http://localhost';
 
+    // Remove any previously set baseUrl (we use one different URL for each browser).
+    delete config.baseUrl;
+
     // Configure Sauce Labs.
     config.user = process.env.SAUCE_USERNAME;
     config.key = process.env.SAUCE_ACCESS_KEY;
