@@ -1,14 +1,42 @@
-#!/bin/sh
+#!/bin/bash
 
-mkdir htdocs
-cd htdocs
-# Add --version=<version> to specify which version to download.
-# We should test at least with 4.5, 4.6, 4.7 and nightly test.
-# See https://wp-cli.org/commands/core/download/
-wp core download
-wp core config --dbname=wordpress --dbuser=root
-wp core install --url=localhost --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
+i=1
+INSTANCES=4
 
-# Finally link the WordLift plugin in WordPress.
-cd ..
-ln -s "$(pwd)/src" htdocs/wp-content/plugins/wordlift
+# Get the current folder.
+HOME=$(pwd)
+
+while [ $i -lt $INSTANCES ]
+do
+    install
+    let "i+=1"
+done
+
+# Install WordPress.
+install ()
+{
+
+    # Pop the current folder, we'll cd into it before leaving the function.
+    local cwd=$(pwd)
+
+    # Get the instance id.
+    local instance=$1
+
+    # Create a directory for our WordPres instance and move into it.
+    mkdir "$cwd/htdocs/$instance"
+    cd "$cwd/htdocs/$instance"
+
+    # Add --version=<version> to specify which version to download.
+    # We should test at least with 4.5, 4.6, 4.7 and nightly test.
+    # See https://wp-cli.org/commands/core/download/
+    wp core download
+    wp core config --dbname=wordpress --dbuser=root --dbprefix="wp_${instance}_"
+    wp core install --url="http://localhost/${instance}/" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
+
+    # Finally link the WordLift plugin in WordPress.
+
+    ln -s "$HOME/src" htdocs/wp-content/plugins/wordlift
+
+    cd $cwd
+
+}
