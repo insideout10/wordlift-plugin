@@ -176,18 +176,22 @@ var config = {
     // resolved to continue.
     //
     // Gets executed once before all workers get launched.
-    // onPrepare: function (config, capabilities) {
-    // },
+    onPrepare: function (config, capabilities) {
+
+        console.log('config', config);
+        console.log('capabilities', capabilities);
+
+    },
     //
     // Gets executed before test execution begins. At this point you can access all global
     // variables, such as `browser`. It is the perfect place to define custom commands.
-    before: function (capabilities, specs) {
-
-        browser.options.baseUrl = 'http://testme.localhost';
-        console.log('capabilities', capabilities);
-        console.log('browser', browser);
-
-    }
+    // before: function (capabilities, specs) {
+    //
+    //     browser.options.baseUrl = 'http://testme.localhost';
+    //     console.log('capabilities', capabilities);
+    //     console.log('browser', browser);
+    //
+    // }
     //
     // Hook that gets executed before the suite starts
     // beforeSuite: function (suite) {
