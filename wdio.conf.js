@@ -291,8 +291,8 @@ if (process.env.CI) {
 
     // Set Travis job and build numbers.
     for (var i = 0; i < config.capabilities.length; i++) {
-        config.capabilities[i].desiredCapabilities['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
-        config.capabilities[i].desiredCapabilities['build'] = process.env.TRAVIS_BUILD_NUMBER;
+        config.capabilities[i]['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
+        config.capabilities[i].build = process.env.TRAVIS_BUILD_NUMBER;
         config.capabilities[i].baseUrl = BASE_URL + '/' + (i + 1);
     }
 
