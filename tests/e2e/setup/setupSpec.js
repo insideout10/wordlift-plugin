@@ -121,8 +121,12 @@ describe('Open the WordPress web site', function () {
             // Click next and wait for the 5th pane.
             clickNextAndWaitForPane(4);
 
+            browser.waitForExist('input#company');
+
             // Click on the company radio.
             browser.click('input#company');
+
+            browser.waitForExist('input#name');
 
             // Set the company name.
             browser.setValue('input#name', 'Acme Inc.');

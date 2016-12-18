@@ -271,6 +271,13 @@ if (process.env.CI) {
             browserName: 'MicrosoftEdge',
             version: '14.14393',
             platform: 'Windows 10'
+        }, {
+            browserName: 'Safari',
+            appiumVersion: '1.6.3',
+            deviceName: 'iPad Air 2 Simulator',
+            deviceOrientation: 'portrait',
+            platformVersion: '10.0',
+            platformName: 'iOS'
         }];
 
     // Set Travis job and build numbers.
