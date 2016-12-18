@@ -12,7 +12,7 @@ install ()
 
     # Create a directory for our WordPres instance and move into it.
     local instance_dir="$cwd/htdocs/$instance"
-    mkdir $instance_dir
+    mkdir -p $instance_dir
     cd $instance_dir
 
     # Add --version=<version> to specify which version to download.
