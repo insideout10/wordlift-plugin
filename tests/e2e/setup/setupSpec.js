@@ -4,7 +4,7 @@ describe('Open the WordPress web site', function () {
 
     it('admin logs in', function () {
 
-        browser.url('/wp-login.php');
+        browser.url('wp-login.php');
         browser.setValue('#user_login', 'admin');
         browser.setValue('#user_pass', 'admin');
         browser.click('#wp-submit');
@@ -42,7 +42,7 @@ describe('Open the WordPress web site', function () {
         it('opens the plugins page and activates WordLift', function () {
 
             // Navigate to the plugins page.
-            browser.url('/wp-admin/plugins.php');
+            browser.url('wp-admin/plugins.php');
 
             // Check the URL.
             expect(browser.getUrl()).toMatch(/\/wp-admin\/plugins\.php$/);
