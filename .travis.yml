@@ -20,22 +20,22 @@ matrix:
     env: SCRIPT=test:js
   # PHP unit tests on PHP 5.3
   - php: 5.3
-    env: SCRIPT=test:phpunit
+    env: SCRIPT=test:php
   # PHP unit tests on PHP 5.4
   - php: 5.4
-    env: SCRIPT=test:phpunit
+    env: SCRIPT=test:php
   # PHP unit tests on PHP 5.5
   - php: 5.5
-    env: SCRIPT=test:phpunit
+    env: SCRIPT=test:php
   # PHP unit tests on PHP 5.6
   - php: 5.6
-    env: SCRIPT=test:phpunit
+    env: SCRIPT=test:php
   # PHP unit tests on PHP 7.0
   - php: 7.0
-    env: SCRIPT=test:phpunit
+    env: SCRIPT=test:php
   # PHP unit tests on PHP 7.1
   - php: 7.1
-    env: SCRIPT=test:phpunit
+    env: SCRIPT=test:php
 
 # Cache the node_modules folder.
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
@@ -76,7 +76,7 @@ services:
 # Legacy (required by test:js and test:php).
 before_install:
   - |
-    if [[ "$SCRIPT" == "test:phpunit" ]]; then
+    if [[ "$SCRIPT" == "test:php" ]]; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install --dev
     fi
