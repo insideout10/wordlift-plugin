@@ -73,7 +73,7 @@
         <div class="btn-wrapper">
             <a href="https://wordlift.io/blogger?utm_campaign=wl_activation_learn_more" target="_tab"
                class="button"><?php esc_html_e( 'Learn More', 'wordlift' ); ?></a>
-            <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
+            <input type="button" data-wl-next="wl-next" class="wl-default-action" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
     </script>
 
@@ -86,9 +86,10 @@
         <input type="text" data-wl-key="wl-key" class="wl-key" id="key" name="key" value="" autocomplete="off"
                placeholder="Activation Key">
         <div class="btn-wrapper">
-            <a href="https://wordlift.io/?utm_campaign=wl_activation_grab_the_key#plan-and-price" target="_tab"
-               type="button"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a>
-            <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
+            <a
+                    href="https://wordlift.io/?utm_campaign=wl_activation_grab_the_key#plan-and-price" target="_tab"
+                    class="button"><?php esc_html_e( 'Grab a Key!', 'wordlift' ); ?></a><input
+                    type="button" data-wl-next="wl-next" class="wl-default-action" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
     </script>
 
@@ -104,7 +105,7 @@
 			<?php esc_html_e( 'Leave it empty to place your entities in the root folder of your website', 'wordlift' ); ?>
         </p>
         <div class="btn-wrapper">
-            <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
+            <input type="button" data-wl-next="wl-next" class="wl-default-action" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
     </script>
 
@@ -136,7 +137,7 @@
         </select>
 
         <div class="btn-wrapper">
-            <input type="button" class="wl-next" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
+            <input type="button" data-wl-next="wl-next" class="wl-default-action" value="<?php esc_attr_e( 'Next', 'wordlift' ); ?>">
         </div>
     </script>
 
@@ -171,7 +172,7 @@
             </a>
         </div>
         <div class="btn-wrapper">
-            <input type="submit" id="btn-finish" value="<?php esc_attr_e( 'Finish', 'wordlift' ); ?>">
+            <input type="submit" id="btn-finish" class="wl-default-action" value="<?php esc_attr_e( 'Finish', 'wordlift' ); ?>">
         </div>
     </script>
 

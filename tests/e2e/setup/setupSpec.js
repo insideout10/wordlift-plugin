@@ -32,7 +32,7 @@ describe('Open the WordPress web site', function () {
         var clickNextAndWaitForPane = function (index) {
 
             // Click on the next button.
-            browser.click('.viewport > ul > li:nth-child(' + index + ') input.wl-next');
+            browser.click('.viewport > ul > li:nth-child(' + index + ') [data-wl-next]');
 
             // Wait until the next pane is visible.
             browser.waitUntil(function () {

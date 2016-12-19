@@ -311,12 +311,12 @@
             this.$elem = $('<div></div>').append(html);
 
             // Hook to the next element and raise a 'next' event when clicked.
-            $('.wl-next', that.$elem).on('click', function () {
+            $('[data-wl-next]', that.$elem).on('click', function () {
                 if (validate()) controller.$elem.trigger('next', that);
             });
 
             // Hook to the previous element raise a 'previous' event when clicked.
-            $('.wl-previous', that.$elem).on('click', function () {
+            $('[data-wl-previous]', that.$elem).on('click', function () {
                 if (validate()) controller.$elem.trigger('previous', that);
             });
 
