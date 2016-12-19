@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift
@@ -18,7 +18,7 @@
  *
  * @package    Wordlift
  * @subpackage Wordlift/admin
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift_Admin {
 

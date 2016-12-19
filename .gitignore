@@ -19,3 +19,9 @@ vendor/
 
 .idea/
 .svn/
+
+# webdriver.io e2e tests screenshots.
+errorShots/
+
+# We don't need npm debug logs in the repo.
+npm-debug.log
