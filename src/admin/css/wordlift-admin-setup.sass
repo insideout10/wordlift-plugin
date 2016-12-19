@@ -276,6 +276,20 @@ select
     // No, you can't choose another color, IE 1x will display white.
     color: #000
 
+
+.wl-key
+  // Those classes are added to 
+  &.invalid,
+  &.valid
+    // Positioning the background-image for both cases.
+    background-repeat: no-repeat
+    background-position: calc(100% - 8px) 7px
+
+  &.invalid
+    background-image: url("../../images/invalid.png")
+  &.valid
+    background-image: url("../../images/valid.png")
+
 p.page-det
   // Positioning
   display: block
