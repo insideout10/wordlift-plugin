@@ -115,14 +115,15 @@
      */
     $(function () {
 
-        // return if we are not in the entity editor page (the *wlEntityTitleLiveSearchParams* json is only enqueued there)
-        if (typeof wlEntityTitleLiveSearchParams === 'undefined') {
+        // return if we are not in the entity editor page (the *wlSettings* json is only enqueued there)
+        // wlSettings.entityBeingEdited comes from `wp_localize_script`, so '1' (true) or '' (false).
+        if (typeof wlSettings === 'undefined' || 1 != wlSettings.entityBeingEdited) {
             return;
         }
 
         // AJAX environment
-        var ajax_url = wlEntityTitleLiveSearchParams.ajax_url + '?action=' + wlEntityTitleLiveSearchParams.action;
-        var currentPostId = wlEntityTitleLiveSearchParams.post_id;
+        var ajax_url = wlSettings.ajax_url + '?action=' + wlSettings.action;
+        var currentPostId = wlSettings.post_id;
 
         // Print error message in page and hide it.
         var duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')

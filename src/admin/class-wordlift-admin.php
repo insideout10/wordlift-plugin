@@ -46,7 +46,7 @@ class Wordlift_Admin {
 	 * @since    1.0.0
 	 *
 	 * @param      string $plugin_name The name of this plugin.
-	 * @param      string $version The version of this plugin.
+	 * @param      string $version     The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -101,15 +101,16 @@ class Wordlift_Admin {
 
 		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
 		$entity_being_edited = get_post();
-		if ( isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ) ) {
 
-			wp_localize_script( $this->plugin_name, 'wlEntityTitleLiveSearchParams', array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'action'   => 'entity_by_title',
-					'post_id'  => get_the_ID()
-				)
-			);
-		}
+		wp_localize_script( $this->plugin_name, 'wlSettings', array(
+				'ajax_url'          => admin_url( 'admin-ajax.php' ),
+				'action'            => 'entity_by_title',
+				'post_id'           => get_the_ID(),
+				'entityBeingEdited' => isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ),
+				'language' => Wordlift_Configuration_Service::get_instance()->get_language()
+			)
+		);
+
 	}
 
 }
