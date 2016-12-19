@@ -346,7 +346,9 @@ function wl_configuration_input_box( $args ) {
  *
  * @deprecated only used by the languages select.
  *
- * @since 3.0.0
+ * @see        https://github.com/insideout10/wordlift-plugin/issues/349
+ *
+ * @since      3.0.0
  *
  * @param array $args The select configuration parameters.
  */
@@ -355,10 +357,19 @@ function wl_configuration_select( $args ) {
 
     <select id="<?php echo esc_attr( $args['id'] ); ?>"
             name="<?php echo esc_attr( $args['name'] ); ?>">
-		<?php foreach ( $args['options'] as $value => $label ) { ?>
-            <option value="<?php echo esc_attr( $value ); ?>" <?php if ( $args['value'] === $value ) {
-				echo 'selected';
-			} ?>><?php echo esc_html( $label ); ?></option>
+		<?php
+		// Print all the supported language, preselecting the one configured in WP (or English if not supported).
+		// We now use the `Wordlift_Languages` class which provides the list of languages supported by WordLift.
+		// See https://github.com/insideout10/wordlift-plugin/issues/349
+
+		// Get WordLift's supported languages.
+		$languages = Wordlift_Languages::get_languages();
+
+		// If we support WP's configured language, then use that, otherwise use English by default.
+		$language = isset( $languages[ $args['value'] ] ) ? $args['value'] : 'en';
+
+		foreach ( $languages as $code => $label ) { ?>
+            <option value="<?php esc_attr_e( $code ) ?>" <?php echo selected( $code, $language, FALSE ) ?>><?php esc_html_e( $label ) ?></option>
 		<?php } ?>
     </select>
 
