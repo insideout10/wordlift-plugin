@@ -14,7 +14,7 @@ require_once( 'wordlift_configuration_settings.php' );
  * @since 3.0.0
  *
  * @param string $parent_slug The parent slug for the menu.
- * @param string $capability The required capability to access the page.
+ * @param string $capability  The required capability to access the page.
  */
 function wl_configuration_admin_menu( $parent_slug, $capability ) {
 
@@ -50,11 +50,11 @@ function wl_configuration_admin_menu_callback( $display_page_title = TRUE ) {
 
 	?>
 
-	<div class="wrap">
+    <div class="wrap">
 
 		<?php if ( $display_page_title ) { ?>
-			<div id="icon-themes" class="icon32"></div>
-			<h2>WordLift</h2>
+            <div id="icon-themes" class="icon32"></div>
+            <h2>WordLift</h2>
 		<?php } ?>
 
 		<?php settings_errors(); ?>
@@ -63,17 +63,17 @@ function wl_configuration_admin_menu_callback( $display_page_title = TRUE ) {
 		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general_settings';
 		?>
 
-		<h2 class="nav-tab-wrapper">
-			<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=general_settings"
-			   class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'General', 'wordlift' ); ?></a>
+        <h2 class="nav-tab-wrapper">
+            <a href="?page=<?php echo( $_GET['page'] ); ?>&tab=general_settings"
+               class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'General', 'wordlift' ); ?></a>
 
 			<?php if ( $can_show_advanced_settings ): ?>
-				<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
-				   class="nav-tab <?php echo $active_tab == 'advanced_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a>
+                <a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
+                   class="nav-tab <?php echo $active_tab == 'advanced_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a>
 			<?php endif; ?>
-		</h2>
+        </h2>
 
-		<form action="options.php" method="post">
+        <form action="options.php" method="post">
 			<?php
 			if ( 'general_settings' === $active_tab ) {
 				settings_fields( 'wl_general_settings' );
@@ -86,13 +86,13 @@ function wl_configuration_admin_menu_callback( $display_page_title = TRUE ) {
 
 			submit_button();
 			?>
-		</form>
+        </form>
 
-		<div style="margin-top: 100px; font-size: 10px;">The entities blocks are
-			designed by Lukasz M. Pogoda from the
-			Noun Project
-		</div>
-	</div>
+        <div style="margin-top: 100px; font-size: 10px;">The entities blocks are
+            designed by Lukasz M. Pogoda from the
+            Noun Project
+        </div>
+    </div>
 
 	<?php
 }
@@ -129,10 +129,10 @@ function wl_configuration_settings() {
 		'wl_general_settings',         // The page on which this option will be displayed
 		'wl_general_settings_section',      // The name of the section to which this field belongs
 		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			'id'          => 'wl-key',
-			'name'        => 'wl_general_settings[key]',
-			'value'       => wl_configuration_get_key(),
-			'description' => __( 'Insert the WordLift Key', 'wordlift' )
+		                                    'id'          => 'wl-key',
+		                                    'name'        => 'wl_general_settings[key]',
+		                                    'value'       => wl_configuration_get_key(),
+		                                    'description' => __( 'Insert the WordLift Key', 'wordlift' ),
 		)
 	);
 
@@ -140,11 +140,11 @@ function wl_configuration_settings() {
 	// Entity Base Path input.
 
 	$entity_base_path_args = array(                              // The array of arguments to pass to the callback. In this case, just a description.
-		'id'          => 'wl-entity-base-path',
-		'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
-		'value'       => Wordlift_Configuration_Service::get_instance()
-		                                               ->get_entity_base_path(),
-		'description' => __( 'Insert the Entity Base Path', 'wordlift' ),
+	                                                             'id'          => 'wl-entity-base-path',
+	                                                             'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
+	                                                             'value'       => Wordlift_Configuration_Service::get_instance()
+	                                                                                                            ->get_entity_base_path(),
+	                                                             'description' => __( 'Insert the Entity Base Path', 'wordlift' ),
 	);
 
 	if ( Wordlift_Entity_Service::get_instance()->count() ) {
@@ -170,11 +170,11 @@ function wl_configuration_settings() {
 		'wl_general_settings',
 		'wl_general_settings_section',
 		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			'id'          => 'wl-site-language',
-			'name'        => 'wl_general_settings[site_language]',
-			'value'       => wl_configuration_get_site_language(),
-			'description' => __( 'The site language', 'wordlift' ),
-			'options'     => wl_configuration_get_languages()
+		                                    'id'          => 'wl-site-language',
+		                                    'name'        => 'wl_general_settings[site_language]',
+		                                    'value'       => wl_configuration_get_site_language(),
+		                                    'description' => __( 'The site language', 'wordlift' ),
+		                                    'options'     => wl_configuration_get_languages(),
 		)
 	);
 
@@ -200,10 +200,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-api-url',
-				'name'        => 'wl_advanced_settings[api_url]',
-				'value'       => wl_configuration_get_api_url(),
-				'description' => __( 'The API URL', 'wordlift' )
+			                                    'id'          => 'wl-api-url',
+			                                    'name'        => 'wl_advanced_settings[api_url]',
+			                                    'value'       => wl_configuration_get_api_url(),
+			                                    'description' => __( 'The API URL', 'wordlift' ),
 			)
 		);
 
@@ -214,10 +214,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-key',
-				'name'        => 'wl_advanced_settings[redlink_key]',
-				'value'       => wl_configuration_get_redlink_key(),
-				'description' => __( 'The Redlink key', 'wordlift' )
+			                                    'id'          => 'wl-redlink-key',
+			                                    'name'        => 'wl_advanced_settings[redlink_key]',
+			                                    'value'       => wl_configuration_get_redlink_key(),
+			                                    'description' => __( 'The Redlink key', 'wordlift' ),
 			)
 		);
 
@@ -228,10 +228,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-user-id',
-				'name'        => 'wl_advanced_settings[redlink_user_id]',
-				'value'       => wl_configuration_get_redlink_user_id(),
-				'description' => __( 'The Redlink User Id', 'wordlift' )
+			                                    'id'          => 'wl-redlink-user-id',
+			                                    'name'        => 'wl_advanced_settings[redlink_user_id]',
+			                                    'value'       => wl_configuration_get_redlink_user_id(),
+			                                    'description' => __( 'The Redlink User Id', 'wordlift' ),
 			)
 		);
 
@@ -242,10 +242,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-dataset-name',
-				'name'        => 'wl_advanced_settings[redlink_dataset_name]',
-				'value'       => wl_configuration_get_redlink_dataset_name(),
-				'description' => __( 'The Redlink Dataset Name', 'wordlift' )
+			                                    'id'          => 'wl-redlink-dataset-name',
+			                                    'name'        => 'wl_advanced_settings[redlink_dataset_name]',
+			                                    'value'       => wl_configuration_get_redlink_dataset_name(),
+			                                    'description' => __( 'The Redlink Dataset Name', 'wordlift' ),
 			)
 		);
 
@@ -256,10 +256,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-dataset-uri',
-				'name'        => 'wl_advanced_settings[redlink_dataset_uri]',
-				'value'       => wl_configuration_get_redlink_dataset_uri(),
-				'description' => __( 'The Redlink Dataset URI', 'wordlift' )
+			                                    'id'          => 'wl-redlink-dataset-uri',
+			                                    'name'        => 'wl_advanced_settings[redlink_dataset_uri]',
+			                                    'value'       => wl_configuration_get_redlink_dataset_uri(),
+			                                    'description' => __( 'The Redlink Dataset URI', 'wordlift' ),
 			)
 		);
 
@@ -270,10 +270,10 @@ function wl_configuration_settings() {
 			'wl_advanced_settings',         // The page on which this option will be displayed
 			'wl_advanced_settings_section',      // The name of the section to which this field belongs
 			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				'id'          => 'wl-redlink-application-name',
-				'name'        => 'wl_advanced_settings[redlink_application_name]',
-				'value'       => wl_configuration_get_redlink_application_name(),
-				'description' => __( 'The Redlink Application Name', 'wordlift' )
+			                                    'id'          => 'wl-redlink-application-name',
+			                                    'name'        => 'wl_advanced_settings[redlink_application_name]',
+			                                    'value'       => wl_configuration_get_redlink_application_name(),
+			                                    'description' => __( 'The Redlink Application Name', 'wordlift' ),
 			)
 		);
 	}
@@ -290,7 +290,7 @@ function wl_configuration_general_settings_section_callback() {
 
 	// TODO: set the following text.
 	?>
-	Configure WordLift general options.
+    Configure WordLift general options.
 	<?php
 }
 
@@ -303,7 +303,7 @@ function wl_configuration_advanced_settings_section_callback() {
 
 	// TODO: set the following text.
 	?>
-	Configure WordLift advanced options.
+    Configure WordLift advanced options.
 	<?php
 }
 
@@ -332,11 +332,11 @@ function wl_configuration_sanitize_settings( $input ) {
  */
 function wl_configuration_input_box( $args ) {
 	?>
-	<input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
-	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="<?php echo esc_attr( $args['value'] ); ?>"
+    <input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
+           name="<?php echo esc_attr( $args['name'] ); ?>"
+           value="<?php echo esc_attr( $args['value'] ); ?>"
 	       <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
-	/>
+    />
 
 	<?php
 }
@@ -344,23 +344,23 @@ function wl_configuration_input_box( $args ) {
 /**
  * Display a select.
  *
- * @since 3.0.0
+ * @deprecated this method is only used to display the select for the languages.
+ *
+ * @since      3.0.0
  *
  * @param array $args The select configuration parameters.
  */
 function wl_configuration_select( $args ) {
 	?>
 
-	<select id="<?php echo esc_attr( $args['id'] ); ?>"
-	        name="<?php echo esc_attr( $args['name'] ); ?>">
+    <select id="<?php echo esc_attr( $args['id'] ); ?>"
+            name="<?php echo esc_attr( $args['name'] ); ?>">
 		<?php foreach ( $args['options'] as $value => $label ) { ?>
-			<option
-				value="<?php echo esc_attr( $value ); ?>" <?php if ( $args['value'] === $value ) {
+            <option value="<?php echo esc_attr( $value ); ?>" <?php if ( $args['value'] === $value ) {
 				echo 'selected';
-			}
-			?>><?php echo esc_html( $label ); ?></option>
+			} ?>><?php echo esc_html( $label ); ?></option>
 		<?php } ?>
-	</select>
+    </select>
 
 	<?php
 }
@@ -375,9 +375,9 @@ function wl_configuration_select( $args ) {
 function wl_configuration_checkbox( $args ) {
 	?>
 
-	<input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
-	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="1" <?php checked( 1, $args['value'], TRUE ); ?>/>
+    <input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
+           name="<?php echo esc_attr( $args['name'] ); ?>"
+           value="1" <?php checked( 1, $args['value'], TRUE ); ?>/>
 
 	<?php
 }
