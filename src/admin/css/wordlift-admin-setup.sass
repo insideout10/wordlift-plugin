@@ -262,8 +262,12 @@ input[type="text"], select
   border-radius: 4px
 
 select
+  // Arrow.
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=')
+  background-position: 100% 0
+  background-repeat: no-repeat
   background-size: 32px 32px
-  //background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=') no-repeat 368px 0
+  // Overriding defaults.
   -webkit-appearance: none
   -moz-appearance: none
   text-overflow: ellipsis
@@ -277,8 +281,10 @@ select
     color: #000
 
 
-.wl-key
+input[type="text"].wl-key
   // Those classes are added to 
+  padding-right: 34px
+
   &.invalid,
   &.valid
     // Positioning the background-image for both cases.

@@ -253,35 +253,43 @@ input[type="text"], select {
 
 /* line 264, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 select {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=");
+  background-position: 100% 0;
+  background-repeat: no-repeat;
   background-size: 32px 32px;
   -webkit-appearance: none;
   -moz-appearance: none;
   text-overflow: ellipsis;
 }
 
-/* line 273, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 277, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 select:focus::-ms-value {
   background: none;
   color: #000;
 }
 
-/* line 282, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
-.wl-key.invalid, .wl-key.valid {
+/* line 284, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+input[type="text"].wl-key {
+  padding-right: 34px;
+}
+
+/* line 288, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+input[type="text"].wl-key.invalid, input[type="text"].wl-key.valid {
   background-repeat: no-repeat;
   background-position: calc(100% - 8px) 7px;
 }
 
-/* line 288, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
-.wl-key.invalid {
+/* line 294, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+input[type="text"].wl-key.invalid {
   background-image: url("../../images/invalid.png");
 }
 
-/* line 290, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
-.wl-key.valid {
+/* line 296, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+input[type="text"].wl-key.valid {
   background-image: url("../../images/valid.png");
 }
 
-/* line 293, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 299, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 p.page-det {
   display: block;
   margin: 8px auto;
@@ -293,17 +301,17 @@ p.page-det {
   max-width: 400px;
 }
 
-/* line 307, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 313, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper {
   margin-bottom: 16px;
 }
 
-/* line 310, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 316, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper input {
   display: none;
 }
 
-/* line 314, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 320, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper label {
   width: 80px;
   display: inline-block;
@@ -311,7 +319,7 @@ p.page-det {
   margin: 0 22px;
 }
 
-/* line 320, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 326, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper .radio {
   width: 12px;
   height: 12px;
@@ -322,7 +330,7 @@ p.page-det {
   border: 1px solid #fff;
 }
 
-/* line 331, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 337, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper .radio .check {
   width: 8px;
   height: 8px;
@@ -335,17 +343,17 @@ p.page-det {
   transition: all 200ms ease-out;
 }
 
-/* line 346, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 352, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper input[type="radio"]:checked ~ .radio .check {
   transform: scale(1);
 }
 
-/* line 349, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 355, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 .radio-wrapper input[type="radio"]:not(:checked) ~ .radio .check {
   transform: scale(0);
 }
 
-/* line 352, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
+/* line 358, /Users/nicolabertelloni/Desktop/insideout/wordlift/plugin/wordlift-plugin/src/admin/css/wordlift-admin-setup.sass */
 a.add-logo {
   color: #fff;
   font-weight: 600;
