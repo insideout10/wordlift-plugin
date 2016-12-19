@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: WordLift Caching
-Plugin URI: http://wordlift.it
+Plugin URI: https://wordlift.io
 Description: Provides caching of remote queries
 Version: 3.0.0-SNAPSHOT
 Author: InsideOut10
