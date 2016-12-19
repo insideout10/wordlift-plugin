@@ -2,7 +2,7 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift
-Tags: artificial intelligence, content recommendation, navigation, semantic editor, linked open data, open data, knowledge graph, seo, semantic seo, search engine optimization, schema.org, google rich snippets, microdata, json-ld, widget, semantic web, wikipedia, data visualization, link, content discovery
+Tags: artificial intelligence, semantic seo, linked data, structured content, knowledge graph, content recommendation, seo, semantic editor, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
 Requires at least: 4.2
 Tested up to: 4.7.0
 Stable tag: {version}
@@ -49,7 +49,7 @@ _____________
 = Supported languages =
 _____________
 
-WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Français (French), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish).
+WordLift currently supports 31 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
 
 The Plug-in is built on **open source software**.
 
