@@ -5,8 +5,37 @@ sudo: required
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
 
-php:
-  - "5.6"
+# Test matrix:
+#  - PHP unit tests: PHP 5.3, 5.4, 5.5, 5.6, 7.0, 7.1
+#  - JavaScript unit tests
+#  - JavaScript end-to-end tests
+# @@todo: we're currently testing only the last version of WordPress, we should also test the previous ones and nightly.
+matrix:
+  include:
+  # JavaScript end-to-end tests.
+  - php: 5.6
+    env: SCRIPT=test:e2e
+  # JavaScript unit tests.
+  - php: 5.6
+    env: SCRIPT=test:js
+  # PHP unit tests on PHP 5.3
+  - php: 5.3
+    env: SCRIPT=test:phpunit
+  # PHP unit tests on PHP 5.4
+  - php: 5.4
+    env: SCRIPT=test:phpunit
+  # PHP unit tests on PHP 5.5
+  - php: 5.5
+    env: SCRIPT=test:phpunit
+  # PHP unit tests on PHP 5.6
+  - php: 5.6
+    env: SCRIPT=test:phpunit
+  # PHP unit tests on PHP 7.0
+  - php: 7.0
+    env: SCRIPT=test:phpunit
+  # PHP unit tests on PHP 7.1
+  - php: 7.1
+    env: SCRIPT=test:phpunit
 
 # Cache the node_modules folder.
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
@@ -24,15 +53,39 @@ addons:
 
 env:
   global:
+    # WordLift's Key and something else.
+    - secure: "NB4P/P1/Gzje1/mOseVZqkIdaxI5vEgnlUUEmNRBtAT0CMt3c3pLSfzRtKrFfuJzoXpahxf8pC1R+Ljjf+QCC+2ECqjGCPSSv1tIj0L/H+c9UtbpPQIwD6kv7dPBYedZ6eNAgGjK1DXhrAuSnNaYJrZ35N6tv06B0KmniY6pJnk="
+    - secure: "Fo6kJNe7LNHPfj6fBIyqOI7Zkm2DZwV7IH8jTGvZF5UkPvJiUyjN13z1TRXOohUYvigITZduF0f2I3MaxkAEpb/d5e2yf/Zu7x/nlRQzcSWM9zPMuW+oJG/b+s2m9F65uYkOIi1J5vI7w/G888zGS9LzSgwh4mXxeG1bm3b4EGw="
+
+    # WordLift's Key.
+    # Disabled, since we're using a key from up above: - secure: "exGT91J35T9zhTHMTmAkdAeMkUm+Xju8yrx3hyxHuAXt6rpwOGFPoeabRLlyj70+DmSMUK3b63yvwofqNtCoBgeNpRmXh9YIGmIZKYQdexD1vtYe6D1fvKM+7/08Z5dlIvQcSJX2gsDzZNQMVcRd0k9OrwrRN5TDZLjIWxBR70M="
+
+    # WordLift's options, needed for testing.
+    - WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING=true
+    - WL_SSL_VERIFY_ENABLED=true
+    - WL_SSL_V1_FORCED=true
+
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
-    # WordLift's Key.
-    - secure: "exGT91J35T9zhTHMTmAkdAeMkUm+Xju8yrx3hyxHuAXt6rpwOGFPoeabRLlyj70+DmSMUK3b63yvwofqNtCoBgeNpRmXh9YIGmIZKYQdexD1vtYe6D1fvKM+7/08Z5dlIvQcSJX2gsDzZNQMVcRd0k9OrwrRN5TDZLjIWxBR70M="
 
 services:
   # Require MySQL.
   - mysql
+
+# Legacy (required by test:js and test:php).
+before_install:
+  - |
+    if [[ "$SCRIPT" == "test:phpunit" ]]; then
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+      composer install --dev
+    fi
+  - |
+    if [[ "$SCRIPT" == "test:js" ]]; then
+      export CHROME_BIN=chromium-browser
+      export DISPLAY=:99.0
+      sh -e /etc/init.d/xvfb start
+    fi
 
 before_script:
   # Create WordPress' database.
@@ -48,8 +101,14 @@ before_script:
   - nvm install 6 --reinstall-packages-from=node
   - nvm use 6
   - node --version
+  # Legacy (required by test:js and test:php).
+  - npm install -g grunt-cli
   # Install Node dependencies.
   - npm install
 
 # Finally launch the script.
-script: npm run test:e2e
+script: npm run $SCRIPT
+
+# Notify our Slack channel.
+notifications:
+  slack: insideout10:NcslbQWVmD4YPInDq8TpBIno

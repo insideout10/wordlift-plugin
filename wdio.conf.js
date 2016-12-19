@@ -286,7 +286,7 @@ if (process.env.CI) {
     for (var i = 0; i < config.capabilities.length; i++) {
         config.capabilities[i]['tunnel-identifier'] = process.env.TRAVIS_JOB_NUMBER;
         config.capabilities[i].build = process.env.TRAVIS_BUILD_NUMBER;
-        config.capabilities[i].name = 'WordLift Cross-Browsing Tests (#' + process.env.TRAVIS_BUILD_NUMBER + ')';
+        config.capabilities[i].name = process.env.TRAVIS_BRANCH + ' (commit ' + process.env.TRAVIS_COMMIT + '; build ' + process.env.TRAVIS_BUILD_NUMBER + ')';
         config.capabilities[i].public = true;
         config.capabilities[i].baseUrl = BASE_URL + '/' + (i + 1);
     }

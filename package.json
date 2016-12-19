@@ -9,7 +9,9 @@
     "url": "https://github.com/insideout10/wordlift-plugin"
   },
   "scripts": {
-    "test:e2e": "./node_modules/.bin/wdio wdio.conf.js"
+    "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
+    "test:js": "grunt travis:js",
+    "test:php": "grunt travis:phpunit"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
