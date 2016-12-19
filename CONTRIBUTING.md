@@ -12,6 +12,7 @@ Here are the guidelines we'd like you to follow :pray::
  - [Submission Guidelines](#submit)
  - [Coding Rules](#rules)
  - [Releases and Commit Workflow](#releases)
+ - [Cross-browsing Tests](#crossbrowsing)
  - [Further Info](#info)
  
 ## <a name="question"></a> Got a Question or Problem?
@@ -90,6 +91,12 @@ number, e.g. 'see #1: updated changelog'.
 Once work is finished on an issue, **don't close issues**: label it **resolved**. Only after the work is published on
 wordpress.org we close the issue (typically the person that publishes the plugin to [wordpress.org][wp-plugins-wordlift]
 will close the issues).
+
+## <a name="crossbrowsing"></a> Cross-browsing tests
+
+We use SauceLabs to perform cross-browsing tests on the following browsers:
+
+<a href="https://saucelabs.com/u/ziodave"><img src="https://saucelabs.com/browser-matrix/ziodave.svg" alt="Browser Matrix"></a>
 
 ## <a name="info"></a> Further Info
 
