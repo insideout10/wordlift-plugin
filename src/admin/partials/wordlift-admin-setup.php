@@ -164,8 +164,8 @@
 
         <div data-wl-logo="wl-logo">
             <input type="hidden" name="logo"/>
-            <div data-wl-logo-preview="wl-logo-preview" class="wl-logo-preview"><a
-                        data-wl-remove-logo="wl-remove-logo" href="javascript:void(0);">X</a>
+            <div data-wl-logo-preview="wl-logo-preview" class="wl-logo-preview">
+                <a data-wl-remove-logo="wl-remove-logo" href="javascript:void(0);" class="fa fa-times"></a>
             </div>
             <a data-wl-add-logo="wl-add-logo" class="add-logo" href="javascript:void(0);">
 				<?php esc_html_e( 'Add your logo', 'wordlift' ); ?>
