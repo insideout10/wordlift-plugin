@@ -107,7 +107,7 @@ class Wordlift_Admin {
 				'action'            => 'entity_by_title',
 				'post_id'           => get_the_ID(),
 				'entityBeingEdited' => isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ),
-				'language' => Wordlift_Configuration_Service::get_instance()->get_language()
+				'language'          => Wordlift_Configuration_Service::get_instance()->get_language_code(),
 			)
 		);
 

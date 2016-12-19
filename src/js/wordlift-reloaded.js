@@ -1206,25 +1206,23 @@
         return data;
       };
       service.getSuggestedSameAs = function(content) {
-        var promise;
-        return promise = this._innerPerform(content).then(function(response) {
-          var entity, id, matches, ref2, suggestions;
-          suggestions = [];
-          ref2 = response.data.entities;
-          for (id in ref2) {
-            entity = ref2[id];
-            if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
-              suggestions.push({
-                id: id,
-                label: entity.label,
-                mainType: entity.mainType,
-                source: matches[1]
-              });
-            }
+        var entity, id, matches, promise, ref2, suggestions;
+        promise = this._innerPerform(content).then(function(response) {});
+        suggestions = [];
+        ref2 = response.data.entities;
+        for (id in ref2) {
+          entity = ref2[id];
+          if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
+            suggestions.push({
+              id: id,
+              label: entity.label,
+              mainType: entity.mainType,
+              source: matches[1]
+            });
           }
-          $log.debug(suggestions);
-          return $rootScope.$broadcast("sameAsRetrieved", suggestions);
-        });
+        }
+        $log.debug(suggestions);
+        return $rootScope.$broadcast("sameAsRetrieved", suggestions);
       };
       service._innerPerform = function(content, annotations) {
         var args;
@@ -1242,6 +1240,9 @@
           content: content,
           annotations: annotations
         };
+        if (((typeof wlSettings !== "undefined" && wlSettings !== null ? wlSettings.language : void 0) != null)) {
+          args.data.contentLanguage = wlSettings.language;
+        }
         $log.info("Analyzing content...");
         return $http(args);
       };
