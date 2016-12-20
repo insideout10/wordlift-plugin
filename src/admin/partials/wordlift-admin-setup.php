@@ -179,7 +179,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="wl-container">
 
     <a href="/wp-admin" class="fa fa-times wl-close"></a>
     
