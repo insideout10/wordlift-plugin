@@ -143,7 +143,13 @@
                 var uploader = wp.media({
                     title: settings.media.title,
                     button: settings.media.button,
-                    multiple: false
+                    multiple: false,
+
+                    // Tell the modal to show only images.
+                    library: {
+                        type: 'image'
+                    }
+
                 });
 
                 // Add logo.
