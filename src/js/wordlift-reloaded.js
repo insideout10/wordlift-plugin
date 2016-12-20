@@ -1807,7 +1807,7 @@
             text = Traslator.create(html).getText();
             if (text.match(/[a-zA-Z0-9]+/)) {
               EditorService.updateContentEditableStatus(false);
-              return AnalysisService.perform(text);
+              return AnalysisService.perform(html);
             } else {
               return $log.warn("Blank content: nothing to do!");
             }
