@@ -40,6 +40,11 @@ body .wl-container, body .wl-container * {
   cursor: pointer;
 }
 
+/* line 32, src/admin/css/wordlift-admin-setup.sass */
+.wl-container input::-ms-clear {
+  display: none;
+}
+
 @media screen and (max-width: 550px) {
   /* line 23, src/admin/css/wordlift-admin-setup.sass */
   .wl-container {
@@ -48,7 +53,7 @@ body .wl-container, body .wl-container * {
   }
 }
 
-/* line 56, src/admin/css/wordlift-admin-setup.sass */
+/* line 60, src/admin/css/wordlift-admin-setup.sass */
 .wl-container header {
   display: table;
   text-align: left;
@@ -56,7 +61,7 @@ body .wl-container, body .wl-container * {
   height: 24px;
 }
 
-/* line 64, src/admin/css/wordlift-admin-setup.sass */
+/* line 68, src/admin/css/wordlift-admin-setup.sass */
 .wl-container header h1 {
   display: inline-block;
   font-size: 24px;
@@ -65,12 +70,12 @@ body .wl-container, body .wl-container * {
   font-weight: 300;
 }
 
-/* line 74, src/admin/css/wordlift-admin-setup.sass */
+/* line 78, src/admin/css/wordlift-admin-setup.sass */
 .wl-container header h1 strong {
   font-weight: 900;
 }
 
-/* line 77, src/admin/css/wordlift-admin-setup.sass */
+/* line 81, src/admin/css/wordlift-admin-setup.sass */
 .wl-container header img {
   float: right;
   margin-top: 4px;
@@ -78,7 +83,7 @@ body .wl-container, body .wl-container * {
   height: 16px;
 }
 
-/* line 85, src/admin/css/wordlift-admin-setup.sass */
+/* line 89, src/admin/css/wordlift-admin-setup.sass */
 .wl-container ul.wl-pane-indicator {
   position: relative;
   top: -20px;
@@ -89,13 +94,13 @@ body .wl-container, body .wl-container * {
 }
 
 @media screen and (max-width: 550px) {
-  /* line 85, src/admin/css/wordlift-admin-setup.sass */
+  /* line 89, src/admin/css/wordlift-admin-setup.sass */
   .wl-container ul.wl-pane-indicator {
     top: 0;
   }
 }
 
-/* line 100, src/admin/css/wordlift-admin-setup.sass */
+/* line 104, src/admin/css/wordlift-admin-setup.sass */
 .wl-container ul.wl-pane-indicator li {
   position: relative;
   display: inline-block;
@@ -107,12 +112,12 @@ body .wl-container, body .wl-container * {
   transition: all 200ms ease-out;
 }
 
-/* line 115, src/admin/css/wordlift-admin-setup.sass */
+/* line 119, src/admin/css/wordlift-admin-setup.sass */
 .wl-container ul.wl-pane-indicator li.active {
   background-color: #fff;
 }
 
-/* line 118, src/admin/css/wordlift-admin-setup.sass */
+/* line 122, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .btn-wrapper {
   position: absolute;
   bottom: 8px;
@@ -120,7 +125,7 @@ body .wl-container, body .wl-container * {
   text-align: center;
 }
 
-/* line 126, src/admin/css/wordlift-admin-setup.sass */
+/* line 130, src/admin/css/wordlift-admin-setup.sass */
 .wl-container button, .wl-container input[type="button"], .wl-container a.button, .wl-container input[type="submit"] {
   border: 0;
   cursor: pointer;
@@ -139,25 +144,25 @@ body .wl-container, body .wl-container * {
   text-decoration: none;
 }
 
-/* line 151, src/admin/css/wordlift-admin-setup.sass */
+/* line 155, src/admin/css/wordlift-admin-setup.sass */
 .wl-container button.wl-default-action, .wl-container input[type="button"].wl-default-action, .wl-container a.button.wl-default-action, .wl-container input[type="submit"].wl-default-action {
   background: #fff;
   color: #2e92ff;
   margin-right: 0;
 }
 
-/* line 157, src/admin/css/wordlift-admin-setup.sass */
+/* line 161, src/admin/css/wordlift-admin-setup.sass */
 .wl-container button:hover, .wl-container input[type="button"]:hover, .wl-container a.button:hover, .wl-container input[type="submit"]:hover {
   transform: scale(1.01) translateY(-2px);
   box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.25), 0 15px 20px -15px rgba(0, 0, 0, 0.25);
 }
 
-/* line 160, src/admin/css/wordlift-admin-setup.sass */
+/* line 164, src/admin/css/wordlift-admin-setup.sass */
 .wl-container button:active, .wl-container input[type="button"]:active, .wl-container a.button:active, .wl-container input[type="submit"]:active {
   transform: scale(0.99) translateY(0px);
 }
 
-/* line 164, src/admin/css/wordlift-admin-setup.sass */
+/* line 168, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .viewport {
   position: absolute;
   bottom: 24px;
@@ -171,14 +176,14 @@ body .wl-container, body .wl-container * {
 }
 
 @media screen and (max-width: 550px) {
-  /* line 164, src/admin/css/wordlift-admin-setup.sass */
+  /* line 168, src/admin/css/wordlift-admin-setup.sass */
   .wl-container .viewport {
     width: calc(100% - 32px);
     height: calc(100vh - 136px);
   }
 }
 
-/* line 183, src/admin/css/wordlift-admin-setup.sass */
+/* line 187, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .viewport ul {
   list-style: none;
   white-space: nowrap;
@@ -189,7 +194,7 @@ body .wl-container, body .wl-container * {
   height: 100%;
 }
 
-/* line 196, src/admin/css/wordlift-admin-setup.sass */
+/* line 200, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .viewport ul li {
   display: inline-block;
   vertical-align: top;
@@ -201,7 +206,7 @@ body .wl-container, body .wl-container * {
   height: 100%;
 }
 
-/* line 209, src/admin/css/wordlift-admin-setup.sass */
+/* line 213, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .page-title {
   width: 100%;
   text-align: center;
@@ -210,7 +215,7 @@ body .wl-container, body .wl-container * {
   margin: 0 0 8px;
 }
 
-/* line 219, src/admin/css/wordlift-admin-setup.sass */
+/* line 223, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .page-txt {
   white-space: normal;
   position: relative;
@@ -220,7 +225,7 @@ body .wl-container, body .wl-container * {
   line-height: 24px;
 }
 
-/* line 233, src/admin/css/wordlift-admin-setup.sass */
+/* line 237, src/admin/css/wordlift-admin-setup.sass */
 .wl-container ul.page-list {
   white-space: normal;
   text-align: left;
@@ -228,7 +233,7 @@ body .wl-container, body .wl-container * {
   max-width: 480px;
 }
 
-/* line 241, src/admin/css/wordlift-admin-setup.sass */
+/* line 245, src/admin/css/wordlift-admin-setup.sass */
 .wl-container ul.page-list li {
   height: 40px;
   width: 150px;
@@ -237,13 +242,13 @@ body .wl-container, body .wl-container * {
   line-height: 40px;
 }
 
-/* line 251, src/admin/css/wordlift-admin-setup.sass */
+/* line 255, src/admin/css/wordlift-admin-setup.sass */
 .wl-container ul.page-list li span {
   font-size: 20px;
   margin-right: 4px;
 }
 
-/* line 255, src/admin/css/wordlift-admin-setup.sass */
+/* line 259, src/admin/css/wordlift-admin-setup.sass */
 .wl-container input[type="text"], .wl-container select {
   border: none;
   outline: none;
@@ -262,7 +267,7 @@ body .wl-container, body .wl-container * {
   border-radius: 4px;
 }
 
-/* line 278, src/admin/css/wordlift-admin-setup.sass */
+/* line 282, src/admin/css/wordlift-admin-setup.sass */
 .wl-container select {
   background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAATNJREFUWAljYBgFoyEwGgKjITAaAgMcAowg+82X/Of7/o5hHRMjw6kLuYxV+NxkMPl/27//DGacQgxBJ2MYP+FTS4wck+e2/+xAy3cCFTsDDa4EWtCNSyNIDqQGpBakB6QXl1pixZlePWbgACqWgWkAWlCCzRFQy0tg6kB6oHqRhEhnMp1NZ/zIys7gANT6BKYd3RFYLH8C0gPSC9NDLg1OAyDNxjP/K//+xbCf4T+DLMwwYJroAbFBDoKJMTAyPGZlY3AEWn4XLkYBA+4AkBnYHIFiNpUtB5nNhGwByFfszMDoAFqELA5mA8VActTyOcx8lBCACZpO+6/08y/DAXh0QC0/ncV4D6aGWjRWB4AMhzsCyAb5nBaWE/SE3vT/YiBMUOGogtEQGA2B0RAYDYGhHAIAbVluGopK7kIAAAAASUVORK5CYII=");
   background-position: 100% 0;
@@ -273,45 +278,51 @@ body .wl-container, body .wl-container * {
   text-overflow: ellipsis;
 }
 
-/* line 291, src/admin/css/wordlift-admin-setup.sass */
+/* line 295, src/admin/css/wordlift-admin-setup.sass */
 .wl-container select:focus::-ms-value {
   background: none;
   color: #000;
 }
 
-/* line 297, src/admin/css/wordlift-admin-setup.sass */
+/* line 301, src/admin/css/wordlift-admin-setup.sass */
 .wl-container input[type="text"]#key,
-.wl-container input[type="text"]#vocabulary {
+.wl-container input[type="text"]#vocabulary,
+.wl-container input[type="text"]#name {
   padding-right: 34px;
 }
 
-/* line 302, src/admin/css/wordlift-admin-setup.sass */
+/* line 307, src/admin/css/wordlift-admin-setup.sass */
 .wl-container input[type="text"]#key.invalid, .wl-container input[type="text"]#key.valid,
 .wl-container input[type="text"]#vocabulary.invalid,
-.wl-container input[type="text"]#vocabulary.valid {
+.wl-container input[type="text"]#vocabulary.valid,
+.wl-container input[type="text"]#name.invalid,
+.wl-container input[type="text"]#name.valid {
   background-repeat: no-repeat;
   background-position: calc(100% - 8px) 7px;
 }
 
-/* line 307, src/admin/css/wordlift-admin-setup.sass */
+/* line 312, src/admin/css/wordlift-admin-setup.sass */
 .wl-container input[type="text"]#key.invalid,
-.wl-container input[type="text"]#vocabulary.invalid {
+.wl-container input[type="text"]#vocabulary.invalid,
+.wl-container input[type="text"]#name.invalid {
   background-image: url("../../images/invalid.png");
 }
 
-/* line 310, src/admin/css/wordlift-admin-setup.sass */
+/* line 315, src/admin/css/wordlift-admin-setup.sass */
 .wl-container input[type="text"]#key.valid,
-.wl-container input[type="text"]#vocabulary.valid {
+.wl-container input[type="text"]#vocabulary.valid,
+.wl-container input[type="text"]#name.valid {
   background-image: url("../../images/valid.png");
 }
 
-/* line 313, src/admin/css/wordlift-admin-setup.sass */
+/* line 318, src/admin/css/wordlift-admin-setup.sass */
 .wl-container input[type="text"]#key.untouched,
-.wl-container input[type="text"]#vocabulary.untouched {
+.wl-container input[type="text"]#vocabulary.untouched,
+.wl-container input[type="text"]#name.untouched {
   background-image: initial;
 }
 
-/* line 316, src/admin/css/wordlift-admin-setup.sass */
+/* line 321, src/admin/css/wordlift-admin-setup.sass */
 .wl-container p.page-det {
   display: block;
   margin: 8px auto;
@@ -323,17 +334,17 @@ body .wl-container, body .wl-container * {
   max-width: 400px;
 }
 
-/* line 330, src/admin/css/wordlift-admin-setup.sass */
+/* line 335, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper {
   margin-bottom: 16px;
 }
 
-/* line 333, src/admin/css/wordlift-admin-setup.sass */
+/* line 338, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper input {
   display: none;
 }
 
-/* line 337, src/admin/css/wordlift-admin-setup.sass */
+/* line 342, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper label {
   width: 80px;
   display: inline-block;
@@ -341,7 +352,7 @@ body .wl-container, body .wl-container * {
   margin: 0 22px;
 }
 
-/* line 343, src/admin/css/wordlift-admin-setup.sass */
+/* line 348, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper .radio {
   width: 12px;
   height: 12px;
@@ -352,7 +363,7 @@ body .wl-container, body .wl-container * {
   border: 1px solid #fff;
 }
 
-/* line 354, src/admin/css/wordlift-admin-setup.sass */
+/* line 359, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper .radio .check {
   width: 8px;
   height: 8px;
@@ -365,17 +376,17 @@ body .wl-container, body .wl-container * {
   transition: all 200ms ease-out;
 }
 
-/* line 369, src/admin/css/wordlift-admin-setup.sass */
+/* line 374, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper input[type="radio"]:checked ~ .radio .check {
   transform: scale(1);
 }
 
-/* line 372, src/admin/css/wordlift-admin-setup.sass */
+/* line 377, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .radio-wrapper input[type="radio"]:not(:checked) ~ .radio .check {
   transform: scale(0);
 }
 
-/* line 375, src/admin/css/wordlift-admin-setup.sass */
+/* line 380, src/admin/css/wordlift-admin-setup.sass */
 .wl-container a.add-logo {
   color: #fff;
   font-weight: 600;
@@ -388,7 +399,7 @@ body .wl-container, body .wl-container * {
   text-shadow: 0.03em 0 #2E92FF, -0.03em 0 #2E92FF, 0 0.03em #2E92FF, 0 -0.03em #2E92FF, 0.06em 0 #2E92FF, -0.06em 0 #2E92FF, 0.09em 0 #2E92FF, -0.09em 0 #2E92FF, 0.12em 0 #2E92FF, -0.12em 0 #2E92FF, 0.15em 0 #2E92FF, -0.15em 0 #2E92FF;
 }
 
-/* line 390, src/admin/css/wordlift-admin-setup.sass */
+/* line 395, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-logo-preview {
   display: none;
   position: relative;
@@ -404,7 +415,7 @@ body .wl-container, body .wl-container * {
   border-radius: 4px;
 }
 
-/* line 410, src/admin/css/wordlift-admin-setup.sass */
+/* line 415, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-logo-preview a {
   display: block;
   position: absolute;
@@ -418,13 +429,13 @@ body .wl-container, body .wl-container * {
   text-decoration: none;
 }
 
-/* line 426, src/admin/css/wordlift-admin-setup.sass */
+/* line 431, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-logo-preview a::before {
   line-height: 16px;
   font-size: 12px;
 }
 
-/* line 432, src/admin/css/wordlift-admin-setup.sass */
+/* line 437, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-close {
   display: block;
   position: absolute;
@@ -440,7 +451,7 @@ body .wl-container, body .wl-container * {
   transition: all 250ms ease-out;
 }
 
-/* line 452, src/admin/css/wordlift-admin-setup.sass */
+/* line 457, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-close::before {
   position: relative;
   top: -1px;
@@ -448,13 +459,13 @@ body .wl-container, body .wl-container * {
   font-size: 24px;
 }
 
-/* line 461, src/admin/css/wordlift-admin-setup.sass */
+/* line 466, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-close:hover {
   transform: scale(1.005) translateY(-1px);
   box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.25), 0 15px 20px -15px rgba(0, 0, 0, 0.25);
 }
 
-/* line 464, src/admin/css/wordlift-admin-setup.sass */
+/* line 469, src/admin/css/wordlift-admin-setup.sass */
 .wl-container .wl-close:active {
   transform: scale(0.995) translateY(0px);
 }

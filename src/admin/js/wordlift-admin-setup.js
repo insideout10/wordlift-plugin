@@ -111,8 +111,9 @@
                     // Set a jQuery reference to the element.
                     var $this = $(this);
 
-                    // Remove any preexisting states.
-                    $this.removeClass('valid invalid');
+                    // Remove any preexisting states, including the `untouched` class which is set initially to prevent
+                    // displaying the `valid`/`invalid` indicator.
+                    $this.removeClass('untouched valid invalid');
 
                     // Delay the check for a valid path.
                     delay($this, function () {
@@ -195,6 +196,10 @@
 
             // Catch form submits and cancel them if the name is not properly set.
             $('form').on('submit', function (e) {
+
+                // At first load the input has an `untouched` class to prevent showing the `valid`/`invalid` indicator
+                // until the user actually touches the input.
+                $('input[data-wl-name]').removeClass('untouched');
 
                 // Check that we have one valid name.
                 if (1 !== $('input.valid[data-wl-name]').length) e.preventDefault();

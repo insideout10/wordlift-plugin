@@ -28,6 +28,10 @@ body
   .radio-wrapper label
     cursor: pointer
 
+  // Hide the "clear all" cross. See http://stackoverflow.com/questions/14007655/remove-ie10s-clear-field-x-button-on-certain-inputs
+  input::-ms-clear
+    display: none
+
   // Define global text color.
   color: $font-color
 
@@ -295,7 +299,8 @@ body
       color: #000
 
   input[type="text"]#key,
-  input[type="text"]#vocabulary
+  input[type="text"]#vocabulary,
+  input[type="text"]#name
     // Those classes are added to 
     padding-right: 34px
 

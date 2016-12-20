@@ -166,7 +166,7 @@
                 <span class="label"><?php esc_html_e( 'Company', 'wordlift' ); ?></span>
             </label>
         </div>
-        <input type="text" id="name" name="name" data-wl-name="wl-name" value="" autocomplete="off"
+        <input type="text" id="name" name="name" data-wl-name="wl-name" value="" autocomplete="off" class="untouched invalid"
                placeholder="<?php esc_attr_e( "What's your name?", 'wordlift' ); ?>">
 
         <div data-wl-logo="wl-logo">
