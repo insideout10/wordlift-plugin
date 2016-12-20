@@ -1240,7 +1240,8 @@
         };
         args.data = {
           content: content,
-          annotations: annotations
+          annotations: annotations,
+          contentType: 'text/html'
         };
         $log.info("Analyzing content...");
         return $http(args);
@@ -1252,7 +1253,7 @@
       service.perform = function(content) {
         var annotations, promise;
         if (service._currentAnalysis) {
-          $log.warn("Analysis already runned! Nothing to do ...");
+          $log.warn("Analysis already run! Nothing to do ...");
           service._updateStatus(false);
           return;
         }
