@@ -99,7 +99,7 @@
         <p class="page-txt">
 			<?php esc_html_e( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field below. Check our FAQs if you need more info.', 'wordlift' ); ?>
         </p>
-        <input type="text" id="vocabulary" name="vocabulary" autocomplete="off" value="vocabulary" class="valid"
+        <input type="text" id="vocabulary" name="vocabulary" autocomplete="off" value="vocabulary" class=""
                data-wl-vocabulary="wl-vocabulary">
         <p class="page-det">
 			<?php esc_html_e( 'Leave it empty to place your entities in the root folder of your website', 'wordlift' ); ?>
@@ -181,10 +181,13 @@
 
 <div class="container">
 
+    <a href="/wp-admin" class="fa fa-times wl-close"></a>
+    
     <header>
         <h1><strong>Word</strong>Lift</h1>
         <img src="<?php echo plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'images/shapes.png'; ?>"/>
     </header>
+    
 
     <form method="post">
 		<?php wp_nonce_field( 'wl-save-configuration' ); ?>
