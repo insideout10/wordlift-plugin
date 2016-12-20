@@ -12,7 +12,10 @@
 
 	// Enqueue styles and scripts.
 	wp_enqueue_style( 'wl-font-awesome', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'css/font-awesome.min.css' );
-	wp_enqueue_style( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-admin-setup.css', array( 'wl-font-awesome' ) );
+	wp_enqueue_style( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'css/wordlift-admin-setup.css', array(
+		'common',
+		'wl-font-awesome',
+	) );
 	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-admin-setup.js', array( 'jquery' ) );
 
 	// Set configuration settings.
@@ -20,7 +23,7 @@
 		'ajaxUrl' => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
 		'action'  => 'wl_validate_key',
 		'media'   => array(
-			'title'  => __( 'WordLift Choose Logo', 'wordlift' ),
+			'title' => __( 'WordLift Choose Logo', 'wordlift' ),
 			'button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 		),
 	) );
@@ -84,7 +87,8 @@
         <p class="page-txt">
 			<?php esc_html_e( 'If you already puchased a plan, check your email, get the activation key from your inbox and insert it in the field below. Otherwise ....', 'wordlift' ); ?>
         </p>
-        <input type="text" data-wl-key="wl-key" class="invalid untouched" id="key" name="key" value="" autocomplete="off" placeholder="Activation Key">
+        <input type="text" data-wl-key="wl-key" class="invalid untouched" id="key" name="key" value=""
+               autocomplete="off" placeholder="Activation Key">
         <div class="btn-wrapper">
             <a
                     href="https://wordlift.io/?utm_campaign=wl_activation_grab_the_key#plan-and-price" target="_tab"
@@ -185,7 +189,7 @@
 
 <div class="wl-container">
 
-    <a href="/wp-admin" class="fa fa-times wl-close"></a>
+    <a href="<?php echo esc_url( admin_url() ); ?> " class="fa fa-times wl-close"></a>
 
     <header>
         <h1><strong>Word</strong>Lift</h1>

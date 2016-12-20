@@ -4,28 +4,33 @@ $background-color: #f5f5f5
 $secondary-color: #2E92FF
 $font-color: #fff
 
+// Define the general properties for the body. These are the only properties we define here as they affect directly
+// the body. Everything else is applied in the `wl-container` which contains our own html.
 body
   background-color: $background-color
   padding: 0
   margin: 0
   // Define fixed height as the viewport.
   height: 100vh
+
+  font-size: initial
+  line-height: initial
+
+  .wl-container, .wl-container *
+    box-sizing: border-box
+
+// The `.wl-container` classifies our 1st level container.
+.wl-container
+
+  h1, h2, h3, h4, h5, h6
+    color: $font-color
+
   // Define global text color.
   color: $font-color
+
   // Define global font-family and provide fallbacks.
   font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif
 
-  // Fixing box in their spaces.
-  *
-    box-sizing: border-box
-
-// Hiding the screen-reader text in screens 
-@media screen
-  span.screen-reader-text
-    display: none
-
-// Content wrapper.
-.wl-container
   // Positioning the element in the page.
   position: relative
   top: 25vh
