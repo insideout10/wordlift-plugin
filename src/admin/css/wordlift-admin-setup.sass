@@ -286,22 +286,24 @@ body
       // No, you can't choose another color, IE 1x will display white.
       color: #000
 
-
-  input[type="text"].wl-key,
+  input[type="text"]#key,
   input[type="text"]#vocabulary
     // Those classes are added to 
     padding-right: 34px
 
-    &.invalid,
-    &.valid
+    &.invalid, &.valid
       // Positioning the background-image for both cases.
       background-repeat: no-repeat
       background-position: calc(100% - 8px) 7px
 
     &.invalid
       background-image: url("../../images/invalid.png")
+
     &.valid
       background-image: url("../../images/valid.png")
+
+    &.untouched
+      background-image: initial
 
   p.page-det
     // Positioning
@@ -436,7 +438,7 @@ body
     // Preventing underline.
     text-decoration: none
     // Shadowing.
-    box-shadow: 0 4px 8px -2px rgba(0,0,0,.25), 0 2px 4px 0px rgba(0,0,0,.35)
+    box-shadow: 0 4px 8px -2px rgba(0, 0, 0, .25), 0 2px 4px 0px rgba(0, 0, 0, .35)
     // Anime.
     transition: all 250ms ease-out
     &::before
@@ -447,7 +449,6 @@ body
       line-height: 32px
       // Fixing icon size.
       font-size: 24px
-
 
     &:hover
       transform: scale(1.005) translateY(-1px)
