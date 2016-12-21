@@ -134,6 +134,17 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.0 (2016-12-21) =
+* Fix: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
+* Fix: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
+* Fix: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
+* Fix: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
+* Fix: [#395](https://github.com/insideout10/wordlift-plugin/issues/395): Author missing from entities edit pages.
+* Fix: [#391](https://github.com/insideout10/wordlift-plugin/issues/391): Html code messed u when using WordLift on previous posts and with Twitter embeds.
+* Fix: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
+* Fix: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
+* Fix: [#306](https://github.com/insideout10/wordlift-plugin/issues/306): Entities from the internal vocabulary are not properly detected from the analysis.
+
 = 3.8.1 (2016-12-09) =
 * Fix: [#415](https://github.com/insideout10/wordlift-plugin/issues/415): WordLift not working after updating to WP 4.7.
 * Fix: [#410](https://github.com/insideout10/wordlift-plugin/issues/410): Triples not showing on the WordLift dashboard.
