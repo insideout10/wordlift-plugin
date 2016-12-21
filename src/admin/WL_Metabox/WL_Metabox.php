@@ -27,7 +27,7 @@ class WL_Metabox {
 		add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ) );
 		add_action( 'wl_linked_data_save_post', array(
 			&$this,
-			'save_form_data'
+			'save_form_data',
 		) );
 
 		// Enqueue js and css
@@ -46,7 +46,7 @@ class WL_Metabox {
 		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
 		add_meta_box( $id, $title, array(
 			$this,
-			'html'
+			'html',
 		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
 
 		// Add filter to change the metabox CSS class
@@ -173,7 +173,7 @@ class WL_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args
-	 * @param bool $grouped Flag to distinguish between simple and grouped Fields
+	 * @param bool  $grouped Flag to distinguish between simple and grouped Fields
 	 */
 	public function add_field( $args, $grouped = FALSE ) {
 
@@ -273,8 +273,10 @@ class WL_Metabox {
 		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wl_entity_metabox_utilities.js' );
 		wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'action'   => 'entity_by_title'
+				'action'   => 'entity_by_title',
 			)
 		);
+
 	}
+
 }
