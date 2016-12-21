@@ -36,10 +36,10 @@
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
-      pattern = /([^&<>]*)(&[^&;]*;|<[^>]*>)([^&<>]*)/gim;
+      pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?[\w-]+(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim;
       textLength = 0;
       htmlLength = 0;
-      while (match = pattern.exec(this._html)) {
+      while ((match = pattern.exec(this._html)) != null) {
         htmlPre = match[1];
         htmlElem = match[2];
         htmlPost = match[3];
@@ -60,7 +60,7 @@
         }
         this._text += textPre + htmlProcessed + textPost;
       }
-      if ('' === this._text && '' !== this._html) {
+      if ('' === this._text && !pattern.match(this._html)) {
         this._text = new String(this._html);
       }
       if (0 === this._textPositions.length || 0 !== this._textPositions[0]) {
@@ -1800,16 +1800,13 @@
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
           return $rootScope.$apply(function() {
-            var html, text;
+            var html;
             html = editor.getContent({
               format: 'raw'
             });
-            text = Traslator.create(html).getText();
-            if (text.match(/[a-zA-Z0-9]+/)) {
+            if ("" !== html) {
               EditorService.updateContentEditableStatus(false);
               return AnalysisService.perform(html);
-            } else {
-              return $log.warn("Blank content: nothing to do!");
             }
           });
         }

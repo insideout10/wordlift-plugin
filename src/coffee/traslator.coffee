@@ -8,7 +8,7 @@ class Traslator
   _html: ''
   _text: ''
 
-  decodeHtml = (html)-> 
+  decodeHtml = (html)->
     txt = document.createElement("textarea")
     txt.innerHTML = html
     txt.value
@@ -28,12 +28,12 @@ class Traslator
     @_text = ''
 
     # OLD pattern = /([^<]*)(<[^>]*>)([^<]*)/gim
-    pattern = /([^&<>]*)(&[^&;]*;|<[^>]*>)([^&<>]*)/gim
-     
+    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?[\w-]+(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
+
     textLength = 0
     htmlLength = 0
 
-    while match = pattern.exec @_html
+    while (match = pattern.exec @_html)?
 
       # Get the text pre/post and the html element
       htmlPre = match[1]
@@ -71,7 +71,7 @@ class Traslator
 
 
     # In case the regex didn't find any tag, copy the html over the text.
-    @_text = new String(@_html) if '' is @_text and '' isnt @_html
+    @_text = new String(@_html) if '' is @_text and !pattern.match @_html
 
     # Add text position 0 if it's not already set.
     if 0 is @_textPositions.length or 0 isnt @_textPositions[0]

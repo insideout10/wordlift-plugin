@@ -112,14 +112,18 @@ $(
           $rootScope.$apply(->
             # Get the html content of the editor.
             html = editor.getContent format: 'raw'
-            # Get the text content from the Html.
-            text = Traslator.create(html).getText()
-            if text.match /[a-zA-Z0-9]+/
-              # Disable tinymce editing
+
+            if "" isnt html
               EditorService.updateContentEditableStatus false
-              AnalysisService.perform htmlt
-            else
-              $log.warn "Blank content: nothing to do!"
+              AnalysisService.perform html
+            # Get the text content from the Html.
+#            text = Traslator.create(html).getText()
+#            if text.match /[a-zA-Z0-9]+/
+#              # Disable tinymce editing
+#              EditorService.updateContentEditableStatus false
+#              AnalysisService.perform html
+#            else
+#              $log.warn "Blank content: nothing to do!"
           )
       ])
     )
