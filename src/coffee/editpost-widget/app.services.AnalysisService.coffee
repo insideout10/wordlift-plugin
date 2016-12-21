@@ -194,7 +194,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       # Set the data as two parameters, content and annotations.
       args.headers = {'Content-Type': 'application/json'}
-      args.data = {content: content, annotations: annotations}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html'}
 
       if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
 
@@ -208,7 +208,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     service.perform = (content)->
       if service._currentAnalysis
-        $log.warn "Analysis already runned! Nothing to do ..."
+        $log.warn "Analysis already run! Nothing to do ..."
         service._updateStatus false
 
         return

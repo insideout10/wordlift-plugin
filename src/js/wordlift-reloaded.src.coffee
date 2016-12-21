@@ -8,7 +8,7 @@ class Traslator
   _html: ''
   _text: ''
 
-  decodeHtml = (html)-> 
+  decodeHtml = (html)->
     txt = document.createElement("textarea")
     txt.innerHTML = html
     txt.value
@@ -27,13 +27,13 @@ class Traslator
     @_textPositions = []
     @_text = ''
 
-    # OLD pattern = /([^<]*)(<[^>]*>)([^<]*)/gim
-    pattern = /([^&<>]*)(&[^&;]*;|<[^>]*>)([^&<>]*)/gim
-     
+    # Changing this regex requires changing the regex also in WLS.
+    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?[\w-]+(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
+
     textLength = 0
     htmlLength = 0
 
-    while match = pattern.exec @_html
+    while (match = pattern.exec @_html)?
 
       # Get the text pre/post and the html element
       htmlPre = match[1]
@@ -71,7 +71,7 @@ class Traslator
 
 
     # In case the regex didn't find any tag, copy the html over the text.
-    @_text = new String(@_html) if '' is @_text and '' isnt @_html
+    @_text = new String(@_html) if '' is @_text and !pattern.match @_html
 
     # Add text position 0 if it's not already set.
     if 0 is @_textPositions.length or 0 isnt @_textPositions[0]
@@ -1172,7 +1172,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       # Set the data as two parameters, content and annotations.
       args.headers = {'Content-Type': 'application/json'}
-      args.data = {content: content, annotations: annotations}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html'}
 
       if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
 
@@ -1186,7 +1186,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     service.perform = (content)->
       if service._currentAnalysis
-        $log.warn "Analysis already runned! Nothing to do ..."
+        $log.warn "Analysis already run! Nothing to do ..."
         service._updateStatus false
 
         return
@@ -1785,14 +1785,18 @@ $(
           $rootScope.$apply(->
             # Get the html content of the editor.
             html = editor.getContent format: 'raw'
-            # Get the text content from the Html.
-            text = Traslator.create(html).getText()
-            if text.match /[a-zA-Z0-9]+/
-              # Disable tinymce editing
+
+            if "" isnt html
               EditorService.updateContentEditableStatus false
-              AnalysisService.perform text
-            else
-              $log.warn "Blank content: nothing to do!"
+              AnalysisService.perform html
+            # Get the text content from the Html.
+#            text = Traslator.create(html).getText()
+#            if text.match /[a-zA-Z0-9]+/
+#              # Disable tinymce editing
+#              EditorService.updateContentEditableStatus false
+#              AnalysisService.perform html
+#            else
+#              $log.warn "Blank content: nothing to do!"
           )
       ])
     )
