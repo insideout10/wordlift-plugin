@@ -100,7 +100,7 @@ class Wordlift_Entity_List_Service {
 				if ( ! $thumb ) {
 					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='" . self::THUMB_SIZE . "' />";
 				}
-				echo "<a href='$edit_link'>$thumb</a>";
+				echo "<a href='" . esc_url( $edit_link ) . "'>$thumb</a>";
 				break;
 
 			case 'wl_column_rating':
