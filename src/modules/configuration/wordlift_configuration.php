@@ -39,7 +39,7 @@ add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
  *
  * @param boolean $display_page_title If true, prints out the page title.
  */
-function wl_configuration_admin_menu_callback( $display_page_title = true ) {
+function wl_configuration_admin_menu_callback( $display_page_title = TRUE ) {
 
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -50,11 +50,11 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 
 	?>
 
-	<div class="wrap">
+    <div class="wrap">
 
 		<?php if ( $display_page_title ) { ?>
-			<div id="icon-themes" class="icon32"></div>
-			<h2>WordLift</h2>
+            <div id="icon-themes" class="icon32"></div>
+            <h2>WordLift</h2>
 		<?php } ?>
 
 		<?php settings_errors(); ?>
@@ -63,17 +63,17 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general_settings';
 		?>
 
-		<h2 class="nav-tab-wrapper">
-			<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=general_settings"
-			   class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'General', 'wordlift' ); ?></a>
+        <h2 class="nav-tab-wrapper">
+            <a href="?page=<?php echo( $_GET['page'] ); ?>&tab=general_settings"
+               class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'General', 'wordlift' ); ?></a>
 
 			<?php if ( $can_show_advanced_settings ): ?>
-				<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
-				   class="nav-tab <?php echo $active_tab == 'advanced_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a>
+                <a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
+                   class="nav-tab <?php echo $active_tab == 'advanced_settings' ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a>
 			<?php endif; ?>
-		</h2>
+        </h2>
 
-		<form action="options.php" method="post">
+        <form action="options.php" method="post">
 			<?php
 			if ( 'general_settings' === $active_tab ) {
 				settings_fields( 'wl_general_settings' );
@@ -86,13 +86,13 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 
 			submit_button();
 			?>
-		</form>
+        </form>
 
-		<div style="margin-top: 100px; font-size: 10px;">The entities blocks are
-			designed by Lukasz M. Pogoda from the
-			Noun Project
-		</div>
-	</div>
+        <div style="margin-top: 100px; font-size: 10px;">The entities blocks are
+            designed by Lukasz M. Pogoda from the
+            Noun Project
+        </div>
+    </div>
 
 	<?php
 }
@@ -290,7 +290,7 @@ function wl_configuration_general_settings_section_callback() {
 
 	// TODO: set the following text.
 	?>
-	Configure WordLift general options.
+    Configure WordLift general options.
 	<?php
 }
 
@@ -303,7 +303,7 @@ function wl_configuration_advanced_settings_section_callback() {
 
 	// TODO: set the following text.
 	?>
-	Configure WordLift advanced options.
+    Configure WordLift advanced options.
 	<?php
 }
 
@@ -332,11 +332,11 @@ function wl_configuration_sanitize_settings( $input ) {
  */
 function wl_configuration_input_box( $args ) {
 	?>
-	<input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
-	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="<?php echo esc_attr( $args['value'] ); ?>"
+    <input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
+           name="<?php echo esc_attr( $args['name'] ); ?>"
+           value="<?php echo esc_attr( $args['value'] ); ?>"
 	       <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
-	/>
+    />
 
 	<?php
 }
@@ -344,23 +344,34 @@ function wl_configuration_input_box( $args ) {
 /**
  * Display a select.
  *
- * @since 3.0.0
+ * @deprecated only used by the languages select.
+ *
+ * @see        https://github.com/insideout10/wordlift-plugin/issues/349
+ *
+ * @since      3.0.0
  *
  * @param array $args The select configuration parameters.
  */
 function wl_configuration_select( $args ) {
 	?>
 
-	<select id="<?php echo esc_attr( $args['id'] ); ?>"
-	        name="<?php echo esc_attr( $args['name'] ); ?>">
-		<?php foreach ( $args['options'] as $value => $label ) { ?>
-			<option
-				value="<?php echo esc_attr( $value ); ?>" <?php if ( $args['value'] === $value ) {
-				echo 'selected';
-			}
-			?>><?php echo esc_html( $label ); ?></option>
+    <select id="<?php echo esc_attr( $args['id'] ); ?>"
+            name="<?php echo esc_attr( $args['name'] ); ?>">
+		<?php
+		// Print all the supported language, preselecting the one configured in WP (or English if not supported).
+		// We now use the `Wordlift_Languages` class which provides the list of languages supported by WordLift.
+		// See https://github.com/insideout10/wordlift-plugin/issues/349
+
+		// Get WordLift's supported languages.
+		$languages = Wordlift_Languages::get_languages();
+
+		// If we support WP's configured language, then use that, otherwise use English by default.
+		$language = isset( $languages[ $args['value'] ] ) ? $args['value'] : 'en';
+
+		foreach ( $languages as $code => $label ) { ?>
+            <option value="<?php esc_attr_e( $code ) ?>" <?php echo selected( $code, $language, FALSE ) ?>><?php esc_html_e( $label ) ?></option>
 		<?php } ?>
-	</select>
+    </select>
 
 	<?php
 }
@@ -375,9 +386,9 @@ function wl_configuration_select( $args ) {
 function wl_configuration_checkbox( $args ) {
 	?>
 
-	<input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
-	       name="<?php echo esc_attr( $args['name'] ); ?>"
-	       value="1" <?php checked( 1, $args['value'], true ); ?>/>
+    <input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
+           name="<?php echo esc_attr( $args['name'] ); ?>"
+           value="1" <?php checked( 1, $args['value'], TRUE ); ?>/>
 
 	<?php
 }
@@ -394,7 +405,7 @@ function wl_configuration_checkbox( $args ) {
 function wl_configuration_settings_links( $links ) {
 
 	// TODO: this link is different within SEO Ultimate.
-	array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
+	array_push( $links, '<a href="' . get_admin_url( NULL, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
 
 	return $links;
 }
@@ -418,8 +429,8 @@ function wl_configuration_get_languages() {
 	// set the path to the language file.
 	$filename = dirname( __FILE__ ) . '/ISO-639-2_utf-8.txt';
 
-	if ( ( $handle = fopen( $filename, 'r' ) ) !== false ) {
-		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== false ) {
+	if ( ( $handle = fopen( $filename, 'r' ) ) !== FALSE ) {
+		while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== FALSE ) {
 			if ( ! empty( $data[2] ) ) {
 				$code           = $data[2];
 				$label          = htmlentities( $data[3] );
@@ -493,7 +504,7 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 		wl_configuration_set_redlink_dataset_uri( $response['body'] );
 
 	} else {
-		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, true ) . " ]" );
+		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, TRUE ) . " ]" );
 	}
 
 }
