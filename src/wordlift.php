@@ -627,7 +627,6 @@ require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
-require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
 require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' );
 
