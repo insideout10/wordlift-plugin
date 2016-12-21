@@ -117,7 +117,7 @@ $(
             if text.match /[a-zA-Z0-9]+/
               # Disable tinymce editing
               EditorService.updateContentEditableStatus false
-              AnalysisService.perform html
+              AnalysisService.perform htmlt
             else
               $log.warn "Blank content: nothing to do!"
           )
