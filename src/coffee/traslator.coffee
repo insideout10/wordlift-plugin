@@ -27,7 +27,7 @@ class Traslator
     @_textPositions = []
     @_text = ''
 
-    # OLD pattern = /([^<]*)(<[^>]*>)([^<]*)/gim
+    # Changing this regex requires changing the regex also in WLS.
     pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?[\w-]+(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
 
     textLength = 0
