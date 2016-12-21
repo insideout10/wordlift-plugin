@@ -135,14 +135,16 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.9.0 (2016-12-21) =
-* Fix: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
-* Fix: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
-* Fix: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
-* Fix: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
-* Fix: [#395](https://github.com/insideout10/wordlift-plugin/issues/395): Author missing from entities edit pages.
+* Enhancement: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
+* Enhancement: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
+* Enhancement: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
+* Enhancement: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
+* Enhancement: [#395](https://github.com/insideout10/wordlift-plugin/issues/395): Author missing from entities edit pages.
+* Enhancement: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
+* Enhancement: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
 * Fix: [#391](https://github.com/insideout10/wordlift-plugin/issues/391): Html code messed u when using WordLift on previous posts and with Twitter embeds.
-* Fix: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
-* Fix: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
+* Fix: [#353](https://github.com/insideout10/wordlift-plugin/issues/353): Responsive not working on the Vocabulary page on WordPress.
+* Fix: [#341](https://github.com/insideout10/wordlift-plugin/issues/341): Special characters do not display correctly in LodLive.
 * Fix: [#306](https://github.com/insideout10/wordlift-plugin/issues/306): Entities from the internal vocabulary are not properly detected from the analysis.
 
 = 3.8.1 (2016-12-09) =
