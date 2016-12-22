@@ -143,14 +143,17 @@ import delay from './deps/delay';
 
                     // Prepare the html code to show in the error div.
                     const html = $.map(response.results, function (item) {
+
+                        // If the item is the current post, ignore it.
                         if (item.id === wlSettings.post_id) return '';
 
-                        const title = item.title;
+                        // Create the edit link.
                         const edit_link = response.edit_link.replace('%d', item.id);
 
+                        // Return the html code.
                         return wlSettings.l10n['You already published an entity with the same name']
-                            + '<a target="_blank" href="' + edit_link + '">' + title + '</a><br />';
-                    }).join('');
+                            + '<a target="_blank" href="' + edit_link + '">' + item.title + '</a><br />';
+                    }).join(''); // Join the html codes together.
 
                     // Set the error div content.
                     $('#wl-same-title-error p').html(html);
