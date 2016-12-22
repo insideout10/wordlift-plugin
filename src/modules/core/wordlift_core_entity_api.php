@@ -75,11 +75,12 @@ function wl_entity_get_by_title( $title, $autocomplete = FALSE, $include_alias =
 function wl_entity_ajax_get_by_title() {
 
 	// Get the title to search.
-	if ( empty( $_GET['title'] ) ) {
-		wp_die( 'The title parameter is required.' );
+	if ( empty( $_POST['title'] ) ) {
+		ob_clean();
+		wp_send_json_error( 'The title parameter is required.' );
 	}
 
-	$title = $_GET['title'];
+	$title = $_POST['title'];
 
 	// Are we searching for a specific title or for a containing title?
 	$autocomplete = isset( $_GET['autocomplete'] );
@@ -97,7 +98,11 @@ function wl_entity_ajax_get_by_title() {
 		'results'   => wl_entity_get_by_title( $title, $autocomplete, $include_alias ),
 	);
 
-	wl_core_send_json( $response );
+	// Clean any buffer.
+	ob_clean();
+
+	// Send the success response.
+	wp_send_json_success( $response );
 
 }
 

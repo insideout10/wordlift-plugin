@@ -1,4 +1,111 @@
-import delay from './deps/delay';
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = delay;
+/**
+ * Delay a function call by half a second.
+ *
+ * Any function can be delayed using `delay`. The timeout for the call is bound to the provided element. If another
+ * function call is delayed on the same element, any previous timeout is cancelled.
+ *
+ * This function is used to validate in real-time inputs when the user presses a key, but allowing the user to
+ * press more keys (hence the delay).
+ *
+ * @since 3.9.0
+ *
+ * @param {Object} $elem A jQuery element reference which will hold the timeout reference.
+ * @param {Function} fn The function to call.
+ * @param args
+ */
+function delay($elem, fn, ...args) {
+
+    // Clear a validation timeout.
+    clearTimeout($elem.data('timeout'));
+
+    // Validate the key, after a delay, so that another key is pressed, this validation is cancelled.
+    $elem.data('timeout', setTimeout(fn, 500, ...args));
+
+};
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__deps_delay__ = __webpack_require__(0);
+
 
 (function ($) {
     'use strict';
@@ -193,7 +300,7 @@ import delay from './deps/delay';
                 const $this = $(this);
 
                 // Delay execution of the check.
-                delay($this, check, $this.val());
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__deps_delay__["a" /* default */])($this, check, $this.val());
 
             })
             .each(function () {
@@ -202,7 +309,7 @@ import delay from './deps/delay';
                 const $this = $(this);
 
                 // Initial check.
-                delay($this, check, $this.val());
+                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__deps_delay__["a" /* default */])($this, check, $this.val());
 
             });
 
@@ -274,3 +381,7 @@ import delay from './deps/delay';
     });
 
 })(jQuery);
+
+
+/***/ }
+/******/ ]);

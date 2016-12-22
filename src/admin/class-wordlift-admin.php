@@ -97,7 +97,7 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.js', array( 'jquery' ), $this->version, FALSE );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array( 'jquery' ), $this->version, FALSE );
 
 		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
 		$entity_being_edited = get_post();
@@ -108,6 +108,9 @@ class Wordlift_Admin {
 				'post_id'           => get_the_ID(),
 				'entityBeingEdited' => isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ),
 				'language'          => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+				'l10n'              => array(
+					'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
+				),
 			)
 		);
 
