@@ -12,7 +12,8 @@
     "build": "webpack",
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
-    "test:php": "grunt travis:phpunit"
+    "test:php": "grunt travis:phpunit",
+    "webpack:watch": "webpack -w"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

@@ -123,10 +123,6 @@ import delay from './deps/delay';
             return;
         }
 
-        // AJAX environment
-        var ajax_url = wlSettings.ajax_url + '?action=' + wlSettings.action;
-        var currentPostId = wlSettings.post_id;
-
         // Print error message in page and hide it.
         var duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
             .insertBefore('div.wrap [name=post]')
@@ -141,46 +137,31 @@ import delay from './deps/delay';
          */
         var check = function (title) {
 
-            var thereAreDuplicates = false;
-
             // Use `wp.ajax` to post a request to find an existing entity with the specified title.
             wp.ajax.post('entity_by_title', {'title': title})
                 .done(function (response) {
 
-                    // Write an error notice with a link for every duplicated entity
-                    if (response && response.results.length > 0) {
+                    // Prepare the html code to show in the error div.
+                    const html = $.map(response.results, function (item) {
+                        if (item.id === wlSettings.post_id) return '';
 
-                        $('#wl-same-title-error p').html(function () {
-                            var html = '';
+                        const title = item.title;
+                        const edit_link = response.edit_link.replace('%d', item.id);
 
-                            for (var i = 0; i < response.results.length; i++) {
+                        return wlSettings.l10n['You already published an entity with the same name']
+                            + '<a target="_blank" href="' + edit_link + '">' + title + '</a><br />';
+                    }).join('');
 
-                                // No error if the entity ID given from the AJAX endpoint is the same as the entity we are editing
-                                if (response.results[i].id !== currentPostId) {
+                    // Set the error div content.
+                    $('#wl-same-title-error p').html(html);
 
-                                    thereAreDuplicates = true;
-
-                                    var title = response.results[i].title;
-                                    var edit_link = response.edit_link.replace('%d', response.results[i].id);
-
-                                    html += wlSettings.l10n['You already published an entity with the same name'];
-                                    html += '<a target="_blank" href="' + edit_link + '">';
-                                    html += title;
-                                    html += '</a><br />';
-                                }
-                            }
-
-                            return html;
-                        });
-                    }
-
-                    if (thereAreDuplicates) {
-                        // Notify user he is creating a duplicate.
+                    // If the html code isn't empty then show the error.
+                    if ('' !== html)
                         duplicatedEntityErrorDiv.show();
-                    } else {
-                        // Hide notice
+                    else
+                    // If the html code is empty, hide the error div.
                         duplicatedEntityErrorDiv.hide();
-                    }
+
                 });
 
         };
