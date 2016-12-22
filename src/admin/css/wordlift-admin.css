@@ -90,3 +90,8 @@
         display: none;
     }
 }
+
+/* Hide the virtual page in the admin menu that we create for WL's setup. */
+#adminmenu a[href=wl-setup] {
+    display: none;
+}
