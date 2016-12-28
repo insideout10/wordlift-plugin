@@ -105,6 +105,8 @@ function delay($elem, fn, ...args) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__deps_delay__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__deps_check__ = __webpack_require__(2);
+
 
 
 (function ($) {
@@ -231,7 +233,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
         }
 
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
+        const duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
             .insertBefore('div.wrap [name=post]')
             .hide();
 
@@ -239,60 +241,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
          * Check whether the specified title is already used by other entities.
          *
          * @since 3.10.0
-         *
-         * @param title The title to look for.
          */
-        var check = function (title) {
+        const callback = function () {
 
-            // Use `wp.ajax` to post a request to find an existing entity with the specified title.
-            wp.ajax.post('entity_by_title', {'title': title})
-                .done(function (response) {
+            // A jQuery reference to the element firing the event.
+            const $this = $(this);
 
-                    // Prepare the html code to show in the error div.
-                    const html = $.map(response.results, function (item) {
-                        if (item.id === wlSettings.post_id) return '';
+            // Delay execution of the check.
+            __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__deps_delay__["a" /* default */])($this, __WEBPACK_IMPORTED_MODULE_1__deps_check__["a" /* default */], $, wp.ajax, $this.val(), wlSettings.post_id, wlSettings.l10n['You already published an entity with the same name'], function (html) {
 
-                        const title = item.title;
-                        const edit_link = response.edit_link.replace('%d', item.id);
+                // Set the error div content.
+                $('#wl-same-title-error p').html(html);
 
-                        return wlSettings.l10n['You already published an entity with the same name']
-                            + '<a target="_blank" href="' + edit_link + '">' + title + '</a><br />';
-                    }).join('');
+                // If the html code isn't empty then show the error.
+                if ('' !== html)
+                    duplicatedEntityErrorDiv.show();
+                else
+                // If the html code is empty, hide the error div.
+                    duplicatedEntityErrorDiv.hide();
 
-                    // Set the error div content.
-                    $('#wl-same-title-error p').html(html);
-
-                    // If the html code isn't empty then show the error.
-                    if ('' !== html)
-                        duplicatedEntityErrorDiv.show();
-                    else
-                    // If the html code is empty, hide the error div.
-                        duplicatedEntityErrorDiv.hide();
-
-                });
+            });
 
         };
 
         // Whenever something happens in the entity title...
         $('[name=post_title]')
-            .on('change paste keyup', function () {
-
-                // Set a jQuery reference to the element.
-                const $this = $(this);
-
-                // Delay execution of the check.
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__deps_delay__["a" /* default */])($this, check, $this.val());
-
-            })
-            .each(function () {
-
-                // Set a jQuery reference to the element.
-                const $this = $(this);
-
-                // Initial check.
-                __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__deps_delay__["a" /* default */])($this, check, $this.val());
-
-            });
+            .on('change paste keyup', callback)
+            .each(callback);
 
     });
 
@@ -363,6 +338,50 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 })(jQuery);
 
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = check;
+/**
+ * Check for duplicate titles.
+ *
+ * @since 3.10.0
+ *
+ * @param {Object} $ A jQuery instance.
+ * @param {Object} ajax A `wp.ajax` class used to perform `post` requests to `admin-ajax.php`.
+ * @param {String} title The title to check for duplicates.
+ * @param {Number} postId The current post id, excluded from the duplicates results.
+ * @param {String} message The error message to display in case there are duplicates.
+ * @param {Function} callback A callback function to call to deliver the results.
+ */
+function check($, ajax, title, postId, message, callback) {
+
+    // Use `wp.ajax` to post a request to find an existing entity with the specified title.
+    ajax.post('entity_by_title', {'title': title})
+        .done(function (response) {
+
+            // Prepare the html code to show in the error div.
+            const html = $.map(response.results, function (item) {
+
+                // If the item is the current post, ignore it.
+                if (item.id === postId) return '';
+
+                // Create the edit link.
+                const edit_link = response.edit_link.replace('%d', item.id);
+
+                // Return the html code.
+                return message + '<a target="_blank" href="' + edit_link + '">' + item.title + '</a><br />';
+            }).join(''); // Join the html codes together.
+
+            // Call the callback function.
+            callback(html);
+
+        });
+
+}
 
 /***/ }
 /******/ ]);

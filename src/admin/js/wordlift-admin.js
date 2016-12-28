@@ -1,4 +1,5 @@
 import delay from './deps/delay';
+import check from './deps/check';
 
 (function ($) {
     'use strict';
@@ -124,7 +125,7 @@ import delay from './deps/delay';
         }
 
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
+        const duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
             .insertBefore('div.wrap [name=post]')
             .hide();
 
@@ -132,63 +133,33 @@ import delay from './deps/delay';
          * Check whether the specified title is already used by other entities.
          *
          * @since 3.10.0
-         *
-         * @param title The title to look for.
          */
-        var check = function (title) {
+        const callback = function () {
 
-            // Use `wp.ajax` to post a request to find an existing entity with the specified title.
-            wp.ajax.post('entity_by_title', {'title': title})
-                .done(function (response) {
+            // A jQuery reference to the element firing the event.
+            const $this = $(this);
 
-                    // Prepare the html code to show in the error div.
-                    const html = $.map(response.results, function (item) {
+            // Delay execution of the check.
+            delay($this, check, $, wp.ajax, $this.val(), wlSettings.post_id, wlSettings.l10n['You already published an entity with the same name'], function (html) {
 
-                        // If the item is the current post, ignore it.
-                        if (item.id === wlSettings.post_id) return '';
+                // Set the error div content.
+                $('#wl-same-title-error p').html(html);
 
-                        // Create the edit link.
-                        const edit_link = response.edit_link.replace('%d', item.id);
+                // If the html code isn't empty then show the error.
+                if ('' !== html)
+                    duplicatedEntityErrorDiv.show();
+                else
+                // If the html code is empty, hide the error div.
+                    duplicatedEntityErrorDiv.hide();
 
-                        // Return the html code.
-                        return wlSettings.l10n['You already published an entity with the same name']
-                            + '<a target="_blank" href="' + edit_link + '">' + item.title + '</a><br />';
-                    }).join(''); // Join the html codes together.
-
-                    // Set the error div content.
-                    $('#wl-same-title-error p').html(html);
-
-                    // If the html code isn't empty then show the error.
-                    if ('' !== html)
-                        duplicatedEntityErrorDiv.show();
-                    else
-                    // If the html code is empty, hide the error div.
-                        duplicatedEntityErrorDiv.hide();
-
-                });
+            });
 
         };
 
         // Whenever something happens in the entity title...
         $('[name=post_title]')
-            .on('change paste keyup', function () {
-
-                // Set a jQuery reference to the element.
-                const $this = $(this);
-
-                // Delay execution of the check.
-                delay($this, check, $this.val());
-
-            })
-            .each(function () {
-
-                // Set a jQuery reference to the element.
-                const $this = $(this);
-
-                // Initial check.
-                delay($this, check, $this.val());
-
-            });
+            .on('change paste keyup', callback)
+            .each(callback);
 
     });
 
