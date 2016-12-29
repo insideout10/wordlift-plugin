@@ -46,6 +46,7 @@ class Wordlift_Languages {
 		'ca',
 		'cs',
 		'da',
+		'de',
 		'en',
 		'es',
 		'et',
