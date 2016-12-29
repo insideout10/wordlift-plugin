@@ -134,6 +134,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.1 (2016-12-29) =
+* Enhancement: [#429](https://github.com/insideout10/wordlift-plugin/issues/429): German missing in supported languages' list.
+
 = 3.9.0 (2016-12-29) =
 * Enhancement: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
 * Enhancement: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
