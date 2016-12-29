@@ -134,7 +134,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.9.0 (2016-12-21) =
+= 3.9.0 (2016-12-29) =
 * Enhancement: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
 * Enhancement: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
 * Enhancement: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
