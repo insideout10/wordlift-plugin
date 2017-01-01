@@ -136,7 +136,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.9.2 (2017-01-01) =
-* Fix: [#430](https://github.com/insideout10/wordlift-plugin/issues/430): Analysis selectors in WP 4.5 and lower.
+* Fix: [#430](https://github.com/insideout10/wordlift-plugin/issues/430): T
 
 = 3.9.1 (2016-12-29) =
 * Enhancement: [#429](https://github.com/insideout10/wordlift-plugin/issues/429): German missing in supported languages' list.
