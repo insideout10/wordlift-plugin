@@ -3,8 +3,8 @@ Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift
 Tags: artificial intelligence, semantic seo, linked data, structured content, knowledge graph, content recommendation, seo, semantic editor, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
-Requires at least: 4.5
-Tested up to: 4.2.0
+Requires at least: 4.2
+Tested up to: 4.7.0
 Stable tag: 3.9.2
 License: GPLv2 or later
 
