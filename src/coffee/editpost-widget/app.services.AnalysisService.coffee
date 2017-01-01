@@ -194,7 +194,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       # Set the data as two parameters, content and annotations.
       args.headers = {'Content-Type': 'application/json'}
-      args.data = {content: content, annotations: annotations, contentType: 'text/html'}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
 
       if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
 
