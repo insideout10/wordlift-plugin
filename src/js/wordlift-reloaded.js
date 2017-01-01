@@ -27,6 +27,8 @@
       return traslator;
     };
 
+    Traslator.version = '1.0.0';
+
     function Traslator(html) {
       this._html = html;
     }
@@ -36,7 +38,7 @@
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
-      pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?[\w-]+(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim;
+      pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim;
       textLength = 0;
       htmlLength = 0;
       while ((match = pattern.exec(this._html)) != null) {
@@ -1239,7 +1241,8 @@
         args.data = {
           content: content,
           annotations: annotations,
-          contentType: 'text/html'
+          contentType: 'text/html',
+          version: Traslator.version
         };
         if (((typeof wlSettings !== "undefined" && wlSettings !== null ? wlSettings.language : void 0) != null)) {
           args.data.contentLanguage = wlSettings.language;

@@ -4,7 +4,7 @@ class Traslator
   _htmlPositions: []
   _textPositions: []
 
-  # Hold the html and text contents.
+# Hold the html and text contents.
   _html: ''
   _text: ''
 
@@ -19,6 +19,8 @@ class Traslator
     traslator.parse()
     traslator
 
+  @version: '1.0.0'
+
   constructor: (html) ->
     @_html = html
 
@@ -27,15 +29,15 @@ class Traslator
     @_textPositions = []
     @_text = ''
 
-    # Changing this regex requires changing the regex also in WLS.
-    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?[\w-]+(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
+    # Changing this regex requires changing the regex also in WLS. Update the Traslator version when changing the regex.
+    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
 
     textLength = 0
     htmlLength = 0
 
     while (match = pattern.exec @_html)?
 
-      # Get the text pre/post and the html element
+# Get the text pre/post and the html element
       htmlPre = match[1]
       htmlElem = match[2]
       htmlPost = match[3]
@@ -43,14 +45,14 @@ class Traslator
       # Get the text pre/post w/o new lines.
       # Add \n\n when it's needed depending on last tag
       textPre = htmlPre + (if htmlElem.toLowerCase() in ['</p>', '</li>'] then '\n\n' else '')
-#      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
+      #      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
       textPost = htmlPost
 
       # Sum the lengths to the existing lengths.
       textLength += textPre.length
 
       if /^&[^&;]*;$/gim.test htmlElem
-       textLength += 1
+        textLength += 1
 
       # For html add the length of the html element.
       htmlLength += htmlPre.length + htmlElem.length
@@ -85,7 +87,7 @@ class Traslator
 #    console.log @_textPositions
 #    console.log '=============================='
 
-  # Get the html position, given a text position.
+# Get the html position, given a text position.
   text2html: (pos) ->
     htmlPos = 0
     textPos = 0
@@ -98,12 +100,12 @@ class Traslator
     #    dump "#{htmlPos} + #{pos} - #{textPos}"
     htmlPos + pos - textPos
 
-  # Get the text position, given an html position.
+# Get the text position, given an html position.
   html2text: (pos) ->
 #    dump @_htmlPositions
 #    dump @_textPositions
 
-    # Return 0 if the specified html position is less than the first HTML position.
+# Return 0 if the specified html position is less than the first HTML position.
     return 0 if pos < @_htmlPositions[0]
 
     htmlPos = 0
@@ -114,16 +116,15 @@ class Traslator
       htmlPos = @_htmlPositions[i]
       textPos = @_textPositions[i]
 
-#    console.log "#{textPos} + #{pos} - #{htmlPos}"
+    #    console.log "#{textPos} + #{pos} - #{htmlPos}"
     textPos + pos - htmlPos
 
-  # Insert an Html fragment at the specified location.
+# Insert an Html fragment at the specified location.
   insertHtml: (fragment, pos) ->
 
 #    dump @_htmlPositions
 #    dump @_textPositions
 #    console.log "[ fragment :: #{fragment} ][ pos text :: #{pos.text} ]"
-
     htmlPos = @text2html pos.text
 
     @_html = @_html.substring(0, htmlPos) + fragment + @_html.substring(htmlPos)
@@ -131,11 +132,11 @@ class Traslator
     # Reparse
     @parse()
 
-  # Return the html.
+# Return the html.
   getHtml: ->
     @_html
 
-  # Return the text.
+# Return the text.
   getText: ->
     @_text
 window.Traslator = Traslator
@@ -1172,7 +1173,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       # Set the data as two parameters, content and annotations.
       args.headers = {'Content-Type': 'application/json'}
-      args.data = {content: content, annotations: annotations, contentType: 'text/html'}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
 
       if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
 
