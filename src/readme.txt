@@ -2,8 +2,8 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift
-Tags: artificial intelligence, semantic seo, linked data, structured content, knowledge graph, content recommendation, seo, semantic editor, schema.org, google rich snippets, google rich card, interactive widgets, apache stanbol, semantic web, wikipedia, data visualization, internal links, content discovery
-Requires at least: 4.5
+Tags: artificial intelligence, semantic seo, linked data, structured content, knowledge graph, content recommendation, seo, schema.org, google rich snippets, google rich card, interactive widgets, semantic content management
+Requires at least: 4.2
 Tested up to: 4.7.0
 Stable tag: {version}
 License: GPLv2 or later
@@ -136,6 +136,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.9.3 (2017-01-04) =
+* Fix: [#431](https://github.com/insideout10/wordlift-plugin/issues/431): WP 4.2 yields "Call to undefined function is_subdomain_install" when saving a post.
 
 = 3.9.2 (2017-01-01) =
 * Fix: [#430](https://github.com/insideout10/wordlift-plugin/issues/430): Fix analysis selectors in WP 4.5 and lower.
