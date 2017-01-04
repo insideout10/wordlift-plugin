@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3\n"
-"POT-Creation-Date: 2017-01-04 13:01+0200\n"
-"PO-Revision-Date: 2017-01-04 13:02+0200\n"
+"POT-Creation-Date: 2017-01-04 12:05+0100\n"
+"PO-Revision-Date: 2017-01-04 15:56+0100\n"
 "Last-Translator: Andrea Volpini <andea@insideout.io>\n"
 "Language-Team: WordLift <info@wordlift.io>\n"
 "Language: it\n"
@@ -17,50 +17,6 @@ msgstr ""
 "esc_html_x;_c;_nc\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: ..\n"
-
-#: ../timelinejs/js/timeline-min.js:11 ../timelinejs/js/timeline-min.js:12
-#: ../timelinejs/js/timeline.js:6812 ../timelinejs/js/timeline.js:7198
-msgid "loading"
-msgstr "caricamento"
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline-min.js:14
-#: ../timelinejs/js/timeline.js:7203 ../timelinejs/js/timeline.js:7205
-#: ../timelinejs/js/timeline.js:13096 ../timelinejs/js/timeline.js:13105
-msgid "error"
-msgstr "errore"
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:7639
-msgid "flickr_notfound_err"
-msgstr ""
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:7968
-msgid "imgur_invalidurl_err"
-msgstr ""
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8427
-msgid "spotify_invalid_url"
-msgstr ""
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8695
-#: ../timelinejs/js/timeline.js:8801
-msgid "twitter_load_err"
-msgstr ""
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8784
-msgid "twitterembed_invalidurl_err"
-msgstr ""
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:9102
-msgid "wikipedia_load_err"
-msgstr ""
-
-#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:9144
-msgid "wikipedia"
-msgstr "Wikipedia"
-
-#: ../timelinejs/js/timeline-min.js:13 ../timelinejs/js/timeline.js:10236
-msgid "swipe_to_navigate"
-msgstr ""
 
 #: ../admin/WL_Metabox/WL_Metabox.php:46
 msgid "properties"
@@ -133,15 +89,15 @@ msgstr "Tutte le \"W\""
 
 #: ../admin/class-wordlift-admin-setup.php:132
 msgid "Welcome to WordLift &#8211; You&lsquo;re almost ready to start"
-msgstr ""
+msgstr "Benvenuto su WordLift &#8211; Sei quasi pronto per iniziare"
 
 #: ../admin/class-wordlift-admin-setup.php:134
 msgid "Run the Setup Wizard"
-msgstr ""
+msgstr "Avvia il Wizard di Configurazione"
 
 #: ../admin/class-wordlift-admin-setup.php:136
 msgid "Skip Setup"
-msgstr ""
+msgstr "Salta la Configurazione"
 
 #: ../admin/class-wordlift-admin-setup.php:157
 msgid "Action failed. Please refresh the page and retry."
@@ -168,7 +124,7 @@ msgstr "Scarica i tuoi Dati"
 
 #: ../admin/partials/wordlift-admin-download-your-data.php:18
 msgid "Choose the format to download your data:"
-msgstr ""
+msgstr "Seleziona il formato per scaricare i tuoi dati: "
 
 #: ../admin/partials/wordlift-admin-download-your-data.php:21
 msgid "JSON-LD"
@@ -189,7 +145,7 @@ msgstr ""
 
 #: ../admin/partials/wordlift-admin-setup.php:15
 msgid "WordLift Setup"
-msgstr ""
+msgstr "Configurazione WordLift"
 
 #: ../admin/partials/wordlift-admin-setup.php:35
 msgid "WordLift Choose Logo"
@@ -201,62 +157,66 @@ msgstr "Seleziona Logo"
 
 #: ../admin/partials/wordlift-admin-setup.php:50
 msgid "Welcome"
-msgstr ""
+msgstr "Benvenuto"
 
 #: ../admin/partials/wordlift-admin-setup.php:52
 msgid ""
 "Thank you for downloading WordLift. Now you can boost your website with a "
 "double-digit growth. WordLift helps you with:"
 msgstr ""
+"Grazie per aver scaricato WordLift. Ora puoi dare una spinta concreta alla "
+"crescita del tuo sito. WordLift ti aiuta con:"
 
 #: ../admin/partials/wordlift-admin-setup.php:57
 msgid "Trustworthiness"
-msgstr ""
+msgstr "Autorevolezza"
 
 #: ../admin/partials/wordlift-admin-setup.php:62
 msgid "Enrichment"
-msgstr ""
+msgstr "Design"
 
 #: ../admin/partials/wordlift-admin-setup.php:67
 msgid "Engagement"
-msgstr ""
+msgstr "Coinvolgimento "
 
 #: ../admin/partials/wordlift-admin-setup.php:72
 msgid "Smart Navigation"
-msgstr ""
+msgstr "Architettura"
 
 #: ../admin/partials/wordlift-admin-setup.php:77
 msgid "SEO Optimization"
-msgstr ""
+msgstr "Ottimizzazione SEO"
 
 #: ../admin/partials/wordlift-admin-setup.php:82
 msgid "Content Marketing"
-msgstr ""
+msgstr "Content Marketing"
 
 #: ../admin/partials/wordlift-admin-setup.php:87
 msgid "Learn More"
-msgstr ""
+msgstr "Scopri di più"
 
 #: ../admin/partials/wordlift-admin-setup.php:89
 #: ../admin/partials/wordlift-admin-setup.php:106
 #: ../admin/partials/wordlift-admin-setup.php:123
 #: ../admin/partials/wordlift-admin-setup.php:157
 msgid "Next"
-msgstr ""
+msgstr "Avanti"
 
 #: ../admin/partials/wordlift-admin-setup.php:95
 msgid "License Key"
-msgstr ""
+msgstr "La tua chiave"
 
 #: ../admin/partials/wordlift-admin-setup.php:97
 msgid ""
 "If you already puchased a plan, check your email, get the activation key "
 "from your inbox and insert it in the field below. Otherwise ...."
 msgstr ""
+"Se hai già acquistato un piano, controlla la tua email, copia la chiave che "
+"hai ricevuto e incollala qui sotto. Altrimenti … "
 
 #: ../admin/partials/wordlift-admin-setup.php:104
 msgid "Grab a Key!"
-msgstr ""
+msgstr "Acquistala"
 
 #: ../admin/partials/wordlift-admin-setup.php:112
 #: ../includes/class-wordlift-entity-post-type-service.php:115
@@ -269,51 +229,59 @@ msgid ""
 "vocabulary. You can customize the url pattern of these pages in the field "
 "below. Check our FAQs if you need more info."
 msgstr ""
+"Tutte le nuove pagine create con WordLift, saranno archiviate nel "
+"vocabolario interno al tuo sito. Puoi personalizzare il percorso base della "
+"URL delle pagine. Leggi la nostra FAQ se hai bisogno di maggiori "
+"informazioni."
 
 #: ../admin/partials/wordlift-admin-setup.php:119
 msgid ""
 "Leave it empty to place your entities in the root folder of your website"
 msgstr ""
+"Lascia il campo vuoto per posizionare le entità sotto la cartella principale "
+"del tuo sito"
 
 #: ../admin/partials/wordlift-admin-setup.php:129
 msgid "Language"
-msgstr ""
+msgstr "Lingua"
 
 #: ../admin/partials/wordlift-admin-setup.php:131
 msgid "Each WordLift key can be used only in one language. Pick yours."
 msgstr ""
+"Ogni chiave di WordLift corrisponde ad una singola lingua. Scegli la lingua "
+"del tuo sito.  "
 
 #: ../admin/partials/wordlift-admin-setup.php:133
 msgid "Choose your language"
-msgstr ""
+msgstr "Scegli la lingua"
 
 #: ../admin/partials/wordlift-admin-setup.php:163
 msgid "Publisher"
-msgstr ""
+msgstr "Publisher"
 
 #: ../admin/partials/wordlift-admin-setup.php:165
 msgid "Are you going to publish as an individual or as a company?"
-msgstr ""
+msgstr "Pubblichi i tuoi contenuti a titolo personale o come azienda?"
 
 #: ../admin/partials/wordlift-admin-setup.php:171
 msgid "Personal"
-msgstr ""
+msgstr "Personale"
 
 #: ../admin/partials/wordlift-admin-setup.php:176
 msgid "Company"
-msgstr ""
+msgstr "Azienda"
 
 #: ../admin/partials/wordlift-admin-setup.php:181
 msgid "What's your name?"
-msgstr ""
+msgstr "Come ti chiami?"
 
 #: ../admin/partials/wordlift-admin-setup.php:189
 msgid "Add your logo"
-msgstr ""
+msgstr "Aggiungi il tuo logo"
 
 #: ../admin/partials/wordlift-admin-setup.php:194
 msgid "Finish"
-msgstr ""
+msgstr "Fine"
 
 #: ../admin/wordlift_admin_edit_post.php:25
 msgid "View Linked Data"
@@ -388,6 +356,7 @@ msgstr "Aggiungi un sinonimo"
 msgid "Delete"
 msgstr "Cancella"
 
+#. translators: %s: Name of current post
 #: ../includes/class-wordlift-timeline-service.php:228
 #, php-format
 msgid "Continue reading %s"
@@ -488,11 +457,11 @@ msgstr "Impostazioni"
 
 #: ../modules/configuration/wordlift_configuration.php:68
 msgid "General"
-msgstr ""
+msgstr "Generale"
 
 #: ../modules/configuration/wordlift_configuration.php:72
 msgid "Advanced"
-msgstr ""
+msgstr "Avanzato"
 
 #: ../modules/configuration/wordlift_configuration.php:127
 msgid "WordLift Key"
@@ -690,6 +659,50 @@ msgstr ""
 msgid "Schema.org metadata for this entity are not completed."
 msgstr ""
 "Compila tutte le proprietà dell'entità per incrementarne la visibilità."
+
+#: ../timelinejs/js/timeline-min.js:11 ../timelinejs/js/timeline-min.js:12
+#: ../timelinejs/js/timeline.js:6812 ../timelinejs/js/timeline.js:7198
+msgid "loading"
+msgstr "caricamento"
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline-min.js:14
+#: ../timelinejs/js/timeline.js:7203 ../timelinejs/js/timeline.js:7205
+#: ../timelinejs/js/timeline.js:13096 ../timelinejs/js/timeline.js:13105
+msgid "error"
+msgstr "errore"
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:7639
+msgid "flickr_notfound_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:7968
+msgid "imgur_invalidurl_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8427
+msgid "spotify_invalid_url"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8695
+#: ../timelinejs/js/timeline.js:8801
+msgid "twitter_load_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:8784
+msgid "twitterembed_invalidurl_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:9102
+msgid "wikipedia_load_err"
+msgstr ""
+
+#: ../timelinejs/js/timeline-min.js:12 ../timelinejs/js/timeline.js:9144
+msgid "wikipedia"
+msgstr "Wikipedia"
+
+#: ../timelinejs/js/timeline-min.js:13 ../timelinejs/js/timeline.js:10236
+msgid "swipe_to_navigate"
+msgstr ""
 
 #~ msgid "Wordlift"
 #~ msgstr "Wordlift"
