@@ -135,6 +135,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.3 (2017-01-04) =
+* Fix: [#431](https://github.com/insideout10/wordlift-plugin/issues/431): WP 4.2 yields "Call to undefined function is_subdomain_install" when saving a post.
+
 = 3.9.2 (2017-01-01) =
 * Fix: [#430](https://github.com/insideout10/wordlift-plugin/issues/430): Fix analysis selectors in WP 4.5 and lower.
 
