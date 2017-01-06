@@ -1,8 +1,8 @@
-=== WordLift - Ordering Knowledge ===
+=== WordLift - Connect with Your Audience ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift
-Tags: artificial intelligence, semantic seo, linked data, structured content, knowledge graph, content recommendation, seo, schema.org, google rich snippets, google rich card, interactive widgets, semantic content management
+Tags: artificial intelligence, semantic seo, linked data, schema.org, knowledge graph, content recommendation, seo, structured content, google rich snippets, google rich card, interactive widgets, semantic content management
 Requires at least: 4.2
 Tested up to: 4.7.0
 Stable tag: {version}
