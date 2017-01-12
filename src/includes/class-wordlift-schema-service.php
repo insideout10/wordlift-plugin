@@ -381,7 +381,7 @@ class Wordlift_Schema_Service {
 					'constraints' => array(
 						'cardinality' => INF,
 					),
-					// we need a custom metabox
+					// We need a custom metabox.
 					'input_field' => 'sameas',
 				),
 				// Add the schema:url property.
