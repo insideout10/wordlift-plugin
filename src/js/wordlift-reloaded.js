@@ -1244,10 +1244,14 @@
           contentType: 'text/html',
           version: Traslator.version
         };
-        if (((typeof wlSettings !== "undefined" && wlSettings !== null ? wlSettings.language : void 0) != null)) {
-          args.data.contentLanguage = wlSettings.language;
+        if ((typeof wlSettings !== "undefined" && wlSettings !== null)) {
+          if ((wlSettings.language != null)) {
+            args.data.contentLanguage = wlSettings.language;
+          }
+          if ((wlSettings.itemId != null)) {
+            args.data.exclude = [wlSettings.itemId];
+          }
         }
-        $log.info("Analyzing content...");
         return $http(args);
       };
       service._updateStatus = function(status) {

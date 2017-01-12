@@ -105,9 +105,14 @@ class Wordlift_Admin {
 		wp_localize_script( $this->plugin_name, 'wlSettings', array(
 				'ajax_url'          => admin_url( 'admin-ajax.php' ),
 				'action'            => 'entity_by_title',
-				'post_id'           => get_the_ID(),
+				'post_id'           => $entity_being_edited->ID,
 				'entityBeingEdited' => isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ),
 				'language'          => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+				// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
+				// from the results, since we don't want the current entity to be discovered by the analysis.
+				//
+				// See https://github.com/insideout10/wordlift-plugin/issues/345
+				'itemId'            => Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID ),
 				'l10n'              => array(
 					'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				),

@@ -63,11 +63,55 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ exports["a"] = check;
+/**
+ * Check for duplicate titles.
+ *
+ * @since 3.10.0
+ *
+ * @param {Object} $ A jQuery instance.
+ * @param {Object} ajax A `wp.ajax` class used to perform `post` requests to `admin-ajax.php`.
+ * @param {String} title The title to check for duplicates.
+ * @param {Number} postId The current post id, excluded from the duplicates results.
+ * @param {String} message The error message to display in case there are duplicates.
+ * @param {Function} callback A callback function to call to deliver the results.
+ */
+function check($, ajax, title, postId, message, callback) {
+
+    // Use `wp.ajax` to post a request to find an existing entity with the specified title.
+    ajax.post('entity_by_title', {'title': title})
+        .done(function (response) {
+
+            // Prepare the html code to show in the error div.
+            const html = $.map(response.results, function (item) {
+
+                // If the item is the current post, ignore it.
+                if (item.id === postId) return '';
+
+                // Create the edit link.
+                const edit_link = response.edit_link.replace('%d', item.id);
+
+                // Return the html code.
+                return message + '<a target="_blank" href="' + edit_link + '">' + item.title + '</a><br />';
+            }).join(''); // Join the html codes together.
+
+            // Call the callback function.
+            callback(html);
+
+        });
+
+}
+
+/***/ },
+/* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99,13 +143,13 @@ function delay($elem, fn, ...args) {
 
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__deps_delay__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__deps_check__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__deps_delay__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__deps_check__ = __webpack_require__(0);
 
 
 
@@ -338,50 +382,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 })(jQuery);
 
-
-/***/ },
-/* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ exports["a"] = check;
-/**
- * Check for duplicate titles.
- *
- * @since 3.10.0
- *
- * @param {Object} $ A jQuery instance.
- * @param {Object} ajax A `wp.ajax` class used to perform `post` requests to `admin-ajax.php`.
- * @param {String} title The title to check for duplicates.
- * @param {Number} postId The current post id, excluded from the duplicates results.
- * @param {String} message The error message to display in case there are duplicates.
- * @param {Function} callback A callback function to call to deliver the results.
- */
-function check($, ajax, title, postId, message, callback) {
-
-    // Use `wp.ajax` to post a request to find an existing entity with the specified title.
-    ajax.post('entity_by_title', {'title': title})
-        .done(function (response) {
-
-            // Prepare the html code to show in the error div.
-            const html = $.map(response.results, function (item) {
-
-                // If the item is the current post, ignore it.
-                if (item.id === postId) return '';
-
-                // Create the edit link.
-                const edit_link = response.edit_link.replace('%d', item.id);
-
-                // Return the html code.
-                return message + '<a target="_blank" href="' + edit_link + '">' + item.title + '</a><br />';
-            }).join(''); // Join the html codes together.
-
-            // Call the callback function.
-            callback(html);
-
-        });
-
-}
 
 /***/ }
 /******/ ]);

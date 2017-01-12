@@ -1175,9 +1175,12 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       args.headers = {'Content-Type': 'application/json'}
       args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
 
-      if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
-
-      $log.info "Analyzing content..."
+      if (wlSettings?)
+        if (wlSettings.language?) then args.data.contentLanguage = wlSettings.language
+        # We set the current entity URI as exclude from the analysis results.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
 
       return $http(args)
 
