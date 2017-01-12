@@ -1115,9 +1115,6 @@
       };
       service.parse = function(data) {
         var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
-        if (data.topics == null) {
-          data.topics = [];
-        }
         dt = this._defaultType;
         data.topics = data.topics.map(function(topic) {
           topic.id = topic.uri;
@@ -1133,6 +1130,10 @@
         ref3 = data.entities;
         for (id in ref3) {
           entity = ref3[id];
+          if (configuration.currentPostUri === id) {
+            delete data.entities[id];
+            continue;
+          }
           if (!entity.label) {
             $log.warn("Label missing for entity " + id);
           }
@@ -1171,18 +1172,22 @@
             results1 = [];
             for (l = 0, len2 = ref8.length; l < len2; l++) {
               ea = ref8[l];
-              if (ea.entityId !== configuration.currentPostUri) {
+              if (ea.entityId in data.entities) {
                 results1.push(ea);
               }
             }
             return results1;
           })();
+          if (0 === data.annotations[id].entityMatches.length) {
+            delete data.annotations[id];
+            continue;
+          }
           ref8 = data.annotations[id].entityMatches;
           for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
             ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
               data.entities[ea.entityId].label = annotation.text;
-              $log.debug("Missing label retrived from related annotation for entity " + ea.entityId);
+              $log.debug("Missing label retrieved from related annotation for entity " + ea.entityId);
             }
             data.entities[ea.entityId].annotations[id] = annotation;
             data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
