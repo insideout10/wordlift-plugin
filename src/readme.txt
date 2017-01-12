@@ -1,7 +1,7 @@
 === WordLift - Connect with Your Audience ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
-Contributors: wordlift
+Contributors: wordlift, insideout10, ziodave
 Tags: artificial intelligence, semantic seo, linked data, schema.org, knowledge graph, content recommendation, seo, structured content, google rich snippets, google rich card, interactive widgets, semantic content management
 Requires at least: 4.2
 Tested up to: 4.7
@@ -136,6 +136,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.9.4 (2017-01-12) =
+* Fix: [#439](https://github.com/insideout10/wordlift-plugin/issues/439): Entity preview is redirected to a Post.
 
 = 3.9.3 (2017-01-04) =
 * Fix: [#431](https://github.com/insideout10/wordlift-plugin/issues/431): WP 4.2 yields "Call to undefined function is_subdomain_install" when saving a post.
