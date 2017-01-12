@@ -1,5 +1,7 @@
 <?php
 /**
+ * Services: WordLift Schema Service.
+ *
  * This file defines the Wordlift_Schema_Service class.
  *
  * @since   3.1.0
@@ -314,7 +316,7 @@ class Wordlift_Schema_Service {
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -328,11 +330,9 @@ class Wordlift_Schema_Service {
 	 */
 	public function get_schema( $name ) {
 
-		// $this->log_service->trace( "Get schema [ name :: $name ]" );
-
 		// Check if the schema exists and, if not, return NULL.
 		if ( ! isset( $this->schema[ $name ] ) ) {
-			return NULL;
+			return null;
 		}
 
 		// Return the requested schema.
@@ -356,10 +356,7 @@ class Wordlift_Schema_Service {
 			}
 		}
 
-		return NULL;
-
-		// Return the requested schema.
-		//		return $this->schema[ $name ];
+		return null;
 	}
 
 	/**
@@ -384,7 +381,8 @@ class Wordlift_Schema_Service {
 					'constraints' => array(
 						'cardinality' => INF,
 					),
-					'input_field' => 'sameas'   // we need a custom metabox
+					// we need a custom metabox
+					'input_field' => 'sameas',
 				),
 				// Add the schema:url property.
 				Wordlift_Schema_Url_Property_Service::META_KEY => Wordlift_Schema_Url_Property_Service::get_instance()
@@ -392,7 +390,6 @@ class Wordlift_Schema_Service {
 			),
 			// {{sameAs}} not present in the microdata template,
 			// because it is treated separately in *wl_content_embed_item_microdata*
-//			'microdata_template' => '',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -413,7 +410,7 @@ class Wordlift_Schema_Service {
 			'label'         => 'CreativeWork',
 			'description'   => 'A creative work (or a Music Album).',
 			'parents'       => array( 'thing' ),
-			// give term slug as parent
+			// Give term slug as parent.
 			'css_class'     => 'wl-creative-work',
 			'uri'           => 'http://schema.org/CreativeWork',
 			'same_as'       => array(
@@ -431,7 +428,6 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-//			'microdata_template' => '{{author}}',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -483,7 +479,6 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-//			'microdata_template' => '{{startDate}}{{endDate}}{{location}}',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -531,42 +526,48 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_PO_BOX      => array(
 					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_POSTAL_CODE => array(
 					'predicate'   => 'http://schema.org/postalCode',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_LOCALITY    => array(
 					'predicate'   => 'http://schema.org/addressLocality',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_REGION      => array(
 					'predicate'   => 'http://schema.org/addressRegion',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_COUNTRY     => array(
 					'predicate'   => 'http://schema.org/addressCountry',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_EMAIL               => array(
 					'predicate'   => 'http://schema.org/email',
@@ -581,8 +582,6 @@ class Wordlift_Schema_Service {
 					'constraints' => '',
 				),
 			),
-//			'microdata_template' => '{{founder}}'
-//			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}{{email}}</span>',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -660,7 +659,6 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-//			'microdata_template' => '{{birthDate}}{{birthPlace}}{{knows}}{{affiliation}}{{email}}',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -699,60 +697,66 @@ class Wordlift_Schema_Service {
 					'type'        => self::DATA_TYPE_DOUBLE,
 					'export_type' => 'xsd:double',
 					'constraints' => '',
-					'input_field' => 'coordinates'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'coordinates',
 				),
 				self::FIELD_GEO_LONGITUDE       => array(
 					'predicate'   => 'http://schema.org/longitude',
 					'type'        => self::DATA_TYPE_DOUBLE,
 					'export_type' => 'xsd:double',
 					'constraints' => '',
-					'input_field' => 'coordinates'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'coordinates',
 				),
 				self::FIELD_ADDRESS             => array(
 					'predicate'   => 'http://schema.org/streetAddress',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_PO_BOX      => array(
 					'predicate'   => 'http://schema.org/postOfficeBoxNumber',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_POSTAL_CODE => array(
 					'predicate'   => 'http://schema.org/postalCode',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_LOCALITY    => array(
 					'predicate'   => 'http://schema.org/addressLocality',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_REGION      => array(
 					'predicate'   => 'http://schema.org/addressRegion',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 				self::FIELD_ADDRESS_COUNTRY     => array(
 					'predicate'   => 'http://schema.org/addressCountry',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
-					'input_field' => 'address'   // to build custom metabox
+					// To build custom metabox.
+					'input_field' => 'address',
 				),
 			),
-//			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
-//			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -785,10 +789,6 @@ class Wordlift_Schema_Service {
 				'https://schema.org/Store',
 			),
 			'custom_fields' => array(),
-//			'microdata_template' => '<span itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">{{latitude}}{{longitude}}</span>'
-//			                        . '<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">{{streetAddress}}{{postOfficeBoxNumber}}{{postalCode}}{{addressLocality}}{{addressRegion}}{{addressCountry}}</span>'
-//			                        . '{{founder}}'
-//			                        . '{{email}}',
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
