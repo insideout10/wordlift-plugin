@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Services: Entity Link Service.
+ *
  * The Wordlift_Entity_Link_Service handles linking and rendering of entities. In order to perform such actions it hooks
  * on different WordPress' actions and filters:
  *
@@ -27,7 +29,7 @@ class Wordlift_Entity_Link_Service {
 	/**
 	 * The entity type service.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var Wordlift_Entity_Post_Type_Service $entity_type_service The entity type service.
 	 */
@@ -36,7 +38,7 @@ class Wordlift_Entity_Link_Service {
 	/**
 	 * The entity post type slug.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var string $slug The entity post type slug.
 	 */
@@ -45,7 +47,7 @@ class Wordlift_Entity_Link_Service {
 	/**
 	 * A logger instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var Wordlift_Log_Service
 	 */
@@ -57,7 +59,7 @@ class Wordlift_Entity_Link_Service {
 	 * @since 3.6.0
 	 *
 	 * @param Wordlift_Entity_Post_Type_Service $entity_type_service
-	 * @param string $slug The entity post type slug.
+	 * @param string                            $slug The entity post type slug.
 	 */
 	public function __construct( $entity_type_service, $slug ) {
 
@@ -73,10 +75,10 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $post_link The post's permalink.
-	 * @param WP_Post $post The post in question.
-	 * @param bool $leavename Whether to keep the post name.
-	 * @param bool $sample Is it a sample permalink.
+	 * @param string  $post_link The post's permalink.
+	 * @param WP_Post $post      The post in question.
+	 * @param bool    $leavename Whether to keep the post name.
+	 * @param bool    $sample    Is it a sample permalink.
 	 *
 	 * @return string The link to the post.
 	 */
@@ -108,13 +110,21 @@ class Wordlift_Entity_Link_Service {
 		}
 
 		// Check if it's a query we should extend with our own custom post type.
-		if ( ! $query->is_main_query() || 2 != count( $query->query ) || ! isset( $query->query['page'] ) || empty( $query->query['name'] ) ) {
+		//
+		// The `$query->query` count could be > 2 if the preview parameter is passed too.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/439
+		if ( ! $query->is_main_query() || 2 > count( $query->query ) || ! isset( $query->query['page'] ) || empty( $query->query['name'] ) ) {
 			return;
 		}
 
 		// Add our own post type to the query.
 		$post_type = is_array( $query->get( 'post_type' ) ) ? $query->get( 'post_type' ) : array();
-		$query->set( 'post_type', array_merge( $post_type, array( 'post', $this->entity_type_service->get_post_type(), 'page' ) ) );
+		$query->set( 'post_type', array_merge( $post_type, array(
+			'post',
+			$this->entity_type_service->get_post_type(),
+			'page',
+		) ) );
 
 	}
 
@@ -123,8 +133,8 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param bool $bad_slug Whether the post slug would be bad as a flat slug.
-	 * @param string $slug The post slug.
+	 * @param bool   $bad_slug  Whether the post slug would be bad as a flat slug.
+	 * @param string $slug      The post slug.
 	 * @param string $post_type Post type.
 	 *
 	 * @return bool Whether the slug is bad.
@@ -151,10 +161,10 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param bool $bad_slug Whether the post slug would be bad as a flat slug.
-	 * @param string $slug The post slug.
+	 * @param bool   $bad_slug  Whether the post slug would be bad as a flat slug.
+	 * @param string $slug      The post slug.
 	 * @param string $post_type Post type.
-	 * @param int $post_parent
+	 * @param int    $post_parent
 	 *
 	 * @return bool Whether the slug is bad.
 	 */
@@ -176,8 +186,8 @@ class Wordlift_Entity_Link_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $slug The slug.
-	 * @param array $post_types An array of post types.
+	 * @param string $slug       The slug.
+	 * @param array  $post_types An array of post types.
 	 *
 	 * @return bool True if the slug exists, otherwise false.
 	 */
