@@ -16,6 +16,11 @@
     "webpack:watch": "webpack -w"
   },
   "devDependencies": {
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "eslint": "^3.13.1",
+    "eslint-config-wpcalypso": "^0.6.0",
+    "eslint-plugin-react": "^6.9.0",
+    "eslint-plugin-wpcalypso": "^3.0.2",
     "grunt": "~0.4.5",
     "grunt-autoprefixer": "^3.0.4",
     "grunt-contrib-clean": "~0.6.0",
@@ -52,6 +57,9 @@
     "matchdep": "~1.0.0",
     "phantomjs": "~1.9",
     "requirejs": "^2.1.11",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-eslint": "^3.0.0",
     "wdio-dot-reporter": "0.0.6",
     "wdio-jasmine-framework": "^0.2.16",
     "wdio-sauce-service": "^0.3.0",
