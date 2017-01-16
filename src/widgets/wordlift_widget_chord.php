@@ -8,10 +8,10 @@ class Wordlift_Chord_Widget extends WP_Widget {
 	public function __construct() {
 		// widget actual processes
 		parent::__construct(
-            'wl_chord_widget', // Base ID
-            __('Chord Widget', 'wordlift'), // Name
-            array('description' => __('The Chord Widget depicts the main topics of your blog in concise graph.', 'wordlift'),) // Args
-        );
+			'wl_chord_widget', // Base ID
+			__( 'Chord Widget', 'wordlift' ), // Name
+			array( 'description' => __( 'The Chord Widget depicts the main topics of your blog in concise graph.', 'wordlift' ), ) // Args
+		);
 	}
 
 	/**
@@ -29,6 +29,8 @@ class Wordlift_Chord_Widget extends WP_Widget {
 	 * Outputs the options form on admin
 	 *
 	 * @param array $instance The widget options
+	 *
+	 * @return string|void
 	 */
 	public function form( $instance ) {
 		// outputs the options form on admin
@@ -39,17 +41,18 @@ class Wordlift_Chord_Widget extends WP_Widget {
 	 *
 	 * @param array $new_instance The new options
 	 * @param array $old_instance The previous options
+	 *
+	 * @return array|void
 	 */
 	public function update( $new_instance, $old_instance ) {
 		// processes widget options to be saved
 	}
 }
 
-function wl_register_chord_widget()
-{
+function wl_register_chord_widget() {
 
-    register_widget('WordLift_Chord_Widget');
+	register_widget( 'WordLift_Chord_Widget' );
 }
 
-add_action('widgets_init', 'wl_register_chord_widget');
-add_filter( 'widget_text', 'do_shortcode');
+add_action( 'widgets_init', 'wl_register_chord_widget' );
+add_filter( 'widget_text', 'do_shortcode' );

@@ -4,11 +4,11 @@ class Traslator
   _htmlPositions: []
   _textPositions: []
 
-  # Hold the html and text contents.
+# Hold the html and text contents.
   _html: ''
   _text: ''
 
-  decodeHtml = (html)-> 
+  decodeHtml = (html)->
     txt = document.createElement("textarea")
     txt.innerHTML = html
     txt.value
@@ -19,6 +19,8 @@ class Traslator
     traslator.parse()
     traslator
 
+  @version: '1.0.0'
+
   constructor: (html) ->
     @_html = html
 
@@ -27,15 +29,15 @@ class Traslator
     @_textPositions = []
     @_text = ''
 
-    # OLD pattern = /([^<]*)(<[^>]*>)([^<]*)/gim
-    pattern = /([^&<>]*)(&[^&;]*;|<[^>]*>)([^&<>]*)/gim
-     
+    # Changing this regex requires changing the regex also in WLS. Update the Traslator version when changing the regex.
+    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
+
     textLength = 0
     htmlLength = 0
 
-    while match = pattern.exec @_html
+    while (match = pattern.exec @_html)?
 
-      # Get the text pre/post and the html element
+# Get the text pre/post and the html element
       htmlPre = match[1]
       htmlElem = match[2]
       htmlPost = match[3]
@@ -43,14 +45,14 @@ class Traslator
       # Get the text pre/post w/o new lines.
       # Add \n\n when it's needed depending on last tag
       textPre = htmlPre + (if htmlElem.toLowerCase() in ['</p>', '</li>'] then '\n\n' else '')
-#      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
+      #      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
       textPost = htmlPost
 
       # Sum the lengths to the existing lengths.
       textLength += textPre.length
 
       if /^&[^&;]*;$/gim.test htmlElem
-       textLength += 1
+        textLength += 1
 
       # For html add the length of the html element.
       htmlLength += htmlPre.length + htmlElem.length
@@ -71,7 +73,7 @@ class Traslator
 
 
     # In case the regex didn't find any tag, copy the html over the text.
-    @_text = new String(@_html) if '' is @_text and '' isnt @_html
+    @_text = new String(@_html) if '' is @_text and !pattern.match @_html
 
     # Add text position 0 if it's not already set.
     if 0 is @_textPositions.length or 0 isnt @_textPositions[0]
@@ -85,7 +87,7 @@ class Traslator
 #    console.log @_textPositions
 #    console.log '=============================='
 
-  # Get the html position, given a text position.
+# Get the html position, given a text position.
   text2html: (pos) ->
     htmlPos = 0
     textPos = 0
@@ -98,12 +100,12 @@ class Traslator
     #    dump "#{htmlPos} + #{pos} - #{textPos}"
     htmlPos + pos - textPos
 
-  # Get the text position, given an html position.
+# Get the text position, given an html position.
   html2text: (pos) ->
 #    dump @_htmlPositions
 #    dump @_textPositions
 
-    # Return 0 if the specified html position is less than the first HTML position.
+# Return 0 if the specified html position is less than the first HTML position.
     return 0 if pos < @_htmlPositions[0]
 
     htmlPos = 0
@@ -114,16 +116,15 @@ class Traslator
       htmlPos = @_htmlPositions[i]
       textPos = @_textPositions[i]
 
-#    console.log "#{textPos} + #{pos} - #{htmlPos}"
+    #    console.log "#{textPos} + #{pos} - #{htmlPos}"
     textPos + pos - htmlPos
 
-  # Insert an Html fragment at the specified location.
+# Insert an Html fragment at the specified location.
   insertHtml: (fragment, pos) ->
 
 #    dump @_htmlPositions
 #    dump @_textPositions
 #    console.log "[ fragment :: #{fragment} ][ pos text :: #{pos.text} ]"
-
     htmlPos = @text2html pos.text
 
     @_html = @_html.substring(0, htmlPos) + fragment + @_html.substring(htmlPos)
@@ -131,11 +132,11 @@ class Traslator
     # Reparse
     @parse()
 
-  # Return the html.
+# Return the html.
   getHtml: ->
     @_html
 
-  # Return the text.
+# Return the text.
   getText: ->
     @_text
 window.Traslator = Traslator
@@ -982,7 +983,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 ])
 # Manage redlink analysis responses
 # @since 1.0.0
-.service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope',
+  .service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope',
   (AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope)->
 
 # Creates a unique ID of the specified length (default 8).
@@ -1081,9 +1082,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 # Add annotation references to each entity
 
 # TMP ... Should be done on WLS side
-      unless data.topics?
-        data.topics = []
-
+#      unless data.topics?
+#        data.topics = []
       dt = @._defaultType
 
       data.topics = data.topics.map (topic)->
@@ -1098,8 +1098,17 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       for id, entity of data.entities
 
+# Remove the current entity from the proposed entities.
+#
+# See https://github.com/insideout10/wordlift-plugin/issues/437
+# See https://github.com/insideout10/wordlift-plugin/issues/345
+        if configuration.currentPostUri is id
+          delete data.entities[id]
+          continue
+
         if not entity.label
           $log.warn "Label missing for entity #{id}"
+
         if not entity.description
           $log.warn "Description missing for entity #{id}"
 
@@ -1124,14 +1133,23 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         annotation.id = id
         annotation.entities = {}
 
-        # Filter out entity matches referring the current entity
-        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId isnt configuration.currentPostUri )
+        # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
+        # to remove the local entity.
+        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
+
+        # Remove the annotation if there's no entity matches left.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/437
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if 0 is data.annotations[id].entityMatches.length
+          delete data.annotations[id]
+          continue
 
         for ea, index in data.annotations[id].entityMatches
 
           if not data.entities[ea.entityId].label
             data.entities[ea.entityId].label = annotation.text
-            $log.debug "Missing label retrived from related annotation for entity #{ea.entityId}"
+            $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
 
           data.entities[ea.entityId].annotations[id] = annotation
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
@@ -1150,20 +1168,20 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
     service.getSuggestedSameAs = (content)->
       promise = @._innerPerform content
 # If successful, broadcast an *sameAsReceived* event.
-      .then (response) ->
-        suggestions = []
+        .then (response) ->
+      suggestions = []
 
-        for id, entity of response.data.entities
+      for id, entity of response.data.entities
 
-          if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
-            suggestions.push {
-              id: id
-              label: entity.label
-              mainType: entity.mainType
-              source: matches[1]
-            }
-        $log.debug suggestions
-        $rootScope.$broadcast "sameAsRetrieved", suggestions
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            source: matches[1]
+          }
+      $log.debug suggestions
+      $rootScope.$broadcast "sameAsRetrieved", suggestions
 
     service._innerPerform = (content, annotations = [])->
       args =
@@ -1172,9 +1190,14 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       # Set the data as two parameters, content and annotations.
       args.headers = {'Content-Type': 'application/json'}
-      args.data = {content: content, annotations: annotations}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
 
-      $log.info "Analyzing content..."
+      if (wlSettings?)
+        if (wlSettings.language?) then args.data.contentLanguage = wlSettings.language
+        # We set the current entity URI as exclude from the analysis results.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
 
       return $http(args)
 
@@ -1184,7 +1207,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     service.perform = (content)->
       if service._currentAnalysis
-        $log.warn "Analysis already runned! Nothing to do ..."
+        $log.warn "Analysis already run! Nothing to do ..."
         service._updateStatus false
 
         return
@@ -1783,14 +1806,18 @@ $(
           $rootScope.$apply(->
             # Get the html content of the editor.
             html = editor.getContent format: 'raw'
-            # Get the text content from the Html.
-            text = Traslator.create(html).getText()
-            if text.match /[a-zA-Z0-9]+/
-              # Disable tinymce editing
+
+            if "" isnt html
               EditorService.updateContentEditableStatus false
-              AnalysisService.perform text
-            else
-              $log.warn "Blank content: nothing to do!"
+              AnalysisService.perform html
+            # Get the text content from the Html.
+#            text = Traslator.create(html).getText()
+#            if text.match /[a-zA-Z0-9]+/
+#              # Disable tinymce editing
+#              EditorService.updateContentEditableStatus false
+#              AnalysisService.perform html
+#            else
+#              $log.warn "Blank content: nothing to do!"
           )
       ])
     )

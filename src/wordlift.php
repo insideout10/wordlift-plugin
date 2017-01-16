@@ -7,17 +7,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://wordlift.it
+ * @link              https://wordlift.io
  * @since             1.0.0
  * @package           Wordlift
  *
  * @wordpress-plugin
  * Plugin Name:       WordLift
- * Plugin URI:        http://wordlift.it
+ * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.9.0-dev
+ * Version:           3.10.0-dev
  * Author:            WordLift, Insideout10
- * Author URI:        http://wordlift.it
+ * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wordlift
@@ -627,7 +627,6 @@ require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
-require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
 require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' );
 
@@ -667,11 +666,6 @@ require_once( 'admin/wordlift_admin_shortcodes.php' );
 // Provide syncing features.
 require_once( 'admin/wordlift_admin_sync.php' );
 //}
-
-/**
- * The admin 'Install wizard' page.
- */
-require_once ('admin/class-wordlift-install-wizard.php');
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,

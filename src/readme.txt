@@ -1,10 +1,10 @@
-=== WordLift - Ordering Knowledge ===
+=== WordLift - Connect with Your Audience ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
-Contributors: wordlift
-Tags: artificial intelligence, content recommendation, navigation, semantic editor, linked open data, open data, knowledge graph, seo, semantic seo, search engine optimization, schema.org, google rich snippets, microdata, json-ld, widget, semantic web, wikipedia, data visualization, link, content discovery
+Contributors: wordlift, insideout10, ziodave
+Tags: artificial intelligence, semantic seo, linked data, schema.org, knowledge graph, content recommendation, seo, structured content, google rich snippets, google rich card, interactive widgets, semantic content management
 Requires at least: 4.2
-Tested up to: 4.6.1
+Tested up to: 4.7
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -17,11 +17,11 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 > **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
 > **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
-[vimeo http://vimeo.com/164538710]
+[vimeo https://vimeo.com/197899438]
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
-**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph).<br />
-**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
+**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph).<br />
+**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
 
 = Features =
 
@@ -39,17 +39,19 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 _____________
 
 
-* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) <br />
+* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) <br />
 * An easy way to **build datasets** and **full data ownership** <br />
 * Support for creating web content using **contextually relevant information** <br />
 * Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
 * New means to drive business growth with **meaningful content discovery paths** <br />
 * Content tagging for **better SEO** <br />
 
+[vimeo http://vimeo.com/164538710]
+
 = Supported languages =
 _____________
 
-WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Deutsch (German), Français (French), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish).
+WordLift currently supports 31 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
 
 The Plug-in is built on **open source software**.
 
@@ -57,7 +59,7 @@ The Plug-in is built on **open source software**.
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there.
+3. Activate the plug-in using a [WordLift key](http://docs.wordlift.io/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there.
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a *WordLift key*. <br />
@@ -113,26 +115,57 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 2. if you deactivate the plugin instead, the vocabulary (metadata, entity and pages) will disappear from your dashboard, but everything you created is stored in your website Database in WordPress, and you will be able to download it, transfer it or re-activate it again anytime from the plugin menu. <br />
 
-3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
+3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
 
 4. WordLift's technology is entirely open source: it takes development skills, infrastructure and some wisdom to nicely bring all the pieces together without our support. <br />
 
-5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
+5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
 
-> Find more FAQ in our [Wiki](http://docs.wordlift.it/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
+> Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
 == Screenshots ==
 
-1. The slick [WordLift Edit Post Widget](http://docs.wordlift.it/en/latest/analysis.html#wordlift-edit-post-widget).
-2. The WordLift Edit Post Widget explained.
-3. The WordLift Event Entity.
-4. The WordLift Place Entity.
-5. The [Navigator Widget](http://docs.wordlift.it/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
-6. The [Faceted Search Widget](http://docs.wordlift.it/en/latest/discover.html#the-faceted-search-widget).
-7. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget).
-8. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
+1. The Setup Wizard.
+2. The slick [WordLift Edit Post Widget](http://docs.wordlift.io/en/latest/analysis.html#wordlift-edit-post-widget).
+3. The WordLift Edit Post Widget explained.
+4. The WordLift Event Entity.
+5. The WordLift Place Entity.
+6. The [Navigator Widget](http://docs.wordlift.io/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
+7. The [Faceted Search Widget](http://docs.wordlift.io/en/latest/discover.html#the-faceted-search-widget).
+8. The [Chord Widget](http://docs.wordlift.io/en/latest/discover.html#the-chord-widget).
+9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.9.4 (2017-01-12) =
+* Fix: [#439](https://github.com/insideout10/wordlift-plugin/issues/439): Entity preview is redirected to a Post.
+
+= 3.9.3 (2017-01-04) =
+* Fix: [#431](https://github.com/insideout10/wordlift-plugin/issues/431): WP 4.2 yields "Call to undefined function is_subdomain_install" when saving a post.
+
+= 3.9.2 (2017-01-01) =
+* Fix: [#430](https://github.com/insideout10/wordlift-plugin/issues/430): Fix analysis selectors in WP 4.5 and lower.
+
+= 3.9.1 (2016-12-29) =
+* Enhancement: [#429](https://github.com/insideout10/wordlift-plugin/issues/429): German missing in supported languages' list.
+
+= 3.9.0 (2016-12-29) =
+* Enhancement: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
+* Enhancement: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
+* Enhancement: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
+* Enhancement: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
+* Enhancement: [#395](https://github.com/insideout10/wordlift-plugin/issues/395): Author missing from entities edit pages.
+* Enhancement: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
+* Enhancement: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
+* Fix: [#391](https://github.com/insideout10/wordlift-plugin/issues/391): Html code messed u when using WordLift on previous posts and with Twitter embeds.
+* Fix: [#353](https://github.com/insideout10/wordlift-plugin/issues/353): Responsive not working on the Vocabulary page on WordPress.
+* Fix: [#341](https://github.com/insideout10/wordlift-plugin/issues/341): Special characters do not display correctly in LodLive.
+* Fix: [#306](https://github.com/insideout10/wordlift-plugin/issues/306): Entities from the internal vocabulary are not properly detected from the analysis.
+
+= 3.8.1 (2016-12-09) =
+* Fix: [#415](https://github.com/insideout10/wordlift-plugin/issues/415): WordLift not working after updating to WP 4.7.
+* Fix: [#410](https://github.com/insideout10/wordlift-plugin/issues/410): Triples not showing on the WordLift dashboard.
+* Fix: [#406](https://github.com/insideout10/wordlift-plugin/issues/406): JSON-LD response corrupt.
 
 = 3.8.0 (2016-11-10) =
 * Enhancement: [#372](https://github.com/insideout10/wordlift-plugin/issues/372): The layout of the Navigator messes up with long entity titles.

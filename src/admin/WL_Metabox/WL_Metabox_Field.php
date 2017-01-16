@@ -25,27 +25,27 @@ class WL_Metabox_Field {
 			return;
 		}
 
-		// Save a copy of the custom field's params
+		// Save a copy of the custom field's params.
 		$this->raw_custom_field = reset( $args );
 
-		// Extract meta name (post_meta key for the DB)
+		// Extract meta name (post_meta key for the DB).
 		$this->meta_name = key( $args );
 
-		// Extract linked data predicate
+		// Extract linked data predicate.
 		if ( isset( $this->raw_custom_field['predicate'] ) ) {
 			$this->predicate = $this->raw_custom_field['predicate'];
 		} else {
 			return;
 		}
 
-		// Extract human readable label
+		// Extract human readable label.
 		$exploded_predicate = explode( '/', $this->predicate );
 
 		// Use the label defined for the property if set, otherwise the last part of the schema.org/xyz predicate.
 		$this->label = isset( $this->raw_custom_field['metabox']['label'] ) ? __( $this->raw_custom_field['metabox']['label'] ) : end( $exploded_predicate );
 
-		// Extract field constraints (numerosity, expected type)
-		// Default constaints: accept one string.
+		// Extract field constraints (numerosity, expected type).
+		// Default constaints: accept one string..
 		if ( isset( $this->raw_custom_field['type'] ) ) {
 			$this->expected_wl_type = $this->raw_custom_field['type'];
 		} else {
@@ -57,12 +57,12 @@ class WL_Metabox_Field {
 
 			$constraints = $this->raw_custom_field['constraints'];
 
-			// Extract cardinality
+			// Extract cardinality.
 			if ( isset( $constraints['cardinality'] ) ) {
 				$this->cardinality = $constraints['cardinality'];
 			}
 
-			// Which type of entity can we accept (e.g. Place, Event, ecc.)?
+			// Which type of entity can we accept (e.g. Place, Event, ecc.)? .
 			if ( $this->expected_wl_type === Wordlift_Schema_Service::DATA_TYPE_URI && isset( $constraints['uri_type'] ) ) {
 				$this->expected_uri_type = is_array( $constraints['uri_type'] ) ? $constraints['uri_type'] : array( $constraints['uri_type'] );
 			}
@@ -106,7 +106,7 @@ class WL_Metabox_Field {
 
 		$data = get_post_meta( get_the_ID(), $this->meta_name );
 
-		// Values are always contained in an array (makes it easier to manage cardinality)
+		// Values are always contained in an array (makes it easier to manage cardinality).
 		if ( ! is_array( $data ) ) {
 			$data = array( $data );
 		}
@@ -154,7 +154,7 @@ class WL_Metabox_Field {
 			return call_user_func( $this->raw_custom_field['sanitize'], $value );
 		}
 
-		if ( ! is_null( $value ) && $value !== '' ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/
+		if ( ! is_null( $value ) && $value !== '' ) {         // do not use 'empty()' -> https://www.virendrachandak.com/techtalk/php-isset-vs-empty-vs-is_null/ .
 			return $value;
 		}
 
@@ -167,15 +167,15 @@ class WL_Metabox_Field {
 	 */
 	public function save_data( $values ) {
 
-		// Will sanitize data and store them in $field->data
+		// Will sanitize data and store them in $field->data.
 		$this->sanitize_data( $values );
 
 		$entity_id = get_the_ID();
 
-		// Take away old values
+		// Take away old values.
 		delete_post_meta( $entity_id, $this->meta_name );
 
-		// insert new values, respecting cardinality
+		// insert new values, respecting cardinality.
 		$single = ( $this->cardinality == 1 );
 		foreach ( $this->data as $value ) {
 			add_post_meta( $entity_id, $this->meta_name, $value, $single );
@@ -198,16 +198,16 @@ class WL_Metabox_Field {
 	 */
 	public function html() {
 
-		// Open main <div> for the Field
+		// Open main <div> for the Field.
 		$html = $this->html_wrapper_open();
 
-		// Label
+		// Label.
 		$html .= "<h3>$this->label</h3>";
 
-		// print nonce
+		// print nonce.
 		$html .= $this->html_nonce();
 
-		// print data loaded from DB
+		// print data loaded from DB.
 		$count = 0;
 		if ( $this->data ) {
 			foreach ( $this->data as $value ) {
@@ -218,7 +218,7 @@ class WL_Metabox_Field {
 			}
 		}
 
-		// Print the empty <input> to add new values
+		// Print the empty <input> to add new values.
 		if ( $count === 0 ) { // } || $count < $this->cardinality ) { DO NOT print empty inputs unless requested by the editor since fields might support empty strings.
 			$html .= $this->html_input( '' );    // Will print an empty <input>
 			$count ++;
@@ -229,7 +229,7 @@ class WL_Metabox_Field {
 			$html .= '<button class="button wl-add-input wl-button" type="button">Add</button>';
 		}
 
-		// Close the HTML wrapper
+		// Close the HTML wrapper.
 		$html .= $this->html_wrapper_close();
 
 		return $html;
@@ -239,6 +239,8 @@ class WL_Metabox_Field {
 	 * Return a single <input> tag for the Field.
 	 *
 	 * @param mixed $value Input value
+	 *
+	 * @return string
 	 */
 	public function html_input( $value ) {
 		$html = <<<EOF
@@ -258,5 +260,5 @@ EOF;
 
 		return '</div><hr>';
 	}
-}
 
+}

@@ -27,6 +27,8 @@
       return traslator;
     };
 
+    Traslator.version = '1.0.0';
+
     function Traslator(html) {
       this._html = html;
     }
@@ -36,10 +38,10 @@
       this._htmlPositions = [];
       this._textPositions = [];
       this._text = '';
-      pattern = /([^&<>]*)(&[^&;]*;|<[^>]*>)([^&<>]*)/gim;
+      pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim;
       textLength = 0;
       htmlLength = 0;
-      while (match = pattern.exec(this._html)) {
+      while ((match = pattern.exec(this._html)) != null) {
         htmlPre = match[1];
         htmlElem = match[2];
         htmlPost = match[3];
@@ -60,7 +62,7 @@
         }
         this._text += textPre + htmlProcessed + textPost;
       }
-      if ('' === this._text && '' !== this._html) {
+      if ('' === this._text && !pattern.match(this._html)) {
         this._text = new String(this._html);
       }
       if (0 === this._textPositions.length || 0 !== this._textPositions[0]) {
@@ -1113,9 +1115,6 @@
       };
       service.parse = function(data) {
         var annotation, annotationId, dt, ea, em, entity, id, index, l, len2, len3, localEntity, local_confidence, m, ref10, ref11, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9;
-        if (data.topics == null) {
-          data.topics = [];
-        }
         dt = this._defaultType;
         data.topics = data.topics.map(function(topic) {
           topic.id = topic.uri;
@@ -1131,6 +1130,10 @@
         ref3 = data.entities;
         for (id in ref3) {
           entity = ref3[id];
+          if (configuration.currentPostUri === id) {
+            delete data.entities[id];
+            continue;
+          }
           if (!entity.label) {
             $log.warn("Label missing for entity " + id);
           }
@@ -1169,18 +1172,22 @@
             results1 = [];
             for (l = 0, len2 = ref8.length; l < len2; l++) {
               ea = ref8[l];
-              if (ea.entityId !== configuration.currentPostUri) {
+              if (ea.entityId in data.entities) {
                 results1.push(ea);
               }
             }
             return results1;
           })();
+          if (0 === data.annotations[id].entityMatches.length) {
+            delete data.annotations[id];
+            continue;
+          }
           ref8 = data.annotations[id].entityMatches;
           for (index = l = 0, len2 = ref8.length; l < len2; index = ++l) {
             ea = ref8[index];
             if (!data.entities[ea.entityId].label) {
               data.entities[ea.entityId].label = annotation.text;
-              $log.debug("Missing label retrived from related annotation for entity " + ea.entityId);
+              $log.debug("Missing label retrieved from related annotation for entity " + ea.entityId);
             }
             data.entities[ea.entityId].annotations[id] = annotation;
             data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId];
@@ -1206,25 +1213,23 @@
         return data;
       };
       service.getSuggestedSameAs = function(content) {
-        var promise;
-        return promise = this._innerPerform(content).then(function(response) {
-          var entity, id, matches, ref2, suggestions;
-          suggestions = [];
-          ref2 = response.data.entities;
-          for (id in ref2) {
-            entity = ref2[id];
-            if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
-              suggestions.push({
-                id: id,
-                label: entity.label,
-                mainType: entity.mainType,
-                source: matches[1]
-              });
-            }
+        var entity, id, matches, promise, ref2, suggestions;
+        promise = this._innerPerform(content).then(function(response) {});
+        suggestions = [];
+        ref2 = response.data.entities;
+        for (id in ref2) {
+          entity = ref2[id];
+          if (matches = id.match(/^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i)) {
+            suggestions.push({
+              id: id,
+              label: entity.label,
+              mainType: entity.mainType,
+              source: matches[1]
+            });
           }
-          $log.debug(suggestions);
-          return $rootScope.$broadcast("sameAsRetrieved", suggestions);
-        });
+        }
+        $log.debug(suggestions);
+        return $rootScope.$broadcast("sameAsRetrieved", suggestions);
       };
       service._innerPerform = function(content, annotations) {
         var args;
@@ -1240,9 +1245,18 @@
         };
         args.data = {
           content: content,
-          annotations: annotations
+          annotations: annotations,
+          contentType: 'text/html',
+          version: Traslator.version
         };
-        $log.info("Analyzing content...");
+        if ((typeof wlSettings !== "undefined" && wlSettings !== null)) {
+          if ((wlSettings.language != null)) {
+            args.data.contentLanguage = wlSettings.language;
+          }
+          if ((wlSettings.itemId != null)) {
+            args.data.exclude = [wlSettings.itemId];
+          }
+        }
         return $http(args);
       };
       service._updateStatus = function(status) {
@@ -1252,7 +1266,7 @@
       service.perform = function(content) {
         var annotations, promise;
         if (service._currentAnalysis) {
-          $log.warn("Analysis already runned! Nothing to do ...");
+          $log.warn("Analysis already run! Nothing to do ...");
           service._updateStatus(false);
           return;
         }
@@ -1799,16 +1813,13 @@
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
           return $rootScope.$apply(function() {
-            var html, text;
+            var html;
             html = editor.getContent({
               format: 'raw'
             });
-            text = Traslator.create(html).getText();
-            if (text.match(/[a-zA-Z0-9]+/)) {
+            if ("" !== html) {
               EditorService.updateContentEditableStatus(false);
-              return AnalysisService.perform(text);
-            } else {
-              return $log.warn("Blank content: nothing to do!");
+              return AnalysisService.perform(html);
             }
           });
         }

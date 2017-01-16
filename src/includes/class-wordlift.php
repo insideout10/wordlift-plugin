@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift
@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift {
 
@@ -241,7 +241,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Jsonld_Service} instance.
 	 *
-	 * @since 3.7.0
+	 * @since  3.7.0
 	 * @access private
 	 * @var \Wordlift_Jsonld_Service $jsonld_service A {@link Wordlift_Jsonld_Service} instance.
 	 */
@@ -249,7 +249,7 @@ class Wordlift {
 
 	/**
 	 *
-	 * @since 3.7.0
+	 * @since  3.7.0
 	 * @access private
 	 * @var \Wordlift_Property_Factory $property_factory
 	 */
@@ -269,19 +269,28 @@ class Wordlift {
 	 *
 	 * @since  3.9.0
 	 * @access private
-	 * @var \Wordlift_Install_wizard $install_wizard The Install wizard.
+	 * @var \Wordlift_Admin_Setup $admin_setup The Install wizard.
 	 */
-	private $install_wizard;
+	private $admin_setup;
 
 	/**
 	 * The Content Filter Service hooks up to the 'the_content' filter and provides
 	 * linking of entities to their pages.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
 	 */
 	private $content_filter_service;
+
+	/**
+	 * A {@link Wordlift_Key_Validation_Service} instance.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
+	 */
+	private $key_validation_service;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -295,7 +304,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.8.0';
+		$this->version     = '3.10.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -332,6 +341,11 @@ class Wordlift {
 		 * of the plugin.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
+
+		/**
+		 * WordLift's supported languages.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-languages.php';
 
 		/**
 		 * Provide support functions to sanitize data.
@@ -467,6 +481,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
 		/**
+		 * Load the WordLift key validation service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-key-validation-service.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin.php';
@@ -495,6 +514,11 @@ class Wordlift {
 		 * The WordLift Dashboard service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
+
+		/**
+		 * The admin 'Install wizard' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-setup.php';
 
 		/**
 		 * The admin 'Download Your Data' page.
@@ -621,9 +645,14 @@ class Wordlift {
 		$entity_uri_to_jsonld_converter = new Wordlift_Entity_Uri_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
 		$this->jsonld_service           = new Wordlift_Jsonld_Service( $this->entity_service, $entity_uri_to_jsonld_converter );
 
+		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
+		$this->key_validation_service = new Wordlift_Key_Validation_Service();
+
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
-		$this->install_wizard = new Wordlift_Install_wizard();
+
+		// Create an instance of the install wizard.
+		$this->admin_setup = new Wordlift_Admin_Setup( $configuration_service, $this->key_validation_service, $this->entity_service );
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
@@ -736,6 +765,12 @@ class Wordlift {
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_wl_jsonld', $this->jsonld_service, 'get' );
 
+		// Hook the AJAX wl_validate_key action to the Key Validation service.
+		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
+
+		// Hook the `admin_init` function to the Admin Setup.
+		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
+
 	}
 
 	/**
@@ -762,7 +797,7 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// Hook the content filter service to add entity links.
-		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content');
+		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
 
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
