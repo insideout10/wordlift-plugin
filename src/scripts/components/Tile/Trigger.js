@@ -5,9 +5,9 @@ import React from 'react';
 import styled from 'styled-components';
 
 const TriggerWrap = styled.div`
-	display: ${ props => props.tile.isSelected ? 'block' : 'none' };
+	display: ${ props => 0 < props.entity.occurrences.length ? 'block' : 'none' };
 	transition: opacity 150ms ease;
-	opacity: ${ props => props.tile.isSelected ? 1 : 0 }
+	opacity: ${ props => 0 < props.entity.occurrences.length ? 1 : 0 }
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -31,7 +31,7 @@ const Arrow = styled.div`
 	transform: rotate( ${ props => props.tile.isOpen ? 180 : 0 }deg );
 	&:hover {
 		border-left-color: #FCCD34;
-	}
+	} 
 `;
 
 export default class Trigger extends React.PureComponent {
@@ -49,6 +49,7 @@ export default class Trigger extends React.PureComponent {
 	render() {
 		return (
 			<TriggerWrap
+				entity={ this.props.entity }
 				tile={ this.props.tile }
 				onClick={ this.open } >
 				<Arrow tile={ this.props.tile } />

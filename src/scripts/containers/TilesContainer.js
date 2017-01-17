@@ -7,6 +7,7 @@ import React from 'react';
  * Internal dependencies
  */
 import Tile from '../components/Tile';
+import log from '../modules/log';
 
 // Define props and state
 const tiles = [
@@ -39,8 +40,10 @@ export default class TilesContainer extends React.Component {
 	/**
 	 * @inheritDoc
 	 */
-	constructor() {
+	constructor( props ) {
 		super();
+
+		log(props.analysis.entities);
 
 		// Bind our functions.
 		this.select = this.select.bind( this );
@@ -49,7 +52,8 @@ export default class TilesContainer extends React.Component {
 
 		// Set the state.
 		this.state = {
-			tiles: tiles,
+			entities: props.analysis.entities,
+			tiles: tiles
 		};
 	}
 
@@ -103,13 +107,17 @@ export default class TilesContainer extends React.Component {
 	 * @inheritDoc
 	 */
 	render() {
+
+		const tile = { isOpen: false, isLinked: false };
+
 		return (
 			<div>
-				{this.state.tiles.map(
-					( tile, i ) =>
+				{Object.keys( this.state.entities ).map(
+					( key, i ) =>
 						<Tile
 							key={ i }
 							index={ i }
+							entity={ this.state.entities[ key ] }
 							tile={ tile }
 							select={ this.select }
 							open={ this.open }

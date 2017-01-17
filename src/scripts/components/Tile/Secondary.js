@@ -87,21 +87,34 @@ const QuickEdit = styled.i`
 
 export default class Secondary extends React.PureComponent {
 
+	/**
+	 * @inheritDoc
+	 */
 	constructor() {
 		super();
 
+		// Bind our functions.
 		this.link = this.link.bind( this );
 	}
 
+	/**
+	 * Link an entity.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @param {Event} e The source {@link Event}.
+	 */
 	link( e ) {
 		this.props.link( e, this.props.index );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	render() {
 		return (
 			<SecondaryWrap
-				tile={ this.props.tile }
-				open={ this.props.open } >
+				tile={ this.props.tile } >
 
 				<LinkWrap
 					onClick={ this.link } >

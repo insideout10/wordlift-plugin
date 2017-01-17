@@ -24,29 +24,45 @@ const TileWrap = styled.div`
 	background-color: #f5f5f5;
 	box-shadow: 0 4px 4px -3px rgba(0,0,0,.25), 0 8px 8px -6px rgba(0,0,0,.25);
 	transition: all 150ms ease-out;
-	${ props => props.tile.isSelected
+	${ props => 0 < props.entity.occurrences.length
 	? '&:hover{transform: scale(1)}'
 	: '&:hover{transform: scale(1.01)}' };
 `;
 
 export default class Tile extends React.PureComponent {
 
+	/**
+	 * @inheritDoc
+	 */
 	constructor() {
 		super();
+
+		// Bind our functions.
 		this.select = this.select.bind( this );
 	}
 
+	/**
+	 * @since 3.10.0
+	 *
+	 * @param {Event} e The source {@link Event}.
+	 */
 	select( e ) {
 		this.props.select( e, this.props.index );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	render() {
 		return (
 			<TileWrap
 				onClick={ this.select }
+				entity={ this.props.entity }
 				tile={ this.props.tile } >
 
-				<Primary tile={ this.props.tile } />
+				<Primary
+					tile={ this.props.tile }
+					entity={ this.props.entity } />
 
 				<Secondary
 					index={ this.props.index }
@@ -56,6 +72,7 @@ export default class Tile extends React.PureComponent {
 
 				<Trigger
 					index={ this.props.index }
+					entity={ this.props.entity }
 					tile={ this.props.tile }
 					open={ this.props.open }
 				/>

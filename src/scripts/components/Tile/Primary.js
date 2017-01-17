@@ -7,7 +7,7 @@ import styled from 'styled-components';
 const PrimaryWrap = styled.div`
 	display: block;
 	position: absolute;
-	left: ${ props => props.open ? '-248px' : 0 };
+	left: ${ props => props.tile.isOpen ? '-248px' : 0 };
 	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
@@ -31,7 +31,7 @@ const Occurrences = styled.div`
 	letter-spacing: -0.21px;
 	line-height: 12px;
 	user-select: none;
-	background-color: ${ props => props.selection ? '#2E92FF' : '#c7c7c7' };
+	background-color: ${ props => 0 < props.entity.occurrences.length ? '#2E92FF' : '#c7c7c7' };
 `;
 
 const Entity = styled.div`
@@ -44,7 +44,7 @@ const Entity = styled.div`
 	font-weight: 600;
 	font-size: 12px;
 	user-select: none;
-	color: ${ props => props.selection ? '#2E92FF' : '#c7c7c7' };
+	color: ${ props => 0 < props.entity.occurrences.length ? '#2E92FF' : '#c7c7c7' };
 `;
 
 const Cloud = styled.i`
@@ -57,24 +57,28 @@ const Cloud = styled.i`
 	color: #CBCBCB;
 	user-select: none;
 	transition: opacity 150ms ease;
-	opacity: ${ props => props.selection ? 1 : 0 }
+	opacity: ${ props => 0 < props.entity.occurrences.length ? 1 : 0 }
 `;
 
 export default function( props ) {
+
 	return (
-		<PrimaryWrap open={ props.tile.isOpen } >
+		<PrimaryWrap tile={ props.tile } >
 			<Occurrences
-				selection={ props.tile.isSelected } >
-				{ props.tile.isSelected ? props.tile.occurrences : '+'}
+				entity={ props.entity }
+				tile={ props.tile } >
+				{ 0 < props.entity.occurrences.length ? props.entity.occurrences.length : '+'}
 			</Occurrences>
 
 			<Entity
-				selection={ props.tile.isSelected } >
-				{ props.tile.entity }
+				entity={ props.entity }
+				tile={ props.tile } >
+				{ props.entity.label }
 			</Entity>
 
 			<Cloud
-				selection={ props.tile.isSelected }
+				entity={ props.entity }
+				tile={ props.tile }
 				className="fa fa-cloud" >
 			</Cloud>
 		</PrimaryWrap>

@@ -9,7 +9,8 @@ import ReactDOM from 'react-dom';
  */
 import TilesContainer from '../containers/TilesContainer';
 
-wp.wordlift.on( 'analysis.result', function( item ) {
+wp.wordlift.on( 'analysis.result', function( analysis ) {
 	ReactDOM.render(
-		<TilesContainer />, document.getElementById( 'wl-hello-message' ) );
+		<TilesContainer
+			analysis={ analysis } />, document.getElementById( 'wl-hello-message' ) );
 } );

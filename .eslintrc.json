@@ -11,7 +11,8 @@
     "ajaxurl": true,
     "jQuery": true,
     "_": true,
-    "Backbone": true
+    "Backbone": true,
+    "log": true
   },
   "extends": "wpcalypso/react",
   "rules": {
