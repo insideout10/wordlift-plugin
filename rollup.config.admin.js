@@ -9,8 +9,10 @@
  */
 
 // Rollup plugins
-import babel from 'rollup-plugin-babel';
 import eslint from 'rollup-plugin-eslint';
+import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
+import commonjs from 'rollup-plugin-commonjs';
 
 export default {
 	// The input file.
@@ -22,6 +24,12 @@ export default {
 	format: 'iife',
 	sourceMap: 'inline',
 	plugins: [
+		resolve( {
+					 jsnext: true,
+					 main: true,
+					 browser: true,
+				 } ),
+		commonjs(),
 		eslint({
 			exclude: [
 				'src/css/**',

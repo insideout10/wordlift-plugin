@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "ENV": true,
+    "inlineEditPost": true,
+    "wlSettings": true,
+    "wp": true,
+    "ajaxurl": true,
+    "jQuery": true,
+    "_": true,
+    "Backbone": true
+  },
+  "extends": "wpcalypso/react",
+  "rules": {
+    "no-mixed-spaces-and-tabs": [
+      "error",
+      "smart-tabs"
+    ]
+  }
+}

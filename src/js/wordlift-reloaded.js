@@ -1275,8 +1275,11 @@
         $log.debug('Requesting analysis...');
         promise = this._innerPerform(content, annotations);
         promise.then(function(response) {
+          var result;
           service._currentAnalysis = response.data;
-          return $rootScope.$broadcast("analysisPerformed", service.parse(response.data));
+          result = service.parse(response.data);
+          $rootScope.$broadcast("analysisPerformed", result);
+          return wp.wordlift.trigger('analysis.result', result);
         });
         promise["catch"](function(response) {
           $log.error(response.data);

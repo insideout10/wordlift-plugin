@@ -1224,7 +1224,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       promise.then (response) ->
 # Store current analysis obj
         service._currentAnalysis = response.data
-        $rootScope.$broadcast "analysisPerformed", service.parse(response.data)
+
+        result = service.parse(response.data)
+        $rootScope.$broadcast "analysisPerformed", result
+        wp.wordlift.trigger 'analysis.result', result
+
 
       # On failure, broadcast an *analysisFailed* event.
       promise.catch (response) ->

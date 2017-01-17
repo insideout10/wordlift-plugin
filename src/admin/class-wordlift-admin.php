@@ -97,7 +97,15 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array( 'jquery' ), $this->version, FALSE );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.min.js', array(
+			'jquery',
+			'underscore',
+			'backbone',
+		), $this->version, false );
+
+		wp_enqueue_script( 'wordlift-edit', plugin_dir_url( __FILE__ ) . 'js/edit.min.js', array(
+			$this->plugin_name,
+		), $this->version, false );
 
 		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
 		$entity_being_edited = get_post();

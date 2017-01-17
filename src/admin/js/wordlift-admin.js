@@ -7,8 +7,9 @@
 /**
  * Internal dependencies
  */
-import delay from './deps/delay';
-import check from './deps/check';
+import wordlift from './modules/wordlift';
+import delay from './modules/delay';
+import check from './modules/check';
 
 (
 	function( $ ) {
@@ -164,13 +165,13 @@ import check from './deps/check';
 				stats.wikidata = percent.toFixed( 5 ) + '%';
 				// Calculate annotated posts ratio
 				const annotated = stats.annotated_posts * 100 / stats.posts;
-				stats.annotated_posts_percentage = annotated.toFixed( 1 );
+				stats.annotatedPostsPercentage = annotated.toFixed( 1 );
 				// Convert NaN to zero if needed
 				//
 				// See https://github.com/insideout10/wordlift-plugin/issues/269
-				stats.annotated_posts_percentage = stats.annotated_posts_percentage || 0;
+				stats.annotatedPostsPercentage = stats.annotatedPostsPercentage || 0;
 				// TODO percentage should be added via css
-				stats.annotated_posts_percentage = stats.annotated_posts_percentage + '%';
+				stats.annotatedPostsPercentage = stats.annotatedPostsPercentage + '%';
 
 				// Populate annotated posts pie chart
 				$( '#wl-posts-pie-chart circle' ).css(
