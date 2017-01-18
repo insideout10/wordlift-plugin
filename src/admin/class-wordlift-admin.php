@@ -98,7 +98,7 @@ class Wordlift_Admin {
 		 */
 
 		$screen = get_current_screen();
-		if ( $screen->parent_base == 'edit' ) {
+		if ( $screen && $screen->parent_base == 'edit' ) {
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array( 'jquery' ), $this->version, FALSE );
 
 			// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
