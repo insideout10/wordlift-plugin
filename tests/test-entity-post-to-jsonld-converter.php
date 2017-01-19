@@ -40,11 +40,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 	private $entity_post_to_jsonld_converter;
 
 	/**
-	 * A {@link Wordlift_Entity_Uri_To_Jsonld_Converter} instance to test.
+	 * A {@link Wordlift_Uri_To_Jsonld_Converter} instance to test.
 	 *
 	 * @since  3.8.0
 	 * @access private
-	 * @var Wordlift_Entity_Uri_To_Jsonld_Converter $entity_uri_to_jsonld_converter A {@link Wordlift_Entity_Uri_To_Jsonld_Converter} instance.
+	 * @var Wordlift_Uri_To_Jsonld_Converter $entity_uri_to_jsonld_converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 */
 	private $entity_uri_to_jsonld_converter;
 
@@ -58,7 +58,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->entity_service                  = Wordlift_Entity_Service::get_instance();
 		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
 		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $property_getter );
-		$this->entity_uri_to_jsonld_converter  = new Wordlift_Entity_Uri_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $property_getter );
+		$this->entity_uri_to_jsonld_converter  = new Wordlift_Uri_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $property_getter );
 
 	}
 

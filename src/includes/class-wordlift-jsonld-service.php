@@ -27,22 +27,22 @@ class Wordlift_Jsonld_Service {
 	 *
 	 * @since  3.8.0
 	 * @access private
-	 * @var \Wordlift_Entity_Post_To_Jsonld_Converter A {@link Wordlift_Entity_To_Jsonld_Converter} instance.
+	 * @var \Wordlift_Uri_To_Jsonld_Converter A {@link Wordlift_Entity_To_Jsonld_Converter} instance.
 	 */
-	private $entity_to_jsonld_converter;
+	private $uri_to_jsonld_converter;
 
 	/**
 	 * Create a JSON-LD service.
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service                  $entity_service             A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_to_jsonld_converter A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Entity_Service          $entity_service          A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Uri_To_Jsonld_Converter $uri_to_jsonld_converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 */
-	public function __construct( $entity_service, $entity_to_jsonld_converter ) {
+	public function __construct( $entity_service, $uri_to_jsonld_converter ) {
 
-		$this->entity_service             = $entity_service;
-		$this->entity_to_jsonld_converter = $entity_to_jsonld_converter;
+		$this->entity_service          = $entity_service;
+		$this->uri_to_jsonld_converter = $uri_to_jsonld_converter;
 
 		add_action( 'wp_footer', array( $this, 'wp_footer' ), PHP_INT_MAX );
 	}
@@ -110,7 +110,7 @@ EOF;
 		$references = array();
 
 		// Set a reference to the entity_to_jsonld_converter to use in the closures.
-		$entity_to_jsonld_converter = $this->entity_to_jsonld_converter;
+		$entity_to_jsonld_converter = $this->uri_to_jsonld_converter;
 
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.

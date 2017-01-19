@@ -48,4 +48,22 @@ EOF
 
 	}
 
+	/**
+	 * Test that the schema:Article markup is added only on posts and pages.
+	 */
+	public function testOnlyPostsAndPages() {
+
+		// @todo
+
+	}
+
+	/**
+	 * Test that we don't add our own markup if it's already there.
+	 */
+	public function testDontAddMarkupIfPresentAlready() {
+
+		// @todo
+
+	}
+
 }

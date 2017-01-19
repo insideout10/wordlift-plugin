@@ -419,6 +419,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
 
 		/**
+		 * The Post service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-service.php';
+
+		/**
 		 * The User service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-user-service.php';
@@ -466,7 +471,8 @@ class Wordlift {
 		 * Load the converters.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-uri-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-uri-to-jsonld-converter.php';
 
 		/**
 		 * Load the content filter.
@@ -593,6 +599,7 @@ class Wordlift {
 
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
 		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service, $this->notice_service );
+		$post_service         = new Wordlift_Post_Service();
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -641,9 +648,11 @@ class Wordlift {
 		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
 		// Instantiate the JSON-LD service.
-		$property_getter                = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$entity_uri_to_jsonld_converter = new Wordlift_Entity_Uri_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
-		$this->jsonld_service           = new Wordlift_Jsonld_Service( $this->entity_service, $entity_uri_to_jsonld_converter );
+		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
+		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
+		$uri_to_jsonld_converter  = new Wordlift_Uri_To_Jsonld_Converter( $this->entity_service, $post_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
+		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $uri_to_jsonld_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
