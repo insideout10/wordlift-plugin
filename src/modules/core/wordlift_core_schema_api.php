@@ -90,6 +90,10 @@ function wl_schema_add_value( $post_id, $property_name, $property_value ) {
 	}
 
 	$old_values = wl_schema_get_value( $post_id, $property_name );
+	
+	// if there was no value set, or error, just assume it is an empty set of values
+	if (!$old_values)
+		$old_values = array();
 
 	$merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
 
