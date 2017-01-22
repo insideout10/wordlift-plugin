@@ -73,7 +73,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Only if the current entity is created from scratch let's avoid to create 
 			// more than one entity with same label & entity type
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
-				$entity[ 'main_type' ] : NULL;
+				$entity['main_type'] : null;
 
 			// Look if current entity uri matchs an internal existing entity, meaning:
 			// 1. when $entity_uri is an internal uri 
@@ -81,28 +81,28 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 
 			// Detect the uri depending if is an existing or a new entity
-			$uri = ( NULL === $ie ) ?
-				Wordlift_Entity_Service::get_instance()->build_uri(
-					$entity[ 'label' ],
+			$uri = ( null === $ie ) ?
+				Wordlift_Uri_Service::get_instance()->build_uri(
+					$entity['label'],
 					Wordlift_Entity_Service::TYPE_NAME,
 					$entity_type
 				) : wl_get_entity_uri( $ie->ID );
 
-			wl_write_log("Map $entity_uri on $uri");
+			wl_write_log( "Map $entity_uri on $uri" );
 			$entities_uri_mapping[ $entity_uri ] = $uri;
 
 			// Local entities have a tmp uri with 'local-entity-' prefix
 			// These uris need to be rewritten here and replaced in the content
 			if ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) {
 				// Override the entity obj
-				$entity[ 'uri' ] = $uri;
+				$entity['uri'] = $uri;
 			}
 
 			// Update entity data with related post
-			$entity[ 'related_post_id' ] = $post_id;
+			$entity['related_post_id'] = $post_id;
 
 			// Save the entity if is a new entity
-			if ( NULL === $ie ) {
+			if ( null === $ie ) {
 				wl_save_entity( $entity );
 			}
 
@@ -140,14 +140,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 	}
 
-    if ( isset( $_POST['wl_entities'] ) ) {
+	if ( isset( $_POST['wl_entities'] ) ) {
 		// Save post metadata if available
-		$metadata_via_post    =  ( isset( $_POST['wl_metadata'] ) ) ?
+		$metadata_via_post = ( isset( $_POST['wl_metadata'] ) ) ?
 			$_POST['wl_metadata'] : array();
 
 		$fields = array(
 			Wordlift_Schema_Service::FIELD_LOCATION_CREATED,
-			Wordlift_Schema_Service::FIELD_TOPIC
+			Wordlift_Schema_Service::FIELD_TOPIC,
 		);
 
 		// Unlink topic taxonomy terms
@@ -158,7 +158,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			// Delete current values
 			delete_post_meta( $post->ID, $field );
 			// Retrieve the entity uri
-			$uri 	= ( isset( $metadata_via_post[ $field ] ) ) ?
+			$uri = ( isset( $metadata_via_post[ $field ] ) ) ?
 				stripslashes( $metadata_via_post[ $field ] ) : '';
 
 			$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
@@ -204,15 +204,15 @@ add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
  * found (by its URI), then the original post is returned.
  *
- * @param array $entity_data, associative array containing:
- * string 'uri'             The entity URI.
- * string 'label'           The entity label.
- * string 'main_type'       The entity type URI.
- * array  'type'            An array of entity type URIs.
- * string 'description'     The entity description.
- * array  'images'          An array of image URLs.
- * int    'related_post_id' A related post ID.
- * array  'same_as'         An array of sameAs URLs.
+ * @param array $entity_data , associative array containing:
+ *                           string 'uri'             The entity URI.
+ *                           string 'label'           The entity label.
+ *                           string 'main_type'       The entity type URI.
+ *                           array  'type'            An array of entity type URIs.
+ *                           string 'description'     The entity description.
+ *                           array  'images'          An array of image URLs.
+ *                           int    'related_post_id' A related post ID.
+ *                           array  'same_as'         An array of sameAs URLs.
  *
  * @return null|WP_Post A post instance or null in case of failure.
  */
@@ -236,7 +236,7 @@ function wl_save_entity( $entity_data ) {
 		'post_type'    => Wordlift_Entity_Service::TYPE_NAME,
 		'post_title'   => $label,
 		'post_content' => $description,
-		'post_excerpt' => ''
+		'post_excerpt' => '',
 	);
 
 	// Check whether an entity already exists with the provided URI.
@@ -253,11 +253,17 @@ function wl_save_entity( $entity_data ) {
 	// is created when saving a post.
 	global $wpseo_metabox, $seo_ultimate;
 	if ( isset( $wpseo_metabox ) ) {
-		remove_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
+		remove_action( 'wp_insert_post', array(
+			$wpseo_metabox,
+			'save_postdata',
+		) );
 	}
 
 	if ( isset( $seo_ultimate ) ) {
-		remove_action( 'save_post', array( $seo_ultimate, 'save_postmeta_box' ) );
+		remove_action( 'save_post', array(
+			$seo_ultimate,
+			'save_postmeta_box',
+		) );
 	}
 
 	// The fact that we're calling here wp_insert_post is causing issues with plugins (and ourselves too) that hook to
@@ -271,19 +277,25 @@ function wl_save_entity( $entity_data ) {
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
 
 	// create or update the post.
-	$post_id = wp_insert_post( $params, TRUE );
+	$post_id = wp_insert_post( $params, true );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
 
 	// If Yoast is installed and active, we restore the Yoast save_postdata hook (https://github.com/insideout10/wordlift-plugin/issues/156)
 	if ( isset( $wpseo_metabox ) ) {
-		add_action( 'wp_insert_post', array( $wpseo_metabox, 'save_postdata' ) );
+		add_action( 'wp_insert_post', array(
+			$wpseo_metabox,
+			'save_postdata',
+		) );
 	}
 
 	// If SEO Ultimate is installed, add back the hook we removed a few lines above.
 	if ( isset( $seo_ultimate ) ) {
-		add_action( 'save_post', array( $seo_ultimate, 'save_postmeta_box' ), 10, 2 );
+		add_action( 'save_post', array(
+			$seo_ultimate,
+			'save_postmeta_box',
+		), 10, 2 );
 	}
 
 	// TODO: handle errors.
@@ -356,7 +368,7 @@ function wl_save_entity( $entity_data ) {
 			// Set the title to the post title.
 			'post_content'   => '',
 			'post_status'    => 'inherit',
-			'post_mime_type' => $content_type
+			'post_mime_type' => $content_type,
 		);
 
 		// Create the attachment in WordPress and generate the related metadata.
@@ -414,7 +426,7 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	// Collect the entities.
 	$entities = array();
 	foreach ( $matches[1] as $uri ) {
-		$uri_d  = html_entity_decode( $uri );
+		$uri_d = html_entity_decode( $uri );
 
 		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri_d );
 

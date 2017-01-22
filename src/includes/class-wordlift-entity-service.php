@@ -12,9 +12,9 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since  3.2.0
 	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
+	 * @var \Wordlift_Log_Service $log The Log service.
 	 */
-	private $log_service;
+	private $log;
 
 	/**
 	 * The UI service.
@@ -67,9 +67,9 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param \Wordlift_UI_Service $ui_service The UI service.
 	 */
-	public function __construct( $ui_service ) {
+	public function __construct( $ui_service, $uri_service ) {
 
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
 		// Set the UI service.
 		$this->ui_service = $ui_service;
@@ -88,40 +88,6 @@ class Wordlift_Entity_Service {
 	public static function get_instance() {
 
 		return self::$instance;
-	}
-
-	/**
-	 * Get the entities related to the last 50 posts published on this blog (we're keeping a long function name due to
-	 * its specific function).
-	 *
-	 * @since 3.1.0
-	 *
-	 * @return array An array of post IDs.
-	 */
-	public function get_all_related_to_last_50_published_posts() {
-
-		// Global timeline. Get entities from the latest posts.
-		$latest_posts_ids = get_posts( array(
-			'numberposts' => 50,
-			'fields'      => 'ids', //only get post IDs
-			'post_type'   => 'post',
-			'post_status' => 'publish',
-		) );
-
-		if ( empty( $latest_posts_ids ) ) {
-			// There are no posts.
-			return array();
-		}
-
-		// Collect entities related to latest posts
-		$entity_ids = array();
-		foreach ( $latest_posts_ids as $id ) {
-			$entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
-				'status' => 'publish',
-			) ) );
-		}
-
-		return $entity_ids;
 	}
 
 	/**
@@ -168,68 +134,6 @@ class Wordlift_Entity_Service {
 
 	}
 
-	/**
-	 * Build an entity uri for a given title
-	 * The uri is composed using a given post_type and a title
-	 * If already exists an entity e2 with a given uri a numeric suffix is added
-	 * If a schema type is given entities with same label and same type are overridden
-	 *
-	 * @since 3.5.0
-	 *
-	 * @param string  $title           A post title.
-	 * @param string  $post_type       A post type. Default value is 'entity'
-	 * @param string  $schema_type     A schema org type.
-	 * @param integer $increment_digit A digit used to call recursively the same function.
-	 *
-	 * @return string Returns an uri.
-	 */
-	public function build_uri( $title, $post_type, $schema_type = null, $increment_digit = 0 ) {
-
-		// Get the entity slug suffix digit
-		$suffix_digit = $increment_digit + 1;
-		// Get a sanitized uri for a given title
-		$entity_slug = ( 0 == $increment_digit ) ?
-			wl_sanitize_uri_path( $title ) :
-			wl_sanitize_uri_path( $title . '_' . $suffix_digit );
-
-		// Compose a candidated uri
-		$new_entity_uri = sprintf( '%s/%s/%s',
-			wl_configuration_get_redlink_dataset_uri(),
-			$post_type,
-			$entity_slug
-		);
-
-		$this->log_service->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
-
-		global $wpdb;
-		// Check if the candidated uri already is used
-		$stmt = $wpdb->prepare(
-			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1",
-			WL_ENTITY_URL_META_NAME,
-			$new_entity_uri
-		);
-
-		// Perform the query
-		$post_id = $wpdb->get_var( $stmt );
-
-		// If the post does not exist, then the new uri is returned 	
-		if ( ! is_numeric( $post_id ) ) {
-			$this->log_service->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
-
-			return $new_entity_uri;
-		}
-		// If schema_type is equal to schema org type of post x, then the new uri is returned 
-		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
-
-		if ( $schema_type === $schema_post_type['css_class'] ) {
-			$this->log_service->trace( "An entity with the same title and type already exists! Return uri [ new_entity_uri :: $new_entity_uri ]" );
-
-			return $new_entity_uri;
-		}
-
-		// Otherwise the same function is called recorsively
-		return $this->build_uri( $title, $post_type, $schema_type, ++ $increment_digit );
-	}
 
 	public function is_used( $post_id ) {
 
@@ -391,7 +295,7 @@ class Wordlift_Entity_Service {
 			$alt_labels = array( $alt_labels );
 		}
 
-		$this->log_service->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
+		$this->log->debug( "Setting alternative labels [ post id :: $post_id ][ alt labels :: " . implode( ',', $alt_labels ) . " ]" );
 
 		// Delete all the existing alternate labels.
 		delete_post_meta( $post_id, self::ALTERNATIVE_LABEL_META_KEY );

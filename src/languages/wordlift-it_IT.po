@@ -44,14 +44,14 @@ msgstr ""
 "WordLift. Questo significa %3$s articoli su un totale di %4$s articoli."
 
 #: ../admin/class-wordlift-admin-dashboard.php:74
-msgid "avarage entity rating"
+msgid "average entity rating"
 msgstr "rating medio delle entità"
 
 #: ../admin/class-wordlift-admin-dashboard.php:76
 #, php-format
 msgid ""
 "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an "
-"avarage rating of %3$s."
+"average rating of %3$s."
 msgstr ""
 "Hai %1$s entità nel tuo <a href=\"%2$s\">vocabolario</a> con un rating medio "
 "del %3$s."

@@ -277,7 +277,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			$new_entity_uri,
-			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
+			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
 		);
 	}
 
@@ -305,7 +305,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 		// Check that the uri for a new entity contains a numeric suffix
 		$this->assertEquals(
 			$new_entity_uri . '_2',
-			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
+			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
 		);
 
 	}
@@ -338,7 +338,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 		// Check that the uri for a new entity contains a numeric suffix
 		$this->assertEquals(
 			$new_entity_uri,
-			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' )
+			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' )
 		);
 
 	}
@@ -389,7 +389,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
 
 		// Build the URI.
-		$uri = $this->entity_service->build_uri( $title, 'entity' );
+		$uri = Wordlift_Uri_Service::get_instance()->build_uri( $title, 'entity' );
 
 		// Check that the URI is good.
 		$this->assertStringEndsWith( '/entity/mozarts__geburtshaus', $uri );

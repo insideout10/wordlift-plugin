@@ -69,9 +69,9 @@ class Wordlift_Dashboard_Service {
 			$this->render_stat_param( 'posts' )
 		);
 
-		$rating_title   = __( 'avarage entity rating', 'wordlift' );
+		$rating_title   = __( 'average entity rating', 'wordlift' );
 		$rating_caption = sprintf( wp_kses(
-			__( 'You have %1$s entities in your <a href="%2$s">vocabulary</a> with an avarage rating of %3$s.', 'wordlift' ),
+			__( 'You have %1$s entities in your <a href="%2$s">vocabulary</a> with an average rating of %3$s.', 'wordlift' ),
 			array( 'a' => array( 'href' => array() ) ) ),
 			$this->render_stat_param( 'entities' ),
 			esc_url( admin_url( 'edit.php?post_type=entity' ) ),
@@ -158,7 +158,7 @@ EOF;
 				'posts'           => $this->count_posts(),
 				'annotated_posts' => $this->count_annotated_posts(),
 				'triples'         => $this->count_triples() ?: '-',
-				'rating'          => $this->avarage_entities_rating(),
+				'rating'          => $this->average_entities_rating(),
 			);
 			// Cache stats results trough transient
 			set_transient( self::TRANSIENT_NAME, $stats, self::TRANSIENT_EXPIRATION );
@@ -202,12 +202,13 @@ EOF;
 	}
 
 	/**
-	 * Calculate the avarage entities rating
+	 * Calculate the average entities rating.
+	 *
 	 * @since 3.4.0
 	 *
-	 * @return int Avarage entities rating.
+	 * @return int Average entities rating.
 	 */
-	public function avarage_entities_rating() {
+	private function average_entities_rating() {
 
 		// Prepare interaction with db
 		global $wpdb;
@@ -221,13 +222,15 @@ EOF;
 	}
 
 	/**
-	 * Calculate total number of published entities
+	 * Calculate total number of published entities.
+	 *
 	 * @uses  https://codex.wordpress.org/it:Riferimento_funzioni/wp_count_posts
+	 *
 	 * @since 3.4.0
 	 *
 	 * @return int Total number of posts.
 	 */
-	public function count_entities() {
+	private function count_entities() {
 
 		return (int) wp_count_posts( Wordlift_Entity_Service::TYPE_NAME )->publish;
 	}
