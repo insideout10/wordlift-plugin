@@ -29,26 +29,24 @@ class Wordlift_Dashboard_Service {
 	const TRANSIENT_EXPIRATION = 86400;
 
 	/**
-	 * The Entity service.
+	 * A {@link Wordlift_Rating_Service} instance.
 	 *
-	 * @since  3.4.0
+	 * @since  3.10.0
 	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @var \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 */
-	private $entity_service;
+	private $rating_service;
 
 	/**
 	 * Create a Wordlift_Entity_List_Service.
 	 *
 	 * @since 3.4.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 */
-	public function __construct( $entity_service ) {
+	public function __construct( $rating_service ) {
 
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Dashboard_Service' );
-
-		$this->entity_service = $entity_service;
+		$this->rating_service = $rating_service;
 
 	}
 
@@ -215,11 +213,11 @@ EOF;
 		global $wpdb;
 		$query = $wpdb->prepare(
 			"SELECT AVG(meta_value) FROM $wpdb->postmeta where meta_key = %s",
-			Wordlift_Entity_Service::RATING_RAW_SCORE_META_KEY
+			Wordlift_Rating_Service::RATING_RAW_SCORE_META_KEY
 		);
 
-		// Perform the query
-		return $this->entity_service->convert_raw_score_to_percentage( $wpdb->get_var( $query ) );
+		// Perform the query.
+		return $this->rating_service->convert_raw_score_to_percentage( $wpdb->get_var( $query ) );
 	}
 
 	/**
@@ -249,7 +247,7 @@ EOF;
 
 		// Return the error in case of failure.
 		if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
-			return (int) FALSE;
+			return (int) false;
 		}
 
 		// Get the body.
@@ -261,7 +259,7 @@ EOF;
 			return (int) $matches[1];
 		}
 
-		return (int) FALSE;
+		return (int) false;
 	}
 
 	private function rl_sparql_select( $query ) {

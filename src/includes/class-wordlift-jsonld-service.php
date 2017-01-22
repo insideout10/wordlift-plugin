@@ -37,7 +37,7 @@ class Wordlift_Jsonld_Service {
 	 * @since 3.8.0
 	 *
 	 * @param \Wordlift_Entity_Service          $entity_service          A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Uri_To_Jsonld_Converter $uri_to_jsonld_converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Post_Converter $uri_to_jsonld_converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
 	 */
 	public function __construct( $entity_service, $uri_to_jsonld_converter ) {
 

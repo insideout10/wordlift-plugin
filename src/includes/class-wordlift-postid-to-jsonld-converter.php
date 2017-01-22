@@ -17,7 +17,6 @@
 class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 
 	private $entity_service;
-	private $post_service;
 	private $entity_post_to_jsonld_converter;
 	private $post_to_jsonld_converter;
 
@@ -27,14 +26,12 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 * @since 3.8.0
 	 *
 	 * @param \Wordlift_Entity_Service                  $entity_service
-	 * @param \Wordlift_Post_Service                    $post_service
 	 * @param \Wordlift_Entity_Post_To_Jsonld_Converter $entity_post_to_jsonld_converter
 	 * @param \Wordlift_Post_To_Jsonld_Converter        $post_to_jsonld_converter
 	 */
-	public function __construct( $entity_service, $post_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter ) {
+	public function __construct( $entity_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter ) {
 
 		$this->entity_service                  = $entity_service;
-		$this->post_service                    = $post_service;
 		$this->entity_post_to_jsonld_converter = $entity_post_to_jsonld_converter;
 		$this->post_to_jsonld_converter        = $post_to_jsonld_converter;
 

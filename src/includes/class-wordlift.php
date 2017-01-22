@@ -283,6 +283,15 @@ class Wordlift {
 	private $key_validation_service;
 
 	/**
+	 * A {@link Wordlift_Rating_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access private
+	 * @var \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
+	 */
+	private $rating_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -408,10 +417,8 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
 
-		/**
-		 * The Post service.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-service.php';
+		// Add the entity rating service.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rating-service.php';
 
 		/**
 		 * The User service.
@@ -586,8 +593,7 @@ class Wordlift {
 		$this->notice_service = new Wordlift_Notice_Service();
 
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service, $this->notice_service );
-		$post_service         = new Wordlift_Post_Service();
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -598,17 +604,11 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
 
-		// Create a new instance of the Redirect service.
-		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->entity_service );
-
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
-
-		// Create entity list customization (wp-admin/edit.php)
-		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -630,6 +630,15 @@ class Wordlift {
 
 		$entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
+		// Create the entity rating service.
+		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $entity_type_service, $this->notice_service );
+
+		// Create entity list customization (wp-admin/edit.php)
+		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->rating_service );
+
+		// Create a new instance of the Redirect service.
+		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->rating_service );
+
 		$this->property_factory = new Wordlift_Property_Factory( $schema_url_property_service );
 		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
@@ -637,7 +646,7 @@ class Wordlift {
 		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
 		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
 		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter, $configuration_service->get_publisher_id() );
-		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $post_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
+		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
 		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $postid_to_jsonld_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
@@ -725,7 +734,7 @@ class Wordlift {
 		$this->loader->add_action( 'save_post_entity', $this->entity_service, 'set_rating_for', 10, 1 );
 
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
-		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
+		$this->loader->add_action( 'in_admin_header', $this->rating_service, 'in_admin_header' );
 
 		// Entity listing customization (wp-admin/edit.php)
 		// Add custom columns
