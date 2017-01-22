@@ -11,32 +11,7 @@
  *
  * @since 3.8.0
  */
-class Wordlift_Entity_Post_To_Jsonld_Converter {
-
-	/**
-	 * The JSON-LD context.
-	 *
-	 * @since 3.8.0
-	 */
-	const CONTEXT = 'http://schema.org';
-
-	/**
-	 * A {@link Wordlift_Entity_Type_Service} instance.
-	 *
-	 * @since  3.8.0
-	 * @access protected
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 */
-	protected $entity_type_service;
-
-	/**
-	 * A {@link Wordlift_Entity_Service} instance.
-	 *
-	 * @since  3.8.0
-	 * @access protected
-	 * @var \Wordlift_Entity_Service $entity_type_service A {@link Wordlift_Entity_Service} instance.
-	 */
-	protected $entity_service;
+class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
 	 * A {@link Wordlift_Property_Getter} instance.
@@ -52,15 +27,16 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service
-	 * @param \Wordlift_Entity_Service      $entity_service
-	 * @param \Wordlift_Property_Getter     $property_getter
+	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service      $entity_service      A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service        $user_service        A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Property_Getter     $property_getter     A {@link Wordlift_Property_Getter} instance.
 	 */
-	public function __construct( $entity_type_service, $entity_service, $property_getter ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $property_getter ) {
+		parent::__construct( $entity_type_service, $entity_service, $user_service );
 
-		$this->entity_type_service = $entity_type_service;
-		$this->entity_service      = $entity_service;
-		$this->property_getter     = $property_getter;
+		$this->property_getter = $property_getter;
+
 	}
 
 	/**
@@ -77,34 +53,23 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 */
 	public function convert( $post_id, &$references = array() ) {
 
-		$post = get_post( $post_id );
+		// Get the post instance.
+		if ( null === $post = get_post( $post_id ) ) {
+			// Post not found.
+			return null;
+		}
 
-		// Get the entity @type.
-		$type = $this->entity_type_service->get( $post->ID );
-
-		// Get the entity @id.
-		$id = $this->entity_service->get_uri( $post->ID );
+		// Get the base JSON-LD and the list of entities referenced by this entity.
+		$jsonld = parent::convert( $post_id, $references );
 
 		// Get the entity name.
-		$name = $post->post_title;
+		$jsonld['name'] = $post->post_title;
+
+		// Get the entity @type.
+		$type = $this->entity_type_service->get( $post_id );
 
 		// Get the configured type custom fields.
 		$fields = $type['custom_fields'];
-
-		// Prepare the response.
-		$jsonld = array(
-			'@context'    => self::CONTEXT,
-			'@id'         => $id,
-			'@type'       => $this->relative_to_context( $type['uri'] ),
-			'name'        => $name,
-			'description' => $this->get_excerpt( $post ),
-		);
-
-		// Set the image URLs if there are images.
-		$images = wl_get_image_urls( $post->ID );
-		if ( 0 < count( $images ) ) {
-			$jsonld['image'] = $images;
-		}
 
 		// Set a reference to use in closures.
 		$converter = $this;
@@ -142,21 +107,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 		}
 
 		return $this->post_process( $jsonld );
-	}
-
-	/**
-	 * If the provided value starts with the schema.org context, we remove the schema.org
-	 * part since it is set with the '@context'.
-	 *
-	 * @since 3.8.0
-	 *
-	 * @param string $value The property value.
-	 *
-	 * @return string The property value without the context.
-	 */
-	public function relative_to_context( $value ) {
-
-		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
 	}
 
 	/**
@@ -202,34 +152,6 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 		}
 
 		return $jsonld;
-	}
-
-	/**
-	 * Get the excerpt for the provided {@link WP_Post}.
-	 *
-	 * @since 3.8.0
-	 *
-	 * @param WP_Post $post The {@link WP_Post}.
-	 *
-	 * @return string The excerpt.
-	 */
-	private function get_excerpt( $post ) {
-
-		// Temporary pop the previous post.
-		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
-
-		// Setup our own post.
-		setup_postdata( $GLOBALS['post'] = &$post );
-
-		$excerpt = get_the_excerpt( $post );
-
-		// Restore the previous post.
-		if ( null !== $original ) {
-			setup_postdata( $GLOBALS['post'] = $original );
-		}
-
-		// Finally return the excerpt.
-		return html_entity_decode( $excerpt );
 	}
 
 }

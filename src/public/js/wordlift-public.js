@@ -14,7 +14,9 @@
 				action: 'wl_jsonld',
 				id: settings.postId
 			}, function( data ) {
-				console.log( data );
+
+				// Append the data in the page head.
+				$('head').append( '<script type="application/ld+json">'+JSON.stringify(data)+'</s' + 'cript>' );
 
 			} );
 

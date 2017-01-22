@@ -107,7 +107,9 @@ class Wordlift_Public {
 			$settings['postId'] = get_the_ID();
 		}
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-public.js', array( 'jquery' ), $this->version, false );
+		// Note that we switched the js to be loaded in footer, since it is loading
+		// the json-ld representation.
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-public.js', array( 'jquery' ), $this->version, true );
 		wp_localize_script( $this->plugin_name, 'wlSettings', $settings );
 
 	}

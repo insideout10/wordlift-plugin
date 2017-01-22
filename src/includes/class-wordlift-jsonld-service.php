@@ -64,7 +64,8 @@ class Wordlift_Jsonld_Service {
 			wp_send_json( array() );
 		}
 
-		$id = array( $_REQUEST['id'] );
+		// Get the id.
+		$id = $_REQUEST['id'];
 
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
@@ -76,17 +77,16 @@ class Wordlift_Jsonld_Service {
 		// Convert each URI to a JSON-LD array, while gathering referenced entities.
 		// in the references array.
 		$jsonld = array_merge(
-			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
-
-				return $entity_to_jsonld_converter->convert( $item, $references );
-			}, $id ),
+			array( $entity_to_jsonld_converter->convert( $id, $references ) ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
 			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
 
+				// "2nd level properties" may not output here, e.g. a post
+				// mentioning an event, located in a place: the place is referenced
+				// via the `@id` but no other properties are loaded.
 				return $entity_to_jsonld_converter->convert( $item, $references );
-			}, array_diff( $references, $id ) )
-		);
+			}, $references ) );
 
 		// Finally send the JSON-LD.
 		wp_send_json( $jsonld );

@@ -465,6 +465,7 @@ class Wordlift {
 		 * Load the converters.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-post-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
@@ -644,8 +645,8 @@ class Wordlift {
 
 		// Instantiate the JSON-LD service.
 		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
-		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter, $configuration_service->get_publisher_id() );
+		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $this->user_service, $property_getter );
+		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $this->user_service, $configuration_service->get_publisher_id() );
 		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
 		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $postid_to_jsonld_converter );
 
@@ -664,7 +665,7 @@ class Wordlift {
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
-			new Wordlift_Debug_Service( $this->entity_service );
+			new Wordlift_Debug_Service( $this->entity_service, $uri_service );
 		}
 
 	}
