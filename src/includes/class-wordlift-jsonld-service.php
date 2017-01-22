@@ -44,45 +44,45 @@ class Wordlift_Jsonld_Service {
 		$this->entity_service          = $entity_service;
 		$this->uri_to_jsonld_converter = $uri_to_jsonld_converter;
 
-		add_action( 'wp_footer', array( $this, 'wp_footer' ), PHP_INT_MAX );
+//		add_action( 'wp_footer', array( $this, 'wp_footer' ), PHP_INT_MAX );
 	}
 
-	/**
-	 * Hook to WP's wp_footer action and load the JSON-LD data.
-	 *
-	 * @since 3.8.0
-	 */
-	public function wp_footer() {
-
-		// We only care about singular pages.
-		if ( ! is_singular() ) {
-			return;
-		}
-
-		// Get the entities related to the current post (and that are published).
-		$post_id = get_the_ID();
-		$posts   = $this->entity_service->is_entity( $post_id )
-			? array( get_the_ID() )
-			: array_unique( wl_core_get_related_entity_ids( $post_id, array(
-				'status' => 'publish',
-			) ) );
-
-		// Build the URL to load the JSON-LD asynchronously.
-		$url            = admin_url( 'admin-ajax.php?action=wl_jsonld' );
-		$entity_service = $this->entity_service;
-		$data           = implode( '&', array_map( function ( $item ) use ( $entity_service ) {
-			return 'uri[]=' . rawurldecode( $entity_service->get_uri( $item ) );
-		}, $posts ) );
-
-		// Print the Javascript code.
-		echo <<<EOF
-<script type="text/javascript"><!--
-(function($) { $( window ).on( 'load', function() { $.post('$url','$data').done(function(data) {
-	$('head').append( '<script type="application/ld+json">'+JSON.stringify(data)+'</s' + 'cript>' );
-}); }); })(jQuery);
-// --></script>
-EOF;
-	}
+//	/**
+//	 * Hook to WP's wp_footer action and load the JSON-LD data.
+//	 *
+//	 * @since 3.8.0
+//	 */
+//	public function wp_footer() {
+//
+//		// We only care about singular pages.
+//		if ( ! is_singular() ) {
+//			return;
+//		}
+//
+//		// Get the entities related to the current post (and that are published).
+//		$post_id = get_the_ID();
+//		$posts   = $this->entity_service->is_entity( $post_id )
+//			? array( get_the_ID() )
+//			: array_unique( wl_core_get_related_entity_ids( $post_id, array(
+//				'status' => 'publish',
+//			) ) );
+//
+//		// Build the URL to load the JSON-LD asynchronously.
+//		$url            = admin_url( 'admin-ajax.php?action=wl_jsonld' );
+//		$entity_service = $this->entity_service;
+//		$data           = implode( '&', array_map( function ( $item ) use ( $entity_service ) {
+//			return 'uri[]=' . rawurldecode( $entity_service->get_uri( $item ) );
+//		}, $posts ) );
+//
+//		// Print the Javascript code.
+//		echo <<<EOF
+//<script type="text/javascript"><!--
+//(function($) { $( window ).on( 'load', function() { $.post('$url','$data').done(function(data) {
+//	$('head').append( '<script type="application/ld+json">'+JSON.stringify(data)+'</s' + 'cript>' );
+//}); }); })(jQuery);
+//// --></script>
+//EOF;
+//	}
 
 	/**
 	 * Process calls to the AJAX 'wl_jsonld' endpoint.
@@ -97,13 +97,12 @@ EOF;
 		// See https://codex.wordpress.org/AJAX_in_Plugins.
 		ob_clean();
 
-		// If no URI has been provided return an empty array.
-		if ( ! isset( $_REQUEST['uri'] ) ) {
+		// If no id has been provided return an empty array.
+		if ( ! isset( $_REQUEST['id'] ) ) {
 			wp_send_json( array() );
 		}
 
-		// Get an array of URIs to parse.
-		$uris = is_array( $_REQUEST['uri'] ) ? $_REQUEST['uri'] : array( $_REQUEST['uri'] );
+		$id = array( $_REQUEST['id'] );
 
 		// An array of references which is captured when converting an URI to a
 		// json which we gather to further expand our json-ld.
@@ -118,13 +117,13 @@ EOF;
 			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
 
 				return $entity_to_jsonld_converter->convert( $item, $references );
-			}, $uris ),
+			}, $id ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
 			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
 
 				return $entity_to_jsonld_converter->convert( $item, $references );
-			}, array_diff( $references, $uris ) )
+			}, array_diff( $references, $id ) )
 		);
 
 		// Finally send the JSON-LD.

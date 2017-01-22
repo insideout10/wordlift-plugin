@@ -26,4 +26,25 @@ class Wordlift_Entity_Type_Service_Test extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * @since 3.10.0
+	 */
+	public function test_posts() {
+		// @todo
+	}
+
+	/**
+	 * @since 3.10.0
+	 */
+	public function test_pages() {
+		// @todo
+	}
+
+	/**
+	 * @since 3.10.0
+	 */
+	public function test_anaything_else() {
+		// @todo
+	}
+
 }

@@ -254,8 +254,8 @@ class Wordlift_Entity_Service {
 	 */
 	public function get_classification_scope_for( $post_id ) {
 
-		if ( FALSE === $this->is_entity( $post_id ) ) {
-			return NULL;
+		if ( false === $this->is_entity( $post_id ) ) {
+			return null;
 		}
 		// Retrieve the entity type
 		$entity_type_arr = wl_entity_type_taxonomy_get_type( $post_id );
@@ -269,7 +269,7 @@ class Wordlift_Entity_Service {
 		}
 
 		// or null
-		return NULL;
+		return null;
 
 	}
 
@@ -288,7 +288,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return string Returns an uri.
 	 */
-	public function build_uri( $title, $post_type, $schema_type = NULL, $increment_digit = 0 ) {
+	public function build_uri( $title, $post_type, $schema_type = null, $increment_digit = 0 ) {
 
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
@@ -338,8 +338,8 @@ class Wordlift_Entity_Service {
 
 	public function is_used( $post_id ) {
 
-		if ( FALSE === $this->is_entity( $post_id ) ) {
-			return NULL;
+		if ( false === $this->is_entity( $post_id ) ) {
+			return null;
 		}
 		// Retrieve the post
 		$entity = get_post( $post_id );
@@ -358,7 +358,7 @@ class Wordlift_Entity_Service {
 		$relation_instances = (int) $wpdb->get_var( $stmt );
 		// If there is at least one relation instance for the current entity, then it's used
 		if ( 0 < $relation_instances ) {
-			return TRUE;
+			return true;
 		}
 
 		// Check if the entity uri is used as meta_value
@@ -372,11 +372,11 @@ class Wordlift_Entity_Service {
 
 		// If there is at least one meta that refers the current entity uri, then current entity is used
 		if ( 0 < $meta_instances ) {
-			return TRUE;
+			return true;
 		}
 
 		// If we are here, it means the current entity is not used at the moment
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -406,7 +406,7 @@ class Wordlift_Entity_Service {
 
 		// Check if we've been provided with a value otherwise return null.
 		if ( empty( $uri ) ) {
-			return NULL;
+			return null;
 		}
 
 		$query_args = array(
@@ -442,7 +442,7 @@ class Wordlift_Entity_Service {
 
 		// Return null if no post is found.
 		if ( 0 === count( $posts ) ) {
-			return NULL;
+			return null;
 		}
 
 		// Return the found post.
@@ -563,13 +563,13 @@ class Wordlift_Entity_Service {
 	public function in_admin_header() {
 
 		// Return safely if get_current_screen() is not defined (yet)
-		if ( FALSE === function_exists( 'get_current_screen' ) ) {
+		if ( false === function_exists( 'get_current_screen' ) ) {
 			return;
 		}
 
 		$screen = get_current_screen();
 		// If there is any valid screen nothing to do
-		if ( NULL === $screen ) {
+		if ( null === $screen ) {
 			return $clauses;
 		}
 
@@ -584,7 +584,7 @@ class Wordlift_Entity_Service {
 			return;
 		}
 		// Retrieve an updated rating for the current entity
-		$rating = $this->get_rating_for( $post->ID, TRUE );
+		$rating = $this->get_rating_for( $post->ID, true );
 		// If there is at least 1 warning
 		if ( isset( $rating['warnings'] ) && 0 < count( $rating['warnings'] ) ) {
 			// TODO - Pass Wordlift_Notice_Service trough the service constructor 
@@ -630,7 +630,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return int An array representing the rating obj.
 	 */
-	public function get_rating_for( $post_id, $force_reload = FALSE ) {
+	public function get_rating_for( $post_id, $force_reload = false ) {
 
 		// If forced reload is required or rating is missing ..
 		if ( $force_reload ) {
@@ -639,14 +639,14 @@ class Wordlift_Entity_Service {
 			return $this->set_rating_for( $post_id );
 		}
 
-		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, TRUE );
+		$current_raw_score = get_post_meta( $post_id, self::RATING_RAW_SCORE_META_KEY, true );
 
 		if ( ! is_numeric( $current_raw_score ) ) {
 			$this->log_service->trace( "Rating missing for [ post_id :: $post_id ] [ current_raw_score :: $current_raw_score ]" );
 
 			return $this->set_rating_for( $post_id );
 		}
-		$current_warnings = get_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, TRUE );
+		$current_warnings = get_post_meta( $post_id, self::RATING_WARNINGS_META_KEY, true );
 
 		// Finally return score and warnings
 		return array(
@@ -676,13 +676,13 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param int $post_id The entity post id.
 	 *
-	 * @return int An array representing the rating obj.
+	 * @return array An array representing the rating obj.
 	 */
 	public function calculate_rating_for( $post_id ) {
 
 		// If it's not an entity, return.
 		if ( ! $this->is_entity( $post_id ) ) {
-			return;
+			return array();
 		}
 		// Retrieve the post object
 		$post = get_post( $post_id );
@@ -734,7 +734,7 @@ class Wordlift_Entity_Service {
 
 		$schema = wl_entity_type_taxonomy_get_type( $post_id );
 
-		$expected_meta_keys = ( NULL === $schema['custom_fields'] ) ?
+		$expected_meta_keys = ( null === $schema['custom_fields'] ) ?
 			array() :
 			array_keys( $schema['custom_fields'] );
 
@@ -766,15 +766,15 @@ class Wordlift_Entity_Service {
 	public function get_uri( $post_id ) {
 
 		// If a null is given, nothing to do
-		if ( NULL == $post_id ) {
-			return NULL;
+		if ( null == $post_id ) {
+			return null;
 		}
 
-		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, TRUE );
+		$uri = get_post_meta( $post_id, WL_ENTITY_URL_META_NAME, true );
 
 		// If the dataset uri is not properly configured, null is returned
 		if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
-			return NULL;
+			return null;
 		}
 
 		// Set the URI if it isn't set yet.
@@ -860,7 +860,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
 	 */
-	public function create( $name, $type_uri, $logo = NULL, $status = 'publish' ) {
+	public function create( $name, $type_uri, $logo = null, $status = 'publish' ) {
 
 		// Create an entity for the publisher.
 		$post_id = wp_insert_post( array(

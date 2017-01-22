@@ -1,19 +1,20 @@
 <?php
 /**
- * Define the {@link Wordlift_Uri_To_Jsonld_Converter} class which extends
- * {@link Wordlift_Entity_Post_To_Jsonld_Converter}.
+ * Converters: Post Id to JSON-LD converter.
+ *
+ * Define the {@link Wordlift_Postid_To_Jsonld_Converter} class.
  *
  * @since   3.8.0
  * @package Wordlift
  */
 
 /**
- * Define the {@link Wordlift_Uri_To_Jsonld_Converter} class to convert
- * entity URIs to JSON-LD arrays.
+ * Define the {@link Wordlift_Postid_To_Jsonld_Converter} class to convert
+ * post ids to JSON-LD arrays.
  *
  * @since 3.8.0
  */
-class Wordlift_Uri_To_Jsonld_Converter {
+class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 
 	private $entity_service;
 	private $post_service;
@@ -39,25 +40,26 @@ class Wordlift_Uri_To_Jsonld_Converter {
 
 	}
 
-
 	/**
-	 * Convert an entity URI to JSON-LD.
+	 * Convert a post to JSON-LD.
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param string $uri An entity uri.
+	 * @param string $id A post id (post or entity).
 	 *
 	 * @param array  $references
 	 *
-	 * @return array|NULL A JSON-LD array representation of the entity with the provided URI or NULL if an entity is not found.
+	 * @return array|NULL A JSON-LD array representation of the post with the provided id, or NULL if not found.
 	 */
-	public function convert( $uri, &$references = array() ) {
+	public function convert( $id, &$references = array() ) {
 
-		if ( null !== $entity = $this->entity_service->get_entity_post_by_uri( $uri ) ) {
-			return $this->entity_post_to_jsonld_converter->convert( $entity );
-		}
+		// Convert an entity.
+//		if ( null !== $entity = $this->entity_service->get_entity_post_by_uri( $id ) ) {
+//			return $this->entity_post_to_jsonld_converter->convert( $entity );
+//		}
 
-		return $this->post_to_jsonld_converter->convert( $this->post_service->get_by_uri( $uri ) );
+		// Convert a post.
+		return $this->post_to_jsonld_converter->convert( $id );
 	}
 
 }

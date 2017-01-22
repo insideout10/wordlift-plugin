@@ -202,16 +202,6 @@ class Wordlift {
 	private $entity_link_service;
 
 	/**
-	 * The page service instance which processes the page output in order to insert schema.org microdata to export the
-	 * correct page title to Google+.
-	 *
-	 * @since  3.5.3
-	 * @access private
-	 * @var \Wordlift_Page_Service
-	 */
-	private $page_service;
-
-	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
 	 * @var    3.6.0
@@ -438,9 +428,6 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
 
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-page-service.php';
-
 		/**
 		 * The SPARQL service.
 		 */
@@ -470,9 +457,10 @@ class Wordlift {
 		/**
 		 * Load the converters.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-post-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-uri-to-jsonld-converter.php';
 
 		/**
 		 * Load the content filter.
@@ -632,8 +620,6 @@ class Wordlift {
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 
-		$this->page_service = new Wordlift_Page_Service();
-
 		// Create an import service instance to hook later to WP's import function.
 		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
 
@@ -650,9 +636,9 @@ class Wordlift {
 		// Instantiate the JSON-LD service.
 		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
 		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
-		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter );
-		$uri_to_jsonld_converter  = new Wordlift_Uri_To_Jsonld_Converter( $this->entity_service, $post_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
-		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $uri_to_jsonld_converter );
+		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $property_getter, $configuration_service->get_publisher_id() );
+		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $post_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
+		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $postid_to_jsonld_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
@@ -814,9 +800,6 @@ class Wordlift {
 		// Hook the ShareThis service.
 		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
-
-		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
-		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', - PHP_INT_MAX );
 
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
