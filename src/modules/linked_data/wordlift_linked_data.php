@@ -75,7 +75,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
 				$entity['main_type'] : null;
 
-			// Look if current entity uri matchs an internal existing entity, meaning:
+			// Look if current entity uri matches an internal existing entity, meaning:
 			// 1. when $entity_uri is an internal uri 
 			// 2. when $entity_uri is an external uri used as sameAs of an internal entity	
 			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
@@ -228,7 +228,10 @@ function wl_save_entity( $entity_data ) {
 	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
 	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
 
-	// wl_write_log( "[ uri :: $uri ][ label :: $label ][ type uri :: $type_uri ]" );
+	// Check whether an entity already exists with the provided URI.
+	if ( null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
+		return $post;
+	}
 
 	// Prepare properties of the new entity.
 	$params = array(
@@ -237,14 +240,13 @@ function wl_save_entity( $entity_data ) {
 		'post_title'   => $label,
 		'post_content' => $description,
 		'post_excerpt' => '',
+		// Ensure we're using a valid slug. We're not overwriting an existing
+		// entity with a post_name already set, since this call is made only for
+		// new entities.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/282
+		'post_name'    => sanitize_title( $label ),
 	);
-
-	// Check whether an entity already exists with the provided URI.
-	$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri );
-
-	if ( null !== $post ) {
-		return $post;
-	}
 
 	// If Yoast is installed and active, we temporary remove the save_postdata hook which causes Yoast to "pass over"
 	// the local SEO form values to the created entity (https://github.com/insideout10/wordlift-plugin/issues/156)
