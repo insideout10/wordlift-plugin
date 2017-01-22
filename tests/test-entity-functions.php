@@ -128,25 +128,25 @@ class EntityFunctionsTest extends WP_UnitTestCase
         $this->assertArrayNotHasKey( Wordlift_Schema_Service::FIELD_DATE_START, $custom_fields );
     }
     
-    function testWlEntityTaxonomyMicrodataTemplateInheritance() {
-        
-        // Create entity and set type
-        $business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
-        wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
-        
-        // Get microdata template
-        $entity_type_details = wl_entity_type_taxonomy_get_type( $business_id );
-        $microdata_template = $entity_type_details['microdata_template'];
-        
-        // Check inherited microdata templates:
-        // latitude from Place with 'itemtype="http://schema.org/GeoCoordinates"' markup
-        $this->assertContains( 'itemtype="http://schema.org/GeoCoordinates"', $microdata_template );
-        $this->assertContains( '{{latitude}}', $microdata_template );
-        // founder from Organization
-        $this->assertContains( '{{founder}}', $microdata_template );
-        // negative test
-        $this->assertNotContains( '{{startDate}}', $microdata_template ); 
-    }
+//    function testWlEntityTaxonomyMicrodataTemplateInheritance() {
+//
+//        // Create entity and set type
+//        $business_id = wl_create_post( "Entity 1 Text", 'entity-1', "Entity 1 Title", 'publish', 'entity' );
+//        wl_set_entity_main_type( $business_id, 'http://schema.org/LocalBusiness' );
+//
+//        // Get microdata template
+//        $entity_type_details = wl_entity_type_taxonomy_get_type( $business_id );
+//        $microdata_template = $entity_type_details['microdata_template'];
+//
+//        // Check inherited microdata templates:
+//        // latitude from Place with 'itemtype="http://schema.org/GeoCoordinates"' markup
+//        $this->assertContains( 'itemtype="http://schema.org/GeoCoordinates"', $microdata_template );
+//        $this->assertContains( '{{latitude}}', $microdata_template );
+//        // founder from Organization
+//        $this->assertContains( '{{founder}}', $microdata_template );
+//        // negative test
+//        $this->assertNotContains( '{{startDate}}', $microdata_template );
+//    }
     
     /**
      * Tests the *wl_get_meta_constraints* function

@@ -71,7 +71,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_post_link_with_empty_slug() {
 
 		$slug                = '';
-		$entity_type_service = new Wordlift_Entity_Type_Service( 'entity', $slug );
+		$entity_type_service = new Wordlift_Entity_Post_Type_Service( 'entity', $slug );
 		$entity_link_service = new Wordlift_Entity_Link_Service( $entity_type_service, $slug );
 
 		$entity = get_post( wp_insert_post( array(
@@ -98,7 +98,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_post_link_with_random_slug() {
 
 		$slug                = rand_str();
-		$entity_type_service = new Wordlift_Entity_Type_Service( 'entity', $slug );
+		$entity_type_service = new Wordlift_Entity_Post_Type_Service( 'entity', $slug );
 		$entity_link_service = new Wordlift_Entity_Link_Service( $entity_type_service, $slug );
 
 		$entity = get_post( wp_insert_post( array(

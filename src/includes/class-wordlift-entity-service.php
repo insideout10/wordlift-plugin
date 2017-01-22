@@ -10,7 +10,7 @@ class Wordlift_Entity_Service {
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -19,7 +19,7 @@ class Wordlift_Entity_Service {
 	/**
 	 * The UI service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_UI_Service $ui_service The UI service.
 	 */
@@ -28,7 +28,7 @@ class Wordlift_Entity_Service {
 	/**
 	 * The Schema service.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
 	 */
@@ -37,7 +37,7 @@ class Wordlift_Entity_Service {
 	/**
 	 * The Notice service.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
 	 */
@@ -142,7 +142,7 @@ class Wordlift_Entity_Service {
 	/**
 	 * A singleton instance of the Entity service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Entity_Service $instance A singleton instance of the Entity service.
 	 */
@@ -210,7 +210,7 @@ class Wordlift_Entity_Service {
 			'numberposts' => 50,
 			'fields'      => 'ids', //only get post IDs
 			'post_type'   => 'post',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
 		) );
 
 		if ( empty( $latest_posts_ids ) ) {
@@ -222,7 +222,7 @@ class Wordlift_Entity_Service {
 		$entity_ids = array();
 		foreach ( $latest_posts_ids as $id ) {
 			$entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
-				'status' => 'publish'
+				'status' => 'publish',
 			) ) );
 		}
 
@@ -281,9 +281,9 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.5.0
 	 *
-	 * @param string $title A post title.
-	 * @param string $post_type A post type. Default value is 'entity'
-	 * @param string $schema_type A schema org type.
+	 * @param string  $title           A post title.
+	 * @param string  $post_type       A post type. Default value is 'entity'
+	 * @param string  $schema_type     A schema org type.
 	 * @param integer $increment_digit A digit used to call recursively the same function.
 	 *
 	 * @return string Returns an uri.
@@ -417,9 +417,9 @@ class Wordlift_Entity_Service {
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
 					'value'   => $uri,
-					'compare' => '='
-				)
-			)
+					'compare' => '=',
+				),
+			),
 		);
 
 		// Only if the current uri is not an internal uri 
@@ -431,7 +431,7 @@ class Wordlift_Entity_Service {
 			$query_args['meta_query'][]           = array(
 				'key'     => Wordlift_Schema_Service::FIELD_SAME_AS,
 				'value'   => $uri,
-				'compare' => '='
+				'compare' => '=',
 			);
 		}
 
@@ -453,13 +453,13 @@ class Wordlift_Entity_Service {
 	 * Fires once a post has been saved. This function uses the $_REQUEST, therefore
 	 * we check that the post we're saving is the current post.
 	 *
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/363
+	 * @see   https://github.com/insideout10/wordlift-plugin/issues/363
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int $post_id Post ID.
-	 * @param WP_Post $post Post object.
-	 * @param bool $update Whether this is an existing post being updated or not.
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @param bool    $update  Whether this is an existing post being updated or not.
 	 */
 	public function save_post( $post_id, $post, $update ) {
 
@@ -486,7 +486,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int $post_id The post id.
+	 * @param int   $post_id    The post id.
 	 * @param array $alt_labels An array of labels.
 	 */
 	public function set_alternative_labels( $post_id, $alt_labels ) {
@@ -625,8 +625,8 @@ class Wordlift_Entity_Service {
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param int $post_id The entity post id.
-	 * @param $force_reload $warnings_needed If true, detailed warnings collection is provided with the rating obj.
+	 * @param int $post_id      The entity post id.
+	 * @param     $force_reload $warnings_needed If true, detailed warnings collection is provided with the rating obj.
 	 *
 	 * @return int An array representing the rating obj.
 	 */
@@ -846,6 +846,44 @@ class Wordlift_Entity_Service {
 		$count = wp_count_posts( self::TYPE_NAME );
 
 		return $count->publish;
+	}
+
+	/**
+	 * Create a new entity.
+	 *
+	 * @since 3.9.0
+	 *
+	 * @param string $name     The entity name.
+	 * @param string $type_uri The entity's type URI.
+	 * @param null   $logo     The entity logo id (or NULL if none).
+	 * @param string $status   The post status, by default 'publish'.
+	 *
+	 * @return int|WP_Error The entity post id or a {@link WP_Error} in case the `wp_insert_post` call fails.
+	 */
+	public function create( $name, $type_uri, $logo = NULL, $status = 'publish' ) {
+
+		// Create an entity for the publisher.
+		$post_id = wp_insert_post( array(
+			'post_type'    => self::TYPE_NAME,
+			'post_title'   => $name,
+			'post_status'  => $status,
+			'post_content' => '',
+		) );
+
+		// Return the error if any.
+		if ( is_wp_error( $post_id ) ) {
+			return $post_id;
+		}
+
+		// Set the entity logo.
+		if ( $logo && is_numeric( $logo ) ) {
+			set_post_thumbnail( $post_id, $logo );
+		}
+
+		// Set the entity type.
+		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri );
+
+		return $post_id;
 	}
 
 }

@@ -9,9 +9,18 @@ require_once( 'functions.php' );
 class EntityServiceTest extends WP_UnitTestCase {
 
 	/**
+	 * The {@link Wordlift_Entity_Service} being tested.
+	 *
+	 * @since  3.7.2
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} being tested.
+	 */
+	private $entity_service;
+
+	/**
 	 * The Log service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -27,6 +36,8 @@ class EntityServiceTest extends WP_UnitTestCase {
 
 		wl_configure_wordpress_test();
 		wl_empty_blog();
+
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
 	}
 
@@ -80,7 +91,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 	 * Check that the entity alternative label is not set when the entity post id
 	 * is not set in the request.
 	 *
-	 * @see https://github.com/insideout10/wordlift-plugin/issues/363
+	 * @see   https://github.com/insideout10/wordlift-plugin/issues/363
 	 *
 	 * @since 3.6.1
 	 */
@@ -361,4 +372,28 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
 
 	}
+
+	/**
+	 * Test URIs build out of post titles containing UTF-8 characters.
+	 *
+	 * @see   https://github.com/insideout10/wordlift-plugin/issues/386
+	 *
+	 * @since 3.7.2
+	 */
+	function test_utf8_post_titles() {
+
+		// The following title has a UTF-8 character right after the 's'.
+		$title = 'Mozarts﻿ Geburtshaus';
+
+		// Check that the encoding is recognized as UTF-8.
+		$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
+
+		// Build the URI.
+		$uri = $this->entity_service->build_uri( $title, 'entity' );
+
+		// Check that the URI is good.
+		$this->assertStringEndsWith( '/entity/mozarts__geburtshaus', $uri );
+
+	}
+
 }

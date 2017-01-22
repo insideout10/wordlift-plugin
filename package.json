@@ -1,15 +1,17 @@
 {
   "name": "WordLift",
   "description": "Serendipity for Bloggers. WordLift brings the power of Artificial Intelligence to Web Publishers.",
-  "version": "3.1.0-dev",
+  "version": "3.9.1",
   "author": "WordLift",
-  "homepage": "http://wordift.it/",
+  "homepage": "https://wordift.io/",
   "repository": {
     "type": "git",
     "url": "https://github.com/insideout10/wordlift-plugin"
   },
-  "engines": {
-    "node": ">= 0.10.0"
+  "scripts": {
+    "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
+    "test:js": "grunt travis:js",
+    "test:php": "grunt travis:phpunit"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -47,6 +49,11 @@
     "karma-script-launcher": "^0.1.0",
     "matchdep": "~1.0.0",
     "phantomjs": "~1.9",
-    "requirejs": "^2.1.11"
+    "requirejs": "^2.1.11",
+    "wdio-dot-reporter": "0.0.6",
+    "wdio-jasmine-framework": "^0.2.16",
+    "wdio-sauce-service": "^0.3.0",
+    "wdio-selenium-standalone-service": "0.0.7",
+    "webdriverio": "^4.4.0"
   }
 }

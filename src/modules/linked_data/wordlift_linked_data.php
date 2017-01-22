@@ -267,14 +267,14 @@ function wl_save_entity( $entity_data ) {
 	// see https://github.com/insideout10/wordlift-plugin/issues/156
 	// see https://github.com/insideout10/wordlift-plugin/issues/148
 	global $wp_filter;
-	$save_post_filters      = $wp_filter['save_post'];
-	$wp_filter['save_post'] = array();
+	$save_post_filters = is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] : $wp_filter['save_post']->callbacks;
+	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = array() : $wp_filter['save_post']->remove_all_filters();
 
 	// create or update the post.
-	$post_id = wp_insert_post( $params, true );
+	$post_id = wp_insert_post( $params, TRUE );
 
 	// Restore all the existing filters.
-	$wp_filter['save_post'] = $save_post_filters;
+	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;
 
 	// If Yoast is installed and active, we restore the Yoast save_postdata hook (https://github.com/insideout10/wordlift-plugin/issues/156)
 	if ( isset( $wpseo_metabox ) ) {

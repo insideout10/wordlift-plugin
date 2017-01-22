@@ -68,3 +68,20 @@ Ecco il mio hashtag #daisempre <span>Roma</span>
    #expect(t.html2text(38)).toBe(32)
    expect(t.getHtml()).toBe(content)
    expect(t.getText()).toBe("Ecco il mio hashtag #daisempre Roma")
+
+  it "finds no text with Google AdSense scripts", ->
+    content = '''
+<div class="float-row"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> <!-- Responsive --> <ins class="adsbygoogle" style="display: block;" data-ad-client="ca-pub-xxxxxxxxxxxxxxx" data-ad-slot="xxxxxxxxxx" data-ad-format="auto"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+'''
+    t = Traslator.create content
+    expect(t.getHtml()).toBe(content)
+    expect(t.getText()).toBe('   (adsbygoogle = window.adsbygoogle || []).push({});')
+
+#    The following test fails because of https://github.com/insideout10/wordlift-plugin/issues/402.
+#  it "finds no text with Google AdSense scripts translated by WP", ->
+#    content = '''
+#    <div class="float-row"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-wp-preserve="%3Cscript%20async%20src%3D%22%2F%2Fpagead2.googlesyndication.com%2Fpagead%2Fjs%2Fadsbygoogle.js%22%3E%3C%2Fscript%3E" data-mce-resize="false" data-mce-placeholder="1" class="mce-object" width="20" height="20" alt="<script>" title="<script>"> <!-- Responsive --> <ins class="adsbygoogle" style="display: block;" data-ad-client="ca-pub-xxxxxxxxxxxxxxx" data-ad-slot="xxxxxxxxxx" data-ad-format="auto" data-mce-style="display: block;"></ins> <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-wp-preserve="%3Cscript%3E%0A(adsbygoogle%20%3D%20window.adsbygoogle%20%7C%7C%20%5B%5D).push(%7B%7D)%3B%0A%3C%2Fscript%3E" data-mce-resize="false" data-mce-placeholder="1" class="mce-object" width="20" height="20" alt="<script>" title="<script>"></div>
+#'''
+#    t = Traslator.create content
+#    expect(t.getHtml()).toBe(content)
+#    expect(t.getText()).toBe('')

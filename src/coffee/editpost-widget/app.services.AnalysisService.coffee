@@ -4,7 +4,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 ])
 # Manage redlink analysis responses
 # @since 1.0.0
-.service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope',
+  .service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope',
   (AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope)->
 
 # Creates a unique ID of the specified length (default 8).
@@ -172,34 +172,31 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
     service.getSuggestedSameAs = (content)->
       promise = @._innerPerform content
 # If successful, broadcast an *sameAsReceived* event.
-      .then (response) ->
-        suggestions = []
+        .then (response) ->
+      suggestions = []
 
-        for id, entity of response.data.entities
+      for id, entity of response.data.entities
 
-          if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
-            suggestions.push {
-              id: id
-              label: entity.label
-              mainType: entity.mainType
-              source: matches[1]
-            }
-        $log.debug suggestions
-        $rootScope.$broadcast "sameAsRetrieved", suggestions
+        if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
+          suggestions.push {
+            id: id
+            label: entity.label
+            mainType: entity.mainType
+            source: matches[1]
+          }
+      $log.debug suggestions
+      $rootScope.$broadcast "sameAsRetrieved", suggestions
 
-    service._innerPerform = (content, annotations = null)->
+    service._innerPerform = (content, annotations = [])->
       args =
         method: 'post'
         url: ajaxurl + '?action=wordlift_analyze'
 
-      # Set the data as two parameters, content and annotations, if annotations have been provided,
-      # otherwise data matches the content.
-      if annotations?
-        args.headers = {'Content-Type': 'application/json'}
-        args.data = {content: content, annotations: annotations}
-      else
-        args.headers = {'Content-Type': 'text/plain'}
-        args.data = content
+      # Set the data as two parameters, content and annotations.
+      args.headers = {'Content-Type': 'application/json'}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
+
+      if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
 
       $log.info "Analyzing content..."
 
@@ -211,7 +208,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     service.perform = (content)->
       if service._currentAnalysis
-        $log.warn "Analysis already runned! Nothing to do ..."
+        $log.warn "Analysis already run! Nothing to do ..."
         service._updateStatus false
 
         return
