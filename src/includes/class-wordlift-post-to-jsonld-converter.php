@@ -131,6 +131,19 @@ class Wordlift_Post_To_Jsonld_Converter implements Wordlift_Post_Converter {
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
+		// Get the entities referenced by this post and set it to the `references`
+		// array so that the caller can do further processing, such as printing out
+		// more of those references.
+		$references = $this->entity_service->get_related_entities( $post->ID );
+
+		// Add the references ids as mentions.
+		$entity_service = $this->entity_service;
+		if ( 0 < sizeof( $references ) ) {
+			$jsonld['mentions'] = array_map( function ( $item ) use ( $entity_service ) {
+				return array( '@id' => $entity_service->get_uri( $item ) );
+			}, $references );
+		}
+
 		return $jsonld;
 	}
 
@@ -198,7 +211,7 @@ class Wordlift_Post_To_Jsonld_Converter implements Wordlift_Post_Converter {
 		}
 
 		// Get the item id
-		$item_id = $this->entity_service->get_uri( $this->publisher_id );
+		$id = $this->entity_service->get_uri( $this->publisher_id );
 
 		// Get the type.
 		$type = $this->entity_type_service->get( $this->publisher_id );
@@ -209,7 +222,7 @@ class Wordlift_Post_To_Jsonld_Converter implements Wordlift_Post_Converter {
 		// Set the publisher data.
 		$params['publisher'] = array(
 			'@type' => $this->relative_to_context( $type['uri'] ),
-			'@id'   => $item_id,
+			'@id'   => $id,
 			'name'  => $name,
 		);
 

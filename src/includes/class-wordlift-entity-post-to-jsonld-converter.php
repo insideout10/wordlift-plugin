@@ -69,14 +69,15 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param WP_Post $post       The {@link WP_Post} to convert.
+	 * @param int   $post_id    The {@link WP_Post} id.
 	 *
-	 * @param array   $references An array of entity references.
+	 * @param array $references An array of entity references.
 	 *
 	 * @return array A JSON-LD array.
 	 */
-	public function convert( $post, &$references = array() ) {
+	public function convert( $post_id, &$references = array() ) {
 
+		$post = get_post( $post_id );
 
 		// Get the entity @type.
 		$type = $this->entity_type_service->get( $post->ID );
@@ -215,7 +216,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 	private function get_excerpt( $post ) {
 
 		// Temporary pop the previous post.
-		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : NULL;
+		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
 
 		// Setup our own post.
 		setup_postdata( $GLOBALS['post'] = &$post );
@@ -223,7 +224,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter {
 		$excerpt = get_the_excerpt( $post );
 
 		// Restore the previous post.
-		if ( NULL !== $original ) {
+		if ( null !== $original ) {
 			setup_postdata( $GLOBALS['post'] = $original );
 		}
 

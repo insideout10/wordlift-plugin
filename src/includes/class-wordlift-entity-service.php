@@ -67,7 +67,7 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param \Wordlift_UI_Service $ui_service The UI service.
 	 */
-	public function __construct( $ui_service, $uri_service ) {
+	public function __construct( $ui_service ) {
 
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Service' );
 
@@ -450,6 +450,22 @@ class Wordlift_Entity_Service {
 		Wordlift_Entity_Type_Service::get_instance()->set( $post_id, $type_uri );
 
 		return $post_id;
+	}
+
+	/**
+	 * Get the entities related to the one with the specified id. By default only
+	 * published entities will be returned.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @param int    $id          The post id.
+	 * @param string $post_status The target post status (default = publish).
+	 *
+	 * @return array An array of post ids.
+	 */
+	public function get_related_entities( $id, $post_status = 'publish' ) {
+
+		return wl_core_inner_get_related_entities( 'post_ids', $id, null, $post_status );
 	}
 
 }

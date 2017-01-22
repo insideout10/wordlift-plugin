@@ -50,13 +50,11 @@ class Wordlift_Postid_To_Jsonld_Converter implements Wordlift_Post_Converter {
 	 */
 	public function convert( $id, &$references = array() ) {
 
-		// Convert an entity.
-//		if ( null !== $entity = $this->entity_service->get_entity_post_by_uri( $id ) ) {
-//			return $this->entity_post_to_jsonld_converter->convert( $entity );
-//		}
-
-		// Convert a post.
-		return $this->post_to_jsonld_converter->convert( $id );
+		return $this->entity_service->is_entity( $id )
+			// Entity.
+			? $this->entity_post_to_jsonld_converter->convert( $id, $references )
+			// Post/Page.
+			: $this->post_to_jsonld_converter->convert( $id, $references );
 	}
 
 }
