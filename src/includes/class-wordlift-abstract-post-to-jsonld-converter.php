@@ -165,6 +165,48 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	}
 
 	/**
+	 * Get an attachment ID given a URL.
+	 *
+	 * ispired from https://wpscholar.com/blog/get-attachment-id-from-wp-image-url/
+	 *
+	 * @param string $url
+	 *
+	 * @return int Attachment ID on success, 0 on failure
+	 */
+	function get_attachment_id( $url ) {
+		$attachment_id = 0;
+		$dir = wp_upload_dir();
+		if ( false !== strpos( $url, $dir['baseurl'] . '/' ) ) { // Is URL in uploads directory?
+			$file = basename( $url );
+			$query_args = array(
+				'post_type'   => 'attachment',
+				'post_status' => 'inherit',
+				'fields'      => 'ids',
+				'meta_query'  => array(
+					array(
+						'value'   => $file,
+						'compare' => 'LIKE',
+						'key'     => '_wp_attachment_metadata',
+					),
+				)
+			);
+			$query = new WP_Query( $query_args );
+			if ( $query->have_posts() ) {
+				foreach ( $query->posts as $post_id ) {
+					$meta = wp_get_attachment_metadata( $post_id );
+					$original_file       = basename( $meta['file'] );
+					$cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
+					if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) {
+						$attachment_id = $post_id;
+						break;
+					}
+				}
+			}
+		}
+		return $attachment_id;
+	}
+
+	/**
 	 * Set the images.
 	 *
 	 * @since 3.10.0
@@ -176,15 +218,25 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Set the image URLs if there are images.
 		$ids = array();
 		if ( '' !== $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-			$ids[] = $thumbnail_id;
+			$ids[$thumbnail_id] = $thumbnail_id;
 		}
-		$ids = array_merge( $ids, array_map( function ( $item ) {
-			return $item->ID;
-		},   get_attached_media( 'image', $post->ID ) ) );
 
-		// todo: add check that the attached media is still embedded in the post.
+		// go over all the images included in the post content, check if they are
+		// in the DB, and if so include them.
+
+		if ( preg_match_all( '#<img [^\>]*src="([^\\">]*)"[^\>]*\ />#', $post->post_content, $images ) ) {
+			foreach ($images[1] as $image_url) {
+				$id = $this->get_attachment_id($image_url);
+				if ( $id ) {
+					$ids[$id] = $id;
+				}
+			}
+		}
+
+		// todo: Do as the above for images in galleries
 
 		// Get other attached images if any.
+		$ids = array_values( $ids );
 		$images = array_map( function ( $item ) {
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
