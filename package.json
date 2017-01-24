@@ -67,6 +67,7 @@
     "rollup-plugin-eslint": "^3.0.0",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-replace": "^1.1.1",
+    "rollup-plugin-uglify": "^1.0.1",
     "rollup-watch": "^3.2.2",
     "wdio-dot-reporter": "0.0.6",
     "wdio-jasmine-framework": "^0.2.16",

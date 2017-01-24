@@ -1,0 +1,1 @@
+export const SELECT_ENTITY = 'SELECT_ENTITY';

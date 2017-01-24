@@ -61,7 +61,6 @@ const Cloud = styled.i`
 `;
 
 export default function( props ) {
-
 	return (
 		<PrimaryWrap tile={ props.tile } >
 			<Occurrences
