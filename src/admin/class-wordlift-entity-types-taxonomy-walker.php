@@ -15,26 +15,6 @@ if ( ! class_exists( 'Walker_Category_Checklist' ) ) {
 class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 
 	/**
-	 * The Log service.
-	 *
-	 * @since 3.1.0
-	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
-	 */
-	private $log_service;
-
-	/**
-	 * Create an instance of Wordlift_Entity_Types_Taxonomy_Walker.
-	 *
-	 * @since 3.1.0
-	 */
-	public function __construct() {
-
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Types_Taxonomy_Walker' );
-
-	}
-
-	/**
 	 * Entity taxonomy metabox must show exclusive options, no checkboxes.
 	 *
 	 * @since 3.1.0
@@ -49,42 +29,12 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 			return $args;
 		}
 
-		// We override the way WP prints the taxonomy metabox HTML
+		// We override the way WP prints the taxonomy metabox HTML.
 		$args['walker']        = $this;
 		$args['checked_ontop'] = false;
 
 		return $args;
 
-	}
-
-	/**
-	 * Starts the list before the elements are added.
-	 *
-	 * Override the behaviour of the parent class to get a "flat" display
-	 * by not emmiting the UL element
-	 *
-	 * @since 3.10
-	 *
-	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth  Depth of category. Used for tab indentation.
-	 * @param array  $args   An array of arguments. @see wp_terms_checklist()
-	 */
-	public function start_lvl( &$output, $depth = 0, $args = array() ) {
-	}
-
-	/**
-	 * Ends the list of after the elements are added.
-	 *
-	 * Override the behaviour of the parent class to get a "flat" display
-	 * by not emmiting the UL element
-	 *
-	 * @since 3.10
-	 *
-	 * @param string $output Passed by reference. Used to append additional content.
-	 * @param int    $depth  Depth of category. Used for tab indentation.
-	 * @param array  $args   An array of arguments. @see wp_terms_checklist()
-	 */
-	public function end_lvl( &$output, $depth = 0, $args = array() ) {
 	}
 
 	/**
@@ -96,18 +46,19 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @param array $elements An array of elements.
-	 * @param int $max_depth The maximum hierarchical depth.
+	 * @param array $elements  An array of elements.
+	 * @param int   $max_depth The maximum hierarchical depth.
 	 *
-	 * @param array $args Additional arguments.
+	 * @param array $args      Additional arguments.
 	 *
 	 * @return string The hierarchical item output.
 	 */
 	public function walk( $elements, $max_depth, $args = array() ) {
 
-		$output = parent::walk( $elements, $max_depth, $args );
-
-		global $post;
+		// `max_depth` force to -1 to display a flat taxonomy.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/305
+		$output = parent::walk( $elements, - 1, $args );
 
 		$output = str_replace(
 			array( "type=\"checkbox\"", "type='checkbox'" ),

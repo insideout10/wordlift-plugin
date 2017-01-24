@@ -5,14 +5,11 @@
  */
 function wl_core_install_entity_type_data() {
 
-	// global $wl_logger;
-	// $wl_logger->trace( 'Installing entity type data...' );
-
 	// Ensure the custom type and the taxonomy are registered.
-//	wl_entity_type_register();
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
 	wl_entity_type_taxonomy_register();
+
 	// Ensure the custom taxonomy for dbpedia topics is registered
 	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
 
@@ -26,32 +23,26 @@ function wl_core_install_entity_type_data() {
 		'creative-work' => array(
 			'label'       => 'CreativeWork',
 			'description' => 'A creative work (or a Music Album).',
-			'parents'     => array( 'thing' ), // give term slug as parent
 		),
 		'event'         => array(
 			'label'       => 'Event',
 			'description' => 'An event.',
-			'parents'     => array( 'thing' ),
 		),
 		'organization'  => array(
 			'label'       => 'Organization',
 			'description' => 'An organization, including a government or a newspaper.',
-			'parents'     => array( 'thing' ),
 		),
 		'person'        => array(
 			'label'       => 'Person',
 			'description' => 'A person (or a music artist).',
-			'parents'     => array( 'thing' ),
 		),
 		'place'         => array(
 			'label'       => 'Place',
 			'description' => 'A place.',
-			'parents'     => array( 'thing' ),
 		),
 		'localbusiness' => array(
 			'label'       => 'LocalBusiness',
 			'description' => 'A local business.',
-			'parents'     => array( 'place', 'organization' ),
 		),
 	);
 
@@ -98,7 +89,8 @@ function wl_core_install_entity_type_data() {
 			'name'        => $term['label'],
 			'slug'        => $slug,
 			'description' => $term['description'],
-			'parent'      => $parent_id   // We give to WP taxonomy just one parent. TODO: see if can give more than one
+			// We give to WP taxonomy just one parent. TODO: see if can give more than one
+			'parent'      => $parent_id,
 		) );
 
 	}
