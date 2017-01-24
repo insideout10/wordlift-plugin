@@ -16,34 +16,43 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	/**
 	 * Attribute to distinguish between date formats, inferred from the schema property export type
 	 *
+	 * @since  3.2.0
 	 * @access private
 	 * @var string $date_format The date format.
-	 * @since 3.2.0
 	 */
 	private $date_format;
 
 	/**
 	 * Boolean flag to decide if the calendar should include time or not
 	 *
+	 * @since  3.2.0
 	 * @access private
 	 * @var boolean $timepicker A boolean flag.
-	 * @since 3.2.0
 	 */
 	private $timepicker;
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function __construct( $args ) {
 		parent::__construct( $args );
 
 		// Distinguish between date and datetime
 		if ( isset( $this->raw_custom_field['export_type'] ) && 'xsd:datetime' === $this->raw_custom_field['export_type'] ) {
 			$this->date_format = 'Y/m/d H:i';
-			$this->timepicker  = TRUE;
+			$this->timepicker  = true;
 		} else {
 			$this->date_format = 'Y/m/d';
-			$this->timepicker  = FALSE;
+			$this->timepicker  = false;
 		}
+
 	}
 
+	/**
+	 * @param mixed $date
+	 *
+	 * @return string
+	 */
 	public function html_input( $date ) {
 
 		$picker_date = ( empty( $date ) ? '' : esc_attr( date( $this->date_format, strtotime( $date ) ) ) );
@@ -62,30 +71,31 @@ EOF;
 		// Should the widget include time picker?
 		$timepicker = json_encode( $this->timepicker );
 
-		// The datetimepicker is taken from https://github.com/trentrichardson/jQuery-Timepicker-Addon
-		// setting documentation found in http://trentrichardson.com/examples/timepicker.
-
+		// Set up the datetimepicker.
+		//
+		// See https://github.com/trentrichardson/jQuery-Timepicker-Addon
+		// See in http://trentrichardson.com/examples/timepicker.
 		$html = <<<EOF
 			<script type='text/javascript'>
 				( function( $ ) {
 
 					$( function() {
 
-						$( '.$this->meta_name[type=text]' ).datetimepicker( {
+						$( '.$this->meta_name[type=text]' ).wldatetimepicker( {
 							// Format of date time displayed at the input.
 							dateFormat: '$this->date_format',
 							timeFormat: 'HH:mm',
 
 							// The hidden field used to store the value, and the format.
 							altField: $( '.$this->meta_name[type=hidden]' ),
-							altFormat: 'yy-mm-dd',
+							altFormat: 'yyyy-mm-dd',
 							altFieldTimeOnly: false,
 							altSeparator:'T',
 							altTimeFormat: 'HH:mm',
 							altTimeSuffix:':00Z',
 
-							// Widget UI options
-							showTimepicker:$timepicker,
+							// Widget UI options.
+							showTimepicker: $timepicker,
 							changeMonth: true,
 							changeYear: true,
 							yearRange : 'c-15:c+15'
