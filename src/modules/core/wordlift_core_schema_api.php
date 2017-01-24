@@ -12,7 +12,7 @@ function wl_schema_reset_value( $post_id, $property_name ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) || is_null( $property_name ) ) {
-		return FALSE;
+		return false;
 	}
 
 	// Build full schema uri if necessary
@@ -27,26 +27,26 @@ function wl_schema_reset_value( $post_id, $property_name ) {
 
 			delete_post_meta( $post_id, $wl_constant );
 
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 /**
- * Retrieves the value of the specified property for the entity, where
+ * Retrieves the value of the specified property for the entity.
  *
  * @param int    $post_id       The numeric post ID.
  * @param string $property_name Name of the property (e.g. name, for the http://schema.org/name property).
  *
- * @return array An array of values or NULL in case of no values (or error).
+ * @return array|null An array of values or NULL in case of no values (or error).
  */
 function wl_schema_get_value( $post_id, $property_name ) {
 
 	// Property name must be defined.
 	if ( ! isset( $property_name ) || is_null( $property_name ) ) {
-		return NULL;
+		return null;
 	}
 
 	// store eventual schema name in  different variable
@@ -56,7 +56,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
 	if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
 		$post_id = get_the_ID();
 		if ( is_null( $post_id ) || ! is_numeric( $post_id ) ) {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -71,7 +71,7 @@ function wl_schema_get_value( $post_id, $property_name ) {
 		}
 	}
 
-	return NULL;
+	return null;
 }
 
 /**
@@ -89,15 +89,13 @@ function wl_schema_add_value( $post_id, $property_name, $property_value ) {
 		$property_value = array( $property_value );
 	}
 
-	$old_values = wl_schema_get_value( $post_id, $property_name );
-	
-	// if there was no value set, or error, just assume it is an empty set of values
-	if (!$old_values)
-		$old_values = array();
+	// Get the old values or set an empty array.
+	$old_values = wl_schema_get_value( $post_id, $property_name ) ?: array();
 
 	$merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
 
 	wl_schema_set_value( $post_id, $property_name, $merged_property_value );
+
 }
 
 /**
@@ -113,7 +111,7 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) || is_null( $property_name ) || empty( $property_value ) || is_null( $property_value ) ) {
-		return FALSE;
+		return false;
 	}
 
 	// Build full schema uri if necessary
@@ -138,11 +136,11 @@ function wl_schema_set_value( $post_id, $property_name, $property_value ) {
 				add_post_meta( $post_id, $wl_constant, $value );
 			}
 
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return false;
 }
 
 
@@ -158,7 +156,7 @@ function wl_schema_get_types( $post_id ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) ) {
-		return NULL;
+		return null;
 	}
 
 	$type = wl_entity_type_taxonomy_get_type( $post_id );
@@ -167,7 +165,7 @@ function wl_schema_get_types( $post_id ) {
 		return array( $type['uri'] );
 	}
 
-	return NULL;
+	return null;
 }
 
 /**
@@ -182,19 +180,16 @@ function wl_schema_set_types( $post_id, $type_names ) {
 
 	// Some checks on the parameters
 	if ( ! is_numeric( $post_id ) || empty( $type_names ) || is_null( $type_names ) ) {
-		return NULL;
+		return null;
 	}
 
-	// TODO: support more than one type
+	// TODO: support more than one type.
 	if ( is_array( $type_names ) ) {
 		$type_names = $type_names[0];
 	}
 
 	// Get the schema URI (e.g. http://schema.org/Thing)
 	$type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
-
-	Wordlift_Log_Service::get_logger( 'wl_schema_set_types' )
-	                    ->debug( "[ type names :: $type_names ]" );
 
 	// Actually sets the taxonomy type
 	wl_set_entity_main_type( $post_id, $type_names );
@@ -244,7 +239,7 @@ function wl_build_full_schema_uri_from_schema_slug( $schema_name ) {
 
 	$schema_root_address = 'http://schema.org/';
 
-	if ( strpos( $schema_name, $schema_root_address ) === FALSE ) {   // === necessary
+	if ( strpos( $schema_name, $schema_root_address ) === false ) {   // === necessary
 		$schema_name = $schema_root_address . $schema_name;
 	}
 
