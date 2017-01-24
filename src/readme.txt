@@ -137,6 +137,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.5 (2017-01-22) =
+* Fix: [#282](https://github.com/insideout10/wordlift-plugin/issues/282): Wrong entity URL.
+
 = 3.9.4 (2017-01-12) =
 * Fix: [#439](https://github.com/insideout10/wordlift-plugin/issues/439): Entity preview is redirected to a Post.
 
