@@ -121,7 +121,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
 
-> Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
+> Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
 == Screenshots ==
 
@@ -136,6 +136,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.9.6 (2017-01-24) =
+* Fix: [#443](https://github.com/insideout10/wordlift-plugin/issues/443): Chord height is fixed when global is true.
+* Fix: [#383](https://github.com/insideout10/wordlift-plugin/issues/383): Chord - text overlapping issue.
 
 = 3.9.5 (2017-01-22) =
 * Fix: [#282](https://github.com/insideout10/wordlift-plugin/issues/282): Wrong entity URL.
