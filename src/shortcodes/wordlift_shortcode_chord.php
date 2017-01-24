@@ -20,7 +20,7 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 	) );
 
 	if ( empty( $post_ids ) ) {
-		return NULL;
+		return null;
 	}
 
 	$entities = array();
@@ -43,14 +43,14 @@ function wl_shortcode_chord_most_referenced_entity_id() {
  *
  * @uses wl_core_get_related_post_ids() to get the list of post ids that reference an entity.
  *
- * @param int $entity_id The entity post ID.
- * @param int $depth Max number of nesting levels in output.
- * @param array $related An existing array of related entities.
- * @param int $max_size Max number of items.
+ * @param int   $entity_id The entity post ID.
+ * @param int   $depth     Max number of nesting levels in output.
+ * @param array $related   An existing array of related entities.
+ * @param int   $max_size  Max number of items.
  *
  * @return array
  */
-function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = NULL, $max_size = 9 ) {
+function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = null, $max_size = 9 ) {
 
 	if ( ! is_null( $related ) ) {
 		if ( 0 === $depth ) {
@@ -64,20 +64,20 @@ function wl_shortcode_chord_get_relations( $entity_id, $depth = 2, $related = NU
 	if ( is_null( $related ) ) {
 		$related = array(
 			'entities'  => array( $entity_id ),
-			'relations' => array()
+			'relations' => array(),
 		);
 	}
 
 	// Get related entities
 	$related_entity_ids = wl_core_get_related_entity_ids( $entity_id, array(
-		'status' => 'publish'
+		'status' => 'publish',
 	) );
 
 	// If the current node is an entity, add related posts too
 	$related_post_ids = ( Wordlift_Entity_Service::get_instance()
 	                                             ->is_entity( $entity_id ) ) ?
 		wl_core_get_related_post_ids( $entity_id, array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) ) :
 		array();
 
@@ -133,14 +133,14 @@ function wl_shortcode_chord_get_graph( $data ) {
 		// Get the entity taxonomy bound to this post (if there's no taxonomy, no stylesheet will be set).
 		$term = wl_entity_type_taxonomy_get_type( $item );
 
-		wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, TRUE ) . " ]" );
+		wl_write_log( "wl_shortcode_chord_get_graph [ post id :: $post->ID ][ term :: " . var_export( $term, true ) . " ]" );
 
 		// TODO: get all images
-		$thumbnail    = NULL;
+		$thumbnail    = null;
 		$thumbnail_id = get_post_thumbnail_id( $post->ID );
 		if ( '' !== $thumbnail_id ) {
 			$attachment = wp_get_attachment_image_src( $thumbnail_id );
-			if ( FALSE !== $attachment ) {
+			if ( false !== $attachment ) {
 				$thumbnail = esc_attr( $attachment[0] );
 			}
 		}
@@ -151,7 +151,7 @@ function wl_shortcode_chord_get_graph( $data ) {
 			'label'      => $post->post_title,
 			'type'       => $post->post_type,
 			'thumbnails' => array( $thumbnail ),
-			'css_class'  => ( isset( $term['css_class'] ) ? $term['css_class'] : '' )
+			'css_class'  => ( isset( $term['css_class'] ) ? $term['css_class'] : '' ),
 		);
 
 		$item = $entity;
@@ -161,7 +161,7 @@ function wl_shortcode_chord_get_graph( $data ) {
 	array_walk( $data['relations'], function ( &$item ) {
 		$relation = array(
 			's' => wl_get_entity_uri( $item[0] ),
-			'o' => wl_get_entity_uri( $item[1] )
+			'o' => wl_get_entity_uri( $item[1] ),
 		);
 
 		$item = $relation;
