@@ -135,6 +135,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.6 (2017-01-24) =
+* Fix: [#443](https://github.com/insideout10/wordlift-plugin/issues/443): Chord height is fixed when global is true.
+* Fix: [#383](https://github.com/insideout10/wordlift-plugin/issues/383): Chord - text overlapping issue.
+
 = 3.9.5 (2017-01-22) =
 * Fix: [#282](https://github.com/insideout10/wordlift-plugin/issues/282): Wrong entity URL.
 
