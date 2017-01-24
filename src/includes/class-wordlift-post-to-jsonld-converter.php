@@ -16,13 +16,13 @@
 class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld_Converter {
 
 	/**
-	 * The publisher id.
+	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @since  3.10.0
 	 * @access private
-	 * @var int|NULL  The publisher id or NULL if not set.
+	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
-	private $publisher_id;
+	private $configuration_service;
 
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
@@ -38,15 +38,15 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
-	 * @param \Wordlift_Entity_Service      $entity_service      A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_User_Service        $user_service        A {@link Wordlift_User_Service} instance.
-	 * @param int|NULL                      $publisher_id        The publisher id or NULL if not configured.
+	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Entity_Service        $entity_service        A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_User_Service          $user_service          A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $publisher_id ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $configuration_service ) {
 		parent::__construct( $entity_type_service, $entity_service, $user_service );
 
-		$this->publisher_id = $publisher_id;
+		$this->configuration_service = $configuration_service;
 
 		// Set a reference to the logger.
 		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Post_To_Jsonld_Converter' );
@@ -116,21 +116,21 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	private function set_publisher( &$params ) {
 
 		// If the publisher id isn't set don't do anything.
-		if ( ! isset( $this->publisher_id ) ) {
+		if ( null === $publisher_id = $this->configuration_service->get_publisher_id() ) {
 			return;
 		}
 
 		// Get the post instance.
-		if ( null === $post = get_post( $this->publisher_id ) ) {
+		if ( null === $post = get_post( $publisher_id ) ) {
 			// Publisher not found.
 			return;
 		}
 
 		// Get the item id
-		$id = $this->entity_service->get_uri( $this->publisher_id );
+		$id = $this->entity_service->get_uri( $publisher_id );
 
 		// Get the type.
-		$type = $this->entity_type_service->get( $this->publisher_id );
+		$type = $this->entity_type_service->get( $publisher_id );
 
 		// Get the name.
 		$name = $post->post_title;

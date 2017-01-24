@@ -88,10 +88,10 @@ class Wordlift {
 	 * The Entity service.
 	 *
 	 * @since  3.1.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
 	 */
-	private $entity_service;
+	protected $entity_service;
 
 	/**
 	 * The Topic Taxonomy service.
@@ -106,10 +106,10 @@ class Wordlift {
 	 * The User service.
 	 *
 	 * @since  3.1.7
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_User_Service $user_service The User service.
 	 */
-	private $user_service;
+	protected $user_service;
 
 	/**
 	 * The Timeline service.
@@ -143,7 +143,7 @@ class Wordlift {
 	 *
 	 * @since  3.3.0
 	 * @access private
-	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
+	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
 	private $entity_list_service;
 
@@ -290,6 +290,33 @@ class Wordlift {
 	 * @var \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 */
 	private $rating_service;
+
+	/**
+	 * A {@link Wordlift_Post_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter A {@link Wordlift_Post_To_Jsonld_Converter} instance.
+	 */
+	protected $post_to_jsonld_converter;
+
+	/**
+	 * A {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 */
+	protected $configuration_service;
+
+	/**
+	 * A {@link Wordlift_Entity_Type_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 */
+	protected $entity_type_service;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -570,13 +597,13 @@ class Wordlift {
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
 		// Create the configuration service.
-		$configuration_service = new Wordlift_Configuration_Service();
+		$this->configuration_service = new Wordlift_Configuration_Service();
 
 		// Create an entity type service instance. It'll be later bound to the init action.
-		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $configuration_service->get_entity_base_path() );
+		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $this->configuration_service->get_entity_base_path() );
 
 		// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
-		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_post_type_service, $configuration_service->get_entity_base_path() );
+		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_post_type_service, $this->configuration_service->get_entity_base_path() );
 
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
@@ -629,10 +656,10 @@ class Wordlift {
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
-		$entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
+		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
 		// Create the entity rating service.
-		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $entity_type_service, $this->notice_service );
+		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
 
 		// Create entity list customization (wp-admin/edit.php)
 		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->rating_service );
@@ -645,9 +672,9 @@ class Wordlift {
 
 		// Instantiate the JSON-LD service.
 		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $this->user_service, $property_getter );
-		$post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $entity_type_service, $this->entity_service, $this->user_service, $configuration_service->get_publisher_id() );
-		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $entity_post_to_jsonld_converter, $post_to_jsonld_converter );
+		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $property_getter );
+		$this->post_to_jsonld_converter  = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $this->configuration_service );
+		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $postid_to_jsonld_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
@@ -657,7 +684,7 @@ class Wordlift {
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
 
 		// Create an instance of the install wizard.
-		$this->admin_setup = new Wordlift_Admin_Setup( $configuration_service, $this->key_validation_service, $this->entity_service );
+		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );

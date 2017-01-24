@@ -164,6 +164,13 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		return html_entity_decode( $excerpt );
 	}
 
+	/**
+	 * Set the images.
+	 *
+	 * @since 3.10.0
+	 * @param WP_Post $post The target {@link WP_Post}.
+	 * @param array $jsonld The JSON-LD array.
+	 */
 	protected function set_images( $post, &$jsonld ) {
 
 		// Set the image URLs if there are images.
@@ -173,7 +180,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		}
 		$ids = array_merge( $ids, array_map( function ( $item ) {
 			return $item->ID;
-		}, get_attached_media( 'image', $post->ID ) ) );
+		},   get_attached_media( 'image', $post->ID ) ) );
+
+		// todo: add check that the attached media is still embedded in the post.
 
 		// Get other attached images if any.
 		$images = array_map( function ( $item ) {

@@ -148,7 +148,7 @@ class Wordlift_Rating_Service {
 	 *
 	 * @return array An array representing the rating obj.
 	 */
-	private function set_rating_for( $post_id ) {
+	public function set_rating_for( $post_id ) {
 
 		// Calculate rating for the given post.
 		$rating = $this->calculate_rating_for( $post_id );

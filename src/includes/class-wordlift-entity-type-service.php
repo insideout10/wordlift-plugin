@@ -102,11 +102,8 @@ class Wordlift_Entity_Type_Service {
 				return $this->schema_service->get_schema( $terms[0]->slug );
 
 			case 'post':
-				// Posts are considered Blog Postings.
-				return array( 'uri' => 'http://schema.org/BlogPosting' );
-
 			case 'page':
-				// Pages are considered Articles.
+				// Posts and pages are considered Articles.
 				return array( 'uri' => 'http://schema.org/Article' );
 
 			default:

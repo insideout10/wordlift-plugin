@@ -65,7 +65,7 @@ function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 	// Prepare interaction with db
 	global $wpdb;
 
-	// Checks passed. Add relation if not exists
+	// Checks passed. Add relation if not exists:
 	// See https://codex.wordpress.org/Class_Reference/wpdb#REPLACE_row
 	$wpdb->replace(
 		wl_core_get_relation_instances_table_name(),

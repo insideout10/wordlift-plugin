@@ -9,14 +9,18 @@
  *
  * @since 3.0.0
  *
- * @uses wl_queue_sparql_update_query() to queue a query if query buffering is on.
+ * @uses  wl_queue_sparql_update_query() to queue a query if query buffering is on.
  *
  * @param string $query The query to execute.
- * @param bool $queue Whether to queue the update.
+ * @param bool   $queue Whether to queue the update.
  *
  * @return bool True if successful otherwise false.
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
+
+	if ( defined( 'DISABLE_ENTITY_PUSH' ) && DISABLE_ENTITY_PUSH ) {
+		return true;
+	}
 
 	// Queue the update query.
 	if ( $queue ) {
@@ -39,9 +43,9 @@ function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDAT
 		'method'  => 'POST',
 		'headers' => array(
 			'Accept'       => 'application/json',
-			'Content-type' => 'application/sparql-update; charset=utf-8'
+			'Content-type' => 'application/sparql-update; charset=utf-8',
 		),
-		'body'    => $query
+		'body'    => $query,
 	) );
 
 	// Send the request.
