@@ -142,7 +142,11 @@ class Wordlift_Entity_Link_Service {
 	public function wp_unique_post_slug_is_bad_flat_slug( $bad_slug, $slug, $post_type ) {
 
 		// The list of post types that might have conflicting slugs.
-		$post_types = array( 'post', 'page', $this->entity_type_service->get_post_type() );
+		$post_types = array(
+			'post',
+			'page',
+			$this->entity_type_service->get_post_type(),
+		);
 
 		// Ignore post types different from the ones we need to check.
 		if ( ! in_array( $post_type, $post_types ) ) {
@@ -151,7 +155,7 @@ class Wordlift_Entity_Link_Service {
 
 		$exists = $this->slug_exists( $slug, array_diff( $post_types, array( $post_type ) ) );
 
-		$this->log->debug( "[ exists :: " . ( $exists ? "yes" : "no" ) . " ]" );
+		$this->log->debug( "Checking if a slug exists [ post type :: $post_type ][ slug :: $slug ][ exists :: " . ( $exists ? "yes" : "no" ) . " ]" );
 
 		return $exists;
 	}
