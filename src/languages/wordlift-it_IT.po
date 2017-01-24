@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WordLift 3\n"
-"POT-Creation-Date: 2017-01-04 12:05+0100\n"
-"PO-Revision-Date: 2017-01-04 15:56+0100\n"
+"POT-Creation-Date: 2017-01-18 16:34+0100\n"
+"PO-Revision-Date: 2017-01-18 16:35+0100\n"
 "Last-Translator: Andrea Volpini <andea@insideout.io>\n"
 "Language-Team: WordLift <info@wordlift.io>\n"
 "Language: it\n"
@@ -110,6 +110,10 @@ msgstr ""
 #: ../admin/class-wordlift-admin-setup.php:202
 msgid "Sorry, you do not have a permission to save the settings"
 msgstr "Spiacente, ma non hai i permessi per salvare le impostazioni"
+
+#: ../admin/class-wordlift-admin.php:117
+msgid "You already published an entity with the same name: "
+msgstr "Hai già pubblicato un entità con lo stesso nome: "
 
 #: ../admin/class-wordlift-download-your-data-page.php:27
 #: ../admin/partials/wordlift-admin-download-your-data.php:17

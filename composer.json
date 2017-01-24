@@ -3,6 +3,6 @@
     "phpunit/phpunit": "4.8.*",
     "phpunit/php-code-coverage": "2.2.*",
     "phpdocumentor/phpdocumentor": "2.*",
-    "codeclimate/php-test-reporter": "0.4.*"
+    "codeclimate/php-test-reporter": "0.3.2"
   }
 }

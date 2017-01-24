@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the Stable (latest release) package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-08-25 18:27+0200\n"
+"PO-Revision-Date: 2017-01-17 18:21+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.11\n"
 "Project-Id-Version: Stable (latest release)\n"
 "POT-Creation-Date: \n"
 "Last-Translator: \n"
@@ -30,7 +30,7 @@ msgstr "Thema"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:87
 msgid "Search Topics"
-msgstr "Themen Suchen"
+msgstr "Themensuche"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:88
 msgid "All Topics"
@@ -38,11 +38,11 @@ msgstr "Alle Themen"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:89
 msgid "Parent Topic"
-msgstr "Übergeordnetes  Thema"
+msgstr "Übergeordnetes Thema"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:90
 msgid "Parent Topic:"
-msgstr "Übergeordnetes  Thema:"
+msgstr "Übergeordnetes Thema:"
 
 #: includes/class-wordlift-topic-taxonomy-service.php:91
 msgid "Edit Topic"
@@ -75,27 +75,27 @@ msgstr "In Verbindung stehende Artikel"
 
 #: admin/class-wordlift-admin-dashboard.php:64
 msgid "enriched posts"
-msgstr "Angereicherten Beiträge"
+msgstr "Angereicherte Beiträge"
 
 #: admin/class-wordlift-admin-dashboard.php:66
 msgid "%1$s, of your <a href=\"%2$s\">posts</a> are annotated. This means %3$s annotated posts on %4$s."
-msgstr "%1$s, aus dein <a href=\"%2$s\">Beiträge</a> kommentierte sind. Das bedeutet, %3$s kommentiert Beiträge auf %4$s."
+msgstr "%1$s Ihrer <a href=\"%2$s\">Beiträge</a> sind bereits bearbeitet. Das bedeutet %3$s von insgesamt %4$s Beiträgen sind annotiert."
 
 #: admin/class-wordlift-admin-dashboard.php:74
 msgid "avarage entity rating"
-msgstr "Durchschnittliche Entität Bewertung"
+msgstr "Durchschnittliche Bewertung der Entität "
 
 #: admin/class-wordlift-admin-dashboard.php:76
 msgid "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an avarage rating of %3$s."
-msgstr "Du hast %1$s Entitäten in dein <a href=\"%2$s\">Vokabular</a> mit einer durchschnittliche Bewertung von %3$s."
+msgstr "Sie haben %1$s Entitäten in Ihrem <a href=\"%2$s\">Vokabular</a> mit einer durchschnittlichen Bewertung von %3$s."
 
 #: admin/class-wordlift-admin-dashboard.php:83
 msgid "triples in your graph"
-msgstr "triples in dein Graph"
+msgstr "Triples in Ihrem Graphen"
 
 #: admin/class-wordlift-admin-dashboard.php:85
 msgid "Your graphs size corresponds to %1$s of <a href=\"%2$s\">Wikidata</a>."
-msgstr "Ihre graphen Größe entspricht %1$s aus <a href=\"%2$s\">Wikidata</a>."
+msgstr "Die Größe Ihres Graphen entspricht %1$s der Größe von <a href=\"%2$s\">Wikidata</a>."
 
 #: admin/class-wordlift-admin-dashboard.php:91
 msgid "triples"
@@ -119,23 +119,23 @@ msgstr "Es gibt keine verwandten Entitäten für die aktuelle Entität."
 
 #: wordlift_manual_translations.php:9
 msgid "This entity is not published. It will not appear within analysis results."
-msgstr "Diese Entität wird nicht veröffentlicht. Es wird nicht innerhalb von Analyseergebnissen erscheinen."
+msgstr "Diese Entität ist nicht veröffentlicht. Sie wird nicht in die Analyse mit einbezogen."
 
 #: wordlift_manual_translations.php:10
 msgid "This entity has no featured image yet."
-msgstr "Diese Einrichtung hat bisher noch keine Beitragsbild."
+msgstr "Diese Entität hat noch kein Beitragsbild."
 
 #: wordlift_manual_translations.php:11
 msgid "There are no sameAs configured for this entity."
-msgstr "Es gibt keine sameAs für diese Entität konfiguriert."
+msgstr "Es fehlt der SameAs-Eintrag für diese Entität."
 
 #: wordlift_manual_translations.php:12
 msgid "Schema.org metadata for this entity are not completed."
-msgstr "Schema.org metadaten für diese Entität nicht abgeschlossen."
+msgstr "Die Schema.org Metadaten für diese Entität sind nicht abgeschlossen."
 
 #: admin/class-wordlift-admin-entity-list.php:69
 msgid "Related Posts"
-msgstr "Im Zusammenhang mit Beiträge"
+msgstr "zusammenhängende Beiträge"
 
 #: admin/class-wordlift-admin-entity-list.php:70
 msgid "Rating"
@@ -187,11 +187,11 @@ msgstr "WordLift"
 #: admin/wordlift_admin_menu.php:45
 #: modules/configuration/wordlift_configuration.php:45
 msgid "You do not have sufficient permissions to access this page."
-msgstr "Du hast nicht ausreichend Rechte, um auf diese Seite zuzugreifen."
+msgstr "Ihre Rechte reichen nicht aus, um auf diese Seite zuzugreifen."
 
 #: modules/analyzer/wordlift_analyzer.php:20
 msgid "An error occurred while request an analysis to the remote service. Please try again later."
-msgstr "Ein Fehler ist aufgetreten während die Analyse zu dem Remote-Service Anfrage. Bitte versuchst es später noch einmal."
+msgstr "Während der Analyse zur Remote-Service Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal."
 
 #: modules/configuration/configuration.php:12
 #: modules/configuration/configuration.php:16
@@ -369,11 +369,11 @@ msgstr "Im Vokabular Suchen"
 
 #: wordlift_entity_type.php:18
 msgid "No entities found"
-msgstr "Keine Elemente gefunden"
+msgstr "Keine Entitäten gefunden"
 
 #: wordlift_entity_type.php:19
 msgid "No entities found in the Trash"
-msgstr "Keine Elemente in den Papierkorb gefunden"
+msgstr "Keine Entitäten im Papierkorb gefunden"
 
 #: wordlift_entity_type.php:21
 msgid "Vocabulary"

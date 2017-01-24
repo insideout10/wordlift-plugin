@@ -97,21 +97,33 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
+		// Get the current screen.
+		$screen = get_current_screen();
+
+		// If there's no screen or we're not in edit mode, don't provide the `wlSettings`,
+		// since the current admin script only provides the configuration data for
+		// the title check.
+		//
+		// This might change as soon as we structure the JavaScript code into well
+		// defined script files.
+		if ( null === $screen || 'edit' !== $screen->parent_base ) {
+			return;
+		}
+
+		// Enqueue the admin scripts.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.min.js', array(
 			'jquery',
 			'underscore',
 			'backbone',
 		), $this->version, false );
 
-		wp_enqueue_script( 'wordlift-edit', plugin_dir_url( __FILE__ ) . 'js/edit.min.js', array(
-			$this->plugin_name,
-		), $this->version, false );
-
 		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
 		$entity_being_edited = get_post();
 
 		wp_localize_script( $this->plugin_name, 'wlSettings', array(
+				// @todo scripts in admin should use wp.post.
 				'ajax_url'          => admin_url( 'admin-ajax.php' ),
+				// @todo remove specific actions from settings.
 				'action'            => 'entity_by_title',
 				'post_id'           => $entity_being_edited->ID,
 				'entityBeingEdited' => isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ),
@@ -126,6 +138,11 @@ class Wordlift_Admin {
 				),
 			)
 		);
+
+		// Enqueue the edit screen JavaScript.
+		wp_enqueue_script( 'wordlift-edit', plugin_dir_url( __FILE__ ) . 'js/edit.min.js', array(
+			$this->plugin_name,
+		), $this->version, false );
 
 	}
 
