@@ -7,7 +7,7 @@ import React from 'react';
  * Internal dependencies
  */
 import Tile from '../components/Tile';
-import log from '../modules/log';
+import log from '../../modules/log';
 
 // Define props and state
 const tiles = [
@@ -43,7 +43,7 @@ export default class TilesContainer extends React.Component {
 	constructor( props ) {
 		super();
 
-		log(props.analysis.entities);
+		log( props.analysis.entities );
 
 		// Bind our functions.
 		this.select = this.select.bind( this );
@@ -107,7 +107,6 @@ export default class TilesContainer extends React.Component {
 	 * @inheritDoc
 	 */
 	render() {
-
 		const tile = { isOpen: false, isLinked: false };
 
 		return (
