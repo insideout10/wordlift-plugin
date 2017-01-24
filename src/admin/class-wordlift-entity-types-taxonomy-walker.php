@@ -57,6 +57,35 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 
 	}
 
+	/**
+	 * Starts the list before the elements are added.
+	 *
+	 * Override the behaviour of the parent class to get a "flat" display
+	 * by not emmiting the UL element
+	 *
+	 * @since 3.10
+	 *
+	 * @param string $output Passed by reference. Used to append additional content.
+	 * @param int    $depth  Depth of category. Used for tab indentation.
+	 * @param array  $args   An array of arguments. @see wp_terms_checklist()
+	 */
+	public function start_lvl( &$output, $depth = 0, $args = array() ) {
+	}
+
+	/**
+	 * Ends the list of after the elements are added.
+	 *
+	 * Override the behaviour of the parent class to get a "flat" display
+	 * by not emmiting the UL element
+	 *
+	 * @since 3.10
+	 *
+	 * @param string $output Passed by reference. Used to append additional content.
+	 * @param int    $depth  Depth of category. Used for tab indentation.
+	 * @param array  $args   An array of arguments. @see wp_terms_checklist()
+	 */
+	public function end_lvl( &$output, $depth = 0, $args = array() ) {
+	}
 
 	/**
 	 * Change checkboxes to radios.
@@ -77,9 +106,9 @@ class Wordlift_Entity_Types_Taxonomy_Walker extends Walker_Category_Checklist {
 	public function walk( $elements, $max_depth, $args = array() ) {
 
 		$output = parent::walk( $elements, $max_depth, $args );
-		
-		global $post; 
-		
+
+		global $post;
+
 		$output = str_replace(
 			array( "type=\"checkbox\"", "type='checkbox'" ),
 			array( "type=\"radio\"", "type='radio'" ),
