@@ -1,8 +1,8 @@
-=== WordLift - Ordering Knowledge ===
+=== WordLift - Connect with Your Audience ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
-Contributors: wordlift
-Tags: artificial intelligence, semantic seo, linked data, structured content, knowledge graph, content recommendation, seo, schema.org, google rich snippets, google rich card, interactive widgets, semantic content management
+Contributors: wordlift, insideout10, ziodave
+Tags: artificial intelligence, semantic seo, linked data, schema.org, knowledge graph, content recommendation, seo, structured content, google rich snippets, google rich card, interactive widgets, semantic content management
 Requires at least: 4.2
 Tested up to: 4.7
 Stable tag: {version}
@@ -17,11 +17,11 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 > **WordLift**, without requiring any technical skills, helps you produce richer content and organize it around your audience. <br />
 > **WordLift** is **available to all for a monthly fee**. Find out more and [get your activation key](https://wordlift.io) directly on our website. <br />
 
-[vimeo http://vimeo.com/164538710]
+[vimeo https://vimeo.com/197899438]
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
-**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph).<br />
-**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
+**WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph).<br />
+**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
 
 = Features =
 
@@ -39,12 +39,14 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 _____________
 
 
-* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) <br />
+* The technology to **self-organize content** using publicly or privately available [knowledge graphs](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) <br />
 * An easy way to **build datasets** and **full data ownership** <br />
 * Support for creating web content using **contextually relevant information** <br />
 * Valued and **free to use photos and illustrations** from the Commons community ranging from maps to astronomical imagery to photographs, artworks and more <br />
 * New means to drive business growth with **meaningful content discovery paths** <br />
 * Content tagging for **better SEO** <br />
+
+[vimeo http://vimeo.com/164538710]
 
 = Supported languages =
 _____________
@@ -57,7 +59,7 @@ The Plug-in is built on **open source software**.
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in using a [WordLift key](http://docs.wordlift.it/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there.
+3. Activate the plug-in using a [WordLift key](http://docs.wordlift.io/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there.
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a *WordLift key*. <br />
@@ -113,25 +115,25 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 2. if you deactivate the plugin instead, the vocabulary (metadata, entity and pages) will disappear from your dashboard, but everything you created is stored in your website Database in WordPress, and you will be able to download it, transfer it or re-activate it again anytime from the plugin menu. <br />
 
-3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
+3. Turning off WordLift on our side, it would be like turning off all the keys and un-publish all the linked data you’ve created, not the plug-in itself, so it will be like #1 - you could get the data back from us and re-publish it as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) on your own infrastructure. <br />
 
 4. WordLift's technology is entirely open source: it takes development skills, infrastructure and some wisdom to nicely bring all the pieces together without our support. <br />
 
-5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.it/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
+5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
 
-> Find more FAQ in our [Wiki](http://docs.wordlift.it/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
+> Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
 == Screenshots ==
 
 1. The Setup Wizard.
-2. The slick [WordLift Edit Post Widget](http://docs.wordlift.it/en/latest/analysis.html#wordlift-edit-post-widget).
+2. The slick [WordLift Edit Post Widget](http://docs.wordlift.io/en/latest/analysis.html#wordlift-edit-post-widget).
 3. The WordLift Edit Post Widget explained.
 4. The WordLift Event Entity.
 5. The WordLift Place Entity.
-6. The [Navigator Widget](http://docs.wordlift.it/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
-7. The [Faceted Search Widget](http://docs.wordlift.it/en/latest/discover.html#the-faceted-search-widget).
-8. The [Chord Widget](http://docs.wordlift.it/en/latest/discover.html#the-chord-widget).
-9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.it/en/latest/key-concepts.html#knowledge-graph) at a glance.
+6. The [Navigator Widget](http://docs.wordlift.io/en/latest/discover.html#the-navigator-widget) providing content-recommendations.
+7. The [Faceted Search Widget](http://docs.wordlift.io/en/latest/discover.html#the-faceted-search-widget).
+8. The [Chord Widget](http://docs.wordlift.io/en/latest/discover.html#the-chord-widget).
+9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
 
