@@ -258,12 +258,8 @@ class WL_Metabox {
 	public function enqueue_scripts_and_styles() {
 
 		// dateTimePicker
-		wp_enqueue_style( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/css/jquery.datetimepicker.css' );
-		wp_enqueue_script( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
-
-		// We rename the xdsoft datetimepicker function name to avoid conflicts to the jQuery UI derived datetimepicker library.
-		// see https://github.com/insideout10/wordlift-plugin/issues/340 .
-		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array( 'jquery-ui-timepicker' ) );
+		wp_enqueue_style( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jQuery-Timepicker-Addon/jquery-ui-timepicker-addon.min.css' );
+		wp_enqueue_script( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jQuery-Timepicker-Addon/jquery-ui-timepicker-addon.min.js', array( 'jquery-ui-datepicker' ),'1.6.3',true );
 
 		// Leaflet.
 		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );

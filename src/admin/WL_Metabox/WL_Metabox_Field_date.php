@@ -34,7 +34,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 	public function __construct( $args ) {
 		parent::__construct( $args );
 
-		// Distinguish between date and datetime	
+		// Distinguish between date and datetime
 		if ( isset( $this->raw_custom_field['export_type'] ) && 'xsd:datetime' === $this->raw_custom_field['export_type'] ) {
 			$this->date_format = 'Y/m/d H:i';
 			$this->timepicker  = TRUE;
@@ -51,7 +51,7 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 		return <<<EOF
 			<div class="wl-input-wrapper">
 				<input type="text" class="$this->meta_name" value="$picker_date" style="width:88%" />
-				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$date" />      
+				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$date" />
 				<button class="button wl-remove-input wl-button" type="button" style="width:10%">Remove</button>
 			</div>
 EOF;
@@ -62,29 +62,33 @@ EOF;
 		// Should the widget include time picker?
 		$timepicker = json_encode( $this->timepicker );
 
-		// The wlDateTimePicker is actually the xdsoft datetimepicker function
-		// which we renamed to avoid conflicts with datetime libraries installed
-		// by other WP plugins (such as the media-from-ftp plugin).
-		// see https://github.com/insideout10/wordlift-plugin/issues/340
+		// The datetimepicker is taken from https://github.com/trentrichardson/jQuery-Timepicker-Addon
+		// setting documentation found in http://trentrichardson.com/examples/timepicker.
+
 		$html = <<<EOF
 			<script type='text/javascript'>
 				( function( $ ) {
 
 					$( function() {
 
-						$( '.$this->meta_name[type=text]' ).wlDateTimePicker( {
-							scrollInput: false,			
-							format: '$this->date_format',
-							timepicker:$timepicker,
-							onChangeDateTime:function(dp, input){
+						$( '.$this->meta_name[type=text]' ).datetimepicker( {
+							// Format of date time displayed at the input.
+							dateFormat: '$this->date_format',
+							timeFormat: 'HH:mm',
 
-								// format must be: 'YYYY-MM-DDTHH:MM:SSZ' from '2014/11/21 04:00'
-								var currentDate = input.val()
-									.replace(/(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2})/,'$1-$2-$3T$4:$5:00Z');
+							// The hidden field used to store the value, and the format.
+							altField: $( '.$this->meta_name[type=hidden]' ),
+							altFormat: 'yy-mm-dd',
+							altFieldTimeOnly: false,
+							altSeparator:'T',
+							altTimeFormat: 'HH:mm',
+							altTimeSuffix:':00Z',
 
-								// store value to save in the hidden input field
-								$( '.$this->meta_name[type=hidden]' ).val( currentDate );
-							}
+							// Widget UI options
+							showTimepicker:$timepicker,
+							changeMonth: true,
+							changeYear: true,
+							yearRange : 'c-15:c+15'
 						});
 
 					} );
