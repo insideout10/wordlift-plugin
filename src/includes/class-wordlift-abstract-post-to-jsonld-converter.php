@@ -248,10 +248,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		        foreach( $keys as $key ) {
 		            $atts = shortcode_parse_atts( $matches[3][$key] );
-	                if ( array_key_exists( 'ids', $atts ) ) {
+
+	                if ( is_array( $atts ) && array_key_exists( 'ids', $atts ) ) {
 						// gallery images insert explicitly by their ids.
 
-						foreach (split(',',$atts['ids']) as $attachment_id) {
+						foreach (explode( ',', $atts['ids'] ) as $attachment_id) {
 							// since we do not check for actual image existance
 							// when generating the json content, check it now
 							if (wp_get_attachment_image_src( $attachment_id, 'full' ))
