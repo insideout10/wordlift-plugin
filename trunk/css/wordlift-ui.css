@@ -2744,3 +2744,6 @@ a.wl-entity-page-link {
   -webkit-box-sizing: initial;
   box-sizing: initial;
 }
+.wl-chord svg .label {
+  text-anchor: initial;
+}
