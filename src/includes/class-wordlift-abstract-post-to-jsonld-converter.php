@@ -218,7 +218,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// Set the image URLs if there are images.
 		$ids = array();
 		if ( '' !== $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-			$ids[$thumbnail_id] = $thumbnail_id;
+			$ids[$thumbnail_id] = true;
 		}
 
 		// go over all the images included in the post content, check if they are
@@ -228,15 +228,46 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			foreach ($images[1] as $image_url) {
 				$id = $this->get_attachment_id($image_url);
 				if ( $id ) {
-					$ids[$id] = $id;
+					$ids[$id] = true;
 				}
 			}
 		}
 
-		// todo: Do as the above for images in galleries
+		// As the above for images in galleries.
+		// code inspired by http://wordpress.stackexchange.com/questions/80408/how-to-get-page-post-gallery-attachment-images-in-order-they-are-set-in-backend
+
+		$pattern = get_shortcode_regex();
+
+		if ( preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
+		    && array_key_exists( 2, $matches )
+		    && in_array( 'gallery', $matches[2] ) ) {
+
+		        $keys = array_keys( $matches[2], 'gallery' );
+
+		        foreach( $keys as $key ) {
+		            $atts = shortcode_parse_atts( $matches[3][$key] );
+	                if ( array_key_exists( 'ids', $atts ) ) {
+						// gallery images insert explicitly by their ids.
+
+						foreach (split(',',$atts['ids']) as $attachment_id) {
+							// since we do not check for actual image existance
+							// when generating the json content, check it now
+							if (wp_get_attachment_image_src( $attachment_id, 'full' ))
+								$ids[$attachment_id] = true;
+						}
+	                } else {
+						// gallery shortcode with no ids uses all the images
+						// attached to the post.
+						$images = get_attached_media( 'image', $post->ID );
+						foreach ($images as $attachment) {
+							$ids[$attachment->ID] = true;
+						}
+					}
+		        }
+		}
 
 		// Get other attached images if any.
-		$ids = array_values( $ids );
+		$ids = array_keys( $ids );
 		$images = array_map( function ( $item ) {
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
