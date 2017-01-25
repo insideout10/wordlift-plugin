@@ -195,7 +195,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 				foreach ( $query->posts as $post_id ) {
 					$meta = wp_get_attachment_metadata( $post_id );
 					$original_file       = basename( $meta['file'] );
-					$cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
+					$cropped_image_files = array(); // default in case there are no image sizes.
+					if ( isset( $meta['sizes'] ) )
+						$cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
 					if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) {
 						$attachment_id = $post_id;
 						break;
@@ -224,7 +226,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		// go over all the images included in the post content, check if they are
 		// in the DB, and if so include them.
 
-		if ( preg_match_all( '#<img [^\>]*src="([^\\">]*)"[^\>]*\ />#', $post->post_content, $images ) ) {
+		if ( preg_match_all( '#<img [^>]*src="([^\\">]*)"[^>]*>#', $post->post_content, $images ) ) {
 			foreach ($images[1] as $image_url) {
 				$id = $this->get_attachment_id($image_url);
 				if ( $id ) {
