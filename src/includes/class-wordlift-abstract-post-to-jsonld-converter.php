@@ -194,12 +194,14 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$ids[] = $thumbnail_id;
 		}
 
-		$embeds  = array_diff( $this->attachment_service->get_embeds( $post->post_content ), $ids );
+		// Get the embeds, removing existing ids.
+		$embeds = array_diff( $this->attachment_service->get_embeds( $post->post_content ), $ids );
+
+		// Get the gallery, removing existing ids.
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
 
-
 		// Map the attachment ids to images' data structured for schema.org use.
-		$jsonld['image'] = array_map( function ( $item ) {
+		$images = array_map( function ( $item ) {
 
 			// @todo: we're not sure that we're getting attachment data here, we
 			// should filter `false`s.
@@ -214,7 +216,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 				'width'  => $attachment[1] . 'px',
 				'height' => $attachment[2] . 'px',
 			);
-		}, $ids, $embeds, $gallery );
+		}, array_merge( $ids, $embeds, $gallery ) );
+
+		if ( 0 < sizeof( $images ) ) {
+			$jsonld['image'] = $images;
+		};
 
 	}
 
