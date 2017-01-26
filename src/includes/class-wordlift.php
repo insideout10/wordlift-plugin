@@ -143,7 +143,7 @@ class Wordlift {
 	 *
 	 * @since  3.3.0
 	 * @access private
-	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
+	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
 	private $entity_list_service;
 

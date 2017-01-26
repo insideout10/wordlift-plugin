@@ -137,6 +137,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.7 (2017-01-26) =
+* Fix: [#461](https://github.com/insideout10/wordlift-plugin/issues/461): Entities highlighted in front-end.
+
 = 3.9.6 (2017-01-24) =
 * Fix: [#443](https://github.com/insideout10/wordlift-plugin/issues/443): Chord height is fixed when global is true.
 * Fix: [#383](https://github.com/insideout10/wordlift-plugin/issues/383): Chord - text overlapping issue.
