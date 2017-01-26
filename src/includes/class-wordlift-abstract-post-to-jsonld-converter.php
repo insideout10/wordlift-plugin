@@ -195,7 +195,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		}
 
 		// Get the embeds, removing existing ids.
-		$embeds = array_diff( $this->attachment_service->get_embeds( $post->post_content ), $ids );
+		$embeds = array_diff( $this->attachment_service->get_image_embeds( $post->post_content ), $ids );
 
 		// Get the gallery, removing existing ids.
 		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );

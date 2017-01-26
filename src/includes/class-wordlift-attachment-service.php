@@ -86,7 +86,7 @@ class Wordlift_Attachment_Service {
 	 *
 	 * @return array An array of attachment ids.
 	 */
-	public function get_embeds( $content ) {
+	public function get_image_embeds( $content ) {
 
 		// Go over all the images included in the post content, check if they are
 		// in the DB, and if so include them.

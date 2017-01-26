@@ -278,7 +278,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 *    Helper function to create attachment DB without uploading FilesystemIterator
+	 * Helper function to create attachment DB without uploading FilesystemIterator.
 	 *
 	 * @since 3.10
 	 *
@@ -289,18 +289,22 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @return    integer        The ID of the attachment created
 	 **/
-	function make_dummy_attachment( $filename, $width, $height, $post_id ) {
-		$attachment_id   = $this->factory->attachment->create_object( $filename, $post_id, array(
+	private function make_dummy_attachment( $filename, $width, $height, $post_id ) {
+
+		// Create an attachment.
+		$attachment_id = $this->factory->attachment->create_object( $filename, $post_id, array(
 			'post_mime_type' => 'image/jpeg',
 			'post_type'      => 'attachment',
 		) );
-		$attachment_data = array(
+
+		// Update the attachment metadata.
+		wp_update_attachment_metadata( $attachment_id, array(
 			'width'  => $width,
 			'height' => $height,
 			'file'   => $filename,
-		);
-		wp_update_attachment_metadata( $attachment_id, $attachment_data );
+		) );
 
+		// Finally return the attachment id.
 		return $attachment_id;
 	}
 
@@ -573,11 +577,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test a Post with featured image, uincontent images and Entities.
+	 * Test a Post with featured image, embedded images and Entities.
 	 *
 	 * @since 3.10.0
 	 */
-	public function test_a_post_with_incontent_images_and_entities() {
+	public function test_a_post_with_embedded_images_and_entities() {
+
 		// Attach an image attached to some other post.
 		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$attachment_id   = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
