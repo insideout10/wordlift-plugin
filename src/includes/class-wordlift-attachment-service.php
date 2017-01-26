@@ -77,7 +77,15 @@ class Wordlift_Attachment_Service {
 		return false;
 	}
 
-
+	/**
+	 * Get images embedded in the post content.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @param string $content The post content.
+	 *
+	 * @return array An array of attachment ids.
+	 */
 	public function get_embeds( $content ) {
 
 		// Go over all the images included in the post content, check if they are
@@ -98,7 +106,19 @@ class Wordlift_Attachment_Service {
 		} );
 	}
 
+	/**
+	 * Get images linked via the `gallery` shortcode.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @param \WP_Post $post A {@link WP_Post} instance.
+	 *
+	 * @return array An array of attachment ids.
+	 */
 	public function get_gallery( $post ) {
+
+		// Prepare the return value.
+		$ids = array();
 
 		// As the above for images in galleries.
 		// Code inspired by http://wordpress.stackexchange.com/questions/80408/how-to-get-page-post-gallery-attachment-images-in-order-they-are-set-in-backend
