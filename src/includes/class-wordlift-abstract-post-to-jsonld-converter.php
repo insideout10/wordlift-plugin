@@ -51,6 +51,15 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	protected $user_service;
 
 	/**
+	 * A {@link Wordlift_Attachment_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access private
+	 * @var \Wordlift_Attachment_Service $attachment_service A {@link Wordlift_Attachment_Service} instance.
+	 */
+	protected $attachment_service;
+
+	/**
 	 * Wordlift_Post_To_Jsonld_Converter constructor.
 	 *
 	 * @since 3.10.0
@@ -58,12 +67,14 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_Entity_Service      $entity_service      A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_User_Service        $user_service        A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service  $attachment_service  A {@link Wordlift_Attachment_Service} instance.
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service ) {
+	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service ) {
 
 		$this->entity_type_service = $entity_type_service;
 		$this->entity_service      = $entity_service;
 		$this->user_service        = $user_service;
+		$this->attachment_service  = $attachment_service;
 
 	}
 
@@ -165,112 +176,29 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	}
 
 	/**
-	 * Get an attachment ID given a URL.
-	 *
-	 * ispired from https://wpscholar.com/blog/get-attachment-id-from-wp-image-url/
-	 *
-	 * @param string $url
-	 *
-	 * @return int Attachment ID on success, 0 on failure
-	 */
-	function get_attachment_id( $url ) {
-		$attachment_id = 0;
-		$dir = wp_upload_dir();
-		if ( false !== strpos( $url, $dir['baseurl'] . '/' ) ) { // Is URL in uploads directory?
-			$file = basename( $url );
-			$query_args = array(
-				'post_type'   => 'attachment',
-				'post_status' => 'inherit',
-				'fields'      => 'ids',
-				'meta_query'  => array(
-					array(
-						'value'   => $file,
-						'compare' => 'LIKE',
-						'key'     => '_wp_attachment_metadata',
-					),
-				)
-			);
-			$query = new WP_Query( $query_args );
-			if ( $query->have_posts() ) {
-				foreach ( $query->posts as $post_id ) {
-					$meta = wp_get_attachment_metadata( $post_id );
-					$original_file       = basename( $meta['file'] );
-					$cropped_image_files = array(); // default in case there are no image sizes.
-					if ( isset( $meta['sizes'] ) )
-						$cropped_image_files = wp_list_pluck( $meta['sizes'], 'file' );
-					if ( $original_file === $file || in_array( $file, $cropped_image_files ) ) {
-						$attachment_id = $post_id;
-						break;
-					}
-				}
-			}
-		}
-		return $attachment_id;
-	}
-
-	/**
 	 * Set the images.
 	 *
 	 * @since 3.10.0
-	 * @param WP_Post $post The target {@link WP_Post}.
-	 * @param array $jsonld The JSON-LD array.
+	 *
+	 * @param WP_Post $post   The target {@link WP_Post}.
+	 * @param array   $jsonld The JSON-LD array.
 	 */
 	protected function set_images( $post, &$jsonld ) {
 
 		// Set the image URLs if there are images.
 		$ids = array();
 		if ( '' !== $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-			$ids[$thumbnail_id] = true;
+			$ids[ $thumbnail_id ] = true;
 		}
 
-		// go over all the images included in the post content, check if they are
-		// in the DB, and if so include them.
-
-		if ( preg_match_all( '#<img [^>]*src="([^\\">]*)"[^>]*>#', $post->post_content, $images ) ) {
-			foreach ($images[1] as $image_url) {
-				$id = $this->get_attachment_id($image_url);
-				if ( $id ) {
-					$ids[$id] = true;
-				}
-			}
-		}
-
-		// As the above for images in galleries.
-		// code inspired by http://wordpress.stackexchange.com/questions/80408/how-to-get-page-post-gallery-attachment-images-in-order-they-are-set-in-backend
-
-		$pattern = get_shortcode_regex();
-
-		if ( preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches )
-		    && array_key_exists( 2, $matches )
-		    && in_array( 'gallery', $matches[2] ) ) {
-
-		        $keys = array_keys( $matches[2], 'gallery' );
-
-		        foreach( $keys as $key ) {
-		            $atts = shortcode_parse_atts( $matches[3][$key] );
-
-	                if ( is_array( $atts ) && array_key_exists( 'ids', $atts ) ) {
-						// gallery images insert explicitly by their ids.
-
-						foreach (explode( ',', $atts['ids'] ) as $attachment_id) {
-							// since we do not check for actual image existance
-							// when generating the json content, check it now
-							if (wp_get_attachment_image_src( $attachment_id, 'full' ))
-								$ids[$attachment_id] = true;
-						}
-	                } else {
-						// gallery shortcode with no ids uses all the images
-						// attached to the post.
-						$images = get_attached_media( 'image', $post->ID );
-						foreach ($images as $attachment) {
-							$ids[$attachment->ID] = true;
-						}
-					}
-		        }
-		}
+		$ids = array_merge(
+			array_keys( $ids ),
+			$this->attachment_service->get_embeds( $post->post_content ),
+			$this->attachment_service->get_gallery( $post )
+		);
 
 		// Get other attached images if any.
-		$ids = array_keys( $ids );
+//		$ids    = array_keys( $ids );
 		$images = array_map( function ( $item ) {
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 

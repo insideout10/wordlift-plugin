@@ -488,6 +488,8 @@ class Wordlift {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/properties/class-wordlift-property-getter-factory.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-attachment-service.php';
+
 		/**
 		 * Load the converters.
 		 */
@@ -670,10 +672,12 @@ class Wordlift {
 		$this->property_factory = new Wordlift_Property_Factory( $schema_url_property_service );
 		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
 
+		$attachment_service = new Wordlift_Attachment_Service();
+
 		// Instantiate the JSON-LD service.
 		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $property_getter );
-		$this->post_to_jsonld_converter  = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $this->configuration_service );
+		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
+		$this->post_to_jsonld_converter  = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
 		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
 		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $postid_to_jsonld_converter );
 

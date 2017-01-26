@@ -41,10 +41,11 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 * @param \Wordlift_Entity_Type_Service   $entity_type_service   A {@link Wordlift_Entity_Type_Service} instance.
 	 * @param \Wordlift_Entity_Service        $entity_service        A {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_User_Service          $user_service          A {@link Wordlift_User_Service} instance.
+	 * @param \Wordlift_Attachment_Service    $attachment_service    A {@link Wordlift_Attachment_Service} instance.
 	 * @param \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct( $entity_type_service, $entity_service, $user_service, $configuration_service ) {
-		parent::__construct( $entity_type_service, $entity_service, $user_service );
+	public function __construct( $entity_type_service, $entity_service, $user_service, $attachment_service, $configuration_service ) {
+		parent::__construct( $entity_type_service, $entity_service, $user_service, $attachment_service );
 
 		$this->configuration_service = $configuration_service;
 
