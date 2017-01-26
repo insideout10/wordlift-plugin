@@ -51,7 +51,7 @@ function wl_core_install_entity_type_data() {
 		// Create the term if it does not exist, then get its ID
 		$term_id = term_exists( $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-		if ( $term_id == 0 || is_null( $term_id ) ) {
+		if ( 0 == $term_id || is_null( $term_id ) ) {
 			$result = wp_insert_term( $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		} else {
 			$term_id = $term_id['term_id'];
@@ -104,9 +104,9 @@ function wl_core_install_create_relation_instance_table() {
 
 	global $wpdb;
 	// global $wl_db_version;
-	$installed_version = get_option( "wl_db_version" );
+	$installed_version = get_option( 'wl_db_version' );
 
-	if ( $installed_version != WL_DB_VERSION ) {
+	if ( WL_DB_VERSION != $installed_version  ) {
 		$table_name      = $wpdb->prefix . WL_DB_RELATION_INSTANCES_TABLE_NAME;
 		$charset_collate = $wpdb->get_charset_collate();
 
@@ -129,7 +129,7 @@ EOF;
 
 		wl_write_log( $results );
 
-		update_option( "wl_db_version", WL_DB_VERSION );
+		update_option( 'wl_db_version', WL_DB_VERSION );
 	}
 }
 
@@ -152,11 +152,47 @@ function wl_core_install() {
 // Installation Hook
 add_action( 'activate_wordlift/wordlift.php', 'wl_core_install' );
 
-// Check db status on automated plugins updates
-function wl_core_update_db_check() {
-	if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+/**
+ * Upgrade the DB structure to the one expected by the 1.0 release
+ *
+ * @since 3.10
+ *
+ */
+function wl_core_upgrade_db_to_1_0() {
+	if ( ! get_site_option( 'wl_db_version' ) ) {
 		wl_core_install_create_relation_instance_table();
 	}
 }
 
-add_action( 'plugins_loaded', 'wl_core_update_db_check' );
+/**
+ * Upgrade the DB structure to the one expected by the 3.10 release
+ *
+ * Flatten the hierarchy of the entity type taxomony terms
+ *
+ * @since 3.10
+ *
+ */
+function wl_core_upgrade_db_1_0_to_3_10() {
+	if ( version_compare( get_site_option( 'wl_db_version' ), '3.9', '<=' ) ) {
+		$term_slugs = array( 'thing', 'creative-work', 'event', 'organization', 'person', 'place', 'localbusiness' );
+		foreach ( $term_slugs as $slug ) {
+			$term = get_term_by( 'slug', $slug, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			if ( $term ) {
+				wp_update_term( $term->term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+					'parent'      => 0,
+				));
+			}
+		}
+	}
+}
+
+// Check db status on automated plugins updates
+function wl_core_update_db_check() {
+	if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+		wl_core_upgrade_db_to_1_0();
+		wl_core_upgrade_db_1_0_to_3_10();
+		update_site_option( 'wl_db_version', WL_DB_VERSION );
+	}
+}
+
+add_action( 'init', 'wl_core_update_db_check',11 ); // need taxonomies and post type to be defined first
