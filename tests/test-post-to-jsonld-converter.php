@@ -278,24 +278,29 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	*	Helper function to create attachment DB without uploading FilesystemIterator
-	*
-	*	@since 3.10
-	*
-	*	@param	string		$filename	The filename the attachement should have
-	*	@param	integer 	$width		The width of the image
-	*	@param	integer 	$height		The height of the image
-	*	@param	integer		$post_id	The ID of the post to associated with the attachment
-	*
-	*	@return	integer		The ID of the attachment created
-	**/
-	function make_dummy_attachement( $filename, $width, $height, $post_id ) {
+	 *    Helper function to create attachment DB without uploading FilesystemIterator
+	 *
+	 * @since 3.10
+	 *
+	 * @param    string  $filename The filename the attachement should have
+	 * @param    integer $width    The width of the image
+	 * @param    integer $height   The height of the image
+	 * @param    integer $post_id  The ID of the post to associated with the attachment
+	 *
+	 * @return    integer        The ID of the attachment created
+	 **/
+	function make_dummy_attachment( $filename, $width, $height, $post_id ) {
 		$attachment_id   = $this->factory->attachment->create_object( $filename, $post_id, array(
 			'post_mime_type' => 'image/jpeg',
 			'post_type'      => 'attachment',
 		) );
-		$attachment_data = array( 'width' => $width, 'height' => $height, 'file' => $filename, );
+		$attachment_data = array(
+			'width'  => $width,
+			'height' => $height,
+			'file'   => $filename,
+		);
 		wp_update_attachment_metadata( $attachment_id, $attachment_data );
+
 		return $attachment_id;
 	}
 
@@ -315,7 +320,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->configuration_service->set_publisher_id( $publisher->ID );
 
 		// Set the logo for the publisher.
-		$attachment_id  = $this->make_dummy_attachement('image.jpg',200,100,$publisher->ID);
+		$attachment_id = $this->make_dummy_attachment( 'image.jpg', 200, 100, $publisher->ID );
 		set_post_thumbnail( $publisher->ID, $attachment_id );
 		$attachment_url = wp_get_attachment_url( $attachment_id );
 
@@ -432,7 +437,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		// attache a thumbnail to the Post
-		$attachment_id  = $this->make_dummy_attachement('image.jpg',200,100,$post->ID);
+		$attachment_id = $this->make_dummy_attachment( 'image.jpg', 200, 100, $post->ID );
 		set_post_thumbnail( $post->ID, $attachment_id );
 		$attachment_url = wp_get_attachment_url( $attachment_id );
 
@@ -504,12 +509,12 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$permalink = get_permalink( $post->ID );
 
 		// attache a thumbnail to the Post
-		$attachment_id  = $this->make_dummy_attachement('image.jpg',200,100,$post->ID);
+		$attachment_id = $this->make_dummy_attachment( 'image.jpg', 200, 100, $post->ID );
 		set_post_thumbnail( $post->ID, $attachment_id );
 		$attachment_url = wp_get_attachment_url( $attachment_id );
 
 		// attache an image outside of content
-		$attachment_id  = $this->make_dummy_attachement('image2.jpg',300,200,$post->ID);
+		$attachment_id   = $this->make_dummy_attachment( 'image2.jpg', 300, 200, $post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment_id );
 
 		// Create a couple of entities.
@@ -573,22 +578,22 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.10.0
 	 */
 	public function test_a_post_with_incontent_images_and_entities() {
-		// attache an image  attached to some other post
-		$other_post     = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
-		$attachment_id  = $this->make_dummy_attachement('otherimage.jpg',300,200,$other_post->ID);
+		// Attach an image attached to some other post.
+		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$attachment_id   = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment_id );
 
-		// Create a post that incluse an img of an attachment and an external URL
+		// Create a post that include an img of an attachment and an external URL
 		$post      = $this->factory->post->create_and_get( array(
-										'post_author' => $this->author->ID,
-									 	'post_content' => 'text <img src="'.$attachment2_url.'">'."\n".
-										 				'more taxt <a href=""><img src="http://ynet.co.il">text</a>',
-										) );
+			'post_author'  => $this->author->ID,
+			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
+			                  'more text <a href=""><img src="http://example.org">text</a>',
+		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
 		// attache a thumbnail to the Post
-		$attachment_id  = $this->make_dummy_attachement('image.jpg',200,100,$post->ID);
+		$attachment_id = $this->make_dummy_attachment( 'image.jpg', 200, 100, $post->ID );
 		set_post_thumbnail( $post->ID, $attachment_id );
 		$attachment_url = wp_get_attachment_url( $attachment_id );
 
@@ -661,23 +666,23 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_attached_gallery_images_and_entities() {
 		// attache an image  attached to some other post
-		$other_post     = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
-		$attachment_id  = $this->make_dummy_attachement('otherimage.jpg',300,200,$other_post->ID);
+		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$attachment_id   = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment_id );
 
 		// Create a post that incluse an img of an attachment and an external URL
 		$post      = $this->factory->post->create_and_get( array(
-										'post_author' => $this->author->ID,
-									 	'post_content' => 'text <img src="'.$attachment2_url.'">'."\n".
-										 				'more taxt <a href=""><img src="http://ynet.co.il">text</a>'.
-														'[gallery] plain text',
-										) );
+			'post_author'  => $this->author->ID,
+			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
+			                  'more text <a href=""><img src="http://example.org">text</a>' .
+			                  '[gallery] plain text',
+		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
 		// attache an image  attached to same post
-		$other_post     = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
-		$attachment3_id  = $this->make_dummy_attachement('gallery.jpg',150,150,$post->ID);
+		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$attachment3_id  = $this->make_dummy_attachment( 'gallery.jpg', 150, 150, $post->ID );
 		$attachment3_url = wp_get_attachment_url( $attachment3_id );
 
 		// Create a couple of entities.
@@ -750,27 +755,27 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_a_post_with_gallery_images_and_entities() {
 		// attache an image  attached to some other post
-		$other_post     = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
-		$attachment2_id  = $this->make_dummy_attachement('otherimage.jpg',300,200,$other_post->ID);
+		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$attachment2_id  = $this->make_dummy_attachment( 'otherimage.jpg', 300, 200, $other_post->ID );
 		$attachment2_url = wp_get_attachment_url( $attachment2_id );
 
 		// attache an image  attached to some other post
-		$attachment3_id  = $this->make_dummy_attachement('yetaotherimage.jpg',200,300,$other_post->ID);
+		$attachment3_id  = $this->make_dummy_attachment( 'yetaotherimage.jpg', 200, 300, $other_post->ID );
 		$attachment3_url = wp_get_attachment_url( $attachment3_id );
 
 		// Create a post that incluse an img of an attachment and an external URL
 		$post      = $this->factory->post->create_and_get( array(
-										'post_author' => $this->author->ID,
-									 	'post_content' => 'text <img src="'.$attachment2_url.'">'."\n".
-										 				'more taxt <a href=""><img src="http://ynet.co.il">text</a>'.
-														'[gallery ids="'.$attachment3_id.','.$attachment2_id.',8905"] plain text',
-										) );
+			'post_author'  => $this->author->ID,
+			'post_content' => 'text <img src="' . $attachment2_url . '">' . "\n" .
+			                  'more text <a href=""><img src="http://example.org">text</a>' .
+			                  '[gallery ids="' . $attachment3_id . ',' . $attachment2_id . ',8905"] plain text',
+		) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
 		$permalink = get_permalink( $post->ID );
 
 		// attache an to same post, should not be in json-ld
-		$other_post     = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
-		$attachment4_id  = $this->make_dummy_attachement('gallery.jpg',150,150,$post->ID);
+		$other_post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
+		$attachment4_id  = $this->make_dummy_attachment( 'gallery.jpg', 150, 150, $post->ID );
 		$attachment4_url = wp_get_attachment_url( $attachment3_id );
 
 		// Create a couple of entities.
@@ -834,4 +839,5 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
 		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
 	}
+
 }

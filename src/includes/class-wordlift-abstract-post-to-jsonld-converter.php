@@ -186,20 +186,23 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 */
 	protected function set_images( $post, &$jsonld ) {
 
-		// Get the attachment ids for images directly embedded in the post or
-		// loaded via a `gallery` shortcode.
-		$ids = array_unique( array_merge(
-			$this->attachment_service->get_embeds( $post->post_content ),
-			$this->attachment_service->get_gallery( $post )
-		) );
+		// Prepare the attachment ids array.
+		$ids = array();
 
-		// If there's a thumbnail, add it to the array at first position.
+		// Set the thumbnail id as first attachment id, if any.
 		if ( '' !== $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) {
-			array_splice( $ids, 0, 0, $thumbnail_id );
+			$ids[] = $thumbnail_id;
 		}
 
+		$embeds  = array_diff( $this->attachment_service->get_embeds( $post->post_content ), $ids );
+		$gallery = array_diff( $this->attachment_service->get_gallery( $post ), $ids, $embeds );
+
+
 		// Map the attachment ids to images' data structured for schema.org use.
-		$images = array_map( function ( $item ) {
+		$jsonld['image'] = array_map( function ( $item ) {
+
+			// @todo: we're not sure that we're getting attachment data here, we
+			// should filter `false`s.
 
 			// Get the attachment data.
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
@@ -211,12 +214,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 				'width'  => $attachment[1] . 'px',
 				'height' => $attachment[2] . 'px',
 			);
-		}, $ids );
-
-		// If we have images' data, add it to the JSON-LD.
-		if ( 0 < count( $images ) ) {
-			$jsonld['image'] = $images;
-		}
+		}, $ids, $embeds, $gallery );
 
 	}
 

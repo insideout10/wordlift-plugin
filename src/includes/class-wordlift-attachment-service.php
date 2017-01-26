@@ -91,7 +91,7 @@ class Wordlift_Attachment_Service {
 		// Go over all the images included in the post content, check if they are
 		// in the DB, and if so include them.
 		$images = array();
-		if ( ! preg_match_all( '#<img [^>]*src="([^\\">]*)"[^>]*>#', $content, $images ) ) {
+		if ( false === preg_match_all( '#<img [^>]*src="([^\\">]*)"[^>]*>#', $content, $images ) ) {
 			return array();
 		}
 
@@ -102,7 +102,7 @@ class Wordlift_Attachment_Service {
 
 		// Filter out not found ids (i.e. id is false).
 		return array_filter( $ids, function ( $item ) {
-			return ! $item;
+			return false !== $item;
 		} );
 	}
 
@@ -117,6 +117,9 @@ class Wordlift_Attachment_Service {
 	 */
 	public function get_gallery( $post ) {
 
+		// @todo: the `gallery` shortcode has an `exclude` attribute which isn't
+		// checked at the moment.
+
 		// Prepare the return value.
 		$ids = array();
 
@@ -124,7 +127,7 @@ class Wordlift_Attachment_Service {
 		// Code inspired by http://wordpress.stackexchange.com/questions/80408/how-to-get-page-post-gallery-attachment-images-in-order-they-are-set-in-backend
 		$pattern = get_shortcode_regex();
 
-		if ( preg_match_all( '/' . $pattern . '/s', $$post->post_content, $matches )
+		if ( preg_match_all( '/' . $pattern . '/s', $post->post_content, $matches )
 		     && array_key_exists( 2, $matches )
 		     && in_array( 'gallery', $matches[2] )
 		) {
@@ -138,8 +141,8 @@ class Wordlift_Attachment_Service {
 					// gallery images insert explicitly by their ids.
 
 					foreach ( explode( ',', $atts['ids'] ) as $attachment_id ) {
-						// since we do not check for actual image existance
-						// when generating the json content, check it now
+						// Since we do not check for actual image existence
+						// when generating the json content, check it now.
 						if ( wp_get_attachment_image_src( $attachment_id, 'full' ) ) {
 							$ids[ $attachment_id ] = true;
 						}
