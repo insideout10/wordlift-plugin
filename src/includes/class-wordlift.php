@@ -143,7 +143,7 @@ class Wordlift {
 	 *
 	 * @since  3.3.0
 	 * @access private
-	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
+	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
 	private $entity_list_service;
 
@@ -304,7 +304,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.9.6';
+		$this->version     = '3.9.7';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
