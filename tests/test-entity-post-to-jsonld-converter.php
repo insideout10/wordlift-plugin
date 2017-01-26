@@ -1,14 +1,18 @@
 <?php
 /**
+ * Tests: Entity Post to JSON-LD Converter Test.
+ *
  * This file defines tests for the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
  *
+ * @since   3.8.
  * @package Wordlift
  */
 
 /**
  * Test the {@link Wordlift_Entity_Post_To_Jsonld_Converter} class.
  *
- * @since 3.8.0
+ * @since   3.8.0
+ * @package Wordlift
  */
 class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
@@ -40,13 +44,13 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 	private $entity_post_to_jsonld_converter;
 
 	/**
-	 * A {@link Wordlift_Uri_To_Jsonld_Converter} instance to test.
+	 * A {@link Wordlift_Postid_To_Jsonld_Converter} instance to test.
 	 *
 	 * @since  3.8.0
 	 * @access private
-	 * @var Wordlift_Uri_To_Jsonld_Converter $entity_uri_to_jsonld_converter A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @var \Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter A {@link Wordlift_Postid_To_Jsonld_Converter} instance.
 	 */
-	private $entity_uri_to_jsonld_converter;
+	private $postid_to_jsonld_converter;
 
 	/**
 	 * {@inheritdoc}
@@ -54,11 +58,15 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 	public function setUp() {
 		parent::setUp();
 
-		$this->entity_type_service             = Wordlift_Entity_Type_Service::get_instance();
-		$this->entity_service                  = Wordlift_Entity_Service::get_instance();
-		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $property_getter );
-		$this->entity_uri_to_jsonld_converter  = new Wordlift_Uri_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $property_getter );
+		// Disable sending SPARQL queries, since we don't need it.
+		$this->turn_off_entity_push();
+
+		$wordlift = new Wordlift_Test();
+
+		$this->entity_type_service             = $wordlift->get_entity_type_service();
+		$this->entity_service                  = $wordlift->get_entity_service();
+		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
+		$this->postid_to_jsonld_converter      = $wordlift->get_postid_to_jsonld_converter();
 
 	}
 
@@ -101,7 +109,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$post       = get_post( $event_id );
 		$references = array();
-		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post, $references );
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertArrayHasKey( '@context', $jsonld );
@@ -135,7 +143,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertContains( $place_uri, $references );
 
 		$references_2 = array();
-		$this->assertEquals( $jsonld, $this->entity_uri_to_jsonld_converter->convert( $event_uri, $references_2 ) );
+		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $event_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
 
 	}
@@ -184,7 +192,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$post       = get_post( $place_id );
 		$references = array();
-		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post, $references );
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertArrayHasKey( '@context', $jsonld );
@@ -229,7 +237,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertEquals( $country, $jsonld['address']['addressCountry'] );
 
 		$references_2 = array();
-		$this->assertEquals( $jsonld, $this->entity_uri_to_jsonld_converter->convert( $place_uri, $references_2 ) );
+		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $place_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
 
 	}
@@ -263,7 +271,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$post       = get_post( $create_work_id );
 		$references = array();
-		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post, $references );
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertArrayHasKey( '@context', $jsonld );
@@ -292,7 +300,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertContains( $person_uri, $references );
 
 		$references_2 = array();
-		$this->assertEquals( $jsonld, $this->entity_uri_to_jsonld_converter->convert( $create_work_uri, $references_2 ) );
+		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $create_work_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
 
 	}
@@ -350,7 +358,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$post       = get_post( $organization_id );
 		$references = array();
-		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post, $references );
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertArrayHasKey( '@context', $jsonld );
@@ -397,7 +405,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertContains( $person_uri, $references );
 
 		$references_2 = array();
-		$this->assertEquals( $jsonld, $this->entity_uri_to_jsonld_converter->convert( $organization_uri, $references_2 ) );
+		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $organization_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
 
 	}
@@ -464,7 +472,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$post       = get_post( $person_id );
 		$references = array();
-		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post, $references );
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertArrayHasKey( '@context', $jsonld );
@@ -503,7 +511,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertContains( array( '@id' => $knows_uri_2 ), $jsonld['knows'] );
 
 		$references_2 = array();
-		$this->assertEquals( $jsonld, $this->entity_uri_to_jsonld_converter->convert( $person_uri, $references_2 ) );
+		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $person_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
 
 	}
@@ -565,7 +573,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$post       = get_post( $local_business_id );
 		$references = array();
-		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post, $references );
+		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
 
 		$this->assertTrue( is_array( $jsonld ) );
 		$this->assertArrayHasKey( '@context', $jsonld );
@@ -624,9 +632,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertContains( $person_uri, $references );
 
 		$references_2 = array();
-		$this->assertEquals( $jsonld, $this->entity_uri_to_jsonld_converter->convert( $local_business_uri, $references_2 ) );
+		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $local_business_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
-
 
 	}
 

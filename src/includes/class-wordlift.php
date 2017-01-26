@@ -319,6 +319,24 @@ class Wordlift {
 	protected $entity_type_service;
 
 	/**
+	 * A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Entity_Post_To_Jsonld_Converter $entity_post_to_jsonld_converter A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 */
+	protected $entity_post_to_jsonld_converter;
+
+	/**
+	 * A {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter A {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 */
+	protected $postid_to_jsonld_converter;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -675,11 +693,11 @@ class Wordlift {
 		$attachment_service = new Wordlift_Attachment_Service();
 
 		// Instantiate the JSON-LD service.
-		$property_getter                 = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
-		$this->post_to_jsonld_converter  = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
-		$postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
-		$this->jsonld_service            = new Wordlift_Jsonld_Service( $this->entity_service, $postid_to_jsonld_converter );
+		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
+		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
+		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
+		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();

@@ -97,6 +97,30 @@ class Wordlift_Test extends Wordlift {
 	}
 
 	/**
+	 * Get the {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @return \Wordlift_Entity_Post_To_Jsonld_Converter The {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 */
+	public function get_entity_post_to_jsonld_converter() {
+
+		return $this->entity_post_to_jsonld_converter;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @return \Wordlift_Postid_To_Jsonld_Converter Get the {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 */
+	public function get_postid_to_jsonld_converter() {
+
+		return $this->postid_to_jsonld_converter;
+	}
+
+	/**
 	 * Get the {@link Wordlift_Entity_Type_Service} instance.
 	 *
 	 * @since 3.10.0
