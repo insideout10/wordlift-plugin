@@ -106,21 +106,25 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 
 		// Prepare the response.
 		$jsonld = array(
-			'@context'         => self::CONTEXT,
-			'@id'              => $id,
-			'@type'            => $this->relative_to_context( $type['uri'] ),
-			'description'      => $this->get_excerpt( $post ),
+			'@context'    => self::CONTEXT,
+			'@id'         => $id,
+			'@type'       => $this->relative_to_context( $type['uri'] ),
+			'description' => $this->get_excerpt( $post ),
+		);
+
+		// Set the `mainEntityOfPage` property if the post has some contents.
+		if ( ! empty( $post->post_content ) ) {
 			// We're setting the `mainEntityOfPage` to signal which one is the
 			// main entity for the specified URL. It might be however that the
 			// post/page is actually about another specific entity. How WL deals
 			// with that hasn't been defined yet (see https://github.com/insideout10/wordlift-plugin/issues/451).
 			//
 			// See http://schema.org/mainEntityOfPage
-			'mainEntityOfPage' => array(
+			$jsonld['mainEntityOfPage'] = array(
 				'@type' => 'WebPage',
 				'@id'   => get_the_permalink( $post->ID ),
-			),
-		);
+			);
+		};
 
 		$this->set_images( $post, $jsonld );
 
@@ -142,7 +146,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @return string The property value without the context.
 	 */
-	protected function relative_to_context( $value ) {
+	public function relative_to_context( $value ) {
 
 		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
 	}
