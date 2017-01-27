@@ -27,7 +27,7 @@ class Wordlift_Attachment_Service {
 	 *
 	 * @return int|false Attachment ID on success, false on failure
 	 */
-	function get_attachment_id( $url ) {
+	public function get_attachment_id( $url ) {
 
 		// Get the upload directory data, we need the base URL to check whether
 		// the URL we received is within WP.
@@ -96,8 +96,9 @@ class Wordlift_Attachment_Service {
 		}
 
 		// Map the image URLs to attachment ids.
-		$ids = array_map( function ( $url ) {
-			return $this->get_attachment_id( $url );
+		$that = $this;
+		$ids  = array_map( function ( $url ) use ( $that ) {
+			return $that->get_attachment_id( $url );
 		}, $images[1] );
 
 		// Filter out not found ids (i.e. id is false).
