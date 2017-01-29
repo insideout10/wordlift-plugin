@@ -4,6 +4,14 @@ sudo: required
 
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
+php:
+ - '5.3'
+ - '5.4'
+ - '5.5'
+ - '5.6'
+ - '7.0'
+ - '7.1'
+
 
 # Test matrix:
 #  - PHP unit tests: PHP 5.3, 5.4, 5.5, 5.6, 7.0, 7.1
@@ -11,24 +19,6 @@ language: php
 #  - JavaScript end-to-end tests
 # @@todo: we're currently testing only the last version of WordPress, we should also test the previous ones and nightly.
 matrix:
-  # PHP unit tests on PHP 5.3
-  - php: 5.3
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 5.4
-  - php: 5.4
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 5.5
-  - php: 5.5
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 5.6
-  - php: 5.6
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 7.0
-  - php: 7.0
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 7.1
-  - php: 7.1
-    env: SCRIPT=test:php
   include:
     # JavaScript end-to-end tests.
     - php: 5.6
@@ -36,6 +26,24 @@ matrix:
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
+#    # PHP unit tests on PHP 5.3
+#    - php: 5.3
+#      env: SCRIPT=test:php
+#    # PHP unit tests on PHP 5.4
+#    - php: 5.4
+#      env: SCRIPT=test:php
+#    # PHP unit tests on PHP 5.5
+#    - php: 5.5
+#      env: SCRIPT=test:php
+#    # PHP unit tests on PHP 5.6
+#    - php: 5.6
+#      env: SCRIPT=test:php
+#    # PHP unit tests on PHP 7.0
+#    - php: 7.0
+#      env: SCRIPT=test:php
+#    # PHP unit tests on PHP 7.1
+#    - php: 7.1
+#      env: SCRIPT=test:php
 
 
 # Cache the node_modules folder.
@@ -70,6 +78,7 @@ env:
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
   matrix:
+    - SCRIPT=test:php
     - WP_VERSION=nightly
     - WP_VERSION=4.7
     - WP_VERSION=4.6
