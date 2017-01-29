@@ -293,6 +293,15 @@ class Wordlift {
 	private $key_validation_service;
 
 	/**
+	 * The {@link Wordlift_Admin_Status_Page} class.
+	 *
+	 * @since  3.9.8
+	 * @access private
+	 * @var \Wordlift_Admin_Status_Page $status_page The {@link Wordlift_Admin_Status_Page} class.
+	 */
+	private $status_page;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -524,6 +533,7 @@ class Wordlift {
 		 * The admin 'Download Your Data' page.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -649,7 +659,8 @@ class Wordlift {
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
 
 		//** WordPress Admin */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $configuration_service );
+		$this->status_page             = new Wordlift_Admin_Status_Page();
 
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $configuration_service, $this->key_validation_service, $this->entity_service );
@@ -758,6 +769,7 @@ class Wordlift {
 
 		// Hook the menu to the Download Your Data page.
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
