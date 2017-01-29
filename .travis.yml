@@ -23,29 +23,29 @@ matrix:
     # Reduce the test combinations by removing tests with recent version of PHP
     # and older version of WordPress.
     - php: 5.5
-      env: SCRIPT=test:php WP_VERSION=4.2
+      env: WP_VERSION=4.2
     - php: 5.5
-      env: SCRIPT=test:php WP_VERSION=4.3
+      env: WP_VERSION=4.3
     - php: 5.6
-      env: SCRIPT=test:php WP_VERSION=4.2
+      env: WP_VERSION=4.2
     - php: 5.6
-      env: SCRIPT=test:php WP_VERSION=4.3
+      env: WP_VERSION=4.3
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=4.2
+      env: WP_VERSION=4.2
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=4.3
+      env: WP_VERSION=4.3
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=4.4
+      env: WP_VERSION=4.4
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=4.5
+      env: WP_VERSION=4.5
     - php: 7.1
-      env: SCRIPT=test:php WP_VERSION=4.2
+      env: WP_VERSION=4.2
     - php: 7.1
-      env: SCRIPT=test:php WP_VERSION=4.3
+      env: WP_VERSION=4.3
     - php: 7.1
-      env: SCRIPT=test:php WP_VERSION=4.4
+      env: WP_VERSION=4.4
     - php: 7.1
-      env: SCRIPT=test:php WP_VERSION=4.5
+      env: WP_VERSION=4.5
   include:
     # JavaScript end-to-end tests.
     - php: 5.6
