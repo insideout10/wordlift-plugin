@@ -78,14 +78,13 @@ env:
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
   matrix:
-    - SCRIPT=test:php
-    - WP_VERSION=nightly
-    - WP_VERSION=4.7
-    - WP_VERSION=4.6
-    - WP_VERSION=4.5
-    - WP_VERSION=4.4
-    - WP_VERSION=4.3
-    - WP_VERSION=4.2
+    - SCRIPT=test:php WP_VERSION=nightly
+    - SCRIPT=test:php WP_VERSION=4.7
+    - SCRIPT=test:php WP_VERSION=4.6
+    - SCRIPT=test:php WP_VERSION=4.5
+    - SCRIPT=test:php WP_VERSION=4.4
+    - SCRIPT=test:php WP_VERSION=4.3
+    - SCRIPT=test:php WP_VERSION=4.2
 
 services:
   # Require MySQL.
