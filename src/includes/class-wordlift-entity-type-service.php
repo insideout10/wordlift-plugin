@@ -104,11 +104,17 @@ class Wordlift_Entity_Type_Service {
 			case 'post':
 			case 'page':
 				// Posts and pages are considered Articles.
-				return array( 'uri' => 'http://schema.org/Article' );
+				return array(
+					'uri'       => 'http://schema.org/Article',
+					'css_class' => 'wl-post',
+				);
 
 			default:
 				// Everything else is considered a Creative Work.
-				return array( 'uri' => 'http://schema.org/CreativeWork' );
+				return array(
+					'uri'       => 'http://schema.org/CreativeWork',
+					'css_class' => 'wl-creative-work',
+				);
 		}
 
 	}

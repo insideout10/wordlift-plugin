@@ -4,17 +4,19 @@
  * @deprecated use {@link Wordlift_Ajax_Unit_Test_Case}.
  * Class WL_Ajax_UnitTestCase
  * Extend WP_Ajax_UnitTestCase
+ *
  * @see        https://codesymphony.co/wp-ajax-plugin-unit-testing/
+ *
  * This class it's used to override the protected method _handleAjax
  * in order to let the method accept an optional parameter that can be passed to the callback
  * Useful to inject php//input fake data into the the callbacks environment
  */
 abstract class WL_Ajax_UnitTestCase extends WP_Ajax_UnitTestCase {
 
-	protected function _handleAjax( $action, $http_raw_data = NULL ) {
+	protected function _handleAjax( $action, $http_raw_data = null ) {
 
 		// Start output buffering
-		ini_set( 'implicit_flush', FALSE );
+		ini_set( 'implicit_flush', false );
 		ob_start();
 
 		// Build the request

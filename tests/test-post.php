@@ -1,4 +1,10 @@
 <?php
+/**
+ * Tests: Posts Test.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ */
 
 require_once 'functions.php';
 
@@ -12,6 +18,9 @@ require_once 'functions.php';
  *    -- in the cloud
  *  - delete the entities (check deletion)
  *  - delete the post (check deletion)
+ *
+ * @since   3.0.0
+ * @package Wordlift
  */
 class PostTest extends WP_UnitTestCase {
 
@@ -37,12 +46,12 @@ class PostTest extends WP_UnitTestCase {
 		$this->assertEquals( 0, count( get_posts( array(
 			'posts_per_page' => - 1,
 			'post_type'      => 'post',
-			'post_status'    => 'any'
+			'post_status'    => 'any',
 		) ) ) );
 		$this->assertEquals( 0, count( get_posts( array(
 			'posts_per_page' => - 1,
 			'post_type'      => 'entity',
-			'post_status'    => 'any'
+			'post_status'    => 'any',
 		) ) ) );
 
 		// Empty the remote dataset.
@@ -203,14 +212,14 @@ class PostTest extends WP_UnitTestCase {
 					'main_type'   => 'http://schema.org/Thing',
 					'type'        => array(),
 					'description' => $description,
-					'images'      => $images
-				)
+					'images'      => $images,
+				),
 			) );
 		}
 
 		// Save the entities in the array.
 		$entity_posts = array();
-		foreach ( $entities as $uri => $entity )  {
+		foreach ( $entities as $uri => $entity ) {
 			$entity_posts[] = wl_save_entity( $entity );
 
 		}
@@ -379,8 +388,8 @@ EOF;
 	/**
 	 * Check the provided entity post against the remote Redlink datastore.
 	 *
-	 * @param string $uri The entity URI.
-	 * @param string $title The entity title.
+	 * @param string $uri       The entity URI.
+	 * @param string $title     The entity title.
 	 * @param string $permalink The entity permalink.
 	 */
 	function checkEntityWithData( $uri, $title, $permalink ) {

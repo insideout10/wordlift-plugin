@@ -232,10 +232,10 @@ class Wordlift {
 	 * A {@link Wordlift_Jsonld_Service} instance.
 	 *
 	 * @since  3.7.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Jsonld_Service $jsonld_service A {@link Wordlift_Jsonld_Service} instance.
 	 */
-	private $jsonld_service;
+	protected $jsonld_service;
 
 	/**
 	 *
@@ -713,7 +713,7 @@ class Wordlift {
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
 
 		//** WordPress Admin */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $configuration_service );
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page();
 
 		// Create an instance of the install wizard.

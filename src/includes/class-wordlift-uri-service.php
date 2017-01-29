@@ -141,6 +141,7 @@ class Wordlift_Uri_Service {
 
 		// Get the entity slug suffix digit
 		$suffix_digit = $increment_digit + 1;
+
 		// Get a sanitized uri for a given title
 		$entity_slug = ( 0 == $increment_digit ) ?
 			wl_sanitize_uri_path( $title ) :
@@ -156,6 +157,7 @@ class Wordlift_Uri_Service {
 		$this->log->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
 
 		global $wpdb;
+
 		// Check if the candidated uri already is used
 		$stmt = $wpdb->prepare(
 			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1",
@@ -172,9 +174,11 @@ class Wordlift_Uri_Service {
 
 			return $new_entity_uri;
 		}
+
 		// If schema_type is equal to schema org type of post x, then the new uri is returned
 		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
 
+		// @todo: we shouldn't rely on css classes to take such decisions.
 		if ( $schema_type === $schema_post_type['css_class'] ) {
 			$this->log->trace( "An entity with the same title and type already exists! Return uri [ new_entity_uri :: $new_entity_uri ]" );
 

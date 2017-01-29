@@ -1,5 +1,7 @@
 <?php
 /**
+ * Tests: JSON-LD Service Test.
+ *
  * This file contains the tests for the {@link Wordlift_Jsonld_Service} class.
  *
  * @since   3.8.0
@@ -9,7 +11,8 @@
 /**
  * Define the test class.
  *
- * @since 3.8.0
+ * @since   3.8.0
+ * @package Wordlift
  */
 class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
@@ -55,11 +58,14 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	public function setUp() {
 		parent::setUp();
 
-		$this->entity_type_service             = Wordlift_Entity_Type_Service::get_instance();
-		$this->entity_service                  = Wordlift_Entity_Service::get_instance();
-		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
-		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $property_getter );
-		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->entity_post_to_jsonld_converter );
+		$this->turn_off_entity_push();
+
+		$wordlift = new Wordlift_Test();
+
+		$this->entity_type_service             = $wordlift->get_entity_type_service();
+		$this->entity_service                  = $wordlift->get_entity_service();
+		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
+		$this->jsonld_service                  = $wordlift->get_jsonld_service();
 
 	}
 
@@ -134,7 +140,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$country = rand_str();
 		add_post_meta( $local_business_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
-		$person_id = $this->factory->post->create( array( 'post_type' => 'entity' ) );
+		$person_id = $this->factory->post->create( array( 'post_type' => 'entity', ) );
 		$this->entity_type_service->set( $person_id, 'http://schema.org/Person' );
 		$person_uri = $this->entity_service->get_uri( $person_id );
 
@@ -143,7 +149,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		// Set up a default request
 		$_GET['action'] = 'wl_jsonld';
-		$_GET['uri']    = $local_business_uri;
+		$_GET['id']     = $local_business_id;
 
 		// Make the request
 		try {

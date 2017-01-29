@@ -96,8 +96,10 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 
 				if ( $item instanceof Wordlift_Property_Entity_Reference ) {
 
-					$url          = $item->getURL();
-					$references[] = $url;
+					$url = $item->getURL();
+
+					// The refactored converters require the entity id.
+					$references[] = $item->getID();
 
 					return array( "@id" => $url );
 				}

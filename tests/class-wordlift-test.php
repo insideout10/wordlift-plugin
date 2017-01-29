@@ -133,4 +133,16 @@ class Wordlift_Test extends Wordlift {
 		return $this->entity_type_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Jsonld_Service} instance.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @return \Wordlift_Jsonld_Service The {@link Wordlift_Jsonld_Service} instance.
+	 */
+	public function get_jsonld_service() {
+
+		return $this->jsonld_service;
+	}
+
 }

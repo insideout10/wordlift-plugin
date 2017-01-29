@@ -80,7 +80,7 @@ class Wordlift_Jsonld_Service {
 			array( $entity_to_jsonld_converter->convert( $id, $references ) ),
 			// Convert each URI in the references array to JSON-LD. We don't output
 			// entities already output above (hence the array_diff).
-			array_map( function ( $item ) use ( $entity_to_jsonld_converter, &$references ) {
+			array_map( function ( $item ) use ( $entity_to_jsonld_converter, $references ) {
 
 				// "2nd level properties" may not output here, e.g. a post
 				// mentioning an event, located in a place: the place is referenced

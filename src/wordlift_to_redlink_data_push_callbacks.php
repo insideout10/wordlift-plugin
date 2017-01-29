@@ -3,10 +3,14 @@
 /**
  * Push the provided post to Redlink (not suitable for entities).
  *
- * @param object $post A post instance.
+ * @param WP_Post $post A post instance.
  */
 function wl_push_post_to_redlink( $post ) {
 
+	// If entity push is disabled, return.
+	if ( defined( 'DISABLE_ENTITY_PUSH' ) && DISABLE_ENTITY_PUSH ) {
+		return;
+	}
 
 	// Only handle published posts.
 	if ( 'post' !== $post->post_type or 'publish' !== $post->post_status ) {
@@ -378,6 +382,11 @@ function wl_sparql_escape_uri( $string ) {
  * Reindex Redlink triple store, enabling local entities to be found in future analyses.
  */
 function wordlift_reindex_triple_store() {
+
+	// If entity push is disabled, return.
+	if ( defined( 'DISABLE_ENTITY_PUSH' ) && DISABLE_ENTITY_PUSH ) {
+		return true;
+	}
 
 	// Get the reindex URL.
 	$url = wl_configuration_get_dataset_index_url();
