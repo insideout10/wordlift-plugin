@@ -19,33 +19,6 @@ php:
 #  - JavaScript end-to-end tests
 # @@todo: we're currently testing only the last version of WordPress, we should also test the previous ones and nightly.
 matrix:
-  exclude:
-    # Reduce the test combinations by removing tests with recent version of PHP
-    # and older version of WordPress.
-    - php: 5.5
-      env: WP_VERSION=4.2
-    - php: 5.5
-      env: WP_VERSION=4.3
-    - php: 5.6
-      env: WP_VERSION=4.2
-    - php: 5.6
-      env: WP_VERSION=4.3
-    - php: 7.0
-      env: WP_VERSION=4.2
-    - php: 7.0
-      env: WP_VERSION=4.3
-    - php: 7.0
-      env: WP_VERSION=4.4
-    - php: 7.0
-      env: WP_VERSION=4.5
-    - php: 7.1
-      env: WP_VERSION=4.2
-    - php: 7.1
-      env: WP_VERSION=4.3
-    - php: 7.1
-      env: WP_VERSION=4.4
-    - php: 7.1
-      env: WP_VERSION=4.5
   include:
     # JavaScript end-to-end tests.
     - php: 5.6
@@ -89,10 +62,7 @@ env:
   matrix:
     - SCRIPT=test:php WP_VERSION=nightly
     - SCRIPT=test:php WP_VERSION=4.7
-    - SCRIPT=test:php WP_VERSION=4.6
     - SCRIPT=test:php WP_VERSION=4.5
-    - SCRIPT=test:php WP_VERSION=4.4
-    - SCRIPT=test:php WP_VERSION=4.3
     - SCRIPT=test:php WP_VERSION=4.2
 
 services:
