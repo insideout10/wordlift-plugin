@@ -34,6 +34,8 @@ matrix:
 cache:
   directories:
     - node_modules
+    - vendor
+    - $HOME/.composer/cache
 
 addons:
   # Have Travis CI start a SauceLabs Connect instance for us.
