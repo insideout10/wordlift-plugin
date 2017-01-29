@@ -34,7 +34,7 @@ matrix:
 cache:
   directories:
     - node_modules
-    - vendor
+    - $HOME/.npm
     - $HOME/.composer/cache
 
 addons:
