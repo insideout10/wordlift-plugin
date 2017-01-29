@@ -87,7 +87,7 @@ before_install:
       export DISPLAY=:99.0
       sh -e /etc/init.d/xvfb start
     fi
-  # If we're making e2e tests, we need the SauceConnect tunnel and to install Apache.
+  # If we're making e2e tests, we need the SauceConnect tunnel, Apache and WordPress.
   - |
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_start.sh

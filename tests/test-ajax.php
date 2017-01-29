@@ -4,7 +4,7 @@ require_once 'functions.php';
 /**
  * Testing ajax response class
  */
-class AjaxTest extends Wordlift_Ajax_Unit_Test_Case {
+class AjaxTest extends WP_UnitTestCase {
 
 	/**
 	 * Saved error reporting level
@@ -17,10 +17,76 @@ class AjaxTest extends Wordlift_Ajax_Unit_Test_Case {
 	 * Override wp_die(), pretend to be ajax, and suppres E_WARNINGs
 	 */
 	public function setUp() {
+
 		parent::setUp();
+
+		// Suppress warnings from "Cannot modify header information - headers already sent by"
+		$this->_error_level = error_reporting();
+		error_reporting( $this->_error_level & ~E_WARNING );
+
+		wl_configure_wordpress_test();
+
+		add_filter( 'wp_die_ajax_handler', array(
+			$this,
+			'getDieHandler',
+		), 1, 1 );
+		if ( ! defined( 'DOING_AJAX' ) ) {
+			define( 'DOING_AJAX', true );
+		}
+
+		// Disable the *wl_write_log* as it can create issues with AJAX tests.
+		add_filter( 'wl_write_log_handler', array(
+			$this,
+			'get_write_log_handler',
+		), 1, 1 );
 
 		wl_empty_blog();
 
+	}
+
+	/**
+	 * Tear down the test fixture.
+	 * Remove the wp_die() override, restore error reporting
+	 */
+	public function tearDown() {
+		parent::tearDown();
+
+		remove_filter( 'wp_die_ajax_handler', array(
+			$this,
+			'getDieHandler',
+		), 1, 1 );
+		remove_filter( 'wl_write_log_handler', array(
+			$this,
+			'get_write_log_handler',
+		), 1, 1 );
+		error_reporting( $this->_error_level );
+	}
+
+
+	public function get_write_log_handler() {
+
+		return array( $this, 'write_log_handler' );
+	}
+
+	public function write_log_handler( $log ) {
+
+	}
+
+	/**
+	 * Return our callback handler
+	 * @return callback
+	 */
+	public function getDieHandler() {
+		return array( $this, 'dieHandler' );
+	}
+
+	/**
+	 * Handler for wp_die()
+	 * Don't die, just continue on.
+	 *
+	 * @param string $message
+	 */
+	public function dieHandler( $message ) {
 	}
 
 	public function test_shortcode_chord_ajax() {
