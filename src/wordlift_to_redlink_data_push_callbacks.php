@@ -184,11 +184,12 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		}
 	}
 
-	// set the same as.
-	$same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' );
-	foreach ( $same_as as $same_as_uri ) {
-		$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
-		$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
+	// Set the same as.
+	if ( null !== $same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' ) ) {
+		foreach ( $same_as as $same_as_uri ) {
+			$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
+			$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
+		}
 	}
 
 	// set the label
@@ -200,10 +201,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	foreach ( $alt_labels as $alt_label ) {
 		$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Sparql_Service::escape( $alt_label ), $site_language );
 	}
-
-	// set the URL
-//	$sparql .= "<$uri_e> schema:url <$permalink> . \n";
-
 
 	// set the description.
 	if ( ! empty( $descr ) ) {

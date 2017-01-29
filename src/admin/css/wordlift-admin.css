@@ -92,6 +92,6 @@
 }
 
 /* Hide the virtual page in the admin menu that we create for WL's setup. */
-#adminmenu a[href=wl-setup] {
+#adminmenu a[href=wl-setup], #adminmenu a[href='admin.php?page=wl_status_report'] {
     display: none;
 }
