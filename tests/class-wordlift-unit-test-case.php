@@ -3,8 +3,8 @@
 /**
  * Define the {@link Wordlift_Unit_Test_Case} class.
  *
- * @since   3.0.0
- * @package Wordlift
+ * @since               3.0.0
+ * @package             Wordlift
  */
 abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
@@ -23,6 +23,9 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		// Default behaviour: push entities to the remote Linked Data store.
+		$this->turn_on_entity_push();
+
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
@@ -37,10 +40,20 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	 */
 	protected function turn_off_entity_push() {
 
-		if ( ! defined( 'DISABLE_ENTITY_PUSH' ) ) {
-			define( 'DISABLE_ENTITY_PUSH', true );
-		}
+		set_transient( 'DISABLE_ENTITY_PUSH', true );
 
 	}
+
+	/**
+	 * Turn on pushing entities to the cloud using SPARQL.
+	 *
+	 * @since 3.10.0
+	 */
+	protected function turn_on_entity_push() {
+
+		set_transient( 'DISABLE_ENTITY_PUSH', false );
+
+	}
+
 
 }

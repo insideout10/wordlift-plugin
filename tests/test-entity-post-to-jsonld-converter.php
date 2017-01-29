@@ -87,11 +87,11 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$event_uri = $this->entity_service->get_uri( $event_id );
 
 		// Set the start date.
-		$start_date = date( 'Y/m/d', random_int( 0, 1576800000 ) );
+		$start_date = date( 'Y/m/d', 1576800000 );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_START, $start_date );
 
 		// Set the end date.
-		$end_date = date( 'Y/m/d', random_int( 1576800000, 3153600000 ) );
+		$end_date = date( 'Y/m/d', 3153600000 );
 		add_post_meta( $event_id, Wordlift_Schema_Service::FIELD_DATE_END, $end_date );
 
 		// Set a random sameAs.
@@ -140,7 +140,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertArrayHasKey( '@id', $jsonld['location'] );
 		$this->assertEquals( $place_uri, $jsonld['location']['@id'] );
 
-		$this->assertContains( $place_uri, $references );
+		$this->assertContains( $place_id, $references );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $event_id, $references_2 ) );
@@ -297,7 +297,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertArrayHasKey( '@id', $jsonld['author'] );
 		$this->assertEquals( $person_uri, $jsonld['author']['@id'] );
 
-		$this->assertContains( $person_uri, $references );
+		$this->assertContains( $person_id, $references );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $create_work_id, $references_2 ) );
@@ -402,7 +402,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertArrayHasKey( '@id', $jsonld['founder'] );
 		$this->assertEquals( $person_uri, $jsonld['founder']['@id'] );
 
-		$this->assertContains( $person_uri, $references );
+		$this->assertContains( $person_id, $references );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $organization_id, $references_2 ) );
@@ -430,7 +430,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		add_post_meta( $person_id, Wordlift_Schema_Service::FIELD_EMAIL, $email );
 
 		// Set the start date.
-		$birth_date = date( 'Y/m/d', random_int( 0, 1576800000 ) );
+		$birth_date = date( 'Y/m/d', 1576800000 );
 		add_post_meta( $person_id, Wordlift_Schema_Service::FIELD_BIRTH_DATE, $birth_date );
 
 		// Set a random sameAs.
@@ -503,7 +503,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertArrayHasKey( '@id', $jsonld['birthPlace'] );
 		$this->assertEquals( $place_uri, $jsonld['birthPlace']['@id'] );
 
-		$this->assertContains( $place_uri, $references );
+		$this->assertContains( $place_id, $references );
 
 		$this->assertCount( 2, $jsonld['knows'] );
 
@@ -629,7 +629,7 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertArrayHasKey( '@id', $jsonld['founder'] );
 		$this->assertEquals( $person_uri, $jsonld['founder']['@id'] );
 
-		$this->assertContains( $person_uri, $references );
+		$this->assertContains( $person_id, $references );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $local_business_id, $references_2 ) );

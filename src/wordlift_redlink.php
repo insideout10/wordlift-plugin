@@ -18,7 +18,7 @@
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
-	if ( defined( 'DISABLE_ENTITY_PUSH' ) && DISABLE_ENTITY_PUSH ) {
+	if ( get_transient( 'DISABLE_ENTITY_PUSH') ) {
 		return true;
 	}
 

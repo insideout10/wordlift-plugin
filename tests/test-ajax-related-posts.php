@@ -22,25 +22,26 @@ class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
-
 		// Disable sending SPARQL queries, since we don't need it.
 		$this->turn_off_entity_push();
 
 	}
 
 	public function testDataSelectionWithoutAnEntityId() {
+
 		$this->_setRole( "administrator" );
 		$this->assertTrue( is_admin() );
 		$this->setExpectedException( 'WPAjaxDieStopException', 'Post id missing or invalid!' );
 		$this->_handleAjax( 'wordlift_related_posts' );
+
 	}
 
 	public function testDataSelectionWithoutAnInvalidEntityId() {
+
 		$_GET['post_id'] = 'foo';
 		$this->setExpectedException( 'WPAjaxDieStopException', 'Post id missing or invalid!' );
 		$this->_handleAjax( 'wordlift_related_posts' );
+
 	}
 
 	public function testPostsSelectionWithFilters() {

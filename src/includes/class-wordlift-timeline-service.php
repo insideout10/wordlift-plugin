@@ -238,7 +238,7 @@ class Wordlift_Timeline_Service {
 
 			// If we have an excerpt, set it.
 			if ( 0 < $excerpt_length ) {
-				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text );
+				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt(), get_permalink(), $more_link_text );
 			}
 
 			return $date;

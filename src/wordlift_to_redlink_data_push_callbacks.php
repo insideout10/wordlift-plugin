@@ -8,7 +8,7 @@
 function wl_push_post_to_redlink( $post ) {
 
 	// If entity push is disabled, return.
-	if ( defined( 'DISABLE_ENTITY_PUSH' ) && DISABLE_ENTITY_PUSH ) {
+	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
 		return;
 	}
 
@@ -384,7 +384,7 @@ function wl_sparql_escape_uri( $string ) {
 function wordlift_reindex_triple_store() {
 
 	// If entity push is disabled, return.
-	if ( defined( 'DISABLE_ENTITY_PUSH' ) && DISABLE_ENTITY_PUSH ) {
+	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
 		return true;
 	}
 

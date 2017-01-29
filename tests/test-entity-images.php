@@ -12,9 +12,6 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
-
 		// Empty the blog.
 		wl_empty_blog();
 
@@ -24,6 +21,7 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 			'post_type'      => 'post',
 			'post_status'    => 'any',
 		) ) ) );
+
 		$this->assertEquals( 0, count( get_posts( array(
 			'posts_per_page' => - 1,
 			'post_type'      => 'entity',

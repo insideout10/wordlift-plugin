@@ -6,9 +6,6 @@ require_once 'functions.php';
  */
 class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
-//	private static $FIRST_POST_ID;
-//	private static $MOST_CONNECTED_ENTITY_ID;
-
 	/**
 	 * The {@link Wordlift_Timeline_Service} instance.
 	 *
@@ -26,9 +23,6 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
 		// We don't need to check the remote Linked Data store.
 		$this->turn_off_entity_push();
-
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
 
 		// Empty the blog.
 		wl_empty_blog();
@@ -85,7 +79,10 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 	 *  * 1 Person entity reference by the Post
 	 */
 	function testGetEvents() {
-		$log = Wordlift_Log_Service::get_logger( 'testGetEvents' );
+
+		// We need to push entities to the Linked Data store for this test. We'll
+		// turn entity push back off at the end of the test.
+		$this->turn_on_entity_push();
 
 		$post_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 
@@ -172,6 +169,10 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
 		$this->assertEquals( $thumbnail_1[0], $date_1['media']['url'] );
 		$this->assertEquals( $thumbnail_2[0], $date_2['media']['url'] );
+
+		//
+		$this->turn_off_entity_push();
+
 	}
 
 	function createPostThumbnail( $guid, $label, $content_type, $file, $post_id ) {
@@ -249,8 +250,8 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 	 */
 	function test_width_and_height() {
 
-		$width   = random_int( 100, 200 ) . 'px';
-		$height  = random_int( 100, 200 ) . 'px';
+		$width   = '100px';
+		$height  = '200px';
 		$content = do_shortcode( "[wl_timeline width='$width' height='$height']" );
 
 		$this->assertTrue( - 1 < strpos( $content, "width:$width" ) );

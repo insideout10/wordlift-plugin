@@ -6,7 +6,7 @@ require_once( 'functions.php' );
  *
  * @since 3.2.0
  */
-class EntityServiceTest extends WP_UnitTestCase {
+class EntityServiceTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Wordlift_Entity_Service} being tested.
