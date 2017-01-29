@@ -33,6 +33,8 @@ matrix:
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
 cache:
   directories:
+    # We cache vendor since it only contains the PHPUnit related files.
+    - vendor
     - node_modules
     - $HOME/.npm
     - $HOME/.composer/cache
