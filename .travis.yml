@@ -39,7 +39,7 @@ cache:
 
 addons:
   # Have Travis CI start a SauceLabs Connect instance for us.
-  sauce_connect: true
+#  sauce_connect: true
   # see https://docs.travis-ci.com/user/hosts
   # see https://support.saucelabs.com/customer/en/portal/articles/2639448-issues-with-localhost-proxying-on-edge-and-safari-8-and-9-using-sauce-connect-proxy
   hosts:
@@ -83,6 +83,10 @@ before_install:
       export DISPLAY=:99.0
       sh -e /etc/init.d/xvfb start
     fi
+  - |
+    if [[ "$SCRIPT" == "test:e2e" ]]; then
+      .ci/travis/sauce_connect_start.sh
+    fi
 
 before_script:
   # Create WordPress' database.
@@ -105,6 +109,12 @@ before_script:
 
 # Finally launch the script.
 script: npm run $SCRIPT
+
+after_script:
+  - |
+    if [[ "$SCRIPT" == "test:e2e" ]]; then
+      .ci/travis/sauce_connect_stop.sh
+    fi
 
 # Notify our Slack channel.
 notifications:
