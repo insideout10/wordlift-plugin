@@ -9,8 +9,6 @@ php:
  - '5.4'
  - '5.5'
  - '5.6'
- - '7.0'
- - '7.1'
 
 # Test matrix:
 #  - PHP unit tests: PHP 5.3, 5.4, 5.5, 5.6, 7.0, 7.1
@@ -25,6 +23,12 @@ matrix:
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
+    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+    - php: 7.0
+      env: SCRIPT=test:php WP_VERSION=4.7
+    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+    - php: 7.1
+      env: SCRIPT=test:php WP_VERSION=4.7
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
@@ -92,13 +96,12 @@ before_install:
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_start.sh
       .ci/travis/install_apache.sh
+      mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
       .ci/travis/install_wp_cli.sh
       .ci/travis/install_wordpress.sh
     fi
 
 before_script:
-  # Create WordPress' database.
-  - mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
