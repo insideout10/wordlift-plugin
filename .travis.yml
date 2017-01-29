@@ -12,7 +12,6 @@ php:
  - '7.0'
  - '7.1'
 
-
 # Test matrix:
 #  - PHP unit tests: PHP 5.3, 5.4, 5.5, 5.6, 7.0, 7.1
 #  - JavaScript unit tests
@@ -29,7 +28,6 @@ matrix:
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
-
 
 # Cache the node_modules folder.
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
