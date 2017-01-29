@@ -16,7 +16,7 @@ class ContentParsingTest extends Wordlift_Unit_Test_Case {
 		wl_empty_blog();
 
 		// We don't need to check the remote Linked Data store.
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 	}
 

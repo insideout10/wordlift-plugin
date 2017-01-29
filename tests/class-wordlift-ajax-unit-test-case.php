@@ -20,7 +20,7 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		parent::setUp();
 
 		// Default behaviour: push entities to the remote Linked Data store.
-		set_transient( 'DISABLE_ENTITY_PUSH', false );
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
@@ -55,17 +55,6 @@ abstract class Wordlift_Ajax_Unit_Test_Case extends WP_Ajax_UnitTestCase {
 		if ( ! empty( $buffer ) ) {
 			$this->_last_response = $buffer;
 		}
-	}
-
-	/**
-	 * Turn off pushing entities to the cloud using SPARQL.
-	 *
-	 * @since 3.10.0
-	 */
-	protected function turn_off_entity_push() {
-
-		set_transient( 'DISABLE_ENTITY_PUSH', true );
-
 	}
 
 }

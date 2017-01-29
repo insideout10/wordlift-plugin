@@ -25,7 +25,7 @@ class FacetedSearchShortcodeTest extends Wordlift_Ajax_Unit_Test_Case {
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 	}
 

@@ -19,7 +19,7 @@ class Wordlift_Schema_Url_Property_Service_Test extends Wordlift_Unit_Test_Case 
 		parent::setUp();
 
 		// We don't need to check the remote Linked Data store.
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$this->schema_url_property_service = Wordlift_Schema_Url_Property_Service::get_instance();
 	}

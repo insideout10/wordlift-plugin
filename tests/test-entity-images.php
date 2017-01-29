@@ -127,6 +127,9 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 
 	function testEntityImagesMetadataPublishingOnRedLink() {
 
+		// We need to push entities to the Linked Data store, we'll turn this off.
+		Wordlift_Unit_Test_Case::turn_on_entity_push();
+
 		// Create a first entity, just to have
 		// two attachments available in the media library
 		$featured_images = array(
@@ -209,6 +212,9 @@ class EntityImagesTest extends Wordlift_Unit_Test_Case {
 		// Ensure no images are on RL
 		$redlink_images = $this->getImageRLMetadata( $entity_post->ID );
 		$this->assertCount( 0, $redlink_images );
+
+		//
+		Wordlift_Unit_Test_Case::turn_off_entity_push();
 
 	}
 

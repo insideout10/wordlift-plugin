@@ -24,7 +24,7 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		parent::setUp();
 
 		// Default behaviour: push entities to the remote Linked Data store.
-		$this->turn_on_entity_push();
+		self::turn_off_entity_push();
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
@@ -38,7 +38,7 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	 *
 	 * @since 3.10.0
 	 */
-	protected function turn_off_entity_push() {
+	public static function turn_off_entity_push() {
 
 		set_transient( 'DISABLE_ENTITY_PUSH', true );
 
@@ -49,7 +49,7 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	 *
 	 * @since 3.10.0
 	 */
-	protected function turn_on_entity_push() {
+	public static function turn_on_entity_push() {
 
 		set_transient( 'DISABLE_ENTITY_PUSH', false );
 

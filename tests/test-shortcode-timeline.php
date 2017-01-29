@@ -22,7 +22,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		// We don't need to check the remote Linked Data store.
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		// Empty the blog.
 		wl_empty_blog();
@@ -82,7 +82,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
 		// We need to push entities to the Linked Data store for this test. We'll
 		// turn entity push back off at the end of the test.
-		$this->turn_on_entity_push();
+		$this::turn_on_entity_push();
 
 		$post_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 
@@ -171,7 +171,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $thumbnail_2[0], $date_2['media']['url'] );
 
 		//
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 	}
 

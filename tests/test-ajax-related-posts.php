@@ -23,7 +23,7 @@ class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 		parent::setUp();
 
 		// Disable sending SPARQL queries, since we don't need it.
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 	}
 

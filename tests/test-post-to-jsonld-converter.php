@@ -84,7 +84,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		parent::setUp();
 
 		// Disable sending SPARQL queries, since we don't need it.
-		$this->turn_off_entity_push();
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$wordlift                       = new Wordlift_Test();
 		$this->post_to_jsonld_converter = $wordlift->get_post_to_jsonld_converter();
