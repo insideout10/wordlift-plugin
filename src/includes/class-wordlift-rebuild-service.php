@@ -69,7 +69,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		// We start at 0 by default and get to max.
 		$offset = $_GET['offset'] ?: 0;
-		$limit  = $_GET['limit'] ?: PHP_INT_MAX;
+		$limit  = $_GET['limit'] ?: 1;
 		$max    = $offset + $limit;
 
 		// If we're starting at offset 0, then delete existing URIs and data from
@@ -102,8 +102,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
-			wp_redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
-			exit;
+			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
 		}
 
 		echo( "done [ count :: $count ][ limit :: $limit ]" );
@@ -112,6 +111,31 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		if ( DOING_AJAX ) {
 			wp_die();
 		}
+
+	}
+
+	/**
+	 * Redirect using a client-side meta to avoid browsers' redirect restrictions.
+	 *
+	 * @since 3.9.8
+	 *
+	 * @param string $url The URL to redirect to.
+	 */
+	private function redirect( $url ) {
+
+		ob_clean();
+
+		@header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+		?>
+		<html>
+		<head>
+			<meta http-equiv="refresh"
+			      content="1; <?php esc_attr_e( $url ); ?>">
+		</head>
+		</html>
+		<?php
+
+		exit;
 
 	}
 

@@ -137,6 +137,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.9.8 (2017-01-29) =
+* Fix: [#462](https://github.com/insideout10/wordlift-plugin/issues/462): Find duplicated entities.
+
 = 3.9.7 (2017-01-26) =
 * Fix: [#461](https://github.com/insideout10/wordlift-plugin/issues/461): Entities highlighted in front-end.
 

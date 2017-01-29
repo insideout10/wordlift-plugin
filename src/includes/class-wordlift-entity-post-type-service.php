@@ -1,9 +1,18 @@
 <?php
+/**
+ * Services: Entity Post Type Service.
+ *
+ * Define the Entity Post Type service class.
+ *
+ * @since   3.6.0
+ * @package Wordlift
+ */
 
 /**
  * Define a class that provides function related to the entity post type.
  *
- * @since 3.6.0
+ * @since   3.6.0
+ * @package Wordlift
  */
 class Wordlift_Entity_Post_Type_Service {
 
@@ -118,14 +127,25 @@ class Wordlift_Entity_Post_Type_Service {
 		$args = array(
 			'labels'        => $labels,
 			'description'   => 'Holds our vocabulary (set of entities) and entity specific data',
-			'public'        => TRUE,
+			'public'        => true,
 			'menu_position' => 20,
 			// after the pages menu.
 			// Add support for 'authors' and 'revisions':
 			// * see https://github.com/insideout10/wordlift-plugin/issues/395
 			// * see https://github.com/insideout10/wordlift-plugin/issues/376
-			'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments', 'author', 'revisions' ),
-			'has_archive'   => TRUE,
+			'supports'      => array(
+				'title',
+				'editor',
+				'thumbnail',
+				'excerpt',
+				'comments',
+				'author',
+				// Disabling revisions support.
+				//
+				// See https://github.com/insideout10/wordlift-plugin/issues/462
+				// 'revisions',
+			),
+			'has_archive'   => true,
 			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
 			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
 			'rewrite'       => array( 'slug' => $this->slug ),
