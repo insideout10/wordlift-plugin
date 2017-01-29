@@ -337,8 +337,6 @@ function wl_save_entity( $entity_data ) {
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );
 
-	wl_write_log( "[ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode( ',', $entity_types ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]" );
-
 	foreach ( $images as $image_remote_url ) {
 
 		// Check if image is already present in local DB

@@ -22,14 +22,16 @@ require_once 'functions.php';
  * @since   3.0.0
  * @package Wordlift
  */
-class PostTest extends WP_UnitTestCase {
+class PostTest extends Wordlift_Unit_Test_Case {
 
-	// The filename pointing to the tesst contents.
+	// The filename pointing to the test contents.
 	const FILENAME = 'post.txt';
 	const SLUG = 'tests-post';
 	const TITLE = 'Test Post';
+
 	// The number of expected entities (as available in the mock response).
 	const EXPECTED_ENTITIES = 8;
+
 	// When true, the remote response is saved locally and kept as a mock-up (be aware that the previous mockup is
 	// overwritten).
 	const SAVE_REMOTE_RESPONSE = false;
@@ -40,9 +42,8 @@ class PostTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		wl_configure_wordpress_test();
-
 		wl_empty_blog();
+
 		$this->assertEquals( 0, count( get_posts( array(
 			'posts_per_page' => - 1,
 			'post_type'      => 'post',
@@ -153,6 +154,8 @@ class PostTest extends WP_UnitTestCase {
 	 * Test saving entities passed via a metabox.
 	 */
 	function testEntitiesViaArray() {
+
+		self::turn_on_entity_push();
 
 		// Create a post.
 		$post_id = $this->createPost();
@@ -276,6 +279,8 @@ class PostTest extends WP_UnitTestCase {
 
 		// Delete the post.
 		$this->deletePost( $post_id );
+
+		self::turn_off_entity_push();
 	}
 
 	function testSaveImage() {

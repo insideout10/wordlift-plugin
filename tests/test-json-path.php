@@ -37,8 +37,6 @@ class JsonPathTest extends Wordlift_Unit_Test_Case {
 
 		$expr_1_exp = $this->expand( $expr_1 );
 
-		echo( $expr_1_exp . "\n" );
-
 		$this->assertEquals( $expected_1, $expr_1_exp );
 
 		$expected_2 = '$[0][\'http://example.org/image\'][!(@id)][?(@.@type == "http://example.org/thumbnail")][\'http://example.org/title\'][?(@.@language == "en")].@value';
@@ -47,8 +45,6 @@ class JsonPathTest extends Wordlift_Unit_Test_Case {
 		          '[?(@.@type == "example:thumbnail")].example:title.[?(@.@language == "en")].@value';
 
 		$expr_2_exp = $this->expand( $expr_2 );
-
-		echo( $expr_2_exp . "\n" );
 
 		$this->assertEquals( $expected_2, $expr_2_exp );
 

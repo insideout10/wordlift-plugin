@@ -17,7 +17,7 @@ require_once 'functions.php';
  * @since   3.0.0
  * @package Wordlift
  */
-class SavePostTest extends WP_UnitTestCase {
+class SavePostTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.
@@ -25,11 +25,11 @@ class SavePostTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		wl_configure_wordpress_test();
 		wl_empty_blog();
+
 	}
 
-	function testSavePostAndReferencedEntities() {
+	function test_savepostandreferencedentities() {
 
 		// create two entities
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -58,7 +58,7 @@ EOF;
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 	}
 
-	function testReferencedEntities() {
+	function test_referencedentities() {
 
 		// create two entities
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -90,7 +90,9 @@ EOF;
 
 	}
 
-	function testPublishingUnpublishingPosts() {
+	function test_publishingunpublishingposts() {
+
+		self::turn_on_entity_push();
 
 		// create two entities
 		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -196,9 +198,13 @@ EOF;
 		$lines = $this->getPostTriples( $entity_2_id );
 		$this->assertCount( 5, $lines );
 
+		self::turn_off_entity_push();
+
 	}
 
-	function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed() {
+	function test_redlinkisupdatedwhenrelatedentityistrashed() {
+
+		self::turn_on_entity_push();
 
 		// Create draft entity
 		$e_id  = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
@@ -226,6 +232,8 @@ EOF;
 		$lines = $this->getPostTriples( $e_id );
 		// Verify the post triples does no more contain a reference to the entity
 		$this->assertCount( 1, $lines );
+
+		self::turn_off_entity_push();
 
 	}
 
@@ -258,7 +266,7 @@ EOF;
 	/**
 	 * Test saving a post without a title. Check the URI.
 	 */
-	function testSavePostWithoutTitle() {
+	function test_savepostwithouttitle() {
 
 		$post_id      = wl_create_post( 'Sample Post', 'post-1', '', 'publish' );
 		$uri          = wl_get_entity_uri( $post_id );
