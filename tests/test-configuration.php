@@ -4,13 +4,17 @@ require_once( 'functions.php' );
 /**
  * Test the methods defined in the configuration module.
  */
-class ConfigurationTest extends WP_UnitTestCase {
+class ConfigurationTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.
 	 */
 	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
+
 	}
 
 
@@ -103,4 +107,5 @@ class ConfigurationTest extends WP_UnitTestCase {
 
 		$this->assertStringStartsWith( "$redlink_api_url/analysis/$redlink_application_name/enhance?key=$redlink_key", wl_configuration_get_analyzer_url() );
 	}
+
 }

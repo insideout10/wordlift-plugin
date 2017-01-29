@@ -1,52 +1,53 @@
 <?php
 require_once 'functions.php';
 
-class ContentParsingTest extends WP_UnitTestCase
-{
+class ContentParsingTest extends Wordlift_Unit_Test_Case {
 
-    /**
-     * Set up the test.
-     */
-    function setUp()
-    {
-        parent::setUp();
+	/**
+	 * Set up the test.
+	 */
+	function setUp() {
+		parent::setUp();
 
-        // Configure WordPress with the test settings.
-        wl_configure_wordpress_test();
+		// Configure WordPress with the test settings.
+		wl_configure_wordpress_test();
 
-        // Empty the blog.
-        wl_empty_blog();
+		// Empty the blog.
+		wl_empty_blog();
 
-    }
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
 
-    function createSampleEntity() {
-        $entity_post_id = wl_create_post( 'Lorem Ipsum', 'honda', 'Honda', 'publish', 'entity' );
-        wl_schema_set_value( $entity_post_id, 'sameAs', 'http://dbpedia.org/resource/Honda' );
-    }
+	}
 
-    function testContentParsing() {
+	function createSampleEntity() {
+		$entity_post_id = wl_create_post( 'Lorem Ipsum', 'honda', 'Honda', 'publish', 'entity' );
+		wl_schema_set_value( $entity_post_id, 'sameAs', 'http://dbpedia.org/resource/Honda' );
+	}
 
-        // Create the sample entity for testing.
-        $this->createSampleEntity();
+	function testContentParsing() {
 
-        $content = '<span class="textannotation highlight organization disambiguated" id="urn:enhancement-16e9b0f6-e792-5b75-ffb7-ec40916d8753" itemid="http://dbpedia.org/resource/Honda" itemscope="itemscope" itemtype="organization">Honda</span> is recalling nearly 900,000 minivans for a defect that could increase fire risk.';
+		// Create the sample entity for testing.
+		$this->createSampleEntity();
 
-        $matches = array();
-        if ( 0 < preg_match_all( '/ itemid="([^"]+)"/im', $content, $matches, PREG_SET_ORDER ) ) {
-            foreach ( $matches as $match  ) {
-                $item_id = $match[1];
+		$content = '<span class="textannotation highlight organization disambiguated" id="urn:enhancement-16e9b0f6-e792-5b75-ffb7-ec40916d8753" itemid="http://dbpedia.org/resource/Honda" itemscope="itemscope" itemtype="organization">Honda</span> is recalling nearly 900,000 minivans for a defect that could increase fire risk.';
 
-                $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
-                $this->assertNotNull( $post );
+		$matches = array();
+		if ( 0 < preg_match_all( '/ itemid="([^"]+)"/im', $content, $matches, PREG_SET_ORDER ) ) {
+			foreach ( $matches as $match ) {
+				$item_id = $match[1];
 
-                $uri  = wl_get_entity_uri( $post->ID );
-                $this->assertNotNull( $uri );
-                $this->assertNotEquals( $item_id, $uri );
+				$post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $item_id );
+				$this->assertNotNull( $post );
 
-            }
-        }
+				$uri = wl_get_entity_uri( $post->ID );
+				$this->assertNotNull( $uri );
+				$this->assertNotEquals( $item_id, $uri );
 
-        $this->assertTrue( 0 < count( $matches ) );
-    }
+			}
+		}
+
+		$this->assertTrue( 0 < count( $matches ) );
+	}
 
 }

@@ -6,7 +6,6 @@
  * @package Wordlift
  */
 require_once 'functions.php';
-require_once 'wordlift_ajax_unit_test_case.php';
 
 /**
  * Class FacetedSearchShortcodeTest

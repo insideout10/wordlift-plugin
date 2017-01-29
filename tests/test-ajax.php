@@ -26,13 +26,19 @@ class AjaxTest extends WP_UnitTestCase {
 
 		wl_configure_wordpress_test();
 
-		add_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
+		add_filter( 'wp_die_ajax_handler', array(
+			$this,
+			'getDieHandler',
+		), 1, 1 );
 		if ( ! defined( 'DOING_AJAX' ) ) {
 			define( 'DOING_AJAX', true );
 		}
 
 		// Disable the *wl_write_log* as it can create issues with AJAX tests.
-		add_filter( 'wl_write_log_handler', array( $this, 'get_write_log_handler' ), 1, 1 );
+		add_filter( 'wl_write_log_handler', array(
+			$this,
+			'get_write_log_handler',
+		), 1, 1 );
 
 		wl_empty_blog();
 
@@ -45,8 +51,14 @@ class AjaxTest extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		remove_filter( 'wp_die_ajax_handler', array( $this, 'getDieHandler' ), 1, 1 );
-		remove_filter( 'wl_write_log_handler', array( $this, 'get_write_log_handler' ), 1, 1 );
+		remove_filter( 'wp_die_ajax_handler', array(
+			$this,
+			'getDieHandler',
+		), 1, 1 );
+		remove_filter( 'wl_write_log_handler', array(
+			$this,
+			'get_write_log_handler',
+		), 1, 1 );
 		error_reporting( $this->_error_level );
 	}
 
@@ -94,7 +106,10 @@ class AjaxTest extends WP_UnitTestCase {
 		$entity_2_id = wl_create_post( 'This is Entity 2', 'entity-2', 'Entity 2', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Thing' );
 
-		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
+		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array(
+			$entity_1_id,
+			$entity_2_id,
+		) );
 
 		$_REQUEST['post_id'] = $post_id;
 		$_REQUEST['depth']   = 3;
@@ -129,7 +144,10 @@ class AjaxTest extends WP_UnitTestCase {
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', true );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-04', true );
 
-		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
+		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array(
+			$entity_1_id,
+			$entity_2_id,
+		) );
 
 		$_REQUEST['post_id'] = $post_id;
 
@@ -160,7 +178,10 @@ class AjaxTest extends WP_UnitTestCase {
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 41.20, true );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 78.2, true );
 
-		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array( $entity_1_id, $entity_2_id ) );
+		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array(
+			$entity_1_id,
+			$entity_2_id,
+		) );
 
 		$_REQUEST['post_id'] = $post_id;
 
@@ -169,4 +190,5 @@ class AjaxTest extends WP_UnitTestCase {
 
 		$this->assertTrue( in_array( 'Content-Type: application/json', $headers ) );
 	}
+
 }

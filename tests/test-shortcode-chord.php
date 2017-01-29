@@ -4,7 +4,8 @@ require_once 'functions.php';
 /**
  * Class ChordShortcodeTest
  */
-class ChordShortcodeTest extends WP_UnitTestCase {
+class ChordShortcodeTest extends Wordlift_Unit_Test_Case {
+
 	private static $FIRST_POST_ID;
 	private static $MOST_CONNECTED_ENTITY_ID;
 
@@ -13,6 +14,9 @@ class ChordShortcodeTest extends WP_UnitTestCase {
 	 */
 	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
@@ -23,7 +27,7 @@ class ChordShortcodeTest extends WP_UnitTestCase {
 		// Creating 2 fake entities
 		$entities = array(
 			wl_create_post( 'content', 'entity1', 'title1', 'publish', 'entity' ),
-			wl_create_post( 'content', 'entity2', 'title2', 'publish', 'entity' )
+			wl_create_post( 'content', 'entity2', 'title2', 'publish', 'entity' ),
 		);
 
 		// Creating a fake post

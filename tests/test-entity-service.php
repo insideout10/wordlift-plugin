@@ -32,6 +32,9 @@ class EntityServiceTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
+
 		$this->log_service = Wordlift_Log_Service::get_logger( 'EntityServiceTest' );
 
 		wl_configure_wordpress_test();

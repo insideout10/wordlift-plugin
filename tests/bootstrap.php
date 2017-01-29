@@ -17,5 +17,6 @@ require $_tests_dir . '/includes/bootstrap.php';
 
 require_once( 'functions.php' );
 require_once( 'class-wordlift-unittest-factory-for-entity.php' );
+require_once( 'class-wordlift-unit-test-case.php' );
 require_once( 'class-wordlift-ajax-unit-test-case.php' );
 require_once( 'class-wordlift-test.php' );

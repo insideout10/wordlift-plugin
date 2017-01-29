@@ -7,16 +7,17 @@ require_once( 'functions.php' );
 /**
  * Class JsonPathTest
  */
-class JsonPathTest extends WP_UnitTestCase
-{
+class JsonPathTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.
 	 */
-	function setUp()
-	{
-
+	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
+
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
@@ -31,8 +32,8 @@ class JsonPathTest extends WP_UnitTestCase
 
 		$expected_1 = '$[0]["http://example.org/image"][!(@id)][?(@.@type == "http://example.org/thumbnail")]["http://example.org/title"][?(@.@language == "en")].@value';
 
-		$expr_1     = '$[0]["example:image"][!(@id)]' .
-			'[?(@.@type == "example:thumbnail")]["example:title"][?(@.@language == "en")].@value';
+		$expr_1 = '$[0]["example:image"][!(@id)]' .
+		          '[?(@.@type == "example:thumbnail")]["example:title"][?(@.@language == "en")].@value';
 
 		$expr_1_exp = $this->expand( $expr_1 );
 
@@ -42,8 +43,8 @@ class JsonPathTest extends WP_UnitTestCase
 
 		$expected_2 = '$[0][\'http://example.org/image\'][!(@id)][?(@.@type == "http://example.org/thumbnail")][\'http://example.org/title\'][?(@.@language == "en")].@value';
 
-		$expr_2     = '$[0].example:image.[!(@id)]' .
-			'[?(@.@type == "example:thumbnail")].example:title.[?(@.@language == "en")].@value';
+		$expr_2 = '$[0].example:image.[!(@id)]' .
+		          '[?(@.@type == "example:thumbnail")].example:title.[?(@.@language == "en")].@value';
 
 		$expr_2_exp = $this->expand( $expr_2 );
 
@@ -58,8 +59,8 @@ class JsonPathTest extends WP_UnitTestCase
 		$prefix    = 'example:';
 		$namespace = 'http://example.org/';
 
-		$expr      = preg_replace( "/(['\"])$prefix/", "\${1}$namespace", $expr );
-		$expr      = preg_replace( "/\\.$prefix([^.]+)\\./", "['$namespace\${1}']", $expr );
+		$expr = preg_replace( "/(['\"])$prefix/", "\${1}$namespace", $expr );
+		$expr = preg_replace( "/\\.$prefix([^.]+)\\./", "['$namespace\${1}']", $expr );
 
 		return $expr;
 	}

@@ -8,107 +8,117 @@ require_once( 'functions.php' );
 /**
  * Class PrefixesTest
  */
-class PrefixesTest extends WP_UnitTestCase {
+class PrefixesTest extends Wordlift_Unit_Test_Case {
 
-    /**
-     * Set up the test.
-     */
-    function setUp()
-    {
-        parent::setUp();
+	/**
+	 * Set up the test.
+	 */
+	function setUp() {
+		parent::setUp();
 
-        // Configure WordPress with the test settings.
-        wl_configure_wordpress_test();
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
 
-        // Empty the blog.
-        wl_empty_blog();
-    }
+		// Configure WordPress with the test settings.
+		wl_configure_wordpress_test();
 
-    /**
-     * Test that the default prefixes are loaded in WL.
-     */
-    function test_prefixes_defaults() {
+		// Empty the blog.
+		wl_empty_blog();
+	}
 
-        $items = array(
-            array ( 'prefix' => 'geo',    'namespace' => 'http://www.w3.org/2003/01/geo/wgs84_pos#' ),
-            array ( 'prefix' => 'dct',    'namespace' => 'http://purl.org/dc/terms/' ),
-            array ( 'prefix' => 'rdfs',   'namespace' => 'http://www.w3.org/2000/01/rdf-schema#' ),
-            array ( 'prefix' => 'owl',    'namespace' => 'http://www.w3.org/2002/07/owl#' ),
-            array ( 'prefix' => 'schema', 'namespace' => 'http://schema.org/' )
-        );
+	/**
+	 * Test that the default prefixes are loaded in WL.
+	 */
+	function test_prefixes_defaults() {
 
-        foreach ( $items as $item ) {
-            $this->assertEquals( $item['namespace'], wl_prefixes_get( $item['prefix'] ) );
-        }
+		$items = array(
+			array( 'prefix'    => 'geo',
+			       'namespace' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
+			),
+			array( 'prefix'    => 'dct',
+			       'namespace' => 'http://purl.org/dc/terms/',
+			),
+			array( 'prefix'    => 'rdfs',
+			       'namespace' => 'http://www.w3.org/2000/01/rdf-schema#',
+			),
+			array( 'prefix'    => 'owl',
+			       'namespace' => 'http://www.w3.org/2002/07/owl#',
+			),
+			array( 'prefix' => 'schema', 'namespace' => 'http://schema.org/' ),
+		);
 
-    }
+		foreach ( $items as $item ) {
+			$this->assertEquals( $item['namespace'], wl_prefixes_get( $item['prefix'] ) );
+		}
 
-    /**
-     * Test adding a new prefix.
-     */
-    function test_prefixes_add_and_delete() {
+	}
 
-        // Create a random prefix and an example namespace.
-        $prefix    = uniqid( 'prefix' );
-        $namespace = 'http://example.org/ns/';
+	/**
+	 * Test adding a new prefix.
+	 */
+	function test_prefixes_add_and_delete() {
 
-        // Check that the prefix doesn't exist yet.
-        $this->assertFalse( wl_prefixes_get( $prefix ) );
+		// Create a random prefix and an example namespace.
+		$prefix    = uniqid( 'prefix' );
+		$namespace = 'http://example.org/ns/';
 
-        // Add the prefix.
-        wl_prefixes_add( $prefix, $namespace );
+		// Check that the prefix doesn't exist yet.
+		$this->assertFalse( wl_prefixes_get( $prefix ) );
 
-        $path           = uniqid( 'this/is/a/test/' );
+		// Add the prefix.
+		wl_prefixes_add( $prefix, $namespace );
 
-        // Compact a URL.
-        $url_to_compact = $namespace . $path;
-        $url_compacted  = wl_prefixes_compact( $url_to_compact );
-        $this->assertEquals( $prefix . ':' . $path, $url_compacted );
+		$path = uniqid( 'this/is/a/test/' );
 
-        // Expand a URL.
-        $url_to_expand  = $url_compacted;
-        $url_expanded   = wl_prefixes_expand( $url_to_expand );
-        $this->assertEquals( $namespace . $path, $url_expanded );
+		// Compact a URL.
+		$url_to_compact = $namespace . $path;
+		$url_compacted  = wl_prefixes_compact( $url_to_compact );
+		$this->assertEquals( $prefix . ':' . $path, $url_compacted );
 
-        // Check the namespace.
-        $this->assertEquals( $namespace, wl_prefixes_get( $prefix ) );
+		// Expand a URL.
+		$url_to_expand = $url_compacted;
+		$url_expanded  = wl_prefixes_expand( $url_to_expand );
+		$this->assertEquals( $namespace . $path, $url_expanded );
 
-        // Now delete the prefix.
-        wl_prefixes_delete( $prefix );
+		// Check the namespace.
+		$this->assertEquals( $namespace, wl_prefixes_get( $prefix ) );
 
-        // Check that the prefix doesn't exist.
-        $this->assertFalse( wl_prefixes_get( $prefix ) );
+		// Now delete the prefix.
+		wl_prefixes_delete( $prefix );
 
-    }
+		// Check that the prefix doesn't exist.
+		$this->assertFalse( wl_prefixes_get( $prefix ) );
+
+	}
 
 
-    /**
-     * Test the Prefixes list table.
-     */
-    function test_prefixes_list_table() {
+	/**
+	 * Test the Prefixes list table.
+	 */
+	function test_prefixes_list_table() {
 
-        $GLOBALS['hook_suffix'] = 'test';
+		$GLOBALS['hook_suffix'] = 'test';
 
-        $prefixes_list_table = new WL_Prefixes_List_Table();
+		$prefixes_list_table = new WL_Prefixes_List_Table();
 
-        // Test the columns.
-        $columns = $prefixes_list_table->get_columns();
-        $this->assertTrue( is_array( $columns ) );
-        $this->assertCount( 2, $columns );
+		// Test the columns.
+		$columns = $prefixes_list_table->get_columns();
+		$this->assertTrue( is_array( $columns ) );
+		$this->assertCount( 2, $columns );
 
-        // Check that the prepare items returns the same number of items in the prefixes.
-        $items       = wl_prefixes_list();
-        $this->assertGreaterThan( 0, sizeof( $items ) );
-        $prefixes_list_table->prepare_items();
-        $this->assertCount( sizeof( $items ), $prefixes_list_table->items );
+		// Check that the prepare items returns the same number of items in the prefixes.
+		$items = wl_prefixes_list();
+		$this->assertGreaterThan( 0, sizeof( $items ) );
+		$prefixes_list_table->prepare_items();
+		$this->assertCount( sizeof( $items ), $prefixes_list_table->items );
 
-        // Check that we get a return value for each column.
-        foreach ( $prefixes_list_table->items as $item ) {
-            foreach ( $columns as $key => $value ) {
-                $this->assertEquals( $item[$key], $prefixes_list_table->column_default( $item, $key ) );
-            }
-        }
+		// Check that we get a return value for each column.
+		foreach ( $prefixes_list_table->items as $item ) {
+			foreach ( $columns as $key => $value ) {
+				$this->assertEquals( $item[ $key ], $prefixes_list_table->column_default( $item, $key ) );
+			}
+		}
 
-    }
+	}
 
 }

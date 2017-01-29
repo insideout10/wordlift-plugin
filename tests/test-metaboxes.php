@@ -5,7 +5,7 @@ require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/WL_Metabox.php' );
 /**
  * Class MetaboxTest
  */
-class MetaboxTest extends WP_UnitTestCase {
+class MetaboxTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.
@@ -13,11 +13,14 @@ class MetaboxTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
+
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
 		// Reset data on the remote dataset.
-		rl_empty_dataset();
+//		rl_empty_dataset();
 
 		// Empty the blog.
 		wl_empty_blog();
@@ -31,8 +34,14 @@ class MetaboxTest extends WP_UnitTestCase {
 		$metabox = new WL_Metabox();
 
 		// Verify the object has hooked correctly (default priority for hooks is 10)
-		$this->assertEquals( 10, has_action( 'add_meta_boxes', array( $metabox, 'add_main_metabox' ) ) );
-		$this->assertEquals( 10, has_action( 'wl_linked_data_save_post', array( $metabox, 'save_form_data' ) ) );
+		$this->assertEquals( 10, has_action( 'add_meta_boxes', array(
+			$metabox,
+			'add_main_metabox',
+		) ) );
+		$this->assertEquals( 10, has_action( 'wl_linked_data_save_post', array(
+			$metabox,
+			'save_form_data',
+		) ) );
 	}
 
 	/*
@@ -55,18 +64,18 @@ class MetaboxTest extends WP_UnitTestCase {
 			'coordinates' => array(
 				Wordlift_Schema_Service::FIELD_GEO_LATITUDE  => $fields[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ],
 				Wordlift_Schema_Service::FIELD_GEO_LONGITUDE => $fields[ Wordlift_Schema_Service::FIELD_GEO_LONGITUDE ],
-			)
+			),
 		);
 		$coordinates_field_obj = new WL_Metabox_Field_coordinates( $coordinates_field );
 		$address_field         = array(
 			'address' => array(
-				Wordlift_Schema_Service::FIELD_ADDRESS => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS ],
-				Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX ],
+				Wordlift_Schema_Service::FIELD_ADDRESS             => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX      => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_PO_BOX ],
 				Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_POSTAL_CODE ],
-				Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY ],
-				Wordlift_Schema_Service::FIELD_ADDRESS_REGION => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_REGION ],
-				Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ]
-			)
+				Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY    => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_LOCALITY ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_REGION      => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_REGION ],
+				Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY     => $fields[ Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY ],
+			),
 		);
 		$address_field_obj     = new WL_Metabox_Field_address( $address_field );
 
@@ -124,15 +133,15 @@ class MetaboxTest extends WP_UnitTestCase {
 			'wl_metaboxes'                                                             => array(
 				'coordinates'                          => array( 43.77, 11.25 ),
 				// special field has a wrapper name, not directly the meta
-				Wordlift_Schema_Service::FIELD_ADDRESS                => array( 'Tuscany, Italy' ),
+				Wordlift_Schema_Service::FIELD_ADDRESS => array( 'Tuscany, Italy' ),
 				Wordlift_Schema_Service::FIELD_SAME_AS => array(
 					'http://yago-knowledge.org/resource/Florence',
-					'http://dbpedia.org/resource/Florence'
-				)
+					'http://dbpedia.org/resource/Florence',
+				),
 			),
 			// Fake nonces
 			'wordlift_coordinates_entity_box_nonce'                                    => wp_create_nonce( 'wordlift_coordinates_entity_box' ),
-			'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box' )
+			'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box_nonce' => wp_create_nonce( 'wordlift_' . Wordlift_Schema_Service::FIELD_SAME_AS . '_entity_box' ),
 		);
 
 		// Metabox save (we call it manually here, but it's hooked to wl_linked_data_save_post - see *testWL_Metabox_constructor*)
@@ -142,9 +151,9 @@ class MetaboxTest extends WP_UnitTestCase {
 		$place_meta = get_post_meta( $place_id );
 
 		$this->assertEquals( array(
-				'http://yago-knowledge.org/resource/Florence',
-				'http://dbpedia.org/resource/Florence'
-			),
+			'http://yago-knowledge.org/resource/Florence',
+			'http://dbpedia.org/resource/Florence',
+		),
 			$place_meta[ Wordlift_Schema_Service::FIELD_SAME_AS ]
 		);
 		$this->assertEquals( array( 43.77 ), $place_meta[ Wordlift_Schema_Service::FIELD_GEO_LATITUDE ] );
@@ -173,7 +182,10 @@ class MetaboxTest extends WP_UnitTestCase {
 		$this->assertEquals( 'http://schema.org/author', $field->predicate );
 		$this->assertEquals( 'author', $field->label );
 		$this->assertEquals( Wordlift_Schema_Service::DATA_TYPE_URI, $field->expected_wl_type );
-		$this->assertEquals( array( 'Person', 'Organization' ), $field->expected_uri_type );
+		$this->assertEquals( array(
+			'Person',
+			'Organization',
+		), $field->expected_uri_type );
 		$this->assertEquals( INF, $field->cardinality );
 
 		// TODO: review this test, do not convert an object to an array.
@@ -240,12 +252,21 @@ class MetaboxTest extends WP_UnitTestCase {
 		$this->assertEquals( array( $person_id ), $field->data );
 
 		// Save new DB values (third value is invalid and fourth is a new entity)
-		$field->save_data( array( $person_id, 'http://some-triplestore/person2', null, 'Annibale' ) );
+		$field->save_data( array(
+			$person_id,
+			'http://some-triplestore/person2',
+			null,
+			'Annibale',
+		) );
 
 		// Verify data is loaded correctly from DB
 		$new_entity = get_page_by_title( 'Annibale', OBJECT, Wordlift_Entity_Service::TYPE_NAME );
 		$field->get_data();
-		$this->assertEquals( array( $person_id, 'http://some-triplestore/person2', $new_entity->ID ), $field->data );
+		$this->assertEquals( array(
+			$person_id,
+			'http://some-triplestore/person2',
+			$new_entity->ID,
+		), $field->data );
 
 	}
 
@@ -259,8 +280,8 @@ class MetaboxTest extends WP_UnitTestCase {
 					'export_type' => 'http://schema.org/Person',
 					'constraints' => array(
 						'uri_type'    => array( 'Person', 'Organization' ),
-						'cardinality' => INF
-					)
+						'cardinality' => INF,
+					),
 				),
 			);
 		}

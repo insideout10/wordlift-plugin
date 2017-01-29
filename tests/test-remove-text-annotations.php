@@ -1,149 +1,152 @@
 <?php
 require_once 'functions.php';
 
-class RemoveTextAnnotationsTest extends WP_UnitTestCase
-{
+class RemoveTextAnnotationsTest extends Wordlift_Unit_Test_Case {
 
-    /**
-     * Set up the test.
-     */
-    function setUp()
-    {
-        parent::setUp();
-        wl_configure_wordpress_test();
-    }
+	/**
+	 * Set up the test.
+	 */
+	function setUp() {
+		parent::setUp();
 
-    function testRemoveATextAnnotation() {
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
 
-        $content = <<<EOF
+		wl_configure_wordpress_test();
+		
+	}
+
+	function testRemoveATextAnnotation() {
+
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation">Roma</span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    function testRemoveASelectedTextAnnotation() {
+	function testRemoveASelectedTextAnnotation() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation selected">Roma</span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    function testRemoveAnUnlinkedTextAnnotation() {
+	function testRemoveAnUnlinkedTextAnnotation() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation unlinked">Roma</span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    function testRemoveAnUnlinkedAndSelectedTextAnnotation() {
+	function testRemoveAnUnlinkedAndSelectedTextAnnotation() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation unlinked selected">Roma</span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    function testRemoveNestedTextAnnotations() {
+	function testRemoveNestedTextAnnotations() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation"><span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f7" class="textannotation">Roma</span></span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    // Test case derioved from issue https://github.com/insideout10/wordlift-plugin/issues/234
-    function testRemoveTextAnnotationsWithBlankSpanInside() {
+	// Test case derioved from issue https://github.com/insideout10/wordlift-plugin/issues/234
+	function testRemoveTextAnnotationsWithBlankSpanInside() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation"><span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f7" class="textannotation">Roma<span></span></span></span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    // Test case derioved from issue https://github.com/insideout10/wordlift-plugin/issues/234
-    function testRemoveTextAnnotationsWithNestedBlankSpanInside() {
+	// Test case derioved from issue https://github.com/insideout10/wordlift-plugin/issues/234
+	function testRemoveTextAnnotationsWithNestedBlankSpanInside() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation"><span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f7" class="textannotation">Roma<span><span></span></span></span></span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a Roma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    // Test case more generic derived from issue https://github.com/insideout10/wordlift-plugin/issues/234
-    function testRemoveAnnotationWithMarkupInside() {
+	// Test case more generic derived from issue https://github.com/insideout10/wordlift-plugin/issues/234
+	function testRemoveAnnotationWithMarkupInside() {
 
-        $this->markTestSkipped(
-              'Markup within annotation is not allowed at the moment'
-            );
+		$this->markTestSkipped(
+			'Markup within annotation is not allowed at the moment'
+		);
 
-        $content = <<<EOF
+		$content          = <<<EOF
 Sono nato a <span id="urn:enhancement-69d1fcf5-878b-4462-68f4-8066eb93c0f9" class="textannotation">R<em>o</em>ma</span>.
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a R<em>o</em>ma.
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
-    function testKeepADisambiguatedTextAnnotation() {
+	function testKeepADisambiguatedTextAnnotation() {
 
-        $content = <<<EOF
+		$content          = <<<EOF
 <span id="urn:enhancement-1dd737ba-ad9f-68e5-d372-6c98a9cda3c0" class="textannotation">Sono</span> nato a <span id="urn:enhancement-7616be76-a52b-b728-6b3b-f94d2499a87b" class="textannotation disambiguated wl-place" itemid="http://dbpedia.org/resource/Rome">Roma</span>
 EOF;
-        $expected_content = <<<EOF
+		$expected_content = <<<EOF
 Sono nato a <span id="urn:enhancement-7616be76-a52b-b728-6b3b-f94d2499a87b" class="textannotation disambiguated wl-place" itemid="http://dbpedia.org/resource/Rome">Roma</span>
 EOF;
-        // addslashes is used here to simulate a content sent in $_POST
-        $data = array( 'post_content' => addslashes( $content ) );
-        $output = wl_remove_text_annotations( $data ); 
-        $this->assertEquals( addslashes( $expected_content ), $output[ 'post_content' ] );
-    }
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
 
 }

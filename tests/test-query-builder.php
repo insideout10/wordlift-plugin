@@ -6,12 +6,12 @@ require_once( 'functions.php' );
  *
  * @since 3.1.7
  */
-class QueryBuilderTest extends WP_UnitTestCase {
+class QueryBuilderTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -22,6 +22,9 @@ class QueryBuilderTest extends WP_UnitTestCase {
 	 */
 	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		$this->turn_off_entity_push();
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'QueryBuilderTest' );
 
