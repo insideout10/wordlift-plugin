@@ -62,7 +62,6 @@ env:
   matrix:
     - SCRIPT=test:php WP_VERSION=nightly
     - SCRIPT=test:php WP_VERSION=4.7
-    - SCRIPT=test:php WP_VERSION=4.5
     - SCRIPT=test:php WP_VERSION=4.2
 
 services:
