@@ -74,32 +74,32 @@ services:
 
 # Legacy (required by test:js and test:php).
 before_install:
+  # If we're running the PHP tests, we need a WP test site.
   - |
     if [[ "$SCRIPT" == "test:php" ]]; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install --dev
     fi
+  # If we're running the JS test we need a browser.
   - |
     if [[ "$SCRIPT" == "test:js" ]]; then
       export CHROME_BIN=chromium-browser
       export DISPLAY=:99.0
       sh -e /etc/init.d/xvfb start
     fi
+  # If we're making e2e tests, we need the SauceConnect tunnel and to install Apache.
   - |
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_start.sh
+      .ci/travis/install_apache.sh
+      .ci/travis/install_wp_cli.sh
+      .ci/travis/install_wordpress.sh
     fi
 
 before_script:
   # Create WordPress' database.
   - mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
-  # Install Apache.
-  - .ci/travis/install_apache.sh
-  # Install wp-cli.
-  - .ci/travis/install_wp_cli.sh
-  # Install WordPress.
-  - .ci/travis/install_wordpress.sh
-  # Install an update version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
+  # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
   - nvm use 6
@@ -113,6 +113,7 @@ before_script:
 script: npm run $SCRIPT
 
 after_script:
+  # Stop SauceConnect.
   - |
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_stop.sh
