@@ -83,12 +83,12 @@ EOF;
 
 						$( '.$this->meta_name[type=text]' ).wldatetimepicker( {
 							// Format of date time displayed at the input.
-							dateFormat: '$this->date_format',
+							dateFormat: 'yy/mm/dd',
 							timeFormat: 'HH:mm',
 
 							// The hidden field used to store the value, and the format.
 							altField: $( '.$this->meta_name[type=hidden]' ),
-							altFormat: 'yyyy-mm-dd',
+							altFormat: 'yy-mm-dd',
 							altFieldTimeOnly: false,
 							altSeparator:'T',
 							altTimeFormat: 'HH:mm',
