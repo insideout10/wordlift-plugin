@@ -137,6 +137,22 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.10.0 (2017-01-30) =
+* Enhancement: [#371](https://github.com/insideout10/wordlift-plugin/issues/371): Extending the list of properties for schema-org:Article.
+* Enhancement: [#358](https://github.com/insideout10/wordlift-plugin/issues/358): Application Key Not Set - Messaging improvement is needed.
+* Enhancement: [#350](https://github.com/insideout10/wordlift-plugin/issues/350): Entity Annotation Loop.
+* Enhancement: [#345](https://github.com/insideout10/wordlift-plugin/issues/345): Entity suggested when analyzing the entity content itself.
+* Enhancement: [#305](https://github.com/insideout10/wordlift-plugin/issues/305): Entity Types' widget should be flat.
+* Enhancement: [#291](https://github.com/insideout10/wordlift-plugin/issues/291): The calendar for startDate and endDate of an event cannot be used for historical events.
+* Enhancement: [#254](https://github.com/insideout10/wordlift-plugin/issues/254): Timeline visualization problem.
+* Fix: [#448](https://github.com/insideout10/wordlift-plugin/issues/448): JSON-LD not loaded with WP Fastest Cache plugin.
+* Fix: [#447](https://github.com/insideout10/wordlift-plugin/issues/447): Enqueue of styles and JS should be more selective and limited to content editing screens.
+* Fix: [#446](https://github.com/insideout10/wordlift-plugin/issues/446): Return value of wl_schema_get_value not always check to not be null.
+* Fix: [#444](https://github.com/insideout10/wordlift-plugin/issues/444): Typo on the dashboard.
+* Fix: [#438](https://github.com/insideout10/wordlift-plugin/issues/438): Autocomplete fails in metaboxes.
+* Fix: [#437](https://github.com/insideout10/wordlift-plugin/issues/437): Some found entities lack the related text annotation.
+* Fix: [#278](https://github.com/insideout10/wordlift-plugin/issues/278): When creating a new entity the duplicate warning appears for entity that have been trashed.
+
 = 3.9.8 (2017-01-29) =
 * Fix: [#462](https://github.com/insideout10/wordlift-plugin/issues/462): Find duplicated entities.
 
