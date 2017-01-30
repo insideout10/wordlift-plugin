@@ -10,7 +10,7 @@ class Wordlift_Timeline_Service {
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -19,7 +19,7 @@ class Wordlift_Timeline_Service {
 	/**
 	 * The Entity service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
 	 */
@@ -29,7 +29,7 @@ class Wordlift_Timeline_Service {
 	 * The number of words to use for the excerpt, set in the `to_json` function
 	 * and used by a filter.
 	 *
-	 * @since 3.7.0
+	 * @since  3.7.0
 	 * @access private
 	 * @var int $excerpt_length The number of words to use for the excerpt.
 	 */
@@ -38,7 +38,7 @@ class Wordlift_Timeline_Service {
 	/**
 	 * A singleton instance of the Timeline service (useful for unit tests).
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Timeline_Service $instance The singleton instance.
 	 */
@@ -81,7 +81,7 @@ class Wordlift_Timeline_Service {
 	public function ajax_timeline() {
 
 		// Get the ID of the post who requested the timeline.
-		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : NULL );
+		$post_id = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : null );
 
 		// Get the events and transform them for the JSON response, then send them to the client.
 		wp_send_json( $this->to_json( $this->get_events( $post_id ) ) );
@@ -93,19 +93,19 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @uses wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
+	 * @uses  wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
 	 *
 	 * @param int $post_id The post ID.
 	 *
 	 * @return array An array of event posts.
 	 */
-	public function get_events( $post_id = NULL ) {
+	public function get_events( $post_id = null ) {
 
 		// Get the entity IDs either from the entities related to the specified post or from the last 50 published
 		// posts if no post has been specified.
 		$ids = ( is_numeric( $post_id )
 			? wl_core_get_related_entity_ids( $post_id )
-			: $this->entity_service->get_all_related_to_last_50_published_posts() );
+			: $this->get_all_related_to_last_50_published_posts() );
 
 		// Add the post itself if it's an entity.
 		if ( is_numeric( $post_id ) && $this->entity_service->is_entity( $post_id ) ) {
@@ -130,20 +130,20 @@ class Wordlift_Timeline_Service {
 				'relation' => 'AND',
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_START,
-					'value'   => NULL,
-					'compare' => '!='
+					'value'   => null,
+					'compare' => '!=',
 				),
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
-					'value'   => NULL,
-					'compare' => '!='
-				)
+					'value'   => null,
+					'compare' => '!=',
+				),
 			),
 			'tax_query'      => array(
 				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
-				'terms'    => 'event'
-			)
+				'terms'    => 'event',
+			),
 		) );
 	}
 
@@ -188,8 +188,8 @@ class Wordlift_Timeline_Service {
 		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
 
 			// Get the start and end dates.
-			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, TRUE ) );
-			$end_date   = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, TRUE ) );
+			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
+			$end_date   = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
 
 			// Set the starting slide.
 			$event_index ++;
@@ -199,7 +199,7 @@ class Wordlift_Timeline_Service {
 
 			// Load thumbnail
 			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) )
-			     && FALSE !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+			     && false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
 				// Set the thumbnail URL.
@@ -226,7 +226,7 @@ class Wordlift_Timeline_Service {
 				sprintf(
 				/* translators: %s: Name of current post */
 					__( 'Continue reading %s' ),
-					the_title_attribute( array( 'echo' => FALSE ) )
+					the_title_attribute( array( 'echo' => false ) )
 				),
 				__( '(more&hellip;)' )
 			);
@@ -238,7 +238,7 @@ class Wordlift_Timeline_Service {
 
 			// If we have an excerpt, set it.
 			if ( 0 < $excerpt_length ) {
-				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt( $item ), get_permalink(), $more_link_text );
+				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt(), get_permalink(), $more_link_text );
 			}
 
 			return $date;
@@ -303,6 +303,40 @@ class Wordlift_Timeline_Service {
 			'day'   => (int) date( 'd', $value ),
 
 		);
+	}
+
+	/**
+	 * Get the entities related to the last 50 posts published on this blog (we're keeping a long function name due to
+	 * its specific function).
+	 *
+	 * @since 3.1.0
+	 *
+	 * @return array An array of post IDs.
+	 */
+	public function get_all_related_to_last_50_published_posts() {
+
+		// Global timeline. Get entities from the latest posts.
+		$latest_posts_ids = get_posts( array(
+			'numberposts' => 50,
+			'fields'      => 'ids', //only get post IDs
+			'post_type'   => 'post',
+			'post_status' => 'publish',
+		) );
+
+		if ( empty( $latest_posts_ids ) ) {
+			// There are no posts.
+			return array();
+		}
+
+		// Collect entities related to latest posts
+		$entity_ids = array();
+		foreach ( $latest_posts_ids as $id ) {
+			$entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
+				'status' => 'publish',
+			) ) );
+		}
+
+		return $entity_ids;
 	}
 
 }

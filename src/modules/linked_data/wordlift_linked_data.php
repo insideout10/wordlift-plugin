@@ -82,7 +82,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 			// Detect the uri depending if is an existing or a new entity
 			$uri = ( null === $ie ) ?
-				Wordlift_Entity_Service::get_instance()->build_uri(
+				Wordlift_Uri_Service::get_instance()->build_uri(
 					$entity['label'],
 					Wordlift_Entity_Service::TYPE_NAME,
 					$entity_type
@@ -336,8 +336,6 @@ function wl_save_entity( $entity_data ) {
 
 	// Call hooks.
 	do_action( 'wl_save_entity', $post_id );
-
-	wl_write_log( "[ post id :: $post_id ][ uri :: $uri ][ label :: $label ][ wl uri :: $wl_uri ][ types :: " . implode( ',', $entity_types ) . " ][ images count :: " . count( $images ) . " ][ same_as count :: " . count( $same_as ) . " ]" );
 
 	foreach ( $images as $image_remote_url ) {
 

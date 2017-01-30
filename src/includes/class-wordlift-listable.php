@@ -23,11 +23,11 @@ abstract class Wordlift_Listable {
 	 */
 	public function process( $callback, $args = array(), $offset = 0, $max = PHP_INT_MAX ) {
 
-		// We process users in chunks in order to avoid using too much memory,
-		// starting at offset 0, 10 users at a time.
-		$limit = 10;
+		// We process chunks in order to avoid using too much memory,
+		// starting at offset 0, 10 at a time.
+//		$limit = 10;
 
-		while ( 0 < sizeof( $items = $this->find( $offset, $limit, $args ) ) && $offset < $max ) {
+		while ( 0 < sizeof( $items = $this->find( $offset, 1, $args ) ) && $offset < $max ) {
 
 			// Cycle through items and call the callback function.
 			foreach ( $items as $item ) {
@@ -38,7 +38,7 @@ abstract class Wordlift_Listable {
 			wp_cache_flush();
 
 			// Move to the next offset.
-			$offset += $limit;
+			$offset += 1;
 
 		}
 

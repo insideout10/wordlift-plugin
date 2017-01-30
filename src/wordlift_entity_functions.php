@@ -76,7 +76,7 @@ function wl_build_entity_uri( $post_id ) {
 		);
 	}
 
-	return Wordlift_Entity_Service::get_instance()->build_uri(
+	return Wordlift_Uri_Service::get_instance()->build_uri(
 		$entity_slug,
 		$post->post_type );
 

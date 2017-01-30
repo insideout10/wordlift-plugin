@@ -206,32 +206,34 @@ function wl_configuration_set_redlink_dataset_name( $value ) {
 	wl_configuration_set( 'wl_advanced_settings', 'redlink_dataset_name', $value );
 }
 
-
 /**
  * Get the Redlink dataset URI.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+ *
+ * @since      3.10.0 deprecated.
+ * @since      3.0.0
  *
  * @return string The Redlink dataset URI.
  */
 function wl_configuration_get_redlink_dataset_uri() {
 
-	$options = get_option( 'wl_advanced_settings', '' );
-
-	return ( empty( $options['redlink_dataset_uri'] ) ? '' : $options['redlink_dataset_uri'] );
+	return Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 }
-
 
 /**
  * Set the Redlink dataset URI.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->set_dataset_uri( $value );
+ *
+ * @since      3.10.0 deprecated.
+ * @since      3.0.0
  *
  * @param string $value The Redlink dataset URI.
  */
 function wl_configuration_set_redlink_dataset_uri( $value ) {
 
-	wl_configuration_set( 'wl_advanced_settings', 'redlink_dataset_uri', $value );
+	Wordlift_Configuration_Service::get_instance()->set_dataset_uri( $value );
 }
 
 /**
@@ -325,7 +327,7 @@ function wl_configuration_get_accounts_by_key_dataset_uri( $key ) {
  *
  * @return string The URL to call to perform the SELECT query.
  */
-function wl_configuration_get_query_select_url( $output, $dataset = NULL ) {
+function wl_configuration_get_query_select_url( $output, $dataset = null ) {
 
 	// If the WordLift Key is set, we use WordLift.
 	$key = wl_configuration_get_key();

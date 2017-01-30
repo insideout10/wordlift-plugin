@@ -23,15 +23,26 @@ class Wordlift_Debug_Service {
 	private $entity_service;
 
 	/**
+	 * A {@link Wordlift_Uri_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access private
+	 * @var \Wordlift_Uri_Service $uri_service A {@link Wordlift_Uri_Service} instance.
+	 */
+	private $uri_service;
+
+	/**
 	 * Wordlift_Debug_Service constructor.
 	 *
 	 * @since 3.7.2
 	 *
 	 * @param Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Uri_Service   $uri_service    A {@link Wordlift_Uri_Service} instance.
 	 */
-	public function __construct( $entity_service ) {
+	public function __construct( $entity_service, $uri_service ) {
 
 		$this->entity_service = $entity_service;
+		$this->uri_service    = $uri_service;
 
 		add_action( 'wp_ajax_wl_dump_uri', array( $this, 'dump_uri' ) );
 
@@ -49,7 +60,7 @@ class Wordlift_Debug_Service {
 
 		$uri       = $this->entity_service->get_uri( $post_id );
 		$encoding  = mb_detect_encoding( $uri );
-		$build_uri = $this->entity_service->build_uri( $post->post_title, $post->post_type );
+		$build_uri = $this->uri_service->build_uri( $post->post_title, $post->post_type );
 
 
 		var_dump( $uri );

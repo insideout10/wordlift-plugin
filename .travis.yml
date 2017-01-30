@@ -4,6 +4,11 @@ sudo: required
 
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
+php:
+ - '5.3'
+ - '5.4'
+ - '5.5'
+ - '5.6'
 
 # Test matrix:
 #  - PHP unit tests: PHP 5.3, 5.4, 5.5, 5.6, 7.0, 7.1
@@ -12,40 +17,39 @@ language: php
 # @@todo: we're currently testing only the last version of WordPress, we should also test the previous ones and nightly.
 matrix:
   include:
-  # JavaScript end-to-end tests.
-  - php: 5.6
-    env: SCRIPT=test:e2e
-  # JavaScript unit tests.
-  - php: 5.6
-    env: SCRIPT=test:js
-  # PHP unit tests on PHP 5.3
-  - php: 5.3
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 5.4
-  - php: 5.4
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 5.5
-  - php: 5.5
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 5.6
-  - php: 5.6
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 7.0
-  - php: 7.0
-    env: SCRIPT=test:php
-  # PHP unit tests on PHP 7.1
-  - php: 7.1
-    env: SCRIPT=test:php
+    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+    - php: 7.0
+      env: SCRIPT=test:php WP_VERSION=4.7
+    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+    - php: 7.1
+      env: SCRIPT=test:php WP_VERSION=4.7
+    # WordPress nightly.
+    - php: 5.6
+      env: SCRIPT=test:php WP_VERSION=nightly
+    # JavaScript end-to-end tests.
+    - php: 5.6
+      env: SCRIPT=test:e2e
+    # JavaScript unit tests.
+    - php: 5.6
+      env: SCRIPT=test:js
+  allow_failures:
+    # WordPress nightly.
+    - php: 5.6
+      env: SCRIPT=test:php WP_VERSION=nightly
 
 # Cache the node_modules folder.
 # See https://blog.travis-ci.com/2013-12-05-speed-up-your-builds-cache-your-dependencies
 cache:
   directories:
+    # We cache vendor since it only contains the PHPUnit related files.
+    - vendor
     - node_modules
+    - $HOME/.npm
+    - $HOME/.composer/cache
 
 addons:
   # Have Travis CI start a SauceLabs Connect instance for us.
-  sauce_connect: true
+#  sauce_connect: true
   # see https://docs.travis-ci.com/user/hosts
   # see https://support.saucelabs.com/customer/en/portal/articles/2639448-issues-with-localhost-proxying-on-edge-and-safari-8-and-9-using-sauce-connect-proxy
   hosts:
@@ -68,6 +72,9 @@ env:
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
+  matrix:
+    - SCRIPT=test:php WP_VERSION=4.7
+    - SCRIPT=test:php WP_VERSION=4.2
 
 services:
   # Require MySQL.
@@ -75,28 +82,31 @@ services:
 
 # Legacy (required by test:js and test:php).
 before_install:
+  # If we're running the PHP tests, we need a WP test site.
   - |
     if [[ "$SCRIPT" == "test:php" ]]; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install --dev
     fi
+  # If we're running the JS test we need a browser.
   - |
     if [[ "$SCRIPT" == "test:js" ]]; then
       export CHROME_BIN=chromium-browser
       export DISPLAY=:99.0
       sh -e /etc/init.d/xvfb start
     fi
+  # If we're making e2e tests, we need the SauceConnect tunnel, Apache and WordPress.
+  - |
+    if [[ "$SCRIPT" == "test:e2e" ]]; then
+      .ci/travis/sauce_connect_start.sh
+      .ci/travis/install_apache.sh
+      mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
+      .ci/travis/install_wp_cli.sh
+      .ci/travis/install_wordpress.sh
+    fi
 
 before_script:
-  # Create WordPress' database.
-  - mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
-  # Install Apache.
-  - .ci/travis/install_apache.sh
-  # Install wp-cli.
-  - .ci/travis/install_wp_cli.sh
-  # Install WordPress.
-  - .ci/travis/install_wordpress.sh
-  # Install an update version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
+  # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
   - nvm use 6
@@ -108,6 +118,13 @@ before_script:
 
 # Finally launch the script.
 script: npm run $SCRIPT
+
+after_script:
+  # Stop SauceConnect.
+  - |
+    if [[ "$SCRIPT" == "test:e2e" ]]; then
+      .ci/travis/sauce_connect_stop.sh
+    fi
 
 # Notify our Slack channel.
 notifications:

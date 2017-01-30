@@ -97,43 +97,36 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
-		// Get the current screen.
-		$screen = get_current_screen();
-
-		// If there's no screen or we're not in edit mode, don't provide the `wlSettings`,
-		// since the current admin script only provides the configuration data for
-		// the title check.
-		//
-		// This might change as soon as we structure the JavaScript code into well
-		// defined script files.
-		if ( null === $screen || 'edit' !== $screen->parent_base ) {
-			return;
-		}
-
 		// Enqueue our script.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array( 'jquery' ), $this->version, false );
 
-		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
-		$entity_being_edited = get_post();
-
-		wp_localize_script( $this->plugin_name, 'wlSettings', array(
-				// @todo scripts in admin should use wp.post.
-				'ajax_url'          => admin_url( 'admin-ajax.php' ),
-				// @todo remove specific actions from settings.
-				'action'            => 'entity_by_title',
-				'post_id'           => $entity_being_edited->ID,
-				'entityBeingEdited' => isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ),
-				'language'          => Wordlift_Configuration_Service::get_instance()->get_language_code(),
-				// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
-				// from the results, since we don't want the current entity to be discovered by the analysis.
-				//
-				// See https://github.com/insideout10/wordlift-plugin/issues/345
-				'itemId'            => Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID ),
-				'l10n'              => array(
-					'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
-				),
-			)
+		// Set the basic params.
+		$params = array(
+			// @todo scripts in admin should use wp.post.
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			// @todo remove specific actions from settings.
+			'action'   => 'entity_by_title',
+			'language' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+			'l10n'     => array(
+				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
+			),
 		);
+
+		// Set post-related values if there's a current post.
+		if ( null !== $post = $entity_being_edited = get_post() ) {
+
+			$params['post_id']           = $entity_being_edited->ID;
+			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() );
+			// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
+			// from the results, since we don't want the current entity to be discovered by the analysis.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/345
+			$params['itemId'] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID );
+
+		}
+
+		// Finally output the params as `wlSettings` for JavaScript code.
+		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
 
 	}
 
