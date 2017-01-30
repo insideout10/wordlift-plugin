@@ -42,17 +42,17 @@ msgstr ""
 "This means %3$s enriched posts out of a total of %4$s."
 
 #: ../admin/class-wordlift-admin-dashboard.php:74
-msgid "avarage entity rating"
+msgid "average entity rating"
 msgstr ""
 
 #: ../admin/class-wordlift-admin-dashboard.php:76
 #, php-format
 msgid ""
 "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an "
-"avarage rating of %3$s."
+"average rating of %3$s."
 msgstr ""
 "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an "
-"avarage rating of %3$s."
+"average rating of %3$s."
 
 #: ../admin/class-wordlift-admin-dashboard.php:83
 msgid "triples in your graph"

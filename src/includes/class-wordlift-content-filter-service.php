@@ -1,15 +1,20 @@
 <?php
-
 /**
+ * Services: Content Filter Service.
+ *
  * Define the Wordlift_Content_Filter_Service class. This file is included from
  * the main class-wordlift.php file.
+ *
+ * @since   3.8.0
+ * @package Wordlift
  */
 
 /**
  * Define the Wordlift_Content_Filter_Service class which intercepts the
  * 'the_content' WP filter and mangles the content accordingly.
  *
- * @since 3.8.0
+ * @since   3.8.0
+ * @package Wordlift
  */
 class Wordlift_Content_Filter_Service {
 
@@ -23,7 +28,7 @@ class Wordlift_Content_Filter_Service {
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
@@ -58,7 +63,7 @@ class Wordlift_Content_Filter_Service {
 		// occurs fail silently returning the original content.
 		return preg_replace_callback( self::PATTERN, array(
 			$this,
-			'link'
+			'link',
 		), $content ) ?: $content;
 	}
 
@@ -78,10 +83,13 @@ class Wordlift_Content_Filter_Service {
 		$label = $matches[3];
 
 		// Get the entity post by URI.
-		if ( NULL === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
+		if ( null === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
 
-			// If the entity post is not found return the original text.
-			return $matches[0];
+			// If the entity post is not found return the label w/o the markup
+			// around it.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/461
+			return $label;
 		}
 
 		// Get the link.

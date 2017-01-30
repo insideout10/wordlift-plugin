@@ -19,11 +19,20 @@ class Wordlift_Log_Service {
 	/**
 	 * The class related to the logs.
 	 *
-	 * @since 1.0.0
+	 * @since  1.0.0
 	 * @access private
 	 * @var string $class_name The class related to the logs.
 	 */
 	private $class_name;
+
+	/**
+	 * A singleton instance for legacy logging.
+	 *
+	 * @since  3.10.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $instance A singleton instance for legacy logging.
+	 */
+	private static $instance = null;
 
 	/**
 	 * Create an instance of the Log service.
@@ -37,6 +46,19 @@ class Wordlift_Log_Service {
 
 	}
 
+	/**
+	 * Get the ROOT logger.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @return \Wordlift_Log_Service A singleton instance for legacy logging.
+	 */
+	public static function get_instance() {
+
+		return self::$instance ?: self::$instance = new Wordlift_Log_Service( 'ROOT' );
+	}
+
+
 	public static function get_logger( $class_name ) {
 
 		return new Wordlift_Log_Service( $class_name );
@@ -48,7 +70,7 @@ class Wordlift_Log_Service {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $level The log level.
+	 * @param string $level   The log level.
 	 * @param string $message The message to log.
 	 */
 	public function log( $level, $message ) {

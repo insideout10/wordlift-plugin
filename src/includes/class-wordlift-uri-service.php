@@ -1,13 +1,19 @@
 <?php
 /**
+ * Services: URI Service.
+ *
  * Define the {@link Wordlift_Uri_Service} responsible for managing entity URIs
  * (for posts, entities, authors, ...).
+ *
+ * @since   3.7.1
+ * @package Wordlift
  */
 
 /**
  * The {@link Wordlift_Uri_Service} class.
  *
- * @since 3.7.1
+ * @since   3.7.1
+ * @package Wordlift
  */
 class Wordlift_Uri_Service {
 
@@ -114,6 +120,73 @@ class Wordlift_Uri_Service {
 //		$path_ascii = mb_convert_encoding( $path, 'ASCII' );
 
 		return sanitize_title( preg_replace( self::INVALID_CHARACTERS, $char, stripslashes( $path ) ) );
+	}
+
+	/**
+	 * Build an entity uri for a given title. The uri is composed using a given
+	 * post_type and a title. If already exists an entity e2 with a given uri a
+	 * numeric suffix is added. If a schema type is given entities with same label
+	 * and same type are overridden.
+	 *
+	 * @since 3.5.0
+	 *
+	 * @param string  $title           A post title.
+	 * @param string  $post_type       A post type. Default value is 'entity'
+	 * @param string  $schema_type     A schema org type.
+	 * @param integer $increment_digit A digit used to call recursively the same function.
+	 *
+	 * @return string Returns an uri.
+	 */
+	public function build_uri( $title, $post_type, $schema_type = null, $increment_digit = 0 ) {
+
+		// Get the entity slug suffix digit
+		$suffix_digit = $increment_digit + 1;
+
+		// Get a sanitized uri for a given title
+		$entity_slug = ( 0 == $increment_digit ) ?
+			wl_sanitize_uri_path( $title ) :
+			wl_sanitize_uri_path( $title . '_' . $suffix_digit );
+
+		// Compose a candidate uri.
+		$new_entity_uri = sprintf( '%s/%s/%s',
+			wl_configuration_get_redlink_dataset_uri(),
+			$post_type,
+			$entity_slug
+		);
+
+		$this->log->trace( "Going to check if uri is used [ new_entity_uri :: $new_entity_uri ] [ increment_digit :: $increment_digit ]" );
+
+		global $wpdb;
+
+		// Check if the candidated uri already is used
+		$stmt = $wpdb->prepare(
+			"SELECT post_id FROM $wpdb->postmeta WHERE meta_key = %s AND meta_value = %s LIMIT 1",
+			WL_ENTITY_URL_META_NAME,
+			$new_entity_uri
+		);
+
+		// Perform the query
+		$post_id = $wpdb->get_var( $stmt );
+
+		// If the post does not exist, then the new uri is returned
+		if ( ! is_numeric( $post_id ) ) {
+			$this->log->trace( "Going to return uri [ new_entity_uri :: $new_entity_uri ]" );
+
+			return $new_entity_uri;
+		}
+
+		// If schema_type is equal to schema org type of post x, then the new uri is returned
+		$schema_post_type = wl_entity_type_taxonomy_get_type( $post_id );
+
+		// @todo: we shouldn't rely on css classes to take such decisions.
+		if ( $schema_type === $schema_post_type['css_class'] ) {
+			$this->log->trace( "An entity with the same title and type already exists! Return uri [ new_entity_uri :: $new_entity_uri ]" );
+
+			return $new_entity_uri;
+		}
+
+		// Otherwise the same function is called recursively
+		return $this->build_uri( $title, $post_type, $schema_type, ++ $increment_digit );
 	}
 
 }

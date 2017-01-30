@@ -82,11 +82,11 @@ msgid "%1$s, of your <a href=\"%2$s\">posts</a> are annotated. This means %3$s a
 msgstr "%1$s Ihrer <a href=\"%2$s\">Beiträge</a> sind bereits bearbeitet. Das bedeutet %3$s von insgesamt %4$s Beiträgen sind annotiert."
 
 #: admin/class-wordlift-admin-dashboard.php:74
-msgid "avarage entity rating"
+msgid "average entity rating"
 msgstr "Durchschnittliche Bewertung der Entität "
 
 #: admin/class-wordlift-admin-dashboard.php:76
-msgid "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an avarage rating of %3$s."
+msgid "You have %1$s entities in your <a href=\"%2$s\">vocabulary</a> with an average rating of %3$s."
 msgstr "Sie haben %1$s Entitäten in Ihrem <a href=\"%2$s\">Vokabular</a> mit einer durchschnittlichen Bewertung von %3$s."
 
 #: admin/class-wordlift-admin-dashboard.php:83

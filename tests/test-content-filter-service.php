@@ -8,12 +8,12 @@
  *
  * @since 3.8.0
  */
-class Wordlift_Content_Filter_Service_Test extends WP_UnitTestCase {
+class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
@@ -21,7 +21,7 @@ class Wordlift_Content_Filter_Service_Test extends WP_UnitTestCase {
 
 	/**
 	 * The {@link Wordlift_Content_Filter_Service} instance to test.
-	 * @since 3.8.0
+	 * @since  3.8.0
 	 * @access private
 	 * @var Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
 	 */
@@ -32,6 +32,9 @@ class Wordlift_Content_Filter_Service_Test extends WP_UnitTestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$this->entity_service         = Wordlift_Entity_Service::get_instance();
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this );
@@ -98,4 +101,3 @@ class Wordlift_Content_Filter_Service_Test extends WP_UnitTestCase {
 		return $this->factory->post->create();
 	}
 }
-
