@@ -1,15 +1,20 @@
 <?php
-
 /**
+ * Metaxboxes: Date Field.
+ *
  * This file defines the WL_Metabox_Field_date class which displays a date field
  * in WordPress' entity posts pages.
+ *
+ * @since   3.2.0
+ * @package Wordlift
  */
 
 /**
  * The WL_Metabox_Field_date class extends {@link WL_Metabox_Field} and provides
  * support for date fields.
  *
- * @since 3.2.0
+ * @since   3.2.0
+ * @package Wordlift
  */
 class WL_Metabox_Field_date extends WL_Metabox_Field {
 
@@ -110,4 +115,5 @@ EOF;
 
 		return $html;
 	}
+
 }
