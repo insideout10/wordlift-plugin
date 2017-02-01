@@ -19,6 +19,7 @@
     "no-mixed-spaces-and-tabs": [
       "error",
       "smart-tabs"
-    ]
+    ],
+    "wpcalypso/jsx-classname-namespace": "off"
   }
 }

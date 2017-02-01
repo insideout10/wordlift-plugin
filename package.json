@@ -24,6 +24,7 @@
     "babel-preset-react": "^6.22.0",
     "eslint": "^3.14.1",
     "eslint-config-wpcalypso": "^0.6.0",
+    "eslint-loader": "^1.6.1",
     "eslint-plugin-react": "^6.9.0",
     "eslint-plugin-wpcalypso": "^3.0.2",
     "grunt": "^0.4.5",

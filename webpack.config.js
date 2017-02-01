@@ -25,6 +25,15 @@ const config = {
 	},
 	module: {
 		rules: [
+			// `eslint`.
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				// `eslint` runs before any other loader.
+				enforce: 'pre',
+				use: 'eslint-loader',
+			},
+			// `babel`.
 			{ test: /\.(js|jsx)$/, use: 'babel-loader' }
 		]
 	},
