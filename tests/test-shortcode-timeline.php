@@ -4,15 +4,12 @@ require_once 'functions.php';
 /**
  * Class TimelineShortcodeTest
  */
-class TimelineShortcodeTest extends WP_UnitTestCase {
-
-//	private static $FIRST_POST_ID;
-//	private static $MOST_CONNECTED_ENTITY_ID;
+class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Wordlift_Timeline_Service} instance.
 	 *
-	 * @since 3.7.0
+	 * @since  3.7.0
 	 * @access private
 	 * @var \Wordlift_Timeline_Service $timeline_service The {@link Wordlift_Timeline_Service} instance.
 	 */
@@ -24,8 +21,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		// Configure WordPress with the test settings.
-		wl_configure_wordpress_test();
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		// Empty the blog.
 		wl_empty_blog();
@@ -48,19 +45,19 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		$entity_1_id    = wl_create_post( "Entity 1's\nText", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
 		$thumbnail_1_id = $this->createPostThumbnail( 'http://example.org/entity_1.png', 'Entity 1 Thumbnail', 'image/png', 'dummy/image_1.png', $entity_1_id );
 		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', TRUE );
-		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', TRUE );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
 		$entity_2_id    = wl_create_post( "Entity 2's\nText", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
 		$thumbnail_2_id = $this->createPostThumbnail( 'http://example.org/entity_2.png', 'Entity 2 Thumbnail', 'image/png', 'dummy/image_2.png', $entity_2_id );
 		wl_set_entity_main_type( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', TRUE );
-		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', TRUE );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 
 		$entity_3_id = wl_create_post( '', 'entity-3', 'Entity 3', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', TRUE );
-		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', TRUE );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', true );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', true );
 
 		$entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
@@ -68,7 +65,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array(
 			$entity_1_id,
 			$entity_2_id,
-			$entity_4_id
+			$entity_4_id,
 		) );
 
 		// Call retrieving function with null argument (i.e. global timeline)
@@ -82,26 +79,29 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 	 *  * 1 Person entity reference by the Post
 	 */
 	function testGetEvents() {
-		$log = Wordlift_Log_Service::get_logger( 'testGetEvents' );
+
+		// We need to push entities to the Linked Data store for this test. We'll
+		// turn entity push back off at the end of the test.
+		self::turn_on_entity_push();
 
 		$post_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
 
 		$entity_1_id    = wl_create_post( "Entity 1's\nText", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
 		$thumbnail_1_id = $this->createPostThumbnail( 'http://example.org/entity_1.png', 'Entity 1 Thumbnail', 'image/png', 'dummy/image_1.png', $entity_1_id );
 		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', TRUE );
-		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', TRUE );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
 		$entity_2_id    = wl_create_post( "Entity 2's\nText", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
 		$thumbnail_2_id = $this->createPostThumbnail( 'http://example.org/entity_2.png', 'Entity 2 Thumbnail', 'image/png', 'dummy/image_2.png', $entity_2_id );
 		wl_set_entity_main_type( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', TRUE );
-		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', TRUE );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 
 		$entity_3_id = wl_create_post( '', 'entity-3', 'Entity 3', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', TRUE );
-		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', TRUE );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-03', true );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-09', true );
 
 		$entity_4_id = wl_create_post( '', 'entity-4', 'Entity 4', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_4_id, 'http://schema.org/Person' );
@@ -111,7 +111,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		wl_core_add_relation_instances( $post_id, WL_WHAT_RELATION, array(
 			$entity_1_id,
 			$entity_2_id,
-			$entity_4_id
+			$entity_4_id,
 		) );
 
 		$events = Wordlift_Timeline_Service::get_instance()
@@ -169,6 +169,10 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 
 		$this->assertEquals( $thumbnail_1[0], $date_1['media']['url'] );
 		$this->assertEquals( $thumbnail_2[0], $date_2['media']['url'] );
+
+		//
+		self::turn_off_entity_push();;
+
 	}
 
 	function createPostThumbnail( $guid, $label, $content_type, $file, $post_id ) {
@@ -178,7 +182,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 			'post_title'     => $label, // Set the title to the post title.
 			'post_content'   => '',
 			'post_status'    => 'inherit',
-			'post_mime_type' => $content_type
+			'post_mime_type' => $content_type,
 		);
 
 		// Create the attachment in WordPress and generate the related metadata.
@@ -187,7 +191,7 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 		wl_write_log( "createPostThumbnail [ " . wp_get_attachment_image( $attachment_id, 'thumbnail' ) . " ]" );
 
 		// Set it as the featured image.
-		$this->assertTrue( FALSE !== set_post_thumbnail( $post_id, $attachment_id ) );
+		$this->assertTrue( false !== set_post_thumbnail( $post_id, $attachment_id ) );
 
 		return $attachment_id;
 	}
@@ -209,22 +213,22 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 
 		$entity_1_id = wl_create_post( "Entity 1's Text", 'entity-1', "Entity 1's Title", 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', TRUE );
-		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', TRUE );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
+		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
 		$entity_2_id = wl_create_post( "Entity 2's Text", 'entity-2', "Entity 2's Title", 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
-		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', TRUE );
-		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', TRUE );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-02', true );
+		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-08', true );
 
 		$entity_3_id = wl_create_post( 'Entity 3 Text', 'entity-3', 'Entity 3 Title', 'publish', 'entity' );
 		wl_set_entity_main_type( $entity_2_id, 'http://schema.org/Place' );
-		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 45.12, TRUE );
-		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 90.3, TRUE );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LATITUDE, 45.12, true );
+		add_post_meta( $entity_3_id, Wordlift_Schema_Service::FIELD_GEO_LONGITUDE, 90.3, true );
 
 		wl_core_add_relation_instances( $post_1_id, WL_WHAT_RELATION, array(
 			$entity_1_id,
-			$entity_3_id
+			$entity_3_id,
 		) );
 		wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_2_id );
 
@@ -246,8 +250,8 @@ class TimelineShortcodeTest extends WP_UnitTestCase {
 	 */
 	function test_width_and_height() {
 
-		$width   = random_int( 100, 200 ) . 'px';
-		$height  = random_int( 100, 200 ) . 'px';
+		$width   = '100px';
+		$height  = '200px';
 		$content = do_shortcode( "[wl_timeline width='$width' height='$height']" );
 
 		$this->assertTrue( - 1 < strpos( $content, "width:$width" ) );

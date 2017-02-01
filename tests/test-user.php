@@ -1,13 +1,16 @@
 <?php
 require_once 'functions.php';
 
-class UserTest extends WP_UnitTestCase {
+class UserTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.
 	 */
 	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
@@ -23,7 +26,7 @@ class UserTest extends WP_UnitTestCase {
 			'user_login' => 'lorem_ipsum',
 			'user_pass'  => 'tmppass',
 			'first_name' => 'Lorem',
-			'last_name'  => 'Ipsum'
+			'last_name'  => 'Ipsum',
 		) );
 
 		$this->assertEquals(
@@ -37,7 +40,7 @@ class UserTest extends WP_UnitTestCase {
 
 		$user_id = wp_insert_user( array(
 			'user_login' => 'lorem_ipsum',
-			'user_pass'  => 'tmppass'
+			'user_pass'  => 'tmppass',
 		) );
 
 		$this->assertEquals(
@@ -50,7 +53,7 @@ class UserTest extends WP_UnitTestCase {
 			'user_login' => 'lorem_ipsum',
 			'user_pass'  => 'tmppass',
 			'first_name' => 'Lorem',
-			'last_name'  => 'Ipsum'
+			'last_name'  => 'Ipsum',
 		) );
 
 		$this->assertEquals( $update_user_id, $user_id );
@@ -67,7 +70,7 @@ class UserTest extends WP_UnitTestCase {
 			'user_login' => 'mario_rossi',
 			'user_pass'  => 'tmppass',
 			'first_name' => 'Mario',
-			'last_name'  => 'Rossi'
+			'last_name'  => 'Rossi',
 		) );
 
 		$this->assertEquals(
@@ -79,7 +82,7 @@ class UserTest extends WP_UnitTestCase {
 			'user_login' => 'mario_rossi_1',
 			'user_pass'  => 'tmppass',
 			'first_name' => 'Mario',
-			'last_name'  => 'Rossi'
+			'last_name'  => 'Rossi',
 		) );
 
 		$this->assertEquals(

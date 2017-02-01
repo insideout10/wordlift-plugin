@@ -127,7 +127,7 @@ class WL_Metabox {
 				$info[ $key ] = $property;
 
 				// Build the requested field group as WL_Metabox_Field_ object.
-				$this->add_field( $info, TRUE );
+				$this->add_field( $info, true );
 			}
 
 		}
@@ -175,7 +175,7 @@ class WL_Metabox {
 	 * @param array $args
 	 * @param bool  $grouped Flag to distinguish between simple and grouped Fields
 	 */
-	public function add_field( $args, $grouped = FALSE ) {
+	public function add_field( $args, $grouped = false ) {
 
 		if ( $grouped ) {
 			// Special fields (sameas, coordinates, etc.).
@@ -254,16 +254,21 @@ class WL_Metabox {
 		wl_linked_data_push_to_redlink( $entity_id );
 	}
 
-	// print on page all the js and css the fields will need.
+	/**
+	 * Enqueue scripts and styles.
+	 *
+	 * @since 3.0.0
+	 */
 	public function enqueue_scripts_and_styles() {
 
-		// dateTimePicker
-		wp_enqueue_style( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/css/jquery.datetimepicker.css' );
-		wp_enqueue_script( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
+		// Load the jquery-ui-timepicker-addon library.
+		wp_enqueue_style( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.css' );
+		wp_enqueue_script( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', array( 'jquery-ui-datepicker' ), '1.6.3', true );
 
-		// We rename the xdsoft datetimepicker function name to avoid conflicts to the jQuery UI derived datetimepicker library.
-		// see https://github.com/insideout10/wordlift-plugin/issues/340 .
-		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array( 'jquery-ui-timepicker' ) );
+		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array(
+			'jquery-ui-datepicker',
+			'jquery-ui-timepicker-addon',
+		) );
 
 		// Leaflet.
 		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );

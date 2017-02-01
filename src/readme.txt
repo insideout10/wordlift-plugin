@@ -121,7 +121,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 5. Your vocabulary (article metadata and entities) are published as [linked data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) and you can always request a data dump in any of the following formats: RDF/XML, Turtle, N3, JSON-LD. <br />
 
-> Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
+> Find more FAQ in our [Wiki](http://docs.wordlift.io/en/latest/faq.html#why-is-it-important-to-organize-my-content-and-publish-it-as-linked-data). <br />
 
 == Screenshots ==
 
@@ -136,6 +136,32 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.10.0 (2017-01-30) =
+* Enhancement: [#371](https://github.com/insideout10/wordlift-plugin/issues/371): Extending the list of properties for schema-org:Article.
+* Enhancement: [#358](https://github.com/insideout10/wordlift-plugin/issues/358): Application Key Not Set - Messaging improvement is needed.
+* Enhancement: [#350](https://github.com/insideout10/wordlift-plugin/issues/350): Entity Annotation Loop.
+* Enhancement: [#345](https://github.com/insideout10/wordlift-plugin/issues/345): Entity suggested when analyzing the entity content itself.
+* Enhancement: [#305](https://github.com/insideout10/wordlift-plugin/issues/305): Entity Types' widget should be flat.
+* Enhancement: [#291](https://github.com/insideout10/wordlift-plugin/issues/291): The calendar for startDate and endDate of an event cannot be used for historical events.
+* Enhancement: [#254](https://github.com/insideout10/wordlift-plugin/issues/254): Timeline visualization problem.
+* Fix: [#448](https://github.com/insideout10/wordlift-plugin/issues/448): JSON-LD not loaded with WP Fastest Cache plugin.
+* Fix: [#447](https://github.com/insideout10/wordlift-plugin/issues/447): Enqueue of styles and JS should be more selective and limited to content editing screens.
+* Fix: [#446](https://github.com/insideout10/wordlift-plugin/issues/446): Return value of wl_schema_get_value not always check to not be null.
+* Fix: [#444](https://github.com/insideout10/wordlift-plugin/issues/444): Typo on the dashboard.
+* Fix: [#438](https://github.com/insideout10/wordlift-plugin/issues/438): Autocomplete fails in metaboxes.
+* Fix: [#437](https://github.com/insideout10/wordlift-plugin/issues/437): Some found entities lack the related text annotation.
+* Fix: [#278](https://github.com/insideout10/wordlift-plugin/issues/278): When creating a new entity the duplicate warning appears for entity that have been trashed.
+
+= 3.9.8 (2017-01-29) =
+* Fix: [#462](https://github.com/insideout10/wordlift-plugin/issues/462): Find duplicated entities.
+
+= 3.9.7 (2017-01-26) =
+* Fix: [#461](https://github.com/insideout10/wordlift-plugin/issues/461): Entities highlighted in front-end.
+
+= 3.9.6 (2017-01-24) =
+* Fix: [#443](https://github.com/insideout10/wordlift-plugin/issues/443): Chord height is fixed when global is true.
+* Fix: [#383](https://github.com/insideout10/wordlift-plugin/issues/383): Chord - text overlapping issue.
 
 = 3.9.5 (2017-01-22) =
 * Fix: [#282](https://github.com/insideout10/wordlift-plugin/issues/282): Wrong entity URL.

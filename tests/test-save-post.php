@@ -1,12 +1,23 @@
 <?php
-
+/**
+ * Tests: Save Post Test.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ */
 /**
  * This file covers tests related to the save-post related routines.
  */
 
 require_once 'functions.php';
 
-class SavePostTest extends WP_UnitTestCase {
+/**
+ * Class SavePostTest.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ */
+class SavePostTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Set up the test.
@@ -14,15 +25,15 @@ class SavePostTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		wl_configure_wordpress_test();
 		wl_empty_blog();
+
 	}
 
-	function testSavePostAndReferencedEntities() {
+	function test_savepostandreferencedentities() {
 
 		// create two entities
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
 
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
@@ -33,7 +44,7 @@ class SavePostTest extends WP_UnitTestCase {
 EOF;
 
 		// Create a post in draft
-		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
+		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 		// Post in draft: should be not pushed on Redlink
 		$lines = $this->getPostTriples( $post_1_id );
 
@@ -47,11 +58,11 @@ EOF;
 		$this->assertCount( 2, wl_core_get_related_entity_ids( $post_1_id ) );
 	}
 
-	function testReferencedEntities() {
+	function test_referencedentities() {
 
 		// create two entities
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
 
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
@@ -61,7 +72,7 @@ EOF;
             <span itemid="$entity_2_uri">Entity 2</span>
 EOF;
 
-		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
+		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 		$lines     = $this->getPostTriples( $post_1_id );
 		$this->assertCount( 1, $lines );
 
@@ -79,11 +90,13 @@ EOF;
 
 	}
 
-	function testPublishingUnpublishingPosts() {
+	function test_publishingunpublishingposts() {
+
+		self::turn_on_entity_push();
 
 		// create two entities
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
 
 		$entity_1_uri = Wordlift_Entity_Service::get_instance()
 		                                       ->get_uri( $entity_1_id );
@@ -100,7 +113,7 @@ EOF;
 EOF;
 
 		// create a post as a draft.
-		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
+		$post_1_id = wl_create_post( $body_1, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 
 		// check the post is not published on Redlink.
 		$lines = $this->getPostTriples( $post_1_id );
@@ -140,7 +153,7 @@ EOF;
 		$this->assertCount( 1, $lines );
 
 		// create another post
-		$post_2_id = wl_create_post( $body_2, 'post-2', uniqid( 'post', TRUE ), 'draft', 'post' );
+		$post_2_id = wl_create_post( $body_2, 'post-2', uniqid( 'post', true ), 'draft', 'post' );
 
 		// check all entities published
 		$lines = $this->getPostTriples( $entity_1_id );
@@ -185,18 +198,22 @@ EOF;
 		$lines = $this->getPostTriples( $entity_2_id );
 		$this->assertCount( 5, $lines );
 
+		self::turn_off_entity_push();
+
 	}
 
-	function testRedlinkIsUpdatedWhenRelatedEntityIsTrashed() {
+	function test_redlinkisupdatedwhenrelatedentityistrashed() {
+
+		self::turn_on_entity_push();
 
 		// Create draft entity
-		$e_id  = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', TRUE ), 'draft', 'entity' );
+		$e_id  = wl_create_post( 'ciao', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$e_uri = wl_get_entity_uri( $e_id );
 		$body  = <<<EOF
             <span itemid="$e_uri">Entity 1</span>
 EOF;
 		// Create draft post mentioning the entity
-		$p_id = wl_create_post( $body, 'post-1', uniqid( 'post', TRUE ), 'draft', 'post' );
+		$p_id = wl_create_post( $body, 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 		// Publish the post (and related entities)
 		wl_update_post_status( $p_id, 'publish' );
 
@@ -215,6 +232,8 @@ EOF;
 		$lines = $this->getPostTriples( $e_id );
 		// Verify the post triples does no more contain a reference to the entity
 		$this->assertCount( 1, $lines );
+
+		self::turn_off_entity_push();
 
 	}
 
@@ -247,7 +266,7 @@ EOF;
 	/**
 	 * Test saving a post without a title. Check the URI.
 	 */
-	function testSavePostWithoutTitle() {
+	function test_savepostwithouttitle() {
 
 		$post_id      = wl_create_post( 'Sample Post', 'post-1', '', 'publish' );
 		$uri          = wl_get_entity_uri( $post_id );
@@ -255,4 +274,5 @@ EOF;
 
 		$this->assertEquals( $expected_uri, $uri );
 	}
+
 }

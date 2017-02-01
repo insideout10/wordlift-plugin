@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests: DB version upgrade tests
+ * Tests: DB version upgrade tests.
  *
  * @since   3.10.0
  * @package Wordlift
@@ -15,26 +15,29 @@
 class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 
 	/**
-	* Test the 1.0 to 3.10 DB upgrade.
-	*
-	* That upgrade path is focused on "flattening" the hirarchy of the
-	* term in the entuty type taxonomy that were created in installs of pre 3.10
-	* release.
-	*
-	* @since   3.10.0
-	**/
+	 * Test the 1.0 to 3.10 DB upgrade.
+	 *
+	 * That upgrade path is focused on "flattening" the hierarchy of the term in
+	 * the entity type taxonomy that were created in installs of pre 3.10 release.
+	 *
+	 * @since   3.10.0
+	 */
 	public function test_1_0_to_3_10_upgrade() {
-		// first reconstruct the pre 3.10.0 DB for the entities taxonomy
+
+		// First reconstruct the pre 3.10.0 DB for the entities taxonomy
 		// based on the 3.9.x code.
 
-		// make sure the taxonomy is empty of terms.
+		// Make sure the taxonomy is empty of terms.
+		$terms = get_terms( 'wl_entity_type', array(
+			'fields'     => 'ids',
+			'hide_empty' => false,
+		) );
 
-		$terms = get_terms( 'wl_entity_type', array( 'fields' => 'ids', 'hide_empty' => false ) );
 		foreach ( $terms as $value ) {
-			 wp_delete_term( $value, 'wl_entity_type' );
+			wp_delete_term( $value, 'wl_entity_type' );
 		}
 
-		// now setup to pre 3.10 structure.
+		// Now setup the pre 3.10 structure.
 		$terms = array(
 			'thing'         => array(
 				'label'       => 'Thing',
@@ -100,10 +103,11 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			) );
 		}
 
-		update_site_option( 'wl_db_version', '3.9' );
+		update_site_option( 'wl_db_version', '1.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
 		wl_core_upgrade_db_1_0_to_3_10();
+
 		$slugs = array(
 			'thing',
 			'creative-work',
@@ -118,13 +122,14 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			$term = get_term_by( 'slug', $slug, 'wl_entity_type' );
 			$this->assertEquals( 0, $term->parent );
 		}
+
 	}
 
 	/**
-	* Test that the 1.0 to 3.10 DB upgrade is not run when db version is 3.10
-	*
-	* @since   3.10.0
-	**/
+	 * Test that the 1.0 to 3.10 DB upgrade is not run when db version is 3.10.
+	 *
+	 * @since   3.10.0
+	 **/
 	public function test_3_10_to_3_10_upgrade() {
 
 		wp_insert_term( 'dummy', 'wl_entity_type', array( 'parent' => 1 ) );
@@ -137,4 +142,5 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 		$term = get_term_by( 'slug', 'dummy', 'wl_entity_type' );
 		$this->assertEquals( 1, $term->parent );
 	}
+
 }

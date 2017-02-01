@@ -2,7 +2,15 @@
 
 /**
  */
-class Wordlift_Entity_Type_Service_Test extends WP_UnitTestCase {
+class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
+
+	function setUp() {
+		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+
+	}
 
 	/**
 	 * Check that the specified slug is used.
@@ -24,6 +32,27 @@ class Wordlift_Entity_Type_Service_Test extends WP_UnitTestCase {
 
 		$this->assertEquals( 'entity', $entity_type_service->get_slug() );
 
+	}
+
+	/**
+	 * @since 3.10.0
+	 */
+	public function test_posts() {
+		// @todo
+	}
+
+	/**
+	 * @since 3.10.0
+	 */
+	public function test_pages() {
+		// @todo
+	}
+
+	/**
+	 * @since 3.10.0
+	 */
+	public function test_anaything_else() {
+		// @todo
 	}
 
 }

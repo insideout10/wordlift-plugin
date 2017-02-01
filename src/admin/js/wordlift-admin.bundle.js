@@ -348,7 +348,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
                 'stroke-dasharray',
                 ( ( stats.annotated_posts * 100 ) / stats.posts ) + ' 100'
             );
-            // Populate avarage entity ratings gauge chart
+            // Populate average entity ratings gauge chart
             $('#wl-entities-gauge-chart .stat').css(
                 'stroke-dasharray',
                 ( stats.rating / 2 ) + ' 100'
