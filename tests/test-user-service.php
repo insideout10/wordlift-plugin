@@ -6,12 +6,12 @@ require_once( 'functions.php' );
  *
  * @since 3.1.7
  */
-class UserServiceTest extends WP_UnitTestCase {
+class UserServiceTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -22,6 +22,9 @@ class UserServiceTest extends WP_UnitTestCase {
 	 */
 	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'UserServiceTest' );
 
@@ -49,7 +52,10 @@ class UserServiceTest extends WP_UnitTestCase {
 			$this->assertTrue( false !== $user_uri );
 
 			// Try to change the nicename and check that the URI doesn't change.
-			wp_update_user( array( 'ID' => $user_id, 'user_nicename' => uniqid( 'nicename-' ) ) );
+			wp_update_user( array(
+				'ID'            => $user_id,
+				'user_nicename' => uniqid( 'nicename-' ),
+			) );
 
 			// Get the URI again and check that it didn't change.
 			$user_uri_1 = Wordlift_User_Service::get_instance()->get_uri( $user_id );

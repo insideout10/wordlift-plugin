@@ -57,6 +57,13 @@ class Wordlift_Configuration_Service {
 	const PUBLISHER_ID = 'publisher_id';
 
 	/**
+	 * The dataset URI option name
+	 *
+	 * @since 3.10.0
+	 */
+	const DATASET_URI = 'redlink_dataset_uri';
+
+	/**
 	 * The Wordlift_Configuration_Service's singleton instance.
 	 *
 	 * @since  3.6.0
@@ -159,7 +166,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function is_skip_wizard() {
 
-		return $this->get( 'wl_general_settings', self::SKIP_WIZARD, FALSE );
+		return $this->get( 'wl_general_settings', self::SKIP_WIZARD, false );
 	}
 
 	/**
@@ -171,7 +178,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function set_skip_wizard( $value ) {
 
-		$this->set( 'wl_general_settings', self::SKIP_WIZARD, $value === TRUE );
+		$this->set( 'wl_general_settings', self::SKIP_WIZARD, $value === true );
 
 	}
 
@@ -238,7 +245,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function get_publisher_id() {
 
-		return $this->get( 'wl_general_settings', self::PUBLISHER_ID, NULL );
+		return $this->get( 'wl_general_settings', self::PUBLISHER_ID, null );
 	}
 
 	/**
@@ -254,4 +261,28 @@ class Wordlift_Configuration_Service {
 
 	}
 
+	/**
+	 * Get the dataset URI.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @return string The dataset URI or an empty string if not set.
+	 */
+	public function get_dataset_uri() {
+
+		return $this->get( 'wl_advanced_settings', self::DATASET_URI, null );
+	}
+
+	/**
+	 * Set the dataset URI.
+	 *
+	 * @since 3.10.0
+	 *
+	 * @param string $value The dataset URI.
+	 */
+	public function set_dataset_uri( $value ) {
+
+		$this->set( 'wl_advanced_settings', self::DATASET_URI, $value );
+	}
+	
 }

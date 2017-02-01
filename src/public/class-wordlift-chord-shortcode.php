@@ -23,19 +23,27 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 			'height'     => '500px',
 			'main_color' => '000',
 			'depth'      => 2,
-			'global'     => FALSE
+			'global'     => false,
 		), $atts );
 
 		if ( $chord_atts['global'] ) {
-			$post_id = wl_shortcode_chord_most_referenced_entity_id();
-			if ( $post_id == NULL ) {
+
+			if ( null === $post_id = wl_shortcode_chord_most_referenced_entity_id() ) {
 				return "WordLift Chord: no entities found.";
 			}
-			$widget_id            = 'wl_chord_global';
-			$chord_atts['height'] = '200px';
+
+			$widget_id = 'wl_chord_global';
+
+			// Use the provided height if any, otherwise use a default of 200px.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/443
+			$chord_atts['height'] = isset( $chord_atts['height'] ) ? $chord_atts['height'] : '200px';
+
 		} else {
+
 			$post_id   = get_the_ID();
 			$widget_id = 'wl_chord_' . $post_id;
+
 		}
 
 		// Adding css
@@ -48,7 +56,7 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
 		wp_localize_script( 'wordlift-ui', 'wl_chord_params', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'action'   => 'wl_chord'
+				'action'   => 'wl_chord',
 			)
 		);
 

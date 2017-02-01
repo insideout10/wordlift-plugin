@@ -21,26 +21,24 @@ class Wordlift_Entity_List_Service {
 	const THUMB_SIZE = 50;
 
 	/**
-	 * The Entity service.
+	 * A {@link Wordlift_Rating_Service} instance.
 	 *
-	 * @since  3.3.0
+	 * @since  3.10.0
 	 * @access private
-	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @var \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 */
-	private $entity_service;
+	private $rating_service;
 
 	/**
 	 * Create a Wordlift_Entity_List_Service.
 	 *
 	 * @since 3.3.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service The Entity service.
+	 * @param \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
 	 */
-	public function __construct( $entity_service ) {
+	public function __construct( $rating_service ) {
 
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_List_Service' );
-
-		$this->entity_service = $entity_service;
+		$this->rating_service = $rating_service;
 
 	}
 
@@ -95,7 +93,10 @@ class Wordlift_Entity_List_Service {
 			case 'wl_column_thumbnail':
 
 				$edit_link = get_edit_post_link( $entity_id );
-				$thumb     = get_the_post_thumbnail( $entity_id, array( self::THUMB_SIZE, self::THUMB_SIZE ) );
+				$thumb     = get_the_post_thumbnail( $entity_id, array(
+					self::THUMB_SIZE,
+					self::THUMB_SIZE,
+				) );
 
 				if ( ! $thumb ) {
 					$thumb = "<img src='" . WL_DEFAULT_THUMBNAIL_PATH . "' width='" . self::THUMB_SIZE . "' />";
@@ -105,7 +106,7 @@ class Wordlift_Entity_List_Service {
 
 			case 'wl_column_rating':
 
-				$rating = $this->entity_service->get_rating_for( $entity_id );
+				$rating = $this->rating_service->get_rating_for( $entity_id );
 				echo '<i class="wl-traffic-light wl-tl-' . $rating['traffic_light_score'] . '">' . $rating['percentage_score'] . '%</i>';
 				break;
 		}
@@ -120,13 +121,13 @@ class Wordlift_Entity_List_Service {
 	public function restrict_manage_posts_classification_scope() {
 
 		// Return safely if get_current_screen() is not defined (yet)
-		if ( FALSE === function_exists( 'get_current_screen' ) ) {
+		if ( false === function_exists( 'get_current_screen' ) ) {
 			return;
 		}
 
 		$screen = get_current_screen();
 		// If there is any valid screen nothing to do
-		if ( NULL === $screen ) {
+		if ( null === $screen ) {
 			return;
 		}
 
@@ -171,7 +172,7 @@ class Wordlift_Entity_List_Service {
 		}
 
 		// Return safely if get_current_screen() is not defined (yet).
-		if ( FALSE === function_exists( 'get_current_screen' ) ) {
+		if ( false === function_exists( 'get_current_screen' ) ) {
 			return $clauses;
 		}
 
@@ -179,7 +180,7 @@ class Wordlift_Entity_List_Service {
 		$screen = get_current_screen();
 
 		// If there is any valid screen nothing to do.
-		if ( NULL === $screen ) {
+		if ( null === $screen ) {
 			return $clauses;
 		}
 
