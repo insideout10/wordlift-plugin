@@ -346,6 +346,15 @@ class Wordlift {
 	private $status_page;
 
 	/**
+	 * The {@link Wordlift_Category_Taxonomy_Service} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Category_Taxonomy_Service $category_taxonomy_service The {@link Wordlift_Category_Taxonomy_Service} instance.
+	 */
+	protected $category_taxonomy_service;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -543,6 +552,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-key-validation-service.php';
 
+		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -722,6 +734,8 @@ class Wordlift {
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
 
+		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
+
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
@@ -874,6 +888,11 @@ class Wordlift {
 
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
+
+		// Hook the `pre_get_posts` filter to the `Wordlift_Category_Taxonomy_Service`
+		// in order to tweak WP's `WP_Query` to include entities in queries related
+		// to categories.
+		$this->loader->add_filter( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
 
 	}
 

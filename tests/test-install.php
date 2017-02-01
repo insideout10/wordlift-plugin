@@ -12,15 +12,15 @@
  * @since   3.10.0
  * @package Wordlift
  */
-class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
+class Wordlift_Install_Test extends WP_UnitTestCase {
 
 	/**
-	* Test that all terms in the entity taxonomy are properly created,
-	* for starters, all the terms are in the DB and in flat hierarchy.
-	*
-	* @since 3.10.0
-	*
-	**/
+	 * Test that all terms in the entity taxonomy are properly created,
+	 * for starters, all the terms are in the DB and in flat hierarchy.
+	 *
+	 * @since 3.10.0
+	 *
+	 **/
 	public function test_entity_terms() {
 
 		wl_core_install();
@@ -40,5 +40,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			$this->assertNotNull( $term );
 			$this->assertEquals( 0, $term->parent );
 		}
+
 	}
+
 }
