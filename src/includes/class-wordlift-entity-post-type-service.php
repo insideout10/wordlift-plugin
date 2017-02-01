@@ -153,6 +153,41 @@ class Wordlift_Entity_Post_Type_Service {
 
 		register_post_type( $this->post_type, $args );
 
+		register_taxonomy_for_object_type( 'category', $this->post_type );
+
+		add_filter( 'pre_get_posts', array( $this, 'add_entities_to_category_archieves' ));
+
 	}
 
+	/**
+	 * Experimental function to set the entity post types as one to be included
+	 * in archive pages.
+	 *
+	 **/
+	public function add_entities_to_category_archieves( $query ) {
+
+		// only for the main query, avoid problems with widgets and what not.
+		if ( $query->is_main_query() ) {
+
+			// unlikely for suppress_filter to be set on the front end, but lets be safe
+			// if it is set the calling code assumes no modifications of queries
+	  		if ( is_category() && empty( $query->query_vars['suppress_filters'] ) ) {
+
+				// check the current post types, maybe the category archive pages
+				// are already associated with othe post types
+				$post_types = $query->get_query_var( 'post_type' );
+				if ( false === $post_types ) {
+					// no value defualts to post.
+					$post_types = array ( 'post');
+				} else {
+					// ensure to convert strings into an array.
+					$post_types = (array) $post_types;
+				}
+				$post_types[] = $this->post_type;
+				$query->set( 'post_type', $post_types );
+			}
+		}
+
+		return $query;
+	}
 }
