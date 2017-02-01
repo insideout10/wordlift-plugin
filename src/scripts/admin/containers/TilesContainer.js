@@ -9,32 +9,6 @@ import React from 'react';
 import Tile from '../components/Tile';
 import log from '../../modules/log';
 
-// Define props and state
-const tiles = [
-	{
-		occurrences: 10,
-		entity: 'Orso Verde',
-		category: 'Oggetto sulla scrivania',
-		isOpen: false,
-		isSelected: false,
-		isLinked: false
-	}, {
-		occurrences: 13,
-		entity: 'Orso Giallo',
-		category: 'Oggetto sulla scrivania',
-		isOpen: false,
-		isSelected: false,
-		isLinked: false
-	}, {
-		occurrences: 34,
-		entity: 'Orso Blu',
-		category: 'Oggetto sulla scrivania',
-		isOpen: false,
-		isSelected: false,
-		isLinked: false
-	}
-];
-
 export default class TilesContainer extends React.Component {
 
 	/**
@@ -52,8 +26,7 @@ export default class TilesContainer extends React.Component {
 
 		// Set the state.
 		this.state = {
-			entities: props.analysis.entities,
-			tiles: tiles
+			entities: props.analysis.entities
 		};
 	}
 
@@ -103,26 +76,34 @@ export default class TilesContainer extends React.Component {
 		this.setState( { tiles: tiles } );
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	render() {
-		const tile = { isOpen: false, isLinked: false };
-
 		return (
 			<div>
-				{Object.keys( this.state.entities ).map(
-					( key, i ) =>
-						<Tile
-							key={ i }
-							index={ i }
-							entity={ this.state.entities[ key ] }
-							tile={ tile }
-							select={ this.select }
-							open={ this.open }
-							link={ this.link } />
-				)}
 			</div>
 		);
 	}
+
+//	/**
+//	 * @inheritDoc
+//	 */
+//	render() {
+//		const tile = { isOpen: false, isLinked: false };
+//
+//		return (
+//			<div>
+//				{Object.keys( this.state.entities ).map(
+//					( key, i ) =>
+//						<Tile
+//							key={ i }
+//							index={ i }
+//							entity={ this.state.entities[ key ] }
+//							tile={ tile }
+//							select={ this.select }
+//							open={ this.open }
+//							link={ this.link } />
+//				)}
+//			</div>
+//		);
+//	}
+
 }

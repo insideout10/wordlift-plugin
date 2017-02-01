@@ -44,7 +44,8 @@ const config = {
 			}
 		} ),
 		new webpack.optimize.UglifyJsPlugin()
-	]
+	],
+	devtool: 'eval-source-map'
 };
 
 module.exports = config;
