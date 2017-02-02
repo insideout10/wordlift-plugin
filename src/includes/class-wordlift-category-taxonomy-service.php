@@ -59,7 +59,9 @@ class Wordlift_Category_Taxonomy_Service {
 
 		// Unlikely for `suppress_filter` to be set on the front end, but let's
 		// be safe if it is set the calling code assumes no modifications of queries.
-		if ( ! is_category() || ! empty( $query->query_vars['suppress_filters'] ) ) {
+		// is_admin is needed, otherwise category based post filters will show
+		// both types and at the current release (4.7) it causes PHP errors.
+		if ( is_admin() || ! is_category() || ! empty( $query->query_vars['suppress_filters'] ) ) {
 			return $query;
 		}
 
