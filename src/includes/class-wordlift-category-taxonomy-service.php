@@ -69,8 +69,10 @@ class Wordlift_Category_Taxonomy_Service {
 		// are already associated with other post types.
 		$post_types = (array) ( $query->get( 'post_type' ) ?: 'post' );
 
-		// Add the entities post type.
-		$post_types[] = $this->entity_post_type_service->get_post_type();
+		// Add the entities post type only if the post post type is used in the query
+		if ( in_array( 'post', $post_types ) ) {
+			$post_types[] = $this->entity_post_type_service->get_post_type();
+		}
 
 		// Update the query post types.
 		$query->set( 'post_type', $post_types );
