@@ -21,7 +21,7 @@ function wl_configuration_admin_menu( $parent_slug, $capability ) {
 	// see http://codex.wordpress.org/Function_Reference/add_submenu_page
 	add_submenu_page(
 		$parent_slug, // The parent menu slug, provided by the calling hook.
-		__( 'Settings', 'wordlift' ),  // page title
+		__( 'WorldLift Settings', 'wordlift' ),  // page title
 		__( 'Settings', 'wordlift' ),  // menu title
 		$capability,                   // The required capability, provided by the calling hook.
 		'wl_configuration_admin_menu',      // the menu slug
@@ -33,13 +33,11 @@ function wl_configuration_admin_menu( $parent_slug, $capability ) {
 add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
 
 /**
- * Displays the page content.
+ * Displays the settings page content.
  *
  * @since 3.0.0
- *
- * @param boolean $display_page_title If true, prints out the page title.
  */
-function wl_configuration_admin_menu_callback( $display_page_title = true ) {
+function wl_configuration_admin_menu_callback() {
 
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -52,10 +50,7 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 
 	<div class="wrap" >
 
-		<?php if ( $display_page_title ) { ?>
-			<div id="icon-themes" class="icon32" ></div >
-			<h2 >WordLift</h2 >
-		<?php } ?>
+		<h2 ><?php _e( 'WorldLift Settings', 'wordlift' ); ?></h2 >
 
 		<?php settings_errors(); ?>
 
@@ -63,15 +58,10 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 		$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general_settings';
 		?>
 
-		<h2 class="nav-tab-wrapper" >
-			<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=general_settings"
-			   class="nav-tab <?php echo $active_tab == 'general_settings' ? 'nav-tab-active' : ''; ?>" ><?php esc_attr_e( 'General', 'wordlift' ); ?></a >
-
-			<?php if ( $can_show_advanced_settings ): ?>
-				<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
-				   class="nav-tab <?php echo $active_tab == 'advanced_settings' ? 'nav-tab-active' : ''; ?>" ><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a >
-			<?php endif; ?>
-		</h2 >
+		<?php if ( $can_show_advanced_settings ) : ?>
+			<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
+			   class="nav-tab <?php echo 'advanced_settings' == $active_tab ? 'nav-tab-active' : ''; ?>" ><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a >
+		<?php endif; ?>
 
 		<form action="options.php" method="post" >
 			<?php
@@ -79,7 +69,7 @@ function wl_configuration_admin_menu_callback( $display_page_title = true ) {
 				settings_fields( 'wl_general_settings' );
 				do_settings_sections( 'wl_general_settings' );
 
-			} else if ( $can_show_advanced_settings && 'advanced_settings' === $active_tab ) {
+			} elseif ( $can_show_advanced_settings && 'advanced_settings' === $active_tab ) {
 				settings_fields( 'wl_advanced_settings' );
 				do_settings_sections( 'wl_advanced_settings' );
 			}
@@ -118,8 +108,8 @@ function wl_configuration_settings() {
 
 	add_settings_section(
 		'wl_general_settings_section',          // ID used to identify this section and with which to register options
-		'General Settings',                              // Title to be displayed on the administration page
-		'wl_configuration_general_settings_section_callback', // Callback used to render the description of the section
+		'',   								// Section header
+		'', 								// Callback used to render the description of the section
 		'wl_general_settings'              // Page on which to add this section of options
 	);
 
@@ -133,10 +123,9 @@ function wl_configuration_settings() {
 		                                    'id'          => 'wl-key',
 		                                    'name'        => 'wl_general_settings[key]',
 		                                    'value'       => wl_configuration_get_key(),
-		                                    'description' => __( 'Insert the WordLift Key', 'wordlift' ),
+		                                    'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
 		)
 	);
-
 
 	// Entity Base Path input.
 
@@ -145,7 +134,7 @@ function wl_configuration_settings() {
 	                                                             'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
 	                                                             'value'       => Wordlift_Configuration_Service::get_instance()
 	                                                                                                            ->get_entity_base_path(),
-	                                                             'description' => __( 'Insert the Entity Base Path', 'wordlift' ),
+	                                                             'description' => __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary">FAQs</a> if you need more info.', 'wordlift' ),
 	);
 
 	if ( Wordlift_Entity_Service::get_instance()->count() ) {
@@ -174,7 +163,7 @@ function wl_configuration_settings() {
 		                                    'id'          => 'wl-site-language',
 		                                    'name'        => 'wl_general_settings[site_language]',
 		                                    'value'       => wl_configuration_get_site_language(),
-		                                    'description' => __( 'The site language', 'wordlift' ),
+		                                    'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
 		                                    'options'     => wl_configuration_get_languages(),
 		)
 	);
@@ -283,19 +272,6 @@ function wl_configuration_settings() {
 add_action( 'admin_init', 'wl_configuration_settings' );
 
 /**
- * Display the general settings description. Called from a hook set by *wl_configuration_settings*.
- *
- * @since 3.0.0
- */
-function wl_configuration_general_settings_section_callback() {
-
-	// TODO: set the following text.
-	?>
-	Configure WordLift general options.
-	<?php
-}
-
-/**
  * Display the advanced settings description. Called from a hook set by *wl_configuration_settings*.
  *
  * @since 3.0.0
@@ -336,10 +312,16 @@ function wl_configuration_input_box( $args ) {
 	<input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
 	       name="<?php echo esc_attr( $args['name'] ); ?>"
 	       value="<?php echo esc_attr( $args['value'] ); ?>"
-	       <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
+		   <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
 	/>
 
 	<?php
+	if ( isset( $args['description'] ) ) {
+			?>
+			<p><?php echo $args['description'];?></p>
+			<?php
+	}
+
 }
 
 /**
@@ -371,11 +353,16 @@ function wl_configuration_select( $args ) {
 
 		foreach ( $languages as $code => $label ) { ?>
 			<option
-				value="<?php esc_attr_e( $code ) ?>" <?php echo selected( $code, $language, false ) ?>><?php esc_html_e( $label ) ?></option >
+				value="<?php echo esc_attr( $code ) ?>" <?php echo selected( $code, $language, false ) ?>><?php echo esc_html( $label ) ?></option >
 		<?php } ?>
 	</select >
 
 	<?php
+	if ( isset( $args['description'] ) ) {
+			?>
+			<p><?php echo $args['description'];?></p>
+			<?php
+	}
 }
 
 /**
@@ -413,7 +400,7 @@ function wl_configuration_settings_links( $links ) {
 }
 
 // add the settings link for the plugin.
-add_filter( "plugin_action_links_wordlift/wordlift.php", 'wl_configuration_settings_links' );
+add_filter( 'plugin_action_links_wordlift/wordlift.php', 'wl_configuration_settings_links' );
 
 
 /**
@@ -506,7 +493,7 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 		wl_configuration_set_redlink_dataset_uri( $response['body'] );
 
 	} else {
-		wl_write_log( "Error on dataset uri remote retrieving [ " . var_export( $response, true ) . " ]" );
+		wl_write_log( 'Error on dataset uri remote retrieving [ ' . var_export( $response, true ) . ' ]' );
 	}
 
 }
