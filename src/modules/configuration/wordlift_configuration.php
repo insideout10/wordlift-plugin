@@ -9,6 +9,26 @@ require_once( 'wordlift_configuration_constants.php' );
 require_once( 'wordlift_configuration_settings.php' );
 
 /**
+ * Enqueue the scripts needed for the settings page
+ *
+ * @since 3.11
+ */
+function wl_enqueue_admin_settings_script() {
+
+	wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/wordlift-admin-settings.js', array( 'jquery' ) );
+
+	// Set configuration settings.
+	wp_localize_script( 'wordlift-admin-settings', '_wlAdminSettings', array(
+		'ajaxUrl' => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
+		'action'  => 'wl_validate_key',
+		'media'   => array(
+			'title' => __( 'WordLift Choose Logo', 'wordlift' ),
+			'button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
+		),
+	) );
+}
+
+/**
  * This function is called by the *wl_admin_menu* hook which is raised when WordLift builds the admin_menu.
  *
  * @since 3.0.0
@@ -19,7 +39,7 @@ require_once( 'wordlift_configuration_settings.php' );
 function wl_configuration_admin_menu( $parent_slug, $capability ) {
 
 	// see http://codex.wordpress.org/Function_Reference/add_submenu_page
-	add_submenu_page(
+	$page = add_submenu_page(
 		$parent_slug, // The parent menu slug, provided by the calling hook.
 		__( 'WorldLift Settings', 'wordlift' ),  // page title
 		__( 'Settings', 'wordlift' ),  // menu title
@@ -28,6 +48,8 @@ function wl_configuration_admin_menu( $parent_slug, $capability ) {
 		'wl_configuration_admin_menu_callback' // the menu callback for displaying the page content
 	);
 
+	// Set a hook to enqueue scripts only when the settings page is displayed
+	add_action( 'admin_print_scripts-' . $page, 'wl_enqueue_admin_settings_script' );
 }
 
 add_action( 'wl_admin_menu', 'wl_configuration_admin_menu', 10, 2 );
