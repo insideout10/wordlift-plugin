@@ -12,7 +12,7 @@ require_once( 'functions.php' );
  *
  * @since 3.7.2
  */
-class UriServiceTest extends WP_UnitTestCase {
+class UriServiceTest extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * The {@link Wordlift_Uri_Service} to test.
@@ -28,6 +28,9 @@ class UriServiceTest extends WP_UnitTestCase {
 	 */
 	function setUp() {
 		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		$this->uri_service = Wordlift_Uri_Service::get_instance();
 

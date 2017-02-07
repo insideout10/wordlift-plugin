@@ -3,10 +3,14 @@
 /**
  * Push the provided post to Redlink (not suitable for entities).
  *
- * @param object $post A post instance.
+ * @param WP_Post $post A post instance.
  */
 function wl_push_post_to_redlink( $post ) {
 
+	// If entity push is disabled, return.
+	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
+		return;
+	}
 
 	// Only handle published posts.
 	if ( 'post' !== $post->post_type or 'publish' !== $post->post_status ) {
@@ -57,7 +61,7 @@ function wl_push_post_to_redlink( $post ) {
 
 	// Add Location Created
 	$location_created_entity_id = get_post_meta(
-		$post->ID, Wordlift_Schema_Service::FIELD_LOCATION_CREATED, TRUE
+		$post->ID, Wordlift_Schema_Service::FIELD_LOCATION_CREATED, true
 	);
 	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $location_created_entity_id ]" );
 	if ( $location_created_entity_id ) {
@@ -67,7 +71,7 @@ function wl_push_post_to_redlink( $post ) {
 	}
 	// Add Topic
 	$topic_entity_id = get_post_meta(
-		$post->ID, Wordlift_Schema_Service::FIELD_TOPIC, TRUE
+		$post->ID, Wordlift_Schema_Service::FIELD_TOPIC, true
 	);
 	wl_write_log( "wl_push_post_to_redlink [ entity_id :: $topic_entity_id ]" );
 
@@ -184,11 +188,12 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		}
 	}
 
-	// set the same as.
-	$same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' );
-	foreach ( $same_as as $same_as_uri ) {
-		$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
-		$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
+	// Set the same as.
+	if ( null !== $same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' ) ) {
+		foreach ( $same_as as $same_as_uri ) {
+			$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
+			$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
+		}
 	}
 
 	// set the label
@@ -201,10 +206,6 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Sparql_Service::escape( $alt_label ), $site_language );
 	}
 
-	// set the URL
-//	$sparql .= "<$uri_e> schema:url <$permalink> . \n";
-
-
 	// set the description.
 	if ( ! empty( $descr ) ) {
 		$sparql .= "<$uri_e> schema:description \"$descr\"@$site_language . \n";
@@ -212,7 +213,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	$main_type = wl_entity_type_taxonomy_get_type( $entity_post->ID );
 
-	if ( NULL != $main_type ) {
+	if ( null != $main_type ) {
 		$main_type_uri = wl_sparql_escape_uri( $main_type['uri'] );
 		$sparql .= " <$uri_e> a <$main_type_uri> . \n";
 
@@ -235,7 +236,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 				$predicate = wordlift_esc_sparql( $settings['predicate'] );
 				if ( ! isset( $settings['export_type'] ) || empty( $settings['export_type'] ) ) {
-					$type = NULL;
+					$type = null;
 				} else {
 					$type = $settings['export_type'];
 				}
@@ -366,7 +367,7 @@ function wordlift_esc_sparql( $string ) {
  *
  * @deprecated use return Wordlift_Sparql_Service::get_instance()->escape_uri($string)
  *
- * @since 3.0.0
+ * @since      3.0.0
  *
  * @param $string string The URI to be escaped.
  *
@@ -382,6 +383,11 @@ function wl_sparql_escape_uri( $string ) {
  */
 function wordlift_reindex_triple_store() {
 
+	// If entity push is disabled, return.
+	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
+		return true;
+	}
+
 	// Get the reindex URL.
 	$url = wl_configuration_get_dataset_index_url();
 
@@ -391,7 +397,7 @@ function wordlift_reindex_triple_store() {
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 		'method'  => 'POST',
-		'headers' => array()
+		'headers' => array(),
 	) );
 
 	$response = wp_remote_request( $url, $args );
@@ -402,15 +408,15 @@ function wordlift_reindex_triple_store() {
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
 		wl_write_log( "wordlift_reindex_triple_store : error [ url :: $url ][ args :: " );
-		wl_write_log( "\n" . var_export( $args, TRUE ) );
+		wl_write_log( "\n" . var_export( $args, true ) );
 		wl_write_log( "[ response :: " );
-		wl_write_log( "\n" . var_export( $response, TRUE ) );
+		wl_write_log( "\n" . var_export( $response, true ) );
 		wl_write_log( "][ body :: " );
 		wl_write_log( "\n" . $body );
 		wl_write_log( "]" );
 
-		return FALSE;
+		return false;
 	}
 
-	return TRUE;
+	return true;
 }

@@ -1,3 +1,6 @@
+import delay from './deps/delay';
+import check from './deps/check';
+
 (function ($) {
     'use strict';
 
@@ -121,67 +124,42 @@
             return;
         }
 
-        // AJAX environment
-        var ajax_url = wlSettings.ajax_url + '?action=' + wlSettings.action;
-        var currentPostId = wlSettings.post_id;
-
         // Print error message in page and hide it.
-        var duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
+        const duplicatedEntityErrorDiv = $('<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>')
             .insertBefore('div.wrap [name=post]')
             .hide();
 
-        // Check duplicates at startup
-        titleInputChecker($('[name=post_title]'));
+        /**
+         * Check whether the specified title is already used by other entities.
+         *
+         * @since 3.10.0
+         */
+        const callback = function () {
+
+            // A jQuery reference to the element firing the event.
+            const $this = $(this);
+
+            // Delay execution of the check.
+            delay($this, check, $, wp.ajax, $this.val(), wlSettings.post_id, wlSettings.l10n['You already published an entity with the same name'], function (html) {
+
+                // Set the error div content.
+                $('#wl-same-title-error p').html(html);
+
+                // If the html code isn't empty then show the error.
+                if ('' !== html)
+                    duplicatedEntityErrorDiv.show();
+                else
+                // If the html code is empty, hide the error div.
+                    duplicatedEntityErrorDiv.hide();
+
+            });
+
+        };
 
         // Whenever something happens in the entity title...
-        $('[name=post_title]').on('change paste keyup', function (event) {
-            // ... check duplicated titles in the interested input
-            titleInputChecker($(event.target));
-        });
-
-        function titleInputChecker(titleInput) {
-
-            var thereAreDuplicates = false;
-
-            // AJAX call to search for entities with the same title
-            $.getJSON(ajax_url + '&title=' + titleInput.val(), function (response) {
-
-                // Write an error notice with a link for every duplicated entity            
-                if (response && response.results.length > 0) {
-
-                    $('#wl-same-title-error p').html(function () {
-                        var html = '';
-
-                        for (var i = 0; i < response.results.length; i++) {
-
-                            // No error if the entity ID given from the AJAX endpoint is the same as the entity we are editing
-                            if (response.results[i].id !== currentPostId) {
-
-                                thereAreDuplicates = true;
-
-                                var title = response.results[i].title;
-                                var edit_link = response.edit_link.replace('%d', response.results[i].id);
-
-                                html += 'You already published an entity with the same name: ';
-                                html += '<a target="_blank" href="' + edit_link + '">';
-                                html += title;
-                                html += '</a><br />';
-                            }
-                        }
-
-                        return html;
-                    });
-                }
-
-                if (thereAreDuplicates) {
-                    // Notify user he is creating a duplicate.
-                    duplicatedEntityErrorDiv.show();
-                } else {
-                    // Hide notice
-                    duplicatedEntityErrorDiv.hide();
-                }
-            });
-        }
+        $('[name=post_title]')
+            .on('change paste keyup', callback)
+            .each(callback);
 
     });
 
@@ -218,7 +196,7 @@
                 'stroke-dasharray',
                 ( ( stats.annotated_posts * 100 ) / stats.posts ) + ' 100'
             );
-            // Populate avarage entity ratings gauge chart
+            // Populate average entity ratings gauge chart
             $('#wl-entities-gauge-chart .stat').css(
                 'stroke-dasharray',
                 ( stats.rating / 2 ) + ' 100'

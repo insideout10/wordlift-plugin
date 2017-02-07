@@ -59,6 +59,8 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 	 */
 	public function rebuild() {
 
+		ob_clean();
+
 		// Give ourselves some time to process the data.
 		set_time_limit( 21600 ); // 6 hours
 
@@ -101,9 +103,9 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
 			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
-		} else {
-			echo( "done [ count :: $count ][ limit :: $limit ]" );
 		}
+
+		echo( "done [ count :: $count ][ limit :: $limit ]" );
 
 		// If we're being called as AJAX, die here.
 		if ( DOING_AJAX ) {

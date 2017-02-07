@@ -3,8 +3,8 @@
 define( 'WL_DEFAULT_THUMBNAIL_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/public/images/missing-image-150x150.png' );
 define( 'WL_DEFAULT_PATH', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/' );
 
-// Database version 
-define( 'WL_DB_VERSION', '1.0' );
+// Database version
+define( 'WL_DB_VERSION', '3.10' );
 // Custom table name
 define( 'WL_DB_RELATION_INSTANCES_TABLE_NAME', 'wl_relation_instances' );
 

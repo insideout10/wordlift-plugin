@@ -7,6 +7,14 @@ require_once( 'class-wordlift-unit-test-case.php' );
  */
 class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 
+	function setUp() {
+		parent::setUp();
+
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+
+	}
+
 	/**
 	 * Try creating a post then an entity with the same title and check that the entity post name receives the -2 suffix.
 	 */
@@ -20,7 +28,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => $post_title,
-			'post_type'    => 'post'
+			'post_type'    => 'post',
 		) ) );
 
 		$entity = get_post( wp_insert_post( array(
@@ -28,7 +36,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => $post_title,
-			'post_type'    => 'entity'
+			'post_type'    => 'entity',
 		) ) );
 
 		// Check that the entity title has the -2 suffix
@@ -48,7 +56,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => $post_title,
-			'post_type'    => 'entity'
+			'post_type'    => 'entity',
 		) ) );
 
 		// insert a post and make sure the ID is ok
@@ -57,7 +65,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => $post_title,
-			'post_type'    => 'post'
+			'post_type'    => 'post',
 		) ) );
 
 		// Check that the entity title has the -2 suffix
@@ -79,7 +87,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => rand_str(),
-			'post_type'    => 'entity'
+			'post_type'    => 'entity',
 		) ) );
 
 		// Simulate a standard post link, in the form of /entity-type-slug/entity-name
@@ -106,7 +114,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 			'post_status'  => 'publish',
 			'post_content' => rand_str(),
 			'post_title'   => rand_str(),
-			'post_type'    => 'entity'
+			'post_type'    => 'entity',
 		) ) );
 
 		// Simulate a standard post link, in the form of /entity-type-slug/entity-name
@@ -116,7 +124,7 @@ class Wordlift_Entity_Link_Service_Test extends Wordlift_Unit_Test_Case {
 		$new_post_link = $entity_link_service->post_type_link( $post_link, $entity, false, false );
 
 		$this->assertEquals( "/$slug/$entity->post_name/", $new_post_link );
-		
+
 	}
 
 }

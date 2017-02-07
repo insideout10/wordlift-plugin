@@ -1082,9 +1082,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 # Add annotation references to each entity
 
 # TMP ... Should be done on WLS side
-      unless data.topics?
-        data.topics = []
-
+#      unless data.topics?
+#        data.topics = []
       dt = @._defaultType
 
       data.topics = data.topics.map (topic)->
@@ -1099,8 +1098,17 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
       for id, entity of data.entities
 
+# Remove the current entity from the proposed entities.
+#
+# See https://github.com/insideout10/wordlift-plugin/issues/437
+# See https://github.com/insideout10/wordlift-plugin/issues/345
+        if configuration.currentPostUri is id
+          delete data.entities[id]
+          continue
+
         if not entity.label
           $log.warn "Label missing for entity #{id}"
+
         if not entity.description
           $log.warn "Description missing for entity #{id}"
 
@@ -1125,14 +1133,23 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         annotation.id = id
         annotation.entities = {}
 
-        # Filter out entity matches referring the current entity
-        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId isnt configuration.currentPostUri )
+        # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
+        # to remove the local entity.
+        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
+
+        # Remove the annotation if there's no entity matches left.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/437
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if 0 is data.annotations[id].entityMatches.length
+          delete data.annotations[id]
+          continue
 
         for ea, index in data.annotations[id].entityMatches
 
           if not data.entities[ea.entityId].label
             data.entities[ea.entityId].label = annotation.text
-            $log.debug "Missing label retrived from related annotation for entity #{ea.entityId}"
+            $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
 
           data.entities[ea.entityId].annotations[id] = annotation
           data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
@@ -1175,9 +1192,12 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       args.headers = {'Content-Type': 'application/json'}
       args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
 
-      if (wlSettings?.language?) then args.data.contentLanguage = wlSettings.language
-
-      $log.info "Analyzing content..."
+      if (wlSettings?)
+        if (wlSettings.language?) then args.data.contentLanguage = wlSettings.language
+        # We set the current entity URI as exclude from the analysis results.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
 
       return $http(args)
 

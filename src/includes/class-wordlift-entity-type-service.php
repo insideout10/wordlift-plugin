@@ -80,20 +80,43 @@ class Wordlift_Entity_Type_Service {
 	 */
 	public function get( $post_id ) {
 
-		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		// Return the correct entity type according to the post type.
+		switch ( get_post_type( $post_id ) ) {
 
-		if ( is_wp_error( $terms ) ) {
-			// TODO: handle error
-			return NULL;
+			case 'entity':
+				// Get the type from the associated classification.
+
+				$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+				if ( is_wp_error( $terms ) ) {
+					// TODO: handle error
+					return null;
+				}
+
+				// If there are not terms associated, return null.
+				if ( 0 === count( $terms ) ) {
+					return null;
+				}
+
+				// Return the entity type with the specified id.
+				return $this->schema_service->get_schema( $terms[0]->slug );
+
+			case 'post':
+			case 'page':
+				// Posts and pages are considered Articles.
+				return array(
+					'uri'       => 'http://schema.org/Article',
+					'css_class' => 'wl-post',
+				);
+
+			default:
+				// Everything else is considered a Creative Work.
+				return array(
+					'uri'       => 'http://schema.org/CreativeWork',
+					'css_class' => 'wl-creative-work',
+				);
 		}
 
-		// If there are not terms associated, return null.
-		if ( 0 === count( $terms ) ) {
-			return NULL;
-		}
-
-		// Return the entity type with the specified id.
-		return $this->schema_service->get_schema( $terms[0]->slug );
 	}
 
 	/**
@@ -109,14 +132,14 @@ class Wordlift_Entity_Type_Service {
 		// If the type URI is empty we remove the type.
 		if ( empty( $type_uri ) ) {
 
-			wp_set_object_terms( $post_id, NULL, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			wp_set_object_terms( $post_id, null, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 			return;
 		}
 
 		// Get all the terms bound to the wl_entity_type taxonomy.
 		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
-			'hide_empty' => FALSE,
+			'hide_empty' => false,
 			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
 			// An issue has been opened with the AAM plugin author as well.
 			//

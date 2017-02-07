@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.9.8
+ * Version:           3.10.0
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -39,44 +39,50 @@ require_once( 'modules/configuration/wordlift_configuration.php' );
 /**
  * Log to the debug.log file.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Log_Service::get_instance()->info( $log );
  *
- * @uses  wl_write_log_handler() to write the log output.
+ * @since      3.0.0
+ *
+ * @uses       wl_write_log_handler() to write the log output.
  *
  * @param string|mixed $log The log data.
  */
 function wl_write_log( $log ) {
 
-	$handler = apply_filters( 'wl_write_log_handler', NULL );
+	Wordlift_Log_Service::get_instance()->info( $log );
 
-	$callers         = debug_backtrace();
-	$caller_function = $callers[1]['function'];
-
-	if ( is_null( $handler ) ) {
-		wl_write_log_handler( $log, $caller_function );
-
-		return;
-	}
-
-	call_user_func( $handler, $log, $caller_function );
+//	$handler = apply_filters( 'wl_write_log_handler', null );
+//
+//	$callers         = debug_backtrace();
+//	$caller_function = $callers[1]['function'];
+//
+//	if ( is_null( $handler ) ) {
+//		wl_write_log_handler( $log, $caller_function );
+//
+//		return;
+//	}
+//
+//	call_user_func( $handler, $log, $caller_function );
 }
 
 /**
  * The default log handler prints out the log.
+ *
+ * @deprecated
  *
  * @since 3.0.0
  *
  * @param string|array $log    The log data.
  * @param string       $caller The calling function.
  */
-function wl_write_log_handler( $log, $caller = NULL ) {
+function wl_write_log_handler( $log, $caller = null ) {
 
 	global $wl_logger;
 
-	if ( TRUE === WP_DEBUG ) {
+	if ( true === WP_DEBUG ) {
 
 		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, TRUE ) : wl_write_log_hide_key( $log ) );
+		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
 
 		if ( isset( $wl_logger ) ) {
 			$wl_logger->info( $message );
@@ -90,6 +96,8 @@ function wl_write_log_handler( $log, $caller = NULL ) {
 
 /**
  * Hide the WordLift Key from the provided text.
+ *
+ * @deprecated
  *
  * @since 3.0.0
  *
@@ -139,7 +147,7 @@ function wl_execute_saved_sparql_update_query( $request_id ) {
 	$query = file_get_contents( $filename );
 
 	// Execute the SPARQL query.
-	rl_execute_sparql_update_query( $query, FALSE );
+	rl_execute_sparql_update_query( $query, false );
 
 	// Reindex the triple store.
 	wordlift_reindex_triple_store();
@@ -252,10 +260,10 @@ function wordlift_allowed_html( $allowedtags, $context ) {
 
 	return array_merge_recursive( $allowedtags, array(
 		'span' => array(
-			'itemscope' => TRUE,
-			'itemtype'  => TRUE,
-			'itemid'    => TRUE,
-			'itemprop'  => TRUE,
+			'itemscope' => true,
+			'itemtype'  => true,
+			'itemid'    => true,
+			'itemprop'  => true,
 		),
 	) );
 }
@@ -291,7 +299,7 @@ function wl_get_coordinates( $post_id ) {
  */
 function wl_get_post_modified_time( $post ) {
 
-	$date_modified = get_post_modified_time( 'c', TRUE, $post );
+	$date_modified = get_post_modified_time( 'c', true, $post );
 
 	if ( '-' === substr( $date_modified, 0, 1 ) ) {
 		return get_the_time( 'c', $post );
@@ -400,7 +408,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 	}
 
 	// Return null.
-	return NULL;
+	return null;
 }
 
 /**
@@ -586,7 +594,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			                               ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
-			if ( NULL === $post ) {
+			if ( null === $post ) {
 				continue;
 			}
 
@@ -628,7 +636,6 @@ require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
-require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' );
 
 // Shortcodes
 
@@ -670,7 +677,7 @@ require_once( 'admin/wordlift_admin_sync.php' );
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
-load_plugin_textdomain( 'wordlift', FALSE, '/wordlift/languages' );
+load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
 
 
 /**
