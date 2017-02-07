@@ -1,8 +1,9 @@
-=== WordLift - Connect with Your Audience ===
+=== WordLift - Rethink Your Content Marketing ===
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: artificial intelligence, semantic seo, linked data, schema.org, knowledge graph, content recommendation, seo, structured content, google rich snippets, google rich card, interactive widgets, semantic content management
+Tags: schema.org, seo, content recommendation, related posts, timeline, knowledge graph, interactive map, engagement, semantic, artificial intelligence, linked data, google rich snippets
+
 Requires at least: 4.2
 Tested up to: 4.7
 Stable tag: {version}
@@ -51,7 +52,7 @@ _____________
 = Supported languages =
 _____________
 
-WordLift currently supports 31 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
+WordLift currently supports 32 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
 
 The Plug-in is built on **open source software**.
 
@@ -59,7 +60,7 @@ The Plug-in is built on **open source software**.
 
 1. Upload `wordlift.zip` to the `/wp-content/plugins/` directory
 2. Extract the files in the wordlift subfolder
-3. Activate the plug-in using a [WordLift key](http://docs.wordlift.io/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and add the key there.
+3. Activate the plug-in using a [WordLift key](http://docs.wordlift.io/en/latest/key-concepts.html#wordlift-key). You receive this key from us after purchasing the monthly service from [our website](https://wordlift.io). Once you have received the key go to the WordPress administration menu, click on Plugins / Installed Plugins. Then click on Settings on the WordLift plugin and follow the guided setup process.
 
 > #### WordLift - Activating the Plugin
 > To activate the plugin you will need a *WordLift key*. <br />
@@ -532,13 +533,11 @@ Change wording for invalid or missing text selection on entity creation workflow
 * First public release
 
 == More Information ==
-WordLift is **happily developed** by [InSideOut10](http://blog.insideout.io/about-us).
-
-InSideOut10 delivers strategic digital communication tools for enterprises and organisations.
-
-InSideOut10 uses artificial intelligence and semantic networks to collect, analyse and link relevant contents with data.
+WordLift is **happily developed** by [WordLift](https://wordlift.io), an innovative Italian startup founded in 2016 and based in downtown Rome.
 
 Our goal is to **help blogger, journalists and content creators connect and share experiences with their readers** as well as **structuring knowledge in machine-readable form**.
+
+For more information, contact us at [hello@wordlift.io](mailto:hello@wordlift.io).
 
 = Why we are doing this =
 
