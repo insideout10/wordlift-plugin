@@ -15,6 +15,9 @@ require_once( 'wordlift_configuration_settings.php' );
  */
 function wl_enqueue_admin_settings_script() {
 
+	// enqueue the media scripts to be used for the publisher's logo selection
+	wp_enqueue_media();
+
 	wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/wordlift-admin-settings.js', array( 'jquery' ) );
 
 	// Set configuration settings.
@@ -507,7 +510,21 @@ function wl_configuration_publisher() {
 		#wl-publisher-name input {
 			width:400px;
 		}
+
+		#wl-publisher-logo-preview {
+			width:24px;
+			height:24px;
+			vertical-align:middle;
+			margin-right:10px;
+			display:none;
+		}
+
 	</style>
+
+	<input type="hidden"
+			id="wl-setting-panel"
+			name="wl-setting-panel" value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
+	<input type="hidden" id="wl-publisher-logo-id" name="wl-publisher-logo-id">
 
 	<div id="wl-publisher-section"
 		class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
@@ -516,9 +533,6 @@ function wl_configuration_publisher() {
 			<a class="nav-tab <?php echo $select_panel_displayed ? 'nav-tab-active' : ''?>" data-panel="wl-select-entity" href="#"><?php _e( 'Select existing publisher', 'wordlift' )?></a>
 			<a class="nav-tab <?php echo $select_panel_displayed ? '' : 'nav-tab-active'?>" data-panel="wl-create-entity" href="#"><?php _e( 'Create new publisher', 'wordlift' )?></a>
 		</div>
-		<input type="hidden"
-				id="wl-setting-panel"
-				name="wl-setting-panel" value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
 		<div id="wl-select-entity-panel" class="wl-tab-panel">
 			<select id="wl-select-entity" name="wl_general_settings[publisher]">
 				<?php
@@ -551,11 +565,11 @@ function wl_configuration_publisher() {
 			<p><b><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></b></p>
 			<p id="wl-publisher-type">
 				<span>
-					<input id="wl-publisher-person" type="radio" name="wl-publisher-type" value="person" checked="checcked">
+					<input id="wl-publisher-person" type="radio" name="wl-publisher-type" value="person" checked="checcked" autocomplete="off">
 					<label for="wl-publisher-person"><?php esc_html_e( 'Person', 'wordlift' )?></label>
 				</span>
 				<span>
-					<input id="wl-publisher-company" type="radio" name="wl-publisher-type" value="company">
+					<input id="wl-publisher-company" type="radio" name="wl-publisher-type" value="company" autocomplete="off">
 					<label for="wl-publisher-company"><?php esc_html_e( 'Company', 'wordlift' )?></label>
 				</span>
 			</p>
@@ -565,7 +579,7 @@ function wl_configuration_publisher() {
 			<div id="wl-publisher-logo">
 				<p><b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b></p>
 				<p>
-					<input type="button" class="button" value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>" >
+					<img id="wl-publisher-logo-preview"><input type="button" class="button" value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>" >
 				</p>
 			</div>
 		</div>

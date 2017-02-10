@@ -161,6 +161,39 @@
 			}
 		};
 
+		// Add logo.
+		$( '#wl-publisher-logo input' ).on( 'click', function () {
+
+			// Create a WP media uploader.
+			var uploader = wp.media({
+				title: settings.media.title,
+				button: settings.media.button,
+				multiple: false,
+
+				// Tell the modal to show only images.
+				library: {
+					type: 'image',
+				},
+			});
+
+			// Catch `select` events on the uploader.
+			uploader
+				.on( 'select', function () {
+
+					// Get the selected attachment.
+					var attachment = uploader.state().get( 'selection' ).first().toJSON();
+
+					// Set the selected image as the preview image
+					$( '#wl-publisher-logo-preview' ).attr( 'src', attachment.url).show();
+
+					// Set the logo id.
+					$( '#wl-publisher-logo-id' ).val( attachment.id );
+
+				})
+				.open();
+
+		});
+
 		// Finally bind additional functions.
         bind();
 
