@@ -324,6 +324,9 @@ function wl_configuration_advanced_settings_section_callback() {
 /**
  * Sanitize the configuration settings to be stored. Configured as a hook from *wl_configuration_settings*.
  *
+ * If a new entity is being created for the publisher, create it and set The
+ * publisher setting.
+ *
  * @since 3.0.0
  *
  * @param array $input The configuration settings array.
@@ -332,8 +335,38 @@ function wl_configuration_advanced_settings_section_callback() {
  */
 function wl_configuration_sanitize_settings( $input ) {
 
-	// TODO: add sanitization checks.
-	return apply_filters( 'wl_configuration_sanitize_settings', $input, $input );
+	$input = apply_filters( 'wl_configuration_sanitize_settings', $input, $input );
+
+	// if the user creats a new publisher entities the information is not part of the
+	// "option" itself and need to get it from other $_POST values
+	if ( isset( $_POST['wl-setting-panel'] ) && ( 'wl-create-entity' == $_POST['wl-setting-panel'] ) ) {
+
+		// validate publisher type
+		if ( ! isset( $_POST['wl-publisher-type'] ) || ! in_array( $_POST['wl-publisher-type'], array( 'person', 'company' ) ) ) {
+			return $input;
+		}
+
+		// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
+		$type_uri = sprintf( 'http://schema.org/%s', 'company' === $_POST['wl-publisher-type'] ? 'Organization' : 'Person' );
+
+		// validate publisher logo
+		if ( 'company' === $_POST['wl-publisher-type'] ) {
+			if ( ! isset( $_POST['wl-publisher-logo-id'] ) || ! is_numeric( $_POST['wl-publisher-logo-id'] ) ) {
+				return $input;
+			}
+
+			$logo = intval( $_POST['wl-publisher-logo-id'] );
+		} else {
+			$logo = 0;
+		}
+
+		// Create an entity for the publisher.
+		$publisher_post_id = Wordlift_Entity_Service::get_instance()->create( $_POST['wl-publisher-name'], $type_uri, $logo, 'publish' );
+
+		$input[ Wordlift_Configuration_Service::PUBLISHER_ID ] = $publisher_post_id;
+	}
+
+	return $input;
 
 }
 
@@ -523,8 +556,9 @@ function wl_configuration_publisher() {
 
 	<input type="hidden"
 			id="wl-setting-panel"
+			autocomplete="off"
 			name="wl-setting-panel" value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
-	<input type="hidden" id="wl-publisher-logo-id" name="wl-publisher-logo-id">
+	<input type="hidden" id="wl-publisher-logo-id" name="wl-publisher-logo-id" autocomplete="off">
 
 	<div id="wl-publisher-section"
 		class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
@@ -534,7 +568,7 @@ function wl_configuration_publisher() {
 			<a class="nav-tab <?php echo $select_panel_displayed ? '' : 'nav-tab-active'?>" data-panel="wl-create-entity" href="#"><?php _e( 'Create new publisher', 'wordlift' )?></a>
 		</div>
 		<div id="wl-select-entity-panel" class="wl-tab-panel">
-			<select id="wl-select-entity" name="wl_general_settings[publisher]">
+			<select id="wl-select-entity" name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID?>]" autocomplete="off">
 				<?php
 				while ( $entities_query->have_posts() ) {
 					$entities_query->the_post();
@@ -556,7 +590,8 @@ function wl_configuration_publisher() {
 					if ( 'Organization' == $terms[0]->name ) {
 						$entity_type = __( 'Company', 'wordlift' );
 					}
-					echo '<option value="' . get_the_ID() . '" data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '"">' . get_the_title() . '</option>';
+
+					echo '<option value="' . get_the_ID() . '" ' . selected( Wordlift_Configuration_Service::get_instance()->get_publisher_id(), get_the_ID(), false ) . ' data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '">' . get_the_title() . '</option>';
 				}
 				?>
 			</select>
