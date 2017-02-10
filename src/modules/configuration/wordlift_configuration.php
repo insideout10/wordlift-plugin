@@ -26,6 +26,10 @@ function wl_enqueue_admin_settings_script() {
 			'button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 		),
 	) );
+
+	// enqueue select2 library js and css
+	wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/select2/js/select2.min.js', array( 'jquery' ), '4.0.3' );
+	wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/select2/css/select2.min.css', array(), '4.0.3' );
 }
 
 /**
@@ -188,6 +192,14 @@ function wl_configuration_settings() {
 		                                    'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
 		                                    'options'     => wl_configuration_get_languages(),
 		)
+	);
+
+	add_settings_field(
+		'wl_publisher',
+		__( 'Publisher', 'wordlift' ),
+		'wl_configuration_publisher',
+		'wl_general_settings',
+		'wl_general_settings_section'
 	);
 
 	if ( defined( 'WL_ENABLE_ADVANCED_CONFIGURATION' ) && WL_ENABLE_ADVANCED_CONFIGURATION ) {
@@ -400,6 +412,164 @@ function wl_configuration_checkbox( $args ) {
 	<input type="checkbox" id="<?php echo esc_attr( $args['id'] ); ?>"
 	       name="<?php echo esc_attr( $args['name'] ); ?>"
 	       value="1" <?php checked( 1, $args['value'], true ); ?>/>
+
+	<?php
+}
+
+/**
+* Display publisher selection/creation settings.
+*
+* @since 3.11.0
+ *
+ */
+function wl_configuration_publisher() {
+
+	// get all the organizations and persons that might be used as publishers.
+
+	$entities_query = new wp_Query( array(
+		'post_type' => Wordlift_Entity_Service::TYPE_NAME,
+		'posts_per_page' => -1,
+		'tax_query' => array(
+			'relation' => 'OR',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'name',
+				'terms'    => 'Person',
+			),
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'name',
+				'terms'    => 'Organization',
+			),
+		),
+	));
+
+	// Variable indicating should the select tab (and panel) be displayed.
+	// If the wizard is skipped during the install there might not be entities
+	// to select from and not point in shoing the tab and panel
+
+	$select_panel_displayed = $entities_query->have_posts();
+
+	?>
+	<style>
+		.wl-tab-panel {
+			display:none;
+			padding-top:10px;
+		}
+
+		.wl-select-entity-active #wl-select-entity-panel {
+			display:block;
+		}
+
+		.wl-create-entity-active #wl-create-entity-panel {
+			display:block;
+		}
+
+		.wl-select-entity-active select {
+			width:400px;
+		}
+
+		.wl-select2 {
+			font-size:12px;
+			color:#1980c0;
+		}
+
+		.wl-select2 img, .wl-select2 .img-filler {
+			height: 24px;
+			width: 24px;
+			margin-right:10px;
+			margin-left:10px;
+			vertical-align:middle;
+			display:inline-block;
+		}
+
+		.wl-select2-type {
+			float:right;
+			margin-right:10px;
+			text-align:right;
+		}
+
+		#wl-publisher-type span {
+			margin-right:20px;
+		}
+
+		#wl-publisher-logo {
+			display:none;
+		}
+
+		#wl-publisher-logo input {
+			color: #555;
+			border-color: #ccc;
+			background: #f7f7f7;
+			box-shadow: 0 1px 0 #ccc;
+		}
+
+		#wl-publisher-name input {
+			width:400px;
+		}
+	</style>
+
+	<div id="wl-publisher-section"
+		class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
+		data-tabing-enabled="<?php echo $select_panel_displayed ? 'yes' : 'no' ?>">
+		<div class="nav-tab-wrapper">
+			<a class="nav-tab <?php echo $select_panel_displayed ? 'nav-tab-active' : ''?>" data-panel="wl-select-entity" href="#"><?php _e( 'Select existing publisher', 'wordlift' )?></a>
+			<a class="nav-tab <?php echo $select_panel_displayed ? '' : 'nav-tab-active'?>" data-panel="wl-create-entity" href="#"><?php _e( 'Create new publisher', 'wordlift' )?></a>
+		</div>
+		<input type="hidden"
+				id="wl-setting-panel"
+				name="wl-setting-panel" value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
+		<div id="wl-select-entity-panel" class="wl-tab-panel">
+			<select id="wl-select-entity" name="wl_general_settings[publisher]">
+				<?php
+				while ( $entities_query->have_posts() ) {
+					$entities_query->the_post();
+
+					// get the thumbnail, the long way around instead of get_the_thumbnail_url
+					// because it is supported only from version 4.4
+
+					$thumb = '';
+					$post_thumbnail_id = get_post_thumbnail_id();
+				    if ( $post_thumbnail_id ) {
+					    $thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
+					}
+
+					// get the type of entity.
+
+					$terms = get_the_terms( get_the_ID(), Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+					$entity_type = __( 'Person', 'wordlift' );
+					if ( 'Organization' == $terms[0]->name ) {
+						$entity_type = __( 'Company', 'wordlift' );
+					}
+					echo '<option value="' . get_the_ID() . '" data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '"">' . get_the_title() . '</option>';
+				}
+				?>
+			</select>
+		</div>
+		<div id="wl-create-entity-panel" class="wl-tab-panel">
+			<p><b><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></b></p>
+			<p id="wl-publisher-type">
+				<span>
+					<input id="wl-publisher-person" type="radio" name="wl-publisher-type" value="person" checked="checcked">
+					<label for="wl-publisher-person"><?php esc_html_e( 'Person', 'wordlift' )?></label>
+				</span>
+				<span>
+					<input id="wl-publisher-company" type="radio" name="wl-publisher-type" value="company">
+					<label for="wl-publisher-company"><?php esc_html_e( 'Company', 'wordlift' )?></label>
+				</span>
+			</p>
+			<p id="wl-publisher-name">
+				<input type="text" placeholder="<?php esc_attr_e( "Publisher's Name", 'wordlift' )?>" name="wl-publisher-name">
+			</p>
+			<div id="wl-publisher-logo">
+				<p><b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b></p>
+				<p>
+					<input type="button" class="button" value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>" >
+				</p>
+			</div>
+		</div>
+	</div>
 
 	<?php
 }
