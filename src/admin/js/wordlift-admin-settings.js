@@ -107,22 +107,36 @@
 						});
 
 				/**
-				 * Add the thumbnail to the display entity in the dropdown
+				 * Format the data related to the entity into HTML to be
+				 * used in the select2 UI.
 				 *
-				 * Used as a callback to the select2 instance
+				 * There can be two sources of data, the HTML itself, in which case
+				 * the data parameter indicates its DOM element, or an AJAX
+				 * response in which case the data is in the data parameter itself
 				 *
-				 * @return the query element to be inserted before the name of
-				 *         the entity in the dropdown.
+				 * @since 3.11
+				 *
+				 * @param data An object that have the following properties
+				 *             id - The post id of the entity
+				 *             text - The title of the entity
+				 *             element - The DOM option element which is being processed
+				 *             thumburl - If from AJAX, the url of the entity's thumburl
+				 *             type - The type of the entity company/personal
+				 *
+				 * @return string The HTML to be used to display the option
 				 */
-				function formatEntity (entity) {
-				  if (!entity.id) { return entity.text; }
-
-
-				  return $( '<span>mark + '+ entity.text + ' </span>' );
-				};
-
 				function htmlForElement(data) {
-					var thumburl = $(data.element).data('thumb');
+
+					var thumburl, type;
+
+					if (data.type === undefined) {
+						thumburl = $(data.element).data('thumb');
+						type = $(data.element).data('type');
+					} else {
+						thumburl = data.thumburl;
+						type = data.type;
+					}
+
 					var thumb = '';
 					if ('' == thumburl) {
 						thumb = '<span class="img-filler"></span>';
@@ -130,9 +144,8 @@
 						thumb = '<img src="' + thumburl + '">';
 					}
 
-					var type = $(data.element).data('type');
 					return $( '<span class="wl-select2-type">' + type + '</span>' +
-								'<span class="wl-select2">' + thumb + data.text  + ' </span>'
+								'<span class="wl-select2">' + thumb + data.text  + '</span>'
 							);
 				}
 
@@ -154,10 +167,48 @@
 					return htmlForElement( data );
 				}
 
-				$('#wl-select-entity-panel select').select2( {
+				var select2_options = {
 					templateResult: formatEntity,
 					templateSelection: formatSelectedEntity,
-				})
+				}
+
+				// If AJAX is not done, it means we have a small set and no point to
+				// clutter it with search field
+
+				if ( ! $( '#wl-select-entity-panel select' ).data( 'ajax--url' ) ) {
+					select2_options.minimumResultsForSearch = 'Infinity';
+				} else {
+					// set delay to start the ajax.
+					select2_options.minimumInputLength = 3;
+
+					// due to the way select2 combines parameters to the URL
+					// it is saner to use POST over get_instance
+
+					select2_options.ajax = {
+						type: 'POST',
+						dataType: 'json',
+						data: function (params) {
+								  return {
+									  q: params.term, // search term
+									  action: 'wl_possible_publisher', // ajax action
+								  };
+							  },
+					  	processResults: function (data, params) {
+									        // parse the results into the format expected by Select2
+
+									        return {
+										          results: data,
+										          pagination: {
+										            more: false,
+										          }
+											  };
+										},
+						templateResult: formatEntity,
+			    		templateSelection: formatEntity,
+					}
+				}
+
+				$( '#wl-select-entity-panel select' ).select2( select2_options );
 			}
 		};
 

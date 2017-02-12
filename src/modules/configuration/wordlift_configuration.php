@@ -8,6 +8,16 @@
 require_once( 'wordlift_configuration_constants.php' );
 require_once( 'wordlift_configuration_settings.php' );
 
+
+/**
+ * The maximal number of entities to be displayed in a "simple"
+ * publisher select. If there are more entities than this, AJAX
+ * should be used
+ *
+ * @since 3.11
+ */
+define( 'WL_MAX_ENTITIES_WITHOUT_AJAX', 11 );
+
 /**
  * Enqueue the scripts needed for the settings page
  *
@@ -464,7 +474,7 @@ function wl_configuration_publisher() {
 
 	$entities_query = new wp_Query( array(
 		'post_type' => Wordlift_Entity_Service::TYPE_NAME,
-		'posts_per_page' => -1,
+		'posts_per_page' => WL_MAX_ENTITIES_WITHOUT_AJAX,
 		'tax_query' => array(
 			'relation' => 'OR',
 			array(
@@ -568,30 +578,64 @@ function wl_configuration_publisher() {
 			<a class="nav-tab <?php echo $select_panel_displayed ? '' : 'nav-tab-active'?>" data-panel="wl-create-entity" href="#"><?php _e( 'Create new publisher', 'wordlift' )?></a>
 		</div>
 		<div id="wl-select-entity-panel" class="wl-tab-panel">
-			<select id="wl-select-entity" name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID?>]" autocomplete="off">
-				<?php
-				while ( $entities_query->have_posts() ) {
-					$entities_query->the_post();
+			<?php
+			// populate the select only if there are less than WL_MAX_ENTITIES_WITHOUT_AJAX possible entities
+			// Otherwise use AJAX..
 
-					// get the thumbnail, the long way around instead of get_the_thumbnail_url
-					// because it is supported only from version 4.4
+			$ajax_params = ( $entities_query->post_count < WL_MAX_ENTITIES_WITHOUT_AJAX )  ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
+			?>
+			<select id="wl-select-entity"
+					name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID?>]"
+					<?php echo $ajax_params?>
+					autocomplete="off">
+				<?php
+
+				if ( $entities_query->post_count < WL_MAX_ENTITIES_WITHOUT_AJAX ) {
+					while ( $entities_query->have_posts() ) {
+						$entities_query->the_post();
+
+						// get the thumbnail, the long way around instead of get_the_thumbnail_url
+						// because it is supported only from version 4.4
+
+						$thumb = '';
+						$post_thumbnail_id = get_post_thumbnail_id();
+					    if ( $post_thumbnail_id ) {
+						    $thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
+						}
+
+						// get the type of entity.
+
+						$terms = get_the_terms( get_the_ID(), Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+						$entity_type = __( 'Person', 'wordlift' );
+						if ( 'Organization' == $terms[0]->name ) {
+							$entity_type = __( 'Company', 'wordlift' );
+						}
+
+						echo '<option value="' . get_the_ID() . '" ' . selected( Wordlift_Configuration_Service::get_instance()->get_publisher_id(), get_the_ID(), false ) . ' data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '">' . get_the_title() . '</option>';
+					}
+				} else {
+					// display only the currently selected publisher
+
+					$post_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+					$post = get_post( $post_id );
 
 					$thumb = '';
-					$post_thumbnail_id = get_post_thumbnail_id();
-				    if ( $post_thumbnail_id ) {
-					    $thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
+					$post_thumbnail_id = get_post_thumbnail_id( $post_id );
+					if ( $post_thumbnail_id ) {
+						$thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
 					}
 
 					// get the type of entity.
 
-					$terms = get_the_terms( get_the_ID(), Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+					$terms = get_the_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 					$entity_type = __( 'Person', 'wordlift' );
 					if ( 'Organization' == $terms[0]->name ) {
 						$entity_type = __( 'Company', 'wordlift' );
 					}
 
-					echo '<option value="' . get_the_ID() . '" ' . selected( Wordlift_Configuration_Service::get_instance()->get_publisher_id(), get_the_ID(), false ) . ' data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '">' . get_the_title() . '</option>';
+					echo '<option value="' . $post_id . '" selected="selected"' . ' data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '">' . get_the_title( $post_id ) . '</option>';
 				}
 				?>
 			</select>
@@ -740,3 +784,113 @@ function wl_configuration_update_key( $old_value, $new_value ) {
 }
 
 add_action( 'update_option_wl_general_settings', 'wl_configuration_update_key', 10, 2 );
+
+/**
+ * Search SQL filter for matching against post title only.
+ *
+ * Adapted from
+ *
+ * @link    http://wordpress.stackexchange.com/a/11826/1685
+ *
+ * @since 3.11
+ *
+ * @param   string      $search
+ * @param   WP_Query    $wp_query
+ */
+function wpse_11826_search_by_title( $search, $wp_query ) {
+	if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
+		global $wpdb;
+
+		$q = $wp_query->query_vars;
+		$n = ! empty( $q['exact'] ) ? '' : '%';
+
+		$search = array();
+
+		foreach ( (array) $q['search_terms'] as $term ) {
+			$search[] = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", $n . $wpdb->esc_like( $term ) . $n );
+		}
+
+		$search = ' AND ' . implode( ' AND ', $search );
+	}
+
+	return $search;
+}
+
+/**
+ * Handle the AJAX request coming from the publisher selection AJAX
+ * on the setting screen.
+ *
+ * The parameters in the POST request are
+ *   q - The string to search for in the title of the person or organizations
+ *       entity.
+ *
+ * As a result output the HTML select element containing the titles of the entities
+ * as labels, and there "post id" as values
+ *
+ */
+function wp_ajax_wl_possible_publisher() {
+
+	// no actual search parameter was passed, bail out
+	if ( ! isset( $_POST['q'] ) ) {
+		wp_die();
+		return;
+	}
+
+	add_filter( 'posts_search', 'wpse_11826_search_by_title', 10, 2 );
+
+	$entities_query = new wp_Query( array(
+		'post_type' => Wordlift_Entity_Service::TYPE_NAME,
+		'posts_per_page' => -1,
+		's' => $_POST['q'],
+		'tax_query' => array(
+			'relation' => 'OR',
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'name',
+				'terms'    => 'Person',
+			),
+			array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'name',
+				'terms'    => 'Organization',
+			),
+		),
+	));
+
+	$response = array();
+
+	while ( $entities_query->have_posts() ) {
+		$entities_query->the_post();
+
+		// get the thumbnail, the long way around instead of get_the_thumbnail_url
+		// because it is supported only from version 4.4
+
+		$thumb = '';
+		$post_thumbnail_id = get_post_thumbnail_id();
+		if ( $post_thumbnail_id ) {
+			$thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
+		}
+
+		// get the type of entity.
+
+		$terms = get_the_terms( get_the_ID(), Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+		$entity_type = __( 'Person', 'wordlift' );
+		if ( 'Organization' == $terms[0]->name ) {
+			$entity_type = __( 'Company', 'wordlift' );
+		}
+
+		$entity_data = array(
+			'id' => get_the_ID(),
+			'text' => get_the_title(),
+			'thumburl' => $thumb,
+			'type' => $entity_type,
+		);
+
+		$response[] = $entity_data;
+	}
+
+	wp_send_json( $response );
+}
+
+add_action( 'wp_ajax_wl_possible_publisher', 'wp_ajax_wl_possible_publisher' );
