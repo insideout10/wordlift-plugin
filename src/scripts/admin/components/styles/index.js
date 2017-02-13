@@ -3,8 +3,6 @@
  */
 import styled from 'styled-components';
 
-const styles = {};
-
 export const Wrapper = styled.div`
 	display: block;
 	position: relative;
@@ -18,6 +16,9 @@ export const Wrapper = styled.div`
 	background-color: #f5f5f5;
 	box-shadow: 0 4px 4px -3px rgba(0,0,0,.25), 0 8px 8px -6px rgba(0,0,0,.25);
 	transition: all 150ms ease-out;
+	&:hover {
+		transform: scale( ${ props => 0 < props.entity.occurrences.length ? 1 : 1.01 } ); 
+	};
 `;
 
 export const Main = styled.div`
@@ -47,7 +48,7 @@ export const Count = styled.div`
 	letter-spacing: -0.21px;
 	line-height: 12px;
 	user-select: none;
-	background-color: #c7c7c7;
+	background-color: ${ props => 0 < props.entity.occurrences.length ? '#2e92ff' : '#c7c7c7' };
 `;
 
 export const Label = styled.div`
@@ -60,7 +61,7 @@ export const Label = styled.div`
 	font-weight: 600;
 	font-size: 12px;
 	user-select: none;
-	color: #c7c7c7;
+	color: ${ props => 0 < props.entity.occurrences.length ? '#2e92ff' : '#c7c7c7' };
 `;
 
 export const Cloud = styled.i`
@@ -73,7 +74,7 @@ export const Cloud = styled.i`
 	color: #CBCBCB;
 	user-select: none;
 	transition: opacity 150ms ease;
-	opacity: 0;
+	opacity: ${ props => 0 < props.entity.occurrences.length ? 1 : 0 }
 `;
 
 export const Drawer = styled.div`
