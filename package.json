@@ -60,6 +60,7 @@
     "karma-requirejs": "^0.2.6",
     "karma-safari-launcher": "^0.1.1",
     "karma-script-launcher": "^0.1.0",
+    "matchdep": "^1.0.1",
     "path": "^0.12.7",
     "phantomjs": "^1.9.20",
     "redux-devtools": "^3.3.2",

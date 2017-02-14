@@ -6,3 +6,12 @@
  * @type {string}
  */
 export const TOGGLE_ENTITY = 'TOGGLE_ENTITY';
+
+/**
+ * Define the `SELECT_ENTITY` action name, used when the Angular application
+ * selects an entity.
+ *
+ * @since 3.11.0
+ * @type {string}
+ */
+export const SELECT_ENTITY = 'SELECT_ENTITY';

@@ -4,15 +4,16 @@
     "es6": true
   },
   "globals": {
+    "ajaxurl": true,
+    "angular": true,
+    "Backbone": true,
     "ENV": true,
     "inlineEditPost": true,
+    "jQuery": true,
+    "log": true,
     "wlSettings": true,
     "wp": true,
-    "ajaxurl": true,
-    "jQuery": true,
-    "_": true,
-    "Backbone": true,
-    "log": true
+    "_": true
   },
   "extends": "wpcalypso/react",
   "rules": {

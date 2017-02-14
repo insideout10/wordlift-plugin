@@ -61,7 +61,10 @@ class EntityTile extends React.PureComponent {
 		return (
 			<Wrapper entity={ this.props.entity }>
 				<Main onClick={ this.onClick }>
-					<Count entity={ this.props.entity }>0</Count>
+					<Count
+						entity={ this.props.entity }>
+						{ this.props.entity.occurrences.length }
+					</Count>
 					<Label
 						entity={ this.props.entity }>{ this.props.entity.label }</Label>
 					<Cloud className="fa fa-cloud"

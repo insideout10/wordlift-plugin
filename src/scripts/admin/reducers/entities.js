@@ -9,8 +9,9 @@
 /**
  * Internal dependencies
  */
-import { TOGGLE_ENTITY } from '../constants/ActionTypes';
-import log from '../../modules/log';
+import { SELECT_ENTITY, TOGGLE_ENTITY } from '../constants/ActionTypes';
+import EditPostWidgetController from '../angular/EditPostWidgetController';
+// import log from '../../modules/log';
 
 /**
  * Define the reducers.
@@ -23,17 +24,16 @@ import log from '../../modules/log';
 const entities = function( state = {}, action ) {
 	switch ( action.type ) {
 
-		case TOGGLE_ENTITY:
-			// Get the entity from the collection.
-			const entity = state.get( action.entity.id );
+		case SELECT_ENTITY:
+			// Update the entity.
+			return state.set( action.entity.id, Object.assign( {}, action.entity ) );
 
-			log( 'Going to select an entity', action, state, state.get( entity.id ) );
+		case TOGGLE_ENTITY:
+			// Call the legacy AngularJS controller.
+			EditPostWidgetController().onSelectedEntityTile( state.get( action.entity.id ) );
 
 			// Update the state by replacing the entity with toggled version.
-			return state.set(
-				action.entity.id,
-				Object.assign( action.entity, { selected: ! entity.selected } )
-			);
+			return state;
 
 		default:
 			return state;

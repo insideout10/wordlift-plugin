@@ -21,8 +21,9 @@
  */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import thunk from 'redux-thunk';
 import { Map } from 'immutable';
 
 /**
@@ -30,6 +31,7 @@ import { Map } from 'immutable';
  */
 import reducer from './reducers';
 import EntityListContainer from './containers/EntityListContainer';
+import { selectEntity } from './actions';
 import log from '../modules/log';
 
 // Start-up the application when an analysis result is received. This event is
@@ -41,7 +43,7 @@ wp.wordlift.on( 'analysis.result', function( analysis ) {
 
 	// Create the `store` with the reducer, using the analysis result as
 	// `initialState`.
-	const store = createStore( reducer, state );
+	const store = createStore( reducer, state, applyMiddleware( thunk ) );
 
 	log( analysis );
 
@@ -54,4 +56,33 @@ wp.wordlift.on( 'analysis.result', function( analysis ) {
 		</Provider>,
 		document.getElementById( 'wl-entity-list' )
 	);
+
+	const entitySelected = function() {
+		return function( dispatch ) {
+			// Hook other events.
+			wp.wordlift.on( 'entitySelected', function( { entity } ) {
+				// Asynchronously call the dispatch. We need this because we
+				// might be inside a reducer call.
+				setTimeout( function() {
+					dispatch( selectEntity( entity ) );
+				}, 0 );
+			} );
+		};
+	};
+
+	const entityDeselected = function() {
+		return function( dispatch ) {
+			// Hook other events.
+			wp.wordlift.on( 'entityDeselected', function( { entity } ) {
+				// Asynchronously call the dispatch. We need this because we
+				// might be inside a reducer call.
+				setTimeout( function() {
+					dispatch( selectEntity( entity ) );
+				}, 0 );
+			} );
+		};
+	};
+
+	store.dispatch( entitySelected() );
+	store.dispatch( entityDeselected() );
 } );

@@ -675,6 +675,10 @@
           });
         }
         $scope.$emit(action, entity, $scope.annotation);
+        wp.wordlift.trigger(action, {
+          entity: entity,
+          annotation: $scope.annotation
+        });
         $scope.updateRelatedPosts();
         return $scope.selectAnnotation(void 0);
       };
