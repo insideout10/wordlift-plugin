@@ -2,10 +2,11 @@
 
 /**
  * Set a configuration option.
+ * @deprecated use {@link Wordlift_Configuration_Service}.
  *
  * @param string $settings The configuration settings group.
- * @param string $key The setting name.
- * @param string $value The setting value.
+ * @param string $key      The setting name.
+ * @param string $value    The setting value.
  */
 function wl_configuration_set( $settings, $key, $value ) {
 
@@ -19,58 +20,74 @@ function wl_configuration_set( $settings, $key, $value ) {
 /**
  * Get the configured WordLift key.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->get_key()
+ *
+ * @since      3.0.0
  *
  * @return string The configured WordLift key or an empty string.
  */
 function wl_configuration_get_key() {
-	$options = get_option( 'wl_general_settings' );
 
-	if ( isset( $options['key'] ) ) {
-		return $options['key'];
-	}
+	return Wordlift_Configuration_Service::get_instance()->get_key();
 
-	return '';
+//	$options = get_option( 'wl_general_settings' );
+//
+//	if ( isset( $options['key'] ) ) {
+//		return $options['key'];
+//	}
+//
+//	return '';
 }
-
 
 /**
  * Set the WordLift key.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->set_key( $value );
+ *
+ * @since      3.0.0
  *
  * @param string $value The WordLift key.
  */
 function wl_configuration_set_key( $value ) {
 
-	wl_configuration_set( 'wl_general_settings', 'key', $value );
+	Wordlift_Configuration_Service::get_instance()->set_key( $value );
+
+//	wl_configuration_set( 'wl_general_settings', 'key', $value );
 
 }
 
 /**
  * Get the *Site Language* configuration setting.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->get_language_code();
+ *
+ * @since      3.0.0
  *
  * @return string It returns the two-letter code of the site language.
  */
 function wl_configuration_get_site_language() {
 
-	$options = get_option( 'wl_general_settings' );
+	return Wordlift_Configuration_Service::get_instance()->get_language_code();
 
-	return ( empty( $options['site_language'] ) ? 'en' : $options['site_language'] );
+//	$options = get_option( 'wl_general_settings' );
+//
+//	return ( empty( $options['site_language'] ) ? 'en' : $options['site_language'] );
 }
 
 /**
  * Set the *Site Language* configuration setting.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->set_language_code( $value );
+ *
+ * @since      3.0.0
  *
  * @param string $value The two-letter language code.
  */
 function wl_configuration_set_site_language( $value ) {
 
-	wl_configuration_set( 'wl_general_settings', 'site_language', $value );
+	Wordlift_Configuration_Service::get_instance()->set_language_code( $value );
+
+//	wl_configuration_set( 'wl_general_settings', 'site_language', $value );
 }
 
 /**
@@ -91,7 +108,9 @@ function wl_configuration_get_api_url() {
 /**
  * Set the API URL.
  *
- * @since 3.0.0
+ * @deprecated used only for testing.
+ *
+ * @since      3.0.0
  *
  * @param string $value The API URL.
  */
@@ -118,7 +137,9 @@ function wl_configuration_get_redlink_key() {
 /**
  * Set the Redlink application key.
  *
- * @param 3.0.0
+ * @deprecated used only for testing.
+ *
+ * @param      3.0.0
  *
  * @param string $value The Redlink application key.
  */
@@ -145,7 +166,9 @@ function wl_configuration_get_redlink_user_id() {
 /**
  * Set the Redlink user id.
  *
- * @since 3.0.0
+ * @deprecated used only for testing.
+ *
+ * @since      3.0.0
  *
  * @param string $value The Redlink user id.
  */
@@ -172,7 +195,9 @@ function wl_configuration_get_redlink_dataset_name() {
 /**
  * Set the Redlink dataset name.
  *
- * @since 3.0.0
+ * @deprecated used only for testing.
+ *
+ * @since      3.0.0
  *
  * @param string $value The Redlink dataset name.
  */
@@ -181,32 +206,34 @@ function wl_configuration_set_redlink_dataset_name( $value ) {
 	wl_configuration_set( 'wl_advanced_settings', 'redlink_dataset_name', $value );
 }
 
-
 /**
  * Get the Redlink dataset URI.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
+ *
+ * @since      3.10.0 deprecated.
+ * @since      3.0.0
  *
  * @return string The Redlink dataset URI.
  */
 function wl_configuration_get_redlink_dataset_uri() {
 
-	$options = get_option( 'wl_advanced_settings', '' );
-
-	return ( empty( $options['redlink_dataset_uri'] ) ? '' : $options['redlink_dataset_uri'] );
+	return Wordlift_Configuration_Service::get_instance()->get_dataset_uri();
 }
-
 
 /**
  * Set the Redlink dataset URI.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Configuration_Service::get_instance()->set_dataset_uri( $value );
+ *
+ * @since      3.10.0 deprecated.
+ * @since      3.0.0
  *
  * @param string $value The Redlink dataset URI.
  */
 function wl_configuration_set_redlink_dataset_uri( $value ) {
 
-	wl_configuration_set( 'wl_advanced_settings', 'redlink_dataset_uri', $value );
+	Wordlift_Configuration_Service::get_instance()->set_dataset_uri( $value );
 }
 
 /**
@@ -242,9 +269,9 @@ function wl_configuration_set_redlink_application_name( $value ) {
  *
  * @since 3.0.0
  *
- * @uses wl_configuration_get_key() to get the WordLift key.
- * @uses wl_configuration_get_redlink_key() to get the application key.
- * @uses wl_configuration_get_redlink_application_name() to get the analysis name.
+ * @uses  wl_configuration_get_key() to get the WordLift key.
+ * @uses  wl_configuration_get_redlink_key() to get the application key.
+ * @uses  wl_configuration_get_redlink_application_name() to get the analysis name.
  *
  * @return string The analysis URL.
  */
@@ -295,12 +322,12 @@ function wl_configuration_get_accounts_by_key_dataset_uri( $key ) {
  *
  * @since 3.0.0
  *
- * @param string $output The output format, either 'json', 'xml', 'tabs' or 'csv'.
+ * @param string      $output  The output format, either 'json', 'xml', 'tabs' or 'csv'.
  * @param string|null $dataset The dataset to use for the query. Only valid for queries straight to Redlink.
  *
  * @return string The URL to call to perform the SELECT query.
  */
-function wl_configuration_get_query_select_url( $output, $dataset = NULL ) {
+function wl_configuration_get_query_select_url( $output, $dataset = null ) {
 
 	// If the WordLift Key is set, we use WordLift.
 	$key = wl_configuration_get_key();

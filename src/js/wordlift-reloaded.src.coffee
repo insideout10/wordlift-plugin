@@ -4,11 +4,11 @@ class Traslator
   _htmlPositions: []
   _textPositions: []
 
-  # Hold the html and text contents.
+# Hold the html and text contents.
   _html: ''
   _text: ''
 
-  decodeHtml = (html)-> 
+  decodeHtml = (html)->
     txt = document.createElement("textarea")
     txt.innerHTML = html
     txt.value
@@ -19,6 +19,8 @@ class Traslator
     traslator.parse()
     traslator
 
+  @version: '1.0.0'
+
   constructor: (html) ->
     @_html = html
 
@@ -27,15 +29,15 @@ class Traslator
     @_textPositions = []
     @_text = ''
 
-    # OLD pattern = /([^<]*)(<[^>]*>)([^<]*)/gim
-    pattern = /([^&<>]*)(&[^&;]*;|<[^>]*>)([^&<>]*)/gim
-     
+    # Changing this regex requires changing the regex also in WLS. Update the Traslator version when changing the regex.
+    pattern = /([^&<>]*)(&[^&;]*;|<[!\/]?(?:[\w-]+|\[cdata\[.*?]])(?: [\w_-]+(?:="[^"]*")?)*>)([^&<>]*)/gim
+
     textLength = 0
     htmlLength = 0
 
-    while match = pattern.exec @_html
+    while (match = pattern.exec @_html)?
 
-      # Get the text pre/post and the html element
+# Get the text pre/post and the html element
       htmlPre = match[1]
       htmlElem = match[2]
       htmlPost = match[3]
@@ -43,14 +45,14 @@ class Traslator
       # Get the text pre/post w/o new lines.
       # Add \n\n when it's needed depending on last tag
       textPre = htmlPre + (if htmlElem.toLowerCase() in ['</p>', '</li>'] then '\n\n' else '')
-#      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
+      #      dump "[ htmlPre length :: #{htmlPre.length} ][ textPre length :: #{textPre.length} ]"
       textPost = htmlPost
 
       # Sum the lengths to the existing lengths.
       textLength += textPre.length
 
       if /^&[^&;]*;$/gim.test htmlElem
-       textLength += 1
+        textLength += 1
 
       # For html add the length of the html element.
       htmlLength += htmlPre.length + htmlElem.length
@@ -71,7 +73,7 @@ class Traslator
 
 
     # In case the regex didn't find any tag, copy the html over the text.
-    @_text = new String(@_html) if '' is @_text and '' isnt @_html
+    @_text = new String(@_html) if '' is @_text and !pattern.match @_html
 
     # Add text position 0 if it's not already set.
     if 0 is @_textPositions.length or 0 isnt @_textPositions[0]
@@ -85,7 +87,7 @@ class Traslator
 #    console.log @_textPositions
 #    console.log '=============================='
 
-  # Get the html position, given a text position.
+# Get the html position, given a text position.
   text2html: (pos) ->
     htmlPos = 0
     textPos = 0
@@ -98,12 +100,12 @@ class Traslator
     #    dump "#{htmlPos} + #{pos} - #{textPos}"
     htmlPos + pos - textPos
 
-  # Get the text position, given an html position.
+# Get the text position, given an html position.
   html2text: (pos) ->
 #    dump @_htmlPositions
 #    dump @_textPositions
 
-    # Return 0 if the specified html position is less than the first HTML position.
+# Return 0 if the specified html position is less than the first HTML position.
     return 0 if pos < @_htmlPositions[0]
 
     htmlPos = 0
@@ -114,16 +116,15 @@ class Traslator
       htmlPos = @_htmlPositions[i]
       textPos = @_textPositions[i]
 
-#    console.log "#{textPos} + #{pos} - #{htmlPos}"
+    #    console.log "#{textPos} + #{pos} - #{htmlPos}"
     textPos + pos - htmlPos
 
-  # Insert an Html fragment at the specified location.
+# Insert an Html fragment at the specified location.
   insertHtml: (fragment, pos) ->
 
 #    dump @_htmlPositions
 #    dump @_textPositions
 #    console.log "[ fragment :: #{fragment} ][ pos text :: #{pos.text} ]"
-
     htmlPos = @text2html pos.text
 
     @_html = @_html.substring(0, htmlPos) + fragment + @_html.substring(htmlPos)
@@ -131,11 +132,11 @@ class Traslator
     # Reparse
     @parse()
 
-  # Return the html.
+# Return the html.
   getHtml: ->
     @_html
 
-  # Return the text.
+# Return the text.
   getText: ->
     @_text
 window.Traslator = Traslator
@@ -575,12 +576,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
     
     $log.debug "Occurrences #{occurrences.length} for #{entityId}"
     $scope.analysis.entities[ entityId ].occurrences = occurrences
-    # Update blind occurences accordingly
-    bo = $scope.analysis.entities[ entityId ].blindOccurrences
-    $scope.analysis.entities[ entityId ].blindOccurrences = bo.filter (oc) ->
-      return (oc in occurrences)
     
-    if occurrences.length is 0      
+    if occurrences.length is 0
       for box, entities of $scope.selectedEntities
         delete $scope.selectedEntities[ box ][ entityId ]
         
@@ -656,30 +653,6 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         entityIds.push id
     RelatedPostDataRetrieverService.load entityIds
 
-  $scope.onEntityPageLinkingToggle = (entity)->
-
-      # Blind occurrences for the current entity
-      bo = entity.blindOccurrences
-      # If we are in bottom / up mode toggle specific annotation
-      if $scope.annotation?
-        if $scope.annotation in bo
-          
-          bo = bo.filter (annotationId)->
-            $scope.annotation isnt annotationId
-        else
-          bo.push $scope.annotation
-      # Otherwise the whole selected occurences collaction
-      else
-        if bo.length > 0
-          bo = []
-        else
-          bo = entity.occurrences
-
-      # Update blind occurences collection
-      $scope.analysis.entities[ entity.id ].blindOccurrences = bo     
-      # Notify to EditorService
-      $scope.$emit "entityBlindnessToggled", $scope.analysis.entities[ entity.id ]
-    
   $scope.onSelectedEntityTile = (entity)->
 
     # Detect if the entity has to be selected or unselected
@@ -903,7 +876,6 @@ angular.module('wordlift.editpost.widget.directives.wlEntityTile', [])
       isSelected: '='
       showConfidence: '='
       onSelect: '&'
-      onBlind: '&'
       onMore: '&'
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-tile.html'
@@ -936,187 +908,271 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     templateUrl: ()->
       configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html'
 ])
-angular.module('wordlift.editpost.widget.services.AnalysisService', [])
-# Manage redlink analysis responses
-.service('AnalysisService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)-> 
-	
-  # Creates a unique ID of the specified length (default 8).
-  uniqueId = (length = 8) ->
-    id = ''
-    id += Math.random().toString(36).substr(2) while id.length < length
-    id.substr 0, length
+angular.module('wordlift.editpost.widget.services.EditorAdapter', [
+  'wordlift.editpost.widget.services.EditorAdapter'
+])
+# An adapter to the page editor.
+#
+# @since 1.4.2
+.service('EditorAdapter', ['$log', ($log)->
 
-  # Merges two objects by copying overrides param onto the options.
-  merge = (options, overrides) ->
-    extend (extend {}, options), overrides
-  extend = (object, properties) ->
-    for key, val of properties
-      object[key] = val
-    object
- 
-  findAnnotation = (annotations, start, end) ->
-    return annotation for id, annotation of annotations when annotation.start is start and annotation.end is end
-
+  # Create the service definition.
   service =
-    _isRunning: false
-    _currentAnalysis: undefined
-    _supportedTypes: []
-    _defaultType: "thing"
-  
-  service.cleanAnnotations = (analysis, positions = []) ->
-    # Take existing entities as mandatory 
-    for annotationId, annotation of analysis.annotations
-      if annotation.start > 0 and annotation.end > annotation.start
-        annotationRange = [ annotation.start..annotation.end ]
-        # TODO Replace with an Array intersection check
-        isOverlapping = false
-        for pos in annotationRange
-          if pos in positions
-            isOverlapping = true
-          break
-        
-        if isOverlapping
-          $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
-          @.deleteAnnotation analysis, annotationId
-        else 
-          positions = positions.concat annotationRange 
 
-    return analysis
+    # Get the editor with the specified id (by default 'content').
+    #
+    # @since 1.4.2
+    #
+    # @param string id The editor's id (by default 'content').
+    # @return The editor instance.
+    getEditor: (id = 'content') ->
+      tinyMCE.get(id)
 
-  # Retrieve supported type from current classification boxes configuration
-  for box in configuration.classificationBoxes
-    for type in box.registeredTypes
-      if type not in service._supportedTypes
-        service._supportedTypes.push type
+    # Get the HTML code in the specified editor (by default 'content').
+    #
+    # @since 1.4.2
+    #
+    # @param string id The editor's id (by default 'content').
+    # @return The editor's HTML content.
+    getHTML: (id) ->
+      service.getEditor(id).getContent format: 'raw'
 
-  service.createEntity = (params = {}) ->
-    # Set the defalut values.
-    defaults =
-      id: 'local-entity-' + uniqueId 32
-      label: ''
-      description: ''
-      mainType: '' # No DefaultType
-      types: []
-      images: []
-      confidence: 1
-      occurrences: []
-      blindOccurrences: []
-      annotations: {}
-    
-    merge defaults, params
-    
-  # Delete an annotation from a given analyis and an annotationId
-  service.deleteAnnotation = (analysis, annotationId)->
+  # Finally return the service.
+  service
+])
+angular.module('wordlift.editpost.widget.services.AnnotationParser', [])
+# Parse annotations.
+#
+# @since 1.4.2
+.service('AnnotationParser', ['$log', ($log)->
 
-    $log.warn "Going to remove overlapping annotation with id #{annotationId}"
-    
-    if analysis.annotations[ annotationId ]?
-      for ea, index in analysis.annotations[ annotationId ].entityMatches
-        delete analysis.entities[ ea.entityId ].annotations[ annotationId ]
-      delete analysis.annotations[ annotationId ]
+  # Define the service.
+  service =
 
-    analysis
+    # Parse the provided HTML code for annotations.
+    #
+    # @since 1.4.2
+    #
+    # @param string html The HTML code to parse.
+    # @return array An array of annotations.
+    parse: (html) ->
 
-  service.createAnnotation = (params = {}) ->
-    # Set the defalut values.
-    defaults =
-      id: 'urn:local-text-annotation-' + uniqueId 32
-      text: ''
-      start: 0
-      end: 0
-      entities: []
-      entityMatches: []
-    
-    merge defaults, params
+      # Prepare a traslator instance that will traslate Html and Text positions.
+      traslator = Traslator.create html
+      # Set the pattern to look for *itemid* attributes.
+      pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
 
-  service.parse = (data) ->
-    
-    # Add local entities
-    # Add id to entity obj
-    # Add id to annotation obj
-    # Add occurences as a blank array
-    # Add annotation references to each entity
+      # Get the matches and return them.
+      (while match = pattern.exec html
 
-    # TMP ... Should be done on WLS side
-  
-    
-    unless data.topics?
-      data.topics = []
+        annotation =
+          start: traslator.html2text match.index
+          end: traslator.html2text (match.index + match[0].length)
+          uri: match[2]
+          label: match[3]
 
-    dt = @._defaultType
+        annotation
+      )
 
-    data.topics = data.topics.map (topic)->
-      
-      topic.id = topic.uri
-      topic.occurrences = []
-      topic.mainType = dt
-      topic
+  # Finally return the service.
+  service
+])
+angular.module('wordlift.editpost.widget.services.AnalysisService', [
+  'wordlift.editpost.widget.services.AnnotationParser',
+  'wordlift.editpost.widget.services.EditorAdapter',
+])
+# Manage redlink analysis responses
+# @since 1.0.0
+  .service('AnalysisService', ['AnnotationParser', 'EditorAdapter', 'configuration', '$log', '$http', '$rootScope',
+  (AnnotationParser, EditorAdapter, configuration, $log, $http, $rootScope)->
 
-    for id, localEntity of configuration.entities
-      
-      data.entities[ id ] = localEntity
+# Creates a unique ID of the specified length (default 8).
+    uniqueId = (length = 8) ->
+      id = ''
+      id += Math.random().toString(36).substr(2) while id.length < length
+      id.substr 0, length
 
-    for id, entity of data.entities
-      
-      if not entity.label
-        $log.warn "Label missing for entity #{id}"
-      if not entity.description
-        $log.warn "Description missing for entity #{id}"
+    # Merges two objects by copying overrides param onto the options.
+    merge = (options, overrides) ->
+      extend (extend {}, options), overrides
+    extend = (object, properties) ->
+      for key, val of properties
+        object[key] = val
+      object
 
-      if not entity.sameAs
-        $log.warn "sameAs missing for entity #{id}"
-        entity.sameAs = []
-        configuration.entities[ id ]?.sameAs = []
-        $log.debug "Schema.org sameAs overridden for entity #{id}"
-    
-      if entity.mainType not in @._supportedTypes
-        $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
-        entity.mainType = @._defaultType
-        configuration.entities[ id ]?.mainType = @._defaultType
-        $log.debug "Schema.org type overridden for entity #{id}"
-        
-      entity.id = id
-      entity.occurrences = []
-      entity.blindOccurrences = []
-      entity.annotations = {}
-      entity.confidence = 1 
+    findAnnotation = (annotations, start, end) ->
+      return annotation for id, annotation of annotations when annotation.start is start and annotation.end is end
 
-    for id, annotation of data.annotations
-      annotation.id = id
-      annotation.entities = {}
-      
-      # Filter out entity matches referring the current entity
-      data.annotations[ id ].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId isnt configuration.currentPostUri )
-      
-      for ea, index in data.annotations[ id ].entityMatches
-        
-        if not data.entities[ ea.entityId ].label 
-          data.entities[ ea.entityId ].label = annotation.text
-          $log.debug "Missing label retrived from related annotation for entity #{ea.entityId}"
+    service =
+      _isRunning: false
+      _currentAnalysis: undefined
+      _supportedTypes: []
+      _defaultType: "thing"
 
-        data.entities[ ea.entityId ].annotations[ id ] = annotation
-        data.annotations[ id ].entities[ ea.entityId ] = data.entities[ ea.entityId ]
+    service.cleanAnnotations = (analysis, positions = []) ->
+# Take existing entities as mandatory
+      for annotationId, annotation of analysis.annotations
+        if annotation.start > 0 and annotation.end > annotation.start
+          annotationRange = [ annotation.start..annotation.end ]
+          # TODO Replace with an Array intersection check
+          isOverlapping = false
+          for pos in annotationRange
+            if pos in positions
+              isOverlapping = true
+            break
 
-    # TODO move this calculation on the server
-    for id, entity of data.entities
-      for annotationId, annotation of data.annotations
-        local_confidence = 1
-        for em in annotation.entityMatches  
-          if em.entityId? and em.entityId is id
-            local_confidence = em.confidence
-        entity.confidence = entity.confidence * local_confidence
+          if isOverlapping
+            $log.warn "Annotation with id: #{annotationId} start: #{annotation.start} end: #{annotation.end} overlaps an existing annotation"
+            @.deleteAnnotation analysis, annotationId
+          else
+            positions = positions.concat annotationRange
 
-    data    
-  
-  service.getSuggestedSameAs = (content)->
-    promise = @._innerPerform content
-    # If successful, broadcast an *sameAsReceived* event.
-    .then (response) ->
-      
+      return analysis
+
+    # Retrieve supported type from current classification boxes configuration
+    for box in configuration.classificationBoxes
+      for type in box.registeredTypes
+        if type not in service._supportedTypes
+          service._supportedTypes.push type
+
+    service.createEntity = (params = {}) ->
+# Set the defalut values.
+      defaults =
+        id: 'local-entity-' + uniqueId 32
+        label: ''
+        description: ''
+        mainType: '' # No DefaultType
+        types: []
+        images: []
+        confidence: 1
+        occurrences: []
+        annotations: {}
+
+      merge defaults, params
+
+    # Delete an annotation from a given analyis and an annotationId
+    service.deleteAnnotation = (analysis, annotationId)->
+      $log.warn "Going to remove overlapping annotation with id #{annotationId}"
+
+      if analysis.annotations[annotationId]?
+        for ea, index in analysis.annotations[annotationId].entityMatches
+          delete analysis.entities[ea.entityId].annotations[annotationId]
+        delete analysis.annotations[annotationId]
+
+      analysis
+
+    service.createAnnotation = (params = {}) ->
+# Set the defalut values.
+      defaults =
+        id: 'urn:local-text-annotation-' + uniqueId 32
+        text: ''
+        start: 0
+        end: 0
+        entities: []
+        entityMatches: []
+
+      merge defaults, params
+
+    service.parse = (data) ->
+
+# Add local entities
+# Add id to entity obj
+# Add id to annotation obj
+# Add occurences as a blank array
+# Add annotation references to each entity
+
+# TMP ... Should be done on WLS side
+#      unless data.topics?
+#        data.topics = []
+      dt = @._defaultType
+
+      data.topics = data.topics.map (topic)->
+        topic.id = topic.uri
+        topic.occurrences = []
+        topic.mainType = dt
+        topic
+
+      for id, localEntity of configuration.entities
+
+        data.entities[id] = localEntity
+
+      for id, entity of data.entities
+
+# Remove the current entity from the proposed entities.
+#
+# See https://github.com/insideout10/wordlift-plugin/issues/437
+# See https://github.com/insideout10/wordlift-plugin/issues/345
+        if configuration.currentPostUri is id
+          delete data.entities[id]
+          continue
+
+        if not entity.label
+          $log.warn "Label missing for entity #{id}"
+
+        if not entity.description
+          $log.warn "Description missing for entity #{id}"
+
+        if not entity.sameAs
+          $log.warn "sameAs missing for entity #{id}"
+          entity.sameAs = []
+          configuration.entities[id]?.sameAs = []
+          $log.debug "Schema.org sameAs overridden for entity #{id}"
+
+        if entity.mainType not in @._supportedTypes
+          $log.warn "Schema.org type #{entity.mainType} for entity #{id} is not supported from current classification boxes configuration"
+          entity.mainType = @._defaultType
+          configuration.entities[id]?.mainType = @._defaultType
+          $log.debug "Schema.org type overridden for entity #{id}"
+
+        entity.id = id
+        entity.occurrences = []
+        entity.annotations = {}
+        entity.confidence = 1
+
+      for id, annotation of data.annotations
+        annotation.id = id
+        annotation.entities = {}
+
+        # Filter out annotations that don't have a corresponding entity. The entities list might be filtered, in order
+        # to remove the local entity.
+        data.annotations[id].entityMatches = (ea for ea in annotation.entityMatches when ea.entityId of data.entities)
+
+        # Remove the annotation if there's no entity matches left.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/437
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if 0 is data.annotations[id].entityMatches.length
+          delete data.annotations[id]
+          continue
+
+        for ea, index in data.annotations[id].entityMatches
+
+          if not data.entities[ea.entityId].label
+            data.entities[ea.entityId].label = annotation.text
+            $log.debug "Missing label retrieved from related annotation for entity #{ea.entityId}"
+
+          data.entities[ea.entityId].annotations[id] = annotation
+          data.annotations[id].entities[ea.entityId] = data.entities[ea.entityId]
+
+      # TODO move this calculation on the server
+      for id, entity of data.entities
+        for annotationId, annotation of data.annotations
+          local_confidence = 1
+          for em in annotation.entityMatches
+            if em.entityId? and em.entityId is id
+              local_confidence = em.confidence
+          entity.confidence = entity.confidence * local_confidence
+
+      data
+
+    service.getSuggestedSameAs = (content)->
+      promise = @._innerPerform content
+# If successful, broadcast an *sameAsReceived* event.
+        .then (response) ->
       suggestions = []
 
       for id, entity of response.data.entities
-       
+
         if matches = id.match /^https?\:\/\/([^\/?#]+)(?:[\/?#]|$)/i
           suggestions.push {
             id: id
@@ -1126,109 +1182,115 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [])
           }
       $log.debug suggestions
       $rootScope.$broadcast "sameAsRetrieved", suggestions
-    
-  service._innerPerform = (content)->
 
-    $log.info "Start to performing analysis"
+    service._innerPerform = (content, annotations = [])->
+      args =
+        method: 'post'
+        url: ajaxurl + '?action=wordlift_analyze'
 
-    return $http(
-      method: 'post'
-      url: ajaxurl + '?action=wordlift_analyze'
-      data: content      
-    )
-  
-  service._updateStatus = (status)->
-    service._isRunning = status
-    $rootScope.$broadcast "analysisServiceStatusUpdated", status
+      # Set the data as two parameters, content and annotations.
+      args.headers = {'Content-Type': 'application/json'}
+      args.data = {content: content, annotations: annotations, contentType: 'text/html', version: Traslator.version}
 
-  service.perform = (content)->
-    
-    if service._currentAnalysis
-      $log.warn "Analysis already runned! Nothing to do ..."
-      service._updateStatus false
+      if (wlSettings?)
+        if (wlSettings.language?) then args.data.contentLanguage = wlSettings.language
+        # We set the current entity URI as exclude from the analysis results.
+        #
+        # See https://github.com/insideout10/wordlift-plugin/issues/345
+        if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
 
-      return
+      return $http(args)
 
-    service._updateStatus true
+    service._updateStatus = (status)->
+      service._isRunning = status
+      $rootScope.$broadcast "analysisServiceStatusUpdated", status
 
-    promise = @._innerPerform content
-    # If successful, broadcast an *analysisPerformed* event.
-    promise.then (response) ->
-      # Store current analysis obj
-      service._currentAnalysis = response.data
-      $rootScope.$broadcast "analysisPerformed", service.parse( response.data )
-    
-    # On failure, broadcast an *analysisFailed* event.
-    promise.catch (response) ->
-      $log.error response.data
-      $rootScope.$broadcast "analysisFailed", response.data
-    
-    # Update service running status in each case
-    promise.finally (response) ->
-      service._updateStatus false
+    service.perform = (content)->
+      if service._currentAnalysis
+        $log.warn "Analysis already run! Nothing to do ..."
+        service._updateStatus false
 
-  # Preselect entity annotations in the provided analysis using the provided collection of annotations.
-  service.preselect = (analysis, annotations) ->
+        return
 
-    $log.debug "Selecting entity annotations (#{annotations.length})..."
+      service._updateStatus true
 
-    # Find the existing entities in the html
-    for annotation in annotations
+      # Get the existing annotations in the text.
+      annotations = AnnotationParser.parse(EditorAdapter.getHTML())
 
-      if annotation.start is annotation.end
-        $log.warn "There is a broken empty annotation for entityId #{annotation.uri}"
-        continue
+      $log.debug 'Requesting analysis...'
 
-      # Find the proper annotation  
-      textAnnotation = findAnnotation analysis.annotations, annotation.start, annotation.end
-      
-      # If there is no textAnnotation then create it and add to the current analysis
-      # It can be normal for new entities that are queued for Redlink re-indexing
-      if not textAnnotation?
+      promise = @._innerPerform content, annotations
+      # If successful, broadcast an *analysisPerformed* event.
+      promise.then (response) ->
+# Store current analysis obj
+        service._currentAnalysis = response.data
+        $rootScope.$broadcast "analysisPerformed", service.parse(response.data)
 
-        $log.warn "Text annotation #{annotation.start}:#{annotation.end} for entityId #{annotation.uri} misses in the analysis"
+      # On failure, broadcast an *analysisFailed* event.
+      promise.catch (response) ->
+        $log.error response.data
+        $rootScope.$broadcast "analysisFailed", response.data
 
-        textAnnotation = @createAnnotation({
-          start: annotation.start
-          end: annotation.end
-          text: annotation.label
+      # Update service running status in each case
+      promise.finally (response) ->
+        service._updateStatus false
+
+    # Preselect entity annotations in the provided analysis using the provided collection of annotations.
+    service.preselect = (analysis, annotations) ->
+      $log.debug "Selecting entity annotations (#{annotations.length})..."
+
+      # Find the existing entities in the html
+      for annotation in annotations
+
+        if annotation.start is annotation.end
+          $log.warn "There is a broken empty annotation for entityId #{annotation.uri}"
+          continue
+
+        # Find the proper annotation
+        textAnnotation = findAnnotation analysis.annotations, annotation.start, annotation.end
+
+        # If there is no textAnnotation then create it and add to the current analysis
+        # It can be normal for new entities that are queued for Redlink re-indexing
+        if not textAnnotation?
+
+          $log.warn "Text annotation #{annotation.start}:#{annotation.end} for entityId #{annotation.uri} misses in the analysis"
+
+          textAnnotation = @createAnnotation({
+            start: annotation.start
+            end: annotation.end
+            text: annotation.label
           })
-        analysis.annotations[ textAnnotation.id ] = textAnnotation
-        
-      # Look for the entity in the current analysis result
-      # Local entities are merged previously during the analysis parsing
-      entity = analysis.entities[ annotation.uri ]
-      for id, e of configuration.entities
-        entity = analysis.entities[ e.id ] if annotation.uri in e.sameAs
+          analysis.annotations[textAnnotation.id] = textAnnotation
 
-      # If no entity is found we have a problem
-      if not entity?
-         $log.warn "Entity with uri #{annotation.uri} is missing both in analysis results and in local storage"
-         continue
+        # Look for the entity in the current analysis result
+        # Local entities are merged previously during the analysis parsing
+        entity = analysis.entities[annotation.uri]
+        for id, e of configuration.entities
+          entity = analysis.entities[e.id] if annotation.uri in e.sameAs
 
-      # Enhance analysis accordingly
-      # Mark the current annotation as a disambiguated occurrence
-      analysis.entities[ entity.id ].occurrences.push textAnnotation.id
-      # Mark the current annotation as a blind occurrence if needed
-      analysis.entities[ entity.id ].blindOccurrences.push textAnnotation.id if annotation.isBlind
-      
-      if not analysis.entities[ entity.id ].annotations[ textAnnotation.id ]?
-        analysis.entities[ entity.id ].annotations[ textAnnotation.id ] = textAnnotation 
-        analysis.annotations[ textAnnotation.id ].entityMatches.push { entityId: entity.id, confidence: 1 } 
-        analysis.annotations[ textAnnotation.id ].entities[ entity.id ] = analysis.entities[ entity.id ]            
-  
-  service
+        # If no entity is found we have a problem
+        if not entity?
+          $log.warn "Entity with uri #{annotation.uri} is missing both in analysis results and in local storage"
+          continue
+        # Enhance analysis accordingly
+        analysis.entities[entity.id].occurrences.push textAnnotation.id
+        if not analysis.entities[entity.id].annotations[textAnnotation.id]?
+          analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation
+          analysis.annotations[textAnnotation.id].entityMatches.push {entityId: entity.id, confidence: 1}
+          analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]
+
+    service
 
 ])
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget.services.EditorService', [
+  'wordlift.editpost.widget.services.EditorAdapter',
   'wordlift.editpost.widget.services.AnalysisService'
   ])
 # Manage redlink analysis responses
-.service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
+.service('EditorService', [ 'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', (configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope)->
   
   INVISIBLE_CHAR = '\uFEFF'
-  BLIND_ANNOTATION_CSS_CLASS = 'no-entity-page-link'
 
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
   findEntities = (html) ->
@@ -1240,17 +1302,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Get the matches and return them.
     (while match = pattern.exec html
       
-      
       annotation = 
         start: traslator.html2text match.index
         end: traslator.html2text (match.index + match[0].length)
         uri: match[2]
         label: match[3]
-        # Detect if this annotation has link related entity page or not
-        isBlind: (match[0].indexOf(BLIND_ANNOTATION_CSS_CLASS) isnt -1)
       
-      $log.debug annotation
-
       annotation
     )
 
@@ -1260,36 +1317,32 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       positions = positions.concat [ entityAnnotation.start..entityAnnotation.end ]
     positions   
 
+  # @deprecated use EditorAdapter.getEditor()
   editor = ->
     tinyMCE.get('content')
     
   disambiguate = ( annotationId, entity )->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     ed.dom.addClass annotationId, "disambiguated"
-    
     for type in configuration.types
       ed.dom.removeClass annotationId, type.css
-    
     ed.dom.removeClass annotationId, "unlinked"
-    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
-    
+    ed.dom.addClass annotationId, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
 
   dedisambiguate = ( annotationId, entity )->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     ed.dom.removeClass annotationId, "disambiguated"
-    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
-    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", ""
     discardedItemId
 
   # TODO refactoring with regex
   currentOccurencesForEntity = (entityId) ->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     occurrences = []    
     return occurrences if entityId is ""
     annotations = ed.dom.select "span.textannotation"
@@ -1328,19 +1381,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-  
-  $rootScope.$on "entityBlindnessToggled", (event, entity) ->
-    ed = editor()
-    for annotationId in entity.occurrences
-      ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
-    for annotationId in entity.blindOccurrences
-      ed.dom.addClass annotationId, BLIND_ANNOTATION_CSS_CLASS
-
+        
   service =
     # Detect if there is a current selection
     hasSelection: ()->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       if ed?
         if ed.selection.isCollapsed()
           return false
@@ -1354,19 +1400,19 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
     # Check if the given editor is the current editor
     isEditor: (editor)->
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       ed.id is editor.id
 
     # Update contenteditable status for the editor
     updateContentEditableStatus: (status)->
       # A reference to the editor.
-      ed = editor() 
+      ed = EditorAdapter.getEditor()
       ed.getBody().setAttribute 'contenteditable', status
 
     # Create a textAnnotation starting from the current selection
     createTextAnnotationFromCurrentSelection: ()->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # If the current selection is collapsed / blank, then nothing to do
       if ed.selection.isCollapsed()
         $log.warn "Invalid selection! The text annotation cannot be created"
@@ -1386,7 +1432,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       ed.selection.setContent textAnnotationSpan 
       
       # Retrieve the current heml content
-      content = ed.getContent format: 'raw'
+      content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
       # Create a Traslator instance
       traslator =  Traslator.create content
       # Retrieve the index position of the new span
@@ -1404,7 +1450,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Select annotation with a id annotationId if available
     selectAnnotation: (annotationId)->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # Unselect all annotations 
       for annotation in ed.dom.select "span.textannotation"
         ed.dom.removeClass annotation.id, "selected"
@@ -1418,10 +1464,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Embed the provided analysis in the editor.
     embedAnalysis: (analysis) =>
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # Get the TinyMCE editor html content.
-      html = ed.getContent format: 'raw'
-      $log.debug html
+      html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+
       # Find existing entities.
       entities = findEntities html
       # Remove overlapping annotations preserving selected entities
@@ -1451,13 +1497,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           entity = analysis.entities[ em.entityId ] 
           
           if annotationId in entity.occurrences
-            # Preserve css classes for blind annotations
-            
-            if annotationId in entity.blindOccurrences
-              element += " #{BLIND_ANNOTATION_CSS_CLASS}"
-            
-            # Mark the annotation as disambiguated    
-            element += " disambiguated\" itemid=\"#{entity.id}"
+            element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
         
         element += "\">"
               
@@ -1766,14 +1806,18 @@ $(
           $rootScope.$apply(->
             # Get the html content of the editor.
             html = editor.getContent format: 'raw'
-            # Get the text content from the Html.
-            text = Traslator.create(html).getText()
-            if text.match /[a-zA-Z0-9]+/
-              # Disable tinymce editing
+
+            if "" isnt html
               EditorService.updateContentEditableStatus false
-              AnalysisService.perform text
-            else
-              $log.warn "Blank content: nothing to do!"
+              AnalysisService.perform html
+            # Get the text content from the Html.
+#            text = Traslator.create(html).getText()
+#            if text.match /[a-zA-Z0-9]+/
+#              # Disable tinymce editing
+#              EditorService.updateContentEditableStatus false
+#              AnalysisService.perform html
+#            else
+#              $log.warn "Blank content: nothing to do!"
           )
       ])
     )

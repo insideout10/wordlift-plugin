@@ -1,65 +1,68 @@
 <?php
+/**
+ * Define the Entity Type Service.
+ *
+ * @since   3.7.0
+ * @package Wordlift
+ */
 
 /**
- * Define a class that provides function related to the entity post type.
- * @since 3.6.0
+ * The Wordlift_Entity_Type_Service provides functions to manipulate an entity
+ * type.
+ *
+ * @since 3.7.0
  */
 class Wordlift_Entity_Type_Service {
 
 	/**
-	 * The entity post type.
+	 * The {@link Wordlift_Schema_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.7.0
 	 * @access private
-	 * @var string $post_type The entity post type.
+	 * @var \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
 	 */
-	private $post_type;
+	private $schema_service;
 
 	/**
-	 * The entity type slug.
+	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.8.0
 	 * @access private
-	 * @var string $slug The entity type slug.
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
-	private $slug;
+	private $log;
 
 	/**
-	 * A singleton instance of the entity type service.
+	 * The {@link Wordlift_Entity_Type_Service} singleton instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.7.0
 	 * @access private
-	 * @var Wordlift_Entity_Type_Service
+	 * @var \Wordlift_Entity_Type_Service $instance The {@link Wordlift_Entity_Type_Service} singleton instance.
 	 */
 	private static $instance;
 
 	/**
-	 * Create an entity type service instance.
+	 * Wordlift_Entity_Type_Service constructor.
 	 *
-	 * @since 3.6.0
+	 * @since 3.7.0
 	 *
-	 * @param string $post_type The post type, e.g. entity.
-	 * @param string $slug The entity type slug, if the slug is empty, the default slug will be used.
+	 * @param \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
 	 */
-	public function __construct( $post_type, $slug ) {
+	public function __construct( $schema_service ) {
 
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Type_Service' );
 
-		$this->post_type = $post_type;
-
-		// We cannot assign an empty slug to the register_post_type function, therefore if the slug is empty we default
-		// to the type name.
-		$this->slug = $slug ?: $post_type;
+		$this->schema_service = $schema_service;
 
 		self::$instance = $this;
 
 	}
 
 	/**
-	 * Get the entity type service singleton instance.
+	 * Get the {@link Wordlift_Entity_Type_Service} singleton instance.
 	 *
-	 * @since 3.6.0
-	 *
-	 * @return Wordlift_Entity_Type_Service The entity type service singleton instance.
+	 * @since 3.7.0
+	 * @return \Wordlift_Entity_Type_Service The {@link Wordlift_Entity_Type_Service} singleton instance.
 	 */
 	public static function get_instance() {
 
@@ -67,67 +70,104 @@ class Wordlift_Entity_Type_Service {
 	}
 
 	/**
-	 * Get the entity type slug.
+	 * Get the types associated with the specified entity post id.
 	 *
-	 * @since 3.6.0
+	 * @since 3.7.0
 	 *
-	 * @return string The entity type slug.
+	 * @param int $post_id The post id.
+	 *
+	 * @return array|null An array of type properties or null if no term is associated
 	 */
-	public function get_slug() {
+	public function get( $post_id ) {
 
-		return $this->slug;
+		// Return the correct entity type according to the post type.
+		switch ( get_post_type( $post_id ) ) {
+
+			case 'entity':
+				// Get the type from the associated classification.
+
+				$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+				if ( is_wp_error( $terms ) ) {
+					// TODO: handle error
+					return null;
+				}
+
+				// If there are not terms associated, return null.
+				if ( 0 === count( $terms ) ) {
+					return null;
+				}
+
+				// Return the entity type with the specified id.
+				return $this->schema_service->get_schema( $terms[0]->slug );
+
+			case 'post':
+			case 'page':
+				// Posts and pages are considered Articles.
+				return array(
+					'uri'       => 'http://schema.org/Article',
+					'css_class' => 'wl-post',
+				);
+
+			default:
+				// Everything else is considered a Creative Work.
+				return array(
+					'uri'       => 'http://schema.org/CreativeWork',
+					'css_class' => 'wl-creative-work',
+				);
+		}
+
 	}
 
 	/**
-	 * Get the entity post type name.
+	 * Set the main type for the specified entity post, given the type URI.
 	 *
-	 * @since 3.6.0
+	 * @since 3.8.0
 	 *
-	 * @return string The entity post type.
+	 * @param int    $post_id  The post id.
+	 * @param string $type_uri The type URI.
 	 */
-	public function get_post_type() {
+	public function set( $post_id, $type_uri ) {
 
-		return $this->post_type;
-	}
+		// If the type URI is empty we remove the type.
+		if ( empty( $type_uri ) ) {
 
+			wp_set_object_terms( $post_id, null, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-	/**
-	 * Register the WordLift entity post type. This method is hooked to WordPress' init action.
-	 *
-	 * @since 3.6.0
-	 */
-	public function register() {
+			return;
+		}
 
-		$labels = array(
-			'name'               => _x( 'Vocabulary', 'post type general name', 'wordlift' ),
-			'singular_name'      => _x( 'Entity', 'post type singular name', 'wordlift' ),
-			'add_new'            => _x( 'Add New Entity', 'entity', 'wordlift' ),
-			'add_new_item'       => __( 'Add New Entity', 'wordlift' ),
-			'edit_item'          => __( 'Edit Entity', 'wordlift' ),
-			'new_item'           => __( 'New Entity', 'wordlift' ),
-			'all_items'          => __( 'All Entities', 'wordlift' ),
-			'view_item'          => __( 'View Entity', 'wordlift' ),
-			'search_items'       => __( 'Search in Vocabulary', 'wordlift' ),
-			'not_found'          => __( 'No entities found', 'wordlift' ),
-			'not_found_in_trash' => __( 'No entities found in the Trash', 'wordlift' ),
-			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Vocabulary', 'wordlift' )
-		);
+		// Get all the terms bound to the wl_entity_type taxonomy.
+		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+			// An issue has been opened with the AAM plugin author as well.
+			//
+			// see https://github.com/insideout10/wordlift-plugin/issues/334
+			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+			'fields'     => 'all',
+		) );
 
-		$args = array(
-			'labels'        => $labels,
-			'description'   => 'Holds our vocabulary (set of entities) and entity specific data',
-			'public'        => true,
-			'menu_position' => 20,
-			// after the pages menu.
-			'supports'      => array( 'title', 'editor', 'thumbnail', 'excerpt', 'comments' ),
-			'has_archive'   => true,
-			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
-			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
-			'rewrite'       => array( 'slug' => $this->slug )
-		);
+		$this->log->error( "Type not found [ post id :: $post_id ][ type uri :: $type_uri ]" );
 
-		register_post_type( $this->post_type, $args );
+		// Check which term matches the specified URI.
+		foreach ( $terms as $term ) {
+
+			$term_id   = $term->term_id;
+			$term_slug = $term->slug;
+
+			// Load the type data.
+			$type = $this->schema_service->get_schema( $term_slug );
+			// Set the related term ID.
+			if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
+
+				$this->log->debug( "Setting entity type [ post id :: $post_id ][ term id :: $term_id ][ term slug :: $term_slug ][ type uri :: {$type['uri']} ][ type css class :: {$type['css_class']} ]" );
+
+				wp_set_object_terms( $post_id, (int) $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+				return;
+			}
+		}
 
 	}
 

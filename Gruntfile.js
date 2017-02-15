@@ -13,27 +13,28 @@ module.exports = function ( grunt ) {
     // Load legacy utils
     grunt.util = require( 'grunt-legacy-util' );
 
+    // This file isn't used anymore.
     // wordlift.js
-    config[ SOURCE_DIR + 'js/wordlift.js' ] = [
-        SOURCE_DIR + 'coffee/traslator.coffee',
-        SOURCE_DIR + 'coffee/app.constants.coffee',
-        SOURCE_DIR + 'coffee/app.config.coffee',
-        SOURCE_DIR + 'coffee/app.directives.wlEntityProps.coffee',
-        SOURCE_DIR + 'coffee/app.directives.coffee',
-        SOURCE_DIR + 'coffee/app.services.LoggerService.coffee',
-        SOURCE_DIR + 'coffee/app.services.AnalysisService.coffee',
-        SOURCE_DIR + 'coffee/app.services.EditorService.coffee',
-        SOURCE_DIR + 'coffee/app.services.EntityAnnotationService.coffee',
-        SOURCE_DIR + 'coffee/app.services.EntityAnnotationConfidenceService.coffee',
-        SOURCE_DIR + 'coffee/app.services.EntityService.coffee',
-        SOURCE_DIR + 'coffee/app.services.SearchService.coffee',
-        SOURCE_DIR + 'coffee/app.services.Helpers.coffee',
-        SOURCE_DIR + 'coffee/app.services.TextAnnotationService.coffee',
-        SOURCE_DIR + 'coffee/app.services.coffee',
-        SOURCE_DIR + 'coffee/app.controllers.coffee',
-        SOURCE_DIR + 'coffee/app.coffee',
-        SOURCE_DIR + 'coffee/chordDialog.coffee'
-    ];
+    // config[ SOURCE_DIR + 'js/wordlift.js' ] = [
+    //     SOURCE_DIR + 'coffee/traslator.coffee',
+    //     SOURCE_DIR + 'coffee/app.constants.coffee',
+    //     SOURCE_DIR + 'coffee/app.config.coffee',
+    //     SOURCE_DIR + 'coffee/app.directives.wlEntityProps.coffee',
+    //     SOURCE_DIR + 'coffee/app.directives.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.LoggerService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.AnalysisService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.EditorService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.EntityAnnotationService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.EntityAnnotationConfidenceService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.EntityService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.SearchService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.Helpers.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.TextAnnotationService.coffee',
+    //     SOURCE_DIR + 'coffee/app.services.coffee',
+    //     SOURCE_DIR + 'coffee/app.controllers.coffee',
+    //     SOURCE_DIR + 'coffee/app.coffee',
+    //     SOURCE_DIR + 'coffee/chordDialog.coffee'
+    // ];
 
     // wordlift-reloaded.js
     config[ SOURCE_DIR + 'js/wordlift-reloaded.js' ] = [
@@ -45,6 +46,8 @@ module.exports = function ( grunt ) {
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityForm.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityTile.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityInputBox.coffee',
+        SOURCE_DIR + 'coffee/editpost-widget/app.services.EditorAdapter.coffee',
+        SOURCE_DIR + 'coffee/editpost-widget/app.services.AnnotationParser.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.AnalysisService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.EditorService.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.services.RelatedPostDataRetrieverService.coffee',
@@ -109,7 +112,7 @@ module.exports = function ( grunt ) {
                 dest: SOURCE_DIR,
                 ext: '.min.js',
                 src: [
-                    'js/wordlift.js',
+                    // 'js/wordlift.js',
                     'js/wordlift-reloaded.js',
                     'js/wordlift-ui.js',
                     'js/wordlift-faceted-entity-search-widget.js'

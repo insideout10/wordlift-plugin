@@ -3,7 +3,7 @@
 /**
  * The admin-specific functionality of the plugin.
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift
@@ -18,7 +18,7 @@
  *
  * @package    Wordlift
  * @subpackage Wordlift/admin
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift_Admin {
 
@@ -46,7 +46,7 @@ class Wordlift_Admin {
 	 * @since    1.0.0
 	 *
 	 * @param      string $plugin_name The name of this plugin.
-	 * @param      string $version The version of this plugin.
+	 * @param      string $version     The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -97,19 +97,37 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.js', array( 'jquery' ), $this->version, FALSE );
+		// Enqueue our script.
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array( 'jquery' ), $this->version, false );
 
-		// Add WL api endpoint to retrieve entities based on their title. We only load it on the entity edit page.
-		$entity_being_edited = get_post();
-		if ( isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() ) ) {
+		// Set the basic params.
+		$params = array(
+			// @todo scripts in admin should use wp.post.
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			// @todo remove specific actions from settings.
+			'action'   => 'entity_by_title',
+			'language' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+			'l10n'     => array(
+				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
+			),
+		);
 
-			wp_localize_script( $this->plugin_name, 'wlEntityTitleLiveSearchParams', array(
-					'ajax_url' => admin_url( 'admin-ajax.php' ),
-					'action'   => 'entity_by_title',
-					'post_id'  => get_the_ID()
-				)
-			);
+		// Set post-related values if there's a current post.
+		if ( null !== $post = $entity_being_edited = get_post() ) {
+
+			$params['post_id']           = $entity_being_edited->ID;
+			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() );
+			// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
+			// from the results, since we don't want the current entity to be discovered by the analysis.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/345
+			$params['itemId'] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID );
+
 		}
+
+		// Finally output the params as `wlSettings` for JavaScript code.
+		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
+
 	}
 
 }

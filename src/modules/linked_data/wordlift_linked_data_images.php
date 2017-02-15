@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Save the image with the specified URL locally. To the local filename a uniqe serial is appended to ensure its uniqueness.
  *
@@ -74,7 +73,6 @@ function wl_save_image( $url ) {
 	return array(
 		'path'         => $image_full_path,
 		'url'          => $image_full_url,
-		'content_type' => $content_type
+		'content_type' => $content_type,
 	);
 }
-

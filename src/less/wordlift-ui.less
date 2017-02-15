@@ -36,8 +36,8 @@ path.wl-thing {
 
 .wl-highlight(@background-color) {
   background-color: @background-color;
-  color           : contrast(@background-color);
-  padding         : 2px;
+  color: contrast(@background-color);
+  padding: 2px;
 }
 
 .wl-person {
@@ -70,11 +70,11 @@ path.wl-thing {
 
 a.wl-entity-page-link {
   text-decoration: none !important;
-  border-bottom  : #666 1px dotted;
+  border-bottom: #666 1px dotted;
 }
 
 .wl-floating-wrapper {
-  border-top : #ccc 1px solid;
+  border-top: #ccc 1px solid;
   padding-top: 1em;
 }
 
@@ -85,10 +85,10 @@ a.wl-entity-page-link {
 }
 
 .wl-floating-item-wrapper {
-  width         : 25%;
-  display       : inline-block;
+  width: 25%;
+  display: inline-block;
   vertical-align: top;
-  padding       : 0 0.3em;
+  padding: 0 0.3em;
 
   h6 {
     margin: 0 !important;
@@ -97,4 +97,23 @@ a.wl-entity-page-link {
   .wl-card-title {
     padding: 0.6em 0 !important;
   }
+}
+
+// Set the default width and height for the wl-timeline component. They can be further customized using the shortcode.
+.wl-timeline-container {
+  width: 100%;
+  height: 300px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  *, *:before, *:after {
+    -webkit-box-sizing: initial;
+    box-sizing: initial;
+  }
+
+}
+
+// Fix for https://github.com/insideout10/wordlift-plugin/issues/383
+.wl-chord svg .label {
+  text-anchor: initial;
 }

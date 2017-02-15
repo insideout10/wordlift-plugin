@@ -14,8 +14,8 @@ function wl_admin_menu() {
 	$menu_slug  = 'wl_admin_menu';
 	$capability = 'manage_options';
 
-	// see http://codex.wordpress.org/Function_Reference/add_utility_page
-	add_utility_page(
+	// see http://codex.wordpress.org/Function_Reference/add_menu_page
+	add_menu_page(
 		__( 'WordLift', 'wordlift' ), // page title
 		__( 'WordLift', 'wordlift' ), // menu title
 		$capability,                 // capabilities

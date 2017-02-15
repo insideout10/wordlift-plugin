@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift
@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift_Activator {
 
@@ -30,6 +30,12 @@ class Wordlift_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+
+		// If WordLift's key is not set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
+		// for granted that we're in a browser admin session.
+		if ( '' === Wordlift_Configuration_Service::get_instance()->get_key() ) {
+			set_transient( '_wl_activation_redirect', TRUE, 30 );
+		}
 
 	}
 

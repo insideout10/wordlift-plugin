@@ -6,12 +6,21 @@ require_once( 'functions.php' );
  *
  * @since 3.2.0
  */
-class EntityServiceTest extends WP_UnitTestCase {
+class EntityServiceTest extends Wordlift_Unit_Test_Case {
+
+	/**
+	 * The {@link Wordlift_Entity_Service} being tested.
+	 *
+	 * @since  3.7.2
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} being tested.
+	 */
+	private $entity_service;
 
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -23,10 +32,15 @@ class EntityServiceTest extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
+		// We don't need to check the remote Linked Data store.
+		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+
 		$this->log_service = Wordlift_Log_Service::get_logger( 'EntityServiceTest' );
 
 		wl_configure_wordpress_test();
 		wl_empty_blog();
+
+		$this->entity_service = Wordlift_Entity_Service::get_instance();
 
 	}
 
@@ -46,6 +60,9 @@ class EntityServiceTest extends WP_UnitTestCase {
 
 		// Check that we have no alternative labels.
 		$this->assertCount( 0, $entity_service->get_alternative_labels( $entity_id ) );
+
+		// Set the request post id to simulate a call from the edit post UI.
+		$_REQUEST['post_ID'] = (string) $entity_id;
 
 		// Call save_post to set the alternative labels, mock the request first.
 		$_REQUEST['wl_alternative_label'] = array( 'ABC 1', 'ABD 2', 'EFG 3' );
@@ -74,7 +91,33 @@ class EntityServiceTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the {@link get_entity_post_by_uri} function 
+	 * Check that the entity alternative label is not set when the entity post id
+	 * is not set in the request.
+	 *
+	 * @see   https://github.com/insideout10/wordlift-plugin/issues/363
+	 *
+	 * @since 3.6.1
+	 */
+	function test_set_alternative_labels_post_id_not_set() {
+
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		// Another entity
+		$entity_id = wl_create_post( 'This is Entity 1', 'entity-1', 'Entity 1', 'publish', 'entity' );
+		wl_set_entity_main_type( $entity_id, 'http://schema.org/Thing' );
+
+		// Call save_post to set the alternative labels, mock the request first.
+		$_REQUEST['wl_alternative_label'] = array( 'ABC 1', 'ABD 2' );
+		$entity_service->save_post( $entity_id, null, null );
+
+		// Check that we have no alternative labels.
+		$this->assertCount( 0, $entity_service->get_alternative_labels( $entity_id ) );
+		$this->assertCount( 0, wl_entity_get_by_title( 'AB', true ) );
+
+	}
+
+	/**
+	 * Test the {@link get_entity_post_by_uri} function
 	 * using external uris set as same as for an internal entity
 	 *
 	 * @since 3.3.2
@@ -88,7 +131,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		// Check the is an internal uri
 		$this->assertTrue( $entity_service->is_internal_uri( $entity_1_uri ) );
-		
+
 		// Look for an antity with that uri
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
 		// Check returned entity is not null
@@ -102,7 +145,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$this->assertFalse( $entity_service->is_internal_uri( $external_uri ) );
 		// Set this external uri as sameAs of the created entity
 		wl_schema_set_value( $entity_1_id, 'sameAs', $external_uri );
-		
+
 		// Look for an antity with that uri
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $external_uri );
 		// Check returned entity is not null
@@ -113,7 +156,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the {@link get_entity_post_by_uri} function 
+	 * Test the {@link get_entity_post_by_uri} function
 	 * using external uris set as same as for an internal entity
 	 * See https://github.com/insideout10/wordlift-plugin/issues/237
 	 *
@@ -124,14 +167,14 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		// Create the first entity
-		$entity_1_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_1_id  = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$entity_1_uri = wl_get_entity_uri( $entity_1_id );
 		// Create the second entity
-		$entity_2_id = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
+		$entity_2_id  = wl_create_post( '', 'entity-2', uniqid( 'entity', true ), 'draft', 'entity' );
 		$entity_2_uri = wl_get_entity_uri( $entity_2_id );
 		// Reference the first entity as sameAs for the second one
 		wl_schema_set_value( $entity_2_id, 'sameAs', $entity_1_uri );
-		
+
 		// Look for the first antity 
 		$retrieved_entity = $entity_service->get_entity_post_by_uri( $entity_1_uri );
 		// Check returned entity is not null
@@ -142,7 +185,7 @@ class EntityServiceTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test the {@link is_used} function 
+	 * Test the {@link is_used} function
 	 *
 	 * @since 3.4.0
 	 */
@@ -159,11 +202,11 @@ class EntityServiceTest extends WP_UnitTestCase {
 		wl_core_add_relation_instance( $entity_2_id, WL_WHAT_RELATION, $entity_1_id );
 		// It should be not used now
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
-            
+
 	}
 
 	/**
-	 * Test the {@link is_used} function 
+	 * Test the {@link is_used} function
 	 *
 	 * @since 3.4.0
 	 */
@@ -180,11 +223,11 @@ class EntityServiceTest extends WP_UnitTestCase {
 		wl_schema_set_value( $entity_2_id, 'sameAs', wl_get_entity_uri( $entity_1_id ) );
 		// It should be used now
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
-            
+
 	}
 
 	/**
-	 * Test the {@link is_used} function 
+	 * Test the {@link is_used} function
 	 *
 	 * @since 3.4.0
 	 */
@@ -201,11 +244,11 @@ class EntityServiceTest extends WP_UnitTestCase {
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_1_id );
 		// It should be used now
 		$this->assertTrue( $entity_service->is_used( $entity_1_id ) );
-            
+
 	}
 
 	/**
-	 * Test the {@link is_used} function 
+	 * Test the {@link is_used} function
 	 *
 	 * @since 3.4.0
 	 */
@@ -215,11 +258,11 @@ class EntityServiceTest extends WP_UnitTestCase {
 		// Create the first entity
 		$post_id = wl_create_post( '', 'post-1', uniqid( 'post', true ), 'draft', 'post' );
 		$this->assertNull( $entity_service->is_used( $post_id ) );
-            
+
 	}
 
 	/**
-	 * Test the {@link build_uri} function 
+	 * Test the {@link build_uri} function
 	 *
 	 * @since 3.5.0
 	 */
@@ -228,21 +271,21 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$entity_name = uniqid( 'entity', true );
-		
-		$new_entity_uri = sprintf( '%s/%s/%s', 
-			wl_configuration_get_redlink_dataset_uri(), 
-			Wordlift_Entity_Service::TYPE_NAME, 
-			wl_sanitize_uri_path( $entity_name )
-		); 
 
-		$this->assertEquals( 
-			$new_entity_uri, 
-			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME ) 
-		);            
+		$new_entity_uri = sprintf( '%s/%s/%s',
+			wl_configuration_get_redlink_dataset_uri(),
+			Wordlift_Entity_Service::TYPE_NAME,
+			wl_sanitize_uri_path( $entity_name )
+		);
+
+		$this->assertEquals(
+			$new_entity_uri,
+			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
+		);
 	}
 
 	/**
-	 * Test the {@link build_uri} function 
+	 * Test the {@link build_uri} function
 	 *
 	 * @since 3.5.0
 	 */
@@ -251,27 +294,27 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$entity_name = uniqid( 'entity', true );
-		
-		$new_entity_uri = sprintf( '%s/%s/%s', 
-			wl_configuration_get_redlink_dataset_uri(), 
-			Wordlift_Entity_Service::TYPE_NAME, 
+
+		$new_entity_uri = sprintf( '%s/%s/%s',
+			wl_configuration_get_redlink_dataset_uri(),
+			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( $entity_name )
-		); 
+		);
 
 		// Create the first entity
 		$entity_id = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
 		// Check the new entity uri
 		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
 		// Check that the uri for a new entity contains a numeric suffix
-		$this->assertEquals( 
-			$new_entity_uri . '_2', 
-			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME ) 
+		$this->assertEquals(
+			$new_entity_uri . '_2',
+			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME )
 		);
-		      
+
 	}
 
 	/**
-	 * Test the {@link build_uri} function 
+	 * Test the {@link build_uri} function
 	 *
 	 * @since 3.5.0
 	 */
@@ -280,31 +323,31 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		$entity_name = uniqid( 'entity', true );
-		
-		$new_entity_uri = sprintf( '%s/%s/%s', 
-			wl_configuration_get_redlink_dataset_uri(), 
-			Wordlift_Entity_Service::TYPE_NAME, 
+
+		$new_entity_uri = sprintf( '%s/%s/%s',
+			wl_configuration_get_redlink_dataset_uri(),
+			Wordlift_Entity_Service::TYPE_NAME,
 			wl_sanitize_uri_path( $entity_name )
-		); 
+		);
 
 		// Create the first entity
-		$entity_id = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
-		$schema_type   = wl_entity_type_taxonomy_get_type( $entity_id );
+		$entity_id   = wl_create_post( '', 'entity-1', $entity_name, 'draft', 'entity' );
+		$schema_type = wl_entity_type_taxonomy_get_type( $entity_id );
 
-		$this->assertEquals( $schema_type[ 'css_class' ], 'wl-thing' );
-		
+		$this->assertEquals( $schema_type['css_class'], 'wl-thing' );
+
 		// Check the new entity uri
 		$this->assertEquals( $new_entity_uri, wl_get_entity_uri( $entity_id ) );
 		// Check that the uri for a new entity contains a numeric suffix
-		$this->assertEquals( 
-			$new_entity_uri, 
-			$entity_service->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' ) 
+		$this->assertEquals(
+			$new_entity_uri,
+			Wordlift_Uri_Service::get_instance()->build_uri( $entity_name, Wordlift_Entity_Service::TYPE_NAME, 'wl-thing' )
 		);
-		      
+
 	}
 
 	/**
-	 * Test the {@link get_classification_scope_for} function 
+	 * Test the {@link get_classification_scope_for} function
 	 *
 	 * @since 3.5.0
 	 */
@@ -317,19 +360,52 @@ class EntityServiceTest extends WP_UnitTestCase {
 		$entity_id = wl_create_post( '', 'entity-1', uniqid( 'entity', true ), 'draft', 'entity' );
 		$this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Thing' );
-        $this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		$this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/CreativeWork' );
-        $this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
+		$this->assertEquals( 'what', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Place' );
-        $this->assertEquals( 'where', $entity_service->get_classification_scope_for( $entity_id ) );
+		$this->assertEquals( 'where', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Event' );
-        $this->assertEquals( 'when', $entity_service->get_classification_scope_for( $entity_id ) );
+		$this->assertEquals( 'when', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Person' );
-        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+		$this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/Organization' );
-        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+		$this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
 		wl_set_entity_main_type( $entity_id, 'http://schema.org/LocalBusiness' );
-        $this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
-			
+		$this->assertEquals( 'who', $entity_service->get_classification_scope_for( $entity_id ) );
+
 	}
+
+	/**
+	 * Test URIs build out of post titles containing UTF-8 characters.
+	 *
+	 * @see   https://github.com/insideout10/wordlift-plugin/issues/386
+	 *
+	 * @since 3.7.2
+	 */
+	function test_utf8_post_titles() {
+
+		// The following title has a UTF-8 character right after the 's'.
+		$title = 'Mozarts﻿ Geburtshaus';
+
+		// Check that the encoding is recognized as UTF-8.
+		$this->assertEquals( 'UTF-8', mb_detect_encoding( $title ) );
+
+		// Build the URI.
+		$uri = Wordlift_Uri_Service::get_instance()->build_uri( $title, 'entity' );
+
+		// Check that the URI is good.
+		$this->assertStringEndsWith( '/entity/mozarts__geburtshaus', $uri );
+
+	}
+
+	/**
+	 * @since 3.10.0
+	 */
+	function test_get_related_entities() {
+
+		// @todo
+
+	}
+
 }

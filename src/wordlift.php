@@ -7,17 +7,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              http://wordlift.it
+ * @link              https://wordlift.io
  * @since             1.0.0
  * @package           Wordlift
  *
  * @wordpress-plugin
  * Plugin Name:       WordLift
- * Plugin URI:        http://wordlift.it
+ * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.7.0-dev
+ * Version:           3.11.0-dev
  * Author:            WordLift, Insideout10
- * Author URI:        http://wordlift.it
+ * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wordlift
@@ -39,44 +39,50 @@ require_once( 'modules/configuration/wordlift_configuration.php' );
 /**
  * Log to the debug.log file.
  *
- * @since 3.0.0
+ * @deprecated use Wordlift_Log_Service::get_instance()->info( $log );
  *
- * @uses wl_write_log_handler() to write the log output.
+ * @since      3.0.0
+ *
+ * @uses       wl_write_log_handler() to write the log output.
  *
  * @param string|mixed $log The log data.
  */
 function wl_write_log( $log ) {
 
-	$handler = apply_filters( 'wl_write_log_handler', NULL );
+	Wordlift_Log_Service::get_instance()->info( $log );
 
-	$callers         = debug_backtrace();
-	$caller_function = $callers[1]['function'];
-
-	if ( is_null( $handler ) ) {
-		wl_write_log_handler( $log, $caller_function );
-
-		return;
-	}
-
-	call_user_func( $handler, $log, $caller_function );
+//	$handler = apply_filters( 'wl_write_log_handler', null );
+//
+//	$callers         = debug_backtrace();
+//	$caller_function = $callers[1]['function'];
+//
+//	if ( is_null( $handler ) ) {
+//		wl_write_log_handler( $log, $caller_function );
+//
+//		return;
+//	}
+//
+//	call_user_func( $handler, $log, $caller_function );
 }
 
 /**
  * The default log handler prints out the log.
  *
+ * @deprecated
+ *
  * @since 3.0.0
  *
- * @param string|array $log The log data.
- * @param string $caller The calling function.
+ * @param string|array $log    The log data.
+ * @param string       $caller The calling function.
  */
-function wl_write_log_handler( $log, $caller = NULL ) {
+function wl_write_log_handler( $log, $caller = null ) {
 
 	global $wl_logger;
 
-	if ( TRUE === WP_DEBUG ) {
+	if ( true === WP_DEBUG ) {
 
 		$message = ( isset( $caller ) ? sprintf( '[%-40.40s] ', $caller ) : '' ) .
-		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, TRUE ) : wl_write_log_hide_key( $log ) );
+		           ( is_array( $log ) || is_object( $log ) ? print_r( $log, true ) : wl_write_log_hide_key( $log ) );
 
 		if ( isset( $wl_logger ) ) {
 			$wl_logger->info( $message );
@@ -90,6 +96,8 @@ function wl_write_log_handler( $log, $caller = NULL ) {
 
 /**
  * Hide the WordLift Key from the provided text.
+ *
+ * @deprecated
  *
  * @since 3.0.0
  *
@@ -139,7 +147,7 @@ function wl_execute_saved_sparql_update_query( $request_id ) {
 	$query = file_get_contents( $filename );
 
 	// Execute the SPARQL query.
-	rl_execute_sparql_update_query( $query, FALSE );
+	rl_execute_sparql_update_query( $query, false );
 
 	// Reindex the triple store.
 	wordlift_reindex_triple_store();
@@ -171,6 +179,7 @@ function wordlift_buttonhooks() {
 function wordlift_register_tinymce_javascript( $plugin_array ) {
 
 	// add the wordlift plugin.
+	// We can't use the minified version here.
 	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js';
 
 	return $plugin_array;
@@ -188,7 +197,7 @@ function wordlift_allowed_post_tags() {
 		'itemscope' => array(),
 		'itemtype'  => array(),
 		'itemprop'  => array(),
-		'itemid'    => array()
+		'itemid'    => array(),
 	);
 
 	foreach ( $tags as $tag ) {
@@ -238,8 +247,8 @@ add_action( 'wp_enqueue_scripts', 'wl_enqueue_scripts' );
 /**
  * Hooked to *wp_kses_allowed_html* filter, adds microdata attributes.
  *
- * @param array $allowedtags The array with the currently configured elements and attributes.
- * @param string $context The context.
+ * @param array  $allowedtags The array with the currently configured elements and attributes.
+ * @param string $context     The context.
  *
  * @return array An array which contains allowed microdata attributes.
  */
@@ -251,11 +260,11 @@ function wordlift_allowed_html( $allowedtags, $context ) {
 
 	return array_merge_recursive( $allowedtags, array(
 		'span' => array(
-			'itemscope' => TRUE,
-			'itemtype'  => TRUE,
-			'itemid'    => TRUE,
-			'itemprop'  => TRUE
-		)
+			'itemscope' => true,
+			'itemtype'  => true,
+			'itemid'    => true,
+			'itemprop'  => true,
+		),
 	) );
 }
 
@@ -277,7 +286,7 @@ function wl_get_coordinates( $post_id ) {
 	// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
 	return array(
 		'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
-		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : ''
+		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : '',
 	);
 }
 
@@ -290,7 +299,7 @@ function wl_get_coordinates( $post_id ) {
  */
 function wl_get_post_modified_time( $post ) {
 
-	$date_modified = get_post_modified_time( 'c', TRUE, $post );
+	$date_modified = get_post_modified_time( 'c', true, $post );
 
 	if ( '-' === substr( $date_modified, 0, 1 ) ) {
 		return get_the_time( 'c', $post );
@@ -322,7 +331,7 @@ function wl_get_image_urls( $post_id ) {
 	$images = get_children( array(
 		'post_parent'    => $post_id,
 		'post_type'      => 'attachment',
-		'post_mime_type' => 'image'
+		'post_mime_type' => 'image',
 	) );
 
 	// Return an empty array if no image is found.
@@ -350,8 +359,8 @@ function wl_get_image_urls( $post_id ) {
 /**
  * Get a SPARQL fragment with schema:image predicates.
  *
- * @param string $uri The URI subject of the statements.
- * @param int $post_id The post ID.
+ * @param string $uri     The URI subject of the statements.
+ * @param int    $post_id The post ID.
  *
  * @return string The SPARQL fragment.
  */
@@ -375,8 +384,8 @@ function wl_get_sparql_images( $uri, $post_id ) {
 /**
  * Get an attachment with the specified parent post ID and source URL.
  *
- * @param int $parent_post_id The parent post ID.
- * @param string $source_url The source URL.
+ * @param int    $parent_post_id The parent post ID.
+ * @param string $source_url     The source URL.
  *
  * @return WP_Post|null A post instance or null if not found.
  */
@@ -390,7 +399,7 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 		'post_status'    => 'any',
 		'post_parent'    => $parent_post_id,
 		'meta_key'       => 'wl_source_url',
-		'meta_value'     => $source_url
+		'meta_value'     => $source_url,
 	) );
 
 	// Return the found post.
@@ -399,13 +408,13 @@ function wl_get_attachment_for_source_url( $parent_post_id, $source_url ) {
 	}
 
 	// Return null.
-	return NULL;
+	return null;
 }
 
 /**
  * Set the source URL.
  *
- * @param int $post_id The post ID.
+ * @param int    $post_id    The post ID.
  * @param string $source_url The source URL.
  */
 function wl_set_source_url( $post_id, $source_url ) {
@@ -420,10 +429,10 @@ function wl_set_source_url( $post_id, $source_url ) {
  *
  * @since 3.0.0
  *
- * @uses rl_sparql_prefixes() to get the SPARQL prefixes.
- * @uses wordlift_esc_sparql() to escape the SPARQL query.
- * @uses wl_get_entity_uri() to get an entity URI.
- * @uses rl_execute_sparql_update_query() to post the DELETE and INSERT queries.
+ * @uses  rl_sparql_prefixes() to get the SPARQL prefixes.
+ * @uses  wordlift_esc_sparql() to escape the SPARQL query.
+ * @uses  wl_get_entity_uri() to get an entity URI.
+ * @uses  rl_execute_sparql_update_query() to post the DELETE and INSERT queries.
  *
  * @param bool $hard True if the rewrite involves configuration updates in Apache/IIS.
  */
@@ -444,7 +453,7 @@ function wl_flush_rewrite_rules_hard( $hard ) {
 			'numberposts' => $limit,
 			'orderby'     => 'ID',
 			'post_type'   => 'any',
-			'post_status' => 'publish'
+			'post_status' => 'publish',
 		) ) ) ) {
 
 		// Holds the delete part of the query.
@@ -498,25 +507,18 @@ add_filter( 'flush_rewrite_rules_hard', 'wl_flush_rewrite_rules_hard', 10, 1 );
 
 /**
  * Sanitizes an URI path by replacing the non allowed characters with an underscore.
- * @uses sanitize_title() to manage not ASCII chars
- * @see https://codex.wordpress.org/Function_Reference/sanitize_title
+ * @uses       sanitize_title() to manage not ASCII chars
+ * @deprecated use Wordlift_Uri_Service::get_instance()->sanitize_path();
+ * @see        https://codex.wordpress.org/Function_Reference/sanitize_title
  *
  * @param string $path The path to sanitize.
  * @param string $char The replacement character (by default an underscore).
  *
- * @return The sanitized path.
+ * @return string The sanitized path.
  */
 function wl_sanitize_uri_path( $path, $char = '_' ) {
 
-	// wl_write_log( "wl_sanitize_uri_path [ path :: $path ][ char :: $char ]" );
-
-	// According to RFC2396 (http://www.ietf.org/rfc/rfc2396.txt) these characters are reserved:
-	// ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" |
-	// "$" | ","
-	// Plus the ' ' (space).
-	// TODO: We shall use the same regex used by MediaWiki (http://stackoverflow.com/questions/23114983/mediawiki-wikipedia-url-sanitization-regex)
-
-	return sanitize_title( preg_replace( '/[;\/?:@&=+$,\s]/', $char, stripslashes( $path ) ) );
+	return Wordlift_Uri_Service::get_instance()->sanitize_path( $path, $char );
 }
 
 /**
@@ -592,7 +594,7 @@ function wl_replace_item_id_with_uri( $content ) {
 			                               ->get_entity_post_by_uri( $item_id );
 
 			// If no entity is found, continue to the next one.
-			if ( NULL === $post ) {
+			if ( null === $post ) {
 				continue;
 			}
 
@@ -626,8 +628,6 @@ require_once( 'wordlift_editor.php' );
 require_once( 'wordlift_entity_type.php' );
 require_once( 'wordlift_entity_type_taxonomy.php' );
 
-// filters the post content when saving posts.
-require_once( 'wordlift_content_filter.php' );
 // add callbacks on post save to notify data changes from wp to redlink triple store
 require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 
@@ -635,9 +635,7 @@ require_once( 'wordlift_to_redlink_data_push_callbacks.php' );
 require_once( 'modules/analyzer/wordlift_analyzer.php' );
 require_once( 'modules/linked_data/wordlift_linked_data.php' );
 require_once( 'modules/prefixes/wordlift_prefixes.php' );
-require_once( 'modules/caching/wordlift_caching.php' );
 require_once( 'modules/redirector/wordlift_redirector.php' );
-require_once( 'modules/freebase_image_proxy/wordlift_freebase_image_proxy.php' );
 
 // Shortcodes
 
@@ -647,9 +645,6 @@ require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
 require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
 require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
-
-// disable In-Depth Articles
-//require_once('wordlift_indepth_articles.php');
 
 require_once( 'widgets/wordlift_widget_geo.php' );
 require_once( 'widgets/wordlift_widget_chord.php' );
@@ -682,7 +677,7 @@ require_once( 'admin/wordlift_admin_sync.php' );
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,
 //       we're currently doing this because wordlift is symbolic linked.
-load_plugin_textdomain( 'wordlift', FALSE, '/wordlift/languages' );
+load_plugin_textdomain( 'wordlift', false, '/wordlift/languages' );
 
 
 /**

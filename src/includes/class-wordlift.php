@@ -6,7 +6,7 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       http://wordlift.it
+ * @link       https://wordlift.io
  * @since      1.0.0
  *
  * @package    Wordlift
@@ -25,7 +25,7 @@
  * @since      1.0.0
  * @package    Wordlift
  * @subpackage Wordlift/includes
- * @author     WordLift <hello@wordlift.it>
+ * @author     WordLift <hello@wordlift.io>
  */
 class Wordlift {
 
@@ -60,7 +60,7 @@ class Wordlift {
 	/**
 	 * The Thumbnail service.
 	 *
-	 * @since 3.1.5
+	 * @since  3.1.5
 	 * @access private
 	 * @var \Wordlift_Thumbnail_Service $thumbnail_service The Thumbnail service.
 	 */
@@ -69,7 +69,7 @@ class Wordlift {
 	/**
 	 * The UI service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_UI_Service $ui_service The UI service.
 	 */
@@ -78,7 +78,7 @@ class Wordlift {
 	/**
 	 * The Schema service.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
 	 */
@@ -87,16 +87,16 @@ class Wordlift {
 	/**
 	 * The Entity service.
 	 *
-	 * @since 3.1.0
-	 * @access private
+	 * @since  3.1.0
+	 * @access protected
 	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
 	 */
-	private $entity_service;
+	protected $entity_service;
 
 	/**
 	 * The Topic Taxonomy service.
 	 *
-	 * @since 3.5.0
+	 * @since  3.5.0
 	 * @access private
 	 * @var \Wordlift_Topic_Taxonomy_Service The Topic Taxonomy service.
 	 */
@@ -105,16 +105,16 @@ class Wordlift {
 	/**
 	 * The User service.
 	 *
-	 * @since 3.1.7
-	 * @access private
+	 * @since  3.1.7
+	 * @access protected
 	 * @var \Wordlift_User_Service $user_service The User service.
 	 */
-	private $user_service;
+	protected $user_service;
 
 	/**
 	 * The Timeline service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Timeline_Service $timeline_service The Timeline service.
 	 */
@@ -123,7 +123,7 @@ class Wordlift {
 	/**
 	 * The Redirect service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Redirect_Service $redirect_service The Redirect service.
 	 */
@@ -132,7 +132,7 @@ class Wordlift {
 	/**
 	 * The Notice service.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
 	 * @var \Wordlift_Notice_Service $notice_service The Notice service.
 	 */
@@ -141,16 +141,16 @@ class Wordlift {
 	/**
 	 * The Entity list customization.
 	 *
-	 * @since 3.3.0
+	 * @since  3.3.0
 	 * @access private
-	 * @var \Wordlift_List_Service $entity_list_service The Entity list service.
+	 * @var \Wordlift_Entity_List_Service $entity_list_service The Entity list service.
 	 */
 	private $entity_list_service;
 
 	/**
 	 * The Entity Types Taxonomy Walker.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Entity_Types_Taxonomy_Walker $entity_types_taxonomy_walker The Entity Types Taxonomy Walker
 	 */
@@ -159,7 +159,7 @@ class Wordlift {
 	/**
 	 * The ShareThis service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_ShareThis_Service $sharethis_service The ShareThis service.
 	 */
@@ -168,7 +168,7 @@ class Wordlift {
 	/**
 	 * The PrimaShop adapter.
 	 *
-	 * @since 3.2.3
+	 * @since  3.2.3
 	 * @access private
 	 * @var \Wordlift_PrimaShop_Adapter $primashop_adapter The PrimaShop adapter.
 	 */
@@ -177,7 +177,7 @@ class Wordlift {
 	/**
 	 * The WordLift Dashboard adapter.
 	 *
-	 * @since 3.4.0
+	 * @since  3.4.0
 	 * @access private
 	 * @var \Wordlift_Dashboard_Service $dashboard_service The WordLift Dashboard service;
 	 */
@@ -186,35 +186,25 @@ class Wordlift {
 	/**
 	 * The entity type service.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
-	 * @var \Wordlift_Entity_Type_Service
+	 * @var \Wordlift_Entity_Post_Type_Service
 	 */
-	private $entity_type_service;
+	private $entity_post_type_service;
 
 	/**
 	 * The entity link service used to mangle links to entities with a custom slug or even w/o a slug.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Entity_Link_Service
 	 */
 	private $entity_link_service;
 
 	/**
-	 * The page service instance which processes the page output in order to insert schema.org microdata to export the
-	 * correct page title to Google+.
-	 *
-	 * @since 3.5.3
-	 * @access private
-	 * @var \Wordlift_Page_Service
-	 */
-	private $page_service;
-
-	/**
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
-	 * @var 3.6.0
+	 * @var    3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
@@ -223,7 +213,7 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Import_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Import_Service $import_service A {@link Wordlift_Import_Service} instance.
 	 */
@@ -232,20 +222,128 @@ class Wordlift {
 	/**
 	 * A {@link Wordlift_Rebuild_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Rebuild_Service $rebuild_service A {@link Wordlift_Rebuild_Service} instance.
 	 */
 	private $rebuild_service;
 
 	/**
+	 * A {@link Wordlift_Jsonld_Service} instance.
+	 *
+	 * @since  3.7.0
+	 * @access protected
+	 * @var \Wordlift_Jsonld_Service $jsonld_service A {@link Wordlift_Jsonld_Service} instance.
+	 */
+	protected $jsonld_service;
+
+	/**
+	 *
+	 * @since  3.7.0
+	 * @access private
+	 * @var \Wordlift_Property_Factory $property_factory
+	 */
+	private $property_factory;
+
+	/**
 	 * The 'Download Your Data' page.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Admin_Download_Your_Data_Page $download_your_data_page The 'Download Your Data' page.
 	 */
 	private $download_your_data_page;
+
+	/**
+	 * The install wizard page.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var \Wordlift_Admin_Setup $admin_setup The Install wizard.
+	 */
+	private $admin_setup;
+
+	/**
+	 * The Content Filter Service hooks up to the 'the_content' filter and provides
+	 * linking of entities to their pages.
+	 *
+	 * @since  3.8.0
+	 * @access private
+	 * @var \Wordlift_Content_Filter_Service $content_filter_service A {@link Wordlift_Content_Filter_Service} instance.
+	 */
+	private $content_filter_service;
+
+	/**
+	 * A {@link Wordlift_Key_Validation_Service} instance.
+	 *
+	 * @since  3.9.0
+	 * @access private
+	 * @var Wordlift_Key_Validation_Service $key_validation_service A {@link Wordlift_Key_Validation_Service} instance.
+	 */
+	private $key_validation_service;
+
+	/**
+	 * A {@link Wordlift_Rating_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access private
+	 * @var \Wordlift_Rating_Service $rating_service A {@link Wordlift_Rating_Service} instance.
+	 */
+	private $rating_service;
+
+	/**
+	 * A {@link Wordlift_Post_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Post_To_Jsonld_Converter $post_to_jsonld_converter A {@link Wordlift_Post_To_Jsonld_Converter} instance.
+	 */
+	protected $post_to_jsonld_converter;
+
+	/**
+	 * A {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 */
+	protected $configuration_service;
+
+	/**
+	 * A {@link Wordlift_Entity_Type_Service} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Entity_Type_Service $entity_type_service A {@link Wordlift_Entity_Type_Service} instance.
+	 */
+	protected $entity_type_service;
+
+	/**
+	 * A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Entity_Post_To_Jsonld_Converter $entity_post_to_jsonld_converter A {@link Wordlift_Entity_Post_To_Jsonld_Converter} instance.
+	 */
+	protected $entity_post_to_jsonld_converter;
+
+	/**
+	 * A {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 *
+	 * @since  3.10.0
+	 * @access protected
+	 * @var \Wordlift_Postid_To_Jsonld_Converter $postid_to_jsonld_converter A {@link Wordlift_Postid_To_Jsonld_Converter} instance.
+	 */
+	protected $postid_to_jsonld_converter;
+
+	/**
+	 * The {@link Wordlift_Admin_Status_Page} class.
+	 *
+	 * @since  3.9.8
+	 * @access private
+	 * @var \Wordlift_Admin_Status_Page $status_page The {@link Wordlift_Admin_Status_Page} class.
+	 */
+	private $status_page;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -259,7 +357,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.7.0-dev';
+		$this->version     = '3.11.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -298,6 +396,11 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
 
 		/**
+		 * WordLift's supported languages.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-languages.php';
+
+		/**
 		 * Provide support functions to sanitize data.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
@@ -318,7 +421,12 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
 
 		/**
-		 * The entity post type service.
+		 * The entity post type service (this is the WordPress post type, not the entity schema type).
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
+
+		/**
+		 * The entity type service (i.e. the schema type).
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
 
@@ -363,6 +471,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-service.php';
 
+		// Add the entity rating service.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rating-service.php';
+
 		/**
 		 * The User service.
 		 */
@@ -377,9 +488,6 @@ class Wordlift {
 		 * The Topic Taxonomy service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-topic-taxonomy-service.php';
-
-
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-page-service.php';
 
 		/**
 		 * The SPARQL service.
@@ -398,10 +506,42 @@ class Wordlift {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-listable.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-factory.php';
+
 		/**
 		 * The WordLift rebuild service, used to rebuild the remote dataset using the local data.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-rebuild-service.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/properties/class-wordlift-property-getter-factory.php';
+
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-attachment-service.php';
+
+		/**
+		 * Load the converters.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/intf-wordlift-post-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-abstract-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
+
+		/**
+		 * Load the content filter.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
+
+		/**
+		 * Load the JSON-LD service to publish entities using JSON-LD.s
+		 *
+		 * @since 3.8.0
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
+
+		/**
+		 * Load the WordLift key validation service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-key-validation-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -434,9 +574,15 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-dashboard.php';
 
 		/**
+		 * The admin 'Install wizard' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-setup.php';
+
+		/**
 		 * The admin 'Download Your Data' page.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -481,13 +627,13 @@ class Wordlift {
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
 		// Create the configuration service.
-		$configuration_service = new Wordlift_Configuration_Service();
+		$this->configuration_service = new Wordlift_Configuration_Service();
 
 		// Create an entity type service instance. It'll be later bound to the init action.
-		$this->entity_type_service = new Wordlift_Entity_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $configuration_service->get_entity_base_path() );
+		$this->entity_post_type_service = new Wordlift_Entity_Post_Type_Service( Wordlift_Entity_Service::TYPE_NAME, $this->configuration_service->get_entity_base_path() );
 
 		// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
-		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_type_service, $configuration_service->get_entity_base_path() );
+		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_post_type_service, $this->configuration_service->get_entity_base_path() );
 
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
@@ -498,14 +644,14 @@ class Wordlift {
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
 		// Create an instance of the Schema service.
-		new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
-		$this->schema_service = new Wordlift_Schema_Service();
+		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
+		$this->schema_service        = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.
 		$this->notice_service = new Wordlift_Notice_Service();
 
 		// Create an instance of the Entity service, passing the UI service to draw parts of the Entity admin page.
-		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service, $this->schema_service, $this->notice_service );
+		$this->entity_service = new Wordlift_Entity_Service( $this->ui_service );
 
 		// Create an instance of the User service.
 		$this->user_service = new Wordlift_User_Service();
@@ -516,17 +662,11 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
 
-		// Create a new instance of the Redirect service.
-		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->entity_service );
-
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
-
-		// Create entity list customization (wp-admin/edit.php)
-		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->entity_service );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -538,18 +678,55 @@ class Wordlift {
 		// Create an instance of the PrimaShop adapter.
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 
-		$this->page_service = new Wordlift_Page_Service();
-
 		// Create an import service instance to hook later to WP's import function.
-		$this->import_service = new Wordlift_Import_Service( $this->entity_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
+		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
 
 		$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
+		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
+
+		// Create the entity rating service.
+		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
+
+		// Create entity list customization (wp-admin/edit.php)
+		$this->entity_list_service = new Wordlift_Entity_List_Service( $this->rating_service );
+
+		// Create a new instance of the Redirect service.
+		$this->dashboard_service = new Wordlift_Dashboard_Service( $this->rating_service );
+
+		$this->property_factory = new Wordlift_Property_Factory( $schema_url_property_service );
+		$this->property_factory->register( Wordlift_Schema_Url_Property_Service::META_KEY, $schema_url_property_service );
+
+		$attachment_service = new Wordlift_Attachment_Service();
+
+		// Instantiate the JSON-LD service.
+		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
+		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
+		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
+		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
+		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter );
+
+		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
+		$this->key_validation_service = new Wordlift_Key_Validation_Service();
+
 		//** WordPress Admin */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page();
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->status_page             = new Wordlift_Admin_Status_Page();
+
+		// Create an instance of the install wizard.
+		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
+
+		// Create an instance of the content filter service.
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
+
+		// Load the debug service if WP is in debug mode.
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
+			new Wordlift_Debug_Service( $this->entity_service, $uri_service );
+		}
 
 	}
 
@@ -615,10 +792,10 @@ class Wordlift {
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
-		$this->loader->add_action( 'save_post_entity', $this->entity_service, 'set_rating_for', 10, 1 );
+		$this->loader->add_action( 'save_post_entity', $this->rating_service, 'set_rating_for', 10, 1 );
 
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
-		$this->loader->add_action( 'in_admin_header', $this->entity_service, 'in_admin_header' );
+		$this->loader->add_action( 'in_admin_header', $this->rating_service, 'in_admin_header' );
 
 		// Entity listing customization (wp-admin/edit.php)
 		// Add custom columns
@@ -646,9 +823,19 @@ class Wordlift {
 
 		// Hook the menu to the Download Your Data page.
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
+
+		// Hook the AJAX wl_jsonld action to the JSON-LD service.
+		$this->loader->add_action( 'wp_ajax_wl_jsonld', $this->jsonld_service, 'get' );
+
+		// Hook the AJAX wl_validate_key action to the Key Validation service.
+		$this->loader->add_action( 'wp_ajax_wl_validate_key', $this->key_validation_service, 'validate_key' );
+
+		// Hook the `admin_init` function to the Admin Setup.
+		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
 	}
 
@@ -664,7 +851,7 @@ class Wordlift {
 		$plugin_public = new Wordlift_Public( $this->get_plugin_name(), $this->get_version() );
 
 		// Register the entity post type.
-		$this->loader->add_action( 'init', $this->entity_type_service, 'register' );
+		$this->loader->add_action( 'init', $this->entity_post_type_service, 'register' );
 
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
@@ -675,6 +862,9 @@ class Wordlift {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
+		// Hook the content filter service to add entity links.
+		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
+
 		// Hook the AJAX wl_timeline action to the Timeline service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
 
@@ -682,8 +872,8 @@ class Wordlift {
 		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
 
-		$this->loader->add_action( 'wp_head', $this->page_service, 'wp_head', PHP_INT_MAX );
-		$this->loader->add_action( 'wp_footer', $this->page_service, 'wp_head', - PHP_INT_MAX );
+		// Hook the AJAX wl_jsonld action to the JSON-LD service.
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
 
 	}
 

@@ -36,45 +36,11 @@
     height: auto;
 }
 
-/*.button.wl-button {
-    border: 1px solid #c70056;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    text-decoration: none;
-    display: inline-block;
-    color: #fff;
-    background-color: #FF006E;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#FF006E), to(#ef007c));
-    background-image: -webkit-linear-gradient(top, #FF006E, #ef007c);
-    background-image: -moz-linear-gradient(top, #FF006E, #ef007c);
-    background-image: -ms-linear-gradient(top, #FF006E, #ef007c);
-    background-image: -o-linear-gradient(top, #FF006E, #ef007c);
-    background-image: linear-gradient(to bottom, #FF006E, #ef007c);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#FF006E, endColorstr=#ef007c);
-    box-shadow: none;
-    text-shadow: none;
-    font-weight: normal;
-}
-
-.button.wl-button:hover {
-    color: #fff;
-    border: 1px solid #990042;
-    background-color: #cc0058;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#cc0058), to(#bc0062));
-    background-image: -webkit-linear-gradient(top, #cc0058, #bc0062);
-    background-image: -moz-linear-gradient(top, #cc0058, #bc0062);
-    background-image: -ms-linear-gradient(top, #cc0058, #bc0062);
-    background-image: -o-linear-gradient(top, #cc0058, #bc0062);
-    background-image: linear-gradient(to bottom, #cc0058, #bc0062);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#cc0058, endColorstr=#bc0062);
-    box-shadow: none;
-}*/
-
 /* wp-admin/edit.php */
 #wl_column_thumbnail {
     width: 60px;
 }
+
 #wl_column_related_posts {
     width: 100px;
 }
@@ -87,27 +53,45 @@
     width: 100px;
     text-align: center;
 }
+
 .wl-traffic-light {
-  display: block;
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  border-radius: 50%;
-  margin:5px auto;
-  color:#fff;
-  font-weight: bold;
-  font-size: 0.8em;
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    margin: 5px auto;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.8em;
 }
+
 .wl_column_rating {
-  text-align: center;
+    text-align: center;
 }
 
 .wl-tl-1 {
-  background-color:#f00;
+    background-color: #f00;
 }
+
 .wl-tl-2 {
-  background-color:#f90;
+    background-color: #f90;
 }
+
 .wl-tl-3 {
-  background-color:#6c0;
+    background-color: #6c0;
+}
+
+/* The default WP style doesn't work well in responsive with our multi-column list.
+ * See https://github.com/insideout10/wordlift-plugin/issues/353
+ */
+@media screen and (max-width: 782px) {
+    .post-type-entity .wp-list-table tr:not(.inline-edit-row):not(.no-items) .column-wl_column_thumbnail {
+        display: none;
+    }
+}
+
+/* Hide the virtual page in the admin menu that we create for WL's setup. */
+#adminmenu a[href=wl-setup], #adminmenu a[href='admin.php?page=wl_status_report'] {
+    display: none;
 }

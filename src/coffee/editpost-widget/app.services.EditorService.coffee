@@ -1,12 +1,12 @@
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.editpost.widget.services.EditorService', [
+  'wordlift.editpost.widget.services.EditorAdapter',
   'wordlift.editpost.widget.services.AnalysisService'
   ])
 # Manage redlink analysis responses
-.service('EditorService', [ 'configuration', 'AnalysisService', '$log', '$http', '$rootScope', (configuration, AnalysisService, $log, $http, $rootScope)-> 
+.service('EditorService', [ 'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', (configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope)->
   
   INVISIBLE_CHAR = '\uFEFF'
-  BLIND_ANNOTATION_CSS_CLASS = 'no-entity-page-link'
 
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
   findEntities = (html) ->
@@ -18,17 +18,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Get the matches and return them.
     (while match = pattern.exec html
       
-      
       annotation = 
         start: traslator.html2text match.index
         end: traslator.html2text (match.index + match[0].length)
         uri: match[2]
         label: match[3]
-        # Detect if this annotation has link related entity page or not
-        isBlind: (match[0].indexOf(BLIND_ANNOTATION_CSS_CLASS) isnt -1)
       
-      $log.debug annotation
-
       annotation
     )
 
@@ -38,36 +33,32 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       positions = positions.concat [ entityAnnotation.start..entityAnnotation.end ]
     positions   
 
+  # @deprecated use EditorAdapter.getEditor()
   editor = ->
     tinyMCE.get('content')
     
   disambiguate = ( annotationId, entity )->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     ed.dom.addClass annotationId, "disambiguated"
-    
     for type in configuration.types
       ed.dom.removeClass annotationId, type.css
-    
     ed.dom.removeClass annotationId, "unlinked"
-    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
-    
+    ed.dom.addClass annotationId, "wl-#{entity.mainType}"
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", entity.id
     discardedItemId
 
   dedisambiguate = ( annotationId, entity )->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     ed.dom.removeClass annotationId, "disambiguated"
-    ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
     ed.dom.removeClass annotationId, "wl-#{entity.mainType}"
-    
     discardedItemId = ed.dom.getAttrib annotationId, "itemid"
     ed.dom.setAttrib annotationId, "itemid", ""
     discardedItemId
 
   # TODO refactoring with regex
   currentOccurencesForEntity = (entityId) ->
-    ed = editor()
+    ed = EditorAdapter.getEditor()
     occurrences = []    
     return occurrences if entityId is ""
     annotations = ed.dom.select "span.textannotation"
@@ -106,19 +97,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-  
-  $rootScope.$on "entityBlindnessToggled", (event, entity) ->
-    ed = editor()
-    for annotationId in entity.occurrences
-      ed.dom.removeClass annotationId, BLIND_ANNOTATION_CSS_CLASS
-    for annotationId in entity.blindOccurrences
-      ed.dom.addClass annotationId, BLIND_ANNOTATION_CSS_CLASS
-
+        
   service =
     # Detect if there is a current selection
     hasSelection: ()->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       if ed?
         if ed.selection.isCollapsed()
           return false
@@ -132,19 +116,19 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
     # Check if the given editor is the current editor
     isEditor: (editor)->
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       ed.id is editor.id
 
     # Update contenteditable status for the editor
     updateContentEditableStatus: (status)->
       # A reference to the editor.
-      ed = editor() 
+      ed = EditorAdapter.getEditor()
       ed.getBody().setAttribute 'contenteditable', status
 
     # Create a textAnnotation starting from the current selection
     createTextAnnotationFromCurrentSelection: ()->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # If the current selection is collapsed / blank, then nothing to do
       if ed.selection.isCollapsed()
         $log.warn "Invalid selection! The text annotation cannot be created"
@@ -164,7 +148,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       ed.selection.setContent textAnnotationSpan 
       
       # Retrieve the current heml content
-      content = ed.getContent format: 'raw'
+      content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
       # Create a Traslator instance
       traslator =  Traslator.create content
       # Retrieve the index position of the new span
@@ -182,7 +166,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Select annotation with a id annotationId if available
     selectAnnotation: (annotationId)->
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # Unselect all annotations 
       for annotation in ed.dom.select "span.textannotation"
         ed.dom.removeClass annotation.id, "selected"
@@ -196,10 +180,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Embed the provided analysis in the editor.
     embedAnalysis: (analysis) =>
       # A reference to the editor.
-      ed = editor()
+      ed = EditorAdapter.getEditor()
       # Get the TinyMCE editor html content.
-      html = ed.getContent format: 'raw'
-      $log.debug html
+      html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
+
       # Find existing entities.
       entities = findEntities html
       # Remove overlapping annotations preserving selected entities
@@ -229,13 +213,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           entity = analysis.entities[ em.entityId ] 
           
           if annotationId in entity.occurrences
-            # Preserve css classes for blind annotations
-            
-            if annotationId in entity.blindOccurrences
-              element += " #{BLIND_ANNOTATION_CSS_CLASS}"
-            
-            # Mark the annotation as disambiguated    
-            element += " disambiguated\" itemid=\"#{entity.id}"
+            element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
         
         element += "\">"
               

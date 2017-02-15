@@ -270,66 +270,49 @@ $ = jQuery
 $.fn.extend
 
   timeline: (options) ->
-    
-    # Default settings
-    settings = {
-      dataEndpoint: undefined
-      width: '100%'
-      height: '600'
-      debug: false
-    }
 
-    # Merge default settings with options.
-    settings = $.extend settings, options
-    
+#
+    options = $.extend {dataEndpoint: null, settings: {}}, options
+
     # Create a reference to dom wrapper element
     container = $(@)
-
-    # Retrieve data from for timeline rendering
-    retrieveTimelineData = ->
-      $.ajax
-        type: 'GET'
-        url: settings.dataEndpoint
-        success: (response) ->
-          buildTimeline response
 
     # Build a Timeline obj via TimelineJS
     # See: https://github.com/NUKnightLab/TimelineJS
     buildTimeline = (data) ->
-      if data.timeline?
-        createStoryJS
-          type: 'timeline'
-          width: settings.width
-          height: settings.height
-          source: data
-          embed_id: container.attr('id')
-          start_at_slide: data.startAtSlide 
-      else
+      if not data.timeline?
         container.hide()
-        log "Timeline data missing: timeline cannot be rendered"
         return
+
+      # TimelineJS v3 constructor.
+      new TL.Timeline(container.attr('id'), data.timeline, options.settings)
 
     # Initialization method
     init = ->
-      retrieveTimelineData()
-
-    # Simple logger 
-    log = (msg) ->
-      console?.log msg if settings.debug
+      $.ajax
+        type: 'GET'
+        url: options.dataEndpoint
+        success: (response) ->
+          buildTimeline response
 
     init()
 
 jQuery ($) ->
   $('.wl-timeline').each ->
     element = $(@)
-    
+
     params = element.data()
     $.extend params, wl_timeline_params
-    
-    url = "#{params.ajax_url}?" + $.param( 'action': params.action, 'post_id': params.postId )
+
+    url = "#{params.ajax_url}?" + $.param(
+      'action': params.action,
+      'post_id': params.postId,
+      'display_images_as': params.display_images_as,
+      'excerpt_length': params.excerpt_length)
 
     $(this).timeline
       dataEndpoint: url
+      settings: params.settings
 $ = jQuery
 
 # Add a geomap plugin object to jQuery
@@ -625,9 +608,12 @@ angular.module('wordlift.utils.directives', [])
 $ = jQuery
 
 # Create the main AngularJS module, and set it dependent on controllers and directives.
-angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.utils.directives' ])
+angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives'])
 .provider("configuration", ()->
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
   _configuration = undefined
 
   provider =
@@ -642,7 +628,10 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
   restrict: 'E'
   scope: true
   template: (tElement, tAttrs)->
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
     wrapperClasses = 'wl-wrapper'
     wrapperAttrs = ' wl-carousel'
     itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
@@ -667,8 +656,13 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
                 <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
               </h6>
             </div>
+<<<<<<< HEAD
             <div class="#{thumbClasses}">
               <a ng-href="{{item.post.permalink}}" style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></a>
+=======
+            <div class="#{thumbClasses}"> 
+              <a ng-href="{{item.post.permalink}}" style="background: url({{item.post.thumbnail}}) no-repeat center center;background-size:cover;"></a>
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
             </div>
             <div class="wl-card-title">
               <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
@@ -679,8 +673,13 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
   """
 
 ])
+<<<<<<< HEAD
 .controller('NavigatorWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)->
 
+=======
+.controller('NavigatorWidgetController', ['DataRetrieverService', 'configuration', '$scope', '$log',
+  (DataRetrieverService, configuration, $scope, $log)->
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
     $scope.items = []
     $scope.configuration = configuration
 
@@ -689,6 +688,7 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
 
 ])
 # Retrieve post
+<<<<<<< HEAD
 .service('DataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)->
 
   service = {}
@@ -706,12 +706,30 @@ angular.module('wordlift.navigator.widget', [ 'wordlift.ui.carousel', 'wordlift.
       $rootScope.$broadcast "itemsLoaded", data
     .error (data, status) ->
        $log.warn "Error loading items, statut #{status}"
+=======
+.service('DataRetrieverService', ['configuration', '$log', '$http', '$rootScope',
+  (configuration, $log, $http, $rootScope)->
+    service = {}
+    service.load = ()->
+      uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}"
+      $log.debug "Going to load navigator items from #{uri}"
 
-  service
+      $http(
+        method: 'get'
+        url: uri
+      )
+# If successful, broadcast an *analysisReceived* event.
+      .success (data) ->
+        $rootScope.$broadcast "itemsLoaded", data
+      .error (data, status) ->
+        $log.warn "Error loading items, statut #{status}"
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
+
+    service
 
 ])
 # Configuration provider
-.config([ 'configurationProvider', (configurationProvider)->
+.config(['configurationProvider', (configurationProvider)->
   configurationProvider.setConfiguration window.wl_navigator_params
 ])
 
@@ -724,6 +742,7 @@ $(
   """)
   .appendTo('.wl-navigator-widget')
 
+<<<<<<< HEAD
 injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
 injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
   # execute the following commands in the angular js context.
@@ -732,4 +751,13 @@ injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverSer
   )
 ])
 
+=======
+# If there are navigator widgets on the page activate them.
+  if 0 < $('.wl-navigator-widget').size()
+    injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
+    injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
+# execute the following commands in the angular js context.
+      $rootScope.$apply(-> DataRetrieverService.load())
+    ])
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
 )

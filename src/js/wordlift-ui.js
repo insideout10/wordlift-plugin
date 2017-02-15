@@ -239,46 +239,27 @@
 
   $.fn.extend({
     timeline: function(options) {
-      var buildTimeline, container, init, log, retrieveTimelineData, settings;
-      settings = {
-        dataEndpoint: void 0,
-        width: '100%',
-        height: '600',
-        debug: false
-      };
-      settings = $.extend(settings, options);
+      var buildTimeline, container, init;
+      options = $.extend({
+        dataEndpoint: null,
+        settings: {}
+      }, options);
       container = $(this);
-      retrieveTimelineData = function() {
+      buildTimeline = function(data) {
+        if (data.timeline == null) {
+          container.hide();
+          return;
+        }
+        return new TL.Timeline(container.attr('id'), data.timeline, options.settings);
+      };
+      init = function() {
         return $.ajax({
           type: 'GET',
-          url: settings.dataEndpoint,
+          url: options.dataEndpoint,
           success: function(response) {
             return buildTimeline(response);
           }
         });
-      };
-      buildTimeline = function(data) {
-        if (data.timeline != null) {
-          return createStoryJS({
-            type: 'timeline',
-            width: settings.width,
-            height: settings.height,
-            source: data,
-            embed_id: container.attr('id'),
-            start_at_slide: data.startAtSlide
-          });
-        } else {
-          container.hide();
-          log("Timeline data missing: timeline cannot be rendered");
-        }
-      };
-      init = function() {
-        return retrieveTimelineData();
-      };
-      log = function(msg) {
-        if (settings.debug) {
-          return typeof console !== "undefined" && console !== null ? console.log(msg) : void 0;
-        }
       };
       return init();
     }
@@ -292,10 +273,13 @@
       $.extend(params, wl_timeline_params);
       url = (params.ajax_url + "?") + $.param({
         'action': params.action,
-        'post_id': params.postId
+        'post_id': params.postId,
+        'display_images_as': params.display_images_as,
+        'excerpt_length': params.excerpt_length
       });
       return $(this).timeline({
-        dataEndpoint: url
+        dataEndpoint: url,
+        settings: params.settings
       });
     });
   });
@@ -630,7 +614,11 @@
           if (configuration.attrs.squared_thumbs) {
             thumbClasses = 'wl-card-image wl-square';
           }
+<<<<<<< HEAD
           return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\">\n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\">\n        <a ng-href=\"{{item.post.permalink}}\" style=\"background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;\"></a>\n      </div>\n      <div class=\"wl-card-title\">\n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
+=======
+          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\"> \n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\"> \n        <a ng-href=\"{{item.post.permalink}}\" style=\"background: url({{item.post.thumbnail}}) no-repeat center center;background-size:cover;\"></a>\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
+>>>>>>> 4ca448882ada4127dea1edda343b37209987718f
         }
       };
     }
@@ -667,13 +655,13 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
+  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), 0 < $('.wl-navigator-widget').size() ? (injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
     'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
       return $rootScope.$apply(function() {
         return DataRetrieverService.load();
       });
     }
-  ]));
+  ])) : void 0);
 
 }).call(this);
 

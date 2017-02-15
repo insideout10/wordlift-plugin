@@ -27,10 +27,10 @@ class WL_Metabox {
 		add_action( 'add_meta_boxes', array( &$this, 'add_main_metabox' ) );
 		add_action( 'wl_linked_data_save_post', array(
 			&$this,
-			'save_form_data'
+			'save_form_data',
 		) );
 
-		// Enqueue js and css
+		// Enqueue js and css.
 		$this->enqueue_scripts_and_styles();
 
 	}
@@ -41,15 +41,15 @@ class WL_Metabox {
 	 */
 	public function add_main_metabox() {
 
-		// Add main metabox (will print also the inner fields)
+		// Add main metabox (will print also the inner fields).
 		$id    = uniqid( 'wl-metabox-' );
 		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
 		add_meta_box( $id, $title, array(
 			$this,
-			'html'
+			'html',
 		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
 
-		// Add filter to change the metabox CSS class
+		// Add filter to change the metabox CSS class.
 		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
 	}
 
@@ -65,13 +65,13 @@ class WL_Metabox {
 		// Build the fields we need to print.
 		$this->instantiate_fields( $post->ID );
 
-		// Loop over the fields
+		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
 
-			// load data from DB (values will be available in $field->data)
+			// load data from DB (values will be available in $field->data).
 			$field->get_data();
 
-			// print field HTML (nonce included)
+			// print field HTML (nonce included).
 			echo $field->html();
 		}
 
@@ -89,7 +89,7 @@ class WL_Metabox {
 	 */
 	public function instantiate_fields( $post_id ) {
 
-		// This function must be called only once. Not called from the constructor because WP hooks have a rococo ordering
+		// This function must be called only once. Not called from the constructor because WP hooks have a rococo ordering.
 		if ( isset( $this->fields ) ) {
 			return;
 		}
@@ -108,26 +108,26 @@ class WL_Metabox {
 			$simple_metaboxes  = $metaboxes[0];
 			$grouped_metaboxes = $metaboxes[1];
 
-			// Loop over simple entity properties
+			// Loop over simple entity properties.
 			foreach ( $simple_metaboxes as $key => $property ) {
 
-				// Info passed to the metabox
+				// Info passed to the metabox.
 				$info         = array();
 				$info[ $key ] = $property;
 
-				// Build the requested field as WL_Metabox_Field_ object
+				// Build the requested field as WL_Metabox_Field_ object.
 				$this->add_field( $info );
 			}
 
-			// Loop over grouped properties
+			// Loop over grouped properties.
 			foreach ( $grouped_metaboxes as $key => $property ) {
 
-				// Info passed to the metabox
+				// Info passed to the metabox.
 				$info         = array();
 				$info[ $key ] = $property;
 
-				// Build the requested field group as WL_Metabox_Field_ object
-				$this->add_field( $info, TRUE );
+				// Build the requested field group as WL_Metabox_Field_ object.
+				$this->add_field( $info, true );
 			}
 
 		}
@@ -143,23 +143,23 @@ class WL_Metabox {
 		$simple_properties  = array();
 		$grouped_properties = array();
 
-		// Loop over possible entity properties
+		// Loop over possible entity properties.
 		foreach ( $custom_fields as $key => $property ) {
 
-			// Check presence of predicate and type
+			// Check presence of predicate and type.
 			if ( isset( $property['predicate'] ) && isset( $property['type'] ) ) {
 
-				// Check if input_field is defined
+				// Check if input_field is defined.
 				if ( isset( $property['input_field'] ) && $property['input_field'] !== '' ) {
 
 					$grouped_key = $property['input_field'];
 
-					// Update list of grouped properties
+					// Update list of grouped properties.
 					$grouped_properties[ $grouped_key ][ $key ] = $property;
 
 				} else {
 
-					// input_field not defined, add simple metabox
+					// input_field not defined, add simple metabox.
 					$simple_properties[ $key ] = $property;
 				}
 			}
@@ -173,18 +173,18 @@ class WL_Metabox {
 	 * This method is a rude factory for Field objects.
 	 *
 	 * @param array $args
-	 * @param bool $grouped Flag to distinguish between simple and grouped Fields
+	 * @param bool  $grouped Flag to distinguish between simple and grouped Fields
 	 */
-	public function add_field( $args, $grouped = FALSE ) {
+	public function add_field( $args, $grouped = false ) {
 
 		if ( $grouped ) {
-			// Special fields (sameas, coordinates, etc.)
+			// Special fields (sameas, coordinates, etc.).
 
-			// Build Field with a custom class (e.g. WL_Metabox_Field_date)
+			// Build Field with a custom class (e.g. WL_Metabox_Field_date).
 			$field_class = 'WL_Metabox_Field_' . key( $args );
 
 		} else {
-			// Simple fields (string, uri, boolean, etc.)
+			// Simple fields (string, uri, boolean, etc.).
 
 			// Which field? We want to use the class that is specific for the field.
 			$meta      = key( $args );
@@ -200,7 +200,7 @@ class WL_Metabox {
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
 
-				// Use default WL_Metabox_Field (manages strings)
+				// Use default WL_Metabox_Field (manages strings).
 				$field_class = 'WL_Metabox_Field';
 
 			} else {
@@ -208,29 +208,29 @@ class WL_Metabox {
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
 
-				// Build Field with a custom class (e.g. WL_Metabox_Field_date)
+				// Build Field with a custom class (e.g. WL_Metabox_Field_date).
 				$field_class = 'WL_Metabox_Field_' . $this_meta['type'];
 
 			}
 		}
 
-		// Call apropriate constructor (e.g. WL_Metabox_Field_... )
+		// Call apropriate constructor (e.g. WL_Metabox_Field_... ).
 		$this->fields[] = new $field_class( $args );
 	}
 
 	public function save_form_data( $entity_id ) {
 
-		// Build Field objects
+		// Build Field objects.
 		$this->instantiate_fields( $entity_id );
 
-		// Check if WL metabox form was posted
+		// Check if WL metabox form was posted.
 		if ( ! isset( $_POST['wl_metaboxes'] ) ) {
 			return;
 		}
 
 		foreach ( $this->fields as $field ) {
 
-			// Verify nonce
+			// Verify nonce.
 			$valid_nonce = $field->verify_nonce();
 			if ( $valid_nonce ) {
 
@@ -254,27 +254,34 @@ class WL_Metabox {
 		wl_linked_data_push_to_redlink( $entity_id );
 	}
 
-	// print on page all the js and css the fields will need
+	/**
+	 * Enqueue scripts and styles.
+	 *
+	 * @since 3.0.0
+	 */
 	public function enqueue_scripts_and_styles() {
 
-		// dateTimePicker
-		wp_enqueue_style( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/css/jquery.datetimepicker.css' );
-		wp_enqueue_script( 'jquery-ui-timepicker', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.full.min.js', array( 'jquery' ) );
+		// Load the jquery-ui-timepicker-addon library.
+		wp_enqueue_style( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.css' );
+		wp_enqueue_script( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', array( 'jquery-ui-datepicker' ), '1.6.3', true );
 
-		// We rename the xdsoft datetimepicker function name to avoid conflicts to the jQuery UI derived datetimepicker library.
-		// see https://github.com/insideout10/wordlift-plugin/issues/340
-		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array( 'jquery-ui-timepicker' ) );
+		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array(
+			'jquery-ui-datepicker',
+			'jquery-ui-timepicker-addon',
+		) );
 
 		// Leaflet.
 		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );
 		wp_enqueue_script( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.js', __FILE__ );
 
-		// Add AJAX autocomplete to facilitate metabox editing
+		// Add AJAX autocomplete to facilitate metabox editing.
 		wp_enqueue_script( 'wl-entity-metabox-utility', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wl_entity_metabox_utilities.js' );
 		wp_localize_script( 'wl-entity-metabox-utility', 'wlEntityMetaboxParams', array(
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
-				'action'   => 'entity_by_title'
+				'action'   => 'entity_by_title',
 			)
 		);
+
 	}
+
 }

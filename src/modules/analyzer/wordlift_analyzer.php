@@ -9,15 +9,15 @@
  * @uses wl_analyze_content() to analyze the provided content.
  */
 function wl_ajax_analyze_action() {
-	
-    if ( $analysis = wl_analyze_content( file_get_contents( "php://input" ) ) ) {
-        header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );	        
-        echo( $analysis );
-        wp_die();
-    }
-	
-    status_header( 500 );
-    wp_send_json( __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' ) );
+
+	if ( $analysis = wl_analyze_content( file_get_contents( "php://input" ) ) ) {
+		header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+		echo( $analysis );
+		wp_die();
+	}
+
+	status_header( 500 );
+	wp_send_json( __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' ) );
 
 }
 
@@ -40,12 +40,15 @@ function wl_analyze_content( $content ) {
 	// Get the analyzer URL.
 	$url = wl_configuration_get_analyzer_url();
 
+	// Set the content type to the request content type or to text/plain by default.
+	$content_type = isset( $_SERVER['CONTENT_TYPE'] ) ? $_SERVER['CONTENT_TYPE'] : 'text/plain';
+
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
 		'method'      => 'POST',
 		'headers'     => array(
 			'Accept'       => 'application/json',
-			'Content-type' => 'text/plain'
+			'Content-type' => $content_type
 		),
 		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
 		'httpversion' => '1.0',
@@ -60,14 +63,14 @@ function wl_analyze_content( $content ) {
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
 		wl_write_log( "error [ url :: $url ][ args :: " );
-		wl_write_log( var_export( $args, true ) );
+		wl_write_log( var_export( $args, TRUE ) );
 		wl_write_log( '][ response :: ' );
-		wl_write_log( "\n" . var_export( $response, true ) );
+		wl_write_log( "\n" . var_export( $response, TRUE ) );
 		wl_write_log( "][ body :: " );
 		wl_write_log( "\n" . $body );
 		wl_write_log( "]" );
 
-		return null;
+		return NULL;
 	}
 
 	wl_write_log( "[ url :: $url ][ response code :: " . $response['response']['code'] . " ]" );

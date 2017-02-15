@@ -10,7 +10,7 @@ class Wordlift_Timeline_Service {
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -19,16 +19,26 @@ class Wordlift_Timeline_Service {
 	/**
 	 * The Entity service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Entity_Service $entity_service The Entity service.
 	 */
 	private $entity_service;
 
 	/**
+	 * The number of words to use for the excerpt, set in the `to_json` function
+	 * and used by a filter.
+	 *
+	 * @since  3.7.0
+	 * @access private
+	 * @var int $excerpt_length The number of words to use for the excerpt.
+	 */
+	private $excerpt_length;
+
+	/**
 	 * A singleton instance of the Timeline service (useful for unit tests).
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Timeline_Service $instance The singleton instance.
 	 */
@@ -83,7 +93,7 @@ class Wordlift_Timeline_Service {
 	 *
 	 * @since 3.1.0
 	 *
-	 * @uses wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
+	 * @uses  wl_core_get_related_entity_ids() to retrieve the entities referenced by the specified post.
 	 *
 	 * @param int $post_id The post ID.
 	 *
@@ -95,7 +105,7 @@ class Wordlift_Timeline_Service {
 		// posts if no post has been specified.
 		$ids = ( is_numeric( $post_id )
 			? wl_core_get_related_entity_ids( $post_id )
-			: $this->entity_service->get_all_related_to_last_50_published_posts() );
+			: $this->get_all_related_to_last_50_published_posts() );
 
 		// Add the post itself if it's an entity.
 		if ( is_numeric( $post_id ) && $this->entity_service->is_entity( $post_id ) ) {
@@ -121,24 +131,26 @@ class Wordlift_Timeline_Service {
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_START,
 					'value'   => null,
-					'compare' => '!='
+					'compare' => '!=',
 				),
 				array(
 					'key'     => Wordlift_Schema_Service::FIELD_DATE_END,
 					'value'   => null,
-					'compare' => '!='
-				)
+					'compare' => '!=',
+				),
 			),
 			'tax_query'      => array(
 				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 				'field'    => 'slug',
-				'terms'    => 'event'
-			)
+				'terms'    => 'event',
+			),
 		) );
 	}
 
 	/**
-	 * Convert timeline events to JSON.
+	 * Convert timeline events to JSON. This function sets the global post in order
+	 * to get an automatic excerpt. Since we're being called inside an AJAX request,
+	 * we're not taking care of restoring any previous post: there isn't any.
 	 *
 	 * @since 3.1.0
 	 *
@@ -153,21 +165,31 @@ class Wordlift_Timeline_Service {
 			return '';
 		}
 
-		// Model data from:
-		// https://github.com/NUKnightLab/TimelineJS/blob/master/examples/example_json.json
+		// {media|thumbnail}: if set to 'media' the image is attached to the slide, if set to 'background' the image is set as background.
+		$display_images_as = isset( $_REQUEST['display_images_as'] ) ? $_REQUEST['display_images_as'] : 'media';
 
-		$timeline         = array();
-		$timeline['type'] = 'default';
+		// The number of words for the excerpt (by default 55, as WordPress).
+		$this->excerpt_length = $excerpt_length = isset( $_REQUEST['excerpt_length'] ) && is_numeric( $_REQUEST['excerpt_length'] ) ? $_REQUEST['excerpt_length'] : 55;
+		add_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
+
+		// Add a filter to remove the [...] after excerpts, since we're adding
+		// a link to the post itself.
+		add_filter( 'excerpt_more', array( $this, 'excerpt_more' ) );
 
 		// Prepare for the starting slide data. The starting slide will be the one where *now* is between *start/end* dates.
 		$start_at_slide = 0;
 		$event_index    = - 1;
 		$now            = time();
 
-		$timeline['date'] = array_map( function ( $post ) use ( &$timeline, &$event_index, &$start_at_slide, &$now ) {
+		// Prepare the timeline variable.
+		$timeline = array();
 
-			$start_date = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
-			$end_date   = strtotime( get_post_meta( $post->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
+		// Populate the arrays.
+		$timeline['events'] = array_map( function ( $item ) use ( &$timeline, &$event_index, &$start_at_slide, &$now, $display_images_as, $excerpt_length ) {
+
+			// Get the start and end dates.
+			$start_date = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_START, true ) );
+			$end_date   = strtotime( get_post_meta( $item->ID, Wordlift_Schema_Service::FIELD_DATE_END, true ) );
 
 			// Set the starting slide.
 			$event_index ++;
@@ -175,41 +197,146 @@ class Wordlift_Timeline_Service {
 				$start_at_slide = $event_index;
 			}
 
-			$date['startDate'] = date( 'Y,m,d', $start_date );
-			$date['endDate']   = date( 'Y,m,d', $end_date );
-			$date['headline']  = '<a href="' . get_permalink( $post->ID ) . '">' . $post->post_title . '</a>';
-			$date['text']      = strip_shortcodes( $post->post_content );
-
 			// Load thumbnail
-			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $post->ID ) ) &&
-			     false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
+			if ( '' !== ( $thumbnail_id = get_post_thumbnail_id( $item->ID ) )
+			     && false !== ( $attachment = wp_get_attachment_image_src( $thumbnail_id ) )
 			) {
 
-				$date['asset'] = array(
-					'media' => $attachment[0]
-				);
-
-				// Add debug data.
-				if ( WP_DEBUG ) {
-					$date['debug'] = array(
-						'post'        => $post,
-						'thumbnailId' => $thumbnail_id,
-						'attachment'  => $attachment
+				// Set the thumbnail URL.
+				if ( 'background' === $display_images_as ) {
+					$date['background'] = array( 'url' => $attachment[0], );
+					$date['media']      = array( 'thumbnail' => $attachment[0], );
+				} else {
+					$date['media'] = array(
+						'url'       => $attachment[0],
+						'thumbnail' => $attachment[0],
 					);
 				}
+
+			}
+
+			// Set the start/end dates by converting them to TimelineJS required format.
+			$date['start_date'] = Wordlift_Timeline_Service::date( $start_date );
+			$date['end_date']   = Wordlift_Timeline_Service::date( $end_date );
+
+			setup_postdata( $GLOBALS['post'] = &$item );
+
+			$more_link_text = sprintf(
+				'<span aria-label="%1$s">%2$s</span>',
+				sprintf(
+				/* translators: %s: Name of current post */
+					__( 'Continue reading %s' ),
+					the_title_attribute( array( 'echo' => false ) )
+				),
+				__( '(more&hellip;)' )
+			);
+
+			// Set the event text only with the headline (see https://github.com/insideout10/wordlift-plugin/issues/352).
+			$date['text'] = array(
+				'headline' => '<a href="' . get_permalink( $item->ID ) . '">' . $item->post_title . '</a>',
+			);
+
+			// If we have an excerpt, set it.
+			if ( 0 < $excerpt_length ) {
+				$date['text']['text'] = sprintf( '%s <a href="%s">%s</a>', get_the_excerpt(), get_permalink(), $more_link_text );
 			}
 
 			return $date;
 
 		}, $posts );
 
+		// Finally remove the excerpt filter.
+		remove_filter( 'excerpt_length', array( $this, 'excerpt_length' ) );
 
-		// The *timeline* library expects the data to be encapsulated in a *timeline* element, e.g.:
-		//  {timeline: ...}
+		// The JSON format is defined here: https://timeline.knightlab.com/docs/json-format.html
 		return array(
-			'timeline'     => $timeline,
-			'startAtSlide' => $start_at_slide
+			'timeline'       => $timeline,
+			'start_at_slide' => $start_at_slide,
 		);
+	}
+
+	/**
+	 * This function filters {@link excerpt_more} by removing it, since we're
+	 * adding the 'read more' link. This filter is set by {@see to_json}.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param string $excerpt_more The excerpt more preset.
+	 *
+	 * @return string An empty string.
+	 */
+	public function excerpt_more( $excerpt_more ) {
+
+		return '';
+	}
+
+	/**
+	 * A filter for the excerpt length, set by the `to_json` function, to tailor
+	 * how many words to return according to the client setting.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param int $length The preset number of words.
+	 *
+	 * @return int The number of words for the preset.
+	 */
+	public function excerpt_length( $length ) {
+
+		return $this->excerpt_length;
+	}
+
+
+	/**
+	 * Convert the date to a date array.
+	 *
+	 * @since 3.7.0
+	 *
+	 * @param $value int A date value.
+	 *
+	 * @return array An array containing year, month and day values.
+	 */
+	public static function date( $value ) {
+
+		return array(
+			'year'  => (int) date( 'Y', $value ),
+			'month' => (int) date( 'm', $value ),
+			'day'   => (int) date( 'd', $value ),
+
+		);
+	}
+
+	/**
+	 * Get the entities related to the last 50 posts published on this blog (we're keeping a long function name due to
+	 * its specific function).
+	 *
+	 * @since 3.1.0
+	 *
+	 * @return array An array of post IDs.
+	 */
+	public function get_all_related_to_last_50_published_posts() {
+
+		// Global timeline. Get entities from the latest posts.
+		$latest_posts_ids = get_posts( array(
+			'numberposts' => 50,
+			'fields'      => 'ids', //only get post IDs
+			'post_type'   => 'post',
+			'post_status' => 'publish',
+		) );
+
+		if ( empty( $latest_posts_ids ) ) {
+			// There are no posts.
+			return array();
+		}
+
+		// Collect entities related to latest posts
+		$entity_ids = array();
+		foreach ( $latest_posts_ids as $id ) {
+			$entity_ids = array_merge( $entity_ids, wl_core_get_related_entity_ids( $id, array(
+				'status' => 'publish',
+			) ) );
+		}
+
+		return $entity_ids;
 	}
 
 }

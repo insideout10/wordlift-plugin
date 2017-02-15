@@ -3,7 +3,7 @@
 /**
  * Deletes the values for the specified property and post ID, where
  *
- * @param $post_id numeric The numeric post ID.
+ * @param $post_id       numeric The numeric post ID.
  * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
  *
  * @return boolean The method returns true if everything went ok, false otherwise.
@@ -35,12 +35,12 @@ function wl_schema_reset_value( $post_id, $property_name ) {
 }
 
 /**
- * Retrieves the value of the specified property for the entity, where
+ * Retrieves the value of the specified property for the entity.
  *
- * @param $post_id numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param int    $post_id       The numeric post ID.
+ * @param string $property_name Name of the property (e.g. name, for the http://schema.org/name property).
  *
- * @return array An array of values or NULL in case of no values (or error).
+ * @return array|null An array of values or NULL in case of no values (or error).
  */
 function wl_schema_get_value( $post_id, $property_name ) {
 
@@ -77,9 +77,9 @@ function wl_schema_get_value( $post_id, $property_name ) {
 /**
  * Add a value of the specified property for the entity, where
  *
- * @param $post_id numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property).
- * @param $property_value mixed Value to save into the property (adding to already saved).
+ * @param int    $post_id        The numeric post ID.
+ * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property).
+ * @param mixed  $property_value Value to save into the property (adding to already saved).
  *
  * @return array An array of values or NULL in case of no values (or error).
  */
@@ -89,19 +89,21 @@ function wl_schema_add_value( $post_id, $property_name, $property_value ) {
 		$property_value = array( $property_value );
 	}
 
-	$old_values = wl_schema_get_value( $post_id, $property_name );
+	// Get the old values or set an empty array.
+	$old_values = wl_schema_get_value( $post_id, $property_name ) ?: array();
 
 	$merged_property_value = array_unique( array_merge( $property_value, $old_values ) );
 
 	wl_schema_set_value( $post_id, $property_name, $merged_property_value );
+
 }
 
 /**
  * Set the value for the specified property and post ID, deleting what was there before.
  *
- * @param $post_id numeric The numeric post ID.
- * @param $property_name string Name of the property (e.g. name, for the http://schema.org/name property)
- * @param $property_value mixed Value to save into the property.
+ * @param int    $post_id        The numeric post ID.
+ * @param string $property_name  Name of the property (e.g. name, for the http://schema.org/name property)
+ * @param mixed  $property_value Value to save into the property.
  *
  * @return boolean The method returns true if everything went ok, an error string otherwise.
  */
@@ -169,7 +171,7 @@ function wl_schema_get_types( $post_id ) {
 /**
  * Sets the entity type(s) for the specified post ID. Support is now for only one type per entity.
  *
- * @param $post_id numeric The numeric post ID
+ * @param $post_id    numeric The numeric post ID
  * @param $type_names array An array of strings, each defining a type (e.g. Type, for the http://schema.org/Type)
  *
  * @return boolean True if everything went ok, an error string otherwise.
@@ -181,15 +183,13 @@ function wl_schema_set_types( $post_id, $type_names ) {
 		return null;
 	}
 
-	// TODO: support more than one type
+	// TODO: support more than one type.
 	if ( is_array( $type_names ) ) {
 		$type_names = $type_names[0];
 	}
 
 	// Get the schema URI (e.g. http://schema.org/Thing)
 	$type_names = wl_build_full_schema_uri_from_schema_slug( $type_names );
-
-	Wordlift_Log_Service::get_logger('wl_schema_set_types')->debug("[ type names :: $type_names ]");
 
 	// Actually sets the taxonomy type
 	wl_set_entity_main_type( $post_id, $type_names );
