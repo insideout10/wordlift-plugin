@@ -65,7 +65,7 @@ export const Label = styled.div`
 `;
 
 export const Cloud = styled.i`
-	display: block;
+	display: ${ props => props.local ? 'block' : 'none' };
 	position: absolute;
 	right: 20px;
 	top: 8px;
@@ -74,7 +74,6 @@ export const Cloud = styled.i`
 	color: #CBCBCB;
 	user-select: none;
 	transition: opacity 150ms ease;
-	opacity: ${ props => 0 < props.entity.occurrences.length ? 1 : 0 }
 `;
 
 export const Trigger = styled.div`

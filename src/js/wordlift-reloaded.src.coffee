@@ -1274,7 +1274,7 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
             # The css class of the original text annotation (now removed from the
             # body. The css class is useful because we store there the `wl-no-link`
             # class.
-            cssClass: annotation.cssClass
+            cssClass: annotation.cssClass if annotation.cssClass?
           })
           analysis.annotations[textAnnotation.id] = textAnnotation
 

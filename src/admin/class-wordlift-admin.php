@@ -110,6 +110,7 @@ class Wordlift_Admin {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
 			'action'   => 'entity_by_title',
+			'datasetUri' => Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
 			'language' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
 			'l10n'     => array(
 				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),

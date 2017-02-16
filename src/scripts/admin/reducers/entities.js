@@ -36,7 +36,10 @@ const entities = function( state = {}, action ) {
 			// app doesn't set the `link` property on the entity, therefore we
 			// preset it here according to the `occurrences` settings.
 			return Map( action.results.entities ).map(
-				x => Object.assign( x, { link: LinkService.getLink( x.occurrences ) } )
+				x => Object.assign( x, {
+					link: LinkService.getLink( x.occurrences ),
+					local: 0 === x.id.indexOf( wlSettings.datasetUri )
+				} )
 			);
 
 		// Legacy: set the current entity on the `EditPostWidgetController`.

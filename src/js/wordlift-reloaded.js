@@ -1311,7 +1311,7 @@
               start: annotation.start,
               end: annotation.end,
               text: annotation.label,
-              cssClass: annotation.cssClass
+              cssClass: annotation.cssClass != null ? annotation.cssClass : void 0
             });
             analysis.annotations[textAnnotation.id] = textAnnotation;
           }
