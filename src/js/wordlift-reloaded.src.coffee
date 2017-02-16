@@ -763,6 +763,8 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.hasSelectedEntities = ()->
         Object.keys( $scope.selectedEntities[ $scope.box.id ] ).length > 0
 
+      wp.wordlift.trigger 'wlClassificationBox.loaded', $scope
+
     controller: ($scope, $element, $attrs) ->
 
       # Mantain a reference to nested entity tiles $scope
@@ -1269,6 +1271,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
             start: annotation.start
             end: annotation.end
             text: annotation.label
+            # The css class of the original text annotation (now removed from the
+            # body. The css class is useful because we store there the `wl-no-link`
+            # class.
+            cssClass: annotation.cssClass
           })
           analysis.annotations[textAnnotation.id] = textAnnotation
 
@@ -1299,7 +1305,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   ])
 # Manage redlink analysis responses
 .service('EditorService', [ 'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', (configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope)->
-  
+
   INVISIBLE_CHAR = '\uFEFF'
 
   # Find existing entities selected in the html content (by looking for *itemid* attributes).
@@ -1307,30 +1313,31 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     # Prepare a traslator instance that will traslate Html and Text positions.
     traslator = Traslator.create html
     # Set the pattern to look for *itemid* attributes.
-    pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
+    pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
 
     # Get the matches and return them.
     (while match = pattern.exec html
-      
-      annotation = 
+
+      annotation =
         start: traslator.html2text match.index
         end: traslator.html2text (match.index + match[0].length)
-        uri: match[2]
-        label: match[3]
-      
+        uri: match[3]
+        label: match[4]
+        cssClass: match[2]
+
       annotation
     )
 
   findPositions = ( entities ) ->
     positions = []
-    for entityAnnotation in entities 
+    for entityAnnotation in entities
       positions = positions.concat [ entityAnnotation.start..entityAnnotation.end ]
-    positions   
+    positions
 
   # @deprecated use EditorAdapter.getEditor()
   editor = ->
     tinyMCE.get('content')
-    
+
   disambiguate = ( annotationId, entity )->
     ed = EditorAdapter.getEditor()
     ed.dom.addClass annotationId, "disambiguated"
@@ -1353,7 +1360,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   # TODO refactoring with regex
   currentOccurencesForEntity = (entityId) ->
     ed = EditorAdapter.getEditor()
-    occurrences = []    
+    occurrences = []
     return occurrences if entityId is ""
     annotations = ed.dom.select "span.textannotation"
     for annotation in annotations
@@ -1363,17 +1370,17 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
   $rootScope.$on "analysisPerformed", (event, analysis) ->
     service.embedAnalysis analysis if analysis? and analysis.annotations?
-  
+
   # Disambiguate a single annotation or every entity related ones
   # Discarded entities are considered too
   $rootScope.$on "entitySelected", (event, entity, annotationId) ->
     discarded = []
     if annotationId?
       discarded.push disambiguate annotationId, entity
-    else    
+    else
       for id, annotation of entity.annotations
         discarded.push disambiguate annotation.id, entity
-    
+
     for entityId in discarded
       if entityId
         occurrences = currentOccurencesForEntity entityId
@@ -1394,13 +1401,13 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     else
       for id, annotation of entity.annotations
         dedisambiguate annotation.id, entity
-        
-    occurrences = currentOccurencesForEntity entity.id    
+
+    occurrences = currentOccurencesForEntity entity.id
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
     # Ghost event to bridge React.
     wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entity.id, occurrences: occurrences }
-        
+
   service =
     # Detect if there is a current selection
     hasSelection: ()->
@@ -1413,7 +1420,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         if pattern.test ed.selection.getContent()
           $log.warn "The selection overlaps html code"
           return false
-        return true 
+        return true
 
       false
 
@@ -1441,15 +1448,15 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       # Notice that toString() method of browser native selection obj is used
       text = "#{ed.selection.getSel()}"
       # Create the text annotation
-      textAnnotation = AnalysisService.createAnnotation { 
+      textAnnotation = AnalysisService.createAnnotation {
         text: text
       }
 
       # Prepare span wrapper for the new text annotation
       textAnnotationSpan = "<span id=\"#{textAnnotation.id}\" class=\"textannotation unlinked selected\">#{ed.selection.getContent()}</span>#{INVISIBLE_CHAR}"
       # Update the content within the editor
-      ed.selection.setContent textAnnotationSpan 
-      
+      ed.selection.setContent textAnnotationSpan
+
       # Retrieve the current heml content
       content = EditorAdapter.getHTML() # ed.getContent format: 'raw'
       # Create a Traslator instance
@@ -1457,12 +1464,12 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       # Retrieve the index position of the new span
       htmlPosition = content.indexOf(textAnnotationSpan);
       # Detect the coresponding text position
-      textPosition = traslator.html2text htmlPosition 
-          
+      textPosition = traslator.html2text htmlPosition
+
       # Set start & end text annotation properties
-      textAnnotation.start = textPosition 
+      textAnnotation.start = textPosition
       textAnnotation.end = textAnnotation.start + text.length
-      
+
       # Send a message about the new textAnnotation.
       $rootScope.$broadcast 'textAnnotationAdded', textAnnotation
 
@@ -1470,7 +1477,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     selectAnnotation: (annotationId)->
       # A reference to the editor.
       ed = EditorAdapter.getEditor()
-      # Unselect all annotations 
+      # Unselect all annotations
       for annotation in ed.dom.select "span.textannotation"
         ed.dom.removeClass annotation.id, "selected"
       # Notify it
@@ -1484,14 +1491,22 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     embedAnalysis: (analysis) =>
       # A reference to the editor.
       ed = EditorAdapter.getEditor()
+
       # Get the TinyMCE editor html content.
       html = EditorAdapter.getHTML() # ed.getContent format: 'raw'
 
       # Find existing entities.
       entities = findEntities html
+
       # Remove overlapping annotations preserving selected entities
       AnalysisService.cleanAnnotations analysis, findPositions(entities)
-      # Preselect entities found in html.
+
+      # Preselect entities found in html. We also keep track of the original
+      # text annotation css classes which may turn useful when checking additional
+      # classes added to the text annotation, for example the `wl-no-link` css
+      # class which we use to decide whether to activate or not a link.
+      # We need to keep track now of the css classes because in a while we're
+      # going to remove the text annotations and put them back.
       AnalysisService.preselect analysis, entities
 
       # Remove existing text annotations (the while-match is necessary to remove nested spans).
@@ -1501,25 +1516,28 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       # Prepare a traslator instance that will traslate Html and Text positions.
       traslator = Traslator.create html
 
-      # Add text annotations to the html 
-      for annotationId, annotation of analysis.annotations 
-        
+      # Add text annotations to the html
+      for annotationId, annotation of analysis.annotations
+
         # If the annotation has no entity matches it could be a problem
         if annotation.entityMatches.length is 0
           $log.warn "Annotation #{annotation.text} [#{annotation.start}:#{annotation.end}] with id #{annotation.id} has no entity matches!"
           continue
-        
+
         element = "<span id=\"#{annotationId}\" class=\"textannotation"
-        
+
+        # Add the `wl-no-link` class if it was present in the original annotation.
+        element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
+
         # Loop annotation to see which has to be preselected
         for em in annotation.entityMatches
-          entity = analysis.entities[ em.entityId ] 
-          
+          entity = analysis.entities[ em.entityId ]
+
           if annotationId in entity.occurrences
             element += " disambiguated wl-#{entity.mainType}\" itemid=\"#{entity.id}"
-        
+
         element += "\">"
-              
+
         # Finally insert the HTML code.
         traslator.insertHtml element, text: annotation.start
         traslator.insertHtml '</span>', text: annotation.end
@@ -1529,7 +1547,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       # See https://github.com/tinymce/tinymce/blob/master/js/tinymce/classes/Formatter.js#L2030
       html = traslator.getHtml()
       html = html.replace(/<\/span>/gim, "</span>#{INVISIBLE_CHAR}" )
-      
+
       $rootScope.$broadcast "analysisEmbedded"
       # Update the editor Html code.
       isDirty = ed.isDirty()
@@ -1743,7 +1761,7 @@ $(
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
-  
+
   # Add svg based spinner code
   spinner = $("""
     <div class="wl-widget-spinner">
@@ -1761,7 +1779,7 @@ $(
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
   injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
-  
+
   # Update spinner
   injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
     $rootScope.$on 'analysisServiceStatusUpdated', (event, status) ->
@@ -1792,7 +1810,7 @@ $(
       if wp.autosave?
         wp.autosave.server.postChanged = ()->
           return false
-      
+
       # Hack wp.mce.views to prevent shorcodes rendering
       # starts before the analysis is properly embedded
       # wp.mce.views uses toViews() method from WP 3.8 to 4.1
@@ -1809,7 +1827,7 @@ $(
           $rootScope.$on "analysisEmbedded", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
-            
+
           $rootScope.$on "analysisFailed", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod

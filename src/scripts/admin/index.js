@@ -32,20 +32,18 @@ import { Map } from 'immutable';
 import reducer from './reducers';
 import EntityListContainer from './containers/EntityListContainer';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
-import log from '../modules/log';
+import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
+// import log from '../modules/log';
 
-// Start-up the application when an analysis result is received. This event is
-// currently fired by the legacy AngularJS application (see
-// app.services.AnalysisService.coffee).
-wp.wordlift.on( 'analysis.result', function( analysis ) {
+//// Start-up the application when the `wlClassificationBox` is loaded. This
+// event is currently fired by the legacy AngularJS application.
+wp.wordlift.on( 'wlClassificationBox.loaded', function() {
 	// Create the initial state.
-	const state = { entities: Map( analysis.entities ) };
+	const state = { entities: Map() };
 
 	// Create the `store` with the reducer, using the analysis result as
 	// `initialState`.
 	const store = createStore( reducer, state, applyMiddleware( thunk ) );
-
-	log( analysis );
 
 	// Render the `React` tree at the `wl-entity-list` element.
 	ReactDOM.render(
@@ -56,6 +54,10 @@ wp.wordlift.on( 'analysis.result', function( analysis ) {
 		</Provider>,
 		document.getElementById( 'wl-entity-list' )
 	);
+
+	// Listen for analysis results and dispatch the `receiveAnalysisResults`
+	// action when new results are received.
+	store.dispatch( ReceiveAnalysisResultsEvent() );
 
 	// Dispatch an redux-thunk action, which hooks to the legacy
 	// `updateOccurrencesForEntity` event and dispatches the related action in

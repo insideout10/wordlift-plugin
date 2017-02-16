@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
-import { toggleEntity, toggleLink } from '../actions';
+import { setCurrentEntity, toggleEntity, toggleLink } from '../actions';
 import EntityList from '../components/EntityList';
 
 /**
@@ -39,7 +39,8 @@ const mapStateToProps = ( state ) => {
  *
  * @since 3.11.0
  * @param {function} dispatch Redux's dispatch function.
- * @returns {{onClick: (function)}} A list of dispatchers.
+ * @returns {{onClick: (Function), onLinkClick: (Function)}} A list of
+ *     dispatchers.
  */
 const mapDispatchToProps = ( dispatch ) => {
 	return {
@@ -47,10 +48,28 @@ const mapDispatchToProps = ( dispatch ) => {
 		 * The `onClick` dispatchers used by `EntityTile` component.
 		 *
 		 * @since 3.11.0
-		 * @param {object} entity The entity instance being clicked.
+		 * @param {Object} entity The entity instance being clicked.
 		 */
-		onClick: ( entity ) => dispatch( toggleEntity( entity ) ),
-		onLinkClick: ( entity ) => dispatch( toggleLink( entity ) ),
+		onClick: ( entity ) => {
+			dispatch( toggleEntity( entity ) );
+		},
+
+		/**
+		 * The `onLinkClick` function is called when the Link switch is
+		 * clicked.
+		 * This function will toggle the link/no link on the entity's
+		 * occurrences.
+		 *
+		 * @since 3.11.0
+		 * @param {Object} entity The entity.
+		 */
+		onLinkClick: ( entity ) => {
+			dispatch( toggleLink( entity ) );
+		},
+
+		onEditClick: ( entity ) => {
+			dispatch( setCurrentEntity( entity ) );
+		}
 	};
 };
 

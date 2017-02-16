@@ -753,9 +753,10 @@
           return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
-          return $scope.hasSelectedEntities = function() {
+          $scope.hasSelectedEntities = function() {
             return Object.keys($scope.selectedEntities[$scope.box.id]).length > 0;
           };
+          return wp.wordlift.trigger('wlClassificationBox.loaded', $scope);
         },
         controller: function($scope, $element, $attrs) {
           var ctrl;
@@ -1309,7 +1310,8 @@
             textAnnotation = this.createAnnotation({
               start: annotation.start,
               end: annotation.end,
-              text: annotation.label
+              text: annotation.label,
+              cssClass: annotation.cssClass
             });
             analysis.annotations[textAnnotation.id] = textAnnotation;
           }
@@ -1350,14 +1352,15 @@
       findEntities = function(html) {
         var annotation, match, pattern, results1, traslator;
         traslator = Traslator.create(html);
-        pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
+        pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
         results1 = [];
         while (match = pattern.exec(html)) {
           annotation = {
             start: traslator.html2text(match.index),
             end: traslator.html2text(match.index + match[0].length),
-            uri: match[2],
-            label: match[3]
+            uri: match[3],
+            label: match[4],
+            cssClass: match[2]
           };
           results1.push(annotation);
         }
@@ -1537,7 +1540,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, traslator;
+            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, traslator;
             ed = EditorAdapter.getEditor();
             html = EditorAdapter.getHTML();
             entities = findEntities(html);
@@ -1555,9 +1558,12 @@
                 continue;
               }
               element = "<span id=\"" + annotationId + "\" class=\"textannotation";
-              ref1 = annotation.entityMatches;
-              for (j = 0, len = ref1.length; j < len; j++) {
-                em = ref1[j];
+              if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-no-link') : void 0)) {
+                element += ' wl-no-link';
+              }
+              ref2 = annotation.entityMatches;
+              for (j = 0, len = ref2.length; j < len; j++) {
+                em = ref2[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;

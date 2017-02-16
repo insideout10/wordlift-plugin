@@ -2807,7 +2807,7 @@ h3.ui-sortable-handle {
           box-sizing: border-box;
   margin-bottom: 10px;
 }
-.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-label h2.wl-widget-entity-panel-label-text {
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-label h3.wl-widget-entity-panel-label-text {
   color: #007AFF;
   font-size: 16px !important;
   font-weight: 400;
@@ -4475,7 +4475,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-creative-work.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-creative-work .type {
   text-align: center;
@@ -4489,11 +4489,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-creative-work.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-creative-work .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-event {
   border-color: #007AFF;
@@ -4514,7 +4514,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-event.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-event .type {
   text-align: center;
@@ -4528,11 +4528,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-event.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-event .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-organization {
   border-color: #007AFF;
@@ -4553,7 +4553,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-organization.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-organization .type {
   text-align: center;
@@ -4567,11 +4567,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-organization.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-organization .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-local-business {
   border-color: #007AFF;
@@ -4592,7 +4592,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-local-business.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-local-business .type {
   text-align: center;
@@ -4606,11 +4606,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-local-business.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-local-business .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-person {
   border-color: #007AFF;
@@ -4631,7 +4631,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-person.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-person .type {
   text-align: center;
@@ -4645,11 +4645,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-person.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-person .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-place {
   border-color: #007AFF;
@@ -4670,7 +4670,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-place.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-place .type {
   text-align: center;
@@ -4684,11 +4684,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-place.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-place .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-thing {
   border-color: #007AFF;
@@ -4709,7 +4709,7 @@ h3.ui-sortable-handle {
 }
 .entity.wl-thing.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-thing .type {
   text-align: center;
@@ -4723,11 +4723,11 @@ h3.ui-sortable-handle {
 }
 .entity.wl-thing.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-thing .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 #wordlift-edit-post-wrapper .clear {
   clear: both;
@@ -5231,49 +5231,49 @@ body#tinymce .textannotation.unlinked.selected {
 }
 body#tinymce .textannotation.selected {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #A4A3A3;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-creative-work {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-event {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-organization {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-local-business {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-person {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-place {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.selected.wl-thing {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }

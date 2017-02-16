@@ -17,8 +17,21 @@ export const TOGGLE_ENTITY = 'TOGGLE_ENTITY';
 export const UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
 
 /**
+ * Define the `TOGGLE_LINK` action name, used to enable/disable linking an
+ * entity.
  *
- *
+ * @since 3.11.0
  * @type {string}
  */
 export const TOGGLE_LINK = 'TOGGLE_LINK';
+
+/**
+ * Define the `RECEIVE_ANALYSIS_RESULTS` action name, fired when analysis
+ * results are received.
+ *
+ * @since 3.11.0
+ * @type {string}
+ */
+export const RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
+
+export const SET_CURRENT_ENTITY = 'SET_CURRENT_ENTITY';

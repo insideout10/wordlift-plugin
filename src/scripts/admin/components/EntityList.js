@@ -21,11 +21,13 @@ import EntityTile from '../components/EntityTile';
  * The `EntityList` component.
  *
  * @since 3.11.0
- * @param {object} entities A map of entities, keyed by their id.
- * @param {function} onClick The click handler.
+ * @param {Object} entities A map of entities, keyed by their id.
+ * @param {Function} onClick The click handler.
+ * @param {Function} onLinkClick Handler for the link/no link click.
+ * @param {Function} onEditClick Handler for the edit click.
  * @constructor
  */
-const EntityList = ( { entities, onClick, onLinkClick } ) => (
+const EntityList = ( { entities, onClick, onLinkClick, onEditClick } ) => (
 	<ul>
 		{
 			// Map each entity to an `EntityTile`.
@@ -33,6 +35,7 @@ const EntityList = ( { entities, onClick, onLinkClick } ) => (
 							  <EntityTile entity={ entity }
 										  tile={ { open: false } }
 										  onClick={ onClick }
+										  onEditClick={ onEditClick }
 										  onLinkClick={ onLinkClick } />
 			)
 		}

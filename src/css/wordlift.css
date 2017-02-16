@@ -2503,7 +2503,7 @@ h3.ui-sortable-handle {
           box-sizing: border-box;
   margin-bottom: 10px;
 }
-.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-label h2.wl-widget-entity-panel-label-text {
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-label h3.wl-widget-entity-panel-label-text {
   color: #007AFF;
   font-size: 16px !important;
   font-weight: 400;
@@ -4152,11 +4152,11 @@ h3.ui-sortable-handle {
 .entity.wl-creative-work:hover,
 .entity.wl-creative-work.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-creative-work .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-event {
   border-color: #007AFF;
@@ -4168,11 +4168,11 @@ h3.ui-sortable-handle {
 .entity.wl-event:hover,
 .entity.wl-event.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-event .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-organization {
   border-color: #007AFF;
@@ -4184,11 +4184,11 @@ h3.ui-sortable-handle {
 .entity.wl-organization:hover,
 .entity.wl-organization.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-organization .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-person {
   border-color: #007AFF;
@@ -4200,11 +4200,11 @@ h3.ui-sortable-handle {
 .entity.wl-person:hover,
 .entity.wl-person.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-person .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-place {
   border-color: #007AFF;
@@ -4216,11 +4216,11 @@ h3.ui-sortable-handle {
 .entity.wl-place:hover,
 .entity.wl-place.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-place .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-thing {
   border-color: #007AFF;
@@ -4232,11 +4232,11 @@ h3.ui-sortable-handle {
 .entity.wl-thing:hover,
 .entity.wl-thing.selected {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity.wl-thing .thumbnail {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
 }
 .entity .source {
   position: absolute;
@@ -4420,37 +4420,37 @@ body#tinymce .textannotation {
 }
 body#tinymce .textannotation.wl-creative-work {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-event {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-organization {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-person {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-place {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }
 body#tinymce .textannotation.wl-thing {
   border: 0 !important;
-  color: #000000;
+  color: #ffffff;
   background-color: #007AFF;
   vertical-align: center;
 }

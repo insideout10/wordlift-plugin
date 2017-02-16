@@ -48,14 +48,32 @@ class EntityTile extends React.Component {
 		super( props );
 
 		// Bind our functions.
-		this.onMainClick = this.onMainClick.bind( this );
+		this.onEditClick = this.onEditClick.bind( this );
 		this.onLinkClick = this.onLinkClick.bind( this );
+		this.onMainClick = this.onMainClick.bind( this );
 		this.onTriggerClick = this.onTriggerClick.bind( this );
 
 		// Set the initial state.
-		this.state = {
-			open: false
-		};
+		this.state = { open: false };
+	}
+
+	/**
+	 * Handles clicks on the `QuickEdit` element and forwards it to the parent
+	 * handlers.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param {Event} e The source {@link Event}.
+	 */
+	onEditClick( e ) {
+		// Prevent propagation.
+		e.preventDefault();
+
+		// Call the handler.
+		this.props.onEditClick( this.props.entity );
+
+		// Close the drawer.
+		this.setState( { open: false } );
 	}
 
 	/**
@@ -74,12 +92,23 @@ class EntityTile extends React.Component {
 		this.props.onClick( this.props.entity );
 	}
 
+	/**
+	 * Handles clicks on the `LinkWrap` element and forwards them to the parent
+	 * handler.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param {Event} e The source {@link Event}.
+	 */
 	onLinkClick( e ) {
 		// Prevent propagation.
 		e.preventDefault();
 
 		// Call the handler.
 		this.props.onLinkClick( this.props.entity );
+
+		// Close the drawer.
+		this.setState( { open: false } );
 	}
 
 	/**
@@ -122,7 +151,8 @@ class EntityTile extends React.Component {
 							Link </LinkInd>
 					</LinkWrap>
 					<Category>{ this.props.tile.category}</Category>
-					<QuickEdit className="fa fa-pencil" />
+					<QuickEdit onClick={ this.onEditClick }
+							   className="fa fa-pencil" />
 				</Drawer>
 				<Trigger entity={ this.props.entity }
 						 onClick={ this.onTriggerClick }>

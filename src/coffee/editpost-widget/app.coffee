@@ -30,7 +30,7 @@ $(
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
-  
+
   # Add svg based spinner code
   spinner = $("""
     <div class="wl-widget-spinner">
@@ -48,7 +48,7 @@ $(
   .appendTo('#wordlift_entities_box .ui-sortable-handle')
 
   injector = angular.bootstrap $('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']
-  
+
   # Update spinner
   injector.invoke(['$rootScope', '$log', ($rootScope, $log) ->
     $rootScope.$on 'analysisServiceStatusUpdated', (event, status) ->
@@ -79,7 +79,7 @@ $(
       if wp.autosave?
         wp.autosave.server.postChanged = ()->
           return false
-      
+
       # Hack wp.mce.views to prevent shorcodes rendering
       # starts before the analysis is properly embedded
       # wp.mce.views uses toViews() method from WP 3.8 to 4.1
@@ -96,7 +96,7 @@ $(
           $rootScope.$on "analysisEmbedded", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod
-            
+
           $rootScope.$on "analysisFailed", (event) ->
             $log.info "Going to restore wp.mce.views method #{method}()"
             wp.mce.views[method] = originalMethod

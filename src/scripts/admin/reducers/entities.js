@@ -7,11 +7,17 @@
  */
 
 /**
+ * External dependencies
+ */
+import { Map } from 'immutable';
+
+/**
  * Internal dependencies
  */
 import * as types from '../constants/ActionTypes';
 import EditPostWidgetController from '../angular/EditPostWidgetController';
-import log from '../../modules/log';
+import LinkService from '../services/LinkService';
+// import log from '../../modules/log';
 
 /**
  * Define the reducers.
@@ -24,13 +30,55 @@ import log from '../../modules/log';
 const entities = function( state = {}, action ) {
 	switch ( action.type ) {
 
-		// Toggle the entity selection, fired when clicking on an entity tile.
+		// Legacy: receive analysis' results.
+		case types.RECEIVE_ANALYSIS_RESULTS:
+			// Return a new map of the received entities. The legacy Angular
+			// app doesn't set the `link` property on the entity, therefore we
+			// preset it here according to the `occurrences` settings.
+			return Map( action.results.entities ).map(
+				x => Object.assign( x, { link: LinkService.getLink( x.occurrences ) } )
+			);
+
+		// Legacy: set the current entity on the `EditPostWidgetController`.
+		case types.SET_CURRENT_ENTITY:
+			// Call the `EditPostWidgetController` to set the current entity.
+			EditPostWidgetController().$apply(
+				EditPostWidgetController().setCurrentEntity( action.entity, 'entity' )
+			);
+
+			// Finally return the original state.
+			return state;
+
+		// Legacy: toggle the entity selection, fired when clicking on an
+		// entity tile.
 		case types.TOGGLE_ENTITY:
 			// Call the legacy AngularJS controller.
-			EditPostWidgetController().onSelectedEntityTile( state.get( action.entity.id ) );
+			EditPostWidgetController().$apply(
+				EditPostWidgetController().onSelectedEntityTile( state.get( action.entity.id ) )
+			);
 
 			// Update the state by replacing the entity with toggled version.
 			return state;
+
+		// Toggle the link/no link on entity's occurrences.
+		case types.TOGGLE_LINK:
+			// Toggle the link on the occurrences.
+			LinkService.setLink( action.entity.occurrences, ! action.entity.link );
+
+			// Update the entity in the state.
+			return state.set(
+				action.entity.id,
+				// A new object instance with the existing props and the new
+				// occurrences.
+				Object.assign(
+					{},
+					state.get( action.entity.id ),
+					{
+						occurrences: action.entity.occurrences,
+						link: LinkService.getLink( action.entity.occurrences )
+					}
+				)
+			);
 
 		// Update the entity's occurrences. This action is dispatched following
 		// a legacy Angular event. The event is configured in the admin/index.js
@@ -46,34 +94,7 @@ const entities = function( state = {}, action ) {
 					state.get( action.entityId ),
 					{
 						occurrences: action.occurrences,
-						link: action.occurrences.reduce( ( acc, id ) => {
-							return acc || ! tinyMCE.get( 'content' ).dom.hasClass( id, 'wl-no-link' );
-						}, false )
-					}
-				)
-			);
-
-		case types.TOGGLE_LINK:
-
-			action.entity.occurrences.forEach( ( x ) => {
-				action.entity.link
-					? tinyMCE.get( 'content' ).dom.addClass( x, 'wl-no-link' )
-					: tinyMCE.get( 'content' ).dom.removeClass( x, 'wl-no-link' )
-			} );
-
-			// Update the entity.
-			return state.set(
-				action.entity.id,
-				// A new object instance with the existing props and the new
-				// occurrences.
-				Object.assign(
-					{},
-					state.get( action.entity.id ),
-					{
-						occurrences: action.entity.occurrences,
-						link: action.entity.occurrences.reduce( ( acc, id ) => {
-							return acc || ! tinyMCE.get( 'content' ).dom.hasClass( id, 'wl-no-link' );
-						}, false )
+						link: LinkService.getLink( action.occurrences )
 					}
 				)
 			);
