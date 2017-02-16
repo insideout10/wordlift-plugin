@@ -22,7 +22,7 @@ import { updateOccurrencesForEntity } from '../actions';
 function UpdateOccurrencesForEntityEvent() {
 	return function( dispatch ) {
 		// Hook other events.
-		wp.wordlift.on( 'updateOccurrencesForEntity', function( entityId, occurrences ) {
+		wp.wordlift.on( 'updateOccurrencesForEntity', function( { entityId, occurrences } ) {
 			// Asynchronously call the dispatch. We need this because we
 			// might be inside a reducer call.
 			setTimeout( function() {

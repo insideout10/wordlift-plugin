@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
-import { toggleEntity } from '../actions';
+import { toggleEntity, toggleLink } from '../actions';
 import EntityList from '../components/EntityList';
 
 /**
@@ -49,9 +49,8 @@ const mapDispatchToProps = ( dispatch ) => {
 		 * @since 3.11.0
 		 * @param {object} entity The entity instance being clicked.
 		 */
-		onClick: ( entity ) => {
-			dispatch( toggleEntity( entity ) );
-		}
+		onClick: ( entity ) => dispatch( toggleEntity( entity ) ),
+		onLinkClick: ( entity ) => dispatch( toggleLink( entity ) ),
 	};
 };
 

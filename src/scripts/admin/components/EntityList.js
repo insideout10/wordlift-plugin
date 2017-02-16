@@ -25,14 +25,15 @@ import EntityTile from '../components/EntityTile';
  * @param {function} onClick The click handler.
  * @constructor
  */
-const EntityList = ( { entities, onClick } ) => (
+const EntityList = ( { entities, onClick, onLinkClick } ) => (
 	<ul>
 		{
 			// Map each entity to an `EntityTile`.
 			entities.map( entity =>
 							  <EntityTile entity={ entity }
 										  tile={ { open: false } }
-										  onClick={ onClick } />
+										  onClick={ onClick }
+										  onLinkClick={ onLinkClick } />
 			)
 		}
 	</ul>

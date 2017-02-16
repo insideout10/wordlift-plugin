@@ -22,14 +22,6 @@ export const toggleEntity = entity => (
 	{ type: types.TOGGLE_ENTITY, entity }
 );
 
-///**
-// * The `selectEntity` action updates an entity when it is selected. This
-// action * is typically fired when the `entitySelected` event is received from
-// the * legacy Angular application. * * @since 3.11.0 * @param {object} entity
-// The entity being selected. * @return {function} The action's function. */
-// export const selectEntity = entity => ( { type: types.SELECT_ENTITY, entity
-// } );
-
 /**
  * The `updateOccurrencesForEntity` action is dispatched when the number of
  * occurrences for an entity is updated (by the legacy Angular application).
@@ -44,14 +36,6 @@ export const updateOccurrencesForEntity = ( entityId, occurrences ) => (
 	{ type: types.UPDATE_OCCURRENCES_FOR_ENTITY, entityId, occurrences }
 );
 
-///**
-// * The `toggleDrawer` action is dispatched when a tile's drawer must be
-// * opened/closed.
-// *
-// * @since 3.11.0
-// * @param {object} tile The tile properties.
-// * @return {function} The action's function.
-// */
-//export const toggleDrawer = ( tile ) => (
-//	{ type: types.TOGGLE_DRAWER, tile }
-//);
+export const toggleLink = ( entity ) => (
+	{ type: types.TOGGLE_LINK, entity }
+);

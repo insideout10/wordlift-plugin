@@ -1442,12 +1442,18 @@
           if (entityId) {
             occurrences = currentOccurencesForEntity(entityId);
             $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
-            wp.wordlift.trigger('updateOccurrencesForEntity', entity.id, occurrences);
+            wp.wordlift.trigger('updateOccurrencesForEntity', {
+              entityId: entity.id,
+              occurrences: occurrences
+            });
           }
         }
         occurrences = currentOccurencesForEntity(entity.id);
         $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
-        return wp.wordlift.trigger('updateOccurrencesForEntity', entity.id, occurrences);
+        return wp.wordlift.trigger('updateOccurrencesForEntity', {
+          entityId: entity.id,
+          occurrences: occurrences
+        });
       });
       $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
         var annotation, id, occurrences, ref;
@@ -1462,7 +1468,10 @@
         }
         occurrences = currentOccurencesForEntity(entity.id);
         $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
-        return wp.wordlift.trigger('updateOccurrencesForEntity', entity.id, occurrences);
+        return wp.wordlift.trigger('updateOccurrencesForEntity', {
+          entityId: entity.id,
+          occurrences: occurrences
+        });
       });
       service = {
         hasSelection: function() {

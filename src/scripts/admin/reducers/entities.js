@@ -9,12 +9,9 @@
 /**
  * Internal dependencies
  */
-import {
-	TOGGLE_ENTITY,
-	UPDATE_OCCURRENCES_FOR_ENTITY
-} from '../constants/ActionTypes';
+import * as types from '../constants/ActionTypes';
 import EditPostWidgetController from '../angular/EditPostWidgetController';
-// import log from '../../modules/log';
+import log from '../../modules/log';
 
 /**
  * Define the reducers.
@@ -28,7 +25,7 @@ const entities = function( state = {}, action ) {
 	switch ( action.type ) {
 
 		// Toggle the entity selection, fired when clicking on an entity tile.
-		case TOGGLE_ENTITY:
+		case types.TOGGLE_ENTITY:
 			// Call the legacy AngularJS controller.
 			EditPostWidgetController().onSelectedEntityTile( state.get( action.entity.id ) );
 
@@ -38,7 +35,7 @@ const entities = function( state = {}, action ) {
 		// Update the entity's occurrences. This action is dispatched following
 		// a legacy Angular event. The event is configured in the admin/index.js
 		// app.
-		case UPDATE_OCCURRENCES_FOR_ENTITY:
+		case types.UPDATE_OCCURRENCES_FOR_ENTITY:
 			// Update the entity.
 			return state.set(
 				action.entityId,
@@ -47,7 +44,37 @@ const entities = function( state = {}, action ) {
 				Object.assign(
 					{},
 					state.get( action.entityId ),
-					{ occurrences: action.occurrences }
+					{
+						occurrences: action.occurrences,
+						link: action.occurrences.reduce( ( acc, id ) => {
+							return acc || ! tinyMCE.get( 'content' ).dom.hasClass( id, 'wl-no-link' );
+						}, false )
+					}
+				)
+			);
+
+		case types.TOGGLE_LINK:
+
+			action.entity.occurrences.forEach( ( x ) => {
+				action.entity.link
+					? tinyMCE.get( 'content' ).dom.addClass( x, 'wl-no-link' )
+					: tinyMCE.get( 'content' ).dom.removeClass( x, 'wl-no-link' )
+			} );
+
+			// Update the entity.
+			return state.set(
+				action.entity.id,
+				// A new object instance with the existing props and the new
+				// occurrences.
+				Object.assign(
+					{},
+					state.get( action.entity.id ),
+					{
+						occurrences: action.entity.occurrences,
+						link: action.entity.occurrences.reduce( ( acc, id ) => {
+							return acc || ! tinyMCE.get( 'content' ).dom.hasClass( id, 'wl-no-link' );
+						}, false )
+					}
 				)
 			);
 

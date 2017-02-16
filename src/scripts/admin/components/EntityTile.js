@@ -49,6 +49,7 @@ class EntityTile extends React.Component {
 
 		// Bind our functions.
 		this.onMainClick = this.onMainClick.bind( this );
+		this.onLinkClick = this.onLinkClick.bind( this );
 		this.onTriggerClick = this.onTriggerClick.bind( this );
 
 		// Set the initial state.
@@ -71,6 +72,14 @@ class EntityTile extends React.Component {
 
 		// Call the handler.
 		this.props.onClick( this.props.entity );
+	}
+
+	onLinkClick( e ) {
+		// Prevent propagation.
+		e.preventDefault();
+
+		// Call the handler.
+		this.props.onLinkClick( this.props.entity );
 	}
 
 	/**
@@ -99,21 +108,17 @@ class EntityTile extends React.Component {
 			<Wrapper entity={ this.props.entity }>
 				<Main onClick={ this.onMainClick }
 					  open={ this.state.open }>
-					<Count
-						entity={ this.props.entity }>
+					<Count entity={ this.props.entity }>
 						{ this.props.entity.occurrences.length }</Count>
-					<Label
-						entity={ this.props.entity }>
+					<Label entity={ this.props.entity }>
 						{ this.props.entity.label }</Label>
 					<Cloud className="fa fa-cloud"
 						   entity={ this.props.entity } />
 				</Main>
 				<Drawer open={ this.state.open }>
-					<LinkWrap onClick={ this.link }>
-						<Switch link={ this.props.link } />
-						<LinkInd
-							tile={ this.props.tile }
-							link={ this.props.link }>
+					<LinkWrap onClick={ this.onLinkClick }>
+						<Switch link={ this.props.entity.link } />
+						<LinkInd link={ this.props.entity.link }>
 							Link </LinkInd>
 					</LinkWrap>
 					<Category>{ this.props.tile.category}</Category>

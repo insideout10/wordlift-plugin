@@ -344,6 +344,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     # Update related posts
     $scope.updateRelatedPosts()
+
     # Reset current annotation
     $scope.selectAnnotation undefined
 

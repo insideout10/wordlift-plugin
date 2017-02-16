@@ -32,7 +32,7 @@ export const LinkInd = styled.div`
 	font-size: 12px;
 	margin: 0 12px 0 4px;
 	transition: opacity 150ms ease;
-	opacity: ${ props => props.tile.isLinked ? 1 : 0.5 };
+	opacity: ${ props => props.link ? 1 : 0.5 };
 	&:after {
 		content: ' ';
 		display: inline-block;

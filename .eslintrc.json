@@ -11,6 +11,7 @@
     "inlineEditPost": true,
     "jQuery": true,
     "log": true,
+    "tinyMCE": true,
     "wlSettings": true,
     "wp": true,
     "_": true

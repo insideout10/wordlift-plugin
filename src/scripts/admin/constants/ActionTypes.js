@@ -8,15 +8,6 @@
 export const TOGGLE_ENTITY = 'TOGGLE_ENTITY';
 
 /**
- * Define the `SELECT_ENTITY` action name, used when the Angular application
- * selects an entity.
- *
- * @since 3.11.0
- * @type {string}
- */
-export const SELECT_ENTITY = 'SELECT_ENTITY';
-
-/**
  * Define the `UPDATE_OCCURRENCES_FOR_ENTITY` action name, used to catch
  * `updateOccur(r)encesForEntity` events from the legacy Angular application.
  *
@@ -25,10 +16,9 @@ export const SELECT_ENTITY = 'SELECT_ENTITY';
  */
 export const UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
 
-///**
-// * Define the `TOGGLE_DRAWER` action name, which opens/closes the drawer.
-// *
-// * @since 3.11.0
-// * @type {string}
-// */
-//export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
+/**
+ *
+ *
+ * @type {string}
+ */
+export const TOGGLE_LINK = 'TOGGLE_LINK';
