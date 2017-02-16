@@ -17,37 +17,75 @@ import React from 'react';
 /**
  * Internal dependencies
  */
-import { Wrapper, Main, Count, Label, Cloud, Drawer } from './styles';
+import {
+	Wrapper,
+	Main,
+	Count,
+	Label,
+	Cloud,
+	Trigger,
+	Arrow
+} from './styles';
+import {
+	Drawer,
+	LinkWrap,
+//	Switch,
+	LinkInd,
+	Category,
+	QuickEdit
+} from './styles/Drawer';
+import Switch from './Switch';
 
 /**
  *
  */
-class EntityTile extends React.PureComponent {
+class EntityTile extends React.Component {
 
 	/**
 	 * @inheritDoc
 	 */
-	constructor() {
-		super();
+	constructor( props ) {
+		super( props );
 
 		// Bind our functions.
-		this.onClick = this.onClick.bind( this );
+		this.onMainClick = this.onMainClick.bind( this );
+		this.onTriggerClick = this.onTriggerClick.bind( this );
+
+		// Set the initial state.
+		this.state = {
+			open: false
+		};
 	}
 
 	/**
 	 * Handle clicks by forwarding the event to the handler (defined in
 	 * `EntityListContainer`).
 	 *
-	 * @since 3.10.0
+	 * @since 3.11.0
 	 *
 	 * @param {Event} e The source {@link Event}.
 	 */
-	onClick( e ) {
+	onMainClick( e ) {
 		// Prevent propagation.
 		e.preventDefault();
 
 		// Call the handler.
 		this.props.onClick( this.props.entity );
+	}
+
+	/**
+	 * Handle trigger clicks, toggling the drawer's open/close state.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param {Event} e The source {@link Event}.
+	 */
+	onTriggerClick( e ) {
+		// Prevent propagation.
+		e.preventDefault();
+
+		// Call the handler.
+		this.setState( { open: ! this.state.open } );
 	}
 
 	/**
@@ -57,20 +95,34 @@ class EntityTile extends React.PureComponent {
 	 * @returns {XML} The render tree.
 	 */
 	render() {
-		// @todo: populate the count.
 		return (
 			<Wrapper entity={ this.props.entity }>
-				<Main onClick={ this.onClick }>
+				<Main onClick={ this.onMainClick }
+					  open={ this.state.open }>
 					<Count
 						entity={ this.props.entity }>
-						{ this.props.entity.occurrences.length }
-					</Count>
+						{ this.props.entity.occurrences.length }</Count>
 					<Label
-						entity={ this.props.entity }>{ this.props.entity.label }</Label>
+						entity={ this.props.entity }>
+						{ this.props.entity.label }</Label>
 					<Cloud className="fa fa-cloud"
 						   entity={ this.props.entity } />
 				</Main>
-				<Drawer />
+				<Drawer open={ this.state.open }>
+					<LinkWrap onClick={ this.link }>
+						<Switch link={ this.props.link } />
+						<LinkInd
+							tile={ this.props.tile }
+							link={ this.props.link }>
+							Link </LinkInd>
+					</LinkWrap>
+					<Category>{ this.props.tile.category}</Category>
+					<QuickEdit className="fa fa-pencil" />
+				</Drawer>
+				<Trigger entity={ this.props.entity }
+						 onClick={ this.onTriggerClick }>
+					<Arrow open={ this.state.open } />
+				</Trigger>
 			</Wrapper>
 		);
 	}

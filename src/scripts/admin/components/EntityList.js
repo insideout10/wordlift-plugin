@@ -31,6 +31,7 @@ const EntityList = ( { entities, onClick } ) => (
 			// Map each entity to an `EntityTile`.
 			entities.map( entity =>
 							  <EntityTile entity={ entity }
+										  tile={ { open: false } }
 										  onClick={ onClick } />
 			)
 		}

@@ -28,11 +28,12 @@ const Arrow = styled.div`
 	border-left: 8px solid #7D7D7D;
 	border-radius: 16px;
 	transition: transform 150ms ease;
-	transform: rotate( ${ props => props.tile.isOpen ? 180 : 0 }deg );
 	&:hover {
 		border-left-color: #FCCD34;
 	} 
 `;
+
+// 	transform: rotate( ${ props => props.tile.isOpen ? 180 : 0 }deg );
 
 export default class Trigger extends React.PureComponent {
 

@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
 export const Main = styled.div`
 	display: block;
 	position: absolute;
-	left: 0;
+	left: ${ props => props.open ? '-248px' : 0 };
 	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
@@ -77,16 +77,32 @@ export const Cloud = styled.i`
 	opacity: ${ props => 0 < props.entity.occurrences.length ? 1 : 0 }
 `;
 
-export const Drawer = styled.div`
-	display: block;
+export const Trigger = styled.div`
+	display: ${ props => 0 < props.entity.occurrences.length ? 'block' : 'none' };
+	transition: opacity 150ms ease;
+	opacity: ${ props => 0 < props.entity.occurrences.length ? 1 : 0 }
 	position: absolute;
-	left: 248px;
+	right: 0;
 	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
-	width: 248px;
+	width: 16px;
 	height: 32px;
-	padding: 8px;
-	color: #626162;
-	transition: left 200ms ease;
+	padding: 8px 4px;
+	background-color: #f1f1f1;
+`;
+
+export const Arrow = styled.div`
+	display: block;
+	width: 8px;
+	height: 8px;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-left: 8px solid #7d7d7d;
+	border-radius: 16px;
+	transition: transform 150ms ease;
+	transform: rotate( ${ props => props.open ? 180 : 0 }deg );
+	&:hover {
+		border-left-color: #fccd34;
+	} 
 `;

@@ -24,3 +24,11 @@ export const SELECT_ENTITY = 'SELECT_ENTITY';
  * @type {string}
  */
 export const UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';
+
+///**
+// * Define the `TOGGLE_DRAWER` action name, which opens/closes the drawer.
+// *
+// * @since 3.11.0
+// * @type {string}
+// */
+//export const TOGGLE_DRAWER = 'TOGGLE_DRAWER';
