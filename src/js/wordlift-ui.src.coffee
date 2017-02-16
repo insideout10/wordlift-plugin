@@ -147,7 +147,7 @@ $.fn.extend
       .data(chord.groups)
       .enter()
       .append('text')
-      .attr('class', 'label')
+      .attr('class', 'wl-chord-label')
       .attr('font-size', ->
         fontSize = parseInt(size / 35)
         fontSize = 8 if(fontSize < 8)
@@ -610,10 +610,6 @@ $ = jQuery
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives'])
 .provider("configuration", ()->
-<<<<<<< HEAD
-
-=======
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
   _configuration = undefined
 
   provider =
@@ -628,10 +624,6 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
   restrict: 'E'
   scope: true
   template: (tElement, tAttrs)->
-<<<<<<< HEAD
-
-=======
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
     wrapperClasses = 'wl-wrapper'
     wrapperAttrs = ' wl-carousel'
     itemWrapperClasses = 'wl-post wl-card wl-item-wrapper'
@@ -651,20 +643,15 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
       <div class="wl-posts">
         <div class="#{wrapperClasses}" #{wrapperAttrs}>
           <div class="#{itemWrapperClasses}" ng-repeat="item in items"#{itemWrapperAttrs}>
-            <div class="wl-card-header wl-entity-wrapper">
+            <div class="wl-card-header wl-entity-wrapper"> 
               <h6>
                 <a ng-href="{{item.entity.permalink}}">{{item.entity.label}}</a>
               </h6>
             </div>
-<<<<<<< HEAD
-            <div class="#{thumbClasses}">
-              <a ng-href="{{item.post.permalink}}" style="background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;"></a>
-=======
             <div class="#{thumbClasses}"> 
               <a ng-href="{{item.post.permalink}}" style="background: url({{item.post.thumbnail}}) no-repeat center center;background-size:cover;"></a>
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
             </div>
-            <div class="wl-card-title">
+            <div class="wl-card-title"> 
               <a ng-href="{{item.post.permalink}}">{{item.post.title}}</a>
             </div>
           </div>
@@ -673,13 +660,8 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
   """
 
 ])
-<<<<<<< HEAD
-.controller('NavigatorWidgetController', [ 'DataRetrieverService', 'configuration', '$scope', '$log', (DataRetrieverService, configuration, $scope, $log)->
-
-=======
 .controller('NavigatorWidgetController', ['DataRetrieverService', 'configuration', '$scope', '$log',
   (DataRetrieverService, configuration, $scope, $log)->
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
     $scope.items = []
     $scope.configuration = configuration
 
@@ -688,25 +670,6 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
 
 ])
 # Retrieve post
-<<<<<<< HEAD
-.service('DataRetrieverService', [ 'configuration', '$log', '$http', '$rootScope', (configuration, $log, $http, $rootScope)->
-
-  service = {}
-  service.load = ()->
-
-    uri = "#{configuration.ajax_url}?action=#{configuration.action}&post_id=#{configuration.post_id}"
-    $log.debug "Going to load navigator items from #{uri}"
-
-    $http(
-      method: 'get'
-      url: uri
-    )
-    # If successful, broadcast an *analysisReceived* event.
-    .success (data) ->
-      $rootScope.$broadcast "itemsLoaded", data
-    .error (data, status) ->
-       $log.warn "Error loading items, statut #{status}"
-=======
 .service('DataRetrieverService', ['configuration', '$log', '$http', '$rootScope',
   (configuration, $log, $http, $rootScope)->
     service = {}
@@ -723,7 +686,6 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
         $rootScope.$broadcast "itemsLoaded", data
       .error (data, status) ->
         $log.warn "Error loading items, statut #{status}"
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
 
     service
 
@@ -742,16 +704,6 @@ $(
   """)
   .appendTo('.wl-navigator-widget')
 
-<<<<<<< HEAD
-injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
-injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
-  # execute the following commands in the angular js context.
-  $rootScope.$apply(->
-    DataRetrieverService.load()
-  )
-])
-
-=======
 # If there are navigator widgets on the page activate them.
   if 0 < $('.wl-navigator-widget').size()
     injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
@@ -759,5 +711,6 @@ injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverSer
 # execute the following commands in the angular js context.
       $rootScope.$apply(-> DataRetrieverService.load())
     ])
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
 )
+
+

@@ -144,7 +144,7 @@
           }
           return colorLuminance(baseColor, 0.5);
         });
-        viz.selectAll('arcs_labels').data(chord.groups).enter().append('text').attr('class', 'label').attr('font-size', function() {
+        viz.selectAll('arcs_labels').data(chord.groups).enter().append('text').attr('class', 'wl-chord-label').attr('font-size', function() {
           var fontSize;
           fontSize = parseInt(size / 35);
           if (fontSize < 8) {
@@ -614,11 +614,7 @@
           if (configuration.attrs.squared_thumbs) {
             thumbClasses = 'wl-card-image wl-square';
           }
-<<<<<<< HEAD
-          return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\">\n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\">\n        <a ng-href=\"{{item.post.permalink}}\" style=\"background: url({{item.post.thumbnail}}) no-repeat center center; background-size: cover;\"></a>\n      </div>\n      <div class=\"wl-card-title\">\n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
-=======
           return "<div class=\"wl-posts\">\n  <div class=\"" + wrapperClasses + "\" " + wrapperAttrs + ">\n    <div class=\"" + itemWrapperClasses + "\" ng-repeat=\"item in items\"" + itemWrapperAttrs + ">\n      <div class=\"wl-card-header wl-entity-wrapper\"> \n        <h6>\n          <a ng-href=\"{{item.entity.permalink}}\">{{item.entity.label}}</a>\n        </h6>\n      </div>\n      <div class=\"" + thumbClasses + "\"> \n        <a ng-href=\"{{item.post.permalink}}\" style=\"background: url({{item.post.thumbnail}}) no-repeat center center;background-size:cover;\"></a>\n      </div>\n      <div class=\"wl-card-title\"> \n        <a ng-href=\"{{item.post.permalink}}\">{{item.post.title}}</a>\n      </div>\n    </div>\n  </div>\n</div>";
->>>>>>> 4ca448882ada4127dea1edda343b37209987718f
         }
       };
     }
