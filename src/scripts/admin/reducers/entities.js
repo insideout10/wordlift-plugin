@@ -17,7 +17,7 @@ import { Map } from 'immutable';
 import * as types from '../constants/ActionTypes';
 import EditPostWidgetController from '../angular/EditPostWidgetController';
 import LinkService from '../services/LinkService';
-// import log from '../../modules/log';
+import log from '../../modules/log';
 
 /**
  * Define the reducers.
@@ -32,6 +32,7 @@ const entities = function( state = {}, action ) {
 
 		// Legacy: receive analysis' results.
 		case types.RECEIVE_ANALYSIS_RESULTS:
+			log( action.results );
 			// Return a new map of the received entities. The legacy Angular
 			// app doesn't set the `link` property on the entity, therefore we
 			// preset it here according to the `occurrences` settings.

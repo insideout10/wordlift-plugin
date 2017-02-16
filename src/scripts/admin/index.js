@@ -33,11 +33,12 @@ import reducer from './reducers';
 import EntityListContainer from './containers/EntityListContainer';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
-// import log from '../modules/log';
+import log from '../modules/log';
 
 //// Start-up the application when the `wlClassificationBox` is loaded. This
 // event is currently fired by the legacy AngularJS application.
 wp.wordlift.on( 'wlClassificationBox.loaded', function() {
+	log('wlClassificationBox.loaded');
 	// Create the initial state.
 	const state = { entities: Map() };
 

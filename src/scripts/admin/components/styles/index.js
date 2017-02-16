@@ -12,7 +12,6 @@ export const Wrapper = styled.div`
 	margin: 8px auto;
 	width: 248px;
 	height: 32px;
-	font-family: OpenSans;
 	background-color: #f5f5f5;
 	box-shadow: 0 4px 4px -3px rgba(0,0,0,.25), 0 8px 8px -6px rgba(0,0,0,.25);
 	transition: all 150ms ease-out;

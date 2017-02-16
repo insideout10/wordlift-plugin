@@ -150,7 +150,7 @@ class EntityTile extends React.Component {
 						<LinkInd link={ this.props.entity.link }>
 							Link </LinkInd>
 					</LinkWrap>
-					<Category>{ this.props.tile.category}</Category>
+					<Category>{ this.props.entity.mainType }</Category>
 					<QuickEdit onClick={ this.onEditClick }
 							   className="fa fa-pencil" />
 				</Drawer>

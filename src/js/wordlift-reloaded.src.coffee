@@ -780,7 +780,7 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
         for tile in $scope.tiles
           tile.isOpened = false
 
-  ])
+])
 
 angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
 .directive('wlEntityForm', ['configuration', '$window', '$log', (configuration, $window, $log)->
@@ -1884,4 +1884,5 @@ $(
 
       ])
     )
+
 )

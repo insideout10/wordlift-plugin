@@ -27,4 +27,4 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
         for tile in $scope.tiles
           tile.isOpened = false
 
-  ])
+])
