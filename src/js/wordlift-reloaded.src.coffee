@@ -556,6 +556,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.isEntitySelected = (entity, box)->
     return $scope.selectedEntities[ box.id ][ entity.id ]?
+
   $scope.isLinkedToCurrentAnnotation = (entity)->
     return ($scope.annotation in entity.occurrences)
 
@@ -1377,9 +1378,15 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         occurrences = currentOccurencesForEntity entityId
         $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
 
+        # Ghost event to bridge React.
+        wp.wordlift.trigger 'updateOccurrencesForEntity', entity.id, occurrences
+
     occurrences = currentOccurencesForEntity entity.id
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-      
+
+    # Ghost event to bridge React.
+    wp.wordlift.trigger 'updateOccurrencesForEntity', entity.id, occurrences
+
   $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
     if annotationId?
       dedisambiguate annotationId, entity
@@ -1389,6 +1396,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         
     occurrences = currentOccurencesForEntity entity.id    
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
+
+    # Ghost event to bridge React.
+    wp.wordlift.trigger 'updateOccurrencesForEntity', entity.id, occurrences
         
   service =
     # Detect if there is a current selection

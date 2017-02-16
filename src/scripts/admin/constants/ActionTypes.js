@@ -15,3 +15,12 @@ export const TOGGLE_ENTITY = 'TOGGLE_ENTITY';
  * @type {string}
  */
 export const SELECT_ENTITY = 'SELECT_ENTITY';
+
+/**
+ * Define the `UPDATE_OCCURRENCES_FOR_ENTITY` action name, used to catch
+ * `updateOccur(r)encesForEntity` events from the legacy Angular application.
+ *
+ * @since 3.11.0
+ * @type {string}
+ */
+export const UPDATE_OCCURRENCES_FOR_ENTITY = 'UPDATE_OCCURRENCES_FOR_ENTITY';

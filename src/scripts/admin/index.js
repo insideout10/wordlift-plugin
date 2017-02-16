@@ -31,7 +31,7 @@ import { Map } from 'immutable';
  */
 import reducer from './reducers';
 import EntityListContainer from './containers/EntityListContainer';
-import { selectEntity } from './actions';
+import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
 import log from '../modules/log';
 
 // Start-up the application when an analysis result is received. This event is
@@ -57,32 +57,8 @@ wp.wordlift.on( 'analysis.result', function( analysis ) {
 		document.getElementById( 'wl-entity-list' )
 	);
 
-	const entitySelected = function() {
-		return function( dispatch ) {
-			// Hook other events.
-			wp.wordlift.on( 'entitySelected', function( { entity } ) {
-				// Asynchronously call the dispatch. We need this because we
-				// might be inside a reducer call.
-				setTimeout( function() {
-					dispatch( selectEntity( entity ) );
-				}, 0 );
-			} );
-		};
-	};
-
-	const entityDeselected = function() {
-		return function( dispatch ) {
-			// Hook other events.
-			wp.wordlift.on( 'entityDeselected', function( { entity } ) {
-				// Asynchronously call the dispatch. We need this because we
-				// might be inside a reducer call.
-				setTimeout( function() {
-					dispatch( selectEntity( entity ) );
-				}, 0 );
-			} );
-		};
-	};
-
-	store.dispatch( entitySelected() );
-	store.dispatch( entityDeselected() );
+	// Dispatch an redux-thunk action, which hooks to the legacy
+	// `updateOccurrencesForEntity` event and dispatches the related action in
+	// Redux.
+	store.dispatch( UpdateOccurrencesForEntityEvent() );
 } );
