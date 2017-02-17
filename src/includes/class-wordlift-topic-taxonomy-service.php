@@ -108,6 +108,9 @@ class Wordlift_Topic_Taxonomy_Service {
 			'hierarchical'      => true,
 			'show_admin_column' => false,
 			'show_ui'			=> false,
+			'show_in_rest'  	=> true,
+			'rest_base'     	=> 'topics',
+			'rest_controller_class' => 'Wordlift_REST_Terms_Controller',
 			'rewrite'			=> array(
 				'slug'	=> self::TAXONOMY_SLUG
 				)
