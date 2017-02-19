@@ -28,18 +28,6 @@ function wl_enqueue_admin_settings_script() {
 	// enqueue the media scripts to be used for the publisher's logo selection
 	wp_enqueue_media();
 
-	wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/wordlift-admin-settings.js', array( 'jquery' ) );
-
-	// Set configuration settings.
-	wp_localize_script( 'wordlift-admin-settings', '_wlAdminSettings', array(
-		'ajaxUrl' => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
-		'action'  => 'wl_validate_key',
-		'media'   => array(
-			'title' => __( 'WordLift Choose Logo', 'wordlift' ),
-			'button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
-		),
-	) );
-
 	// enqueue select2 library js and css
 	wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/select2/js/select2.min.js', array( 'jquery' ), '4.0.3' );
 	wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . '/admin/js/select2/css/select2.min.css', array(), '4.0.3' );

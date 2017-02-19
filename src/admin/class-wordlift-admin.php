@@ -106,9 +106,12 @@ class Wordlift_Admin {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
 			'action'   => 'entity_by_title',
+			'key_validation_action'  => 'wl_validate_key',
 			'language' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
 			'l10n'     => array(
 				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
+				'logo_selection_title' => __( 'WordLift Choose Logo', 'wordlift' ),
+				'logo_selection_button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 			),
 		);
 
@@ -127,6 +130,9 @@ class Wordlift_Admin {
 
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
+
+		// javascript required for the settings page
+		wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/wordlift-admin-settings.js', array( 'jquery' ) );
 
 	}
 

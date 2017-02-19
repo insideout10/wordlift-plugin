@@ -54,7 +54,7 @@
                     delay($this, function () {
 
                         // Post the validation request.
-                        $.post(settings.ajaxUrl, {'action': settings.action, 'key': $this.val()},
+                        $.post(settings.ajax_url, {'action': settings.key_validation_action, 'key': $this.val()},
                             function (data) {
 
                                 // If the key is valid then set the process class.
@@ -217,8 +217,8 @@
 
 			// Create a WP media uploader.
 			var uploader = wp.media({
-				title: settings.media.title,
-				button: settings.media.button,
+				title: settings.l10n.logo_selection_title,
+				button: settings.l10n.logo_selection_button,
 				multiple: false,
 
 				// Tell the modal to show only images.
@@ -250,4 +250,4 @@
 
 	});
 
-})(jQuery, _wlAdminSettings);
+})(jQuery, wlSettings);
