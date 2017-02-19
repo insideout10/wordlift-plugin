@@ -34,4 +34,12 @@ export const TOGGLE_LINK = 'TOGGLE_LINK';
  */
 export const RECEIVE_ANALYSIS_RESULTS = 'RECEIVE_ANALYSIS_RESULTS';
 
+/**
+ * Define the `SET_CURRENT_ENTITY` action name, fired to edit an entity inline.
+ *
+ * @since 3.11.0
+ * @type {string}
+ */
 export const SET_CURRENT_ENTITY = 'SET_CURRENT_ENTITY';
+
+export const SET_ENTITY_FILTER = 'SET_ENTITY_FILTER';

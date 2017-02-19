@@ -1,7 +1,7 @@
 /**
  * Reducers: Root.
  *
- * The root reducers combining other reducers: entities.
+ * The root reducers combining other reducers: entities, visibilityFilter.
  *
  * @since 3.11.0
  */
@@ -15,6 +15,7 @@ import { combineReducers } from 'redux';
  * Internal dependencies
  */
 import entities from './entities';
+import visibilityFilter from './visibilityFilter';
 
 /**
  * Define the root reducer.
@@ -22,7 +23,7 @@ import entities from './entities';
  * @since 3.11.0
  * @type {Reducer<S>}
  */
-const rootReducer = combineReducers( { entities } );
+const rootReducer = combineReducers( { entities, visibilityFilter } );
 
 // Finally export the root reducer.
 export default rootReducer;

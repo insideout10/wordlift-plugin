@@ -13,6 +13,7 @@
     "log": true,
     "tinyMCE": true,
     "wlSettings": true,
+    "wordlift": true,
     "wp": true,
     "_": true
   },

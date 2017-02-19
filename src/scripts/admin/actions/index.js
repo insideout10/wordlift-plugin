@@ -23,8 +23,21 @@ export const receiveAnalysisResults = ( results ) => (
 	{ type: types.RECEIVE_ANALYSIS_RESULTS, results }
 );
 
+/**
+ * The `setCurrentEntity` action is dispatched in order to send an event to the
+ * legacy Angular app which in turn show the provided `entity` in the inline
+ * entity edit box.
+ *
+ * @since 3.11.0
+ * @param {Object} entity The entity to display in the inline edit box.
+ * @return {Function} The action's function.
+ */
 export const setCurrentEntity = ( entity ) => (
 	{ type: types.SET_CURRENT_ENTITY, entity }
+);
+
+export const setEntityVisibility = ( filter ) => (
+	{ type: types.SET_ENTITY_FILTER, filter }
 );
 
 /**

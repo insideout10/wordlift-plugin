@@ -24,13 +24,12 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-import { Map } from 'immutable';
 
 /**
  * Internal dependencies
  */
 import reducer from './reducers';
-import EntityListContainer from './containers/EntityListContainer';
+import App from './components/App';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
 import log from '../modules/log';
@@ -38,20 +37,18 @@ import log from '../modules/log';
 //// Start-up the application when the `wlClassificationBox` is loaded. This
 // event is currently fired by the legacy AngularJS application.
 wp.wordlift.on( 'wlClassificationBox.loaded', function() {
-	log('wlClassificationBox.loaded');
-	// Create the initial state.
-	const state = { entities: Map() };
+	log( 'wlClassificationBox.loaded' );
 
 	// Create the `store` with the reducer, using the analysis result as
 	// `initialState`.
-	const store = createStore( reducer, state, applyMiddleware( thunk ) );
+	const store = createStore( reducer, applyMiddleware( thunk ) );
 
 	// Render the `React` tree at the `wl-entity-list` element.
 	ReactDOM.render(
 		// Following is `react-redux` syntax for binding the `store` with the
 		// container down to the components.
 		<Provider store={ store }>
-			<EntityListContainer />
+			<App />
 		</Provider>,
 		document.getElementById( 'wl-entity-list' )
 	);

@@ -21,6 +21,30 @@ import { setCurrentEntity, toggleEntity, toggleLink } from '../actions';
 import EntityList from '../components/EntityList';
 
 /**
+ * Filters the provided map of entities according to the specified filter.
+ *
+ * @since 3.11.0
+ *
+ * @param {Object} entities A keyed map of entities.
+ * @param {String} filter The filter.
+ * @returns {Object} The filtered keyed-map of entities.
+ */
+const getVisibleEntities = ( entities, filter ) => {
+	switch ( filter ) {
+		case 'SHOW_WHO':
+			return entities.filter( x => 'who' === x.w );
+		case 'SHOW_WHERE':
+			return entities.filter( x => 'where' === x.w );
+		case 'SHOW_WHEN':
+			return entities.filter( x => 'when' === x.w );
+		case 'SHOW_WHAT':
+			return entities.filter( x => 'what' === x.w );
+		default:
+			return entities;
+	}
+};
+
+/**
  * Map the state to React components' properties.
  *
  * @since 3.11.0
@@ -30,7 +54,7 @@ import EntityList from '../components/EntityList';
  */
 const mapStateToProps = ( state ) => {
 	return {
-		entities: state.entities
+		entities: getVisibleEntities( state.entities, state.visibilityFilter )
 	};
 };
 
@@ -80,10 +104,10 @@ const mapDispatchToProps = ( dispatch ) => {
  *
  * @since 3.11.0
  */
-const EntityListContainer = connect(
+const VisibleEntityList = connect(
 	mapStateToProps,
 	mapDispatchToProps
 )( EntityList );
 
-// Finally export the `EntityListContainer`.
-export default EntityListContainer;
+// Finally export the `VisibleEntityList`.
+export default VisibleEntityList;

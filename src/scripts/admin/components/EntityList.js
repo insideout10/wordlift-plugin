@@ -21,6 +21,7 @@ import EntityTile from '../components/EntityTile';
  * The `EntityList` component.
  *
  * @since 3.11.0
+ *
  * @param {Object} entities A map of entities, keyed by their id.
  * @param {Function} onClick The click handler.
  * @param {Function} onLinkClick Handler for the link/no link click.
