@@ -889,10 +889,10 @@ class Wordlift {
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
 
-		// Hook the `pre_get_posts` filter to the `Wordlift_Category_Taxonomy_Service`
+		// Hook the `pre_get_posts` action to the `Wordlift_Category_Taxonomy_Service`
 		// in order to tweak WP's `WP_Query` to include entities in queries related
 		// to categories.
-		$this->loader->add_filter( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
+		$this->loader->add_action( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
 
 	}
 

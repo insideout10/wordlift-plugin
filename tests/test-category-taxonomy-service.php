@@ -22,17 +22,17 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_non_main_query_ignored() {
 
 		$post_id = $this->factory->post->create( array(
-											'post_type' => 'post',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+			'post_type'    => 'post',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 
-		$entity_id = $this->factory->post->create( array(
-											'post_type' => 'entity',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+		$entity_id   = $this->factory->post->create( array(
+			'post_type'    => 'entity',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 		$category_id = $this->factory->category->create( array( 'name' => 'testcat' ) );
 
@@ -53,26 +53,26 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test category archive page shows both posts and entities
+	 * Test category archive page shows both posts and entities.
 	 *
-	 * Test done by simulating a main query
+	 * Test done by simulating a main query.
 	 *
 	 * @since 3.11
 	 */
-	public function test_category_archieve_page() {
+	public function test_category_archive_page() {
 
 		$post_id = $this->factory->post->create( array(
-											'post_type' => 'post',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+			'post_type'    => 'post',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 
-		$entity_id = $this->factory->post->create( array(
-											'post_type' => 'entity',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+		$entity_id   = $this->factory->post->create( array(
+			'post_type'    => 'entity',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 		$category_id = $this->factory->category->create( array( 'name' => 'testcat' ) );
 
@@ -105,17 +105,17 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_explicit_post_type() {
 
 		$post_id = $this->factory->post->create( array(
-											'post_type' => 'post',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+			'post_type'    => 'post',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 
-		$entity_id = $this->factory->post->create( array(
-											'post_type' => 'entity',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+		$entity_id   = $this->factory->post->create( array(
+			'post_type'    => 'entity',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 		$category_id = $this->factory->category->create( array( 'name' => 'testcat' ) );
 
@@ -125,16 +125,16 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// reset global query variables to virgin state to make is_main_query true.
 
-		global $wp_the_query,$wp_query;
+		global $wp_the_query, $wp_query;
 		$wp_the_query = new WP_QUery();
-		$wp_query = $wp_the_query;
+		$wp_query     = $wp_the_query;
 
 		// test explicit post post type as a string.
 
-		$posts = $wp_the_query->query(array(
-			'cat' => $category_id,
+		$posts = $wp_the_query->query( array(
+			'cat'       => $category_id,
 			'post_type' => 'post',
-		));
+		) );
 
 		// test that two posts are returned.
 		$this->assertEquals( 2, count( $posts ) );
@@ -148,10 +148,10 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// test explicit post post type as an array.
 
-		$posts = $wp_the_query->query(array(
-			'cat' => $category_id,
+		$posts = $wp_the_query->query( array(
+			'cat'       => $category_id,
 			'post_type' => array( 'post' ),
-		));
+		) );
 
 		// test that two posts are returned.
 		$this->assertEquals( 2, count( $posts ) );
@@ -165,10 +165,10 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// test explicit post post type with combination with other post type.
 
-		$posts = $wp_the_query->query(array(
-			'cat' => $category_id,
+		$posts = $wp_the_query->query( array(
+			'cat'       => $category_id,
 			'post_type' => array( 'post', 'product' ),
-		));
+		) );
 
 		// test that two posts are returned.
 
@@ -183,34 +183,34 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// test unrelated post type.
 
-		$posts = $wp_the_query->query(array(
-			'cat' => $category_id,
+		$posts = $wp_the_query->query( array(
+			'cat'       => $category_id,
 			'post_type' => array( 'product' ),
-		));
+		) );
 
 		// no posts should be returned
 		$this->assertEquals( 0, count( $posts ) );
 	}
 
 	/**
-	 * Test queries in admin context are ignored
+	 * Test queries in admin context are ignored.
 	 *
 	 * @since 3.11
 	 */
 	public function test_admin_context() {
 
 		$post_id = $this->factory->post->create( array(
-											'post_type' => 'post',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+			'post_type'    => 'post',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 
-		$entity_id = $this->factory->post->create( array(
-											'post_type' => 'entity',
-											'post_content' => '',
-											'post_title' => 'test post',
-											'post_status' => 'publish',
+		$entity_id   = $this->factory->post->create( array(
+			'post_type'    => 'entity',
+			'post_content' => '',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 		$category_id = $this->factory->category->create( array( 'name' => 'testcat' ) );
 
@@ -220,9 +220,9 @@ class Wordlift_Category_Taxonomy_Service_Test extends Wordlift_Unit_Test_Case {
 
 		global $wp_the_query; // the main query object.
 
-		$posts = $wp_the_query->query(array(
+		$posts = $wp_the_query->query( array(
 			'cat' => $category_id,
-		));
+		) );
 
 		// test that only one post is returned.
 		$this->assertEquals( 1, count( $posts ) );
