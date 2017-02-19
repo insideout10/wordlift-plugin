@@ -36,13 +36,15 @@ const entities = function( state = Map(), action ) {
 			// Return a new map of the received entities. The legacy Angular
 			// app doesn't set the `link` property on the entity, therefore we
 			// preset it here according to the `occurrences` settings.
-			return Map( action.results.entities ).map(
-				x => Object.assign( x, {
-					link: LinkService.getLink( x.occurrences ),
-					local: 0 === x.id.indexOf( wlSettings.datasetUri ),
-					w: WsService.getW( x )
-				} )
-			);
+			return Map( action.results.entities )
+				.map(
+					x => Object.assign( x, {
+						link: LinkService.getLink( x.occurrences ),
+						local: 0 === x.id.indexOf( wlSettings.datasetUri ),
+						w: WsService.getW( x )
+					} )
+				)
+				.sortBy( x => x.label );
 
 		// Legacy: set the current entity on the `EditPostWidgetController`.
 		case types.SET_CURRENT_ENTITY:

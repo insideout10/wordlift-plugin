@@ -9,6 +9,7 @@ angular.module('wordlift.editpost.widget', [
   'wordlift.editpost.widget.providers.ConfigurationProvider',
   'wordlift.editpost.widget.controllers.EditPostWidgetController',
   'wordlift.editpost.widget.directives.wlClassificationBox',
+  'wordlift.editpost.widget.directives.wlEntityList',
   'wordlift.editpost.widget.directives.wlEntityForm',
   'wordlift.editpost.widget.directives.wlEntityTile',
   'wordlift.editpost.widget.directives.wlEntityInputBox',

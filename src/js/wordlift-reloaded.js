@@ -472,7 +472,8 @@
             $scope.addNewEntityToAnalysis();
             $scope.addMsg('The entity was created!', 'positive');
         }
-        return $scope.unsetCurrentEntity();
+        $scope.unsetCurrentEntity();
+        return wp.wordlift.trigger('analysis.result', $scope.analysis);
       };
       $scope.selectedEntities = {};
       $scope.currentSection = void 0;
@@ -776,6 +777,17 @@
             }
             return results1;
           };
+        }
+      };
+    }
+  ]);
+
+  angular.module('wordlift.editpost.widget.directives.wlEntityList', []).directive('wlEntityList', [
+    '$log', function($log) {
+      return {
+        restrict: 'A',
+        link: function() {
+          return wp.wordlift.trigger('wlEntityList.loaded');
         }
       };
     }
@@ -1770,7 +1782,7 @@
 
   $ = jQuery;
 
-  angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
+  angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
     return configurationProvider.setConfiguration(window.wordlift);
   });
 

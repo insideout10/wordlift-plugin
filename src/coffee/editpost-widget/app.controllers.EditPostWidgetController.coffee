@@ -141,6 +141,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     $scope.unsetCurrentEntity()
 
+    # Trigger again the analysis results to have React update its tree
+    wp.wordlift.trigger 'analysis.result', $scope.analysis
+
   $scope.selectedEntities = {}
 
   # A reference to the current section in the widget

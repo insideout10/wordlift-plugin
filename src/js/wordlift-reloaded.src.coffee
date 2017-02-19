@@ -491,6 +491,9 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
     $scope.unsetCurrentEntity()
 
+    # Trigger again the analysis results to have React update its tree
+    wp.wordlift.trigger 'analysis.result', $scope.analysis
+
   $scope.selectedEntities = {}
 
   # A reference to the current section in the widget
@@ -779,6 +782,17 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       ctrl.closeTiles = ()->
         for tile in $scope.tiles
           tile.isOpened = false
+
+])
+
+# This directive is a small placeholder to have React load itself.
+angular.module('wordlift.editpost.widget.directives.wlEntityList', [])
+  .directive('wlEntityList', ['$log', ($log) ->
+
+    restrict: 'A'
+
+    # Trigger the event which will load the React application.
+    link: () -> wp.wordlift.trigger 'wlEntityList.loaded'
 
 ])
 
@@ -1740,6 +1754,7 @@ angular.module('wordlift.editpost.widget', [
   'wordlift.editpost.widget.providers.ConfigurationProvider',
   'wordlift.editpost.widget.controllers.EditPostWidgetController',
   'wordlift.editpost.widget.directives.wlClassificationBox',
+  'wordlift.editpost.widget.directives.wlEntityList',
   'wordlift.editpost.widget.directives.wlEntityForm',
   'wordlift.editpost.widget.directives.wlEntityTile',
   'wordlift.editpost.widget.directives.wlEntityInputBox',

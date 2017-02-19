@@ -12,6 +12,7 @@ import React from 'react';
 /**
  * Internal dependencies
  */
+import Wrapper from './Wrapper';
 import EntityFilter from '../../containers/EntityFilter';
 
 /**
@@ -21,13 +22,13 @@ import EntityFilter from '../../containers/EntityFilter';
  * @return {Function} The `render` function.
  */
 const Header = () => (
-	<div>
-		<EntityFilter filter="SHOW_WHAT">What</EntityFilter>
-		<EntityFilter filter="SHOW_WHERE">Where</EntityFilter>
-		<EntityFilter filter="SHOW_WHEN">When</EntityFilter>
-		<EntityFilter filter="SHOW_WHO">Who</EntityFilter>
-		<EntityFilter filter="SHOW_ALL">All</EntityFilter>
-	</div>
+	<Wrapper>
+		<EntityFilter filter="SHOW_WHAT">what</EntityFilter>
+		<EntityFilter filter="SHOW_WHERE">where</EntityFilter>
+		<EntityFilter filter="SHOW_WHEN">when</EntityFilter>
+		<EntityFilter filter="SHOW_WHO">who</EntityFilter>
+		<EntityFilter filter="SHOW_ALL">all</EntityFilter>
+	</Wrapper>
 );
 
 // Finally export the `Header`.

@@ -32,13 +32,11 @@ import reducer from './reducers';
 import App from './components/App';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
-import log from '../modules/log';
+// import log from '../modules/log';
 
-//// Start-up the application when the `wlClassificationBox` is loaded. This
-// event is currently fired by the legacy AngularJS application.
-wp.wordlift.on( 'wlClassificationBox.loaded', function() {
-	log( 'wlClassificationBox.loaded' );
-
+// Start-up the application when the `wlEntityList` Angular directive is
+// loaded.
+wp.wordlift.on( 'wlEntityList.loaded', function() {
 	// Create the `store` with the reducer, using the analysis result as
 	// `initialState`.
 	const store = createStore( reducer, applyMiddleware( thunk ) );
