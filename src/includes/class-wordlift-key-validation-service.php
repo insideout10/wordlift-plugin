@@ -51,7 +51,7 @@ class Wordlift_Key_Validation_Service {
 		}
 
 		// Set a response with valid set to true or false according to the key validity.
-		wp_send_json( array( 'valid' => $this->is_valid( $_POST['key'] ) ) );
+		wp_send_json_success( array( 'valid' => $this->is_valid( $_POST['key'] ) ) );
 
 	}
 

@@ -54,8 +54,9 @@
                     delay($this, function () {
 
                         // Post the validation request.
-                        $.post(settings.ajax_url, {'action': settings.key_validation_action, 'key': $this.val()},
-                            function (data) {
+                        wp.ajax.post(settings.key_validation_action, {
+							'key': $this.val(),
+						}).done( function ( data ) {
 
                                 // If the key is valid then set the process class.
                                 if (data && data.valid)
@@ -63,7 +64,7 @@
                                 else
                                     $this.addClass('invalid');
 
-                            });
+						});
 
                     });
 

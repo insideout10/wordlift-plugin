@@ -132,7 +132,7 @@ class Wordlift_Admin {
 		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
 
 		// javascript required for the settings page
-		wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/wordlift-admin-settings.js', array( 'jquery' ) );
+		wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/wordlift-admin-settings.js', array( 'wp-util' ) );
 
 	}
 
