@@ -140,18 +140,33 @@ function wl_configuration_settings() {
 		'wl_general_settings'              // Page on which to add this section of options
 	);
 
+	$key_args = array(
+		'id'          => 'wl-key',
+		'name'        => 'wl_general_settings[key]',
+		'value'       => wl_configuration_get_key(),
+		'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
+	);
+
+	// set the class for the key field based on the validity of the key.
+	// class should be "untouched" for an empty (virgin) value, "valid"
+	// if the key is valid, or "invalid" otherwise.
+
+	$validation_service = new Wordlift_Key_Validation_Service();
+	if ( empty( $key_args['value'] ) ) {
+		$key_args['class'] = 'untouched';
+	} elseif ( $validation_service->is_valid( $key_args['value'] ) ) {
+		$key_args['class'] = 'valid';
+	} else {
+		$key_args['class'] = 'invalid';
+	}
+
 	add_settings_field(
 		WL_CONFIG_WORDLIFT_KEY,             // ID used to identify the field throughout the theme
 		__( 'WordLift Key', 'wordlift' ),   // The label to the left of the option interface element
 		'wl_configuration_input_box',       // The name of the function responsible for rendering the option interface
 		'wl_general_settings',         // The page on which this option will be displayed
 		'wl_general_settings_section',      // The name of the section to which this field belongs
-		array(                              // The array of arguments to pass to the callback. In this case, just a description.
-		                                    'id'          => 'wl-key',
-		                                    'name'        => 'wl_general_settings[key]',
-		                                    'value'       => wl_configuration_get_key(),
-		                                    'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
-		)
+		$key_args                             // The array of arguments to pass to the callback. In this case, just a description.
 	);
 
 	// Entity Base Path input.
@@ -486,6 +501,24 @@ function wl_configuration_publisher() {
 
 	?>
 	<style>
+		#wl-key {
+			padding-right: 34px;
+			background-repeat: no-repeat;
+			background-position: calc(100% - 8px) 7px;
+		}
+
+		#wl-key.invalid {
+	  		background-image: url("<?php echo dirname( dirname( plugin_dir_url( __FILE__ ) ) )?>/images/invalid.png");
+		}
+
+		#wl-key.valid {
+	  		background-image: url("<?php echo dirname( dirname( plugin_dir_url( __FILE__ ) ) )?>/images/valid.png");
+		}
+
+		#wl-key.untouched {
+		  	background-image: initial;
+		}
+
 		.wl-tab-panel {
 			display:none;
 			padding-top:10px;

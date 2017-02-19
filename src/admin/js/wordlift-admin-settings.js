@@ -58,11 +58,11 @@
 							'key': $this.val(),
 						}).done( function ( data ) {
 
-                                // If the key is valid then set the process class.
-                                if (data && data.valid)
-                                    $this.addClass('valid');
-                                else
-                                    $this.addClass('invalid');
+                            // If the key is valid then set the process class.
+                            if (data && data.valid)
+                                $this.addClass('valid');
+                            else
+                                $this.addClass('invalid');
 
 						});
 
