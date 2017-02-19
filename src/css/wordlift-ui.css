@@ -2742,6 +2742,5 @@ a.wl-entity-page-link {
 .wl-timeline-container *:before,
 .wl-timeline-container *:after {
   -webkit-box-sizing: initial;
-  -moz-box-sizing: initial;
-       box-sizing: initial;
+  box-sizing: initial;
 }
