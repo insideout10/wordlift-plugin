@@ -144,7 +144,7 @@
           }
           return colorLuminance(baseColor, 0.5);
         });
-        viz.selectAll('arcs_labels').data(chord.groups).enter().append('text').attr('class', 'label').attr('font-size', function() {
+        viz.selectAll('arcs_labels').data(chord.groups).enter().append('text').attr('class', 'wl-chord-label').attr('font-size', function() {
           var fontSize;
           fontSize = parseInt(size / 35);
           if (fontSize < 8) {

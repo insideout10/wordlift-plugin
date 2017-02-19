@@ -147,7 +147,7 @@ $.fn.extend
       .data(chord.groups)
       .enter()
       .append('text')
-      .attr('class', 'label')
+      .attr('class', 'wl-chord-label')
       .attr('font-size', ->
         fontSize = parseInt(size / 35)
         fontSize = 8 if(fontSize < 8)
