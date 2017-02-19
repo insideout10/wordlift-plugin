@@ -346,6 +346,24 @@ class Wordlift {
 	private $status_page;
 
 	/**
+	 * The controller for the entity type list admin page
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Entity_Taxonomy_List $entity_type_admin_page The {@link Wordlift_Admin_Entity_Taxonomy_List} class.
+	 */
+	private $entity_type_admin_page;
+
+	/**
+	 * The controller for the entity type settings admin page
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Entity_Type_Settings $entity_type_settings_admin_page The {@link Wordlift_Admin_Entity_Type_Settings} class.
+	 */
+	private $entity_type_settings_admin_page;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -579,6 +597,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-setup.php';
 
 		/**
+		 * The WordLift entity type list admin page controller.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wordlift-admin-entity-taxonomy-list.php';
+
+		/**
+		 * The WordLift entity type settings admin page controller.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-settings.php';
+
+		/**
 		 * The admin 'Download Your Data' page.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
@@ -716,6 +744,12 @@ class Wordlift {
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page();
 
+		// create an instance of the entity type list admin page controller.
+		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List();
+
+		// create an instance of the entity type etting admin page controller.
+		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
+
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
 
@@ -824,6 +858,7 @@ class Wordlift {
 		// Hook the menu to the Download Your Data page.
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
@@ -837,6 +872,9 @@ class Wordlift {
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
+		// hook styling for the entity type list admin
+		$this->loader->add_action( 'admin_print_styles-edit-tags.php', $this->entity_type_admin_page, 'admin_print_styles_edit_tags' );
+		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
 	}
 
 	/**
