@@ -396,13 +396,9 @@ class Wordlift_Admin_Settings_Page {
 	 */
 	function update_key( $old_value, $new_value ) {
 
-		// wl_write_log( "Going to request set redlink dataset uri if needed" );
-
 		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
 		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
 		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
-
-		// wl_write_log( "[ old value :: $old_key ][ new value :: $new_key ]" );
 
 		// If the key hasn't changed, don't do anything.
 		// WARN The 'update_option' hook is fired only if the new and old value are not equal
@@ -421,11 +417,10 @@ class Wordlift_Admin_Settings_Page {
 		// If the response is valid, then set the value.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 
-			// wl_write_log( "[ Retrieved dataset :: " . $response['body'] . " ]" );
 			$this->configuration_service->set_dataset_uri( $response['body'] );
 
 		} else {
-			wl_write_log( 'Error on dataset uri remote retrieving [ ' . var_export( $response, true ) . ' ]' );
+			// TO DO User notification is needed here.
 		}
 
 	}
@@ -437,10 +432,10 @@ class Wordlift_Admin_Settings_Page {
 	 *
 	 * @link    http://wordpress.stackexchange.com/a/11826/1685
 	 *
-	 * @since   3.11
+	 * @since   3.11.0
 	 *
-	 * @param   string   $search
-	 * @param   WP_Query $wp_query
+	 * @param   string   $search   The search string.
+	 * @param   WP_Query $wp_query The WP-Query in the context of which the search is done.
 	 */
 	function search_by_title( $search, $wp_query ) {
 		if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
@@ -470,12 +465,12 @@ class Wordlift_Admin_Settings_Page {
 	 *       entity.
 	 *
 	 * As a result output the HTML select element containing the titles of the entities
-	 * as labels, and there "post id" as values
+	 * as labels, and there "post id" as values.
 	 *
 	 */
 	function possible_publisher() {
 
-		// no actual search parameter was passed, bail out
+		// No actual search parameter was passed, bail out.
 		if ( ! isset( $_POST['q'] ) ) {
 			wp_die();
 
@@ -508,8 +503,10 @@ class Wordlift_Admin_Settings_Page {
 		while ( $entities_query->have_posts() ) {
 			$entities_query->the_post();
 
-			// get the thumbnail, the long way around instead of get_the_thumbnail_url
-			// because it is supported only from version 4.4
+			/*
+			 * Get the thumbnail, the long way around instead of get_the_thumbnail_url
+			 * because it is supported only from version 4.4.
+			 */
 
 			$thumb             = '';
 			$post_thumbnail_id = get_post_thumbnail_id();

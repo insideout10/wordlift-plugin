@@ -1,4 +1,11 @@
 <?php
+/**
+ * Pages: Publisher section in the Admin Settings page.
+ *
+ * @since   3.11.0
+ * @package Wordlift/admin
+ */
+
 // Get all the organizations and persons that might be used as publishers.
 
 $entities_query = new WP_Query( array(
@@ -19,9 +26,11 @@ $entities_query = new WP_Query( array(
 	),
 ) );
 
-// Variable indicating should the select tab (and panel) be displayed.
-// If the wizard is skipped during the install there might not be entities
-// to select from and not point in showing the tab and panel.
+/*
+ * Variable indicating should the select tab (and panel) be displayed.
+ * If the wizard is skipped during the install there might not be entities
+ * to select from and not point in showing the tab and panel.
+ */
 
 $select_panel_displayed = $entities_query->have_posts();
 ?>
@@ -65,8 +74,10 @@ $select_panel_displayed = $entities_query->have_posts();
 				while ( $entities_query->have_posts() ) {
 					$entities_query->the_post();
 
-					// Get the thumbnail, the long way around instead of get_the_thumbnail_url
-					// because it is supported only from version 4.4.
+					/*
+					 * Get the thumbnail, the long way around instead of get_the_thumbnail_url
+					 * because it is supported only from version 4.4.
+					 */
 
 					$thumb             = '';
 					$post_thumbnail_id = get_post_thumbnail_id();
