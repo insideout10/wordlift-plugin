@@ -28,7 +28,7 @@ import EditLink from './EditLink';
 import ArrowToggle from '../ArrowToggle';
 
 /**
- *
+ * @inheritDoc
  */
 class EntityTile extends React.Component {
 
