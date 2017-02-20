@@ -28,7 +28,15 @@ const Wrapper = styled.div`
 		text-align: center;
 		text-decoration: none;
 		
+		&:hover {
+			color: #a0a0a0;
+		}
+		&:focus {
+			// Overrides wp styles.
+			box-shadow: none
+		}
 	}
+
 	
 	*:last-child {
 		border-right: none;

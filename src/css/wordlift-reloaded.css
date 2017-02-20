@@ -4,6 +4,7 @@
  */
 /* FONT PATH
  * -------------------------- */
+@import "https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/4.1.0/sanitize.min.css";
 @font-face {
   font-family: 'FontAwesome';
   src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');
