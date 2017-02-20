@@ -94,9 +94,6 @@ class Wordlift_Admin_Settings_Page {
 			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
 		}
 
-		// Ony show advanced settings tab if the relative constant exists and is set to true.
-		$can_show_advanced_settings = defined( 'WL_ENABLE_ADVANCED_CONFIGURATION' ) && WL_ENABLE_ADVANCED_CONFIGURATION;
-
 		?>
 
 		<div class="wrap">
@@ -105,26 +102,10 @@ class Wordlift_Admin_Settings_Page {
 
 			<?php settings_errors(); ?>
 
-			<?php
-			$active_tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'general_settings';
-			?>
-
-			<?php if ( $can_show_advanced_settings ) : ?>
-				<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
-				   class="nav-tab <?php echo 'advanced_settings' == $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a>
-			<?php endif; ?>
-
 			<form action="options.php" method="post">
 				<?php
-				if ( 'general_settings' === $active_tab ) {
-					settings_fields( 'wl_general_settings' );
-					do_settings_sections( 'wl_general_settings' );
-
-				} elseif ( $can_show_advanced_settings && 'advanced_settings' === $active_tab ) {
-					settings_fields( 'wl_advanced_settings' );
-					do_settings_sections( 'wl_advanced_settings' );
-				}
-
+				settings_fields( 'wl_general_settings' );
+				do_settings_sections( 'wl_general_settings' );
 				submit_button();
 				?>
 			</form>
@@ -141,9 +122,7 @@ class Wordlift_Admin_Settings_Page {
 
 
 	/**
-	 * Configure all the configuration parameters. The configuration parameters are grouped in two tabs:
-	 *  * General
-	 *  * Advanced (only available if the WL_ENABLE_ADVANCED_CONFIGURATION constant exists and is set to True)
+	 * Configure all the configuration parameters.
 	 *
 	 * Called by the *admin_init* hook.
 	 *
@@ -151,13 +130,13 @@ class Wordlift_Admin_Settings_Page {
 	 */
 	function admin_init() {
 
-		// add the settings link for the plugin on the plugin admin page.
+		// Add the settings link for the plugin on the plugin admin page.
 		add_filter( 'plugin_action_links_wordlift/wordlift.php', array(
 			$this,
 			'settings_links',
 		) );
 
-		// hook publisher ajax
+		// Hook publisher ajax
 		add_action( 'wp_ajax_wl_possible_publisher', array(
 			$this,
 			'possible_publisher',
@@ -262,136 +241,6 @@ class Wordlift_Admin_Settings_Page {
 			'wl_general_settings_section'
 		);
 
-		if ( defined( 'WL_ENABLE_ADVANCED_CONFIGURATION' ) && WL_ENABLE_ADVANCED_CONFIGURATION ) {
-
-			register_setting(
-				'wl_advanced_settings',
-				'wl_advanced_settings',
-				array( $this, 'sanitize_settings' )
-			);
-
-			add_settings_section(
-				'wl_advanced_settings_section',          // ID used to identify this section and with which to register options
-				'Advanced',                              // Title to be displayed on the administration page
-				'wl_configuration_advanced_settings_section_callback', // Callback used to render the description of the section
-				'wl_advanced_settings'              // Page on which to add this section of options
-			);
-
-			add_settings_field(
-				WL_CONFIG_API_URL,             // ID used to identify the field throughout the theme
-				__( 'API URL', 'wordlift' ),   // The label to the left of the option interface element
-				array(
-					$this,
-					'input_box',
-				),       // The name of the function responsible for rendering the option interface
-				'wl_advanced_settings',         // The page on which this option will be displayed
-				'wl_advanced_settings_section',      // The name of the section to which this field belongs
-				array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				                                    'id'          => 'wl-api-url',
-				                                    'name'        => 'wl_advanced_settings[api_url]',
-				                                    'value'       => wl_configuration_get_api_url(),
-				                                    'description' => __( 'The API URL', 'wordlift' ),
-				)
-			);
-
-			add_settings_field(
-				WL_CONFIG_APPLICATION_KEY_NAME,             // ID used to identify the field throughout the theme
-				__( 'Redlink Key', 'wordlift' ),   // The label to the left of the option interface element
-				array(
-					$this,
-					'input_box',
-				),       // The name of the function responsible for rendering the option interface
-				'wl_advanced_settings',         // The page on which this option will be displayed
-				'wl_advanced_settings_section',      // The name of the section to which this field belongs
-				array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				                                    'id'          => 'wl-redlink-key',
-				                                    'name'        => 'wl_advanced_settings[redlink_key]',
-				                                    'value'       => wl_configuration_get_redlink_key(),
-				                                    'description' => __( 'The Redlink key', 'wordlift' ),
-				)
-			);
-
-			add_settings_field(
-				WL_CONFIG_USER_ID_NAME,             // ID used to identify the field throughout the theme
-				__( 'Redlink User Id', 'wordlift' ),   // The label to the left of the option interface element
-				array(
-					$this,
-					'input_box',
-				),       // The name of the function responsible for rendering the option interface
-				'wl_advanced_settings',         // The page on which this option will be displayed
-				'wl_advanced_settings_section',      // The name of the section to which this field belongs
-				array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				                                    'id'          => 'wl-redlink-user-id',
-				                                    'name'        => 'wl_advanced_settings[redlink_user_id]',
-				                                    'value'       => wl_configuration_get_redlink_user_id(),
-				                                    'description' => __( 'The Redlink User Id', 'wordlift' ),
-				)
-			);
-
-			add_settings_field(
-				WL_CONFIG_DATASET_NAME,             // ID used to identify the field throughout the theme
-				__( 'Redlink Dataset name', 'wordlift' ),   // The label to the left of the option interface element
-				array(
-					$this,
-					'input_box',
-				),       // The name of the function responsible for rendering the option interface
-				'wl_advanced_settings',         // The page on which this option will be displayed
-				'wl_advanced_settings_section',      // The name of the section to which this field belongs
-				array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				                                    'id'          => 'wl-redlink-dataset-name',
-				                                    'name'        => 'wl_advanced_settings[redlink_dataset_name]',
-				                                    'value'       => wl_configuration_get_redlink_dataset_name(),
-				                                    'description' => __( 'The Redlink Dataset Name', 'wordlift' ),
-				)
-			);
-
-			add_settings_field(
-				WL_CONFIG_DATASET_BASE_URI_NAME,             // ID used to identify the field throughout the theme
-				__( 'Redlink Dataset URI', 'wordlift' ),   // The label to the left of the option interface element
-				array(
-					$this,
-					'input_box',
-				),       // The name of the function responsible for rendering the option interface
-				'wl_advanced_settings',         // The page on which this option will be displayed
-				'wl_advanced_settings_section',      // The name of the section to which this field belongs
-				array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				                                    'id'          => 'wl-redlink-dataset-uri',
-				                                    'name'        => 'wl_advanced_settings[redlink_dataset_uri]',
-				                                    'value'       => wl_configuration_get_redlink_dataset_uri(),
-				                                    'description' => __( 'The Redlink Dataset URI', 'wordlift' ),
-				)
-			);
-
-			add_settings_field(
-				WL_CONFIG_ANALYSIS_NAME,             // ID used to identify the field throughout the theme
-				__( 'Redlink Application Name', 'wordlift' ),   // The label to the left of the option interface element
-				array(
-					$this,
-					'input_box',
-				),       // The name of the function responsible for rendering the option interface
-				'wl_advanced_settings',         // The page on which this option will be displayed
-				'wl_advanced_settings_section',      // The name of the section to which this field belongs
-				array(                              // The array of arguments to pass to the callback. In this case, just a description.
-				                                    'id'          => 'wl-redlink-application-name',
-				                                    'name'        => 'wl_advanced_settings[redlink_application_name]',
-				                                    'value'       => wl_configuration_get_redlink_application_name(),
-				                                    'description' => __( 'The Redlink Application Name', 'wordlift' ),
-				)
-			);
-		}
-	}
-
-	/**
-	 * Display the advanced settings description. Called from a hook set by *wl_configuration_settings*.
-	 *
-	 * @since 3.0.0
-	 */
-	function wl_configuration_advanced_settings_section_callback() {
-
-		// TODO: set the following text.
-		?>
-		Configure WordLift advanced options.
-		<?php
 	}
 
 	/**
@@ -410,8 +259,8 @@ class Wordlift_Admin_Settings_Page {
 
 		$input = apply_filters( 'wl_configuration_sanitize_settings', $input, $input );
 
-		// if the user creats a new publisher entities the information is not part of the
-		// "option" itself and need to get it from other $_POST values
+		// If the user creates a new publisher entities the information is not part of the
+		// "option" itself and need to get it from other $_POST values.
 		if ( isset( $_POST['wl-setting-panel'] ) && ( 'wl-create-entity' == $_POST['wl-setting-panel'] ) ) {
 
 			// validate publisher type
