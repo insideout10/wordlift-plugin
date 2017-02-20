@@ -109,12 +109,6 @@ class Wordlift_Admin_Settings_Page {
 				submit_button();
 				?>
 			</form>
-
-			<div style="margin-top: 100px; font-size: 10px;">The entities blocks
-				are
-				designed by Lukasz M. Pogoda from the
-				Noun Project
-			</div>
 		</div>
 
 		<?php
@@ -229,7 +223,6 @@ class Wordlift_Admin_Settings_Page {
 				'name'        => 'wl_general_settings[site_language]',
 				'value'       => wl_configuration_get_site_language(),
 				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
-				'options'     => $this->get_languages(),
 			)
 		);
 
@@ -626,40 +619,6 @@ class Wordlift_Admin_Settings_Page {
 		array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
 
 		return $links;
-	}
-
-
-	/**
-	 * Get the available languages.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @return array An array of languages key values (key being the language code and values the language names).
-	 */
-	function get_languages() {
-
-		// prepare the language array.
-		$langs = array();
-
-		// set the path to the language file.
-		$filename = dirname( __FILE__ ) . '/ISO-639-2_utf-8.txt';
-
-		if ( ( $handle = fopen( $filename, 'r' ) ) !== false ) {
-			while ( ( $data = fgetcsv( $handle, 1000, '|' ) ) !== false ) {
-				if ( ! empty( $data[2] ) ) {
-					$code           = $data[2];
-					$label          = htmlentities( $data[3] );
-					$langs[ $code ] = $label;
-				}
-			}
-			fclose( $handle );
-		}
-
-		// sort the languages;
-		asort( $langs );
-
-		return $langs;
-
 	}
 
 	/**
