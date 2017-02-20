@@ -1,12 +1,21 @@
 <?php
+/**
+ * Ajax Adapters: Publisher Ajax Adapter.
+ *
+ * An Ajax adapter to the {@link Wordlift_Publisher_Service}.
+ *
+ * @since   3.11.0
+ * @package Wordlift
+ */
 
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 20/02/2017
- * Time: 18:01
+ * Define the {@link Wordlift_Publisher_Ajax_Adapter} instance.
+ *
+ * @since   3.11.0
+ * @package Wordlift
  */
 class Wordlift_Publisher_Ajax_Adapter {
+
 	/**
 	 * The {@link Wordlift_Publisher_Service} instance.
 	 *
@@ -30,7 +39,10 @@ class Wordlift_Publisher_Ajax_Adapter {
 	}
 
 	/**
-	 * The publisher AJAX action.
+	 * The publisher AJAX action. This function is hook to the `wl_publisher`
+	 * action.
+	 *
+	 * @since 3.11.0
 	 */
 	public function publisher() {
 

@@ -1,17 +1,37 @@
 <?php
+/**
+ * Services: Publisher Service.
+ *
+ * The Publisher service provides functions to list potential publishers.
+ *
+ * @since   3.11.0
+ * @package Wordlift
+ */
 
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 20/02/2017
- * Time: 17:59
+ * Define the {@link Wordlift_Publisher_Service} class.
+ *
+ * @since   3.11.0
+ * @package Wordlift
  */
 class Wordlift_Publisher_Service {
 
+	/**
+	 * Query WP for potential publishers, i.e. {@link WP_Post}s of type `entity`
+	 * and of `wl_entity_type` (taxonomy) `Organization` or `Person`.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param string $filter The title filter.
+	 *
+	 * @return array An array of results.
+	 */
 	public function query( $filter ) {
 
+		// Get the global `wpdb` instance.
 		global $wpdb;
 
+		// Run the query and get the results.
 		$results = $wpdb->get_results( $wpdb->prepare(
 			"SELECT p.id, p.post_title, t.name AS type, m.meta_value AS thumbnail_id" .
 			" FROM wp_posts p" .
@@ -33,8 +53,10 @@ class Wordlift_Publisher_Service {
 			'%' . $wpdb->esc_like( $filter ) . '%'
 		) );
 
+		// Set a reference to ourselves to pass to the closure.
 		$publisher_service = $this;
 
+		// Map the results in a `Select2` compatible array.
 		return array_map( function ( $item ) use ( $publisher_service ) {
 			return array(
 				'id'            => $item->id,
@@ -45,6 +67,16 @@ class Wordlift_Publisher_Service {
 		}, $results );
 	}
 
+	/**
+	 * Get the thumbnail's URL.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param int    $attachment_id The attachment id.
+	 * @param string $size          The attachment size (default = 'thumbnail').
+	 *
+	 * @return string|bool The image URL or false if not found.
+	 */
 	public function get_attachment_image_url( $attachment_id, $size = 'thumbnail' ) {
 
 		$image = wp_get_attachment_image_src( $attachment_id, $size );
