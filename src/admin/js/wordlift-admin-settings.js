@@ -54,7 +54,7 @@
                     delay($this, function () {
 
                         // Post the validation request.
-                        wp.ajax.post(settings.key_validation_action, {
+                        wp.ajax.post('wl_validate_key', {
 							'key': $this.val(),
 						}).done( function ( data ) {
 
@@ -70,33 +70,39 @@
 
 			});
 
-			// tab switching between selection of existing entity for a publisher
-			// and creation of a new one.
-			// bind the event only if there are actually two tabs to switch between.
+			/*
+			 * Tab switching between selection of existing entity for a publisher
+			 * and creation of a new one.
+			 * Bind the event only if there are actually two tabs to switch between.
+			 */
 
 			if ( 'yes' == $( '#wl-publisher-section' ).data('tabing-enabled') ) {
 				$('.nav-tab' )
 					.on( 'click', function (event) {
-						// switch the tab indicators.
+						// Switch the tab indicators.
 
 						$('.nav-tab' ).removeClass( 'nav-tab-active' );
 						$(this).addClass( 'nav-tab-active' );
 
-						// switch panels.
+						// Switch panels.
 
 						var panel = $(this).data( 'panel' );
 						$( '#wl-publisher-section' ).attr( 'class', panel + '-active' );
 
-						// set the current panel indicator for the server to know
-						// which was the last active tab
+						/*
+						 * Set the current panel indicator for the server to know
+						 * which was the last active tab.
+						 */
 
 						$('#wl-setting-panel').val(panel);
 						event.preventDefault();
 					});
 
-					// handle switch between personal and company
-					// new publisher type. Hide and show the logo selection
-					// based on the current selection of the radio button.
+					/*
+					 * Handle switch between personal and company
+					 * new publisher type. Hide and show the logo selection
+					 * based on the current selection of the radio button.
+					 */
 
 					$('#wl-publisher-type input' )
 						.on( 'click', function (event) {
@@ -184,11 +190,13 @@
 					}
 
 				} else {
-					// set delay to start the ajax.
+					// Set delay to start the ajax.
 					select2_options.minimumInputLength = 3;
 
-					// due to the way select2 combines parameters to the URL
-					// it is saner to use POST over get_instance
+					/*
+					 * Due to the way select2 combines parameters to the URL
+					 * it is saner to use POST over get.
+					 */
 
 					select2_options.ajax = {
 						type: 'POST',
@@ -196,11 +204,11 @@
 						data: function (params) {
 								  return {
 									  q: params.term, // search term
-									  action: 'wl_possible_publisher', // ajax action
+									  action: 'wl_possible_publisher', // Ajax action.
 								  };
 							  },
 					  	processResults: function (data, params) {
-									        // parse the results into the format expected by Select2
+									        // Parse the results into the format expected by Select2.
 
 									        return {
 										          results: data,
