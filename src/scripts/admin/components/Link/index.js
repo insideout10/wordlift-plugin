@@ -46,7 +46,7 @@ class Link extends React.PureComponent {
 	render() {
 		return (
 			<a href="javascript:void(0);"
-			   className={ this.props.active ? 'active' : '' }
+			   className={ this.props.active ? 'wl-active' : '' }
 			   onClick={ this.onClick }>{ this.props.children }</a>
 		);
 	}

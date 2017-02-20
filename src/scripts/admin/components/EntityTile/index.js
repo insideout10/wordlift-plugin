@@ -8,33 +8,19 @@
  *
  * @since 3.11.0
  */
-
 /**
  * External dependencies
  */
 import React from 'react';
-
 /**
  * Internal dependencies
  */
-import {
-	Wrapper,
-	Main,
-	Count,
-	Label,
-	Cloud,
-	Trigger,
-	Arrow
-} from './styles';
-import {
-	Drawer,
-	LinkWrap,
-//	Switch,
-	LinkInd,
-	Category,
-	QuickEdit
-} from './styles/Drawer';
-import Switch from './Switch';
+import { Wrapper, Main, Count, Label, Cloud } from '../styles';
+import Drawer from './Drawer';
+import Switch from '../Switch';
+import Category from './Category';
+import EditLink from './EditLink';
+import ArrowToggle from '../ArrowToggle';
 
 /**
  *
@@ -49,9 +35,9 @@ class EntityTile extends React.Component {
 
 		// Bind our functions.
 		this.onEditClick = this.onEditClick.bind( this );
-		this.onLinkClick = this.onLinkClick.bind( this );
+		this.onSwitchClick = this.onSwitchClick.bind( this );
 		this.onMainClick = this.onMainClick.bind( this );
-		this.onTriggerClick = this.onTriggerClick.bind( this );
+		this.onArrowToggleClick = this.onArrowToggleClick.bind( this );
 
 		// Set the initial state.
 		this.state = { open: false };
@@ -100,15 +86,12 @@ class EntityTile extends React.Component {
 	 *
 	 * @param {Event} e The source {@link Event}.
 	 */
-	onLinkClick( e ) {
+	onSwitchClick( e ) {
 		// Prevent propagation.
 		e.preventDefault();
 
 		// Call the handler.
 		this.props.onLinkClick( this.props.entity );
-
-		// Close the drawer.
-		this.setState( { open: false } );
 	}
 
 	/**
@@ -118,8 +101,7 @@ class EntityTile extends React.Component {
 	 *
 	 * @param {Event} e The source {@link Event}.
 	 */
-	onTriggerClick( e ) {
-		// Prevent propagation.
+	onArrowToggleClick( e ) {
 		e.preventDefault();
 
 		// Call the handler.
@@ -145,19 +127,16 @@ class EntityTile extends React.Component {
 						   entity={ this.props.entity } />
 				</Main>
 				<Drawer open={ this.state.open }>
-					<LinkWrap onClick={ this.onLinkClick }>
-						<Switch link={ this.props.entity.link } />
-						<LinkInd link={ this.props.entity.link }>
-							Link </LinkInd>
-					</LinkWrap>
+					<Switch onClick={ this.onSwitchClick }
+							selected={ this.props.entity.link }>
+						Link </Switch>
 					<Category>{ this.props.entity.mainType }</Category>
-					<QuickEdit onClick={ this.onEditClick }
-							   className="fa fa-pencil" />
+					<EditLink onClick={ this.onEditClick }
+							  className="fa fa-pencil" />
 				</Drawer>
-				<Trigger entity={ this.props.entity }
-						 onClick={ this.onTriggerClick }>
-					<Arrow open={ this.state.open } />
-				</Trigger>
+				<ArrowToggle onClick={ this.onArrowToggleClick }
+							 open={ this.state.open }
+							 show={ 0 < this.props.entity.occurrences.length } />
 			</Wrapper>
 		);
 	}

@@ -89,18 +89,3 @@ export const Trigger = styled.div`
 	padding: 8px 4px;
 	background-color: #f1f1f1;
 `;
-
-export const Arrow = styled.div`
-	display: block;
-	width: 8px;
-	height: 8px;
-	border-top: 8px solid transparent;
-	border-bottom: 8px solid transparent;
-	border-left: 8px solid #7d7d7d;
-	border-radius: 16px;
-	transition: transform 150ms ease;
-	transform: rotate( ${ props => props.open ? 180 : 0 }deg );
-	&:hover {
-		border-left-color: #fccd34;
-	} 
-`;

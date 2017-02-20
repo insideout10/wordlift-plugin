@@ -1,9 +1,20 @@
 /**
- * Created by david on 19/02/2017.
+ * Components: Wrapper component.
+ *
+ * The Wrapper component applies styling to its children in order to make them
+ * event.
+ *
+ * @since 3.11.0
  */
 
+/**
+ * External dependencies
+ */
 import styled from 'styled-components';
 
+/**
+ * @inheritDoc
+ */
 const Wrapper = styled.div`
     border-radius: 2px;
     border: 1px solid #c6c6c6;
@@ -23,10 +34,11 @@ const Wrapper = styled.div`
 		border-right: none;
 	}
 	
-	*.active {
+	*.wl-active {
 		background: #c6c6c6;
 		color: #fff;
 	}
 `;
 
+// Finally export the `Wrapper`.
 export default Wrapper;
