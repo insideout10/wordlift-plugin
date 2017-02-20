@@ -11,12 +11,20 @@ require_once( 'wordlift_configuration_settings.php' );
 
 /**
  * The maximal number of entities to be displayed in a "simple"
+ * publisher select without a search box.
+ *
+ * @since 3.11
+ */
+define( 'WL_MAX_ENTITIES_WITHOUT_SEARCH', 10 );
+
+/**
+ * The maximal number of entities to be displayed in a "simple"
  * publisher select. If there are more entities than this, AJAX
  * should be used
  *
  * @since 3.11
  */
-define( 'WL_MAX_ENTITIES_WITHOUT_AJAX', 11 );
+define( 'WL_MAX_ENTITIES_WITHOUT_AJAX', 200 );
 
 /**
  * Enqueue the scripts needed for the settings page
@@ -604,11 +612,15 @@ function wl_configuration_publisher() {
 			// populate the select only if there are less than WL_MAX_ENTITIES_WITHOUT_AJAX possible entities
 			// Otherwise use AJAX..
 
-			$ajax_params = ( $entities_query->post_count < WL_MAX_ENTITIES_WITHOUT_AJAX )  ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
+			$ajax_params = ( $entities_query->found_posts <= WL_MAX_ENTITIES_WITHOUT_AJAX )  ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
+
+			// show the search box only if there are more entiyies than WL_MAX_ENTITIES_WITHOUT_SEARCH.
+			$disable_search_params = ( $entities_query->found_posts > WL_MAX_ENTITIES_WITHOUT_SEARCH )  ? '' : ' data-nosearch="true" ';
 			?>
 			<select id="wl-select-entity"
 					name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID?>]"
 					<?php echo $ajax_params?>
+					<?php echo $disable_search_params?>
 					autocomplete="off">
 				<?php
 

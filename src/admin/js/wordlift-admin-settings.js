@@ -173,11 +173,16 @@
 					templateSelection: formatSelectedEntity,
 				}
 
-				// If AJAX is not done, it means we have a small set and no point to
-				// clutter it with search field
+				// If AJAX is not done, check if we should even bother with a
+				// search box.
 
 				if ( ! $( '#wl-select-entity-panel select' ).data( 'ajax--url' ) ) {
-					select2_options.minimumResultsForSearch = 'Infinity';
+
+					// turn off search if we know that it is a small number of results
+					if ( $( '#wl-select-entity-panel select' ).data( 'nosearch' ) ) {
+						select2_options.minimumResultsForSearch = 'Infinity';
+					}
+
 				} else {
 					// set delay to start the ajax.
 					select2_options.minimumInputLength = 3;
