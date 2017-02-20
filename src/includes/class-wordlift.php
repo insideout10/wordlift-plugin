@@ -355,6 +355,15 @@ class Wordlift {
 	private $status_page;
 
 	/**
+	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Settings_Page_Action_Link $settings_page_action_link The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 */
+	private $settings_page_action_link;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -601,7 +610,9 @@ class Wordlift {
 		/**
 		 * The admin 'WordLift Settings' page.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -732,9 +743,10 @@ class Wordlift {
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
 
 		//** WordPress Admin */
-		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
-		$this->status_page             = new Wordlift_Admin_Status_Page();
-		$this->settings_page = new Wordlift_Admin_Settings_Page( 10, 200, $this->configuration_service, $this->entity_service );
+		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->status_page               = new Wordlift_Admin_Status_Page();
+		$this->settings_page             = new Wordlift_Admin_Settings_Page( 10, 200, $this->configuration_service, $this->entity_service );
+		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
@@ -857,14 +869,17 @@ class Wordlift {
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
-		// Hook the admin_init to the settings page
+		// Hook the admin_init to the settings page.
 		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
 
-		// hook the menu creation on the general wordlift menu creation
+		// Hook the menu creation on the general wordlift menu creation
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 
-		// hook key update
+		// Hook key update.
 		$this->loader->add_action( 'update_option_wl_general_settings', $this->settings_page, 'update_key' );
+
+		// Add additional action links to the WordLift plugin in the plugins page.
+		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
 
 	}
 

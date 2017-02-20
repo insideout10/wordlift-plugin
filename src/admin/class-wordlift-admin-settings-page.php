@@ -19,7 +19,7 @@ require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wo
  * @package    Wordlift
  * @subpackage Wordlift/admin
  */
-class Wordlift_Admin_Settings_Page {
+class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 	/**
 	 * The maximum number of entities to be displayed in a "simple" publisher
@@ -79,11 +79,57 @@ class Wordlift_Admin_Settings_Page {
 	}
 
 	/**
-	 * Enqueue the scripts needed for the settings page.
-	 *
-	 * @since 3.11.0
+	 * @inheritdoc
 	 */
-	function enqueue_scripts() {
+	function get_parent_slug() {
+
+		return 'wl_admin_menu';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function get_capability() {
+
+		return 'manage_options';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function get_page_title() {
+
+		return 'WorldLift Settings';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function get_menu_title() {
+
+		return 'Settings';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function get_menu_slug() {
+
+		return 'wl_configuration_admin_menu';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	function get_partial_name() {
+
+		return 'wordlift-admin-settings-page.php';
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function enqueue_scripts() {
 
 		// Enqueue the media scripts to be used for the publisher's logo selection.
 		wp_enqueue_media();
@@ -91,49 +137,8 @@ class Wordlift_Admin_Settings_Page {
 		// Enqueue select2 library js and css.
 		wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/select2/js/select2.min.js', array( 'jquery' ), '4.0.3' );
 		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/select2/css/select2.min.css', array(), '4.0.3' );
+
 	}
-
-	/**
-	 * This function is called by the *wl_admin_menu* hook which is raised when WordLift builds the admin_menu.
-	 *
-	 * @since 3.11.0
-	 *
-	 * @param string $parent_slug The parent slug for the menu.
-	 * @param string $capability  The required capability to access the page.
-	 */
-	function admin_menu( $parent_slug, $capability ) {
-
-		// see http://codex.wordpress.org/Function_Reference/add_submenu_page
-		$page = add_submenu_page(
-			$parent_slug, // The parent menu slug, provided by the calling hook.
-			__( 'WorldLift Settings', 'wordlift' ),  // page title
-			__( 'Settings', 'wordlift' ),  // menu title
-			$capability,                   // The required capability, provided by the calling hook.
-			'wl_configuration_admin_menu',      // the menu slug
-			array(
-				$this,
-				'render_page',
-			) // the menu callback for displaying the page content
-		);
-
-		// Set a hook to enqueue scripts only when the settings page is displayed.
-		add_action( 'admin_print_scripts-' . $page, array(
-			$this,
-			'enqueue_scripts',
-		) );
-	}
-
-	/**
-	 * Displays the settings page content.
-	 *
-	 * @since 3.11.0
-	 */
-	function render_page() {
-
-		// Include the partial.
-		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-settings-page.php' );
-	}
-
 
 	/**
 	 * Configure all the configuration parameters.
@@ -144,12 +149,12 @@ class Wordlift_Admin_Settings_Page {
 	 */
 	function admin_init() {
 
-		// Add the settings link for the plugin on the plugin admin page.
-		add_filter( 'plugin_action_links_wordlift/wordlift.php', array(
-			$this,
-			'settings_links',
-		) );
-
+//		// Add the settings link for the plugin on the plugin admin page.
+//		add_filter( 'plugin_action_links_wordlift/wordlift.php', array(
+//			$this,
+//			'settings_links',
+//		) );
+//
 		// Hook publisher ajax
 		add_action( 'wp_ajax_wl_possible_publisher', array(
 			$this,
@@ -389,22 +394,22 @@ class Wordlift_Admin_Settings_Page {
 
 	}
 
-	/**
-	 * Create a link to WordLift settings page.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @param array $links An array of links.
-	 *
-	 * @return array An array of links including those added by the plugin.
-	 */
-	function settings_links( $links ) {
-
-		// TODO: this link is different within SEO Ultimate.
-		array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
-
-		return $links;
-	}
+//	/**
+//	 * Create a link to WordLift settings page.
+//	 *
+//	 * @since 3.0.0
+//	 *
+//	 * @param array $links An array of links.
+//	 *
+//	 * @return array An array of links including those added by the plugin.
+//	 */
+//	function settings_links( $links ) {
+//
+//		// TODO: this link is different within SEO Ultimate.
+//		array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
+//
+//		return $links;
+//	}
 
 	/**
 	 * Intercept the change of the WordLift key in order to set the dataset URI.
