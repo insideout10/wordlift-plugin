@@ -1,42 +1,54 @@
 <?php
 /**
- * Handles the WordLift admin settings page
+ * Pages: Admin Settings.
+ *
+ * Handles the WordLift admin settings page.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 
-require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules\configuration\wordlift_configuration_constants.php' );
-require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules\configuration\wordlift_configuration_settings.php' );
-
+require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wordlift_configuration_constants.php' );
+require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wordlift_configuration_settings.php' );
 
 /**
- * The maximal number of entities to be displayed in a "simple"
- * publisher select without a search box.
+ * Define the {@link Wordlift_Admin_Settings_Page} class.
  *
- * @since 3.11
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
-define( 'WL_MAX_ENTITIES_WITHOUT_SEARCH', 10 );
-
-/**
- * The maximal number of entities to be displayed in a "simple"
- * publisher select. If there are more entities than this, AJAX
- * should be used
- *
- * @since 3.11
- */
-define( 'WL_MAX_ENTITIES_WITHOUT_AJAX', 200 );
-
 class Wordlift_Admin_Settings_Page {
 
 	/**
-	 * Enqueue the scripts needed for the settings page
+	 * The maximal number of entities to be displayed in a "simple"
+	 * publisher select without a search box.
+	 *
+	 * @since 3.11
+	 */
+	const MAX_ENTITIES_WITHOUT_SEARCH = 10;
+
+	/**
+	 * The maximal number of entities to be displayed in a "simple"
+	 * publisher select. If there are more entities than this, AJAX
+	 * should be used.
+	 *
+	 * @since 3.11
+	 */
+	const MAX_ENTITIES_WITHOUT_AJAX = 200;
+
+	/**
+	 * Enqueue the scripts needed for the settings page.
 	 *
 	 * @since 3.11
 	 */
 	function enqueue_scripts() {
 
-		// enqueue the media scripts to be used for the publisher's logo selection
+		// Enqueue the media scripts to be used for the publisher's logo selection.
 		wp_enqueue_media();
 
-		// enqueue select2 library js and css
+		// Enqueue select2 library js and css.
 		wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/select2/js/select2.min.js', array( 'jquery' ), '4.0.3' );
 		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/select2/css/select2.min.css', array(), '4.0.3' );
 	}
@@ -58,11 +70,17 @@ class Wordlift_Admin_Settings_Page {
 			__( 'Settings', 'wordlift' ),  // menu title
 			$capability,                   // The required capability, provided by the calling hook.
 			'wl_configuration_admin_menu',      // the menu slug
-			array( $this, 'render_page' ) // the menu callback for displaying the page content
+			array(
+				$this,
+				'render_page',
+			) // the menu callback for displaying the page content
 		);
 
 		// Set a hook to enqueue scripts only when the settings page is displayed
-		add_action( 'admin_print_scripts-' . $page, array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_print_scripts-' . $page, array(
+			$this,
+			'enqueue_scripts',
+		) );
 	}
 
 	/**
@@ -81,9 +99,9 @@ class Wordlift_Admin_Settings_Page {
 
 		?>
 
-		<div class="wrap" >
+		<div class="wrap">
 
-			<h2 ><?php _e( 'WorldLift Settings', 'wordlift' ); ?></h2 >
+			<h2><?php _e( 'WorldLift Settings', 'wordlift' ); ?></h2>
 
 			<?php settings_errors(); ?>
 
@@ -93,10 +111,10 @@ class Wordlift_Admin_Settings_Page {
 
 			<?php if ( $can_show_advanced_settings ) : ?>
 				<a href="?page=<?php echo( $_GET['page'] ); ?>&tab=advanced_settings"
-				   class="nav-tab <?php echo 'advanced_settings' == $active_tab ? 'nav-tab-active' : ''; ?>" ><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a >
+				   class="nav-tab <?php echo 'advanced_settings' == $active_tab ? 'nav-tab-active' : ''; ?>"><?php esc_attr_e( 'Advanced', 'wordlift' ); ?></a>
 			<?php endif; ?>
 
-			<form action="options.php" method="post" >
+			<form action="options.php" method="post">
 				<?php
 				if ( 'general_settings' === $active_tab ) {
 					settings_fields( 'wl_general_settings' );
@@ -109,14 +127,14 @@ class Wordlift_Admin_Settings_Page {
 
 				submit_button();
 				?>
-			</form >
+			</form>
 
-			<div style="margin-top: 100px; font-size: 10px;" >The entities blocks
+			<div style="margin-top: 100px; font-size: 10px;">The entities blocks
 				are
 				designed by Lukasz M. Pogoda from the
 				Noun Project
-			</div >
-		</div >
+			</div>
+		</div>
 
 		<?php
 	}
@@ -134,10 +152,16 @@ class Wordlift_Admin_Settings_Page {
 	function admin_init() {
 
 		// add the settings link for the plugin on the plugin admin page.
-		add_filter( 'plugin_action_links_wordlift/wordlift.php', array( $this, 'settings_links' ) );
+		add_filter( 'plugin_action_links_wordlift/wordlift.php', array(
+			$this,
+			'settings_links',
+		) );
 
 		// hook publisher ajax
-		add_action( 'wp_ajax_wl_possible_publisher', array( $this, 'possible_publisher' ) );
+		add_action( 'wp_ajax_wl_possible_publisher', array(
+			$this,
+			'possible_publisher',
+		) );
 
 		register_setting(
 			'wl_general_settings',
@@ -147,8 +171,8 @@ class Wordlift_Admin_Settings_Page {
 
 		add_settings_section(
 			'wl_general_settings_section',          // ID used to identify this section and with which to register options
-			'',   								// Section header
-			'', 								// Callback used to render the description of the section
+			'',                                // Section header
+			'',                                // Callback used to render the description of the section
 			'wl_general_settings'              // Page on which to add this section of options
 		);
 
@@ -175,7 +199,10 @@ class Wordlift_Admin_Settings_Page {
 		add_settings_field(
 			WL_CONFIG_WORDLIFT_KEY,             // ID used to identify the field throughout the theme
 			__( 'WordLift Key', 'wordlift' ),   // The label to the left of the option interface element
-			array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+			array(
+				$this,
+				'input_box',
+			),       // The name of the function responsible for rendering the option interface
 			'wl_general_settings',         // The page on which this option will be displayed
 			'wl_general_settings_section',      // The name of the section to which this field belongs
 			$key_args                             // The array of arguments to pass to the callback. In this case, just a description.
@@ -183,11 +210,12 @@ class Wordlift_Admin_Settings_Page {
 
 		// Entity Base Path input.
 
-		$entity_base_path_args = array(                              // The array of arguments to pass to the callback. In this case, just a description.
+		$entity_base_path_args = array(
+			// The array of arguments to pass to the callback. In this case, just a description.
 			'id'          => 'wl-entity-base-path',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
 			'value'       => Wordlift_Configuration_Service::get_instance()
-															->get_entity_base_path(),
+			                                               ->get_entity_base_path(),
 			'description' => __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary">FAQs</a> if you need more info.', 'wordlift' ),
 		);
 
@@ -199,7 +227,10 @@ class Wordlift_Admin_Settings_Page {
 		add_settings_field(
 			Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY,             // ID used to identify the field throughout the theme
 			__( 'Entity Base Path', 'wordlift' ),   // The label to the left of the option interface element
-			array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+			array(
+				$this,
+				'input_box',
+			),       // The name of the function responsible for rendering the option interface
 			'wl_general_settings',         // The page on which this option will be displayed
 			'wl_general_settings_section',      // The name of the section to which this field belongs
 			$entity_base_path_args
@@ -213,12 +244,13 @@ class Wordlift_Admin_Settings_Page {
 			array( $this, 'select_box' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
-			array(                              // The array of arguments to pass to the callback. In this case, just a description.
-			                                    'id'          => 'wl-site-language',
-			                                    'name'        => 'wl_general_settings[site_language]',
-			                                    'value'       => wl_configuration_get_site_language(),
-			                                    'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
-			                                    'options'     => $this->get_languages(),
+			array(
+				// The array of arguments to pass to the callback. In this case, just a description.
+				'id'          => 'wl-site-language',
+				'name'        => 'wl_general_settings[site_language]',
+				'value'       => wl_configuration_get_site_language(),
+				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
+				'options'     => $this->get_languages(),
 			)
 		);
 
@@ -248,7 +280,10 @@ class Wordlift_Admin_Settings_Page {
 			add_settings_field(
 				WL_CONFIG_API_URL,             // ID used to identify the field throughout the theme
 				__( 'API URL', 'wordlift' ),   // The label to the left of the option interface element
-				array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+				array(
+					$this,
+					'input_box',
+				),       // The name of the function responsible for rendering the option interface
 				'wl_advanced_settings',         // The page on which this option will be displayed
 				'wl_advanced_settings_section',      // The name of the section to which this field belongs
 				array(                              // The array of arguments to pass to the callback. In this case, just a description.
@@ -262,7 +297,10 @@ class Wordlift_Admin_Settings_Page {
 			add_settings_field(
 				WL_CONFIG_APPLICATION_KEY_NAME,             // ID used to identify the field throughout the theme
 				__( 'Redlink Key', 'wordlift' ),   // The label to the left of the option interface element
-				array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+				array(
+					$this,
+					'input_box',
+				),       // The name of the function responsible for rendering the option interface
 				'wl_advanced_settings',         // The page on which this option will be displayed
 				'wl_advanced_settings_section',      // The name of the section to which this field belongs
 				array(                              // The array of arguments to pass to the callback. In this case, just a description.
@@ -276,7 +314,10 @@ class Wordlift_Admin_Settings_Page {
 			add_settings_field(
 				WL_CONFIG_USER_ID_NAME,             // ID used to identify the field throughout the theme
 				__( 'Redlink User Id', 'wordlift' ),   // The label to the left of the option interface element
-				array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+				array(
+					$this,
+					'input_box',
+				),       // The name of the function responsible for rendering the option interface
 				'wl_advanced_settings',         // The page on which this option will be displayed
 				'wl_advanced_settings_section',      // The name of the section to which this field belongs
 				array(                              // The array of arguments to pass to the callback. In this case, just a description.
@@ -290,7 +331,10 @@ class Wordlift_Admin_Settings_Page {
 			add_settings_field(
 				WL_CONFIG_DATASET_NAME,             // ID used to identify the field throughout the theme
 				__( 'Redlink Dataset name', 'wordlift' ),   // The label to the left of the option interface element
-				array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+				array(
+					$this,
+					'input_box',
+				),       // The name of the function responsible for rendering the option interface
 				'wl_advanced_settings',         // The page on which this option will be displayed
 				'wl_advanced_settings_section',      // The name of the section to which this field belongs
 				array(                              // The array of arguments to pass to the callback. In this case, just a description.
@@ -304,7 +348,10 @@ class Wordlift_Admin_Settings_Page {
 			add_settings_field(
 				WL_CONFIG_DATASET_BASE_URI_NAME,             // ID used to identify the field throughout the theme
 				__( 'Redlink Dataset URI', 'wordlift' ),   // The label to the left of the option interface element
-				array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+				array(
+					$this,
+					'input_box',
+				),       // The name of the function responsible for rendering the option interface
 				'wl_advanced_settings',         // The page on which this option will be displayed
 				'wl_advanced_settings_section',      // The name of the section to which this field belongs
 				array(                              // The array of arguments to pass to the callback. In this case, just a description.
@@ -318,7 +365,10 @@ class Wordlift_Admin_Settings_Page {
 			add_settings_field(
 				WL_CONFIG_ANALYSIS_NAME,             // ID used to identify the field throughout the theme
 				__( 'Redlink Application Name', 'wordlift' ),   // The label to the left of the option interface element
-				array( $this, 'input_box' ),       // The name of the function responsible for rendering the option interface
+				array(
+					$this,
+					'input_box',
+				),       // The name of the function responsible for rendering the option interface
 				'wl_advanced_settings',         // The page on which this option will be displayed
 				'wl_advanced_settings_section',      // The name of the section to which this field belongs
 				array(                              // The array of arguments to pass to the callback. In this case, just a description.
@@ -365,7 +415,11 @@ class Wordlift_Admin_Settings_Page {
 		if ( isset( $_POST['wl-setting-panel'] ) && ( 'wl-create-entity' == $_POST['wl-setting-panel'] ) ) {
 
 			// validate publisher type
-			if ( ! isset( $_POST['wl-publisher-type'] ) || ! in_array( $_POST['wl-publisher-type'], array( 'person', 'company' ) ) ) {
+			if ( ! isset( $_POST['wl-publisher-type'] ) || ! in_array( $_POST['wl-publisher-type'], array(
+					'person',
+					'company',
+				) )
+			) {
 				return $input;
 			}
 
@@ -405,15 +459,17 @@ class Wordlift_Admin_Settings_Page {
 		<input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
 		       name="<?php echo esc_attr( $args['name'] ); ?>"
 		       value="<?php echo esc_attr( $args['value'] ); ?>"
-			   <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
-			   <?php if ( isset( $args['class'] ) ) { echo 'class="' . esc_attr( $args['class'] ) . '"'; } ?>
+		       <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
+			<?php if ( isset( $args['class'] ) ) {
+				echo 'class="' . esc_attr( $args['class'] ) . '"';
+			} ?>
 		/>
 
 		<?php
 		if ( isset( $args['description'] ) ) {
-				?>
-				<p><?php echo $args['description'];?></p>
-				<?php
+			?>
+			<p><?php echo $args['description']; ?></p>
+			<?php
 		}
 
 	}
@@ -433,7 +489,7 @@ class Wordlift_Admin_Settings_Page {
 		?>
 
 		<select id="<?php echo esc_attr( $args['id'] ); ?>"
-		        name="<?php echo esc_attr( $args['name'] ); ?>" >
+		        name="<?php echo esc_attr( $args['name'] ); ?>">
 			<?php
 			// Print all the supported language, preselecting the one configured in WP (or English if not supported).
 			// We now use the `Wordlift_Languages` class which provides the list of languages supported by WordLift.
@@ -447,22 +503,22 @@ class Wordlift_Admin_Settings_Page {
 
 			foreach ( $languages as $code => $label ) { ?>
 				<option
-					value="<?php echo esc_attr( $code ) ?>" <?php echo selected( $code, $language, false ) ?>><?php echo esc_html( $label ) ?></option >
+					value="<?php echo esc_attr( $code ) ?>" <?php echo selected( $code, $language, false ) ?>><?php echo esc_html( $label ) ?></option>
 			<?php } ?>
-		</select >
+		</select>
 
 		<?php
 		if ( isset( $args['description'] ) ) {
-				?>
-				<p><?php echo $args['description'];?></p>
-				<?php
+			?>
+			<p><?php echo $args['description']; ?></p>
+			<?php
 		}
 	}
 
 	/**
-	* Display publisher selection/creation settings.
-	*
-	* @since 3.11.0
+	 * Display publisher selection/creation settings.
+	 *
+	 * @since 3.11.0
 	 *
 	 */
 	function publisher_section() {
@@ -470,9 +526,9 @@ class Wordlift_Admin_Settings_Page {
 		// get all the organizations and persons that might be used as publishers.
 
 		$entities_query = new wp_Query( array(
-			'post_type' => Wordlift_Entity_Service::TYPE_NAME,
-			'posts_per_page' => WL_MAX_ENTITIES_WITHOUT_AJAX,
-			'tax_query' => array(
+			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
+			'posts_per_page' => self::MAX_ENTITIES_WITHOUT_AJAX,
+			'tax_query'      => array(
 				'relation' => 'OR',
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
@@ -485,7 +541,7 @@ class Wordlift_Admin_Settings_Page {
 					'terms'    => 'Organization',
 				),
 			),
-		));
+		) );
 
 		// Variable indicating should the select tab (and panel) be displayed.
 		// If the wizard is skipped during the install there might not be entities
@@ -502,60 +558,60 @@ class Wordlift_Admin_Settings_Page {
 			}
 
 			#wl-key.invalid {
-		  		background-image: url("<?php echo dirname( plugin_dir_url( __FILE__ ) )?>/images/invalid.png");
+				background-image: url("<?php echo dirname( plugin_dir_url( __FILE__ ) )?>/images/invalid.png");
 			}
 
 			#wl-key.valid {
-		  		background-image: url("<?php echo dirname( plugin_dir_url( __FILE__ ) )?>/images/valid.png");
+				background-image: url("<?php echo dirname( plugin_dir_url( __FILE__ ) )?>/images/valid.png");
 			}
 
 			#wl-key.untouched {
-			  	background-image: initial;
+				background-image: initial;
 			}
 
 			.wl-tab-panel {
-				display:none;
-				padding-top:10px;
+				display: none;
+				padding-top: 10px;
 			}
 
 			.wl-select-entity-active #wl-select-entity-panel {
-				display:block;
+				display: block;
 			}
 
 			.wl-create-entity-active #wl-create-entity-panel {
-				display:block;
+				display: block;
 			}
 
 			.wl-select-entity-active select {
-				width:400px;
+				width: 400px;
 			}
 
 			.wl-select2 {
-				font-size:12px;
-				color:#1980c0;
+				font-size: 12px;
+				color: #1980c0;
 			}
 
 			.wl-select2 img, .wl-select2 .img-filler {
 				height: 24px;
 				width: 24px;
-				margin-right:10px;
-				margin-left:10px;
-				vertical-align:middle;
-				display:inline-block;
+				margin-right: 10px;
+				margin-left: 10px;
+				vertical-align: middle;
+				display: inline-block;
 			}
 
 			.wl-select2-type {
-				float:right;
-				margin-right:10px;
-				text-align:right;
+				float: right;
+				margin-right: 10px;
+				text-align: right;
 			}
 
 			#wl-publisher-type span {
-				margin-right:20px;
+				margin-right: 20px;
 			}
 
 			#wl-publisher-logo {
-				display:none;
+				display: none;
 			}
 
 			#wl-publisher-logo input {
@@ -566,60 +622,66 @@ class Wordlift_Admin_Settings_Page {
 			}
 
 			#wl-publisher-name input {
-				width:400px;
+				width: 400px;
 			}
 
 			#wl-publisher-logo-preview {
-				width:24px;
-				height:24px;
-				vertical-align:middle;
-				margin-right:10px;
-				display:none;
+				width: 24px;
+				height: 24px;
+				vertical-align: middle;
+				margin-right: 10px;
+				display: none;
 			}
 
 		</style>
 
 		<input type="hidden"
-				id="wl-setting-panel"
-				autocomplete="off"
-				name="wl-setting-panel" value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
-		<input type="hidden" id="wl-publisher-logo-id" name="wl-publisher-logo-id" autocomplete="off">
+		       id="wl-setting-panel"
+		       autocomplete="off"
+		       name="wl-setting-panel"
+		       value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
+		<input type="hidden" id="wl-publisher-logo-id"
+		       name="wl-publisher-logo-id" autocomplete="off">
 
 		<div id="wl-publisher-section"
-			class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
-			data-tabing-enabled="<?php echo $select_panel_displayed ? 'yes' : 'no' ?>">
+		     class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
+		     data-tabing-enabled="<?php echo $select_panel_displayed ? 'yes' : 'no' ?>">
 			<div class="nav-tab-wrapper">
-				<a class="nav-tab <?php echo $select_panel_displayed ? 'nav-tab-active' : ''?>" data-panel="wl-select-entity" href="#"><?php _e( 'Select existing publisher', 'wordlift' )?></a>
-				<a class="nav-tab <?php echo $select_panel_displayed ? '' : 'nav-tab-active'?>" data-panel="wl-create-entity" href="#"><?php _e( 'Create new publisher', 'wordlift' )?></a>
+				<a class="nav-tab <?php echo $select_panel_displayed ? 'nav-tab-active' : '' ?>"
+				   data-panel="wl-select-entity"
+				   href="#"><?php _e( 'Select existing publisher', 'wordlift' ) ?></a>
+				<a class="nav-tab <?php echo $select_panel_displayed ? '' : 'nav-tab-active' ?>"
+				   data-panel="wl-create-entity"
+				   href="#"><?php _e( 'Create new publisher', 'wordlift' ) ?></a>
 			</div>
 			<div id="wl-select-entity-panel" class="wl-tab-panel">
 				<?php
 				// populate the select only if there are less than WL_MAX_ENTITIES_WITHOUT_AJAX possible entities
 				// Otherwise use AJAX..
 
-				$ajax_params = ( $entities_query->found_posts <= WL_MAX_ENTITIES_WITHOUT_AJAX )  ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
+				$ajax_params = ( $entities_query->found_posts <= self::MAX_ENTITIES_WITHOUT_AJAX ) ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
 
 				// show the search box only if there are more entiyies than WL_MAX_ENTITIES_WITHOUT_SEARCH.
-				$disable_search_params = ( $entities_query->found_posts > WL_MAX_ENTITIES_WITHOUT_SEARCH )  ? '' : ' data-nosearch="true" ';
+				$disable_search_params = ( $entities_query->found_posts > self::MAX_ENTITIES_WITHOUT_SEARCH ) ? '' : ' data-nosearch="true" ';
 				?>
 				<select id="wl-select-entity"
-						name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID?>]"
-						<?php echo $ajax_params?>
-						<?php echo $disable_search_params?>
-						autocomplete="off">
+				        name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID ?>]"
+					<?php echo $ajax_params ?>
+					<?php echo $disable_search_params ?>
+					    autocomplete="off">
 					<?php
 
-					if ( $entities_query->post_count < WL_MAX_ENTITIES_WITHOUT_AJAX ) {
+					if ( $entities_query->post_count < self::MAX_ENTITIES_WITHOUT_AJAX ) {
 						while ( $entities_query->have_posts() ) {
 							$entities_query->the_post();
 
 							// get the thumbnail, the long way around instead of get_the_thumbnail_url
 							// because it is supported only from version 4.4
 
-							$thumb = '';
+							$thumb             = '';
 							$post_thumbnail_id = get_post_thumbnail_id();
-						    if ( $post_thumbnail_id ) {
-							    $thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
+							if ( $post_thumbnail_id ) {
+								$thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
 							}
 
 							// get the type of entity.
@@ -637,9 +699,9 @@ class Wordlift_Admin_Settings_Page {
 						// display only the currently selected publisher
 
 						$post_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
-						$post = get_post( $post_id );
+						$post    = get_post( $post_id );
 
-						$thumb = '';
+						$thumb             = '';
 						$post_thumbnail_id = get_post_thumbnail_id( $post_id );
 						if ( $post_thumbnail_id ) {
 							$thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
@@ -660,24 +722,38 @@ class Wordlift_Admin_Settings_Page {
 				</select>
 			</div>
 			<div id="wl-create-entity-panel" class="wl-tab-panel">
-				<p><b><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></b></p>
+				<p>
+					<b><?php esc_html_e( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></b>
+				</p>
 				<p id="wl-publisher-type">
 					<span>
-						<input id="wl-publisher-person" type="radio" name="wl-publisher-type" value="person" checked="checcked" autocomplete="off">
-						<label for="wl-publisher-person"><?php esc_html_e( 'Person', 'wordlift' )?></label>
+						<input id="wl-publisher-person" type="radio"
+						       name="wl-publisher-type" value="person"
+						       checked="checcked" autocomplete="off">
+						<label
+							for="wl-publisher-person"><?php esc_html_e( 'Person', 'wordlift' ) ?></label>
 					</span>
 					<span>
-						<input id="wl-publisher-company" type="radio" name="wl-publisher-type" value="company" autocomplete="off">
-						<label for="wl-publisher-company"><?php esc_html_e( 'Company', 'wordlift' )?></label>
+						<input id="wl-publisher-company" type="radio"
+						       name="wl-publisher-type" value="company"
+						       autocomplete="off">
+						<label
+							for="wl-publisher-company"><?php esc_html_e( 'Company', 'wordlift' ) ?></label>
 					</span>
 				</p>
 				<p id="wl-publisher-name">
-					<input type="text" placeholder="<?php esc_attr_e( "Publisher's Name", 'wordlift' )?>" name="wl-publisher-name">
+					<input type="text"
+					       placeholder="<?php esc_attr_e( "Publisher's Name", 'wordlift' ) ?>"
+					       name="wl-publisher-name">
 				</p>
 				<div id="wl-publisher-logo">
-					<p><b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b></p>
 					<p>
-						<img id="wl-publisher-logo-preview"><input type="button" class="button" value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>" >
+						<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b>
+					</p>
+					<p>
+						<img id="wl-publisher-logo-preview"><input type="button"
+						                                           class="button"
+						                                           value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>">
 					</p>
 				</div>
 			</div>
@@ -702,7 +778,6 @@ class Wordlift_Admin_Settings_Page {
 
 		return $links;
 	}
-
 
 
 	/**
@@ -789,10 +864,10 @@ class Wordlift_Admin_Settings_Page {
 	 *
 	 * @link    http://wordpress.stackexchange.com/a/11826/1685
 	 *
-	 * @since 3.11
+	 * @since   3.11
 	 *
-	 * @param   string      $search
-	 * @param   WP_Query    $wp_query
+	 * @param   string   $search
+	 * @param   WP_Query $wp_query
 	 */
 	function search_by_title( $search, $wp_query ) {
 		if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
@@ -830,16 +905,17 @@ class Wordlift_Admin_Settings_Page {
 		// no actual search parameter was passed, bail out
 		if ( ! isset( $_POST['q'] ) ) {
 			wp_die();
+
 			return;
 		}
 
 		add_filter( 'posts_search', array( $this, 'search_by_title' ), 10, 2 );
 
 		$entities_query = new wp_Query( array(
-			'post_type' => Wordlift_Entity_Service::TYPE_NAME,
-			'posts_per_page' => -1,
-			's' => $_POST['q'],
-			'tax_query' => array(
+			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
+			'posts_per_page' => - 1,
+			's'              => $_POST['q'],
+			'tax_query'      => array(
 				'relation' => 'OR',
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
@@ -852,7 +928,7 @@ class Wordlift_Admin_Settings_Page {
 					'terms'    => 'Organization',
 				),
 			),
-		));
+		) );
 
 		$response = array();
 
@@ -862,7 +938,7 @@ class Wordlift_Admin_Settings_Page {
 			// get the thumbnail, the long way around instead of get_the_thumbnail_url
 			// because it is supported only from version 4.4
 
-			$thumb = '';
+			$thumb             = '';
 			$post_thumbnail_id = get_post_thumbnail_id();
 			if ( $post_thumbnail_id ) {
 				$thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
@@ -878,10 +954,10 @@ class Wordlift_Admin_Settings_Page {
 			}
 
 			$entity_data = array(
-				'id' => get_the_ID(),
-				'text' => get_the_title(),
+				'id'       => get_the_ID(),
+				'text'     => get_the_title(),
 				'thumburl' => $thumb,
-				'type' => $entity_type,
+				'type'     => $entity_type,
 			);
 
 			$response[] = $entity_data;

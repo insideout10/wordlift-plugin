@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Define the menu entry and the page for 'Download Your Data'.
  *
