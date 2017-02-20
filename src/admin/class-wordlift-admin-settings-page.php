@@ -90,28 +90,8 @@ class Wordlift_Admin_Settings_Page {
 	 */
 	function render_page() {
 
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-		}
-
-		?>
-
-		<div class="wrap">
-
-			<h2><?php _e( 'WorldLift Settings', 'wordlift' ); ?></h2>
-
-			<?php settings_errors(); ?>
-
-			<form action="options.php" method="post">
-				<?php
-				settings_fields( 'wl_general_settings' );
-				do_settings_sections( 'wl_general_settings' );
-				submit_button();
-				?>
-			</form>
-		</div>
-
-		<?php
+		// Include the partial.
+		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-settings-page.php' );
 	}
 
 
@@ -367,7 +347,7 @@ class Wordlift_Admin_Settings_Page {
 
 		// get all the organizations and persons that might be used as publishers.
 
-		$entities_query = new wp_Query( array(
+		$entities_query = new WP_Query( array(
 			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
 			'posts_per_page' => self::MAX_ENTITIES_WITHOUT_AJAX,
 			'tax_query'      => array(
@@ -719,7 +699,7 @@ class Wordlift_Admin_Settings_Page {
 
 		add_filter( 'posts_search', array( $this, 'search_by_title' ), 10, 2 );
 
-		$entities_query = new wp_Query( array(
+		$entities_query = new WP_Query( array(
 			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
 			'posts_per_page' => - 1,
 			's'              => $_POST['q'],
