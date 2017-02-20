@@ -623,6 +623,8 @@ class Wordlift {
 		/**
 		 * The admin 'WordLift Settings' page.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';

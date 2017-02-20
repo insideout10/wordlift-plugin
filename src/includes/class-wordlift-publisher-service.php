@@ -34,14 +34,14 @@ class Wordlift_Publisher_Service {
 		// Run the query and get the results.
 		$results = $wpdb->get_results( $wpdb->prepare(
 			"SELECT p.id, p.post_title, t.name AS type, m.meta_value AS thumbnail_id" .
-			" FROM wp_posts p" .
-			"  LEFT JOIN wp_term_relationships tr" .
+			" FROM $wpdb->posts p" .
+			"  LEFT JOIN $wpdb->term_relationships tr" .
 			"   ON tr.object_id = p.id" .
-			"  LEFT JOIN wp_term_taxonomy tt" .
+			"  LEFT JOIN $wpdb->term_taxonomy tt" .
 			"   ON tt.term_taxonomy_id = tr.term_taxonomy_id" .
-			"  LEFT JOIN wp_terms t" .
+			"  LEFT JOIN $wpdb->terms t" .
 			"   ON t.term_id = tt.term_id" .
-			"  LEFT JOIN wp_postmeta m" .
+			"  LEFT JOIN $wpdb->postmeta m" .
 			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
 			"  WHERE p.post_type = %s" .
 			"   AND t.name IN ( 'Organization', 'Person' )" .

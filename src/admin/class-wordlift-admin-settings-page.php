@@ -149,18 +149,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	function admin_init() {
 
-//		// Add the settings link for the plugin on the plugin admin page.
-//		add_filter( 'plugin_action_links_wordlift/wordlift.php', array(
-//			$this,
-//			'settings_links',
-//		) );
-//
-		// Hook publisher ajax
-		add_action( 'wp_ajax_wl_possible_publisher', array(
-			$this,
-			'possible_publisher',
-		) );
-
 		register_setting(
 			'wl_general_settings',
 			'wl_general_settings',
@@ -168,10 +156,10 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		);
 
 		add_settings_section(
-			'wl_general_settings_section',          // ID used to identify this section and with which to register options
-			'',                                // Section header
-			'',                                // Callback used to render the description of the section
-			'wl_general_settings'              // Page on which to add this section of options
+			'wl_general_settings_section', // ID used to identify this section and with which to register options.
+			'',                            // Section header.
+			'',                            // Callback used to render the description of the section.
+			'wl_general_settings'          // Page on which to add this section of options.
 		);
 
 		$key_args = array(
@@ -181,11 +169,11 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
 		);
 
-		// set the class for the key field based on the validity of the key.
-		// class should be "untouched" for an empty (virgin) value, "valid"
+		// Set the class for the key field based on the validity of the key.
+		// Class should be "untouched" for an empty (virgin) value, "valid"
 		// if the key is valid, or "invalid" otherwise.
-
 		$validation_service = new Wordlift_Key_Validation_Service();
+
 		if ( empty( $key_args['value'] ) ) {
 			$key_args['class'] = 'untouched';
 		} elseif ( $validation_service->is_valid( $key_args['value'] ) ) {
@@ -195,50 +183,41 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		}
 
 		add_settings_field(
-			WL_CONFIG_WORDLIFT_KEY,             // ID used to identify the field throughout the theme
-			__( 'WordLift Key', 'wordlift' ),   // The label to the left of the option interface element
-			array(
-				$this,
-				'input_box',
-			),       // The name of the function responsible for rendering the option interface
+			WL_CONFIG_WORDLIFT_KEY,           // ID used to identify the field throughout the theme.
+			__( 'WordLift Key', 'wordlift' ), // The label to the left of the option interface element.
+			array( 'Wordlift_Admin_Input_Element', 'render', ),
+			// The name of the function responsible for rendering the option interface
 			'wl_general_settings',         // The page on which this option will be displayed
 			'wl_general_settings_section',      // The name of the section to which this field belongs
 			$key_args                             // The array of arguments to pass to the callback. In this case, just a description.
 		);
 
 		// Entity Base Path input.
-
 		$entity_base_path_args = array(
 			// The array of arguments to pass to the callback. In this case, just a description.
 			'id'          => 'wl-entity-base-path',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
 			'value'       => $this->configuration_service->get_entity_base_path(),
-			'description' => __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary">FAQs</a> if you need more info.', 'wordlift' ),
+			'description' => sprintf( _x( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="%s">FAQs</a> if you need more info.', 'wordlift' ), 'https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary' ),
 		);
 
-		if ( $this->entity_service->count() ) {
-			// Mark the field readonly, the value can be anything.
-			$entity_base_path_args['readonly'] = '';
-		}
+		$entity_base_path_args['readonly'] = 0 < $this->entity_service->count();
 
 		add_settings_field(
-			Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY,             // ID used to identify the field throughout the theme
-			__( 'Entity Base Path', 'wordlift' ),   // The label to the left of the option interface element
-			array(
-				$this,
-				'input_box',
-			),       // The name of the function responsible for rendering the option interface
-			'wl_general_settings',         // The page on which this option will be displayed
-			'wl_general_settings_section',      // The name of the section to which this field belongs
+			Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY, // ID used to identify the field throughout the theme
+			__( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
+			array( 'Wordlift_Admin_Input_Element', 'render', ),
+			// The name of the function responsible for rendering the option interface
+			'wl_general_settings',                                // The page on which this option will be displayed
+			'wl_general_settings_section',                        // The name of the section to which this field belongs
 			$entity_base_path_args
 		);
 
 		// Site Language input.
-
 		add_settings_field(
 			WL_CONFIG_SITE_LANGUAGE_NAME,
 			__( 'Site Language', 'wordlift' ),
-			array( $this, 'select_box' ),
+			array( 'Wordlift_Admin_Language_Select_Element', 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
 			array(
@@ -314,74 +293,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
-	 * Draw an input text with the provided parameters.
-	 *
-	 * @since 3.11.0
-	 *
-	 * @param array $args An array of configuration parameters.
-	 */
-	function input_box( $args ) {
-		?>
-		<input type="text" id="<?php echo esc_attr( $args['id'] ); ?>"
-		       name="<?php echo esc_attr( $args['name'] ); ?>"
-		       value="<?php echo esc_attr( $args['value'] ); ?>"
-		       <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
-			<?php if ( isset( $args['class'] ) ) {
-				echo 'class="' . esc_attr( $args['class'] ) . '"';
-			} ?>
-		/>
-
-		<?php
-		if ( isset( $args['description'] ) ) {
-			?>
-			<p><?php echo $args['description']; ?></p>
-			<?php
-		}
-
-	}
-
-	/**
-	 * Display a select.
-	 *
-	 * @deprecated only used by the languages select.
-	 *
-	 * @see        https://github.com/insideout10/wordlift-plugin/issues/349
-	 *
-	 * @since      3.11.0
-	 *
-	 * @param array $args The select configuration parameters.
-	 */
-	function select_box( $args ) {
-		?>
-
-		<select id="<?php echo esc_attr( $args['id'] ); ?>"
-		        name="<?php echo esc_attr( $args['name'] ); ?>">
-			<?php
-			// Print all the supported language, preselecting the one configured in WP (or English if not supported).
-			// We now use the `Wordlift_Languages` class which provides the list of languages supported by WordLift.
-			// See https://github.com/insideout10/wordlift-plugin/issues/349
-
-			// Get WordLift's supported languages.
-			$languages = Wordlift_Languages::get_languages();
-
-			// If we support WP's configured language, then use that, otherwise use English by default.
-			$language = isset( $languages[ $args['value'] ] ) ? $args['value'] : 'en';
-
-			foreach ( $languages as $code => $label ) { ?>
-				<option
-					value="<?php echo esc_attr( $code ) ?>" <?php echo selected( $code, $language, false ) ?>><?php echo esc_html( $label ) ?></option>
-			<?php } ?>
-		</select>
-
-		<?php
-		if ( isset( $args['description'] ) ) {
-			?>
-			<p><?php echo $args['description']; ?></p>
-			<?php
-		}
-	}
-
-	/**
 	 * Display publisher selection/creation settings.
 	 *
 	 * @since 3.11.0
@@ -393,23 +304,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-settings-page-publisher-section.php' );
 
 	}
-
-//	/**
-//	 * Create a link to WordLift settings page.
-//	 *
-//	 * @since 3.0.0
-//	 *
-//	 * @param array $links An array of links.
-//	 *
-//	 * @return array An array of links including those added by the plugin.
-//	 */
-//	function settings_links( $links ) {
-//
-//		// TODO: this link is different within SEO Ultimate.
-//		array_push( $links, '<a href="' . get_admin_url( null, 'admin.php?page=wl_configuration_admin_menu' ) . '">Settings</a>' );
-//
-//		return $links;
-//	}
 
 	/**
 	 * Intercept the change of the WordLift key in order to set the dataset URI.
@@ -448,117 +342,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			// TO DO User notification is needed here.
 		}
 
-	}
-
-	/**
-	 * Search SQL filter for matching against post title only.
-	 *
-	 * Adapted from
-	 *
-	 * @link    http://wordpress.stackexchange.com/a/11826/1685
-	 *
-	 * @since   3.11.0
-	 *
-	 * @param   string   $search   The search string.
-	 * @param   WP_Query $wp_query The WP-Query in the context of which the search is done.
-	 */
-	function search_by_title( $search, $wp_query ) {
-		if ( ! empty( $search ) && ! empty( $wp_query->query_vars['search_terms'] ) ) {
-			global $wpdb;
-
-			$q = $wp_query->query_vars;
-			$n = ! empty( $q['exact'] ) ? '' : '%';
-
-			$search = array();
-
-			foreach ( (array) $q['search_terms'] as $term ) {
-				$search[] = $wpdb->prepare( "$wpdb->posts.post_title LIKE %s", $n . $wpdb->esc_like( $term ) . $n );
-			}
-
-			$search = ' AND ' . implode( ' AND ', $search );
-		}
-
-		return $search;
-	}
-
-	/**
-	 * Handle the AJAX request coming from the publisher selection AJAX
-	 * on the setting screen.
-	 *
-	 * The parameters in the POST request are
-	 *   q - The string to search for in the title of the person or organizations
-	 *       entity.
-	 *
-	 * As a result output the HTML select element containing the titles of the entities
-	 * as labels, and there "post id" as values.
-	 *
-	 */
-	function possible_publisher() {
-
-		// No actual search parameter was passed, bail out.
-		if ( ! isset( $_POST['q'] ) ) {
-			wp_die();
-
-			return;
-		}
-
-		add_filter( 'posts_search', array( $this, 'search_by_title' ), 10, 2 );
-
-		$entities_query = new WP_Query( array(
-			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
-			'posts_per_page' => - 1,
-			's'              => $_POST['q'],
-			'tax_query'      => array(
-				'relation' => 'OR',
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'name',
-					'terms'    => 'Person',
-				),
-				array(
-					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field'    => 'name',
-					'terms'    => 'Organization',
-				),
-			),
-		) );
-
-		$response = array();
-
-		while ( $entities_query->have_posts() ) {
-			$entities_query->the_post();
-
-			/*
-			 * Get the thumbnail, the long way around instead of get_the_thumbnail_url
-			 * because it is supported only from version 4.4.
-			 */
-
-			$thumb             = '';
-			$post_thumbnail_id = get_post_thumbnail_id();
-			if ( $post_thumbnail_id ) {
-				$thumb = wp_get_attachment_image_url( $post_thumbnail_id, 'thumbnail' );
-			}
-
-			// get the type of entity.
-
-			$terms = get_the_terms( get_the_ID(), Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-			$entity_type = __( 'Person', 'wordlift' );
-			if ( 'Organization' == $terms[0]->name ) {
-				$entity_type = __( 'Company', 'wordlift' );
-			}
-
-			$entity_data = array(
-				'id'       => get_the_ID(),
-				'text'     => get_the_title(),
-				'thumburl' => $thumb,
-				'type'     => $entity_type,
-			);
-
-			$response[] = $entity_data;
-		}
-
-		wp_send_json( $response );
 	}
 
 }

@@ -8,8 +8,7 @@
 ?>
 
 <div class="wrap">
-
-	<h2><?php _e( 'WorldLift Settings', 'wordlift' ); ?></h2>
+	<h2><?php esc_html_e( 'WorldLift Settings', 'wordlift' ); ?></h2>
 
 	<?php settings_errors(); ?>
 
