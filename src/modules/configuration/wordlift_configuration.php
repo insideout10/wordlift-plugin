@@ -396,6 +396,7 @@ function wl_configuration_input_box( $args ) {
 	       name="<?php echo esc_attr( $args['name'] ); ?>"
 	       value="<?php echo esc_attr( $args['value'] ); ?>"
 		   <?php if ( isset( $args['readonly'] ) ) { ?>readonly<?php } ?>
+		   <?php if ( isset( $args['class'] ) ) { echo 'class="' . esc_attr( $args['class'] ) . '"'; } ?>
 	/>
 
 	<?php
