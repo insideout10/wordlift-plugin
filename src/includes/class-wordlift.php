@@ -255,6 +255,15 @@ class Wordlift {
 	private $download_your_data_page;
 
 	/**
+	 * The 'WordLift Settings' page.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Settings_Page $settings_page The 'WordLift Settings' page.
+	 */
+	private $settings_page;
+
+	/**
 	 * The install wizard page.
 	 *
 	 * @since  3.9.0
@@ -585,6 +594,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
 
 		/**
+		 * The admin 'Download Your Data' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
+
+		/**
+		 * The admin 'WordLift Settings' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
@@ -715,6 +734,7 @@ class Wordlift {
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page();
+		$this->settings_page = new Wordlift_Admin_Settings_Page( );
 
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
@@ -836,6 +856,15 @@ class Wordlift {
 
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
+
+		// Hook the admin_init to the settings page
+		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
+
+		// hook the menu creation on the general wordlift menu creation
+		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+
+		// hook key update
+		$this->loader->add_action( 'update_option_wl_general_settings', $this->settings_page, 'update_key' );
 
 	}
 

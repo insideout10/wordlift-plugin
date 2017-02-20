@@ -34,7 +34,6 @@ require_once( 'wordlift_constants.php' );
 
 // Load modules
 require_once( 'modules/core/wordlift_core.php' );
-require_once( 'modules/configuration/wordlift_configuration.php' );
 
 /**
  * Log to the debug.log file.
