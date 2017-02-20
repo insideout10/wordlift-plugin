@@ -35,16 +35,16 @@ $entities_query = new WP_Query( array(
 $select_panel_displayed = $entities_query->have_posts();
 ?>
 <input type="hidden"
-	   id="wl-setting-panel"
-	   autocomplete="off"
-	   name="wl-setting-panel"
-	   value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
+       id="wl-setting-panel"
+       autocomplete="off"
+       name="wl-setting-panel"
+       value="<?php echo $select_panel_displayed ? 'wl-select-entity' : 'wl-create-entity' ?>">
 <input type="hidden" id="wl-publisher-logo-id"
-	   name="wl-publisher-logo-id" autocomplete="off">
+       name="wl-publisher-logo-id" autocomplete="off">
 
 <div id="wl-publisher-section"
-	 class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
-	 data-tabing-enabled="<?php echo $select_panel_displayed ? 'yes' : 'no' ?>">
+     class="<?php echo $select_panel_displayed ? 'wl-select-entity-active' : 'wl-create-entity-active' ?>"
+     data-tabing-enabled="<?php echo $select_panel_displayed ? 'yes' : 'no' ?>">
 	<div class="nav-tab-wrapper">
 		<a class="nav-tab <?php echo $select_panel_displayed ? 'nav-tab-active' : '' ?>"
 		   data-panel="wl-select-entity"
@@ -64,10 +64,10 @@ $select_panel_displayed = $entities_query->have_posts();
 		$disable_search_params = ( $entities_query->found_posts > $this->max_entities_without_search ) ? '' : ' data-nosearch="true" ';
 		?>
 		<select id="wl-select-entity"
-				name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID ?>]"
+		        name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID ?>]"
 			<?php echo $ajax_params ?>
 			<?php echo $disable_search_params ?>
-				autocomplete="off">
+			    autocomplete="off">
 			<?php
 
 			if ( $entities_query->post_count < $this->max_entities_without_ajax ) {
@@ -129,23 +129,23 @@ $select_panel_displayed = $entities_query->have_posts();
 		<p id="wl-publisher-type">
 			<span>
 				<input id="wl-publisher-person" type="radio"
-					   name="wl-publisher-type" value="person"
-					   checked="checcked" autocomplete="off">
+				       name="wl-publisher-type" value="person"
+				       checked="checcked" autocomplete="off">
 				<label
 					for="wl-publisher-person"><?php esc_html_e( 'Person', 'wordlift' ) ?></label>
 			</span>
 			<span>
 				<input id="wl-publisher-company" type="radio"
-					   name="wl-publisher-type" value="company"
-					   autocomplete="off">
+				       name="wl-publisher-type" value="company"
+				       autocomplete="off">
 				<label
 					for="wl-publisher-company"><?php esc_html_e( 'Company', 'wordlift' ) ?></label>
 			</span>
 		</p>
 		<p id="wl-publisher-name">
 			<input type="text"
-				   placeholder="<?php esc_attr_e( "Publisher's Name", 'wordlift' ) ?>"
-				   name="wl-publisher-name">
+			       placeholder="<?php esc_attr_e( "Publisher's Name", 'wordlift' ) ?>"
+			       name="wl-publisher-name">
 		</p>
 		<div id="wl-publisher-logo">
 			<p>
@@ -153,8 +153,8 @@ $select_panel_displayed = $entities_query->have_posts();
 			</p>
 			<p>
 				<img id="wl-publisher-logo-preview"><input type="button"
-														   class="button"
-														   value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>">
+				                                           class="button"
+				                                           value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>">
 			</p>
 		</div>
 	</div>

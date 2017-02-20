@@ -22,12 +22,24 @@ require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wo
 class Wordlift_Admin_Settings_Page {
 
 	/**
-	 * @since 3.11
+	 * The maximum number of entities to be displayed in a "simple" publisher
+	 * select without a search box.
+	 *
+	 * @since    3.11
 	 * @access   private
-	 * @var      integer $max_entities_without_search The maximal number of
-	 * entities to be displayed in a "simple" publisher select without a search box.
+	 * @var      integer $max_entities_without_search The maximum number of entities
+	 *  to be displayed in a "simple" publisher select without a search box.
 	 */
 	private $max_entities_without_search;
+
+	/**
+	 * The maximum number of entities to load when called via AJAX.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var int $max_entities_without_ajax The maximum number of entities to load when called via AJAX.
+	 */
+	private $max_entities_without_ajax;
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
@@ -47,21 +59,29 @@ class Wordlift_Admin_Settings_Page {
 	 */
 	private $configuration_service;
 
-	function __construct( $max_entities_without_search,
-		$max_entities_without_ajax,
-		$configuration_service,
-		$entity_service
-	) {
+	/**
+	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param int $max_entities_without_search The maximum number of entities to be displayed in a "simple" publisher select without a search box.
+	 * @param int $max_entities_without_ajax
+	 * @param int $configuration_service
+	 * @param int $entity_service
+	 */
+	function __construct( $max_entities_without_search, $max_entities_without_ajax, $configuration_service, $entity_service ) {
+
 		$this->max_entities_without_search = $max_entities_without_search;
-		$this->max_entities_without_ajax = $max_entities_without_ajax;
-		$this->configuration_service = $configuration_service;
-		$this->entity_service = $entity_service;
+		$this->max_entities_without_ajax   = $max_entities_without_ajax;
+		$this->configuration_service       = $configuration_service;
+		$this->entity_service              = $entity_service;
+
 	}
 
 	/**
 	 * Enqueue the scripts needed for the settings page.
 	 *
-	 * @since 3.11
+	 * @since 3.11.0
 	 */
 	function enqueue_scripts() {
 
@@ -76,7 +96,7 @@ class Wordlift_Admin_Settings_Page {
 	/**
 	 * This function is called by the *wl_admin_menu* hook which is raised when WordLift builds the admin_menu.
 	 *
-	 * @since 3.0.0
+	 * @since 3.11.0
 	 *
 	 * @param string $parent_slug The parent slug for the menu.
 	 * @param string $capability  The required capability to access the page.
@@ -106,7 +126,7 @@ class Wordlift_Admin_Settings_Page {
 	/**
 	 * Displays the settings page content.
 	 *
-	 * @since 3.0.0
+	 * @since 3.11.0
 	 */
 	function render_page() {
 
@@ -120,7 +140,7 @@ class Wordlift_Admin_Settings_Page {
 	 *
 	 * Called by the *admin_init* hook.
 	 *
-	 * @since 3.0.0
+	 * @since 3.11.0
 	 */
 	function admin_init() {
 
@@ -241,7 +261,7 @@ class Wordlift_Admin_Settings_Page {
 	 * If a new entity is being created for the publisher, create it and set The
 	 * publisher setting.
 	 *
-	 * @since 3.0.0
+	 * @since 3.11.0
 	 *
 	 * @param array $input The configuration settings array.
 	 *
@@ -259,7 +279,7 @@ class Wordlift_Admin_Settings_Page {
 			if ( ! isset( $_POST['wl-publisher-type'] ) || ! in_array( $_POST['wl-publisher-type'], array(
 					'person',
 					'company',
-			) )
+				) )
 			) {
 				return $input;
 			}
@@ -291,7 +311,7 @@ class Wordlift_Admin_Settings_Page {
 	/**
 	 * Draw an input text with the provided parameters.
 	 *
-	 * @since 3.0.0
+	 * @since 3.11.0
 	 *
 	 * @param array $args An array of configuration parameters.
 	 */
@@ -322,7 +342,7 @@ class Wordlift_Admin_Settings_Page {
 	 *
 	 * @see        https://github.com/insideout10/wordlift-plugin/issues/349
 	 *
-	 * @since      3.0.0
+	 * @since      3.11.0
 	 *
 	 * @param array $args The select configuration parameters.
 	 */

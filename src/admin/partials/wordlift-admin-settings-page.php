@@ -5,7 +5,6 @@
  * @since   3.11.0
  * @package Wordlift/admin
  */
-
 ?>
 
 <div class="wrap">
