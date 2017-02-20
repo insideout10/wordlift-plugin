@@ -12,10 +12,15 @@
  * External dependencies
  */
 import React from 'react';
+
 /**
  * Internal dependencies
  */
-import { Wrapper, Main, Count, Label, Cloud } from '../styles';
+import Wrapper from './Wrapper';
+import Main from './Main';
+import Count from './Count';
+import Label from './Label';
+import Cloud from './Cloud';
 import Drawer from './Drawer';
 import Switch from '../Switch';
 import Category from './Category';
@@ -38,6 +43,8 @@ class EntityTile extends React.Component {
 		this.onSwitchClick = this.onSwitchClick.bind( this );
 		this.onMainClick = this.onMainClick.bind( this );
 		this.onArrowToggleClick = this.onArrowToggleClick.bind( this );
+		this.close = this.close.bind( this );
+		this.setWrapperRef = this.setWrapperRef.bind( this );
 
 		// Set the initial state.
 		this.state = { open: false };
@@ -109,6 +116,44 @@ class EntityTile extends React.Component {
 	}
 
 	/**
+	 * Close the `Drawer` (if open).
+	 *
+	 * @since 3.11.0
+	 * @param {Event} e The source {@link Event}.
+	 */
+	close( e ) {
+		e.preventDefault();
+
+		// Close if open.
+		if ( this.state.open ) {
+			this.setState( { open: false } );
+		}
+	}
+
+	/**
+	 * When the component is updated with the open flag, set the focus.
+	 *
+	 * @since 3.11.0
+	 */
+	componentDidUpdate() {
+		if ( this.state.open && this.setWrapperRef ) {
+			this.setWrapperRef.focus();
+		}
+	}
+
+	/**
+	 * Set a reference to the `Wrapper` element.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param {Object} element The `Wrapper` DOM element.
+	 */
+	setWrapperRef( element ) {
+		// Set the reference to the wrapper.
+		this.setWrapperRef = element;
+	}
+
+	/**
 	 * Render the component.
 	 *
 	 * @since 3.11.0
@@ -116,7 +161,10 @@ class EntityTile extends React.Component {
 	 */
 	render() {
 		return (
-			<Wrapper entity={ this.props.entity }>
+			<Wrapper entity={ this.props.entity }
+					 onBlur={ this.close }
+					 innerRef={ this.setWrapperRef }
+					 tabIndex="0">
 				<Main onClick={ this.onMainClick }
 					  open={ this.state.open }>
 					<Count entity={ this.props.entity }>

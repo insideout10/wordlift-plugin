@@ -1,7 +1,5 @@
 /**
- * Components: Drawer.
- *
- * A container for elements that display when the drawer is open.
+ * Components: Main.
  *
  * @since 3.11.0
  */
@@ -14,20 +12,18 @@ import styled from 'styled-components';
 /**
  * @inheritDoc
  */
-const Drawer = styled.div`
+const Main = styled.div`
+	cursor: pointer;
 	display: block;
 	position: absolute;
-	left: 248px;
+	left: ${ props => props.open ? '-248px' : 0 };
 	top: 0;
 	bottom: 0;
 	box-sizing: border-box;
 	width: 248px;
 	height: 32px;
-	padding: 8px;
-	color: #626162;
 	transition: left 200ms ease;
-	left: ${ props => props.open ? 0 : '248px' };
 `;
 
-// Finally export the `Drawer`.
-export default Drawer;
+// Finally export `Main`.
+export default Main;
