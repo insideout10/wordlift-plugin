@@ -2706,12 +2706,14 @@ h1.wl-tab-lead-text {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  z-index: 1;
 }
 .wl-tab-lead:last-of-type {
   margin-bottom: 0;

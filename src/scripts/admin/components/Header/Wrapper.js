@@ -16,9 +16,12 @@ import styled from 'styled-components';
  * @inheritDoc
  */
 const Wrapper = styled.div`
+		position: relative;
+		margin: auto;
+    max-width: 248px;
     border-radius: 2px;
     border: 1px solid #c6c6c6;
-    
+
 	* {
 		box-sizing: border-box;
 		display: inline-block;

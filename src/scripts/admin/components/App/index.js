@@ -17,6 +17,19 @@ import React from 'react';
  */
 import Header from '../Header';
 import VisibleEntityList from '../../containers/VisibleEntityList';
+/**
+ * External dependencies
+ */
+import styled from 'styled-components';
+
+const ClassDrawer = styled.div`
+	background-color: #ffffff;
+	padding: 8px 0;
+	margin-bottom: 8px;
+	// Compensate accordion margin bottom.
+	position: relative;
+	top: -8px;
+`;
 
 /**
  * Define the {@link App}.
@@ -25,10 +38,10 @@ import VisibleEntityList from '../../containers/VisibleEntityList';
  * @return {Function} The `render` function.
  */
 const App = () => (
-	<div>
+	<ClassDrawer>
 		<Header />
 		<VisibleEntityList />
-	</div>
+	</ClassDrawer>
 );
 
 // Finally export the `App`.

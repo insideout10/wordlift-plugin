@@ -18,6 +18,19 @@ import React from 'react';
 import EntityTile from '../components/EntityTile';
 
 /**
+ * External dependencies
+ */
+import styled from 'styled-components';
+
+/*
+* Styles the Entity list.
+*/
+const List = styled.ul`
+	margin: 0 auto;
+	padding-top: 16px;
+`;
+
+/**
  * The `EntityList` component.
  *
  * @since 3.11.0
@@ -29,7 +42,7 @@ import EntityTile from '../components/EntityTile';
  * @constructor
  */
 const EntityList = ( { entities, onClick, onLinkClick, onEditClick } ) => (
-	<ul>
+	<List>
 		{
 			// Map each entity to an `EntityTile`.
 			entities.map( entity =>
@@ -40,7 +53,7 @@ const EntityList = ( { entities, onClick, onLinkClick, onEditClick } ) => (
 										  onLinkClick={ onLinkClick } />
 			)
 		}
-	</ul>
+	</List>
 );
 
 // Finally export the `EntityList`.
