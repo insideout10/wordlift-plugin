@@ -22,21 +22,41 @@ require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wo
 class Wordlift_Admin_Settings_Page {
 
 	/**
-	 * The maximal number of entities to be displayed in a "simple"
-	 * publisher select without a search box.
-	 *
 	 * @since 3.11
+	 * @access   private
+	 * @var      integer $max_entities_without_search The maximal number of
+	 * entities to be displayed in a "simple" publisher select without a search box.
 	 */
-	const MAX_ENTITIES_WITHOUT_SEARCH = 10;
+	private $max_entities_without_search;
 
 	/**
-	 * The maximal number of entities to be displayed in a "simple"
-	 * publisher select. If there are more entities than this, AJAX
-	 * should be used.
+	 * A {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @since 3.11
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
-	const MAX_ENTITIES_WITHOUT_AJAX = 200;
+	private $entity_service;
+
+	/**
+	 * A {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	function __construct( $max_entities_without_search,
+		$max_entities_without_ajax,
+		$configuration_service,
+		$entity_service
+	) {
+		$this->max_entities_without_search = $max_entities_without_search;
+		$this->max_entities_without_ajax = $max_entities_without_ajax;
+		$this->configuration_service = $configuration_service;
+		$this->entity_service = $entity_service;
+	}
 
 	/**
 	 * Enqueue the scripts needed for the settings page.
@@ -76,7 +96,7 @@ class Wordlift_Admin_Settings_Page {
 			) // the menu callback for displaying the page content
 		);
 
-		// Set a hook to enqueue scripts only when the settings page is displayed
+		// Set a hook to enqueue scripts only when the settings page is displayed.
 		add_action( 'admin_print_scripts-' . $page, array(
 			$this,
 			'enqueue_scripts',
@@ -132,7 +152,7 @@ class Wordlift_Admin_Settings_Page {
 		$key_args = array(
 			'id'          => 'wl-key',
 			'name'        => 'wl_general_settings[key]',
-			'value'       => wl_configuration_get_key(),
+			'value'       => $this->configuration_service->get_key(),
 			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
 		);
 
@@ -167,12 +187,11 @@ class Wordlift_Admin_Settings_Page {
 			// The array of arguments to pass to the callback. In this case, just a description.
 			'id'          => 'wl-entity-base-path',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY . ']',
-			'value'       => Wordlift_Configuration_Service::get_instance()
-			                                               ->get_entity_base_path(),
+			'value'       => $this->configuration_service->get_entity_base_path(),
 			'description' => __( 'All new pages created with WordLift, will be stored inside your internal vocabulary. You can customize the url pattern of these pages in the field above. Check our <a href="https://wordlift.io/wordlift-user-faqs/#10-why-and-how-should-i-customize-the-url-of-the-entity-pages-created-in-my-vocabulary">FAQs</a> if you need more info.', 'wordlift' ),
 		);
 
-		if ( Wordlift_Entity_Service::get_instance()->count() ) {
+		if ( $this->entity_service->count() ) {
 			// Mark the field readonly, the value can be anything.
 			$entity_base_path_args['readonly'] = '';
 		}
@@ -201,7 +220,7 @@ class Wordlift_Admin_Settings_Page {
 				// The array of arguments to pass to the callback. In this case, just a description.
 				'id'          => 'wl-site-language',
 				'name'        => 'wl_general_settings[site_language]',
-				'value'       => wl_configuration_get_site_language(),
+				'value'       => $this->configuration_service->get_language_code(),
 				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
 			)
 		);
@@ -240,7 +259,7 @@ class Wordlift_Admin_Settings_Page {
 			if ( ! isset( $_POST['wl-publisher-type'] ) || ! in_array( $_POST['wl-publisher-type'], array(
 					'person',
 					'company',
-				) )
+			) )
 			) {
 				return $input;
 			}
@@ -260,7 +279,7 @@ class Wordlift_Admin_Settings_Page {
 			}
 
 			// Create an entity for the publisher.
-			$publisher_post_id = Wordlift_Entity_Service::get_instance()->create( $_POST['wl-publisher-name'], $type_uri, $logo, 'publish' );
+			$publisher_post_id = $this->entity_service->create( $_POST['wl-publisher-name'], $type_uri, $logo, 'publish' );
 
 			$input[ Wordlift_Configuration_Service::PUBLISHER_ID ] = $publisher_post_id;
 		}
@@ -349,7 +368,7 @@ class Wordlift_Admin_Settings_Page {
 
 		$entities_query = new WP_Query( array(
 			'post_type'      => Wordlift_Entity_Service::TYPE_NAME,
-			'posts_per_page' => self::MAX_ENTITIES_WITHOUT_AJAX,
+			'posts_per_page' => $this->max_entities_without_ajax,
 			'tax_query'      => array(
 				'relation' => 'OR',
 				array(
@@ -478,13 +497,13 @@ class Wordlift_Admin_Settings_Page {
 			</div>
 			<div id="wl-select-entity-panel" class="wl-tab-panel">
 				<?php
-				// populate the select only if there are less than WL_MAX_ENTITIES_WITHOUT_AJAX possible entities
-				// Otherwise use AJAX..
+				// Populate the select only if there are less than max_entities_without_ajax possible entities,
+				// Otherwise use AJAX.
 
-				$ajax_params = ( $entities_query->found_posts <= self::MAX_ENTITIES_WITHOUT_AJAX ) ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
+				$ajax_params = ( $entities_query->found_posts <= $this->max_entities_without_ajax ) ? '' : ' data-ajax--url="' . parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ) . '/action=wl_possible_publisher" data-ajax--cache="true" ';
 
-				// show the search box only if there are more entiyies than WL_MAX_ENTITIES_WITHOUT_SEARCH.
-				$disable_search_params = ( $entities_query->found_posts > self::MAX_ENTITIES_WITHOUT_SEARCH ) ? '' : ' data-nosearch="true" ';
+				// show the search box only if there are more entiyies than max_entities_without_search.
+				$disable_search_params = ( $entities_query->found_posts > $this->max_entities_without_search ) ? '' : ' data-nosearch="true" ';
 				?>
 				<select id="wl-select-entity"
 				        name="wl_general_settings[<?php echo Wordlift_Configuration_Service::PUBLISHER_ID ?>]"
@@ -493,7 +512,7 @@ class Wordlift_Admin_Settings_Page {
 					    autocomplete="off">
 					<?php
 
-					if ( $entities_query->post_count < self::MAX_ENTITIES_WITHOUT_AJAX ) {
+					if ( $entities_query->post_count < $this->max_entities_without_ajax ) {
 						while ( $entities_query->have_posts() ) {
 							$entities_query->the_post();
 
@@ -515,12 +534,12 @@ class Wordlift_Admin_Settings_Page {
 								$entity_type = __( 'Company', 'wordlift' );
 							}
 
-							echo '<option value="' . get_the_ID() . '" ' . selected( Wordlift_Configuration_Service::get_instance()->get_publisher_id(), get_the_ID(), false ) . ' data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '">' . get_the_title() . '</option>';
+							echo '<option value="' . get_the_ID() . '" ' . selected( $this->configuration_service->get_publisher_id(), get_the_ID(), false ) . ' data-thumb="' . esc_attr( $thumb ) . '" data-type="' . esc_attr( $entity_type ) . '">' . get_the_title() . '</option>';
 						}
 					} else {
 						// display only the currently selected publisher
 
-						$post_id = Wordlift_Configuration_Service::get_instance()->get_publisher_id();
+						$post_id = $this->configuration_service->get_publisher_id();
 						$post    = get_post( $post_id );
 
 						$thumb             = '';
@@ -627,7 +646,7 @@ class Wordlift_Admin_Settings_Page {
 
 		// If the key is empty, empty the dataset URI.
 		if ( '' === $new_key ) {
-			wl_configuration_set_redlink_dataset_uri( '' );
+			$this->configuration_service->set_dataset_uri( '' );
 		}
 
 		// Request the dataset URI.
@@ -637,7 +656,7 @@ class Wordlift_Admin_Settings_Page {
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
 
 			// wl_write_log( "[ Retrieved dataset :: " . $response['body'] . " ]" );
-			wl_configuration_set_redlink_dataset_uri( $response['body'] );
+			$this->configuration_service->set_dataset_uri( $response['body'] );
 
 		} else {
 			wl_write_log( 'Error on dataset uri remote retrieving [ ' . var_export( $response, true ) . ' ]' );

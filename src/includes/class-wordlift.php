@@ -734,7 +734,7 @@ class Wordlift {
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page();
-		$this->settings_page = new Wordlift_Admin_Settings_Page( );
+		$this->settings_page = new Wordlift_Admin_Settings_Page( 10, 200, $this->configuration_service, $this->entity_service );
 
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
