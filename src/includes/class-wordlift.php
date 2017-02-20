@@ -364,6 +364,15 @@ class Wordlift {
 	private $settings_page_action_link;
 
 	/**
+	 * The {@link Wordlift_Publisher_Ajax_Adapter} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Publisher_Ajax_Adapter $publisher_ajax_adapter The {@link Wordlift_Publisher_Ajax_Adapter} instance.
+	 */
+	protected $publisher_ajax_adapter;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -556,6 +565,10 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
+		// The Publisher Service and the AJAX adapter.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
+
 		/**
 		 * Load the WordLift key validation service.
 		 */
@@ -742,6 +755,10 @@ class Wordlift {
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
 
+		// Create an instance of the Publisher Service and the AJAX Adapter.
+		$publisher_service            = new Wordlift_Publisher_Service();
+		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
+
 		//** WordPress Admin */
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page               = new Wordlift_Admin_Status_Page();
@@ -880,6 +897,9 @@ class Wordlift {
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
+
+		// Hook the AJAX `wl_publisher` action name.
+		$this->loader->add_action( 'wp_ajax_wl_publisher', $this->publisher_ajax_adapter, 'publisher' );
 
 	}
 
