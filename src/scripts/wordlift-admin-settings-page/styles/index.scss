@@ -97,7 +97,7 @@
 .ui-tabs .ui-tabs-panel { 
   // Size.
   max-width: 480px;
-  height: 32px;
+  min-height: 32px;
   // Border.
   border-radius: 2px;
   // Spacing. 

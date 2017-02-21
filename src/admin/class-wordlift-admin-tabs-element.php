@@ -54,7 +54,7 @@ class Wordlift_Admin_Tabs_Element implements Wordlift_Admin_Element {
 			</ul>
 			<?php foreach ( $params['tabs'] as $index => $tab ) { ?>
 				<div id="tabs-<?php echo $index + 1; ?>">
-					<p><?php call_user_func( $tab['callback'], $tab['args'] ); ?></p>
+					<?php call_user_func( $tab['callback'], $tab['args'] ); ?>
 				</div>
 			<?php } ?>
 		</div>
