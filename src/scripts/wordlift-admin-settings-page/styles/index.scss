@@ -26,7 +26,8 @@
         vertical-align: top;
         white-space: nowrap;
         &:focus {
-          box-shadow: none
+          box-shadow: none;
+          outline: none;
         }
       }
 
@@ -134,4 +135,50 @@
 .wl-select2-thumbnail {
   // Spacing
   margin-right: 8px;
+}
+
+#tabs-2 {
+  p {
+    margin: 8px 0;
+
+    &:first-of-type {
+      margin-top: 24px;
+    }
+  }
+}
+
+#wl-publisher-name input {
+  // Size
+  width: 100%;
+  max-width: 480px;
+  min-height: 32px;
+  // Spacing.
+  margin-top: 8px;
+  padding: 4px 8px;
+}
+
+#wl-publisher-type {
+  // Size.
+  max-width: 480px;
+  width: 100%;
+  // Styling radios.
+  span {
+    // Size.
+    width: 45%;
+    // Position.
+    display: inline-block;
+  }
+}
+
+#wl-publisher-media-uploader {
+  // Size.
+  height: 32px;
+  // Position.
+  float: left;
+}
+
+#wl-publisher-media-uploader-preview {
+  max-width: 256px;
+  max-height: 256px;
+  margin-bottom: 16px;
 }

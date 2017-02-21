@@ -21,7 +21,8 @@
       vertical-align: top;
       white-space: nowrap; }
       #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus {
-        box-shadow: none; }
+        box-shadow: none;
+        outline: none; }
     #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active, #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover {
       border-bottom: 1px solid #f1f1f1 !important;
       background: #f1f1f1;
@@ -79,3 +80,31 @@
 
 .wl-select2-thumbnail {
   margin-right: 8px; }
+
+#tabs-2 p {
+  margin: 8px 0; }
+  #tabs-2 p:first-of-type {
+    margin-top: 24px; }
+
+#wl-publisher-name input {
+  width: 100%;
+  max-width: 480px;
+  min-height: 32px;
+  margin-top: 8px;
+  padding: 4px 8px; }
+
+#wl-publisher-type {
+  max-width: 480px;
+  width: 100%; }
+  #wl-publisher-type span {
+    width: 45%;
+    display: inline-block; }
+
+#wl-publisher-media-uploader {
+  height: 32px;
+  float: left; }
+
+#wl-publisher-media-uploader-preview {
+  max-width: 256px;
+  max-height: 256px;
+  margin-bottom: 16px; }
