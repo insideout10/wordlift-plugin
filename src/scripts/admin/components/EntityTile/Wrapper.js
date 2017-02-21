@@ -23,11 +23,17 @@ const Wrapper = styled.div`
 	height: 32px;
 	background-color: #f5f5f5;
 	box-shadow: 0 4px 4px -3px rgba(0,0,0,.25), 0 8px 8px -6px rgba(0,0,0,.25);
-	transition: all 150ms ease-out;
+	transition: all 100ms linear;
 	&:hover {
 		transform: scale( ${ props => 0 < props.entity.occurrences.length ? 1 : 1.01 } ); 
 		background-color: ${ props => 0 < props.entity.occurrences.length ? '#f5f5f5' : '#fafafa' }
 	};
+
+	&:active {
+		transform: scale(0.99)
+		background-color: #f5f5f5;
+	};
+
 `;
 
 // Finally export the `Wrapper`.
