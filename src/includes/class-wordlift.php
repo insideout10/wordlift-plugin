@@ -648,6 +648,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
 
+		/**
+		 * The SEO service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-seo-service.php';
+
 		$this->loader = new Wordlift_Loader();
 
 		// Instantiate a global logger.
@@ -695,6 +700,9 @@ class Wordlift {
 		new Wordlift_Chord_Shortcode();
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
+
+		// Initialize the SEO service.
+		new Wordlift_SEO_Service();
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
