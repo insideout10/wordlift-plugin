@@ -33,7 +33,7 @@ class Wordlift_Admin_Language_Select_Element implements Wordlift_Admin_Element {
 			'description' => false,
 		) );
 
-		$description = $params['description'] ? '<p>' . esc_html( $params['description'] ) . '</p>' : '';
+		$description = $params['description'] ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
 
 		?>
 		<select id="<?php echo esc_attr( $params['id'] ); ?>"

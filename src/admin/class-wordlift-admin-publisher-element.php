@@ -135,9 +135,9 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			// The list of available options.
 			'data'               => $this->publisher_service->query(),
 			// The HTML template for each option.
-			'template-result'    => "<img src='<%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %>' /><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span>",
+			'template-result'    => "<div class='wl-select2-result'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
 			// The HTML template for the selected option.
-			'template-selection' => "<img src='<%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %>' /><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span>",
+			'template-selection' => "<div class='wl-select2-selection'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
 		) );
 
 	}

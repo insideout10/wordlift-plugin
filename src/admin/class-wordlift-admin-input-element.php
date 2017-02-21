@@ -36,7 +36,7 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 		// Set the readonly and class attributes and the description.
 		$readonly    = $params['readonly'] ? ' readonly="readonly"' : '';
 		$css_class   = $params['class'] ? ' class="' . esc_attr( $params['class'] ) . '"' : '';
-		$description = $params['description'] ? '<p>' . esc_html( $params['description'] ) . '</p>' : '';
+		$description = $params['description'] ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
 
 		?>
 

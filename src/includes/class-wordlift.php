@@ -728,7 +728,7 @@ class Wordlift {
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 
 		// Create an import service instance to hook later to WP's import function.
-		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
+		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, $this->configuration_service->get_dataset_uri() );
 
 		$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 

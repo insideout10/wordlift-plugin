@@ -2,6 +2,8 @@
 /**
  * Define the menu entry and the page for 'Download Your Data'.
  *
+ * @todo       transition this page to {@link Wordlift_Admin_Page}.
+ *
  * @since      3.6.0
  *
  * @package    Wordlift

@@ -1,0 +1,63 @@
+#wl-settings-page {
+
+  #wl-key {
+    width: 100%;
+  }
+
+  .wl-tabs-element {
+    border-radius: 0;
+    border: 0;
+    background: none;
+
+    .nav-tab-wrapper {
+      border-radius: 0;
+      border: 0;
+      border-bottom: 1px solid #ccc;
+      background: none;
+      padding-bottom: 0;
+      padding-left: 6px;
+
+      .nav-tab {
+        border-radius: 0;
+        border: 1px solid #ccc !important;
+        background: #e4e4e4;
+        color: #555;
+        margin: 0 3px 0 0;
+        vertical-align: top;
+        white-space: nowrap;
+      }
+
+      .ui-state-active, .ui-state-active:hover {
+        border-bottom: 1px solid #f1f1f1 !important;
+        background: #f1f1f1;
+        color: #000;
+      }
+    }
+  }
+
+}
+
+// This must be global since `Select2` puts the options somewhere in the global
+// scope.
+.wl-admin-settings-page-select2 {
+
+  &.select2-selection {
+    min-height: 30px;
+    max-height: 30px;
+    overflow-y: auto;
+  }
+
+  .wl-select2-thumbnail {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background: no-repeat center;
+    background-size: contain;
+    margin: 2px;
+  }
+
+  .wl-select2-type {
+    float: right;
+  }
+
+}

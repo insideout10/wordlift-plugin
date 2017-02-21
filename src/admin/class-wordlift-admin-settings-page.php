@@ -9,8 +9,6 @@
  * @subpackage Wordlift/admin
  */
 
-require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wordlift_configuration_settings.php' );
-
 /**
  * Define the {@link Wordlift_Admin_Settings_Page} class.
  *
@@ -44,7 +42,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.11.0
-	 * @access protected
+	 * @access private
 	 * @var \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
 	 */
 	private $entity_service;
@@ -53,20 +51,35 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * A {@link Wordlift_Configuration_Service} instance.
 	 *
 	 * @since  3.11.0
-	 * @access protected
+	 * @access private
 	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	private $configuration_service;
+
 	/**
-	 * @var
+	 * A {@link Wordlift_Admin_Input_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Input_Element $input_element An {@link Wordlift_Admin_Input_Element} element renderer.
 	 */
 	private $input_element;
+
 	/**
-	 * @var
+	 * A {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Language_Select_Element $language_select_element A {@link Wordlift_Admin_Language_Select_Element} element renderer.
 	 */
 	private $language_select_element;
+
 	/**
-	 * @var
+	 * A {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Publisher_Element $publisher_element A {@link Wordlift_Admin_Publisher_Element} element renderer.
 	 */
 	private $publisher_element;
 
@@ -155,7 +168,8 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// JavaScript required for the settings page.
 		// @todo: try to move to the `wordlift-admin.bundle.js`.
-		wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-settings-page.bundle.js', array( 'wp-util' ) );
+		wp_enqueue_script( 'wordlift-admin-settings-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-settings-page.bundle.js', array( 'wp-util' ) );
+		wp_enqueue_style( 'wordlift-admin-settings-page', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/wordlift-admin-settings-page.min.css' );
 
 	}
 

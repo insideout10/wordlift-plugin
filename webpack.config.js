@@ -1,5 +1,6 @@
 const webpack = require( 'webpack' );
 const path = require( 'path' );
+const ExtractTextPlugin = require( "extract-text-webpack-plugin" );
 
 const config = {
 	entry: {
@@ -21,7 +22,22 @@ const config = {
 				use: 'eslint-loader',
 			},
 			// `babel`.
-			{ test: /\.(js|jsx)$/, use: 'babel-loader' }
+			{ test: /\.(js|jsx)$/, use: 'babel-loader' },
+			// Stylesheets.
+			{
+				test: /\.scss$/,
+				use: ExtractTextPlugin.extract(
+					{
+						fallback: 'style-loader',
+						//resolve-url-loader may be
+						// chained before
+						// sass-loader if necessary
+						use: [
+							'css-loader',
+							'sass-loader'
+						]
+					} )
+			}
 		]
 	},
 	plugins: [
@@ -30,7 +46,8 @@ const config = {
 				NODE_ENV: JSON.stringify( 'production' )
 			}
 		} ),
-		new webpack.optimize.UglifyJsPlugin()
+		new webpack.optimize.UglifyJsPlugin(),
+		new ExtractTextPlugin( '../css/[name].min.css' )
 	],
 	devtool: 'cheap-module-eval-source-map'
 };

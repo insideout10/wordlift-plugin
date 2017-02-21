@@ -7,7 +7,7 @@
  */
 ?>
 
-<div class="wrap">
+<div class="wrap" id="wl-settings-page">
 	<h2><?php esc_html_e( 'WorldLift Settings', 'wordlift' ); ?></h2>
 
 	<?php settings_errors(); ?>
