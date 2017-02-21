@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin UI: Wordlift_Admin_Entity_Taxonomy_List
+ * Admin UI: Wordlift_Admin_Entity_Taxonomy_List_Page
  *
- * The {@link Wordlift_Admin_Entity_Taxonomy_List} class handles modifications
+ * The {@link Wordlift_Admin_Entity_Taxonomy_List_Page} class handles modifications
  * to the entity type list admin page
  *
  * @link       https://wordlift.io
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @subpackage Wordlift/admin
  * @author     WordLift <hello@wordlift.io>
  */
-class Wordlift_Admin_Entity_Taxonomy_List {
+class Wordlift_Admin_Entity_Taxonomy_List_Page {
 
 	/**
 	 * Hook to `admin_print_styles-edit-tags.php` to stretch the term table
@@ -38,12 +38,16 @@ class Wordlift_Admin_Entity_Taxonomy_List {
 
 		$screen = get_current_screen();
 
-		// if we are in the entity type list admin page, stretch the term
-		// table. !important is used as this style is loaded before the wordpress
-		// core ones.
+		/*
+		 * if we are in the entity type list admin page, stretch the term
+		 * table. !important is used as this style is loaded before the wordpress
+		 * core ones.
+		 */
 
-		// Since we can not make the term title not being a link, at least style
-		// it as if it is not one.
+		/*
+		 * Since we can not make the term title not being a link, at least style
+		 * it as if it is not one.
+		 */
 
 		if ( 'edit-wl_entity_type' == $screen->id ) {
 			?>
@@ -67,7 +71,8 @@ class Wordlift_Admin_Entity_Taxonomy_List {
 	 * @since 3.11.0
 	 */
 	function wl_entity_type_row_actions( $actions, $term ) {
-		$actions['seo'] = '<a href="#">' . __( 'SEO settings', 'wordlift' ) . '</a>';
+		$url = admin_url( "admin.php?page=wl_entity_type_settings&amp;tag_ID=$term->term_id" );
+		$actions['seo'] = '<a href="' . esc_url( $url ) . '">' . __( 'SEO Settings', 'wordlift' ) . '</a>';
 		return $actions;
 	}
 }

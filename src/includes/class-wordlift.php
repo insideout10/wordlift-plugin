@@ -350,7 +350,7 @@ class Wordlift {
 	 *
 	 * @since  3.11.0
 	 * @access private
-	 * @var \Wordlift_Admin_Entity_Taxonomy_List $entity_type_admin_page The {@link Wordlift_Admin_Entity_Taxonomy_List} class.
+	 * @var \Wordlift_Admin_Entity_Taxonomy_List_Page $entity_type_admin_page The {@link Wordlift_Admin_Entity_Taxonomy_List_Page} class.
 	 */
 	private $entity_type_admin_page;
 
@@ -599,7 +599,7 @@ class Wordlift {
 		/**
 		 * The WordLift entity type list admin page controller.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/wordlift-admin-entity-taxonomy-list.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-taxonomy-list-page.php';
 
 		/**
 		 * The WordLift entity type settings admin page controller.
@@ -745,7 +745,7 @@ class Wordlift {
 		$this->status_page             = new Wordlift_Admin_Status_Page();
 
 		// create an instance of the entity type list admin page controller.
-		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List();
+		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 
 		// create an instance of the entity type etting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
