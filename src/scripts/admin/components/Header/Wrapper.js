@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 		width: 20%;
 		border-right: 1px solid #666;
 		color: #666;
-		text-align: center;
+		text-align: center; 
 		text-decoration: none;
 		
 		&:hover {
