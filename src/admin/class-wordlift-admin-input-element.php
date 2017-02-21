@@ -1,14 +1,27 @@
 <?php
+/**
+ * Elements: Input.
+ *
+ * Represents an Input text box.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
+ */
 
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 20/02/2017
- * Time: 21:51
+ * Define the {@link Wordlift_Admin_Input_Element} class.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
-class Wordlift_Admin_Input_Element {
+class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 
-	public static function render( $args ) {
+	/**
+	 * @inheritdoc
+	 */
+	public function render( $args ) {
 
 		// Parse the arguments and merge with default values.
 		$params = wp_parse_args( $args, array(
@@ -20,10 +33,10 @@ class Wordlift_Admin_Input_Element {
 			'description' => false,
 		) );
 
-		// Set the readonly and class attributes.
+		// Set the readonly and class attributes and the description.
 		$readonly    = $params['readonly'] ? ' readonly="readonly"' : '';
 		$css_class   = $params['class'] ? ' class="' . esc_attr( $params['class'] ) . '"' : '';
-		$description = $params['description'] ? '<p>' . esc_html__( $params['description'], 'wordlift' ) . '</p>' : '';
+		$description = $params['description'] ? '<p>' . esc_html( $params['description'] ) . '</p>' : '';
 
 		?>
 
@@ -37,6 +50,8 @@ class Wordlift_Admin_Input_Element {
 		<?php echo $description; ?>
 
 		<?php
+
+		return $this;
 	}
 
 }

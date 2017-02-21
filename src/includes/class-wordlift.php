@@ -623,8 +623,12 @@ class Wordlift {
 		/**
 		 * The admin 'WordLift Settings' page.
 		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/intf-wordlift-admin-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-select2-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-tabs-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
@@ -761,10 +765,18 @@ class Wordlift {
 		$publisher_service            = new Wordlift_Publisher_Service();
 		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
 
-		//** WordPress Admin */
+		/** WordPress Admin UI. */
+
+		// UI elements.
+		$input_element           = new Wordlift_Admin_Input_Element();
+		$select2_element         = new Wordlift_Admin_Select2_Element();
+		$language_select_element = new Wordlift_Admin_Language_Select_Element();
+		$tabs_element            = new Wordlift_Admin_Tabs_Element();
+		$publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $publisher_service, $tabs_element, $select2_element );
+
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page               = new Wordlift_Admin_Status_Page();
-		$this->settings_page             = new Wordlift_Admin_Settings_Page( 10, 200, $this->configuration_service, $this->entity_service );
+		$this->settings_page             = new Wordlift_Admin_Settings_Page( 10, 200, $this->configuration_service, $this->entity_service, $input_element, $language_select_element, $publisher_element );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Create an instance of the install wizard.

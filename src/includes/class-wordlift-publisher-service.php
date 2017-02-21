@@ -16,6 +16,35 @@
  */
 class Wordlift_Publisher_Service {
 
+	public function count() {
+
+		// Get the global `wpdb` instance.
+		global $wpdb;
+
+		// Run the query and get the count.
+		$count = $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT( p.id )" .
+			" FROM $wpdb->posts p" .
+			"  LEFT JOIN $wpdb->term_relationships tr" .
+			"   ON tr.object_id = p.id" .
+			"  LEFT JOIN $wpdb->term_taxonomy tt" .
+			"   ON tt.term_taxonomy_id = tr.term_taxonomy_id" .
+			"  LEFT JOIN $wpdb->terms t" .
+			"   ON t.term_id = tt.term_id" .
+			"  LEFT JOIN $wpdb->postmeta m" .
+			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
+			"  WHERE p.post_type = %s" .
+			"   AND t.name IN ( 'Organization', 'Person' )" .
+			"   AND tt.taxonomy = %s" .
+			" ORDER BY p.post_title",
+			Wordlift_Entity_Service::TYPE_NAME,
+			Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME
+		) );
+
+		// Finally return the count.
+		return $count;
+	}
+
 	/**
 	 * Query WP for potential publishers, i.e. {@link WP_Post}s of type `entity`
 	 * and of `wl_entity_type` (taxonomy) `Organization` or `Person`.
@@ -26,7 +55,7 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @return array An array of results.
 	 */
-	public function query( $filter ) {
+	public function query( $filter = '' ) {
 
 		// Get the global `wpdb` instance.
 		global $wpdb;

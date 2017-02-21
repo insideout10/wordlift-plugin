@@ -1,14 +1,27 @@
 <?php
+/**
+ * Elements: Language Select.
+ *
+ * An Select element with the list of languages.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
+ */
 
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 20/02/2017
- * Time: 21:51
+ * Define the {@link Wordlift_Admin_Language_Select_Element} class.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
-class Wordlift_Admin_Language_Select_Element {
+class Wordlift_Admin_Language_Select_Element implements Wordlift_Admin_Element {
 
-	public static function render( $args ) {
+	/**
+	 * @inheritdoc
+	 */
+	public function render( $args ) {
 
 		// Parse the arguments and merge with default values.
 		$params = wp_parse_args( $args, array(
@@ -20,7 +33,7 @@ class Wordlift_Admin_Language_Select_Element {
 			'description' => false,
 		) );
 
-		$description = $params['description'] ? '<p>' . esc_html__( $params['description'], 'wordlift' ) . '</p>' : '';
+		$description = $params['description'] ? '<p>' . esc_html( $params['description'] ) . '</p>' : '';
 
 		?>
 		<select id="<?php echo esc_attr( $params['id'] ); ?>"
@@ -47,6 +60,8 @@ class Wordlift_Admin_Language_Select_Element {
 		<?php echo $description; ?>
 
 		<?php
+
+		return $this;
 	}
 
 }

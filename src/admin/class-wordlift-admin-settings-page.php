@@ -58,23 +58,43 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
 	 */
 	private $configuration_service;
+	/**
+	 * @var
+	 */
+	private $input_element;
+	/**
+	 * @var
+	 */
+	private $language_select_element;
+	/**
+	 * @var
+	 */
+	private $publisher_element;
 
 	/**
 	 * Create a {@link Wordlift_Admin_Settings_Page} instance.
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param int $max_entities_without_search The maximum number of entities to be displayed in a "simple" publisher select without a search box.
-	 * @param int $max_entities_without_ajax
-	 * @param int $configuration_service
-	 * @param int $entity_service
+	 * @param int                                     $max_entities_without_search The maximum number of entities to be displayed in a "simple" publisher select without a search box.
+	 * @param int                                     $max_entities_without_ajax
+	 * @param \Wordlift_Configuration_Service         $configuration_service
+	 * @param \Wordlift_Entity_Service                $entity_service
+	 * @param \Wordlift_Admin_Input_Element           $input_element
+	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element
+	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element
 	 */
-	function __construct( $max_entities_without_search, $max_entities_without_ajax, $configuration_service, $entity_service ) {
+	function __construct( $max_entities_without_search, $max_entities_without_ajax, $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element ) {
 
 		$this->max_entities_without_search = $max_entities_without_search;
 		$this->max_entities_without_ajax   = $max_entities_without_ajax;
 		$this->configuration_service       = $configuration_service;
 		$this->entity_service              = $entity_service;
+
+		// Set a reference to the UI elements.
+		$this->input_element           = $input_element;
+		$this->language_select_element = $language_select_element;
+		$this->publisher_element       = $publisher_element;
 
 	}
 
@@ -134,10 +154,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Enqueue the media scripts to be used for the publisher's logo selection.
 		wp_enqueue_media();
 
-		// Enqueue select2 library js and css.
-		wp_enqueue_script( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/select2/js/select2.min.js', array( 'jquery' ), '4.0.3' );
-		wp_enqueue_style( 'wordlift-select2', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/select2/css/select2.min.css', array(), '4.0.3' );
-
 	}
 
 	/**
@@ -149,11 +165,10 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	function admin_init() {
 
-		register_setting(
-			'wl_general_settings',
-			'wl_general_settings',
-			array( $this, 'sanitize_settings' )
-		);
+		register_setting( 'wl_general_settings', 'wl_general_settings', array(
+			$this,
+			'sanitize_settings',
+		) );
 
 		add_settings_section(
 			'wl_general_settings_section', // ID used to identify this section and with which to register options.
@@ -185,7 +200,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		add_settings_field(
 			WL_CONFIG_WORDLIFT_KEY,           // ID used to identify the field throughout the theme.
 			__( 'WordLift Key', 'wordlift' ), // The label to the left of the option interface element.
-			array( 'Wordlift_Admin_Input_Element', 'render', ),
+			array( $this->input_element, 'render', ),
 			// The name of the function responsible for rendering the option interface
 			'wl_general_settings',         // The page on which this option will be displayed
 			'wl_general_settings_section',      // The name of the section to which this field belongs
@@ -206,7 +221,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		add_settings_field(
 			Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY, // ID used to identify the field throughout the theme
 			__( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
-			array( 'Wordlift_Admin_Input_Element', 'render', ),
+			array( $this->input_element, 'render', ),
 			// The name of the function responsible for rendering the option interface
 			'wl_general_settings',                                // The page on which this option will be displayed
 			'wl_general_settings_section',                        // The name of the section to which this field belongs
@@ -217,7 +232,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		add_settings_field(
 			WL_CONFIG_SITE_LANGUAGE_NAME,
 			__( 'Site Language', 'wordlift' ),
-			array( 'Wordlift_Admin_Language_Select_Element', 'render' ),
+			array( $this->language_select_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
 			array(
@@ -232,7 +247,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		add_settings_field(
 			'wl_publisher',
 			__( 'Publisher', 'wordlift' ),
-			array( $this, 'publisher_section' ),
+			array( $this->publisher_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section'
 		);
@@ -292,18 +307,6 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 	}
 
-	/**
-	 * Display publisher selection/creation settings.
-	 *
-	 * @since 3.11.0
-	 *
-	 */
-	function publisher_section() {
-
-		// Include the partial.
-		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-settings-page-publisher-section.php' );
-
-	}
 
 	/**
 	 * Intercept the change of the WordLift key in order to set the dataset URI.
