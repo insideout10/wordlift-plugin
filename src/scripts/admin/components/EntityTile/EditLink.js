@@ -22,7 +22,7 @@ const EditLink = styled.i`
 	height: 16px;
 	text-align: center;
 	line-height: 1;
-	background-color: #cbcbcb;
+	background-color: #666;
 	color: #fff;
 	border-radius: 2px;
 	
