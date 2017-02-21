@@ -21,6 +21,7 @@ const Count = styled.div`
 	border-radius: 2px;
 	padding: 2px 0;
 	text-align: center;
+	vertical-align: top;
 	font-weight: 600;
 	font-size: 12px;
 	color: #FFFFFF;

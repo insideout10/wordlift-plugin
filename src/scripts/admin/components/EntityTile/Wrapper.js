@@ -26,6 +26,7 @@ const Wrapper = styled.div`
 	transition: all 150ms ease-out;
 	&:hover {
 		transform: scale( ${ props => 0 < props.entity.occurrences.length ? 1 : 1.01 } ); 
+		background-color: #f1f1f1;
 	};
 `;
 
