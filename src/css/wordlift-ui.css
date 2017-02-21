@@ -2674,37 +2674,37 @@ path.wl-thing {
 }
 .wl-person {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-place {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-creative-work {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-organization {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-local-business {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-event {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 .wl-thing {
   background-color: #007AFF;
-  color: #000000;
+  color: #ffffff;
   padding: 2px;
 }
 a.wl-entity-page-link {
@@ -2743,7 +2743,4 @@ a.wl-entity-page-link {
 .wl-timeline-container *:after {
   -webkit-box-sizing: initial;
   box-sizing: initial;
-}
-.wl-chord svg .label {
-  text-anchor: initial;
 }
