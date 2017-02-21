@@ -34,7 +34,18 @@ const config = {
 				use: 'eslint-loader',
 			},
 			// `babel`.
-			{ test: /\.(js|jsx)$/, use: 'babel-loader' }
+			{ test: /\.(js|jsx)$/, use: 'babel-loader' },
+			// Stylesheets.
+			{
+				test: /\.scss$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					'sass-loader'
+				]
+			},
+			{ test: /\.css$/, use: 'css-loader' }
+
 		]
 	},
 	plugins: [

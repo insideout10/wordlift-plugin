@@ -15,20 +15,8 @@ import React from 'react';
 /**
  * Internal dependencies
  */
-import EntityTile from '../components/EntityTile';
-
-/**
- * External dependencies
- */
-import styled from 'styled-components';
-
-/*
-* Styles the Entity list.
-*/
-const List = styled.ul`
-	margin: 0 auto;
-	padding-top: 16px;
-`;
+import List from './List';
+import EntityTile from '../EntityTile';
 
 /**
  * The `EntityList` component.

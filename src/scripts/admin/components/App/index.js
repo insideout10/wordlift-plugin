@@ -15,21 +15,10 @@ import React from 'react';
 /**
  * Internal dependencies
  */
+import Wrapper from './Wrapper';
 import Header from '../Header';
 import VisibleEntityList from '../../containers/VisibleEntityList';
-/**
- * External dependencies
- */
-import styled from 'styled-components';
-
-const ClassDrawer = styled.div`
-	background-color: #ffffff;
-	padding: 8px 0;
-	margin-bottom: 8px;
-	// Compensate accordion margin bottom.
-	position: relative;
-	top: -8px;
-`;
+import { wrap } from './style.scss';
 
 /**
  * Define the {@link App}.
@@ -38,10 +27,10 @@ const ClassDrawer = styled.div`
  * @return {Function} The `render` function.
  */
 const App = () => (
-	<ClassDrawer>
+	<Wrapper className={ wrap }>
 		<Header />
 		<VisibleEntityList />
-	</ClassDrawer>
+	</Wrapper>
 );
 
 // Finally export the `App`.

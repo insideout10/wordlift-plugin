@@ -16,8 +16,8 @@ import styled from 'styled-components';
  * @inheritDoc
  */
 const Wrapper = styled.div`
-		position: relative;
-		margin: auto;
+	position: relative;
+	margin: auto;
     max-width: 248px;
     border-radius: 2px;
     border: 1px solid #666;
@@ -28,19 +28,19 @@ const Wrapper = styled.div`
 		width: 20%;
 		border-right: 1px solid #666;
 		color: #666;
-		text-align: center; 
+		text-align: center;
 		text-decoration: none;
 		
 		&:hover {
 			color: #a0a0a0;
 		}
+		
 		&:focus {
 			// Overrides wp styles.
 			box-shadow: none
 		}
 	}
 
-	
 	*:last-child {
 		border-right: none;
 	}
