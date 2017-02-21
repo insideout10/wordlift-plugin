@@ -20,14 +20,16 @@
       margin: 0 3px 0 0;
       vertical-align: top;
       white-space: nowrap; }
+      #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus {
+        box-shadow: none; }
     #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active, #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover {
       border-bottom: 1px solid #f1f1f1 !important;
       background: #f1f1f1;
       color: #000; }
 
 .wl-admin-settings-page-select2.select2-selection {
-  min-height: 30px;
-  max-height: 30px;
+  min-height: 32px;
+  max-height: 32px;
   overflow-y: auto; }
 
 .wl-admin-settings-page-select2 .wl-select2-thumbnail {
@@ -36,7 +38,44 @@
   display: inline-block;
   background: no-repeat center;
   background-size: contain;
-  margin: 2px; }
+  margin: 4px 8px 4px 0; }
 
 .wl-admin-settings-page-select2 .wl-select2-type {
-  float: right; }
+  float: right;
+  line-height: 32px;
+  font-weight: 600; }
+
+.select2-results__options {
+  color: #666 !important; }
+
+.select2-results__option .wl-select2-type {
+  float: right;
+  line-height: 32px;
+  font-weight: 600; }
+
+.select2-results__option--highlighted {
+  background-color: #f5f5f5 !important;
+  color: #2E92FF !important; }
+
+.ui-tabs .ui-tabs-panel {
+  max-width: 480px;
+  height: 32px;
+  border-radius: 2px;
+  padding: 0 !important;
+  margin: 16px 0; }
+  .ui-tabs .ui-tabs-panel * {
+    vertical-align: middle; }
+  .ui-tabs .ui-tabs-panel p {
+    max-height: 32px;
+    margin: 0;
+    width: 100%;
+    color: #4a4a4a; }
+
+.select2-container--default .select2-selection--single {
+  overflow: hidden;
+  padding: 0 0;
+  line-height: 28px;
+  font-size: 12px; }
+
+.wl-select2-thumbnail {
+  margin-right: 8px; }

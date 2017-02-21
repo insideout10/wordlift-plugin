@@ -25,6 +25,9 @@
         margin: 0 3px 0 0;
         vertical-align: top;
         white-space: nowrap;
+        &:focus {
+          box-shadow: none
+        }
       }
 
       .ui-state-active, .ui-state-active:hover {
@@ -42,8 +45,8 @@
 .wl-admin-settings-page-select2 {
 
   &.select2-selection {
-    min-height: 30px;
-    max-height: 30px;
+    min-height: 32px;
+    max-height: 32px;
     overflow-y: auto;
   }
 
@@ -53,11 +56,82 @@
     display: inline-block;
     background: no-repeat center;
     background-size: contain;
-    margin: 2px;
+    margin: 4px 8px 4px 0;
   }
 
   .wl-select2-type {
+    // Position.
     float: right;
+    // Spacing.
+    line-height: 32px;
+    // Text job
+    font-weight: 600;
   }
 
+}
+
+// Styling select pane.
+.select2-results__options {
+  color: #666 !important;
+}
+
+
+// Styling select option.
+.select2-results__option {
+  .wl-select2-type {
+    // Position.
+    float: right;
+    // Spacing.
+    line-height: 32px;
+    // Text job
+    font-weight: 600;
+  }
+}
+
+.select2-results__option--highlighted {
+  background-color: #f5f5f5 !important;
+  color: #2E92FF !important;
+}
+
+// Styling the select wrap.
+.ui-tabs .ui-tabs-panel { 
+  // Size.
+  max-width: 480px;
+  height: 32px;
+  // Border.
+  border-radius: 2px;
+  // Spacing. 
+  padding: 0 !important;
+  margin: 16px 0;
+  
+  // Fixing inline blocks positioning.
+  * {
+    vertical-align: middle;
+  }
+
+  // Fixing the inner space.
+  p {
+    max-height: 32px;
+    margin: 0;
+    width: 100%;
+    // Text job.
+    color: #4a4a4a
+  }
+}
+
+// Select display.
+.select2-container--default .select2-selection--single { 
+  // Prevent scrollbar.
+  overflow: hidden;
+  // Internal.
+  padding: 0 0;
+  line-height: 28px;
+  // Text job.
+  font-size: 12px;
+}
+
+// Select > Row > image
+.wl-select2-thumbnail {
+  // Spacing
+  margin-right: 8px;
 }
