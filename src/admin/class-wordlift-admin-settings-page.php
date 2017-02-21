@@ -9,7 +9,6 @@
  * @subpackage Wordlift/admin
  */
 
-require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wordlift_configuration_constants.php' );
 require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'modules/configuration/wordlift_configuration_settings.php' );
 
 /**
@@ -154,6 +153,10 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		// Enqueue the media scripts to be used for the publisher's logo selection.
 		wp_enqueue_media();
 
+		// JavaScript required for the settings page.
+		// @todo: try to move to the `wordlift-admin.bundle.js`.
+		wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-settings-page.js', array( 'wp-util' ) );
+
 	}
 
 	/**
@@ -165,11 +168,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 */
 	function admin_init() {
 
-		register_setting( 'wl_general_settings', 'wl_general_settings', array(
-			$this,
-			'sanitize_settings',
-		) );
+		// Register WordLift's general settings, providing our own sanitize callback
+		// which will also check whether the user filled the WL Publisher form.
+		register_setting(
+			'wl_general_settings',
+			'wl_general_settings',
+			array( $this, 'sanitize_callback', )
+		);
 
+		// Add the general settings section.
 		add_settings_section(
 			'wl_general_settings_section', // ID used to identify this section and with which to register options.
 			'',                            // Section header.
@@ -197,14 +204,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			$key_args['class'] = 'invalid';
 		}
 
+		// Add the `key` field.
 		add_settings_field(
-			WL_CONFIG_WORDLIFT_KEY,           // ID used to identify the field throughout the theme.
-			__( 'WordLift Key', 'wordlift' ), // The label to the left of the option interface element.
+			Wordlift_Configuration_Service::KEY,            // ID used to identify the field throughout the theme.
+			_x( 'WordLift Key', 'wordlift' ),               // The label to the left of the option interface element.
+			// The name of the function responsible for rendering the option interface.
 			array( $this->input_element, 'render', ),
-			// The name of the function responsible for rendering the option interface
-			'wl_general_settings',         // The page on which this option will be displayed
-			'wl_general_settings_section',      // The name of the section to which this field belongs
-			$key_args                             // The array of arguments to pass to the callback. In this case, just a description.
+			'wl_general_settings',                          // The page on which this option will be displayed.
+			'wl_general_settings_section',                  // The name of the section to which this field belongs.
+			$key_args                                       // The array of arguments to pass to the callback. In this case, just a description.
 		);
 
 		// Entity Base Path input.
@@ -218,20 +226,21 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		$entity_base_path_args['readonly'] = 0 < $this->entity_service->count();
 
+		// Add the `wl_entity_base_path` field.
 		add_settings_field(
 			Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY, // ID used to identify the field throughout the theme
-			__( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
-			array( $this->input_element, 'render', ),
+			_x( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
 			// The name of the function responsible for rendering the option interface
+			array( $this->input_element, 'render', ),
 			'wl_general_settings',                                // The page on which this option will be displayed
 			'wl_general_settings_section',                        // The name of the section to which this field belongs
 			$entity_base_path_args
 		);
 
-		// Site Language input.
+		// Add the `language_name` field.
 		add_settings_field(
-			WL_CONFIG_SITE_LANGUAGE_NAME,
-			__( 'Site Language', 'wordlift' ),
+			Wordlift_Configuration_Service::LANGUAGE,
+			_x( 'Site Language', 'wordlift' ),
 			array( $this->language_select_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section',
@@ -244,9 +253,10 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			)
 		);
 
+		// Add the `publisher` field.
 		add_settings_field(
-			'wl_publisher',
-			__( 'Publisher', 'wordlift' ),
+			Wordlift_Configuration_Service::PUBLISHER_ID,
+			_x( 'Publisher', 'wordlift' ),
 			array( $this->publisher_element, 'render' ),
 			'wl_general_settings',
 			'wl_general_settings_section'
@@ -266,9 +276,10 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @return mixed
 	 */
-	function sanitize_settings( $input ) {
-
-		$input = apply_filters( 'wl_configuration_sanitize_settings', $input, $input );
+	function sanitize_callback( $input ) {
+		var_dump( $input );
+		var_dump( $_POST );
+		wp_die();
 
 		// If the user creates a new publisher entities the information is not part of the
 		// "option" itself and need to get it from other $_POST values.

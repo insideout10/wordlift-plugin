@@ -70,9 +70,6 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 	 */
 	public function render( $args ) {
 
-		// Parse the arguments and merge with default values.
-//		$params = wp_parse_args( $args, array() );
-
 		// Get the number of potential candidates as publishers.
 		$count = $this->publisher_service->count();
 
@@ -92,32 +89,85 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			'active' => 0 === $count ? 1 : 0,
 		) );
 
-//		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-settings-page-publisher-section.php' );
-
+		// Finally return the element instance.
 		return $this;
 	}
 
+	/**
+	 * Render the publisher's select.
+	 *
+	 * @since 3.11.0
+	 */
 	public function select() {
 
 		// Get the configured publisher id. In case a publisher id is already configured
 		// this must be pre-loaded in the options.
 		$publisher_id = $this->configuration_service->get_publisher_id();
 
+		// Get the publisher post. This must be prepopulated in the `options` array
+		// in order to make it preselected in Select2.
 		$post = get_post( $publisher_id );
 
+		// Prepare the URLs for entities which don't have logos.
+		$person_thumbnail_url       = plugin_dir_url( dirname( __FILE__ ) ) . 'images/person.png';
+		$organization_thumbnail_url = plugin_dir_url( dirname( __FILE__ ) ) . 'images/organization.png';
+
+		// Finally render the Select.
 		$this->select_element->render( array(
+			// The selected id.
 			'value'              => $publisher_id,
+			// The selected item (must be in the options for Select2 to display it).
 			'options'            => array( $post->ID => $post->post_title ),
+			// The list of available options.
 			'data'               => $this->publisher_service->query(),
-			'template-result'    => '<img src="<%= obj.thumbnail_url || "" %>" /><span class="wl-select2"><%= obj.text %></span><span class="wl-select2-type"><%= obj.type || "" %></span>',
-			'template-selection' => '<img src="<%= obj.thumbnail_url || "" %>" /><span class="wl-select2"><%= obj.text %></span><span class="wl-select2-type"><%= obj.type || "" %></span>',
+			// The HTML template for each option.
+			'template-result'    => "<img src='<%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %>' /><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span>",
+			// The HTML template for the selected option.
+			'template-selection' => "<img src='<%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %>' /><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span>",
 		) );
 
 	}
 
+	/**
+	 * Render the 'create publisher' form.
+	 *
+	 * @since 3.11.0
+	 */
 	public function create() {
 		?>
-		Hello Create
+		<p>
+			<strong><?php echo esc_html_x( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></strong>
+		</p>
+		<p id="wl-publisher-type">
+			<span>
+				<input id="wl-publisher-person" type="radio"
+				       name="wl_publisher[type]" value="person"
+				       checked="checked">
+				<label for="wl-publisher-person"><?php
+					echo esc_html_x( 'Person', 'wordlift' ) ?></label>
+			</span>
+			<span>
+				<input id="wl-publisher-company" type="radio"
+				       name="wl_publisher[type]" value="company"">
+				<label for="wl-publisher-company"><?php
+					echo esc_html_x( 'Company', 'wordlift' ) ?></label>
+			</span>
+		</p>
+		<p id="wl-publisher-name">
+			<input type="text" name="wl_publisher[name]"
+			       placeholder="<?php echo esc_attr_x( "Publisher's Name", 'wordlift' ) ?>">
+		</p>
+		<div id="wl-publisher-logo">
+			<input type="hidden" id="wp-publisher-thumbnail-id" name="wl_publisher[thumbnail_id]" />
+			<p>
+				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b>
+			</p>
+			<p>
+				<img id="wl-publisher-logo-preview"><input type="button"
+				                                           class="button"
+				                                           value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>">
+			</p>
+		</div>
 		<?php
 	}
 

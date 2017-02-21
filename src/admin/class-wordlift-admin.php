@@ -109,8 +109,8 @@ class Wordlift_Admin {
 			'language' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
 			'l10n'     => array(
 				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
-				'logo_selection_title' => __( 'WordLift Choose Logo', 'wordlift' ),
-				'logo_selection_button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
+				'logo_selection_title'                               => __( 'WordLift Choose Logo', 'wordlift' ),
+				'logo_selection_button'                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 			),
 		);
 
@@ -129,9 +129,6 @@ class Wordlift_Admin {
 
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
-
-		// javascript required for the settings page
-		wp_enqueue_script( 'wordlift-admin-settings', plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/wordlift-admin-settings.js', array( 'wp-util' ) );
 
 	}
 
