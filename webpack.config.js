@@ -31,7 +31,8 @@ const config = {
 			}
 		} ),
 		new webpack.optimize.UglifyJsPlugin()
-	]
+	],
+	devtool: 'cheap-module-eval-source-map'
 };
 
 module.exports = config;

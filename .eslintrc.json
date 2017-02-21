@@ -1,0 +1,28 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "ajaxurl": true,
+    "angular": true,
+    "Backbone": true,
+    "ENV": true,
+    "inlineEditPost": true,
+    "jQuery": true,
+    "log": true,
+    "tinyMCE": true,
+    "wlSettings": true,
+    "wordlift": true,
+    "wp": true,
+    "_": true
+  },
+  "extends": "wpcalypso/react",
+  "rules": {
+    "no-mixed-spaces-and-tabs": [
+      "error",
+      "smart-tabs"
+    ],
+    "wpcalypso/jsx-classname-namespace": "off"
+  }
+}

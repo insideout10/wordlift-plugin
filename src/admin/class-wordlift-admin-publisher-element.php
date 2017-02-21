@@ -158,14 +158,16 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			       placeholder="<?php echo esc_attr_x( "Publisher's Name", 'wordlift' ) ?>">
 		</p>
 		<div id="wl-publisher-logo">
-			<input type="hidden" id="wp-publisher-thumbnail-id" name="wl_publisher[thumbnail_id]" />
+			<input type="hidden" id="wl-publisher-media-uploader-url"
+			       name="wl_publisher[thumbnail_id]" />
 			<p>
 				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b>
 			</p>
 			<p>
-				<img id="wl-publisher-logo-preview"><input type="button"
-				                                           class="button"
-				                                           value="<?php esc_attr_e( 'Select an existing image or upload a new one', 'wordlift' ); ?>">
+				<img id="wl-publisher-media-uploader-preview" />
+				<button type="button" class="button"
+				        id="wl-publisher-media-uploader"><?php
+					echo esc_html_x( 'Select an existing image or upload a new one', 'wordlift' ); ?></button>
 			</p>
 		</div>
 		<?php

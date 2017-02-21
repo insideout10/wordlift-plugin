@@ -1,17 +1,17 @@
+/**
+ * Internal dependencies
+ */
 import delay from '../../scripts/common/delay';
 import check from '../../scripts/common/check';
 
 (
 	function( $ ) {
-		'use strict';
-
 		/**
 		 * Execute when the document is ready.
 		 *
 		 * @since 3.1.0
 		 */
 		$( function() {
-
 			// The Entity Types Taxonomy is exclusive, one cannot choose more
 			// than a type. Therefore from the PHP code we provide a Walker
 			// that changes checkboxes into radios. However the quickedit on
@@ -23,44 +23,39 @@ import check from '../../scripts/common/check';
 				return;
 			}
 
-			var fnEdit = inlineEditPost.edit; // Create a reference to the
-											  // original function.
+			// Create a reference to the original function.
+			const fnEdit = inlineEditPost.edit;
 
 			// Override the edit function.
 			inlineEditPost.edit = function( id ) {
-
 				// Call the original function.
 				fnEdit.apply( this, arguments );
 
 				// Get the id (this is a copy of what happens in the original
 				// edit function).
-				if ( typeof(
-						id
-					) === 'object' ) {
+				if ( typeof id === 'object' ) {
 					id = this.getId( id );
 				}
 
 				// Get a reference to the row data (holding the post data) and
 				// to the newly displayed inline edit row.
-				var rowData = $( '#inline_' + id ),
+				const rowData = $( '#inline_' + id ),
 					editRow = $( '#edit-' + id );
 
 				// Select the terms for the taxonomy (this is a copy of the
 				// original lines in the edit function but we're targeting
 				// radios instead of checkboxes).
 				$( '.post_category', rowData ).each( function() {
-					var taxname,
-						term_ids = $( this ).text();
+					const termIds = $( this ).text();
 
-					if ( term_ids ) {
-						taxname = $( this ).attr( 'id' ).replace( '_' + id, '' );
+					if ( termIds ) {
+						const taxname = $( this ).attr( 'id' ).replace( '_' + id, '' );
 						// Target radios (instead of checkboxes).
-						$( 'ul.' + taxname + '-checklist :radio', editRow ).val( term_ids.split( ',' ) );
+						$( 'ul.' + taxname + '-checklist :radio', editRow )
+							.val( termIds.split( ',' ) );
 					}
 				} );
-
 			};
-
 		} );
 
 		/**
@@ -70,28 +65,22 @@ import check from '../../scripts/common/check';
 		 * @since 3.2.0
 		 */
 		$( function() {
-
 			// Add the delete button to the existing input texts.
 			$( '.wl-alternative-label > .wl-delete-button' ).on( 'click', function( event ) {
-
 				$( event.delegateTarget ).parent().remove();
-
 			} );
 
 			// Handle the click on the 'Add more titles' button and bind the
 			// event of the (new) delete button.
 			$( '#wl-add-alternative-labels-button' ).on( 'click', function( event ) {
-
 				$( event.delegateTarget ).before( function() {
-					var $element = $( $( '#wl-tmpl-alternative-label-input' ).html() );
+					const $element = $( $( '#wl-tmpl-alternative-label-input' ).html() );
 					$element.children( '.wl-delete-button' ).on( 'click', function() {
 						$element.remove();
 					} );
 					return $element;
 				} );
-
 			} );
-
 		} );
 
 		/**
@@ -100,16 +89,18 @@ import check from '../../scripts/common/check';
 		 * @since 3.2.0
 		 */
 		$( function() {
-
 			// return if we are not in the entity editor page (the *wlSettings*
 			// json is only enqueued there) wlSettings.entityBeingEdited comes
 			// from `wp_localize_script`, so '1' (true) or '' (false).
-			if ( typeof wlSettings === 'undefined' || 1 != wlSettings.entityBeingEdited ) {
+			if ( typeof wlSettings === 'undefined' ||
+				 1 !== Number( wlSettings.entityBeingEdited ) ) {
 				return;
 			}
 
 			// Print error message in page and hide it.
-			const duplicatedEntityErrorDiv = $( '<div class="wl-notice notice wl-suggestion" id="wl-same-title-error" ><p></p></div>' )
+			const duplicatedEntityErrorDiv = $(
+				'<div class="wl-notice notice wl-suggestion" ' +
+				' id="wl-same-title-error"><p></p></div>' )
 				.insertBefore( 'div.wrap [name=post]' )
 				.hide();
 
@@ -120,34 +111,36 @@ import check from '../../scripts/common/check';
 			 * @since 3.10.0
 			 */
 			const callback = function() {
-
 				// A jQuery reference to the element firing the event.
 				const $this = $( this );
 
 				// Delay execution of the check.
-				delay( $this, check, $, wp.ajax, $this.val(), wlSettings.post_id, wlSettings.l10n[ 'You already published an entity with the same name' ], function( html ) {
+				delay(
+					$this,
+					check,
+					$,
+					wp.ajax,
+					$this.val(),
+					wlSettings.post_id,
+					wlSettings.l10n[ 'You already published an entity with the same name' ],
+					function( html ) {
+						// Set the error div content.
+						$( '#wl-same-title-error p' ).html( html );
 
-					// Set the error div content.
-					$( '#wl-same-title-error p' ).html( html );
-
-					// If the html code isn't empty then show the error.
-					if ( '' !== html ) {
-						duplicatedEntityErrorDiv.show();
-					} else
-					// If the html code is empty, hide the error div.
-					{
-						duplicatedEntityErrorDiv.hide();
-					}
-
-				} );
-
+						// If the html code isn't empty then show the error.
+						if ( '' !== html ) {
+							duplicatedEntityErrorDiv.show();
+						} else {
+							// If the html code is empty, hide the error div.
+							duplicatedEntityErrorDiv.hide();
+						}
+					} );
 			};
 
 			// Whenever something happens in the entity title...
 			$( '[name=post_title]' )
 				.on( 'change paste keyup', callback )
 				.each( callback );
-
 		} );
 
 		/**
@@ -156,57 +149,58 @@ import check from '../../scripts/common/check';
 		 * @since 3.4.0
 		 */
 		$( function() {
-
 			// return if not needed
 			if ( ! $( '#wl-dashboard-widget-inner-wrapper' ).length ) {
 				return;
 			}
 
 			$.getJSON( ajaxurl + '?action=wordlift_get_stats', function( stats ) {
-
 				// Get the triples, 0 by default if triples is not a number.
-				var triples = isNaN( stats.triples ) ? 0 : stats.triples;
+				const triples = isNaN( stats.triples ) ? 0 : stats.triples;
 
 				// Calculate wikidata ratio
 				// TODO percentage should be added via css
 				stats.wikidata = (
-								 (
-								 triples * 100
-								 ) / 947690143
+									 (
+										 triples * 100
+									 ) / 947690143
 								 ).toFixed( 5 ) + '%';
 				// Calculate annotated posts ratio
+				// eslint-disable-next-line camelcase
 				stats.annotated_posts_percentage = (
-				(
-				stats.annotated_posts * 100
-				) / stats.posts
+					(
+						stats.annotated_posts * 100
+					) / stats.posts
 				).toFixed( 1 );
 				// Convert NaN to zero if needed
 				// See https://github.com/insideout10/wordlift-plugin/issues/269
+				// eslint-disable-next-line camelcase, space-unary-ops
 				stats.annotated_posts_percentage = + stats.annotated_posts_percentage || 0;
 				// TODO percentage should be added via css
+				// eslint-disable-next-line camelcase
 				stats.annotated_posts_percentage = stats.annotated_posts_percentage + '%';
 
 				// Populate annotated posts pie chart
 				$( '#wl-posts-pie-chart circle' ).css(
 					'stroke-dasharray',
 					(
-					(
-					stats.annotated_posts * 100
-					) / stats.posts
+						(
+							stats.annotated_posts * 100
+						) / stats.posts
 					) + ' 100'
 				);
 				// Populate average entity ratings gauge chart
 				$( '#wl-entities-gauge-chart .stat' ).css(
 					'stroke-dasharray',
 					(
-					stats.rating / 2
+						stats.rating / 2
 					) + ' 100'
 				);
 
 				// TODO percentage should be added via css
 				stats.rating = stats.rating + '%';
 				// populate value placeholders
-				for ( var property in stats ) {
+				for ( const property in stats ) {
 					$( '#wl-dashboard-widget-' + property ).text( stats[ property ] );
 				}
 
@@ -215,19 +209,16 @@ import check from '../../scripts/common/check';
 
 				// Set the same height for stat graph wrappers
 				// Links not working with css alternatives
-				var minHeight = 0;
-				$( '.wl-stat-graph-wrapper' ).each( function( index ) {
-					var stat = $( this );
+				let minHeight = 0;
+				$( '.wl-stat-graph-wrapper' ).each( function() {
+					const stat = $( this );
 					if ( stat.height() > minHeight ) {
 						minHeight = stat.height();
 					}
 				} );
 
 				$( '.wl-stat-graph-wrapper' ).css( 'min-height', minHeight );
-
 			} );
-
 		} );
-
 	}
 )( jQuery );
