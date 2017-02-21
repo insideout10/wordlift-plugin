@@ -20,14 +20,14 @@ const Wrapper = styled.div`
 		margin: auto;
     max-width: 248px;
     border-radius: 2px;
-    border: 1px solid #c6c6c6;
+    border: 1px solid #666;
 
 	* {
 		box-sizing: border-box;
 		display: inline-block;
 		width: 20%;
-		border-right: 1px solid #c6c6c6;
-		color: #c6c6c6;
+		border-right: 1px solid #666;
+		color: #666;
 		text-align: center;
 		text-decoration: none;
 		
@@ -46,7 +46,7 @@ const Wrapper = styled.div`
 	}
 	
 	*.wl-active {
-		background: #c6c6c6;
+		background: #666;
 		color: #fff;
 	}
 `;

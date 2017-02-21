@@ -22,7 +22,7 @@ const Label = styled.div`
 	font-weight: 600;
 	font-size: 12px;
 	user-select: none;
-	color: ${ props => 0 < props.entity.occurrences.length ? '#2e92ff' : '#c7c7c7' };
+	color: ${ props => 0 < props.entity.occurrences.length ? '#2e92ff' : '#666' };
 `;
 
 // Finally export the `Label`.
