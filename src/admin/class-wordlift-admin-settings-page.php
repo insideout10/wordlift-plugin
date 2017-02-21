@@ -186,9 +186,9 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		$key_args = array(
 			'id'          => 'wl-key',
-			'name'        => 'wl_general_settings[key]',
+			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => $this->configuration_service->get_key(),
-			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
+			'description' => _x( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
 		);
 
 		// Set the class for the key field based on the validity of the key.
@@ -206,7 +206,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// Add the `key` field.
 		add_settings_field(
-			Wordlift_Configuration_Service::KEY,            // ID used to identify the field throughout the theme.
+			'wl-key',                                       // Element id used to identify the field throughout the theme.
 			_x( 'WordLift Key', 'wordlift' ),               // The label to the left of the option interface element.
 			// The name of the function responsible for rendering the option interface.
 			array( $this->input_element, 'render', ),
@@ -228,7 +228,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// Add the `wl_entity_base_path` field.
 		add_settings_field(
-			Wordlift_Configuration_Service::ENTITY_BASE_PATH_KEY, // ID used to identify the field throughout the theme
+			'wl-entity-base-path',                                // ID used to identify the field throughout the theme
 			_x( 'Entity Base Path', 'wordlift' ),                 // The label to the left of the option interface element
 			// The name of the function responsible for rendering the option interface
 			array( $this->input_element, 'render', ),
@@ -239,7 +239,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// Add the `language_name` field.
 		add_settings_field(
-			Wordlift_Configuration_Service::LANGUAGE,
+			'wl-site-language',
 			_x( 'Site Language', 'wordlift' ),
 			array( $this->language_select_element, 'render' ),
 			'wl_general_settings',
@@ -247,7 +247,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			array(
 				// The array of arguments to pass to the callback. In this case, just a description.
 				'id'          => 'wl-site-language',
-				'name'        => 'wl_general_settings[site_language]',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LANGUAGE . ']',
 				'value'       => $this->configuration_service->get_language_code(),
 				'description' => __( 'Each WordLift Key can be used only in one language. Pick yours.', 'wordlift' ),
 			)
@@ -255,11 +255,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 		// Add the `publisher` field.
 		add_settings_field(
-			Wordlift_Configuration_Service::PUBLISHER_ID,
+			'wl-publisher-id',
 			_x( 'Publisher', 'wordlift' ),
 			array( $this->publisher_element, 'render' ),
 			'wl_general_settings',
-			'wl_general_settings_section'
+			'wl_general_settings_section',
+			array(
+				'id'   => 'wl-publisher-id',
+				'name' => 'wl_general_settings[' . Wordlift_Configuration_Service::PUBLISHER_ID . ']',
+			)
 		);
 
 	}
@@ -277,85 +281,22 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @return mixed
 	 */
 	function sanitize_callback( $input ) {
-		var_dump( $input );
-		var_dump( $_POST );
-		wp_die();
 
-		// If the user creates a new publisher entities the information is not part of the
-		// "option" itself and need to get it from other $_POST values.
-		if ( isset( $_POST['wl-setting-panel'] ) && ( 'wl-create-entity' == $_POST['wl-setting-panel'] ) ) {
-
-			// validate publisher type
-			if ( ! isset( $_POST['wl-publisher-type'] ) || ! in_array( $_POST['wl-publisher-type'], array(
-					'person',
-					'company',
-				) )
-			) {
-				return $input;
-			}
+		// Check whether a publisher name has been set.
+		if ( isset( $_POST['wl_publisher'] ) && ! empty( trim( $_POST['wl_publisher']['name'] ) ) ) {
+			$name         = $_POST['wl_publisher']['name'];
+			$type         = $_POST['wl_publisher']['type'];
+			$thumbnail_id = $_POST['wl_publisher']['thumbnail_id'] ?: null;
 
 			// Set the type URI, either http://schema.org/Person or http://schema.org/Organization.
-			$type_uri = sprintf( 'http://schema.org/%s', 'company' === $_POST['wl-publisher-type'] ? 'Organization' : 'Person' );
+			$type_uri = sprintf( 'http://schema.org/%s', 'organization' === $type ? 'Organization' : 'Person' );
 
-			// validate publisher logo
-			if ( 'company' === $_POST['wl-publisher-type'] ) {
-				if ( ! isset( $_POST['wl-publisher-logo-id'] ) || ! is_numeric( $_POST['wl-publisher-logo-id'] ) ) {
-					return $input;
-				}
-
-				$logo = intval( $_POST['wl-publisher-logo-id'] );
-			} else {
-				$logo = 0;
-			}
-
-			// Create an entity for the publisher.
-			$publisher_post_id = $this->entity_service->create( $_POST['wl-publisher-name'], $type_uri, $logo, 'publish' );
-
-			$input[ Wordlift_Configuration_Service::PUBLISHER_ID ] = $publisher_post_id;
+			// Create an entity for the publisher and assign it to the input
+			// parameter which WordPress automatically saves into the settings.
+			$input['publisher_id'] = $this->entity_service->create( $name, $type_uri, $thumbnail_id, 'publish' );
 		}
 
 		return $input;
-
-	}
-
-
-	/**
-	 * Intercept the change of the WordLift key in order to set the dataset URI.
-	 *
-	 * @since 3.0.0
-	 *
-	 * @param array $old_value The old settings.
-	 * @param array $new_value The new settings.
-	 */
-	function update_key( $old_value, $new_value ) {
-
-		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
-		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
-		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
-
-		// If the key hasn't changed, don't do anything.
-		// WARN The 'update_option' hook is fired only if the new and old value are not equal
-		if ( $old_key === $new_key ) {
-			return;
-		}
-
-		// If the key is empty, empty the dataset URI.
-		if ( '' === $new_key ) {
-			$this->configuration_service->set_dataset_uri( '' );
-		}
-
-		// Request the dataset URI.
-		$response = wp_remote_get( wl_configuration_get_accounts_by_key_dataset_uri( $new_key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
-
-		// If the response is valid, then set the value.
-		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
-
-			$this->configuration_service->set_dataset_uri( $response['body'] );
-
-		} else {
-			// TO DO User notification is needed here.
-		}
-
 	}
 
 }

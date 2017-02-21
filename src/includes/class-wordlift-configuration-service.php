@@ -284,5 +284,58 @@ class Wordlift_Configuration_Service {
 
 		$this->set( 'wl_advanced_settings', self::DATASET_URI, $value );
 	}
-	
+
+	/**
+	 * Intercept the change of the WordLift key in order to set the dataset URI.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param array $old_value The old settings.
+	 * @param array $new_value The new settings.
+	 */
+	public function update_key( $old_value, $new_value ) {
+
+		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
+		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
+		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
+
+		// If the key hasn't changed, don't do anything.
+		// WARN The 'update_option' hook is fired only if the new and old value are not equal
+		if ( $old_key === $new_key ) {
+			return;
+		}
+
+		// If the key is empty, empty the dataset URI.
+		if ( '' === $new_key ) {
+			$this->set_dataset_uri( '' );
+		}
+
+		// Request the dataset URI.
+		$response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $new_key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+
+		// If the response is valid, then set the value.
+		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
+
+			$this->set_dataset_uri( $response['body'] );
+
+		} else {
+			// TO DO User notification is needed here.
+		}
+
+	}
+
+	/**
+	 * Get the API URI to retrieve the dataset URI using the WordLift Key.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param string $key The WordLift key to use.
+	 *
+	 * @return string The API URI.
+	 */
+	public function get_accounts_by_key_dataset_uri( $key ) {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
+	}
+
 }

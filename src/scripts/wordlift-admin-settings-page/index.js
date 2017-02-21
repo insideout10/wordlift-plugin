@@ -29,7 +29,7 @@ import Select2 from '../common/select2';
 				library: { type: 'image' },
 			}, ( attachment ) => {
 				// Set the selected image as the preview image
-				$( '#wl-publisher-media-uploader-url' ).attr( 'src', attachment.url ).show();
+				$( '#wl-publisher-media-uploader-preview' ).attr( 'src', attachment.url ).show();
 
 				// Set the logo id.
 				$( '#wl-publisher-media-uploader-id' ).val( attachment.id );

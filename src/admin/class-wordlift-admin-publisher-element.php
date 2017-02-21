@@ -70,6 +70,12 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 	 */
 	public function render( $args ) {
 
+		// Parse the arguments and merge with default values.
+		$params = wp_parse_args( $args, array(
+			'id'   => uniqid( 'wl-input-' ),
+			'name' => uniqid( 'wl-input-' ),
+		) );
+
 		// Get the number of potential candidates as publishers.
 		$count = $this->publisher_service->count();
 
@@ -78,10 +84,12 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 				array(
 					'label'    => 'Select an Existing Publisher',
 					'callback' => array( $this, 'select' ),
+					'args'     => $params,
 				),
 				array(
 					'label'    => 'Create a New Publisher',
 					'callback' => array( $this, 'create' ),
+					'args'     => $params,
 				),
 			),
 			// Set the default tab according to the number of potential publishers
@@ -97,8 +105,10 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 	 * Render the publisher's select.
 	 *
 	 * @since 3.11.0
+	 *
+	 * @param array $params An array of parameters.
 	 */
-	public function select() {
+	public function select( $params ) {
 
 		// Get the configured publisher id. In case a publisher id is already configured
 		// this must be pre-loaded in the options.
@@ -114,6 +124,10 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 
 		// Finally render the Select.
 		$this->select_element->render( array(
+			// Id.
+			'id'                 => $params['id'],
+			// Name.
+			'name'               => $params['name'],
 			// The selected id.
 			'value'              => $publisher_id,
 			// The selected item (must be in the options for Select2 to display it).
@@ -132,8 +146,10 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 	 * Render the 'create publisher' form.
 	 *
 	 * @since 3.11.0
+	 *
+	 * @param array $params An array of parameters.
 	 */
-	public function create() {
+	public function create( $params ) {
 		?>
 		<p>
 			<strong><?php echo esc_html_x( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></strong>
@@ -148,7 +164,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			</span>
 			<span>
 				<input id="wl-publisher-company" type="radio"
-				       name="wl_publisher[type]" value="company"">
+				       name="wl_publisher[type]" value="organization"">
 				<label for="wl-publisher-company"><?php
 					echo esc_html_x( 'Company', 'wordlift' ) ?></label>
 			</span>
@@ -158,7 +174,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			       placeholder="<?php echo esc_attr_x( "Publisher's Name", 'wordlift' ) ?>">
 		</p>
 		<div id="wl-publisher-logo">
-			<input type="hidden" id="wl-publisher-media-uploader-url"
+			<input type="hidden" id="wl-publisher-media-uploader-id"
 			       name="wl_publisher[thumbnail_id]" />
 			<p>
 				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b>
