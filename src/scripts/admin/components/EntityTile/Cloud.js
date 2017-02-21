@@ -13,7 +13,7 @@ import styled from 'styled-components';
  * @inheritDoc
  */
 const Cloud = styled.i`
-	display: ${ props => props.local ? 'block' : 'none' };
+	display: ${ props => props.local ? 'none' : 'block' };
 	position: absolute;
 	right: 20px;
 	top: 8px;
