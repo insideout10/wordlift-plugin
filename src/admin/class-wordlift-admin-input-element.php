@@ -29,13 +29,13 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 			'name'        => uniqid( 'wl-input-' ),
 			'value'       => '',
 			'readonly'    => false,
-			'class'       => false,
+			'css_class'   => false,
 			'description' => false,
 		) );
 
 		// Set the readonly and class attributes and the description.
 		$readonly    = $params['readonly'] ? ' readonly="readonly"' : '';
-		$css_class   = $params['class'] ? ' class="' . esc_attr( $params['class'] ) . '"' : '';
+		$css_class   = $params['css_class'] ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
 		$description = $params['description'] ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
 
 		?>

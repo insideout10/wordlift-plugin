@@ -131,7 +131,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			// The selected id.
 			'value'              => $publisher_id,
 			// The selected item (must be in the options for Select2 to display it).
-			'options'            => array( $post->ID => $post->post_title ),
+			'options'            => $post ? array( $post->ID => $post->post_title ) : array(),
 			// The list of available options.
 			'data'               => $this->publisher_service->query(),
 			// The HTML template for each option.
@@ -177,7 +177,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 			<input type="hidden" id="wl-publisher-media-uploader-id"
 			       name="wl_publisher[thumbnail_id]" />
 			<p>
-				<b><?php esc_html_e( "Choose the publisher's Logo", 'wordlift' ) ?></b>
+				<b><?php echo esc_html_x( "Choose the publisher's Logo", 'wordlift' ) ?></b>
 			</p>
 			<p>
 				<img id="wl-publisher-media-uploader-preview" />

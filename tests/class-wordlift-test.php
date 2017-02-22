@@ -145,4 +145,40 @@ class Wordlift_Test extends Wordlift {
 		return $this->jsonld_service;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Admin_Input_Element} element renderer.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return \Wordlift_Admin_Input_Element The {@link Wordlift_Admin_Input_Element} element renderer.
+	 */
+	public function get_input_element() {
+
+		return $this->input_element;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return \Wordlift_Admin_Language_Select_Element The {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 */
+	public function get_language_select_element() {
+
+		return $this->language_select_element;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return \Wordlift_Admin_Publisher_Element The {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 */
+	public function get_publisher_element() {
+
+		return $this->publisher_element;
+	}
+
 }

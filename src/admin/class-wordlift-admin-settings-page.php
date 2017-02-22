@@ -211,11 +211,11 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$validation_service = new Wordlift_Key_Validation_Service();
 
 		if ( empty( $key_args['value'] ) ) {
-			$key_args['class'] = 'untouched';
+			$key_args['css_class'] = 'untouched';
 		} elseif ( $validation_service->is_valid( $key_args['value'] ) ) {
-			$key_args['class'] = 'valid';
+			$key_args['css_class'] = 'valid';
 		} else {
-			$key_args['class'] = 'invalid';
+			$key_args['css_class'] = 'invalid';
 		}
 
 		// Add the `key` field.

@@ -28,8 +28,6 @@ class Wordlift_Admin_Language_Select_Element implements Wordlift_Admin_Element {
 			'id'          => uniqid( 'wl-input-' ),
 			'name'        => uniqid( 'wl-input-' ),
 			'value'       => '',
-			'readonly'    => false,
-			'class'       => false,
 			'description' => false,
 		) );
 
