@@ -880,8 +880,7 @@ class Wordlift {
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
-		// hook styling for the entity type list admin
-		$this->loader->add_action( 'admin_print_styles-edit-tags.php', $this->entity_type_admin_page, 'admin_print_styles_edit_tags' );
+		// hook row actions for the entity type list admin
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
 	}
 
