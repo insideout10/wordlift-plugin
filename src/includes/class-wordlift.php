@@ -907,7 +907,7 @@ class Wordlift {
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 
 		// Hook key update.
-		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key' );
+		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key', 10, 2 );
 
 		// Add additional action links to the WordLift plugin in the plugins page.
 		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
