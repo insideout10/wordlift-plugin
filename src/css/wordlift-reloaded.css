@@ -3293,6 +3293,7 @@ h3.ui-sortable-handle {
   -webkit-transform: translateY(3px);
       -ms-transform: translateY(3px);
           transform: translateY(3px);
+  float: right;
 }
 .wl-widget-spinner svg {
   display: inline-block;
