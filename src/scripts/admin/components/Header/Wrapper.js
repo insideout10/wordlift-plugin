@@ -18,9 +18,10 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
 	position: relative;
 	margin: auto;
-    max-width: 248px;
-    border-radius: 2px;
-    border: 1px solid #666;
+  max-width: 248px;
+  border-radius: 2px;
+  border: 1px solid #666;
+	overflow: hidden;
 
 	* {
 		box-sizing: border-box;
@@ -43,6 +44,10 @@ const Wrapper = styled.div`
 
 	*:last-child {
 		border-right: none;
+		// Fix annoying pixel gap in responsive.
+		&.wl-active {
+			box-shadow: 3px 0 0 0 #666;
+		}
 	}
 	
 	*.wl-active {
