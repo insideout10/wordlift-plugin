@@ -42,7 +42,7 @@ class Wordlift_Publisher_Service {
 		) );
 
 		// Finally return the count.
-		return $count;
+		return (int) $count;
 	}
 
 	/**
