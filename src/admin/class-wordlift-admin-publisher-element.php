@@ -171,7 +171,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 		</p>
 		<p id="wl-publisher-name">
 			<input type="text" name="wl_publisher[name]"
-			       placeholder="<?php echo esc_attr_x( "Publisher's Name", 'wordlift' ) ?>">
+			       placeholder="<?php echo esc_attr_x( "What's your name?", 'wordlift' ) ?>">
 		</p>
 		<div id="wl-publisher-logo">
 			<input type="hidden" id="wl-publisher-media-uploader-id"
