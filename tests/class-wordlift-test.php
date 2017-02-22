@@ -181,4 +181,38 @@ class Wordlift_Test extends Wordlift {
 		return $this->publisher_element;
 	}
 
+	/**
+	 * Get the {@link Wordlift_Admin_Select2_Element} element renderer.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return \Wordlift_Admin_Select2_Element The {@link Wordlift_Admin_Select2_Element} element renderer.
+	 */
+	public function get_select2_element() {
+
+		return $this->select2_element;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Admin_Settings_Page_Action_Link} instance.
+	 *
+	 * @since 3.11.0
+	 * @return \Wordlift_Admin_Settings_Page_Action_Link The {@link Wordlift_Admin_Settings_Page_Action_Link} instance.
+	 */
+	public function get_settings_page_action_link() {
+
+		return $this->settings_page_action_link;
+	}
+
+	/**
+	 * Get the {@link Wordlift_Admin_Settings_Page} instance.
+	 *
+	 * @since 3.11.0
+	 * @return \Wordlift_Admin_Settings_Page The {@link Wordlift_Admin_Settings_Page} instance.
+	 */
+	public function get_settings_page() {
+
+		return $this->settings_page;
+	}
+
 }

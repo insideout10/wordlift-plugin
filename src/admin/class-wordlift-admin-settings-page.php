@@ -19,26 +19,6 @@
 class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 	/**
-	 * The maximum number of entities to be displayed in a "simple" publisher
-	 * select without a search box.
-	 *
-	 * @since    3.11
-	 * @access   private
-	 * @var      integer $max_entities_without_search The maximum number of entities
-	 *  to be displayed in a "simple" publisher select without a search box.
-	 */
-	private $max_entities_without_search;
-
-	/**
-	 * The maximum number of entities to load when called via AJAX.
-	 *
-	 * @since  3.11.0
-	 * @access private
-	 * @var int $max_entities_without_ajax The maximum number of entities to load when called via AJAX.
-	 */
-	private $max_entities_without_ajax;
-
-	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.11.0
@@ -88,20 +68,16 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param int                                     $max_entities_without_search The maximum number of entities to be displayed in a "simple" publisher select without a search box.
-	 * @param int                                     $max_entities_without_ajax
 	 * @param \Wordlift_Configuration_Service         $configuration_service
 	 * @param \Wordlift_Entity_Service                $entity_service
 	 * @param \Wordlift_Admin_Input_Element           $input_element
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element
 	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element
 	 */
-	function __construct( $max_entities_without_search, $max_entities_without_ajax, $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element ) {
+	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element ) {
 
-		$this->max_entities_without_search = $max_entities_without_search;
-		$this->max_entities_without_ajax   = $max_entities_without_ajax;
-		$this->configuration_service       = $configuration_service;
-		$this->entity_service              = $entity_service;
+		$this->configuration_service = $configuration_service;
+		$this->entity_service        = $entity_service;
 
 		// Set a reference to the UI elements.
 		$this->input_element           = $input_element;
@@ -283,7 +259,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	}
 
 	/**
-	 * Sanitize the configuration settings to be stored. Configured as a hook from *wl_configuration_settings*.
+	 * Sanitize the configuration settings to be stored.
 	 *
 	 * If a new entity is being created for the publisher, create it and set The
 	 * publisher setting.
@@ -292,7 +268,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 *
 	 * @param array $input The configuration settings array.
 	 *
-	 * @return mixed
+	 * @return array The sanitized input array.
 	 */
 	function sanitize_callback( $input ) {
 
