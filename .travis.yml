@@ -118,8 +118,6 @@ before_install:
       .ci/travis/install_wp_cli.sh
       .ci/travis/install_wordpress.sh
     fi
-
-before_script:
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
@@ -131,6 +129,8 @@ before_script:
   - npm install -g npm@$NPM_VERSION
   # Legacy (required by test:js and test:php).
   - npm install -g grunt-cli
+
+before_script:
   # Install Node dependencies.
   - npm install
 
