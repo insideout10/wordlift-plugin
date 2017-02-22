@@ -81,6 +81,11 @@ env:
 
     # Required for Node compiles. See https://github.com/travis-ci/travis-ci/issues/4771
     - CXX=g++-4.8
+
+    # Switch npm version to solve optional dependencies issues.
+    #
+    # See https://github.com/npm/npm/issues/14042
+    - NPM_VERSION=3.10.7
   matrix:
     - SCRIPT=test:php WP_VERSION=4.7
     - SCRIPT=test:php WP_VERSION=4.2
@@ -120,6 +125,10 @@ before_script:
   - nvm install 6 --reinstall-packages-from=node
   - nvm use 6
   - node --version
+  # Switch npm version to solve optional dependencies issues.
+  #
+  # See https://github.com/npm/npm/issues/14042
+  - npm install -g npm@$NPM_VERSION
   # Legacy (required by test:js and test:php).
   - npm install -g grunt-cli
   # Install Node dependencies.
