@@ -1,5 +1,18 @@
 #wl-settings-page #wl-key {
-  width: 100%; }
+  width: 100%;
+  max-width: 480px;
+  height: 32px;
+  padding: 0 8px;
+  line-height: 32px;
+  font-size: 14px;
+  color: #444;
+  border-radius: 4px;
+  border: 1px solid #aaaaaa; }
+  #wl-settings-page #wl-key.valid {
+    background-image: url("/../../images/valid.png");
+    background-position: 464px 8px; }
+  #wl-settings-page #wl-key.invalid {
+    background-color: red; }
 
 #wl-settings-page .wl-tabs-element {
   border-radius: 0;
@@ -107,4 +120,5 @@
 #wl-publisher-media-uploader-preview {
   max-width: 256px;
   max-height: 256px;
-  margin-bottom: 16px; }
+  margin-bottom: 16px;
+  display: block; }
