@@ -18,6 +18,6 @@ describe( 'Open the WordPress web site', function() {
 
 	} );
 
-	Admin();
+	describe('while in WordPress backend, admin', Admin);
 
 } );
