@@ -159,7 +159,7 @@ describe( 'Open the WordPress web site', function() {
 
 			browser.click( '#menu-posts a[href="post-new.php"]' );
 
-			browser.waitForExist( 'iframe#content_ifr"]' );
+			browser.waitForExist( 'iframe#content_ifr' );
 
 			browser.frame( browser.element( 'iframe#content_ifr' ).value );
 
