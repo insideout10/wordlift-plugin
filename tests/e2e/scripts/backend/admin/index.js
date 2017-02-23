@@ -1,4 +1,4 @@
-const Admin = describe( 'while in WordPress backend, admin', function() {
+const Admin = () => describe( 'while in WordPress backend, admin', function() {
 
 	// `paneX` represents the expected horizontal offset of the current pane.
 	// It is set the first time, when the _wl-setup_ page is opened.
