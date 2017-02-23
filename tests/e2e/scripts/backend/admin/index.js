@@ -23,7 +23,7 @@ const Admin = () => describe( 'while in WordPress backend, admin', function() {
 			return paneX === browser.getLocation( '.viewport > ul > li:nth-child(' + (
 												  index + 1
 												  ) + ')', 'x' );
-		}, 750, 'expected pane to be visible within 750ms' );
+		}, 1000, 'expected pane to be visible within 750ms' );
 
 	};
 
@@ -72,7 +72,7 @@ const Admin = () => describe( 'while in WordPress backend, admin', function() {
 		browser.setValue( 'input#key', process.env.WORDLIFT_KEY );
 
 		// Wait until the element becomes valid.
-		browser.waitForExist( 'input#key.valid' );
+		browser.waitForExist( 'input#key.valid', 5000 );
 
 	} );
 
