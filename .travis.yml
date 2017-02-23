@@ -49,17 +49,11 @@ cache:
 
 addons:
   # Have Travis CI start a SauceLabs Connect instance for us.
-  #  sauce_connect: true
+#  sauce_connect: true
   # see https://docs.travis-ci.com/user/hosts
   # see https://support.saucelabs.com/customer/en/portal/articles/2639448-issues-with-localhost-proxying-on-edge-and-safari-8-and-9-using-sauce-connect-proxy
   hosts:
     - wordpress.local
-  # Required for Node compiles. See https://github.com/travis-ci/travis-ci/issues/4771
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-4.8
 
 env:
   global:
@@ -78,14 +72,6 @@ env:
     # SauceLabs environment vars.
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
-
-    # Required for Node compiles. See https://github.com/travis-ci/travis-ci/issues/4771
-    - CXX=g++-4.8
-
-    # Switch npm version to solve optional dependencies issues.
-    #
-    # See https://github.com/npm/npm/issues/14042
-    - NPM_VERSION=3.10.7
   matrix:
     - SCRIPT=test:php WP_VERSION=4.7
     - SCRIPT=test:php WP_VERSION=4.2
@@ -118,19 +104,15 @@ before_install:
       .ci/travis/install_wp_cli.sh
       .ci/travis/install_wordpress.sh
     fi
+
+before_script:
   # Install an updated version of NodeJS. Note that this cannot be put in a sh file as nvm must retain its choice.
   - . $HOME/.nvm/nvm.sh
   - nvm install 6 --reinstall-packages-from=node
   - nvm use 6
   - node --version
-  # Switch npm version to solve optional dependencies issues.
-  #
-  # See https://github.com/npm/npm/issues/14042
-  - npm install -g npm@$NPM_VERSION
   # Legacy (required by test:js and test:php).
   - npm install -g grunt-cli
-
-before_script:
   # Install Node dependencies.
   - npm install
 

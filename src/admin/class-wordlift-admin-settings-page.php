@@ -273,7 +273,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	function sanitize_callback( $input ) {
 
 		// Check whether a publisher name has been set.
-		if ( isset( $_POST['wl_publisher'] ) && ! empty( trim( $_POST['wl_publisher']['name'] ) ) ) {
+		if ( isset( $_POST['wl_publisher'] ) && ! empty( $_POST['wl_publisher']['name'] ) ) {
 			$name         = $_POST['wl_publisher']['name'];
 			$type         = $_POST['wl_publisher']['type'];
 			$thumbnail_id = $_POST['wl_publisher']['thumbnail_id'] ?: null;
