@@ -15,7 +15,7 @@ const path = require( 'path' );
 // organizing them in three main files (front-end, admin, editor). For some time
 // the old files and the new files will cohexist.
 
-const config = {
+const admin = {
 	entry: {
 		'wordlift-admin': './src/scripts/admin/index.js'
 	},
@@ -57,5 +57,49 @@ const config = {
 		new webpack.optimize.UglifyJsPlugin()
 	]
 };
+
+const e2e = {
+	entry: {
+		'backend': './tests/e2e/scripts/backend/index.js'
+	},
+	output: {
+		path: path.resolve( __dirname, 'tests/e2e/tests' ),
+		filename: '[name]/index.specs.js'
+	},
+	module: {
+		rules: [
+			// `eslint`.
+			{
+				test: /\.js$/,
+				exclude: /node_modules/,
+				// `eslint` runs before any other loader.
+				enforce: 'pre',
+				use: 'eslint-loader',
+			},
+			// `babel`.
+			{ test: /\.(js|jsx)$/, use: 'babel-loader' },
+			// Stylesheets.
+			{
+				test: /\.scss$/,
+				use: [
+					'style-loader',
+					'css-loader',
+					'sass-loader'
+				]
+			},
+			{ test: /\.css$/, use: 'css-loader' }
+
+		]
+	},
+	plugins: [
+		new webpack.DefinePlugin( {
+			'process.env': {
+				NODE_ENV: JSON.stringify( 'production' )
+			}
+		} )
+	]
+};
+
+const config = [ admin, e2e ];
 
 module.exports = config;
