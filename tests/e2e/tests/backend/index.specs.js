@@ -95,7 +95,7 @@ var Admin = function Admin() {
 				// console.log(browser.getLocation('.viewport > ul >
 				// li:nth-child()', 'x'));
 				return paneX === browser.getLocation('.viewport > ul > li:nth-child(' + (index + 1) + ')', 'x');
-			}, 750, 'expected pane to be visible within 750ms');
+			}, 1000, 'expected pane to be visible within 750ms');
 		};
 
 		it('opens the plugins page and activates WordLift', function () {
@@ -142,7 +142,7 @@ var Admin = function Admin() {
 			browser.setValue('input#key', __webpack_require__.i({"NODE_ENV":"production"}).WORDLIFT_KEY);
 
 			// Wait until the element becomes valid.
-			browser.waitForExist('input#key.valid');
+			browser.waitForExist('input#key.valid', 5000);
 		});
 
 		it('continues to Vocabulary', function () {
