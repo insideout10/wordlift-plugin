@@ -153,11 +153,11 @@ describe( 'Open the WordPress web site', function() {
 
 		it( 'opens the posts page', function() {
 
-			browser.click( '#menu-posts .wp-submenu a[href="edit.php"]' );
+			browser.click( '#menu-posts > a[href="edit.php"]' );
 
-			browser.waitForExist( 'h1.wp-heading-inline' );
+			browser.waitForExist( '#menu-posts a[href="post-new.php"]' );
 
-			browser.click( '#menu-posts .wp-submenu a[href="post-new.php"]' );
+			browser.click( '#menu-posts a[href="post-new.php"]' );
 
 			browser.waitForExist( '#tinymce' );
 
