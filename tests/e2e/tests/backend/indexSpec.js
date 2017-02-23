@@ -161,8 +161,7 @@ describe( 'Open the WordPress web site', function() {
 
 			browser.waitForExist( 'iframe#content_ifr"]' );
 
-			var my_frame = $( 'iframe#content_ifr' ).value;
-			browser.frame( my_frame );
+			browser.frame( browser.element( 'iframe#content_ifr' ).value );
 
 			browser.waitForExist( '#tinymce p' );
 
