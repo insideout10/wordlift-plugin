@@ -16,6 +16,13 @@
  */
 class Wordlift_Publisher_Service {
 
+	/**
+	 * Counts the number of potential publishers.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return int The number of potential publishers.
+	 */
 	public function count() {
 
 		// Get the global `wpdb` instance.
