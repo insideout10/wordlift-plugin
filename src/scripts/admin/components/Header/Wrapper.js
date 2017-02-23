@@ -18,9 +18,9 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
 	position: relative;
 	margin: auto;
-  max-width: 248px;
-  border-radius: 2px;
-  border: 1px solid #666;
+	max-width: 248px;
+	border-radius: 2px;
+	border: 1px solid #666;
 	overflow: hidden;
 
 	* {
@@ -35,15 +35,16 @@ const Wrapper = styled.div`
 		&:hover {
 			color: #a0a0a0;
 		}
-		
+
 		&:focus {
-			// Overrides wp styles.
+			// Overrides WordPress' styles.
 			box-shadow: none
 		}
 	}
 
 	*:last-child {
 		border-right: none;
+
 		// Fix annoying pixel gap in responsive.
 		&.wl-active {
 			box-shadow: 3px 0 0 0 #666;
