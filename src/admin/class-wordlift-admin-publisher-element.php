@@ -82,12 +82,12 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 		$this->tabs_element->render( array(
 			'tabs'   => array(
 				array(
-					'label'    => 'Select an Existing Publisher',
+					'label'    => __( 'Select an Existing Publisher', 'wordlift' ),
 					'callback' => array( $this, 'select' ),
 					'args'     => $params,
 				),
 				array(
-					'label'    => 'Create a New Publisher',
+					'label'    => __( 'Create a New Publisher', 'wordlift' ),
 					'callback' => array( $this, 'create' ),
 					'args'     => $params,
 				),
@@ -183,7 +183,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 				<img id="wl-publisher-media-uploader-preview" />
 				<button type="button" class="button"
 				        id="wl-publisher-media-uploader"><?php
-					echo esc_html_x( 'Select an existing image or upload a new one', 'wordlift' ); ?></button>
+						echo esc_html_x( 'Select an existing image or upload a new one', 'wordlift' ); ?></button>
 			</p>
 		</div>
 		<?php

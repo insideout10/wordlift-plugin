@@ -77,8 +77,8 @@ abstract class Wordlift_Admin_Page {
 		// See http://codex.wordpress.org/Function_Reference/add_submenu_page
 		$page = add_submenu_page(
 			$this->get_parent_slug(),
-			_x( $this->get_page_title(), 'wordlift' ),
-			_x( $this->get_menu_title(), 'wordlift' ),
+			$this->get_page_title(),
+			$this->get_menu_title(),
 			$this->get_capability(),                   // The required capability, provided by the calling hook.
 			$this->get_menu_slug(),
 			array( $this, 'render' )

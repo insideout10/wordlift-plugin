@@ -48,7 +48,7 @@ class Wordlift_Admin_Tabs_Element implements Wordlift_Admin_Element {
 				<?php foreach ( $params['tabs'] as $index => $tab ) { ?>
 					<li class="nav-tab">
 						<a href="#tabs-<?php echo $index + 1; ?>"><?php
-							echo esc_html_x( $tab['label'], 'wordlift' ); ?></a>
+							echo esc_html( $tab['label'] ); ?></a>
 					</li>
 				<?php } ?>
 			</ul>
