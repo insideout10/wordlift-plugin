@@ -161,15 +161,17 @@ describe( 'Open the WordPress web site', function() {
 
 			browser.waitForExist( 'iframe#content_ifr' );
 
-			browser.frame( browser.element( 'iframe#content_ifr' ).value );
+			browser.frame( 'content_ifr' );
 
 			browser.waitForExist( '#tinymce p' );
 
-			browser.click('#tinymce');
-			browser.keys('WordLift brings the power of Artiﬁcial Intelligence to help you produce richer content and organize it around your audience.');
+			browser.click( '#tinymce' );
+			browser.keys( 'WordLift brings the power of Artiﬁcial Intelligence to help you produce richer content and organize it around your audience.' );
 
 			// Set the company name.
-			// browser.setValue( '#tinymce p', 'WordLift brings the power of Artiﬁcial Intelligence to help you produce richer content and organize it around your audience.' );
+			// browser.setValue( '#tinymce p', 'WordLift brings the power of
+			// Artiﬁcial Intelligence to help you produce richer content and
+			// organize it around your audience.' );
 
 			browser.frame( null );
 
