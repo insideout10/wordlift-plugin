@@ -71,8 +71,37 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-var Admin = function Admin() {
-	return describe('while in WordPress backend, admin', function () {
+var Admin = function Admin() {};
+
+/* unused harmony default export */ var _unused_webpack_default_export = Admin;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin__ = __webpack_require__(0);
+
+
+'use strict';
+
+describe('Open the WordPress web site', function () {
+
+	it('admin logs in', function () {
+
+		browser.url('/wp-login.php');
+
+		browser.waitForVisible('#wp-submit');
+
+		browser.setValue('#user_login', 'admin');
+		browser.setValue('#user_pass', 'admin');
+		browser.click('#wp-submit');
+
+		browser.waitForExist('body.wp-admin');
+	});
+
+	describe('while in WordPress backend, admin', function () {
 
 		// `paneX` represents the expected horizontal offset of the current pane.
 		// It is set the first time, when the _wl-setup_ page is opened.
@@ -95,7 +124,7 @@ var Admin = function Admin() {
 				// console.log(browser.getLocation('.viewport > ul >
 				// li:nth-child()', 'x'));
 				return paneX === browser.getLocation('.viewport > ul > li:nth-child(' + (index + 1) + ')', 'x');
-			}, 1000, 'expected pane to be visible within 750ms');
+			}, 750, 'expected pane to be visible within 750ms');
 		};
 
 		it('opens the plugins page and activates WordLift', function () {
@@ -195,37 +224,6 @@ var Admin = function Admin() {
 			// expect(browser.getUrl()).toMatch(/\/wp-admin\/$/);
 		});
 	});
-};
-
-/* harmony default export */ __webpack_exports__["a"] = Admin;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__admin__ = __webpack_require__(0);
-
-
-'use strict';
-
-describe('Open the WordPress web site', function () {
-
-	it('admin logs in', function () {
-
-		browser.url('/wp-login.php');
-
-		browser.waitForVisible('#wp-submit');
-
-		browser.setValue('#user_login', 'admin');
-		browser.setValue('#user_pass', 'admin');
-		browser.click('#wp-submit');
-
-		browser.waitForExist('body.wp-admin');
-	});
-
-	__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__admin__["a" /* default */])();
 });
 
 /***/ })
