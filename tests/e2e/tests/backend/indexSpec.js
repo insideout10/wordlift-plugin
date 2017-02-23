@@ -159,14 +159,14 @@ describe( 'Open the WordPress web site', function() {
 
 			browser.click( '#menu-posts a[href="post-new.php"]' );
 
-			browser.waitForExist( '#tinymce' );
+			browser.waitForExist( 'iframe[id=content_ifr] #tinymce' );
 
 			// Set the company name.
 			browser.setValue( '#tinymce p', 'WordLift brings the power of Artiﬁcial Intelligence to help you produce richer content and organize it around your audience.' );
 
 			browser.click( '#publish' );
 
-			browser.waitForVisible('#wl-entity-list ul')
+			browser.waitForVisible( '#wl-entity-list ul' )
 
 		} )
 
