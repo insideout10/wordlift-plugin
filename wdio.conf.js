@@ -26,7 +26,7 @@ var config = {
     // directory is where your package.json resides, so `wdio` will be called from there.
     //
     specs: [
-        './tests/e2e/tests/**/*.specs.js'
+        './tests/e2e/tests/**/*Spec.js'
     ],
     // Patterns to exclude.
     exclude: [
