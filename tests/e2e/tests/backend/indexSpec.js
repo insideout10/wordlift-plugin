@@ -135,6 +135,7 @@ describe( 'Open the WordPress web site', function() {
 			browser.setValue( 'input#name', 'Acme Inc.' );
 
 			// Click on finish.
+			browser.waitForExist( '#btn-finish' );
 			browser.click( '#btn-finish' );
 
 			// Check that we got back to the admin area.

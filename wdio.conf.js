@@ -238,8 +238,6 @@ if ( process.env.CI ) {
 			version: 'latest',
 			platform: 'Windows 10',
 			enableNativeEvents: true
-//			EnableNativeEvents: true
-
 		}, {
 			browserName: 'internet explorer',
 			version: 'latest',
