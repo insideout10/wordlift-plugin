@@ -172,6 +172,8 @@ describe( 'Open the WordPress web site', function() {
 
 				browser.frame( null );
 
+				browser.element( '#publish' ).scroll();
+
 				browser.click( '#publish' );
 
 				browser.waitForExist( '#wl-entity-list ul' )
