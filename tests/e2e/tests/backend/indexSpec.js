@@ -170,7 +170,7 @@ describe( 'Open the WordPress web site', function() {
 				// Artiﬁcial Intelligence to help you produce richer content and
 				// organize it around your audience.' );
 
-				browser.frame( null );
+				browser.frameParent();
 
 				browser.element( '#publish' ).scroll();
 
