@@ -139,7 +139,7 @@ describe( 'Open the WordPress web site', function() {
 			browser.submitForm( 'form' );
 
 //			// Check that we got back to the admin area.
-			browser.waitForExist( '#adminmenumain' );
+			browser.waitForExist( 'body.wp-admin' );
 
 		} );
 
