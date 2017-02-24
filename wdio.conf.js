@@ -237,8 +237,8 @@ if ( process.env.CI ) {
 			browserName: 'firefox',
 			version: 'latest',
 			platform: 'Windows 10',
-//			enableNativeEvents: true,
-			EnableNativeEvents: true
+			enableNativeEvents: true
+//			EnableNativeEvents: true
 
 		}, {
 			browserName: 'internet explorer',
