@@ -153,19 +153,19 @@ describe( 'Open the WordPress web site', function() {
 
 		it( 'opens the posts page', function() {
 
-			browser.waitForVisible( '#menu-posts > a[href="edit.php"]' );
+			browser.waitForExist( '#menu-posts > a[href="edit.php"]' );
 
 			browser.click( '#menu-posts > a[href="edit.php"]' );
 
-			browser.waitForVisible( '#menu-posts a[href="post-new.php"]' );
+			browser.waitForExist( '#menu-posts a[href="post-new.php"]' );
 
 			browser.click( '#menu-posts a[href="post-new.php"]' );
 
-			browser.waitForVisible( '#content_ifr' );
+			browser.waitForExist( '#content_ifr' );
 
 			browser.frame( 'content_ifr' );
 
-			browser.waitForVisible( '#tinymce' );
+			browser.waitForExist( '#tinymce' );
 
 			browser.click( '#tinymce' );
 			browser.keys( 'WordLift brings the power of Artiﬁcial Intelligence to help you produce richer content and organize it around your audience.' );
@@ -179,7 +179,7 @@ describe( 'Open the WordPress web site', function() {
 
 			browser.click( '#publish' );
 
-			browser.waitForVisible( '#wl-entity-list ul' )
+			browser.waitForExist( '#wl-entity-list ul' )
 
 		} )
 
