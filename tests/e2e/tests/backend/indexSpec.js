@@ -129,59 +129,54 @@ describe( 'Open the WordPress web site', function() {
 			// Click next and wait for the 5th pane.
 			clickNextAndWaitForPane( 4 );
 
-			// browser.waitForExist('input#company');
-			//
-			// // Click on the company radio.
-			// browser.click('input#company');
-
 			browser.waitForExist( 'input#name' );
 
 			// Set the company name.
 			browser.setValue( 'input#name', 'Acme Inc.' );
 
 			// Click on finish.
-			browser.click( 'input#btn-finish' );
+			browser.click( '#btn-finish' );
 
-			// Check that we got back to the admin area.
-			browser.waitForExist( 'body.wp-admin', 10000 );
+//			// Check that we got back to the admin area.
+//			browser.waitForExist( '#adminmenumain' );
 
 		} );
 
-	} );
+		describe( 'create a post', function() {
 
-	describe( 'create a post', function() {
+			it( 'opens the posts page', function() {
 
-		it( 'opens the posts page', function() {
+				browser.waitForExist( '#menu-posts > a[href="edit.php"]' );
 
-			browser.waitForExist( '#menu-posts > a[href="edit.php"]' );
+				browser.click( '#menu-posts > a[href="edit.php"]' );
 
-			browser.click( '#menu-posts > a[href="edit.php"]' );
+				browser.waitForExist( '#menu-posts a[href="post-new.php"]' );
 
-			browser.waitForExist( '#menu-posts a[href="post-new.php"]' );
+				browser.click( '#menu-posts a[href="post-new.php"]' );
 
-			browser.click( '#menu-posts a[href="post-new.php"]' );
+				browser.waitForExist( '#content_ifr' );
 
-			browser.waitForExist( '#content_ifr' );
+				browser.frame( browser.element( '#content_ifr' ) );
 
-			browser.frame( 'content_ifr' );
+				browser.waitForExist( '#tinymce' );
 
-			browser.waitForExist( '#tinymce' );
+				browser.click( '#tinymce' );
+				browser.keys( 'WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.' );
 
-			browser.click( '#tinymce' );
-			browser.keys( 'WordLift brings the power of Artiﬁcial Intelligence to help you produce richer content and organize it around your audience.' );
+				// Set the company name.
+				// browser.setValue( '#tinymce p', 'WordLift brings the power of
+				// Artiﬁcial Intelligence to help you produce richer content and
+				// organize it around your audience.' );
 
-			// Set the company name.
-			// browser.setValue( '#tinymce p', 'WordLift brings the power of
-			// Artiﬁcial Intelligence to help you produce richer content and
-			// organize it around your audience.' );
+				browser.frame( null );
 
-			browser.frame( null );
+				browser.click( '#publish' );
 
-			browser.click( '#publish' );
+				browser.waitForExist( '#wl-entity-list ul' )
 
-			browser.waitForExist( '#wl-entity-list ul' )
+			} )
 
-		} )
+		} );
 
 	} );
 
