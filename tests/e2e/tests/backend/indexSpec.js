@@ -135,11 +135,10 @@ describe( 'Open the WordPress web site', function() {
 			browser.setValue( 'input#name', 'Acme Inc.' );
 
 			// Click on finish.
-//			browser.click( '#btn-finish' );
-			browser.submitForm( 'form' );
+			browser.click( '#btn-finish' );
 
-//			// Check that we got back to the admin area.
-			browser.waitForExist( 'body.wp-admin' );
+			// Check that we got back to the admin area.
+			browser.waitForExist( '.wp-admin' );
 
 		} );
 
