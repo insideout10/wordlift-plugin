@@ -12,7 +12,7 @@ import styled from 'styled-components';
 /**
  * @inheritDoc
  */
-const Wrapper = styled.div`
+const Wrapper = styled.li`
 	display: block;
 	position: relative;
 	box-sizing: border-box;
