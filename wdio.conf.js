@@ -231,13 +231,13 @@ if ( process.env.CI ) {
 			platform: 'Windows 10'
 		}, {
 			browserName: 'safari',
-			platform: 'macOS 10.12',
-			version: 'latest'
+			platform: 'OS X 10.11',
+			version: '9.0'
 		}, {
 			browserName: 'firefox',
 			version: 'latest',
-			platform: 'macOS 10.12',
-			enableNativeEvents: true
+			platform: 'Windows 10',
+			nativeEvents: true
 		}, {
 			browserName: 'internet explorer',
 			version: 'latest',
