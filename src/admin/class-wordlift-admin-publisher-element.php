@@ -152,7 +152,7 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 	public function create( $params ) {
 		?>
 		<p>
-			<strong><?php echo esc_html_x( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></strong>
+			<strong><?php echo esc_html__( 'Are you publishing as an individual or as a company?', 'wordlift' ) ?></strong>
 		</p>
 		<p id="wl-publisher-type">
 			<span>
@@ -160,30 +160,30 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 				       name="wl_publisher[type]" value="person"
 				       checked="checked">
 				<label for="wl-publisher-person"><?php
-					echo esc_html_x( 'Person', 'wordlift' ) ?></label>
+					echo esc_html__( 'Person', 'wordlift' ) ?></label>
 			</span>
 			<span>
 				<input id="wl-publisher-company" type="radio"
 				       name="wl_publisher[type]" value="organization"">
 				<label for="wl-publisher-company"><?php
-					echo esc_html_x( 'Company', 'wordlift' ) ?></label>
+					echo esc_html__( 'Company', 'wordlift' ) ?></label>
 			</span>
 		</p>
 		<p id="wl-publisher-name">
 			<input type="text" name="wl_publisher[name]"
-			       placeholder="<?php echo esc_attr_x( "What's your name?", 'wordlift' ) ?>">
+			       placeholder="<?php echo esc_attr__( "What's your name?", 'wordlift' ) ?>">
 		</p>
 		<div id="wl-publisher-logo">
 			<input type="hidden" id="wl-publisher-media-uploader-id"
 			       name="wl_publisher[thumbnail_id]" />
 			<p>
-				<b><?php echo esc_html_x( "Choose the publisher's Logo", 'wordlift' ) ?></b>
+				<b><?php echo esc_html__( "Choose the publisher's Logo", 'wordlift' ) ?></b>
 			</p>
 			<p>
 				<img id="wl-publisher-media-uploader-preview" />
 				<button type="button" class="button"
 				        id="wl-publisher-media-uploader"><?php
-						echo esc_html_x( 'Select an existing image or upload a new one', 'wordlift' ); ?></button>
+						echo esc_html__( 'Select an existing image or upload a new one', 'wordlift' ); ?></button>
 			</p>
 		</div>
 		<?php
