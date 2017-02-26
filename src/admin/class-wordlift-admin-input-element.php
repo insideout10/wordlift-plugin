@@ -19,24 +19,48 @@
 class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 
 	/**
-	 * @inheritdoc
+	 * Output the HTML for an input box type settings_page
+	 *
+	 * @param array {
+	 *  	Parameters controlling the result.
+	 *
+	 *		@type string name The name attribute of the input element. Mandatory.
+	 *
+	 *		@type string id 	The id attribute of the input element. Optional.
+	 *		@type string id 	The id attribute of the input element.
+	 *							Optional, randomly generated one is used if not supplied.
+	 *		@type string value 	The value of the input element.
+	 *							Optional, defaults to empty string.
+	 *		@type bool readonly	Indicates whether the input is read only.
+	 *							Optional, defaults to read-write
+	 *		@type string css_class	The class attribute for the input element.
+	 *							If empty string no class attribute will be added.
+	 *							Optional, defaults to empty string.
+	 *		@type string description	The descriptio text to be displayed below the element.
+	 *							Can include some HTML element.
+	 *							If empty string no description will be displayed.
+	 *							Optional, defaults to empty string.
+	 *		}
 	 */
 	public function render( $args ) {
 
-		// Parse the arguments and merge with default values.
+		/*
+		 * Parse the arguments and merge with default values.
+		 * Name intentionally do not have a default as it has to be in SyncEvent
+		 * with form handling code
+		 */
 		$params = wp_parse_args( $args, array(
 			'id'          => uniqid( 'wl-input-' ),
-			'name'        => uniqid( 'wl-input-' ),
 			'value'       => '',
 			'readonly'    => false,
-			'css_class'   => false,
-			'description' => false,
+			'css_class'   => '',
+			'description' => '',
 		) );
 
 		// Set the readonly and class attributes and the description.
 		$readonly    = $params['readonly'] ? ' readonly="readonly"' : '';
-		$css_class   = $params['css_class'] ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
-		$description = $params['description'] ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
+		$css_class   = ! empty( $params['css_class'] ) ? ' class="' . esc_attr( $params['css_class'] ) . '"' : '';
+		$description = ! empty( $params['description'] ) ? '<p>' . wp_kses( $params['description'], array( 'a' => array( 'href' => array() ) ) ) . '</p>' : '';
 
 		?>
 
