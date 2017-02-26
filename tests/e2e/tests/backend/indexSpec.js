@@ -157,6 +157,8 @@ describe( 'Open the WordPress web site', function() {
 
 				browser.waitForExist( '#content_ifr' );
 
+				browser.pause(5000);
+
 				browser.frame( browser.element( '#content_ifr' ).value );
 
 				browser.waitForExist( '#tinymce' );

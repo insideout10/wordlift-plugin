@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "test:e2e": "node test.js",
+    "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
     "test:php": "grunt travis:phpunit",
     "webpack:watch": "webpack -w"
@@ -88,6 +88,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "sanitize.css": "^4.1.0",
+    "sleep": "^5.1.0",
     "styled-components": "^1.4.3"
   }
 }
