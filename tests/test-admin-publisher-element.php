@@ -1,10 +1,18 @@
 <?php
+/**
+ * Tests: Publisher Element test.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
+ */
 
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 22/02/2017
- * Time: 11:59
+ * Define the {@link Wordlift_Admin_Publisher_Element_Test } class.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
 class Wordlift_Admin_Publisher_Element_Test extends Wordlift_Unit_Test_Case {
 
