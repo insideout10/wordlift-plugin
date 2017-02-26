@@ -147,36 +147,38 @@ describe( 'Open the WordPress web site', function() {
 
 			it( 'opens the posts page', function() {
 
-				browser.waitForExist( '#menu-posts > a[href="edit.php"]' );
+//				browser.waitForExist( '#menu-posts > a[href="edit.php"]' );
+//
+//				browser.click( '#menu-posts > a[href="edit.php"]' );
+//
+//				browser.waitForExist( 'a.page-title-action' );
+//
+//				browser.click( 'a.page-title-action' );
+//
+//				browser.waitForExist( '#content_ifr' );
+//
+//				browser.pause(5000);
+//
+//				browser.frame( browser.element( '#content_ifr' ).value );
+//
+//				browser.waitForExist( '#tinymce' );
+//
+//				browser.click( '#tinymce' );
+//
+//				browser.keys( 'WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.' );
+//
+//				// Set the company name.
+//				// browser.setValue( '#tinymce p', 'WordLift brings the power of
+//				// Artiﬁcial Intelligence to help you produce richer content and
+//				// organize it around your audience.' );
+//
+//				browser.frameParent();
+//
+//				browser.element( '#publish' ).scroll();
+//
+//				browser.click( '#publish' );
 
-				browser.click( '#menu-posts > a[href="edit.php"]' );
-
-				browser.waitForExist( 'a.page-title-action' );
-
-				browser.click( 'a.page-title-action' );
-
-				browser.waitForExist( '#content_ifr' );
-
-				browser.pause(5000);
-
-				browser.frame( browser.element( '#content_ifr' ).value );
-
-				browser.waitForExist( '#tinymce' );
-
-				browser.click( '#tinymce' );
-
-				browser.keys( 'WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.' );
-
-				// Set the company name.
-				// browser.setValue( '#tinymce p', 'WordLift brings the power of
-				// Artiﬁcial Intelligence to help you produce richer content and
-				// organize it around your audience.' );
-
-				browser.frameParent();
-
-				browser.element( '#publish' ).scroll();
-
-				browser.click( '#publish' );
+				browser.url( '/wp-admin/post.php?post=3&action=edit' );
 
 				browser.waitForExist( '#wl-entity-list ul' )
 

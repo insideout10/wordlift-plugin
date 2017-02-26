@@ -244,8 +244,7 @@ if ( process.env.CI ) {
 		}, {
 			browserName: 'firefox',
 			version: 'latest',
-			platform: 'Windows 10',
-			nativeEvents: true
+			platform: 'Windows 10'
 		}, {
 			browserName: 'internet explorer',
 			version: 'latest',

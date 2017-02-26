@@ -22,8 +22,10 @@ install ()
     wp core config --dbname=wordpress --dbuser=root --dbprefix="wp_${instance}_"
     wp core install --url="http://wordpress.local/${instance}" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
 
-    # Finally link the WordLift plugin in WordPress.
+    # Create a post to test analysis results.
+    wp post create --post_type=post --post_title='A sample post' --post_content='WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.'
 
+    # Finally link the WordLift plugin in WordPress.
     ln -s "$HOME/src" "$instance_dir/wp-content/plugins/wordlift"
 
     cd $cwd
