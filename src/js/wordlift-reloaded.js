@@ -553,8 +553,11 @@
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
-        $log.debug("Occurrences " + occurrences.length + " for " + entityId);
         $scope.analysis.entities[entityId].occurrences = occurrences;
+        wp.wordlift.trigger('updateOccurrencesForEntity', {
+          entityId: entityId,
+          occurrences: occurrences
+        });
         if (occurrences.length === 0) {
           ref1 = $scope.selectedEntities;
           results1 = [];
@@ -1457,18 +1460,10 @@
           if (entityId) {
             occurrences = currentOccurencesForEntity(entityId);
             $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
-            wp.wordlift.trigger('updateOccurrencesForEntity', {
-              entityId: entity.id,
-              occurrences: occurrences
-            });
           }
         }
         occurrences = currentOccurencesForEntity(entity.id);
-        $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
-        return wp.wordlift.trigger('updateOccurrencesForEntity', {
-          entityId: entity.id,
-          occurrences: occurrences
-        });
+        return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
       });
       $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
         var annotation, id, occurrences, ref;
@@ -1482,11 +1477,7 @@
           }
         }
         occurrences = currentOccurencesForEntity(entity.id);
-        $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
-        return wp.wordlift.trigger('updateOccurrencesForEntity', {
-          entityId: entity.id,
-          occurrences: occurrences
-        });
+        return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
       });
       service = {
         hasSelection: function() {

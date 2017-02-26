@@ -228,8 +228,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
 
-    $log.debug "Occurrences #{occurrences.length} for #{entityId}"
+    # $log.debug "Occurrences #{occurrences.length} for #{entityId}"
     $scope.analysis.entities[ entityId ].occurrences = occurrences
+
+    # Ghost event to bridge React.
+    wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entityId, occurrences: occurrences }
 
     if occurrences.length is 0
       for box, entities of $scope.selectedEntities

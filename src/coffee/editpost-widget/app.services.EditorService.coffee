@@ -86,14 +86,8 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
         occurrences = currentOccurencesForEntity entityId
         $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
 
-        # Ghost event to bridge React.
-        wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entity.id, occurrences: occurrences }
-
     occurrences = currentOccurencesForEntity entity.id
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-
-    # Ghost event to bridge React.
-    wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entity.id, occurrences: occurrences }
 
   $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
     if annotationId?
@@ -104,9 +98,6 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
     occurrences = currentOccurencesForEntity entity.id
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
-
-    # Ghost event to bridge React.
-    wp.wordlift.trigger 'updateOccurrencesForEntity', { entityId: entity.id, occurrences: occurrences }
 
   service =
     # Detect if there is a current selection
