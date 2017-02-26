@@ -3,6 +3,18 @@ var webdriver = require( 'selenium-webdriver' ),
 	until = webdriver.until;
 
 var driver = new webdriver.Builder()
+	.usingServer( 'http://localhost:4445' )
+	.withCapabilities(
+		{
+			browserName: 'safari',
+			platform: 'macOS 10.12',
+			version: '10.0',
+			username: 'ziodave',
+			accessKey: '35a270f8-1742-4dc1-ab14-5e7bb1cc9042',
+			'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER
+		} ).build();
+
+var driver = new webdriver.Builder()
 	.forBrowser( 'safari' )
 	.build();
 
