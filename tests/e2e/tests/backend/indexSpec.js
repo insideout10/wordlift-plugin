@@ -180,7 +180,7 @@ describe( 'Open the WordPress web site', function() {
 
 				browser.url( '/wp-admin/post.php?post=3&action=edit' );
 
-				browser.waitForExist( '#wl-entity-list ul' )
+				browser.waitForExist( '#wl-entity-list ul li' )
 
 			} )
 
