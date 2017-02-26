@@ -151,9 +151,9 @@ describe( 'Open the WordPress web site', function() {
 
 				browser.click( '#menu-posts > a[href="edit.php"]' );
 
-				browser.waitForExist( '#menu-posts a[href="post-new.php"]' );
+				browser.waitForExist( 'a.page-title-action' );
 
-				browser.click( '#menu-posts a[href="post-new.php"]' );
+				browser.click( 'a.page-title-action' );
 
 				browser.waitForExist( '#content_ifr' );
 
