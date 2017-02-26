@@ -1,9 +1,9 @@
 <?php
 /**
- * Admin UI: Wordlift_Admin_Entity_Type_settings
+ * Admin UI: Admin Entity Type Settings.
  *
  * The {@link Wordlift_Admin_Entity_Type_settings} class handles modifications
- * to the entity type list admin page
+ * to the entity type list admin page.
  *
  * @link       https://wordlift.io
  *
@@ -20,7 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * The Entity taxonomy list admin page controller.
  *
  * Methods to manipulate whatever is displayed on the admin list page
- * for the entity taxonomy
+ * for the entity taxonomy.
+ *
+ * @since      3.11.0
  *
  * @package    Wordlift
  * @subpackage Wordlift/admin
@@ -29,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wordlift_Admin_Entity_Type_Settings {
 
 	/**
-	 * Handle menu registration
+	 * Handle menu registration.
 	 *
 	 * The registration is required, although we do not want to actually to add
 	 * an item to the menu, in order to "whitelist" the access to the settings page in
@@ -44,19 +46,19 @@ class Wordlift_Admin_Entity_Type_Settings {
 		 * This has to be done before any output happens in order to be able to
 		 * display proper "die" error messages and redirect.
 		 */
-
-		if ( isset( $_GET['page'] ) && ( 'wl_entity_type_settings' == $_GET['page'] ) ) {
+		if ( isset( $_GET['page'] ) && ( 'wl_entity_type_settings' === $_GET['page'] ) ) {
 
 			// Validate inputs. Do not return on invalid parameters or capabilities.
 			$this->validate_proper_term();
 
 			// If proper form submission, handle it and redirect back to the settings page.
-			if ( isset( $_POST['action'] ) && ( 'wl_edit_entity_type_term' == $_POST['action'] ) ) {
+			if ( isset( $_POST['action'] ) && ( 'wl_edit_entity_type_term' === $_POST['action'] ) ) {
 				$this->handle_form_submission();
 			}
 
 			// Register admin notices handler.
 			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
+
 		}
 
 		/*
@@ -66,8 +68,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		add_submenu_page(
 			null,
-			__( 'Edit Entity term', 'wordlift' ),
-			__( 'Edit Entity term', 'wordlift' ),
+			_x( 'Edit Entity term', 'wordlift' ),
+			_x( 'Edit Entity term', 'wordlift' ),
 			'manage_options',
 			'wl_entity_type_settings',
 			array( $this, 'settings_page' )
@@ -81,12 +83,12 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @since 3.11.0
 	 */
 	function admin_notice() {
-		if ( isset( $_GET['message'] ) && ('1' == $_GET['message'] ) ) {
-	?>
-		<div class="notice notice-success is-dismissible">
-			<p><?php _e( 'Settings saved', 'wordlift' )?></p>
-		</div>
-	<?php
+		if ( isset( $_GET['message'] ) && ( '1' == $_GET['message'] ) ) {
+			?>
+			<div class="notice notice-success is-dismissible">
+				<p><?php echo esc_html_x( 'Settings saved', 'wordlift' ) ?></p>
+			</div>
+			<?php
 		}
 	}
 
@@ -108,6 +110,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 			);
 		}
 
+		// Get the term id and the actual term.
 		$term_id = (int) $_REQUEST['tag_ID'];
 		$term    = get_term( $term_id, 'wl_entity_type' );
 
@@ -128,11 +131,11 @@ class Wordlift_Admin_Entity_Type_Settings {
 		$term_id = (int) $_POST['tag_ID'];
 		check_admin_referer( 'update-entity_type_term_' . $term_id );
 
-		$term    = get_term( $term_id, 'wl_entity_type' );
+		$term = get_term( $term_id, 'wl_entity_type' );
 
-		$settings = get_option( 'wl_entity_type_settings', array() );
+		$settings             = get_option( 'wl_entity_type_settings', array() );
 		$settings[ $term_id ] = array(
-			'title' => trim( wp_unslash( $_POST['title'] ) ),
+			'title'       => trim( wp_unslash( $_POST['title'] ) ),
 			'description' => wp_unslash( $_POST['description'] ),
 		);
 		update_option( 'wl_entity_type_settings', $settings );
@@ -151,7 +154,9 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @since 3.11.0
 	 */
 	function settings_page() {
+
 		include( dirname( __FILE__ ) . '/partials/wordpress-admin-entity-type-settings.php' );
+
 	}
 
 }

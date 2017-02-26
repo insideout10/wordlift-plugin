@@ -702,7 +702,7 @@ class Wordlift {
 		new Wordlift_Timeline_Shortcode();
 
 		// Initialize the SEO service.
-		new Wordlift_SEO_Service();
+		new Wordlift_Seo_Service();
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -880,8 +880,9 @@ class Wordlift {
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
 
-		// hook row actions for the entity type list admin
+		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
+
 	}
 
 	/**
