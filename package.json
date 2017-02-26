@@ -11,7 +11,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
+    "test:e2e": "node test.js",
     "test:js": "grunt travis:js",
     "test:php": "grunt travis:phpunit",
     "webpack:watch": "webpack -w"
@@ -70,6 +70,7 @@
     "redux-devtools": "^3.3.2",
     "requirejs": "^2.3.3",
     "sass-loader": "^6.0.1",
+    "selenium-webdriver": "^3.1.0",
     "style-loader": "^0.13.1",
     "wdio-dot-reporter": "0.0.7",
     "wdio-jasmine-framework": "^0.2.19",
