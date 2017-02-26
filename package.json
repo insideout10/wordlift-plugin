@@ -88,7 +88,6 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "sanitize.css": "^4.1.0",
-    "sleep": "^5.1.0",
     "styled-components": "^1.4.3"
   }
 }
