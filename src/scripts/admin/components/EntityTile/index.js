@@ -125,7 +125,7 @@ class EntityTile extends React.Component {
 		e.preventDefault();
 
 		// Close if open.
-		if ( this.state.open ) {
+		if ( ! e.currentTarget.contains( document.activeElement ) && this.state.open ) {
 			this.setState( { open: false } );
 		}
 	}
