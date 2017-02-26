@@ -15,10 +15,9 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 		return;
 	}
 
-	$post_id = $_GET["post_id"];
-
 	// Get the current post
-	$post = get_post( $post_id );
+	$post_id = $_GET["post_id"];
+	$post    = get_post( $post_id );
 
 	wl_write_log( "Going to find posts related to current with post id: $post_id ..." );
 
@@ -44,6 +43,10 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 			'post_type'      => 'post',
 			'post_status'    => 'publish',
 			'as'             => 'subject',
+			// Return 10 results top.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/426.
+			'first'          => 5,
 		) );
 
 		foreach ( $related_posts as $post_obj ) {
@@ -56,6 +59,7 @@ function wordlift_ajax_related_posts( $http_raw_data = null ) {
 	}
 
 	wl_core_send_json( $related_posts );
+
 }
 
 add_action( 'wp_ajax_wordlift_related_posts', 'wordlift_ajax_related_posts' );
