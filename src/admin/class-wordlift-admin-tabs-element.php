@@ -23,7 +23,23 @@ class Wordlift_Admin_Tabs_Element implements Wordlift_Admin_Element {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param array $args An array of parameters.
+	 * @param array $args {
+	 *  	Parameters controlling the html being output.
+	 *
+	 *		@type integer $active	The index of the active panel on first render
+	 *								a zero based number of the tab actual placement
+	 *
+	 *		@type array $tabs {
+	 *			The array of tabs to be rendered.
+	 *			The index of the elements is expected to be an ascending integers
+	 *			tabs with lower index values will be render first (on the left)
+	 *
+	 *			@type string 	$label 	The label used for the tab.
+	 *			@type callable 	$callback 	The callback to call to render the
+	 *										Tab "panel".
+	 *			@type array 	$args	The arguments array passed to the callback.
+	 *			}
+	 *		}
 	 *
 	 * @return \Wordlift_Admin_Element The element instance.
 	 */
