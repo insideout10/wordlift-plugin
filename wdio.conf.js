@@ -127,7 +127,9 @@ var config = {
 	// screenshotRoot: 'my-shots', failedComparisonsRoot: 'diffs',
 	// misMatchTolerance: 0.05, screenWidth: [320,480,640,1024] },
 	// webdriverrtc: {}, browserevent: {} },  Test runner services Services
-	// take over a specific job you don't want to take care of. They enhance your test setup with almost no effort. Unlike plugins, they don't add new commands. Instead, they hook themselves up into the test process.
+	// take over a specific job you don't want to take care of. They enhance
+	// your test setup with almost no effort. Unlike plugins, they don't add
+	// new commands. Instead, they hook themselves up into the test process.
 	services: [ 'selenium-standalone' ],
 	//
 	// Framework you want to run your specs with.
@@ -199,7 +201,13 @@ var config = {
 	// args) { },  Runs after a WebdriverIO command gets executed afterCommand:
 	// function (commandName, args, result, error) { },  Function to be
 	// executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
-	// afterTest: function (test) { },  Hook that gets executed after the suite has ended afterSuite: function (suite) { },  Gets executed after all tests are done. You still have access to all global variables from the test. after: function (result, capabilities, specs) { },  Gets executed after all workers got shut down and the process is about to exit. It is not possible to defer the end of the process using a promise. onComplete: function(exitCode) { }
+	// afterTest: function (test) { },  Hook that gets executed after the suite
+	// has ended afterSuite: function (suite) { },  Gets executed after all
+	// tests are done. You still have access to all global variables from the
+	// test. after: function (result, capabilities, specs) { },  Gets executed
+	// after all workers got shut down and the process is about to exit. It is
+	// not possible to defer the end of the process using a promise.
+	// onComplete: function(exitCode) { }
 };
 
 // Tweak the configuration if we're in Travis-CI.
@@ -232,7 +240,7 @@ if ( process.env.CI ) {
 		}, {
 			browserName: 'safari',
 			platform: 'OS X 10.11',
-			version: '9.0'
+			version: 'latest'
 		}, {
 			browserName: 'firefox',
 			version: 'latest',
