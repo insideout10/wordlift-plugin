@@ -240,13 +240,11 @@ if ( process.env.CI ) {
 		}, {
 			browserName: 'safari',
 			platform: 'OS X 10.11',
-			version: 'latest',
-			seleniumVersion: '3.1.0'
+			version: 'latest'
 		}, {
 			browserName: 'firefox',
 			version: 'latest',
-			platform: 'Windows 10',
-			seleniumVersion: '3.1.0'
+			platform: 'Windows 10'
 		}, {
 			browserName: 'internet explorer',
 			version: 'latest',

@@ -183,15 +183,7 @@ describe( 'Open the WordPress web site', function() {
 				browser.waitForExist( '#wl-entity-list ul li' );
 
 				browser.click( '#wl-entity-list ul li' );
-
-				browser.waitForExist( '#tinymce' );
-
-				browser.click( '#tinymce' );
-
-				browser.keys( 'WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.' );
-
-				browser.waitForExist( '#tinymce' );
-
+				
 			} )
 
 		} );
