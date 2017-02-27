@@ -15,9 +15,10 @@
 const LoginToWordPress = () => {
 	// Open the login page.
 	browser.url( '/wp-login.php' );
+	browser.pause( 5000 );
 
 	// Wait for the login button.
-	browser.waitForVisible( '#wp-submit' );
+	browser.waitForExist( '#wp-submit' );
 
 	// Type username and password, then submit.
 	browser.setValue( '#user_login', 'admin' );
@@ -25,7 +26,7 @@ const LoginToWordPress = () => {
 	browser.click( '#wp-submit' );
 
 	// Wait for the admin screen to load.
-	browser.waitForExist( 'body.wp-admin' );
+	browser.pause( 5000 );
 };
 
 // Finally export the `LoginToWordPress` function.

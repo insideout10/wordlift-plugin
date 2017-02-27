@@ -5,12 +5,6 @@
  */
 
 /**
- * Internal dependencies
- */
-import SettingsPage from './SettingsPage';
-import PostEditPage from './PostEditPage';
-
-/**
  * Define the `SetupPage` test.
  *
  * @since 3.11.0
@@ -54,6 +48,7 @@ const SetupPage = function() {
 
 		// Activate WordLift.
 		browser.click( '[data-slug="wordlift"] .activate a' );
+		browser.pause( 2500 );
 
 		// We got redirected to the `wl-setup` page.
 		// expect(browser.getUrl()).toMatch(/\/wp-admin\/index\.php\?page=wl-setup$/);
@@ -116,20 +111,16 @@ const SetupPage = function() {
 
 		// Set the company name.
 		browser.setValue( 'input#name', 'Acme Inc.' );
+		browser.pause( 2500 );
 
 		// Click on finish.
 		browser.waitForExist( '#btn-finish' );
 		browser.click( '#btn-finish' );
+		browser.pause( 5000 );
 
 		// Check that we got back to the admin area.
 		browser.waitForExist( '.wp-admin' );
 	} );
-
-	// Test the WordLift Settings Page.
-	describe( 'test the Settings Page', SettingsPage );
-
-	// Test the Post Edit Page.
-	describe( 'test the Post Edit Page', PostEditPage );
 };
 
 // Finally export the `SetupPage`.
