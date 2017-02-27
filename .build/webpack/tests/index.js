@@ -23,12 +23,8 @@ const config = {
 			{ test: /\.js$/, use: 'babel-loader' }
 		]
 	},
-	plugins: [
-		new webpack.DefinePlugin( {
-			'process.env.NODE_ENV': JSON.stringify( 'production' )
-		} )
-	],
-	devtool: 'cheap-module-eval-source-map'
+	devtool: 'cheap-module-eval-source-map',
+	node: { process: false }
 };
 
 module.exports = config;

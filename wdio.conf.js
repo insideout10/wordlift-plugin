@@ -240,8 +240,7 @@ if ( process.env.CI ) {
 		}, {
 			browserName: 'safari',
 			platform: 'macOS 10.12',
-			version: 'latest',
-			seleniumVersion: '3.0.1'
+			version: 'latest'
 		}, {
 			browserName: 'firefox',
 			version: 'latest',
