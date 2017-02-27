@@ -29,6 +29,7 @@ const SettingsPage = function() {
 		expect( browser.getAttribute( '#wl-entity-base-path', 'readonly' ) ).toBe( 'true' );
 
 		// Expect English to be selected as language.
+		// @todo: FF has issues in getting the value for the selected option.
 		expect( browser.getValue( '#wl-site-language' ) ).toBe( 'en' );
 
 		// Check that a publisher is set.
@@ -88,6 +89,7 @@ const SettingsPage = function() {
 		browser.setValue( '[name="wl_publisher\[name\]"]', 'John Smith' );
 
 		// Submit the form.
+		browser.scroll( '#submit' );
 		browser.click( '#submit' );
 
 		// Wait for the `wl-key` element to exist and to have a `valid` css
@@ -95,6 +97,7 @@ const SettingsPage = function() {
 		browser.waitForExist( '#wl-key.valid' );
 
 		// Check that the publisher is set.
+		// @todo: FF has issues in getting the value for the selected option.
 		const selected = browser.getValue( '#wl-publisher-id' );
 		expect( browser.getText( '#wl-publisher-id option[value="' + selected + '"]' ) )
 			.toBe( 'John Smith' );
