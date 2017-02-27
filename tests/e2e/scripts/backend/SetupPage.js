@@ -5,6 +5,12 @@
  */
 
 /**
+ * Internal dependencies
+ */
+import SettingsPage from './SettingsPage';
+import PostEditPage from './PostEditPage';
+
+/**
  * Define the `SetupPage` test.
  *
  * @since 3.11.0
@@ -118,6 +124,12 @@ const SetupPage = function() {
 		// Check that we got back to the admin area.
 		browser.waitForExist( '.wp-admin' );
 	} );
+
+	// Test the WordLift Settings Page.
+	describe( 'test the Settings Page', SettingsPage );
+
+	// Test the Post Edit Page.
+	describe( 'test the Post Edit Page', PostEditPage );
 };
 
 // Finally export the `SetupPage`.
