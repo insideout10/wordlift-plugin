@@ -95,7 +95,8 @@ const SettingsPage = function() {
 		browser.waitForExist( '#wl-key.valid' );
 
 		// Check that the publisher is set.
-		expect( browser.getText( '#wl-publisher-id option:selected' ) ).toBe( 'John Smith' );
+		const selected = browser.getValue( '#wl-publisher-id' );
+		expect( browser.getText( '#wl-publisher-id option[value="' + selected + '"]' ) ).toBe( 'John Smith' );
 
 		// @todo: also test changing the language.
 	} );
