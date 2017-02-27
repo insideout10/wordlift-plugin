@@ -21,6 +21,7 @@ const config = [
 	tests, {
 		entry: {
 			'wordlift-admin': './src/admin/js/wordlift-admin.js',
+			'wordlift-admin-edit-page': './src/scripts/admin/index.js',
 			'wordlift-admin-settings-page': './src/scripts/wordlift-admin-settings-page/index.js'
 		},
 		output: {
