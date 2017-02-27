@@ -30,7 +30,7 @@ const SettingsPage = function() {
 
 		// Expect English to be selected as language.
 		// @todo: FF has issues in getting the value for the selected option.
-		expect( browser.getValue( '#wl-site-language' ) ).toBe( 'en' );
+		expect( browser.getValue( '#wl-site-language option[selected="selected"]' ) ).toBe( 'en' );
 
 		// Check that a publisher is set.
 		expect( browser.getValue( '#wl-publisher-id' ) ).not.toBe( '' );
@@ -98,7 +98,7 @@ const SettingsPage = function() {
 
 		// Check that the publisher is set.
 		// @todo: FF has issues in getting the value for the selected option.
-		const selected = browser.getValue( '#wl-publisher-id' );
+		const selected = browser.getValue( '#wl-publisher-id option[selected="selected"]' );
 		expect( browser.getText( '#wl-publisher-id option[value="' + selected + '"]' ) )
 			.toBe( 'John Smith' );
 
