@@ -64,16 +64,16 @@ const SetupPage = function() {
 		clickNextAndWaitForPane( 1 );
 
 		// Set an invalid key.
-		browser.setValue( 'input#key', 'an-invalid-key' );
+		browser.setValue( '#key', 'an-invalid-key' );
 
 		// Wait until the element becomes invalid.
-		browser.waitForExist( 'input#key.invalid' );
+		browser.waitForExist( '#key.invalid' );
 
 		// Set a valid key.
-		browser.setValue( 'input#key', process.env.WORDLIFT_KEY );
+		browser.setValue( '#key', process.env.WORDLIFT_KEY );
 
 		// Wait until the element becomes valid.
-		browser.waitForExist( 'input#key.valid' );
+		browser.waitForExist( '#key.valid' );
 	} );
 
 	it( 'continues to Vocabulary', function() {
