@@ -1,207 +1,77 @@
-'use strict';
-
-describe( 'Open the WordPress web site', function() {
-
-	it( 'admin logs in', function() {
-
-		browser.url( '/wp-login.php' );
-
-		browser.waitForExist( '#wp-submit' );
-		browser.pause( 1000 );
-
-		browser.setValue( '#user_login', 'admin' );
-		browser.pause( 1000 );
-
-		browser.setValue( '#user_pass', 'admin' );
-		browser.pause( 1000 );
-
-		browser.click( '#wp-submit' );
-		browser.pause( 1000 );
-
-		browser.waitForExist( '.wp-admin' );
-
-	} );
-
-	describe( 'while in WordPress backend, admin', function() {
-
-		// `paneX` represents the expected horizontal offset of the current
-		// pane. It is set the first time, when the _wl-setup_ page is opened.
-		var paneX;
-
-		/**
-		 * Click on the next button in the pane at `index` (1-based).
-		 *
-		 * @since 3.9.0
-		 *
-		 * @param {Number} index The pane index (1-based).
-		 */
-		var clickNextAndWaitForPane = function( index ) {
-
-			// Click on the next button.
-			browser.click( '.viewport > ul > li:nth-child(' + index + ') [data-wl-next]' );
-
-			// Wait until the next pane is visible.
-			browser.waitUntil( function() {
-				// console.log(browser.getLocation('.viewport > ul >
-				// li:nth-child()', 'x'));
-				return paneX === browser.getLocation( '.viewport > ul > li:nth-child(' + (
-													  index + 1
-													  ) + ')', 'x' );
-			}, 750, 'expected pane to be visible within 750ms' );
-
-		};
-
-		it( 'opens the plugins page and activates WordLift', function() {
-
-			// Navigate to the plugins page.
-			browser.url( '/wp-admin/plugins.php' );
-			browser.pause( 1000 );
-
-			// Check the URL.
-			// expect(browser.getUrl()).toMatch(/\/wp-admin\/plugins\.php$/);
-
-			// Get WordLift's row in the plugins' list.
-			browser.waitForExist( '[data-slug="wordlift"]' );
-
-			var wordlift = browser.element( '[data-slug="wordlift"]' );
-
-			// Check that WordLift's row is there.
-			// expect(wordlift).not.toBeUndefined();
-
-			// Activate WordLift.
-			wordlift.click( '.activate a' );
-			browser.pause( 1000 );
-
-			// We got redirected to the `wl-setup` page.
-			// expect(browser.getUrl()).toMatch(/\/wp-admin\/index\.php\?page=wl-setup$/);
-
-			// Wait until the element becomes invalid.
-			browser.waitForExist( '.viewport > ul > li:first-child' );
-
-			// Set the x offset for the current visible pane.
-			paneX = browser.getLocation( '.viewport > ul > li:first-child', 'x' );
-
-		} );
-
-		it( 'continues to License Key', function() {
-
-			// Click next and wait for the 2nd pane.
-			clickNextAndWaitForPane( 1 );
-
-			// Set an invalid key.
-			browser.setValue( 'input#key', 'an-invalid-key' );
-			browser.pause( 1000 );
-
-			// Wait until the element becomes invalid.
-			browser.waitForExist( 'input#key.invalid' );
-
-			// Set a valid key.
-			browser.setValue( 'input#key', process.env.WORDLIFT_KEY );
-			browser.pause( 1000 );
-
-			// Wait until the element becomes valid.
-			browser.waitForExist( 'input#key.valid' );
-
-		} );
-
-		it( 'continues to Vocabulary', function() {
-
-			// Click next and wait for the 3rd pane.
-			clickNextAndWaitForPane( 2 );
-
-			// browser.click('input#vocabulary');
-			//
-			// // Set an invalid vocabulary path.
-			// browser.keys(['Backspace', '_']);
-			//
-			// browser.saveScreenshot();
-			//
-			// // Wait until the element becomes invalid.
-			// browser.waitForExist('input#vocabulary.invalid');
-			//
-			// // Set a valid vocabulary.
-			// browser.keys('Backspace');
-
-			// Wait until the element becomes valid.
-			browser.waitForExist( 'input#vocabulary.valid' );
-
-		} );
-
-		it( 'continues to Language', function() {
-
-			// Click next and wait for the 4th pane.
-			clickNextAndWaitForPane( 3 );
-
-		} );
-
-		it( 'continues to Publisher', function() {
-
-			// Click next and wait for the 5th pane.
-			clickNextAndWaitForPane( 4 );
-
-			browser.waitForExist( 'input#name' );
-
-			// Set the company name.
-			browser.setValue( 'input#name', 'Acme Inc.' );
-			browser.pause( 1000 );
-
-			// Click on finish.
-			browser.waitForExist( '#btn-finish' );
-
-			browser.click( '#btn-finish' );
-			browser.pause( 1000 );
-
-			// Check that we got back to the admin area.
-			browser.waitForExist( '.wp-admin' );
-
-		} );
-
-		describe( 'create a post', function() {
-
-			it( 'opens the posts page', function() {
-
-				browser.waitForExist( '#menu-posts > a[href="edit.php"]' );
-
-				browser.click( '#menu-posts > a[href="edit.php"]' );
-				browser.pause( 1000 );
-
-				browser.waitForExist( 'a.page-title-action' );
-
-				browser.click( 'a.page-title-action' );
-				browser.pause( 1000 );
-
-				browser.waitForExist( '#content_ifr' );
-
-				browser.pause( 5000 );
-
-				browser.frame( browser.element( '#content_ifr' ).value );
-
-				browser.waitForExist( '#tinymce' );
-
-				browser.click( '#tinymce' );
-				browser.pause( 1000 );
-
-				browser.keys( 'WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.' );
-				browser.pause( 1000 );
-
-				// Set the company name.
-				// browser.setValue( '#tinymce p', 'WordLift brings the power of
-				// Artiﬁcial Intelligence to help you produce richer content and
-				// organize it around your audience.' );
-
-				browser.frameParent();
-
-				browser.element( '#publish' ).scroll();
-
-				browser.click( '#publish' );
-				browser.pause( 1000 );
-
-				browser.waitForExist( '#wl-entity-list ul' )
-
-			} )
-
-		} );
-
-	} );
-
-} );
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\ndescribe('Open the WordPress web site', function () {\n\n\tit('admin logs in', function () {\n\n\t\tbrowser.url('/wp-login.php');\n\n\t\tbrowser.waitForVisible('#wp-submit');\n\n\t\tbrowser.setValue('#user_login', 'admin');\n\t\tbrowser.setValue('#user_pass', 'admin');\n\t\tbrowser.click('#wp-submit');\n\n\t\tbrowser.waitForExist('body.wp-admin');\n\t});\n\n\tdescribe('while in WordPress backend, admin', function () {\n\n\t\t// `paneX` represents the expected horizontal offset of the current\n\t\t// pane. It is set the first time, when the _wl-setup_ page is opened.\n\t\tvar paneX;\n\n\t\t/**\n   * Click on the next button in the pane at `index` (1-based).\n   *\n   * @since 3.9.0\n   *\n   * @param {Number} index The pane index (1-based).\n   */\n\t\tvar clickNextAndWaitForPane = function clickNextAndWaitForPane(index) {\n\n\t\t\t// Click on the next button.\n\t\t\tbrowser.click('.viewport > ul > li:nth-child(' + index + ') [data-wl-next]');\n\n\t\t\t// Wait until the next pane is visible.\n\t\t\tbrowser.waitUntil(function () {\n\t\t\t\t// console.log(browser.getLocation('.viewport > ul >\n\t\t\t\t// li:nth-child()', 'x'));\n\t\t\t\treturn paneX === browser.getLocation('.viewport > ul > li:nth-child(' + (index + 1) + ')', 'x');\n\t\t\t}, 750, 'expected pane to be visible within 750ms');\n\t\t};\n\n\t\tit('opens the plugins page and activates WordLift', function () {\n\n\t\t\t// Navigate to the plugins page.\n\t\t\tbrowser.url('/wp-admin/plugins.php');\n\n\t\t\t// Check the URL.\n\t\t\t// expect(browser.getUrl()).toMatch(/\\/wp-admin\\/plugins\\.php$/);\n\n\t\t\t// Get WordLift's row in the plugins' list.\n\t\t\tbrowser.waitForExist('[data-slug=\"wordlift\"]');\n\n\t\t\tvar wordlift = browser.element('[data-slug=\"wordlift\"]');\n\n\t\t\t// Check that WordLift's row is there.\n\t\t\t// expect(wordlift).not.toBeUndefined();\n\n\t\t\t// Activate WordLift.\n\t\t\twordlift.click('.activate a');\n\n\t\t\t// We got redirected to the `wl-setup` page.\n\t\t\t// expect(browser.getUrl()).toMatch(/\\/wp-admin\\/index\\.php\\?page=wl-setup$/);\n\n\t\t\t// Wait until the element becomes invalid.\n\t\t\tbrowser.waitForExist('.viewport > ul > li:first-child');\n\n\t\t\t// Set the x offset for the current visible pane.\n\t\t\tpaneX = browser.getLocation('.viewport > ul > li:first-child', 'x');\n\t\t});\n\n\t\tit('continues to License Key', function () {\n\n\t\t\t// Click next and wait for the 2nd pane.\n\t\t\tclickNextAndWaitForPane(1);\n\n\t\t\t// Set an invalid key.\n\t\t\tbrowser.setValue('input#key', 'an-invalid-key');\n\n\t\t\t// Wait until the element becomes invalid.\n\t\t\tbrowser.waitForExist('input#key.invalid');\n\n\t\t\t// Set a valid key.\n\t\t\tbrowser.setValue('input#key', __webpack_require__.i({\"NODE_ENV\":\"production\"}).WORDLIFT_KEY);\n\n\t\t\t// Wait until the element becomes valid.\n\t\t\tbrowser.waitForExist('input#key.valid');\n\t\t});\n\n\t\tit('continues to Vocabulary', function () {\n\n\t\t\t// Click next and wait for the 3rd pane.\n\t\t\tclickNextAndWaitForPane(2);\n\n\t\t\t// browser.click('input#vocabulary');\n\t\t\t//\n\t\t\t// // Set an invalid vocabulary path.\n\t\t\t// browser.keys(['Backspace', '_']);\n\t\t\t//\n\t\t\t// browser.saveScreenshot();\n\t\t\t//\n\t\t\t// // Wait until the element becomes invalid.\n\t\t\t// browser.waitForExist('input#vocabulary.invalid');\n\t\t\t//\n\t\t\t// // Set a valid vocabulary.\n\t\t\t// browser.keys('Backspace');\n\n\t\t\t// Wait until the element becomes valid.\n\t\t\tbrowser.waitForExist('input#vocabulary.valid');\n\t\t});\n\n\t\tit('continues to Language', function () {\n\n\t\t\t// Click next and wait for the 4th pane.\n\t\t\tclickNextAndWaitForPane(3);\n\t\t});\n\n\t\tit('continues to Publisher', function () {\n\n\t\t\t// Click next and wait for the 5th pane.\n\t\t\tclickNextAndWaitForPane(4);\n\n\t\t\tbrowser.waitForExist('input#name');\n\n\t\t\t// Set the company name.\n\t\t\tbrowser.setValue('input#name', 'Acme Inc.');\n\n\t\t\t// Click on finish.\n\t\t\tbrowser.waitForExist('#btn-finish');\n\t\t\tbrowser.click('#btn-finish');\n\n\t\t\t// Check that we got back to the admin area.\n\t\t\tbrowser.waitForExist('.wp-admin');\n\t\t});\n\n\t\tdescribe('create a post', function () {\n\n\t\t\tit('opens the posts page', function () {\n\n\t\t\t\t//\t\t\t\tbrowser.waitForExist( '#menu-posts > a[href=\"edit.php\"]' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.click( '#menu-posts > a[href=\"edit.php\"]' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.waitForExist( 'a.page-title-action' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.click( 'a.page-title-action' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.waitForExist( '#content_ifr' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.pause(5000);\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.frame( browser.element( '#content_ifr' ).value );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.waitForExist( '#tinymce' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.click( '#tinymce' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.keys( 'WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience.' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\t// Set the company name.\n\t\t\t\t//\t\t\t\t// browser.setValue( '#tinymce p', 'WordLift brings the power of\n\t\t\t\t//\t\t\t\t// Artiﬁcial Intelligence to help you produce richer content and\n\t\t\t\t//\t\t\t\t// organize it around your audience.' );\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.frameParent();\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.element( '#publish' ).scroll();\n\t\t\t\t//\n\t\t\t\t//\t\t\t\tbrowser.click( '#publish' );\n\n\t\t\t\tbrowser.url('/wp-admin/post.php?post=3&action=edit');\n\n\t\t\t\tbrowser.waitForExist('#wl-entity-list ul li');\n\n\t\t\t\tbrowser.click('#wl-entity-list ul li');\n\t\t\t});\n\t\t});\n\t});\n});//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy90ZXN0cy9lMmUvc2NyaXB0cy9iYWNrZW5kL2luZGV4LmpzPzE0NGYiXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBzdHJpY3QnO1xuXG5kZXNjcmliZSggJ09wZW4gdGhlIFdvcmRQcmVzcyB3ZWIgc2l0ZScsIGZ1bmN0aW9uKCkge1xuXG5cdGl0KCAnYWRtaW4gbG9ncyBpbicsIGZ1bmN0aW9uKCkge1xuXG5cdFx0YnJvd3Nlci51cmwoICcvd3AtbG9naW4ucGhwJyApO1xuXG5cdFx0YnJvd3Nlci53YWl0Rm9yVmlzaWJsZSggJyN3cC1zdWJtaXQnICk7XG5cblx0XHRicm93c2VyLnNldFZhbHVlKCAnI3VzZXJfbG9naW4nLCAnYWRtaW4nICk7XG5cdFx0YnJvd3Nlci5zZXRWYWx1ZSggJyN1c2VyX3Bhc3MnLCAnYWRtaW4nICk7XG5cdFx0YnJvd3Nlci5jbGljayggJyN3cC1zdWJtaXQnICk7XG5cblx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJ2JvZHkud3AtYWRtaW4nICk7XG5cblx0fSApO1xuXG5cdGRlc2NyaWJlKCAnd2hpbGUgaW4gV29yZFByZXNzIGJhY2tlbmQsIGFkbWluJywgZnVuY3Rpb24oKSB7XG5cblx0XHQvLyBgcGFuZVhgIHJlcHJlc2VudHMgdGhlIGV4cGVjdGVkIGhvcml6b250YWwgb2Zmc2V0IG9mIHRoZSBjdXJyZW50XG5cdFx0Ly8gcGFuZS4gSXQgaXMgc2V0IHRoZSBmaXJzdCB0aW1lLCB3aGVuIHRoZSBfd2wtc2V0dXBfIHBhZ2UgaXMgb3BlbmVkLlxuXHRcdHZhciBwYW5lWDtcblxuXHRcdC8qKlxuXHRcdCAqIENsaWNrIG9uIHRoZSBuZXh0IGJ1dHRvbiBpbiB0aGUgcGFuZSBhdCBgaW5kZXhgICgxLWJhc2VkKS5cblx0XHQgKlxuXHRcdCAqIEBzaW5jZSAzLjkuMFxuXHRcdCAqXG5cdFx0ICogQHBhcmFtIHtOdW1iZXJ9IGluZGV4IFRoZSBwYW5lIGluZGV4ICgxLWJhc2VkKS5cblx0XHQgKi9cblx0XHR2YXIgY2xpY2tOZXh0QW5kV2FpdEZvclBhbmUgPSBmdW5jdGlvbiggaW5kZXggKSB7XG5cblx0XHRcdC8vIENsaWNrIG9uIHRoZSBuZXh0IGJ1dHRvbi5cblx0XHRcdGJyb3dzZXIuY2xpY2soICcudmlld3BvcnQgPiB1bCA+IGxpOm50aC1jaGlsZCgnICsgaW5kZXggKyAnKSBbZGF0YS13bC1uZXh0XScgKTtcblxuXHRcdFx0Ly8gV2FpdCB1bnRpbCB0aGUgbmV4dCBwYW5lIGlzIHZpc2libGUuXG5cdFx0XHRicm93c2VyLndhaXRVbnRpbCggZnVuY3Rpb24oKSB7XG5cdFx0XHRcdC8vIGNvbnNvbGUubG9nKGJyb3dzZXIuZ2V0TG9jYXRpb24oJy52aWV3cG9ydCA+IHVsID5cblx0XHRcdFx0Ly8gbGk6bnRoLWNoaWxkKCknLCAneCcpKTtcblx0XHRcdFx0cmV0dXJuIHBhbmVYID09PSBicm93c2VyLmdldExvY2F0aW9uKCAnLnZpZXdwb3J0ID4gdWwgPiBsaTpudGgtY2hpbGQoJyArIChcblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRcdFx0ICBpbmRleCArIDFcblx0XHRcdFx0XHRcdFx0XHRcdFx0XHRcdFx0ICApICsgJyknLCAneCcgKTtcblx0XHRcdH0sIDc1MCwgJ2V4cGVjdGVkIHBhbmUgdG8gYmUgdmlzaWJsZSB3aXRoaW4gNzUwbXMnICk7XG5cblx0XHR9O1xuXG5cdFx0aXQoICdvcGVucyB0aGUgcGx1Z2lucyBwYWdlIGFuZCBhY3RpdmF0ZXMgV29yZExpZnQnLCBmdW5jdGlvbigpIHtcblxuXHRcdFx0Ly8gTmF2aWdhdGUgdG8gdGhlIHBsdWdpbnMgcGFnZS5cblx0XHRcdGJyb3dzZXIudXJsKCAnL3dwLWFkbWluL3BsdWdpbnMucGhwJyApO1xuXG5cdFx0XHQvLyBDaGVjayB0aGUgVVJMLlxuXHRcdFx0Ly8gZXhwZWN0KGJyb3dzZXIuZ2V0VXJsKCkpLnRvTWF0Y2goL1xcL3dwLWFkbWluXFwvcGx1Z2luc1xcLnBocCQvKTtcblxuXHRcdFx0Ly8gR2V0IFdvcmRMaWZ0J3Mgcm93IGluIHRoZSBwbHVnaW5zJyBsaXN0LlxuXHRcdFx0YnJvd3Nlci53YWl0Rm9yRXhpc3QoICdbZGF0YS1zbHVnPVwid29yZGxpZnRcIl0nICk7XG5cblx0XHRcdHZhciB3b3JkbGlmdCA9IGJyb3dzZXIuZWxlbWVudCggJ1tkYXRhLXNsdWc9XCJ3b3JkbGlmdFwiXScgKTtcblxuXHRcdFx0Ly8gQ2hlY2sgdGhhdCBXb3JkTGlmdCdzIHJvdyBpcyB0aGVyZS5cblx0XHRcdC8vIGV4cGVjdCh3b3JkbGlmdCkubm90LnRvQmVVbmRlZmluZWQoKTtcblxuXHRcdFx0Ly8gQWN0aXZhdGUgV29yZExpZnQuXG5cdFx0XHR3b3JkbGlmdC5jbGljayggJy5hY3RpdmF0ZSBhJyApO1xuXG5cdFx0XHQvLyBXZSBnb3QgcmVkaXJlY3RlZCB0byB0aGUgYHdsLXNldHVwYCBwYWdlLlxuXHRcdFx0Ly8gZXhwZWN0KGJyb3dzZXIuZ2V0VXJsKCkpLnRvTWF0Y2goL1xcL3dwLWFkbWluXFwvaW5kZXhcXC5waHBcXD9wYWdlPXdsLXNldHVwJC8pO1xuXG5cdFx0XHQvLyBXYWl0IHVudGlsIHRoZSBlbGVtZW50IGJlY29tZXMgaW52YWxpZC5cblx0XHRcdGJyb3dzZXIud2FpdEZvckV4aXN0KCAnLnZpZXdwb3J0ID4gdWwgPiBsaTpmaXJzdC1jaGlsZCcgKTtcblxuXHRcdFx0Ly8gU2V0IHRoZSB4IG9mZnNldCBmb3IgdGhlIGN1cnJlbnQgdmlzaWJsZSBwYW5lLlxuXHRcdFx0cGFuZVggPSBicm93c2VyLmdldExvY2F0aW9uKCAnLnZpZXdwb3J0ID4gdWwgPiBsaTpmaXJzdC1jaGlsZCcsICd4JyApO1xuXG5cdFx0fSApO1xuXG5cdFx0aXQoICdjb250aW51ZXMgdG8gTGljZW5zZSBLZXknLCBmdW5jdGlvbigpIHtcblxuXHRcdFx0Ly8gQ2xpY2sgbmV4dCBhbmQgd2FpdCBmb3IgdGhlIDJuZCBwYW5lLlxuXHRcdFx0Y2xpY2tOZXh0QW5kV2FpdEZvclBhbmUoIDEgKTtcblxuXHRcdFx0Ly8gU2V0IGFuIGludmFsaWQga2V5LlxuXHRcdFx0YnJvd3Nlci5zZXRWYWx1ZSggJ2lucHV0I2tleScsICdhbi1pbnZhbGlkLWtleScgKTtcblxuXHRcdFx0Ly8gV2FpdCB1bnRpbCB0aGUgZWxlbWVudCBiZWNvbWVzIGludmFsaWQuXG5cdFx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJ2lucHV0I2tleS5pbnZhbGlkJyApO1xuXG5cdFx0XHQvLyBTZXQgYSB2YWxpZCBrZXkuXG5cdFx0XHRicm93c2VyLnNldFZhbHVlKCAnaW5wdXQja2V5JywgcHJvY2Vzcy5lbnYuV09SRExJRlRfS0VZICk7XG5cblx0XHRcdC8vIFdhaXQgdW50aWwgdGhlIGVsZW1lbnQgYmVjb21lcyB2YWxpZC5cblx0XHRcdGJyb3dzZXIud2FpdEZvckV4aXN0KCAnaW5wdXQja2V5LnZhbGlkJyApO1xuXG5cdFx0fSApO1xuXG5cdFx0aXQoICdjb250aW51ZXMgdG8gVm9jYWJ1bGFyeScsIGZ1bmN0aW9uKCkge1xuXG5cdFx0XHQvLyBDbGljayBuZXh0IGFuZCB3YWl0IGZvciB0aGUgM3JkIHBhbmUuXG5cdFx0XHRjbGlja05leHRBbmRXYWl0Rm9yUGFuZSggMiApO1xuXG5cdFx0XHQvLyBicm93c2VyLmNsaWNrKCdpbnB1dCN2b2NhYnVsYXJ5Jyk7XG5cdFx0XHQvL1xuXHRcdFx0Ly8gLy8gU2V0IGFuIGludmFsaWQgdm9jYWJ1bGFyeSBwYXRoLlxuXHRcdFx0Ly8gYnJvd3Nlci5rZXlzKFsnQmFja3NwYWNlJywgJ18nXSk7XG5cdFx0XHQvL1xuXHRcdFx0Ly8gYnJvd3Nlci5zYXZlU2NyZWVuc2hvdCgpO1xuXHRcdFx0Ly9cblx0XHRcdC8vIC8vIFdhaXQgdW50aWwgdGhlIGVsZW1lbnQgYmVjb21lcyBpbnZhbGlkLlxuXHRcdFx0Ly8gYnJvd3Nlci53YWl0Rm9yRXhpc3QoJ2lucHV0I3ZvY2FidWxhcnkuaW52YWxpZCcpO1xuXHRcdFx0Ly9cblx0XHRcdC8vIC8vIFNldCBhIHZhbGlkIHZvY2FidWxhcnkuXG5cdFx0XHQvLyBicm93c2VyLmtleXMoJ0JhY2tzcGFjZScpO1xuXG5cdFx0XHQvLyBXYWl0IHVudGlsIHRoZSBlbGVtZW50IGJlY29tZXMgdmFsaWQuXG5cdFx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJ2lucHV0I3ZvY2FidWxhcnkudmFsaWQnICk7XG5cblx0XHR9ICk7XG5cblx0XHRpdCggJ2NvbnRpbnVlcyB0byBMYW5ndWFnZScsIGZ1bmN0aW9uKCkge1xuXG5cdFx0XHQvLyBDbGljayBuZXh0IGFuZCB3YWl0IGZvciB0aGUgNHRoIHBhbmUuXG5cdFx0XHRjbGlja05leHRBbmRXYWl0Rm9yUGFuZSggMyApO1xuXG5cdFx0fSApO1xuXG5cdFx0aXQoICdjb250aW51ZXMgdG8gUHVibGlzaGVyJywgZnVuY3Rpb24oKSB7XG5cblx0XHRcdC8vIENsaWNrIG5leHQgYW5kIHdhaXQgZm9yIHRoZSA1dGggcGFuZS5cblx0XHRcdGNsaWNrTmV4dEFuZFdhaXRGb3JQYW5lKCA0ICk7XG5cblx0XHRcdGJyb3dzZXIud2FpdEZvckV4aXN0KCAnaW5wdXQjbmFtZScgKTtcblxuXHRcdFx0Ly8gU2V0IHRoZSBjb21wYW55IG5hbWUuXG5cdFx0XHRicm93c2VyLnNldFZhbHVlKCAnaW5wdXQjbmFtZScsICdBY21lIEluYy4nICk7XG5cblx0XHRcdC8vIENsaWNrIG9uIGZpbmlzaC5cblx0XHRcdGJyb3dzZXIud2FpdEZvckV4aXN0KCAnI2J0bi1maW5pc2gnICk7XG5cdFx0XHRicm93c2VyLmNsaWNrKCAnI2J0bi1maW5pc2gnICk7XG5cblx0XHRcdC8vIENoZWNrIHRoYXQgd2UgZ290IGJhY2sgdG8gdGhlIGFkbWluIGFyZWEuXG5cdFx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJy53cC1hZG1pbicgKTtcblxuXHRcdH0gKTtcblxuXHRcdGRlc2NyaWJlKCAnY3JlYXRlIGEgcG9zdCcsIGZ1bmN0aW9uKCkge1xuXG5cdFx0XHRpdCggJ29wZW5zIHRoZSBwb3N0cyBwYWdlJywgZnVuY3Rpb24oKSB7XG5cbi8vXHRcdFx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJyNtZW51LXBvc3RzID4gYVtocmVmPVwiZWRpdC5waHBcIl0nICk7XG4vL1xuLy9cdFx0XHRcdGJyb3dzZXIuY2xpY2soICcjbWVudS1wb3N0cyA+IGFbaHJlZj1cImVkaXQucGhwXCJdJyApO1xuLy9cbi8vXHRcdFx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJ2EucGFnZS10aXRsZS1hY3Rpb24nICk7XG4vL1xuLy9cdFx0XHRcdGJyb3dzZXIuY2xpY2soICdhLnBhZ2UtdGl0bGUtYWN0aW9uJyApO1xuLy9cbi8vXHRcdFx0XHRicm93c2VyLndhaXRGb3JFeGlzdCggJyNjb250ZW50X2lmcicgKTtcbi8vXG4vL1x0XHRcdFx0YnJvd3Nlci5wYXVzZSg1MDAwKTtcbi8vXG4vL1x0XHRcdFx0YnJvd3Nlci5mcmFtZSggYnJvd3Nlci5lbGVtZW50KCAnI2NvbnRlbnRfaWZyJyApLnZhbHVlICk7XG4vL1xuLy9cdFx0XHRcdGJyb3dzZXIud2FpdEZvckV4aXN0KCAnI3RpbnltY2UnICk7XG4vL1xuLy9cdFx0XHRcdGJyb3dzZXIuY2xpY2soICcjdGlueW1jZScgKTtcbi8vXG4vL1x0XHRcdFx0YnJvd3Nlci5rZXlzKCAnV29yZExpZnQgYnJpbmdzIHRoZSBwb3dlciBvZiBBcnRpZmljaWFsIEludGVsbGlnZW5jZSB0byBoZWxwIHlvdSBwcm9kdWNlIHJpY2hlciBjb250ZW50IGFuZCBvcmdhbml6ZSBpdCBhcm91bmQgeW91ciBhdWRpZW5jZS4nICk7XG4vL1xuLy9cdFx0XHRcdC8vIFNldCB0aGUgY29tcGFueSBuYW1lLlxuLy9cdFx0XHRcdC8vIGJyb3dzZXIuc2V0VmFsdWUoICcjdGlueW1jZSBwJywgJ1dvcmRMaWZ0IGJyaW5ncyB0aGUgcG93ZXIgb2Zcbi8vXHRcdFx0XHQvLyBBcnRp76yBY2lhbCBJbnRlbGxpZ2VuY2UgdG8gaGVscCB5b3UgcHJvZHVjZSByaWNoZXIgY29udGVudCBhbmRcbi8vXHRcdFx0XHQvLyBvcmdhbml6ZSBpdCBhcm91bmQgeW91ciBhdWRpZW5jZS4nICk7XG4vL1xuLy9cdFx0XHRcdGJyb3dzZXIuZnJhbWVQYXJlbnQoKTtcbi8vXG4vL1x0XHRcdFx0YnJvd3Nlci5lbGVtZW50KCAnI3B1Ymxpc2gnICkuc2Nyb2xsKCk7XG4vL1xuLy9cdFx0XHRcdGJyb3dzZXIuY2xpY2soICcjcHVibGlzaCcgKTtcblxuXHRcdFx0XHRicm93c2VyLnVybCggJy93cC1hZG1pbi9wb3N0LnBocD9wb3N0PTMmYWN0aW9uPWVkaXQnICk7XG5cblx0XHRcdFx0YnJvd3Nlci53YWl0Rm9yRXhpc3QoICcjd2wtZW50aXR5LWxpc3QgdWwgbGknICk7XG5cblx0XHRcdFx0YnJvd3Nlci5jbGljayggJyN3bC1lbnRpdHktbGlzdCB1bCBsaScgKTtcblxuXHRcdFx0fSApXG5cblx0XHR9ICk7XG5cblx0fSApO1xuXG59ICk7XG5cblxuLy8gV0VCUEFDSyBGT09URVIgLy9cbi8vIHRlc3RzL2UyZS9zY3JpcHRzL2JhY2tlbmQvaW5kZXguanMiXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUVBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTs7Ozs7OztBQU9BO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBR0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBRUE7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFFQTtBQUVBO0FBRUE7QUFFQSIsInNvdXJjZVJvb3QiOiIifQ==");
+
+/***/ })
+/******/ ]);
