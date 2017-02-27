@@ -97,8 +97,12 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
-		// Enqueue our script.
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array( 'jquery' ), $this->version, false );
+		// Enqueue the admin scripts.
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.min.js', array(
+			'jquery',
+			'underscore',
+			'backbone',
+		), $this->version, false );
 
 		// Set the basic params.
 		$params = array(
@@ -106,6 +110,7 @@ class Wordlift_Admin {
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
 			'action'   => 'entity_by_title',
+			'datasetUri' => Wordlift_Configuration_Service::get_instance()->get_dataset_uri(),
 			'language' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
 			'l10n'     => array(
 				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
@@ -129,6 +134,13 @@ class Wordlift_Admin {
 
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
+
+		// Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
+		// is scheduled to replace the older `wordlift-admin.min.js` once client-side
+		// code is properly refactored.
+		wp_enqueue_script( 'wordlift-edit', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array(
+			$this->plugin_name,
+		), $this->version, false );
 
 	}
 
