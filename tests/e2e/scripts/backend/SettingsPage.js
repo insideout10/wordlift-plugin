@@ -96,7 +96,8 @@ const SettingsPage = function() {
 
 		// Check that the publisher is set.
 		const selected = browser.getValue( '#wl-publisher-id' );
-		expect( browser.getText( '#wl-publisher-id option[value="' + selected + '"]' ) ).toBe( 'John Smith' );
+		expect( browser.getText( '#wl-publisher-id option[value="' + selected + '"]' ) )
+			.toBe( 'John Smith' );
 
 		// @todo: also test changing the language.
 	} );
