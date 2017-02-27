@@ -183,7 +183,7 @@ describe( 'Open the WordPress web site', function() {
 				browser.waitForExist( '#wl-entity-list ul li' );
 
 				browser.click( '#wl-entity-list ul li' );
-				
+
 			} )
 
 		} );
