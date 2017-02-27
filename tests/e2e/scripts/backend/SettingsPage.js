@@ -98,8 +98,7 @@ const SettingsPage = function() {
 
 		// Check that the publisher is set.
 		// @todo: FF has issues in getting the value for the selected option.
-		const selected = browser.getValue( '#wl-publisher-id option[selected="selected"]' );
-		expect( browser.getText( '#wl-publisher-id option[value="' + selected + '"]' ) )
+		expect( browser.getText( '#wl-publisher-id option:first-child' ) )
 			.toBe( 'John Smith' );
 
 		// @todo: also test changing the language.
