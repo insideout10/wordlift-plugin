@@ -79,7 +79,7 @@ var config = {
 		// *
 		// https://github.com/webdriverio/webdriverio/blob/master/examples/cloudservices/webdriverio.saucelabs.js
 		{
-			browserName: 'chrome'
+			browserName: 'firefox'
 		}
 	],
 	//
