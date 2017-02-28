@@ -25,21 +25,21 @@
     outline: 0;
     // Anime.
     transition: 50ms border-color ease-in-out;
+    // Background position.
+    background-position: 448px 8px;
 
     &.valid {
       // Icon.
       background-image: url('../../../images/valid.png');
-      background-position: 464px 8px;
       // Spacing.
-      padding-right: 24px;
+      padding-right: 32px;
     }
 
     &.invalid {
       // Icon.
-      background-image: url('../../../images/valid.png');
-      background-position: 464px 8px;
+      background-image: url('../../../images/invalid.png');
       // Spacing.
-      padding-right: 24px;
+      padding-right: 32px;
     }
   }
 
