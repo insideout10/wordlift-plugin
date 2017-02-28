@@ -90,7 +90,7 @@ const SettingsPage = function() {
 		// Submit the form.
 		browser.scroll( '#submit' );
 		browser.click( '#submit' );
-		browser.pause( 2500 );
+		browser.pause( 5000 );
 
 		// Wait for the `wl-key` element to exist and to have a `valid` css
 		// class indicating that the key is valid.

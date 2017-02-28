@@ -21,5 +21,4 @@ describe( 'test WordLift', function() {
 
 	// Test the Post Edit Page.
 	describe( 'test the Post Edit Page', PostEditPage );
-
 } );
