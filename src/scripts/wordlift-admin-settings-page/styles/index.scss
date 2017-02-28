@@ -1,4 +1,9 @@
 #wl-settings-page {
+  
+  // Hide the "clear all" cross. See http://stackoverflow.com/questions/14007655/remove-ie10s-clear-field-x-button-on-certain-inputs
+  input::-ms-clear {    
+    display: none
+  }
 
   #wl-entity-base-path,
   #wl-key {
