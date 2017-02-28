@@ -135,13 +135,6 @@ class Wordlift_Admin {
 		// Finally output the params as `wlSettings` for JavaScript code.
 		wp_localize_script( $this->plugin_name, 'wlSettings', $params );
 
-		// Enqueue the edit screen JavaScript. The `wordlift-admin.bundle.js` file
-		// is scheduled to replace the older `wordlift-admin.min.js` once client-side
-		// code is properly refactored.
-		wp_enqueue_script( 'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-edit-page.bundle.js', array(
-			$this->plugin_name,
-		), $this->version, false );
-
 	}
 
 }
