@@ -13,7 +13,7 @@ import styled from 'styled-components';
  * @inheritDoc
  */
 const Wrapper = styled.div`
-	background-color: #ffffff;
+	background-color: #fff;
 	padding: 8px 0;
 
 	// Compensate accordion margin bottom.

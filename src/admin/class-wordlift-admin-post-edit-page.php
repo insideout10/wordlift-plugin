@@ -63,9 +63,6 @@ class Wordlift_Admin_Post_Edit_Page {
 			false
 		);
 
-		// Enqueue the style.
-		wp_enqueue_style( 'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-settings-page.min.css', array(), $this->plugin->get_version() );
-
 	}
 
 }

@@ -1,6 +1,5 @@
 const webpack = require( 'webpack' );
 const path = require( 'path' );
-const ExtractTextPlugin = require( "extract-text-webpack-plugin" );
 const tests = require( './.build/webpack/tests' );
 
 // @todo: consider splitting vendor, see:
@@ -21,8 +20,8 @@ const config = [
 	tests, {
 		entry: {
 			'wordlift-admin': './src/admin/js/wordlift-admin.js',
-			'wordlift-admin-edit-page': './src/scripts/admin/index.js',
-			'wordlift-admin-settings-page': './src/scripts/wordlift-admin-settings-page/index.js'
+			'wordlift-admin-edit-page': './src/scripts/admin-edit-page/index.js',
+			'wordlift-admin-settings-page': './src/scripts/admin-settings-page/index.js'
 		},
 		output: {
 			path: path.resolve( __dirname, 'src/admin/js' ),
@@ -43,14 +42,11 @@ const config = [
 				// Stylesheets.
 				{
 					test: /\.scss$/,
-					use: ExtractTextPlugin.extract(
-						{
-							fallback: "style-loader",
-							use: [
-								'css-loader',
-								'sass-loader'
-							]
-						} )
+					use: [
+						'style-loader',
+						'css-loader',
+						'sass-loader'
+					]
 				},
 				{
 					test: /\.png$/,
@@ -68,8 +64,7 @@ const config = [
 					NODE_ENV: JSON.stringify( 'production' )
 				}
 			} ),
-			new webpack.optimize.UglifyJsPlugin(),
-			new ExtractTextPlugin( '../css/[name].min.css' )
+			new webpack.optimize.UglifyJsPlugin()
 		],
 		devtool: 'cheap-module-eval-source-map'
 	}
