@@ -49,31 +49,31 @@ const PostEditPage = function() {
 		browser.waitForExist( '#wl-entity-list ul li' );
 
 		// Click on the first analysis result.
-		browser.click( '#wl-entity-list ul li:nth-child(1) div:nth-child(1)' );
+		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(1)' );
 		browser.pause( 1000 );
 
 		// Open the drawer.
-		browser.click( '#wl-entity-list ul li:nth-child(1) div:nth-child(3)' );
+		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(3)' );
 		browser.pause( 1000 );
 
 		// Disable link.
-		browser.click( '#wl-entity-list ul li:nth-child(1) div:nth-child(2) div:nth-child(1)' );
+		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(2) > div:nth-child(1)' );
 		browser.pause( 1000 );
 
 		// Re-enable link.
-		browser.click( '#wl-entity-list ul li:nth-child(1) div:nth-child(2) div:nth-child(1)' );
+		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(2) > div:nth-child(1)' );
 		browser.pause( 1000 );
 
 		// Click on the second analysis result.
-		browser.click( '#wl-entity-list ul li:nth-child(2) div:nth-child(1)' );
+		browser.click( '#wl-entity-list ul li:nth-child(2) > div:nth-child(1)' );
 		browser.pause( 1000 );
 
 		// Expect the drawer of the 1st tile to be invisible.
-		expect( browser.isVisible( '#wl-entity-list ul li:nth-child(1) div:nth-child(2)' ) )
+		expect( browser.isVisible( '#wl-entity-list ul li:nth-child(1) > div:nth-child(2)' ) )
 			.toBe( false );
 
 		// Expect the drawer of the 2nd tile to be visible.
-		expect( browser.isVisible( '#wl-entity-list ul li:nth-child(2) div:nth-child(2)' ) )
+		expect( browser.isVisible( '#wl-entity-list ul li:nth-child(2) > div:nth-child(2)' ) )
 			.toBe( true );
 	} );
 };
