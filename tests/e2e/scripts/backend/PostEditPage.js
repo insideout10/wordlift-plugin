@@ -74,7 +74,7 @@ const PostEditPage = function() {
 
 		// Expect the drawer of the 2nd tile to be visible.
 		expect( browser.isVisible( '#wl-entity-list ul li:nth-child(2) > div:nth-child(2)' ) )
-			.toBe( true );
+			.toBe( false );
 	} );
 };
 
