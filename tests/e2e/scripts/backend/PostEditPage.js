@@ -65,7 +65,7 @@ const PostEditPage = function() {
 		browser.pause( 1000 );
 
 		// Click on the second analysis result.
-		browser.click( '#wl-entity-list ul li:nth-child(1) div:nth-child(1)' );
+		browser.click( '#wl-entity-list ul li:nth-child(2) div:nth-child(1)' );
 		browser.pause( 1000 );
 
 		// Expect the drawer of the 1st tile to be invisible.
