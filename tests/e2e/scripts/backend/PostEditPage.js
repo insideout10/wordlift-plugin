@@ -50,19 +50,19 @@ const PostEditPage = function() {
 
 		// Click on the first analysis result.
 		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(1)' );
-		browser.pause( 1000 );
+		browser.pause( 2500 );
 
 		// Open the drawer.
 		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(3)' );
-		browser.pause( 1000 );
+		browser.pause( 2500 );
 
 		// Disable link.
 		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(2) > div:nth-child(1)' );
-		browser.pause( 1000 );
+		browser.pause( 2500 );
 
 		// Re-enable link.
 		browser.click( '#wl-entity-list ul li:nth-child(1) > div:nth-child(2) > div:nth-child(1)' );
-		browser.pause( 1000 );
+		browser.pause( 2500 );
 
 		// Click on the second analysis result.
 		browser.click( '#wl-entity-list ul li:nth-child(2) > div:nth-child(1)' );
