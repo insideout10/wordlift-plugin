@@ -16,7 +16,8 @@
   background-color: #fff;
   outline: 0;
   transition: 50ms border-color ease-in-out;
-  background-position: 448px 8px; }
+  background-position: 448px 8px;
+  background-repeat: no-repeat; }
   #wl-settings-page #wl-entity-base-path.valid,
   #wl-settings-page #wl-key.valid {
     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAA0ElEQVR4Aa3NgeYCQRDH8fMH/AkgAZrZVAQIhFCP0TuUIgB70wUCBAlIz7S7LgQgvUAh6jodN8Gmxh4D7refbxTyo1P3nzL6C4vmYGxgrS08tMHzwqpBONjiThvI3u5KKTYDw3xk1LwcJmmjF1tYklNDOcyXOOgXQ4ejHL6XVacmApjP4uw1XB1aldjAhX9yQArz2HVqniEHJDAHcPMpIIb5Iey9AYvTb2FRQAB7AgJYEBDAgoAAFgQ8sCxABrcFjDft1DgK/VHartNRVX999wQwVJB5+G9izgAAAABJRU5ErkJggg==);

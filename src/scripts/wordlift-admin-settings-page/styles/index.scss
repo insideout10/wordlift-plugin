@@ -25,9 +25,9 @@
     outline: 0;
     // Anime.
     transition: 50ms border-color ease-in-out;
-    // Background position.
+    // Background.
     background-position: 448px 8px;
-
+    background-repeat: no-repeat;
     &.valid {
       // Icon.
       background-image: url('../../../images/valid.png');
