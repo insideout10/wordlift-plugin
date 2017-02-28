@@ -66,7 +66,7 @@ const PostEditPage = function() {
 
 		// Click on the second analysis result.
 		browser.click( '#wl-entity-list ul li:nth-child(2) > div:nth-child(1)' );
-		browser.pause( 1000 );
+		browser.pause( 2500 );
 
 		// Expect the drawer of the 1st tile to be invisible.
 		expect( browser.isVisible( '#wl-entity-list ul li:nth-child(1) > div:nth-child(2)' ) )
