@@ -46,7 +46,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	function wl_entity_type_row_actions( $actions, $term ) {
 
 		$url               = admin_url( "admin.php?page=wl_entity_type_settings&tag_ID=$term->term_id" );
-		$actions['wl_seo'] = '<a href="' . esc_url( $url ) . '">' . _x( 'SEO Settings', 'wordlift' ) . '</a>';
+		$actions['wl_seo'] = '<a href="' . esc_url( $url ) . '">' . __( 'SEO Settings', 'wordlift' ) . '</a>';
 
 		return $actions;
 	}

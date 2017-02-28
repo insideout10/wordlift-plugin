@@ -65,14 +65,14 @@ class Wordlift_Admin_Entity_Type_Settings {
 		 * Use a null parent slug to prevent the menu from actually appearing
 		 * in the admin menu.
 		 */
-
+		// @todo: use the new {@link Wordlift_Admin_Page}.
 		add_submenu_page(
 			null,
-			_x( 'Edit Entity term', 'wordlift' ),
-			_x( 'Edit Entity term', 'wordlift' ),
+			__( 'Edit Entity term', 'wordlift' ),
+			__( 'Edit Entity term', 'wordlift' ),
 			'manage_options',
 			'wl_entity_type_settings',
-			array( $this, 'settings_page' )
+			array( $this, 'render' )
 		);
 	}
 
@@ -83,10 +83,10 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @since 3.11.0
 	 */
 	function admin_notice() {
-		if ( isset( $_GET['message'] ) && ( '1' == $_GET['message'] ) ) {
+		if ( isset( $_GET['message'] ) && ( '1' === $_GET['message'] ) ) {
 			?>
 			<div class="notice notice-success is-dismissible">
-				<p><?php echo esc_html_x( 'Settings saved', 'wordlift' ) ?></p>
+				<p><?php esc_html_e( 'Settings saved', 'wordlift' ) ?></p>
 			</div>
 			<?php
 		}
@@ -129,6 +129,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 	function handle_form_submission() {
 
 		$term_id = (int) $_POST['tag_ID'];
+
+		// Check the nonce.
 		check_admin_referer( 'update-entity_type_term_' . $term_id );
 
 		$term = get_term( $term_id, 'wl_entity_type' );
@@ -153,9 +155,9 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 */
-	function settings_page() {
+	function render() {
 
-		include( dirname( __FILE__ ) . '/partials/wordpress-admin-entity-type-settings.php' );
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordpress-admin-entity-type-settings.php';
 
 	}
 

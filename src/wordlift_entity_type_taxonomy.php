@@ -24,19 +24,22 @@ function wl_entity_type_taxonomy_register() {
 	);
 
 	// Take away GUI for taxonomy editing.
-	// TODO: readd capabilities when editing of the WL <-> schema.org mapping is possible
+	// TODO: read capabilities when editing of the WL <-> schema.org mapping is possible.
 	$capabilities = array(
+		// We enable editors to change the title/description of terms:
+	    //
+		// See https://github.com/insideout10/wordlift-plugin/issues/398
 		'manage_terms' => 'manage_options',
-		'edit_terms'   => NULL,
-		'delete_terms' => NULL,
-		'assign_terms' => 'edit_posts'
+		'edit_terms'   => null,
+		'delete_terms' => null,
+		'assign_terms' => 'edit_posts',
 	);
 
 	$args = array(
 		'labels'            => $labels,
 		'capabilities'      => $capabilities,
-		'hierarchical'      => TRUE,
-		'show_admin_column' => TRUE
+		'hierarchical'      => true,
+		'show_admin_column' => true,
 	);
 
 	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'entity', $args );
@@ -78,8 +81,8 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 /**
  * Get the children types of given term.
  *
- * @param mixes $term Term ID (e.g. 12) or slug (e.g. 'creative-work') or name (e.g. 'CreativeWork').
- * @param string $by Search key. Must be one of: 'id', 'slug', 'name', or 'term_taxonomy_id'.
+ * @param mixes  $term Term ID (e.g. 12) or slug (e.g. 'creative-work') or name (e.g. 'CreativeWork').
+ * @param string $by   Search key. Must be one of: 'id', 'slug', 'name', or 'term_taxonomy_id'.
  */
 function wl_entity_type_taxonomy_get_term_children( $term, $by = 'name' ) {
 	// TODO: test this method

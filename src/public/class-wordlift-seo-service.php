@@ -26,38 +26,59 @@ class Wordlift_Seo_Service {
 	 */
 	function __construct() {
 
-		// If we are not on the admin, run the get_term filter for entity type terms.
-		if ( ! is_admin() ) {
-			add_filter( 'get_wl_entity_type', array( $this, 'get_wl_entity_type' ), 10, 2 );
+		if ( is_admin() ) {
+			return;
 		}
+
+		// If we are not on the admin, run the get_term filter for entity type terms.
+		add_filter( 'get_wl_entity_type', array(
+			$this,
+			'get_wl_entity_type',
+		), 10, 2 );
+
 	}
 
 	/**
 	 * Filter the entity term object, replace title and description
-	 * with whatever was set in the entity settings page
+	 * with whatever was set in the entity settings page.
 	 *
-	 * @since 3.11
+	 * @since    3.11
 	 *
-	 * @param WP_Term	$Term	The term to filters.
-	 * @param string 	$taxonomy	The taxonomy name.
+	 * @param WP_Term $term     The term to filters.
+	 * @param string  $taxonomy The taxonomy name.
 	 *
-	 * @return WP_Term which is $term with fields changed
+	 * @return WP_Term The {@link WP_Term} with fields changed.
 	 */
 	function get_wl_entity_type( $term, $taxonomy ) {
 
+		// Get the terms' settings.
 		$entity_settings = get_option( 'wl_entity_type_settings', array() );
 
-		if ( isset( $entity_settings[ $term->term_id ] ) ) {
+		// If we have no settings for the specified term, then return the original
+		// term.
+		if ( ! isset( $entity_settings[ $term->term_id ] ) ) {
 
-			$settings = $entity_settings[ $term->term_id ];
-			if ( ! empty( $settings['title'] ) ) {
-				$term->name = $settings['title'];
-			}
-			if ( ! empty( $settings['description'] ) ) {
-				$term->description = $settings['description'];
-			}
+			return $term;
 		}
 
+		// Get the settings for the specified term.
+		$settings = $entity_settings[ $term->term_id ];
+
+		// Update the name.
+		if ( ! empty( $settings['title'] ) ) {
+
+			$term->name = $settings['title'];
+
+		}
+
+		// Update the description.
+		if ( ! empty( $settings['description'] ) ) {
+
+			$term->description = $settings['description'];
+
+		}
+
+		// Return the updated term.
 		return $term;
 	}
 

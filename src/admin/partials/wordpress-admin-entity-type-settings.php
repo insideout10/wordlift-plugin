@@ -20,7 +20,7 @@ $term_settings = isset( $settings[ $term_id ] ) ? $settings[ $term_id ] : array(
 
 ?>
 <div class="wrap">
-	<h1><?php echo esc_html__( 'Edit Entity Type', 'wordlift' ) ?></h1>
+	<h1><?php esc_html_e( 'Edit Entity Type', 'wordlift' ) ?></h1>
 
 	<form name="edittag" id="edittag" method="post"
 	      action="<?php echo admin_url( 'admin.php?page=wl_entity_type_settings' ) ?>"
@@ -33,7 +33,7 @@ $term_settings = isset( $settings[ $term_id ] ) ? $settings[ $term_id ] : array(
 			<tr class="form-field form-required term-name-wrap">
 				<th scope="row">
 					<label><?php
-						echo esc_html__( 'Name', 'wordlift' ); ?></label>
+						esc_html_e( 'Name', 'wordlift' ); ?></label>
 				</th>
 				<td><?php
 					echo esc_html( $term->name ) ?></td>
@@ -41,24 +41,24 @@ $term_settings = isset( $settings[ $term_id ] ) ? $settings[ $term_id ] : array(
 			<tr class="form-field form-required term-name-wrap">
 				<th scope="row">
 					<label for="title"><?php
-						echo esc_html__( 'SEO Title', 'wordlift' ); ?></label>
+						esc_html_e( 'SEO Title', 'wordlift' ); ?></label>
 				</th>
 				<td><input name="title" id="title" type="text"
 				           value="<?php echo esc_attr( $term_settings['title'] ) ?>"
 				           size="40" />
 					<p class="description"><?php
-						echo esc_html__( 'The HTML title to be used at the entity type achieve page.', 'wordlift' ); ?></p>
+						esc_html_e( 'The HTML title to be used at the entity type achieve page.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
 			<tr class="form-field term-description-wrap">
 				<th scope="row"><label for="description"><?php
-						echo esc_html__( 'SEP Description', 'wordlift' ); ?></label>
+						esc_html_e( 'SEO Description', 'wordlift' ); ?></label>
 				</th>
 				<td><textarea name="description" id="description" rows="5"
 				              cols="50" class="large-text"><?php
-							  	echo esc_html( $term_settings['description'] ) ?></textarea>
+						echo esc_html( $term_settings['description'] ) ?></textarea>
 					<p class="description"><?php
-						echo esc_html__( 'The description meta used in the entity type achieve page.', 'wordlift' ); ?></p>
+						esc_html_e( 'The description meta used in the entity type achieve page.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
 		</table>
