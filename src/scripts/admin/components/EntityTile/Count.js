@@ -15,7 +15,7 @@ import styled from 'styled-components';
 const Count = styled.div`
 	display: inline-block;
 	position: relative;
-	margin: 8px;
+	margin: 4px 8px;
 	width: 16px;
 	height: 16px;
 	border-radius: 2px;

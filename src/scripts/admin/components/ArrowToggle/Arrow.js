@@ -17,6 +17,8 @@ import styled from 'styled-components';
  */
 const Arrow = styled.div`
 	display: block;
+	position: absolute;
+	top: 8px;
 	width: 8px;
 	height: 8px;
 	border-top: 8px solid transparent;

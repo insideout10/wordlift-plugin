@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 	bottom: 0;
 	box-sizing: border-box;
 	width: 16px;
-	height: 32px;
+	min-height: 32px;
 	padding: 8px 4px;
 	background-color: #f1f1f1;
 	

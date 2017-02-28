@@ -22,7 +22,7 @@ const Drawer = styled.div`
 	bottom: 0;
 	box-sizing: border-box;
 	width: 248px;
-	height: 32px;
+	min-height: 24px;
 	padding: 8px;
 	color: #626162;
 	transition: left 200ms ease;
