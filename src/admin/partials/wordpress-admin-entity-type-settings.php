@@ -2,18 +2,22 @@
 /**
  * Pages: Entity Type Term Settings Page.
  *
+ * Assumes $term_id is set to the entity type term id, and $setting is set
+ * to its overriding settings.
+ *
  * @since      3.11.0
  * @package    Wordlift
  * @subpackage Wordlift/admin/partials
+ *
  */
 
-// Get the term id and the the term.
-$term_id = absint( $_REQUEST['tag_ID'] );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $term    = get_term( $term_id, 'wl_entity_type' );
 
-// Get the settings array.
-$settings      = get_option( 'wl_entity_type_settings', array() );
-$term_settings = isset( $settings[ $term_id ] ) ? $settings[ $term_id ] : array(
+$term_settings = ! is_null( $settings ) ? $settings : array(
 	'title'       => '',
 	'description' => '',
 );

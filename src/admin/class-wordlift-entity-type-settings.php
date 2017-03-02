@@ -93,7 +93,7 @@ class Wordlift_Admin_Entity_Type_Settings {
 	}
 
 	/**
-	 * Validate the existence of the the entity type indicated by the tag_ID
+	 * Validate the existence of the entity type indicated by the tag_ID
 	 * url parameter before doing any processing. Done before any output to mimic
 	 * the way WordPress handles same situation with "normal" term editing screens.
 	 *
@@ -135,12 +135,11 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		$term = get_term( $term_id, 'wl_entity_type' );
 
-		$settings             = get_option( 'wl_entity_type_settings', array() );
-		$settings[ $term_id ] = array(
-			'title'       => trim( wp_unslash( $_POST['title'] ) ),
-			'description' => wp_unslash( $_POST['description'] ),
+		$this->set_setting(
+			$term_id,
+			trim( wp_unslash( $_POST['title'] ) ),
+			wp_unslash( $_POST['description'] )
 		);
-		update_option( 'wl_entity_type_settings', $settings );
 
 		// Redirect back to the term settings page and indicate a save was done.
 		$url = admin_url( "admin.php?page=wl_entity_type_settings&tag_ID=$term->term_id&message=1" );
@@ -156,9 +155,57 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @since 3.11.0
 	 */
 	function render() {
+		// Set variables used by the partial
+		$term_id = absint( $_REQUEST['tag_ID'] );
+		$settings = $this->get_setting( $term_id );
 
 		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordpress-admin-entity-type-settings.php';
 
+	}
+
+	/**
+	 * Store the entity type term settings in the DB
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param 	integer $term_id 	The ID of the entity type term
+	 * @param	string	$title 	The override for the terms title.
+	 * @param	string	$description	The override for the terms description.
+	 *
+	 */
+	function set_setting( $term_id, $title, $description ) {
+
+		$settings = get_option( 'wl_entity_type_settings', array() );
+		$settings[ $term_id ] = array(
+			'title'       => $title,
+			'description' => $description,
+		);
+		update_option( 'wl_entity_type_settings', $settings );
+	}
+
+	/**
+	 * Retrieve the entity type term settings from the DB
+	 *
+	 * @since 3.11.0
+	 *
+	 * @param 	integer $term_id 	The ID of the entity type term
+	 *
+	 * @return	null|array {
+	 *				null is returned when there are no settings otherwise
+	 *				an array is retuned with following fields
+	 *
+	 *				@type	string 	title	The overriding title for the term
+	 *				@type	string 	description	The overriding description for the term
+	 *			}
+	 */
+	function get_setting( $term_id ) {
+
+		$settings = get_option( 'wl_entity_type_settings', array() );
+		if ( isset( $settings[ $term_id ] ) ) {
+			return $settings[ $term_id ];
+		} else {
+			null;
+		}
 	}
 
 }
