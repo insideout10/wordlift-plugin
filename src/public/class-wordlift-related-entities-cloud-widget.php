@@ -59,20 +59,25 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 
-		return array( 'title' => sanitize_text_field( $new_instance['title'] ), );
+		return array( 'title' => sanitize_text_field( $new_instance['title'] ) );
 	}
 
 	/**
-	 * @inheritdoc
+	 * Find the related entities to the currently displayed post and
+	 * calculate the "tags" for them as wp_generate_tag_cloud expects to get.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return array 	Array of tags. Empty array in case we re not in a context
+	 *                  of a post, or it has no related entities.
 	 */
-	public function widget( $args, $instance ) {
-
+	public function get_related_entities_tags() {
 		// Define the supported types list.
-		$supported_types = array( 'post', Wordlift_Entity_Service::TYPE_NAME, );
+		$supported_types = array( 'post', Wordlift_Entity_Service::TYPE_NAME );
 
 		// Show nothing if not on a post or entity page.
 		if ( ! is_singular( $supported_types ) ) {
-			return;
+			return array();
 		}
 
 		// Get the IDs of entities related to current post.
@@ -80,14 +85,8 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 
 		// Bail out if there are no associated entities.
 		if ( empty( $related_entities ) ) {
-			return;
+			return array();
 		}
-
-		// The widget title.
-		$title = empty( $instance['title'] ) ? __( 'Related Entities', 'wordlift' ) : $instance['title'];
-
-		// Standard filter all widgets should apply
-		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
 		/*
 		 * Create an array of "tags" to feed to wp_generate_tag_cloud.
@@ -112,8 +111,28 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 				'count' => $connected_entities + $connected_posts,
 				// The weight.
 			);
-
 		}
+
+		return $tags;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function widget( $args, $instance ) {
+
+		$tags = $this->get_related_entities_tags();
+
+		// Bail out if there are no associated entities.
+		if ( empty( $tags ) ) {
+			return;
+		}
+
+		// The widget title.
+		$title = empty( $instance['title'] ) ? __( 'Related Entities', 'wordlift' ) : $instance['title'];
+
+		// Standard filter all widgets should apply
+		$title = apply_filters( 'widget_title', $title, $instance, $this->id_base );
 
 		/*
 		 * Need to have the same class as the core tagcloud widget, to easily
