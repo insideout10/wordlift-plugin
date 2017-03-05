@@ -74,9 +74,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 	 */
 	function test_in_admin_context() {
 
-		$this->assertFalse( defined( 'WP_ADMIN' ) );
-		
-		define( 'WP_ADMIN', true );
+		set_current_screen( 'edit.php' );
 
 		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		$test = array(
