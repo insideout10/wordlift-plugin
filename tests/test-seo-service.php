@@ -2,15 +2,17 @@
 /**
  * Tests: SEO service.
  *
- * @since   3.11.0
- * @package Wordlift
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
 
 /**
  * Define the {@link Wordlift_Seo_Service} class.
  *
- * @since   3.11.0
- * @package Wordlift
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
 class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 
@@ -35,6 +37,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		$term = get_term_by( 'name', 'person', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->name, 'Person' );
 		$this->assertEquals( $term->description, 'A person (or a music artist).' );
+
 	}
 
 	/**
@@ -47,7 +50,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 
 		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		$test = array(
-			'title' => 'test name',
+			'title'       => 'test name',
 			'description' => 'test description',
 		);
 
@@ -58,6 +61,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->name, 'test name' );
 		$this->assertEquals( $term->description, 'test description' );
+
 	}
 
 	/**
@@ -74,7 +78,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 
 		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		$test = array(
-			'title' => 'test name',
+			'title'       => 'test name',
 			'description' => 'test description',
 		);
 
@@ -85,5 +89,7 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 		$this->assertEquals( $term->name, 'Event' );
 		$this->assertEquals( $term->description, 'An event.' );
+
 	}
+
 }

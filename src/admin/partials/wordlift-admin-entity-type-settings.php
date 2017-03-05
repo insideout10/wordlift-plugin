@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$term    = get_term( $term_id, 'wl_entity_type' );
+$term = get_term( $term_id, 'wl_entity_type' );
 
 $term_settings = ! is_null( $settings ) ? $settings : array(
 	'title'       => '',

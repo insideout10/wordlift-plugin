@@ -93,8 +93,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 	}
 
 	/**
-	 * Validate the existence of the entity type indicated by the tag_ID
-	 * url parameter before doing any processing. Done before any output to mimic
+	 * Validate the existence of the entity type indicated by the tag_ID url
+	 * parameter before doing any processing. Done before any output to mimic
 	 * the way WordPress handles same situation with "normal" term editing screens.
 	 *
 	 * @since 3.11.0
@@ -143,8 +143,10 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		// Redirect back to the term settings page and indicate a save was done.
 		$url = admin_url( "admin.php?page=wl_entity_type_settings&tag_ID=$term->term_id&message=1" );
+
 		wp_redirect( $url );
 		exit;
+
 	}
 
 	/**
@@ -155,11 +157,12 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 * @since 3.11.0
 	 */
 	function render() {
+
 		// Set variables used by the partial
-		$term_id = absint( $_REQUEST['tag_ID'] );
+		$term_id  = absint( $_REQUEST['tag_ID'] );
 		$settings = $this->get_setting( $term_id );
 
-		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordpress-admin-entity-type-settings.php';
+		include plugin_dir_path( dirname( __FILE__ ) ) . 'admin/partials/wordlift-admin-entity-type-settings.php';
 
 	}
 
@@ -168,19 +171,20 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param 	integer $term_id 	The ID of the entity type term
-	 * @param	string	$title 	The override for the terms title.
-	 * @param	string	$description	The override for the terms description.
+	 * @param    integer $term_id     The ID of the entity type term
+	 * @param    string  $title       The override for the terms title.
+	 * @param    string  $description The override for the terms description.
 	 *
 	 */
 	function set_setting( $term_id, $title, $description ) {
 
-		$settings = get_option( 'wl_entity_type_settings', array() );
+		$settings             = get_option( 'wl_entity_type_settings', array() );
 		$settings[ $term_id ] = array(
 			'title'       => $title,
 			'description' => $description,
 		);
 		update_option( 'wl_entity_type_settings', $settings );
+
 	}
 
 	/**
@@ -188,24 +192,26 @@ class Wordlift_Admin_Entity_Type_Settings {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param 	integer $term_id 	The ID of the entity type term
+	 * @param    integer $term_id The ID of the entity type term
 	 *
-	 * @return	null|array {
-	 *				null is returned when there are no settings otherwise
-	 *				an array is retuned with following fields
+	 * @return    null|array {
+	 *                null is returned when there are no settings otherwise
+	 *                an array is returned with following fields
 	 *
-	 *				@type	string 	title	The overriding title for the term
-	 *				@type	string 	description	The overriding description for the term
-	 *			}
+	 * @type    string    title    The overriding title for the term
+	 * @type    string    description    The overriding description for the term
+	 *            }
 	 */
 	function get_setting( $term_id ) {
 
 		$settings = get_option( 'wl_entity_type_settings', array() );
+
 		if ( isset( $settings[ $term_id ] ) ) {
 			return $settings[ $term_id ];
 		} else {
 			null;
 		}
+
 	}
 
 }
