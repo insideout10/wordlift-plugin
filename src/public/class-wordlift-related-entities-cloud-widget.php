@@ -68,7 +68,7 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @return array 	Array of tags. Empty array in case we re not in a context
+	 * @return array    Array of tags. Empty array in case we re not in a context
 	 *                  of a post, or it has no related entities.
 	 */
 	public function get_related_entities_tags() {

@@ -2,15 +2,17 @@
 /**
  * Tests: Related Entities Cloud Widget class.
  *
- * @since   3.11.0
- * @package Wordlift
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
 
 /**
  * Define the {@link Wordlift_Related_Entities_Cloud_Widget} class.
  *
- * @since   3.11.0
- * @package Wordlift
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
 class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Case {
 
@@ -20,7 +22,7 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 	 * @since 3.11.0
 	 *
 	 */
-	function test_title_sanitization() {
+	function test_title_sanitize() {
 
 		$widget = new Wordlift_Related_Entities_Cloud_Widget();
 
@@ -43,11 +45,11 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 	function test_get_related_entities_tags() {
 
 		// Create posts to test against
-		$post_id   = wl_create_post( '', 'post1', 'A post with no entities', 'publish', 'post' );
-		$post_id1   = wl_create_post( '', 'post2', 'A post with an entity', 'publish', 'post' );
-		$post_id2   = wl_create_post( '', 'post3', 'A post with two entities', 'publish', 'post' );
+		$post_id  = wl_create_post( '', 'post1', 'A post with no entities', 'publish', 'post' );
+		$post_id1 = wl_create_post( '', 'post2', 'A post with an entity', 'publish', 'post' );
+		$post_id2 = wl_create_post( '', 'post3', 'A post with two entities', 'publish', 'post' );
 
-		$entity_id = wl_create_post( '', 'entity1', 'An Entity', 'publish', 'entity' );
+		$entity_id  = wl_create_post( '', 'entity1', 'An Entity', 'publish', 'entity' );
 		$entity_id2 = wl_create_post( '', 'entity2', 'Another Entity', 'publish', 'entity' );
 		$entity_id3 = wl_create_post( '', 'entity3', 'Entity to Entity', 'publish', 'entity' );
 
@@ -66,7 +68,7 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 		// test post with one connected entity with weight 2
 		$this->go_to( '?p=' . $post_id1 );
 		$widget = new Wordlift_Related_Entities_Cloud_Widget();
-		$tags = $widget->get_related_entities_tags();
+		$tags   = $widget->get_related_entities_tags();
 		$this->assertEquals( 1, count( $tags ) );
 		$this->assertEquals( 'http://example.org/?entity=entity1', $tags[0]->link );
 		$this->assertEquals( 'An Entity', $tags[0]->slug );
@@ -77,7 +79,7 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 		// Test post with two connected entities.
 		$this->go_to( '?p=' . $post_id2 );
 		$widget = new Wordlift_Related_Entities_Cloud_Widget();
-		$tags = $widget->get_related_entities_tags();
+		$tags   = $widget->get_related_entities_tags();
 		$this->assertEquals( 2, count( $tags ) );
 
 		// Assume order is order of creation of entities.
@@ -96,7 +98,7 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 		// Test entity page.
 		$this->go_to( '?entity=entity2' );
 		$widget = new Wordlift_Related_Entities_Cloud_Widget();
-		$tags = $widget->get_related_entities_tags();
+		$tags   = $widget->get_related_entities_tags();
 		$this->assertEquals( 1, count( $tags ) );
 
 		// Assume order is order of creation of entities.
@@ -110,7 +112,7 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 		// Test in home page context.
 		$this->go_to( '/' );
 		$widget = new Wordlift_Related_Entities_Cloud_Widget();
-		$tags = $widget->get_related_entities_tags();
+		$tags   = $widget->get_related_entities_tags();
 		$this->assertEquals( 0, count( $tags ) );
 
 	}
@@ -121,8 +123,9 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 	 * @since 3.11.0
 	 */
 	function test_widget_class() {
+
 		// Create posts to test against
-		$post_id   = wl_create_post( '', 'post1', 'A post with no entities', 'publish', 'post' );
+		$post_id = wl_create_post( '', 'post1', 'A post with no entities', 'publish', 'post' );
 
 		$entity_id = wl_create_post( '', 'entity1', 'An Entity', 'publish', 'entity' );
 		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $entity_id );
@@ -132,18 +135,18 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 		ob_start();
 		$widget->widget(
 			array(
-				'before_widget' => 'bw',	// Test before widget setting.
-				'after_widget' => 'aw',		// Test after widget setting.
-				'before_title' => 'bt',	// Test before title setting.
-				'after_title' => 'at',		// Test after title setting.
-				),
+				'before_widget' => 'bw',    // Test before widget setting.
+				'after_widget'  => 'aw',        // Test after widget setting.
+				'before_title'  => 'bt',    // Test before title setting.
+				'after_title'   => 'at',        // Test after title setting.
+			),
 			array( 'title' => '' )
 		);
 		$output = ob_get_clean();
 
 		// test before and after widget.
 		$this->assertEquals( 'bw', substr( $output, 0, 2 ) );
-		$this->assertEquals( 'aw', substr( $output, -2, 2 ) );
+		$this->assertEquals( 'aw', substr( $output, - 2, 2 ) );
 
 		// Test default title with before and after
 		$this->assertTrue( false !== strpos( $output, 'btRelated Entitiesat' ) );
@@ -155,29 +158,33 @@ class Wordlift_Related_Entities_Cloud_Widget_Test extends Wordlift_Unit_Test_Cas
 		ob_start();
 		$widget->widget(
 			array(
-				'before_widget' => 'bw',	// Test before widget setting.
-				'after_widget' => 'aw',		// Test after widget setting.
-				'before_title' => 'bt',	// Test before title setting.
-				'after_title' => 'at',		// Test after title setting.
-				),
+				'before_widget' => 'bw',    // Test before widget setting.
+				'after_widget'  => 'aw',        // Test after widget setting.
+				'before_title'  => 'bt',    // Test before title setting.
+				'after_title'   => 'at',        // Test after title setting.
+			),
 			array( 'title' => 'bla' )
 		);
 		$output = ob_get_clean();
 		$this->assertTrue( false !== strpos( $output, 'btblaat' ) );
 
 		// Test the widget_title filter is applied to the title
-		add_filter( 'widget_title', function ( $t, $i, $idb ) {return 'passed';}, 10, 3 );
+		add_filter( 'widget_title', function ( $t, $i, $idb ) {
+			return 'passed';
+		}, 10, 3 );
 		ob_start();
 		$widget->widget(
 			array(
-				'before_widget' => 'bw',	// Test before widget setting.
-				'after_widget' => 'aw',		// Test after widget setting.
-				'before_title' => 'bt',	// Test before title setting.
-				'after_title' => 'at',		// Test after title setting.
-				),
+				'before_widget' => 'bw',    // Test before widget setting.
+				'after_widget'  => 'aw',        // Test after widget setting.
+				'before_title'  => 'bt',    // Test before title setting.
+				'after_title'   => 'at',        // Test after title setting.
+			),
 			array( 'title' => 'bla' )
 		);
 		$output = ob_get_clean();
 		$this->assertTrue( false !== strpos( $output, 'btpassedat' ) );
+
 	}
+
 }
