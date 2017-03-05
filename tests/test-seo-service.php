@@ -86,9 +86,10 @@ class Test_Wordlift_Seo_Service extends Wordlift_Unit_Test_Case {
 		update_option( 'wl_entity_type_settings', array( $term->term_id => $test ) );
 
 		// Now get the term again and compare.
-		$term = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-		$this->assertEquals( $term->name, 'Event' );
-		$this->assertEquals( $term->description, 'An event.' );
+		$term_2 = get_term_by( 'name', 'event', Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		$this->assertEquals( $term->term_id, $term_2->term_id );
+		$this->assertEquals( 'Event', $term_2->name );
+		$this->assertEquals( 'An event.', $term_2->description );
 
 	}
 
