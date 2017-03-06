@@ -30,8 +30,9 @@ import thunk from 'redux-thunk';
  */
 import reducer from './reducers';
 import App from './components/App';
-import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
+import AnnotationEvent from './angular/AnnotationEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
+import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
 // import log from '../modules/log';
 
 // Start-up the application when the `wlEntityList` Angular directive is
@@ -50,6 +51,10 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 		</Provider>,
 		document.getElementById( 'wl-entity-list' )
 	);
+
+	// Listen for annotation selections in TinyMCE and dispatch the
+	// `AnnotationEvent` action.
+	store.dispatch( AnnotationEvent() );
 
 	// Listen for analysis results and dispatch the `receiveAnalysisResults`
 	// action when new results are received.

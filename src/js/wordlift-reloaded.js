@@ -571,6 +571,7 @@
       $scope.$watch("annotation", function(newAnnotationId) {
         var annotation;
         $log.debug("Current annotation id changed to " + newAnnotationId);
+        wp.wordlift.trigger('annotation', newAnnotationId);
         if ($scope.isRunning) {
           return;
         }

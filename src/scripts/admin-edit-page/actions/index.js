@@ -12,6 +12,18 @@
 import * as types from '../constants/ActionTypes';
 
 /**
+ * Set the current annotation. If `undefined` no annotation is selected.
+ *
+ * @since 3.11.0
+ * @param {string} annotation The annotation id or `undefined` if no annotation
+ *     is selected.
+ * @return {Function} The action's function.
+ */
+export const setCurrentAnnotation = ( annotation ) => (
+	{ type: types.ANNOTATION, annotation }
+);
+
+/**
  * The `receiveAnalysisResults` action is dispatched when new analysis results
  * are received.
  *
