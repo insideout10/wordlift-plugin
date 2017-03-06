@@ -245,7 +245,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       promise.then (response) ->
 # Store current analysis obj
         service._currentAnalysis = response.data
-        $rootScope.$broadcast "analysisPerformed", service.parse(response.data)
+
+        result = service.parse(response.data)
+        $rootScope.$broadcast "analysisPerformed", result
+        wp.wordlift.trigger 'analysis.result', result
+
 
       # On failure, broadcast an *analysisFailed* event.
       promise.catch (response) ->
@@ -280,6 +284,10 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
             start: annotation.start
             end: annotation.end
             text: annotation.label
+            # The css class of the original text annotation (now removed from the
+            # body. The css class is useful because we store there the `wl-no-link`
+            # class.
+            cssClass: annotation.cssClass if annotation.cssClass?
           })
           analysis.annotations[textAnnotation.id] = textAnnotation
 

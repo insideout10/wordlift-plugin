@@ -95,3 +95,89 @@
 #adminmenu a[href=wl-setup], #adminmenu a[href='admin.php?page=wl_status_report'] {
     display: none;
 }
+
+/*!***/
+ /** Admin settings page related styling.*/
+ /**!*/
+
+ /*#wl-key {*/
+	 /*padding-right: 34px;*/
+	 /*background-repeat: no-repeat;*/
+	 /*background-position: calc(100% - 8px) 7px;*/
+ /*}*/
+
+ /*#wl-key.invalid {*/
+	 /*background-image: url('../../images/invalid.png');*/
+ /*}*/
+
+ /*#wl-key.valid {*/
+	 /*background-image: url('../../images/valid.png');*/
+ /*}*/
+
+ /*#wl-key.untouched {*/
+	 /*background-image: initial;*/
+ /*}*/
+
+ /*.wl-tab-panel {*/
+	 /*display: none;*/
+	 /*padding-top: 10px;*/
+ /*}*/
+
+ /*.wl-select-entity-active #wl-select-entity-panel {*/
+	 /*display: block;*/
+ /*}*/
+
+ /*.wl-create-entity-active #wl-create-entity-panel {*/
+	 /*display: block;*/
+ /*}*/
+
+ /*.wl-select-entity-active select {*/
+	 /*width: 400px;*/
+ /*}*/
+
+ /*.wl-select2 {*/
+	 /*font-size: 12px;*/
+	 /*color: #1980c0;*/
+ /*}*/
+
+ /*.wl-select2 img, .wl-select2 .img-filler {*/
+	 /*height: 24px;*/
+	 /*width: 24px;*/
+	 /*margin-right: 10px;*/
+	 /*margin-left: 10px;*/
+	 /*vertical-align: middle;*/
+	 /*display: inline-block;*/
+ /*}*/
+
+ /*.wl-select2-type {*/
+	 /*float: right;*/
+	 /*margin-right: 10px;*/
+	 /*text-align: right;*/
+ /*}*/
+
+ /*#wl-publisher-type span {*/
+	 /*margin-right: 20px;*/
+ /*}*/
+
+ /*#wl-publisher-logo {*/
+	 /*display: none;*/
+ /*}*/
+
+ /*#wl-publisher-logo input {*/
+	 /*color: #555;*/
+	 /*border-color: #ccc;*/
+	 /*background: #f7f7f7;*/
+	 /*box-shadow: 0 1px 0 #ccc;*/
+ /*}*/
+
+ /*#wl-publisher-name input {*/
+	 /*width: 400px;*/
+ /*}*/
+
+ /*#wl-publisher-logo-preview {*/
+	 /*width: 24px;*/
+	 /*height: 24px;*/
+	 /*vertical-align: middle;*/
+	 /*margin-right: 10px;*/
+	 /*display: none;*/
+ /*}*/

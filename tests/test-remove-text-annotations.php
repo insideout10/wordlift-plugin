@@ -149,4 +149,25 @@ EOF;
 		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
 	}
 
+	/**
+	 * A CSS class could be inserted between `textannotation` and `disambiguated`.
+	 * This test checks that the function still correctly identifies a disambiguated
+	 * text annotation.
+	 *
+	 * @since 3.11.0
+	 */
+	function test_keep_an_annotation_with_wl_no_link_between_textannotation_and_disambiguated() {
+
+		$content          = <<<EOF
+<span id="urn:enhancement-1dd737ba-ad9f-68e5-d372-6c98a9cda3c0" class="textannotation">Sono</span> nato a <span id="urn:enhancement-7616be76-a52b-b728-6b3b-f94d2499a87b" class="textannotation wl-no-link disambiguated wl-place" itemid="http://dbpedia.org/resource/Rome">Roma</span>
+EOF;
+		$expected_content = <<<EOF
+Sono nato a <span id="urn:enhancement-7616be76-a52b-b728-6b3b-f94d2499a87b" class="textannotation wl-no-link disambiguated wl-place" itemid="http://dbpedia.org/resource/Rome">Roma</span>
+EOF;
+		// addslashes is used here to simulate a content sent in $_POST
+		$data   = array( 'post_content' => addslashes( $content ) );
+		$output = wl_remove_text_annotations( $data );
+		$this->assertEquals( addslashes( $expected_content ), $output['post_content'] );
+	}
+
 }

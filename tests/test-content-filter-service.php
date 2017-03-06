@@ -73,6 +73,27 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Test a content with an entity marked as `wl-no-link`.
+	 *
+	 * @since 3.11.0
+	 */
+	public function test_entity_no_link() {
+
+		// Add a filter to set the permalink to a fixed value we can test.
+		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
+
+		// The content.
+		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation wl-no-link disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+
+		// The expected content without a link.
+		$expected = 'Matt Mullenweg would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
+
+		// Check that the expected content matches the function output.
+		$this->assertEquals( $expected, $this->content_filter_service->the_content( $content ) );
+
+	}
+
+	/**
 	 * Intercept the permalink call to return a fixed link we can test.
 	 * @since 3.8.0
 	 *
@@ -100,4 +121,5 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 		return $this->factory->post->create();
 	}
+
 }

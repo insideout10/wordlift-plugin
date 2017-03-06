@@ -54,16 +54,17 @@
                     delay($this, function () {
 
                         // Post the validation request.
-                        $.post(settings.ajaxUrl, {'action': settings.action, 'key': $this.val()},
-                            function (data) {
+                        wp.ajax.post(settings.action, {
+							'key': $this.val(),
+						}).done ( function (data) {
 
-                                // If the key is valid then set the process class.
-                                if (data && data.valid)
-                                    $this.addClass('valid');
-                                else
-                                    $this.addClass('invalid');
+                            // If the key is valid then set the process class.
+                            if (data && data.valid)
+                                $this.addClass('valid');
+                            else
+                                $this.addClass('invalid');
 
-                            });
+                        });
 
                     });
 

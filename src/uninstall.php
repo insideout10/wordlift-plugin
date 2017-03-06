@@ -84,7 +84,7 @@ wl_write_log( 'Done.' );
  * Delete options
  */
 wl_write_log( 'Cleaning WordLift options... ' );
-delete_option( WL_OPTIONS_NAME );
+// delete_option( WL_OPTIONS_NAME );
 delete_option( 'wl_option_prefixes' );
 delete_option( 'wl_general_settings' );
 delete_option( 'wl_advanced_settings' );

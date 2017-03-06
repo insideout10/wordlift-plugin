@@ -10,6 +10,8 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
       $scope.hasSelectedEntities = ()->
         Object.keys( $scope.selectedEntities[ $scope.box.id ] ).length > 0
 
+      wp.wordlift.trigger 'wlClassificationBox.loaded', $scope
+
     controller: ($scope, $element, $attrs) ->
 
       # Mantain a reference to nested entity tiles $scope
@@ -25,4 +27,4 @@ angular.module('wordlift.editpost.widget.directives.wlClassificationBox', [])
         for tile in $scope.tiles
           tile.isOpened = false
 
-  ])
+])
