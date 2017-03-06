@@ -436,6 +436,15 @@ class Wordlift {
 	private $entity_type_settings_admin_page;
 
 	/**
+	 * The {@link Wordlift_Related_Entities_Cloud_Widget} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Related_Entities_Cloud_Widget $related_entities_cloud_widget The {@link Wordlift_Related_Entities_Cloud_Widget} instance.
+	 */
+	protected $related_entities_cloud_widget;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -753,6 +762,10 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-seo-service.php';
 
+		/** Widgets */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
+
 		$this->loader = new Wordlift_Loader();
 
 		// Instantiate a global logger.
@@ -874,6 +887,13 @@ class Wordlift {
 
 		// create an instance of the entity type etting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
+
+		/** Widgets */
+		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
+
+		//** WordPress Admin */
+		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->status_page             = new Wordlift_Admin_Status_Page();
 
 		// Create an instance of the install wizard.
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
