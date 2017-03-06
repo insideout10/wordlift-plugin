@@ -8,6 +8,11 @@
  */
 
 /**
+ * Styles
+ */
+import * as style from './style.scss';
+
+/**
  * External dependencies
  */
 import React from 'react';
@@ -18,7 +23,6 @@ import React from 'react';
 import Wrapper from './Wrapper';
 import Header from '../Header';
 import VisibleEntityList from '../../containers/VisibleEntityList';
-import { wrap } from './style.scss';
 
 /**
  * Define the {@link App}.
@@ -27,7 +31,7 @@ import { wrap } from './style.scss';
  * @return {Function} The `render` function.
  */
 const App = () => (
-	<Wrapper className={ wrap }>
+	<Wrapper className={ style[ 'wl-classification-box-wrapper' ] }>
 		<Header />
 		<VisibleEntityList />
 	</Wrapper>
