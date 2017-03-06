@@ -19,7 +19,7 @@ const Cloud = styled.i`
 	top: 8px;
 	font-size: 14px;
 	line-height: 1;
-	color: #CBCBCB;
+	color: #cbcbcb;
 	user-select: none;
 	transition: opacity 150ms ease;
 `;
