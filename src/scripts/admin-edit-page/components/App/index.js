@@ -8,7 +8,10 @@
  */
 
 /**
- * Styles
+ * Styles.
+ *
+ * The following style must be loaded as first in order to give precedence to
+ * styled-components (which are loaded after).
  */
 import * as style from './style.scss';
 
