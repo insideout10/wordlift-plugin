@@ -119,7 +119,7 @@ class Wordlift_Timeline_Service {
 			return array();
 		}
 
-		$this->log_service->trace( "Getting events [ entity ids :: " . join( ', ', $ids ) . " ]" );
+		$this->log_service->trace( 'Getting events [ entity ids :: ' . join( ', ', $ids ) . ' ]' );
 
 		return get_posts( array(
 			'post__in'       => $ids,
@@ -204,15 +204,14 @@ class Wordlift_Timeline_Service {
 
 				// Set the thumbnail URL.
 				if ( 'background' === $display_images_as ) {
-					$date['background'] = array( 'url' => $attachment[0], );
-					$date['media']      = array( 'thumbnail' => $attachment[0], );
+					$date['background'] = array( 'url' => $attachment[0] );
+					$date['media']      = array( 'thumbnail' => $attachment[0] );
 				} else {
 					$date['media'] = array(
 						'url'       => $attachment[0],
 						'thumbnail' => $attachment[0],
 					);
 				}
-
 			}
 
 			// Set the start/end dates by converting them to TimelineJS required format.
@@ -224,7 +223,7 @@ class Wordlift_Timeline_Service {
 			$more_link_text = sprintf(
 				'<span aria-label="%1$s">%2$s</span>',
 				sprintf(
-				/* translators: %s: Name of current post */
+					/* translators: %s: Name of current post */
 					__( 'Continue reading %s' ),
 					the_title_attribute( array( 'echo' => false ) )
 				),
@@ -319,7 +318,7 @@ class Wordlift_Timeline_Service {
 		$latest_posts_ids = get_posts( array(
 			'numberposts' => 50,
 			'fields'      => 'ids', //only get post IDs
-			'post_type'   => 'post',
+			'post_type'   => array( 'post', 'page' ),
 			'post_status' => 'publish',
 		) );
 
