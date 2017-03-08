@@ -149,6 +149,15 @@ class Wordlift_Entity_Post_Type_Service {
 
 		register_post_type( $this->post_type, $args );
 
+		// Enable WP's standard `category` taxonomy for entities.
+		//
+		// While this enables editors to bind entities to the WP posts' category
+		// taxonomy, in Wordlift_Category_Taxonomy_Service we also need to alter
+		// WP's main category query to include the `entity` post type.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/442
+		register_taxonomy_for_object_type( 'category', $this->post_type );
+
 	}
 
 }

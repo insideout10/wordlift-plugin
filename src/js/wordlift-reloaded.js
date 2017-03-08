@@ -472,7 +472,8 @@
             $scope.addNewEntityToAnalysis();
             $scope.addMsg('The entity was created!', 'positive');
         }
-        return $scope.unsetCurrentEntity();
+        $scope.unsetCurrentEntity();
+        return wp.wordlift.trigger('analysis.result', $scope.analysis);
       };
       $scope.selectedEntities = {};
       $scope.currentSection = void 0;
@@ -552,8 +553,11 @@
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
-        $log.debug("Occurrences " + occurrences.length + " for " + entityId);
         $scope.analysis.entities[entityId].occurrences = occurrences;
+        wp.wordlift.trigger('updateOccurrencesForEntity', {
+          entityId: entityId,
+          occurrences: occurrences
+        });
         if (occurrences.length === 0) {
           ref1 = $scope.selectedEntities;
           results1 = [];
@@ -675,6 +679,10 @@
           });
         }
         $scope.$emit(action, entity, $scope.annotation);
+        wp.wordlift.trigger(action, {
+          entity: entity,
+          annotation: $scope.annotation
+        });
         $scope.updateRelatedPosts();
         return $scope.selectAnnotation(void 0);
       };
@@ -749,9 +757,10 @@
           return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-classification-box.html';
         },
         link: function($scope, $element, $attrs, $ctrl) {
-          return $scope.hasSelectedEntities = function() {
+          $scope.hasSelectedEntities = function() {
             return Object.keys($scope.selectedEntities[$scope.box.id]).length > 0;
           };
+          return wp.wordlift.trigger('wlClassificationBox.loaded', $scope);
         },
         controller: function($scope, $element, $attrs) {
           var ctrl;
@@ -771,6 +780,17 @@
             }
             return results1;
           };
+        }
+      };
+    }
+  ]);
+
+  angular.module('wordlift.editpost.widget.directives.wlEntityList', []).directive('wlEntityList', [
+    '$log', function($log) {
+      return {
+        restrict: 'A',
+        link: function() {
+          return wp.wordlift.trigger('wlEntityList.loaded');
         }
       };
     }
@@ -1275,8 +1295,11 @@
         $log.debug('Requesting analysis...');
         promise = this._innerPerform(content, annotations);
         promise.then(function(response) {
+          var result;
           service._currentAnalysis = response.data;
-          return $rootScope.$broadcast("analysisPerformed", service.parse(response.data));
+          result = service.parse(response.data);
+          $rootScope.$broadcast("analysisPerformed", result);
+          return wp.wordlift.trigger('analysis.result', result);
         });
         promise["catch"](function(response) {
           $log.error(response.data);
@@ -1302,7 +1325,8 @@
             textAnnotation = this.createAnnotation({
               start: annotation.start,
               end: annotation.end,
-              text: annotation.label
+              text: annotation.label,
+              cssClass: annotation.cssClass != null ? annotation.cssClass : void 0
             });
             analysis.annotations[textAnnotation.id] = textAnnotation;
           }
@@ -1343,14 +1367,15 @@
       findEntities = function(html) {
         var annotation, match, pattern, results1, traslator;
         traslator = Traslator.create(html);
-        pattern = /<(\w+)[^>]*\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
+        pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
         results1 = [];
         while (match = pattern.exec(html)) {
           annotation = {
             start: traslator.html2text(match.index),
             end: traslator.html2text(match.index + match[0].length),
-            uri: match[2],
-            label: match[3]
+            uri: match[3],
+            label: match[4],
+            cssClass: match[2]
           };
           results1.push(annotation);
         }
@@ -1518,7 +1543,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, traslator;
+            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, traslator;
             ed = EditorAdapter.getEditor();
             html = EditorAdapter.getHTML();
             entities = findEntities(html);
@@ -1536,9 +1561,12 @@
                 continue;
               }
               element = "<span id=\"" + annotationId + "\" class=\"textannotation";
-              ref1 = annotation.entityMatches;
-              for (j = 0, len = ref1.length; j < len; j++) {
-                em = ref1[j];
+              if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-no-link') : void 0)) {
+                element += ' wl-no-link';
+              }
+              ref2 = annotation.entityMatches;
+              for (j = 0, len = ref2.length; j < len; j++) {
+                em = ref2[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
@@ -1745,7 +1773,7 @@
 
   $ = jQuery;
 
-  angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
+  angular.module('wordlift.editpost.widget', ['ngAnimate', 'wordlift.ui.carousel', 'wordlift.utils.directives', 'wordlift.editpost.widget.providers.ConfigurationProvider', 'wordlift.editpost.widget.controllers.EditPostWidgetController', 'wordlift.editpost.widget.directives.wlClassificationBox', 'wordlift.editpost.widget.directives.wlEntityList', 'wordlift.editpost.widget.directives.wlEntityForm', 'wordlift.editpost.widget.directives.wlEntityTile', 'wordlift.editpost.widget.directives.wlEntityInputBox', 'wordlift.editpost.widget.services.AnalysisService', 'wordlift.editpost.widget.services.EditorService', 'wordlift.editpost.widget.services.RelatedPostDataRetrieverService']).config(function(configurationProvider) {
     return configurationProvider.setConfiguration(window.wordlift);
   });
 

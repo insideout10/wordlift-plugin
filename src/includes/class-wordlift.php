@@ -255,6 +255,15 @@ class Wordlift {
 	private $download_your_data_page;
 
 	/**
+	 * The 'WordLift Settings' page.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Settings_Page $settings_page The 'WordLift Settings' page.
+	 */
+	protected $settings_page;
+
+	/**
 	 * The install wizard page.
 	 *
 	 * @since  3.9.0
@@ -344,6 +353,96 @@ class Wordlift {
 	 * @var \Wordlift_Admin_Status_Page $status_page The {@link Wordlift_Admin_Status_Page} class.
 	 */
 	private $status_page;
+
+	/**
+	 * The {@link Wordlift_Category_Taxonomy_Service} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Category_Taxonomy_Service $category_taxonomy_service The {@link Wordlift_Category_Taxonomy_Service} instance.
+	 */
+	protected $category_taxonomy_service;
+
+	/**
+	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Settings_Page_Action_Link $settings_page_action_link The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
+	 */
+	protected $settings_page_action_link;
+
+	/**
+	 * The {@link Wordlift_Publisher_Ajax_Adapter} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Publisher_Ajax_Adapter $publisher_ajax_adapter The {@link Wordlift_Publisher_Ajax_Adapter} instance.
+	 */
+	protected $publisher_ajax_adapter;
+
+	/**
+	 * The {@link Wordlift_Admin_Input_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Input_Element $input_element The {@link Wordlift_Admin_Input_Element} element renderer.
+	 */
+	protected $input_element;
+
+	/**
+	 * The {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Language_Select_Element $language_select_element The {@link Wordlift_Admin_Language_Select_Element} element renderer.
+	 */
+	protected $language_select_element;
+
+	/**
+	 * The {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Publisher_Element $publisher_element The {@link Wordlift_Admin_Publisher_Element} element renderer.
+	 */
+	protected $publisher_element;
+
+	/**
+	 * The {@link Wordlift_Admin_Select2_Element} element renderer.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Select2_Element $select2_element The {@link Wordlift_Admin_Select2_Element} element renderer.
+	 */
+	protected $select2_element;
+
+	/**
+	 * The controller for the entity type list admin page
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Entity_Taxonomy_List_Page $entity_type_admin_page The {@link Wordlift_Admin_Entity_Taxonomy_List_Page} class.
+	 */
+	private $entity_type_admin_page;
+
+	/**
+	 * The controller for the entity type settings admin page
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Admin_Entity_Type_Settings $entity_type_settings_admin_page The {@link Wordlift_Admin_Entity_Type_Settings} class.
+	 */
+	private $entity_type_settings_admin_page;
+
+	/**
+	 * The {@link Wordlift_Related_Entities_Cloud_Widget} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Related_Entities_Cloud_Widget $related_entities_cloud_widget The {@link Wordlift_Related_Entities_Cloud_Widget} instance.
+	 */
+	protected $related_entities_cloud_widget;
 
 	/**
 	 * Define the core functionality of the plugin.
@@ -538,10 +637,17 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-service.php';
 
+		// The Publisher Service and the AJAX adapter.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
+
 		/**
 		 * Load the WordLift key validation service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-key-validation-service.php';
+
+		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -579,10 +685,41 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-setup.php';
 
 		/**
+		 * The WordLift entity type list admin page controller.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-taxonomy-list-page.php';
+
+		/**
+		 * The WordLift entity type settings admin page controller.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-entity-type-settings.php';
+
+		/**
 		 * The admin 'Download Your Data' page.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
+
+		/**
+		 * The admin 'Download Your Data' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-download-your-data-page.php';
+
+		/**
+		 * The admin 'WordLift Settings' page.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/intf-wordlift-admin-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-select2-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-tabs-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-publisher-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
+
+		/** Admin Pages */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -619,6 +756,15 @@ class Wordlift {
 		 * The ShareThis service.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-sharethis-service.php';
+
+		/**
+		 * The SEO service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-seo-service.php';
+
+		/** Widgets */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
 		$this->loader = new Wordlift_Loader();
 
@@ -668,6 +814,9 @@ class Wordlift {
 		new Wordlift_Geomap_Shortcode();
 		new Wordlift_Timeline_Shortcode();
 
+		// Initialize the SEO service.
+		new Wordlift_Seo_Service();
+
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 		$this->topic_taxonomy_service = new Wordlift_Topic_Taxonomy_Service();
@@ -679,7 +828,7 @@ class Wordlift {
 		$this->primashop_adapter = new Wordlift_PrimaShop_Adapter();
 
 		// Create an import service instance to hook later to WP's import function.
-		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, wl_configuration_get_redlink_dataset_uri() );
+		$this->import_service = new Wordlift_Import_Service( $this->entity_post_type_service, $this->entity_service, $this->schema_service, $this->sparql_service, $this->configuration_service->get_dataset_uri() );
 
 		$uri_service = new Wordlift_Uri_Service( $GLOBALS['wpdb'] );
 
@@ -712,6 +861,36 @@ class Wordlift {
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
 		$this->key_validation_service = new Wordlift_Key_Validation_Service();
 
+		// Create an instance of the Publisher Service and the AJAX Adapter.
+		$publisher_service            = new Wordlift_Publisher_Service();
+		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
+
+		/** WordPress Admin UI. */
+
+		// UI elements.
+		$this->input_element           = new Wordlift_Admin_Input_Element();
+		$this->select2_element         = new Wordlift_Admin_Select2_Element();
+		$this->language_select_element = new Wordlift_Admin_Language_Select_Element();
+		$tabs_element                  = new Wordlift_Admin_Tabs_Element();
+		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $publisher_service, $tabs_element, $this->select2_element );
+
+		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
+		$this->status_page               = new Wordlift_Admin_Status_Page();
+		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element );
+		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
+
+		// Pages.
+		new Wordlift_Admin_Post_Edit_Page( $this );
+
+		// create an instance of the entity type list admin page controller.
+		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
+
+		// create an instance of the entity type etting admin page controller.
+		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
+
+		/** Widgets */
+		$this->related_entities_cloud_widget = new Wordlift_Related_Entities_Cloud_Widget();
+
 		//** WordPress Admin */
 		$this->download_your_data_page = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page             = new Wordlift_Admin_Status_Page();
@@ -721,6 +900,8 @@ class Wordlift {
 
 		// Create an instance of the content filter service.
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
+
+		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
@@ -824,6 +1005,7 @@ class Wordlift {
 		// Hook the menu to the Download Your Data page.
 		$this->loader->add_action( 'admin_menu', $this->download_your_data_page, 'admin_menu', 100, 0 );
 		$this->loader->add_action( 'admin_menu', $this->status_page, 'admin_menu', 100, 0 );
+		$this->loader->add_action( 'admin_menu', $this->entity_type_settings_admin_page, 'admin_menu', 100, 0 );
 
 		// Hook the admin-ajax.php?action=wl_download_your_data&out=xyz links.
 		$this->loader->add_action( 'wp_ajax_wl_download_your_data', $this->download_your_data_page, 'download_your_data', 10 );
@@ -836,6 +1018,24 @@ class Wordlift {
 
 		// Hook the `admin_init` function to the Admin Setup.
 		$this->loader->add_action( 'admin_init', $this->admin_setup, 'admin_init' );
+
+		// Hook the admin_init to the settings page.
+		$this->loader->add_action( 'admin_init', $this->settings_page, 'admin_init' );
+
+		// Hook the menu creation on the general wordlift menu creation
+		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+
+		// Hook key update.
+		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key', 10, 2 );
+
+		// Add additional action links to the WordLift plugin in the plugins page.
+		$this->loader->add_filter( 'plugin_action_links_wordlift/wordlift.php', $this->settings_page_action_link, 'action_links', 10, 1 );
+
+		// Hook the AJAX `wl_publisher` action name.
+		$this->loader->add_action( 'wp_ajax_wl_publisher', $this->publisher_ajax_adapter, 'publisher' );
+
+		// Hook row actions for the entity type list admin.
+		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
 
 	}
 
@@ -874,6 +1074,11 @@ class Wordlift {
 
 		// Hook the AJAX wl_jsonld action to the JSON-LD service.
 		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
+
+		// Hook the `pre_get_posts` action to the `Wordlift_Category_Taxonomy_Service`
+		// in order to tweak WP's `WP_Query` to include entities in queries related
+		// to categories.
+		$this->loader->add_action( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
 
 	}
 

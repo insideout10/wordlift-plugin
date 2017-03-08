@@ -17,6 +17,9 @@ php:
 # @@todo: we're currently testing only the last version of WordPress, we should also test the previous ones and nightly.
 matrix:
   include:
+    # JavaScript end-to-end tests.
+    - php: 5.6
+      env: SCRIPT=test:e2e
     # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.0
       env: SCRIPT=test:php WP_VERSION=4.7
@@ -26,9 +29,6 @@ matrix:
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
-    # JavaScript end-to-end tests.
-    - php: 5.6
-      env: SCRIPT=test:e2e
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
@@ -48,12 +48,17 @@ cache:
     - $HOME/.composer/cache
 
 addons:
-  # Have Travis CI start a SauceLabs Connect instance for us.
-#  sauce_connect: true
   # see https://docs.travis-ci.com/user/hosts
   # see https://support.saucelabs.com/customer/en/portal/articles/2639448-issues-with-localhost-proxying-on-edge-and-safari-8-and-9-using-sauce-connect-proxy
   hosts:
     - wordpress.local
+  addons:
+    # Required for compatibility with some nodejs dependencies.
+    apt:
+      sources:
+      - ubuntu-toolchain-r-test
+      packages:
+      - gcc-4.8
 
 env:
   global:

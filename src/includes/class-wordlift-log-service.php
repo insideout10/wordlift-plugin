@@ -80,7 +80,7 @@ class Wordlift_Log_Service {
 			return;
 		}
 
-		error_log( sprintf( self::MESSAGE_TEMPLATE, $level, $this->class_name, $message ) );
+		error_log( sprintf( self::MESSAGE_TEMPLATE, $level, $this->class_name, is_array( $message ) ? implode( ', ', $message ) : $message ) );
 
 	}
 

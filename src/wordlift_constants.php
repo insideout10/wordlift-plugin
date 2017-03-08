@@ -29,6 +29,12 @@ define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
+
+define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', defined( 'WORDLIFT_API_URL' ) ? WORDLIFT_API_URL . '/' : 'https://api.wordlift.it/' );
+
+define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://developers.google.com/structured-data/testing-tool/?url=' );
+
+
 /**
  * Get an array with commonly supported prefixes.
  *

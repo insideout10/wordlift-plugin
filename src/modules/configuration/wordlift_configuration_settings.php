@@ -305,7 +305,10 @@ EOF;
 /**
  * Get the API URI to retrieve the dataset URI using the WordLift Key.
  *
- * @since 3.0.0
+ * @deprecated use `Wordlift_Configuration_Service::get_instance()->get_accounts_by_key_dataset_uri( $key );`.
+ *
+ * @since      3.11.0 deprecated
+ * @since      3.0.0
  *
  * @param string $key The WordLift key to use.
  *
@@ -313,7 +316,9 @@ EOF;
  */
 function wl_configuration_get_accounts_by_key_dataset_uri( $key ) {
 
-	return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
+	return Wordlift_Configuration_Service::get_instance()->get_accounts_by_key_dataset_uri( $key );
+
+	//return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
 }
 
 

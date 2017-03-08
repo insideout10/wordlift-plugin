@@ -63,7 +63,7 @@ class Wordlift_Dashboard_Service {
 		$enriched_posts_caption = sprintf( wp_kses(
 			__( '%1$s, of your <a href="%2$s">posts</a> are annotated. This means %3$s annotated posts on %4$s.', 'wordlift' ),
 			array( 'a' => array( 'href' => array() ) ) ),
-			$this->render_stat_param( 'annotated_posts_percentage' ),
+			$this->render_stat_param( 'annotatedPostsPercentage' ),
 			esc_url( admin_url( 'edit.php' ) ),
 			$this->render_stat_param( 'annotated_posts' ),
 			$this->render_stat_param( 'posts' )

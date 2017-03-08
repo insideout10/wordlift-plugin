@@ -23,7 +23,7 @@ class Wordlift_Content_Filter_Service {
 	 *
 	 * @since 3.8.0
 	 */
-	const PATTERN = '/<(\\w+)[^<]* itemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
+	const PATTERN = '/<(\\w+)[^<]*class="([^"]*)"\\sitemid=\"([^"]+)\"[^>]*>([^<]*)<\\/\\1>/i';
 
 	/**
 	 * A {@link Wordlift_Entity_Service} instance.
@@ -79,8 +79,9 @@ class Wordlift_Content_Filter_Service {
 	private function link( $matches ) {
 
 		// Get the entity itemid URI and label.
-		$uri   = $matches[2];
-		$label = $matches[3];
+		$css_class = $matches[2];
+		$uri       = $matches[3];
+		$label     = $matches[4];
 
 		// Get the entity post by URI.
 		if ( null === ( $post = $this->entity_service->get_entity_post_by_uri( $uri ) ) ) {
@@ -89,6 +90,12 @@ class Wordlift_Content_Filter_Service {
 			// around it.
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/461
+			return $label;
+		}
+
+		// If the `wl-no-link` class is set on the text annotation then we return
+		// the label with no anchor.
+		if ( - 1 < strpos( $css_class, 'wl-no-link' ) ) {
 			return $label;
 		}
 
