@@ -95,3 +95,18 @@
 #adminmenu a[href=wl-setup], #adminmenu a[href='admin.php?page=wl_status_report'] {
     display: none;
 }
+
+/*
+ * styles related to the entity type list admin page.
+ * the expand the table on behalf of the blank left space
+ * usually used to "add", and style the title link in a non link styling
+ * to prevent it from confusing.
+ */
+.taxonomy-wl_entity_type #col-right {
+    width: 100% !important;
+}
+
+.taxonomy-wl_entity_type .row-title, .taxonomy-wl_entity_type .row-title:hover {
+    color: gray;
+    cursor: default;
+}

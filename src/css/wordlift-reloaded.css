@@ -2705,12 +2705,14 @@ h1.wl-tab-lead-text {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
       -ms-flex-pack: center;
           justify-content: center;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
+  z-index: 1;
 }
 .wl-tab-lead:last-of-type {
   margin-bottom: 0;
@@ -2807,7 +2809,7 @@ h3.ui-sortable-handle {
           box-sizing: border-box;
   margin-bottom: 10px;
 }
-.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-label h2.wl-widget-entity-panel-label-text {
+.wl-widget-entity-panel .wl-widget-entity-panel-wrap .wl-widget-entity-panel-label h3.wl-widget-entity-panel-label-text {
   color: #007AFF;
   font-size: 16px !important;
   font-weight: 400;
@@ -3291,6 +3293,7 @@ h3.ui-sortable-handle {
   -webkit-transform: translateY(3px);
       -ms-transform: translateY(3px);
           transform: translateY(3px);
+  float: right;
 }
 .wl-widget-spinner svg {
   display: inline-block;

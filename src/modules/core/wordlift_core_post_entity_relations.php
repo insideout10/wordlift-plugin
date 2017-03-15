@@ -475,11 +475,13 @@ function wl_core_sql_query_builder( $args ) {
 		// Sql Inner Join clausole
 		$sql .= $wpdb->prepare( " AND r.predicate = %s", $args['with_predicate'] );
 	}
-	// Add a group by clousole to avoid duplicated rows
+	// Add a group by clause to avoid duplicated rows
+	// @todo: isn't a distinct a better choice?
 	$sql .= " GROUP BY p.id";
 
+	// @todo: how does `first` represent the limit?
 	if ( isset( $args['first'] ) && is_numeric( $args['first'] ) ) {
-		// Sql Inner Join clausole
+		// Sql Inner Join clause.
 		$sql .= $wpdb->prepare( " LIMIT %d", $args['first'] );
 	}
 	// Close sql statement
@@ -548,6 +550,7 @@ function wl_core_get_posts( $args, $returned_type = OBJECT ) {
 
 	// Prepare interaction with db
 	global $wpdb;
+
 	// Build sql statement with given arguments
 	$sql_statement = wl_core_sql_query_builder( $args );
 

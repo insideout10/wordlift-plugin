@@ -18,6 +18,15 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 	protected $entity_factory;
 
 	/**
+	 * The {@link Wordlift_Test} instance.
+	 *
+	 * @since  3.11.0
+	 * @access private
+	 * @var \Wordlift_Test $wordlift_test The {@link Wordlift_Test} instance.
+	 */
+	private $wordlift_test;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	function setUp() {
@@ -30,6 +39,8 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 		wl_configure_wordpress_test();
 
 		$this->entity_factory = new Wordlift_UnitTest_Factory_For_Entity( $this->factory );
+
+		$this->wordlift_test = new Wordlift_Test();
 
 	}
 
@@ -55,5 +66,15 @@ abstract class Wordlift_Unit_Test_Case extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * Get the {@link Wordlift_Test} instance.
+	 *
+	 * @since 3.11.0
+	 * @return \Wordlift_Test The {@link Wordlift_Test} instance.
+	 */
+	public function get_wordlift_test() {
+
+		return $this->wordlift_test;
+	}
 
 }

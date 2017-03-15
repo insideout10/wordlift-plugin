@@ -43,6 +43,7 @@ module.exports = function ( grunt ) {
         SOURCE_DIR + 'coffee/ui/carousel.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.controllers.EditPostWidgetController.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlClassificationBox.coffee',
+		SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityList.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityForm.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityTile.coffee',
         SOURCE_DIR + 'coffee/editpost-widget/app.directives.wlEntityInputBox.coffee',
