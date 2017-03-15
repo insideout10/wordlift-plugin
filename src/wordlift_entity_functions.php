@@ -264,8 +264,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = NULL ) {
 	$type = wl_entity_type_taxonomy_get_type( $entity_id );
 
 	if ( ! isset( $type['custom_fields'] ) ) {
-		Wordlift_Log_Service::get_logger( 'wl_entity_taxonomy_get_custom_fields' )
-		                    ->error( "custom_fields not set [ entity id :: $entity_id ]" );
+		return array();
 	}
 
 	return $type['custom_fields'];
