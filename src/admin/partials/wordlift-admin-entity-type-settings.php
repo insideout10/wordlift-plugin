@@ -45,24 +45,24 @@ $term_settings = ! is_null( $settings ) ? $settings : array(
 			<tr class="form-field form-required term-name-wrap">
 				<th scope="row">
 					<label for="title"><?php
-						esc_html_e( 'SEO Title', 'wordlift' ); ?></label>
+						esc_html_e( 'Title', 'wordlift' ); ?></label>
 				</th>
 				<td><input name="title" id="title" type="text"
 				           value="<?php echo esc_attr( $term_settings['title'] ) ?>"
 				           size="40" />
 					<p class="description"><?php
-						esc_html_e( 'The HTML title to be used at the entity type achieve page.', 'wordlift' ); ?></p>
+						esc_html_e( 'The HTML title to be used in the entity type archive page.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
 			<tr class="form-field term-description-wrap">
 				<th scope="row"><label for="description"><?php
-						esc_html_e( 'SEO Description', 'wordlift' ); ?></label>
+						esc_html_e( 'Description', 'wordlift' ); ?></label>
 				</th>
 				<td><textarea name="description" id="description" rows="5"
 				              cols="50" class="large-text"><?php
 						echo esc_html( $term_settings['description'] ) ?></textarea>
 					<p class="description"><?php
-						esc_html_e( 'The description meta used in the entity type achieve page.', 'wordlift' ); ?></p>
+						esc_html_e( 'The description to be used in the entity type archive page.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
 		</table>

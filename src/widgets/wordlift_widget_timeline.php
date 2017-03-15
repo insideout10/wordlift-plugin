@@ -6,12 +6,11 @@ class Wordlift_Timeline_Widget extends WP_Widget {
 	 * Sets up the widgets name etc
 	 */
 	public function __construct() {
-
 		// widget actual processes
 		parent::__construct(
 			'wl_timeline_widget', // Base ID
-			__( 'Timeline Widget', 'wordlift' ), // Name
-			array( 'description' => __( 'The Timeline widget displays event-entities on a timeline.', 'wordlift' ), ) // Args
+			__( 'WordLift Timeline Widget', 'wordlift' ), // Name
+			array( 'description' => __( 'Displays entities of type event using an interactive timeline.', 'wordlift' ), ) // Args
 		);
 	}
 
