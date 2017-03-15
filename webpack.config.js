@@ -43,11 +43,14 @@ const config = [
 					use: 'babel-loader'
 				},
 				// Stylesheets.
+				//
+				// Do not enable `css-loader?modules` or global styles define in
+				// `src/scripts/admin-settings-page/index.scss` will fail.
 				{
 					test: /\.scss$/,
 					use: [
 						'style-loader',
-						'css-loader?modules',
+						'css-loader',
 						'sass-loader'
 					]
 				},
