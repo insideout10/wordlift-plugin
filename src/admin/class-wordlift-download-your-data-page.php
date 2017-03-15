@@ -57,7 +57,7 @@ class Wordlift_Admin_Download_Your_Data_Page {
 	public function page() {
 
 		// Include the partial.
-		include( plugin_dir_url( __FILE__ ) . 'partials/wordlift-admin-download-your-data.php' );
+		include( plugin_dir_path( __FILE__ ) . 'partials/wordlift-admin-download-your-data.php' );
 
 	}
 
