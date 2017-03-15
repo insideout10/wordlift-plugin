@@ -223,7 +223,7 @@ class Wordlift_Timeline_Service {
 			$more_link_text = sprintf(
 				'<span aria-label="%1$s">%2$s</span>',
 				sprintf(
-					/* translators: %s: Name of current post */
+				/* translators: %s: Name of current post */
 					__( 'Continue reading %s' ),
 					the_title_attribute( array( 'echo' => false ) )
 				),
