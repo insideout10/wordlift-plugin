@@ -14,6 +14,7 @@
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
     "test:php": "grunt travis:phpunit",
+    "test:multisite": "grunt travis:multisite",
     "webpack:watch": "webpack -w"
   },
   "devDependencies": {

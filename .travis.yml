@@ -32,6 +32,9 @@ matrix:
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
+    # Additional PHP Unit tests multisite enviroment, PHP 5.6, WP 4.7.
+    - php: 5.6
+      env: SCRIPT=test:multisite WP_VERSION=4.7
   allow_failures:
     # WordPress nightly.
     - php: 5.6

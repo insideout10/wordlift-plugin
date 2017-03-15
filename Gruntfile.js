@@ -235,6 +235,12 @@ module.exports = function ( grunt ) {
                 args: [ '-c', 'phpunit.xml' ]
             }
         },
+        multisite: {
+            'default': {
+                cmd: 'phpunit',
+                args: [ '-c', 'phpunit-multisite.xml' ]
+            }
+        },
         /* Karma JS Unit Testing */
         karma: {
             unit: {
