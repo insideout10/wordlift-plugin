@@ -139,6 +139,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.11.0 (2017-03-06) =
+* Enhancement: [#489](https://github.com/insideout10/wordlift-plugin/issues/489): Revise title and description for the timeline widget.
 * Enhancement: [#442](https://github.com/insideout10/wordlift-plugin/issues/442): Enable WordPress Category to Organise WordLift Entities.
 * Enhancement: [#426](https://github.com/insideout10/wordlift-plugin/issues/426): Related articles needs to be limited and/or paginated.
 * Enhancement: [#335](https://github.com/insideout10/wordlift-plugin/issues/335): Allow more actions on entity tiles within the disambiguation widget.
