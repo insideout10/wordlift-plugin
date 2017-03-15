@@ -2534,6 +2534,7 @@
   margin: 0em;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper h6 {
+  text-align: left;
   text-transform: uppercase;
   font-size: 0.86em;
   padding: 0;
