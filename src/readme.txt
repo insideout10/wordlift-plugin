@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.11.1 (2017-03-17) =
+* Fix: [#494](https://github.com/insideout10/wordlift-plugin/issues/494): Cached Html Templates.
+
 = 3.11.0 (2017-03-06) =
 * Enhancement: [#489](https://github.com/insideout10/wordlift-plugin/issues/489): Revise title and description for the timeline widget.
 * Enhancement: [#482](https://github.com/insideout10/wordlift-plugin/issues/482): Global timeline doesn't include events bound to pages.
