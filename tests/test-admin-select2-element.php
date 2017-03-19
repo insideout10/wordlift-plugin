@@ -45,7 +45,7 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 	public function test_options() {
 
 		// Generate a random number of options.
-		$count   = rand( 1, 10 );
+		$count   = rand( 2, 10 );
 		$options = array();
 		for ( $i = 1; $i <= $count; $i ++ ) {
 			$options[] = "value-$i";
