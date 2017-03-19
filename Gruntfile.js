@@ -231,7 +231,7 @@ module.exports = function ( grunt ) {
         },
         phpunit: {
             'default': {
-                cmd: 'phpunit',
+                cmd: './vendor/bin/phpunit',
                 args: [ '-c', 'phpunit.xml' ]
             }
         },

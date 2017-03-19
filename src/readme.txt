@@ -138,6 +138,27 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.11.2 (2017-03-19) =
+* Fix: [#497](https://github.com/insideout10/wordlift-plugin/issues/497): Aggressive caching may serve old files.
+* Fix: [#496](https://github.com/insideout10/wordlift-plugin/issues/496): WL highlight classes conflict with themes.
+* Fix: [#495](https://github.com/insideout10/wordlift-plugin/issues/495): Additional left padding on entity tiles.
+
+= 3.11.1 (2017-03-17) =
+* Fix: [#494](https://github.com/insideout10/wordlift-plugin/issues/494): Cached Html Templates.
+
+= 3.11.0 (2017-03-06) =
+* Enhancement: [#489](https://github.com/insideout10/wordlift-plugin/issues/489): Revise title and description for the timeline widget.
+* Enhancement: [#482](https://github.com/insideout10/wordlift-plugin/issues/482): Global timeline doesn't include events bound to pages.
+* Enhancement: [#442](https://github.com/insideout10/wordlift-plugin/issues/442): Enable WordPress Category to Organise WordLift Entities.
+* Enhancement: [#426](https://github.com/insideout10/wordlift-plugin/issues/426): Related articles needs to be limited and/or paginated.
+* Enhancement: [#335](https://github.com/insideout10/wordlift-plugin/issues/335): Allow more actions on entity tiles within the disambiguation widget.
+* Enhancement: [#427](https://github.com/insideout10/wordlift-plugin/issues/427): Add Publisher field to WordLift Setting page.
+* Enhancement: [#398](https://github.com/insideout10/wordlift-plugin/issues/398): SEO improvement: providing control over title and description of WordLift Archive pages.
+* Enhancement: [#355](https://github.com/insideout10/wordlift-plugin/issues/355): Creating a Tag-Like Widget for articles.
+* Fix: [#383](https://github.com/insideout10/wordlift-plugin/issues/383): Chord - text overlapping issue.
+* Fix: [#469](https://github.com/insideout10/wordlift-plugin/issues/469): Chord Rendering Problem on Firefox.
+* Fix: [#464](https://github.com/insideout10/wordlift-plugin/issues/464): Extend Wordlift_Log_Service's log to support arrays.
+
 = 3.10.0 (2017-01-30) =
 * Enhancement: [#371](https://github.com/insideout10/wordlift-plugin/issues/371): Extending the list of properties for schema-org:Article.
 * Enhancement: [#358](https://github.com/insideout10/wordlift-plugin/issues/358): Application Key Not Set - Messaging improvement is needed.

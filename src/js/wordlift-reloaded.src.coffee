@@ -593,6 +593,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.$watch "annotation", (newAnnotationId)->
 
     $log.debug "Current annotation id changed to #{newAnnotationId}"
+
+    # Trigger the `annotation` event to have the React app show the entities.
+    wp.wordlift.trigger 'annotation', newAnnotationId
+
     # Execute just once the analysis is properly performed
     return if $scope.isRunning
     # Execute just if the current annotation id is defined
@@ -808,7 +812,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.11.2'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
@@ -931,7 +935,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.11.2'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1766,7 +1770,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.11.2'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')

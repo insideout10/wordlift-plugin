@@ -207,7 +207,7 @@ class TimelineShortcodeTest extends Wordlift_Unit_Test_Case {
 
 		// Create posts
 		$post_1_id = wl_create_post( '', 'post-1', 'Post 1', 'publish', 'post' );
-		$post_2_id = wl_create_post( '', 'post-2', 'Post 2', 'publish', 'post' );
+		$post_2_id = wl_create_post( '', 'post-2', 'Post 2', 'publish', 'page' );
 
 		// Create entities (2 events and one place)
 

@@ -95,6 +95,8 @@ before_install:
     if [[ "$SCRIPT" == "test:php" ]]; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       composer install --dev
+      phpunit --version
+      ./vendor/bin/phpunit --version
     fi
   # If we're running the JS test we need a browser.
   - |
