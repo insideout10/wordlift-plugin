@@ -179,7 +179,12 @@ function wordlift_register_tinymce_javascript( $plugin_array ) {
 
 	// add the wordlift plugin.
 	// We can't use the minified version here.
-	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js';
+
+	// Get WordLift's version as a cache killer.
+	$version = Wordlift::get_instance()->get_version();
+
+	// Add our own JavaScript file to TinyMCE's extensions.
+	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js?ver=' . $version;
 
 	return $plugin_array;
 }
