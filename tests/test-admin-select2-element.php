@@ -59,8 +59,6 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		) );
 		$output = ob_get_clean();
 
-		echo ($output);
-
 		// Check that there is a matching number of `option` tags.
 		$matches = array();
 		preg_match_all( '/<option\s+/', $output, $matches );
