@@ -45,7 +45,7 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 	public function test_options() {
 
 		// Generate a random number of options.
-		$count   = rand( 2, 10 );
+		$count   = rand( 1, 10 );
 		$options = array();
 		for ( $i = 1; $i <= $count; $i ++ ) {
 			$options[] = "value-$i";
@@ -54,10 +54,12 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		// Render Select2.
 		ob_start();
 		$this->select2_element->render( array(
-			'value'   => 1,
+			'value'   => 0,
 			'options' => $options,
 		) );
 		$output = ob_get_clean();
+
+		echo ($output);
 
 		// Check that there is a matching number of `option` tags.
 		$matches = array();
@@ -66,7 +68,7 @@ class Wordlift_Admin_Select2_Element_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( $count, $matches[0] );
 
 		// Check that the first option is selected.
-		$this->assertEquals( 1, preg_match( '/<option\s+value="1"\s+selected=\'selected\'>/', $output ) );
+		$this->assertEquals( 1, preg_match( '/<option\s+value="0"\s+selected=\'selected\'>/', $output ) );
 
 	}
 
