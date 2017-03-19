@@ -138,6 +138,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.11.2 (2017-03-19) =
+* Fix: [#497](https://github.com/insideout10/wordlift-plugin/issues/497): Aggressive caching may serve old files.
+* Fix: [#496](https://github.com/insideout10/wordlift-plugin/issues/496): WL highlight classes conflict with themes.
+* Fix: [#495](https://github.com/insideout10/wordlift-plugin/issues/495): Additional left padding on entity tiles.
+
 = 3.11.1 (2017-03-17) =
 * Fix: [#494](https://github.com/insideout10/wordlift-plugin/issues/494): Cached Html Templates.
 
