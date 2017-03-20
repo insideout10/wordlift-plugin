@@ -221,8 +221,9 @@ class Wordlift_Entity_Service {
 			),
 		);
 
-		// Only if the current uri is not an internal uri
-		// entity search is performed also looking at sameAs values
+		// Only if the current uri is not an internal uri, entity search is
+		// performed also looking at sameAs values.
+		//
 		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
 		if ( ! $this->is_internal_uri( $uri ) ) {
 

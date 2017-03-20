@@ -70,8 +70,8 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
-			// Only if the current entity is created from scratch let's avoid to create
-			// more than one entity with same label & entity type
+			// Only if the current entity is created from scratch let's avoid to
+			// create more than one entity with same label & entity type.
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
 				$entity['main_type'] : null;
 
@@ -186,7 +186,7 @@ add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_en
  */
 function wordlift_save_post_add_default_schema_type( $entity_id ) {
 
-	$entity      = get_post( $entity_id );
+	$entity = get_post( $entity_id );
 
 	// Avoid doing anything if post is autosave or a revision.
 
