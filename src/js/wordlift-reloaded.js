@@ -808,7 +808,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.11.2';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.12.0-dev';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.configuration = configuration;
@@ -954,7 +954,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.11.2';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.12.0-dev';
         }
       };
     }
