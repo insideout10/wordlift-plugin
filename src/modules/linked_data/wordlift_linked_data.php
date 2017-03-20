@@ -70,14 +70,14 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 
 		foreach ( $entities_via_post as $entity_uri => $entity ) {
 
-			// Only if the current entity is created from scratch let's avoid to create 
-			// more than one entity with same label & entity type
+			// Only if the current entity is created from scratch let's avoid to
+			// create more than one entity with same label & entity type.
 			$entity_type = ( preg_match( '/^local-entity-.+/', $entity_uri ) > 0 ) ?
 				$entity['main_type'] : null;
 
 			// Look if current entity uri matches an internal existing entity, meaning:
-			// 1. when $entity_uri is an internal uri 
-			// 2. when $entity_uri is an external uri used as sameAs of an internal entity	
+			// 1. when $entity_uri is an internal uri
+			// 2. when $entity_uri is an external uri used as sameAs of an internal entity
 			$ie = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $entity_uri );
 
 			// Detect the uri depending if is an existing or a new entity
@@ -186,7 +186,14 @@ add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_en
  */
 function wordlift_save_post_add_default_schema_type( $entity_id ) {
 
-	$entity      = get_post( $entity_id );
+	$entity = get_post( $entity_id );
+
+	// Avoid doing anything if post is autosave or a revision.
+
+	if ( wp_is_post_autosave( $entity ) || wp_is_post_revision( $entity ) ) {
+		return;
+	}
+
 	$entity_type = wl_schema_get_types( $entity_id );
 
 	// Assign type 'Thing' if we are dealing with an entity without type

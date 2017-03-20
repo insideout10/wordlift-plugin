@@ -53,7 +53,6 @@ class Wordlift_Entity_Post_Type_Service {
 	 */
 	public function __construct( $post_type, $slug ) {
 
-
 		$this->post_type = $post_type;
 
 		// We cannot assign an empty slug to the register_post_type function, therefore if the slug is empty we default
@@ -140,10 +139,7 @@ class Wordlift_Entity_Post_Type_Service {
 				'excerpt',
 				'comments',
 				'author',
-				// Disabling revisions support.
-				//
-				// See https://github.com/insideout10/wordlift-plugin/issues/462
-				// 'revisions',
+				'revisions',
 			),
 			'has_archive'   => true,
 			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',

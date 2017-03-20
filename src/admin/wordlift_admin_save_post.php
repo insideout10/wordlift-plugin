@@ -132,4 +132,3 @@ function wl_update_post_status( $post_id, $status ) {
 	/** This action is documented in wp-includes/post.php */
 	do_action( 'wp_insert_post', $post->ID, $post, true );
 }
-

@@ -221,8 +221,9 @@ class Wordlift_Entity_Service {
 			),
 		);
 
-		// Only if the current uri is not an internal uri 
-		// entity search is performed also looking at sameAs values
+		// Only if the current uri is not an internal uri, entity search is
+		// performed also looking at sameAs values.
+		//
 		// This solve issues like https://github.com/insideout10/wordlift-plugin/issues/237
 		if ( ! $this->is_internal_uri( $uri ) ) {
 
@@ -261,6 +262,12 @@ class Wordlift_Entity_Service {
 	 * @param bool    $update  Whether this is an existing post being updated or not.
 	 */
 	public function save_post( $post_id, $post, $update ) {
+
+		// Avoid doing anything if post is autosave or a revision.
+
+		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
+			return;
+		}
 
 		// We're setting the alternative label that have been provided via the UI
 		// (in fact we're using $_REQUEST), while save_post may be also called
