@@ -38,8 +38,14 @@ const config = [
 					use: 'eslint-loader',
 				},
 				// `babel`.
-				{ test: /\.(js|jsx)$/, use: 'babel-loader' },
+				{
+					test: /\.(js|jsx)$/,
+					use: 'babel-loader'
+				},
 				// Stylesheets.
+				//
+				// Do not enable `css-loader?modules` or global styles define in
+				// `src/scripts/admin-settings-page/index.scss` will fail.
 				{
 					test: /\.scss$/,
 					use: [
@@ -54,7 +60,7 @@ const config = [
 				},
 				{
 					test: /\.jpg$/,
-					use: [ 'file-loader' ]
+					use: 'file-loader'
 				}
 			]
 		},

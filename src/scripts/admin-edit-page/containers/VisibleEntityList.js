@@ -26,11 +26,16 @@ import EntityList from '../components/EntityList';
  * @since 3.11.0
  *
  * @param {Object} entities A keyed map of entities.
- * @param {String} filter The filter.
+ * @param {string} annotation The annotation id.
+ * @param {string} filter The filter.
  * @returns {Object} The filtered keyed-map of entities.
  */
-const getVisibleEntities = ( entities, filter ) => {
+const getVisibleEntities = ( entities, annotation, filter ) => {
 	switch ( filter ) {
+		// When showing an annotation, we check that the annotation id is
+		// present as key in the annotations property.
+		case 'SHOW_ANNOTATION':
+			return entities.filter( x => annotation in x.annotations );
 		case 'SHOW_WHO':
 			return entities.filter( x => 'who' === x.w );
 		case 'SHOW_WHERE':
@@ -54,7 +59,9 @@ const getVisibleEntities = ( entities, filter ) => {
  */
 const mapStateToProps = ( state ) => {
 	return {
-		entities: getVisibleEntities( state.entities, state.visibilityFilter )
+		entities: getVisibleEntities(
+			state.entities, state.annotationFilter, state.visibilityFilter
+		)
 	};
 };
 

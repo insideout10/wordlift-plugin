@@ -243,6 +243,10 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.$watch "annotation", (newAnnotationId)->
 
     $log.debug "Current annotation id changed to #{newAnnotationId}"
+
+    # Trigger the `annotation` event to have the React app show the entities.
+    wp.wordlift.trigger 'annotation', newAnnotationId
+
     # Execute just once the analysis is properly performed
     return if $scope.isRunning
     # Execute just if the current annotation id is defined

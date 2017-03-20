@@ -1,5 +1,7 @@
-.wrap {
-  :global {
-    @import '~sanitize.css/sanitize.css';
+:local(.wl-classification-box-wrapper) {
+  @import '~sanitize.css/sanitize';
+
+  ul {
+    padding: 0;
   }
 }

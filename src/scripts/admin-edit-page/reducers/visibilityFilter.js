@@ -24,6 +24,17 @@ const visibilityFilter = function( state = 'SHOW_ALL', action ) {
 		case types.SET_ENTITY_FILTER:
 			return action.filter;
 
+		// Handle the `ANNOTATION` action, which notifies us of a selected
+		// annotation in TinyMCE. In that case we switch to a `SHOW_ANNOTATION`
+		// filter.
+		case types.ANNOTATION:
+			// We might receive an undefined annotation (when no annotation is
+			// selected).
+			//
+			// Note that selected annotation is set by the `annotationFilter`
+			// function.
+			return action.annotation === undefined ? 'SHOW_ALL' : 'SHOW_ANNOTATION';
+
 		default:
 			return state;
 	}

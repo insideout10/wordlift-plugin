@@ -1,4 +1,13 @@
 /**
+ * Define the `ANNOTATION` action name, used when an annotation is (de)selected
+ * in TinyMCE.
+ *
+ * @since 3.11.0
+ * @type {string}
+ */
+export const ANNOTATION = 'ANNOTATION';
+
+/**
  * Define the `TOGGLE_ENTITY` action name, used when the selection state of an
  * an entity must be toggled on / off.
  *

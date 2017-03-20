@@ -2534,6 +2534,7 @@
   margin: 0em;
 }
 .wl-navigator-widget .wl-posts .wl-entity-wrapper h6 {
+  text-align: left;
   text-transform: uppercase;
   font-size: 0.86em;
   padding: 0;
@@ -2671,41 +2672,6 @@ path.wl-event {
 }
 path.wl-thing {
   fill: #007AFF;
-}
-.wl-person {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
-}
-.wl-place {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
-}
-.wl-creative-work {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
-}
-.wl-organization {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
-}
-.wl-local-business {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
-}
-.wl-event {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
-}
-.wl-thing {
-  background-color: #007AFF;
-  color: #ffffff;
-  padding: 2px;
 }
 a.wl-entity-page-link {
   text-decoration: none !important;

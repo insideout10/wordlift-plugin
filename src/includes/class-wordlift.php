@@ -445,6 +445,17 @@ class Wordlift {
 	protected $related_entities_cloud_widget;
 
 	/**
+	 * {@link Wordlift}'s singleton instance.
+	 *
+	 * @since  3.11.2
+	 *
+	 * @since  3.11.2
+	 * @access private
+	 * @var Wordlift $instance {@link Wordlift}'s singleton instance.
+	 */
+	private static $instance;
+
+	/**
 	 * Define the core functionality of the plugin.
 	 *
 	 * Set the plugin name and the plugin version that can be used throughout the plugin.
@@ -456,12 +467,26 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.11.0-dev';
+		$this->version     = '3.11.2';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		self::$instance = $this;
+
+	}
+
+	/**
+	 * Get the singleton instance.
+	 *
+	 * @since 3.11.2
+	 *
+	 * @return Wordlift The {@link Wordlift} singleton instance.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**
