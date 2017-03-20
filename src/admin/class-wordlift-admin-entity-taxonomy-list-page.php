@@ -50,4 +50,33 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 
 		return $actions;
 	}
+
+	/**
+	 * Override the capabilities related to managing the entity type terms
+	 * for multisite super admin to prevent it from manipulating it in any
+	 * way.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @param array  $caps    The user's current capabilities.
+	 * @param string $cap     Capability name.
+	 * @param int    $user_id The user ID.
+	 * @param array  $args    Adds the context to the cap. Typically the object ID.
+	 *
+	 * @return array 	Array containing the do_not_allow capability for super admin
+	 *                  when editing and deleting entity type terms capabilities
+	 *					are being "approved"
+	 */
+	function restrict_super_admin( $caps, $cap, $user_id, $args ) {
+
+		if ( is_super_admin() ) {
+			switch ( $cap ) {
+				case 'wl_entity_type_edit_term':
+				case 'wl_entity_type_delete_term':
+					$caps[] = 'do_not_allow';
+			}
+		}
+
+		return $caps;
+	}
 }

@@ -1062,6 +1062,10 @@ class Wordlift {
 		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
 
+		// Hooks to restrict multisite super admin from manipulating entity types.
+		if ( is_multisite() ) {
+			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
+		}
 	}
 
 	/**

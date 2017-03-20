@@ -35,6 +35,16 @@ function wl_entity_type_taxonomy_register() {
 		'assign_terms' => 'edit_posts',
 	);
 
+	/*
+	 * Special capabilities need to be set for multisite super admin to be able
+	 * to "disable" related actions them later, null just do not work well for
+	 * it.
+	 */
+	if ( is_super_admin() ) {
+		$capabilities['edit_terms'] = 'wl_entity_type_edit_term';
+		$capabilities['delete_terms'] = 'wl_entity_type_delete_term';
+	}
+
 	$args = array(
 		'labels'            => $labels,
 		'capabilities'      => $capabilities,
