@@ -157,37 +157,38 @@ function wl_execute_saved_sparql_update_query( $request_id ) {
 
 add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
 
-/**
- * Add buttons hook for the TinyMCE editor. This method is called by the WP init hook.
- */
-function wordlift_buttonhooks() {
+///**
+// * Add buttons hook for the TinyMCE editor. This method is called by the WP init hook.
+// */
+//function wordlift_buttonhooks() {
+//
+//	// Only add hooks when the current user has permissions AND is in Rich Text editor mode
+//	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) ) {
+//		add_filter( 'mce_external_plugins', 'wordlift_register_tinymce_javascript' );
+//	}
+//}
 
-	// Only add hooks when the current user has permissions AND is in Rich Text editor mode
-	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) ) {
-		add_filter( 'mce_external_plugins', 'wordlift_register_tinymce_javascript' );
-	}
-}
-
-/**
- * Load the TinyMCE plugin. This method is called by the WP mce_external_plugins hook.
- *
- * @param array $plugin_array The existing plugins array.
- *
- * @return array The modified plugins array.
- */
-function wordlift_register_tinymce_javascript( $plugin_array ) {
-
-	// add the wordlift plugin.
-	// We can't use the minified version here.
-
-	// Get WordLift's version as a cache killer.
-	$version = Wordlift::get_instance()->get_version();
-
-	// Add our own JavaScript file to TinyMCE's extensions.
-	$plugin_array['wordlift'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js?ver=' . $version;
-
-	return $plugin_array;
-}
+///**
+// * Load the TinyMCE plugin. This method is called by the WP mce_external_plugins hook.
+// *
+// * @param array $plugin_array The existing plugins array.
+// *
+// * @return array The modified plugins array.
+// */
+//function wordlift_register_tinymce_javascript( $plugin_array ) {
+//
+//	// add the wordlift plugin.
+//	// We can't use the minified version here.
+//
+//	// Get WordLift's version as a cache killer.
+//	$version = Wordlift::get_instance()->get_version();
+//
+//	// Add our own JavaScript file to TinyMCE's extensions.
+//	$plugin_array['wordlift']   = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js?ver=' . $version;
+//	$plugin_array['wl_tinymce'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-tinymce.bundle.js?ver=' . $version;
+//
+//	return $plugin_array;
+//}
 
 /**
  * Enable microdata schema.org tagging.

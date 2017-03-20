@@ -16,7 +16,7 @@
     "jQuery": true,
     "log": true,
     "process": true,
-    "tinyMCE": true,
+    "tinymce": true,
     "wlSettings": true,
     "wordlift": true,
     "wp": true,
