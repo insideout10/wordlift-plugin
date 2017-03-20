@@ -6,7 +6,6 @@
 @import 'wordlift-card.less';
 @import 'wordlift-label.less';
 @import 'wordlift-dashboard-widget.less';
-
 // Importing new brand identity
 @import "wordlift-widget-be.less";
 
@@ -15,7 +14,6 @@
     display: none;
   }
 }
-
 
 .wl-button {
   background-color: @wl-brand-color !important;
@@ -67,7 +65,7 @@
 }
 
 .mce-wl-button button {
-  background  : data-uri('../images/svg/wl-logo-icon.svg') 6px 3px no-repeat !important;
+  background: data-uri('../images/svg/wl-logo-icon.svg') 6px 3px no-repeat !important;
   padding-left: 28px !important;
   height: 20px;
 }
@@ -76,40 +74,42 @@
 .wl-entity-props {
   display: none;
 }
+
 // TinyMCE toolbar
 
 .mceIcon.mce_wordlift,
 .mce-widget.mce-btn.mce-wordlift button {
-  background-position    : center center;
-  background-repeat      : no-repeat;
+  background-position: center center;
+  background-repeat: no-repeat;
 
   &:before {
     content: @fa-var-pencil;
   }
 
   &:hover {
-    color: rgb(0,0,0) !important;
+    color: rgb(0, 0, 0) !important;
   }
-  color                  : @wl-brand-color !important;
-  font-size              : 14px !important;
-  font-family            : FontAwesome !important;
-  font-style             : normal;
-  font-weight            : normal;
-  line-height            : 18px !important;
-  -webkit-font-smoothing : antialiased;
+  color: @wl-brand-color !important;
+  font-size: 14px !important;
+  font-family: FontAwesome !important;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 18px !important;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 // Set a tile color background, foreground and icons.
 .tile(@color, @icon) {
   border-color: @color;
-  color       : #444;
+  color: #444;
 
   .type {
     text-align: center;
 
     &:before {
       content: @icon;
-      color  : @color;
+      color: @color;
     }
   }
 
@@ -121,44 +121,44 @@
 
   &.selected {
     background-color: @color;
-    color           : contrast(@color);
+    color: contrast(@color);
   }
 
   .thumbnail {
     background-color: @color;
-    color           : contrast(@color);
+    color: contrast(@color);
   }
 }
 
 .entity {
   background: white;
-  padding   : 0;
-  margin    : 0.2em 0;
-  font-size : 0.9em;
-  position  : relative;
+  padding: 0;
+  margin: 0.2em 0;
+  font-size: 0.9em;
+  position: relative;
 
   .entity-header {
     position: relative;
 
     .wl-progress-background {
-      position        : absolute;
-      top             : 5px;
-      right           : 20px;
-      width           : 50px;
-      height          : 6px;
+      position: absolute;
+      top: 5px;
+      right: 20px;
+      width: 50px;
+      height: 6px;
       background-color: #e2e2e2;
-      padding         : 0;
+      padding: 0;
 
       .wl-progress-current {
-        height          : 6px;
+        height: 6px;
         background-color: @wl-brand-color;
       }
     }
   }
 
   .wl-internal {
-    color      : @wl-brand-color;
-    font-size  : 1.1em;
+    color: @wl-brand-color;
+    font-size: 1.1em;
     line-height: 1.5em;
   }
 
@@ -168,33 +168,33 @@
   }
 
   .details {
-    margin : 0;
+    margin: 0;
     padding: 0;
-    color  : #999;
+    color: #999;
 
     p {
-      margin    : 5px 0;
-      font-size : inherit;
-      cursor    : pointer;
+      margin: 5px 0;
+      font-size: inherit;
+      cursor: pointer;
       max-height: 200px;
       overflow-y: auto;
     }
 
     img {
-      width : 100%;
+      width: 100%;
       height: auto;
     }
   }
 
   .type {
-    font-family            : FontAwesome;
-    font-style             : normal;
-    font-weight            : normal;
-    line-height            : 14px;
-    -webkit-font-smoothing : antialiased;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 14px;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size              : 14px;
-    padding                : 4px;
+    font-size: 14px;
+    padding: 4px;
   }
 
   &.wl-creative-work {
@@ -231,7 +231,7 @@
   // background-color: white;
 
   .clear {
-    clear : both;
+    clear: both;
     height: 1px;
   }
 
@@ -245,67 +245,67 @@
   input,
   select,
   textarea {
-    width    : 100%;
+    width: 100%;
     font-size: inherit;
   }
 
   .wl-widget-headline {
-  //   margin       : 10px -12px;
-  //   border-top   : #eee 1px solid;
-  //   border-bottom: #eee 1px solid;
-  //   font-size    : 14px;
-  //   padding      : 8px 12px 8px;
-  //   line-height  : 1.4em;
-  //   position     : relative;
+    //   margin       : 10px -12px;
+    //   border-top   : #eee 1px solid;
+    //   border-bottom: #eee 1px solid;
+    //   font-size    : 14px;
+    //   padding      : 8px 12px 8px;
+    //   line-height  : 1.4em;
+    //   position     : relative;
 
     .wl-spinner {
-      position       : absolute;
-      right          : 30px;
-      top            : 10px;
-      background     : url('/wp-admin/images/spinner.gif') no-repeat;
+      position: absolute;
+      right: 30px;
+      top: 10px;
+      background: url('/wp-admin/images/spinner.gif') no-repeat;
       background-size: 16px 16px;
-      opacity        : 0.7;
-      filter:alpha(opacity=70);
-      width          : 16px;
-      height         : 16px;
+      opacity: 0.7;
+      filter: alpha(opacity=70);
+      width: 16px;
+      height: 16px;
     }
 
     .wl-more {
       .fa-icon(@fa-var-caret-square-o-down);
-      color   : #aaa;
+      color: #aaa;
       position: absolute;
-      right   : 10px;
-      top     : 11px;
+      right: 10px;
+      top: 11px;
     }
 
     .wl-less {
       .fa-icon(@fa-var-caret-square-o-up);
-      color   : #aaa;
+      color: #aaa;
       position: absolute;
-      right   : 10px;
-      top     : 11px;
+      right: 10px;
+      top: 11px;
     }
   }
 
   .wl-widget-sub-headline {
-    font-size     : 1.04em;
-    line-height   : 1.04em;
-    font-weight   : 700;
-    padding       : 5px 0;
+    font-size: 1.04em;
+    line-height: 1.04em;
+    font-weight: 700;
+    padding: 5px 0;
     text-transform: uppercase;
-    border-bottom : #eee 1px solid;
-    margin        : 0 0 4px;
-    position      : relative;
+    border-bottom: #eee 1px solid;
+    margin: 0 0 4px;
+    position: relative;
 
     small {
-      position      : absolute;
-      right         : 0;
-      top           : 5px;
-      padding       : 0 4px;
-      color         : #888;
-      font-size     : 0.7em;
+      position: absolute;
+      right: 0;
+      top: 5px;
+      padding: 0 4px;
+      color: #888;
+      font-size: 0.7em;
       text-transform: uppercase;
-      border-left   : #ccc 2px solid;
+      border-left: #ccc 2px solid;
     }
   }
 
@@ -314,34 +314,34 @@
   }
 
   #wl-add-entity-button-wrapper {
-    padding   : 4px 0 0;
+    padding: 4px 0 0;
     text-align: right;
   }
 
   .wl-annotation-label {
     border-bottom: #ccc 1px solid;
-    margin       : 0;
-    padding      : 4px;
-    position     : relative;
+    margin: 0;
+    padding: 4px;
+    position: relative;
 
     .wl-annotation-label-icon {
       .fa-icon(@fa-var-pencil);
-      font-family            : FontAwesome;
-      font-style             : normal;
-      font-weight            : normal;
-      line-height            : 14px;
-      -webkit-font-smoothing : antialiased;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 14px;
+      -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      font-size              : 14px;
-      padding                : 4px 0;
+      font-size: 14px;
+      padding: 4px 0;
     }
 
     .wl-annotation-label-remove-icon {
       .fa-icon(@fa-var-times);
       position: absolute;
-      right   : 0;
-      bottom  : 0;
-      margin  : 0 0 6px;
+      right: 0;
+      bottom: 0;
+      margin: 0 0 6px;
     }
 
     small {
@@ -353,14 +353,14 @@
     position: relative;
 
     .box-widgets {
-      color  : #555;
-      border : #ccc 1px solid;
+      color: #555;
+      border: #ccc 1px solid;
       padding: 0;
-      margin : 0 0 10px;
+      margin: 0 0 10px;
 
       img {
         cursor: pointer;
-        width : 45%;
+        width: 45%;
         height: auto;
         margin: 3px;
       }
@@ -372,7 +372,7 @@
     }
 
     .box-header {
-      font-size     : 0.8em;
+      font-size: 0.8em;
       text-transform: capitalize;
 
       h5 {
@@ -385,55 +385,55 @@
           justify-content: center;
           align-items: center;
           padding: 2px !important;
-          color         : @wl-btn-txt-color;
+          color: @wl-btn-txt-color;
           background-color: desaturate(@wl-brand-color, 100%);
           text-transform: none;
-          cursor        : not-allowed;
-          line-height   : 20px;
-          height        : 22px;
+          cursor: not-allowed;
+          line-height: 20px;
+          height: 22px;
           width: 22px;
           text-align: center;
           font-weight: 700;
-          font-size     : 11px;
-          margin-top    : -1px;
-          float         : right;
+          font-size: 11px;
+          margin-top: -1px;
+          float: right;
           border-radius: 50%;
 
           &.selected {
             cursor: pointer;
-            color : #fff;
+            color: #fff;
             background-color: @wl-brand-color;
           }
         }
       }
 
       .label {
-        position      : relative;
+        position: relative;
         text-transform: capitalize;
-        font-weight   : bold;
-        padding       : 5px 0;
-        margin        : 0;
-        line-height   : 1.3em;
-        font-size     : 1.3em;
+        font-weight: bold;
+        padding: 5px 0;
+        margin: 0;
+        line-height: 1.3em;
+        font-size: 1.3em;
       }
 
       .wl-widget-label {
-        position        : relative;
-        text-transform  : capitalize;
-        font-weight     : normal;
-        font-size       : inherit;
-        padding         : 0 2px 0 6px;
+        position: relative;
+        text-transform: capitalize;
+        font-weight: normal;
+        font-size: inherit;
+        padding: 0 2px 0 6px;
         background-color: #f7f7f7;
-        border-bottom   : #ccc 1px solid;
-        color           : #555;
+        border-bottom: #ccc 1px solid;
+        color: #555;
 
         .wl-deselect-widget {
-          position : absolute;
-          top      : 3px;
-          right    : 3px;
+          position: absolute;
+          top: 3px;
+          right: 3px;
           .fa-icon(@fa-var-times);
           font-size: inherit;
-          color    : #aaa;
+          color: #aaa;
 
           &:hover {
             color: @wp-cta-remove-color;
@@ -443,7 +443,7 @@
 
       .wl-suggestion-tools {
         margin-left: 4px;
-        padding    : 4px 0 2px 2px;
+        padding: 4px 0 2px 2px;
         border-left: #ccc 1px solid;
 
         .wl-widget-icon {
@@ -452,19 +452,21 @@
           &.wl-ImageSuggestor {
             color: @wp-cta-color;
             .fa-icon(@fa-var-picture-o);
-          };
+          }
+        ;
 
           &.wl-ArticleSuggestor {
             color: @wp-cta-color;
             .fa-icon(@fa-var-list);
-          };
+          }
+        ;
         }
       }
     }
   }
 
   .wl-entity-form {
-    margin : 0;
+    margin: 0;
     padding: 0;
 
     div {
@@ -482,23 +484,23 @@
     }
 
     .wl-suggested-sameas-wrapper {
-      margin-top      : 5px;
-      padding         : 3px 10px;
+      margin-top: 5px;
+      padding: 3px 10px;
       background-color: #f7f7f7;
 
       h5 {
         text-transform: uppercase;
-        margin        : 0;
-        padding       : 0.2em 0;
+        margin: 0;
+        padding: 0.2em 0;
       }
 
       .wl-sameas {
-        font-size     : 0.75em;
-        margin        : 2px 0;
-        cursor        : pointer;
-        line-height   : 12px;
-        border-left   : #ccc 12px solid;
-        padding-left  : 5px;
+        font-size: 0.75em;
+        margin: 2px 0;
+        cursor: pointer;
+        line-height: 12px;
+        border-left: #ccc 12px solid;
+        padding-left: 5px;
         text-transform: none;
 
         &.active {
@@ -509,42 +511,42 @@
 
     .wl-buttons-wrapper {
       margin-top: 6px;
-      padding   : 4px 0;
+      padding: 4px 0;
       border-top: 2px solid #ddd;
       text-align: right;
 
       .button {
         line-height: 20px;
-        height     : 22px;
-        font-size  : 11px;
+        height: 22px;
+        font-size: 11px;
         margin-left: 2px;
 
         .wl-link {
           .fa-icon(@fa-var-external-link);
           font-size: 10px;
-          padding  : 0 0 0 4px;
+          padding: 0 0 0 4px;
         }
       }
     }
 
     label {
       display: block;
-      margin : 0 0 3px;
+      margin: 0 0 3px;
     }
 
     .wl-entity-id {
       background-color: #e2e2e2;
-      color           : #999;
-      padding         : 2px 6px;
-      font-size       : 0.8em;
+      color: #999;
+      padding: 2px 6px;
+      font-size: 0.8em;
     }
   }
 
   .wl-cta-location {
-    cursor       : pointer;
-    color        : #999;
+    cursor: pointer;
+    color: #999;
     border-bottom: @wl-place-color 1px dotted;
-    padding      : 2px;
+    padding: 2px;
   }
 
   .wl-edit {
@@ -557,7 +559,7 @@
   }
 
   .wl-disabled {
-    color : #888 !important;
+    color: #888 !important;
     cursor: not-allowed;
   }
 
@@ -573,18 +575,18 @@
 
   .wl-more {
     .fa-icon(@fa-var-caret-down);
-    color   : #aaa;
+    color: #aaa;
     position: absolute;
-    right   : 0;
-    top     : 0;
+    right: 0;
+    top: 0;
   }
 
   .wl-less {
     .fa-icon(@fa-var-caret-up);
-    color   : #aaa;
+    color: #aaa;
     position: absolute;
-    right   : 0;
-    top     : 0;
+    right: 0;
+    top: 0;
   }
 
 }
@@ -606,174 +608,175 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities,
 }
 
 #wordlift-disambiguation-popover {
-  display : none;
+  display: none;
   position: fixed;
-  top     : 50px;
-  right   : 20px;
+  top: 50px;
+  right: 20px;
 
   .postbox {
-    border-color : #bbb;
-    box-shadow   : 0 0 10em #666;
-    height       : 100%;
+    border-color: #bbb;
+    box-shadow: 0 0 10em #666;
+    height: 100%;
     margin-bottom: 0;
 
     &:before {
-      content     : ' ';
-      position    : absolute;
-      width       : 0;
-      height      : 0;
-      left        : -50px;
-      top         : 50px;
-      border      : 25px solid;
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -50px;
+      top: 50px;
+      border: 25px solid;
       border-color: transparent #bbb transparent transparent;
     }
 
     &:after {
-      content     : ' ';
-      position    : absolute;
-      width       : 0;
-      height      : 0;
-      left        : -49px;
-      top         : 50px;
-      border      : 25px solid;
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: -49px;
+      top: 50px;
+      border: 25px solid;
       border-color: transparent #fff transparent transparent;
     }
   }
 
   .handlediv:before {
-    content                : '\f158';
-    right                  : 12px;
-    font                   : 400 20px/1 dashicons;
-    speak                  : none;
-    display                : inline-block;
-    padding                : 8px 10px;
-    top                    : 0;
-    position               : relative;
-    -webkit-font-smoothing : antialiased;
+    content: '\f158';
+    right: 12px;
+    font: 400 20px/1 dashicons;
+    speak: none;
+    display: inline-block;
+    padding: 8px 10px;
+    top: 0;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    text-decoration        : none !important;
+    text-decoration: none !important;
   }
 
   .arrow-left {
-    width        : 0;
-    height       : 0;
-    border-top   : 10px solid transparent;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
-    border-right : 10px solid blue;
+    border-right: 10px solid blue;
   }
 }
 
-body#tinymce {
-  font-family: "Open Sans",sans-serif;
-  font-size  : 0.9em;
-  line-height: 1.4em;
+//body#tinymce {
+//  font-family: "Open Sans", sans-serif;
+//  font-size: 0.9em;
+//  line-height: 1.4em;
+//
+//  .annotation_(@type, @icon, @hover-color) {
+//    border-color: @type;
+//  }
+//
+//  .rounded-corners (@radius: 5px) {
+//    -webkit-border-radius: @radius;
+//    -moz-border-radius: @radius;
+//    -ms-border-radius: @radius;
+//    -o-border-radius: @radius;
+//    border-radius: @radius;
+//  }
+//
+//  .highlight(@color) {
+//    border: 0 !important;
+//    color: contrast(@color);
+//    background-color: @color;
+//    vertical-align: center;
+//  }
+//
+//  .disambiguate(@color) {
+//    border-color: @color !important;
+//  }
+//
+//  .textannotation {
+//    //border-bottom: #999 2px solid;
+//    //padding: 2px 0;
+//    //cursor: pointer;
+//    //cursor: hand;
+//
+//    &.unlinked {
+//      //border: #999 1px dashed;
+//      //padding: 2px;
+//
+//      &.selected {
+//        //font-weight: bold;
+//        //border: #999 1px dashed !important;
+//        //background-color: #fff !important;
+//        //color: inherit !important;
+//      }
+//    }
+//
+//    &.selected {
+//      .highlight(@wl-default-color);
+//
+//      &.wl-creative-work {
+//        .highlight(@wl-creative-work-color)
+//      }
+//
+//      &.wl-event {
+//        .highlight(@wl-event-color)
+//      }
+//
+//      &.wl-organization {
+//        .highlight(@wl-organization-color)
+//      }
+//
+//      &.wl-local-business {
+//        .highlight(@wl-organization-color)
+//      }
+//
+//      &.wl-person {
+//        .highlight(@wl-person-color)
+//      }
+//
+//      &.wl-place {
+//        .highlight(@wl-place-color)
+//      }
+//
+//      &.wl-thing {
+//        .highlight(@wl-thing-color)
+//      }
+//    }
+//
+//    &.wl-creative-work {
+//      .disambiguate(@wl-creative-work-color)
+//    }
+//
+//    &.wl-event {
+//      .disambiguate(@wl-event-color)
+//    }
+//
+//    &.wl-organization {
+//      .disambiguate(@wl-organization-color)
+//    }
+//
+//    &.wl-local-business {
+//      .disambiguate(@wl-organization-color)
+//    }
+//
+//    &.wl-person {
+//      .disambiguate(@wl-person-color)
+//    }
+//
+//    &.wl-place {
+//      .disambiguate(@wl-place-color)
+//    }
+//
+//    &.wl-thing {
+//      .disambiguate(@wl-thing-color)
+//    }
+//  }
+//
+//  &[contenteditable=false] {
+//    background-color: rgb(241, 241, 241);
+//  }
+//}
 
-  .annotation_(@type, @icon, @hover-color) {
-    border-color: @type;
-  }
-
-  .rounded-corners (@radius: 5px) {
-    -webkit-border-radius: @radius;
-    -moz-border-radius   : @radius;
-    -ms-border-radius    : @radius;
-    -o-border-radius     : @radius;
-    border-radius        : @radius;
-  }
-
-  .highlight(@color) {
-    border          : 0 !important;
-    color           : contrast(@color);
-    background-color: @color;
-    vertical-align  : center;
-  }
-
-  .disambiguate(@color) {
-    border-color: @color !important;
-  }
-
-  .textannotation {
-    border-bottom: #999 2px solid;
-    padding      : 2px 0;
-    cursor       : pointer;
-    cursor       : hand;
-
-    &.unlinked {
-      border : #999 1px dashed;
-      padding: 2px;
-
-      &.selected {
-        font-weight     : bold;
-        border          : #999 1px dashed !important;
-        background-color: #fff !important;
-        color           : inherit !important;
-      }
-    }
-
-    &.selected {
-      .highlight(@wl-default-color);
-
-      &.wl-creative-work {
-        .highlight(@wl-creative-work-color)
-      }
-
-      &.wl-event {
-        .highlight(@wl-event-color)
-      }
-
-      &.wl-organization {
-        .highlight(@wl-organization-color)
-      }
-
-      &.wl-local-business {
-        .highlight(@wl-organization-color)
-      }
-
-      &.wl-person {
-        .highlight(@wl-person-color)
-      }
-
-      &.wl-place {
-        .highlight(@wl-place-color)
-      }
-
-      &.wl-thing {
-        .highlight(@wl-thing-color)
-      }
-    }
-
-    &.wl-creative-work {
-      .disambiguate(@wl-creative-work-color)
-    }
-
-    &.wl-event {
-      .disambiguate(@wl-event-color)
-    }
-
-    &.wl-organization {
-      .disambiguate(@wl-organization-color)
-    }
-
-    &.wl-local-business {
-      .disambiguate(@wl-organization-color)
-    }
-
-    &.wl-person {
-      .disambiguate(@wl-person-color)
-    }
-
-    &.wl-place {
-      .disambiguate(@wl-place-color)
-    }
-
-    &.wl-thing {
-      .disambiguate(@wl-thing-color)
-    }
-  }
-
-  &[contenteditable=false] {
-    background-color: rgb(241, 241, 241);
-  }
-}
 /* metaboxes */
 .wl-metabox {
   border-left: @wl-brand-color 4px solid;
@@ -784,7 +787,7 @@ body#tinymce {
 }
 
 .wl-input-notice {
-  color    : darkred;
+  color: darkred;
   font-size: 10px;
 }
 
@@ -798,18 +801,18 @@ body#tinymce {
   justify-content: center;
   align-items: center;
   padding: 2px !important;
-  color         : @wl-btn-txt-color;
+  color: @wl-btn-txt-color;
   background-color: desaturate(@wl-brand-color, 100%);
   text-transform: none;
-  cursor        : not-allowed;
-  line-height   : 20px;
-  height        : 22px;
+  cursor: not-allowed;
+  line-height: 20px;
+  height: 22px;
   width: 22px;
   text-align: center;
   font-weight: 700;
-  font-size     : 11px;
-  margin-top    : -1px;
-  float         : right;
+  font-size: 11px;
+  margin-top: -1px;
+  float: right;
   border-radius: 50%;
 }
 
@@ -819,7 +822,7 @@ svg.wl-logo-svg {
   transform: translateY(2px);
   margin-right: 10px;
 
-  &.wl-logo-16{
+  &.wl-logo-16 {
     width: 16px;
     height: 16px;
   }
@@ -839,3 +842,38 @@ svg.wl-logo-svg {
   }
 }
 
+// The TinyMCE editor.
+body#tinymce {
+
+  // Editor loading.
+  &[contenteditable=false] {
+    background-color: rgb(241, 241, 241);
+  }
+
+  .textannotation {
+    cursor: pointer;
+
+    // Default state for an annotation.
+    background-color: rgba(46, 146, 255, .2);
+    box-shadow: 3px 0 0 0 rgba(46, 146, 255, .2), -3px 0 0 0 rgba(46, 146, 255, .2);
+
+    // When an entity is bound to an annotation.
+    &.disambiguated {
+      background-color: rgba(255, 239, 173, .4);
+      box-shadow: 3px 0 0 0 rgba(255, 239, 173, .4), -3px 0 0 0 rgba(255, 239, 173, .4);
+    }
+
+    // When the editor clicks an annotation.
+    &.selected {
+      background-color: rgba(46, 146, 255, .4);
+      box-shadow: 3px 0 0 0 rgba(46, 146, 255, .4), -3px 0 0 0 rgba(46, 146, 255, .4);
+    }
+  }
+
+  // When the user is typing in TinyMCE.
+  &.wl-tinymce-typing .textannotation {
+    background-color: transparent;
+    box-shadow: none;
+    transition: all 500ms linear;
+  }
+}
