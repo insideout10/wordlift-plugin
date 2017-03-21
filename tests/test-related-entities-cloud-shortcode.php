@@ -59,7 +59,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		// Test post with two connected entities.
 		$this->go_to( '?p=' . $post_id2 );
 		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
-		$tags   = $shortcode->get_related_entities_tags();
+		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 2, count( $tags ) );
 
 		// Assume order is order of creation of entities.
@@ -78,7 +78,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		// Test entity page.
 		$this->go_to( '?entity=entity2' );
 		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
-		$tags   = $shortcode->get_related_entities_tags();
+		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 1, count( $tags ) );
 
 		// Assume order is order of creation of entities.
@@ -92,7 +92,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		// Test in home page context.
 		$this->go_to( '/' );
 		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
-		$tags   = $shortcode->get_related_entities_tags();
+		$tags      = $shortcode->get_related_entities_tags();
 		$this->assertEquals( 0, count( $tags ) );
 
 	}
@@ -117,8 +117,6 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		wl_core_add_relation_instance( $post_id2, WL_WHAT_RELATION, $entity_id2 );
 		wl_core_add_relation_instance( $entity_id2, WL_WHAT_RELATION, $entity_id3 );
 
-		$shortcode = new Wordlift_Related_Entities_Cloud_Shortcode();
-
 		// test post with no connected entities at all
 		$this->go_to( '?p=' . $post_id );
 		$output = do_shortcode( '[wl_cloud]' );
@@ -129,4 +127,5 @@ class Wordlift_Related_Entities_Cloud_Shortcode_Test extends Wordlift_Unit_Test_
 		$output = do_shortcode( '[wl_cloud]' );
 		$this->assertNotEquals( '', $output );
 	}
+
 }

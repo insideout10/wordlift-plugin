@@ -1,9 +1,18 @@
 <?php
+/**
+ * Shortcodes: Entities Cloud Shortcode, `wl_cloud`.
+ *
+ * @since      3.12.0
+ * @package    Wordlift
+ * @subpackage Wordlift/public
+ */
 
 /**
  * The `wl_cloud` shortcode.
  *
- * @since 3.12.0
+ * @since      3.12.0
+ * @package    Wordlift
+ * @subpackage Wordlift/public
  */
 class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 
@@ -28,10 +37,9 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 		 * Since the output is use in the widget as well, we need to have the
 		 * same class as the core tagcloud widget, to easily inherit its styling.
 		 */
-
 		return '<div class="tagcloud wl-related-entities-cloud">' .
-				wp_generate_tag_cloud( $tags ) .
-				'</div>';
+		       wp_generate_tag_cloud( $tags ) .
+		       '</div>';
 	}
 
 	/**
@@ -44,6 +52,7 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 	 *                  of a post, or it has no related entities.
 	 */
 	public function get_related_entities_tags() {
+
 		// Define the supported types list.
 		$supported_types = array( 'post', Wordlift_Entity_Service::TYPE_NAME );
 
@@ -83,8 +92,10 @@ class Wordlift_Related_Entities_Cloud_Shortcode extends Wordlift_Shortcode {
 				'count' => $connected_entities + $connected_posts,
 				// The weight.
 			);
+
 		}
 
 		return $tags;
 	}
+
 }

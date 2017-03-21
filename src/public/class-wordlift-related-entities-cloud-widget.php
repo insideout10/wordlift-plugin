@@ -90,6 +90,7 @@ class Wordlift_Related_Entities_Cloud_Widget extends Wordlift_Widget {
 
 		echo $cloud_html;
 		echo $args['after_widget'];
+
 	}
 
 }

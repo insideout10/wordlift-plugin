@@ -11,25 +11,25 @@
 function wl_admin_shortcode_buttons() {
 	// Only add hooks when the current user has permissions AND is in Rich Text editor mode
 	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) ) {
-		add_filter( 'mce_external_plugins', 'wl_admin_shortcode_buttons_register_tinymce_javascript' );
+		// add_filter( 'mce_external_plugins', 'wl_admin_shortcode_buttons_register_tinymce_javascript' );
 		add_filter( 'mce_buttons', 'wl_admin_shortcode_register_buttons' );
 		add_action( 'admin_footer', 'wl_admin_inject_chord_dialog_dependencies' );
 	}
 }
 
-/**
- * Registers the WordLift shortcodes plugin in TinyMCE.
- *
- * @param array $plugin_array An array of TinyMCE plugins.
- *
- * @return array The TinyMCE plugins array including WordLift shortcodes plugin.
- */
-function wl_admin_shortcode_buttons_register_tinymce_javascript( $plugin_array ) {
-
-	$plugin_array['wl_shortcodes'] = plugin_dir_url( __FILE__ ) . 'js/wordlift_shortcode_tinymce_plugin.js?ver=3.12.0';
-
-	return $plugin_array;
-}
+///**
+// * Registers the WordLift shortcodes plugin in TinyMCE.
+// *
+// * @param array $plugin_array An array of TinyMCE plugins.
+// *
+// * @return array The TinyMCE plugins array including WordLift shortcodes plugin.
+// */
+//function wl_admin_shortcode_buttons_register_tinymce_javascript( $plugin_array ) {
+//
+//	$plugin_array['wl_shortcodes'] = plugin_dir_url( __FILE__ ) . 'js/wordlift_shortcode_tinymce_plugin.js?ver=3.12.0';
+//
+//	return $plugin_array;
+//}
 
 /**
  * Register shortcodes menu.
