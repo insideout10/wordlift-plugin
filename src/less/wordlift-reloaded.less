@@ -845,13 +845,14 @@ svg.wl-logo-svg {
 // The TinyMCE editor.
 body#tinymce {
 
-  // Editor loading.
+  // Editor loading.p
   &[contenteditable=false] {
     background-color: rgb(241, 241, 241);
   }
 
   .textannotation {
     cursor: pointer;
+    transition: all 500ms linear;
 
     // Default state for an annotation.
     background-color: rgba(46, 146, 255, .2);
@@ -874,6 +875,5 @@ body#tinymce {
   &.wl-tinymce-typing .textannotation {
     background-color: transparent;
     box-shadow: none;
-    transition: all 500ms linear;
   }
 }

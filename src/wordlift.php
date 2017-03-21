@@ -213,7 +213,8 @@ function wordlift_allowed_post_tags() {
 }
 
 // init process for button control
-add_action( 'init', 'wordlift_buttonhooks' );
+//add_action( 'init', 'wordlift_buttonhooks' );
+
 // add allowed post tags.
 add_action( 'init', 'wordlift_allowed_post_tags' );
 
