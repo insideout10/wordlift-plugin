@@ -5211,99 +5211,6 @@ div.wp-menu-image:before #adminmenu .toplevel_page_wordlift-admin-entities.wp-me
   border-bottom: 10px solid transparent;
   border-right: 10px solid blue;
 }
-body#tinymce {
-  font-family: "Open Sans", sans-serif;
-  font-size: 0.9em;
-  line-height: 1.4em;
-}
-body#tinymce .textannotation {
-  border-bottom: #999 2px solid;
-  padding: 2px 0;
-  cursor: pointer;
-  cursor: hand;
-}
-body#tinymce .textannotation.unlinked {
-  border: #999 1px dashed;
-  padding: 2px;
-}
-body#tinymce .textannotation.unlinked.selected {
-  font-weight: bold;
-  border: #999 1px dashed !important;
-  background-color: #fff !important;
-  color: inherit !important;
-}
-body#tinymce .textannotation.selected {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #A4A3A3;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-creative-work {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-event {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-organization {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-local-business {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-person {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-place {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.selected.wl-thing {
-  border: 0 !important;
-  color: #ffffff;
-  background-color: #007AFF;
-  vertical-align: center;
-}
-body#tinymce .textannotation.wl-creative-work {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-event {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-organization {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-local-business {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-person {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-place {
-  border-color: #007AFF !important;
-}
-body#tinymce .textannotation.wl-thing {
-  border-color: #007AFF !important;
-}
-body#tinymce[contenteditable=false] {
-  background-color: #f1f1f1;
-}
 /* metaboxes */
 .wl-metabox {
   border-left: #007AFF 4px solid;
@@ -5365,4 +5272,30 @@ svg.wl-logo-svg .wl-logo-letter {
 }
 #wl_entity_type-tabs .hide-if-no-js {
   display: none;
+}
+body#tinymce[contenteditable=false] {
+  background-color: #f1f1f1;
+}
+body#tinymce .textannotation {
+  cursor: pointer;
+  -webkit-transition: all 500ms linear;
+          transition: all 500ms linear;
+  background-color: rgba(46, 146, 255, 0.2);
+  -webkit-box-shadow: 3px 0 0 0 rgba(46, 146, 255, 0.2), -3px 0 0 0 rgba(46, 146, 255, 0.2);
+          box-shadow: 3px 0 0 0 rgba(46, 146, 255, 0.2), -3px 0 0 0 rgba(46, 146, 255, 0.2);
+}
+body#tinymce .textannotation.disambiguated {
+  background-color: rgba(255, 239, 173, 0.4);
+  -webkit-box-shadow: 3px 0 0 0 rgba(255, 239, 173, 0.4), -3px 0 0 0 rgba(255, 239, 173, 0.4);
+          box-shadow: 3px 0 0 0 rgba(255, 239, 173, 0.4), -3px 0 0 0 rgba(255, 239, 173, 0.4);
+}
+body#tinymce .textannotation.selected {
+  background-color: rgba(46, 146, 255, 0.4);
+  -webkit-box-shadow: 3px 0 0 0 rgba(46, 146, 255, 0.4), -3px 0 0 0 rgba(46, 146, 255, 0.4);
+          box-shadow: 3px 0 0 0 rgba(46, 146, 255, 0.4), -3px 0 0 0 rgba(46, 146, 255, 0.4);
+}
+body#tinymce.wl-tinymce-typing .textannotation {
+  background-color: transparent;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }

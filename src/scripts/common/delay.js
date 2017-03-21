@@ -13,15 +13,16 @@
  * @param {Object} $elem A jQuery element reference which will hold the timeout
  *     reference.
  * @param {Function} fn The function to call.
+ * @param {number} timeout The timeout, by default 500 ms.
  * @param {...Object} args Additional arguments for the callback.
  */
-const delay = ( $elem, fn, ...args ) => {
+const delay = ( $elem, fn, timeout = 500, ...args ) => {
 	// Clear a validation timeout.
 	clearTimeout( $elem.data( 'timeout' ) );
 
 	// Validate the key, after a delay, so that another key is pressed, this
 	// validation is cancelled.
-	$elem.data( 'timeout', setTimeout( fn, 500, ...args ) );
+	$elem.data( 'timeout', setTimeout( fn, timeout, ...args ) );
 };
 
 // Finally export the `delay` function.

@@ -58,6 +58,15 @@ class Wordlift {
 	protected $version;
 
 	/**
+	 * The {@link Wordlift_Tinymce_Adapter} instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Tinymce_Adapter $tinymce_adapter The {@link Wordlift_Tinymce_Adapter} instance.
+	 */
+	protected $tinymce_adapter;
+
+	/**
 	 * The Thumbnail service.
 	 *
 	 * @since  3.1.5
@@ -674,6 +683,9 @@ class Wordlift {
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
+		/** Adapters. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -896,6 +908,9 @@ class Wordlift {
 		$publisher_service            = new Wordlift_Publisher_Service();
 		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
 
+		/** Adapters. */
+		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
+
 		/** WordPress Admin UI. */
 
 		// UI elements.
@@ -1067,6 +1082,9 @@ class Wordlift {
 
 		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
+
+		/** Adapters. */
+		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
