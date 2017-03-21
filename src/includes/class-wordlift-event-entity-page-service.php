@@ -64,7 +64,8 @@ class Wordlift_Event_entity_Page_Service {
 			'key' => Wordlift_Schema_Service::FIELD_DATE_START,
 		);
 		$query->set( 'meta_query', $meta_query );
-		$query->set( 'orderby', 'meta_value_num' );
+		$query->set( 'orderby', 'meta_value' );
+		$query->set( 'order', 'DESC' );
 	}
 
 }
