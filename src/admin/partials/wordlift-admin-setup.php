@@ -54,32 +54,44 @@
 		<ul class="page-list">
 			<li>
 				<span class="fa fa-university"></span>
-				<?php esc_html_e( 'Trustworthiness', 'wordlift' ); ?>
+				<span class="list-value">	
+					<?php esc_html_e( 'Trustworthiness', 'wordlift' ); ?>
+				</span>
 			</li>
 
 			<li>
 				<span class="fa fa-map-marker"></span>
-				<?php esc_html_e( 'Enrichment', 'wordlift' ); ?>
+				<span class="list-value">
+					<?php esc_html_e( 'Enrichment', 'wordlift' ); ?>
+				</span>
 			</li>
 
 			<li>
 				<span class="fa fa-heart"></span>
-				<?php esc_html_e( 'Engagement', 'wordlift' ); ?>
+				<span class="list-value">
+					<?php esc_html_e( 'Engagement', 'wordlift' ); ?>
+				</span>
 			</li>
 
 			<li>
 				<span class="fa fa-hand-o-right"></span>
-				<?php esc_html_e( 'Smart Navigation', 'wordlift' ); ?>
+				<span class="list-value">
+					<?php esc_html_e( 'Smart Navigation', 'wordlift' ); ?>
+				</span>
 			</li>
 
 			<li>
 				<span class="fa fa-google"></span>
-				<?php esc_html_e( 'SEO Optimization', 'wordlift' ); ?>
+				<span class="list-value">
+					<?php esc_html_e( 'SEO Optimization', 'wordlift' ); ?>
+				</span>
 			</li>
 
 			<li>
 				<span class="fa fa-group"></span>
-				<?php esc_html_e( 'Content Marketing', 'wordlift' ); ?>
+				<span class="list-value">
+					<?php esc_html_e( 'Content Marketing', 'wordlift' ); ?>
+				</span>
 			</li>
 		</ul>
 		<div class="btn-wrapper">

@@ -251,10 +251,26 @@ body
       // Text job.
       font-size: 14px
       line-height: 40px
-
-      span
+      
+      span.fa
         font-size: 20px
+        line-height: 16px
+        width: 20px
+        height: 20px
+        vertical-align: middle
         margin-right: 4px
+        
+      span.list-value
+        // Position
+        display: inline-block
+        // Size
+        width: 100px
+        // Allows multiple lines
+        white-space: normal
+        // Text job
+        line-height: 16px
+        @media screen and (max-width: 550px)
+          width: 100%
 
   input[type="text"], select
     // Reset default.
