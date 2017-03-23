@@ -178,7 +178,7 @@ class Wordlift_Configuration_Service {
 	 */
 	public function set_skip_wizard( $value ) {
 
-		$this->set( 'wl_general_settings', self::SKIP_WIZARD, $value === true );
+		$this->set( 'wl_general_settings', self::SKIP_WIZARD, true === $value );
 
 	}
 
@@ -310,18 +310,59 @@ class Wordlift_Configuration_Service {
 			$this->set_dataset_uri( '' );
 		}
 
+		// make the request to the remote server
+		$this->get_remote_dataset_uri( $new_key );
+	}
+
+	/**
+	 * Handle retrieving the dataset uri from the remote server.
+	 *
+	 * If a valid dataset uri is returned it is stored in the appropriate option,
+	 * otherwise the option is set to empty string.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @param string  $key     The key to be used
+	 *
+	 */
+	private function get_remote_dataset_uri( $key ) {
 		// Request the dataset URI.
-		$response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $new_key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+		$response = wp_remote_get( $this->get_accounts_by_key_dataset_uri( $key ), unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
 
 		// If the response is valid, then set the value.
 		if ( ! is_wp_error( $response ) && 200 === (int) $response['response']['code'] ) {
-
 			$this->set_dataset_uri( $response['body'] );
-
 		} else {
-			// TO DO User notification is needed here.
+			$this->set_dataset_uri( '' );
+		}
+	}
+
+	/**
+	 * Handle the edge case where a user submits the same key again
+	 * when he does not have the dataset uri to regain it.
+	 *
+	 * This can not be handled in the normal option update hook because
+	 * it is not being triggered when the save value equals to the one already
+	 * in the DB.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @param mixed  $value     The new, unserialized option value.
+	 * @param mixed  $old_value The old option value.
+	 *
+	 * @return mixed The same value in the $value parameter
+	 *
+	 */
+	function maybe_update_dataset_uri( $value, $old_value ) {
+		if ( ! empty( $value ) &&
+			( $value == $old_value ) &&
+			empty( $this->get_dataset_uri() ) ) {
+
+			// make the request to the remote server to try to get the dataset uri
+			$this->get_remote_dataset_uri( $value );
 		}
 
+		return $value;
 	}
 
 	/**

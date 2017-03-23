@@ -45,13 +45,23 @@ class Wordlift_Admin {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param      string $plugin_name The name of this plugin.
-	 * @param      string $version     The version of this plugin.
+	 * @param   string $plugin_name The name of this plugin.
+	 * @param   string $version     The version of this plugin.
+	 * @param	\Wordlift_Configuration_Service	$configuration_service	The configuration service.
+	 * @param	\Wordlift_Notice_Service	$notice_service	The notice service.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $plugin_name, $version, $configuration_service, $notice_service ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+		if ( empty( $configuration_service->get_dataset_uri() ) ) {
+			if ( empty( $configuration_service->get_key() ) ) {
+				$error = __( 'A key needs to be configured to make WordLift Operational.', 'wordlift' );
+			} else {
+				$error = __( 'The authentication of the WordLift key had failed, can be because the key is invalid or communication plroblems. Please try again.', 'wordlift' );
+			}
+			$notice_service->add_error( $error );
+		}
 
 	}
 
@@ -123,7 +133,7 @@ class Wordlift_Admin {
 		if ( null !== $post = $entity_being_edited = get_post() ) {
 
 			$params['post_id']           = $entity_being_edited->ID;
-			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && $entity_being_edited->post_type == Wordlift_Entity_Service::TYPE_NAME && is_numeric( get_the_ID() );
+			$params['entityBeingEdited'] = isset( $entity_being_edited->post_type ) && Wordlift_Entity_Service::TYPE_NAME == $entity_being_edited->post_type && is_numeric( get_the_ID() );
 			// We add the `itemId` here to give a chance to the analysis to use it in order to tell WLS to exclude it
 			// from the results, since we don't want the current entity to be discovered by the analysis.
 			//
