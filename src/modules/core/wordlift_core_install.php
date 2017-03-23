@@ -144,6 +144,12 @@ EOF;
  */
 function wl_core_install() {
 
+	// do not let the plugin be activate on wordpress versions before 4.2.
+	$version = get_bloginfo( 'version' );
+    if ( version_compare( $version, '4.2', '<' ) ) {
+        die( __('The WordLift plugin requires WordPress version 4.2 or above.', 'wordlift' ) );
+	}
+
 	// Create a blank application key if there is none
 	$key = wl_configuration_get_key();
 	if ( empty( $key ) ) {
