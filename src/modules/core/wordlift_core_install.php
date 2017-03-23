@@ -155,8 +155,8 @@ function wl_core_install() {
 	flush_rewrite_rules();
 }
 
-// Installation Hook
-add_action( 'activate_wordlift/wordlift.php', 'wl_core_install' );
+// Installation/Activation Hook
+register_activation_hook( dirname( dirname( dirname( __FILE__ ) ) ) . '/wordlift.php', 'wl_core_install' );
 
 /**
  * Upgrade the DB structure to the one expected by the 1.0 release
@@ -205,7 +205,6 @@ function wl_core_upgrade_db_1_0_to_3_10() {
 				) );
 			}
 		}
-
 	}
 
 }
