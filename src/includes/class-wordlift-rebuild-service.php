@@ -130,7 +130,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		<html>
 		<head>
 			<meta http-equiv="refresh"
-			      content="1; <?php esc_attr_e( $url ); ?>">
+			      content="1; <?php echo esc_attr( $url ); ?>">
 		</head>
 		</html>
 		<?php

@@ -10,17 +10,17 @@
 function wl_entity_type_taxonomy_register() {
 
 	$labels = array(
-		'name'              => _x( 'Entity Types', 'taxonomy general name' ),
-		'singular_name'     => _x( 'Entity Type', 'taxonomy singular name' ),
-		'search_items'      => __( 'Search Entity Types' ),
-		'all_items'         => __( 'All Entity Types' ),
-		'parent_item'       => __( 'Parent Entity Type' ),
-		'parent_item_colon' => __( 'Parent Entity Type:' ),
-		'edit_item'         => __( 'Edit Entity Type' ),
-		'update_item'       => __( 'Update Entity Type' ),
-		'add_new_item'      => __( 'Add New Entity Type' ),
-		'new_item_name'     => __( 'New Entity Type' ),
-		'menu_name'         => __( 'Entity Types' ),
+		'name'              => _x( 'Entity Types', 'taxonomy general name', 'wordlift' ),
+		'singular_name'     => _x( 'Entity Type', 'taxonomy singular name', 'wordlift' ),
+		'search_items'      => __( 'Search Entity Types', 'wordlift' ),
+		'all_items'         => __( 'All Entity Types', 'wordlift' ),
+		'parent_item'       => __( 'Parent Entity Type', 'wordlift' ),
+		'parent_item_colon' => __( 'Parent Entity Type:', 'wordlift' ),
+		'edit_item'         => __( 'Edit Entity Type', 'wordlift' ),
+		'update_item'       => __( 'Update Entity Type', 'wordlift' ),
+		'add_new_item'      => __( 'Add New Entity Type', 'wordlift' ),
+		'new_item_name'     => __( 'New Entity Type', 'wordlift' ),
+		'menu_name'         => __( 'Entity Types', 'wordlift' ),
 	);
 
 	// Take away GUI for taxonomy editing.
@@ -71,21 +71,21 @@ function wl_entity_type_taxonomy_get_type( $post_id ) {
 
 	return Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 
-//	$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-//
-//	if ( is_wp_error( $terms ) ) {
-//		// TODO: handle error
-//		return NULL;
-//	}
-//
-//	// If there are not terms associated, return null.
-//	if ( 0 === count( $terms ) ) {
-//		return NULL;
-//	}
-//
-//	// Return the entity type with the specified id.
-//	return Wordlift_Schema_Service::get_instance()
-//	                              ->get_schema( $terms[0]->slug );
+	//	$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+	//
+	//	if ( is_wp_error( $terms ) ) {
+	//		// TODO: handle error
+	//		return NULL;
+	//	}
+	//
+	//	// If there are not terms associated, return null.
+	//	if ( 0 === count( $terms ) ) {
+	//		return NULL;
+	//	}
+	//
+	//	// Return the entity type with the specified id.
+	//	return Wordlift_Schema_Service::get_instance()
+	//	                              ->get_schema( $terms[0]->slug );
 }
 
 /**
