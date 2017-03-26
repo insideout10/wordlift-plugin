@@ -50,6 +50,7 @@ function wl_entity_type_taxonomy_register() {
 		'capabilities'      => $capabilities,
 		'hierarchical'      => true,
 		'show_admin_column' => true,
+		'show_in_quick_edit' => false,
 	);
 
 	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'entity', $args );
