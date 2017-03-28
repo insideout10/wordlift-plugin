@@ -519,6 +519,12 @@ class Wordlift_Schema_Service {
 				'http://schema.org/Newspaper',
 			),
 			'custom_fields' => array(
+				self::FIELD_LEGAL_NAME           => array(
+					'predicate'   => 'http://schema.org/legalName',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
 				self::FIELD_FOUNDER             => array(
 					'predicate'   => 'http://schema.org/founder',
 					'type'        => self::DATA_TYPE_URI,
@@ -584,12 +590,6 @@ class Wordlift_Schema_Service {
 				),
 				self::FIELD_TELEPHONE           => array(
 					'predicate'   => 'http://schema.org/telephone',
-					'type'        => self::DATA_TYPE_STRING,
-					'export_type' => 'xsd:string',
-					'constraints' => '',
-				),
-				self::FIELD_LEGAL_NAME           => array(
-					'predicate'   => 'http://schema.org/legalName',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
