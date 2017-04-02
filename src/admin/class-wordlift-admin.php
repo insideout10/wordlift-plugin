@@ -56,9 +56,10 @@ class Wordlift_Admin {
 		$this->version     = $version;
 
 		$dataset_uri = $configuration_service->get_dataset_uri();
-		
+		$key         = $configuration_service->get_key();
+
 		if ( empty( $dataset_uri ) ) {
-			if ( empty( $configuration_service->get_key() ) ) {
+			if ( empty( $key ) ) {
 				$error = __( 'WordLift\'s key is unset: WordLift requires a key.', 'wordlift' );
 			} else {
 				$error = __( 'WordLift\'s dataset URI is unset: please retry WordLift\'s configuration.', 'wordlift' );
