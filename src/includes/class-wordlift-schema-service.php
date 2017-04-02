@@ -519,7 +519,7 @@ class Wordlift_Schema_Service {
 				'http://schema.org/Newspaper',
 			),
 			'custom_fields' => array(
-				self::FIELD_LEGAL_NAME           => array(
+				self::FIELD_LEGAL_NAME          => array(
 					'predicate'   => 'http://schema.org/legalName',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
