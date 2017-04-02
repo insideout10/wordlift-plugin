@@ -54,7 +54,10 @@ class Wordlift_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
-		if ( empty( $configuration_service->get_dataset_uri() ) ) {
+
+		$dataset_uri = $configuration_service->get_dataset_uri();
+		
+		if ( empty( $dataset_uri ) ) {
 			if ( empty( $configuration_service->get_key() ) ) {
 				$error = __( 'WordLift\'s key is unset: WordLift requires a key.', 'wordlift' );
 			} else {
