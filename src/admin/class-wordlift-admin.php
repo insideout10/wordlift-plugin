@@ -45,10 +45,10 @@ class Wordlift_Admin {
 	 *
 	 * @since    1.0.0
 	 *
-	 * @param   string $plugin_name The name of this plugin.
-	 * @param   string $version     The version of this plugin.
-	 * @param	\Wordlift_Configuration_Service	$configuration_service	The configuration service.
-	 * @param	\Wordlift_Notice_Service	$notice_service	The notice service.
+	 * @param   string                           $plugin_name           The name of this plugin.
+	 * @param   string                           $version               The version of this plugin.
+	 * @param    \Wordlift_Configuration_Service $configuration_service The configuration service.
+	 * @param    \Wordlift_Notice_Service        $notice_service        The notice service.
 	 */
 	public function __construct( $plugin_name, $version, $configuration_service, $notice_service ) {
 
@@ -56,9 +56,9 @@ class Wordlift_Admin {
 		$this->version     = $version;
 		if ( empty( $configuration_service->get_dataset_uri() ) ) {
 			if ( empty( $configuration_service->get_key() ) ) {
-				$error = __( 'A key needs to be configured to make WordLift Operational.', 'wordlift' );
+				$error = __( 'WordLift\'s key is unset: WordLift requires a key.', 'wordlift' );
 			} else {
-				$error = __( 'The authentication of the WordLift key had failed, can be because the key is invalid or communication plroblems. Please try again.', 'wordlift' );
+				$error = __( 'WordLift\'s dataset URI is unset: please retry WordLift\'s configuration.', 'wordlift' );
 			}
 			$notice_service->add_error( $error );
 		}
