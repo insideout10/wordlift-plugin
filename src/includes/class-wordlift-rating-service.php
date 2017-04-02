@@ -245,28 +245,28 @@ class Wordlift_Rating_Service {
 		// Is the current entity related to at least 1 post?
 		( 0 < count( wl_core_get_related_post_ids( $post->ID ) ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_HAS_RELATED_POSTS, 'wordlift' ) );
+			array_push( $warnings, __( 'There are no related posts for the current entity.', 'wordlift' ) );
 
 		// Is the post content not empty?
 		( ! empty( $post->post_content ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_HAS_CONTENT_POST, 'wordlift' ) );
+			array_push( $warnings, __( 'This entity has not description.', 'wordlift' ) );
 
 		// Is the current entity related to at least 1 entity?
 		// Was the current entity already disambiguated?
 		( 0 < count( wl_core_get_related_entity_ids( $post->ID ) ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_HAS_RELATED_ENTITIES, 'wordlift' ) );
+			array_push( $warnings, __( 'There are no related entities for the current entity.', 'wordlift' ) );
 
 		// Is the entity published?
 		( 'publish' === get_post_status( $post->ID ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_IS_PUBLISHED, 'wordlift' ) );
+			array_push( $warnings, __( 'This entity is not published. It will not appear within analysis results.', 'wordlift' ) );
 
 		// Has a thumbnail?
 		( has_post_thumbnail( $post->ID ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_HAS_THUMBNAIL, 'wordlift' ) );
+			array_push( $warnings, __( 'This entity has no featured image yet.', 'wordlift' ) );
 
 		// Get all post meta keys for the current post
 		global $wpdb;
@@ -282,7 +282,7 @@ class Wordlift_Rating_Service {
 		// If each expected key is contained in available keys array ...
 		( in_array( Wordlift_Schema_Service::FIELD_SAME_AS, $available_meta_keys ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_HAS_SAME_AS, 'wordlift' ) );
+			array_push( $warnings, __( 'There are no sameAs configured for this entity.', 'wordlift' ) );
 
 		$schema = $this->entity_type_service->get( $post_id );
 
@@ -294,7 +294,7 @@ class Wordlift_Rating_Service {
 		// If each expected key is contained in available keys array ...
 		( count( $intersection ) === count( $expected_meta_keys ) ) ?
 			$score ++ :
-			array_push( $warnings, __( self::RATING_WARNING_HAS_COMPLETED_METADATA, 'wordlift' ) );
+			array_push( $warnings, __( 'Schema.org metadata for this entity are not completed.', 'wordlift' ) );
 
 		// Finally return score and warnings
 		return array(
