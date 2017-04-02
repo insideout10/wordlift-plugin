@@ -166,7 +166,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
 
 		// Setup our own post.
-		setup_postdata( $GLOBALS['post'] = &$post );
+		setup_postdata( $GLOBALS['post'] = $post );
 
 		$excerpt = get_the_excerpt();
 

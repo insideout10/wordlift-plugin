@@ -998,7 +998,12 @@ class Wordlift {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Wordlift_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Wordlift_Admin(
+			$this->get_plugin_name(),
+			$this->get_version(),
+			$this->configuration_service,
+			$this->notice_service
+		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -1086,6 +1091,7 @@ class Wordlift {
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 
 		// Hook key update.
+		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );
 		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key', 10, 2 );
 
 		// Add additional action links to the WordLift plugin in the plugins page.
