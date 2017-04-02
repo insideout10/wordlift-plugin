@@ -7,12 +7,12 @@
  */
 
 /**
- * Define the {@link Wordlift_Event_entity_Page_Service_Test} class.
+ * Define the {@link Wordlift_Event_Entity_Page_Service_Test} class.
  *
  * @since   3.12.0
  * @package Wordlift
  */
-class Wordlift_Event_entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
+class Wordlift_Event_Entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test non main query is ignored.
@@ -22,35 +22,35 @@ class Wordlift_Event_entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_non_main_query_ignored() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
-		$entity_1_id   = $this->factory->post->create( array(
+		$entity_1_id         = $this->factory->post->create( array(
 			'post_type'    => 'entity',
 			'post_content' => '',
 			'post_title'   => 'test post',
 			'post_status'  => 'publish',
-			'post_date'	   => '2014-03-01',
+			'post_date'    => '2014-03-01',
 		) );
 
 		$entity_type_service->set( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
-		$entity_2_id   = $this->factory->post->create( array(
+		$entity_2_id = $this->factory->post->create( array(
 			'post_type'    => 'entity',
 			'post_content' => '',
 			'post_title'   => 'test post',
 			'post_status'  => 'publish',
-			'post_date'	   => '2014-02-01',
+			'post_date'    => '2014-02-01',
 		) );
 
 		$entity_type_service->set( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-02-01', true );
 
-		$entity_3_id   = $this->factory->post->create( array(
+		$entity_3_id = $this->factory->post->create( array(
 			'post_type'    => 'entity',
 			'post_content' => '',
 			'post_title'   => 'test post',
 			'post_status'  => 'publish',
-			'post_date'	   => '2014-01-01',
+			'post_date'    => '2014-01-01',
 		) );
 
 		$entity_type_service->set( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
@@ -60,8 +60,8 @@ class Wordlift_Event_entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 			'tax_query' => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-					'field' => 'slug',
-					'terms' => 'event',
+					'field'    => 'slug',
+					'terms'    => 'event',
 				),
 			),
 		) );
@@ -74,6 +74,7 @@ class Wordlift_Event_entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $entity_1_id, $posts[0]->ID );
 		$this->assertEquals( $entity_2_id, $posts[1]->ID );
 		$this->assertEquals( $entity_3_id, $posts[2]->ID );
+
 	}
 
 	/**
@@ -87,35 +88,35 @@ class Wordlift_Event_entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 	public function test_event_entity_archive_page() {
 
 		$entity_type_service = $this->get_wordlift_test()->get_entity_type_service();
-		$entity_1_id   = $this->factory->post->create( array(
+		$entity_1_id         = $this->factory->post->create( array(
 			'post_type'    => 'entity',
 			'post_content' => '',
 			'post_title'   => 'test post',
 			'post_status'  => 'publish',
-			'post_date'	   => '2014-03-01',
+			'post_date'    => '2014-03-01',
 		) );
 
 		$entity_type_service->set( $entity_1_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-01-01', true );
 		add_post_meta( $entity_1_id, Wordlift_Schema_Service::FIELD_DATE_END, '2014-01-07', true );
 
-		$entity_2_id   = $this->factory->post->create( array(
+		$entity_2_id = $this->factory->post->create( array(
 			'post_type'    => 'entity',
 			'post_content' => '',
 			'post_title'   => 'test post',
 			'post_status'  => 'publish',
-			'post_date'	   => '2014-02-01',
+			'post_date'    => '2014-02-01',
 		) );
 
 		$entity_type_service->set( $entity_2_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
 		add_post_meta( $entity_2_id, Wordlift_Schema_Service::FIELD_DATE_START, '2014-02-01', true );
 
-		$entity_3_id   = $this->factory->post->create( array(
+		$entity_3_id = $this->factory->post->create( array(
 			'post_type'    => 'entity',
 			'post_content' => '',
 			'post_title'   => 'test post',
 			'post_status'  => 'publish',
-			'post_date'	   => '2014-01-01',
+			'post_date'    => '2014-01-01',
 		) );
 
 		$entity_type_service->set( $entity_3_id, Wordlift_Schema_Service::SCHEMA_EVENT_TYPE );
@@ -134,5 +135,7 @@ class Wordlift_Event_entity_Page_Service_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( $entity_2_id, $posts[0]->ID );
 		$this->assertEquals( $entity_3_id, $posts[1]->ID );
 		$this->assertEquals( $entity_1_id, $posts[2]->ID );
+
 	}
+
 }

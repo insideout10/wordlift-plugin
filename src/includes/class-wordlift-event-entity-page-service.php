@@ -10,21 +10,12 @@
  */
 
 /**
- * Define the {@link Wordlift_Event_entity_Page_Service} class.
+ * Define the {@link Wordlift_Event_Entity_Page_Service} class.
  *
  * @since   3.12.0
  * @package Wordlift
  */
-class Wordlift_Event_entity_Page_Service {
-
-	/**
-	 * Create a {@link Wordlift_Category_Taxonomy_Service} instance.
-	 *
-	 * @since 3.12.0
-	 *
-	 */
-	function __construct() {
-	}
+class Wordlift_Event_Entity_Page_Service {
 
 	/**
 	 * Set the entity post types as one to be included in archive pages.
@@ -54,8 +45,9 @@ class Wordlift_Event_entity_Page_Service {
 		// is_admin is needed, otherwise category based post filters will show
 		// both types and at the current release (4.7) it causes PHP errors.
 		if ( is_admin() ||
-			! is_tax( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'event' ) ||
-			! empty( $query->query_vars['suppress_filters'] ) ) {
+		     ! is_tax( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'event' ) ||
+		     ! empty( $query->query_vars['suppress_filters'] )
+		) {
 			return;
 		}
 
@@ -66,6 +58,7 @@ class Wordlift_Event_entity_Page_Service {
 		$query->set( 'meta_query', $meta_query );
 		$query->set( 'orderby', 'meta_value' );
 		$query->set( 'order', 'DESC' );
+		
 	}
 
 }
