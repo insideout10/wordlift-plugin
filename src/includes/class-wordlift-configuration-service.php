@@ -322,7 +322,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.12.0
 	 *
-	 * @param string  $key     The key to be used
+	 * @param string $key The key to be used
 	 *
 	 */
 	private function get_remote_dataset_uri( $key ) {
@@ -347,16 +347,17 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.12.0
 	 *
-	 * @param mixed  $value     The new, unserialized option value.
-	 * @param mixed  $old_value The old option value.
+	 * @param mixed $value     The new, unserialized option value.
+	 * @param mixed $old_value The old option value.
 	 *
 	 * @return mixed The same value in the $value parameter
 	 *
 	 */
 	function maybe_update_dataset_uri( $value, $old_value ) {
-		if ( ! empty( $value ) &&
-			( $value == $old_value ) &&
-			empty( $this->get_dataset_uri() ) ) {
+
+		$dataset_uri = $this->get_dataset_uri();
+
+		if ( ! empty( $value ) && $value == $old_value && empty( $dataset_uri ) ) {
 
 			// make the request to the remote server to try to get the dataset uri
 			$this->get_remote_dataset_uri( $value );
