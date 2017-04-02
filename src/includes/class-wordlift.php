@@ -757,6 +757,7 @@ class Wordlift {
 
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
@@ -948,6 +949,9 @@ class Wordlift {
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
+
+		// User Profile.
+		new Wordlift_Admin_User_Profile_Page( $this );
 
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
