@@ -74,7 +74,7 @@ class Wordlift_Topic_Taxonomy_Service {
 
 	/**
 	 * Just register the topic taxonomy.
-	 * 
+	 *
 	 * @since 3.5.0
 	 *
 	 */
@@ -82,24 +82,24 @@ class Wordlift_Topic_Taxonomy_Service {
 
 		// See https://codex.wordpress.org/Function_Reference/register_taxonomy
 		$labels = array(
-			'name'              => _x( 'Topics', 'taxonomy general name' ),
-			'singular_name'     => _x( 'Topic', 'taxonomy singular name' ),
-			'search_items'      => __( 'Search Topics' ),
-			'all_items'         => __( 'All Topics' ),
-			'parent_item'       => __( 'Parent Topic' ),
-			'parent_item_colon' => __( 'Parent Topic:' ),
-			'edit_item'         => __( 'Edit Topic' ),
-			'update_item'       => __( 'Update Topic' ),
-			'add_new_item'      => __( 'Add New Topic' ),
-			'new_item_name'     => __( 'New Topic' ),
-			'menu_name'         => __( 'Topics' ),
+			'name'              => _x( 'Topics', 'taxonomy general name', 'wordlift' ),
+			'singular_name'     => _x( 'Topic', 'taxonomy singular name', 'wordlift' ),
+			'search_items'      => __( 'Search Topics', 'wordlift' ),
+			'all_items'         => __( 'All Topics', 'wordlift' ),
+			'parent_item'       => __( 'Parent Topic', 'wordlift' ),
+			'parent_item_colon' => __( 'Parent Topic:', 'wordlift' ),
+			'edit_item'         => __( 'Edit Topic', 'wordlift' ),
+			'update_item'       => __( 'Update Topic', 'wordlift' ),
+			'add_new_item'      => __( 'Add New Topic', 'wordlift' ),
+			'new_item_name'     => __( 'New Topic', 'wordlift' ),
+			'menu_name'         => __( 'Topics', 'wordlift' ),
 		);
 
 		$capabilities = array(
 			'manage_terms' => null,
 			'edit_terms'   => null,
 			'delete_terms' => null,
-			'assign_terms' => 'edit_posts'
+			'assign_terms' => 'edit_posts',
 		);
 
 		$args = array(
@@ -109,55 +109,55 @@ class Wordlift_Topic_Taxonomy_Service {
 			'show_admin_column' => false,
 			'show_ui'			=> false,
 			'rewrite'			=> array(
-				'slug'	=> self::TAXONOMY_SLUG
-				)
+				'slug'	=> self::TAXONOMY_SLUG,
+			),
 		);
 
 		// Register taxonomy
-		register_taxonomy( 
-			self::TAXONOMY_NAME, self::TAXONOMY_OBJECT_TYPE, $args 
+		register_taxonomy(
+			self::TAXONOMY_NAME, self::TAXONOMY_OBJECT_TYPE, $args
 		);
 
 	}
 
 	/**
 	 * Get or create a taxonomy term from a given entity topic.
-	 * 
+	 *
 	 * @since 3.5.0
 	 *
 	 */
 	public function get_or_create_term_from_topic_entity( $topic ) {
-		
-		// Define taxonomy term slug 
+
+		// Define taxonomy term slug
 		$term_slug = sanitize_title( $topic->post_title );
-		// Look for an existing taxonomy term with a given slug 
+		// Look for an existing taxonomy term with a given slug
 		if ( $term = get_term_by( 'slug', $term_slug, self::TAXONOMY_NAME ) ) {
 			return (int) $term->term_id;
 		}
 		// Otherwise create a new term and return it
-		$result = wp_insert_term( 
-			$topic->post_title, 
-			self::TAXONOMY_NAME, 
+		$result = wp_insert_term(
+			$topic->post_title,
+			self::TAXONOMY_NAME,
 			array(
-				'slug'			=>	$term_slug,
-				'description'	=>	$topic->post_content
-			) 
+				'slug'			=> $term_slug,
+				'description'	=> $topic->post_content,
+			)
 		);
 
-		return  (int) $result[ 'term_id' ];
+		return  (int) $result['term_id'];
 	}
 
 	/**
 	 * Set a topic for a given post.
-	 * 
+	 *
 	 * @since 3.5.0
 	 *
 	 */
 	public function set_topic_for( $post_id, $topic_id ) {
-		// Retrieve the topic entity post 
+		// Retrieve the topic entity post
 		$topic_entity_post = get_post( $topic_id );
 		// If current topic does not exist in db false is returned
-		if ( NULL === $topic_entity_post ) {
+		if ( null === $topic_entity_post ) {
 			return false;
 		}
 		// Create the proper taxonomy term if needed
@@ -169,7 +169,7 @@ class Wordlift_Topic_Taxonomy_Service {
 
 	/**
 	 * Unlink any topic for a given post.
-	 * 
+	 *
 	 * @since 3.5.0
 	 *
 	 */
