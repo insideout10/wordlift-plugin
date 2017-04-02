@@ -23,7 +23,7 @@ class Wordlift_Install_Test extends WP_UnitTestCase {
 	 **/
 	public function test_entity_terms() {
 
-		wl_core_install();
+		activate_wordlift();
 
 		$slugs = array(
 			'thing',
