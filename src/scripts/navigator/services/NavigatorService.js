@@ -1,0 +1,7 @@
+class NavigatorService {
+
+	get( postId ) {
+
+	}
+
+}

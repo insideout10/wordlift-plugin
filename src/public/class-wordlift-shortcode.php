@@ -11,15 +11,28 @@ abstract class Wordlift_Shortcode {
 	/**
 	 * The shortcode, set by extending classes.
 	 */
-	const SHORTCODE = NULL;
+	const SHORTCODE = null;
+
+	/**
+	 * The {@link Wordlift} plugin instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift $plugin The {@link Wordlift} plugin instance.
+	 */
+	protected $plugin;
 
 	/**
 	 * Create a shortcode instance by registering the shortcode with the render
 	 * function.
 	 *
 	 * @since 3.5.4
+	 *
+	 * @param \Wordlift $plugin The {@link Wordlift} plugin instance.
 	 */
-	public function __construct() {
+	public function __construct( $plugin ) {
+
+		$this->plugin = $plugin;
 
 		add_shortcode( static::SHORTCODE, array( $this, 'render' ) );
 
@@ -49,8 +62,8 @@ abstract class Wordlift_Shortcode {
 		wp_enqueue_script( 'wordlift-ui', dirname( plugin_dir_url( __FILE__ ) ) . '/js/wordlift-ui' . ( ! defined( 'SCRIPT_DEBUG' ) || ! SCRIPT_DEBUG ? '.min' : '' ) . '.js', array(
 			'jquery',
 			'angularjs',
-			'angularjs-touch'
-		) );
+			'angularjs-touch',
+		), $this->plugin->get_version() );
 
 	}
 

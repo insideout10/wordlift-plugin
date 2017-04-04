@@ -20,14 +20,14 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		// Extract attributes and set default values.
 		$shortcode_atts = shortcode_atts( array(
 			'title'          => __( 'Related articles', 'wordlift' ),
-			'with_carousel'  => TRUE,
-			'squared_thumbs' => FALSE
+			'with_carousel'  => true,
+			'squared_thumbs' => false,
 		), $atts );
 
 		foreach (
 			array(
 				'with_carousel',
-				'squared_thumbs'
+				'squared_thumbs',
 			) as $att
 		) {
 
@@ -55,11 +55,17 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 				'ajax_url' => admin_url( 'admin-ajax.php' ),
 				'action'   => 'wl_navigator',
 				'post_id'  => $current_post->ID,
-				'attrs'    => $shortcode_atts
+				'attrs'    => $shortcode_atts,
 			)
 		);
 
-		return "<div id='$navigator_id' class='wl-navigator-widget'></div>";
+		// Enqueue the Navigator script.
+		wp_enqueue_script( 'wordlift-navigator', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/wordlift-navigator.bundle.js', array(
+			'jquery',
+			'wp-util',
+		), $this->plugin->get_version(), true );
+
+		return "<div id='$navigator_id' class='wl-navigator-widget'></div><div data-wl-navigator='wl-navigator'></div>";
 	}
 
 }

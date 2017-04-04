@@ -463,6 +463,24 @@ class Wordlift {
 	protected $related_entities_cloud_widget;
 
 	/**
+	 * The {@link Wordlift_Navigator_Service} instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Navigator_Service $navigator_service The {@link Wordlift_Navigator_Service} instance.
+	 */
+	protected $navigator_service;
+
+	/**
+	 * The {@link Wordlift_Navigator_Ajax_Adapter} instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Navigator_Ajax_Adapter $navigator_ajax_adapter The {@link Wordlift_Navigator_Ajax_Adapter} instance.
+	 */
+	protected $navigator_ajax_adapter;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -695,8 +713,14 @@ class Wordlift {
 		// Load the `Wordlift_Event_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
 
+		/** Services. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-navigator-service.php';
+
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
+
+		/** Ajax Adapters. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-navigator-ajax-adapter.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -835,6 +859,8 @@ class Wordlift {
 		// Create an entity link service instance. It'll be later bound to the post_type_link and pre_get_posts actions.
 		$this->entity_link_service = new Wordlift_Entity_Link_Service( $this->entity_post_type_service, $this->configuration_service->get_entity_base_path() );
 
+		/** Services. */
+
 		// Create an instance of the UI service.
 		$this->ui_service = new Wordlift_UI_Service();
 
@@ -863,11 +889,11 @@ class Wordlift {
 		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
 
 		// Initialize the shortcodes.
-		new Wordlift_Navigator_Shortcode();
-		new Wordlift_Chord_Shortcode();
-		new Wordlift_Geomap_Shortcode();
-		new Wordlift_Timeline_Shortcode();
-		new Wordlift_Related_Entities_Cloud_Shortcode();
+		new Wordlift_Navigator_Shortcode( $this );
+		new Wordlift_Chord_Shortcode( $this );
+		new Wordlift_Geomap_Shortcode( $this );
+		new Wordlift_Timeline_Shortcode( $this );
+		new Wordlift_Related_Entities_Cloud_Shortcode( $this );
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
@@ -891,6 +917,8 @@ class Wordlift {
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
+
+		$this->navigator_service = new Wordlift_Navigator_Service( $this->entity_type_service );
 
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
@@ -922,6 +950,9 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
+
+		/** Ajax Adapters. */
+		$this->navigator_ajax_adapter = new Wordlift_Navigator_Ajax_Adapter( $this->navigator_service );
 
 		/** WordPress Admin UI. */
 
@@ -1106,6 +1137,9 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 
+		/** Ajax Adapters. */
+		$this->loader->add_action( 'wp_ajax_wl_navigator_get', $this->navigator_ajax_adapter, 'get' );
+
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
@@ -1138,15 +1172,9 @@ class Wordlift {
 		// Hook the content filter service to add entity links.
 		$this->loader->add_filter( 'the_content', $this->content_filter_service, 'the_content' );
 
-		// Hook the AJAX wl_timeline action to the Timeline service.
-		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
-
 		// Hook the ShareThis service.
 		$this->loader->add_filter( 'the_content', $this->sharethis_service, 'the_content', 99 );
 		$this->loader->add_filter( 'the_excerpt', $this->sharethis_service, 'the_excerpt', 99 );
-
-		// Hook the AJAX wl_jsonld action to the JSON-LD service.
-		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
 
 		// Hook the `pre_get_posts` action to the `Wordlift_Category_Taxonomy_Service`
 		// in order to tweak WP's `WP_Query` to include entities in queries related
@@ -1159,6 +1187,11 @@ class Wordlift {
 		 * order of start time.
 		 */
 		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
+
+		/** Ajax Adapters. */
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_timeline', $this->timeline_service, 'ajax_timeline' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_jsonld', $this->jsonld_service, 'get' );
+		$this->loader->add_action( 'wp_ajax_nopriv_wl_navigator_get', $this->navigator_ajax_adapter, 'get' );
 
 	}
 

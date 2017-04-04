@@ -73,13 +73,13 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		'bg',
 		'be',
 		'ar',
-		'af'
+		'af',
 	);
 
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.0
+	 * @since  3.1.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -89,9 +89,11 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 	 * Create a Wordlift_Timeline_Shortcode instance.
 	 *
 	 * @since 3.1.0
+	 *
+	 * @param \Wordlift $plugin The {@link Wordlift} plugin.
 	 */
-	public function __construct() {
-		parent::__construct();
+	public function __construct( $plugin ) {
+		parent::__construct( $plugin );
 
 		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Timeline_Shortcode' );
 
@@ -111,35 +113,35 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 		//extract attributes and set default values
 		$settings = shortcode_atts( array(
 			'debug'                            => defined( 'WP_DEBUG' ) && WP_DEBUG,
-			'height'                           => NULL,
-			'width'                            => NULL,
-			'is_embed'                         => FALSE,
-			'hash_bookmark'                    => FALSE,
+			'height'                           => null,
+			'width'                            => null,
+			'is_embed'                         => false,
+			'hash_bookmark'                    => false,
 			'default_bg_color'                 => 'white',
 			'scale_factor'                     => 2,
-			'initial_zoom'                     => NULL,
+			'initial_zoom'                     => null,
 			'zoom_sequence'                    => '[0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]',
 			'timenav_position'                 => 'bottom',
 			'optimal_tick_width'               => 100,
 			'base_class'                       => 'tl-timeline',
 			'timenav_height'                   => 150,
-			'timenav_height_percentage'        => NULL,
+			'timenav_height_percentage'        => null,
 			'timenav_mobile_height_percentage' => 40,
 			'timenav_height_min'               => 150,
 			'marker_height_min'                => 30,
 			'marker_width_min'                 => 100,
 			'marker_padding'                   => 5,
 			'start_at_slide'                   => 0,
-			'start_at_end'                     => FALSE,
+			'start_at_end'                     => false,
 			'menubar_height'                   => 0,
-			'use_bc'                           => FALSE,
+			'use_bc'                           => false,
 			'duration'                         => 1000,
 			'ease'                             => 'TL.Ease.easeInOutQuint',
 			'slide_default_fade'               => '0%',
 			'language'                         => $this->get_locale(),
-			'ga_property_id'                   => NULL,
+			'ga_property_id'                   => null,
 			'track_events'                     => "['back_to_start','nav_next','nav_previous','zoom_in','zoom_out']",
-			'global'                           => FALSE,
+			'global'                           => false,
 			// The following settings are unrelated to TimelineJS script.
 			'display_images_as'                => 'media',
 			'excerpt_length'                   => 55,
@@ -163,12 +165,12 @@ class Wordlift_Timeline_Shortcode extends Wordlift_Shortcode {
 			// These settings apply to the timeline javascript client.
 			'settings'          => array_filter( $settings, function ( $value ) {
 				// Do not set NULL values.
-				return ( NULL !== $value );
-			} )
+				return ( null !== $value );
+			} ),
 		) );
 
 		// Get the current post id or set null if global is set to true.
-		$post_id = ( $settings['global'] ? NULL : get_the_ID() );
+		$post_id = ( $settings['global'] ? null : get_the_ID() );
 
 		// Escaping atts.
 		$style        = sprintf( 'style="%s%s"', isset( $settings['width'] ) ? "width:{$settings['width']};" : '', isset( $settings['height'] ) ? "height:{$settings['height']};" : '' );
