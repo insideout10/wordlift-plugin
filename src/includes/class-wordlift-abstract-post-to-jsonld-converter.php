@@ -120,10 +120,11 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			// with that hasn't been defined yet (see https://github.com/insideout10/wordlift-plugin/issues/451).
 			//
 			// See http://schema.org/mainEntityOfPage
-			$jsonld['mainEntityOfPage'] = array(
-				'@type' => 'WebPage',
-				'@id'   => get_the_permalink( $post->ID ),
-			);
+			//
+			// No need to specify `'@type' => 'WebPage'.
+			//
+			// See https://github.com/insideout10/wordlift-plugin/issues/451
+			$jsonld['mainEntityOfPage'] = get_the_permalink( $post->ID );
 		};
 
 		$this->set_images( $post, $jsonld );
@@ -217,8 +218,12 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			return array(
 				'@type'  => 'ImageObject',
 				'url'    => $attachment[0],
-				'width'  => $attachment[1] . 'px',
-				'height' => $attachment[2] . 'px',
+				// If you specify a "width" or "height" value you should leave out
+				// 'px'. For example: "width":"4608px" should be "width":"4608".
+				//
+				// See https://github.com/insideout10/wordlift-plugin/issues/451
+				'width'  => $attachment[1],
+				'height' => $attachment[2],
 			);
 		}, array_merge( $ids, $embeds, $gallery ) );
 
