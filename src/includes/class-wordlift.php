@@ -1103,6 +1103,13 @@ class Wordlift {
 		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
 
+		// Hook capabilities manipulation to allow access to entity type admin page 
+		// on wordpress versions before 4.7.
+		global $wp_version;
+		if ( version_compare( $wp_version, '4.7', '<' ) ) {
+			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
+		}
+
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 
