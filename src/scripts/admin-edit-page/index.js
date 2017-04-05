@@ -28,16 +28,12 @@ import thunk from 'redux-thunk';
 /**
  * Internal dependencies
  */
-import WordPress from './wordpress';
 import reducer from './reducers';
 import App from './components/App';
 import AnnotationEvent from './angular/AnnotationEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
 // import log from '../modules/log';
-
-// Start-up WordPress integration.
-WordPress( window, window.wp.mce.views, window.jQuery );
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.

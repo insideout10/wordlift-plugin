@@ -49,13 +49,17 @@ abstract class Wordlift_Shortcode {
 	 */
 	public abstract function render( $atts );
 
+	public function preview() {
+
+	}
+
 	/**
 	 * Enqueue scripts. Called by the shortcode implementations in their render
 	 * method.
 	 *
 	 * @since 3.5.4
 	 */
-	protected function enqueue_scripts() {
+	public function enqueue_scripts() {
 
 		wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
 		wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js', array( 'angularjs' ) );

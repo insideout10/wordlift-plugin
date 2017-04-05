@@ -892,7 +892,7 @@ class Wordlift {
 		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
 
 		// Initialize the shortcodes.
-		new Wordlift_Navigator_Shortcode( $this );
+		$navigator_shortcode = new Wordlift_Navigator_Shortcode( $this );
 		new Wordlift_Chord_Shortcode( $this );
 		new Wordlift_Geomap_Shortcode( $this );
 		new Wordlift_Timeline_Shortcode( $this );
@@ -972,7 +972,7 @@ class Wordlift {
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Pages.
-		new Wordlift_Admin_Post_Edit_Page( $this );
+		new Wordlift_Admin_Post_Edit_Page( $this, array( $navigator_shortcode ) );
 
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();

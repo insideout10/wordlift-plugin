@@ -27,6 +27,8 @@ class Wordlift_Admin_Post_Edit_Page {
 	 */
 	private $plugin;
 
+	private $shortcodes;
+
 	/**
 	 * Create the {@link Wordlift_Admin_Post_Edit_Page} instance.
 	 *
@@ -34,7 +36,10 @@ class Wordlift_Admin_Post_Edit_Page {
 	 *
 	 * @param \Wordlift $plugin The {@link Wordlift} plugin instance.
 	 */
-	function __construct( $plugin ) {
+	function __construct( $plugin, $shortcodes ) {
+
+		$this->plugin     = $plugin;
+		$this->shortcodes = $shortcodes;
 
 		// Define the callback.
 		$callback = array( $this, 'enqueue_scripts', );
@@ -43,7 +48,6 @@ class Wordlift_Admin_Post_Edit_Page {
 		add_action( 'admin_print_scripts-post.php', $callback );
 		add_action( 'admin_print_scripts-post-new.php', $callback );
 
-		$this->plugin = $plugin;
 	}
 
 	/**
@@ -62,6 +66,11 @@ class Wordlift_Admin_Post_Edit_Page {
 			$this->plugin->get_version(),
 			false
 		);
+
+		/** @var Wordlift_Shortcode $shortcode */
+		foreach ( $this->shortcodes as $shortcode ) {
+			$shortcode->enqueue_scripts();
+		}
 
 	}
 
