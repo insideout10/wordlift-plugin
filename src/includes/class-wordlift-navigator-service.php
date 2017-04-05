@@ -136,7 +136,7 @@ class Wordlift_Navigator_Service {
 						'permalink' => get_post_permalink( $post->ID ),
 						'title'     => $post->post_title,
 						'thumbnail' => $thumbnail_url[0],
-						'excerpt'   => Wordlift_Post_Excerpt_Helper::get_excerpt( $post ),
+						'excerpt'   => Wordlift_Post_Excerpt_Helper::get_excerpt( $post, 20, '...' ),
 					),
 					'entity' => array(
 						'label'     => $entity->post_title,
