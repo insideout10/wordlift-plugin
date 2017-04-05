@@ -43,22 +43,24 @@ class Wordlift_Navigator_Service {
 	);
 
 	/**
-	 * The {@link Wordlift_Entity_Type_Service} instance.
+	 * The {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.12.0
 	 * @access private
-	 * @var \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
-	private $entity_type_service;
+	private $entity_service;
 
 	/**
 	 * Create a {@link Wordlift_Navigator_Service} instance.
 	 *
-	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 * @since 3.12.0
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
-	function __construct( $entity_type_service ) {
+	function __construct( $entity_service ) {
 
-		$this->entity_type_service = $entity_type_service;
+		$this->entity_service = $entity_service;
 
 	}
 
@@ -128,19 +130,17 @@ class Wordlift_Navigator_Service {
 					continue;
 				}
 
-				// Get the entity type.
-				$entity_type = $this->entity_type_service->get( $entity->ID );
-
 				// Prepare the results.
 				$results[ $post->ID ] = array(
 					'post'   => array(
 						'permalink' => get_post_permalink( $post->ID ),
 						'title'     => $post->post_title,
 						'thumbnail' => $thumbnail_url[0],
+						'excerpt'   => Wordlift_Post_Excerpt_Helper::get_excerpt( $post ),
 					),
 					'entity' => array(
 						'label'     => $entity->post_title,
-						'mainType'  => $entity_type['css_class'],
+						'relation'  => $this->entity_service->get_classification_scope_for( $entity->ID ),
 						'permalink' => get_post_permalink( $entity->ID ),
 					),
 				);

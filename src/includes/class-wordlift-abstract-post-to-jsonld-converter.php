@@ -109,7 +109,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			'@context'    => self::CONTEXT,
 			'@id'         => $id,
 			'@type'       => $this->relative_to_context( $type['uri'] ),
-			'description' => $this->get_excerpt( $post ),
+			'description' => Wordlift_Post_Excerpt_Helper::get_excerpt( $post ),
 		);
 
 		// Set the `mainEntityOfPage` property if the post has some contents.
@@ -149,34 +149,6 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	public function relative_to_context( $value ) {
 
 		return 0 === strpos( $value, self::CONTEXT . '/' ) ? substr( $value, strlen( self::CONTEXT ) + 1 ) : $value;
-	}
-
-	/**
-	 * Get the excerpt for the provided {@link WP_Post}.
-	 *
-	 * @since 3.10.0
-	 *
-	 * @param WP_Post $post The {@link WP_Post}.
-	 *
-	 * @return string The excerpt.
-	 */
-	protected function get_excerpt( $post ) {
-
-		// Temporary pop the previous post.
-		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
-
-		// Setup our own post.
-		setup_postdata( $GLOBALS['post'] = $post );
-
-		$excerpt = get_the_excerpt();
-
-		// Restore the previous post.
-		if ( null !== $original ) {
-			setup_postdata( $GLOBALS['post'] = $original );
-		}
-
-		// Finally return the excerpt.
-		return html_entity_decode( $excerpt );
 	}
 
 	/**

@@ -555,6 +555,9 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-i18n.php';
 
+		/** Helpers. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-excerpt-helper.php';
+
 		/**
 		 * WordLift's supported languages.
 		 */
@@ -918,7 +921,7 @@ class Wordlift {
 
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
-		$this->navigator_service = new Wordlift_Navigator_Service( $this->entity_type_service );
+		$this->navigator_service = new Wordlift_Navigator_Service( $this->entity_service );
 
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );

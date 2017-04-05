@@ -153,6 +153,7 @@ class Wordlift_Entity_List_Service {
 			echo sprintf( '<option value="%s" %s >%s</option>', esc_attr( $v ), $default, esc_html( $w ) );
 		}
 		echo '</select>';
+
 	}
 
 	/**
