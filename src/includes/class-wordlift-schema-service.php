@@ -176,6 +176,13 @@ class Wordlift_Schema_Service {
 	const FIELD_TELEPHONE = 'wl_schema_telephone';
 
 	/**
+	 * The 'legalName' field name.
+	 *
+	 * @since 3.12.0
+	 */
+	const FIELD_LEGAL_NAME = 'wl_schema_legal_name';
+
+	/**
 	 * The 'URI' data type name.
 	 *
 	 * @since 3.1.0
@@ -512,6 +519,12 @@ class Wordlift_Schema_Service {
 				'http://schema.org/Newspaper',
 			),
 			'custom_fields' => array(
+				self::FIELD_LEGAL_NAME          => array(
+					'predicate'   => 'http://schema.org/legalName',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+				),
 				self::FIELD_FOUNDER             => array(
 					'predicate'   => 'http://schema.org/founder',
 					'type'        => self::DATA_TYPE_URI,
