@@ -198,7 +198,7 @@ function wl_core_upgrade_db_1_0_to_3_10() {
  *
  * @since 3.12.0
  */
-function wl_core_upgrade_db_3_10_to_3_12() {
+function wl_core_upgrade_db_3_10_3_12() {
 	/*
 	 * As this upgrade functionality runs on the init hook, and the AMP plugin
 	 * initialization does the same, avoid possible race conditions by
