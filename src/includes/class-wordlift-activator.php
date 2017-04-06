@@ -31,10 +31,22 @@ class Wordlift_Activator {
 	 */
 	public static function activate() {
 
-		// If WordLift's key is not set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
+		$configuration_service = Wordlift_Configuration_Service::get_instance();
+
+		// Create a blank application key if there is none
+		$key = $configuration_service->get_key();
+		if ( empty( $key ) ) {
+			$configuration_service->set_key( '' );
+		}
+
+		wl_core_install_entity_type_data();
+		wl_core_install_create_relation_instance_table();
+		flush_rewrite_rules();
+
+		// If WordLift's key is not configured, set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
 		// for granted that we're in a browser admin session.
-		if ( '' === Wordlift_Configuration_Service::get_instance()->get_key() ) {
-			set_transient( '_wl_activation_redirect', TRUE, 30 );
+		if ( '' === $configuration_service->get_key() ) {
+			set_transient( '_wl_activation_redirect', true, 30 );
 		}
 
 	}

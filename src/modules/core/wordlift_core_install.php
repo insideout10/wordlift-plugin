@@ -140,25 +140,6 @@ EOF;
 }
 
 /**
- * Install Wordlift in WordPress.
- */
-function wl_core_install() {
-
-	// Create a blank application key if there is none
-	$key = wl_configuration_get_key();
-	if ( empty( $key ) ) {
-		wl_configuration_set_key( '' );
-	}
-
-	wl_core_install_entity_type_data();
-	wl_core_install_create_relation_instance_table();
-	flush_rewrite_rules();
-}
-
-// Installation Hook
-add_action( 'activate_wordlift/wordlift.php', 'wl_core_install' );
-
-/**
  * Upgrade the DB structure to the one expected by the 1.0 release
  *
  * @since 3.10.0
@@ -205,7 +186,6 @@ function wl_core_upgrade_db_1_0_to_3_10() {
 				) );
 			}
 		}
-
 	}
 
 }

@@ -373,6 +373,15 @@ class Wordlift {
 	protected $category_taxonomy_service;
 
 	/**
+	 * The {@link Wordlift_Event_Entity_Page_Service} instance.
+	 *
+	 * @since  3.11.0
+	 * @access protected
+	 * @var \Wordlift_Event_Entity_Page_Service $event_entity_page_service The {@link Wordlift_Event_Entity_Page_Service} instance.
+	 */
+	protected $event_entity_page_service;
+
+	/**
 	 * The {@link Wordlift_Admin_Settings_Page_Action_Link} class.
 	 *
 	 * @since  3.11.0
@@ -683,6 +692,9 @@ class Wordlift {
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
+		// Load the `Wordlift_Event_Entity_Page_Service` class definition.
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
+
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 
@@ -953,6 +965,8 @@ class Wordlift {
 		// User Profile.
 		new Wordlift_Admin_User_Profile_Page( $this );
 
+		$this->event_entity_page_service = new Wordlift_Event_Entity_Page_Service();
+
 		// Load the debug service if WP is in debug mode.
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-debug-service.php';
@@ -988,7 +1002,12 @@ class Wordlift {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Wordlift_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Wordlift_Admin(
+			$this->get_plugin_name(),
+			$this->get_version(),
+			$this->configuration_service,
+			$this->notice_service
+		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -1076,6 +1095,7 @@ class Wordlift {
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
 
 		// Hook key update.
+		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );
 		$this->loader->add_action( 'update_option_wl_general_settings', $this->configuration_service, 'update_key', 10, 2 );
 
 		// Add additional action links to the WordLift plugin in the plugins page.
@@ -1136,6 +1156,13 @@ class Wordlift {
 		// in order to tweak WP's `WP_Query` to include entities in queries related
 		// to categories.
 		$this->loader->add_action( 'pre_get_posts', $this->category_taxonomy_service, 'pre_get_posts', 10, 1 );
+
+		/*
+		 * Hook the `pre_get_posts` action to the `Wordlift_Event_Entity_Page_Service`
+		 * in order to tweak WP's `WP_Query` to show event related entities in reverse
+		 * order of start time.
+		 */
+		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
 
 	}
 

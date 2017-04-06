@@ -4320,9 +4320,6 @@ h3.ui-sortable-handle {
   display: -ms-inline-flexbox;
   display: inline-flex;
 }
-.inline-edit-entity .inline-edit-categories {
-  display: none;
-}
 .wl-button {
   background-color: #007AFF !important;
   text-transform: none;

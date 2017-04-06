@@ -148,7 +148,7 @@
 			// Print all the supported language, preselecting the one configured in WP (or English if not supported).
 			foreach ( $languages as $code => $label ) { ?>
 				<option
-					value="<?php esc_attr_e( $code ) ?>" <?php echo selected( $code, $language, FALSE ) ?>><?php esc_html_e( $label ) ?></option>
+					value="<?php echo esc_attr( $code ) ?>" <?php echo selected( $code, $language, false ) ?>><?php echo esc_html( $label ) ?></option>
 			<?php } ?>
 		</select>
 

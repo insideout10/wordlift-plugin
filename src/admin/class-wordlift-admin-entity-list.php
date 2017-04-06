@@ -131,7 +131,7 @@ class Wordlift_Entity_List_Service {
 			return;
 		}
 
-		if ( $screen->post_type !== Wordlift_Entity_Service::TYPE_NAME ) {
+		if ( Wordlift_Entity_Service::TYPE_NAME !== $screen->post_type ) {
 			return;
 		}
 
@@ -141,16 +141,16 @@ class Wordlift_Entity_List_Service {
 
 		// Print select box with the 4W
 		$all_w = array(
-			__( "All 'W'" ),
-			WL_WHAT_RELATION,
-			WL_WHO_RELATION,
-			WL_WHERE_RELATION,
-			WL_WHEN_RELATION,
+			"All 'W'" => __( "All 'W'", 'wordlift' ),
+			WL_WHAT_RELATION => __( 'What', 'wordlift' ),
+			WL_WHO_RELATION => __( 'Who', 'wordlift' ),
+			WL_WHERE_RELATION => __( 'Where', 'wordlift' ),
+			WL_WHEN_RELATION => __( 'When', 'wordlift' ),
 		);
 		echo '<select name="wl-classification-scope" id="wl-dropdown-classification-scope">';
-		foreach ( $all_w as $w ) {
-			$default = ( $selected === $w ) ? 'selected' : '';
-			echo sprintf( '<option value="%s" %s >%s</option>', $w, $default, __( $w ) );
+		foreach ( $all_w as $v => $w ) {
+			$default = ( $selected === $v ) ? 'selected' : '';
+			echo sprintf( '<option value="%s" %s >%s</option>', esc_attr( $v ), $default, esc_html( $w ) );
 		}
 		echo '</select>';
 	}
