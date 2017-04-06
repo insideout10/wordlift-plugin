@@ -39,18 +39,24 @@ const $ = jQuery;
 //
 //		tinymce.PluginManager.add( 'wl_shortcode_previews', function( editor,
 // url ) {
-			editor.on( 'init', function() {
-				console.log( { 'mce here': wp.mce, 'doc': editor.getDoc() } );
+
+			const script = ( url ) => {
 				const scriptId = editor.dom.uniqueId();
 
 				const scriptElm = editor.dom.create( 'script', {
 					id: scriptId,
 					type: 'text/javascript',
-					src: url + '/../../../../../wp-content/plugins/wordlift/admin/js/wordlift-admin-tinymce-views.bundle.js'
+					src: url
 				} );
 
 				editor.getDoc().getElementsByTagName( 'head' )[ 0 ].appendChild( scriptElm );
+			};
+
+			editor.on( 'init', function() {
+				script( url + '/../../../../../wp-content/plugins/wordlift/public/js/wordlift-navigator.bundle.js' );
+				script( url + '/../../../../../wp-content/plugins/wordlift/admin/js/wordlift-admin-tinymce-views.bundle.js' );
 			} );
+
 		} );
 	}
 )( window.tinymce );

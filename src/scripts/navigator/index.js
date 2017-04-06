@@ -18,7 +18,7 @@ import ReactDOM from 'react-dom';
 import App from './components/App';
 
 // Set a reference to jQuery.
-const $ = jQuery;
+const $ = parent.jQuery;
 
 window.wl = window.wl || {};
 
@@ -30,7 +30,7 @@ const Navigator = window.wl.Navigator = ( selector ) => {
 
 	// Call the ajax action.
 // eslint-disable-next-line camelcase
-	wp.ajax.post( 'wl_navigator_get', { post_id: wlSettings.postId } ).done( function( data ) {
+	parent.wp.ajax.post( 'wl_navigator_get', { post_id: parent.wlSettings.postId } ).done( function( data ) {
 		// Get all the Navigator elements (marked up with the
 		// `data-wl-navigator` attribute).
 		$( selector ).each( function() {

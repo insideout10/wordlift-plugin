@@ -1,7 +1,5 @@
-console.log( { mce: window.parent.wp.mce } );
-
 (
-	function( window, views, $, _ ) {
+	function( window, views, _, tinyMCE ) {
 
 		const navigator = _.extend( {}, {
 			content: 'Loading...',
@@ -9,7 +7,11 @@ console.log( { mce: window.parent.wp.mce } );
 
 				console.log( { bindNode: arguments } );
 
-				window.wl.Navigator( element );
+				const frame = tinyMCE.get( 'content' ).getWin();
+
+				frame.wlSettings = parent.wlSettings;
+				frame.wlNavigator = parent.wlNavigator;
+				frame.wl.Navigator( element );
 
 			},
 			unbindNode: function() {
@@ -22,4 +24,4 @@ console.log( { mce: window.parent.wp.mce } );
 		views.register( 'wl_navigator', _.extend( {}, navigator ) );
 
 	}
-)( window.parent, window.parent.wp.mce.views, window.parent.window.jQuery, window.parent._ );
+)( window.parent, window.parent.wp.mce.views, window.parent._, window.parent.tinyMCE );
