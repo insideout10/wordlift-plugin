@@ -816,6 +816,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-seo-service.php';
 
+		/**
+		 * The AMP service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-amp-service.php';
+
 		/** Widgets */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
@@ -871,6 +876,9 @@ class Wordlift {
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
+
+		// Initialize the AMP service.
+		new Wordlift_AMP_Service();
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
