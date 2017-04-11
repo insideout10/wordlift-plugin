@@ -96,12 +96,42 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
-		// Add the references ids as mentions.
-		$entity_service = $this->entity_service;
+		// Process the references if any.
 		if ( 0 < sizeof( $references ) ) {
-			$jsonld['mentions'] = array_map( function ( $item ) use ( $entity_service ) {
-				return array( '@id' => $entity_service->get_uri( $item ) );
-			}, $references );
+
+			// Prepare the `about` and `mentions` array.
+			$about = $mentions = array();
+
+			// If the entity is in the title, then it should be an `about`.
+			foreach ( $references as $reference ) {
+
+				// Get the entity labels.
+				$labels = $this->entity_service->get_labels( $reference );
+
+				// Get the entity URI.
+				$item = array( '@id' => $this->entity_service->get_uri( $reference ) );
+
+				// Check if the labels match any part of the title.
+				$matches = 1 === preg_match( '/' . implode( '|', $labels ) . '/', $post->post_title );
+
+				// If the title matches, assign the entity to the about, otherwise to the mentions.
+				if ( $matches ) {
+					$about[] = $item;
+				} else {
+					$mentions[] = $item;
+				}
+			}
+
+			// If we have abouts, assign them to the JSON-LD.
+			if ( 0 < sizeof( $about ) ) {
+				$jsonld['about'] = $about;
+			}
+
+			// If we have mentions, assign them to the JSON-LD.
+			if ( 0 < sizeof( $mentions ) ) {
+				$jsonld['mentions'] = $mentions;
+			}
+
 		}
 
 		return $jsonld;
