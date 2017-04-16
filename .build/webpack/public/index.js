@@ -6,7 +6,7 @@ const config = {
 		'wordlift-navigator': './src/scripts/navigator/index.js'
 	},
 	output: {
-		path: './src/public/js',
+		path: path.resolve( __dirname, '../../..', './src/public/js' ),
 		filename: '[name].bundle.js'
 	},
 	module: {

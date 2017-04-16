@@ -10,7 +10,7 @@ const config = {
 		'wordlift-admin-tinymce-views': './src/scripts/admin-tinymce-views/index.js'
 	},
 	output: {
-		path: './src/admin/js',
+		path: path.resolve( __dirname, '../../..', './src/admin/js' ),
 		filename: '[name].bundle.js'
 	},
 	module: {

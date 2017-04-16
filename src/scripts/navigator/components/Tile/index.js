@@ -20,6 +20,7 @@ import Thumbnail from '../Thumbnail';
 import Title from '../Title';
 import Excerpt from '../Excerpt';
 import More from '../More';
+import localization from '../../../common/localization/LocalizationComponent';
 
 /**
  * Define the {@link App}.
@@ -27,15 +28,15 @@ import More from '../More';
  * @since 3.12.0
  * @return {Function} The `render` function.
  */
-const Tile = ( { entity, post } ) => (
+const Tile = ( { entity, post, l10n } ) => (
 	<Wrapper className={ entity.mainType }>
 		<Header entity={ entity } />
 		<Thumbnail source={ post.thumbnail } />
 		<Title link={ post.permalink }>{ post.title }</Title>
 		<Excerpt>{ post.excerpt }</Excerpt>
-		<More link={ post.permalink }>{ wlNavigator.l10n[ 'Read More' ]}</More>
+		<More link={ post.permalink }>{ l10n[ 'Read More' ]}</More>
 	</Wrapper>
 );
 
 // Finally export the `Tile`.
-export default Tile;
+export default localization( Tile );

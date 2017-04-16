@@ -5,7 +5,7 @@ const config = {
 		'backend': './tests/e2e/scripts/backend/index.js',
 	},
 	output: {
-		path: './tests/e2e/tests',
+		path: path.resolve( __dirname, '../../..', './tests/e2e/tests' ),
 		filename: '[name]/indexSpec.js'
 	},
 	module: {

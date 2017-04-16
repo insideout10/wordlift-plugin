@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "env": {
     "browser": true,
     "es6": true
@@ -18,11 +19,11 @@
     "process": true,
     "tinymce": true,
     "tinyMCE": true,
-    "wlNavigator": true,
     "wlSettings": true,
     "wordlift": true,
     "wp": true,
-    "_": true
+    "_": true,
+    "_wlNavigator": true
   },
   "extends": "wpcalypso/react",
   "rules": {

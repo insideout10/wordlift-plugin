@@ -16,29 +16,34 @@ import ReactDOM from 'react-dom';
  * Internal dependencies
  */
 import App from './components/App';
+import LocalizationProvider from '../common/localization/LocalizationProvider';
 
 // Set a reference to jQuery.
 const $ = parent.jQuery;
 
-window.wl = window.wl || {};
-
-const Navigator = window.wl.Navigator = ( selector ) => {
+const Navigator = ( selector, post, postId, l10n ) => {
 	// Bail out if there are no elements where to attach.
 	if ( 0 === $( selector ).length ) {
 		return;
 	}
 
 	// Call the ajax action.
-// eslint-disable-next-line camelcase
-	parent.wp.ajax.post( 'wl_navigator_get', { post_id: parent.wlSettings.postId } ).done( function( data ) {
+	// eslint-disable-next-line camelcase
+	post( 'wl_navigator_get', { post_id: postId } ).done( function( data ) {
 		// Get all the Navigator elements (marked up with the
 		// `data-wl-navigator` attribute).
 		$( selector ).each( function() {
 			// Render the `React` tree.
-			ReactDOM.render( <App data={ data } />, this );
+			ReactDOM.render(
+				<LocalizationProvider l10n={ l10n }>
+					<App data={ data } />
+				</LocalizationProvider>,
+				this
+			);
 		} );
 	} );
 };
 
 // Initialize the default Navigator instance.
-Navigator( '[data-wl-navigator]' );
+Navigator( '[data-wl-navigator]', parent.wp.ajax.post, parent.wlSettings.postId,
+		   parent._wlNavigator.l10n );
