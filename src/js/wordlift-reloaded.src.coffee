@@ -578,7 +578,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
 
-    # $log.debug "Occurrences #{occurrences.length} for #{entityId}"
+    $log.debug "Updating #{occurrences.length} occurrence(s) for #{entityId}..."
+
     $scope.analysis.entities[ entityId ].occurrences = occurrences
 
     # Ghost event to bridge React.
@@ -642,7 +643,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if entity = analysis.entities[ entityId ]
 
           if entity.occurrences.length is 0
-            $log.warn "Entity #{entityId} selected as #{box.label} without valid occurences!"
+            $log.warn "Entity #{entityId} selected as #{box.label} without valid occurrences!", entity
             continue
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
@@ -1121,8 +1122,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         topic.mainType = dt
         topic
 
-      for id, localEntity of configuration.entities
+      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
+      for id, localEntity of configuration.entities
         data.entities[id] = localEntity
 
       for id, entity of data.entities
@@ -1270,7 +1272,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     # Preselect entity annotations in the provided analysis using the provided collection of annotations.
     service.preselect = (analysis, annotations) ->
-      $log.debug "Selecting entity annotations (#{annotations.length})..."
+
+      $log.debug "Selecting #{annotations.length} entity annotation(s)..."
 
       # Find the existing entities in the html
       for annotation in annotations
@@ -1333,8 +1336,15 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
   findEntities = (html) ->
     # Prepare a traslator instance that will traslate Html and Text positions.
     traslator = Traslator.create html
+
     # Set the pattern to look for *itemid* attributes.
-    pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
+    # pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
+    #
+    # Internet Explorer 11 and Edge have cases where the `id` attribute is kept,
+    # so we consider it in the pattern.
+    #
+    # See https://github.com/insideout10/wordlift-plugin/issues/520
+    pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim
 
     # Get the matches and return them.
     (while match = pattern.exec html
@@ -1379,14 +1389,22 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
     discardedItemId
 
   # TODO refactoring with regex
-  currentOccurencesForEntity = (entityId) ->
+  currentOccurrencesForEntity = (entityId) ->
+
+    $log.info "Calculating occurrences for entity #{entityId}..."
+
     ed = EditorAdapter.getEditor()
     occurrences = []
     return occurrences if entityId is ""
+
     annotations = ed.dom.select "span.textannotation"
+
+    $log.info "Found #{annotations.length} annotation(s) for entity #{entityId}."
+
     for annotation in annotations
       itemId = ed.dom.getAttrib annotation.id, "itemid"
       occurrences.push annotation.id  if itemId is entityId
+
     occurrences
 
   $rootScope.$on "analysisPerformed", (event, analysis) ->
@@ -1404,10 +1422,10 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
 
     for entityId in discarded
       if entityId
-        occurrences = currentOccurencesForEntity entityId
+        occurrences = currentOccurrencesForEntity entityId
         $rootScope.$broadcast "updateOccurencesForEntity", entityId, occurrences
 
-    occurrences = currentOccurencesForEntity entity.id
+    occurrences = currentOccurrencesForEntity entity.id
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
   $rootScope.$on "entityDeselected", (event, entity, annotationId) ->
@@ -1417,7 +1435,7 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
       for id, annotation of entity.annotations
         dedisambiguate annotation.id, entity
 
-    occurrences = currentOccurencesForEntity entity.id
+    occurrences = currentOccurrencesForEntity entity.id
     $rootScope.$broadcast "updateOccurencesForEntity", entity.id, occurrences
 
   service =
