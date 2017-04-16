@@ -1,27 +1,48 @@
-(
-	function( window, views, _, tinyMCE ) {
+/**
+ * TinyMCE Views: Navigator View.
+ *
+ * @since 3.12.0
+ */
 
-		const navigator = _.extend( {}, {
-			content: 'Loading...',
-			bindNode: function( x, element ) {
+/**
+ * External dependencies
+ */
+import ReactDOM from 'react-dom';
 
-				console.log( { bindNode: arguments } );
+/**
+ * Internal dependencies
+ */
+import { wp, _, _wlSettings, _wlNavigator } from '../common/wordpress';
+import Navigator from '../navigator';
 
-				const frame = tinyMCE.get( 'content' ).getWin();
+/**
+ * Define the `wl_navigator` view.
+ *
+ * @since 3.12.0
+ */
+const view = _.extend( {}, {
+	/**
+	 * @inheritDoc
+	 */
+	getContent: function() {
+		// Something is required here otherwise wp.media won't bind our node.
+		return _wlNavigator.l10n[ 'Loading Preview...' ];
+	},
 
-				frame.wlSettings = parent.wlSettings;
-				frame.wlNavigator = parent.wlNavigator;
-				frame.wl.Navigator( element );
+	/**
+	 * @inheritDoc
+	 */
+	bindNode: function( editor, node ) {
+		Navigator( node, _wlSettings.postId, _wlNavigator.l10n );
+	},
 
-			},
-			unbindNode: function() {
-
-				console.log( arguments );
-
-			}
-		} );
-
-		views.register( 'wl_navigator', _.extend( {}, navigator ) );
-
+	/**
+	 * @inheritDoc
+	 */
+	unbindNode: function( editor, node ) {
+		ReactDOM.unmountComponentAtNode( node );
 	}
-)( window.parent, window.parent.wp.mce.views, window.parent._, window.parent.tinyMCE );
+} );
+
+// Finally register the `wl_navigator` view.
+wp.mce.views.register( 'wl_navigator', view );

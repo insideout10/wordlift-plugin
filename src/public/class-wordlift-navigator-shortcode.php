@@ -42,7 +42,10 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		), $this->plugin->get_version(), true );
 
 		wp_localize_script( 'wordlift-navigator', '_wlNavigator', array(
-				'l10n' => array( 'Read More' => _x( 'Read More', 'Navigator Widget', 'wordlift' ) ),
+				'l10n' => array(
+					'Read More' => _x( 'Read More', 'Navigator Widget', 'wordlift' ),
+					'Loading Preview...' => _x( 'Loading Preview...', 'Navigator Widget', 'wordlift' ),
+				),
 			)
 		);
 

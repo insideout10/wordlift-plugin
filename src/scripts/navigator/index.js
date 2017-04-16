@@ -15,13 +15,11 @@ import ReactDOM from 'react-dom';
 /**
  * Internal dependencies
  */
+import { $, post, _wlSettings, _wlNavigator } from '../common/wordpress';
 import App from './components/App';
 import LocalizationProvider from '../common/localization/LocalizationProvider';
 
-// Set a reference to jQuery.
-const $ = parent.jQuery;
-
-const Navigator = ( selector, post, postId, l10n ) => {
+const Navigator = ( selector, postId, l10n ) => {
 	// Bail out if there are no elements where to attach.
 	if ( 0 === $( selector ).length ) {
 		return;
@@ -45,5 +43,7 @@ const Navigator = ( selector, post, postId, l10n ) => {
 };
 
 // Initialize the default Navigator instance.
-Navigator( '[data-wl-navigator]', parent.wp.ajax.post, parent.wlSettings.postId,
-		   parent._wlNavigator.l10n );
+Navigator( '[data-wl-navigator]', _wlSettings.postId, _wlNavigator.l10n );
+
+// Finally export the `Navigator` function.
+export default Navigator;
