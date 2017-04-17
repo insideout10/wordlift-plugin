@@ -8,13 +8,26 @@
  * External dependencies
  */
 import styled from 'styled-components';
+import { ellipsis, parseToHsl } from 'polished';
 
-// Define the header backgrounds.
-const BACKGROUNDS = {
-	what: '#2e92ff',
-	who: '#bd10e0',
-	where: '#7ed321',
-	when: '#f7941d',
+// Define the colors.
+const RELATIONS = {
+	what: {
+		background: '#2e92ff',
+		color: 0.5 < parseToHsl( '#2e92ff' ).lightness ? '#fff' : '#000'
+	},
+	who: {
+		background: '#bd10e0',
+		color: 0.5 < parseToHsl( '#bd10e0' ).lightness ? '#fff' : '#000'
+	},
+	where: {
+		background: '#7ed321',
+		color: 0.5 < parseToHsl( '#7ed321' ).lightness ? '#fff' : '#000'
+	},
+	when: {
+		background: '#f7941d',
+		color: 0.5 < parseToHsl( '#f7941d' ).lightness ? '#fff' : '#000'
+	},
 };
 
 /**
@@ -32,12 +45,17 @@ const Wrapper = styled.div`
     
     // Styling the text.
     font-size: 14px;
-    text-decoration: underline;
-    font-family: 'Droid Serif', serif;
+    font-weight: 700;
     
     // Coloring the header.
-    color: #fff;    
-    background-color: ${ props => BACKGROUNDS[ props.relation ] };
+    background-color: ${ props => RELATIONS[ props.relation ].background };
+    
+    a {
+    	color: ${ props => RELATIONS[ props.relation ].color };
+    	text-decoration: none;
+    }  
+    
+    ${ ellipsis() }
 `;
 
 // Finally export the `Wrapper`.

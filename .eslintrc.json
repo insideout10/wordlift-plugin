@@ -19,6 +19,7 @@
     "process": true,
     "tinymce": true,
     "tinyMCE": true,
+    "wl": true,
     "wlSettings": true,
     "wordlift": true,
     "wp": true,

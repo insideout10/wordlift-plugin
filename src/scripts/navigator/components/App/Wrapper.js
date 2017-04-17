@@ -8,11 +8,16 @@
  * External dependencies
  */
 import styled from 'styled-components';
+import { normalize } from 'polished';
 
 /**
  * @inheritDoc
  */
 const Wrapper = styled.ul`
+	${ normalize() }
+	
+	margin-left: 0;
+	padding-left: 0;
     text-align: center;
 `;
 

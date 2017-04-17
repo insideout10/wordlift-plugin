@@ -23,7 +23,7 @@ import CoverImage from '../CoverImage';
  */
 const Thumbnail = ( { source } ) => (
 	<Wrapper>
-		<CoverImage width="100%" height="120px" source={ source } />
+		<CoverImage width="100%" height="100px" source={ source } />
 	</Wrapper>
 );
 

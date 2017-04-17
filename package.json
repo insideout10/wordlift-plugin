@@ -86,7 +86,7 @@
   "dependencies": {
     "debug": "^2.6.3",
     "immutable": "^3.8.1",
-    "normalize.css": "^6.0.0",
+    "polished": "^1.0.3",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

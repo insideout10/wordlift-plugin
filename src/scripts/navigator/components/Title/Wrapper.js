@@ -8,12 +8,12 @@
  * External dependencies
  */
 import styled from 'styled-components';
+import { ellipsis } from 'polished';
 
 /**
  * @inheritDoc
  */
 const Wrapper = styled.div`
-    font-family: 'Droid Serif', serif;
     font-size: 12px;
     font-weight: 800;
     line-height: 16px;
@@ -23,6 +23,10 @@ const Wrapper = styled.div`
     width: 100%;
     height: 48x;
     margin: 8px 0 0;
+    
+    a {
+    	${ ellipsis() }
+    }
 `;
 
 // Finally export the `Wrapper`.
