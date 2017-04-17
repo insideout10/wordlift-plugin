@@ -4,7 +4,7 @@ require_once 'functions.php';
 /**
  * Class ChordShortcodeTest
  */
-class ChordShortcodeTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Chord_Shortcode_Test extends Wordlift_Unit_Test_Case {
 
 	private static $FIRST_POST_ID;
 	private static $MOST_CONNECTED_ENTITY_ID;
@@ -50,7 +50,7 @@ class ChordShortcodeTest extends Wordlift_Unit_Test_Case {
 	function testChordShortcodeOutput() {
 		$GLOBALS['post'] = self::$FIRST_POST_ID;
 
-		$chord = new Wordlift_Chord_Shortcode();
+		$chord = new Wordlift_Chord_Shortcode( $this->get_wordlift_test() );
 
 		$markup = $chord->render( array() );
 		$this->assertNotNull( $markup );
