@@ -13,8 +13,8 @@
     "build": "webpack --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
-    "test:php": "phpunit",
-    "test:multisite": "phpunit -c phpunit-multisite.xml",
+    "test:php": "./vendor/bin/phpunit",
+    "test:multisite": "./vendor/bin/phpunit -c phpunit-multisite.xml",
     "webpack:watch": "webpack -w --optimize-minimize --define process.env.NODE_ENV=\"'production'\""
   },
   "devDependencies": {
