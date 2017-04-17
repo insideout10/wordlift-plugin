@@ -7,6 +7,14 @@
  */
 
 /**
+ * Styles.
+ *
+ * The following style must be loaded as first in order to give precedence to
+ * styled-components (which are loaded after).
+ */
+import * as style from './style.scss';
+
+/**
  * External dependencies
  */
 import React from 'react';
@@ -24,7 +32,7 @@ import Tile from '../Tile';
  * @return {Function} The `render` function.
  */
 const App = ( { data } ) => (
-	<Wrapper>
+	<Wrapper className={ style[ 'wl-navigator-wrapper' ] }>
 		{ data.map( item => <Tile entity={ item.entity }
 								  post={ item.post } /> )}
 	</Wrapper>
