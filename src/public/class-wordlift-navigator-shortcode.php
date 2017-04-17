@@ -27,12 +27,9 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		return "<div data-wl-navigator='wl-navigator'></div>";
 	}
 
-	public function preview() {
-
-		$this->enqueue_scripts();
-
-	}
-
+	/**
+	 * {@inheritdoc}
+	 */
 	public function enqueue_scripts() {
 
 		// Enqueue the Navigator script.
@@ -42,12 +39,11 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 		), $this->plugin->get_version(), true );
 
 		wp_localize_script( 'wordlift-navigator', '_wlNavigator', array(
-				'l10n' => array(
-					'Read More' => _x( 'Read More', 'Navigator Widget', 'wordlift' ),
-					'Loading Preview...' => _x( 'Loading Preview...', 'Navigator Widget', 'wordlift' ),
-				),
-			)
-		);
+			'l10n' => array(
+				'Read More'                          => _x( 'Read More', 'Navigator Widget', 'wordlift' ),
+				'WordLift Navigator has no options.' => _x( 'WordLift Navigator has no options.', 'Navigator Widget preview in TinyMCE', 'wordlift' ),
+			),
+		) );
 
 	}
 

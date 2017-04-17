@@ -19,6 +19,16 @@ import { $, post, _wlSettings, _wlNavigator } from '../common/wordpress';
 import App from './components/App';
 import LocalizationProvider from '../common/localization/LocalizationProvider';
 
+/**
+ * Define the `Navigator` function which will load a Navigator at the nodes
+ * matched by `selector`, loading data for the specified `postId`.
+ *
+ * @since 3.12.0
+ * @param {string} selector The node selector.
+ * @param {numeric} postId The post id.
+ * @param {Object} l10n Localization messages.
+ * @constructor
+ */
 const Navigator = ( selector, postId, l10n ) => {
 	// Bail out if there are no elements where to attach.
 	if ( 0 === $( selector ).length ) {

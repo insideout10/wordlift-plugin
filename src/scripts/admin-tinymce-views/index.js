@@ -21,26 +21,39 @@ import Navigator from '../navigator';
  * @since 3.12.0
  */
 const view = _.extend( {}, {
+
 	/**
 	 * @inheritDoc
 	 */
-	getContent: function() {
-		// Something is required here otherwise wp.media won't bind our node.
-		return _wlNavigator.l10n[ 'Loading Preview...' ];
+	getContent() {
+		// Return some content in order to get the `render` function to call the
+		// `bindNode` function. The content hereby displayed is WordPress'
+		// standard loading placeholder.
+		return '<div class="loading-placeholder">' +
+			   '<div class="dashicons dashicons-admin-media"></div>' +
+			   '<div class="wpview-loading"><ins></ins></div>' +
+			   '</div>';
 	},
 
 	/**
 	 * @inheritDoc
 	 */
-	bindNode: function( editor, node ) {
+	bindNode( editor, node ) {
 		Navigator( node, _wlSettings.postId, _wlNavigator.l10n );
 	},
 
 	/**
 	 * @inheritDoc
 	 */
-	unbindNode: function( editor, node ) {
+	unbindNode( editor, node ) {
 		ReactDOM.unmountComponentAtNode( node );
+	},
+
+	/**
+	 * @inheritDoc
+	 */
+	edit() {
+		alert( _wlNavigator.l10n[ 'WordLift Navigator has no options.' ] );
 	}
 } );
 

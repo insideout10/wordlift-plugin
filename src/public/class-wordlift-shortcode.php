@@ -49,10 +49,6 @@ abstract class Wordlift_Shortcode {
 	 */
 	public abstract function render( $atts );
 
-	public function preview() {
-
-	}
-
 	/**
 	 * Enqueue scripts. Called by the shortcode implementations in their render
 	 * method.

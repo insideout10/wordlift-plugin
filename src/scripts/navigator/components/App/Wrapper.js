@@ -12,10 +12,8 @@ import styled from 'styled-components';
 /**
  * @inheritDoc
  */
-const Wrapper = styled.div`
-    display: table;
-    position: relative;
-    margin: 1em auto;
+const Wrapper = styled.ul`
+    text-align: center;
 `;
 
 // Finally export the `Wrapper`.
