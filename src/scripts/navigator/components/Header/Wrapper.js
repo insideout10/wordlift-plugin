@@ -36,7 +36,6 @@ const RELATIONS = {
 const Wrapper = styled.div`
     margin: 0;
     width: 100%;
-    display: block;
     box-sizing: border-box;
     
     // Positioning the text.
@@ -59,6 +58,9 @@ const Wrapper = styled.div`
     }  
     
     ${ ellipsis() }
+    
+    // Force the inline-block.
+	display: block;
 `;
 
 // Finally export the `Wrapper`.

@@ -13,8 +13,8 @@
         </testsuite>
     </testsuites>
     <php>
-        <const name="WP_DEBUG_LOG" value="true"/>
-        <const name="WP_DEBUG_DISPLAY" value="false"/>
+        <!--<const name="WP_DEBUG_LOG" value="true"/>-->
+        <!--<const name="WP_DEBUG_DISPLAY" value="false"/>-->
         <const name="WP_TESTS_MULTISITE" value="1" />
     </php>
 </phpunit>
