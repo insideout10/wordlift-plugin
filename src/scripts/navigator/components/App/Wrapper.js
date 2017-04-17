@@ -16,8 +16,8 @@ import { normalize } from 'polished';
 const Wrapper = styled.ul`
 	${ normalize() }
 	
-	margin-left: 0;
-	padding-left: 0;
+	margin: 0 0 20px 0;
+	padding: 0;
     text-align: center;
 `;
 

@@ -16,9 +16,14 @@ const Wrapper = styled.li`
     display: inline-block;
     list-style: none;
     vertical-align: top;
-    margin: 8px 4px;
-    width: 180px;
-    text-align: initial;    
+    margin: 8px 2px;
+    width: 136px;
+    text-align: initial;
+        
+	a {
+		text-decoration: none;
+		border-bottom: 0;
+	}
 `;
 
 // Finally export the `Wrapper`.

@@ -16,13 +16,13 @@ const Wrapper = styled.div`
     display: block;
     width: 100%;
     height: 16px;
-    margin: 16px 0 0;
+    margin: 8px 0 0;
     background-color: #d8d8d8;
     color: #000;
     text-align: right;
-    padding: 0 8px;
+    padding: 0 2px;
     box-sizing: border-box;
-    font-size: 12px;
+    font-size: 10px;
 `;
 
 // Finally export the `Wrapper`.

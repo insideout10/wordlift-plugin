@@ -44,15 +44,18 @@ const Wrapper = styled.div`
     padding: 0 8px;
     
     // Styling the text.
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
     
     // Coloring the header.
+   	color: ${ props => RELATIONS[ props.relation ].color };
     background-color: ${ props => RELATIONS[ props.relation ].background };
-    
+   
     a {
     	color: ${ props => RELATIONS[ props.relation ].color };
     	text-decoration: none;
+    	// Some style define the underline using border-bottom.
+    	border-bottom: 0;
     }  
     
     ${ ellipsis() }

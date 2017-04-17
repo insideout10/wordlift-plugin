@@ -14,9 +14,9 @@ import { ellipsis } from 'polished';
  * @inheritDoc
  */
 const Wrapper = styled.div`
-    font-size: 12px;
-    font-weight: 800;
-    line-height: 16px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 12px;
     text-decoration: none;
     color: #000;
     display: block;
