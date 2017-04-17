@@ -6,8 +6,7 @@ const config = {
 		'wordlift-admin': './src/admin/js/wordlift-admin.js',
 		'wordlift-admin-edit-page': './src/scripts/admin-edit-page/index.js',
 		'wordlift-admin-settings-page': './src/scripts/admin-settings-page/index.js',
-		'wordlift-admin-tinymce': './src/scripts/admin-tinymce/index.js',
-		'wordlift-admin-tinymce-views': './src/scripts/admin-tinymce-views/index.js'
+		'wordlift-admin-tinymce': './src/scripts/admin-tinymce/index.js'
 	},
 	output: {
 		path: path.resolve( __dirname, '../../..', './src/admin/js' ),
@@ -51,14 +50,15 @@ const config = {
 		]
 	},
 	plugins: [
-		new webpack.DefinePlugin( {
-									  'process.env': {
-										  NODE_ENV: JSON.stringify( 'production' )
-									  }
-								  } ),
-		new webpack.optimize.UglifyJsPlugin()
+		new webpack.optimize.CommonsChunkPlugin(
+			{
+				name: 'wordlift-admin-vendor',
+				minChunks: function( module ) {
+					return module.context && module.context.indexOf( 'node_modules' ) !== - 1;
+				}
+			} )
 	],
-	devtool: 'cheap-module-eval-source-map'
+	devtool: 'cheap-module-source-map'
 };
 
 module.exports = config;

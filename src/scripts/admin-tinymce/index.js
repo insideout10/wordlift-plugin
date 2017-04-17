@@ -10,31 +10,37 @@
 /**
  * Internal dependencies
  */
-import { $ } from '../common/wordpress';
+import { $, _wlSettings } from '../common/wordpress';
 import delay from '../common/delay';
-
-const pluginURL = '/../../../../../wp-content/plugins/wordlift/';
 
 // A handy function to load a script in the TinyMCE frame.
 const script = ( editor, source ) => {
-	const elementId = editor.dom.uniqueId();
+	// Create the script element.
+	const element = document.createElement( 'script' );
+	element.type = 'text/javascript';
+	element.src = source;
+	// Ensure scripts are executed in order.
+	//
+	// See note [2]:
+	// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/script#Browser_compatibility
+	// See also: https://bugs.chromium.org/p/chromium/issues/detail?id=594444
+	element.async = false;
 
-	const element = editor.dom.create( 'script', {
-		id: elementId,
-		type: 'text/javascript',
-		src: source
-	} );
-
+	// Finaally append the `script` element to the head of TinyMCE's `iframe`.
 	editor.getDoc().getElementsByTagName( 'head' )[ 0 ].appendChild( element );
 };
 
+// Get a reference to the scripts to load into TinyMCE.
+const sources = parent._wlAdminEditPage.tinymce.scripts;
+
 // Add our plugin.
-tinymce.PluginManager.add( 'wl_tinymce', ( editor, url ) => {
+tinymce.PluginManager.add( 'wl_tinymce', ( editor ) => {
 	// When the editor is initialized add support for the Navigator
 	// shortcode and configure the TinyMCE views.
 	editor.on( 'init', function() {
-		script( editor, url + pluginURL + 'public/js/wordlift-navigator.bundle.js' );
-		script( editor, url + pluginURL + 'admin/js/wordlift-admin-tinymce-views.bundle.js' );
+		for ( const source of sources ) {
+			script( editor, source + '?version=' + _wlSettings.version );
+		}
 	} );
 
 	// Listen for `KeyPress` events.

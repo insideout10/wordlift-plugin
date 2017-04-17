@@ -1,10 +1,7 @@
 const AdminConfiguration = require( './.build/webpack/admin' );
+const EditorConfiguration = require( './.build/webpack/tinymce' );
 const PublicConfiguration = require( './.build/webpack/public' );
 const TestsConfiguration = require( './.build/webpack/tests' );
-
-// @todo: consider splitting vendor, see:
-// * https://robertknight.github.io/posts/webpack-dll-plugins/
-// * https://webpack.js.org/concepts/entry-points/
 
 // @todo: add the other files:
 // * wordlift, for the WordPress front-end,
@@ -18,6 +15,7 @@ const TestsConfiguration = require( './.build/webpack/tests' );
 
 const config = [
 	AdminConfiguration,
+	EditorConfiguration,
 	PublicConfiguration,
 	TestsConfiguration
 ];

@@ -29,7 +29,10 @@ import LocalizationProvider from '../common/localization/LocalizationProvider';
  * @param {Object} l10n Localization messages.
  * @constructor
  */
-const Navigator = ( selector, postId, l10n ) => {
+
+window.wl = window.wl || {};
+
+const Navigator = window.wl.Navigator = ( selector, postId, l10n ) => {
 	// Bail out if there are no elements where to attach.
 	if ( 0 === $( selector ).length ) {
 		return;

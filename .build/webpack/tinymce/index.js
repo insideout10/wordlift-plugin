@@ -3,10 +3,10 @@ const path = require( 'path' );
 
 const config = {
 	entry: {
-		'wordlift-navigator': './src/scripts/navigator/index.js'
+		'wordlift-tinymce-views': './src/scripts/tinymce-views/index.js'
 	},
 	output: {
-		path: path.resolve( __dirname, '../../..', './src/public/js' ),
+		path: path.resolve( __dirname, '../../..', './src/admin/js/tinymce' ),
 		filename: '[name].bundle.js'
 	},
 	module: {
@@ -46,15 +46,6 @@ const config = {
 			}
 		]
 	},
-	plugins: [
-		new webpack.optimize.CommonsChunkPlugin(
-			{
-				name: 'wordlift-vendor',
-				minChunks: function( module ) {
-					return module.context && module.context.indexOf( 'node_modules' ) !== - 1;
-				}
-			} )
-	],
 	devtool: 'cheap-module-source-map'
 };
 

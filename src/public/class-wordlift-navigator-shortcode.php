@@ -34,9 +34,10 @@ class Wordlift_Navigator_Shortcode extends Wordlift_Shortcode {
 
 		// Enqueue the Navigator script.
 		wp_enqueue_script( 'wordlift-navigator', dirname( plugin_dir_url( __FILE__ ) ) . '/public/js/wordlift-navigator.bundle.js', array(
+			'wordlift-vendor',
 			'jquery',
 			'wp-util',
-		), $this->plugin->get_version(), true );
+		), $this->plugin->get_version(), false );
 
 		wp_localize_script( 'wordlift-navigator', '_wlNavigator', array(
 			'l10n' => array(

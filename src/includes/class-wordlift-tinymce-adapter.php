@@ -59,7 +59,7 @@ class Wordlift_Tinymce_Adapter {
 		// Add our own JavaScript file to TinyMCE's extensions.
 		$plugins['wordlift']      = plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-reloaded.js?ver=' . $version;
 		$plugins['wl_shortcodes'] = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift_shortcode_tinymce_plugin.js?ver=' . $version;
-		$plugins['wl_tinymce']    = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-tinymce.bundle.js?ver=' . $version;
+		$plugins['wl_tinymce']      = plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-admin-tinymce.bundle.js?ver=' . $version;
 
 		return $plugins;
 	}

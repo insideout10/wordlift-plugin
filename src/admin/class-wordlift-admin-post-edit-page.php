@@ -62,10 +62,24 @@ class Wordlift_Admin_Post_Edit_Page {
 		// code is properly refactored.
 		wp_enqueue_script(
 			'wordlift-admin-edit-page', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-edit-page.bundle.js',
-			array( $this->plugin->get_plugin_name(), 'mce-view' ),
+			array(
+				'wordlift-admin-vendor',
+				$this->plugin->get_plugin_name(),
+				'mce-view',
+			),
 			$this->plugin->get_version(),
 			false
 		);
+
+		wp_localize_script( 'wordlift-admin-edit-page', '_wlAdminEditPage', array(
+			'tinymce' => array(
+				'scripts' => array(
+					plugin_dir_url( dirname( __FILE__ ) ) . 'public/js/wordlift-vendor.bundle.js',
+					plugin_dir_url( dirname( __FILE__ ) ) . 'public/js/wordlift-navigator.bundle.js',
+					plugin_dir_url( __FILE__ ) . 'js/tinymce/wordlift-tinymce-views.bundle.js',
+				),
+			),
+		) );
 
 		/** @var Wordlift_Shortcode $shortcode */
 		foreach ( $this->shortcodes as $shortcode ) {

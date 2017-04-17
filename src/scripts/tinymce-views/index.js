@@ -13,7 +13,6 @@ import ReactDOM from 'react-dom';
  * Internal dependencies
  */
 import { wp, _, _wlSettings, _wlNavigator } from '../common/wordpress';
-import Navigator from '../navigator';
 
 /**
  * Define the `wl_navigator` view.
@@ -39,7 +38,7 @@ const view = _.extend( {}, {
 	 * @inheritDoc
 	 */
 	bindNode( editor, node ) {
-		Navigator( node, _wlSettings.postId, _wlNavigator.l10n );
+		wl.Navigator( node, _wlSettings.postId, _wlNavigator.l10n );
 	},
 
 	/**

@@ -112,6 +112,9 @@ class Wordlift_Public {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-public.js', array( 'jquery' ), $this->version, true );
 		wp_localize_script( $this->plugin_name, 'wlSettings', $settings );
 
+		// Define the vendor script.
+		wp_register_script( 'wordlift-vendor', plugin_dir_url( __FILE__ ) . 'js/wordlift-vendor.bundle.js', array(), $this->version, true );
+
 	}
 
 }

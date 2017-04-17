@@ -111,8 +111,16 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
+		// Registering the `wordlift-vendor` here is required in order to enable
+		// front-end libraries, such as the `Navigator` to be previewed in TinyMCE.
+		wp_register_script( 'wordlift-vendor', plugin_dir_url( dirname( __FILE__ ) ) . 'public/js/wordlift-vendor.bundle.js', array(), $this->version, false );
+
+		// Register the `wordlift-admin-vendor` bundle.
+		wp_register_script( 'wordlift-admin-vendor', plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-vendor.bundle.js', array(), $this->version, false );
+
 		// Enqueue the admin scripts.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array(
+			'wordlift-admin-vendor',
 			'jquery',
 			'underscore',
 			'backbone',
@@ -143,7 +151,8 @@ class Wordlift_Admin {
 			// from the results, since we don't want the current entity to be discovered by the analysis.
 			//
 			// See https://github.com/insideout10/wordlift-plugin/issues/345
-			$params['itemId'] = Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID );
+			$params['itemId']  = Wordlift_Entity_Service::get_instance()->get_uri( $entity_being_edited->ID );
+			$params['version'] = $this->version;
 
 		}
 
