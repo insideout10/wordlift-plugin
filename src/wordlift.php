@@ -232,9 +232,9 @@ function wordlift_admin_enqueue_scripts() {
 
 	wp_enqueue_script( 'jquery-ui-autocomplete' );
 	wp_enqueue_script( 'angularjs', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular.min.js' );
-	wp_enqueue_script( 'angularjs-geolocation', plugin_dir_url( __FILE__ ) . '/bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js' );
-	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js' );
-	wp_enqueue_script( 'angularjs-animate', 'https://code.angularjs.org/1.3.11/angular-animate.min.js' );
+	wp_enqueue_script( 'angularjs-geolocation', plugin_dir_url( __FILE__ ) . 'bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js', array( 'angularjs' ) );
+	wp_enqueue_script( 'angularjs-touch', 'https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.11/angular-touch.min.js', array( 'angularjs' ) );
+	wp_enqueue_script( 'angularjs-animate', 'https://code.angularjs.org/1.3.11/angular-animate.min.js', array( 'angularjs' ) );
 
 	// Disable auto-save for custom entity posts only
 	if ( Wordlift_Entity_Service::TYPE_NAME === get_post_type() ) {
@@ -381,7 +381,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
 		$image_url_esc = wl_sparql_escape_uri( $image_url );
-		$sparql .= " <$uri_e> schema:image <$image_url_esc> . \n";
+		$sparql        .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}
 
 	return $sparql;
