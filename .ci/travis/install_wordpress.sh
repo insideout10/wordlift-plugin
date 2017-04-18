@@ -22,6 +22,10 @@ install ()
     wp core config --dbname=wordpress --dbuser=root --dbprefix="wp_${instance}_"
     wp core install --url="http://wordpress.local/${instance}" --title=WordPress --admin_user=admin --admin_password=admin --admin_email=admin@example.org
 
+    # Set the rewrite structure.
+    echo "apache_modules:\n  - mod_rewrite" > wp-cli.yml
+    wp rewrite structure '/%postname%/' --hard
+
     # Create a post to test analysis results.
     wp post create --post_type=post --post_title='A sample post' --post_content='WordLift brings the power of Artificial Intelligence to help you produce richer content and organize it around your audience. Supercalifragilisticexpialidocious.'
 

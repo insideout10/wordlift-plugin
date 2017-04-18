@@ -652,7 +652,6 @@ require_once( 'shortcodes/wordlift_shortcode_chord.php' );
 require_once( 'shortcodes/wordlift_shortcode_geomap.php' );
 require_once( 'shortcodes/wordlift_shortcode_field.php' );
 require_once( 'shortcodes/wordlift_shortcode_faceted_search.php' );
-require_once( 'shortcodes/wordlift_shortcode_navigator.php' );
 
 require_once( 'widgets/wordlift_widget_geo.php' );
 require_once( 'widgets/wordlift_widget_chord.php' );
