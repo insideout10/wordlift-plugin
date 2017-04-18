@@ -66,6 +66,7 @@ class Wordlift_Sample_Data_Ajax_Adapter {
 		$this->sample_data_service->delete();
 
 		// Send success.
+		@header( 'Content-Disposition: inline' );
 		wp_send_json_success();
 
 	}
