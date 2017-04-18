@@ -7,8 +7,8 @@
 const OpenPostLoremIpsum = function() {
 	it( 'opens the Lorem Ipsum post', function() {
 		browser.url( '/lorem-ipsum' );
-		browser.waitForExist( '[data-wl-navigator] > ul', 10000 );
-		browser.scroll( '[data-wl-navigator]', 0, 100 );
+		browser.waitForExist( '[data-wl-navigator] > ul', 5000 );
+		browser.scroll( '[data-wl-navigator]', 0, -100 );
 		browser.pause( 3000 );
 	} );
 };
