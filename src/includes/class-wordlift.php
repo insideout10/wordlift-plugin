@@ -481,9 +481,25 @@ class Wordlift {
 	protected $navigator_ajax_adapter;
 
 	/**
-	 * {@link Wordlift}'s singleton instance.
+	 * The {@link Wordlift_Sample_Data_Service} instance.
 	 *
-	 * @since  3.11.2
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Sample_Data_Service $sample_data_service The {@link Wordlift_Sample_Data_Service} instance.
+	 */
+	protected $sample_data_service;
+
+	/**
+	 * The {@link Wordlift_Sample_Data_Ajax_Adapter} instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Sample_Data_Ajax_Adapter $sample_data_ajax_adapter The {@link Wordlift_Sample_Data_Ajax_Adapter} instance.
+	 */
+	protected $sample_data_ajax_adapter;
+
+	/**
+	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
 	 * @access private
@@ -718,12 +734,14 @@ class Wordlift {
 
 		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-navigator-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 
 		/** Ajax Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-navigator-ajax-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -875,6 +893,7 @@ class Wordlift {
 		// Create an instance of the Schema service.
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
 		$this->schema_service        = new Wordlift_Schema_Service();
+		$this->entity_type_service   = new Wordlift_Entity_Type_Service( $this->schema_service );
 
 		// Create an instance of the Notice service.
 		$this->notice_service = new Wordlift_Notice_Service();
@@ -891,6 +910,9 @@ class Wordlift {
 		// Create a new instance of the Redirect service.
 		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
 
+		$this->sample_data_service = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service );
+
+		/** Shortcodes. */
 		// Initialize the shortcodes.
 		$navigator_shortcode = new Wordlift_Navigator_Shortcode( $this );
 		new Wordlift_Chord_Shortcode( $this );
@@ -918,8 +940,6 @@ class Wordlift {
 
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
-
-		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
 
 		$this->navigator_service = new Wordlift_Navigator_Service( $this->entity_service );
 
@@ -955,7 +975,8 @@ class Wordlift {
 		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
 
 		/** Ajax Adapters. */
-		$this->navigator_ajax_adapter = new Wordlift_Navigator_Ajax_Adapter( $this->navigator_service );
+		$this->navigator_ajax_adapter   = new Wordlift_Navigator_Ajax_Adapter( $this->navigator_service );
+		$this->sample_data_ajax_adapter = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
 
 		/** WordPress Admin UI. */
 
@@ -1142,6 +1163,8 @@ class Wordlift {
 
 		/** Ajax Adapters. */
 		$this->loader->add_action( 'wp_ajax_wl_navigator_get', $this->navigator_ajax_adapter, 'get' );
+		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
+		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
