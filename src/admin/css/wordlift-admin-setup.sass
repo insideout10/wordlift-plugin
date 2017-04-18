@@ -127,13 +127,15 @@ body
     width: 100%
     text-align: center
 
+    *:first-child
+      margin-right: 4px
+
   button, input[type="button"], a.button, input[type="submit"]
     // Reset default.
     border: 0
     cursor: pointer
     // Positioning.
     display: inline-block
-    margin-right: 32px
     // Size
     min-width: 112px
     height: 32px
@@ -239,38 +241,39 @@ body
     white-space: normal
     text-align: left
     // Size.
-    height: 80px
     max-width: 480px
+    max-height: 130px
 
     li
       // Reset default.
-      height: 40px
+      min-height: 40px
       width: 150px
       // Preventing new lines.
       white-space: nowrap
       // Text job.
       font-size: 14px
-      line-height: 40px
-      
-      span.fa
-        font-size: 20px
-        line-height: 16px
-        width: 20px
-        height: 20px
-        vertical-align: middle
-        margin-right: 4px
-        
-      span.list-value
-        // Position
-        display: inline-block
-        // Size
-        width: 100px
-        // Allows multiple lines
-        white-space: normal
-        // Text job
-        line-height: 16px
-        @media screen and (max-width: 550px)
-          width: 100%
+
+      span
+        vertical-align: top
+
+        &.fa
+          font-size: 20px
+          width: 20px
+          margin-right: 4px
+          text-align: center
+
+        &.list-value
+          // Position
+          display: inline-block
+          margin-top: 2px
+          // Size
+          width: 125px
+          // Allows multiple lines
+          white-space: normal
+          // Text job
+          line-height: 16px
+          @media screen and (max-width: 550px)
+            width: 100%
 
   input[type="text"], select
     // Reset default.
