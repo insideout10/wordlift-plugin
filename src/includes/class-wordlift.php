@@ -763,6 +763,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-tabs-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-publisher-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-person-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
@@ -932,6 +933,7 @@ class Wordlift {
 		$this->language_select_element = new Wordlift_Admin_Language_Select_Element();
 		$tabs_element                  = new Wordlift_Admin_Tabs_Element();
 		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $publisher_service, $tabs_element, $this->select2_element );
+		$this->person_element       = new Wordlift_Admin_Person_Element( $this->configuration_service, $publisher_service, $tabs_element, $this->select2_element );
 
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->status_page               = new Wordlift_Admin_Status_Page();
@@ -963,7 +965,7 @@ class Wordlift {
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
 		// User Profile.
-		new Wordlift_Admin_User_Profile_Page( $this );
+		new Wordlift_Admin_User_Profile_Page( $this, $this->person_element );
 
 		$this->event_entity_page_service = new Wordlift_Event_Entity_Page_Service();
 
