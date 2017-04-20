@@ -673,6 +673,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
 
+		/*
+		 * Load the excerpt helper.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-excerpt-helper.php';
+
 		/**
 		 * Load the JSON-LD service to publish entities using JSON-LD.s
 		 *
