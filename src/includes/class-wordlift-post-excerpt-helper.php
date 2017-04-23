@@ -24,7 +24,7 @@
 class Wordlift_Post_Excerpt_Helper {
 
 	/**
-	 * Get the excerpt for the provided {@link WP_Post}.
+	 * Get the text excerpt for the provided {@link WP_Post}.
 	 *
 	 * Since anyone can hook on the excerpt generation filters, and
 	 * amend it with non textual content, we play it self and generate
@@ -32,38 +32,19 @@ class Wordlift_Post_Excerpt_Helper {
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param WP_Post     $post   The {@link WP_Post}.
-	 * @param int    	  $length The desired excerpt length.
-	 * @param string	  $more   The desired more string.
+	 * @param WP_Post $post   The {@link WP_Post}.
+	 * @param int     $length The desired excerpt length.
+	 * @param string  $more   The desired more string.
 	 *
 	 * @return string The excerpt.
 	 */
-	public static function get_excerpt( $post, $length = 55, $more = '[&hellip;]' ) {
+	public static function get_text_excerpt( $post, $length = 55, $more = '...' ) {
 
-		// Temporary pop the previous post.
-		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
+		// Get the excerpt and trim it. Use the `post_excerpt` if available.
+		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post->post_content, $length, $more );
 
-		// Setup our own post.
-		setup_postdata( $GLOBALS['post'] = $post );
-
-		if ( '' == $post->post_excerpt ) {
-			$text = get_the_content( '' );
-			$text = strip_shortcodes( $text );
-			$excerpt = wp_trim_words( $text, $length, $more );
-			// Adjust html output same way as for the normal excerpt,
-			// just force all functions depending on the_excerpt hook.
-			$excerpt = shortcode_unautop( wpautop( convert_chars( convert_smilies( wptexturize( $excerpt ) ) ) ) );
-		} else {
-			$excerpt = shortcode_unautop( wpautop( convert_chars( convert_smilies( wptexturize( $post->post_excerpt ) ) ) ) );
-		}
-
-		// Restore the previous post.
-		if ( null !== $original ) {
-			setup_postdata( $GLOBALS['post'] = $original );
-		}
-
-		// Finally return the excerpt.
-		return $excerpt;
+		// Remove shortcodes and decode html entities.
+		return html_entity_decode( strip_shortcodes( $excerpt ) );
 	}
 
 }
