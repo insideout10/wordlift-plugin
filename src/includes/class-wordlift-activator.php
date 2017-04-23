@@ -33,7 +33,6 @@ class Wordlift_Activator {
 
 		// Do not let the plugin be activate on wordpress versions before 4.2.
 		$version = get_bloginfo( 'version' );
-
 		if ( version_compare( $version, '4.2', '<' ) ) {
 			die( __( 'The WordLift plugin requires WordPress version 4.2 or above.', 'wordlift' ) );
 		}
