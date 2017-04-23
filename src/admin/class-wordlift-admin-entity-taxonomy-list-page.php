@@ -48,8 +48,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 		$url               = admin_url( "admin.php?page=wl_entity_type_settings&tag_ID=$term->term_id" );
 		$actions['wl_seo'] = '<a href="' . esc_url( $url ) . '">' . __( 'SEO Settings', 'wordlift' ) . '</a>';
 
-		// Hacks for pre 4.7 compatibility
-
+		// Hacks for pre 4.7 compatibility.
 		unset( $actions['inline hide-if-no-js'] );
 		unset( $actions['edit'] );
 
@@ -68,9 +67,9 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	 * @param int    $user_id The user ID.
 	 * @param array  $args    Adds the context to the cap. Typically the object ID.
 	 *
-	 * @return array 	Array containing the do_not_allow capability for super admin
+	 * @return array    Array containing the do_not_allow capability for super admin
 	 *                  when editing and deleting entity type terms capabilities
-	 *					are being "approved"
+	 *                    are being "approved"
 	 */
 	function restrict_super_admin( $caps, $cap, $user_id, $args ) {
 
@@ -87,7 +86,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 
 	/**
 	 * Override the capabilities related to managing the entity type terms
-	 * required for wordpress versions below 4.7 to get access to the admin page.
+	 * required for WordPress < 4.7 to get access to the admin page.
 	 *
 	 * @since 3.12.0
 	 *
@@ -96,7 +95,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	 * @param int    $user_id The user ID.
 	 * @param array  $args    Adds the context to the cap. Typically the object ID.
 	 *
-	 * @return array 	Array containing the manage_options capability
+	 * @return array    Array containing the manage_options capability
 	 */
 	function enable_admin_access_pre_47( $caps, $cap, $user_id, $args ) {
 		if ( 'wl_entity_type_edit_term' != $cap ) {
@@ -123,6 +122,7 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 		}
 
 		$mapped[] = 'manage_options';
+
 		return $mapped;
 	}
 }
