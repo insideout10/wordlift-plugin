@@ -53,6 +53,12 @@ class Wordlift_Jsonld_Service {
 	 */
 	public function get() {
 
+		// Tell NewRelic to ignore us, otherwise NewRelic customers might receive
+		// e-mails with a low apdex score.
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/521
+		Wordlift_NewRelic_Adapter::ignore_apdex();
+
 		// Clear the buffer to be sure someone doesn't mess with our response.
 		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/406.

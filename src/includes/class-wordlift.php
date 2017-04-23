@@ -674,6 +674,9 @@ class Wordlift {
 		// Load the `Wordlift_Category_Taxonomy_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-category-taxonomy-service.php';
 
+		/** Adapters. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
