@@ -75,12 +75,10 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 	 */
 	function restrict_super_admin( $caps, $cap, $user_id, $args ) {
 
-		if ( is_super_admin() ) {
-			switch ( $cap ) {
-				case 'wl_entity_type_edit_term':
-				case 'wl_entity_type_delete_term':
-					$caps[] = 'do_not_allow';
-			}
+		switch ( $cap ) {
+			case 'wl_entity_type_edit_term':
+			case 'wl_entity_type_delete_term':
+				$caps[] = 'do_not_allow';
 		}
 
 		return $caps;
