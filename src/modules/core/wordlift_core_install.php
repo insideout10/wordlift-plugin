@@ -211,7 +211,6 @@ function wl_core_upgrade_db_1_0_to_3_10() {
 				) );
 			}
 		}
-
 	}
 
 }

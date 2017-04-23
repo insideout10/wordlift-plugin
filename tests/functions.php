@@ -8,7 +8,7 @@ define( 'WL_ENHANCER_NAMESPACE', 'a' );
 define( 'WL_DUBLIN_CORE_NAMESPACE', 'b' );
 define( 'WL_JSON_LD_CONTEXT', serialize( array(
 	WL_ENHANCER_NAMESPACE    => 'http://fise.iks-project.eu/ontology/',
-	WL_DUBLIN_CORE_NAMESPACE => 'http://purl.org/dc/terms/'
+	WL_DUBLIN_CORE_NAMESPACE => 'http://purl.org/dc/terms/',
 ) ) );
 
 // Disable buffering.
@@ -27,10 +27,10 @@ require_once( 'jsonld.php' );
  * Create a new post.
  *
  * @param string $content The post content.
- * @param string $slug The post slug.
- * @param string $title The post title.
- * @param string $status The post status (e.g. draft, publish, pending, private, ...)
- * @param string $type The post status (e.g. post, page, link, ...)
+ * @param string $slug    The post slug.
+ * @param string $title   The post title.
+ * @param string $status  The post status (e.g. draft, publish, pending, private, ...)
+ * @param string $type    The post status (e.g. post, page, link, ...)
  *
  * @return int|WP_Error The post ID or a WP_Error instance.
  */
@@ -41,7 +41,7 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
 		'post_name'    => $slug,
 		'post_status'  => $status,
 		'post_type'    => $type,
-		'post_author'  => wl_test_create_user()
+		'post_author'  => wl_test_create_user(),
 	);
 
 	if ( ! empty( $title ) ) {
@@ -61,7 +61,7 @@ function wl_create_post( $content, $slug, $title, $status = 'draft', $type = 'po
 /**
  * Delete the post and related attachments with the specified id (it's basically a proxy to wp_delete_post).
  *
- * @param int $post_id The post id.
+ * @param int  $post_id      The post id.
  * @param bool $force_delete Whether to force delete.
  *
  * @return false|WP_Post False on failure and the post object for the deleted post success.
@@ -96,7 +96,7 @@ function wl_delete_post_attachments( $post_id ) {
 /**
  * Update the content of the post with the specified ID.
  *
- * @param int $post_id The post ID.
+ * @param int    $post_id The post ID.
  * @param string $content The post content.
  *
  * @return int|WP_Error The post ID in case of success, a WP_Error in case of error.
@@ -108,7 +108,7 @@ function wl_update_post( $post_id, $content ) {
 	$wp_error = null;
 	$args     = array(
 		'ID'           => $post_id,
-		'post_content' => $content
+		'post_content' => $content,
 	);
 
 	// Return WP_Error in case of errors.
@@ -171,7 +171,7 @@ function wl_analyze_post( $post_id ) {
  * Embed the analysis results in the post content. It should match what happens client-side with the related function
  * in the app.services.EditorService.coffee file.
  *
- * @param array $results The analysis results.
+ * @param array  $results The analysis results.
  * @param string $content The post content.
  *
  * @return string The content with the annotations embedded.
@@ -448,7 +448,8 @@ function wl_parse_response( $json ) {
 					'sel_prefix' => $item->{WL_ENHANCER_NAMESPACE . ':selection-prefix'}->{'@value'},
 					'sel_suffix' => $item->{WL_ENHANCER_NAMESPACE . ':selection-suffix'}->{'@value'},
 					'sel_text'   => $item->{WL_ENHANCER_NAMESPACE . ':selected-text'}->{'@value'},
-					'entities'   => array() // will hold the entities referenced by this text-annotation.
+					'entities'   => array()
+					// will hold the entities referenced by this text-annotation.
 				);
 			}
 		} // Entity
@@ -482,14 +483,14 @@ function wl_parse_response( $json ) {
 		// Add the entity to the text annotation entities array.
 		array_push( $text_annotation['entities'], array(
 			'entity'     => $entity,
-			'confidence' => $confidence
+			'confidence' => $confidence,
 		) );
 	}
 
 	return array(
 		'text_annotations'   => $text_annotations,
 		'entity_annotations' => $entity_annotations,
-		'entities'           => $entities
+		'entities'           => $entities,
 	);
 }
 
@@ -559,9 +560,9 @@ function wl_execute_sparql_query( $query ) {
 		'method'  => 'POST',
 		'headers' => array(
 			'Accept'       => 'application/json',
-			'Content-type' => 'application/sparql-update; charset=utf-8'
+			'Content-type' => 'application/sparql-update; charset=utf-8',
 		),
-		'body'    => $query
+		'body'    => $query,
 	) );
 
 	// Send the request.
@@ -597,9 +598,9 @@ function wl_empty_blog() {
 		'post_type'      => array(
 			'post',
 			'page',
-			'entity'
+			'entity',
 		),
-		'post_status'    => 'any'
+		'post_status'    => 'any',
 	) ) );
 
 	wl_delete_users();
@@ -630,7 +631,7 @@ function wl_get_attachments( $post_id ) {
 		'post_type'      => 'attachment',
 		'posts_per_page' => - 1,
 		'post_status'    => 'any',
-		'post_parent'    => $post_id
+		'post_parent'    => $post_id,
 	) );
 }
 
@@ -667,7 +668,8 @@ function wl_configure_wordpress_test() {
 
 	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
-	do_action( 'activate_wordlift/wordlift.php' );
+	// Simulate WordLift activation.
+	activate_wordlift();
 
 	// If the WordLift key is set, then we'll configure it, otherwise we configure Redlink.
 	if ( false !== getenv( 'WORDLIFT_KEY' ) ) {
@@ -716,7 +718,7 @@ function wl_test_create_user() {
 		'user_login' => uniqid( 'user-' ),
 		'user_pass'  => 'tmppass',
 		'first_name' => 'Mario',
-		'last_name'  => 'Rossi'
+		'last_name'  => 'Rossi',
 	) );
 }
 
@@ -759,7 +761,7 @@ function rl_count_triples() {
 		return array(
 			'subjects'   => (int) $matches[1],
 			'predicates' => (int) $matches[2],
-			'objects'    => (int) $matches[3]
+			'objects'    => (int) $matches[3],
 		);
 	}
 
@@ -773,7 +775,7 @@ function rl_count_triples() {
 /**
  * Execute the provided query against the SPARQL SELECT Redlink end-point and return the response.
  *
- * @param string $query A SPARQL query.
+ * @param string $query  A SPARQL query.
  * @param string $accept The mime type for the response format (default = 'text/csv').
  *
  * @return WP_Response|WP_Error A WP_Response instance in successful otherwise a WP_Error.
@@ -810,7 +812,7 @@ function rl_empty_dataset() {
 
 	// Prepare the request.
 	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method' => 'DELETE'
+		'method' => 'DELETE',
 	) );
 
 	// Send the request.
@@ -839,8 +841,8 @@ function rl_empty_dataset_url() {
  *
  * @global type $wpdb
  *
- * @param type $post_id
- * @param type $predicate
+ * @param type  $post_id
+ * @param type  $predicate
  *
  * @return array in the following format:
  *              Array (
@@ -936,18 +938,18 @@ function wl_schema_get_property_expected_type( $property_name ) {
 
 	// Search for the entity type which has the requested name as uri
 	$found = false;
-	foreach( $all_types_and_fields as $type_fields ) {
-		foreach( $type_fields as $field ) {
-			if( $field['predicate'] == $property_name ) {
+	foreach ( $all_types_and_fields as $type_fields ) {
+		foreach ( $type_fields as $field ) {
+			if ( $field['predicate'] == $property_name ) {
 
 				$expected_types = array();
 
 				// Does the property accept a specific schema type?
-				if( isset( $field['constraints'] ) && isset( $field['constraints']['uri_type'] ) ) {
-					
+				if ( isset( $field['constraints'] ) && isset( $field['constraints']['uri_type'] ) ) {
+
 					// Take note of expected schema type
 					$uri_types = ( is_array( $field['constraints']['uri_type'] ) ) ?
-						$field['constraints']['uri_type'] : 
+						$field['constraints']['uri_type'] :
 						array( $field['constraints']['uri_type'] );
 
 					foreach ( $uri_types as $uri_type ) {
