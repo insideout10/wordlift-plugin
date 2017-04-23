@@ -27,29 +27,19 @@ function wl_entity_type_taxonomy_register() {
 	// TODO: read capabilities when editing of the WL <-> schema.org mapping is possible.
 	$capabilities = array(
 		// We enable editors to change the title/description of terms:
-	    //
+		//
 		// See https://github.com/insideout10/wordlift-plugin/issues/398
 		'manage_terms' => 'manage_options',
-		'edit_terms'   => null,
-		'delete_terms' => null,
+		'edit_terms'   => 'wl_entity_type_edit_term',
+		'delete_terms' => 'wl_entity_type_delete_term',
 		'assign_terms' => 'edit_posts',
 	);
 
-	/*
-	 * Special capabilities need to be set for multisite super admin to be able
-	 * to "disable" related actions them later, null just do not work well for
-	 * it.
-	 */
-	if ( is_super_admin() ) {
-		$capabilities['edit_terms'] = 'wl_entity_type_edit_term';
-		$capabilities['delete_terms'] = 'wl_entity_type_delete_term';
-	}
-
 	$args = array(
-		'labels'            => $labels,
-		'capabilities'      => $capabilities,
-		'hierarchical'      => true,
-		'show_admin_column' => true,
+		'labels'             => $labels,
+		'capabilities'       => $capabilities,
+		'hierarchical'       => true,
+		'show_admin_column'  => true,
 		'show_in_quick_edit' => false,
 	);
 
