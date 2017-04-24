@@ -190,6 +190,25 @@ function wl_core_upgrade_db_1_0_to_3_10() {
 
 }
 
+/**
+ * Upgrade the DB structure to the one expected by the 3.12 release.
+ *
+ * Flush rewrite rules to support immediate integration with automattic's
+ * AMP plugin.
+ *
+ * @since 3.12.0
+ */
+function wl_core_upgrade_db_3_10_3_12() {
+	/*
+	 * As this upgrade functionality runs on the init hook, and the AMP plugin
+	 * initialization does the same, avoid possible race conditions by
+	 * deferring the actual flush to a later hook.
+	 */
+	add_action('wp_loaded', function () {
+		flush_rewrite_rules();
+	});
+}
+
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
@@ -197,6 +216,7 @@ function wl_core_update_db_check() {
 
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
+		wl_core_upgrade_db_3_10_3_12();
 		update_site_option( 'wl_db_version', WL_DB_VERSION );
 
 	}

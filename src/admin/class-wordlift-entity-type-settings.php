@@ -112,9 +112,8 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		// Get the term id and the actual term.
 		$term_id = (int) $_REQUEST['tag_ID'];
-		$term    = get_term( $term_id, 'wl_entity_type' );
 
-		if ( ! $term instanceof WP_Term ) {
+		if ( ! term_exists( $term_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME ) ) {
 			wp_die( __( 'You attempted to edit an entity type term that doesn&#8217;t exist.', 'wordlift' ) );
 		}
 
