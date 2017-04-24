@@ -49,9 +49,9 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 		$actions['wl-seo'] = '<a href="' . esc_url( $url ) . '">' . __( 'SEO Settings', 'wordlift' ) . '</a>';
 
 		// Hacks for pre 4.7 compatibility:
-		// * remove the quick edit:
+		// * remove the quick edit.
 		unset( $actions['inline hide-if-no-js'] );
-		// * remove the edit link:
+		// * remove the edit link.
 		unset( $actions['edit'] );
 
 		return $actions;
@@ -112,8 +112,10 @@ class Wordlift_Admin_Entity_Taxonomy_List_Page {
 			return $caps;
 		}
 
+		$path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH );
+
 		// Bail out if the `path` cannot be determined.
-		if ( null === $path = parse_url( $_SERVER['REQUEST_URI'], PHP_URL_PATH ) ) {
+		if ( null === $path ) {
 			return $caps;
 		}
 
