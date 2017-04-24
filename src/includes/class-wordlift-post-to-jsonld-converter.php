@@ -196,8 +196,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// See https://developers.google.com/search/docs/data-types/articles
 		$params['publisher']['logo']['@type']  = 'ImageObject';
 		$params['publisher']['logo']['url']    = $attachment[0];
-		$params['publisher']['logo']['width']  = $attachment[1] . 'px';
-		$params['publisher']['logo']['height'] = $attachment[2] . 'px';
+		// If you specify a "width" or "height" value you should leave out
+		// 'px'. For example: "width":"4608px" should be "width":"4608".
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$params['publisher']['logo']['width']  = $attachment[1];
+		$params['publisher']['logo']['height'] = $attachment[2];
 
 	}
 
