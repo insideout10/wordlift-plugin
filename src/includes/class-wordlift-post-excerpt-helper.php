@@ -44,7 +44,23 @@ class Wordlift_Post_Excerpt_Helper {
 		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post->post_content, $length, $more );
 
 		// Remove shortcodes and decode html entities.
-		return html_entity_decode( strip_shortcodes( $excerpt ) );
+		return html_entity_decode( self::strip_all_shortcodes( $excerpt ) );
+	}
+
+	/**
+	 * Remove all the shortcodes from the content. We're using our own function
+	 * because WordPress' own `strip_shortcodes` only takes into consideration
+	 * shortcodes for installed plugins/themes.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @param string $content The content with shortcodes.
+	 *
+	 * @return string The content without shortcodes.
+	 */
+	private static function strip_all_shortcodes( $content ) {
+
+		return preg_replace( '/\[[^]]+\]/', '', $content );
 	}
 
 }
