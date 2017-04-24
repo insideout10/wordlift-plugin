@@ -138,9 +138,23 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.12.0-dev (2017-03-20) =
+= 3.12.0 (2017-03-24) =
+* Enhancement: [#516](https://github.com/insideout10/wordlift-plugin/issues/516): Visual Composer tags appearing in the article's description.
+* Enhancement: [#512](https://github.com/insideout10/wordlift-plugin/issues/512): Entity type listing page shows an "access not allowed" in wordpress versions before 4.7.
+* Enhancement: [#511](https://github.com/insideout10/wordlift-plugin/issues/511): Add support for the about property.
+* Enhancement: [#503](https://github.com/insideout10/wordlift-plugin/issues/503): Text domain is missing in calls to _x translation API.
+* Enhancement: [#501](https://github.com/insideout10/wordlift-plugin/issues/501): PHP7 Compatibility Check.
+* Enhancement: [#490](https://github.com/insideout10/wordlift-plugin/issues/490): Adding the "WordLift Entities Cloud" as shortcode.
+* Enhancement: [#487](https://github.com/insideout10/wordlift-plugin/issues/487): Adding support for editing categories when using Quick Edit from the Vocabulary.
 * Enhancement: [#484](https://github.com/insideout10/wordlift-plugin/issues/484): Check compatibility with WordPress Multisite configurations.
+* Enhancement: [#457](https://github.com/insideout10/wordlift-plugin/issues/457): When the plugin is installed in a directory not named "wordlift" initializaton hook ignored.
+* Enhancement: [#453](https://github.com/insideout10/wordlift-plugin/issues/453): Need to show alert and have recovery plan when setting/activation fail to get dataset uri.
+* Enhancement: [#451](https://github.com/insideout10/wordlift-plugin/issues/451): Improve schema:Article markup.
+* Enhancement: [#418](https://github.com/insideout10/wordlift-plugin/issues/418): Do not allow activating WordLift on incompatible WP's versions.
+* Enhancement: [#403](https://github.com/insideout10/wordlift-plugin/issues/403): Adding legalName for Organization and LocalBusiness.
 * Enhancement: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
+* Enhancement: [#323](https://github.com/insideout10/wordlift-plugin/issues/323): Content dynamically posted should follow both a chronological or a relevancy order.
+* Enhancement: [#212](https://github.com/insideout10/wordlift-plugin/issues/212): Adding support for the Accelerated Mobile Pages (AMP) on WordLift Entity Pages.
 
 = 3.11.3 (2017-04-23) =
 * Fix: [#521](https://github.com/insideout10/wordlift-plugin/issues/521): Performance Issues on Ajax End-Point.
