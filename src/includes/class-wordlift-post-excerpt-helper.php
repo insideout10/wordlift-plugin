@@ -2,8 +2,8 @@
 /**
  * Helpers: Post Excerpt Helper.
  *
- * The Post Excerpt Helper provides the `get_excerpt` handy function to get the
- * excerpt for any post.
+ * The Post Excerpt Helper provides the `get_text_excerpt` handy function to get
+ * the textual excerpt for any post.
  *
  * While WordPress' own `get_the_excerpt` does exactly the same only since version
  * 4.5, the function allows to specify a post id.

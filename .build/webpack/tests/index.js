@@ -22,7 +22,7 @@ const config = {
 			{ test: /\.js$/, use: 'babel-loader' }
 		]
 	},
-	devtool: 'cheap-module-eval-source-map',
+	devtool: 'cheap-module-source-map',
 	node: { process: false }
 };
 
