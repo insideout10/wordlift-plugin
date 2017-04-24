@@ -73,7 +73,7 @@ const config = [
 			} ),
 			new webpack.optimize.UglifyJsPlugin()
 		],
-		devtool: 'cheap-module-eval-source-map'
+		devtool: 'cheap-module-source-map'
 	}
 ];
 
