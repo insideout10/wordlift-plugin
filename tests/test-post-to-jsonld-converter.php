@@ -483,8 +483,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -547,8 +546,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
