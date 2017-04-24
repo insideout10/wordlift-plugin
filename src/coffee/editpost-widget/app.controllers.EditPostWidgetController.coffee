@@ -228,7 +228,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
 
   $scope.$on "updateOccurencesForEntity", (event, entityId, occurrences) ->
 
-    # $log.debug "Occurrences #{occurrences.length} for #{entityId}"
+    $log.debug "Updating #{occurrences.length} occurrence(s) for #{entityId}..."
+
     $scope.analysis.entities[ entityId ].occurrences = occurrences
 
     # Ghost event to bridge React.
@@ -292,7 +293,7 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
         if entity = analysis.entities[ entityId ]
 
           if entity.occurrences.length is 0
-            $log.warn "Entity #{entityId} selected as #{box.label} without valid occurences!"
+            $log.warn "Entity #{entityId} selected as #{box.label} without valid occurrences!", entity
             continue
 
           $scope.selectedEntities[ box.id ][ entityId ] = analysis.entities[ entityId ]
