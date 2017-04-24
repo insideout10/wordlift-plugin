@@ -113,8 +113,9 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         topic.mainType = dt
         topic
 
-      for id, localEntity of configuration.entities
+      $log.debug "Found #{Object.keys(configuration.entities).length} entities in configuration...", configuration
 
+      for id, localEntity of configuration.entities
         data.entities[id] = localEntity
 
       for id, entity of data.entities
@@ -262,7 +263,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
 
     # Preselect entity annotations in the provided analysis using the provided collection of annotations.
     service.preselect = (analysis, annotations) ->
-      $log.debug "Selecting entity annotations (#{annotations.length})..."
+
+      $log.debug "Selecting #{annotations.length} entity annotation(s)..."
 
       # Find the existing entities in the html
       for annotation in annotations

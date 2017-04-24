@@ -24,143 +24,43 @@
 class Wordlift_Post_Excerpt_Helper {
 
 	/**
-	 * The desired excerpt length.
+	 * Get the text excerpt for the provided {@link WP_Post}.
 	 *
-	 * @since  3.12.0
-	 * @access private
-	 * @var int|null $length The desired excerpt length. If null the length won't be changed.
-	 */
-	private $length;
-
-	/**
-	 * The desired more string.
-	 *
-	 * @since  3.12.0
-	 * @access private
-	 * @var string|null $length The desired more string. If null the length won't be changed.
-	 */
-	private $more;
-
-	/**
-	 * Create a {@link Wordlift_Post_Excerpt_Helper} to tweak the excerpt length and `more`.
-	 *
-	 * WordPress uses filters to change the excerpt parameters, a {@link Wordlift_Post_Excerpt_Helper}
-	 * instance hooks to the filters to alter the parameters.
-	 *
-	 * @param int|null    $length The desired excerpt length. If null the length won't be changed.
-	 * @param string|null $more   The desired more string. If null the length won't be changed.
-	 */
-	function __construct( $length, $more ) {
-
-		$this->length = $length;
-		$this->more   = $more;
-
-	}
-
-	/**
-	 * Get the excerpt for the provided {@link WP_Post}.
+	 * Since anyone can hook on the excerpt generation filters, and
+	 * amend it with non textual content, we play it self and generate
+	 * the excerpt ourselves, mimicking the way wordpress core does it.
 	 *
 	 * @since 3.10.0
 	 *
-	 * @param WP_Post     $post   The {@link WP_Post}.
-	 * @param int|null    $length The desired excerpt length, or null to get the default.
-	 * @param string|null $more   The desired more string, or null to get the default.
+	 * @param WP_Post $post   The {@link WP_Post}.
+	 * @param int     $length The desired excerpt length.
+	 * @param string  $more   The desired more string.
 	 *
 	 * @return string The excerpt.
 	 */
-	public static function get_excerpt( $post, $length = null, $more = null ) {
+	public static function get_text_excerpt( $post, $length = 55, $more = '...' ) {
 
-		// Temporary pop the previous post.
-		$original = isset( $GLOBALS['post'] ) ? $GLOBALS['post'] : null;
+		// Get the excerpt and trim it. Use the `post_excerpt` if available.
+		$excerpt = wp_trim_words( ! empty( $post->post_excerpt ) ? $post->post_excerpt : $post->post_content, $length, $more );
 
-		// Setup our own post.
-		setup_postdata( $GLOBALS['post'] = $post );
-
-		// Crete a helper instance which can tweak the excerpt length and `more`.
-		$helper = new Wordlift_Post_Excerpt_Helper( $length, $more );
-		self::add_filters( $helper );
-
-		$excerpt = get_the_excerpt();
-
-		self::remove_filters( $helper );
-
-		// Restore the previous post.
-		if ( null !== $original ) {
-			setup_postdata( $GLOBALS['post'] = $original );
-		}
-
-		// Finally return the excerpt.
-		return html_entity_decode( $excerpt );
+		// Remove shortcodes and decode html entities.
+		return html_entity_decode( self::strip_all_shortcodes( $excerpt ) );
 	}
 
 	/**
-	 * Add filters to tweak the excerpt length and more.
+	 * Remove all the shortcodes from the content. We're using our own function
+	 * because WordPress' own `strip_shortcodes` only takes into consideration
+	 * shortcodes for installed plugins/themes.
 	 *
 	 * @since 3.12.0
 	 *
-	 * @param \Wordlift_Post_Excerpt_Helper $helper A {@link Wordlift_Post_Excerpt_Helper} instance.
+	 * @param string $content The content with shortcodes.
+	 *
+	 * @return string The content without shortcodes.
 	 */
-	private static function add_filters( $helper ) {
+	private static function strip_all_shortcodes( $content ) {
 
-		add_filter( 'excerpt_length', array(
-			$helper,
-			'excerpt_length',
-		), PHP_INT_MAX, 1 );
-
-		add_filter( 'excerpt_more', array(
-			$helper,
-			'excerpt_more',
-		), PHP_INT_MAX, 1 );
-
-	}
-
-	/**
-	 * Remove filters to tweak the excerpt length and more.
-	 *
-	 * @since 3.12.0
-	 *
-	 * @param \Wordlift_Post_Excerpt_Helper $helper A {@link Wordlift_Post_Excerpt_Helper} instance.
-	 */
-	private static function remove_filters( $helper ) {
-
-		remove_filter( 'excerpt_length', array(
-			$helper,
-			'excerpt_length',
-		), PHP_INT_MAX );
-
-		remove_filter( 'excerpt_more', array(
-			$helper,
-			'excerpt_more',
-		), PHP_INT_MAX );
-
-	}
-
-	/**
-	 * Called by the `excerpt_length` filter.
-	 *
-	 * @since 3.12.0
-	 *
-	 * @param int $value The existing value.
-	 *
-	 * @return int The existing value or our tweaked value.
-	 */
-	public function excerpt_length( $value ) {
-
-		return isset( $this->length ) ? $this->length : $value;
-	}
-
-	/**
-	 * Called by the `excerpt_more` filter.
-	 *
-	 * @since 3.12.0
-	 *
-	 * @param string $value The existing value.
-	 *
-	 * @return string The existing value or our tweaked value.
-	 */
-	public function excerpt_more( $value ) {
-
-		return isset( $this->more ) ? $this->more : $value;
+		return preg_replace( '/\[[^]]+\]/', '', $content );
 	}
 
 }

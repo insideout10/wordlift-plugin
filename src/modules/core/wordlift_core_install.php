@@ -140,25 +140,6 @@ EOF;
 }
 
 /**
- * Install Wordlift in WordPress.
- */
-function wl_core_install() {
-
-	// Create a blank application key if there is none
-	$key = wl_configuration_get_key();
-	if ( empty( $key ) ) {
-		wl_configuration_set_key( '' );
-	}
-
-	wl_core_install_entity_type_data();
-	wl_core_install_create_relation_instance_table();
-	flush_rewrite_rules();
-}
-
-// Installation Hook
-add_action( 'activate_wordlift/wordlift.php', 'wl_core_install' );
-
-/**
  * Upgrade the DB structure to the one expected by the 1.0 release
  *
  * @since 3.10.0
@@ -205,9 +186,27 @@ function wl_core_upgrade_db_1_0_to_3_10() {
 				) );
 			}
 		}
-
 	}
 
+}
+
+/**
+ * Upgrade the DB structure to the one expected by the 3.12 release.
+ *
+ * Flush rewrite rules to support immediate integration with automattic's
+ * AMP plugin.
+ *
+ * @since 3.12.0
+ */
+function wl_core_upgrade_db_3_10_3_12() {
+	/*
+	 * As this upgrade functionality runs on the init hook, and the AMP plugin
+	 * initialization does the same, avoid possible race conditions by
+	 * deferring the actual flush to a later hook.
+	 */
+	add_action('wp_loaded', function () {
+		flush_rewrite_rules();
+	});
 }
 
 // Check db status on automated plugins updates
@@ -217,6 +216,7 @@ function wl_core_update_db_check() {
 
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
+		wl_core_upgrade_db_3_10_3_12();
 		update_site_option( 'wl_db_version', WL_DB_VERSION );
 
 	}
