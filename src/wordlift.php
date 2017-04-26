@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.12.0-dev
+ * Version:           3.13.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -32,7 +32,7 @@ if ( ! defined( 'WPINC' ) ) {
 // Include WordLift constants.
 require_once( 'wordlift_constants.php' );
 
-// Load modules
+// Load modules.
 require_once( 'modules/core/wordlift_core.php' );
 
 /**
@@ -50,18 +50,6 @@ function wl_write_log( $log ) {
 
 	Wordlift_Log_Service::get_instance()->info( $log );
 
-//	$handler = apply_filters( 'wl_write_log_handler', null );
-//
-//	$callers         = debug_backtrace();
-//	$caller_function = $callers[1]['function'];
-//
-//	if ( is_null( $handler ) ) {
-//		wl_write_log_handler( $log, $caller_function );
-//
-//		return;
-//	}
-//
-//	call_user_func( $handler, $log, $caller_function );
 }
 
 /**
@@ -100,7 +88,7 @@ function wl_write_log_handler( $log, $caller = null ) {
  *
  * @since 3.0.0
  *
- * @param $text string A text that may potentially contain a WL key.
+ * @param string $text A text that may potentially contain a WL key.
  *
  * @return string A text with the key hidden.
  */
@@ -156,39 +144,6 @@ function wl_execute_saved_sparql_update_query( $request_id ) {
 }
 
 add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
-
-///**
-// * Add buttons hook for the TinyMCE editor. This method is called by the WP init hook.
-// */
-//function wordlift_buttonhooks() {
-//
-//	// Only add hooks when the current user has permissions AND is in Rich Text editor mode
-//	if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) ) {
-//		add_filter( 'mce_external_plugins', 'wordlift_register_tinymce_javascript' );
-//	}
-//}
-
-///**
-// * Load the TinyMCE plugin. This method is called by the WP mce_external_plugins hook.
-// *
-// * @param array $plugin_array The existing plugins array.
-// *
-// * @return array The modified plugins array.
-// */
-//function wordlift_register_tinymce_javascript( $plugin_array ) {
-//
-//	// add the wordlift plugin.
-//	// We can't use the minified version here.
-//
-//	// Get WordLift's version as a cache killer.
-//	$version = Wordlift::get_instance()->get_version();
-//
-//	// Add our own JavaScript file to TinyMCE's extensions.
-//	$plugin_array['wordlift']   = plugin_dir_url( __FILE__ ) . 'js/wordlift-reloaded.js?ver=' . $version;
-//	$plugin_array['wl_tinymce'] = plugin_dir_url( __FILE__ ) . 'js/wordlift-admin-tinymce.bundle.js?ver=' . $version;
-//
-//	return $plugin_array;
-//}
 
 /**
  * Enable microdata schema.org tagging.
@@ -288,8 +243,9 @@ function wl_get_coordinates( $post_id ) {
 	$latitude  = wl_schema_get_value( $post_id, 'latitude' );
 	$longitude = wl_schema_get_value( $post_id, 'longitude' );
 
-	// DO NOT set latitude/longitude to 0/0 as default values. It's a specific place on the globe:
-	// "The zero/zero point of this system is located in the Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
+	// DO NOT set latitude/longitude to 0/0 as default values. It's a specific
+	// place on the globe:"The zero/zero point of this system is located in the
+	// Gulf of Guinea about 625 km (390 mi) south of Tema, Ghana."
 	return array(
 		'latitude'  => isset( $latitude[0] ) && is_numeric( $latitude[0] ) ? $latitude[0] : '',
 		'longitude' => isset( $longitude[0] ) && is_numeric( $longitude[0] ) ? $longitude[0] : '',
@@ -323,16 +279,13 @@ function wl_get_post_modified_time( $post ) {
  */
 function wl_get_image_urls( $post_id ) {
 
-
-	// If there is a featured image it has the priority
+	// If there is a featured image it has the priority.
 	$featured_image_id = get_post_thumbnail_id( $post_id );
 	if ( is_numeric( $featured_image_id ) ) {
 		$image_url = wp_get_attachment_url( $featured_image_id );
 
 		return array( $image_url );
 	}
-
-	// wl_write_log( "wl_get_image_urls [ post id :: $post_id ]" );
 
 	$images = get_children( array(
 		'post_parent'    => $post_id,
@@ -381,7 +334,7 @@ function wl_get_sparql_images( $uri, $post_id ) {
 	$image_urls = wl_get_image_urls( $post_id );
 	foreach ( $image_urls as $image_url ) {
 		$image_url_esc = wl_sparql_escape_uri( $image_url );
-		$sparql .= " <$uri_e> schema:image <$image_url_esc> . \n";
+		$sparql        .= " <$uri_e> schema:image <$image_url_esc> . \n";
 	}
 
 	return $sparql;

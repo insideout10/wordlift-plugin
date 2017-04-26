@@ -132,8 +132,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -171,8 +171,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -190,9 +190,17 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 
 		$publisher = $this->entity_factory->create_and_get();
 		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+
+		$type = $this->entity_type_service->get( $publisher->ID );
+
+		$this->assertTrue( is_array( $type ) );
+		$this->assertTrue( 0 < sizeof( $type ) );
+
 		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
 
 		$this->configuration_service->set_publisher_id( $publisher->ID );
+
+		$this->assertEquals( $publisher->ID, $this->configuration_service->get_publisher_id() );
 
 		$post      = $this->factory->post->create_and_get( array( 'post_author' => $this->author->ID ) );
 		$post_uri  = $this->entity_service->get_uri( $post->ID );
@@ -213,8 +221,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -261,8 +269,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -348,8 +356,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -366,8 +374,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['publisher']['logo'] );
 		$this->assertEquals( 'ImageObject', $jsonld['publisher']['logo']['@type'] );
 		$this->assertEquals( $attachment_url, $jsonld['publisher']['logo']['url'] );
-		$this->assertEquals( '200px', $jsonld['publisher']['logo']['width'] );
-		$this->assertEquals( '100px', $jsonld['publisher']['logo']['height'] );
+		$this->assertEquals( 200, $jsonld['publisher']['logo']['width'] );
+		$this->assertEquals( 100, $jsonld['publisher']['logo']['height'] );
 
 	}
 
@@ -414,8 +422,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -426,6 +434,133 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $jsonld['mentions'] );
 		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
 		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+
+	}
+
+	/**
+	 * Test a post with a `mentions` and an `about`.
+	 *
+	 * @since 3.12.0
+	 */
+	public function test_a_post_with_one_mentions_and_one_about() {
+
+		// Create a post.
+		$post      = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Lorem Ipsum',
+			'post_author' => $this->author->ID,
+		) );
+		$post_uri  = $this->entity_service->get_uri( $post->ID );
+		$permalink = get_permalink( $post->ID );
+
+		// Create a couple of entities.
+		$entity_1 = $this->entity_factory->create_and_get();
+		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
+
+		$entity_2 = $this->entity_factory->create_and_get( array( 'post_title' => 'Lorem' ) );
+		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
+
+		// Bind the entities to the post.
+		wl_core_add_relation_instances( $post->ID, WL_WHO_RELATION, array(
+			$entity_1->ID,
+			$entity_2->ID,
+		) );
+
+		//
+		$references = array();
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
+		// Check that we have 2 references.
+		$this->assertCount( 2, $references );
+
+		// Check that we have 10 properties, not one more than that.
+		$this->assertCount( 11, $jsonld );
+
+		// Check the json-ld values.
+		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
+		$this->assertEquals( $post_uri, $jsonld['@id'] );
+		$this->assertEquals( 'Article', $jsonld['@type'] );
+		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
+		$this->assertEquals( $post->post_title, $jsonld['headline'] );
+		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
+		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
+		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
+		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_date_gmt, false ), $jsonld['datePublished'] );
+		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_modified_gmt, false ), $jsonld['dateModified'] );
+
+		//
+		$this->assertCount( 1, $jsonld['mentions'] );
+		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+
+		$this->assertCount( 1, $jsonld['about'] );
+		$this->assertEquals( $entity_2_uri, $jsonld['about'][0]['@id'] );
+
+	}
+
+	/**
+	 * Test a post with a `mentions` and an `about`.
+	 *
+	 * @since 3.12.0
+	 */
+	public function test_a_post_with_one_mentions_and_one_about_with_synonym() {
+
+		// Create a post.
+		$post      = $this->factory->post->create_and_get( array(
+			'post_title'  => 'Lorem Ipsum',
+			'post_author' => $this->author->ID,
+		) );
+		$post_uri  = $this->entity_service->get_uri( $post->ID );
+		$permalink = get_permalink( $post->ID );
+
+		// Create a couple of entities.
+		$entity_1 = $this->entity_factory->create_and_get();
+		$this->entity_type_service->set( $entity_1->ID, 'http://schema.org/Organization' );
+		$entity_1_uri = $this->entity_service->get_uri( $entity_1->ID );
+
+		$entity_2 = $this->entity_factory->create_and_get( array( 'post_title' => 'Whatever' ) );
+		$this->entity_type_service->set( $entity_2->ID, 'http://schema.org/Person' );
+		$entity_2_uri = $this->entity_service->get_uri( $entity_2->ID );
+		$this->entity_service->set_alternative_labels( $entity_2->ID, array( 'Lorem' ) );
+
+		// Bind the entities to the post.
+		wl_core_add_relation_instances( $post->ID, WL_WHO_RELATION, array(
+			$entity_1->ID,
+			$entity_2->ID,
+		) );
+
+		//
+		$references = array();
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
+		// Check that we have 2 references.
+		$this->assertCount( 2, $references );
+
+		// Check that we have 10 properties, not one more than that.
+		$this->assertCount( 11, $jsonld );
+
+		// Check the json-ld values.
+		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
+		$this->assertEquals( $post_uri, $jsonld['@id'] );
+		$this->assertEquals( 'Article', $jsonld['@type'] );
+		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
+		$this->assertEquals( $post->post_title, $jsonld['headline'] );
+		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
+		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
+		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
+		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_date_gmt, false ), $jsonld['datePublished'] );
+		$this->assertEquals( mysql2date( 'Y-m-d\TH:i', $post->post_modified_gmt, false ), $jsonld['dateModified'] );
+
+		//
+		$this->assertCount( 1, $jsonld['mentions'] );
+		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
+
+		$this->assertCount( 1, $jsonld['about'] );
+		$this->assertEquals( $entity_2_uri, $jsonld['about'][0]['@id'] );
 
 	}
 
@@ -476,8 +611,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -491,8 +626,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['image']['0'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['0']['@type'] );
 		$this->assertEquals( $attachment_url, $jsonld['image']['0']['url'] );
-		$this->assertEquals( '200px', $jsonld['image']['0']['width'] );
-		$this->assertEquals( '100px', $jsonld['image']['0']['height'] );
+		$this->assertEquals( 200, $jsonld['image']['0']['width'] );
+		$this->assertEquals( 100, $jsonld['image']['0']['height'] );
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
@@ -552,8 +687,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -567,8 +702,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['image']['0'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['0']['@type'] );
 		$this->assertEquals( $attachment_url, $jsonld['image']['0']['url'] );
-		$this->assertEquals( '200px', $jsonld['image']['0']['width'] );
-		$this->assertEquals( '100px', $jsonld['image']['0']['height'] );
+		$this->assertEquals( 200, $jsonld['image']['0']['width'] );
+		$this->assertEquals( 100, $jsonld['image']['0']['height'] );
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
@@ -633,8 +768,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -648,15 +783,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['image']['0'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['0']['@type'] );
 		$this->assertEquals( $attachment_url, $jsonld['image']['0']['url'] );
-		$this->assertEquals( '200px', $jsonld['image']['0']['width'] );
-		$this->assertEquals( '100px', $jsonld['image']['0']['height'] );
+		$this->assertEquals( 200, $jsonld['image']['0']['width'] );
+		$this->assertEquals( 100, $jsonld['image']['0']['height'] );
 
 		// Check the in content attachments.
 		$this->assertCount( 4, $jsonld['image']['1'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['1']['@type'] );
 		$this->assertEquals( $attachment2_url, $jsonld['image']['1']['url'] );
-		$this->assertEquals( '300px', $jsonld['image']['1']['width'] );
-		$this->assertEquals( '200px', $jsonld['image']['1']['height'] );
+		$this->assertEquals( 300, $jsonld['image']['1']['width'] );
+		$this->assertEquals( 200, $jsonld['image']['1']['height'] );
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
@@ -721,8 +856,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -736,15 +871,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['image']['0'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['0']['@type'] );
 		$this->assertEquals( $attachment2_url, $jsonld['image']['0']['url'] );
-		$this->assertEquals( '300px', $jsonld['image']['0']['width'] );
-		$this->assertEquals( '200px', $jsonld['image']['0']['height'] );
+		$this->assertEquals( 300, $jsonld['image']['0']['width'] );
+		$this->assertEquals( 200, $jsonld['image']['0']['height'] );
 
 		// Check the gallery image.
 		$this->assertCount( 4, $jsonld['image']['1'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['1']['@type'] );
 		$this->assertEquals( $attachment3_url, $jsonld['image']['1']['url'] );
-		$this->assertEquals( '150px', $jsonld['image']['1']['width'] );
-		$this->assertEquals( '150px', $jsonld['image']['1']['height'] );
+		$this->assertEquals( 150, $jsonld['image']['1']['width'] );
+		$this->assertEquals( 150, $jsonld['image']['1']['height'] );
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );
@@ -814,8 +949,8 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertEquals( 'Article', $jsonld['@type'] );
 		$this->assertEquals( $post->post_excerpt, $jsonld['description'] );
 		$this->assertEquals( $post->post_title, $jsonld['headline'] );
-		$this->assertEquals( 'WebPage', $jsonld['mainEntityOfPage']['@type'] );
-		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage']['@id'] );
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		$this->assertEquals( $permalink, $jsonld['mainEntityOfPage'] );
 		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
 		$this->assertEquals( $this->author_uri, $jsonld['author']['@id'] );
 		$this->assertEquals( $this->author->display_name, $jsonld['author']['name'] );
@@ -829,15 +964,15 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 4, $jsonld['image']['0'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['0']['@type'] );
 		$this->assertEquals( $attachment2_url, $jsonld['image']['0']['url'] );
-		$this->assertEquals( '300px', $jsonld['image']['0']['width'] );
-		$this->assertEquals( '200px', $jsonld['image']['0']['height'] );
+		$this->assertEquals( 300, $jsonld['image']['0']['width'] );
+		$this->assertEquals( 200, $jsonld['image']['0']['height'] );
 
 		// Check the gallery image.
 		$this->assertCount( 4, $jsonld['image']['1'] );
 		$this->assertEquals( 'ImageObject', $jsonld['image']['1']['@type'] );
 		$this->assertEquals( $attachment3_url, $jsonld['image']['1']['url'] );
-		$this->assertEquals( '200px', $jsonld['image']['1']['width'] );
-		$this->assertEquals( '300px', $jsonld['image']['1']['height'] );
+		$this->assertEquals( 200, $jsonld['image']['1']['width'] );
+		$this->assertEquals( 300, $jsonld['image']['1']['height'] );
 
 		//
 		$this->assertCount( 2, $jsonld['mentions'] );

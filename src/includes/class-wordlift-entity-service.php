@@ -331,6 +331,20 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
+	 * Retrieve the labels for an entity, i.e. the title + the synonyms.
+	 *
+	 * @since 3.12.0
+	 *
+	 * @param int $post_id The entity {@link WP_Post} id.
+	 *
+	 * @return array An array with the entity title and labels.
+	 */
+	public function get_labels( $post_id ) {
+
+		return array_merge( (array) get_the_title( $post_id ), $this->get_alternative_labels( $post_id ) );
+	}
+
+	/**
 	 * Fires before the permalink field in the edit form (this event is available in WP from 4.1.0).
 	 *
 	 * @since 3.2.0

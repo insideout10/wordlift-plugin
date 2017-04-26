@@ -106,6 +106,10 @@
     width: 100% !important;
 }
 
+.taxonomy-wl_entity_type #col-left {
+    display: none !important;
+}
+
 .taxonomy-wl_entity_type .row-title, .taxonomy-wl_entity_type .row-title:hover {
     color: gray;
     cursor: default;

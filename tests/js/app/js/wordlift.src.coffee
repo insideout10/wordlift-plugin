@@ -458,6 +458,9 @@ angular.module('AnalysisService', ['wordlift.tinymce.plugin.services.EntityServi
 
         # Set the local entity collection.
         service.setEntities = (entities) ->
+
+          $log.debug "Setting the local #{entities.length} entity/ies..."
+
           @_entities = entities
         # Get the local entity collection.
         service.getEntities = () ->

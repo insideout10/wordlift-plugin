@@ -16,27 +16,8 @@ require_once 'functions.php';
  * @package Wordlift
  */
 class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
-	/**
-	 * Set up the test.
-	 */
-	function setUp() {
-		parent::setUp();
 
-		// Disable sending SPARQL queries, since we don't need it.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-	}
-
-	public function testDataSelectionWithoutAnEntityId() {
-
-		$this->_setRole( "administrator" );
-		$this->assertTrue( is_admin() );
-		$this->setExpectedException( 'WPAjaxDieStopException', 'Post id missing or invalid!' );
-		$this->_handleAjax( 'wordlift_related_posts' );
-
-	}
-
-	public function testDataSelectionWithoutAnInvalidEntityId() {
+	public function test_dataselectionwithoutaninvalidentityid() {
 
 		$_GET['post_id'] = 'foo';
 		$this->setExpectedException( 'WPAjaxDieStopException', 'Post id missing or invalid!' );
@@ -44,16 +25,20 @@ class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 
 	}
 
-	public function testPostsSelectionWithFilters() {
+	public function test_postsselectionwithfilters() {
 
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );
 		$post_1_id   = wl_create_post( '', 'post1', 'A post', 'publish' );
 		$post_2_id   = wl_create_post( '', 'post2', 'A post', 'publish' );
 
+		$this->assertTrue( 0 < $entity_1_id );
+		$this->assertTrue( 0 < $post_1_id );
+		$this->assertTrue( 0 < $post_2_id );
+
 		// Insert relations
-		wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id );
-		wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id );
+		$this->assertTrue( 0 < wl_core_add_relation_instance( $post_1_id, WL_WHAT_RELATION, $entity_1_id ) );
+		$this->assertTrue( 0 < wl_core_add_relation_instance( $post_2_id, WL_WHAT_RELATION, $entity_1_id ) );
 
 		// Set $_GET variable: this means we will perform data selection for $entity_1_id
 		$_GET['post_id'] = $post_1_id;
@@ -81,7 +66,7 @@ class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 
 	}
 
-	public function testPostsSelectionWithoutFilters() {
+	public function test_postsselectionwithoutfilters() {
 
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'publish', 'entity' );
@@ -110,7 +95,7 @@ class AjaxRelatedPostsTest extends Wordlift_Ajax_Unit_Test_Case {
 
 	}
 
-	public function testPostsSelectionStartingFromAnEntity() {
+	public function test_postsselectionstartingfromanentity() {
 
 		// Create 2 posts and 2 entities
 		$entity_1_id = wl_create_post( '', 'entity0', 'An Entity', 'draft', 'entity' );

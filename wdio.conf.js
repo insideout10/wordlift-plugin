@@ -130,7 +130,10 @@ var config = {
 	// take over a specific job you don't want to take care of. They enhance
 	// your test setup with almost no effort. Unlike plugins, they don't add
 	// new commands. Instead, they hook themselves up into the test process.
-	services: [ 'selenium-standalone' ],
+	services: [ 'firefox-profile', 'selenium-standalone' ],
+	firefoxProfile: {
+		'security.insecure_field_warning.contextual.enabled': false
+	},
 	//
 	// Framework you want to run your specs with.
 	// The following are supported: Mocha, Jasmine, and Cucumber
@@ -225,7 +228,7 @@ if ( process.env.CI ) {
 	config.key = process.env.SAUCE_ACCESS_KEY;
 
 	// Use Sauce.
-	config.services = [ 'sauce' ];
+	config.services = [ 'firefox-profile', 'sauce' ];
 
 	// Add browsers: Firefox, Internet Explorer.
 	config.capabilities = [

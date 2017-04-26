@@ -553,6 +553,7 @@
       };
       $scope.$on("updateOccurencesForEntity", function(event, entityId, occurrences) {
         var entities, ref1, results1;
+        $log.debug("Updating " + occurrences.length + " occurrence(s) for " + entityId + "...");
         $scope.analysis.entities[entityId].occurrences = occurrences;
         wp.wordlift.trigger('updateOccurrencesForEntity', {
           entityId: entityId,
@@ -619,7 +620,7 @@
             entityId = ref4[m];
             if (entity = analysis.entities[entityId]) {
               if (entity.occurrences.length === 0) {
-                $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurences!");
+                $log.warn("Entity " + entityId + " selected as " + box.label + " without valid occurrences!", entity);
                 continue;
               }
               $scope.selectedEntities[box.id][entityId] = analysis.entities[entityId];
@@ -1143,6 +1144,7 @@
           topic.mainType = dt;
           return topic;
         });
+        $log.debug("Found " + (Object.keys(configuration.entities).length) + " entities in configuration...", configuration);
         ref2 = configuration.entities;
         for (id in ref2) {
           localEntity = ref2[id];
@@ -1312,7 +1314,7 @@
       };
       service.preselect = function(analysis, annotations) {
         var annotation, e, entity, id, l, len2, ref2, ref3, results1, textAnnotation;
-        $log.debug("Selecting entity annotations (" + annotations.length + ")...");
+        $log.debug("Selecting " + annotations.length + " entity annotation(s)...");
         results1 = [];
         for (l = 0, len2 = annotations.length; l < len2; l++) {
           annotation = annotations[l];
@@ -1363,12 +1365,12 @@
 
   angular.module('wordlift.editpost.widget.services.EditorService', ['wordlift.editpost.widget.services.EditorAdapter', 'wordlift.editpost.widget.services.AnalysisService']).service('EditorService', [
     'configuration', 'AnalysisService', 'EditorAdapter', '$log', '$http', '$rootScope', function(configuration, AnalysisService, EditorAdapter, $log, $http, $rootScope) {
-      var INVISIBLE_CHAR, currentOccurencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
+      var INVISIBLE_CHAR, currentOccurrencesForEntity, dedisambiguate, disambiguate, editor, findEntities, findPositions, service;
       INVISIBLE_CHAR = '\uFEFF';
       findEntities = function(html) {
         var annotation, match, pattern, results1, traslator;
         traslator = Traslator.create(html);
-        pattern = /<(\w+)[^>]*\sclass="([^"]+)"\sitemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
+        pattern = /<(\w+)[^>]*\sclass="([^"]+)"\s+(?:id="[^"]+"\s+)?itemid="([^"]+)"[^>]*>([^<]*)<\/\1>/gim;
         results1 = [];
         while (match = pattern.exec(html)) {
           annotation = {
@@ -1422,14 +1424,16 @@
         ed.dom.setAttrib(annotationId, "itemid", "");
         return discardedItemId;
       };
-      currentOccurencesForEntity = function(entityId) {
+      currentOccurrencesForEntity = function(entityId) {
         var annotation, annotations, ed, itemId, j, len, occurrences;
+        $log.info("Calculating occurrences for entity " + entityId + "...");
         ed = EditorAdapter.getEditor();
         occurrences = [];
         if (entityId === "") {
           return occurrences;
         }
         annotations = ed.dom.select("span.textannotation");
+        $log.info("Found " + annotations.length + " annotation(s) for entity " + entityId + ".");
         for (j = 0, len = annotations.length; j < len; j++) {
           annotation = annotations[j];
           itemId = ed.dom.getAttrib(annotation.id, "itemid");
@@ -1459,11 +1463,11 @@
         for (j = 0, len = discarded.length; j < len; j++) {
           entityId = discarded[j];
           if (entityId) {
-            occurrences = currentOccurencesForEntity(entityId);
+            occurrences = currentOccurrencesForEntity(entityId);
             $rootScope.$broadcast("updateOccurencesForEntity", entityId, occurrences);
           }
         }
-        occurrences = currentOccurencesForEntity(entity.id);
+        occurrences = currentOccurrencesForEntity(entity.id);
         return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
       });
       $rootScope.$on("entityDeselected", function(event, entity, annotationId) {
@@ -1477,7 +1481,7 @@
             dedisambiguate(annotation.id, entity);
           }
         }
-        occurrences = currentOccurencesForEntity(entity.id);
+        occurrences = currentOccurrencesForEntity(entity.id);
         return $rootScope.$broadcast("updateOccurencesForEntity", entity.id, occurrences);
       });
       service = {

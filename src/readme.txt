@@ -142,6 +142,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#484](https://github.com/insideout10/wordlift-plugin/issues/484): Check compatibility with WordPress Multisite configurations.
 * Enhancement: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
 
+= 3.11.3 (2017-04-23) =
+* Fix: [#521](https://github.com/insideout10/wordlift-plugin/issues/521): Performance Issues on Ajax End-Point.
+* Fix: [#520](https://github.com/insideout10/wordlift-plugin/issues/520): Selected entities lost with IE11 and Edge.
+
 = 3.11.2 (2017-03-19) =
 * Fix: [#497](https://github.com/insideout10/wordlift-plugin/issues/497): Aggressive caching may serve old files.
 * Fix: [#496](https://github.com/insideout10/wordlift-plugin/issues/496): WL highlight classes conflict with themes.

@@ -485,7 +485,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.12.0-dev';
+		$this->version     = '3.13.0-dev';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -673,6 +673,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-content-filter-service.php';
 
+		/*
+		 * Load the excerpt helper.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-excerpt-helper.php';
+
 		/**
 		 * Load the JSON-LD service to publish entities using JSON-LD.s
 		 *
@@ -697,6 +702,7 @@ class Wordlift {
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -818,6 +824,11 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-seo-service.php';
 
+		/**
+		 * The AMP service.
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-amp-service.php';
+
 		/** Widgets */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
@@ -873,6 +884,9 @@ class Wordlift {
 
 		// Initialize the SEO service.
 		new Wordlift_Seo_Service();
+
+		// Initialize the AMP service.
+		new Wordlift_AMP_Service();
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -1108,6 +1122,13 @@ class Wordlift {
 
 		// Hook row actions for the entity type list admin.
 		$this->loader->add_filter( 'wl_entity_type_row_actions', $this->entity_type_admin_page, 'wl_entity_type_row_actions', 10, 2 );
+
+		// Hook capabilities manipulation to allow access to entity type admin
+		// page  on wordpress versions before 4.7.
+		global $wp_version;
+		if ( version_compare( $wp_version, '4.7', '<' ) ) {
+			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'enable_admin_access_pre_47', 10, 4 );
+		}
 
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
