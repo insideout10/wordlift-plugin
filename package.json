@@ -10,7 +10,7 @@
     "url": "https://github.com/insideout10/wordlift-plugin"
   },
   "scripts": {
-    "build": "webpack --optimize-minimize --define process.env.NODE_ENV=\"'production'\"",
+    "build": "./node_modules/.bin/webpack",
     "test:e2e": "./node_modules/.bin/wdio wdio.conf.js",
     "test:js": "grunt travis:js",
     "test:php": "./vendor/bin/phpunit",

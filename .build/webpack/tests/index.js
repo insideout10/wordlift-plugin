@@ -1,4 +1,3 @@
-const webpack = require( 'webpack' );
 const path = require( 'path' );
 
 const config = {
@@ -6,7 +5,7 @@ const config = {
 		'backend': './tests/e2e/scripts/backend/index.js',
 	},
 	output: {
-		path: './tests/e2e/tests',
+		path: path.resolve( __dirname, '../../..', './tests/e2e/tests' ),
 		filename: '[name]/indexSpec.js'
 	},
 	module: {
@@ -23,7 +22,7 @@ const config = {
 			{ test: /\.js$/, use: 'babel-loader' }
 		]
 	},
-	devtool: 'cheap-module-eval-source-map',
+	devtool: 'cheap-module-source-map',
 	node: { process: false }
 };
 
