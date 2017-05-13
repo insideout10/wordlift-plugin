@@ -858,17 +858,43 @@ body#tinymce {
     background-color: rgba(46, 146, 255, .2);
     box-shadow: 3px 0 0 0 rgba(46, 146, 255, .2), -3px 0 0 0 rgba(46, 146, 255, .2);
 
-    // When an entity is bound to an annotation.
-    &.disambiguated {
-      background-color: rgba(255, 239, 173, .4);
-      box-shadow: 3px 0 0 0 rgba(255, 239, 173, .4), -3px 0 0 0 rgba(255, 239, 173, .4);
+    // Default properties.
+    &.disambiguated, &.selected {
+      // Reset the above properties.
+      background-color: transparent;
+      box-shadow: none;
+      padding: 2px 0;
     }
 
-    // When the editor clicks an annotation.
-    &.selected {
-      background-color: rgba(46, 146, 255, .4);
-      box-shadow: 3px 0 0 0 rgba(46, 146, 255, .4), -3px 0 0 0 rgba(46, 146, 255, .4);
+    // Disambiguated entities are underlined with the WL blu color.
+    &.disambiguated {
+      border-color: #007aff !important;
+      border-bottom: #999 2px solid;
     }
+
+    // Selected entities are highlighted gray.
+    &.selected {
+      color: #fff;
+      background-color: #a4a3a3;
+    }
+
+    // Selected disambiguated entities are highlighted blu.
+    &.disambiguated.selected {
+      border-bottom: 0;
+      background-color: #007aff;
+    }
+
+    //// When an entity is bound to an annotation.
+    //&.disambiguated {
+    //  background-color: rgba(255, 239, 173, .4);
+    //  box-shadow: 3px 0 0 0 rgba(255, 239, 173, .4), -3px 0 0 0 rgba(255, 239, 173, .4);
+    //}
+    //
+    //// When the editor clicks an annotation.
+    //&.selected {
+    //  background-color: rgba(46, 146, 255, .4);
+    //  box-shadow: 3px 0 0 0 rgba(46, 146, 255, .4), -3px 0 0 0 rgba(46, 146, 255, .4);
+    //}
   }
 
   // When the user is typing in TinyMCE.
