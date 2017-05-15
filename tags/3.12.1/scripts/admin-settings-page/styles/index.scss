@@ -1,0 +1,239 @@
+#wl-settings-page {
+
+  // Hide the "clear all" cross. See http://stackoverflow.com/questions/14007655/remove-ie10s-clear-field-x-button-on-certain-inputs
+  input::-ms-clear {
+    display: none
+  }
+
+  #wl-entity-base-path,
+  #wl-key {
+    // Size,
+    width: 100%;
+    max-width: 480px;
+    height: 32px;
+    // Internal
+    padding: 0 8px;
+    line-height: 32px;
+    // Text job.
+    font-size: 14px;
+    color: #32373c;
+    // Border.
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+    background-color: #fff;
+    outline: 0;
+    // Anime.
+    transition: 50ms border-color ease-in-out;
+    // Background.
+    background-position: 448px 8px;
+    background-repeat: no-repeat;
+    &.valid {
+      // Icon.
+      background-image: url('../../../images/valid.png');
+      // Spacing.
+      padding-right: 32px;
+    }
+
+    &.invalid {
+      // Icon.
+      background-image: url('../../../images/invalid.png');
+      // Spacing.
+      padding-right: 32px;
+    }
+  }
+
+  #wl-entity-base-path {
+    background-color: #f5f5f5;
+  }
+
+  .wl-tabs-element {
+    border-radius: 0;
+    border: 0;
+    background: none;
+
+    .nav-tab-wrapper {
+      border-radius: 0;
+      border: 0;
+      border-bottom: 1px solid #ccc;
+      background: none;
+      padding-bottom: 0;
+      padding-left: 6px;
+
+      .nav-tab {
+        border-radius: 0;
+        border: 1px solid #ccc !important;
+        background: #e4e4e4;
+        color: #555;
+        margin: 0 3px 0 0;
+        vertical-align: top;
+        white-space: nowrap;
+        &:focus {
+          box-shadow: none;
+          outline: none;
+        }
+      }
+
+      .ui-state-active, .ui-state-active:hover {
+        border-bottom: 1px solid #f1f1f1 !important;
+        background: #f1f1f1;
+        color: #000;
+      }
+    }
+  }
+
+}
+
+// This must be global since `Select2` puts the options somewhere in the global
+// scope.
+.wl-admin-settings-page-select2 {
+
+  &.select2-selection {
+    min-height: 32px;
+    max-height: 32px;
+    overflow-y: auto;
+  }
+
+  .wl-select2-thumbnail {
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    background: no-repeat center;
+    background-size: contain;
+    margin: 4px 8px 4px 0;
+  }
+
+  .wl-select2-type {
+    // Position.
+    float: right;
+    // Spacing.
+    line-height: 32px;
+    // Text job
+    font-weight: 600;
+  }
+
+}
+
+// Styling select pane.
+.select2-results__options {
+  color: #666 !important;
+}
+
+// Styling select option.
+.select2-results__option {
+  .wl-select2-type {
+    // Position.
+    float: right;
+    // Spacing.
+    line-height: 32px;
+    // Text job
+    font-weight: 600;
+  }
+}
+
+.select2-results__option--highlighted {
+  background-color: #f5f5f5 !important;
+  color: #2E92FF !important;
+}
+
+// Styling the select wrap.
+.ui-tabs .ui-tabs-panel {
+  // Size.
+  max-width: 480px;
+  min-height: 32px;
+  // Border.
+  border-radius: 2px;
+  // Spacing. 
+  padding: 0 !important;
+  margin: 16px 0;
+
+  // Fixing inline blocks positioning.
+  * {
+    vertical-align: middle;
+  }
+
+  // Fixing the inner space.
+  p {
+    max-height: 32px;
+    margin: 0;
+    width: 100%;
+    // Text job.
+    color: #4a4a4a
+  }
+}
+
+// Select display.
+.select2-container--default .select2-selection--single {
+  // Prevent scrollbar.
+  overflow: hidden;
+  // Internal.
+  padding: 0 0;
+  line-height: 28px;
+  // Text job.
+  font-size: 12px;
+}
+
+// Select > Row > image
+.wl-select2-thumbnail {
+  // Spacing
+  margin-right: 8px;
+}
+
+#tabs-2 {
+  p {
+    margin: 8px 0;
+
+    &:first-of-type {
+      margin-top: 24px;
+    }
+  }
+}
+
+#wl-publisher-name input,
+#wl-site-language {
+  // Size
+  width: 100%;
+  max-width: 480px;
+  min-height: 32px;
+  // Spacing.
+  margin-top: 8px;
+  padding: 4px 8px;
+  // Color,
+  color: #32373c;
+  // Border.
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .07);
+  background-color: #fff;
+  outline: 0;
+}
+
+#wl-publisher-type {
+  // Size.
+  max-width: 480px;
+  width: 100%;
+  // Styling radios.
+  span {
+    // Size.
+    width: 45%;
+    // Position.
+    display: inline-block;
+  }
+}
+
+#wl-publisher-media-uploader {
+  // Size.
+  height: 32px;
+  // Position.
+  float: left;
+}
+
+#wl-publisher-media-uploader-preview {
+  // Size. 
+  max-width: 256px;
+  max-height: 256px;
+  // Spacing.
+  margin-bottom: 16px;
+  // Prevent thumb and btn on the same line.
+  display: block;
+}
