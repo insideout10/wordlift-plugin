@@ -6,7 +6,7 @@ Tags: schema.org, seo, content recommendation, related posts, timeline, knowledg
 
 Requires at least: 4.2
 Tested up to: 4.7
-Stable tag: 3.12.1
+Stable tag: {version}
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
