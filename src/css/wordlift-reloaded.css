@@ -5280,15 +5280,16 @@ body#tinymce .textannotation {
   background-color: rgba(46, 146, 255, 0.2);
   -webkit-box-shadow: 3px 0 0 0 rgba(46, 146, 255, 0.2), -3px 0 0 0 rgba(46, 146, 255, 0.2);
           box-shadow: 3px 0 0 0 rgba(46, 146, 255, 0.2), -3px 0 0 0 rgba(46, 146, 255, 0.2);
+  padding: 2px;
 }
 body#tinymce .textannotation.disambiguated,
 body#tinymce .textannotation.selected {
   background-color: transparent;
   -webkit-box-shadow: none;
           box-shadow: none;
-  padding: 2px 0;
 }
 body#tinymce .textannotation.disambiguated {
+  background-color: rgba(46, 146, 255, 0.4);
   border-color: #007aff !important;
   border-bottom: #999 2px solid;
 }
@@ -5297,8 +5298,9 @@ body#tinymce .textannotation.selected {
   background-color: #a4a3a3;
 }
 body#tinymce .textannotation.disambiguated.selected {
-  border-bottom: 0;
+  color: #fff;
   background-color: #007aff;
+  border-bottom: #007aff 2px solid;
 }
 body#tinymce.wl-tinymce-typing .textannotation {
   background-color: transparent;
