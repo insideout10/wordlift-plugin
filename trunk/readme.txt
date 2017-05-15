@@ -6,7 +6,7 @@ Tags: schema.org, seo, content recommendation, related posts, timeline, knowledg
 
 Requires at least: 4.2
 Tested up to: 4.7
-Stable tag: 3.12.0
+Stable tag: 3.12.1
 License: GPLv2 or later
 
 WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
@@ -137,6 +137,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.12.1 (2017-05-15) =
+* Enhancement: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.
 
 = 3.12.0 (2017-03-24) =
 * Enhancement: [#516](https://github.com/insideout10/wordlift-plugin/issues/516): Visual Composer tags appearing in the article's description.
