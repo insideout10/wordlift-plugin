@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.12.1 (2017-05-15) =
+* Enhancement: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.
+
 = 3.12.0 (2017-05-03) =
 * Enhancement: [#516](https://github.com/insideout10/wordlift-plugin/issues/516): Visual Composer tags appearing in the article's description.
 * Enhancement: [#512](https://github.com/insideout10/wordlift-plugin/issues/512): Entity type listing page shows an "access not allowed" in wordpress versions before 4.7.
