@@ -7,23 +7,29 @@
 /**
  * Add custom buttons to the buttons below the post title.
  *
- * @param string $html The current html.
- * @param int $post_id The post ID.
+ * @param string $html      The current html.
+ * @param int    $post_id   The post ID.
  * @param string $new_title Optional. New title.
- * @param string $new_slug Optional. New slug.
+ * @param string $new_slug  Optional. New slug.
  *
  * @return The enhanced html.
  */
 function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 
+	// Check if the specified post id is of a supported type.
+	$is_post_type_supported = in_array( get_post_type( $post_id ), array(
+		'post',
+		'entity',
+	) );
+
 	// If the post is published, add the button to view Redlink's linked data.
-	if ( 'publish' == get_post_status( $post_id ) ) {
+	if ( 'publish' === get_post_status( $post_id ) && $is_post_type_supported ) {
 		if ( $uri = wl_get_entity_uri( $post_id ) ) {
 			$uri_esc       = esc_attr( wl_get_entity_uri( $post_id ) );
 			$lod_view_href = 'http://lodview.it/lodview/?IRI=' . $uri_esc;
-			$html .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small wl-button' target='_blank'>" .
-			         esc_html__( 'View Linked Data', 'wordlift' ) .
-			         "</a></span>\n";
+			$html          .= "<span id='view-post-btn'><a href='$lod_view_href' class='button button-small wl-button' target='_blank'>" .
+			                  esc_html__( 'View Linked Data', 'wordlift' ) .
+			                  "</a></span>\n";
 		}
 		$html .= "<span id='view-post-btn'><a href='" . WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL .
 		         urlencode( get_permalink( $post_id ) ) .

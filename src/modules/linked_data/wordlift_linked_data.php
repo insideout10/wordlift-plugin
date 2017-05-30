@@ -468,7 +468,8 @@ function wl_linked_data_push_to_redlink( $post_id ) {
 			wl_push_entity_post_to_redlink( $post );
 			break;
 		default:
-			wl_push_post_to_redlink( $post );
+			Wordlift_Linked_Data_Service::get_instance()->wl_push_post_to_redlink( $post );
+//			wl_push_post_to_redlink( $post );
 	}
 
 	// Reindex the triple store if buffering is turned off.

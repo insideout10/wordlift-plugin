@@ -14,7 +14,7 @@ class Wordlift_Sparql_Service {
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
@@ -23,7 +23,7 @@ class Wordlift_Sparql_Service {
 	/**
 	 * The {@link Wordlift_Sparql_Service} singleton instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $instance The {@link Wordlift_Sparql_Service} singleton instance.
 	 */
@@ -73,7 +73,7 @@ class Wordlift_Sparql_Service {
 	 * @since 3.6.0
 	 *
 	 * @param string $value The value.
-	 * @param string $type The value type.
+	 * @param string $type  The value type.
 	 *
 	 * @return string The formatted value for SPARQL statements.
 	 */
@@ -171,6 +171,16 @@ class Wordlift_Sparql_Service {
 		$string = str_replace( "\t", '\\t', $string );
 
 		return $string;
+	}
+
+	public static function make_date_time( $time ) {
+
+		return '"' . str_replace( '+00:00', '.000Z', $time ) . '"^^<http://www.w3.org/2001/XMLSchema#dateTime>';
+	}
+
+	public static function fix_tz( $time ) {
+
+		return str_replace( '+00:00', '.000Z', $time );
 	}
 
 }
