@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.12.2 (????) =
+* Fix: [#543](https://github.com/insideout10/wordlift-plugin/issues/543): Entities not published to the Linked Data Store.
+
 = 3.12.1 (2017-05-15) =
 * Enhancement: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.
 
