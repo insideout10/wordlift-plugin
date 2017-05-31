@@ -17,14 +17,18 @@ $not_found_uris = array_diff( $local_uris, $remote_uris );
 <div class="wrap">
 	<h1><?php esc_html_e( 'Status Report', 'wordlift' ); ?></h1>
 
-	<p><?php echo esc_html( sprintf( __( '%d not found URIs; %d local entity URIs; %d remote URs (including posts and authors).', 'wordlift' ), count( $not_found_uris ), count( $local_uris ), count( $remote_uris ) ) ); ?></p>
+	<p><?php echo esc_html( sprintf( __( '%d not found URIs; %d local entity URIs; %d remote URIs (including posts and authors).', 'wordlift' ), count( $not_found_uris ), count( $local_uris ), count( $remote_uris ) ) ); ?></p>
 
 	<table class="wp-list-table widefat fixed striped posts">
 		<thead>
 		<th scope="col"><?php esc_html_e( 'URL', 'wordlift' ); ?></th>
 		</thead>
 		<tbody>
-		<?php foreach ( $not_found_uris as $uri ) { ?>
+		<?php foreach ( $not_found_uris as $id => $uri ) {
+
+			// Re-push the entity to the Linked Data Cloud.
+			wl_linked_data_push_to_redlink( $id );
+			?>
 			<tr>
 				<td><?php echo esc_html( $uri ); ?></td>
 			</tr>

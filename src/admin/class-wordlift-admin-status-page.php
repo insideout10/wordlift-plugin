@@ -94,18 +94,20 @@ class Wordlift_Admin_Status_Page extends Wordlift_Admin_Page {
 	 */
 	protected function get_entity_uris() {
 
+		// Get the entity IDs.
 		$ids = $this->entity_service->get( array(
 			'numberposts' => - 1,
 			'fields'      => 'ids',
 			'post_status' => 'publish',
 		) );
 
-
+		// Create a reference to the entity service for the closure.
 		$entity_service = $this->entity_service;
 
-		return array_map( function ( $item ) use ( $entity_service ) {
+		// Combine IDs with URIs.
+		return array_combine( $ids, array_map( function ( $item ) use ( $entity_service ) {
 			return $entity_service->get_uri( $item );
-		}, $ids );
+		}, $ids ) );
 	}
 
 	/**
