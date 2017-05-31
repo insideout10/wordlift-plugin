@@ -12,6 +12,13 @@ $remote_uris = $this->get_linked_data_uris();
 
 $not_found_uris = array_diff( $local_uris, $remote_uris );
 
+if ( 0 < count( $not_found_uris ) ) {
+
+	$first_id = key( $not_found_uris );
+	// Re-push the entity to the Linked Data Cloud.
+	wl_linked_data_push_to_redlink( $first_id );
+
+}
 ?>
 
 <div class="wrap">
@@ -24,11 +31,7 @@ $not_found_uris = array_diff( $local_uris, $remote_uris );
 		<th scope="col"><?php esc_html_e( 'URL', 'wordlift' ); ?></th>
 		</thead>
 		<tbody>
-		<?php foreach ( $not_found_uris as $id => $uri ) {
-
-			// Re-push the entity to the Linked Data Cloud.
-			wl_linked_data_push_to_redlink( $id );
-			?>
+		<?php foreach ( $not_found_uris as $id => $uri ) { ?>
 			<tr>
 				<td><?php echo esc_html( $uri ); ?></td>
 			</tr>
