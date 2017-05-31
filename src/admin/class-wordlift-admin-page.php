@@ -1,10 +1,20 @@
 <?php
+/**
+ * Pages: Abstract Admin Page.
+ *
+ * An abstract class meant to be extended by admin pages.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
+ */
 
 /**
- * Created by PhpStorm.
- * User: david
- * Date: 20/02/2017
- * Time: 17:12
+ * Define the {@link Wordlift_Admin_Page} class.
+ *
+ * @since      3.11.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin
  */
 abstract class Wordlift_Admin_Page {
 
@@ -13,18 +23,24 @@ abstract class Wordlift_Admin_Page {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @return string The parent slug
+	 * @return string The parent slug (default 'wl_admin_menu').
 	 */
-	abstract function get_parent_slug();
+	protected function get_parent_slug() {
+
+		return 'wl_admin_menu';
+	}
 
 	/**
-	 * Get the required capability
+	 * Get the required capability.
 	 *
 	 * @since 3.11.0
 	 *
-	 * @return string The capability.
+	 * @return string The capability (default 'manage_options').
 	 */
-	abstract function get_capability();
+	protected function get_capability() {
+
+		return 'manage_options';
+	}
 
 	/**
 	 * Get the page title. Will be translated.

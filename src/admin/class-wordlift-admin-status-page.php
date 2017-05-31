@@ -17,78 +17,176 @@
  *
  * @since 3.6.0
  */
-class Wordlift_Admin_Status_Page {
+class Wordlift_Admin_Status_Page extends Wordlift_Admin_Page {
+
+
+//	private function delete_entity_branches() {
+//
+//		global $wpdb;
+//
+//		$results = $wpdb->get_results(
+//			"SELECT DISTINCT p.id" .
+//			" FROM $wpdb->posts p" .
+//			// Get the post revisions.
+//			" WHERE p.post_parent > 0" .
+//			"  AND p.post_type = 'entity'"
+//		);
+//
+//		foreach ( $results as $result ) {
+//			wp_delete_post( $result->id, true );
+//		}
+//
+//		return sizeof( $results );
+//	}
+//
+//	private function delete_entity_revisions() {
+//
+//		global $wpdb;
+//
+//		$results = $wpdb->get_results(
+//			"SELECT DISTINCT r.id" .
+//			" FROM $wpdb->posts p, $wpdb->posts r" .
+//			" WHERE r.post_type = 'revision'" .
+//			"  AND p.post_type = 'entity'" .
+//			"  AND p.id = r.post_parent"
+//		);
+//
+//		foreach ( $results as $result ) {
+//			wp_delete_post_revision( $result->id );
+//		}
+//
+//		return sizeof( $results );
+//	}
 
 	/**
-	 * Hook to 'admin_menu' to add the 'Status Report' page.
+	 * The {@link Wordlift_Entity_Service} instance.
 	 *
-	 * @since 3.9.8
+	 * @since  3.12.2
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
 	 */
-	public function admin_menu() {
+	private $entity_service;
+	/**
+	 * @var
+	 */
+	private $sparql_service;
 
-		// Add a callback to our 'page' function.
-		add_submenu_page(
-			'wl_admin_menu',
-			_x( 'Status Report', 'Page title', 'wordlift' ),
-			_x( 'Status Report', 'Menu title', 'wordlift' ),
-			'manage_options',
-			'wl_status_report',
-			array( $this, 'page', )
-		);
+	/**
+	 * Create a {@link Wordlift_Admin_Status_Page} instance.
+	 *
+	 * @since 3.12.2
+	 *
+	 * @param \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Sparql_Service $sparql_service The {@link Wordlift_Sparql_Service} instance.
+	 */
+	public function __construct( $entity_service, $sparql_service ) {
+
+		$this->entity_service = $entity_service;
+		$this->sparql_service = $sparql_service;
 
 	}
 
 	/**
-	 * The admin menu callback to render the page.
+	 * Get the list of entity URIs.
 	 *
-	 * @since 3.9.8
+	 * @since 3.12.2
+	 * @return array An array of entity URIs.
 	 */
-	public function page() {
+	protected function get_entity_uris() {
 
-		$branches  = $this->delete_entity_branches();
-		$revisions = $this->delete_entity_revisions();
+		$ids = $this->entity_service->get( array(
+			'numberposts' => - 1,
+			'fields'      => 'ids',
+			'post_status' => 'publish',
+		) );
 
-		// Include the partial.
-		include( 'partials/wordlift-admin-status-page.php' );
 
+		$entity_service = $this->entity_service;
+
+		return array_map( function ( $item ) use ( $entity_service ) {
+			return $entity_service->get_uri( $item );
+		}, $ids );
 	}
 
-	private function delete_entity_branches() {
+	/**
+	 * Get the list of URIs in the Linked Data Cloud.
+	 *
+	 * @since 3.12.2
+	 * @return array|null An array of URIs.
+	 */
+	protected function get_linked_data_uris() {
 
-		global $wpdb;
+		// Prepare the query to get the URIs from the Linked Data Cloud.
+		$query = Wordlift_Query_Builder::new_instance()
+		                               ->select( 'DISTINCT ?s' )
+		                               ->statement( '?s', Wordlift_Query_Builder::RDFS_TYPE_URI, '?o' )
+		                               ->build();
 
-		$results = $wpdb->get_results(
-			"SELECT DISTINCT p.id" .
-			" FROM $wpdb->posts p" .
-			// Get the post revisions.
-			" WHERE p.post_parent > 0" .
-			"  AND p.post_type = 'entity'"
-		);
+		// Execute the query.
+		$response = $this->sparql_service->select( $query );
 
-		foreach ( $results as $result ) {
-			wp_delete_post( $result->id, true );
+		// If the response is an error, return null.
+		if ( is_a( $response, 'WP_Error' ) ) {
+			return null;
 		}
 
-		return sizeof( $results );
+		// Split the response into single URIs.
+		$uris = preg_split( "/(\r\n|\n|\r)/", $response['body'] );
+
+		// Remove the header.
+		unset( $uris[0] );
+
+		// Finally return the URIs.
+		return $uris;
 	}
 
-	private function delete_entity_revisions() {
+	/**
+	 * Get the page title. Will be translated.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return string The page title.
+	 */
+	function get_page_title() {
 
-		global $wpdb;
+		return _x( 'Status Report', 'Page title', 'wordlift' );
+	}
 
-		$results = $wpdb->get_results(
-			"SELECT DISTINCT r.id" .
-			" FROM $wpdb->posts p, $wpdb->posts r" .
-			" WHERE r.post_type = 'revision'" .
-			"  AND p.post_type = 'entity'" .
-			"  AND p.id = r.post_parent"
-		);
+	/**
+	 * Get the menu title. Will be translated.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return string The menu title.
+	 */
+	function get_menu_title() {
 
-		foreach ( $results as $result ) {
-			wp_delete_post_revision( $result->id );
-		}
+		return _x( 'Status Report', 'Menu title', 'wordlift' );
+	}
 
-		return sizeof( $results );
+	/**
+	 * Get the menu slug.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return string The menu slug.
+	 */
+	function get_menu_slug() {
+
+		return 'wl_status_report';
+	}
+
+	/**
+	 * Get the partial file name, used in the {@link render} function.
+	 *
+	 * @since 3.11.0
+	 *
+	 * @return string The partial file name.
+	 */
+	function get_partial_name() {
+
+
+		return 'wordlift-admin-status-page.php';
 	}
 
 }

@@ -741,7 +741,7 @@ function rl_count_triples() {
 
 		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
 
-		wl_write_log( "rl_count_triples : error [ url :: $url ][ response :: " );
+		wl_write_log( "rl_count_triples : error [ response :: " );
 		wl_write_log( "\n" . var_export( $response, true ) );
 		wl_write_log( "][ body :: " );
 		wl_write_log( "\n" . $body );

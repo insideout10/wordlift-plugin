@@ -489,4 +489,25 @@ class Wordlift_Entity_Service {
 		return wl_core_inner_get_related_entities( 'post_ids', $id, null, $post_status );
 	}
 
+	/**
+	 * Get the list of entities.
+	 *
+	 * @since 3.12.2
+	 *
+	 * @param array $params Custom parameters for WordPress' own {@link get_posts} function.
+	 *
+	 * @return array An array of entity posts.
+	 */
+	public function get( $params = array() ) {
+
+		// Set the defaults.
+		$defaults = array( 'post_type' => 'entity' );
+
+		// Merge the defaults with the provided parameters.
+		$args = wp_parse_args( $params, $defaults );
+
+		// Call the `get_posts` function.
+		return get_posts( $args );
+	}
+
 }
