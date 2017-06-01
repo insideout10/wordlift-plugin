@@ -28,14 +28,17 @@ class Wordlift_FsockOpen_Test extends Wordlift_Unit_Test_Case {
 	public function test() {
 
 		if ( version_compare( $GLOBALS['wp_version'], '4.7.0', '<' ) ) {
-			$this->markTestSkipped('Unsupported WordPress version.');
+			$this->markTestSkipped( 'Unsupported WordPress version.' );
+
+			return;
 		}
 
 		$transport = new Requests_Transport_fsockopen();
 
 		$response = $transport->request( 'https://api.wordlift.it', array(), array(), self::get_default_options() );
 
-		var_dump( $response );
+		$this->assertFalse( is_a( $response, 'WP_Error' ) );
+		$this->assertNotEmpty( $response );
 
 	}
 
