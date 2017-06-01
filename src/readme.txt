@@ -5,7 +5,7 @@ Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, seo, content recommendation, related posts, timeline, knowledge graph, interactive map, engagement, semantic, artificial intelligence, linked data, google rich snippets
 
 Requires at least: 4.2
-Tested up to: 4.7
+Tested up to: 4.8
 Stable tag: {version}
 License: GPLv2 or later
 
@@ -137,6 +137,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.12.2 (2017-06-01) =
+* Fix: [#549](https://github.com/insideout10/wordlift-plugin/issues/549): Make WL compatible with WP 4.8.
+* Fix: [#543](https://github.com/insideout10/wordlift-plugin/issues/543): Entities not published to the Linked Data Store.
+* Fix: [#528](https://github.com/insideout10/wordlift-plugin/issues/528): fsockopen loops indefinitely.
 
 = 3.12.1 (2017-05-15) =
 * Enhancement: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.

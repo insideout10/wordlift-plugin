@@ -44,20 +44,40 @@ class TopicTaxonomyServiceTest extends Wordlift_Unit_Test_Case {
 		// Create a fake topic entity
 		$topic_id     = wl_create_post( 'foo', sanitize_title( $topic ), $topic, 'draft', 'entity' );
 		$topic_entity = get_post( $topic_id );
+
+		$this->assertNotNull( $topic_entity, 'The topic entity should exist.' );
+		$this->assertNotNull( $topic_entity->post_title, 'Cannot read the post title.' );
+
 		// Create a reference to the service
 		$topic_taxonomy_service = Wordlift_Topic_Taxonomy_Service::get_instance();
-		// Check topic taxonomy term coresponding to $topic_id does not exist yet
+
+		// Check topic taxonomy term corresponding to $topic_id does not exist yet
 		$this->assertFalse( get_term_by(
 			'slug', sanitize_title( $topic ), $topic_taxonomy_service::TAXONOMY_NAME
 		) );
+
 		// Going to create the term
 		$term_id = $topic_taxonomy_service->get_or_create_term_from_topic_entity( $topic_entity );
+
 		// Check if the results is a numeric, meaning the term was properly created
 		$this->assertInternalType( 'int', $term_id );
+		$this->assertGreaterThan( 0, $term_id );
+
 		// Retrieve the term obj and check its properties
-		$term = get_term_by( 'ID', $term_id, $topic_taxonomy_service::TAXONOMY_NAME );
+		$taxonomy = get_taxonomy( Wordlift_Topic_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertFalse( false === $taxonomy, 'The topic taxonomy must exist.' );
+
+		// Since WP 4.8 we had to change 'ID' to 'id'.
+		$term = get_term_by( 'id', $term_id, Wordlift_Topic_Taxonomy_Service::TAXONOMY_NAME );
+
+		$this->assertFalse( false === $term );
+		$this->assertNotNull( $term, 'The term should exist.' );
+		$this->assertNotNull( $term->name, 'Cannot read the term name.' );
+
 		// Check term name against topic entity post title
 		$this->assertEquals( $term->name, $topic_entity->post_title );
+
 		// Check term description against topic entity post content
 		$this->assertEquals( $term->description, $topic_entity->post_content );
 		// Double check here
