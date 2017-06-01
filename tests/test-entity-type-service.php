@@ -4,14 +4,6 @@
  */
 class Wordlift_Entity_Type_Service_Test extends Wordlift_Unit_Test_Case {
 
-	function setUp() {
-		parent::setUp();
-
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
-
-	}
-
 	/**
 	 * Check that the specified slug is used.
 	 */
