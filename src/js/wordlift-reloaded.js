@@ -1182,7 +1182,6 @@
           entity.id = id;
           entity.occurrences = [];
           entity.annotations = {};
-          entity.confidence = 1;
         }
         ref7 = data.annotations;
         for (id in ref7) {
