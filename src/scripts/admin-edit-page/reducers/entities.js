@@ -44,14 +44,20 @@ const entities = function( state = Map(), action ) {
 					} )
 				)
 				// Sort by confidence.
-				.sort( ( x, y ) => y.confidence - x.confidence )
+				.sort( ( x, y ) => {
+					// Get the delta confidence.
+					const delta = y.confidence - x.confidence;
+
+					// If the confidence is equal, sort by number of annotations.
+					return 0 !== delta ? delta : y.annotations.length - x.annotations.length;
+				} )
 				// Set the shortlist flag to true for the first 20.
 				.mapEntries( ( [ k, v ], i ) => {
 					v.shortlist = i < 20;
 					return [ k, v ];
 				} )
 				// Then resort them by label.
-				.sortBy( x => x.label );
+				.sortBy( x => x.label.toLowerCase() );
 
 		// Legacy: set the current entity on the `EditPostWidgetController`.
 		case types.SET_CURRENT_ENTITY:
