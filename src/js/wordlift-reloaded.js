@@ -502,6 +502,7 @@
       $scope.messages = [];
       RelatedPostDataRetrieverService.load(Object.keys($scope.configuration.entities));
       $rootScope.$on("analysisFailed", function(event, errorMsg) {
+        $scope.analysisFailed = true;
         return $scope.addMsg(errorMsg, 'error');
       });
       $rootScope.$on("analysisServiceStatusUpdated", function(event, newStatus) {
@@ -1299,6 +1300,10 @@
         promise = this._innerPerform(content, annotations);
         promise.then(function(response) {
           var result;
+          if ((response.data.success != null) && !response.data.success) {
+            $rootScope.$broadcast("analysisFailed", response.data.data.message);
+            return;
+          }
           service._currentAnalysis = response.data;
           result = service.parse(response.data);
           $rootScope.$broadcast("analysisPerformed", result);
