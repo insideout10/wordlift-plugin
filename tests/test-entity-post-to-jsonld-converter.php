@@ -142,6 +142,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 
 		$this->assertContains( $place_id, $references );
 
+		$this->assertFalse( isset( $jsonld['alternateName'] ) );
+
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $event_id, $references_2 ) );
 		$this->assertEquals( $references, $references_2 );
@@ -190,6 +192,10 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$country = rand_str();
 		add_post_meta( $place_id, Wordlift_Schema_Service::FIELD_ADDRESS_COUNTRY, $country );
 
+		// Set the alternative names.
+		$alternate_labels = array( rand_str(), rand_str() );
+		$this->entity_service->set_alternative_labels( $place_id, $alternate_labels );
+
 		$post       = get_post( $place_id );
 		$references = array();
 		$jsonld     = $this->entity_post_to_jsonld_converter->convert( $post->ID, $references );
@@ -235,6 +241,8 @@ class Wordlift_Entity_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_C
 		$this->assertEquals( $locality, $jsonld['address']['addressLocality'] );
 		$this->assertEquals( $region, $jsonld['address']['addressRegion'] );
 		$this->assertEquals( $country, $jsonld['address']['addressCountry'] );
+
+		$this->assertEquals( $alternate_labels, $jsonld['alternateName'] );
 
 		$references_2 = array();
 		$this->assertEquals( $jsonld, $this->postid_to_jsonld_converter->convert( $place_id, $references_2 ) );
