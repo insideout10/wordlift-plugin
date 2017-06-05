@@ -25,4 +25,7 @@
 	   class="button wl-add-input wl-button"><?php _ex( 'Turtle', 'File format, not the animal', 'wordlift' ); ?></a>
 	<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_download_your_data&out=n3' ) ); ?>"
 	   class="button wl-add-input wl-button"><?php esc_html_e( 'N3', 'wordlift' ); ?></a>
+	<a href="<?php echo esc_url( admin_url( 'admin-ajax.php?action=wl_google_analytics_export' ) ); ?>"
+	   class="button wl-add-input wl-button"><?php esc_html_e( 'Google Analytics', 'wordlift' ); ?></a>
+
 </div>
