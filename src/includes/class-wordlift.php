@@ -981,7 +981,7 @@ class Wordlift {
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
 
 		// Create an instance of the content filter service.
-		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
