@@ -21,26 +21,27 @@ class Wordlift_Admin_Input_Element implements Wordlift_Admin_Element {
 	/**
 	 * Output the HTML for an input box type settings_page
 	 *
-	 * @param array {
-	 *  	Parameters controlling the result.
+	 * @param array $args An array with the following keys:
+	 *                    Parameters controlling the result.
 	 *
-	 *		@type string name The name attribute of the input element. Mandatory.
+	 * @type string name The name attribute of the input element. Mandatory.
 	 *
-	 *		@type string id 	The id attribute of the input element. Optional.
-	 *		@type string id 	The id attribute of the input element.
-	 *							Optional, randomly generated one is used if not supplied.
-	 *		@type string value 	The value of the input element.
-	 *							Optional, defaults to empty string.
-	 *		@type bool readonly	Indicates whether the input is read only.
-	 *							Optional, defaults to read-write
-	 *		@type string css_class	The class attribute for the input element.
-	 *							If empty string no class attribute will be added.
-	 *							Optional, defaults to empty string.
-	 *		@type string description	The descriptio text to be displayed below the element.
-	 *							Can include some HTML element.
-	 *							If empty string no description will be displayed.
-	 *							Optional, defaults to empty string.
-	 *		}
+	 * @type string id    The id attribute of the input element. Optional.
+	 * @type string id    The id attribute of the input element.
+	 *                            Optional, randomly generated one is used if not supplied.
+	 * @type string value    The value of the input element.
+	 *                            Optional, defaults to empty string.
+	 * @type bool readonly    Indicates whether the input is read only.
+	 *                            Optional, defaults to read-write
+	 * @type string css_class    The class attribute for the input element.
+	 *                            If empty string no class attribute will be added.
+	 *                            Optional, defaults to empty string.
+	 * @type string description    The descriptio text to be displayed below the element.
+	 *                            Can include some HTML element.
+	 *                            If empty string no description will be displayed.
+	 *                            Optional, defaults to empty string.
+	 *
+	 * @return $this|Wordlift_Admin_Element
 	 */
 	public function render( $args ) {
 
