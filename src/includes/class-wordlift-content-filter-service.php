@@ -65,9 +65,6 @@ class Wordlift_Content_Filter_Service {
 		$this->entity_service        = $entity_service;
 		$this->configuration_service = $configuration_service;
 
-		// Preload the `link by default` setting.
-		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
-
 	}
 
 	/**
@@ -81,6 +78,9 @@ class Wordlift_Content_Filter_Service {
 	 * @return string The filtered content.
 	 */
 	public function the_content( $content ) {
+
+		// Preload the `link by default` setting.
+		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
