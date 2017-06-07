@@ -138,6 +138,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.12.3 (2017-06-07) =
+* Fix: [#556](https://github.com/insideout10/wordlift-plugin/issues/556): SPARQL queries fail.
+* Fix: [#555](https://github.com/insideout10/wordlift-plugin/issues/555): In WP backend "View Linked Data" and "Test Google Rich Snippets" buttons to be shown.
+* Fix: [#554](https://github.com/insideout10/wordlift-plugin/issues/554): The WordLift's Editor is picking up old description in "Entity Description.
+
 = 3.12.2 (2017-06-01) =
 * Fix: [#549](https://github.com/insideout10/wordlift-plugin/issues/549): Make WL compatible with WP 4.8.
 * Fix: [#543](https://github.com/insideout10/wordlift-plugin/issues/543): Entities not published to the Linked Data Store.

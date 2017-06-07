@@ -35,4 +35,4 @@ function wl_admin_permalink_html( $html, $post_id, $new_title, $new_slug ) {
 	return $html;
 }
 
-add_filter( 'get_sample_permalink_html', 'wl_admin_permalink_html', 10, 4 );
+add_filter( 'get_sample_permalink_html', 'wl_admin_permalink_html', PHP_INT_MAX, 4 );
