@@ -297,7 +297,7 @@ class Wordlift_Query_Builder {
 	/**
 	 * Guess the subject type.
 	 *
-	 * @since 3.12.4
+	 * @since 3.12.3
 	 *
 	 * @param string $subject The subject string.
 	 *

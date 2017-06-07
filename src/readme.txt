@@ -138,6 +138,11 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.12.3 (2017-06-07) =
+* Fix: [#556](https://github.com/insideout10/wordlift-plugin/issues/556): SPARQL queries fail.
+* Fix: [#555](https://github.com/insideout10/wordlift-plugin/issues/555): In WP backend "View Linked Data" and "Test Google Rich Snippets" buttons to be shown.
+* Fix: [#554](https://github.com/insideout10/wordlift-plugin/issues/554): The WordLift's Editor is picking up old description in "Entity Description.
+
 = 3.12.2 (2017-06-01) =
 * Fix: [#549](https://github.com/insideout10/wordlift-plugin/issues/549): Make WL compatible with WP 4.8.
 * Fix: [#543](https://github.com/insideout10/wordlift-plugin/issues/543): Entities not published to the Linked Data Store.
@@ -146,7 +151,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 = 3.12.1 (2017-05-15) =
 * Enhancement: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.
 
-= 3.12.0 (2017-03-24) =
+= 3.12.0 (2017-04-24) =
 * Enhancement: [#516](https://github.com/insideout10/wordlift-plugin/issues/516): Visual Composer tags appearing in the article's description.
 * Enhancement: [#512](https://github.com/insideout10/wordlift-plugin/issues/512): Entity type listing page shows an "access not allowed" in wordpress versions before 4.7.
 * Enhancement: [#511](https://github.com/insideout10/wordlift-plugin/issues/511): Add support for the about property.
