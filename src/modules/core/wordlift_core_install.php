@@ -147,7 +147,8 @@ EOF;
  */
 function wl_core_upgrade_db_to_1_0() {
 
-	if ( ! get_site_option( 'wl_db_version' ) ) {
+	if ( ! get_option( 'wl_db_version' ) ) {
+		wl_core_install_entity_type_data();
 		wl_core_install_create_relation_instance_table();
 	}
 
@@ -163,7 +164,7 @@ function wl_core_upgrade_db_to_1_0() {
 function wl_core_upgrade_db_1_0_to_3_10() {
 
 	// If the DB version is less than 3.10, than flatten the txonomy.
-	if ( version_compare( get_site_option( 'wl_db_version' ), '3.9', '<=' ) ) {
+	if ( version_compare( get_option( 'wl_db_version' ), '3.9', '<=' ) ) {
 
 		$term_slugs = array(
 			'thing',
@@ -212,12 +213,12 @@ function wl_core_upgrade_db_3_10_3_12() {
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
-	if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
 
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
-		update_site_option( 'wl_db_version', WL_DB_VERSION );
+		update_option( 'wl_db_version', WL_DB_VERSION );
 
 	}
 
