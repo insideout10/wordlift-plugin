@@ -192,9 +192,17 @@ var config = {
 // onPrepare: function (config, capabilities) { }, // Gets executed before //
 // test execution begins. At this point you can access all global // variables,
 // such as `browser`. It is the perfect place to define custom // commands.
-// before: function( capabilities, specs ) {  // Set the browser's `baseUrl`
-// from the `capabilities`'s `baseUrl` in // order to have each browser go to a
-// different WordPress setup. if ( capabilities.baseUrl ) { browser.options.baseUrl = capabilities.baseUrl; }  browser.timeouts( 'implicit', 10000 );  }
+	before: function( capabilities, specs ) {
+		// Set the browser's `baseUrl` from the `capabilities` 's `baseUrl` in
+		// order to have each browser go to a different WordPress setup.
+
+		if ( capabilities.baseUrl ) {
+			browser.options.baseUrl = capabilities.baseUrl;
+		}
+
+		browser.timeouts( 'implicit', 10000 );
+
+	}
 	//
 	// Hook that gets executed before the suite starts
 	// beforeSuite: function (suite) {
@@ -223,7 +231,7 @@ var config = {
 if ( process.env.CI ) {
 
 	// Set the tests' base url.
-	const BASE_URL = 'http://wordpress.local';
+	// const BASE_URL = 'http://wordpress.local';
 
 	// Remove any previously set baseUrl (we use one different URL for each
 	// browser).
@@ -271,7 +279,7 @@ if ( process.env.CI ) {
 		config.capabilities[ i ].build = process.env.TRAVIS_BUILD_NUMBER;
 		config.capabilities[ i ].name = process.env.TRAVIS_BRANCH + ' (build ' + process.env.TRAVIS_BUILD_NUMBER + '; commit ' + process.env.TRAVIS_COMMIT + ')';
 		config.capabilities[ i ].public = true;
-		config.capabilities[ i ].baseUrl = BASE_URL + '/' + (
+		config.capabilities[ i ].baseUrl = 'http://wordpress.local/' + (
 										   i + 1
 			);
 	}
