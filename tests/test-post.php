@@ -101,27 +101,27 @@ class PostTest extends Wordlift_Unit_Test_Case {
 		$this->assertTrue( isset( $counts['objects'] ) );
 	}
 
-	/**
-	 * Test create a post and submit it to Redlink for analysis.
-	 */
-	function testRedlinkAPI() {
-
-		// Create the test post.
-		$post_id = $this->createPost();
-
-		// Send the post for analysis.
-		$body = wl_analyze_post( $post_id );
-
-		// Save the results to a file.
-		if ( self::SAVE_REMOTE_RESPONSE ) {
-			$output = dirname( __FILE__ ) . '/' . self::FILENAME . '.json';
-			$result = file_put_contents( $output, $body );
-			$this->assertFalse( false === $result );
-		}
-
-		// Delete the test post.
-		$this->deletePost( $post_id );
-	}
+//	/**
+//	 * Test create a post and submit it to Redlink for analysis.
+//	 */
+//	function testRedlinkAPI() {
+//
+//		// Create the test post.
+//		$post_id = $this->createPost();
+//
+//		// Send the post for analysis.
+//		$body = wl_analyze_post( $post_id );
+//
+//		// Save the results to a file.
+//		if ( self::SAVE_REMOTE_RESPONSE ) {
+//			$output = dirname( __FILE__ ) . '/' . self::FILENAME . '.json';
+//			$result = file_put_contents( $output, $body );
+//			$this->assertFalse( false === $result );
+//		}
+//
+//		// Delete the test post.
+//		$this->deletePost( $post_id );
+//	}
 
 	/**
 	 * Test a simple sparql query against Redlink to check whether SPARQL queries work fine.
