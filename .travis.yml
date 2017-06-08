@@ -110,10 +110,10 @@ before_install:
   - |
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_start.sh
-      .ci/travis/install_apache.sh
       mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
       .ci/travis/install_wp_cli.sh
       .ci/travis/install_wordpress.sh
+      .ci/travis/install_apache.sh
     fi
 
 before_script:
