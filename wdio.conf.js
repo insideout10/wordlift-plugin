@@ -175,7 +175,7 @@ var config = {
 	beforeSession: function( config, capabilities, specs ) {
 
 		// Copy the baseUrl from the browser's capabilities settings.
-		config.baseUrl = 'http://xyz'; // capabilities.baseUrl;
+		config.baseUrl = capabilities.baseUrl;
 
 	},
 
@@ -184,26 +184,17 @@ var config = {
 //	// Hooks
 //	// =====
 //	// WebdriverIO provides several hooks you can use to interfere with the
-//	// test process in order to enhance it and to build services around it. You
-//	// can either apply a single function or an array of methods to it. If one
-//	// of them returns with a promise, WebdriverIO will wait until that promise
-//	// got resolved to continue.  Gets executed once before all workers get
-//	// launched. `capabilities` here contain the array of `capabilities`.
-//	// onPrepare: function (config, capabilities) { }, // Gets executed before
-//	// test execution begins. At this point you can access all global
-//	// variables, such as `browser`. It is the perfect place to define custom
-//	// commands.
-//	before: function( capabilities, specs ) {
-//
-//		// Set the browser's `baseUrl` from the `capabilities`'s `baseUrl` in
-//		// order to have each browser go to a different WordPress setup.
-//		if ( capabilities.baseUrl ) {
-//			browser.options.baseUrl = capabilities.baseUrl;
-//		}
-//
-//		browser.timeouts( 'implicit', 10000 );
-//
-//	}
+//	// test process in order to enhance it and to build services around it.
+// You // can either apply a single function or an array of methods to it. If
+// one // of them returns with a promise, WebdriverIO will wait until that
+// promise // got resolved to continue.  Gets executed once before all workers
+// get // launched. `capabilities` here contain the array of `capabilities`. //
+// onPrepare: function (config, capabilities) { }, // Gets executed before //
+// test execution begins. At this point you can access all global // variables,
+// such as `browser`. It is the perfect place to define custom // commands.
+// before: function( capabilities, specs ) {  // Set the browser's `baseUrl`
+// from the `capabilities`'s `baseUrl` in // order to have each browser go to a
+// different WordPress setup. if ( capabilities.baseUrl ) { browser.options.baseUrl = capabilities.baseUrl; }  browser.timeouts( 'implicit', 10000 );  }
 	//
 	// Hook that gets executed before the suite starts
 	// beforeSuite: function (suite) {
