@@ -81,7 +81,7 @@
     "wdio-jasmine-framework": "^0.3.1",
     "wdio-sauce-service": "^0.4.0",
     "wdio-selenium-standalone-service": "0.0.8",
-    "webdriverio": "^4.7.1",
+    "webdriverio": "^4.6.2",
     "webpack": "^2.6.1"
   },
   "dependencies": {

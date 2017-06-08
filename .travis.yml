@@ -21,21 +21,21 @@ matrix:
     # JavaScript end-to-end tests.
     - php: 5.6
       env: SCRIPT=test:e2e
-    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+    # Additional PHP Unit tests, PHP 7.0, WP 4.8 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=4.7
-    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+      env: SCRIPT=test:php WP_VERSION=4.8
+    # Additional PHP Unit tests, PHP 7.0, WP 4.8 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.1
-      env: SCRIPT=test:php WP_VERSION=4.7
+      env: SCRIPT=test:php WP_VERSION=4.8
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
-    # Additional PHP Unit tests multisite enviroment, PHP 5.6, WP 4.7.
+    # Additional PHP Unit tests multisite enviroment, PHP 5.6, WP 4.8.
     - php: 5.6
-      env: SCRIPT=test:multisite WP_VERSION=4.7
+      env: SCRIPT=test:multisite WP_VERSION=4.8
   allow_failures:
     # WordPress nightly.
     - php: 5.6
@@ -82,7 +82,7 @@ env:
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
   matrix:
-    - SCRIPT=test:php WP_VERSION=4.7
+    - SCRIPT=test:php WP_VERSION=4.8
     - SCRIPT=test:php WP_VERSION=4.2
 
 services:
