@@ -409,6 +409,15 @@ class Wordlift {
 	protected $input_element;
 
 	/**
+	 * The {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 *
+	 * @since  3.13.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Radio_Input_Element $radio_input_element The {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 */
+	protected $radio_input_element;
+
+	/**
 	 * The {@link Wordlift_Admin_Language_Select_Element} element renderer.
 	 *
 	 * @since  3.11.0
@@ -764,6 +773,7 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/intf-wordlift-admin-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-input-radio-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-select2-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-tabs-element.php';
@@ -941,13 +951,14 @@ class Wordlift {
 
 		// UI elements.
 		$this->input_element           = new Wordlift_Admin_Input_Element();
+		$this->radio_input_element     = new Wordlift_Admin_Radio_Input_Element();
 		$this->select2_element         = new Wordlift_Admin_Select2_Element();
 		$this->language_select_element = new Wordlift_Admin_Language_Select_Element();
 		$tabs_element                  = new Wordlift_Admin_Tabs_Element();
 		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $publisher_service, $tabs_element, $this->select2_element );
 
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
-		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element );
+		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element, $this->radio_input_element );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Pages.
@@ -970,7 +981,7 @@ class Wordlift {
 		$this->admin_setup = new Wordlift_Admin_Setup( $this->configuration_service, $this->key_validation_service, $this->entity_service );
 
 		// Create an instance of the content filter service.
-		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service );
+		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 

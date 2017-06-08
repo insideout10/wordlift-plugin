@@ -244,10 +244,10 @@ if ( process.env.CI ) {
 			browserName: 'safari',
 			platform: 'macOS 10.12',
 			version: 'latest'
-		}, {
-			browserName: 'firefox',
-			version: 'latest',
-			platform: 'Windows 10'
+//		}, {
+//			browserName: 'firefox',
+//			version: 'latest',
+//			platform: 'Windows 10'
 		}, {
 			browserName: 'internet explorer',
 			version: 'latest',
