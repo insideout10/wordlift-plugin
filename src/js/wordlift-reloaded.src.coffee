@@ -1160,7 +1160,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         entity.id = id
         entity.occurrences = []
         entity.annotations = {}
-        entity.confidence = 1
+        # See #550: the confidence is set by the server.
+        # entity.confidence = 1
 
       for id, annotation of data.annotations
         annotation.id = id
