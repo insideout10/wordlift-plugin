@@ -18,4 +18,5 @@ sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-availa
 echo "***** Apache Configuration *****"
 cat /etc/apache2/sites-available/default
 
+echo "***** Restarting Apache *****"
 sudo service apache2 restart

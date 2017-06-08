@@ -4,6 +4,8 @@
 install ()
 {
 
+    echo "***** Installing WordPress instance $1 *****"
+
     # Pop the current folder, we'll cd into it before leaving the function.
     local cwd=$(pwd)
 
@@ -29,6 +31,8 @@ install ()
     ln -s "$HOME/src" "$instance_dir/wp-content/plugins/wordlift"
 
     cd $cwd
+
+    echo "***** WordPress instance $1 installed *****"
 
 }
 
