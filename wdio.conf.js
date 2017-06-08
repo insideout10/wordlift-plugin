@@ -175,7 +175,7 @@ var config = {
 	beforeSession: function( config, capabilities, specs ) {
 
 		// Copy the baseUrl from the browser's capabilities settings.
-		config.baseUrl = capabilities.baseUrl;
+		config.baseUrl = 'http://xyz'; // capabilities.baseUrl;
 
 	},
 
@@ -236,7 +236,7 @@ if ( process.env.CI ) {
 
 	// Remove any previously set baseUrl (we use one different URL for each
 	// browser).
-	delete config.baseUrl;
+	// delete config.baseUrl;
 
 	// Configure Sauce Labs.
 	config.user = process.env.SAUCE_USERNAME;
