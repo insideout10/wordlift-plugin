@@ -7,6 +7,15 @@ require_once 'functions.php';
 class EntityTest extends Wordlift_Unit_Test_Case {
 
 	/**
+	 * The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  1.11.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+
+	/**
 	 * Set up the test.
 	 */
 	function setUp() {
@@ -42,6 +51,8 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 			'post_type'      => 'entity',
 			'post_status'    => 'any',
 		) ) ) );
+
+		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 
 	}
 
@@ -166,9 +177,14 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 				'http://vo.dbpedia.org/resource/Tim_Berners-Lee',
 				'http://zh_min_nan.dbpedia.org/resource/Tim_Berners-Lee',
 			),
+			'synonym'        => array( 'TBL' ),
 		);
 		$entity_post  = wl_save_entity( $entity_props );
 		$this->assertNotNull( $entity_post );
+
+		// Get the synonyms and check that they match the provided number of synonyms.
+		$synonyms = $this->entity_service->get_alternative_labels( $entity_post->ID );
+		$this->assertCount( 1, $synonyms );
 
 		// Check that creating a post for the same entity does create a duplicate post.
 		$entity_post_2 = wl_save_entity( $entity_props );
@@ -210,6 +226,10 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 		);
 		$entity_post  = wl_save_entity( $entity_props );
 		$this->assertNotNull( $entity_post );
+
+		// Get the synonyms and check that they match the provided number of synonyms.
+		$synonyms = $this->entity_service->get_alternative_labels( $entity_post->ID );
+		$this->assertCount( 0, $synonyms );
 
 		// Check that the type is set correctly.
 		$this->assertEquals( array( 'http://schema.org/Place' ), wl_schema_get_types( $entity_post->ID ) );
