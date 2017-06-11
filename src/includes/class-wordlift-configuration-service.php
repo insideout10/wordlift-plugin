@@ -355,12 +355,16 @@ class Wordlift_Configuration_Service {
 	 */
 	function maybe_update_dataset_uri( $value, $old_value ) {
 
+		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
+		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
+		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
+
 		$dataset_uri = $this->get_dataset_uri();
 
-		if ( ! empty( $value ) && $value == $old_value && empty( $dataset_uri ) ) {
+		if ( ! empty( $new_key ) && $new_key == $old_key && empty( $dataset_uri ) ) {
 
 			// make the request to the remote server to try to get the dataset uri
-			$this->get_remote_dataset_uri( $value );
+			$this->get_remote_dataset_uri( $new_key );
 		}
 
 		return $value;
