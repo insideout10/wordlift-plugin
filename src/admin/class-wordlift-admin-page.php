@@ -70,6 +70,20 @@ abstract class Wordlift_Admin_Page {
 	abstract function get_menu_slug();
 
 	/**
+	 * Get the page url.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @return string The escaped url of the admin page
+	 */
+	function get_url() {
+
+		// ideally should have used menu_page_url, but it is loaded later than some usages.
+		$url = admin_url( 'admin.php?page=' . $this->get_menu_slug() );
+		return esc_url( $url );
+	}
+
+	/**
 	 * Get the partial file name, used in the {@link render} function.
 	 *
 	 * @since 3.11.0
