@@ -106,7 +106,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 
 		// Redirect to the next chunk.
 		if ( $count == $limit ) {
-			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit ) );
+			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&entity_only=' . ( $entity_only ? '1' : '0' ) ) );
 		}
 
 		echo( "done [ count :: $count ][ limit :: $limit ]" );
