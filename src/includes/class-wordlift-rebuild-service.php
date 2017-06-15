@@ -68,9 +68,10 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		header( 'Content-type: text/plain; charset=utf-8' );
 
 		// We start at 0 by default and get to max.
-		$offset = $_GET['offset'] ?: 0;
-		$limit  = $_GET['limit'] ?: 1;
-		$max    = $offset + $limit;
+		$offset      = $_GET['offset'] ?: 0;
+		$limit       = $_GET['limit'] ?: 1;
+		$entity_only = isset( $_GET['entity_only'] ) && '1' === $_GET['entity_only'];
+		$max         = $offset + $limit;
 
 		// If we're starting at offset 0, then delete existing URIs and data from
 		// the remote dataset.
@@ -97,7 +98,10 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
-			'post_type'   => array( 'entity', 'post' ),
+			'post_type'   => $entity_only ? 'entity' : array(
+				'entity',
+				'post',
+			),
 		), $offset, $max );
 
 		// Redirect to the next chunk.
