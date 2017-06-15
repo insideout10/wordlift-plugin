@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.12.4 (2017-06-15) =
+* Fix: [#563](https://github.com/insideout10/wordlift-plugin/issues/563): Allow rebuilding entities only.
+
 = 3.12.3 (2017-06-07) =
 * Fix: [#556](https://github.com/insideout10/wordlift-plugin/issues/556): SPARQL queries fail.
 * Fix: [#555](https://github.com/insideout10/wordlift-plugin/issues/555): In WP backend "View Linked Data" and "Test Google Rich Snippets" buttons to be shown.
