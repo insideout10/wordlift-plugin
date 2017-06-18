@@ -689,6 +689,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-adapter.php';
+
 		/**
 		 * Load the WordLift key validation service.
 		 */

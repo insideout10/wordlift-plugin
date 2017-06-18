@@ -112,6 +112,9 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			'description' => Wordlift_Post_Excerpt_Helper::get_text_excerpt( $post ),
 		);
 
+		$pa = new Wordlift_Post_Adatpter( $post_id );
+		$jsonld['wordCount'] = $pa->word_count();
+
 		// Set the `mainEntityOfPage` property if the post has some contents.
 		if ( ! empty( $post->post_content ) ) {
 			// We're setting the `mainEntityOfPage` to signal which one is the
