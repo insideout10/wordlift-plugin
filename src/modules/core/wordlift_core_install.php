@@ -209,6 +209,24 @@ function wl_core_upgrade_db_3_10_3_12() {
 	});
 }
 
+/**
+ * Upgrade the DB structure to the one expected by the 3.14 release.
+ *
+ * Add Recipe entity.
+ *
+ * @since 3.14.0
+ */
+function wl_core_upgrade_db_3_12_3_14() {
+	$result = wp_insert_term(
+		'Recipe',
+		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+		array(
+				'slug'       => 'recipe',
+				'description' => 'A Recipe.',
+			)
+	);
+}
+
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
@@ -217,6 +235,7 @@ function wl_core_update_db_check() {
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
+		wl_core_upgrade_db_3_12_3_14();
 		update_site_option( 'wl_db_version', WL_DB_VERSION );
 
 	}
