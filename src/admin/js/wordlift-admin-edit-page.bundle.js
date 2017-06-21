@@ -361,7 +361,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var _prodInvariant = __webpack_require__(2);
 
 var DOMProperty = __webpack_require__(15);
-var ReactDOMComponentFlags = __webpack_require__(71);
+var ReactDOMComponentFlags = __webpack_require__(70);
 
 var invariant = __webpack_require__(0);
 
@@ -770,14 +770,21 @@ var flatten = function flatten(chunks, executionContext) {
 };
 
 //      
+__WEBPACK_IMPORTED_MODULE_0_stylis___default.a.set({
+  global: false,
+  cascade: true,
+  keyframe: false,
+  prefix: true,
+  compress: false,
+  semicolon: true
+});
+
 var stringifyRules = function stringifyRules(rules, selector, prefix) {
   var flatCSS = rules.join('').replace(/^\s*\/\/.*$/gm, ''); // replace JS comments
 
   var cssStr = selector && prefix ? prefix + ' ' + selector + ' { ' + flatCSS + ' }' : flatCSS;
 
-  var css = __WEBPACK_IMPORTED_MODULE_0_stylis___default()(prefix || !selector ? '' : selector, cssStr, false, false);
-
-  return css;
+  return __WEBPACK_IMPORTED_MODULE_0_stylis___default()(prefix || !selector ? '' : selector, cssStr);
 };
 
 //      
@@ -1847,7 +1854,9 @@ var StyleSheetManager = function (_Component) {
 
   StyleSheetManager.prototype.render = function render() {
     /* eslint-disable react/prop-types */
-    // $FlowFixMe
+    // Flow v0.43.1 will report an error accessing the `children` property,
+    // but v0.47.0 will not. It is necessary to use a type cast instead of
+    // a "fixme" comment to satisfy both Flow versions.
     return __WEBPACK_IMPORTED_MODULE_1_react___default.a.Children.only(this.props.children);
   };
 
@@ -2766,8 +2775,8 @@ var _StyledComponent = function _StyledComponent(ComponentStyle, constructWithOp
   /* We depend on components having unique IDs */
   var identifiers = {};
   var generateId = function generateId(_displayName) {
-    var displayName = typeof _displayName !== 'string' ? 'sc' : _displayName.replace(escapeRegex, '-') // Replace all possible CSS selectors
-    .replace(multiDashRegex, '-'); // Replace multiple -- with single -
+    var displayName = typeof _displayName !== 'string' ? 'sc' : _displayName.replace(escapeRegex, '-' // Replace all possible CSS selectors
+    ).replace(multiDashRegex, '-'); // Replace multiple -- with single -
 
     var nr = (identifiers[displayName] || 0) + 1;
     identifiers[displayName] = nr;
@@ -2958,9 +2967,16 @@ var _StyledComponent = function _StyledComponent(ComponentStyle, constructWithOp
         get: function get() {
           var _ = options.displayName,
               __ = options.componentId,
-              optionsToCopy = objectWithoutProperties(options, ['displayName', 'componentId']);
+              rulesFromOptions = options.rules,
+              optionsToCopy = objectWithoutProperties(options, ['displayName', 'componentId', 'rules']);
 
-          var newOptions = _extends({}, optionsToCopy, { rules: rules, ParentComponent: StyledComponent });
+          var newRules = rulesFromOptions === undefined ? rules : rulesFromOptions.concat(rules);
+
+          var newOptions = _extends({}, optionsToCopy, {
+            rules: newRules,
+            ParentComponent: StyledComponent
+          });
+
           return constructWithOptions(createStyledComponent, target, newOptions);
         }
       }]);
@@ -3477,9 +3493,9 @@ module.exports = { debugTool: debugTool };
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(3);
 
-var CallbackQueue = __webpack_require__(69);
+var CallbackQueue = __webpack_require__(68);
 var PooledClass = __webpack_require__(13);
-var ReactFeatureFlags = __webpack_require__(74);
+var ReactFeatureFlags = __webpack_require__(73);
 var ReactReconciler = __webpack_require__(16);
 var Transaction = __webpack_require__(29);
 
@@ -4161,7 +4177,7 @@ var DOMNamespaces = __webpack_require__(40);
 var setInnerHTML = __webpack_require__(31);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(48);
-var setTextContent = __webpack_require__(86);
+var setTextContent = __webpack_require__(85);
 
 var ELEMENT_NODE_TYPE = 1;
 var DOCUMENT_FRAGMENT_NODE_TYPE = 11;
@@ -4784,10 +4800,10 @@ var _assign = __webpack_require__(3);
 var ReactCurrentOwner = __webpack_require__(12);
 
 var warning = __webpack_require__(1);
-var canDefineProperty = __webpack_require__(94);
+var canDefineProperty = __webpack_require__(93);
 var hasOwnProperty = Object.prototype.hasOwnProperty;
 
-var REACT_ELEMENT_TYPE = __webpack_require__(93);
+var REACT_ELEMENT_TYPE = __webpack_require__(92);
 
 var RESERVED_PROPS = {
   key: true,
@@ -5305,8 +5321,8 @@ var EventPluginRegistry = __webpack_require__(41);
 var EventPluginUtils = __webpack_require__(42);
 var ReactErrorUtils = __webpack_require__(46);
 
-var accumulateInto = __webpack_require__(80);
-var forEachAccumulated = __webpack_require__(81);
+var accumulateInto = __webpack_require__(79);
+var forEachAccumulated = __webpack_require__(80);
 var invariant = __webpack_require__(0);
 
 /**
@@ -5585,8 +5601,8 @@ module.exports = EventPluginHub;
 var EventPluginHub = __webpack_require__(22);
 var EventPluginUtils = __webpack_require__(42);
 
-var accumulateInto = __webpack_require__(80);
-var forEachAccumulated = __webpack_require__(81);
+var accumulateInto = __webpack_require__(79);
+var forEachAccumulated = __webpack_require__(80);
 var warning = __webpack_require__(1);
 
 var getListener = EventPluginHub.getListener;
@@ -5909,7 +5925,7 @@ var _assign = __webpack_require__(3);
 
 var EventPluginRegistry = __webpack_require__(41);
 var ReactEventEmitterMixin = __webpack_require__(203);
-var ViewportMetrics = __webpack_require__(79);
+var ViewportMetrics = __webpack_require__(78);
 
 var getVendorPrefixedEventName = __webpack_require__(235);
 var isEventSupported = __webpack_require__(52);
@@ -6239,7 +6255,7 @@ module.exports = ReactBrowserEventEmitter;
 
 
 var SyntheticUIEvent = __webpack_require__(25);
-var ViewportMetrics = __webpack_require__(79);
+var ViewportMetrics = __webpack_require__(78);
 
 var getEventModifierState = __webpack_require__(50);
 
@@ -6766,7 +6782,7 @@ module.exports = setInnerHTML;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Provider__ = __webpack_require__(238);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_connectAdvanced__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__connect_connect__ = __webpack_require__(239);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__components_Provider__["a"]; });
 /* unused harmony reexport createProvider */
@@ -6783,12 +6799,12 @@ module.exports = setInnerHTML;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__combineReducers__ = __webpack_require__(262);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__ = __webpack_require__(261);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__applyMiddleware__ = __webpack_require__(260);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(95);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__compose__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_warning__ = __webpack_require__(96);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__createStore__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_1__combineReducers__["a"]; });
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_2__bindActionCreators__["a"]; });
@@ -7206,6 +7222,12 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+    return [];
+};
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -7245,7 +7267,7 @@ var ReactInstrumentation = __webpack_require__(9);
 
 var createMicrosoftUnsafeLocalFunction = __webpack_require__(48);
 var setInnerHTML = __webpack_require__(31);
-var setTextContent = __webpack_require__(86);
+var setTextContent = __webpack_require__(85);
 
 function getNodeAfter(parentNode, node) {
   // Special case for text components, which return [open, close] comments
@@ -8051,7 +8073,7 @@ module.exports = KeyEscapeUtils;
 var _prodInvariant = __webpack_require__(2);
 
 var ReactPropTypesSecret = __webpack_require__(209);
-var propTypesFactory = __webpack_require__(65);
+var propTypesFactory = __webpack_require__(64);
 
 var React = __webpack_require__(17);
 var PropTypes = propTypesFactory(React.isValidElement);
@@ -9276,7 +9298,7 @@ var _prodInvariant = __webpack_require__(19);
 
 var ReactNoopUpdateQueue = __webpack_require__(57);
 
-var canDefineProperty = __webpack_require__(94);
+var canDefineProperty = __webpack_require__(93);
 var emptyObject = __webpack_require__(21);
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
@@ -9574,33 +9596,6 @@ module.exports = function (css) {
 
 /***/ }),
 /* 59 */
-/***/ (function(module, exports) {
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var g;
-
-// This works in non-strict mode
-g = function () {
-	return this;
-}();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1, eval)("this");
-} catch (e) {
-	// This works if the window reference is available
-	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-/***/ }),
-/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -9771,10 +9766,10 @@ function insertStyleElement (options, style) {
 }
 
 function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
 	style.parentNode.removeChild(style);
 
 	var idx = stylesInsertedAtTop.indexOf(style);
-
 	if(idx >= 0) {
 		stylesInsertedAtTop.splice(idx, 1);
 	}
@@ -9959,7 +9954,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 61 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10048,7 +10043,7 @@ var EventListener = {
 module.exports = EventListener;
 
 /***/ }),
-/* 62 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10080,7 +10075,7 @@ function focusNode(node) {
 module.exports = focusNode;
 
 /***/ }),
-/* 63 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10125,7 +10120,7 @@ function getActiveElement(doc) /*?DOMElement*/{
 module.exports = getActiveElement;
 
 /***/ }),
-/* 64 */
+/* 63 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10138,7 +10133,7 @@ var _Symbol = __WEBPACK_IMPORTED_MODULE_0__root_js__["a" /* default */].Symbol;
 /* harmony default export */ __webpack_exports__["a"] = (_Symbol);
 
 /***/ }),
-/* 65 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10166,7 +10161,7 @@ module.exports = function (isValidElement) {
 };
 
 /***/ }),
-/* 66 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -10198,7 +10193,7 @@ if (false) {
 }
 
 /***/ }),
-/* 67 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10218,7 +10213,7 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 module.exports = ReactPropTypesSecret;
 
 /***/ }),
-/* 68 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10371,7 +10366,7 @@ var CSSProperty = {
 module.exports = CSSProperty;
 
 /***/ }),
-/* 69 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10495,7 +10490,7 @@ var CallbackQueue = function () {
 module.exports = PooledClass.addPoolingTo(CallbackQueue);
 
 /***/ }),
-/* 70 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10737,7 +10732,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10760,7 +10755,7 @@ var ReactDOMComponentFlags = {
 module.exports = ReactDOMComponentFlags;
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10965,7 +10960,7 @@ function _handleChange(event) {
 module.exports = ReactDOMSelect;
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11000,7 +10995,7 @@ ReactEmptyComponent.injection = ReactEmptyComponentInjection;
 module.exports = ReactEmptyComponent;
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11027,7 +11022,7 @@ var ReactFeatureFlags = {
 module.exports = ReactFeatureFlags;
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11100,7 +11095,7 @@ var ReactHostComponent = {
 module.exports = ReactHostComponent;
 
 /***/ }),
-/* 76 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11119,8 +11114,8 @@ module.exports = ReactHostComponent;
 var ReactDOMSelection = __webpack_require__(196);
 
 var containsNode = __webpack_require__(151);
-var focusNode = __webpack_require__(62);
-var getActiveElement = __webpack_require__(63);
+var focusNode = __webpack_require__(61);
+var getActiveElement = __webpack_require__(62);
 
 function isInDocument(node) {
   return containsNode(document.documentElement, node);
@@ -11229,7 +11224,7 @@ var ReactInputSelection = {
 module.exports = ReactInputSelection;
 
 /***/ }),
-/* 77 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11255,7 +11250,7 @@ var ReactCurrentOwner = __webpack_require__(12);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDOMContainerInfo = __webpack_require__(190);
 var ReactDOMFeatureFlags = __webpack_require__(192);
-var ReactFeatureFlags = __webpack_require__(74);
+var ReactFeatureFlags = __webpack_require__(73);
 var ReactInstanceMap = __webpack_require__(24);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactMarkupChecksum = __webpack_require__(206);
@@ -11264,7 +11259,7 @@ var ReactUpdateQueue = __webpack_require__(47);
 var ReactUpdates = __webpack_require__(10);
 
 var emptyObject = __webpack_require__(21);
-var instantiateReactComponent = __webpack_require__(84);
+var instantiateReactComponent = __webpack_require__(83);
 var invariant = __webpack_require__(0);
 var setInnerHTML = __webpack_require__(31);
 var shouldUpdateReactComponent = __webpack_require__(53);
@@ -11772,7 +11767,7 @@ var ReactMount = {
 module.exports = ReactMount;
 
 /***/ }),
-/* 78 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11817,7 +11812,7 @@ var ReactNodeTypes = {
 module.exports = ReactNodeTypes;
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11849,7 +11844,7 @@ var ViewportMetrics = {
 module.exports = ViewportMetrics;
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11912,7 +11907,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11948,7 +11943,7 @@ function forEachAccumulated(arr, cb, scope) {
 module.exports = forEachAccumulated;
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11964,7 +11959,7 @@ module.exports = forEachAccumulated;
 
 
 
-var ReactNodeTypes = __webpack_require__(78);
+var ReactNodeTypes = __webpack_require__(77);
 
 function getHostComponentFromComposite(inst) {
   var type;
@@ -11983,7 +11978,7 @@ function getHostComponentFromComposite(inst) {
 module.exports = getHostComponentFromComposite;
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12021,7 +12016,7 @@ function getTextContentAccessor() {
 module.exports = getTextContentAccessor;
 
 /***/ }),
-/* 84 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12043,8 +12038,8 @@ var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(3);
 
 var ReactCompositeComponent = __webpack_require__(187);
-var ReactEmptyComponent = __webpack_require__(73);
-var ReactHostComponent = __webpack_require__(75);
+var ReactEmptyComponent = __webpack_require__(72);
+var ReactHostComponent = __webpack_require__(74);
 
 var getNextDebugID = __webpack_require__(257);
 var invariant = __webpack_require__(0);
@@ -12157,7 +12152,7 @@ _assign(ReactCompositeComponentWrapper.prototype, ReactCompositeComponent, {
 module.exports = instantiateReactComponent;
 
 /***/ }),
-/* 85 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12213,7 +12208,7 @@ function isTextInputElement(elem) {
 module.exports = isTextInputElement;
 
 /***/ }),
-/* 86 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12270,7 +12265,7 @@ if (ExecutionEnvironment.canUseDOM) {
 module.exports = setTextContent;
 
 /***/ }),
-/* 87 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12453,7 +12448,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 /***/ }),
-/* 88 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12465,7 +12460,7 @@ module.exports = traverseAllChildren;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_Subscription__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_PropTypes__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_PropTypes__ = __webpack_require__(89);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _extends = Object.assign || function (target) {
@@ -12766,14 +12761,14 @@ selectorFactory) {
 }
 
 /***/ }),
-/* 89 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["b"] = wrapMapToPropsConstant;
 /* unused harmony export getDependsOnOwnProps */
 /* harmony export (immutable) */ __webpack_exports__["a"] = wrapMapToPropsFunc;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_verifyPlainObject__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_verifyPlainObject__ = __webpack_require__(90);
 
 
 function wrapMapToPropsConstant(getConstant) {
@@ -12843,13 +12838,13 @@ function wrapMapToPropsFunc(mapToProps, methodName) {
 }
 
 /***/ }),
-/* 90 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return subscriptionShape; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return storeShape; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_prop_types__);
 
 
@@ -12867,7 +12862,7 @@ var storeShape = __WEBPACK_IMPORTED_MODULE_0_prop_types___default.a.shape({
 });
 
 /***/ }),
-/* 91 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12884,7 +12879,7 @@ function verifyPlainObject(value, displayName, methodName) {
 }
 
 /***/ }),
-/* 92 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12916,11 +12911,11 @@ function isNative(fn) {
   var hasOwnProperty = Object.prototype.hasOwnProperty;
   var reIsNative = RegExp('^' + funcToString
   // Take an example native function source for comparison
-  .call(hasOwnProperty)
+  .call(hasOwnProperty
   // Strip regex characters so we can use it for regex
-  .replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+  ).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&'
   // Remove hasOwnProperty from the template to make it generic
-  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
+  ).replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$');
   try {
     var source = funcToString.call(fn);
     return reIsNative.test(source);
@@ -13224,7 +13219,7 @@ var ReactComponentTreeHook = {
 module.exports = ReactComponentTreeHook;
 
 /***/ }),
-/* 93 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13249,7 +13244,7 @@ var REACT_ELEMENT_TYPE = typeof Symbol === 'function' && Symbol['for'] && Symbol
 module.exports = REACT_ELEMENT_TYPE;
 
 /***/ }),
-/* 94 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13280,7 +13275,7 @@ if (false) {
 module.exports = canDefineProperty;
 
 /***/ }),
-/* 95 */
+/* 94 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13321,7 +13316,7 @@ function compose() {
 }
 
 /***/ }),
-/* 96 */
+/* 95 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13582,7 +13577,7 @@ function createStore(reducer, preloadedState, enhancer) {
 }
 
 /***/ }),
-/* 97 */
+/* 96 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -13608,6 +13603,33 @@ function warning(message) {
   } catch (e) {}
   /* eslint-enable no-empty */
 }
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports) {
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 /***/ }),
 /* 98 */,
@@ -15551,26 +15573,26 @@ var entities = function entities() {
 					local: 0 === x.id.indexOf(wlSettings.datasetUri),
 					w: __WEBPACK_IMPORTED_MODULE_4__services_WsService__["a" /* default */].getW(x)
 				});
-			})
+			}
 			// Sort by confidence.
-			.sort(function (x, y) {
+			).sort(function (x, y) {
 				// Get the delta confidence.
 				var delta = y.confidence - x.confidence;
 
 				// If the confidence is equal, sort by number of annotations.
 				return 0 !== delta ? delta : y.annotations.length - x.annotations.length;
-			})
+			}
 			// Set the shortlist flag to true for the first 20.
-			.mapEntries(function (_ref, i) {
+			).mapEntries(function (_ref, i) {
 				var _ref2 = _slicedToArray(_ref, 2),
 				    k = _ref2[0],
 				    v = _ref2[1];
 
 				v.shortlist = i < 20;
 				return [k, v];
-			})
+			}
 			// Then resort them by label.
-			.sortBy(function (x) {
+			).sortBy(function (x) {
 				return x.label.toLowerCase();
 			});
 
@@ -21529,7 +21551,7 @@ module.exports = invariant;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__getRawTag_js__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__objectToString_js__ = __webpack_require__(168);
 
@@ -21570,7 +21592,7 @@ function baseGetTag(value) {
 var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) == 'object' && global && global.Object === Object && global;
 
 /* harmony default export */ __webpack_exports__["a"] = (freeGlobal);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(59)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(97)))
 
 /***/ }),
 /* 166 */
@@ -21590,7 +21612,7 @@ var getPrototype = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__overArg_js
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(64);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Symbol_js__ = __webpack_require__(63);
 
 
 /** Used for built-in method references. */
@@ -21829,7 +21851,7 @@ module.exports = checkPropTypes;
 
 var emptyFunction = __webpack_require__(7);
 var invariant = __webpack_require__(0);
-var ReactPropTypesSecret = __webpack_require__(67);
+var ReactPropTypesSecret = __webpack_require__(66);
 
 module.exports = function () {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -21893,7 +21915,7 @@ var emptyFunction = __webpack_require__(7);
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
 
-var ReactPropTypesSecret = __webpack_require__(67);
+var ReactPropTypesSecret = __webpack_require__(66);
 var checkPropTypes = __webpack_require__(172);
 
 module.exports = function (isValidElement, throwOnDirectAccess) {
@@ -22467,7 +22489,7 @@ module.exports = ARIADOMPropertyConfig;
 
 var ReactDOMComponentTree = __webpack_require__(4);
 
-var focusNode = __webpack_require__(62);
+var focusNode = __webpack_require__(61);
 
 var AutoFocusUtils = {
   focusDOMComponent: function focusDOMComponent() {
@@ -22886,7 +22908,7 @@ module.exports = BeforeInputEventPlugin;
 
 
 
-var CSSProperty = __webpack_require__(68);
+var CSSProperty = __webpack_require__(67);
 var ExecutionEnvironment = __webpack_require__(6);
 var ReactInstrumentation = __webpack_require__(9);
 
@@ -23109,7 +23131,7 @@ var SyntheticEvent = __webpack_require__(11);
 
 var getEventTarget = __webpack_require__(51);
 var isEventSupported = __webpack_require__(52);
-var isTextInputElement = __webpack_require__(85);
+var isTextInputElement = __webpack_require__(84);
 
 var eventTypes = {
   change: {
@@ -23644,7 +23666,7 @@ var _assign = __webpack_require__(3);
 
 var PooledClass = __webpack_require__(13);
 
-var getTextContentAccessor = __webpack_require__(83);
+var getTextContentAccessor = __webpack_require__(82);
 
 /**
  * This helper class stores information about text content of a target node,
@@ -23983,10 +24005,10 @@ module.exports = HTMLDOMPropertyConfig;
 
 var ReactReconciler = __webpack_require__(16);
 
-var instantiateReactComponent = __webpack_require__(84);
+var instantiateReactComponent = __webpack_require__(83);
 var KeyEscapeUtils = __webpack_require__(43);
 var shouldUpdateReactComponent = __webpack_require__(53);
-var traverseAllChildren = __webpack_require__(87);
+var traverseAllChildren = __webpack_require__(86);
 var warning = __webpack_require__(1);
 
 var ReactComponentTreeHook;
@@ -23997,7 +24019,7 @@ if (typeof process !== 'undefined' && __webpack_require__.i({"NODE_ENV":"product
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(92);
+  ReactComponentTreeHook = __webpack_require__(91);
 }
 
 function instantiateChild(childInstances, child, name, selfDebugID) {
@@ -24187,7 +24209,7 @@ var ReactCurrentOwner = __webpack_require__(12);
 var ReactErrorUtils = __webpack_require__(46);
 var ReactInstanceMap = __webpack_require__(24);
 var ReactInstrumentation = __webpack_require__(9);
-var ReactNodeTypes = __webpack_require__(78);
+var ReactNodeTypes = __webpack_require__(77);
 var ReactReconciler = __webpack_require__(16);
 
 if (false) {
@@ -25089,13 +25111,13 @@ module.exports = ReactCompositeComponent;
 
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDefaultInjection = __webpack_require__(201);
-var ReactMount = __webpack_require__(77);
+var ReactMount = __webpack_require__(76);
 var ReactReconciler = __webpack_require__(16);
 var ReactUpdates = __webpack_require__(10);
 var ReactVersion = __webpack_require__(214);
 
 var findDOMNode = __webpack_require__(230);
-var getHostComponentFromComposite = __webpack_require__(82);
+var getHostComponentFromComposite = __webpack_require__(81);
 var renderSubtreeIntoContainer = __webpack_require__(237);
 var warning = __webpack_require__(1);
 
@@ -25213,15 +25235,15 @@ var CSSPropertyOperations = __webpack_require__(178);
 var DOMLazyTree = __webpack_require__(14);
 var DOMNamespaces = __webpack_require__(40);
 var DOMProperty = __webpack_require__(15);
-var DOMPropertyOperations = __webpack_require__(70);
+var DOMPropertyOperations = __webpack_require__(69);
 var EventPluginHub = __webpack_require__(22);
 var EventPluginRegistry = __webpack_require__(41);
 var ReactBrowserEventEmitter = __webpack_require__(27);
-var ReactDOMComponentFlags = __webpack_require__(71);
+var ReactDOMComponentFlags = __webpack_require__(70);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactDOMInput = __webpack_require__(194);
 var ReactDOMOption = __webpack_require__(195);
-var ReactDOMSelect = __webpack_require__(72);
+var ReactDOMSelect = __webpack_require__(71);
 var ReactDOMTextarea = __webpack_require__(198);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactMultiChild = __webpack_require__(207);
@@ -26378,7 +26400,7 @@ module.exports = ReactDOMIDOperations;
 var _prodInvariant = __webpack_require__(2),
     _assign = __webpack_require__(3);
 
-var DOMPropertyOperations = __webpack_require__(70);
+var DOMPropertyOperations = __webpack_require__(69);
 var LinkedValueUtils = __webpack_require__(44);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactUpdates = __webpack_require__(10);
@@ -26669,7 +26691,7 @@ var _assign = __webpack_require__(3);
 
 var React = __webpack_require__(17);
 var ReactDOMComponentTree = __webpack_require__(4);
-var ReactDOMSelect = __webpack_require__(72);
+var ReactDOMSelect = __webpack_require__(71);
 
 var warning = __webpack_require__(1);
 var didWarnInvalidOptionChildren = false;
@@ -26796,7 +26818,7 @@ module.exports = ReactDOMOption;
 var ExecutionEnvironment = __webpack_require__(6);
 
 var getNodeForCharacterOffset = __webpack_require__(234);
-var getTextContentAccessor = __webpack_require__(83);
+var getTextContentAccessor = __webpack_require__(82);
 
 /**
  * While `isCollapsed` is available on the Selection object and `collapsed`
@@ -27714,7 +27736,7 @@ module.exports = ReactEventEmitterMixin;
 
 var _assign = __webpack_require__(3);
 
-var EventListener = __webpack_require__(61);
+var EventListener = __webpack_require__(60);
 var ExecutionEnvironment = __webpack_require__(6);
 var PooledClass = __webpack_require__(13);
 var ReactDOMComponentTree = __webpack_require__(4);
@@ -27876,9 +27898,9 @@ var DOMProperty = __webpack_require__(15);
 var EventPluginHub = __webpack_require__(22);
 var EventPluginUtils = __webpack_require__(42);
 var ReactComponentEnvironment = __webpack_require__(45);
-var ReactEmptyComponent = __webpack_require__(73);
+var ReactEmptyComponent = __webpack_require__(72);
 var ReactBrowserEventEmitter = __webpack_require__(27);
-var ReactHostComponent = __webpack_require__(75);
+var ReactHostComponent = __webpack_require__(74);
 var ReactUpdates = __webpack_require__(10);
 
 var ReactInjection = {
@@ -28544,10 +28566,10 @@ module.exports = ReactPropTypesSecret;
 
 var _assign = __webpack_require__(3);
 
-var CallbackQueue = __webpack_require__(69);
+var CallbackQueue = __webpack_require__(68);
 var PooledClass = __webpack_require__(13);
 var ReactBrowserEventEmitter = __webpack_require__(27);
-var ReactInputSelection = __webpack_require__(76);
+var ReactInputSelection = __webpack_require__(75);
 var ReactInstrumentation = __webpack_require__(9);
 var Transaction = __webpack_require__(29);
 var ReactUpdateQueue = __webpack_require__(47);
@@ -29388,11 +29410,11 @@ module.exports = SVGDOMPropertyConfig;
 var EventPropagators = __webpack_require__(23);
 var ExecutionEnvironment = __webpack_require__(6);
 var ReactDOMComponentTree = __webpack_require__(4);
-var ReactInputSelection = __webpack_require__(76);
+var ReactInputSelection = __webpack_require__(75);
 var SyntheticEvent = __webpack_require__(11);
 
-var getActiveElement = __webpack_require__(63);
-var isTextInputElement = __webpack_require__(85);
+var getActiveElement = __webpack_require__(62);
+var isTextInputElement = __webpack_require__(84);
 var shallowEqual = __webpack_require__(36);
 
 var skipSelectionChangeEvent = ExecutionEnvironment.canUseDOM && 'documentMode' in document && document.documentMode <= 11;
@@ -29584,7 +29606,7 @@ module.exports = SelectEventPlugin;
 
 var _prodInvariant = __webpack_require__(2);
 
-var EventListener = __webpack_require__(61);
+var EventListener = __webpack_require__(60);
 var EventPropagators = __webpack_require__(23);
 var ReactDOMComponentTree = __webpack_require__(4);
 var SyntheticAnimationEvent = __webpack_require__(218);
@@ -30357,7 +30379,7 @@ module.exports = adler32;
 
 
 
-var CSSProperty = __webpack_require__(68);
+var CSSProperty = __webpack_require__(67);
 var warning = __webpack_require__(1);
 
 var isUnitlessNumber = CSSProperty.isUnitlessNumber;
@@ -30447,7 +30469,7 @@ var ReactCurrentOwner = __webpack_require__(12);
 var ReactDOMComponentTree = __webpack_require__(4);
 var ReactInstanceMap = __webpack_require__(24);
 
-var getHostComponentFromComposite = __webpack_require__(82);
+var getHostComponentFromComposite = __webpack_require__(81);
 var invariant = __webpack_require__(0);
 var warning = __webpack_require__(1);
 
@@ -30510,7 +30532,7 @@ module.exports = findDOMNode;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var KeyEscapeUtils = __webpack_require__(43);
-var traverseAllChildren = __webpack_require__(87);
+var traverseAllChildren = __webpack_require__(86);
 var warning = __webpack_require__(1);
 
 var ReactComponentTreeHook;
@@ -30521,7 +30543,7 @@ if (typeof process !== 'undefined' && __webpack_require__.i({"NODE_ENV":"product
   // https://github.com/facebook/react/issues/7240
   // Remove the inline requires when we don't need them anymore:
   // https://github.com/facebook/react/pull/7178
-  ReactComponentTreeHook = __webpack_require__(92);
+  ReactComponentTreeHook = __webpack_require__(91);
 }
 
 /**
@@ -30959,7 +30981,7 @@ module.exports = quoteAttributeValueForBrowser;
 
 
 
-var ReactMount = __webpack_require__(77);
+var ReactMount = __webpack_require__(76);
 
 module.exports = ReactMount.renderSubtreeIntoContainer;
 
@@ -30971,9 +30993,9 @@ module.exports = ReactMount.renderSubtreeIntoContainer;
 /* unused harmony export createProvider */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(65);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_PropTypes__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_PropTypes__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_warning__ = __webpack_require__(55);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -31069,7 +31091,7 @@ function createProvider() {
 
 "use strict";
 /* unused harmony export createConnect */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_connectAdvanced__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_connectAdvanced__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_shallowEqual__ = __webpack_require__(246);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mapDispatchToProps__ = __webpack_require__(240);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mapStateToProps__ = __webpack_require__(241);
@@ -31202,7 +31224,7 @@ function createConnect() {
 /* unused harmony export whenMapDispatchToPropsIsMissing */
 /* unused harmony export whenMapDispatchToPropsIsObject */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_redux__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wrapMapToProps__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__wrapMapToProps__ = __webpack_require__(88);
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 
@@ -31233,7 +31255,7 @@ function whenMapDispatchToPropsIsObject(mapDispatchToProps) {
 "use strict";
 /* unused harmony export whenMapStateToPropsIsFunction */
 /* unused harmony export whenMapStateToPropsIsMissing */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wrapMapToProps__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__wrapMapToProps__ = __webpack_require__(88);
 
 
 function whenMapStateToPropsIsFunction(mapStateToProps) {
@@ -31257,7 +31279,7 @@ function whenMapStateToPropsIsMissing(mapStateToProps) {
 /* unused harmony export wrapMergePropsFunc */
 /* unused harmony export whenMergePropsIsFunction */
 /* unused harmony export whenMergePropsIsOmitted */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_verifyPlainObject__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_verifyPlainObject__ = __webpack_require__(90);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -32922,7 +32944,7 @@ module.exports = ReactPropTypeLocationNames;
 var _require = __webpack_require__(18),
     isValidElement = _require.isValidElement;
 
-var factory = __webpack_require__(65);
+var factory = __webpack_require__(64);
 
 module.exports = factory(isValidElement);
 
@@ -33129,7 +33151,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var _prodInvariant = __webpack_require__(19);
 
 var ReactCurrentOwner = __webpack_require__(12);
-var REACT_ELEMENT_TYPE = __webpack_require__(93);
+var REACT_ELEMENT_TYPE = __webpack_require__(92);
 
 var getIteratorFn = __webpack_require__(256);
 var invariant = __webpack_require__(0);
@@ -33296,7 +33318,7 @@ module.exports = traverseAllChildren;
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = applyMiddleware;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__compose__ = __webpack_require__(94);
 var _extends = Object.assign || function (target) {
   for (var i = 1; i < arguments.length; i++) {
     var source = arguments[i];for (var key in source) {
@@ -33416,9 +33438,9 @@ function bindActionCreators(actionCreators, dispatch) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = combineReducers;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__createStore__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash_es_isPlainObject__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_warning__ = __webpack_require__(96);
 
 
 
@@ -33553,7 +33575,7 @@ function combineReducers(reducers) {
 /* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 /*
  *          __        ___
@@ -33563,1130 +33585,1338 @@ function combineReducers(reducers) {
  * /____/\__/\__, /_/_/____/
  *          /____/
  *
- * stylis is a feature-rich css preprocessor
- *
- * @licence MIT
+ * light - weight css preprocessor @licence MIT
  */
+/* eslint-disable */
 (function (factory) {
-	if (( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined') {
-		module.exports = factory(global);
-	} else if (true) {
-		!(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory(window)),
+	( false ? 'undefined' : _typeof(exports)) === 'object' && typeof module !== 'undefined' ? module['exports'] = factory() :  true ? !(__WEBPACK_AMD_DEFINE_FACTORY__ = (factory()),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.call(exports, __webpack_require__, exports, module)) :
 				__WEBPACK_AMD_DEFINE_FACTORY__),
-				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-		window.stylis = factory(window);
-	}
-})(function (window) {
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)) : window['stylis'] = factory();
+})(function () {
 
 	'use strict';
 
-	// plugins
+	/**
+  * Notes
+  *
+  * int + int + int === n4 [faster]
+  *
+  * vs
+  *
+  * int === n1 && int === n2 && int === n3
+  *
+  * ----
+  *
+  * switch (int) { case ints...} [faster]
+  *
+  * vs
+  *
+  * if (int == 1 && int === 2 ...)
+  *
+  * ----
+  *
+  * The (first*n1 + second*n2 + third*n3) format used in the property parser
+  * is a simple way to hash the sequence of characters
+  * taking into account the index they occur in
+  * since any number of 3 character sequences could produce duplicates.
+  *
+  * On the other hand sequences that are directly tied to the index of the character
+  * resolve a far more accurate measure, it's also faster
+  * to evaluate one condition in a switch statement
+  * than three regardless of the added math
+  *
+  * This allows the property parser to in theory be both small and fast.
+  */
 
-	var plugins = [];
+	var nulptn = /^\0+/g; /* matches leading null characters */
+	var fmtptn = /[\0\r]/g; /* new line and null characters */
+	var colonptn = /: */g; /* splits animation rules */
+	var cursorptn = /zoo|gra/; /* assert cursor varient */
+	var transformptn = / *(transform)/g; /* vendor prefix transform, older webkit */
+	var animationptn = /,+\s*(?![^(]*[)])/g; /* splits multiple shorthand notation animations */
+	var propertiesbtn = / +\s*(?![^(]*[)])/g; /* animation properties */
+	var elementptn = / *[\0] */g; /* selector elements */
+	var selectorptn = /,\r+?/g; /* splits selectors */
+	var andptn = /&/g; /* match & */
+	var keyptn = /\W+/g; /* removes invalid characters from key */
+	var escapeptn = /:global\(((?:[^\(\)\[\]]*|\[.*\]|\([^\(\)]*\))*)\)/g; /* matches :global(.*) */
+	var keyframeptn = /@(k\w+s)\s*(\S*)\s*/; /* matches @keyframes $1 */
+	var plcholdrptn = /::?(place)/g; /* match ::placeholder varient */
+	var beforeptn = /\s+(?=[{\];=:>])/g; /* rm \s before ] ; = : */
+	var afterptn = /([[}=:>])\s+/g; /* rm \s after characters [ } = : */
+	var tailptn = /(\{[^{]+?);(?=\})/g; /* rm tail semi-colons ;} */
+	var whiteptn = /\s{2,}/g;
+	var pseudoptn = /([^\(])(:+) */g; /* pseudo element */
 
-	// regular expressions
-	var andPattern = /&/g;
-	var andSpacePattern = / +&/;
-	var splitPattern = /,\n/g;
-	var globalPattern = /:global\(%?((?:[^\(\)\[\]]*|\[.*\]|\([^\(\)]*\))*)\)/g;
-	var globalsPattern = /(?:&| ):global\(%?((?:[^\(\)\[\]]*|\[.*\]|\([^\(\)]*\))*)\)/g;
-	var hostPattern = /:host\((.*)\)/g;
-	var hostContextPattern = /:host-context\((.*)\)/g;
-	var newLinePattern = /\n/g;
-	var placeholderPattern = /::place/g;
-	var colonPattern = /: +/g;
-	var animationPattern = /[ .#~+><\d]+/g;
-	var transformPattern = / *(transform)/g;
-
-	// prefixes
+	/* vendors */
+	var webkit = '-webkit-';
 	var moz = '-moz-';
 	var ms = '-ms-';
-	var webkit = '-webkit-';
+
+	/* character codes */
+	var SEMICOLON = 59; /* ; */
+	var CLOSEBRACES = 125; /* } */
+	var OPENBRACES = 123; /* { */
+	var OPENPARENTHESES = 40; /* ( */
+	var CLOSEPARENTHESES = 41; /* ) */
+	var OPENBRACKET = 91; /* [ */
+	var CLOSEBRACKET = 93; /* ] */
+	var NEWLINE = 10; /* \n */
+	var CARRIAGE = 13; /* \r */
+	var TAB = 9; /* \t */
+	var AT = 64; /* @ */
+	var SPACE = 32; /*   */
+	var AND = 38; /* & */
+	var DASH = 45; /* - */
+	var UNDERSCORE = 95; /* _ */
+	var STAR = 42; /* * */
+	var COMMA = 44; /* , */
+	var COLON = 58; /* : */
+	var SINGLEQUOTE = 39; /* ' */
+	var DOUBLEQUOTE = 34; /* " */
+	var FOWARDSLASH = 47; /* / */
+	var GREATERTHAN = 62; /* > */
+	var PLUS = 43; /* + */
+	var TILDE = 126; /* ~ */
+	var NULL = 0; /* \0 */
+	var FORMFEED = 12; /* \f */
+	var VERTICALTAB = 11; /* \v */
+
+	/* special identifiers */
+	var KEYFRAME = 107; /* k */
+	var MEDIA = 109; /* m */
+	var SUPPORTS = 115; /* s */
+	var FONT = 102; /* f */
+	var PLACEHOLDER = 112; /* p */
+	var IMPORT = 169; /* <at>i */
+	var CHARSET = 163; /* <at>c */
+
+	var column = 1; /* current column */
+	var line = 1; /* current line numebr */
+	var pattern = 0; /* :pattern */
+
+	var cascade = 1; /* #id h1 h2 vs h1#id h2#id  */
+	var vendor = 1; /* vendor prefix */
+	var escape = 1; /* escape :global() pattern */
+	var compress = 0; /* compress output */
+	var semicolon = 0; /* no/semicolon option */
+
+	/* empty reference */
+	var array = [];
+
+	/* plugins */
+	var plugins = [];
+	var plugged = 0;
+
+	/* plugin context */
+	var POSTS = -2;
+	var PREPS = -1;
+	var UNKWN = 0;
+	var PROPS = 1;
+	var BLCKS = 2;
+	var ATRUL = 3;
+
+	var unkwn = 0;
+
+	/* keyframe animation */
+	var keyed = 1;
+	var key = '';
+
+	/* selector namespace */
+	var nscopealt = '';
+	var nscope = '';
 
 	/**
-  * css preprocessor
+  * Compile
   *
-  * @param  {String}   selector   - i.e `.class` or `#id` or `[attr=id]`
-  * @param  {String}   styles     - css string
-  * @param  {Boolean=} animations - prefix animations and keyframes, true by default
-  * @param  {Boolean=} compact    - enable additional shadow dom features(:host, :host-context)
-  * @param  {Function|Array} middlewares
+  * @param {Array<string>} parent
+  * @param {Array<string>} current
+  * @param {string} body
+  * @param {number} from
   * @return {string}
   */
-	function stylis(selector, styles, animations, compact, middlewares) {
-		selector += '';
-
-		var middleware = middlewares;
-		var prefix = '';
-		var namespace = '';
-		var char;
-		var attr;
-		var animns;
-
-		var type = selector.charCodeAt(0);
-
-		// ` selector` -> `selector`
-		if (type < 33) {
-			type = (selector = selector.trim()).charCodeAt(0);
-		}
-
-		switch (type) {
-			// `#` `.` id and class selectors
-			case 35:
-			case 46:
-				{
-					namespace = (prefix = selector).substring(1);
-					break;
-				}
-			// [ attr selector
-			case 91:
-				{
-					// `[data-id=namespace]` -> ['data-id', 'namespace']
-					attr = selector.substring(1, selector.length - 1).split('=');
-					char = (namespace = attr[1] || attr[0]).charCodeAt(0);
-
-					// [data-id="namespace"]/[data-id='namespace']
-					// --> "namespace"/'namspace' --> namespace
-					if (char === 34 || char === 39) {
-						namespace = namespace.substring(1, namespace.length - 1);
-					}
-
-					prefix = '[' + attr[0] + (attr.length > 1 ? '="' + namespace + '"]' : ']');
-					break;
-				}
-			// element selector
-			default:
-				{
-					namespace = prefix = selector;
-				}
-		}
-
-		// reset type signature
-		type = 0;
-
-		// animation and keyframe namespace
-		if (animations === true || animations === undefined || animations === null) {
-			animations = true;
-			animns = namespace.replace(animationPattern, '-');
-		} else {
-			animns = '';
-			animations = false;
-		}
-
-		// middleware
-		var has;
-		var uses = middleware !== void 0 && middleware !== null;
-		var length = plugins.length;
-
-		if (uses === true) {
-			has = (typeof middleware === 'undefined' ? 'undefined' : _typeof(middleware)).charCodeAt(0);
-
-			// o, array
-			if (has === 111) {
-				use(middleware);
-			}
-			// f, function
-			else if (has === 102) {
-					plugins[length++] = middleware;
-				} else {
-					uses = false;
-				}
-		}
-
-		if (length !== 0) {
-			middleware = length === 1 ? plugins[0] : proxy;
-			uses = true;
-		}
-
-		// declare
-		var character;
-		var colon;
-		var inner;
-		var selectors;
-		var build;
-		var temp;
-		var prev;
-		var indexOf;
-		var first;
-		var second;
-		var third;
-		var sel;
-		var blob;
-		var nest;
-		var str;
-		var media;
-
-		// buffers
-		var buff = '';
-		var blck = '';
-		var flat = '';
-
-		// character code
-		var code = 0;
-		var nextcode;
-
-		// context signatures
-		var medias = 0;
-		var special = 0;
-		var close = 0;
-		var closed = 0;
-		var nested = 0;
-		var func = 0;
-		var strings = 0;
-		var globs = 0;
-		var isplace = 0;
-		var join = 0;
-
-		// context(flat) signatures
-		var levels = 0;
-
-		// comments
-		var comment = 0;
-		var comblck = 0;
-		var comline = 0;
-
-		// pre-process
-		if (uses === true) {
-			temp = middleware(0, styles, line, column, prefix, 0);
-
-			if (temp != null) {
-				styles = temp;
-			}
-
-			str = '';
-		}
-
-		// positions
+	function compile(parent, current, body, from) {
+		var brq = 0; /* brackets [] */
+		var cmt = 0; /* comments /* // or /* */
+		var fnq = 0; /* functions () */
+		var str = 0; /* quotes '', "" */
+		var first = 0;
+		var second = 0;
+		var counter = 0;
+		var context = 0;
+		var atrule = 0;
+		var pseudo = 0;
 		var caret = 0;
-		var depth = 0;
-		var column = 0;
-		var line = 1;
-		var eof = styles.length;
+		var code = 0;
+		var tail = 0;
+		var trail = 0;
+		var fmt = 0;
+		var insert = 0;
+		var length = 0;
+		var eof = body.length;
+		var eol = eof - 1;
+		var char = '';
+		var chars = '';
+		var out = '';
+		var block = '';
+		var children = '';
+		var flat = '';
+		var ref;
+		var res;
 
-		// compiled output
-		var output = '';
-
-		// parse + compile
+		// ...build body
 		while (caret < eof) {
-			code = styles.charCodeAt(caret);
+			code = body.charCodeAt(caret);
 
-			// {, }, ; characters, parse line by line
-			if (medias === 1 && caret === eof - 1 || strings === 0 && func === 0 && comment === 0 && (
-			// {, }, ;
-			code === 123 || code === 125 || code === 59 ||
-			// eof buffer
-			caret === eof - 1 && buff.length !== 0)) {
-				buff += styles.charAt(caret);
-
-				// middleware, selector/property context, }
-				if (uses === true && code !== 125) {
-					// { pre-processed selector context
-					if (code === 123) {
-						temp = middleware(1, buff.substring(0, buff.length - 1).trim(), line, column, prefix, output.length);
-					}
-					// ; property context
-					else {
-							temp = middleware(2, buff, line, column, prefix, output.length);
-						}
-
-					if (temp != null) {
-						buff = code === 123 ? temp + ' {' : temp;
-					}
-				}
-
-				first = buff.charCodeAt(0);
-
-				// only trim when the first character is a space ` `
-				if (first === 32) {
-					first = (buff = buff.trim()).charCodeAt(0);
-				}
-
-				second = buff.charCodeAt(1);
-				third = buff.charCodeAt(2);
-
-				// @, special block
-				if (first === 64) {
-					// push flat css
-					if (levels === 1 && flat.length !== 0) {
-						levels = 0;
-						flat = prefix + ' {' + flat + '}';
-
-						// middleware, flat context
-						if (uses === true) {
-							temp = middleware(4, flat, line, column, prefix, output.length);
-
-							if (temp != null) {
-								flat = temp;
+			if (cmt + str + fnq + brq === 0) {
+				// auto semicolon insertion
+				if (insert === 1) {
+					// false flags, comma character
+					switch (code) {
+						case COMMA:
+							{
+								break;
 							}
-						}
-
-						output += flat;
-						flat = '';
+						default:
+							{
+								caret--;
+								code = SEMICOLON;
+							}
 					}
 
-					// ;
-					if (code !== 59) {
-						// @keyframe, `k`
-						if (second === 107) {
-							blob = buff.substring(1, 11) + animns + buff.substring(11);
-							buff = '@' + webkit + blob;
-							type = 1;
-						}
-						// @media `m`, `e` characters,
-						// @supports `s` `u` characters,
-						// @global `g` character
-						else if (second === 109 && third === 101 || second === 115 && third === 117 || second === 103) {
-								caret++;
-								column++;
+					insert = 0;
+				}
 
-								if (media === undefined) {
-									media = '';
+				// eof varient
+				switch (caret) {
+					case eol:
+						{
+							if (fmt > 0) {
+								chars = chars.replace(fmtptn, '');
+							}
+
+							if ((chars = chars.trim()).length > 0) {
+								switch (code) {
+									case SPACE:
+									case TAB:
+									case SEMICOLON:
+									case CARRIAGE:
+									case NEWLINE:
+										{
+											break;
+										}
+									default:
+										{
+											chars += body.charAt(caret);
+										}
 								}
 
-								inner = '';
+								code = SEMICOLON;
+							}
+						}
+				}
 
-								// keep track of opening `{` and `}` occurrences
-								closed = 1;
+				// token varient
+				switch (code) {
+					case OPENBRACES:
+						{
+							chars = chars.trim();
+							first = chars.charCodeAt(0);
+							counter = 1;
+							caret++;
 
-								// travel to the end of the block
-								while (caret < eof) {
-									char = styles.charCodeAt(caret);
+							while (caret < eof) {
+								code = body.charCodeAt(caret);
 
-									// {, }, nested blocks may have nested blocks
-									if (char === 123) {
-										closed++;
-									} else if (char === 125) {
-										closed--;
-									}
+								switch (code) {
+									case OPENBRACES:
+										{
+											counter++;
+											break;
+										}
+									case CLOSEBRACES:
+										{
+											counter--;
+											break;
+										}
+								}
 
-									// break when the nested block has ended
-									if (closed === 0) {
-										caret++;
+								if (counter === 0) {
+									break;
+								}
+
+								block += body.charAt(caret++);
+							}
+
+							if (first === NULL) {
+								first = (chars = chars.replace(nulptn, '').trim()).charCodeAt(0);
+							}
+
+							switch (first) {
+								// @at-rule
+								case AT:
+									{
+										if (fmt > 0) {
+											chars = chars.replace(fmtptn, '');
+										}
+
+										second = chars.charCodeAt(1);
+										block = compile(current, second > 108 ? current : array, block, second
+
+										// execute plugins, @at-rule context
+										);if (plugged > 0) {
+											ref = select(array, chars);
+											res = proxy(ATRUL, block, ref, current, line, column, out.length);
+											chars = ref.join('');
+
+											if (res !== void 0) {
+												block = res;
+											}
+										}
+
+										switch (second) {
+											case MEDIA:
+											case SUPPORTS:
+												{
+													block = chars + '{' + block + '}';
+													break;
+												}
+											case FONT:
+												{
+													block = chars + block;
+													break;
+												}
+											case KEYFRAME:
+												{
+													chars = chars.replace(keyframeptn, '$1 $2' + (keyed > 0 ? key : ''));
+													block = chars + '{' + block + '}';
+													block = '@' + (vendor > 0 ? webkit + block + '@' + block : block);
+													break;
+												}
+										}
 										break;
 									}
-
-									// build content of nested block
-									inner += styles.charAt(caret++);
-
-									// move column and line position
-									column = char === 13 || char === 10 ? (line++, 0) : column + 1;
-								}
-
-								selector = depth === 0 ? prefix : prev.substring(0, prev.length - 1).replace(newLinePattern, '').trim();
-
-								// build block
-								media += buff + stylis(selector, inner.trim(), animations, compact, null).trim() + '}';
-
-								// middleware, block context
-								if (uses === true) {
-									temp = middleware(3, media, line, column, prefix, output.length);
-
-									if (temp != null) {
-										media = temp;
+								// selector
+								default:
+									{
+										block = compile(current, select(current, chars), block, from);
 									}
-								}
-
-								buff = '';
-								medias = 1;
-
-								if (caret === eof) {
-									eof++;
-								}
-
-								continue;
 							}
-							// unknown
-							else {
-									type = 6;
-								}
-					}
 
-					// flag special, i.e @keyframes, @font-face ...
-					if (code !== 59 && second !== 105) {
-						// k, m
-						if (second !== 107 && second !== 109 && second !== 115 && second !== 103) {
-							type = 5;
+							children += block;
+							caret++;
+
+							// reset
+							context = 0;
+							pseudo = 0;
+							fmt = 0;
+							atrule = 0;
+							chars = '';
+							block = '';
+
+							break;
 						}
-
-						close = -1;
-						special++;
-					}
-				}
-				// property/selector
-				else {
-						// { character, selector declaration
-						if (code === 123) {
-							depth++;
-
-							// push flat css
-							if (levels === 1 && flat.length !== 0) {
-								levels = 0;
-								flat = prefix + ' {' + flat + '}';
-
-								// middleware, flat context
-								if (uses === true) {
-									temp = middleware(4, flat, line, column, prefix, output.length);
-
-									if (temp != null) {
-										flat = temp;
-									}
-								}
-
-								output += flat;
-								flat = '';
+					case SEMICOLON:
+						{
+							if (fmt > 0) {
+								chars = chars.replace(fmtptn, '');
 							}
 
-							// nested selector
-							if (depth === 2) {
-								// discard first character {
-								caret++;
-								column++;
+							chars = chars.trim
 
-								// inner content of block
-								inner = '';
-
-								var nestSelector = buff.substring(0, buff.length - 1).split(splitPattern);
-								var prevSelector = prev.substring(0, prev.length - 1).split(splitPattern);
-
-								// keep track of opening `{` and `}` occurrences
-								closed = 1;
-
-								// travel to the end of the block
-								while (caret < eof) {
-									char = styles.charCodeAt(caret);
-
-									// {, nested blocks may have nested blocks
-									if (char === 123) {
-										closed++;
+							// execute plugins, property context
+							();if (plugged > 0) {
+								if ((res = proxy(PROPS, chars, current, parent, line, column, out.length)) !== void 0) {
+									if ((chars = res.trim()).length < 1) {
+										chars = '\0\0';
 									}
-									// },
-									else if (char === 125) {
-											closed--;
-										}
+								}
+							}
 
-									// break when the nested block has ended
-									if (closed === 0) {
+							first = chars.charCodeAt(0);
+							second = chars.charCodeAt(1);
+
+							switch (first + second) {
+								case NULL:
+									{
 										break;
 									}
-
-									// build content of nested block
-									inner += styles.charAt(caret++);
-
-									// move column and line position
-									column = char === 13 || char === 10 ? (line++, 0) : column + 1;
-								}
-
-								// handle multiple selectors: h1, h2 { div, h4 {} } should generate
-								// -> h1 div, h2 div, h2 h4, h2 div {}
-								length = prevSelector.length;
-
-								for (var j = 0; j < length; j++) {
-									// extract value, prep index for reuse
-									temp = prevSelector[j];
-									indexOf = temp.indexOf(prefix);
-
-									prevSelector[j] = '';
-
-									// since there could also be multiple nested selectors
-									for (var k = 0, l = nestSelector.length; k < l; k++) {
-										if (indexOf > 0) {
-											selector = ':global(%)' + temp.trim();
-										} else {
-											selector = temp.replace(prefix, '&').trim();
-										}
-
-										sel = nestSelector[k].trim();
-
-										if (sel.indexOf(' &') > 0) {
-											selector = sel.replace('&', '').trim() + ' ' + selector;
-										} else if (globalPattern.exec(sel) !== null) {
-											selector = sel;
-										} else {
-											selector = selector + ' ' + sel;
-										}
-
-										prevSelector[j] += selector.replace(andSpacePattern, '').trim() + (k === l - 1 ? '' : ',');
+								case IMPORT:
+								case CHARSET:
+									{
+										flat += chars + body.charAt(caret);
+										break;
 									}
-								}
-
-								if (nest === undefined) {
-									nest = '';
-								}
-
-								// concat nest
-								nest += '\n' + prevSelector.join(',').replace(globalsPattern, ' $1') + ' {' + inner + '}';
-
-								// signature
-								nested = 1;
-
-								// clear current line, to avoid adding nested blocks to the normal flow
-								buff = '';
-
-								// decreament depth
-								depth--;
+								default:
+									{
+										out += property(chars, first, second, chars.charCodeAt(2));
+									}
 							}
-							// top-level selector
-							else if (special === 0 || type === 2) {
-									// register block with placeholder selector
-									if (isplace === 0 && buff.indexOf('::place') !== -1) {
-										isplace = 1;
-									}
 
-									selectors = buff.split(splitPattern);
+							caret++;
 
-									// current selector
-									build = '';
+							// reset
+							context = 0;
+							pseudo = 0;
+							fmt = 0;
+							chars = '';
 
-									// previous selector
-									prev = '';
-
-									length = selectors.length;
-
-									// prefix multiple selectors with namesapces
-									// @example h1, h2, h3 --> [namespace] h1, [namespace] h1, ....
-									for (var j = 0; j < length; j++) {
-										char = (selector = selectors[j]).charCodeAt(0);
-
-										// ` `, trim if first character is a space
-										if (char === 32) {
-											char = (selector = selector.trim()).charCodeAt(0);
-										}
-
-										// &
-										if (char === 38) {
-											// before: & { / &&... {
-											selector = prefix + selector.substring(1).replace(andPattern, prefix);
-											// after: ${prefix} { / ${prefix}${prefix}...
-										} else {
-											// default to :global if & exists outside of the first non-space character
-											if ((indexOf = selector.indexOf(' &')) > 0) {
-												// before: html & {
-												selector = selector.replace(andPattern, prefix).trim();
-												// after: html ${prefix} {
-											}
-											// :
-											else if (char === 58) {
-													nextcode = selector.charCodeAt(1);
-
-													// h, t, :host
-													if (compact === true && nextcode === 104 && selector.charCodeAt(4) === 116) {
-														nextcode = selector.charCodeAt(5);
-
-														// (, :host(selector)
-														if (nextcode === 40) {
-															// before: `(selector)`
-															selector = prefix + selector.replace(hostPattern, '$1').replace(andPattern, prefix);
-															// after: ${prefx} selector {
-														}
-														// -, :host-context(selector)
-														else if (nextcode === 45) {
-																// before: `-context(selector)`
-																selector = selector.replace(hostContextPattern, '$1 ' + prefix).replace(andPattern, prefix);
-																// after: selector ${prefix} {
-															}
-															// :host
-															else {
-																	selector = prefix + selector.substring(5);
-																}
-													}
-													// g, :global(selector)
-													else if (nextcode === 103 && (compact === true || (nextcode = selector.charCodeAt(8)) === 37)) {
-															globs = 1;
-
-															// before: `:global(selector)`
-															selector = selector.replace(globalPattern, '$1').replace(andPattern, prefix).trim();
-															// after: selector
-														}
-														// :hover, :active, :focus, etc...
-														else {
-																selector = prefix + selector;
-															}
-												}
-												// non-pseudo selectors
-												else if (globs === 0) {
-														selector = prefix + ' ' + selector;
-													}
-										}
-
-										// middleware, post-processed selector context
-										if (uses === true) {
-											temp = middleware(1.5, j === length - 1 ? selector.substring(0, selector.length - 1).trim() : selector, line, column, prefix, output.length);
-
-											if (temp != null) {
-												selector = j === length - 1 ? temp + ' {' : temp;
-											}
-										}
-
-										// if first selector do not prefix with `,`
-										prev += (j !== 0 ? ',\n' : '') + (globs !== 1 ? selector : ':global(%)' + selector);
-										build += j !== 0 ? ',' + selector : selector;
-
-										// reset :global flag
-										globs = 0;
-									}
-
-									buff = build;
-								} else {
-									prev = buff;
-								}
+							break;
 						}
-						// not single `}`
-						else if ((code === 125 && buff.length === 1) === false) {
-								if (join === 1) {
-									buff = buff.replace(newLinePattern, '');
-								}
-
-								// ;
-								if (code !== 59) {
-									buff = (code === 125 ? buff.substring(0, buff.length - 1) : buff.trim()) + ';';
-								}
-
-								// animation: a, n, i characters
-								if (first === 97 && second === 110 && third === 105) {
-									// removes ;
-									buff = buff.substring(0, buff.length - 1);
-
-									// position of :
-									colon = buff.indexOf(':') + 1;
-
-									// left hand side everything before `:`
-									build = buff.substring(0, colon);
-
-									// short hand animation syntax
-									if (animations === true && buff.charCodeAt(9) !== 45) {
-										var anims = buff.substring(colon).trim().split(',');
-
-										length = anims.length;
-
-										// because we can have multiple animations `animation: slide 4s, slideOut 2s`
-										for (var j = 0; j < length; j++) {
-											var anim = anims[j];
-											var props = anim.split(' ');
-
-											// since we can't be sure of the position of the name of the animation we have to find it
-											for (var k = 0, l = props.length; k < l; k++) {
-												var prop = props[k].trim();
-												var frst = prop.charCodeAt(0);
-												var thrd = prop.charCodeAt(2);
-												var len = prop.length;
-												var last = prop.charCodeAt(len - 1);
-
-												// animation name parser
-												if (
-												// first character
-												(
-												// letters
-												frst > 64 && frst < 90 || frst > 96 && frst < 122 ||
-												// the exception `underscores or dashes`
-												frst === 45 ||
-												// but two dashes at the beginning are forbidden
-												frst === 95 && prop.charCodeAt(1) !== 95) &&
-
-												// cubic-bezier()/steps(), )
-												last !== 41 && len !== 0 && !(frst === 105 && (
-												// infinite, i, f, e
-												thrd === 102 && last === 101 && len === 8 ||
-												// initial
-												thrd === 105 && last === 108 && len === 7 ||
-												// inherit
-												thrd === 104 && last === 116 && len === 7)) &&
-
-												// unset
-												!(frst === 117 && thrd === 115 && last === 116 && len === 5) &&
-
-												// linear, l, n, r
-												!(frst === 108 && thrd === 110 && last === 114 && len === 6) &&
-
-												// alternate/alternate-reverse, a, t, e
-												!(frst === 97 && thrd === 116 && last === 101 && (len === 9 || len === 17)) &&
-
-												// normal, n, r, l
-												!(frst === 110 && thrd === 114 && last === 108 && len === 6) &&
-
-												// backwards, b, c, s
-												!(frst === 98 && thrd === 99 && last === 115 && len === 9) &&
-
-												// forwards, f, r, s
-												!(frst === 102 && thrd === 114 && last === 115 && len === 8) &&
-
-												// both, b, t, h
-												!(frst === 98 && thrd === 116 && last === 104 && len === 4) &&
-
-												// none, n, n, e
-												!(frst === 110 && thrd === 110 && last === 101 && len === 4) &&
-
-												// running, r, n, g
-												!(frst === 114 && thrd === 110 && last === 103 && len === 7) &&
-
-												// paused, p, u, d
-												!(frst === 112 && thrd === 117 && last === 100 && len === 6) &&
-
-												// reversed, r, v, d
-												!(frst === 114 && thrd === 118 && last === 100 && len === 8) &&
-
-												// step-start/step-end, s, e, (t/d)
-												!(frst === 115 && thrd === 101 && (last === 116 && len === 10 || last === 100 && len === 8)) &&
-
-												// ease/ease-in/ease-out/ease-in-out, e, s, e
-												!(frst === 101 && thrd === 115 && (last === 101 && len === 4 || (len === 11 || len === 7 || len === 8) && prop.charCodeAt(4) === 45)) &&
-
-												// durations, 0.4ms, .4s, 400ms ...
-												isNaN(parseFloat(prop)) &&
-
-												// handle spaces in cubic-bezier()/steps() functions
-												prop.indexOf('(') === -1) {
-													props[k] = animns + prop;
-												}
-											}
-
-											build += (j === 0 ? '' : ',') + props.join(' ').trim();
-										}
-									}
-									// explicit syntax, anims array should have only one element
-									else {
-											build += (buff.charCodeAt(10) !== 110 ? '' : animns) + buff.substring(colon).trim().trim();
-										}
-
-									// vendor prefix
-									buff = webkit + build + ';' + build + (code === 125 ? ';}' : ';');
-								}
-								// appearance: a, p, p
-								else if (first === 97 && second === 112 && third === 112) {
-										// vendor prefix -webkit- and -moz-
-										buff = webkit + buff + moz + buff + buff;
-									}
-									// display: d, i, s
-									else if (first === 100 && second === 105 && third === 115) {
-											// flex/inline-flex
-											if ((indexOf = buff.indexOf('flex')) !== -1) {
-												// e, inline-flex
-												temp = buff.charCodeAt(indexOf - 2) === 101 ? 'inline-' : '';
-												buff = buff.indexOf(' !important') !== -1 ? ' !important' : '';
-
-												// vendor prefix
-												buff = 'display: ' + webkit + temp + 'box' + buff + ';' + 'display: ' + webkit + temp + 'flex' + buff + ';' + 'display: ' + ms + 'flexbox' + buff + ';' + 'display: ' + temp + 'flex' + buff + ';';
-											}
-										}
-										// transforms & transitions: t, r, a
-										// text-size-adjust: t, e, x
-										else if (first === 116 && (second === 114 && third === 97 || second === 101 && third === 120)) {
-												// vendor prefix -webkit- and -ms- if transform
-												buff = webkit + buff + (buff.charCodeAt(5) === 102 ? ms + buff : '') + buff;
-
-												if (second + third === 211 && buff.charCodeAt(12) === 115 && buff.indexOf(' transform') > -1) {
-													buff = buff.substring(0, buff.indexOf(';') + 1).replace(transformPattern, ' ' + webkit + '$1') + buff;
-												}
-											}
-											// hyphens: h, y, p
-											// user-select: u, s, e
-											else if (first === 104 && second === 121 && third === 112 || first === 117 && second === 115 && third === 101) {
-													// vendor prefix all
-													buff = webkit + buff + moz + buff + ms + buff + buff;
-												}
-												// flex: f, l, e
-												else if (first === 102 && second === 108 && third === 101) {
-														// vendor prefix all but moz
-														buff = webkit + buff + ms + buff + buff;
-													}
-													// order: o, r, d
-													else if (first === 111 && second === 114 && third === 100) {
-															// vendor prefix all but moz
-															buff = webkit + buff + ms + 'flex-' + buff + buff;
-														}
-														// align-items, align-center, align-self: a, l, i, -
-														else if (first === 97 && second === 108 && third === 105 && buff.charCodeAt(5) === 45) {
-																switch (buff.charCodeAt(6)) {
-																	// align-items, i
-																	case 105:
-																		{
-																			temp = buff.replace('-items', '');
-																			buff = webkit + buff + webkit + 'box-' + temp + ms + 'flex-' + temp + buff;
-																			break;
-																		}
-																	// align-self, s
-																	case 115:
-																		{
-																			buff = ms + 'flex-item-' + buff.replace('-self', '') + buff;
-																			break;
-																		}
-																	// align-content
-																	default:
-																		{
-																			buff = ms + 'flex-line-pack' + buff.replace('align-content', '') + buff;
-																			break;
-																		}
-																}
-															}
-															// justify-content, j, u, s
-															else if (first === 106 && second === 117 && third === 115) {
-																	colon = buff.indexOf(':');
-																	temp = buff.substring(colon).replace('flex-', '');
-
-																	buff = webkit + 'box-pack' + temp + webkit + buff + ms + 'flex-pack' + temp + buff;
-																}
-																// cursor, c, u, r
-																else if (first === 99 && second === 117 && third === 114 && /zoo|gra/.exec(buff) !== null) {
-																		buff = buff.replace(colonPattern, ': ' + webkit) + buff.replace(colonPattern, ': ' + moz) + buff;
-																	}
-																	// width: min-content / width: max-content
-																	else if (first === 119 && second === 105 && third === 100 && (indexOf = buff.indexOf('-content')) !== -1) {
-																			temp = buff.substring(indexOf - 3);
-
-																			// vendor prefix
-																			buff = 'width: ' + webkit + temp + 'width: ' + moz + temp + 'width: ' + temp;
-																		}
-
-								if (code !== 59) {
-									buff = buff.substring(0, buff.length - 1);
-
-									// }
-									if (code === 125) {
-										buff += '}';
-									}
-								}
-							}
-
-						// } character
-						if (code === 125) {
-							if (depth !== 0) {
-								depth--;
-							}
-
-							// concat nested css
-							if (depth === 0 && nested === 1) {
-								styles = styles.substring(0, caret + 1) + nest + styles.substring(caret + 1);
-								eof += nest.length;
-								nest = '';
-								nested = 0;
-								close++;
-							}
-
-							// }, ` ` whitespace
-							if (first !== 125 && buff.charCodeAt(buff.length - 2) === 32) {
-								buff = buff.substring(0, buff.length - 1).trim() + '}';
-							}
-						}
-
-						// @keyframes
-						if (special !== 0) {
-							// }, find closing tag
-							if (code === 125) {
-								close++;
-							}
-							// {
-							else if (code === 123 && close !== 0) {
-									close--;
-								}
-
-							// closing tag
-							if (close === 0) {
-								// @keyframes
-								if (type === 1) {
-									// vendor prefix
-									buff = '}@' + blob + '}';
-
-									// reset
-									blob = '';
-								}
-
-								// reset signatures
-								type = 0;
-								close--;
-								special--;
-							}
-							// @keyframes
-							else if (type === 1) {
-									blob += buff;
-								}
-						}
-						// flat context
-						else if (depth === 0 && code !== 125) {
-								levels = 1;
-								flat = flat === undefined ? buff : flat + buff;
-								buff = '';
-							}
-					}
-
-				// append line to blck buffer
-				blck += buff;
-
-				// add blck buffer to output
-				if (code === 125 && type === 0) {
-					char = blck.charCodeAt(blck.length - 2);
-
-					// {, @
-					if (char !== 123) {
-						// middleware, block context
-						if (uses === true) {
-							temp = middleware(3, blck, line, column, prefix, output.length);
-
-							if (temp != null) {
-								blck = temp;
-							}
-						}
-
-						if (isplace === 1) {
-							isplace = 0;
-
-							blck = blck.replace(placeholderPattern, '::' + webkit + 'input-place') + blck.replace(placeholderPattern, '::' + moz + 'place') + blck.replace(placeholderPattern, ':' + ms + 'input-place') + blck;
-						}
-
-						// append blck buffer
-						output += blck;
-					}
-
-					// reset blck buffer
-					blck = '';
 				}
-
-				if (medias === 1) {
-					// middleware, block context
-					if (uses === true) {
-						temp = middleware(3, blck, line, column, prefix, output.length);
-
-						if (temp != null) {
-							media = temp;
-						}
-					}
-
-					output += media;
-					medias = 0;
-					media = '';
-				}
-
-				join = 0;
-
-				// reset line buffer
-				buff = '';
 			}
-			// build line by line
-			else {
-					// \r, \n, new lines
-					if (code === 13 || code === 10) {
-						if (comline === 1) {
-							comment = comline = 0;
-							buff = buff.substring(0, buff.indexOf('//')).trim();
-						}
-						// /
-						else if (uses === true && comment === 0 && (length = (str = str.trim()).length) !== 0 && str.charCodeAt(0) !== 47) {
-								if (buff.length !== 0) {
-									temp = middleware(7, str, line, column, prefix, output.length);
 
-									if (temp != null) {
-										buff = buff.replace(new RegExp(str + '$'), temp).trim();
+			// parse characters
+			switch (code) {
+				case CARRIAGE:
+				case NEWLINE:
+					{
+						// auto insert semicolon
+						if (cmt + str + fnq + brq + semicolon === 0) {
+							// valid characters that
+							// may precede a newline
+							switch (tail) {
+								case COLON:
+								case COMMA:
+								case NULL:
+								case TAB:
+								case CARRIAGE:
+								case NEWLINE:
+								case SPACE:
+								case SEMICOLON:
+								case OPENBRACES:
+								case CLOSEBRACES:
+									{
+										break;
+									}
+								default:
+									{
+										// colon : present? register for auto semicolon insertion
+										if (pseudo > 0) {
+											insert = 1;
+										}
+									}
+							}
+						}
+
+						// terminate line comment
+						if (cmt === FOWARDSLASH) {
+							cmt = 0;
+						}
+
+						// execute plugins, newline context
+						if (plugged * unkwn > 0) {
+							proxy(UNKWN, chars, current, parent, line, column, out.length);
+						}
+
+						// next line, reset column position
+						column = 1;
+						line++;
+
+						break;
+					}
+				default:
+					{
+						// increment column position
+						column++;
+
+						// ignore tabs
+						if (code === TAB) {
+							break;
+						}
+
+						// current character
+						char = body.charAt(caret
+
+						// remove comments, escape functions, strings, attributes and prepare selectors
+						);switch (code) {
+							// escape breaking control characters
+							case NULL:
+								char = '\\0';break;
+							case FORMFEED:
+								char = '\\f';break;
+							case VERTICALTAB:
+								char = '\\v';break;
+							// :p<l>aceholder
+							// :g<l>obal
+							case 108:
+								{
+									if (str + cmt + brq + pattern === 0 && pseudo > 0 && caret - pseudo === 2) {
+										if (tail !== PLACEHOLDER || body.charCodeAt(caret - 3) === COLON) {
+											pattern = tail;
+										}
+									}
+									break;
+								}
+							// :pattern
+							case COLON:
+								{
+									if (str + cmt + brq === 0) {
+										pseudo = caret;
+									}
+									break;
+								}
+							// selectors
+							case COMMA:
+								{
+									if (cmt + fnq + str + brq === 0) {
+										fmt = 1;
+										char += '\r';
+									}
+									break;
+								}
+							// qoutes
+							case DOUBLEQUOTE:
+								{
+									if (cmt === 0) {
+										str = str === DOUBLEQUOTE ? 0 : str === 0 ? DOUBLEQUOTE : str;
+									}
+									break;
+								}
+							case SINGLEQUOTE:
+								{
+									if (cmt === 0) {
+										str = str === SINGLEQUOTE ? 0 : str === 0 ? SINGLEQUOTE : str;
+									}
+									break;
+								}
+							// attributes
+							case OPENBRACKET:
+								{
+									if (str + cmt + fnq === 0) {
+										brq = 1;
+									}
+									break;
+								}
+							case CLOSEBRACKET:
+								{
+									if (str + cmt + fnq === 0) {
+										brq = 0;
+									}
+									break;
+								}
+							// functions
+							case CLOSEPARENTHESES:
+								{
+									if (str + cmt + brq === 0) {
+										// last character, eof
+										if (caret === eol) {
+											eol++;
+											eof++;
+										}
+										fnq--;
+									}
+									break;
+								}
+							case OPENPARENTHESES:
+								{
+									if (str + cmt + brq === 0) {
+										if (context === 0) {
+											switch (tail * 2 + trail * 3) {
+												// :matches
+												case 533:
+													{
+														break;
+													}
+												// :global, :not, :nth-child etc...
+												default:
+													{
+														counter = 0;
+														context = 1;
+													}
+											}
+										}
+										fnq++;
+									}
+									break;
+								}
+							case AT:
+								{
+									if (cmt + fnq + str + brq + pseudo + atrule === 0) {
+										atrule = 1;
+									}
+									break;
+								}
+							// block/line comments
+							case STAR:
+							case FOWARDSLASH:
+								{
+									if (str + brq + fnq > 0) {
+										break;
+									}
+
+									switch (cmt) {
+										case 0:
+											{
+												switch (code * 2 + body.charCodeAt(caret + 1) * 3) {
+													// //
+													case 235:
+														{
+															cmt = FOWARDSLASH;
+															break;
+														}
+													// /*
+													case 220:
+														{
+															cmt = STAR;
+															break;
+														}
+												}
+												break;
+											}
+										case STAR:
+											{
+												if (code === FOWARDSLASH && tail === STAR) {
+													char = '';
+													cmt = 0;
+												}
+											}
 									}
 								}
-
-								str = '';
-							}
-
-						column = 0;
-						line++;
-					} else {
-						// not `\t` tab character
-						if (code !== 9) {
-							character = styles.charAt(caret);
-
-							// build line buffer
-							if (uses === true && comment === 0) {
-								str += character;
-							}
-
-							// build character buffer
-							buff += character;
-
-							switch (code) {
-								// ,
-								case 44:
-									{
-										if (strings === 0 && comment === 0 && func === 0) {
-											join = 1;
-											buff += '\n';
-										}
-										break;
-									}
-								// " character
-								case 34:
-									{
-										if (comment === 0) {
-											// exit string " context / enter string context
-											strings = strings === 34 ? 0 : strings === 39 ? 39 : 34;
-										}
-										break;
-									}
-								// ' character
-								case 39:
-									{
-										if (comment === 0) {
-											// exit string ' context / enter string context
-											strings = strings === 39 ? 0 : strings === 34 ? 34 : 39;
-										}
-										break;
-									}
-								// ( character
-								case 40:
-									{
-										if (strings === 0 && comment === 0) {
-											func = 1;
-										}
-										break;
-									}
-								// ) character
-								case 41:
-									{
-										if (strings === 0 && comment === 0) {
-											func = 0;
-										}
-										break;
-									}
-								// / character
-								case 47:
-									{
-										if (strings === 0 && func === 0) {
-											char = styles.charCodeAt(caret - 1);
-
-											// /, begin line comment
-											if (comblck === 0 && char === 47) {
-												comment = comline = 1;
-											}
-											// *, end block comment
-											else if (char === 42) {
-													comment = comblck = 0;
-													buff = buff.substring(0, buff.indexOf('/*')).trim();
-												}
-										}
-
-										break;
-									}
-								// * character
-								case 42:
-									{
-										if (strings === 0 && func === 0 && comline === 0 && comblck === 0) {
-											// /, begin block comment
-											if (styles.charCodeAt(caret - 1) === 47) {
-												comment = comblck = 1;
-											}
-										}
-
-										break;
-									}
-							}
 						}
 
-						// move column position
-						column++;
-					}
-				}
+						// ignore comment blocks
+						if (cmt === 0) {
+							// aggressive isolation mode, divide each individual selector
+							// including selectors in :not function but excluding selectors in :global function
+							if (cascade + str + brq + atrule === 0 && from !== KEYFRAME) {
+								switch (fmt = 1, code) {
+									case COMMA:
+									case TILDE:
+									case GREATERTHAN:
+									case PLUS:
+									case CLOSEPARENTHESES:
+									case OPENPARENTHESES:
+										{
+											if (context === 0) {
+												switch (tail) {
+													case TAB:
+													case SPACE:
+													case NEWLINE:
+													case CARRIAGE:
+														{
+															char = char + '\0';
+															break;
+														}
+													default:
+														{
+															char = '\0' + char + (code === COMMA ? '' : '\0');
+														}
+												}
+											} else {
+												switch (code) {
+													case OPENPARENTHESES:
+														{
+															context = ++counter;
+															break;
+														}
+													case CLOSEPARENTHESES:
+														{
+															if ((context = --counter) === 0) {
+																char += '\0';
+															}
+															break;
+														}
+												}
+											}
+											break;
+										}
+									case SPACE:
+										{
+											switch (tail) {
+												case COMMA:
+												case TAB:
+												case SPACE:
+												case NEWLINE:
+												case CARRIAGE:
+													{
+														break;
+													}
+												default:
+													{
+														if (context === 0) {
+															char += '\0';
+														}
+													}
+											}
+										}
+								}
+							}
 
-			// move caret position
+							// concat buffer of characters
+							chars += char;
+						}
+					}
+			}
+
+			// tail characters
+			trail = tail;
+			tail = code;
+
+			// visit every character
 			caret++;
 		}
 
-		// trailing flat css
-		if (flat !== undefined && flat.length !== 0) {
-			flat = prefix + ' {' + flat + '}';
-
-			// middleware, flat context
-			if (uses === true) {
-				temp = middleware(4, flat, line, column, prefix, output.length);
-
-				if (temp != null) {
-					flat = temp;
-				}
-			}
-
-			// append flat css
-			output += flat;
+		if (fmt > 0) {
+			out = out.replace(fmtptn, '');
 		}
 
-		// middleware, output context
-		if (uses === true) {
-			temp = middleware(6, output, line, column, prefix, output.length);
+		length = out.length;
 
-			if (temp != null) {
-				output = temp;
+		// execute plugins, block context
+		if (length > 0 && plugged > 0) {
+			res = proxy(BLCKS, out, current, parent, line, column, length);
+
+			if (res !== void 0) {
+				length = (out = res).length;
 			}
 		}
 
-		return output;
+		if (length > 0) {
+			if (cascade === 0 && from !== KEYFRAME) {
+				isolate(current);
+			}
+
+			out = current.join(',').trim() + '{' + out + '}';
+
+			switch (pattern) {
+				case 0:
+					{
+						break;
+					}
+				case PLACEHOLDER:
+					{
+						// :placeholder
+						out = out.replace(plcholdrptn, '::' + webkit + 'input-$1') + out.replace(plcholdrptn, '::' + moz + '$1') + out.replace(plcholdrptn, ':' + ms + 'input-$1') + out;
+					}
+				default:
+					{
+						pattern = 0;
+					}
+			}
+		}
+
+		return flat + out + children;
 	}
 
 	/**
-  * use plugin
+  * Select
   *
-  * @param  {string|function|function[]} key
-  * @param  {function?} plugin
-  * @return {Object} {plugins}
+  * @param {Array<string>} parent
+  * @param {string} current
+  * @return {Array<string>}
+  */
+	function select(parent, current) {
+		var selectors = current.trim().split(selectorptn);
+		var out = selectors;
+
+		var length = out.length;
+		var l = parent.length;
+
+		switch (l) {
+			case 0:
+			case 1:
+				{
+					for (var i = 0, ref = l === 0 ? '' : parent[0] + ' '; i < length; i++) {
+						out[i] = scope(out[i], ref, l).trim();
+					}
+					break;
+				}
+			// nested
+			default:
+				{
+					for (var i = 0, j = 0, out = []; i < length; i++) {
+						for (var k = 0; k < l; k++) {
+							out[j++] = scope(selectors[i], parent[k] + ' ', l).trim();
+						}
+					}
+				}
+		}
+
+		return out;
+	}
+
+	/**
+  * Scope
+  *
+  * @param {string} input
+  * @param {string} parent
+  * @param {number} level
+  * @return {string}
+  */
+	function scope(input, parent, level) {
+		var selector = input;
+		var prefix = parent;
+		var code = selector.charCodeAt(0
+
+		// trim leading whitespace
+		);if (code < 33) {
+			code = (selector = selector.trim()).charCodeAt(0);
+		}
+
+		switch (code) {
+			// &
+			case AND:
+				{
+					switch (cascade + level) {
+						case 0:
+						case 1:
+							{
+								if (parent.trim().length === 0) {
+									break;
+								}
+							}
+						default:
+							{
+								return selector.replace(andptn, prefix.trim());
+							}
+					}
+					break;
+				}
+			// :
+			case COLON:
+				{
+					switch (selector.charCodeAt(1)) {
+						// g in :global
+						case 103:
+							{
+								if (escape > 0 && cascade > 0) {
+									return selector.replace(escapeptn, '$1').replace(andptn, nscope);
+								}
+								break;
+							}
+						default:
+							{
+								// :hover
+								return prefix.trim() + selector;
+							}
+					}
+				}
+			default:
+				{
+					switch (selector.charCodeAt(selector.length - 1)) {
+						// html &
+						case AND:
+							{
+								return prefix.replace(nscope, '').trim() + ' ' + selector.replace(andptn, nscope);
+							}
+					}
+				}
+		}
+
+		return prefix + selector;
+	}
+
+	/**
+  * Property
+  *
+  * @param {string} input
+  * @param {number} first
+  * @param {number} second
+  * @param {number} third
+  * @return {string}
+  */
+	function property(input, first, second, third) {
+		var out = input + ';';
+		var index = 0;
+		var hash = first * 2 + second * 3 + third * 4;
+		var cache;
+
+		// animation: a, n, i characters
+		if (hash === 944) {
+			out = animation(out);
+		} else if (vendor > 0) {
+			// vendor prefix
+			switch (hash) {
+				// background/backface-visibility, b, a, c
+				case 883:
+					{
+						// backface-visibility, -
+						if (out.charCodeAt(8) === DASH) {
+							out = webkit + out + out;
+						}
+						break;
+					}
+				// appearance: a, p, p
+				case 978:
+					{
+						out = webkit + out + moz + out + out;
+						break;
+					}
+				// hyphens: h, y, p
+				// user-select: u, s, e
+				case 1019:
+				case 983:
+					{
+						out = webkit + out + moz + out + ms + out + out;
+						break;
+					}
+				// flex: f, l, e
+				case 932:
+					{
+						out = webkit + out + ms + out + out;
+						break;
+					}
+				case 964:
+					{
+						// order: o, r, d
+						out = webkit + out + ms + 'flex' + '-' + out + out;
+						break;
+					}
+				// justify-content, j, u, s
+				case 1023:
+					{
+						cache = out.substring(out.indexOf(':', 15)).replace('flex-', '');
+						out = webkit + 'box-pack' + cache + webkit + out + ms + 'flex-pack' + cache + out;
+						break;
+					}
+				// display(flex/inline-flex/inline-box): d, i, s
+				case 975:
+					{
+						index = (out = input).length - 10;
+						cache = (out.charCodeAt(index) === 33 ? out.substring(0, index) : out).substring(8).trim();
+
+						switch (hash = cache.charCodeAt(0) + (cache.charCodeAt(7) | 0)) {
+							// inline-
+							case 203:
+								{
+									// inline-box
+									if (cache.charCodeAt(8) > 110) {
+										out = out.replace(cache, webkit + cache) + ';' + out;
+									}
+									break;
+								}
+							// inline-flex
+							// flex
+							case 207:
+							case 102:
+								{
+									out = out.replace(cache, webkit + (hash > 102 ? 'inline-' : '') + 'box') + ';' + out.replace(cache, webkit + cache) + ';' + out.replace(cache, ms + cache + 'box') + ';' + out;
+								}
+						}
+
+						out += ';';
+						break;
+					}
+				// align-items, align-center, align-self: a, l, i, -
+				case 938:
+					{
+						if (out.charCodeAt(5) === DASH) {
+							switch (out.charCodeAt(6)) {
+								// align-items, i
+								case 105:
+									{
+										cache = out.replace('-items', '');
+										out = webkit + out + webkit + 'box-' + cache + ms + 'flex-' + cache + out;
+										break;
+									}
+								// align-self, s
+								case 115:
+									{
+										out = webkit + out + ms + 'flex-item-' + out.replace('-self', '') + out;
+										break;
+									}
+								// align-content
+								default:
+									{
+										out = webkit + out + ms + 'flex-line-pack' + out.replace('align-content', '') + out;
+									}
+							}
+						}
+						break;
+					}
+				// cursor, c, u, r
+				case 1005:
+					{
+						if (cursorptn.test(out)) {
+							out = out.replace(colonptn, ': ' + webkit) + out.replace(colonptn, ': ' + moz) + out;
+						}
+						break;
+					}
+				// width: min-content / width: max-content
+				case 953:
+					{
+						if ((index = out.indexOf('-content', 9)) > 0) {
+							// width: min-content / width: max-content
+							cache = out.substring(index - 3);
+							out = 'width:' + webkit + cache + 'width:' + moz + cache + 'width:' + cache;
+						}
+						break;
+					}
+				// transform, transition: t, r, a
+				// text-size-adjust: t, e, x
+				case 962:
+				case 1015:
+					{
+						out = webkit + out + (out.charCodeAt(5) === 102 ? ms + out : '') + out;
+
+						// transitions
+						if (second + third === 211 && out.charCodeAt(13) === 105 && out.indexOf('transform', 10) > 0) {
+							out = out.substring(0, out.indexOf(';', 27) + 1).replace(transformptn, webkit + '$1') + out;
+						}
+
+						break;
+					}
+			}
+		}
+
+		return out;
+	}
+
+	/**
+  * Animation
+  *
+  * @param {string} input
+  * @return {string}
+  */
+	function animation(input) {
+		var length = input.length;
+		var index = input.indexOf(':', 9) + 1;
+		var declare = input.substring(0, index).trim();
+		var body = input.substring(index, length - 1).trim();
+		var out = '';
+
+		// shorthand
+		if (input.charCodeAt(9) !== DASH) {
+			var list = body.split(animationptn);
+
+			for (var i = 0, index = 0, length = list.length; i < length; index = 0, i++) {
+				var value = list[i];
+				var items = value.split(propertiesbtn);
+
+				while (value = items[index]) {
+					var peak = value.charCodeAt(0);
+
+					if (keyed === 1 && (
+					// letters
+					peak > AT && peak < 90 || peak > 96 && peak < 122 || peak === UNDERSCORE ||
+					// dash but not in sequence ex. --
+					peak === DASH && value.charCodeAt(1) !== DASH)) {
+						// not a number/function
+						switch (isNaN(parseFloat(value)) + (value.indexOf('(') !== -1)) {
+							case 1:
+								{
+									switch (value) {
+										case 'infinite':case 'alternate':case 'backwards':case 'running':
+										case 'normal':case 'forwards':case 'both':case 'none':case 'linear':
+										case 'ease':case 'ease-in':case 'ease-out':case 'ease-in-out':
+										case 'paused':case 'reversed':case 'alternate-reverse':case 'inherit':
+										case 'initial':case 'unset':case 'step-start':case 'step-end':
+											{
+												break;
+											}
+										default:
+											{
+												value += key;
+											}
+									}
+								}
+						}
+					}
+
+					items[index++] = value;
+				}
+
+				out += (i === 0 ? '' : ',') + items.join(' ');
+			}
+		} else {
+			out += input.charCodeAt(10) === 110 ? body + (keyed === 1 ? key : '') : body;
+		}
+
+		out = declare + out + ';';
+
+		return vendor > 0 ? webkit + out + out : out;
+	}
+
+	/**
+  * Isolate
+  *
+  * @param {Array<string>} selectors
+  */
+	function isolate(selectors) {
+		for (var i = 0, length = selectors.length, prefix, element; i < length; i++) {
+			var elements = selectors[i].split(elementptn);
+			var out = '';
+
+			for (var j = 0, size = 0, tail = 0, code = 0, l = elements.length; j < l; j++) {
+				if ((size = (element = elements[j]).length) === 0 && l > 1) {
+					continue;
+				}
+
+				prefix = ' ';
+				tail = out.charCodeAt(out.length - 1);
+				code = element.charCodeAt(0);
+
+				if (j === 0) {
+					prefix = '';
+				} else {
+					switch (tail) {
+						case STAR:
+						case TILDE:
+						case GREATERTHAN:
+						case PLUS:
+						case SPACE:
+						case OPENPARENTHESES:
+							{
+								prefix = '';
+							}
+					}
+				}
+
+				switch (code) {
+					case AND:
+						{
+							element = prefix + '' + nscopealt;
+						}
+					case TILDE:
+					case GREATERTHAN:
+					case PLUS:
+					case SPACE:
+					case CLOSEPARENTHESES:
+					case OPENPARENTHESES:
+						{
+							break;
+						}
+					case OPENBRACKET:
+						{
+							element = prefix + element + nscopealt;
+							break;
+						}
+					case COLON:
+						{
+							switch (element.charCodeAt(1) * 2 + element.charCodeAt(2) * 3) {
+								// :global
+								case 530:
+									{
+										if (escape > 0) {
+											element = prefix + element.substring(8, size - 1);
+											break;
+										}
+									}
+								// :hover, :nth-child(), ...
+								default:
+									{
+										if (j < 1 || elements[j - 1].length < 1) {
+											element = prefix + nscopealt + element;
+										}
+									}
+							}
+							break;
+						}
+					case COMMA:
+						{
+							prefix = '';
+						}
+					default:
+						{
+							if (size > 1 && element.indexOf(':') > 0) {
+								element = prefix + element.replace(pseudoptn, '$1' + nscopealt + '$2');
+							} else {
+								element = prefix + element + nscopealt;
+							}
+						}
+				}
+
+				out += element;
+			}
+
+			selectors[i] = out.replace(fmtptn, '').trim();
+		}
+	}
+
+	/**
+  * Proxy
+  *
+  * @param {number} context
+  * @param {string} content
+  * @param {Array<string>} selectors
+  * @param {Array<string>} parents
+  * @param {number} line
+  * @param {number} column
+  * @param {number} length
+  * @return {(string|void|*)}
+  */
+	function proxy(context, content, selectors, parents, line, column, length) {
+		for (var i = 0, out = content, next; i < plugged; i++) {
+			switch (next = plugins[i].call(stylis, context, out, selectors, parents, line, column, length)) {
+				case void 0:
+				case false:
+				case true:
+				case null:
+					{
+						break;
+					}
+				default:
+					{
+						out = next;
+					}
+			}
+		}
+
+		switch (out) {
+			case void 0:
+			case false:
+			case true:
+			case null:
+			case content:
+				{
+					break;
+				}
+			default:
+				{
+					return out;
+				}
+		}
+	}
+
+	/**
+  * Minify
+  *
+  * @param {(string|*)} output
+  * @return {string}
+  */
+	function minify(output) {
+		return output.replace(fmtptn, '').replace(beforeptn, '').replace(afterptn, '$1').replace(tailptn, '$1').replace(whiteptn, ' ');
+	}
+
+	/**
+  * Use
+  *
+  * @param {(Array<function(...?)>|function(...?)|number|void)?} plugin
   */
 	function use(plugin) {
-		var length = plugins.length;
-
-		if (plugin != null) {
-			// array of plugins
-			if (plugin.constructor === Array) {
-				for (var i = 0, l = plugin.length; i < l; i++) {
-					plugins[length++] = plugin[i];
+		switch (plugin) {
+			case void 0:
+			case null:
+				{
+					plugged = plugins.length = 0;
+					break;
 				}
-			}
-			// single un-keyed plugin
-			else {
-					plugins[length] = plugin;
+			default:
+				{
+					switch (plugin.constructor) {
+						case Array:
+							{
+								for (var i = 0, length = plugin.length; i < length; i++) {
+									use(plugin[i]);
+								}
+								break;
+							}
+						case Function:
+							{
+								plugins[plugged++] = plugin;
+								break;
+							}
+						case Boolean:
+							{
+								unkwn = !!plugin | 0;
+							}
+					}
 				}
 		}
 
-		return stylis;
-	};
-
-	/**
-  * Middleware Proxy
-  *
-  * @param  {Number} ctx
-  * @param  {String} str
-  * @param  {Number} line
-  * @param  {Number} col
-  * @param  {String} prefix
-  * @param  {Number} length
-  * @return {String?}
-  */
-	function proxy(ctx, str, line, col, prefix, length) {
-		var output = str;
-
-		for (var i = 0, l = plugins.length; i < l; i++) {
-			output = plugins[i](ctx, output, line, col, prefix, length) || output;
-		}
-
-		if (output !== str) {
-			return output;
-		}
+		return use;
 	}
 
-	stylis.use = use;
+	/**
+  * Set
+  *
+  * @param {Object} options
+  */
+	function set(options) {
+		for (var name in options) {
+			var value = options[name];
+			switch (name) {
+				case 'keyframe':
+					keyed = value | 0;break;
+				case 'global':
+					escape = value | 0;break;
+				case 'cascade':
+					cascade = value | 0;break;
+				case 'compress':
+					compress = value | 0;break;
+				case 'prefix':
+					vendor = value | 0;break;
+				case 'semicolon':
+					semicolon = value | 0;break;
+			}
+		}
+
+		return set;
+	}
 
 	/**
-  * plugin store
+  * Stylis
   *
-  * @type {Function[]}
+  * @param {string} selector
+  * @param {string} input
+  * @return {(string|*)}
   */
-	stylis.p = plugins;
+	function stylis(selector, input) {
+		// setup
+		var ns = selector;
+		var code = ns.charCodeAt(0
 
-	/**
-  * regular expresions
-  *
-  * @type {Object<string, RegExp>}
-  */
-	stylis.r = {
-		a: andPattern,
-		s: splitPattern,
-		g: globalPattern,
-		n: globalsPattern
-	};
+		// trim leading whitespace
+		);if (code < 33) {
+			code = (ns = ns.trim()).charCodeAt(0);
+		}
+
+		// keyframe/animation namespace
+		if (keyed > 0) {
+			key = ns.replace(keyptn, code === OPENBRACKET ? '' : '-');
+		}
+
+		// bit
+		code = 1;
+
+		// cascade/isolate
+		if (cascade === 1) {
+			nscope = ns;
+		} else {
+			nscopealt = ns;
+		}
+
+		var selectors = [nscope];
+
+		// execute plugins, pre-process context
+		if (plugged > 0) {
+			proxy(PREPS, input, selectors, selectors, line, column, 0);
+		}
+
+		// build
+		var output = compile(array, selectors, input, 0
+
+		// execute plugins, post-process context
+		);if (plugged > 0) {
+			var res = proxy(POSTS, output, selectors, selectors, line, column, output.length);
+
+			if (res !== void 0) {
+				// bypass minification
+				if (typeof (output = res) !== 'string') {
+					code = 0;
+				}
+			}
+		}
+
+		// reset
+		key = '';
+		nscope = '';
+		nscopealt = '';
+		pattern = 0;
+		line = 1;
+		column = 1;
+
+		return compress * code === 0 ? output : minify(output);
+	}
+
+	stylis['use'] = use;
+	stylis['set'] = set;
 
 	return stylis;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)))
 
 /***/ }),
 /* 264 */
@@ -34729,7 +34959,7 @@ if (typeof self !== 'undefined') {
 
 var result = (0, _ponyfill2['default'])(root);
 exports['default'] = result;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59), __webpack_require__(267)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(97), __webpack_require__(267)(module)))
 
 /***/ }),
 /* 266 */
@@ -34819,7 +35049,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(60)(content, options);
+var update = __webpack_require__(59)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {

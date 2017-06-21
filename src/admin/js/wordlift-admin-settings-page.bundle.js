@@ -273,7 +273,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(60)(content, options);
+var update = __webpack_require__(59)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -597,7 +597,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 60:
+/***/ 59:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -768,10 +768,10 @@ function insertStyleElement (options, style) {
 }
 
 function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
 	style.parentNode.removeChild(style);
 
 	var idx = stylesInsertedAtTop.indexOf(style);
-
 	if(idx >= 0) {
 		stylesInsertedAtTop.splice(idx, 1);
 	}
