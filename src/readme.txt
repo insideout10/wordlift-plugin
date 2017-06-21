@@ -149,6 +149,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Feature: [#477](https://github.com/insideout10/wordlift-plugin/issues/477): Preserve alternative labels when an entity is saved in the local vocabulary.
 * Feature: [#330](https://github.com/insideout10/wordlift-plugin/issues/330): External Entities not recognised when adding an extra paragraph on long articles.
 
+= 3.12.4 (2017-06-15) =
+* Feature: [#563](https://github.com/insideout10/wordlift-plugin/issues/563): Allow rebuilding entities only.
+
 = 3.12.3 (2017-06-07) =
 * Fix: [#556](https://github.com/insideout10/wordlift-plugin/issues/556): SPARQL queries fail.
 * Fix: [#555](https://github.com/insideout10/wordlift-plugin/issues/555): In WP backend "View Linked Data" and "Test Google Rich Snippets" buttons to be shown.
