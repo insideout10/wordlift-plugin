@@ -17,3 +17,5 @@ dist/
 /build/
 /.svn/
 /bower_components/
+
+.idea/
