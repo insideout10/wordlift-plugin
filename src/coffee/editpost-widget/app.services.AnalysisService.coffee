@@ -149,7 +149,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         entity.id = id
         entity.occurrences = []
         entity.annotations = {}
-        entity.confidence = 1
+        # See #550: the confidence is set by the server.
+        # entity.confidence = 1
 
       for id, annotation of data.annotations
         annotation.id = id
@@ -244,7 +245,15 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
       promise = @._innerPerform content, annotations
       # If successful, broadcast an *analysisPerformed* event.
       promise.then (response) ->
-# Store current analysis obj
+
+        # Catch wp_json_send_error responses.
+        if response.data.success? and !response.data.success
+          # Yes `data.data`, the first one to get the body of the response, the
+          # second for the body internal structure.
+          $rootScope.$broadcast "analysisFailed", response.data.data.message
+          return
+
+        # Store current analysis obj
         service._currentAnalysis = response.data
 
         result = service.parse(response.data)

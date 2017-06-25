@@ -13,7 +13,7 @@
 	<!-- CREATE NEW ENTITY BTN -->
 	<div
 		ng-click="setCurrentEntity(newEntity)"
-		ng-hide="currentEntity"
+		ng-hide="currentEntity || analysisFailed"
 		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html?ver=3.12.1'">
 	</div>
 
@@ -30,7 +30,7 @@
 </div>
 
 <!-- WL BOTTOM WRAP -->
-<div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity">
+<div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity || analysisFailed">
 
 	<!-- CLASSIFICATION BOX  -->
 	<div

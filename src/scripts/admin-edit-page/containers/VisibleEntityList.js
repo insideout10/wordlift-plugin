@@ -45,7 +45,13 @@ const getVisibleEntities = ( entities, annotation, filter ) => {
 		case 'SHOW_WHAT':
 			return entities.filter( x => 'what' === x.w );
 		default:
-			return entities;
+			// When showing all the entities, show only the shortlisted ones,
+			// i.e. the most relevant. The `shortlist` flag is set in the
+			// `entities` reducer and is assigned to the first 20 entities
+			// ordered by descending confidence.
+			//
+			// We also show selected entities.
+			return entities.filter( x => x.shortlist || 0 < x.occurrences.length );
 	}
 };
 

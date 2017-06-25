@@ -66,6 +66,12 @@ class Wordlift_Entity_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To
 		// Get the entity name.
 		$jsonld['name'] = $post->post_title;
 
+		// 3.13.0, add alternate names.
+		$alternative_labels = $this->entity_service->get_alternative_labels( $post_id );
+		if ( 0 < count( $alternative_labels ) ) {
+			$jsonld['alternateName'] = $alternative_labels;
+		}
+
 		// Get the entity @type.
 		$type = $this->entity_type_service->get( $post_id );
 

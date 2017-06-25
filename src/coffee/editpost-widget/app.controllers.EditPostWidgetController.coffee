@@ -180,6 +180,8 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   RelatedPostDataRetrieverService.load Object.keys( $scope.configuration.entities )
 
   $rootScope.$on "analysisFailed", (event, errorMsg) ->
+    # Set the analysis failed flag.
+    $scope.analysisFailed = true
     $scope.addMsg errorMsg, 'error'
 
   $rootScope.$on "analysisServiceStatusUpdated", (event, newStatus) ->
