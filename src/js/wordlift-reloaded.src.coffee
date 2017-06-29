@@ -1570,6 +1570,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           # Add the `wl-no-link` class if it was present in the original annotation.
           element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
 
+          # Add the `wl-link` class if it was present in the original annotation.
+          element += ' wl-link' if -1 < annotation.cssClass?.indexOf('wl-link')
+
           # Loop annotation to see which has to be preselected
           for em in annotation.entityMatches
             entity = analysis.entities[em.entityId]

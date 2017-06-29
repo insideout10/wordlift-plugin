@@ -15797,7 +15797,7 @@ var LinkService = function () {
   * Create an `LinkService` instance.
   *
   * @since 3.13.0
-  * @param {bool} linkByDefault Whether to link by default.
+  * @param {boolean} linkByDefault Whether to link by default.
   */
 	function LinkService(linkByDefault) {
 		_classCallCheck(this, LinkService);
@@ -15882,7 +15882,9 @@ var LinkService = function () {
 			var _this2 = this;
 
 			return occurrences.reduce(function (acc, id) {
-				return acc || _this2.linkByDefault ? !__WEBPACK_IMPORTED_MODULE_0__EditorService__["a" /* default */].get().dom.hasClass(id, 'wl-no-link') : __WEBPACK_IMPORTED_MODULE_0__EditorService__["a" /* default */].get().dom.hasClass(id, 'wl-link');
+				var dom = __WEBPACK_IMPORTED_MODULE_0__EditorService__["a" /* default */].get().dom;
+
+				return acc || (_this2.linkByDefault ? !dom.hasClass(id, 'wl-no-link') : dom.hasClass(id, 'wl-link'));
 			}, false);
 		}
 	}]);
