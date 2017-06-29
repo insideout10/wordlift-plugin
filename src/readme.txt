@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.13.1 (2017-06-29) =
+* Fix: [#569](https://github.com/insideout10/wordlift-plugin/issues/569): Explicitly enabling an entity link doesn't work.
+
 = 3.13.0 (2017-06-22) =
 * Feature: [#550](https://github.com/insideout10/wordlift-plugin/issues/550): Limit the number of entities.
 * Fix: [#541](https://github.com/insideout10/wordlift-plugin/issues/541): AMP version of a page with a map displays a gray box.
