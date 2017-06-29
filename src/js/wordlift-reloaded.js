@@ -1552,7 +1552,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, traslator;
+            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, ref3, traslator;
             ed = EditorAdapter.getEditor();
             html = EditorAdapter.getHTML();
             entities = findEntities(html);
@@ -1573,9 +1573,12 @@
               if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-no-link') : void 0)) {
                 element += ' wl-no-link';
               }
-              ref2 = annotation.entityMatches;
-              for (j = 0, len = ref2.length; j < len; j++) {
-                em = ref2[j];
+              if (-1 < ((ref2 = annotation.cssClass) != null ? ref2.indexOf('wl-link') : void 0)) {
+                element += ' wl-link';
+              }
+              ref3 = annotation.entityMatches;
+              for (j = 0, len = ref3.length; j < len; j++) {
+                em = ref3[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
