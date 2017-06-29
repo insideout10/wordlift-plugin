@@ -1,0 +1,73 @@
+<div class="wl-widget-global-wrap">
+
+	<!-- WL MESSAGE PANEL -->
+	<div class="wl-widget-message-panel">
+
+		<!-- ERROR MESSAGES -->
+		<div
+			ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-messages.html?ver=3.12.1'">
+		</div>
+
+	</div>
+
+	<!-- CREATE NEW ENTITY BTN -->
+	<div
+		ng-click="setCurrentEntity(newEntity)"
+		ng-hide="currentEntity || analysisFailed"
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html?ver=3.12.1'">
+	</div>
+
+	<!-- WL TOP WRAP -->
+	<div class="wl-widget-global-top-wrap" ng-show="currentEntity">
+
+		<!-- ENTITY PANEL -->
+		<wl-entity-form
+			entity="currentEntity"
+			on-reset="unsetCurrentEntity()"
+			on-submit="storeCurrentEntity()">
+		</wl-entity-form>
+	</div>
+</div>
+
+<!-- WL BOTTOM WRAP -->
+<div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity || analysisFailed">
+
+	<!-- CLASSIFICATION BOX  -->
+	<div
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html?ver=3.12.1'">
+	</div>
+
+	<!-- ARTICLE METADATA -->
+	<div
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-article-metadata.html?ver=3.12.1'">
+	</div>
+
+	<!-- SUGGESTED IMAGES -->
+	<div
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-suggested-images.html?ver=3.12.1'">
+	</div>
+
+	<!-- RELATED POST -->
+	<div
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html?ver=3.12.1'">
+	</div>
+
+</div>
+</div>
+
+<!-- POST DATA BOX -->
+<div class="wl-entity-input-boxes">
+	<wl-entity-input-box entity="entity"
+	                     ng-repeat="entity in analysis.entities | isEntitySelected"></wl-entity-input-box>
+	<wl-entity-input-box entity="topic" ng-if="topic"></wl-entity-input-box>
+	<wl-entity-input-box entity="publishedPlace"
+	                     ng-if="publishedPlace"></wl-entity-input-box>
+	<div ng-repeat="(box, entities) in selectedEntities">
+		<input type='text' name='wl_boxes[{{box}}][]' value='{{id}}'
+		       ng-repeat="(id, entity) in entities">
+	</div>
+	<input type='text' name='wl_metadata[wl_topic]' value='{{topic.id}}'
+	       ng-if="topic">
+	<input type='text' name='wl_metadata[wl_location_created]'
+	       value='{{publishedPlace.id}}' ng-if="publishedPlace">
+</div>
