@@ -273,6 +273,15 @@ class Wordlift {
 	protected $settings_page;
 
 	/**
+	 * The 'WordLift Batch analysis' page.
+	 *
+	 * @since  3.14.0
+	 * @access protected
+	 * @var \Wordlift_Batch_Analysis_page $sbatch_analysis_page The 'WordLift batcch analysis' page.
+	 */
+	protected $batch_analysis_page;
+
+	/**
 	 * The install wizard page.
 	 *
 	 * @since  3.9.0
@@ -780,6 +789,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
 
 		/** Admin Pages */
@@ -841,6 +851,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-widget.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wordlift-related-entities-cloud-widget.php';
 
+		require_once( plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis.php' );
+
 		$this->loader = new Wordlift_Loader();
 
 		// Instantiate a global logger.
@@ -895,6 +907,8 @@ class Wordlift {
 
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
+
+		$this->batch_analysis = new Wordlift_Batch_Analysis_Service( $this );
 
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
@@ -959,6 +973,7 @@ class Wordlift {
 
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element, $this->radio_input_element );
+		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_page( $this->batch_analysis );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Pages.
@@ -1113,6 +1128,10 @@ class Wordlift {
 
 		// Hook the menu creation on the general wordlift menu creation
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
+			// Add the functionality only if a flag is set in wp-config.php .
+			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
+		}
 
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );

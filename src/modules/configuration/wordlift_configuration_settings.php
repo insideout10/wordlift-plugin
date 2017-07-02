@@ -398,3 +398,27 @@ function wl_configuration_get_dataset_index_url() {
 	return wl_configuration_get_api_url() . "/data/$redlink_dataset/release?key=$redlink_key";
 
 }
+
+/**
+ * Get the URL to perform batch analyzes.
+ *
+ * @since 3.14.0
+ *
+ * @return string The URL to call to perform the batch analyzes.
+ */
+function wl_configuration_get_batch_analysis_url() {
+
+	// If the WordLift Key is set, we use WordLift.
+	$key = wl_configuration_get_key();
+	if ( ! empty( $key ) ) {
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'batch-analyses';
+	}
+
+	// get the configuration.
+	$redlink_dataset = wl_configuration_get_redlink_dataset_name();
+	$redlink_key     = wl_configuration_get_redlink_key();
+
+	// construct the API URL.
+	return wl_configuration_get_api_url() . '/batch-analyses';
+
+}
