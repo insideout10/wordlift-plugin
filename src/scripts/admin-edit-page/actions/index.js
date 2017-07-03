@@ -87,3 +87,7 @@ export const toggleLink = ( entity ) => (
 export const updateOccurrencesForEntity = ( entityId, occurrences ) => (
 	{ type: types.UPDATE_OCCURRENCES_FOR_ENTITY, entityId, occurrences }
 );
+
+export const switchAnalysisOnOff = () => (
+	{ type: types.SWITCH_ANALYSIS_ON_OFF }
+);

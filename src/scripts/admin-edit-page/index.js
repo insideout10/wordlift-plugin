@@ -24,6 +24,7 @@ import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+//import { combineReducers } from 'redux';
 
 /**
  * Internal dependencies
@@ -33,7 +34,8 @@ import App from './components/App';
 import AnnotationEvent from './angular/AnnotationEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
-// import log from '../modules/log';
+//import AnalysisOnOffSwitch from './containers/AnalysisOnOffSwitch';
+//import analysisEnabled from './reducers/analysisEnabled';
 
 // Start-up the application when the `wlEntityList` Angular directive is
 // loaded.
@@ -65,3 +67,25 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 	// Redux.
 	store.dispatch( UpdateOccurrencesForEntityEvent() );
 } );
+
+/**
+ * Internal dependencies
+ */
+
+
+//jQuery( ( $ ) => {
+//
+//	const reducer = combineReducers( { analysisEnabled } );
+//
+//	const store = createStore( reducer, { analysisEnabled: true } );
+//
+//	// Add an element which will contain the on/off switch.
+//	const element = $( '<div class="wl-on-off-switch"></div>' ).appendTo( '#wordlift_entities_box .hndle' )[ 0 ];
+//
+//	ReactDOM.render(
+//		<Provider store={ store }>
+//			<AnalysisOnOffSwitch />
+//		</Provider>,
+//		element
+//	);
+//} );

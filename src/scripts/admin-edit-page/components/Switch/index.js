@@ -35,6 +35,8 @@ class Switch extends React.PureComponent {
 
 		// Bind the event handler.
 		this.onClick = this.onClick.bind( this );
+		this.onMouseDown = this.onMouseDown.bind( this );
+		this.onMouseUp = this.onMouseUp.bind( this );
 	}
 
 	/**
