@@ -37,14 +37,16 @@ if ( isset( $_FILES['urls'] ) && check_admin_referer( 'batch_analysis', 'wl_nonc
 			<?php esc_html_e( 'File containing URLs of posts to analyze', 'wordlift' )?>
 		</label>
 		<input type="file" name="urls">
+		<br>
+		<?php esc_html_e( 'The file should contain one URL in each line.', 'wordlift' )?>
+	</p>
 	<p>
 		<label for="wl_linktype">
 			<?php esc_html_e( 'Type of entity linking', 'wordlif' ); ?>
 		</label>
 		<select id="wl_linktype" name="wl_linktype">
-			<option value="default"><?php esc_html_e( 'Ignore', 'wordlift' )?></option>
-			<option value="yes"><?php esc_html_e( 'Link', 'wordlift' )?></option>
 			<option value="no"><?php esc_html_e( 'No Link', 'wordlift' )?></option>
+			<option value="yes"><?php esc_html_e( 'Link', 'wordlift' )?></option>
 		</select>
 	</p>
 	<?php submit_button( __( 'Start', 'wordlift' ) ); ?>
@@ -68,7 +70,7 @@ if ( empty( $queue ) ) {
 <?php
 $queue = $this->batch_analysis_service->waiting_for_response();
 if ( empty( $queue ) ) {
-	esc_html_e( 'Nothing is currently in queue', 'wordlift' );
+	esc_html_e( 'Nothing is currently being processed', 'wordlift' );
 } else {
 	echo '<ul>';
 	foreach ( $queue as $item ) {
