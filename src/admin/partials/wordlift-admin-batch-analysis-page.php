@@ -10,7 +10,8 @@
 <div class="wrap">
 	<h2><?php esc_html_e( 'WordLift Batch Analyze Monitor', 'wordlift' )?></h2>
 <?php
-if ( isset( $_FILES['urls'] ) ) {
+// If a form was submitted and the nonce checks out, process the list of URLS.
+if ( isset( $_FILES['urls'] ) && check_admin_referer( 'batch_analysis', 'wl_nonce' ) ) {
 	// The file contains a list of urls to be analyzed, one per raw
 	$pids = array();
 	$filename = $_FILES['urls']['tmp_name'];
@@ -37,6 +38,7 @@ if ( isset( $_FILES['urls'] ) ) {
 }
 ?>
 <form method="post" action="" enctype="multipart/form-data">
+	<?php wp_nonce_field( 'batch_analysis', 'wl_nonce' ); ?>
 	<p>
 		<label>
 			<?php esc_html_e( 'File containing URLs of posts to analyze', 'wordlift' )?>
