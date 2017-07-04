@@ -26,14 +26,7 @@ if ( isset( $_FILES['urls'] ) && check_admin_referer( 'batch_analysis', 'wl_nonc
 		}
 	}
 	fclose( $file );
-	$batch = get_option( 'wl_analyze_batch', array(
-					'queue' => array(),
-					'processing' => array(),
-	) );
-	foreach ( $pids as $pid ) {
-		$batch['queue'][ $pid ] = array( 'id' => $pid, 'link' => $_POST['wl_linktype'] );
-		update_option( 'wl_analyze_batch', $batch );
-	}
+	$this->batch_analysis_service->enqueue_for_analysis( $pids, $_POST['wl_linktype'] );
 	$this->batch_analysis_service->batch_analyze();
 }
 ?>
@@ -57,15 +50,9 @@ if ( isset( $_FILES['urls'] ) && check_admin_referer( 'batch_analysis', 'wl_nonc
 	<?php submit_button( __( 'Start', 'wordlift' ) ); ?>
 </form>
 
-<?php
-	$batch = get_option( 'wl_analyze_batch', array(
-											'queue' => array(),
-											'processing' => array(),
-	) );
-?>
 <h3><?php esc_html_e( 'Posts in queue', 'wordlift' )?></h3>
 <?php
-$queue = $batch['queue'];
+$queue = $this->batch_analysis_service->waiting_for_analysis();
 if ( empty( $queue ) ) {
 	esc_html_e( 'Nothing is currently in queue', 'wordlift' );
 } else {
@@ -79,7 +66,7 @@ if ( empty( $queue ) ) {
 ?>
 <h3><?php esc_html_e( 'Posts being processed', 'wordlift' )?></h3>
 <?php
-$queue = $batch['processing'];
+$queue = $this->batch_analysis_service->waiting_for_response();
 if ( empty( $queue ) ) {
 	esc_html_e( 'Nothing is currently in queue', 'wordlift' );
 } else {
