@@ -37,6 +37,9 @@ matrix:
     - php: 5.6
       env: SCRIPT=test:multisite WP_VERSION=4.8
   allow_failures:
+    # JavaScript end-to-end tests.
+    - php: 5.6
+      env: SCRIPT=test:e2e
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
