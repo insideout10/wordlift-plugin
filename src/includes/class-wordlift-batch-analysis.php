@@ -107,10 +107,7 @@ class Wordlift_Batch_analysis_Service {
 		$batch = $this->get_batch_queues();
 
 		foreach ( $post_ids as $pid ) {
-			// If it was already batch processed, just skip.
-			if ( ! get_post_meta( $pid, '_wl_batch_analysis', true ) ) {
-				$batch[ self::ANALYZE_QUEUE ][ $pid ] = array( 'id' => $pid, 'link' => $link_setting );
-			}
+			$batch[ self::ANALYZE_QUEUE ][ $pid ] = array( 'id' => $pid, 'link' => $link_setting );
 		}
 		update_option( self::OPTION_NAME, $batch );
 	}
@@ -132,43 +129,45 @@ class Wordlift_Batch_analysis_Service {
 			 * to the wordlift server to process it, when the requests includes
 			 * the content and the id of the post.
 			 */
-			$item = array_pop( $analyze_queue );
-			if ( $item ) { // just being extra careful.
-				$post = get_post( $item['id'] );
-				if ( empty( $post ) ) {
-					// Post was possibly deleted, just bailout.
-					return;
-				}
-				$url = wl_configuration_get_batch_analysis_url();
-				$param = array(
-					'id'	=> $item['id'],
-					'key'	=> wl_configuration_get_key(),
-					'content' => $post->post_content,
-					'contentLanguage' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
-					'version' => $this->plugin->get_version(),
-					'links' => $item['link'],
-					'scope' => 'local',
-				);
-				$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-					'method'      => 'POST',
-					'headers'     => array(
-						'Accept'       => 'application/json',
-						'Content-type' => 'application/json; charset=UTF-8',
-					),
-					// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
-					'httpversion' => '1.0',
-					'body'        => wp_json_encode( $param ),
-				) );
+			for ( $i = 0; $i < 10; $i++ ) {
+				$item = array_pop( $analyze_queue );
+				if ( $item ) { // just being extra careful.
+					$post = get_post( $item['id'] );
+					if ( empty( $post ) ) {
+						// Post was possibly deleted, just bailout.
+						return;
+					}
+					$url = wl_configuration_get_batch_analysis_url();
+					$param = array(
+						'id'	=> $item['id'],
+						'key'	=> wl_configuration_get_key(),
+						'content' => $post->post_content,
+						'contentLanguage' => Wordlift_Configuration_Service::get_instance()->get_language_code(),
+						'version' => $this->plugin->get_version(),
+						'links' => $item['link'],
+						'scope' => 'local',
+					);
+					$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
+						'method'      => 'POST',
+						'headers'     => array(
+							'Accept'       => 'application/json',
+							'Content-type' => 'application/json; charset=UTF-8',
+						),
+						// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
+						'httpversion' => '1.0',
+						'body'        => wp_json_encode( $param ),
+					) );
 
-				$response = wp_remote_post( $url, $args );
-				// If it's an error log it.
-				if ( is_wp_error( $response ) ) {
-					$analyze_queue[ $id ] = $item;
-					$message = "An error occurred while requesting a batch analysis to $url: {$response->get_error_message()}";
-					Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
-					throw new Exception( $response->get_error_message(), $response->get_error_code() );
-				} else {
-					$response_queue[ $item['id'] ] = $item;
+					$response = wp_remote_post( $url, $args );
+					// If it's an error log it.
+					if ( is_wp_error( $response ) ) {
+						$analyze_queue[ $id ] = $item;
+						$message = "An error occurred while requesting a batch analysis to $url: {$response->get_error_message()}";
+						Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
+						throw new Exception( $response->get_error_message(), $response->get_error_code() );
+					} else {
+						$response_queue[ $item['id'] ] = $item;
+					}
 				}
 			}
 		}
@@ -190,36 +189,36 @@ class Wordlift_Batch_analysis_Service {
 		 	 * If we have any post waiting for a reply to any post, send a status
 			 * request to the server.
 			 */
-			$item = array_pop( $response_queue );
-			if ( $item ) { // just being extra careful.
-				$post = get_post( $item['id'] );
-				if ( empty( $post ) ) {
-					// Post was possibly deleted, just bailout.
-					return;
-				}
-				$apiurl = wl_configuration_get_batch_analysis_url();
-				$id	= $item['id'];
-				$key = wl_configuration_get_key();
-				$url = $apiurl . '/' . $id . '?key=' . $key;
-				$response = wp_remote_get( $url, unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
-				// If it's an error log it.
-				if ( is_wp_error( $response ) ) {
-					$analyze_queue[ $id ] = $item;
-					$message = "An error occurred while requesting a batch analysis to $url: {$response->get_error_message()}";
-					Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
-					throw new Exception( $response->get_error_message(), $response->get_error_code() );
-				} elseif ( 200 != $response['response']['code'] ) {
-					$analyze_queue[ $id ] = $item;
-				} else {
-					// Save the returned content as new revision.
-					$decode = json_decode( $response['body'] );
-					$content = $decode->content;
-					wp_update_post( array(
-						'ID' => $id,
-						'post_content' => wp_slash( $content ),
-					) );
-					// Add indication that the post was batch processed.
-					add_post_meta( $id, '_wl_batch_analysis', true, true );
+			for ( $i = 0; $i < 10; $i++ ) {
+				$item = array_pop( $response_queue );
+				if ( $item ) { // just being extra careful.
+					$post = get_post( $item['id'] );
+					if ( empty( $post ) ) {
+						// Post was possibly deleted, just bailout.
+						return;
+					}
+					$apiurl = wl_configuration_get_batch_analysis_url();
+					$id	= $item['id'];
+					$key = wl_configuration_get_key();
+					$url = $apiurl . '/' . $id . '?key=' . $key;
+					$response = wp_remote_get( $url, unserialize( WL_REDLINK_API_HTTP_OPTIONS ) );
+					// If it's an error log it.
+					if ( is_wp_error( $response ) ) {
+						$analyze_queue[ $id ] = $item;
+						$message = "An error occurred while requesting a batch analysis to $url: {$response->get_error_message()}";
+						Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
+						throw new Exception( $response->get_error_message(), $response->get_error_code() );
+					} elseif ( 200 != $response['response']['code'] ) {
+						$analyze_queue[ $id ] = $item;
+					} else {
+						// Save the returned content as new revision.
+						$decode = json_decode( $response['body'] );
+						$content = $decode->content;
+						wp_update_post( array(
+							'ID' => $id,
+							'post_content' => wp_slash( $content ),
+						) );
+					}
 				}
 			}
 		}
