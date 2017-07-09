@@ -214,10 +214,10 @@ class Wordlift {
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
 	 * @var    3.6.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
-	private $sparql_service;
+	protected $sparql_service;
 
 	/**
 	 * A {@link Wordlift_Import_Service} instance.
@@ -1201,7 +1201,7 @@ class Wordlift {
 		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
-		
+
 	}
 
 	/**
