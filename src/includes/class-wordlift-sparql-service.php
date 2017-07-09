@@ -77,6 +77,8 @@ class Wordlift_Sparql_Service {
 	 */
 	public function run_sparql_query( $request_id ) {
 
+		$this->log->debug( "Running SPARQL queries..." );
+
 		// Look for a free temporary filename.
 		for ( $index = 1; $index < 1000; $index ++ ) {
 			$filename = WL_TEMP_DIR . $request_id . "-$index.sparql";
