@@ -713,6 +713,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 
+		/** Async Tasks. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -946,6 +950,9 @@ class Wordlift {
 
 		/** Adapters. */
 		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
+
+		/** Async Tasks. */
+		new Wordlift_Sparql_Query_Async_Task();
 
 		/** WordPress Admin UI. */
 

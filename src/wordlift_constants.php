@@ -16,7 +16,7 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 ) ) );
 
 // Create a unique ID for this request, useful to hook async HTTP requests.
-define( 'WL_REQUEST_ID', uniqid() );
+define( 'WL_REQUEST_ID', uniqid( true ) );
 
 // Set the temporary files folder.
 defined( 'WL_TEMP_DIR' ) || define( 'WL_TEMP_DIR', get_temp_dir() );

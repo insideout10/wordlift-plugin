@@ -58,12 +58,100 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @since 3.6.0
 	 *
+	 * @param string $stmt  The SPARQL statement.
+	 * @param bool   $queue Whether to queue the statement for asynchronous
+	 *                      execution.
+	 */
+	public function execute( $stmt, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
+
+		rl_execute_sparql_update_query( $stmt, $queue );
+
+	}
+
+	/**
+	 * Run the SPARQL queries buffered for the specified request id.
+	 *
+	 * @since 3.13.2
+	 *
+	 * @param string $request_id A unique request id.
+	 */
+	public function run_sparql_query( $request_id ) {
+
+		// Look for a free temporary filename.
+		for ( $index = 1; $index < 1000; $index ++ ) {
+			$filename = WL_TEMP_DIR . $request_id . "-$index.sparql";
+
+			// Bail out if there are no files left.
+			if ( ! file_exists( $filename ) ) {
+				break;
+			}
+
+			$this->log->debug( "Running SPARQL from $filename..." );
+
+			// Get the query saved in the file.
+			$query = file_get_contents( $filename );
+
+			// Execute the SPARQL query.
+			rl_execute_sparql_update_query( $query, false );
+
+			// Delete the temporary file.
+			unlink( $filename );
+		}
+
+		// Reindex the triple store.
+		wordlift_reindex_triple_store();
+
+	}
+
+	/**
+	 * Queue a SPARQL statement for asynchronous execution.
+	 *
+	 * @since 3.13.2
+	 *
 	 * @param string $stmt The SPARQL statement.
 	 */
 	public function queue( $stmt ) {
 
-		rl_execute_sparql_update_query( $stmt );
+		// Get a temporary filename.
+		$filename = $this->get_temporary_file_for_sparql();
 
+		$this->log->debug( "Buffering SPARQL to file $filename..." );
+
+		// Write the contents to the temporary filename.
+		file_put_contents( $filename, $stmt . "\n", FILE_APPEND );
+
+	}
+
+	/**
+	 * Get a temporary filename where to store SPARQL queries.
+	 *
+	 * @since 3.13.2
+	 *
+	 * @return string The filename.
+	 * @throws Exception An exception is thrown if there are already 1.000
+	 *                   temporary files for this request.
+	 */
+	private function get_temporary_file_for_sparql() {
+
+		// Look for a free temporary filename.
+		for ( $index = 1; $index < 1000; $index ++ ) {
+			$filename = WL_TEMP_DIR . WL_REQUEST_ID . "-$index.sparql";
+
+			if ( ! file_exists( $filename ) ) {
+
+				// Only if this it the first buffered SPARQL, then launch the
+				// action which will be handled by the Async Task. The Async
+				// Task will take care of all the buffered files.
+				if ( 1 === $index ) {
+					do_action( 'wl_run_sparql_query', WL_REQUEST_ID );
+				}
+
+				// Return the temporary filename.
+				return $filename;
+			}
+		}
+
+		throw new Exception( 'Cannot create a temporary file.' );
 	}
 
 	/**

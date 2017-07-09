@@ -82,7 +82,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			$this->uri_service->delete_all();
 
 			// Delete all the triples in the remote dataset.
-			$this->sparql_service->queue( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
+			$this->sparql_service->execute( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
 
 		}
 
