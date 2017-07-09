@@ -138,6 +138,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.13.2 (????-??-??) =
+* Fix: [#575](https://github.com/insideout10/wordlift-plugin/issues/575): Cron is unreliable on some web sites.
+
 = 3.13.1 (2017-06-29) =
 * Fix: [#569](https://github.com/insideout10/wordlift-plugin/issues/569): Explicitly enabling an entity link doesn't work.
 
