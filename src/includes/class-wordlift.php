@@ -1144,6 +1144,8 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 
+		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
@@ -1198,6 +1200,8 @@ class Wordlift {
 		 */
 		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
 
+		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+		
 	}
 
 	/**
