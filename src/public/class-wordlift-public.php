@@ -105,6 +105,8 @@ class Wordlift_Public {
 		// If we're in a single page, then print out the post id.
 		if ( is_singular() ) {
 			$settings['postId'] = get_the_ID();
+		} elseif ( is_home() ) {
+			$settings['postId'] = get_option( 'page_for_posts' );
 		}
 
 		// Note that we switched the js to be loaded in footer, since it is loading

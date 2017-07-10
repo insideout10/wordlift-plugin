@@ -103,6 +103,28 @@ class Wordlift_Entity_Type_Service {
 
 			case 'post':
 			case 'page':
+				/**
+				 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output
+				 *
+				 * @api bool $display_search Whether or not to display json+ld search on the frontend
+				 */
+				if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
+
+					// Get home and blog page ids
+					$ids = array(
+						get_option( 'page_on_front' ),
+						get_option( 'page_for_posts' ),
+					);
+
+					// Determinate if this is home or blog page.
+					if ( in_array( $post_id, $ids ) ) {
+						// Home and Blog pages are considered WebSite.
+						return array(
+							'uri'       => 'http://schema.org/WebSite',
+							'css_class' => 'wl-website',
+						);
+					}
+				}
 				// Posts and pages are considered Articles.
 				return array(
 					'uri'       => 'http://schema.org/Article',
