@@ -243,4 +243,237 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test that the JSON-LD WebSite
+	 *
+	 */
+	public function test_jsonld_website() {
+		$name              = rand_str();
+		$description       = rand_str();
+
+		// Create homepage
+		$homepage_id = $this->factory->post->create( array(
+			'post_title' => $name,
+			'post_type'  => 'page',
+		) );
+
+		// Get url
+		$home_uri = $this->entity_service->get_uri( $homepage_id );
+
+		// Set our page as homepage & update the site description
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', $homepage_id );
+		update_option( 'blogdescription', $description );
+
+		// Get site info
+		$headline    = get_bloginfo( 'name' );
+		$description = get_bloginfo( 'description' );
+		$url         = home_url('/');
+		$target      = $url . '?s={search_term_string}';
+
+		// Set up a default request
+		$_GET['action'] = 'wl_jsonld';
+		$_GET['id']     = $homepage_id;
+
+		// Make the request
+		try {
+			$this->_handleAjax( 'wl_jsonld' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+
+		// Get response
+		$response = json_decode( $this->_last_response );
+
+		$this->assertTrue( is_array( $response ) );
+
+		$this->assertCount( 1, $response );
+
+		$jsonld_1 = get_object_vars( $response[0] );
+
+		$this->assertTrue( is_array( $jsonld_1 ) );
+		$this->assertArrayHasKey( '@context', $jsonld_1 );
+		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+
+		$this->assertArrayHasKey( '@id', $jsonld_1 );
+		$this->assertEquals( $home_uri, $jsonld_1['@id'] );
+
+		$this->assertArrayHasKey( '@type', $jsonld_1 );
+		$this->assertEquals( 'WebSite', $jsonld_1['@type'] );
+
+		$this->assertArrayHasKey( 'description', $jsonld_1 );
+		$this->assertEquals( $description, $jsonld_1['description'] );
+
+		$this->assertArrayHasKey( 'headline', $jsonld_1 );
+		$this->assertEquals( $headline, $jsonld_1['headline'] );
+
+		$this->assertArrayHasKey( 'url', $jsonld_1 );
+		$this->assertEquals( $url, $jsonld_1['url'] );
+
+		// Get potentital action
+		$potential_action = get_object_vars( $jsonld_1['potentialAction'] );
+
+		$this->assertArrayHasKey( '@type', $potential_action );
+		$this->assertEquals( 'SearchAction', $potential_action['@type'] );
+
+		$this->assertArrayHasKey( 'target', $potential_action );
+		$this->assertEquals( $target, $potential_action['target'] );
+	}
+
+
+	/**
+	 * Test that the JSON-LD WebSite is working.
+	 *
+	 * @since 3.8.0
+	 */
+	public function test_disavble_jsonld_website() {
+		$name              = rand_str();
+		$description       = rand_str();
+
+		// Create homepage
+		$homepage_id = $this->factory->post->create( array(
+			'post_title' => $name,
+			'post_type'  => 'page',
+		) );
+
+		// Get url
+		$home_uri = $this->entity_service->get_uri( $homepage_id );
+
+		// Set our page as homepage & update the site description
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', $homepage_id );
+		update_option( 'blogdescription', $description );
+
+		// Get site info
+		$headline    = get_bloginfo( 'name' );
+		$description = get_bloginfo( 'description' );
+		$url         = home_url('/');
+		$target      = $url . '?s={search_term_string}';
+
+		// Set up a default request
+		$_GET['action'] = 'wl_jsonld';
+		$_GET['id']     = $homepage_id;
+
+		// Diable WebSite schema
+		add_filter( 'wordlift_disable_website_json_ld', '__return_true' );
+
+		// Make the request
+		try {
+			$this->_handleAjax( 'wl_jsonld' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+
+		$response = json_decode( $this->_last_response );
+
+		$this->assertTrue( is_array( $response ) );
+
+		$this->assertCount( 1, $response );
+
+		$jsonld_1 = get_object_vars( $response[0] );
+
+		$this->assertTrue( is_array( $jsonld_1 ) );
+		$this->assertArrayHasKey( '@context', $jsonld_1 );
+		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+
+		$this->assertArrayHasKey( '@id', $jsonld_1 );
+		$this->assertEquals( $home_uri, $jsonld_1['@id'] );
+
+		$this->assertArrayHasKey( '@type', $jsonld_1 );
+		$this->assertNotEquals( 'WebSite', $jsonld_1['@type'] );
+
+		$this->assertArrayHasKey( 'description', $jsonld_1 );
+		$this->assertNotEquals( $description, $jsonld_1['description'] );
+
+		$this->assertArrayHasKey( 'headline', $jsonld_1 );
+		$this->assertNotEquals( $headline, $jsonld_1['headline'] );
+	}
+
+
+	/**
+	 * Test that the JSON-LD WebSite is working.
+	 *
+	 * @since 3.8.0
+	 */
+	public function test_change_jsonld_website_search_target() {
+		$name              = rand_str();
+		$description       = rand_str();
+
+		// Create homepage
+		$homepage_id = $this->factory->post->create( array(
+			'post_title' => $name,
+			'post_type'  => 'page',
+		) );
+
+		// Get url
+		$home_uri = $this->entity_service->get_uri( $homepage_id );
+
+		// Set our page as homepage & update the site description
+		update_option( 'show_on_front', 'page' );
+		update_option( 'page_on_front', $homepage_id );
+		update_option( 'blogdescription', $description );
+
+		// Get site info
+		$headline        = get_bloginfo( 'name' );
+		$description     = get_bloginfo( 'description' );
+		$url             = home_url('/');
+		$target          = $url . '?s={search_term_string}';
+
+		// Change the search target
+		$modified_target = str_replace('{search_term_string}', '', $target);
+
+		// Set up a default request
+		$_GET['action'] = 'wl_jsonld';
+		$_GET['id']     = $homepage_id;
+		add_filter( 'wordlift_json_ld_search_url', array( $this, 'change_search_url' ) );
+
+		// Make the request
+		try {
+			$this->_handleAjax( 'wl_jsonld' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+
+		$response = json_decode( $this->_last_response );
+
+		$this->assertTrue( is_array( $response ) );
+
+		$this->assertCount( 1, $response );
+
+		$jsonld_1 = get_object_vars( $response[0] );
+
+		$this->assertTrue( is_array( $jsonld_1 ) );
+		$this->assertArrayHasKey( '@context', $jsonld_1 );
+		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+
+		$this->assertArrayHasKey( '@id', $jsonld_1 );
+		$this->assertEquals( $home_uri, $jsonld_1['@id'] );
+
+		$this->assertArrayHasKey( '@type', $jsonld_1 );
+		$this->assertEquals( 'WebSite', $jsonld_1['@type'] );
+
+		$this->assertArrayHasKey( 'description', $jsonld_1 );
+		$this->assertEquals( $description, $jsonld_1['description'] );
+
+		$this->assertArrayHasKey( 'headline', $jsonld_1 );
+		$this->assertEquals( $headline, $jsonld_1['headline'] );
+
+		$this->assertArrayHasKey( 'url', $jsonld_1 );
+		$this->assertEquals( $url, $jsonld_1['url'] );
+
+		$potential_action = get_object_vars( $jsonld_1['potentialAction'] );
+
+		$this->assertArrayHasKey( '@type', $potential_action );
+		$this->assertEquals( 'SearchAction', $potential_action['@type'] );
+
+		$this->assertArrayHasKey( 'target', $potential_action );
+		$this->assertNotEquals( $target, $potential_action['target'] );
+
+		$this->assertArrayHasKey( 'target', $potential_action );
+		$this->assertEquals( $modified_target, $potential_action['target'] );
+	}
+
+	public function change_search_url( $url ) {
+		return str_replace('{search_term_string}', '', $url);
+	}
 }
