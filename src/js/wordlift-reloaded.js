@@ -1803,7 +1803,7 @@
       });
     }
   ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
-    var fireEvent;
+    var closed, fireEvent, startAnalysis;
     if (editor.id !== "content") {
       return;
     }
@@ -1849,7 +1849,7 @@
         return results1;
       }
     ]);
-    fireEvent(editor, "LoadContent", function(e) {
+    startAnalysis = function() {
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
           return $rootScope.$apply(function() {
@@ -1864,7 +1864,18 @@
           });
         }
       ]);
-    });
+    };
+    closed = $('#wordlift_entities_box').hasClass('closed');
+    if (!closed) {
+      fireEvent(editor, 'LoadContent', startAnalysis);
+    } else {
+      $(document).on('postbox-toggled', function(e, postbox) {
+        if ('wordlift_entities_box' !== postbox.id) {
+          return;
+        }
+        return startAnalysis();
+      });
+    }
     fireEvent(editor, "NodeChange", function(e) {
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
