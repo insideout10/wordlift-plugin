@@ -12,7 +12,7 @@ define( 'WL_REDLINK_API_HTTP_OPTIONS', serialize( array(
 	'cookies'         => array(),
 	'sslverify'       => ( 'false' === getenv( 'WL_SSL_VERIFY_ENABLED' ) ) ? false : true,
 	'sslcertificates' => dirname( __FILE__ ) . '/ssl/ca-bundle.crt',
-	'decompress'      => false
+	'decompress'      => false,
 ) ) );
 
 // Create a unique ID for this request, useful to hook async HTTP requests.
@@ -29,8 +29,9 @@ define( 'WL_ENTITY_URL_META_NAME', 'entity_url' );
 // Max number of recursions when printing microdata
 define( 'WL_RECURSION_DEPTH_ON_ENTITY_METADATA_PRINTING', 3 );
 
-
-define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', defined( 'WORDLIFT_API_URL' ) ? WORDLIFT_API_URL . '/' : 'https://api.wordlift.it/' );
+// 3.13.0, we use by default WLS 1.11 which provides us with the new, faster
+// chunked analysis.
+define( 'WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE', defined( 'WORDLIFT_API_URL' ) ? WORDLIFT_API_URL . '/' : 'https://api.wordlift.it/1.11/' );
 
 define( 'WL_CONFIG_TEST_GOOGLE_RICH_SNIPPETS_URL', 'https://developers.google.com/structured-data/testing-tool/?url=' );
 
@@ -77,7 +78,7 @@ function wl_predicates() {
 		'schema:description',
 		'schema:image',
 		'schema:interactionCount',
-		'schema:url'
+		'schema:url',
 	);
 
 }

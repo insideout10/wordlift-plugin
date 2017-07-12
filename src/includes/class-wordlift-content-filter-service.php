@@ -35,15 +35,35 @@ class Wordlift_Content_Filter_Service {
 	private $entity_service;
 
 	/**
+	 * The {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.13.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
+	 * The `link by default` setting.
+	 *
+	 * @since  3.13.0
+	 * @access private
+	 * @var bool True if link by default is enabled otherwise false.
+	 */
+	private $is_link_by_default;
+
+	/**
 	 * Wordlift_Content_Filter_Service constructor.
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param $entity_service
+	 * @param \Wordlift_Entity_Service        $entity_service        The {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct( $entity_service ) {
+	public function __construct( $entity_service, $configuration_service ) {
 
-		$this->entity_service = $entity_service;
+		$this->entity_service        = $entity_service;
+		$this->configuration_service = $configuration_service;
 
 	}
 
@@ -58,6 +78,9 @@ class Wordlift_Content_Filter_Service {
 	 * @return string The filtered content.
 	 */
 	public function the_content( $content ) {
+
+		// Preload the `link by default` setting.
+		$this->is_link_by_default = $this->configuration_service->is_link_by_default();
 
 		// Replace each match of the entity tag with the entity link. If an error
 		// occurs fail silently returning the original content.
@@ -93,17 +116,23 @@ class Wordlift_Content_Filter_Service {
 			return $label;
 		}
 
-		// If the `wl-no-link` class is set on the text annotation then we return
-		// the label with no anchor.
-		if ( - 1 < strpos( $css_class, 'wl-no-link' ) ) {
+		$no_link = - 1 < strpos( $css_class, 'wl-no-link' );
+		$link    = - 1 < strpos( $css_class, 'wl-link' );
+
+		// Don't link if links are disabled and the entity is not link or the
+		// entity is do not link.
+		$dont_link = ( ! $this->is_link_by_default && ! $link ) || $no_link;
+
+		// Return the label if it's don't link.
+		if ( $dont_link ) {
 			return $label;
 		}
 
 		// Get the link.
-		$link = get_permalink( $post );
+		$href = get_permalink( $post );
 
 		// Return the link.
-		return "<a class='wl-entity-page-link' href='$link'>$label</a>";
+		return "<a class='wl-entity-page-link' href='$href'>$label</a>";
 	}
 
 }

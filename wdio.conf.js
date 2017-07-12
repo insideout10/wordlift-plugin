@@ -164,24 +164,38 @@ var config = {
 		}
 	},
 
-	//
-	// =====
-	// Hooks
-	// =====
-	// WebdriverIO provides several hooks you can use to interfere with the
-	// test process in order to enhance it and to build services around it. You
-	// can either apply a single function or an array of methods to it. If one
-	// of them returns with a promise, WebdriverIO will wait until that promise
-	// got resolved to continue.  Gets executed once before all workers get
-	// launched. `capabilities` here contain the array of `capabilities`.
-	// onPrepare: function (config, capabilities) { }, // Gets executed before
-	// test execution begins. At this point you can access all global
-	// variables, such as `browser`. It is the perfect place to define custom
-	// commands.
-	before: function( capabilities, specs ) {
+	/**
+	 * Gets executed just before initialising the webdriver session and test
+	 * framework. It allows you to manipulate configurations depending on the
+	 * capability or spec.
+	 * @param {Object} config wdio configuration object
+	 * @param {Array.<Object>} capabilities list of capabilities details
+	 * @param {Array.<String>} specs List of spec file paths that are to be run
+	 */
+	beforeSession: function( config, capabilities, specs ) {
 
-		// Set the browser's `baseUrl` from the `capabilities`'s `baseUrl` in
+		// Copy the baseUrl from the browser's capabilities settings.
+		config.baseUrl = capabilities.baseUrl;
+
+	},
+
+//	//
+//	// =====
+//	// Hooks
+//	// =====
+//	// WebdriverIO provides several hooks you can use to interfere with the
+//	// test process in order to enhance it and to build services around it.
+// You // can either apply a single function or an array of methods to it. If
+// one // of them returns with a promise, WebdriverIO will wait until that
+// promise // got resolved to continue.  Gets executed once before all workers
+// get // launched. `capabilities` here contain the array of `capabilities`. //
+// onPrepare: function (config, capabilities) { }, // Gets executed before //
+// test execution begins. At this point you can access all global // variables,
+// such as `browser`. It is the perfect place to define custom // commands.
+	before: function( capabilities, specs ) {
+		// Set the browser's `baseUrl` from the `capabilities` 's `baseUrl` in
 		// order to have each browser go to a different WordPress setup.
+
 		if ( capabilities.baseUrl ) {
 			browser.options.baseUrl = capabilities.baseUrl;
 		}
@@ -217,11 +231,11 @@ var config = {
 if ( process.env.CI ) {
 
 	// Set the tests' base url.
-	const BASE_URL = 'http://wordpress.local';
+	// const BASE_URL = 'http://wordpress.local';
 
 	// Remove any previously set baseUrl (we use one different URL for each
 	// browser).
-	delete config.baseUrl;
+	// delete config.baseUrl;
 
 	// Configure Sauce Labs.
 	config.user = process.env.SAUCE_USERNAME;
@@ -244,10 +258,10 @@ if ( process.env.CI ) {
 			browserName: 'safari',
 			platform: 'macOS 10.12',
 			version: 'latest'
-		}, {
-			browserName: 'firefox',
-			version: 'latest',
-			platform: 'Windows 10'
+//		}, {
+//			browserName: 'firefox',
+//			version: 'latest',
+//			platform: 'Windows 10'
 		}, {
 			browserName: 'internet explorer',
 			version: 'latest',
@@ -265,7 +279,7 @@ if ( process.env.CI ) {
 		config.capabilities[ i ].build = process.env.TRAVIS_BUILD_NUMBER;
 		config.capabilities[ i ].name = process.env.TRAVIS_BRANCH + ' (build ' + process.env.TRAVIS_BUILD_NUMBER + '; commit ' + process.env.TRAVIS_COMMIT + ')';
 		config.capabilities[ i ].public = true;
-		config.capabilities[ i ].baseUrl = BASE_URL + '/' + (
+		config.capabilities[ i ].baseUrl = 'http://wordpress.local/' + (
 										   i + 1
 			);
 	}

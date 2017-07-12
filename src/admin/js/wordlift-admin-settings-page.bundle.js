@@ -1,7 +1,961 @@
-!function(t){function e(r){if(n[r])return n[r].exports;var i=n[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,e),i.l=!0,i.exports}var n={};e.m=t,e.c=n,e.i=function(t){return t},e.d=function(t,n,r){e.o(t,n)||Object.defineProperty(t,n,{configurable:!1,enumerable:!0,get:r})},e.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(n,"a",n),n},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=150)}({109:function(t,e,n){"use strict";var r=n(33),i=jQuery,o=function(t){i(t).on("keyup",function(){var t=i(this);t.removeClass("untouched valid invalid"),n.i(r.a)(t,function(){wp.ajax.post("wl_validate_key",{key:t.val()}).done(function(e){e&&e.valid?t.addClass("valid"):t.addClass("invalid")})})})};e.a=o},110:function(t,e,n){"use strict";var r=jQuery,i=function(t,e,n){var i=wp.media(e);i.on("select",function(){n(i.state().get("selection").first().toJSON())}),r(t).on("click",function(){i.open()})};e.a=i},111:function(t,e,n){"use strict";var r=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},i=jQuery,o=function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};i(t).each(function(){var t=i(this),n=r({},{width:"100%",data:t.data("wl-select2-data"),escapeMarkup:function(t){return t},templateResult:_.template(t.data("wl-select2-template-result")),templateSelection:_.template(t.data("wl-select2-template-selection"))},e);t.select2(n)})};e.a=o},112:function(t,e,n){"use strict";var r=jQuery,i=function(t){r(t).each(function(){var t=r(this);t.tabs({active:t.data("active")})})};e.a=i},115:function(t,e,n){var r=n(272);"string"==typeof r&&(r=[[t.i,r,""]]);n(63)(r,{});r.locals&&(t.exports=r.locals)},150:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(115),i=(n.n(r),n(109)),o=n(110),a=n(112),s=n(111);!function(t,e){t(function(){n.i(i.a)("#wl-key"),n.i(o.a)("#wl-publisher-media-uploader",{title:e.l10n.logo_selection_title,button:e.l10n.logo_selection_button,multiple:!1,library:{type:"image"}},function(e){t("#wl-publisher-media-uploader-preview").attr("src",e.url).show(),t("#wl-publisher-media-uploader-id").val(e.id)}),n.i(a.a)(".wl-tabs-element"),n.i(s.a)(".wl-select2-element",{containerCssClass:"wl-admin-settings-page-select2",dropdownCssClass:"wl-admin-settings-page-select2"})})}(jQuery,wlSettings)},26:function(t,e){var n,r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t};n=function(){return this}();try{n=n||Function("return this")()||(0,eval)("this")}catch(t){"object"===("undefined"==typeof window?"undefined":r(window))&&(n=window)}t.exports=n},272:function(t,e,n){e=t.exports=n(37)(void 0),e.push([t.i,"#wl-settings-page input::-ms-clear {\n  display: none; }\n\n#wl-settings-page #wl-entity-base-path,\n#wl-settings-page #wl-key {\n  width: 100%;\n  max-width: 480px;\n  height: 32px;\n  padding: 0 8px;\n  line-height: 32px;\n  font-size: 14px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0;\n  transition: 50ms border-color ease-in-out;\n  background-position: 448px 8px;\n  background-repeat: no-repeat; }\n  #wl-settings-page #wl-entity-base-path.valid,\n  #wl-settings-page #wl-key.valid {\n    background-image: url("+n(275)+");\n    padding-right: 32px; }\n  #wl-settings-page #wl-entity-base-path.invalid,\n  #wl-settings-page #wl-key.invalid {\n    background-image: url("+n(274)+");\n    padding-right: 32px; }\n\n#wl-settings-page #wl-entity-base-path {\n  background-color: #f5f5f5; }\n\n#wl-settings-page .wl-tabs-element {\n  border-radius: 0;\n  border: 0;\n  background: none; }\n  #wl-settings-page .wl-tabs-element .nav-tab-wrapper {\n    border-radius: 0;\n    border: 0;\n    border-bottom: 1px solid #ccc;\n    background: none;\n    padding-bottom: 0;\n    padding-left: 6px; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab {\n      border-radius: 0;\n      border: 1px solid #ccc !important;\n      background: #e4e4e4;\n      color: #555;\n      margin: 0 3px 0 0;\n      vertical-align: top;\n      white-space: nowrap; }\n      #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus {\n        box-shadow: none;\n        outline: none; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active, #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover {\n      border-bottom: 1px solid #f1f1f1 !important;\n      background: #f1f1f1;\n      color: #000; }\n\n.wl-admin-settings-page-select2.select2-selection {\n  min-height: 32px;\n  max-height: 32px;\n  overflow-y: auto; }\n\n.wl-admin-settings-page-select2 .wl-select2-thumbnail {\n  width: 24px;\n  height: 24px;\n  display: inline-block;\n  background: no-repeat center;\n  background-size: contain;\n  margin: 4px 8px 4px 0; }\n\n.wl-admin-settings-page-select2 .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.select2-results__options {\n  color: #666 !important; }\n\n.select2-results__option .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.select2-results__option--highlighted {\n  background-color: #f5f5f5 !important;\n  color: #2E92FF !important; }\n\n.ui-tabs .ui-tabs-panel {\n  max-width: 480px;\n  min-height: 32px;\n  border-radius: 2px;\n  padding: 0 !important;\n  margin: 16px 0; }\n  .ui-tabs .ui-tabs-panel * {\n    vertical-align: middle; }\n  .ui-tabs .ui-tabs-panel p {\n    max-height: 32px;\n    margin: 0;\n    width: 100%;\n    color: #4a4a4a; }\n\n.select2-container--default .select2-selection--single {\n  overflow: hidden;\n  padding: 0 0;\n  line-height: 28px;\n  font-size: 12px; }\n\n.wl-select2-thumbnail {\n  margin-right: 8px; }\n\n#tabs-2 p {\n  margin: 8px 0; }\n  #tabs-2 p:first-of-type {\n    margin-top: 24px; }\n\n#wl-publisher-name input,\n#wl-site-language {\n  width: 100%;\n  max-width: 480px;\n  min-height: 32px;\n  margin-top: 8px;\n  padding: 4px 8px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0; }\n\n#wl-publisher-type {\n  max-width: 480px;\n  width: 100%; }\n  #wl-publisher-type span {\n    width: 45%;\n    display: inline-block; }\n\n#wl-publisher-media-uploader {\n  height: 32px;\n  float: left; }\n\n#wl-publisher-media-uploader-preview {\n  max-width: 256px;\n  max-height: 256px;\n  margin-bottom: 16px;\n  display: block; }\n",""])},274:function(t,e){t.exports="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA8ElEQVR42p3UOw7CMBAEUNNADRI3ACQogVPkqxQu4A40FHAgSiipcpVQUnEAqkjLDsJRkMU4wtIqv/FLnNgxaCLSkzi2kiR7sXZsAk2zK62jZNkax23kJFEkKN2/a2DyC9HMRjM1su9tmm6dbh3iYQRpZZ9aQ4Ph4ATBPMQr5PBO0IlhBEHmbFxDuMH8ehDkKrvdAEZHLIyEse6Ij2E4BCo5wr8OnxphhGN/IxwLIyU6BTFJ0yWdJ9b2ESZYhQyWyIEhnaZGni/cL6Gm84Rjt+aG+BVgFX8uXDzEx6oGKYrZV0DVkQ5zajo0PIFi8/bQXxTkJIW2nf39AAAAAElFTkSuQmCC"},275:function(t,e){t.exports="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAA0ElEQVR4Aa3NgeYCQRDH8fMH/AkgAZrZVAQIhFCP0TuUIgB70wUCBAlIz7S7LgQgvUAh6jodN8Gmxh4D7refbxTyo1P3nzL6C4vmYGxgrS08tMHzwqpBONjiThvI3u5KKTYDw3xk1LwcJmmjF1tYklNDOcyXOOgXQ4ejHL6XVacmApjP4uw1XB1aldjAhX9yQArz2HVqniEHJDAHcPMpIIb5Iey9AYvTb2FRQAB7AgJYEBDAgoAAFgQ8sCxABrcFjDft1DgK/VHartNRVX999wQwVJB5+G9izgAAAABJRU5ErkJggg=="},33:function(t,e,n){"use strict";var r=function(t,e){for(var n=arguments.length,r=Array(n>3?n-3:0),i=3;i<n;i++)r[i-3]=arguments[i];var o=arguments.length>2&&void 0!==arguments[2]?arguments[2]:500;clearTimeout(t.data("timeout")),t.data("timeout",setTimeout.apply(void 0,[e,o].concat(r)))};e.a=r},36:function(t,e,n){"use strict";function r(t){var e=t.length;if(e%4>0)throw new Error("Invalid string. Length must be a multiple of 4");return"="===t[e-2]?2:"="===t[e-1]?1:0}function i(t){return 3*t.length/4-r(t)}function o(t){var e,n,i,o,a,s,u=t.length;a=r(t),s=new l(3*u/4-a),i=a>0?u-4:u;var f=0;for(e=0,n=0;e<i;e+=4,n+=3)o=h[t.charCodeAt(e)]<<18|h[t.charCodeAt(e+1)]<<12|h[t.charCodeAt(e+2)]<<6|h[t.charCodeAt(e+3)],s[f++]=o>>16&255,s[f++]=o>>8&255,s[f++]=255&o;return 2===a?(o=h[t.charCodeAt(e)]<<2|h[t.charCodeAt(e+1)]>>4,s[f++]=255&o):1===a&&(o=h[t.charCodeAt(e)]<<10|h[t.charCodeAt(e+1)]<<4|h[t.charCodeAt(e+2)]>>2,s[f++]=o>>8&255,s[f++]=255&o),s}function a(t){return f[t>>18&63]+f[t>>12&63]+f[t>>6&63]+f[63&t]}function s(t,e,n){for(var r,i=[],o=e;o<n;o+=3)r=(t[o]<<16)+(t[o+1]<<8)+t[o+2],i.push(a(r));return i.join("")}function u(t){for(var e,n=t.length,r=n%3,i="",o=[],a=0,u=n-r;a<u;a+=16383)o.push(s(t,a,a+16383>u?u:a+16383));return 1===r?(e=t[n-1],i+=f[e>>2],i+=f[e<<4&63],i+="=="):2===r&&(e=(t[n-2]<<8)+t[n-1],i+=f[e>>10],i+=f[e>>4&63],i+=f[e<<2&63],i+="="),o.push(i),o.join("")}e.byteLength=i,e.toByteArray=o,e.fromByteArray=u;for(var f=[],h=[],l="undefined"!=typeof Uint8Array?Uint8Array:Array,c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",p=0,g=c.length;p<g;++p)f[p]=c[p],h[c.charCodeAt(p)]=p;h["-".charCodeAt(0)]=62,h["_".charCodeAt(0)]=63},37:function(t,e,n){(function(e){function n(t,e){var n=t[1]||"",i=t[3];if(!i)return n;if(e){var o=r(i);return[n].concat(i.sources.map(function(t){return"/*# sourceURL="+i.sourceRoot+t+" */"})).concat([o]).join("\n")}return[n].join("\n")}function r(t){return"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+new e(JSON.stringify(t)).toString("base64")+" */"}t.exports=function(t){var e=[];return e.toString=function(){return this.map(function(e){var r=n(e,t);return e[2]?"@media "+e[2]+"{"+r+"}":r}).join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var r={},i=0;i<this.length;i++){var o=this[i][0];"number"==typeof o&&(r[o]=!0)}for(i=0;i<t.length;i++){var a=t[i];"number"==typeof a[0]&&r[a[0]]||(n&&!a[2]?a[2]=n:n&&(a[2]="("+a[2]+") and ("+n+")"),e.push(a))}},e}}).call(e,n(42).Buffer)},39:function(t,e){e.read=function(t,e,n,r,i){var o,a,s=8*i-r-1,u=(1<<s)-1,f=u>>1,h=-7,l=n?i-1:0,c=n?-1:1,p=t[e+l];for(l+=c,o=p&(1<<-h)-1,p>>=-h,h+=s;h>0;o=256*o+t[e+l],l+=c,h-=8);for(a=o&(1<<-h)-1,o>>=-h,h+=r;h>0;a=256*a+t[e+l],l+=c,h-=8);if(0===o)o=1-f;else{if(o===u)return a?NaN:1/0*(p?-1:1);a+=Math.pow(2,r),o-=f}return(p?-1:1)*a*Math.pow(2,o-r)},e.write=function(t,e,n,r,i,o){var a,s,u,f=8*o-i-1,h=(1<<f)-1,l=h>>1,c=23===i?Math.pow(2,-24)-Math.pow(2,-77):0,p=r?0:o-1,g=r?1:-1,d=e<0||0===e&&1/e<0?1:0;for(e=Math.abs(e),isNaN(e)||e===1/0?(s=isNaN(e)?1:0,a=h):(a=Math.floor(Math.log(e)/Math.LN2),e*(u=Math.pow(2,-a))<1&&(a--,u*=2),e+=a+l>=1?c/u:c*Math.pow(2,1-l),e*u>=2&&(a++,u/=2),a+l>=h?(s=0,a=h):a+l>=1?(s=(e*u-1)*Math.pow(2,i),a+=l):(s=e*Math.pow(2,l-1)*Math.pow(2,i),a=0));i>=8;t[n+p]=255&s,p+=g,s/=256,i-=8);for(a=a<<i|s,f+=i;f>0;t[n+p]=255&a,p+=g,a/=256,f-=8);t[n+p-g]|=128*d}},40:function(t,e){var n={}.toString;t.exports=Array.isArray||function(t){return"[object Array]"==n.call(t)}},42:function(t,e,n){"use strict";(function(t){function r(){return o.TYPED_ARRAY_SUPPORT?2147483647:1073741823}function i(t,e){if(r()<e)throw new RangeError("Invalid typed array length");return o.TYPED_ARRAY_SUPPORT?(t=new Uint8Array(e),t.__proto__=o.prototype):(null===t&&(t=new o(e)),t.length=e),t}function o(t,e,n){if(!(o.TYPED_ARRAY_SUPPORT||this instanceof o))return new o(t,e,n);if("number"==typeof t){if("string"==typeof e)throw new Error("If encoding is specified then the first argument must be a string");return f(this,t)}return a(this,t,e,n)}function a(t,e,n,r){if("number"==typeof e)throw new TypeError('"value" argument must not be a number');return"undefined"!=typeof ArrayBuffer&&e instanceof ArrayBuffer?c(t,e,n,r):"string"==typeof e?h(t,e,n):p(t,e)}function s(t){if("number"!=typeof t)throw new TypeError('"size" argument must be a number');if(t<0)throw new RangeError('"size" argument must not be negative')}function u(t,e,n,r){return s(e),e<=0?i(t,e):void 0!==n?"string"==typeof r?i(t,e).fill(n,r):i(t,e).fill(n):i(t,e)}function f(t,e){if(s(e),t=i(t,e<0?0:0|g(e)),!o.TYPED_ARRAY_SUPPORT)for(var n=0;n<e;++n)t[n]=0;return t}function h(t,e,n){if("string"==typeof n&&""!==n||(n="utf8"),!o.isEncoding(n))throw new TypeError('"encoding" must be a valid string encoding');var r=0|w(e,n);t=i(t,r);var a=t.write(e,n);return a!==r&&(t=t.slice(0,a)),t}function l(t,e){var n=e.length<0?0:0|g(e.length);t=i(t,n);for(var r=0;r<n;r+=1)t[r]=255&e[r];return t}function c(t,e,n,r){if(e.byteLength,n<0||e.byteLength<n)throw new RangeError("'offset' is out of bounds");if(e.byteLength<n+(r||0))throw new RangeError("'length' is out of bounds");return e=void 0===n&&void 0===r?new Uint8Array(e):void 0===r?new Uint8Array(e,n):new Uint8Array(e,n,r),o.TYPED_ARRAY_SUPPORT?(t=e,t.__proto__=o.prototype):t=l(t,e),t}function p(t,e){if(o.isBuffer(e)){var n=0|g(e.length);return t=i(t,n),0===t.length?t:(e.copy(t,0,0,n),t)}if(e){if("undefined"!=typeof ArrayBuffer&&e.buffer instanceof ArrayBuffer||"length"in e)return"number"!=typeof e.length||Z(e.length)?i(t,0):l(t,e);if("Buffer"===e.type&&W(e.data))return l(t,e.data)}throw new TypeError("First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.")}function g(t){if(t>=r())throw new RangeError("Attempt to allocate Buffer larger than maximum size: 0x"+r().toString(16)+" bytes");return 0|t}function d(t){return+t!=t&&(t=0),o.alloc(+t)}function w(t,e){if(o.isBuffer(t))return t.length;if("undefined"!=typeof ArrayBuffer&&"function"==typeof ArrayBuffer.isView&&(ArrayBuffer.isView(t)||t instanceof ArrayBuffer))return t.byteLength;"string"!=typeof t&&(t=""+t);var n=t.length;if(0===n)return 0;for(var r=!1;;)switch(e){case"ascii":case"latin1":case"binary":return n;case"utf8":case"utf-8":case void 0:return V(t).length;case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return 2*n;case"hex":return n>>>1;case"base64":return X(t).length;default:if(r)return V(t).length;e=(""+e).toLowerCase(),r=!0}}function y(t,e,n){var r=!1;if((void 0===e||e<0)&&(e=0),e>this.length)return"";if((void 0===n||n>this.length)&&(n=this.length),n<=0)return"";if(n>>>=0,e>>>=0,n<=e)return"";for(t||(t="utf8");;)switch(t){case"hex":return I(this,e,n);case"utf8":case"utf-8":return T(this,e,n);case"ascii":return S(this,e,n);case"latin1":case"binary":return C(this,e,n);case"base64":return U(this,e,n);case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return k(this,e,n);default:if(r)throw new TypeError("Unknown encoding: "+t);t=(t+"").toLowerCase(),r=!0}}function v(t,e,n){var r=t[e];t[e]=t[n],t[n]=r}function b(t,e,n,r,i){if(0===t.length)return-1;if("string"==typeof n?(r=n,n=0):n>2147483647?n=2147483647:n<-2147483648&&(n=-2147483648),n=+n,isNaN(n)&&(n=i?0:t.length-1),n<0&&(n=t.length+n),n>=t.length){if(i)return-1;n=t.length-1}else if(n<0){if(!i)return-1;n=0}if("string"==typeof e&&(e=o.from(e,r)),o.isBuffer(e))return 0===e.length?-1:m(t,e,n,r,i);if("number"==typeof e)return e&=255,o.TYPED_ARRAY_SUPPORT&&"function"==typeof Uint8Array.prototype.indexOf?i?Uint8Array.prototype.indexOf.call(t,e,n):Uint8Array.prototype.lastIndexOf.call(t,e,n):m(t,[e],n,r,i);throw new TypeError("val must be string, number or Buffer")}function m(t,e,n,r,i){function o(t,e){return 1===a?t[e]:t.readUInt16BE(e*a)}var a=1,s=t.length,u=e.length;if(void 0!==r&&("ucs2"===(r=String(r).toLowerCase())||"ucs-2"===r||"utf16le"===r||"utf-16le"===r)){if(t.length<2||e.length<2)return-1;a=2,s/=2,u/=2,n/=2}var f;if(i){var h=-1;for(f=n;f<s;f++)if(o(t,f)===o(e,-1===h?0:f-h)){if(-1===h&&(h=f),f-h+1===u)return h*a}else-1!==h&&(f-=f-h),h=-1}else for(n+u>s&&(n=s-u),f=n;f>=0;f--){for(var l=!0,c=0;c<u;c++)if(o(t,f+c)!==o(e,c)){l=!1;break}if(l)return f}return-1}function A(t,e,n,r){n=Number(n)||0;var i=t.length-n;r?(r=Number(r))>i&&(r=i):r=i;var o=e.length;if(o%2!=0)throw new TypeError("Invalid hex string");r>o/2&&(r=o/2);for(var a=0;a<r;++a){var s=parseInt(e.substr(2*a,2),16);if(isNaN(s))return a;t[n+a]=s}return a}function E(t,e,n,r){return G(V(e,t.length-n),t,n,r)}function x(t,e,n,r){return G(J(e),t,n,r)}function R(t,e,n,r){return x(t,e,n,r)}function _(t,e,n,r){return G(X(e),t,n,r)}function B(t,e,n,r){return G(H(e,t.length-n),t,n,r)}function U(t,e,n){return 0===e&&n===t.length?K.fromByteArray(t):K.fromByteArray(t.slice(e,n))}function T(t,e,n){n=Math.min(t.length,n);for(var r=[],i=e;i<n;){var o=t[i],a=null,s=o>239?4:o>223?3:o>191?2:1;if(i+s<=n){var u,f,h,l;switch(s){case 1:o<128&&(a=o);break;case 2:u=t[i+1],128==(192&u)&&(l=(31&o)<<6|63&u)>127&&(a=l);break;case 3:u=t[i+1],f=t[i+2],128==(192&u)&&128==(192&f)&&(l=(15&o)<<12|(63&u)<<6|63&f)>2047&&(l<55296||l>57343)&&(a=l);break;case 4:u=t[i+1],f=t[i+2],h=t[i+3],128==(192&u)&&128==(192&f)&&128==(192&h)&&(l=(15&o)<<18|(63&u)<<12|(63&f)<<6|63&h)>65535&&l<1114112&&(a=l)}}null===a?(a=65533,s=1):a>65535&&(a-=65536,r.push(a>>>10&1023|55296),a=56320|1023&a),r.push(a),i+=s}return P(r)}function P(t){var e=t.length;if(e<=$)return String.fromCharCode.apply(String,t);for(var n="",r=0;r<e;)n+=String.fromCharCode.apply(String,t.slice(r,r+=$));return n}function S(t,e,n){var r="";n=Math.min(t.length,n);for(var i=e;i<n;++i)r+=String.fromCharCode(127&t[i]);return r}function C(t,e,n){var r="";n=Math.min(t.length,n);for(var i=e;i<n;++i)r+=String.fromCharCode(t[i]);return r}function I(t,e,n){var r=t.length;(!e||e<0)&&(e=0),(!n||n<0||n>r)&&(n=r);for(var i="",o=e;o<n;++o)i+=z(t[o]);return i}function k(t,e,n){for(var r=t.slice(e,n),i="",o=0;o<r.length;o+=2)i+=String.fromCharCode(r[o]+256*r[o+1]);return i}function O(t,e,n){if(t%1!=0||t<0)throw new RangeError("offset is not uint");if(t+e>n)throw new RangeError("Trying to access beyond buffer length")}function Y(t,e,n,r,i,a){if(!o.isBuffer(t))throw new TypeError('"buffer" argument must be a Buffer instance');if(e>i||e<a)throw new RangeError('"value" argument is out of bounds');if(n+r>t.length)throw new RangeError("Index out of range")}function L(t,e,n,r){e<0&&(e=65535+e+1);for(var i=0,o=Math.min(t.length-n,2);i<o;++i)t[n+i]=(e&255<<8*(r?i:1-i))>>>8*(r?i:1-i)}function M(t,e,n,r){e<0&&(e=4294967295+e+1);for(var i=0,o=Math.min(t.length-n,4);i<o;++i)t[n+i]=e>>>8*(r?i:3-i)&255}function j(t,e,n,r,i,o){if(n+r>t.length)throw new RangeError("Index out of range");if(n<0)throw new RangeError("Index out of range")}function D(t,e,n,r,i){return i||j(t,e,n,4,3.4028234663852886e38,-3.4028234663852886e38),q.write(t,e,n,r,23,4),n+4}function N(t,e,n,r,i){return i||j(t,e,n,8,1.7976931348623157e308,-1.7976931348623157e308),q.write(t,e,n,r,52,8),n+8}function Q(t){if(t=F(t).replace(tt,""),t.length<2)return"";for(;t.length%4!=0;)t+="=";return t}function F(t){return t.trim?t.trim():t.replace(/^\s+|\s+$/g,"")}function z(t){return t<16?"0"+t.toString(16):t.toString(16)}function V(t,e){e=e||1/0;for(var n,r=t.length,i=null,o=[],a=0;a<r;++a){if((n=t.charCodeAt(a))>55295&&n<57344){if(!i){if(n>56319){(e-=3)>-1&&o.push(239,191,189);continue}if(a+1===r){(e-=3)>-1&&o.push(239,191,189);continue}i=n;continue}if(n<56320){(e-=3)>-1&&o.push(239,191,189),i=n;continue}n=65536+(i-55296<<10|n-56320)}else i&&(e-=3)>-1&&o.push(239,191,189);if(i=null,n<128){if((e-=1)<0)break;o.push(n)}else if(n<2048){if((e-=2)<0)break;o.push(n>>6|192,63&n|128)}else if(n<65536){if((e-=3)<0)break;o.push(n>>12|224,n>>6&63|128,63&n|128)}else{if(!(n<1114112))throw new Error("Invalid code point");if((e-=4)<0)break;o.push(n>>18|240,n>>12&63|128,n>>6&63|128,63&n|128)}}return o}function J(t){for(var e=[],n=0;n<t.length;++n)e.push(255&t.charCodeAt(n));return e}function H(t,e){for(var n,r,i,o=[],a=0;a<t.length&&!((e-=2)<0);++a)n=t.charCodeAt(a),r=n>>8,i=n%256,o.push(i),o.push(r);return o}function X(t){return K.toByteArray(Q(t))}function G(t,e,n,r){for(var i=0;i<r&&!(i+n>=e.length||i>=t.length);++i)e[i+n]=t[i];return i}function Z(t){return t!==t}/*!
- * The buffer module from node.js, for the browser.
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 147);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 106:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__delay__ = __webpack_require__(32);
+/**
+ * Validators: Key Validator.
  *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
+ * Validate WordLift's key in inputs.
+ *
+ * @since 3.11.0
  */
-var K=n(36),q=n(39),W=n(40);e.Buffer=o,e.SlowBuffer=d,e.INSPECT_MAX_BYTES=50,o.TYPED_ARRAY_SUPPORT=void 0!==t.TYPED_ARRAY_SUPPORT?t.TYPED_ARRAY_SUPPORT:function(){try{var t=new Uint8Array(1);return t.__proto__={__proto__:Uint8Array.prototype,foo:function(){return 42}},42===t.foo()&&"function"==typeof t.subarray&&0===t.subarray(1,1).byteLength}catch(t){return!1}}(),e.kMaxLength=r(),o.poolSize=8192,o._augment=function(t){return t.__proto__=o.prototype,t},o.from=function(t,e,n){return a(null,t,e,n)},o.TYPED_ARRAY_SUPPORT&&(o.prototype.__proto__=Uint8Array.prototype,o.__proto__=Uint8Array,"undefined"!=typeof Symbol&&Symbol.species&&o[Symbol.species]===o&&Object.defineProperty(o,Symbol.species,{value:null,configurable:!0})),o.alloc=function(t,e,n){return u(null,t,e,n)},o.allocUnsafe=function(t){return f(null,t)},o.allocUnsafeSlow=function(t){return f(null,t)},o.isBuffer=function(t){return!(null==t||!t._isBuffer)},o.compare=function(t,e){if(!o.isBuffer(t)||!o.isBuffer(e))throw new TypeError("Arguments must be Buffers");if(t===e)return 0;for(var n=t.length,r=e.length,i=0,a=Math.min(n,r);i<a;++i)if(t[i]!==e[i]){n=t[i],r=e[i];break}return n<r?-1:r<n?1:0},o.isEncoding=function(t){switch(String(t).toLowerCase()){case"hex":case"utf8":case"utf-8":case"ascii":case"latin1":case"binary":case"base64":case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return!0;default:return!1}},o.concat=function(t,e){if(!W(t))throw new TypeError('"list" argument must be an Array of Buffers');if(0===t.length)return o.alloc(0);var n;if(void 0===e)for(e=0,n=0;n<t.length;++n)e+=t[n].length;var r=o.allocUnsafe(e),i=0;for(n=0;n<t.length;++n){var a=t[n];if(!o.isBuffer(a))throw new TypeError('"list" argument must be an Array of Buffers');a.copy(r,i),i+=a.length}return r},o.byteLength=w,o.prototype._isBuffer=!0,o.prototype.swap16=function(){var t=this.length;if(t%2!=0)throw new RangeError("Buffer size must be a multiple of 16-bits");for(var e=0;e<t;e+=2)v(this,e,e+1);return this},o.prototype.swap32=function(){var t=this.length;if(t%4!=0)throw new RangeError("Buffer size must be a multiple of 32-bits");for(var e=0;e<t;e+=4)v(this,e,e+3),v(this,e+1,e+2);return this},o.prototype.swap64=function(){var t=this.length;if(t%8!=0)throw new RangeError("Buffer size must be a multiple of 64-bits");for(var e=0;e<t;e+=8)v(this,e,e+7),v(this,e+1,e+6),v(this,e+2,e+5),v(this,e+3,e+4);return this},o.prototype.toString=function(){var t=0|this.length;return 0===t?"":0===arguments.length?T(this,0,t):y.apply(this,arguments)},o.prototype.equals=function(t){if(!o.isBuffer(t))throw new TypeError("Argument must be a Buffer");return this===t||0===o.compare(this,t)},o.prototype.inspect=function(){var t="",n=e.INSPECT_MAX_BYTES;return this.length>0&&(t=this.toString("hex",0,n).match(/.{2}/g).join(" "),this.length>n&&(t+=" ... ")),"<Buffer "+t+">"},o.prototype.compare=function(t,e,n,r,i){if(!o.isBuffer(t))throw new TypeError("Argument must be a Buffer");if(void 0===e&&(e=0),void 0===n&&(n=t?t.length:0),void 0===r&&(r=0),void 0===i&&(i=this.length),e<0||n>t.length||r<0||i>this.length)throw new RangeError("out of range index");if(r>=i&&e>=n)return 0;if(r>=i)return-1;if(e>=n)return 1;if(e>>>=0,n>>>=0,r>>>=0,i>>>=0,this===t)return 0;for(var a=i-r,s=n-e,u=Math.min(a,s),f=this.slice(r,i),h=t.slice(e,n),l=0;l<u;++l)if(f[l]!==h[l]){a=f[l],s=h[l];break}return a<s?-1:s<a?1:0},o.prototype.includes=function(t,e,n){return-1!==this.indexOf(t,e,n)},o.prototype.indexOf=function(t,e,n){return b(this,t,e,n,!0)},o.prototype.lastIndexOf=function(t,e,n){return b(this,t,e,n,!1)},o.prototype.write=function(t,e,n,r){if(void 0===e)r="utf8",n=this.length,e=0;else if(void 0===n&&"string"==typeof e)r=e,n=this.length,e=0;else{if(!isFinite(e))throw new Error("Buffer.write(string, encoding, offset[, length]) is no longer supported");e|=0,isFinite(n)?(n|=0,void 0===r&&(r="utf8")):(r=n,n=void 0)}var i=this.length-e;if((void 0===n||n>i)&&(n=i),t.length>0&&(n<0||e<0)||e>this.length)throw new RangeError("Attempt to write outside buffer bounds");r||(r="utf8");for(var o=!1;;)switch(r){case"hex":return A(this,t,e,n);case"utf8":case"utf-8":return E(this,t,e,n);case"ascii":return x(this,t,e,n);case"latin1":case"binary":return R(this,t,e,n);case"base64":return _(this,t,e,n);case"ucs2":case"ucs-2":case"utf16le":case"utf-16le":return B(this,t,e,n);default:if(o)throw new TypeError("Unknown encoding: "+r);r=(""+r).toLowerCase(),o=!0}},o.prototype.toJSON=function(){return{type:"Buffer",data:Array.prototype.slice.call(this._arr||this,0)}};var $=4096;o.prototype.slice=function(t,e){var n=this.length;t=~~t,e=void 0===e?n:~~e,t<0?(t+=n)<0&&(t=0):t>n&&(t=n),e<0?(e+=n)<0&&(e=0):e>n&&(e=n),e<t&&(e=t);var r;if(o.TYPED_ARRAY_SUPPORT)r=this.subarray(t,e),r.__proto__=o.prototype;else{var i=e-t;r=new o(i,void 0);for(var a=0;a<i;++a)r[a]=this[a+t]}return r},o.prototype.readUIntLE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=this[t],i=1,o=0;++o<e&&(i*=256);)r+=this[t+o]*i;return r},o.prototype.readUIntBE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=this[t+--e],i=1;e>0&&(i*=256);)r+=this[t+--e]*i;return r},o.prototype.readUInt8=function(t,e){return e||O(t,1,this.length),this[t]},o.prototype.readUInt16LE=function(t,e){return e||O(t,2,this.length),this[t]|this[t+1]<<8},o.prototype.readUInt16BE=function(t,e){return e||O(t,2,this.length),this[t]<<8|this[t+1]},o.prototype.readUInt32LE=function(t,e){return e||O(t,4,this.length),(this[t]|this[t+1]<<8|this[t+2]<<16)+16777216*this[t+3]},o.prototype.readUInt32BE=function(t,e){return e||O(t,4,this.length),16777216*this[t]+(this[t+1]<<16|this[t+2]<<8|this[t+3])},o.prototype.readIntLE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=this[t],i=1,o=0;++o<e&&(i*=256);)r+=this[t+o]*i;return i*=128,r>=i&&(r-=Math.pow(2,8*e)),r},o.prototype.readIntBE=function(t,e,n){t|=0,e|=0,n||O(t,e,this.length);for(var r=e,i=1,o=this[t+--r];r>0&&(i*=256);)o+=this[t+--r]*i;return i*=128,o>=i&&(o-=Math.pow(2,8*e)),o},o.prototype.readInt8=function(t,e){return e||O(t,1,this.length),128&this[t]?-1*(255-this[t]+1):this[t]},o.prototype.readInt16LE=function(t,e){e||O(t,2,this.length);var n=this[t]|this[t+1]<<8;return 32768&n?4294901760|n:n},o.prototype.readInt16BE=function(t,e){e||O(t,2,this.length);var n=this[t+1]|this[t]<<8;return 32768&n?4294901760|n:n},o.prototype.readInt32LE=function(t,e){return e||O(t,4,this.length),this[t]|this[t+1]<<8|this[t+2]<<16|this[t+3]<<24},o.prototype.readInt32BE=function(t,e){return e||O(t,4,this.length),this[t]<<24|this[t+1]<<16|this[t+2]<<8|this[t+3]},o.prototype.readFloatLE=function(t,e){return e||O(t,4,this.length),q.read(this,t,!0,23,4)},o.prototype.readFloatBE=function(t,e){return e||O(t,4,this.length),q.read(this,t,!1,23,4)},o.prototype.readDoubleLE=function(t,e){return e||O(t,8,this.length),q.read(this,t,!0,52,8)},o.prototype.readDoubleBE=function(t,e){return e||O(t,8,this.length),q.read(this,t,!1,52,8)},o.prototype.writeUIntLE=function(t,e,n,r){if(t=+t,e|=0,n|=0,!r){Y(this,t,e,n,Math.pow(2,8*n)-1,0)}var i=1,o=0;for(this[e]=255&t;++o<n&&(i*=256);)this[e+o]=t/i&255;return e+n},o.prototype.writeUIntBE=function(t,e,n,r){if(t=+t,e|=0,n|=0,!r){Y(this,t,e,n,Math.pow(2,8*n)-1,0)}var i=n-1,o=1;for(this[e+i]=255&t;--i>=0&&(o*=256);)this[e+i]=t/o&255;return e+n},o.prototype.writeUInt8=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,1,255,0),o.TYPED_ARRAY_SUPPORT||(t=Math.floor(t)),this[e]=255&t,e+1},o.prototype.writeUInt16LE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,2,65535,0),o.TYPED_ARRAY_SUPPORT?(this[e]=255&t,this[e+1]=t>>>8):L(this,t,e,!0),e+2},o.prototype.writeUInt16BE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,2,65535,0),o.TYPED_ARRAY_SUPPORT?(this[e]=t>>>8,this[e+1]=255&t):L(this,t,e,!1),e+2},o.prototype.writeUInt32LE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,4,4294967295,0),o.TYPED_ARRAY_SUPPORT?(this[e+3]=t>>>24,this[e+2]=t>>>16,this[e+1]=t>>>8,this[e]=255&t):M(this,t,e,!0),e+4},o.prototype.writeUInt32BE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,4,4294967295,0),o.TYPED_ARRAY_SUPPORT?(this[e]=t>>>24,this[e+1]=t>>>16,this[e+2]=t>>>8,this[e+3]=255&t):M(this,t,e,!1),e+4},o.prototype.writeIntLE=function(t,e,n,r){if(t=+t,e|=0,!r){var i=Math.pow(2,8*n-1);Y(this,t,e,n,i-1,-i)}var o=0,a=1,s=0;for(this[e]=255&t;++o<n&&(a*=256);)t<0&&0===s&&0!==this[e+o-1]&&(s=1),this[e+o]=(t/a>>0)-s&255;return e+n},o.prototype.writeIntBE=function(t,e,n,r){if(t=+t,e|=0,!r){var i=Math.pow(2,8*n-1);Y(this,t,e,n,i-1,-i)}var o=n-1,a=1,s=0;for(this[e+o]=255&t;--o>=0&&(a*=256);)t<0&&0===s&&0!==this[e+o+1]&&(s=1),this[e+o]=(t/a>>0)-s&255;return e+n},o.prototype.writeInt8=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,1,127,-128),o.TYPED_ARRAY_SUPPORT||(t=Math.floor(t)),t<0&&(t=255+t+1),this[e]=255&t,e+1},o.prototype.writeInt16LE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,2,32767,-32768),o.TYPED_ARRAY_SUPPORT?(this[e]=255&t,this[e+1]=t>>>8):L(this,t,e,!0),e+2},o.prototype.writeInt16BE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,2,32767,-32768),o.TYPED_ARRAY_SUPPORT?(this[e]=t>>>8,this[e+1]=255&t):L(this,t,e,!1),e+2},o.prototype.writeInt32LE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,4,2147483647,-2147483648),o.TYPED_ARRAY_SUPPORT?(this[e]=255&t,this[e+1]=t>>>8,this[e+2]=t>>>16,this[e+3]=t>>>24):M(this,t,e,!0),e+4},o.prototype.writeInt32BE=function(t,e,n){return t=+t,e|=0,n||Y(this,t,e,4,2147483647,-2147483648),t<0&&(t=4294967295+t+1),o.TYPED_ARRAY_SUPPORT?(this[e]=t>>>24,this[e+1]=t>>>16,this[e+2]=t>>>8,this[e+3]=255&t):M(this,t,e,!1),e+4},o.prototype.writeFloatLE=function(t,e,n){return D(this,t,e,!0,n)},o.prototype.writeFloatBE=function(t,e,n){return D(this,t,e,!1,n)},o.prototype.writeDoubleLE=function(t,e,n){return N(this,t,e,!0,n)},o.prototype.writeDoubleBE=function(t,e,n){return N(this,t,e,!1,n)},o.prototype.copy=function(t,e,n,r){if(n||(n=0),r||0===r||(r=this.length),e>=t.length&&(e=t.length),e||(e=0),r>0&&r<n&&(r=n),r===n)return 0;if(0===t.length||0===this.length)return 0;if(e<0)throw new RangeError("targetStart out of bounds");if(n<0||n>=this.length)throw new RangeError("sourceStart out of bounds");if(r<0)throw new RangeError("sourceEnd out of bounds");r>this.length&&(r=this.length),t.length-e<r-n&&(r=t.length-e+n);var i,a=r-n;if(this===t&&n<e&&e<r)for(i=a-1;i>=0;--i)t[i+e]=this[i+n];else if(a<1e3||!o.TYPED_ARRAY_SUPPORT)for(i=0;i<a;++i)t[i+e]=this[i+n];else Uint8Array.prototype.set.call(t,this.subarray(n,n+a),e);return a},o.prototype.fill=function(t,e,n,r){if("string"==typeof t){if("string"==typeof e?(r=e,e=0,n=this.length):"string"==typeof n&&(r=n,n=this.length),1===t.length){var i=t.charCodeAt(0);i<256&&(t=i)}if(void 0!==r&&"string"!=typeof r)throw new TypeError("encoding must be a string");if("string"==typeof r&&!o.isEncoding(r))throw new TypeError("Unknown encoding: "+r)}else"number"==typeof t&&(t&=255);if(e<0||this.length<e||this.length<n)throw new RangeError("Out of range index");if(n<=e)return this;e>>>=0,n=void 0===n?this.length:n>>>0,t||(t=0);var a;if("number"==typeof t)for(a=e;a<n;++a)this[a]=t;else{var s=o.isBuffer(t)?t:V(new o(t,r).toString()),u=s.length;for(a=0;a<n-e;++a)this[a+e]=s[a%u]}return this};var tt=/[^+\/0-9A-Za-z-_]/g}).call(e,n(26))},62:function(t,e){t.exports=function(t){var e="undefined"!=typeof window&&window.location;if(!e)throw new Error("fixUrls requires window.location");if(!t||"string"!=typeof t)return t;var n=e.protocol+"//"+e.host,r=n+e.pathname.replace(/\/[^\/]*$/,"/");return t.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi,function(t,e){var i=e.trim().replace(/^"(.*)"$/,function(t,e){return e}).replace(/^'(.*)'$/,function(t,e){return e});if(/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(i))return t;var o;return o=0===i.indexOf("//")?i:0===i.indexOf("/")?n+i:r+i.replace(/^\.\//,""),"url("+JSON.stringify(o)+")"})}},63:function(t,e,n){function r(t,e){for(var n=0;n<t.length;n++){var r=t[n],i=g[r.id];if(i){i.refs++;for(var o=0;o<i.parts.length;o++)i.parts[o](r.parts[o]);for(;o<r.parts.length;o++)i.parts.push(h(r.parts[o],e))}else{for(var a=[],o=0;o<r.parts.length;o++)a.push(h(r.parts[o],e));g[r.id]={id:r.id,refs:1,parts:a}}}}function i(t){for(var e=[],n={},r=0;r<t.length;r++){var i=t[r],o=i[0],a=i[1],s=i[2],u=i[3],f={css:a,media:s,sourceMap:u};n[o]?n[o].parts.push(f):e.push(n[o]={id:o,parts:[f]})}return e}function o(t,e){var n=w(t.insertInto);if(!n)throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");var r=b[b.length-1];if("top"===t.insertAt)r?r.nextSibling?n.insertBefore(e,r.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),b.push(e);else{if("bottom"!==t.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e)}}function a(t){t.parentNode.removeChild(t);var e=b.indexOf(t);e>=0&&b.splice(e,1)}function s(t){var e=document.createElement("style");return t.attrs.type="text/css",f(e,t.attrs),o(t,e),e}function u(t){var e=document.createElement("link");return t.attrs.type="text/css",t.attrs.rel="stylesheet",f(e,t.attrs),o(t,e),e}function f(t,e){Object.keys(e).forEach(function(n){t.setAttribute(n,e[n])})}function h(t,e){var n,r,i;if(e.singleton){var o=v++;n=y||(y=s(e)),r=l.bind(null,n,o,!1),i=l.bind(null,n,o,!0)}else t.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(n=u(e),r=p.bind(null,n,e),i=function(){a(n),n.href&&URL.revokeObjectURL(n.href)}):(n=s(e),r=c.bind(null,n),i=function(){a(n)});return r(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;r(t=e)}else i()}}function l(t,e,n,r){var i=n?"":r.css;if(t.styleSheet)t.styleSheet.cssText=A(e,i);else{var o=document.createTextNode(i),a=t.childNodes;a[e]&&t.removeChild(a[e]),a.length?t.insertBefore(o,a[e]):t.appendChild(o)}}function c(t,e){var n=e.css,r=e.media;if(r&&t.setAttribute("media",r),t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}function p(t,e,n){var r=n.css,i=n.sourceMap,o=void 0===e.convertToAbsoluteUrls&&i;(e.convertToAbsoluteUrls||o)&&(r=m(r)),i&&(r+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(i))))+" */");var a=new Blob([r],{type:"text/css"}),s=t.href;t.href=URL.createObjectURL(a),s&&URL.revokeObjectURL(s)}var g={},d=function(t){var e;return function(){return void 0===e&&(e=t.apply(this,arguments)),e}}(function(){return window&&document&&document.all&&!window.atob}),w=function(t){var e={};return function(n){return void 0===e[n]&&(e[n]=t.call(this,n)),e[n]}}(function(t){return document.querySelector(t)}),y=null,v=0,b=[],m=n(62);t.exports=function(t,e){if("undefined"!=typeof DEBUG&&DEBUG&&"object"!=typeof document)throw new Error("The style-loader cannot be used in a non-browser environment");e=e||{},e.attrs="object"==typeof e.attrs?e.attrs:{},void 0===e.singleton&&(e.singleton=d()),void 0===e.insertInto&&(e.insertInto="head"),void 0===e.insertAt&&(e.insertAt="bottom");var n=i(t);return r(n,e),function(t){for(var o=[],a=0;a<n.length;a++){var s=n[a],u=g[s.id];u.refs--,o.push(u)}if(t){r(i(t),e)}for(var a=0;a<o.length;a++){var u=o[a];if(0===u.refs){for(var f=0;f<u.parts.length;f++)u.parts[f]();delete g[u.id]}}}};var A=function(){var t=[];return function(e,n){return t[e]=n,t.filter(Boolean).join("\n")}}()}});
+
+/**
+ * Internal dependencies
+ */
+
+
+// Map $ to jQuery.
+var $ = jQuery;
+
+/**
+ * Create a key validator on the element with the specified selector.
+ *
+ * @since 3.11.0
+ * @param {string} selector The element selector.
+ */
+var KeyValidator = function KeyValidator(selector) {
+	$(selector).on('keyup', function () {
+		// Get a jQuery reference to the object.
+		var $this = $(this);
+
+		// Remove any preexisting states, including the `untouched` class
+		// which is set initially to prevent displaying the
+		// `valid`/`invalid` indicator.
+		$this.removeClass('untouched valid invalid');
+
+		// Delay execution of the validation.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__delay__["a" /* default */])($this, function () {
+			// Post the validation request.
+			wp.ajax.post('wl_validate_key', { key: $this.val() }).done(function (data) {
+				// If the key is valid then set the process class.
+				if (data && data.valid) {
+					$this.addClass('valid');
+				} else {
+					$this.addClass('invalid');
+				}
+			});
+		});
+	});
+};
+
+// Finally export the `KeyValidator` function.
+/* harmony default export */ __webpack_exports__["a"] = (KeyValidator);
+
+/***/ }),
+
+/***/ 107:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Media Uploader.
+ *
+ * Provide a function to use WordPress' Media Uploader by binding a button's
+ * click event.
+ *
+ * @since 3.11.0
+ */
+
+// Set a reference to jQuery.
+var $ = jQuery;
+
+/**
+ * Hook WordPress' Media Uploader.
+ *
+ * @since 3.11.0
+ * @param {string} selector The button's selector.
+ * @param {Object} options The Media Uploader's options.
+ * @param {Function} callback A callback function which will receive the
+ *     selected attachment.
+ * @constructor
+ */
+var MediaUploader = function MediaUploader(selector, options, callback) {
+  // Create a WP media uploader.
+  var uploader = wp.media(options);
+
+  // Catch `select` events on the uploader.
+  uploader.on('select', function () {
+    // Get the selected attachment.
+    callback(uploader.state().get('selection').first().toJSON());
+  });
+
+  // Add logo.
+  $(selector).on('click', function () {
+    uploader.open();
+  });
+};
+
+// Finally export the `MediaUploader`.
+/* harmony default export */ __webpack_exports__["a"] = (MediaUploader);
+
+/***/ }),
+
+/***/ 108:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+/**
+ * Created by david on 21/02/2017.
+ */
+
+var $ = jQuery;
+
+/**
+ * Create a Select2 element on the element identified by the selector.
+ *
+ * @since 3.11.0
+ * @param {string} selector The element selector.
+ * @param {Object} args Custom options.
+ * @constructor
+ */
+var Select2 = function Select2(selector) {
+	var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	// Cycle through each element to create `Select2`.
+	$(selector).each(function () {
+		//
+		var $this = $(this);
+
+		var options = _extends({}, {
+			width: '100%',
+			data: $this.data('wl-select2-data'),
+			escapeMarkup: function escapeMarkup(markup) {
+				return markup;
+			},
+			templateResult: _.template($this.data('wl-select2-template-result')),
+			templateSelection: _.template($this.data('wl-select2-template-selection'))
+		}, args);
+
+		// Create the tabs and set the default active element.
+		$this.select2(options);
+	});
+};
+
+// Finally export `Select2`.
+/* harmony default export */ __webpack_exports__["a"] = (Select2);
+
+/***/ }),
+
+/***/ 109:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Tabs.
+ *
+ * Create a tabbed UI.
+ *
+ * @since 3.11.0
+ */
+
+// Set a reference to jQuery.
+var $ = jQuery;
+
+/**
+ * Create a tabbed UI on the element with the specified selector.
+ *
+ * @since 3.11.0
+ * @param {string} selector The selector.
+ * @constructor
+ */
+var Tabs = function Tabs(selector) {
+  // Although in jQuery UI 1.12 it's possible to configure the css
+  // classes, WP 4.2 uses jQuery 1.11.
+  $(selector).each(function () {
+    //
+    var $this = $(this);
+
+    // Create the tabs and set the default active element.
+    $this.tabs({ active: $this.data('active') });
+  });
+};
+
+// Finally export `Tabs`.
+/* harmony default export */ __webpack_exports__["a"] = (Tabs);
+
+/***/ }),
+
+/***/ 112:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(269);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(59)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/sass-loader/lib/loader.js!./index.scss", function() {
+			var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/sass-loader/lib/loader.js!./index.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 147:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__styles_index_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_key_validator__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_media_uploader__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tabs__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_select2__ = __webpack_require__(108);
+/**
+ * Entry: wordlift-admin-settings-page.js
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+
+
+/**
+ * UI interactions on the WordLift Settings page
+ *
+ * @since 3.11.0
+ */
+(function ($, settings) {
+	$(function () {
+		// Attach the WL key validator to the `#wl-key` element.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_key_validator__["a" /* default */])('#wl-key');
+
+		// Attach the Media Uploader to the #wl-publisher-logo
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_media_uploader__["a" /* default */])('#wl-publisher-media-uploader', {
+			title: settings.l10n.logo_selection_title,
+			button: settings.l10n.logo_selection_button,
+			multiple: false,
+			library: { type: 'image' }
+		}, function (attachment) {
+			// Set the selected image as the preview image
+			$('#wl-publisher-media-uploader-preview').attr('src', attachment.url).show();
+
+			// Set the logo id.
+			$('#wl-publisher-media-uploader-id').val(attachment.id);
+		});
+
+		// Create the tabs.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_tabs__["a" /* default */])('.wl-tabs-element');
+
+		// Create the Select2.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_select2__["a" /* default */])('.wl-select2-element', {
+			containerCssClass: 'wl-admin-settings-page-select2',
+			dropdownCssClass: 'wl-admin-settings-page-select2'
+		});
+	});
+})(jQuery, wlSettings);
+
+/***/ }),
+
+/***/ 269:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(35)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "#wl-settings-page input::-ms-clear {\n  display: none; }\n\n#wl-settings-page #wl-entity-base-path,\n#wl-settings-page #wl-key {\n  width: 100%;\n  max-width: 480px;\n  height: 32px;\n  padding: 0 8px;\n  line-height: 32px;\n  font-size: 14px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0;\n  transition: 50ms border-color ease-in-out;\n  background-position: 448px 8px;\n  background-repeat: no-repeat; }\n  #wl-settings-page #wl-entity-base-path.valid,\n  #wl-settings-page #wl-key.valid {\n    background-image: url(" + __webpack_require__(272) + ");\n    padding-right: 32px; }\n  #wl-settings-page #wl-entity-base-path.invalid,\n  #wl-settings-page #wl-key.invalid {\n    background-image: url(" + __webpack_require__(271) + ");\n    padding-right: 32px; }\n\n#wl-settings-page #wl-entity-base-path {\n  background-color: #f5f5f5; }\n\n#wl-settings-page .wl-tabs-element {\n  border-radius: 0;\n  border: 0;\n  background: none; }\n  #wl-settings-page .wl-tabs-element .nav-tab-wrapper {\n    border-radius: 0;\n    border: 0;\n    border-bottom: 1px solid #ccc;\n    background: none;\n    padding-bottom: 0;\n    padding-left: 6px; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab {\n      border-radius: 0;\n      border: 1px solid #ccc !important;\n      background: #e4e4e4;\n      color: #555;\n      margin: 0 3px 0 0;\n      vertical-align: top;\n      white-space: nowrap; }\n      #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus {\n        box-shadow: none;\n        outline: none; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active, #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover {\n      border-bottom: 1px solid #f1f1f1 !important;\n      background: #f1f1f1;\n      color: #000; }\n\n.wl-admin-settings-page-select2.select2-selection {\n  min-height: 32px;\n  max-height: 32px;\n  overflow-y: auto; }\n\n.wl-admin-settings-page-select2 .wl-select2-thumbnail {\n  width: 24px;\n  height: 24px;\n  display: inline-block;\n  background: no-repeat center;\n  background-size: contain;\n  margin: 4px 8px 4px 0; }\n\n.wl-admin-settings-page-select2 .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.select2-results__options {\n  color: #666 !important; }\n\n.select2-results__option .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.select2-results__option--highlighted {\n  background-color: #f5f5f5 !important;\n  color: #2E92FF !important; }\n\n.ui-tabs .ui-tabs-panel {\n  max-width: 480px;\n  min-height: 32px;\n  border-radius: 2px;\n  padding: 0 !important;\n  margin: 16px 0; }\n  .ui-tabs .ui-tabs-panel * {\n    vertical-align: middle; }\n  .ui-tabs .ui-tabs-panel p {\n    max-height: 32px;\n    margin: 0;\n    width: 100%;\n    color: #4a4a4a; }\n\n.select2-container--default .select2-selection--single {\n  overflow: hidden;\n  padding: 0 0;\n  line-height: 28px;\n  font-size: 12px; }\n\n.wl-select2-thumbnail {\n  margin-right: 8px; }\n\n#tabs-2 p {\n  margin: 8px 0; }\n  #tabs-2 p:first-of-type {\n    margin-top: 24px; }\n\n#wl-publisher-name input,\n#wl-site-language {\n  width: 100%;\n  max-width: 480px;\n  min-height: 32px;\n  margin-top: 8px;\n  padding: 4px 8px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0; }\n\n#wl-publisher-type {\n  max-width: 480px;\n  width: 100%; }\n  #wl-publisher-type span {\n    width: 45%;\n    display: inline-block; }\n\n#wl-publisher-media-uploader {\n  height: 32px;\n  float: left; }\n\n#wl-publisher-media-uploader-preview {\n  max-width: 256px;\n  max-height: 256px;\n  margin-bottom: 16px;\n  display: block; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 271:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA8ElEQVR42p3UOw7CMBAEUNNADRI3ACQogVPkqxQu4A40FHAgSiipcpVQUnEAqkjLDsJRkMU4wtIqv/FLnNgxaCLSkzi2kiR7sXZsAk2zK62jZNkax23kJFEkKN2/a2DyC9HMRjM1su9tmm6dbh3iYQRpZZ9aQ4Ph4ATBPMQr5PBO0IlhBEHmbFxDuMH8ehDkKrvdAEZHLIyEse6Ij2E4BCo5wr8OnxphhGN/IxwLIyU6BTFJ0yWdJ9b2ESZYhQyWyIEhnaZGni/cL6Gm84Rjt+aG+BVgFX8uXDzEx6oGKYrZV0DVkQ5zajo0PIFi8/bQXxTkJIW2nf39AAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 272:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAA0ElEQVR4Aa3NgeYCQRDH8fMH/AkgAZrZVAQIhFCP0TuUIgB70wUCBAlIz7S7LgQgvUAh6jodN8Gmxh4D7refbxTyo1P3nzL6C4vmYGxgrS08tMHzwqpBONjiThvI3u5KKTYDw3xk1LwcJmmjF1tYklNDOcyXOOgXQ4ejHL6XVacmApjP4uw1XB1aldjAhX9yQArz2HVqniEHJDAHcPMpIIb5Iey9AYvTb2FRQAB7AgJYEBDAgoAAFgQ8sCxABrcFjDft1DgK/VHartNRVX999wQwVJB5+G9izgAAAABJRU5ErkJggg=="
+
+/***/ }),
+
+/***/ 32:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Delay a function call by half a second.
+ *
+ * Any function can be delayed using `delay`. The timeout for the call is bound
+ * to the provided element. If another function call is delayed on the same
+ * element, any previous timeout is cancelled.
+ *
+ * This function is used to validate in real-time inputs when the user presses
+ * a key, but allowing the user to press more keys (hence the delay).
+ *
+ * @since 3.9.0
+ *
+ * @param {Object} $elem A jQuery element reference which will hold the timeout
+ *     reference.
+ * @param {Function} fn The function to call.
+ * @param {number} timeout The timeout, by default 500 ms.
+ * @param {...Object} args Additional arguments for the callback.
+ */
+var delay = function delay($elem, fn) {
+  for (var _len = arguments.length, args = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+    args[_key - 3] = arguments[_key];
+  }
+
+  var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
+
+  // Clear a validation timeout.
+  clearTimeout($elem.data('timeout'));
+
+  // Validate the key, after a delay, so that another key is pressed, this
+  // validation is cancelled.
+  $elem.data('timeout', setTimeout.apply(undefined, [fn, timeout].concat(args)));
+};
+
+// Finally export the `delay` function.
+/* harmony default export */ __webpack_exports__["a"] = (delay);
+
+/***/ }),
+
+/***/ 35:
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function (useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if (item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function (modules, mediaQuery) {
+		if (typeof modules === "string") modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for (var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if (typeof id === "number") alreadyImportedModules[id] = true;
+		}
+		for (i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if (mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if (mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */';
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+/***/ }),
+
+/***/ 58:
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+	// get current location
+	var location = typeof window !== "undefined" && window.location;
+
+	if (!location) {
+		throw new Error("fixUrls requires window.location");
+	}
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+		return css;
+	}
+
+	var baseUrl = location.protocol + "//" + location.host;
+	var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+ This regular expression is just a way to recursively match brackets within
+ a string.
+ 	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+    (  = Start a capturing group
+      (?:  = Start a non-capturing group
+          [^)(]  = Match anything that isn't a parentheses
+          |  = OR
+          \(  = Match a start parentheses
+              (?:  = Start another non-capturing groups
+                  [^)(]+  = Match anything that isn't a parentheses
+                  |  = OR
+                  \(  = Match a start parentheses
+                      [^)(]*  = Match anything that isn't a parentheses
+                  \)  = Match a end parentheses
+              )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+  \)  = Match a close parens
+ 	 /gi  = Get all matches, not the first.  Be case insensitive.
+  */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function (fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl.trim().replace(/^"(.*)"$/, function (o, $1) {
+			return $1;
+		}).replace(/^'(.*)'$/, function (o, $1) {
+			return $1;
+		});
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+			return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+			//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+/***/ }),
+
+/***/ 59:
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(58);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=wordlift-admin-settings-page.bundle.js.map
