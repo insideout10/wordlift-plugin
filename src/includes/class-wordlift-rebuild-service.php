@@ -82,7 +82,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			$this->uri_service->delete_all();
 
 			// Delete all the triples in the remote dataset.
-			$this->sparql_service->queue( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
+			$this->sparql_service->execute( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o };' );
 
 		}
 
@@ -109,7 +109,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			$this->redirect( admin_url( 'admin-ajax.php?action=wl_rebuild&offset=' . ( $offset + $limit ) . '&limit=' . $limit . '&entity_only=' . ( $entity_only ? '1' : '0' ) ) );
 		}
 
-		echo( "done [ count :: $count ][ limit :: $limit ]" );
+		echo( "Rebuild complete [ count :: $count ][ limit :: $limit ]" );
 
 		// If we're being called as AJAX, die here.
 		if ( DOING_AJAX ) {
@@ -134,8 +134,11 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 		<html>
 		<head>
 			<meta http-equiv="refresh"
-			      content="1; <?php echo esc_attr( $url ); ?>">
+			      content="0; <?php echo esc_attr( $url ); ?>">
 		</head>
+		<body>
+			Rebuilding, please wait...
+		</body>
 		</html>
 		<?php
 

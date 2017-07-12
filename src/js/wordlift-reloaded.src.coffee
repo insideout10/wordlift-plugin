@@ -1880,19 +1880,19 @@ $(
           break
     ])
 
-    # Perform analysis once tinymce is loaded
-    fireEvent(editor, "LoadContent", (e) ->
+    # Define the callback to call to start the analysis.
+    startAnalysis = () ->
       injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
         (AnalysisService, EditorService, $rootScope, $log) ->
-          # execute the following commands in the angular js context.
+# execute the following commands in the angular js context.
           $rootScope.$apply(->
-            # Get the html content of the editor.
+# Get the html content of the editor.
             html = editor.getContent format: 'raw'
 
             if "" isnt html
               EditorService.updateContentEditableStatus false
               AnalysisService.perform html
-            # Get the text content from the Html.
+# Get the text content from the Html.
 #            text = Traslator.create(html).getText()
 #            if text.match /[a-zA-Z0-9]+/
 #              # Disable tinymce editing
@@ -1902,7 +1902,21 @@ $(
 #              $log.warn "Blank content: nothing to do!"
           )
       ])
-    )
+
+
+    # Check whether the postbox is closed.
+    closed = $('#wordlift_entities_box').hasClass('closed')
+
+    # Start the analysis if the postbox isn't closed.
+    if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
+      # If the postbox is closed, hook to the `postbox-toggled` event and start
+      # the analysis as soon as the postbox is opened.
+      $(document).on( 'postbox-toggled', (e, postbox) ->
+        # Bail out if it's not our postbox.
+        return if 'wordlift_entities_box' isnt postbox.id
+
+        startAnalysis()
+      )
 
     # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
     fireEvent(editor, "NodeChange", (e) ->
