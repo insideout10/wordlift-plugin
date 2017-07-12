@@ -135,9 +135,9 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		/**
-		 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output
+		 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output.
 		 *
-		 * @api bool $display_search Whether or not to display json+ld search on the frontend
+		 * @api bool $display_search Whether or not to display json+ld search on the frontend.
 		 */
 		if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
 			// Change jsonld if is home or blog page
@@ -204,8 +204,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Copy over some useful properties.
 		//
 		// See https://developers.google.com/search/docs/data-types/articles
-		$params['publisher']['logo']['@type']  = 'ImageObject';
-		$params['publisher']['logo']['url']    = $attachment[0];
+		$params['publisher']['logo']['@type'] = 'ImageObject';
+		$params['publisher']['logo']['url']   = $attachment[0];
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
 		//
@@ -215,7 +215,16 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 	}
 
-	function change_jsonld_if_homepage( &$params, $post_id ) {
+	/**
+	 * Update the JSON-LD structure to match the `WebSite` schema.org class, if
+	 * the {@link WP_Post} id is used as homepage.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param array $params  The JSON-LD structure.
+	 * @param int   $post_id The current {@link WP_Post} id.
+	 */
+	private function change_jsonld_if_homepage( &$params, $post_id ) {
 		// Get home & blog page ids
 		$ids = array(
 			get_option( 'page_on_front' ),
@@ -227,7 +236,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 			// Change values so they will be accurate on homepage
 			$params['headline']    = get_bloginfo( 'name' );
 			$params['description'] = get_bloginfo( 'description' );
-			$params['url']         = home_url('/');
+			$params['url']         = home_url( '/' );
 
 			// Set the search action.
 			$this->set_search_action( $params );
@@ -237,7 +246,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	/**
 	 * Enrich the provided params array with publisher data, if available.
 	 *
-	 * @since 3.10.0
+	 * @since 3.14.0
 	 *
 	 * @param array $params The parameters array.
 	 */

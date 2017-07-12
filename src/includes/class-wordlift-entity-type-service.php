@@ -104,9 +104,9 @@ class Wordlift_Entity_Type_Service {
 			case 'post':
 			case 'page':
 				/**
-				 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output
+				 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output.
 				 *
-				 * @api bool $display_search Whether or not to display json+ld search on the frontend
+				 * @api bool $display_search Whether or not to display json+ld search on the frontend.
 				 */
 				if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
 
@@ -125,6 +125,7 @@ class Wordlift_Entity_Type_Service {
 						);
 					}
 				}
+
 				// Posts and pages are considered Articles.
 				return array(
 					'uri'       => 'http://schema.org/Article',

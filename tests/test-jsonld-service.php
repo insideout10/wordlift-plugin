@@ -244,12 +244,13 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	/**
-	 * Test that the JSON-LD WebSite
+	 * Test that the JSON-LD WebSite.
 	 *
+	 * @since 3.14.0
 	 */
 	public function test_jsonld_website() {
-		$name              = rand_str();
-		$description       = rand_str();
+		$name        = rand_str();
+		$description = rand_str();
 
 		// Create homepage
 		$homepage_id = $this->factory->post->create( array(
@@ -268,7 +269,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		// Get site info
 		$headline    = get_bloginfo( 'name' );
 		$description = get_bloginfo( 'description' );
-		$url         = home_url('/');
+		$url         = home_url( '/' );
 		$target      = $url . '?s={search_term_string}';
 
 		// Set up a default request
@@ -318,17 +319,17 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$this->assertArrayHasKey( 'target', $potential_action );
 		$this->assertEquals( $target, $potential_action['target'] );
-	}
 
+	}
 
 	/**
 	 * Test that the JSON-LD WebSite is working.
 	 *
-	 * @since 3.8.0
+	 * @since 3.14.0
 	 */
-	public function test_disavble_jsonld_website() {
-		$name              = rand_str();
-		$description       = rand_str();
+	public function test_disable_jsonld_website() {
+		$name        = rand_str();
+		$description = rand_str();
 
 		// Create homepage
 		$homepage_id = $this->factory->post->create( array(
@@ -347,7 +348,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		// Get site info
 		$headline    = get_bloginfo( 'name' );
 		$description = get_bloginfo( 'description' );
-		$url         = home_url('/');
+		$url         = home_url( '/' );
 		$target      = $url . '?s={search_term_string}';
 
 		// Set up a default request
@@ -393,11 +394,11 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	/**
 	 * Test that the JSON-LD WebSite is working.
 	 *
-	 * @since 3.8.0
+	 * @since 3.14.0
 	 */
 	public function test_change_jsonld_website_search_target() {
-		$name              = rand_str();
-		$description       = rand_str();
+		$name        = rand_str();
+		$description = rand_str();
 
 		// Create homepage
 		$homepage_id = $this->factory->post->create( array(
@@ -414,18 +415,21 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		update_option( 'blogdescription', $description );
 
 		// Get site info
-		$headline        = get_bloginfo( 'name' );
-		$description     = get_bloginfo( 'description' );
-		$url             = home_url('/');
-		$target          = $url . '?s={search_term_string}';
+		$headline    = get_bloginfo( 'name' );
+		$description = get_bloginfo( 'description' );
+		$url         = home_url( '/' );
+		$target      = $url . '?s={search_term_string}';
 
 		// Change the search target
-		$modified_target = str_replace('{search_term_string}', '', $target);
+		$modified_target = str_replace( '{search_term_string}', '', $target );
 
 		// Set up a default request
 		$_GET['action'] = 'wl_jsonld';
 		$_GET['id']     = $homepage_id;
-		add_filter( 'wordlift_json_ld_search_url', array( $this, 'change_search_url' ) );
+		add_filter( 'wordlift_json_ld_search_url', array(
+			$this,
+			'change_search_url',
+		) );
 
 		// Make the request
 		try {
@@ -473,7 +477,18 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->assertEquals( $modified_target, $potential_action['target'] );
 	}
 
+	/**
+	 * Test the filter `wordlift_json_ld_search_url`.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param string $url The default URL.
+	 *
+	 * @return string A modified URL.
+	 */
 	public function change_search_url( $url ) {
-		return str_replace('{search_term_string}', '', $url);
+
+		return str_replace( '{search_term_string}', '', $url );
 	}
+
 }
