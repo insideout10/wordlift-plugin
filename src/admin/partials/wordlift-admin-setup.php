@@ -27,13 +27,16 @@
 	) );
 	wp_enqueue_script( 'wordlift-admin-setup', plugin_dir_url( dirname( __FILE__ ) ) . 'js/wordlift-admin-setup.js', array( 'jquery' ) );
 
+	//Get wp_permalink structure
+	$permalink_structure = get_option('permalink_structure');
 	// Set configuration settings.
 	wp_localize_script( 'wordlift-admin-setup', '_wlAdminSetup', array(
-		'ajaxUrl' => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
-		'action'  => 'wl_validate_key',
-		'media'   => array(
-			'title' => __( 'WordLift Choose Logo', 'wordlift' ),
-			'button' => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
+		'ajaxUrl'   => parse_url( self_admin_url( 'admin-ajax.php' ), PHP_URL_PATH ),
+		'action'    => 'wl_validate_key',
+		'permalink' => $permalink_structure,
+		'media'     => array(
+			'title'   => __( 'WordLift Choose Logo', 'wordlift' ),
+			'button'  => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),
 		),
 	) );
 
