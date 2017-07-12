@@ -362,7 +362,9 @@ class Wordlift_Configuration_Service {
 	 */
 	function maybe_update_dataset_uri( $value, $old_value ) {
 
-		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
+		// Check the old key value and the new one. Here we're only handling the
+		// case where the key hasn't changed and the dataset URI isn't set. The
+		// other case, i.e. a new key is inserted, is handled at `update_key`.
 		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
 		$new_key = isset( $value['key'] ) ? $value['key'] : '';
 
