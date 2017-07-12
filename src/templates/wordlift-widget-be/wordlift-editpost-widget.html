@@ -5,7 +5,7 @@
 
 		<!-- ERROR MESSAGES -->
 		<div
-			ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-messages.html?ver=3.12.0-dev'">
+			ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-messages.html?ver=3.12.1'">
 		</div>
 
 	</div>
@@ -13,8 +13,8 @@
 	<!-- CREATE NEW ENTITY BTN -->
 	<div
 		ng-click="setCurrentEntity(newEntity)"
-		ng-hide="currentEntity"
-		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html?ver=3.12.0-dev'">
+		ng-hide="currentEntity || analysisFailed"
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html?ver=3.12.1'">
 	</div>
 
 	<!-- WL TOP WRAP -->
@@ -30,26 +30,26 @@
 </div>
 
 <!-- WL BOTTOM WRAP -->
-<div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity">
+<div class="wl-widget-global-bottom-wrap" ng-hide="currentEntity || analysisFailed">
 
 	<!-- CLASSIFICATION BOX  -->
 	<div
-		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html?ver=3.12.0-dev'">
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-classification-box.html?ver=3.12.1'">
 	</div>
 
 	<!-- ARTICLE METADATA -->
 	<div
-		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-article-metadata.html?ver=3.12.0-dev'">
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-article-metadata.html?ver=3.12.1'">
 	</div>
 
 	<!-- SUGGESTED IMAGES -->
 	<div
-		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-suggested-images.html?ver=3.12.0-dev'">
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-suggested-images.html?ver=3.12.1'">
 	</div>
 
 	<!-- RELATED POST -->
 	<div
-		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html?ver=3.12.0-dev'">
+		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-related-post.html?ver=3.12.1'">
 	</div>
 
 </div>

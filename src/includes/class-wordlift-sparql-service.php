@@ -14,7 +14,7 @@ class Wordlift_Sparql_Service {
 	/**
 	 * A {@link Wordlift_Log_Service} instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
@@ -23,7 +23,7 @@ class Wordlift_Sparql_Service {
 	/**
 	 * The {@link Wordlift_Sparql_Service} singleton instance.
 	 *
-	 * @since 3.6.0
+	 * @since  3.6.0
 	 * @access private
 	 * @var \Wordlift_Sparql_Service $instance The {@link Wordlift_Sparql_Service} singleton instance.
 	 */
@@ -67,13 +67,36 @@ class Wordlift_Sparql_Service {
 	}
 
 	/**
+	 * Execute the SELECT query.
+	 *
+	 * @since 3.12.2
+	 *
+	 * @param string $query The SELECT query to execute.
+	 *
+	 * @return WP_Error|array The response or WP_Error on failure.
+	 */
+	public function select( $query ) {
+
+		// Prepare the SPARQL statement by prepending the default namespaces.
+		$sparql = rl_sparql_prefixes() . "\n" . $query;
+
+		// Get the SPARQL SELECT URL.
+		$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
+
+		// Prepare the request.
+		$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
+
+		return wp_remote_get( $url, $args );
+	}
+
+	/**
 	 * Formats the provided value according to the specified type in order to
 	 * insert the value using SPARQL. The value is also escaped.
 	 *
 	 * @since 3.6.0
 	 *
 	 * @param string $value The value.
-	 * @param string $type The value type.
+	 * @param string $type  The value type.
 	 *
 	 * @return string The formatted value for SPARQL statements.
 	 */

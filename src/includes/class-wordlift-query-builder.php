@@ -85,6 +85,38 @@ class Wordlift_Query_Builder {
 	const SCHEMA_URL_URI = 'http://schema.org/url';
 
 	/**
+	 * @since 3.14.0
+	 */
+	const SCHEMA_IMAGE_URI = 'http://schema.org/image';
+
+	/**
+	 * The location created predicate.
+	 *
+	 * @since 3.14.0
+	 */
+	const SCHEMA_LOCATION_CREATED_URI = 'http://schema.org/locationCreated';
+
+	/**
+	 * @since 3.14.0
+	 */
+	const SCHEMA_AUTHOR_URI = 'http://schema.org/author';
+
+	/**
+	 * @since 3.14.0
+	 */
+	const SCHEMA_INTERACTION_COUNT_URI = 'http://schema.org/interactionCount';
+
+	/**
+	 * @since 3.14.0
+	 */
+	const DCTERMS_SUBJECT_URI = 'http://purl.org/dc/terms/subject';
+
+	/**
+	 * @since 3.14.0
+	 */
+	const DCTERMS_REFERENCES_URI = 'http://purl.org/dc/terms/references';
+
+	/**
 	 * The RDF label.
 	 *
 	 * @since 3.1.7
@@ -94,7 +126,7 @@ class Wordlift_Query_Builder {
 	/**
 	 * Hold the template (INSERT or DELETE).
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var string $template The query template.
 	 */
@@ -103,7 +135,7 @@ class Wordlift_Query_Builder {
 	/**
 	 * An array of statements (in the form of subject, predicate, object).
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var array $statements An array of statements.
 	 */
@@ -147,16 +179,32 @@ class Wordlift_Query_Builder {
 	}
 
 	/**
+	 * Set the query to SELECT.
+	 *
+	 * @since 3.12.2
+	 *
+	 * @param string $props The list of properties to read.
+	 *
+	 * @return $this \Wordlift_Query_Builder The Query builder.
+	 */
+	public function select( $props = '*' ) {
+
+		$this->template = "SELECT $props WHERE { %s }";
+
+		return $this;
+	}
+
+	/**
 	 * Add a statement.
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param string $subject The subject of the statement (must be a URI).
-	 * @param string $predicate The predicate (must be a URI).
-	 * @param string $object The object, can be a URI or a value.
-	 * @param int $object_type The object type, either a {@link OBJECT_URI} or a value {@link OBJECT_VALUE}. If set to {@link OBJECT_AUTO}, the Query builder will try to guess.
-	 * @param string|null $data_type The data type (or null).
-	 * @param string|null $language The language code (or null).
+	 * @param string      $subject     The subject of the statement (must be a URI).
+	 * @param string      $predicate   The predicate (must be a URI).
+	 * @param string      $object      The object, can be a URI or a value.
+	 * @param int         $object_type The object type, either a {@link OBJECT_URI} or a value {@link OBJECT_VALUE}. If set to {@link OBJECT_AUTO}, the Query builder will try to guess.
+	 * @param string|null $data_type   The data type (or null).
+	 * @param string|null $language    The language code (or null).
 	 *
 	 * @return $this \Wordlift_Query_Builder The Query builder.
 	 */
@@ -167,15 +215,23 @@ class Wordlift_Query_Builder {
 			return $this;
 		}
 
+		// Guess the subject type.
+		$subject_value_type = $this->guess_subject_type( $subject );
+
 		// Get the object type if set, otherwise try to guess it.
 		$object_value_type = ( self::OBJECT_AUTO === $object_type ? $this->guess_object_type( $predicate, $object ) : $object_type );
 
 		// Prepare the statement template.
-		$template = '<%1$s> <%2$s> ' . (
-			self::OBJECT_URI === $object_value_type ? '<%3$s>' : (
-			self::OBJECT_PARAMETER === $object_value_type ? '%3$s' :
-				// self::OBJECT_VALUE === $object_value_type
-				'"%3$s"' . ( isset( $data_type ) ? '^^%4$s' : '' ) . ( isset( $language ) ? '@%5$s' : '' ) ) );
+		$template =
+			// Subject as a parameter, no `<`, `>`.
+			( self::OBJECT_PARAMETER === $subject_value_type ? '%1$s' : '<%1$s>' ) .
+			// Predicate.
+			' <%2$s> ' .
+			// Object.
+			( self::OBJECT_URI === $object_value_type ? '<%3$s>' :
+				( self::OBJECT_PARAMETER === $object_value_type ? '%3$s' :
+					// self::OBJECT_VALUE === $object_value_type
+					'"%3$s"' . ( isset( $data_type ) ? '^^%4$s' : '' ) . ( isset( $language ) ? '@%5$s' : '' ) ) );
 
 		// Escape the subject, predicate and object.
 		$escaped_subject   = Wordlift_Sparql_Service::escape_uri( $subject );
@@ -197,7 +253,7 @@ class Wordlift_Query_Builder {
 	public function build() {
 
 		// If there are no statements return an empty string.
-		if (0 === count($this->statements)) {
+		if ( 0 === count( $this->statements ) ) {
 			return '';
 		}
 
@@ -210,7 +266,7 @@ class Wordlift_Query_Builder {
 	 * @since 3.1.7
 	 *
 	 * @param string $predicate The predicate.
-	 * @param string $object The object.
+	 * @param string $object    The object.
 	 *
 	 * @return int {@link Wordlift_Query_Builder::OBJECT_URI} if the Query builder thinks the object must be an URI, {@link Wordlift_Query_Builder::OBJECT_VALUE} otherwise.
 	 */
@@ -224,13 +280,37 @@ class Wordlift_Query_Builder {
 		// Guess based on the predicate.
 		switch ( $predicate ) {
 
+			case self::DCTERMS_REFERENCES_URI:
+			case self::DCTERMS_SUBJECT_URI:
 			case self::RDFS_TYPE_URI:
+			case self::SCHEMA_AUTHOR_URI:
+			case self::SCHEMA_LOCATION_CREATED_URI:
 			case self::SCHEMA_URL_URI:
+			case self::SCHEMA_IMAGE_URI:
 				return self::OBJECT_URI;
 
 		}
 
 		return self::OBJECT_VALUE;
+	}
+
+	/**
+	 * Guess the subject type.
+	 *
+	 * @since 3.12.3
+	 *
+	 * @param string $subject The subject string.
+	 *
+	 * @return int {@link Wordlift_Query_Builder::OBJECT_PARAMETER} if the Query builder thinks the subject is a parameter (starts with ?), otherwise {@link Wordlift_Query_Builder::OBJECT_URI}.
+	 */
+	private function guess_subject_type( $subject ) {
+
+		// If the object starts with a question mark, it's a parameter.
+		if ( 0 === strpos( $subject, '?' ) ) {
+			return self::OBJECT_PARAMETER;
+		}
+
+		return self::OBJECT_URI;
 	}
 
 }
