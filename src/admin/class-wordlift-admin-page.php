@@ -80,6 +80,7 @@ abstract class Wordlift_Admin_Page {
 
 		// ideally should have used menu_page_url, but it is loaded later than some usages.
 		$url = admin_url( 'admin.php?page=' . $this->get_menu_slug() );
+
 		return esc_url( $url );
 	}
 
