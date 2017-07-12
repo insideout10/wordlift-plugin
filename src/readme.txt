@@ -138,7 +138,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.14.0 (????-??-??) =
+= 3.13.3-qa (2017-07-12) =
 * Enhancement: [#558](https://github.com/insideout10/wordlift-plugin/issues/558): Link to the settings page in the message about unset key.
 * Enhancement: [#412](https://github.com/insideout10/wordlift-plugin/issues/412): Add a toggle to disable WordLift's analysis on certain pages/post.
 
