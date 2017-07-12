@@ -64,6 +64,13 @@ class Wordlift_Configuration_Service {
 	const DATASET_URI = 'redlink_dataset_uri';
 
 	/**
+	 * The link by default option name.
+	 *
+	 * @since 3.11.0
+	 */
+	const LINK_BY_DEFAULT = 'link_by_default';
+
+	/**
 	 * The Wordlift_Configuration_Service's singleton instance.
 	 *
 	 * @since  3.6.0
@@ -382,6 +389,30 @@ class Wordlift_Configuration_Service {
 	public function get_accounts_by_key_dataset_uri( $key ) {
 
 		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . "accounts/key=$key/dataset_uri";
+	}
+
+	/**
+	 * Get the `link by default` option.
+	 *
+	 * @since 3.13.0
+	 *
+	 * @return bool True if entities must be linked by default otherwise false.
+	 */
+	public function is_link_by_default() {
+
+		return 'yes' === $this->get( 'wl_general_settings', self::LINK_BY_DEFAULT, 'yes' );
+	}
+
+	/**
+	 * Set the `link by default` option.
+	 *
+	 * @since 3.13.0
+	 *
+	 * @param bool $value True to enabling linking by default, otherwise false.
+	 */
+	public function set_link_by_default( $value ) {
+
+		$this->set( 'wl_general_settings', self::LINK_BY_DEFAULT, true === $value ? 'yes' : 'no' );
 	}
 
 }

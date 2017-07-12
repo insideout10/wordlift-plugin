@@ -1,22 +1,39 @@
 <?php
-require_once( 'functions.php' );
+/**
+ * Tests: Configuration Tests.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
+ */
 
 /**
- * Test the methods defined in the configuration module.
+ * Define the
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
-class ConfigurationTest extends Wordlift_Unit_Test_Case {
+class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * Set up the test.
+	 * The {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.13.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
+	 * @inheritdoc
 	 */
 	function setUp() {
 		parent::setUp();
 
-		// We don't need to check the remote Linked Data store.
-		Wordlift_Unit_Test_Case::turn_off_entity_push();;
+		$this->configuration_service = $this->get_wordlift_test()->get_configuration_service();
 
 	}
-
 
 	function test_wl_configuration_key() {
 
@@ -106,6 +123,30 @@ class ConfigurationTest extends Wordlift_Unit_Test_Case {
 		wl_configuration_set_api_url( $redlink_api_url );
 
 		$this->assertStringStartsWith( "$redlink_api_url/analysis/$redlink_application_name/enhance?key=$redlink_key", wl_configuration_get_analyzer_url() );
+	}
+
+	/**
+	 * Test the `link by default` setting.
+	 *
+	 * @since 3.13.0
+	 */
+	public function test_is_link_by_default() {
+
+		// Check that the default setting is `true`.
+		$this->assertTrue( $this->configuration_service->is_link_by_default() );
+
+		$this->configuration_service->set_link_by_default( true );
+
+		$this->assertTrue( $this->configuration_service->is_link_by_default() );
+
+		$this->configuration_service->set_link_by_default( false );
+
+		$this->assertFalse( $this->configuration_service->is_link_by_default() );
+
+		$this->configuration_service->set_link_by_default( 1 );
+
+		$this->assertFalse( $this->configuration_service->is_link_by_default() );
+
 	}
 
 }

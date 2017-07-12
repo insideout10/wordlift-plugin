@@ -216,7 +216,7 @@ class Wordlift_Query_Builder {
 		}
 
 		// Guess the subject type.
-		$subject_value_type = $this->guess_object_type( $predicate, $object );
+		$subject_value_type = $this->guess_subject_type( $subject );
 
 		// Get the object type if set, otherwise try to guess it.
 		$object_value_type = ( self::OBJECT_AUTO === $object_type ? $this->guess_object_type( $predicate, $object ) : $object_type );
@@ -292,6 +292,25 @@ class Wordlift_Query_Builder {
 		}
 
 		return self::OBJECT_VALUE;
+	}
+
+	/**
+	 * Guess the subject type.
+	 *
+	 * @since 3.12.3
+	 *
+	 * @param string $subject The subject string.
+	 *
+	 * @return int {@link Wordlift_Query_Builder::OBJECT_PARAMETER} if the Query builder thinks the subject is a parameter (starts with ?), otherwise {@link Wordlift_Query_Builder::OBJECT_URI}.
+	 */
+	private function guess_subject_type( $subject ) {
+
+		// If the object starts with a question mark, it's a parameter.
+		if ( 0 === strpos( $subject, '?' ) ) {
+			return self::OBJECT_PARAMETER;
+		}
+
+		return self::OBJECT_URI;
 	}
 
 }

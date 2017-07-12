@@ -138,31 +138,53 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.13.1 (2017-06-29) =
+* Fix: [#569](https://github.com/insideout10/wordlift-plugin/issues/569): Explicitly enabling an entity link doesn't work.
+
+= 3.13.0 (2017-06-22) =
+* Feature: [#550](https://github.com/insideout10/wordlift-plugin/issues/550): Limit the number of entities.
+* Fix: [#541](https://github.com/insideout10/wordlift-plugin/issues/541): AMP version of a page with a map displays a gray box.
+* Feature: [#537](https://github.com/insideout10/wordlift-plugin/issues/537): Translate all labels in plugin languages in the Faceted Search Widget.
+* Feature: [#534](https://github.com/insideout10/wordlift-plugin/issues/534): Inform the editor when a subscription is not active.
+* Feature: [#522](https://github.com/insideout10/wordlift-plugin/issues/522): Check Widgets compatibility with AMP.
+* Feature: [#513](https://github.com/insideout10/wordlift-plugin/issues/513): Synonyms in JSON-LD.
+* Feature: [#485](https://github.com/insideout10/wordlift-plugin/issues/485): Add the possibility to configure NOLINK by default.
+* Feature: [#477](https://github.com/insideout10/wordlift-plugin/issues/477): Preserve alternative labels when an entity is saved in the local vocabulary.
+* Feature: [#330](https://github.com/insideout10/wordlift-plugin/issues/330): External Entities not recognised when adding an extra paragraph on long articles.
+
+= 3.12.4 (2017-06-15) =
+* Feature: [#563](https://github.com/insideout10/wordlift-plugin/issues/563): Allow rebuilding entities only.
+
+= 3.12.3 (2017-06-07) =
+* Fix: [#556](https://github.com/insideout10/wordlift-plugin/issues/556): SPARQL queries fail.
+* Fix: [#555](https://github.com/insideout10/wordlift-plugin/issues/555): In WP backend "View Linked Data" and "Test Google Rich Snippets" buttons to be shown.
+* Fix: [#554](https://github.com/insideout10/wordlift-plugin/issues/554): The WordLift's Editor is picking up old description in "Entity Description.
+
 = 3.12.2 (2017-06-01) =
 * Fix: [#549](https://github.com/insideout10/wordlift-plugin/issues/549): Make WL compatible with WP 4.8.
 * Fix: [#543](https://github.com/insideout10/wordlift-plugin/issues/543): Entities not published to the Linked Data Store.
 * Fix: [#528](https://github.com/insideout10/wordlift-plugin/issues/528): fsockopen loops indefinitely.
 
 = 3.12.1 (2017-05-15) =
-* Enhancement: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.
+* Feature: [#535](https://github.com/insideout10/wordlift-plugin/issues/535): Incorrect text-annotation styles in editor.
 
 = 3.12.0 (2017-05-03) =
-* Enhancement: [#516](https://github.com/insideout10/wordlift-plugin/issues/516): Visual Composer tags appearing in the article's description.
-* Enhancement: [#512](https://github.com/insideout10/wordlift-plugin/issues/512): Entity type listing page shows an "access not allowed" in wordpress versions before 4.7.
-* Enhancement: [#511](https://github.com/insideout10/wordlift-plugin/issues/511): Add support for the about property.
-* Enhancement: [#503](https://github.com/insideout10/wordlift-plugin/issues/503): Text domain is missing in calls to _x translation API.
-* Enhancement: [#501](https://github.com/insideout10/wordlift-plugin/issues/501): PHP7 Compatibility Check.
-* Enhancement: [#490](https://github.com/insideout10/wordlift-plugin/issues/490): Adding the "WordLift Entities Cloud" as shortcode.
-* Enhancement: [#487](https://github.com/insideout10/wordlift-plugin/issues/487): Adding support for editing categories when using Quick Edit from the Vocabulary.
-* Enhancement: [#484](https://github.com/insideout10/wordlift-plugin/issues/484): Check compatibility with WordPress Multisite configurations.
-* Enhancement: [#457](https://github.com/insideout10/wordlift-plugin/issues/457): When the plugin is installed in a directory not named "wordlift" initializaton hook ignored.
-* Enhancement: [#453](https://github.com/insideout10/wordlift-plugin/issues/453): Need to show alert and have recovery plan when setting/activation fail to get dataset uri.
-* Enhancement: [#451](https://github.com/insideout10/wordlift-plugin/issues/451): Improve schema:Article markup.
-* Enhancement: [#418](https://github.com/insideout10/wordlift-plugin/issues/418): Do not allow activating WordLift on incompatible WP's versions.
-* Enhancement: [#403](https://github.com/insideout10/wordlift-plugin/issues/403): Adding legalName for Organization and LocalBusiness.
-* Enhancement: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
-* Enhancement: [#323](https://github.com/insideout10/wordlift-plugin/issues/323): Content dynamically posted should follow both a chronological or a relevancy order.
-* Enhancement: [#212](https://github.com/insideout10/wordlift-plugin/issues/212): Adding support for the Accelerated Mobile Pages (AMP) on WordLift Entity Pages.
+* Feature: [#516](https://github.com/insideout10/wordlift-plugin/issues/516): Visual Composer tags appearing in the article's description.
+* Feature: [#512](https://github.com/insideout10/wordlift-plugin/issues/512): Entity type listing page shows an "access not allowed" in wordpress versions before 4.7.
+* Feature: [#511](https://github.com/insideout10/wordlift-plugin/issues/511): Add support for the about property.
+* Feature: [#503](https://github.com/insideout10/wordlift-plugin/issues/503): Text domain is missing in calls to _x translation API.
+* Feature: [#501](https://github.com/insideout10/wordlift-plugin/issues/501): PHP7 Compatibility Check.
+* Feature: [#490](https://github.com/insideout10/wordlift-plugin/issues/490): Adding the "WordLift Entities Cloud" as shortcode.
+* Feature: [#487](https://github.com/insideout10/wordlift-plugin/issues/487): Adding support for editing categories when using Quick Edit from the Vocabulary.
+* Feature: [#484](https://github.com/insideout10/wordlift-plugin/issues/484): Check compatibility with WordPress Multisite configurations.
+* Feature: [#457](https://github.com/insideout10/wordlift-plugin/issues/457): When the plugin is installed in a directory not named "wordlift" initializaton hook ignored.
+* Feature: [#453](https://github.com/insideout10/wordlift-plugin/issues/453): Need to show alert and have recovery plan when setting/activation fail to get dataset uri.
+* Feature: [#451](https://github.com/insideout10/wordlift-plugin/issues/451): Improve schema:Article markup.
+* Feature: [#418](https://github.com/insideout10/wordlift-plugin/issues/418): Do not allow activating WordLift on incompatible WP's versions.
+* Feature: [#403](https://github.com/insideout10/wordlift-plugin/issues/403): Adding legalName for Organization and LocalBusiness.
+* Feature: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
+* Feature: [#323](https://github.com/insideout10/wordlift-plugin/issues/323): Content dynamically posted should follow both a chronological or a relevancy order.
+* Feature: [#212](https://github.com/insideout10/wordlift-plugin/issues/212): Adding support for the Accelerated Mobile Pages (AMP) on WordLift Entity Pages.
 
 = 3.11.3 (2017-04-23) =
 * Fix: [#521](https://github.com/insideout10/wordlift-plugin/issues/521): Performance Issues on Ajax End-Point.
@@ -177,26 +199,26 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#494](https://github.com/insideout10/wordlift-plugin/issues/494): Cached Html Templates.
 
 = 3.11.0 (2017-03-06) =
-* Enhancement: [#489](https://github.com/insideout10/wordlift-plugin/issues/489): Revise title and description for the timeline widget.
-* Enhancement: [#482](https://github.com/insideout10/wordlift-plugin/issues/482): Global timeline doesn't include events bound to pages.
-* Enhancement: [#442](https://github.com/insideout10/wordlift-plugin/issues/442): Enable WordPress Category to Organise WordLift Entities.
-* Enhancement: [#426](https://github.com/insideout10/wordlift-plugin/issues/426): Related articles needs to be limited and/or paginated.
-* Enhancement: [#335](https://github.com/insideout10/wordlift-plugin/issues/335): Allow more actions on entity tiles within the disambiguation widget.
-* Enhancement: [#427](https://github.com/insideout10/wordlift-plugin/issues/427): Add Publisher field to WordLift Setting page.
-* Enhancement: [#398](https://github.com/insideout10/wordlift-plugin/issues/398): SEO improvement: providing control over title and description of WordLift Archive pages.
-* Enhancement: [#355](https://github.com/insideout10/wordlift-plugin/issues/355): Creating a Tag-Like Widget for articles.
+* Feature: [#489](https://github.com/insideout10/wordlift-plugin/issues/489): Revise title and description for the timeline widget.
+* Feature: [#482](https://github.com/insideout10/wordlift-plugin/issues/482): Global timeline doesn't include events bound to pages.
+* Feature: [#442](https://github.com/insideout10/wordlift-plugin/issues/442): Enable WordPress Category to Organise WordLift Entities.
+* Feature: [#426](https://github.com/insideout10/wordlift-plugin/issues/426): Related articles needs to be limited and/or paginated.
+* Feature: [#335](https://github.com/insideout10/wordlift-plugin/issues/335): Allow more actions on entity tiles within the disambiguation widget.
+* Feature: [#427](https://github.com/insideout10/wordlift-plugin/issues/427): Add Publisher field to WordLift Setting page.
+* Feature: [#398](https://github.com/insideout10/wordlift-plugin/issues/398): SEO improvement: providing control over title and description of WordLift Archive pages.
+* Feature: [#355](https://github.com/insideout10/wordlift-plugin/issues/355): Creating a Tag-Like Widget for articles.
 * Fix: [#383](https://github.com/insideout10/wordlift-plugin/issues/383): Chord - text overlapping issue.
 * Fix: [#469](https://github.com/insideout10/wordlift-plugin/issues/469): Chord Rendering Problem on Firefox.
 * Fix: [#464](https://github.com/insideout10/wordlift-plugin/issues/464): Extend Wordlift_Log_Service's log to support arrays.
 
 = 3.10.0 (2017-01-30) =
-* Enhancement: [#371](https://github.com/insideout10/wordlift-plugin/issues/371): Extending the list of properties for schema-org:Article.
-* Enhancement: [#358](https://github.com/insideout10/wordlift-plugin/issues/358): Application Key Not Set - Messaging improvement is needed.
-* Enhancement: [#350](https://github.com/insideout10/wordlift-plugin/issues/350): Entity Annotation Loop.
-* Enhancement: [#345](https://github.com/insideout10/wordlift-plugin/issues/345): Entity suggested when analyzing the entity content itself.
-* Enhancement: [#305](https://github.com/insideout10/wordlift-plugin/issues/305): Entity Types' widget should be flat.
-* Enhancement: [#291](https://github.com/insideout10/wordlift-plugin/issues/291): The calendar for startDate and endDate of an event cannot be used for historical events.
-* Enhancement: [#254](https://github.com/insideout10/wordlift-plugin/issues/254): Timeline visualization problem.
+* Feature: [#371](https://github.com/insideout10/wordlift-plugin/issues/371): Extending the list of properties for schema-org:Article.
+* Feature: [#358](https://github.com/insideout10/wordlift-plugin/issues/358): Application Key Not Set - Messaging improvement is needed.
+* Feature: [#350](https://github.com/insideout10/wordlift-plugin/issues/350): Entity Annotation Loop.
+* Feature: [#345](https://github.com/insideout10/wordlift-plugin/issues/345): Entity suggested when analyzing the entity content itself.
+* Feature: [#305](https://github.com/insideout10/wordlift-plugin/issues/305): Entity Types' widget should be flat.
+* Feature: [#291](https://github.com/insideout10/wordlift-plugin/issues/291): The calendar for startDate and endDate of an event cannot be used for historical events.
+* Feature: [#254](https://github.com/insideout10/wordlift-plugin/issues/254): Timeline visualization problem.
 * Fix: [#448](https://github.com/insideout10/wordlift-plugin/issues/448): JSON-LD not loaded with WP Fastest Cache plugin.
 * Fix: [#447](https://github.com/insideout10/wordlift-plugin/issues/447): Enqueue of styles and JS should be more selective and limited to content editing screens.
 * Fix: [#446](https://github.com/insideout10/wordlift-plugin/issues/446): Return value of wl_schema_get_value not always check to not be null.
@@ -228,16 +250,16 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#430](https://github.com/insideout10/wordlift-plugin/issues/430): Fix analysis selectors in WP 4.5 and lower.
 
 = 3.9.1 (2016-12-29) =
-* Enhancement: [#429](https://github.com/insideout10/wordlift-plugin/issues/429): German missing in supported languages' list.
+* Feature: [#429](https://github.com/insideout10/wordlift-plugin/issues/429): German missing in supported languages' list.
 
 = 3.9.0 (2016-12-29) =
-* Enhancement: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
-* Enhancement: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
-* Enhancement: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
-* Enhancement: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
-* Enhancement: [#395](https://github.com/insideout10/wordlift-plugin/issues/395): Author missing from entities edit pages.
-* Enhancement: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
-* Enhancement: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
+* Feature: [#425](https://github.com/insideout10/wordlift-plugin/issues/425): Move the traslator server-side.
+* Feature: [#417](https://github.com/insideout10/wordlift-plugin/issues/417): Integrate e2e tests in WordLift.
+* Feature: [#408](https://github.com/insideout10/wordlift-plugin/issues/408): Remove the Caching submodule.
+* Feature: [#397](https://github.com/insideout10/wordlift-plugin/issues/397): Review WordLift's setup process.
+* Feature: [#395](https://github.com/insideout10/wordlift-plugin/issues/395): Author missing from entities edit pages.
+* Feature: [#376](https://github.com/insideout10/wordlift-plugin/issues/376): Enable revisions for entities.
+* Feature: [#349](https://github.com/insideout10/wordlift-plugin/issues/349): Remove all non supported languages from the Settings.
 * Fix: [#391](https://github.com/insideout10/wordlift-plugin/issues/391): Html code messed u when using WordLift on previous posts and with Twitter embeds.
 * Fix: [#353](https://github.com/insideout10/wordlift-plugin/issues/353): Responsive not working on the Vocabulary page on WordPress.
 * Fix: [#341](https://github.com/insideout10/wordlift-plugin/issues/341): Special characters do not display correctly in LodLive.
@@ -249,9 +271,9 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#406](https://github.com/insideout10/wordlift-plugin/issues/406): JSON-LD response corrupt.
 
 = 3.8.0 (2016-11-10) =
-* Enhancement: [#372](https://github.com/insideout10/wordlift-plugin/issues/372): The layout of the Navigator messes up with long entity titles.
-* Enhancement: [#365](https://github.com/insideout10/wordlift-plugin/issues/365): Stop words are analyzed too.
-* Enhancement: [#310](https://github.com/insideout10/wordlift-plugin/issues/310): Favour json-ld in place of microdata.
+* Feature: [#372](https://github.com/insideout10/wordlift-plugin/issues/372): The layout of the Navigator messes up with long entity titles.
+* Feature: [#365](https://github.com/insideout10/wordlift-plugin/issues/365): Stop words are analyzed too.
+* Feature: [#310](https://github.com/insideout10/wordlift-plugin/issues/310): Favour json-ld in place of microdata.
 * Fix: [#386](https://github.com/insideout10/wordlift-plugin/issues/386): Linked data not saved.
 * Fix: [#393](https://github.com/insideout10/wordlift-plugin/issues/393): JSON-LD problem with OSDS.
 
@@ -262,19 +284,19 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#351](https://github.com/insideout10/wordlift-plugin/issues/351): Text annotations missing for found entities.
 * Fix: [#363](https://github.com/insideout10/wordlift-plugin/issues/363): Synonyms associated to other entities.
 * Fix: [#368](https://github.com/insideout10/wordlift-plugin/issues/368): Adding unneeded p tag for entity properties.
-* Enhancement: [#370](https://github.com/insideout10/wordlift-plugin/issues/370): Upgrade to TimelineJS 3.x.
-* Enhancement: [#369](https://github.com/insideout10/wordlift-plugin/issues/369): Remove the unused In-Depth file.
-* Enhancement: [#354](https://github.com/insideout10/wordlift-plugin/issues/354): Improve the navigator Widget by adding links to the images.
-* Enhancement: [#352](https://github.com/insideout10/wordlift-plugin/issues/352): Improve design of the TimeLine Widget.
+* Feature: [#370](https://github.com/insideout10/wordlift-plugin/issues/370): Upgrade to TimelineJS 3.x.
+* Feature: [#369](https://github.com/insideout10/wordlift-plugin/issues/369): Remove the unused In-Depth file.
+* Feature: [#354](https://github.com/insideout10/wordlift-plugin/issues/354): Improve the navigator Widget by adding links to the images.
+* Feature: [#352](https://github.com/insideout10/wordlift-plugin/issues/352): Improve design of the TimeLine Widget.
 
 = 3.6.0 (2016-09-25) =
-* Enhancement: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path.
-* Enhancement: [#230](https://github.com/insideout10/wordlift-plugin/issues/230): Download your data.
-* Enhancement: [#338](https://github.com/insideout10/wordlift-plugin/issues/338): Custom domains and dataset names
-* Enhancement: [#339](https://github.com/insideout10/wordlift-plugin/issues/339): Improving the Import/Export of the user Vocabulary.
-* Enhancement: [#342](https://github.com/insideout10/wordlift-plugin/issues/342): Data migration.
-* Enhancement: [#343](https://github.com/insideout10/wordlift-plugin/issues/343): Disable Wikipedia images.
-* Enhancement: [#346](https://github.com/insideout10/wordlift-plugin/issues/346): Add Telephone and URL properties.
+* Feature: [#125](https://github.com/insideout10/wordlift-plugin/issues/125): Personalise the entity path.
+* Feature: [#230](https://github.com/insideout10/wordlift-plugin/issues/230): Download your data.
+* Feature: [#338](https://github.com/insideout10/wordlift-plugin/issues/338): Custom domains and dataset names
+* Feature: [#339](https://github.com/insideout10/wordlift-plugin/issues/339): Improving the Import/Export of the user Vocabulary.
+* Feature: [#342](https://github.com/insideout10/wordlift-plugin/issues/342): Data migration.
+* Feature: [#343](https://github.com/insideout10/wordlift-plugin/issues/343): Disable Wikipedia images.
+* Feature: [#346](https://github.com/insideout10/wordlift-plugin/issues/346): Add Telephone and URL properties.
 * Fix: [#340](https://github.com/insideout10/wordlift-plugin/issues/340): Incompatible date widget.
 * Fix: [#347](https://github.com/insideout10/wordlift-plugin/issues/347): Annotations mysteriously disappeared.
 * Fix: [#346](https://github.com/insideout10/wordlift-plugin/issues/346): Double link in front-end entities.
@@ -295,49 +317,49 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Fix: [#315](https://github.com/insideout10/wordlift-plugin/issues/315): Activation on large web sites fails.
 
 = 3.5.1 (2016-06-16) =
-* Enhancement: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities threshold to improve widget usability.
+* Feature: [#312](https://github.com/insideout10/wordlift-plugin/issues/312): Reduce chord entities threshold to improve widget usability.
 
 = 3.5.0 (2016-05-16) =
 * Fix: [#300](https://github.com/insideout10/wordlift-plugin/issues/300): Ensure only published entities are returned as facets by faceted search widget.
 * Fix: [#299](https://github.com/insideout10/wordlift-plugin/issues/299): Featured images are now properly updated on RL.
-* Enhancement: [#295](https://github.com/insideout10/wordlift-plugin/issues/295): New UI refinements.
-* Enhancement: [#297](https://github.com/insideout10/wordlift-plugin/issues/297): Detect classification scope from current entity type.
-* Enhancement: [#284](https://github.com/insideout10/wordlift-plugin/issues/284): Disambiguation widget UI refactoring.
-* Enhancement: [#289](https://github.com/insideout10/wordlift-plugin/issues/289): Introduced html static templates for angularjs layer components.
-* Enhancement: [#288](https://github.com/insideout10/wordlift-plugin/issues/288): Removed selected entities tags from disambiguation widget.
-* Enhancement: [#283](https://github.com/insideout10/wordlift-plugin/issues/283): Dbpedia topics are now mapped also on a custom taxonomy.
-* Enhancement: [#229](https://github.com/insideout10/wordlift-plugin/issues/229): Add article classification.
-* Enhancement: [#294](https://github.com/insideout10/wordlift-plugin/issues/294): Fix disambiguation failure use case.
-* Enhancement: [#280](https://github.com/insideout10/wordlift-plugin/issues/280): Fix disambiguation failure use case.
-* Enhancement: [#279](https://github.com/insideout10/wordlift-plugin/issues/279): Disambiguation fixed for entities with escaped chars contained in the uri.
-* Enhancement: [#276](https://github.com/insideout10/wordlift-plugin/issues/276): Fix facets layout with entities long titles.
-* Enhancement: [#275](https://github.com/insideout10/wordlift-plugin/issues/275): Exclude posts without featured image from navigator results.
-* Enhancement: [#274](https://github.com/insideout10/wordlift-plugin/issues/274): Simplify facets layout grid.
-* Enhancement: [#273](https://github.com/insideout10/wordlift-plugin/issues/273): Remove entity type icon and counter from facets within faceted search widget to simplify the layout.
-* Enhancement: [#270](https://github.com/insideout10/wordlift-plugin/issues/270): Show wl-carousel controls on mouseover only.
-* Enhancement: [#269](https://github.com/insideout10/wordlift-plugin/issues/269): Fix NaN in WL dashboard.
-* Enhancement: [#268](https://github.com/insideout10/wordlift-plugin/issues/268): Flaoting configurable layout is now available both for navigator and faceted search.
-* Enhancement: [#267](https://github.com/insideout10/wordlift-plugin/issues/267): Force override for entities with same schema type and label within disambiguation workflow.
-* Enhancement: [#264](https://github.com/insideout10/wordlift-plugin/issues/264): Improve data selection strategy for navigation widget.
-* Enhancement: [#253](https://github.com/insideout10/wordlift-plugin/issues/253): Introduce navigator and faceted search configuration.
-* Enhancement: [#258](https://github.com/insideout10/wordlift-plugin/issues/258): Entity titles are now also published in the graph as dc:title.
-* Enhancement: [#147](https://github.com/insideout10/wordlift-plugin/issues/147): Navigator widget works also on entity pages.
-* Enhancement: [#232](https://github.com/insideout10/wordlift-plugin/issues/232): Navigator widget refactoring.
-* Enhancement: [#224](https://github.com/insideout10/wordlift-plugin/issues/224): Enable entity partial match in autocomplete.
-* Enhancement: [#215](https://github.com/insideout10/wordlift-plugin/issues/215): Allow to create multiple entities with same label and different entity types safely (without any overlapping).
-* Enhancement: [#130](https://github.com/insideout10/wordlift-plugin/issues/130): Remove angularjs bower dependency. CDN is used instead.
+* Feature: [#295](https://github.com/insideout10/wordlift-plugin/issues/295): New UI refinements.
+* Feature: [#297](https://github.com/insideout10/wordlift-plugin/issues/297): Detect classification scope from current entity type.
+* Feature: [#284](https://github.com/insideout10/wordlift-plugin/issues/284): Disambiguation widget UI refactoring.
+* Feature: [#289](https://github.com/insideout10/wordlift-plugin/issues/289): Introduced html static templates for angularjs layer components.
+* Feature: [#288](https://github.com/insideout10/wordlift-plugin/issues/288): Removed selected entities tags from disambiguation widget.
+* Feature: [#283](https://github.com/insideout10/wordlift-plugin/issues/283): Dbpedia topics are now mapped also on a custom taxonomy.
+* Feature: [#229](https://github.com/insideout10/wordlift-plugin/issues/229): Add article classification.
+* Feature: [#294](https://github.com/insideout10/wordlift-plugin/issues/294): Fix disambiguation failure use case.
+* Feature: [#280](https://github.com/insideout10/wordlift-plugin/issues/280): Fix disambiguation failure use case.
+* Feature: [#279](https://github.com/insideout10/wordlift-plugin/issues/279): Disambiguation fixed for entities with escaped chars contained in the uri.
+* Feature: [#276](https://github.com/insideout10/wordlift-plugin/issues/276): Fix facets layout with entities long titles.
+* Feature: [#275](https://github.com/insideout10/wordlift-plugin/issues/275): Exclude posts without featured image from navigator results.
+* Feature: [#274](https://github.com/insideout10/wordlift-plugin/issues/274): Simplify facets layout grid.
+* Feature: [#273](https://github.com/insideout10/wordlift-plugin/issues/273): Remove entity type icon and counter from facets within faceted search widget to simplify the layout.
+* Feature: [#270](https://github.com/insideout10/wordlift-plugin/issues/270): Show wl-carousel controls on mouseover only.
+* Feature: [#269](https://github.com/insideout10/wordlift-plugin/issues/269): Fix NaN in WL dashboard.
+* Feature: [#268](https://github.com/insideout10/wordlift-plugin/issues/268): Flaoting configurable layout is now available both for navigator and faceted search.
+* Feature: [#267](https://github.com/insideout10/wordlift-plugin/issues/267): Force override for entities with same schema type and label within disambiguation workflow.
+* Feature: [#264](https://github.com/insideout10/wordlift-plugin/issues/264): Improve data selection strategy for navigation widget.
+* Feature: [#253](https://github.com/insideout10/wordlift-plugin/issues/253): Introduce navigator and faceted search configuration.
+* Feature: [#258](https://github.com/insideout10/wordlift-plugin/issues/258): Entity titles are now also published in the graph as dc:title.
+* Feature: [#147](https://github.com/insideout10/wordlift-plugin/issues/147): Navigator widget works also on entity pages.
+* Feature: [#232](https://github.com/insideout10/wordlift-plugin/issues/232): Navigator widget refactoring.
+* Feature: [#224](https://github.com/insideout10/wordlift-plugin/issues/224): Enable entity partial match in autocomplete.
+* Feature: [#215](https://github.com/insideout10/wordlift-plugin/issues/215): Allow to create multiple entities with same label and different entity types safely (without any overlapping).
+* Feature: [#130](https://github.com/insideout10/wordlift-plugin/issues/130): Remove angularjs bower dependency. CDN is used instead.
 
 = 3.4.0 (2016-02-12) =
-* Enhancement: [#263](https://github.com/insideout10/wordlift-plugin/issues/263): Sorting and smart auto-limit added for entities in faceted search widget.
-* Enhancement: [#255](https://github.com/insideout10/wordlift-plugin/issues/255): Disable entity url editing.
+* Feature: [#263](https://github.com/insideout10/wordlift-plugin/issues/263): Sorting and smart auto-limit added for entities in faceted search widget.
+* Feature: [#255](https://github.com/insideout10/wordlift-plugin/issues/255): Disable entity url editing.
 * Fix: [#251](https://github.com/insideout10/wordlift-plugin/issues/251): avoid entity duplication for entities with an updated label used in disambiguation.
 * Fix: [#244](https://github.com/insideout10/wordlift-plugin/issues/244): Tinymce does not remain idle anymore switching between Visual and Text mode.
-* Enhancement: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget.
-* Enhancement: [#231](https://github.com/insideout10/wordlift-plugin/issues/231): Faceted search widget is now available also for standard posts
-* Enhancement: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
-* Enhancement: [#214](https://github.com/insideout10/wordlift-plugin/issues/214): Faceted search 4W revamp.
-* Enhancement: [#180](https://github.com/insideout10/wordlift-plugin/issues/180): Enable minified js files for faceted search shortcode.
-* Enhancement: [#115](https://github.com/insideout10/wordlift-plugin/issues/115): Filter out the current entity from the analysis results to avoid to link a given entity with itself.
+* Feature: [#233](https://github.com/insideout10/wordlift-plugin/issues/233): Add WordLift dashboard widget.
+* Feature: [#231](https://github.com/insideout10/wordlift-plugin/issues/231): Faceted search widget is now available also for standard posts
+* Feature: [#223](https://github.com/insideout10/wordlift-plugin/issues/223): Remove unavailable entity images from images suggestions.
+* Feature: [#214](https://github.com/insideout10/wordlift-plugin/issues/214): Faceted search 4W revamp.
+* Feature: [#180](https://github.com/insideout10/wordlift-plugin/issues/180): Enable minified js files for faceted search shortcode.
+* Feature: [#115](https://github.com/insideout10/wordlift-plugin/issues/115): Filter out the current entity from the analysis results to avoid to link a given entity with itself.
 
 = 3.3.5 (2016-02-10) =
 * Fix: [#260](https://github.com/insideout10/wordlift-plugin/issues/260): Autosave disabled for entity posts to avoid unexpected entities duplication
@@ -365,15 +387,15 @@ Change wording for invalid or missing text selection on entity creation workflow
 * Fix: [#225](https://github.com/insideout10/wordlift-plugin/issues/225): Return safely when get_current_screen() is not defined (yet).
 
 = 3.3.0 (2016-01-06) =
-* Enhancement: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): Download and save Place coordinates from RL.
-* Enhancement: [#161](https://github.com/insideout10/wordlift-plugin/issues/161): Geomap shows current entity if it is a Place (or child of Place).
-* Enhancement: [#207](https://github.com/insideout10/wordlift-plugin/issues/207): Add rating score and consistency check for entities.
-* Enhancement: [#209](https://github.com/insideout10/wordlift-plugin/issues/209): Add thumbnail preview within the entity listing.
-* Enhancement: [#208](https://github.com/insideout10/wordlift-plugin/issues/208): Add classification scopes filter - aka 4W filter - within entity listing.
-* Enhancement: [#199](https://github.com/insideout10/wordlift-plugin/issues/199) & [#101](https://github.com/insideout10/wordlift-plugin/issues/101): Improve new entity creation workflow usability within the content post editing.
-* Enhancement: [#171](https://github.com/insideout10/wordlift-plugin/issues/171): Add related posts counter within the entity listing.
-* Enhancement: [#121](https://github.com/insideout10/wordlift-plugin/issues/121): Improve UI consinstency
-* Enhancement: [#140](https://github.com/insideout10/wordlift-plugin/issues/140): Add new properties for Organization
+* Feature: [#151](https://github.com/insideout10/wordlift-plugin/issues/151): Download and save Place coordinates from RL.
+* Feature: [#161](https://github.com/insideout10/wordlift-plugin/issues/161): Geomap shows current entity if it is a Place (or child of Place).
+* Feature: [#207](https://github.com/insideout10/wordlift-plugin/issues/207): Add rating score and consistency check for entities.
+* Feature: [#209](https://github.com/insideout10/wordlift-plugin/issues/209): Add thumbnail preview within the entity listing.
+* Feature: [#208](https://github.com/insideout10/wordlift-plugin/issues/208): Add classification scopes filter - aka 4W filter - within entity listing.
+* Feature: [#199](https://github.com/insideout10/wordlift-plugin/issues/199) & [#101](https://github.com/insideout10/wordlift-plugin/issues/101): Improve new entity creation workflow usability within the content post editing.
+* Feature: [#171](https://github.com/insideout10/wordlift-plugin/issues/171): Add related posts counter within the entity listing.
+* Feature: [#121](https://github.com/insideout10/wordlift-plugin/issues/121): Improve UI consinstency
+* Feature: [#140](https://github.com/insideout10/wordlift-plugin/issues/140): Add new properties for Organization
 
 = 3.2.5 (2015-12-25) =
 * Fix: [#221](https://github.com/insideout10/wordlift-plugin/issues/221): Fix de-synch between Wordpress and RedLink when disambiguation is performed trough entity alternative title
@@ -393,21 +415,21 @@ Change wording for invalid or missing text selection on entity creation workflow
  * Fix: [#194](https://github.com/insideout10/wordlift-plugin/issues/194): Make text annotations within tinymce editor not editable.
 
 = 3.2.0 (2015-12-04) =
- * Enhancement: [#196](https://github.com/insideout10/wordlift-plugin/issues/196): renovate the Vocabulary icon with WordLift logo.
- * Enhancement: [#195](https://github.com/insideout10/wordlift-plugin/issues/195): re-enable title duplicates notices.
- * Enhancement: [#185](https://github.com/insideout10/wordlift-plugin/issues/185): cleaning up, remove the entity_view submodule.
- * Enhancement: [#184](https://github.com/insideout10/wordlift-plugin/issues/184): for the joy of the 100,000+ active installs, we're now compatible with the [ShareThis plugin](https://wordpress.org/plugins/share-this/).
- * Enhancement: [#181](https://github.com/insideout10/wordlift-plugin/issues/181): finally, you can add more titles to entities.
- * Enhancement: [#178](https://github.com/insideout10/wordlift-plugin/issues/178): some renovation, add WordLift in the naming of the Metabox.
- * Enhancement: [#177](https://github.com/insideout10/wordlift-plugin/issues/177): enjoy better admin notices.
- * Enhancement: [#176](https://github.com/insideout10/wordlift-plugin/issues/176): cleaning up, remove the option "color coding on front-end".
- * Enhancement: [#175](https://github.com/insideout10/wordlift-plugin/issues/175): cleaning up, remove SPARQL queries menu item.
- * Enhancement: [#174](https://github.com/insideout10/wordlift-plugin/issues/174): cleaning up, remove performance analysis menu item.
- * Enhancement: [#173](https://github.com/insideout10/wordlift-plugin/issues/173): cleaning up, remove WordLift upper-right corner icon.
- * Enhancement: [#170](https://github.com/insideout10/wordlift-plugin/issues/170): disable entity editing in disambiguation widget for internal entities.
- * Enhancement: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
- * Enhancement: [#149](https://github.com/insideout10/wordlift-plugin/issues/149): add email and organization properties to Person.
- * Enhancement: [#143](https://github.com/insideout10/wordlift-plugin/issues/143): it is now possible to specify many additional properties for addresses.
+ * Feature: [#196](https://github.com/insideout10/wordlift-plugin/issues/196): renovate the Vocabulary icon with WordLift logo.
+ * Feature: [#195](https://github.com/insideout10/wordlift-plugin/issues/195): re-enable title duplicates notices.
+ * Feature: [#185](https://github.com/insideout10/wordlift-plugin/issues/185): cleaning up, remove the entity_view submodule.
+ * Feature: [#184](https://github.com/insideout10/wordlift-plugin/issues/184): for the joy of the 100,000+ active installs, we're now compatible with the [ShareThis plugin](https://wordpress.org/plugins/share-this/).
+ * Feature: [#181](https://github.com/insideout10/wordlift-plugin/issues/181): finally, you can add more titles to entities.
+ * Feature: [#178](https://github.com/insideout10/wordlift-plugin/issues/178): some renovation, add WordLift in the naming of the Metabox.
+ * Feature: [#177](https://github.com/insideout10/wordlift-plugin/issues/177): enjoy better admin notices.
+ * Feature: [#176](https://github.com/insideout10/wordlift-plugin/issues/176): cleaning up, remove the option "color coding on front-end".
+ * Feature: [#175](https://github.com/insideout10/wordlift-plugin/issues/175): cleaning up, remove SPARQL queries menu item.
+ * Feature: [#174](https://github.com/insideout10/wordlift-plugin/issues/174): cleaning up, remove performance analysis menu item.
+ * Feature: [#173](https://github.com/insideout10/wordlift-plugin/issues/173): cleaning up, remove WordLift upper-right corner icon.
+ * Feature: [#170](https://github.com/insideout10/wordlift-plugin/issues/170): disable entity editing in disambiguation widget for internal entities.
+ * Feature: [#159](https://github.com/insideout10/wordlift-plugin/issues/159): enable both date and datetime fields for the metabox.
+ * Feature: [#149](https://github.com/insideout10/wordlift-plugin/issues/149): add email and organization properties to Person.
+ * Feature: [#143](https://github.com/insideout10/wordlift-plugin/issues/143): it is now possible to specify many additional properties for addresses.
  * Fix: [#189](https://github.com/insideout10/wordlift-plugin/issues/189): fix entity recognition when bullet points are used.
  * Fix: [#122](https://github.com/insideout10/wordlift-plugin/issues/122): fire related posts loading on disambiguation widget loading.
 
@@ -436,9 +458,9 @@ Change wording for invalid or missing text selection on entity creation workflow
  * Fix: [#112](https://github.com/insideout10/wordlift-plugin/issues/112): chord tooltip has white background and black font to avoid themes conflicting with the widget.
 
 = 3.1.0 (2015-11-13) =
- * Enhancement: [#145](https://github.com/insideout10/wordlift-plugin/issues/145): control new entities creation from metaboxes.
- * Enhancement: [#134](https://github.com/insideout10/wordlift-plugin/issues/134): scripts and styles source repository merged with PHP repository.
- * Enhancement: [#57](https://github.com/insideout10/wordlift-plugin/issues/57): on the Edit Entity page the referencing posts has been restored.
+ * Feature: [#145](https://github.com/insideout10/wordlift-plugin/issues/145): control new entities creation from metaboxes.
+ * Feature: [#134](https://github.com/insideout10/wordlift-plugin/issues/134): scripts and styles source repository merged with PHP repository.
+ * Feature: [#57](https://github.com/insideout10/wordlift-plugin/issues/57): on the Edit Entity page the referencing posts has been restored.
  * Fix: [#144](https://github.com/insideout10/wordlift-plugin/issues/144): changing type on WordLift doesn't reset the property list on Redlink is now fixed.
  * Fix: [#141](https://github.com/insideout10/wordlift-plugin/issues/141): properties when published to Redlink have no links (and no meaning) is now fixed.
  * Fix: [#139](https://github.com/insideout10/wordlift-plugin/issues/139): single founder while expecting multiple founders is now fixed.
@@ -467,12 +489,12 @@ Change wording for invalid or missing text selection on entity creation workflow
  * Fix: [#95](https://github.com/insideout10/wordlift-plugin/issues/95): WordPress image edit controls disappears after installing WordLift is now fixed.
 
 = 3.0.12 (2015-10-23) =
- * Enhancement: [#85](https://github.com/insideout10/wordlift-plugin/issues/85): now structured data are added in the entity pages for the current entity itself
+ * Feature: [#85](https://github.com/insideout10/wordlift-plugin/issues/85): now structured data are added in the entity pages for the current entity itself
  * Fix: [#128](https://github.com/insideout10/wordlift-plugin/issues/128): now hashes in the text do not break anymore the annotations embedding after analysis execution
  * Fix: [#96](https://github.com/insideout10/wordlift-plugin/issues/96): garbage response from api is no more returned
 
 = 3.0.11 (2015-10-14) =
- * Enhancement: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
+ * Feature: 'View Linked Data' button to visualize RDF triples with [LodView](https://github.com/dvcama/LodView)
 
 = 3.0.10 (2015-10-14) =
   * Fix [#119](https://github.com/insideout10/wordlift-plugin/issues/119). Now public entities status is properly preserved when linked to draft posts.
@@ -482,7 +504,7 @@ Change wording for invalid or missing text selection on entity creation workflow
  * Fix: [issue 13](https://github.com/insideout10/wordlift-plugin/issues/13): authorship tagging is now shown only on single pages and posts (thanks to Kevin Polley)
 
 = 2.6.18 =
- * Enhancement: Twitter authentication is now back.
+ * Feature: Twitter authentication is now back.
 
 = 2.6.17 =
  * Fix: change regular expression to add image itemprops for In-Depth articles to avoid conflicts with linked images and plugins such Nav Menu Images (thanks to Lee Hodson).
@@ -497,7 +519,7 @@ Change wording for invalid or missing text selection on entity creation workflow
 = 2.6.14 =
  * Fix: post thumbnail html output even if there's no thumbnail.
  * Fix: adding schema.org title using the_title filter could cause issues with theme that use this function for the img tag alt attribute value.
- * Enhancement: add support for DW Focus theme.
+ * Feature: add support for DW Focus theme.
 
 = 2.6.13 =
  * Fix: overlap with Facebook admin menu.

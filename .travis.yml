@@ -1,6 +1,7 @@
 # We need `sudo` because we're going to install Apache with PHP.
 # See https://docs.travis-ci.com/user/ci-environment/#Virtualization-environments
 sudo: required
+dist: precise
 
 # Set the language to PHP since we're going to setup a WordPress web site.
 language: php
@@ -20,22 +21,25 @@ matrix:
     # JavaScript end-to-end tests.
     - php: 5.6
       env: SCRIPT=test:e2e
-    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+    # Additional PHP Unit tests, PHP 7.0, WP 4.8 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.0
-      env: SCRIPT=test:php WP_VERSION=4.7
-    # Additional PHP Unit tests, PHP 7.0, WP 4.7 (WP 4.2 isn't compatible with PHP 7.x).
+      env: SCRIPT=test:php WP_VERSION=4.8
+    # Additional PHP Unit tests, PHP 7.0, WP 4.8 (WP 4.2 isn't compatible with PHP 7.x).
     - php: 7.1
-      env: SCRIPT=test:php WP_VERSION=4.7
+      env: SCRIPT=test:php WP_VERSION=4.8
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
     # JavaScript unit tests.
     - php: 5.6
       env: SCRIPT=test:js
-    # Additional PHP Unit tests multisite enviroment, PHP 5.6, WP 4.7.
+    # Additional PHP Unit tests multisite enviroment, PHP 5.6, WP 4.8.
     - php: 5.6
-      env: SCRIPT=test:multisite WP_VERSION=4.7
+      env: SCRIPT=test:multisite WP_VERSION=4.8
   allow_failures:
+    # JavaScript end-to-end tests.
+    - php: 5.6
+      env: SCRIPT=test:e2e
     # WordPress nightly.
     - php: 5.6
       env: SCRIPT=test:php WP_VERSION=nightly
@@ -81,7 +85,7 @@ env:
     - secure: "BPMK2gsJp6pL9rQ+qJUJaCiILGI5DTn91bcEeOOguiPtg2EUMpZWG3fvyIoFJzGu8Mi7jluP60au00cmYK8QbtwJyDACqsmDRwV+1JFrl1ipZJ2R/KVksFfzsb8qOnNG9ejCSkobHj3IrR5l+bCJU2PPa9/d/lc3DFhZaNW4T3k="
     - secure: "MWJrwnQ09c+ekylfFMuky4W3V5rokJBGMXTZp5/PsDgY2eL684/77vIjUQ6tBNVrKIMhh5VbAoJ3FIY3PkbCVoz0JN3hRJ4JZNtqn1X/ABC7i0csC09ObLZO55/F2kHawPofvysdg/h9xfvd7vUQsoqd4FQcyxEzbUGmv2XenTE="
   matrix:
-    - SCRIPT=test:php WP_VERSION=4.7
+    - SCRIPT=test:php WP_VERSION=4.8
     - SCRIPT=test:php WP_VERSION=4.2
 
 services:
@@ -109,10 +113,10 @@ before_install:
   - |
     if [[ "$SCRIPT" == "test:e2e" ]]; then
       .ci/travis/sauce_connect_start.sh
-      .ci/travis/install_apache.sh
       mysql -e 'create database wordpress default charset utf8mb4 default collate utf8mb4_general_ci;'
       .ci/travis/install_wp_cli.sh
       .ci/travis/install_wordpress.sh
+      .ci/travis/install_apache.sh
     fi
 
 before_script:
