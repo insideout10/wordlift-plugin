@@ -5,7 +5,7 @@
  * A complex element that displays the current person entity associated with a User
  * and enables selecting a new one.
  *
- * @since      3.13.0
+ * @since      3.14.0
  * @package    Wordlift
  * @subpackage Wordlift/admin
  */
@@ -13,7 +13,7 @@
 /**
  * Define the {@link Wordlift_Admin_Person_Element} class.
  *
- * @since      3.13.0
+ * @since      3.14.0
  * @package    Wordlift
  * @subpackage Wordlift/admin
  */
@@ -22,31 +22,36 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 	/**
 	 * The {@link Wordlift_Publisher_Service} instance.
 	 *
-	 * @since  3.13.0
+	 * @since  3.14.0
 	 * @access private
 	 * @var \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 */
 	private $publisher_service;
+
 	/**
-	 * @var Wordlift_Admin_Select2_Element
+	 * A {@link Wordlift_Admin_Select2_Element} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Admin_Select2_Element $select_element A {@link Wordlift_Admin_Select2_Element} instance.
 	 */
 	private $select_element;
 
 	/**
 	 * Create a {@link Wordlift_Admin_Person_Element} instance.
 	 *
-	 * @since 3.13.0
+	 * @since 3.14.0
 	 *
-	 * @param \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
-	 * @param \Wordlift_Publisher_Service     $publisher_service     The {@link Wordlift_Publisher_Service} instance.
-	 * @param \Wordlift_Admin_Select2_Element $select_element        The {@link Wordlift_Admin_Select_Element} instance.
+	 * @param \Wordlift_Publisher_Service     $publisher_service The {@link Wordlift_Publisher_Service} instance.
+	 * @param \Wordlift_Admin_Select2_Element $select_element    The {@link Wordlift_Admin_Select_Element} instance.
 	 */
 	function __construct( $publisher_service, $select_element ) {
 
-		$this->publisher_service     = $publisher_service;
+		$this->publisher_service = $publisher_service;
 
 		// Child elements.
 		$this->select_element = $select_element;
+
 	}
 
 	/**
@@ -56,16 +61,13 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 
 		// Parse the arguments and merge with default values.
 		$params = wp_parse_args( $args, array(
-			'id'   => uniqid( 'wl-input-' ),
-			'name' => uniqid( 'wl-input-' ),
+			'id'             => uniqid( 'wl-input-' ),
+			'name'           => uniqid( 'wl-input-' ),
 			'current_entity' => 0,
 		) );
 
 		$current_entity_id = $params['current_entity'];
-		$current_entity = $current_entity_id ? get_post( $current_entity_id ) : null;
-
-		// Get the number of potential candidates as persons.
-		$count = $this->publisher_service->count();
+		$current_entity    = $current_entity_id ? get_post( $current_entity_id ) : null;
 
 		// Prepare the URLs for entities which don't have logos.
 		$person_thumbnail_url       = plugin_dir_url( dirname( __FILE__ ) ) . 'images/person.png';
@@ -107,31 +109,31 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 	}
 
 	/**
-	 * Add the JS code resuired to inizialize select2.
+	 * Add the JS code to initialize select2.
 	 *
-	 * @since 3.13.0
+	 * @since 3.14.0
 	 */
 	public function initialize_select2() {
 		?>
 		<script type="text/javascript">
-		jQuery(document).ready(function ($) {
-			$( '.wl-select2-element' ).each(function ( index, element ) {
-				var $e = $(element);
-				$e.select2(
-					{
-						width: '100%',
-						data: $e.data( 'wl-select2-data' ),
-						escapeMarkup: function( markup ) {
-							return markup;
-						},
-						templateResult: _.template( $e.data( 'wl-select2-template-result' ) ),
-						templateSelection: _.template( $e.data( 'wl-select2-template-selection' ) ),
-						containerCssClass: 'wl-admin-settings-page-select2',
-						dropdownCssClass: 'wl-admin-settings-page-select2',
-					}
-				);
-			});
-		});
+			jQuery( document ).ready( function( $ ) {
+				$( '.wl-select2-element' ).each( function( index, element ) {
+					const $e = $( element );
+					$e.select2(
+						{
+							width: '100%',
+							data: $e.data( 'wl-select2-data' ),
+							escapeMarkup: function( markup ) {
+								return markup;
+							},
+							templateResult: _.template( $e.data( 'wl-select2-template-result' ) ),
+							templateSelection: _.template( $e.data( 'wl-select2-template-selection' ) ),
+							containerCssClass: 'wl-admin-settings-page-select2',
+							dropdownCssClass: 'wl-admin-settings-page-select2',
+						}
+					);
+				} );
+			} );
 		</script>
 		<?php
 	}

@@ -25,3 +25,5 @@ errorShots/
 
 # We don't need npm debug logs in the repo.
 npm-debug.log
+
+tests/phpunit.bat

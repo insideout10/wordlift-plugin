@@ -1,4 +1,0 @@
-@SET WL_DISABLE_SPARQL_UPDATE_QUERIES_BUFFERING="true"
-@SET WORDLIFT_KEY="QB5qXLFbhEXzlLKSONJZiYnhEDNY0EIXknfEBsgWVz1Wn3t3Qn9BNmlCmCM6AVu5"
-@set WP_TESTS_DIR=D:/wamp/www/tests/wordlift/tests/phpunit/
-phpunit70 %*
