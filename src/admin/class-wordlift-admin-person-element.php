@@ -74,8 +74,9 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 		$organization_thumbnail_url = plugin_dir_url( dirname( __FILE__ ) ) . 'images/organization.png';
 
 		$data = $this->publisher_service->query();
+
 		// Set a default to show when no entity is associated and a way to unassign.
-		$data[0] = '';
+		array_unshift( $data, '' );
 
 		// Finally render the Select.
 		$this->select_element->render( array(
