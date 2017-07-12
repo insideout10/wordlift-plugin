@@ -209,14 +209,47 @@ function wl_core_upgrade_db_3_10_3_12() {
 	});
 }
 
+/**
+ * Upgrade the DB structure to the one expected by the 3.14 release.
+ *
+ * Add the capabilities to manage entities to admins and editors
+ *
+ * @since 3.12.0
+ */
+function wl_core_upgrade_db_3_12_3_14() {
+
+	// Assign capabilities to manipulate entities to admins.
+	$admins = get_role( 'administrator' );
+
+	$admins->add_cap( 'edit_wordlift_entity' );
+	$admins->add_cap( 'edit_wordlift_entities' );
+	$admins->add_cap( 'edit_other_wordlift_entities' );
+	$admins->add_cap( 'publish_wordlift_entities' );
+	$admins->add_cap( 'read_wordlift_entity' );
+	$admins->add_cap( 'read_private_wordlift_entities' );
+	$admins->add_cap( 'delete_wordlift_entity' );
+
+	// Assign capabilities to manipulate entities to admins.
+	$editors = get_role( 'editor' );
+
+	$editors->add_cap( 'edit_wordlift_entity' );
+	$editors->add_cap( 'edit_wordlift_entities' );
+	$editors->add_cap( 'edit_other_wordlift_entities' );
+	$editors->add_cap( 'publish_wordlift_entities' );
+	$editors->add_cap( 'read_wordlift_entity' );
+	$editors->add_cap( 'read_private_wordlift_entities' );
+	$editors->add_cap( 'delete_wordlift_entity' );
+}
+
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
-
+	wl_core_upgrade_db_3_12_3_14();
 	if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
 
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
+		wl_core_upgrade_db_3_12_3_14();
 		update_site_option( 'wl_db_version', WL_DB_VERSION );
 
 	}

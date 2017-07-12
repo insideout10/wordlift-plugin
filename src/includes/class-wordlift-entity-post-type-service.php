@@ -145,6 +145,7 @@ class Wordlift_Entity_Post_Type_Service {
 			'menu_icon'     => WP_CONTENT_URL . '/plugins/wordlift/images/svg/wl-vocabulary-icon.svg',
 			// Although we define our slug here, we further manage linking to entities using the Wordlift_Entity_Link_Service.
 			'rewrite'       => array( 'slug' => $this->slug ),
+			'capabilities'	=> array( 'wordlift_entity', 'wordlift_entities' ),
 		);
 
 		register_post_type( $this->post_type, $args );
