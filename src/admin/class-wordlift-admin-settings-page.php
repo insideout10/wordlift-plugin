@@ -55,6 +55,15 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	private $input_element;
 
 	/**
+	 * A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 *
+	 * @since  3.13.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Radio_Input_Element $radio_input_element A {@link Wordlift_Admin_Radio_Input_Element} element renderer.
+	 */
+	private $radio_input_element;
+
+	/**
 	 * A {@link Wordlift_Admin_Language_Select_Element} element renderer.
 	 *
 	 * @since  3.11.0
@@ -82,14 +91,16 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	 * @param \Wordlift_Admin_Input_Element           $input_element
 	 * @param \Wordlift_Admin_Language_Select_Element $language_select_element
 	 * @param \Wordlift_Admin_Publisher_Element       $publisher_element
+	 * @param \Wordlift_Admin_Radio_Input_Element     $radio_input_element
 	 */
-	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element ) {
+	function __construct( $configuration_service, $entity_service, $input_element, $language_select_element, $publisher_element, $radio_input_element ) {
 
 		$this->configuration_service = $configuration_service;
 		$this->entity_service        = $entity_service;
 
 		// Set a reference to the UI elements.
 		$this->input_element           = $input_element;
+		$this->radio_input_element     = $radio_input_element;
 		$this->language_select_element = $language_select_element;
 		$this->publisher_element       = $publisher_element;
 
@@ -273,6 +284,21 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			array(
 				'id'   => 'wl-publisher-id',
 				'name' => 'wl_general_settings[' . Wordlift_Configuration_Service::PUBLISHER_ID . ']',
+			)
+		);
+
+		// Add the `link by default` field.
+		add_settings_field(
+			'wl-link-by-default',
+			_x( 'Link by Default', 'wordlift' ),
+			array( $this->radio_input_element, 'render' ),
+			'wl_general_settings',
+			'wl_general_settings_section',
+			array(
+				'id'          => 'wl-link-by-default',
+				'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::LINK_BY_DEFAULT . ']',
+				'value'       => $this->configuration_service->is_link_by_default() ? 'yes' : 'no',
+				'description' => _x( 'Whether to link entities by default or not. This setting applies to all the entities.', 'wordlift' ),
 			)
 		);
 

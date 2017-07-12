@@ -502,6 +502,7 @@
       $scope.messages = [];
       RelatedPostDataRetrieverService.load(Object.keys($scope.configuration.entities));
       $rootScope.$on("analysisFailed", function(event, errorMsg) {
+        $scope.analysisFailed = true;
         return $scope.addMsg(errorMsg, 'error');
       });
       $rootScope.$on("analysisServiceStatusUpdated", function(event, newStatus) {
@@ -1182,7 +1183,6 @@
           entity.id = id;
           entity.occurrences = [];
           entity.annotations = {};
-          entity.confidence = 1;
         }
         ref7 = data.annotations;
         for (id in ref7) {
@@ -1299,6 +1299,10 @@
         promise = this._innerPerform(content, annotations);
         promise.then(function(response) {
           var result;
+          if ((response.data.success != null) && !response.data.success) {
+            $rootScope.$broadcast("analysisFailed", response.data.data.message);
+            return;
+          }
           service._currentAnalysis = response.data;
           result = service.parse(response.data);
           $rootScope.$broadcast("analysisPerformed", result);
@@ -1548,7 +1552,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, traslator;
+            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, ref3, traslator;
             ed = EditorAdapter.getEditor();
             html = EditorAdapter.getHTML();
             entities = findEntities(html);
@@ -1569,9 +1573,12 @@
               if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-no-link') : void 0)) {
                 element += ' wl-no-link';
               }
-              ref2 = annotation.entityMatches;
-              for (j = 0, len = ref2.length; j < len; j++) {
-                em = ref2[j];
+              if (-1 < ((ref2 = annotation.cssClass) != null ? ref2.indexOf('wl-link') : void 0)) {
+                element += ' wl-link';
+              }
+              ref3 = annotation.entityMatches;
+              for (j = 0, len = ref3.length; j < len; j++) {
+                em = ref3[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;

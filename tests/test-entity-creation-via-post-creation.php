@@ -9,6 +9,15 @@ require_once 'functions.php';
 class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 
 	/**
+	 * The {@link Wordlift_Entity_Service} instance.
+	 *
+	 * @since  1.11.0
+	 * @access private
+	 * @var \Wordlift_Entity_Service $entity_service The {@link Wordlift_Entity_Service} instance.
+	 */
+	private $entity_service;
+
+	/**
 	 * Set up the test.
 	 */
 	function setUp() {
@@ -18,6 +27,8 @@ class EntityCreationViaPostCreationTest extends Wordlift_Unit_Test_Case {
 		Wordlift_Unit_Test_Case::turn_off_entity_push();;
 
 		wl_empty_blog();
+
+		$this->entity_service = $this->get_wordlift_test()->get_entity_service();
 
 	}
 
@@ -84,7 +95,7 @@ EOF;
 		$post_id = wl_create_post( $content, 'my-post', 'A post', 'draft' );
 		// Here the entity should be created instead
 
-		$entity = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $original_entity_uri );
+		$entity = $this->entity_service->get_entity_post_by_uri( $original_entity_uri );
 
 		// And it should be related to the post as where predicate
 		$related_entity_ids = wl_core_get_related_entity_ids( $post_id, array( "predicate" => "where" ) );

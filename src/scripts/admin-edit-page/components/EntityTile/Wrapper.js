@@ -13,7 +13,7 @@ import styled from 'styled-components';
  * @inheritDoc
  */
 const Wrapper = styled.li`
-	display: block;
+	display: 'block';
 	position: relative;
 	box-sizing: border-box;
 	overflow: hidden;

@@ -6,18 +6,26 @@
  *
  * @since 1.0.0
  *
- * @uses wl_analyze_content() to analyze the provided content.
+ * @uses  wl_analyze_content() to analyze the provided content.
  */
 function wl_ajax_analyze_action() {
 
-	if ( $analysis = wl_analyze_content( file_get_contents( "php://input" ) ) ) {
-		header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
-		echo( $analysis );
-		wp_die();
-	}
+	try {
+		if ( $analysis = wl_analyze_content( file_get_contents( "php://input" ) ) ) {
+			header( 'Content-Type: application/json; charset=' . get_option( 'blog_charset' ) );
+			echo( $analysis );
+			wp_die();
+		}
 
-	status_header( 500 );
-	wp_send_json( __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' ) );
+		status_header( 500 );
+		wp_send_json( __( 'An error occurred while request an analysis to the remote service. Please try again later.', 'wordlift' ) );
+
+	} catch ( Exception $e ) {
+		wp_send_json_error( array(
+			'code'    => $e->getCode(),
+			'message' => $e->getMessage(),
+		) );
+	}
 
 }
 
@@ -29,7 +37,7 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  *
  * @since 1.0.0
  *
- * @uses wl_configuration_get_analyzer_url() to get the API for the analysis.
+ * @uses  wl_configuration_get_analyzer_url() to get the API for the analysis.
  *
  * @param string $content The content to analyze.
  *
@@ -48,32 +56,40 @@ function wl_analyze_content( $content ) {
 		'method'      => 'POST',
 		'headers'     => array(
 			'Accept'       => 'application/json',
-			'Content-type' => $content_type
+			'Content-type' => $content_type,
 		),
 		// we need to downgrade the HTTP version in this case since chunked encoding is dumping numbers in the response.
 		'httpversion' => '1.0',
-		'body'        => $content
+		'body'        => $content,
 	) );
 
 	$response = wp_remote_post( $url, $args );
 
-	// If an error has been raised, return the error.
-	if ( is_wp_error( $response ) || 200 !== (int) $response['response']['code'] ) {
+	// If it's an error log it.
+	if ( is_wp_error( $response ) ) {
 
-		$body = ( is_wp_error( $response ) ? $response->get_error_message() : $response['body'] );
+		$message = "An error occurred while requesting an analysis to $url: {$response->get_error_message()}";
 
-		wl_write_log( "error [ url :: $url ][ args :: " );
-		wl_write_log( var_export( $args, TRUE ) );
-		wl_write_log( '][ response :: ' );
-		wl_write_log( "\n" . var_export( $response, TRUE ) );
-		wl_write_log( "][ body :: " );
-		wl_write_log( "\n" . $body );
-		wl_write_log( "]" );
+		Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
 
-		return NULL;
+		throw new Exception( $response->get_error_message(), $response->get_error_code() );
 	}
 
-	wl_write_log( "[ url :: $url ][ response code :: " . $response['response']['code'] . " ]" );
+	// Get the status code.
+	$status_code = (int) $response['response']['code'];
 
-	return $response['body'];
+	// If status code is OK, return the body.
+	if ( 200 === $status_code ) {
+		return $response['body'];
+	}
+
+	// Invalid request, e.g. invalid key.
+	if ( 400 === $status_code ) {
+		$error = json_decode( $response['body'] );
+
+		throw new Exception( $error->message, $error->code );
+	}
+
+	// Another generic error.
+	throw new Exception( "An error occurred.", $status_code );;
 }

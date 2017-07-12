@@ -145,27 +145,27 @@ function wl_delete_posts( $posts ) {
 	return $success;
 }
 
-/**
- * Analyze the post with the specified ID. The analysis will make use of the method *wl_ajax_analyze_action*
- * provided by the WordLift plugin.
- *
- * @since 3.0.0
- *
- * @param int $post_id The post ID to analyze.
- *
- * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
- */
-function wl_analyze_post( $post_id ) {
-
-	// Get the post contents.
-	$post = wl_get_post( $post_id );
-	if ( null === $post ) {
-		return null;
-	}
-	$content = $post->post_content;
-
-	return wl_analyze_content( $content );
-}
+///**
+// * Analyze the post with the specified ID. The analysis will make use of the method *wl_ajax_analyze_action*
+// * provided by the WordLift plugin.
+// *
+// * @since 3.0.0
+// *
+// * @param int $post_id The post ID to analyze.
+// *
+// * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
+// */
+//function wl_analyze_post( $post_id ) {
+//
+//	// Get the post contents.
+//	$post = wl_get_post( $post_id );
+//	if ( null === $post ) {
+//		return null;
+//	}
+//	$content = $post->post_content;
+//
+//	return wl_analyze_content( $content );
+//}
 
 /**
  * Embed the analysis results in the post content. It should match what happens client-side with the related function

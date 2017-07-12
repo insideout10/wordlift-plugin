@@ -953,6 +953,7 @@ angular.module('wordlift.tinymce.plugin.services.EntityAnnotationService', [])
 
       # Copy over the label from the entity annotation if the label is not set on the entity.
       params.entity.label = params.label if params.entity? and not params.entity.label?
+      params.entity.confidence = params.confidence if params.entity? and not params.entity.confidence?
 
       # Merge the params with the default settings.
       entityAnnotation = h.merge defaults, params

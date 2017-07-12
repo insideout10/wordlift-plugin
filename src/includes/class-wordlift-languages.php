@@ -69,7 +69,7 @@ class Wordlift_Languages {
 		'sv',
 		'tr',
 		'uk',
-		'zh',
+		'zh-cn',
 	);
 
 	/**

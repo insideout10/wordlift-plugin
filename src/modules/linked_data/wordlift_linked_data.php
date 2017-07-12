@@ -235,6 +235,9 @@ function wl_save_entity( $entity_data ) {
 	$related_post_id  = isset( $entity_data['related_post_id'] ) ? $entity_data['related_post_id'] : null;
 	$other_properties = isset( $entity_data['properties'] ) ? $entity_data['properties'] : array();
 
+	// Get the synonyms.
+	$synonyms = isset( $entity_data['synonym'] ) ? $entity_data['synonym'] : array();
+
 	// Check whether an entity already exists with the provided URI.
 	if ( null !== $post = Wordlift_Entity_Service::get_instance()->get_entity_post_by_uri( $uri ) ) {
 		return $post;
@@ -287,6 +290,10 @@ function wl_save_entity( $entity_data ) {
 
 	// create or update the post.
 	$post_id = wp_insert_post( $params, true );
+
+	// Setting the alternative labels for this entity.
+	Wordlift_Entity_Service::get_instance()
+	                       ->set_alternative_labels( $post_id, $synonyms );
 
 	// Restore all the existing filters.
 	is_array( $wp_filter['save_post'] ) ? $wp_filter['save_post'] = $save_post_filters : $wp_filter['save_post']->callbacks = $save_post_filters;

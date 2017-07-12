@@ -1,13 +1,41 @@
 <?php
+/**
+ * Shortcodes: Geomap Shortcode.
+ *
+ * `wl_geomap` implementation.
+ *
+ * @since      3.5.4
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
+ */
 
 /**
- * The `wl_geomap` implementation.
+ * Define the {@link Wordlift_Geomap_Shortcode} class.
  *
- * @since 3.5.4
+ * @since      3.5.4
+ * @package    Wordlift
+ * @subpackage Wordlift/includes
  */
 class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 
 	const SHORTCODE = 'wl_geomap';
+
+	/**
+	 * Create a {@link Wordlift_Geomap_Shortcode} instance.
+	 *
+	 * @since 3.5.4
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		// Hook to the `amp_post_template_css` to hide ourselves when in AMP
+		// rendering.
+		add_action( 'amp_post_template_css', array(
+			$this,
+			'amp_post_template_css',
+		) );
+
+	}
 
 	/**
 	 * Render the shortcode.
@@ -24,7 +52,7 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		$geomap_atts = shortcode_atts( array(
 			'width'  => '100%',
 			'height' => '300px',
-			'global' => FALSE
+			'global' => false,
 		), $atts );
 
 		// Get id of the post
@@ -33,7 +61,7 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		if ( $geomap_atts['global'] || is_null( $post_id ) ) {
 			// Global geomap
 			$geomap_id = 'wl_geomap_global';
-			$post_id   = NULL;
+			$post_id   = null;
 		} else {
 			// Post-specific geomap
 			$geomap_id = 'wl_geomap_' . $post_id;
@@ -60,7 +88,6 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 		) );
 
 		// Escaping atts.
-		$esc_class   = esc_attr( 'wl-geomap' );
 		$esc_id      = esc_attr( $geomap_id );
 		$esc_width   = esc_attr( $geomap_atts['width'] );
 		$esc_height  = esc_attr( $geomap_atts['height'] );
@@ -68,15 +95,27 @@ class Wordlift_Geomap_Shortcode extends Wordlift_Shortcode {
 
 		// Return HTML template.
 		return <<<EOF
-<div class="$esc_class" 
-	id="$esc_id"
-	data-post-id="$esc_post_id"
-	style="width:$esc_width;
-        height:$esc_height;
-        background-color:gray
-        ">
+<div class="wl-geomap"  id="$esc_id" data-post-id="$esc_post_id"
+	style="width:$esc_width; height:$esc_height; background-color: gray;">
 </div>
 EOF;
+	}
+
+	/**
+	 * Customize the CSS when in AMP.
+	 *
+	 * See https://github.com/Automattic/amp-wp/blob/master/readme.md#custom-css
+	 *
+	 * @since 3.13.0
+	 *
+	 * @param object $amp_template The template.
+	 */
+	public function amp_post_template_css( $amp_template ) {
+
+		// Hide the `wl-geomap` when in AMP.
+		?>
+		.wl-geomap { display: none; }
+		<?php
 	}
 
 }
