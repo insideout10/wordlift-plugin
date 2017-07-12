@@ -205,9 +205,9 @@ function wl_core_upgrade_db_3_10_3_12() {
 	 * initialization does the same, avoid possible race conditions by
 	 * deferring the actual flush to a later hook.
 	 */
-	add_action('wp_loaded', function () {
+	add_action( 'wp_loaded', function () {
 		flush_rewrite_rules();
-	});
+	} );
 }
 
 // Check db status on automated plugins updates

@@ -45,7 +45,7 @@ class Wordlift_Activator {
 			$configuration_service->set_key( '' );
 		}
 
-		// intentionally go through the whole upgrade procedure to be DRY.
+		// Intentionally go through the whole upgrade procedure to be DRY.
 		wl_core_update_db_check();
 
 		// If WordLift's key is not configured, set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
