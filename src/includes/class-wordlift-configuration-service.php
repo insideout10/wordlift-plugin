@@ -364,7 +364,7 @@ class Wordlift_Configuration_Service {
 
 		// Check the old key value and the new one. We're going to ask for the dataset URI only if the key has changed.
 		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
-		$new_key = isset( $new_value['key'] ) ? $new_value['key'] : '';
+		$new_key = isset( $value['key'] ) ? $value['key'] : '';
 
 		$dataset_uri = $this->get_dataset_uri();
 
