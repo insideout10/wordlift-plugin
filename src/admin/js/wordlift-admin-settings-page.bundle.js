@@ -1,2 +1,961 @@
-!function(t){function e(r){if(n[r])return n[r].exports;var i=n[r]={i:r,l:!1,exports:{}};return t[r].call(i.exports,i,i.exports,e),i.l=!0,i.exports}var n={};e.m=t,e.c=n,e.i=function(t){return t},e.d=function(t,n,r){e.o(t,n)||Object.defineProperty(t,n,{configurable:!1,enumerable:!0,get:r})},e.n=function(t){var n=t&&t.__esModule?function(){return t.default}:function(){return t};return e.d(n,"a",n),n},e.o=function(t,e){return Object.prototype.hasOwnProperty.call(t,e)},e.p="",e(e.s=147)}({106:function(t,e,n){"use strict";var r=n(32),i=jQuery,a=function(t){i(t).on("keyup",function(){var t=i(this);t.removeClass("untouched valid invalid"),n.i(r.a)(t,function(){wp.ajax.post("wl_validate_key",{key:t.val()}).done(function(e){e&&e.valid?t.addClass("valid"):t.addClass("invalid")})})})};e.a=a},107:function(t,e,n){"use strict";var r=jQuery,i=function(t,e,n){var i=wp.media(e);i.on("select",function(){n(i.state().get("selection").first().toJSON())}),r(t).on("click",function(){i.open()})};e.a=i},108:function(t,e,n){"use strict";var r=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(t[r]=n[r])}return t},i=jQuery,a=function(t){var e=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};i(t).each(function(){var t=i(this),n=r({},{width:"100%",data:t.data("wl-select2-data"),escapeMarkup:function(t){return t},templateResult:_.template(t.data("wl-select2-template-result")),templateSelection:_.template(t.data("wl-select2-template-selection"))},e);t.select2(n)})};e.a=a},109:function(t,e,n){"use strict";var r=jQuery,i=function(t){r(t).each(function(){var t=r(this);t.tabs({active:t.data("active")})})};e.a=i},112:function(t,e,n){var r=n(269);"string"==typeof r&&(r=[[t.i,r,""]]);var i={};i.transform=void 0;n(59)(r,i);r.locals&&(t.exports=r.locals)},147:function(t,e,n){"use strict";Object.defineProperty(e,"__esModule",{value:!0});var r=n(112),i=(n.n(r),n(106)),a=n(107),o=n(109),s=n(108);!function(t,e){t(function(){n.i(i.a)("#wl-key"),n.i(a.a)("#wl-publisher-media-uploader",{title:e.l10n.logo_selection_title,button:e.l10n.logo_selection_button,multiple:!1,library:{type:"image"}},function(e){t("#wl-publisher-media-uploader-preview").attr("src",e.url).show(),t("#wl-publisher-media-uploader-id").val(e.id)}),n.i(o.a)(".wl-tabs-element"),n.i(s.a)(".wl-select2-element",{containerCssClass:"wl-admin-settings-page-select2",dropdownCssClass:"wl-admin-settings-page-select2"})})}(jQuery,wlSettings)},269:function(t,e,n){e=t.exports=n(35)(void 0),e.push([t.i,"#wl-settings-page input::-ms-clear{display:none}#wl-settings-page #wl-entity-base-path,#wl-settings-page #wl-key{width:100%;max-width:480px;height:32px;padding:0 8px;line-height:32px;font-size:14px;color:#32373c;border-radius:4px;border:1px solid #ddd;box-shadow:inset 0 1px 2px rgba(0,0,0,.07);background-color:#fff;outline:0;transition:border-color 50ms ease-in-out;background-position:448px 8px;background-repeat:no-repeat}#wl-settings-page #wl-entity-base-path.valid,#wl-settings-page #wl-key.valid{background-image:url("+n(272)+");padding-right:32px}#wl-settings-page #wl-entity-base-path.invalid,#wl-settings-page #wl-key.invalid{background-image:url("+n(271)+");padding-right:32px}#wl-settings-page #wl-entity-base-path{background-color:#f5f5f5}#wl-settings-page .wl-tabs-element{border-radius:0;border:0;background:none}#wl-settings-page .wl-tabs-element .nav-tab-wrapper{border-radius:0;border:0;border-bottom:1px solid #ccc;background:none;padding-bottom:0;padding-left:6px}#wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab{border-radius:0;border:1px solid #ccc!important;background:#e4e4e4;color:#555;margin:0 3px 0 0;vertical-align:top;white-space:nowrap}#wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus{box-shadow:none;outline:none}#wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active,#wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover{border-bottom:1px solid #f1f1f1!important;background:#f1f1f1;color:#000}.wl-admin-settings-page-select2.select2-selection{min-height:32px;max-height:32px;overflow-y:auto}.wl-admin-settings-page-select2 .wl-select2-thumbnail{width:24px;height:24px;display:inline-block;background:no-repeat 50%;background-size:contain;margin:4px 8px 4px 0}.wl-admin-settings-page-select2 .wl-select2-type{float:right;line-height:32px;font-weight:600}.select2-results__options{color:#666!important}.select2-results__option .wl-select2-type{float:right;line-height:32px;font-weight:600}.select2-results__option--highlighted{background-color:#f5f5f5!important;color:#2e92ff!important}.ui-tabs .ui-tabs-panel{max-width:480px;min-height:32px;border-radius:2px;padding:0!important;margin:16px 0}.ui-tabs .ui-tabs-panel *{vertical-align:middle}.ui-tabs .ui-tabs-panel p{max-height:32px;margin:0;width:100%;color:#4a4a4a}.select2-container--default .select2-selection--single{overflow:hidden;padding:0;line-height:28px;font-size:12px}.wl-select2-thumbnail{margin-right:8px}#tabs-2 p{margin:8px 0}#tabs-2 p:first-of-type{margin-top:24px}#wl-publisher-name input,#wl-site-language{width:100%;max-width:480px;min-height:32px;margin-top:8px;padding:4px 8px;color:#32373c;border-radius:4px;border:1px solid #ddd;box-shadow:inset 0 1px 2px rgba(0,0,0,.07);background-color:#fff;outline:0}#wl-publisher-type{max-width:480px;width:100%}#wl-publisher-type span{width:45%;display:inline-block}#wl-publisher-media-uploader{height:32px;float:left}#wl-publisher-media-uploader-preview{max-width:256px;max-height:256px;margin-bottom:16px;display:block}",""])},271:function(t,e){t.exports="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA8ElEQVR42p3UOw7CMBAEUNNADRI3ACQogVPkqxQu4A40FHAgSiipcpVQUnEAqkjLDsJRkMU4wtIqv/FLnNgxaCLSkzi2kiR7sXZsAk2zK62jZNkax23kJFEkKN2/a2DyC9HMRjM1su9tmm6dbh3iYQRpZZ9aQ4Ph4ATBPMQr5PBO0IlhBEHmbFxDuMH8ehDkKrvdAEZHLIyEse6Ij2E4BCo5wr8OnxphhGN/IxwLIyU6BTFJ0yWdJ9b2ESZYhQyWyIEhnaZGni/cL6Gm84Rjt+aG+BVgFX8uXDzEx6oGKYrZV0DVkQ5zajo0PIFi8/bQXxTkJIW2nf39AAAAAElFTkSuQmCC"},272:function(t,e){t.exports="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAA0ElEQVR4Aa3NgeYCQRDH8fMH/AkgAZrZVAQIhFCP0TuUIgB70wUCBAlIz7S7LgQgvUAh6jodN8Gmxh4D7refbxTyo1P3nzL6C4vmYGxgrS08tMHzwqpBONjiThvI3u5KKTYDw3xk1LwcJmmjF1tYklNDOcyXOOgXQ4ejHL6XVacmApjP4uw1XB1aldjAhX9yQArz2HVqniEHJDAHcPMpIIb5Iey9AYvTb2FRQAB7AgJYEBDAgoAAFgQ8sCxABrcFjDft1DgK/VHartNRVX999wQwVJB5+G9izgAAAABJRU5ErkJggg=="},32:function(t,e,n){"use strict";var r=function(t,e){for(var n=arguments.length,r=Array(n>3?n-3:0),i=3;i<n;i++)r[i-3]=arguments[i];var a=arguments.length>2&&void 0!==arguments[2]?arguments[2]:500;clearTimeout(t.data("timeout")),t.data("timeout",setTimeout.apply(void 0,[e,a].concat(r)))};e.a=r},35:function(t,e){function n(t,e){var n=t[1]||"",i=t[3];if(!i)return n;if(e&&"function"==typeof btoa){var a=r(i);return[n].concat(i.sources.map(function(t){return"/*# sourceURL="+i.sourceRoot+t+" */"})).concat([a]).join("\n")}return[n].join("\n")}function r(t){return"/*# sourceMappingURL=data:application/json;charset=utf-8;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(t))))+" */"}t.exports=function(t){var e=[];return e.toString=function(){return this.map(function(e){var r=n(e,t);return e[2]?"@media "+e[2]+"{"+r+"}":r}).join("")},e.i=function(t,n){"string"==typeof t&&(t=[[null,t,""]]);for(var r={},i=0;i<this.length;i++){var a=this[i][0];"number"==typeof a&&(r[a]=!0)}for(i=0;i<t.length;i++){var o=t[i];"number"==typeof o[0]&&r[o[0]]||(n&&!o[2]?o[2]=n:n&&(o[2]="("+o[2]+") and ("+n+")"),e.push(o))}},e}},58:function(t,e){t.exports=function(t){var e="undefined"!=typeof window&&window.location;if(!e)throw new Error("fixUrls requires window.location");if(!t||"string"!=typeof t)return t;var n=e.protocol+"//"+e.host,r=n+e.pathname.replace(/\/[^\/]*$/,"/");return t.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi,function(t,e){var i=e.trim().replace(/^"(.*)"$/,function(t,e){return e}).replace(/^'(.*)'$/,function(t,e){return e});if(/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(i))return t;var a;return a=0===i.indexOf("//")?i:0===i.indexOf("/")?n+i:r+i.replace(/^\.\//,""),"url("+JSON.stringify(a)+")"})}},59:function(t,e,n){function r(t,e){for(var n=0;n<t.length;n++){var r=t[n],i=g[r.id];if(i){i.refs++;for(var a=0;a<i.parts.length;a++)i.parts[a](r.parts[a]);for(;a<r.parts.length;a++)i.parts.push(u(r.parts[a],e))}else{for(var o=[],a=0;a<r.parts.length;a++)o.push(u(r.parts[a],e));g[r.id]={id:r.id,refs:1,parts:o}}}}function i(t,e){for(var n=[],r={},i=0;i<t.length;i++){var a=t[i],o=e.base?a[0]+e.base:a[0],s=a[1],l=a[2],p=a[3],u={css:s,media:l,sourceMap:p};r[o]?r[o].parts.push(u):n.push(r[o]={id:o,parts:[u]})}return n}function a(t,e){var n=b(t.insertInto);if(!n)throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");var r=w[w.length-1];if("top"===t.insertAt)r?r.nextSibling?n.insertBefore(e,r.nextSibling):n.appendChild(e):n.insertBefore(e,n.firstChild),w.push(e);else{if("bottom"!==t.insertAt)throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");n.appendChild(e)}}function o(t){if(null===t.parentNode)return!1;t.parentNode.removeChild(t);var e=w.indexOf(t);e>=0&&w.splice(e,1)}function s(t){var e=document.createElement("style");return t.attrs.type="text/css",p(e,t.attrs),a(t,e),e}function l(t){var e=document.createElement("link");return t.attrs.type="text/css",t.attrs.rel="stylesheet",p(e,t.attrs),a(t,e),e}function p(t,e){Object.keys(e).forEach(function(n){t.setAttribute(n,e[n])})}function u(t,e){var n,r,i,a;if(e.transform&&t.css){if(!(a=e.transform(t.css)))return function(){};t.css=a}if(e.singleton){var p=v++;n=m||(m=s(e)),r=c.bind(null,n,p,!1),i=c.bind(null,n,p,!0)}else t.sourceMap&&"function"==typeof URL&&"function"==typeof URL.createObjectURL&&"function"==typeof URL.revokeObjectURL&&"function"==typeof Blob&&"function"==typeof btoa?(n=l(e),r=f.bind(null,n,e),i=function(){o(n),n.href&&URL.revokeObjectURL(n.href)}):(n=s(e),r=d.bind(null,n),i=function(){o(n)});return r(t),function(e){if(e){if(e.css===t.css&&e.media===t.media&&e.sourceMap===t.sourceMap)return;r(t=e)}else i()}}function c(t,e,n,r){var i=n?"":r.css;if(t.styleSheet)t.styleSheet.cssText=A(e,i);else{var a=document.createTextNode(i),o=t.childNodes;o[e]&&t.removeChild(o[e]),o.length?t.insertBefore(a,o[e]):t.appendChild(a)}}function d(t,e){var n=e.css,r=e.media;if(r&&t.setAttribute("media",r),t.styleSheet)t.styleSheet.cssText=n;else{for(;t.firstChild;)t.removeChild(t.firstChild);t.appendChild(document.createTextNode(n))}}function f(t,e,n){var r=n.css,i=n.sourceMap,a=void 0===e.convertToAbsoluteUrls&&i;(e.convertToAbsoluteUrls||a)&&(r=x(r)),i&&(r+="\n/*# sourceMappingURL=data:application/json;base64,"+btoa(unescape(encodeURIComponent(JSON.stringify(i))))+" */");var o=new Blob([r],{type:"text/css"}),s=t.href;t.href=URL.createObjectURL(o),s&&URL.revokeObjectURL(s)}var g={},h=function(t){var e;return function(){return void 0===e&&(e=t.apply(this,arguments)),e}}(function(){return window&&document&&document.all&&!window.atob}),b=function(t){var e={};return function(n){return void 0===e[n]&&(e[n]=t.call(this,n)),e[n]}}(function(t){return document.querySelector(t)}),m=null,v=0,w=[],x=n(58);t.exports=function(t,e){if("undefined"!=typeof DEBUG&&DEBUG&&"object"!=typeof document)throw new Error("The style-loader cannot be used in a non-browser environment");e=e||{},e.attrs="object"==typeof e.attrs?e.attrs:{},e.singleton||(e.singleton=h()),e.insertInto||(e.insertInto="head"),e.insertAt||(e.insertAt="bottom");var n=i(t,e);return r(n,e),function(t){for(var a=[],o=0;o<n.length;o++){var s=n[o],l=g[s.id];l.refs--,a.push(l)}if(t){r(i(t,e),e)}for(var o=0;o<a.length;o++){var l=a[o];if(0===l.refs){for(var p=0;p<l.parts.length;p++)l.parts[p]();delete g[l.id]}}}};var A=function(){var t=[];return function(e,n){return t[e]=n,t.filter(Boolean).join("\n")}}()}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 147);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 106:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__delay__ = __webpack_require__(32);
+/**
+ * Validators: Key Validator.
+ *
+ * Validate WordLift's key in inputs.
+ *
+ * @since 3.11.0
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+// Map $ to jQuery.
+var $ = jQuery;
+
+/**
+ * Create a key validator on the element with the specified selector.
+ *
+ * @since 3.11.0
+ * @param {string} selector The element selector.
+ */
+var KeyValidator = function KeyValidator(selector) {
+	$(selector).on('keyup', function () {
+		// Get a jQuery reference to the object.
+		var $this = $(this);
+
+		// Remove any preexisting states, including the `untouched` class
+		// which is set initially to prevent displaying the
+		// `valid`/`invalid` indicator.
+		$this.removeClass('untouched valid invalid');
+
+		// Delay execution of the validation.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__delay__["a" /* default */])($this, function () {
+			// Post the validation request.
+			wp.ajax.post('wl_validate_key', { key: $this.val() }).done(function (data) {
+				// If the key is valid then set the process class.
+				if (data && data.valid) {
+					$this.addClass('valid');
+				} else {
+					$this.addClass('invalid');
+				}
+			});
+		});
+	});
+};
+
+// Finally export the `KeyValidator` function.
+/* harmony default export */ __webpack_exports__["a"] = (KeyValidator);
+
+/***/ }),
+
+/***/ 107:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Media Uploader.
+ *
+ * Provide a function to use WordPress' Media Uploader by binding a button's
+ * click event.
+ *
+ * @since 3.11.0
+ */
+
+// Set a reference to jQuery.
+var $ = jQuery;
+
+/**
+ * Hook WordPress' Media Uploader.
+ *
+ * @since 3.11.0
+ * @param {string} selector The button's selector.
+ * @param {Object} options The Media Uploader's options.
+ * @param {Function} callback A callback function which will receive the
+ *     selected attachment.
+ * @constructor
+ */
+var MediaUploader = function MediaUploader(selector, options, callback) {
+  // Create a WP media uploader.
+  var uploader = wp.media(options);
+
+  // Catch `select` events on the uploader.
+  uploader.on('select', function () {
+    // Get the selected attachment.
+    callback(uploader.state().get('selection').first().toJSON());
+  });
+
+  // Add logo.
+  $(selector).on('click', function () {
+    uploader.open();
+  });
+};
+
+// Finally export the `MediaUploader`.
+/* harmony default export */ __webpack_exports__["a"] = (MediaUploader);
+
+/***/ }),
+
+/***/ 108:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+/**
+ * Created by david on 21/02/2017.
+ */
+
+var $ = jQuery;
+
+/**
+ * Create a Select2 element on the element identified by the selector.
+ *
+ * @since 3.11.0
+ * @param {string} selector The element selector.
+ * @param {Object} args Custom options.
+ * @constructor
+ */
+var Select2 = function Select2(selector) {
+	var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	// Cycle through each element to create `Select2`.
+	$(selector).each(function () {
+		//
+		var $this = $(this);
+
+		var options = _extends({}, {
+			width: '100%',
+			data: $this.data('wl-select2-data'),
+			escapeMarkup: function escapeMarkup(markup) {
+				return markup;
+			},
+			templateResult: _.template($this.data('wl-select2-template-result')),
+			templateSelection: _.template($this.data('wl-select2-template-selection'))
+		}, args);
+
+		// Create the tabs and set the default active element.
+		$this.select2(options);
+	});
+};
+
+// Finally export `Select2`.
+/* harmony default export */ __webpack_exports__["a"] = (Select2);
+
+/***/ }),
+
+/***/ 109:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Tabs.
+ *
+ * Create a tabbed UI.
+ *
+ * @since 3.11.0
+ */
+
+// Set a reference to jQuery.
+var $ = jQuery;
+
+/**
+ * Create a tabbed UI on the element with the specified selector.
+ *
+ * @since 3.11.0
+ * @param {string} selector The selector.
+ * @constructor
+ */
+var Tabs = function Tabs(selector) {
+  // Although in jQuery UI 1.12 it's possible to configure the css
+  // classes, WP 4.2 uses jQuery 1.11.
+  $(selector).each(function () {
+    //
+    var $this = $(this);
+
+    // Create the tabs and set the default active element.
+    $this.tabs({ active: $this.data('active') });
+  });
+};
+
+// Finally export `Tabs`.
+/* harmony default export */ __webpack_exports__["a"] = (Tabs);
+
+/***/ }),
+
+/***/ 112:
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(269);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(59)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/sass-loader/lib/loader.js!./index.scss", function() {
+			var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/sass-loader/lib/loader.js!./index.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+
+/***/ 147:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__styles_index_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_key_validator__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_media_uploader__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tabs__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_select2__ = __webpack_require__(108);
+/**
+ * Entry: wordlift-admin-settings-page.js
+ */
+
+/**
+ * Internal dependencies
+ */
+
+
+
+
+
+
+/**
+ * UI interactions on the WordLift Settings page
+ *
+ * @since 3.11.0
+ */
+(function ($, settings) {
+	$(function () {
+		// Attach the WL key validator to the `#wl-key` element.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_key_validator__["a" /* default */])('#wl-key');
+
+		// Attach the Media Uploader to the #wl-publisher-logo
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_media_uploader__["a" /* default */])('#wl-publisher-media-uploader', {
+			title: settings.l10n.logo_selection_title,
+			button: settings.l10n.logo_selection_button,
+			multiple: false,
+			library: { type: 'image' }
+		}, function (attachment) {
+			// Set the selected image as the preview image
+			$('#wl-publisher-media-uploader-preview').attr('src', attachment.url).show();
+
+			// Set the logo id.
+			$('#wl-publisher-media-uploader-id').val(attachment.id);
+		});
+
+		// Create the tabs.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_tabs__["a" /* default */])('.wl-tabs-element');
+
+		// Create the Select2.
+		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__common_select2__["a" /* default */])('.wl-select2-element', {
+			containerCssClass: 'wl-admin-settings-page-select2',
+			dropdownCssClass: 'wl-admin-settings-page-select2'
+		});
+	});
+})(jQuery, wlSettings);
+
+/***/ }),
+
+/***/ 269:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(35)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "#wl-settings-page input::-ms-clear {\n  display: none; }\n\n#wl-settings-page #wl-entity-base-path,\n#wl-settings-page #wl-key {\n  width: 100%;\n  max-width: 480px;\n  height: 32px;\n  padding: 0 8px;\n  line-height: 32px;\n  font-size: 14px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0;\n  transition: 50ms border-color ease-in-out;\n  background-position: 448px 8px;\n  background-repeat: no-repeat; }\n  #wl-settings-page #wl-entity-base-path.valid,\n  #wl-settings-page #wl-key.valid {\n    background-image: url(" + __webpack_require__(272) + ");\n    padding-right: 32px; }\n  #wl-settings-page #wl-entity-base-path.invalid,\n  #wl-settings-page #wl-key.invalid {\n    background-image: url(" + __webpack_require__(271) + ");\n    padding-right: 32px; }\n\n#wl-settings-page #wl-entity-base-path {\n  background-color: #f5f5f5; }\n\n#wl-settings-page .wl-tabs-element {\n  border-radius: 0;\n  border: 0;\n  background: none; }\n  #wl-settings-page .wl-tabs-element .nav-tab-wrapper {\n    border-radius: 0;\n    border: 0;\n    border-bottom: 1px solid #ccc;\n    background: none;\n    padding-bottom: 0;\n    padding-left: 6px; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab {\n      border-radius: 0;\n      border: 1px solid #ccc !important;\n      background: #e4e4e4;\n      color: #555;\n      margin: 0 3px 0 0;\n      vertical-align: top;\n      white-space: nowrap; }\n      #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus {\n        box-shadow: none;\n        outline: none; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active, #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover {\n      border-bottom: 1px solid #f1f1f1 !important;\n      background: #f1f1f1;\n      color: #000; }\n\n.wl-admin-settings-page-select2.select2-selection {\n  min-height: 32px;\n  max-height: 32px;\n  overflow-y: auto; }\n\n.wl-admin-settings-page-select2 .wl-select2-thumbnail {\n  width: 24px;\n  height: 24px;\n  display: inline-block;\n  background: no-repeat center;\n  background-size: contain;\n  margin: 4px 8px 4px 0; }\n\n.wl-admin-settings-page-select2 .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.select2-results__options {\n  color: #666 !important; }\n\n.select2-results__option .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.select2-results__option--highlighted {\n  background-color: #f5f5f5 !important;\n  color: #2E92FF !important; }\n\n.ui-tabs .ui-tabs-panel {\n  max-width: 480px;\n  min-height: 32px;\n  border-radius: 2px;\n  padding: 0 !important;\n  margin: 16px 0; }\n  .ui-tabs .ui-tabs-panel * {\n    vertical-align: middle; }\n  .ui-tabs .ui-tabs-panel p {\n    max-height: 32px;\n    margin: 0;\n    width: 100%;\n    color: #4a4a4a; }\n\n.select2-container--default .select2-selection--single {\n  overflow: hidden;\n  padding: 0 0;\n  line-height: 28px;\n  font-size: 12px; }\n\n.wl-select2-thumbnail {\n  margin-right: 8px; }\n\n#tabs-2 p {\n  margin: 8px 0; }\n  #tabs-2 p:first-of-type {\n    margin-top: 24px; }\n\n#wl-publisher-name input,\n#wl-site-language {\n  width: 100%;\n  max-width: 480px;\n  min-height: 32px;\n  margin-top: 8px;\n  padding: 4px 8px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0; }\n\n#wl-publisher-type {\n  max-width: 480px;\n  width: 100%; }\n  #wl-publisher-type span {\n    width: 45%;\n    display: inline-block; }\n\n#wl-publisher-media-uploader {\n  height: 32px;\n  float: left; }\n\n#wl-publisher-media-uploader-preview {\n  max-width: 256px;\n  max-height: 256px;\n  margin-bottom: 16px;\n  display: block; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ 271:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA8ElEQVR42p3UOw7CMBAEUNNADRI3ACQogVPkqxQu4A40FHAgSiipcpVQUnEAqkjLDsJRkMU4wtIqv/FLnNgxaCLSkzi2kiR7sXZsAk2zK62jZNkax23kJFEkKN2/a2DyC9HMRjM1su9tmm6dbh3iYQRpZZ9aQ4Ph4ATBPMQr5PBO0IlhBEHmbFxDuMH8ehDkKrvdAEZHLIyEse6Ij2E4BCo5wr8OnxphhGN/IxwLIyU6BTFJ0yWdJ9b2ESZYhQyWyIEhnaZGni/cL6Gm84Rjt+aG+BVgFX8uXDzEx6oGKYrZV0DVkQ5zajo0PIFi8/bQXxTkJIW2nf39AAAAAElFTkSuQmCC"
+
+/***/ }),
+
+/***/ 272:
+/***/ (function(module, exports) {
+
+module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAA0ElEQVR4Aa3NgeYCQRDH8fMH/AkgAZrZVAQIhFCP0TuUIgB70wUCBAlIz7S7LgQgvUAh6jodN8Gmxh4D7refbxTyo1P3nzL6C4vmYGxgrS08tMHzwqpBONjiThvI3u5KKTYDw3xk1LwcJmmjF1tYklNDOcyXOOgXQ4ejHL6XVacmApjP4uw1XB1aldjAhX9yQArz2HVqniEHJDAHcPMpIIb5Iey9AYvTb2FRQAB7AgJYEBDAgoAAFgQ8sCxABrcFjDft1DgK/VHartNRVX999wQwVJB5+G9izgAAAABJRU5ErkJggg=="
+
+/***/ }),
+
+/***/ 32:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/**
+ * Delay a function call by half a second.
+ *
+ * Any function can be delayed using `delay`. The timeout for the call is bound
+ * to the provided element. If another function call is delayed on the same
+ * element, any previous timeout is cancelled.
+ *
+ * This function is used to validate in real-time inputs when the user presses
+ * a key, but allowing the user to press more keys (hence the delay).
+ *
+ * @since 3.9.0
+ *
+ * @param {Object} $elem A jQuery element reference which will hold the timeout
+ *     reference.
+ * @param {Function} fn The function to call.
+ * @param {number} timeout The timeout, by default 500 ms.
+ * @param {...Object} args Additional arguments for the callback.
+ */
+var delay = function delay($elem, fn) {
+  for (var _len = arguments.length, args = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
+    args[_key - 3] = arguments[_key];
+  }
+
+  var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
+
+  // Clear a validation timeout.
+  clearTimeout($elem.data('timeout'));
+
+  // Validate the key, after a delay, so that another key is pressed, this
+  // validation is cancelled.
+  $elem.data('timeout', setTimeout.apply(undefined, [fn, timeout].concat(args)));
+};
+
+// Finally export the `delay` function.
+/* harmony default export */ __webpack_exports__["a"] = (delay);
+
+/***/ }),
+
+/***/ 35:
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function (useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if (item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function (modules, mediaQuery) {
+		if (typeof modules === "string") modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for (var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if (typeof id === "number") alreadyImportedModules[id] = true;
+		}
+		for (i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if (typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if (mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if (mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */';
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+/***/ }),
+
+/***/ 58:
+/***/ (function(module, exports) {
+
+
+/**
+ * When source maps are enabled, `style-loader` uses a link element with a data-uri to
+ * embed the css on the page. This breaks all relative urls because now they are relative to a
+ * bundle instead of the current page.
+ *
+ * One solution is to only use full urls, but that may be impossible.
+ *
+ * Instead, this function "fixes" the relative urls to be absolute according to the current page location.
+ *
+ * A rudimentary test suite is located at `test/fixUrls.js` and can be run via the `npm test` command.
+ *
+ */
+
+module.exports = function (css) {
+	// get current location
+	var location = typeof window !== "undefined" && window.location;
+
+	if (!location) {
+		throw new Error("fixUrls requires window.location");
+	}
+
+	// blank or null?
+	if (!css || typeof css !== "string") {
+		return css;
+	}
+
+	var baseUrl = location.protocol + "//" + location.host;
+	var currentDir = baseUrl + location.pathname.replace(/\/[^\/]*$/, "/");
+
+	// convert each url(...)
+	/*
+ This regular expression is just a way to recursively match brackets within
+ a string.
+ 	 /url\s*\(  = Match on the word "url" with any whitespace after it and then a parens
+    (  = Start a capturing group
+      (?:  = Start a non-capturing group
+          [^)(]  = Match anything that isn't a parentheses
+          |  = OR
+          \(  = Match a start parentheses
+              (?:  = Start another non-capturing groups
+                  [^)(]+  = Match anything that isn't a parentheses
+                  |  = OR
+                  \(  = Match a start parentheses
+                      [^)(]*  = Match anything that isn't a parentheses
+                  \)  = Match a end parentheses
+              )  = End Group
+              *\) = Match anything and then a close parens
+          )  = Close non-capturing group
+          *  = Match anything
+       )  = Close capturing group
+  \)  = Match a close parens
+ 	 /gi  = Get all matches, not the first.  Be case insensitive.
+  */
+	var fixedCss = css.replace(/url\s*\(((?:[^)(]|\((?:[^)(]+|\([^)(]*\))*\))*)\)/gi, function (fullMatch, origUrl) {
+		// strip quotes (if they exist)
+		var unquotedOrigUrl = origUrl.trim().replace(/^"(.*)"$/, function (o, $1) {
+			return $1;
+		}).replace(/^'(.*)'$/, function (o, $1) {
+			return $1;
+		});
+
+		// already a full url? no change
+		if (/^(#|data:|http:\/\/|https:\/\/|file:\/\/\/)/i.test(unquotedOrigUrl)) {
+			return fullMatch;
+		}
+
+		// convert the url to a full url
+		var newUrl;
+
+		if (unquotedOrigUrl.indexOf("//") === 0) {
+			//TODO: should we add protocol?
+			newUrl = unquotedOrigUrl;
+		} else if (unquotedOrigUrl.indexOf("/") === 0) {
+			// path should be relative to the base url
+			newUrl = baseUrl + unquotedOrigUrl; // already starts with '/'
+		} else {
+			// path should be relative to current directory
+			newUrl = currentDir + unquotedOrigUrl.replace(/^\.\//, ""); // Strip leading './'
+		}
+
+		// send back the fixed url(...)
+		return "url(" + JSON.stringify(newUrl) + ")";
+	});
+
+	// send back the fixed css
+	return fixedCss;
+};
+
+/***/ }),
+
+/***/ 59:
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+
+var stylesInDom = {};
+
+var	memoize = function (fn) {
+	var memo;
+
+	return function () {
+		if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+		return memo;
+	};
+};
+
+var isOldIE = memoize(function () {
+	// Test for IE <= 9 as proposed by Browserhacks
+	// @see http://browserhacks.com/#hack-e71d8692f65334173fee715c222cb805
+	// Tests for existence of standard globals is to allow style-loader
+	// to operate correctly into non-standard environments
+	// @see https://github.com/webpack-contrib/style-loader/issues/177
+	return window && document && document.all && !window.atob;
+});
+
+var getElement = (function (fn) {
+	var memo = {};
+
+	return function(selector) {
+		if (typeof memo[selector] === "undefined") {
+			memo[selector] = fn.call(this, selector);
+		}
+
+		return memo[selector]
+	};
+})(function (target) {
+	return document.querySelector(target)
+});
+
+var singleton = null;
+var	singletonCounter = 0;
+var	stylesInsertedAtTop = [];
+
+var	fixUrls = __webpack_require__(58);
+
+module.exports = function(list, options) {
+	if (typeof DEBUG !== "undefined" && DEBUG) {
+		if (typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+
+	options.attrs = typeof options.attrs === "object" ? options.attrs : {};
+
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (!options.singleton) options.singleton = isOldIE();
+
+	// By default, add <style> tags to the <head> element
+	if (!options.insertInto) options.insertInto = "head";
+
+	// By default, add <style> tags to the bottom of the target
+	if (!options.insertAt) options.insertAt = "bottom";
+
+	var styles = listToStyles(list, options);
+
+	addStylesToDom(styles, options);
+
+	return function update (newList) {
+		var mayRemove = [];
+
+		for (var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+
+		if(newList) {
+			var newStyles = listToStyles(newList, options);
+			addStylesToDom(newStyles, options);
+		}
+
+		for (var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+
+			if(domStyle.refs === 0) {
+				for (var j = 0; j < domStyle.parts.length; j++) domStyle.parts[j]();
+
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+};
+
+function addStylesToDom (styles, options) {
+	for (var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+
+		if(domStyle) {
+			domStyle.refs++;
+
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles (list, options) {
+	var styles = [];
+	var newStyles = {};
+
+	for (var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = options.base ? item[0] + options.base : item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+
+		if(!newStyles[id]) styles.push(newStyles[id] = {id: id, parts: [part]});
+		else newStyles[id].parts.push(part);
+	}
+
+	return styles;
+}
+
+function insertStyleElement (options, style) {
+	var target = getElement(options.insertInto)
+
+	if (!target) {
+		throw new Error("Couldn't find a style target. This probably means that the value for the 'insertInto' parameter is invalid.");
+	}
+
+	var lastStyleElementInsertedAtTop = stylesInsertedAtTop[stylesInsertedAtTop.length - 1];
+
+	if (options.insertAt === "top") {
+		if (!lastStyleElementInsertedAtTop) {
+			target.insertBefore(style, target.firstChild);
+		} else if (lastStyleElementInsertedAtTop.nextSibling) {
+			target.insertBefore(style, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			target.appendChild(style);
+		}
+		stylesInsertedAtTop.push(style);
+	} else if (options.insertAt === "bottom") {
+		target.appendChild(style);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
+	style.parentNode.removeChild(style);
+
+	var idx = stylesInsertedAtTop.indexOf(style);
+	if(idx >= 0) {
+		stylesInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement (options) {
+	var style = document.createElement("style");
+
+	options.attrs.type = "text/css";
+
+	addAttrs(style, options.attrs);
+	insertStyleElement(options, style);
+
+	return style;
+}
+
+function createLinkElement (options) {
+	var link = document.createElement("link");
+
+	options.attrs.type = "text/css";
+	options.attrs.rel = "stylesheet";
+
+	addAttrs(link, options.attrs);
+	insertStyleElement(options, link);
+
+	return link;
+}
+
+function addAttrs (el, attrs) {
+	Object.keys(attrs).forEach(function (key) {
+		el.setAttribute(key, attrs[key]);
+	});
+}
+
+function addStyle (obj, options) {
+	var style, update, remove, result;
+
+	// If a transform function was defined, run it on the css
+	if (options.transform && obj.css) {
+	    result = options.transform(obj.css);
+
+	    if (result) {
+	    	// If transform returns a value, use that instead of the original css.
+	    	// This allows running runtime transformations on the css.
+	    	obj.css = result;
+	    } else {
+	    	// If the transform function returns a falsy value, don't add this css.
+	    	// This allows conditional loading of css
+	    	return function() {
+	    		// noop
+	    	};
+	    }
+	}
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+
+		style = singleton || (singleton = createStyleElement(options));
+
+		update = applyToSingletonTag.bind(null, style, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, style, styleIndex, true);
+
+	} else if (
+		obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function"
+	) {
+		style = createLinkElement(options);
+		update = updateLink.bind(null, style, options);
+		remove = function () {
+			removeStyleElement(style);
+
+			if(style.href) URL.revokeObjectURL(style.href);
+		};
+	} else {
+		style = createStyleElement(options);
+		update = applyToTag.bind(null, style);
+		remove = function () {
+			removeStyleElement(style);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle (newObj) {
+		if (newObj) {
+			if (
+				newObj.css === obj.css &&
+				newObj.media === obj.media &&
+				newObj.sourceMap === obj.sourceMap
+			) {
+				return;
+			}
+
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag (style, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (style.styleSheet) {
+		style.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = style.childNodes;
+
+		if (childNodes[index]) style.removeChild(childNodes[index]);
+
+		if (childNodes.length) {
+			style.insertBefore(cssNode, childNodes[index]);
+		} else {
+			style.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag (style, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		style.setAttribute("media", media)
+	}
+
+	if(style.styleSheet) {
+		style.styleSheet.cssText = css;
+	} else {
+		while(style.firstChild) {
+			style.removeChild(style.firstChild);
+		}
+
+		style.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink (link, options, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	/*
+		If convertToAbsoluteUrls isn't defined, but sourcemaps are enabled
+		and there is no publicPath defined then lets turn convertToAbsoluteUrls
+		on by default.  Otherwise default to the convertToAbsoluteUrls option
+		directly
+	*/
+	var autoFixUrls = options.convertToAbsoluteUrls === undefined && sourceMap;
+
+	if (options.convertToAbsoluteUrls || autoFixUrls) {
+		css = fixUrls(css);
+	}
+
+	if (sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = link.href;
+
+	link.href = URL.createObjectURL(blob);
+
+	if(oldSrc) URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ })
+
+/******/ });
 //# sourceMappingURL=wordlift-admin-settings-page.bundle.js.map
