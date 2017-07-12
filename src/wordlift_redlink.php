@@ -18,19 +18,14 @@
  */
 function rl_execute_sparql_update_query( $query, $queue = WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
 
-	if ( get_transient( 'DISABLE_ENTITY_PUSH') ) {
+	if ( get_transient( 'DISABLE_ENTITY_PUSH' ) ) {
 		return true;
 	}
 
 	// Queue the update query.
 	if ( $queue ) {
 
-		if ( WP_DEBUG ) {
-			global $wl_logger;
-			$wl_logger->trace( "Buffering a query [ query :: $query ]" );
-		}
-
-		wl_queue_sparql_update_query( $query );
+		Wordlift_Sparql_Service::get_instance()->queue( $query );
 
 		return true;
 	}

@@ -214,10 +214,10 @@ class Wordlift {
 	 * A {@link Wordlift_Sparql_Service} instance.
 	 *
 	 * @var    3.6.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Sparql_Service $sparql_service A {@link Wordlift_Sparql_Service} instance.
 	 */
-	private $sparql_service;
+	protected $sparql_service;
 
 	/**
 	 * A {@link Wordlift_Import_Service} instance.
@@ -713,6 +713,10 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
 
+		/** Async Tasks. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/class-wordlift-sparql-query-async-task.php';
+
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
@@ -947,6 +951,9 @@ class Wordlift {
 		/** Adapters. */
 		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
 
+		/** Async Tasks. */
+		new Wordlift_Sparql_Query_Async_Task();
+
 		/** WordPress Admin UI. */
 
 		// UI elements.
@@ -1137,6 +1144,8 @@ class Wordlift {
 		/** Adapters. */
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 
+		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
@@ -1159,7 +1168,7 @@ class Wordlift {
 
 		// Bind the link generation and handling hooks to the entity link service.
 		$this->loader->add_filter( 'post_type_link', $this->entity_link_service, 'post_type_link', 10, 4 );
-		$this->loader->add_action( 'pre_get_posts', $this->entity_link_service, 'pre_get_posts', 10, 1 );
+		$this->loader->add_action( 'pre_get_posts', $this->entity_link_service, 'pre_get_posts', PHP_INT_MAX, 1 );
 		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_flat_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_flat_slug', 10, 3 );
 		$this->loader->add_filter( 'wp_unique_post_slug_is_bad_hierarchical_slug', $this->entity_link_service, 'wp_unique_post_slug_is_bad_hierarchical_slug', 10, 4 );
 
@@ -1190,6 +1199,8 @@ class Wordlift {
 		 * order of start time.
 		 */
 		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
+
+		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
 	}
 

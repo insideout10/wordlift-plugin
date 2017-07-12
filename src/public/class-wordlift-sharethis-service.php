@@ -17,7 +17,7 @@ class Wordlift_ShareThis_Service {
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -67,7 +67,7 @@ class Wordlift_ShareThis_Service {
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param string $tag The filter tag.
+	 * @param string $tag     The filter tag.
 	 * @param string $content The post content.
 	 *
 	 * @return string The updated post content.
@@ -78,7 +78,7 @@ class Wordlift_ShareThis_Service {
 		global $post;
 
 		// If it's not the entity type, return.
-		if ( Wordlift_Entity_Service::TYPE_NAME !== $post->post_type ) {
+		if ( null === $post || ! isset( $post->post_type ) || Wordlift_Entity_Service::TYPE_NAME !== $post->post_type ) {
 			return $content;
 		}
 
