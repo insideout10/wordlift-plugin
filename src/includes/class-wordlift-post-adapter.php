@@ -14,14 +14,14 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin
  */
-class Wordlift_Post_Adatpter {
+class Wordlift_Post_Adapter {
 
 	/**
 	 * The post id to which the adopter relates.
 	 *
 	 * @since 3.14.0
 	 *
-	 * @var integer $post_id.
+	 * @var integer $post_id .
 	 */
 	private $post_id;
 
@@ -35,6 +35,7 @@ class Wordlift_Post_Adatpter {
 	function __construct( $post_id ) {
 
 		$this->post_id = $post_id;
+
 	}
 
 	/**
@@ -49,8 +50,8 @@ class Wordlift_Post_Adatpter {
 	public function word_count() {
 
 		$post = get_post( $this->post_id );
-		$wordcount = str_word_count( strip_tags( strip_shortcodes( $post->post_content ) ) );
 
-		return $wordcount;
+		return str_word_count( strip_tags( strip_shortcodes( $post->post_content ) ) );
 	}
+
 }
