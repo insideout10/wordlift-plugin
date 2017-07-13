@@ -46,6 +46,7 @@ class Wordlift_User_Service {
 
 		self::$instance = $this;
 
+		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
 	}
 
 	/**
@@ -251,4 +252,46 @@ class Wordlift_User_Service {
 		return $query;
 	}
 
+	/**
+	 * Filter capabilities of user.
+	 *
+	 * Deny the capability of managing and editing entities for some users.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param array $allcaps All the capabilities of the user
+	 * @param array $cap     [0] Required capability
+	 * @param array $args    [0] Requested capability
+	 *                       [1] User ID
+	 *                       [2] Associated object ID
+	 */
+	function has_cap( $allcaps, $cap, $args ) {
+		/*
+		 * For entity management/editing related capabilities
+		 * check that an editor was not explicitly denied (in user profile)
+		 * the capability.
+		 */
+		if (
+			( 'edit_wordlift_entity' == $cap[0] ) ||
+			( 'edit_wordlift_entities' == $cap[0] ) ||
+			( 'edit_others_wordlift_entities' == $cap[0] ) ||
+			( 'publish_wordlift_entities' == $cap[0] ) ||
+			( 'read_private_wordlift_entities' == $cap[0] ) ||
+			( 'delete_wordlift_entity' == $cap[0] )
+		) {
+			$user_id = $args[1];
+			$user = get_user_by( 'id', $user_id );
+
+			// Check that if a user is an editor.
+			if ( in_array( 'editor', (array) $user->roles ) ) {
+				// Check the deny flag and turn the capability "off" if it is on.
+				$deny = get_user_meta( $user_id, 'wl_can_edit_entities', true );
+				if ( $deny ) {
+					$allcaps[ $cap[0] ] = false;
+				}
+			}
+		}
+
+		return $allcaps;
+	}
 }

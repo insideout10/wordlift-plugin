@@ -223,9 +223,8 @@ function wl_core_upgrade_db_3_12_3_14() {
 
 	$admins->add_cap( 'edit_wordlift_entity' );
 	$admins->add_cap( 'edit_wordlift_entities' );
-	$admins->add_cap( 'edit_other_wordlift_entities' );
+	$admins->add_cap( 'edit_others_wordlift_entities' );
 	$admins->add_cap( 'publish_wordlift_entities' );
-	$admins->add_cap( 'read_wordlift_entity' );
 	$admins->add_cap( 'read_private_wordlift_entities' );
 	$admins->add_cap( 'delete_wordlift_entity' );
 
@@ -234,9 +233,8 @@ function wl_core_upgrade_db_3_12_3_14() {
 
 	$editors->add_cap( 'edit_wordlift_entity' );
 	$editors->add_cap( 'edit_wordlift_entities' );
-	$editors->add_cap( 'edit_other_wordlift_entities' );
+	$editors->add_cap( 'edit_others_wordlift_entities' );
 	$editors->add_cap( 'publish_wordlift_entities' );
-	$editors->add_cap( 'read_wordlift_entity' );
 	$editors->add_cap( 'read_private_wordlift_entities' );
 	$editors->add_cap( 'delete_wordlift_entity' );
 }
