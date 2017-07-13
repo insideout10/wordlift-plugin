@@ -50,6 +50,10 @@ class Wordlift_Admin_User_Profile_Page {
 			$this,
 			'edit_user_profile_update',
 		) );
+		add_action( 'personal_options_update', array(
+			$this,
+			'edit_user_profile_update',
+		) );
 
 		$this->author_element = $author_element;
 	}
@@ -69,6 +73,7 @@ class Wordlift_Admin_User_Profile_Page {
 		if ( ! current_user_can( 'edit_users' ) ) {
 			return;
 		}
+
 		?>
 		<h2><?php esc_html_e( 'Wordlift', 'wordlift' ); ?></h2>
 
@@ -107,9 +112,19 @@ class Wordlift_Admin_User_Profile_Page {
 			return;
 		}
 
+		// Bail out if the `wl_person` parameter isn't set.
+		if ( ! isset( $_POST['wl_person'] ) ) {
+			return;
+		}
+
 		// Update the entity id in the user meta
-		if ( isset( $_POST['wl_person'] ) && is_numeric( $_POST['wl_person'] ) ) {
+		if ( is_numeric( $_POST['wl_person'] ) ) {
 			update_user_meta( $user_id, 'wl_person', intval( $_POST['wl_person'] ) );
+		}
+
+		// Remove the user meta if the parameter is empty.
+		if ( empty( $_POST['wl_person'] ) ) {
+			delete_user_meta( $user_id, 'wl_person', intval( $_POST['wl_person'] ) );
 		}
 
 	}
