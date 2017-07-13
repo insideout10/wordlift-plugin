@@ -1865,6 +1865,19 @@
         }
       ]);
     };
+    $(document).on('postbox-toggled', function(e, postbox) {
+      var $body, closed;
+      if ('wordlift_entities_box' !== postbox.id) {
+        return;
+      }
+      closed = $('#wordlift_entities_box').hasClass('closed');
+      $body = $(editor.getBody());
+      if (closed) {
+        return $body.addClass('wl-postbox-closed');
+      } else {
+        return $body.removeClass('wl-postbox-closed');
+      }
+    });
     closed = $('#wordlift_entities_box').hasClass('closed');
     if (!closed) {
       fireEvent(editor, 'LoadContent', startAnalysis);
