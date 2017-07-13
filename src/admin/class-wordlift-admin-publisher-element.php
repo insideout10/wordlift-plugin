@@ -36,10 +36,12 @@ class Wordlift_Admin_Publisher_Element implements Wordlift_Admin_Element {
 	 * @var \Wordlift_Publisher_Service $publisher_service The {@link Wordlift_Publisher_Service} instance.
 	 */
 	private $publisher_service;
+
 	/**
 	 * @var Wordlift_Admin_Tabs_Element
 	 */
 	private $tabs_element;
+
 	/**
 	 * @var Wordlift_Admin_Select2_Element
 	 */

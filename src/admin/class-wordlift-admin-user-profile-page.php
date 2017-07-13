@@ -108,7 +108,7 @@ class Wordlift_Admin_User_Profile_Page {
 		}
 
 		// Update the entity id in the user meta
-		if ( isset( $_POST['wl_person'] ) ) {
+		if ( isset( $_POST['wl_person'] ) && is_numeric( $_POST['wl_person'] ) ) {
 			update_user_meta( $user_id, 'wl_person', intval( $_POST['wl_person'] ) );
 		}
 
