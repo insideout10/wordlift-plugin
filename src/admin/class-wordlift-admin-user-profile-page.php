@@ -34,7 +34,7 @@ class Wordlift_Admin_User_Profile_Page {
 	 * @since 3.14.0
 	 *
 	 * @param \Wordlift_Admin_Person_Element $person_element The person entity selection
-	 *                                                      element rendering the possible persons.
+	 *                                                       element rendering the possible persons.
 	 */
 	function __construct( $person_element ) {
 
