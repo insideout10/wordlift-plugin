@@ -194,7 +194,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.9.0
 	 *
-	 * @return WordLift's key or an empty string if not set.
+	 * @return string WordLift's key or an empty string if not set.
 	 */
 	public function get_key() {
 
@@ -370,7 +370,7 @@ class Wordlift_Configuration_Service {
 
 		$dataset_uri = $this->get_dataset_uri();
 
-		if ( ! empty( $new_key ) && $new_key == $old_key && empty( $dataset_uri ) ) {
+		if ( ! empty( $new_key ) && $new_key === $old_key && empty( $dataset_uri ) ) {
 
 			// make the request to the remote server to try to get the dataset uri
 			$this->get_remote_dataset_uri( $new_key );
