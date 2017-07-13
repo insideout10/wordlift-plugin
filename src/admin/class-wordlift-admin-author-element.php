@@ -79,8 +79,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 
 		// Finally do the render, passing along also the current selected entity
 		// id and the options data.
-		$this->do_render( $params, $current_entity_id, $data );
-
+		return $this->do_render( $params, $current_entity_id, $data );
 	}
 
 	/**

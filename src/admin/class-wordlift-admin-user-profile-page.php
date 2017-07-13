@@ -19,14 +19,23 @@
 class Wordlift_Admin_User_Profile_Page {
 
 	/**
-	 * The {@link Wordlift_Admin_Person_Element} Wordlift_Admin_Person_Element instance.
+	 * The {@link Wordlift_Admin_Person_Element} instance.
 	 *
-	 * @since 3.14.0
-	 *
+	 * @since  3.14.0
+	 * @access private
 	 * @var \Wordlift_Admin_Author_Element $plugin The person entity
 	 *                selection element rendering the possible persons.
 	 */
 	private $author_element;
+
+	/**
+	 * The {@link Wordlift_User_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 */
+	private $user_service;
 
 	/**
 	 * Create the {@link Wordlift_Admin_User_Profile_Page} instance.
@@ -35,8 +44,12 @@ class Wordlift_Admin_User_Profile_Page {
 	 *
 	 * @param \Wordlift_Admin_Author_Element $author_element The person entity selection
 	 *                                                       element rendering the possible persons.
+	 * @param \Wordlift_User_Service         $user_service   The {@link Wordlift_User_Service} instance.
 	 */
-	function __construct( $author_element ) {
+	function __construct( $author_element, $user_service ) {
+
+		$this->author_element = $author_element;
+		$this->user_service   = $user_service;
 
 		/*
 		 * When an admin (or similar permissions) edits his own profile a
@@ -55,7 +68,6 @@ class Wordlift_Admin_User_Profile_Page {
 			'edit_user_profile_update',
 		) );
 
-		$this->author_element = $author_element;
 	}
 
 	/**
@@ -87,7 +99,7 @@ class Wordlift_Admin_User_Profile_Page {
 					$this->author_element->render( array(
 						'id'             => 'wl_person',
 						'name'           => 'wl_person',
-						'current_entity' => get_user_meta( $user->ID, 'wl_person', true ),
+						'current_entity' => $this->user_service->get_entity( $user->ID ),
 					) );
 					?>
 					<p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
@@ -117,14 +129,7 @@ class Wordlift_Admin_User_Profile_Page {
 			return;
 		}
 
-		$person_id = intval( $_POST['wl_person'] );
-
-		// Update the entity id in the user meta
-		if ( 0 < $person_id ) {
-			update_user_meta( $user_id, 'wl_person', $person_id );
-		} else {
-			delete_user_meta( $user_id, 'wl_person', $person_id );
-		}
+		$this->user_service->set_entity( $user_id, intval( $_POST['wl_person'] ) );
 
 	}
 

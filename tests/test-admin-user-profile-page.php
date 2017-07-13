@@ -17,15 +17,35 @@
 class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 
 	/**
+	 * A {@link Wordlift_Admin_Author_Element} instance mock.
+	 *
+	 * @since  3.14.0
+	 * @access private
 	 * @var \Wordlift_Admin_Author_Element $admin_person_element
 	 */
 	private $admin_person_element;
 
 	/**
+	 * A {@link Wordlift_Admin_User_Profile_Page} instance mock.
+	 *
+	 * @since  3.14.0
+	 * @access private
 	 * @var \Wordlift_Admin_User_Profile_Page $user_profile_page
 	 */
 	private $user_profile_page;
 
+	/**
+	 * The {@link Wordlift_User_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 */
+	private $user_service;
+
+	/**
+	 * @inheritdoc
+	 */
 	function setUp() {
 		parent::setUp();
 
@@ -34,7 +54,15 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		                                   ->setMethods( array() )
 		                                   ->getMock();
 
-		$this->user_profile_page = new Wordlift_Admin_User_Profile_Page( $this->admin_person_element );
+		$this->user_service = $this->getMockBuilder( Wordlift_Admin_Author_Element::class )
+		                           ->disableOriginalConstructor()
+		                           ->setMethods( array(
+			                           'get_entity',
+			                           'set_entity',
+		                           ) )
+		                           ->getMock();
+
+		$this->user_profile_page = new Wordlift_Admin_User_Profile_Page( $this->admin_person_element, $this->user_service );
 
 	}
 
@@ -77,6 +105,9 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		) );
 		wp_set_current_user( $current_user_id );
 
+		$this->user_service->expects( $this->never() )
+		                   ->method( 'get_entity' );
+
 		ob_clean();
 		$this->user_profile_page->edit_user_profile( $target_user );
 		$result = ob_get_clean();
@@ -101,6 +132,11 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
+
+		$this->user_service->expects( $this->once() )
+		                   ->method( 'get_entity' )
+		                   ->with( $this->equalTo( $target_user->ID ) )
+		                   ->willReturn( '' );
 
 		ob_clean();
 		$this->user_profile_page->edit_user_profile( $target_user );
@@ -131,12 +167,11 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		// Set the requested entity id.
 		$_POST['wl_person'] = 1;
 
+		$this->user_service->expects( $this->never() )
+		                   ->method( 'set_entity' );
+
 		// Update the user profile.
 		$this->user_profile_page->edit_user_profile_update( $target_user_id );
-
-		// Check that the value hasn't been set.
-		$meta_value = get_user_meta( $target_user_id, 'wl_person', true );
-		$this->assertEmpty( $meta_value, "The `wl_person` meta isn't set when the current user cannot edit users." );
 
 	}
 
@@ -161,12 +196,13 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		// Set the requested entity id.
 		$_POST['wl_person'] = 1;
 
+		$this->user_service->expects( $this->once() )
+		                   ->method( 'set_entity' )
+		                   ->with( $this->equalTo( $target_user_id ), $this->equalTo( 1 ) )
+		                   ->willReturn( true );
+
 		// Update the user profile.
 		$this->user_profile_page->edit_user_profile_update( $target_user_id );
-
-		// Check that the value hasn't been set.
-		$meta_value = get_user_meta( $target_user_id, 'wl_person', true );
-		$this->assertEquals( 1, $meta_value, "The `wl_person` meta is set when the current user can edit users." );
 
 	}
 

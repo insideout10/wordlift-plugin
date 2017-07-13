@@ -152,7 +152,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	private function get_author( $author_id ) {
 
 		// Get the entity bound to this user.
-		$entity_id = get_user_meta( $author_id, 'wl_person', true );
+		$entity_id = $this->user_service->get_entity( $author_id );
 
 		// If there's no entity bound return a simple author structure.
 		if ( empty( $entity_id ) ) {

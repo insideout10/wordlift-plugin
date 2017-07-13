@@ -1005,7 +1005,7 @@ class Wordlift {
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
 
 		// User Profile.
-		new Wordlift_Admin_User_Profile_Page( $this->author_element );
+		new Wordlift_Admin_User_Profile_Page( $this->author_element, $this->user_service );
 
 		$this->event_entity_page_service = new Wordlift_Event_Entity_Page_Service();
 

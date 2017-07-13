@@ -976,6 +976,7 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $jsonld['mentions'] );
 		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
 		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+		
 	}
 
 }

@@ -87,7 +87,7 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 			                             && isset( $value['options'] ) && is_array( $value['options'] )
 			                             && isset( $value['options'][ $entity_post_id ] ) && $post_title === $value['options'][ $entity_post_id ]
 			                             && isset( $value['data'] ) && is_array( $value['data'] )
-			                             && empty( $value['data'][0] )
+			                             && 0 == $value['data'][0]['id']
 			                             && 'First Element' === $value['data'][1];
 		                      } ) );
 
