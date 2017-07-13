@@ -113,18 +113,17 @@ class Wordlift_Admin_User_Profile_Page {
 		}
 
 		// Bail out if the `wl_person` parameter isn't set.
-		if ( ! isset( $_POST['wl_person'] ) ) {
+		if ( ! isset( $_POST['wl_person'] ) || ! is_numeric( $_POST['wl_person'] ) ) {
 			return;
 		}
 
-		// Update the entity id in the user meta
-		if ( is_numeric( $_POST['wl_person'] ) ) {
-			update_user_meta( $user_id, 'wl_person', intval( $_POST['wl_person'] ) );
-		}
+		$person_id = intval( $_POST['wl_person'] );
 
-		// Remove the user meta if the parameter is empty.
-		if ( empty( $_POST['wl_person'] ) ) {
-			delete_user_meta( $user_id, 'wl_person', intval( $_POST['wl_person'] ) );
+		// Update the entity id in the user meta
+		if ( 0 < $person_id ) {
+			update_user_meta( $user_id, 'wl_person', $person_id );
+		} else {
+			delete_user_meta( $user_id, 'wl_person', $person_id );
 		}
 
 	}

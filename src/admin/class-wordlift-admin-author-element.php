@@ -71,7 +71,7 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 
 		// Set a default to show when no entity is associated and a way to unassign.
 		array_unshift( $data, array(
-			'id'            => '',
+			'id'            => '0',
 			'text'          => __( '<em>(none)</em>', 'wordlift' ),
 			'type'          => '',
 			'thumbnail_url' => plugin_dir_url( dirname( __FILE__ ) ) . 'images/pixel.png',
