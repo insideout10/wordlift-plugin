@@ -900,9 +900,17 @@ body#tinymce {
     //}
   }
 
-  // When the user is typing in TinyMCE.
-  &.wl-tinymce-typing .textannotation {
+  // When the user is typing in TinyMCE or the classification postbox is closed.
+  &.wl-tinymce-typing .textannotation, &.wl-postbox-closed .textannotation {
+    cursor: initial;
     background-color: transparent;
     box-shadow: none;
+
+      // Selected entities are highlighted gray.
+      &.selected {
+        color: initial;
+        background-color: initial;
+      }
+
   }
 }

@@ -5300,8 +5300,15 @@ body#tinymce .textannotation.disambiguated.selected {
   background-color: #007aff;
   border-bottom: #007aff 2px solid;
 }
-body#tinymce.wl-tinymce-typing .textannotation {
+body#tinymce.wl-tinymce-typing .textannotation,
+body#tinymce.wl-postbox-closed .textannotation {
+  cursor: initial;
   background-color: transparent;
   -webkit-box-shadow: none;
           box-shadow: none;
+}
+body#tinymce.wl-tinymce-typing .textannotation.selected,
+body#tinymce.wl-postbox-closed .textannotation.selected {
+  color: initial;
+  background-color: initial;
 }

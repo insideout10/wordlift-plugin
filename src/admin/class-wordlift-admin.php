@@ -59,10 +59,11 @@ class Wordlift_Admin {
 		$key         = $configuration_service->get_key();
 
 		if ( empty( $dataset_uri ) ) {
+			$settings_page = Wordlift_Admin_Settings_Page::get_instance();
 			if ( empty( $key ) ) {
-				$error = __( 'WordLift\'s key is unset: WordLift requires a key.', 'wordlift' );
+				$error = sprintf( esc_html__( "WordLift's key isn't set, please open the %s to set WordLift's key.", 'wordlift' ), '<a href="' . $settings_page->get_url() . '">' . esc_html__( 'settings page', 'wordlift' ) . '</a>' );
 			} else {
-				$error = __( 'WordLift\'s dataset URI is unset: please retry WordLift\'s configuration.', 'wordlift' );
+				$error = sprintf( esc_html__( "WordLift's dataset URI is not configured: please open the %s to set WordLift's key again.", 'wordlift' ), '<a href="' . $settings_page->get_url() . '">' . esc_html__( 'settings page', 'wordlift' ) . '</a>' );
 			}
 			$notice_service->add_error( $error );
 		}

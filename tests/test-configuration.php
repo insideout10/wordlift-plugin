@@ -25,6 +25,8 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 	 */
 	private $configuration_service;
 
+	private $http_request_count = 0;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -147,6 +149,106 @@ class Wordlift_Configuration_Test extends Wordlift_Unit_Test_Case {
 
 		$this->assertFalse( $this->configuration_service->is_link_by_default() );
 
+	}
+
+	/**
+	 */
+	function test_maybe_update_dataset_uri_new_key_empty() {
+
+		add_filter( 'pre_http_request', array(
+			$this,
+			'pre_http_request',
+		), 10, 3 );
+
+		$this->configuration_service->maybe_update_dataset_uri(
+			array( 'key' => uniqid() ),
+			array( 'key' => '' )
+		);
+
+		$this->assertEquals( 0, $this->http_request_count );
+
+	}
+
+	/**
+	 */
+	function test_maybe_update_dataset_uri_new_key_not_equal_to_old_key() {
+
+		add_filter( 'pre_http_request', array(
+			$this,
+			'pre_http_request',
+		), 10, 3 );
+
+		$old_key = uniqid( true );
+		$new_key = uniqid( true );
+
+		$this->configuration_service->maybe_update_dataset_uri(
+			array( 'key' => $old_key ),
+			array( 'key' => $new_key )
+		);
+
+		$this->assertEquals( 0, $this->http_request_count );
+
+	}
+
+	/**
+	 */
+	function test_maybe_update_dataset_uri_dataset_uri_not_empty() {
+
+		add_filter( 'pre_http_request', array(
+			$this,
+			'pre_http_request',
+		), 10, 3 );
+
+		$old_key = $new_key = uniqid( true );
+
+		$this->configuration_service->maybe_update_dataset_uri(
+			array( 'key' => $old_key ),
+			array( 'key' => $new_key )
+		);
+
+		$this->assertNotEmpty( $this->configuration_service->get_dataset_uri() );
+
+		$this->assertEquals( 0, $this->http_request_count );
+
+	}
+
+	/**
+	 */
+	function test_maybe_update_dataset_uri() {
+
+		add_filter( 'pre_http_request', array(
+			$this,
+			'pre_http_request',
+		), 10, 3 );
+
+		$old_dataset_uri = $this->configuration_service->get_dataset_uri();
+		$this->configuration_service->set_dataset_uri( '' );
+
+		$old_key = $new_key = uniqid( true );
+
+		$this->configuration_service->maybe_update_dataset_uri(
+			array( 'key' => $old_key ),
+			array( 'key' => $new_key )
+		);
+
+		$this->assertEquals( 1, $this->http_request_count );
+
+		$this->configuration_service->set_dataset_uri( $old_dataset_uri );
+
+	}
+
+	/**
+	 * @param bool   $preempt Whether to preempt an HTTP request return. Default false.
+	 * @param array  $r       HTTP request arguments.
+	 * @param string $url     The request URL.
+	 *
+	 * @return bool
+	 */
+	function pre_http_request( $preempt, $r, $url ) {
+
+		$this->http_request_count ++;
+
+		return true;
 	}
 
 }

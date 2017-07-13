@@ -84,58 +84,6 @@
 
 }
 
-// This must be global since `Select2` puts the options somewhere in the global
-// scope.
-.wl-admin-settings-page-select2 {
-
-  &.select2-selection {
-    min-height: 32px;
-    max-height: 32px;
-    overflow-y: auto;
-  }
-
-  .wl-select2-thumbnail {
-    width: 24px;
-    height: 24px;
-    display: inline-block;
-    background: no-repeat center;
-    background-size: contain;
-    margin: 4px 8px 4px 0;
-  }
-
-  .wl-select2-type {
-    // Position.
-    float: right;
-    // Spacing.
-    line-height: 32px;
-    // Text job
-    font-weight: 600;
-  }
-
-}
-
-// Styling select pane.
-.select2-results__options {
-  color: #666 !important;
-}
-
-// Styling select option.
-.select2-results__option {
-  .wl-select2-type {
-    // Position.
-    float: right;
-    // Spacing.
-    line-height: 32px;
-    // Text job
-    font-weight: 600;
-  }
-}
-
-.select2-results__option--highlighted {
-  background-color: #f5f5f5 !important;
-  color: #2E92FF !important;
-}
-
 // Styling the select wrap.
 .ui-tabs .ui-tabs-panel {
   // Size.

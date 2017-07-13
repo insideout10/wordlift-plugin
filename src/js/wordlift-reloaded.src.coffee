@@ -815,7 +815,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.12.1'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.13.3'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
@@ -938,7 +938,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.12.1'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.13.3'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1802,7 +1802,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.12.1'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.13.3'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -1880,19 +1880,19 @@ $(
           break
     ])
 
-    # Perform analysis once tinymce is loaded
-    fireEvent(editor, "LoadContent", (e) ->
+    # Define the callback to call to start the analysis.
+    startAnalysis = () ->
       injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
         (AnalysisService, EditorService, $rootScope, $log) ->
-          # execute the following commands in the angular js context.
+# execute the following commands in the angular js context.
           $rootScope.$apply(->
-            # Get the html content of the editor.
+# Get the html content of the editor.
             html = editor.getContent format: 'raw'
 
             if "" isnt html
               EditorService.updateContentEditableStatus false
               AnalysisService.perform html
-            # Get the text content from the Html.
+# Get the text content from the Html.
 #            text = Traslator.create(html).getText()
 #            if text.match /[a-zA-Z0-9]+/
 #              # Disable tinymce editing
@@ -1902,7 +1902,43 @@ $(
 #              $log.warn "Blank content: nothing to do!"
           )
       ])
+
+    addClassToBody = () ->
+      # Get the editor body.
+      $body = $( editor.getBody() )
+
+      # Whether the postbox is closed.
+      closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
+
+      # Add or remove the class according to the postbox status.
+      if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
+
+
+    # Add a `wl-postbox-closed` class to the editor body when the classification
+    # metabox is closed.
+    $(document).on( 'postbox-toggled', (e, postbox) ->
+      # Bail out if it's not our postbox.
+      return if 'wordlift_entities_box' isnt postbox.id
+
+      addClassToBody()
     )
+
+    # Set the initial state on the editor's body.
+    editor.on('init', () -> addClassToBody())
+
+    # Check whether the postbox is closed.
+    closed = $('#wordlift_entities_box').hasClass('closed')
+
+    # Start the analysis if the postbox isn't closed.
+    if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
+      # If the postbox is closed, hook to the `postbox-toggled` event and start
+      # the analysis as soon as the postbox is opened.
+      $(document).on( 'postbox-toggled', (e, postbox) ->
+        # Bail out if it's not our postbox.
+        return if 'wordlift_entities_box' isnt postbox.id
+
+        startAnalysis()
+      )
 
     # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
     fireEvent(editor, "NodeChange", (e) ->
