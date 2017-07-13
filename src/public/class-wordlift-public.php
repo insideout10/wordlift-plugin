@@ -105,8 +105,22 @@ class Wordlift_Public {
 		// If we're in a single page, then print out the post id.
 		if ( is_singular() ) {
 			$settings['postId'] = get_the_ID();
-		} elseif ( is_home() ) {
-			$settings['postId'] = get_option( 'page_for_posts' );
+		}
+
+		// Add flag that we are on home/blog page.
+		if ( is_home() || is_front_page()  ) {
+			$settings['isHome'] = true;
+
+			// Check if we are on blog page and change the id.
+			if ( is_home() ) {
+				// Get blogpage id.
+				$maybe_blogpage_id = get_option( 'page_for_posts' );
+
+				// Check if we have blog page set and use it's id.
+				if ( ! empty( $maybe_blogpage_id ) ) {
+					$settings['postId'] = $maybe_blogpage_id;
+				}
+			}
 		}
 
 		// Note that we switched the js to be loaded in footer, since it is loading

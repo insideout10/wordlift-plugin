@@ -134,16 +134,6 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		}
 
-		/**
-		 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output
-		 *
-		 * @api bool $display_search Whether or not to display json+ld search on the frontend
-		 */
-		if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
-			// Change jsonld if is home or blog page
-			$this->change_jsonld_if_homepage( $jsonld, $post_id );
-		}
-
 		return $jsonld;
 	}
 
@@ -213,47 +203,5 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$params['publisher']['logo']['width']  = $attachment[1];
 		$params['publisher']['logo']['height'] = $attachment[2];
 
-	}
-
-	function change_jsonld_if_homepage( &$params, $post_id ) {
-		// Get home & blog page ids
-		$ids = array(
-			get_option( 'page_on_front' ),
-			get_option( 'page_for_posts' ),
-		);
-
-		// Determinate if this is home or blog page.
-		if ( in_array( $post_id, $ids ) ) {
-			// Change values so they will be accurate on homepage
-			$params['headline']    = get_bloginfo( 'name' );
-			$params['description'] = get_bloginfo( 'description' );
-			$params['url']         = home_url('/');
-
-			// Set the search action.
-			$this->set_search_action( $params );
-		}
-	}
-
-	/**
-	 * Enrich the provided params array with publisher data, if available.
-	 *
-	 * @since 3.10.0
-	 *
-	 * @param array $params The parameters array.
-	 */
-	private function set_search_action( &$params ) {
-		/**
-		 * Filter: 'wordlift_json_ld_search_url' - Allows filtering of the search URL.
-		 *
-		 * @api string $search_url The search URL for this site with a `{search_term_string}` variable.
-		 */
-		$search_url = apply_filters( 'wordlift_json_ld_search_url', home_url( '/' ) . '?s={search_term_string}' );
-
-		// Add search action
-		$params['potentialAction'] = array(
-			'@type'       => 'SearchAction',
-			'target'      => $search_url,
-			'query-input' => 'required name=search_term_string',
-		);
 	}
 }
