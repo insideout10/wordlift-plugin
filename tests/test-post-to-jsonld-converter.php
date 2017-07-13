@@ -976,6 +976,114 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 		$this->assertCount( 2, $jsonld['mentions'] );
 		$this->assertEquals( $entity_1_uri, $jsonld['mentions'][0]['@id'] );
 		$this->assertEquals( $entity_2_uri, $jsonld['mentions'][1]['@id'] );
+
+	}
+
+	/**
+	 * Test a Post made by an author without a representing entity.
+	 *
+	 * @since 3.14.0
+	 */
+	public function test_a_post_with_a_user_without_a_representing_entity() {
+
+		$author_id  = $this->factory->user->create( array(
+			'display_name' => 'John Smith',
+		) );
+		$author_uri = $this->user_service->get_uri( $author_id );
+
+		// Create a post that includes an img of an attachment and an external URL.
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $author_id,
+		) );
+
+		//
+		$references = array();
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
+		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
+		$this->assertEquals( $author_uri, $jsonld['author']['@id'] );
+		$this->assertEquals( 'John Smith', $jsonld['author']['name'] );
+
+	}
+
+	/**
+	 * Test a Post made by an author with a representing entity.
+	 *
+	 * @since 3.14.0
+	 */
+	public function test_a_post_with_a_user_with_a_representing_person_entity() {
+
+		$author_id  = $this->factory->user->create( array(
+			'display_name' => 'John Smith',
+		) );
+		$author_uri = $this->user_service->get_uri( $author_id );
+
+		$entity_id  = $this->entity_factory->create( array(
+			'post_title'   => 'John Smith Entity',
+			'post_excerpt' => 'Lorem Ipsum',
+		) );
+		$entity_uri = $this->entity_service->get_uri( $entity_id );
+		$entity_url = get_permalink( $entity_id );
+		$this->entity_type_service->set( $entity_id, 'http://schema.org/Person' );
+
+		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
+
+		// Create a post that includes an img of an attachment and an external URL.
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $author_id,
+		) );
+
+		//
+		$references = array();
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
+		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
+		$this->assertEquals( 'Person', $jsonld['author']['@type'] );
+		$this->assertEquals( 'Lorem Ipsum', $jsonld['author']['description'] );
+		$this->assertEquals( 'John Smith Entity', $jsonld['author']['name'] );
+		$this->assertEquals( $entity_url, $jsonld['author']['mainEntityOfPage'] );
+		$this->assertEquals( $entity_url, $jsonld['author']['url'] );
+
+	}
+
+	/**
+	 * Test a Post made by an author with a representing entity.
+	 *
+	 * @since 3.14.0
+	 */
+	public function test_a_post_with_a_user_with_a_representing_organization_entity() {
+
+		$author_id  = $this->factory->user->create( array(
+			'display_name' => 'John Smith',
+		) );
+		$author_uri = $this->user_service->get_uri( $author_id );
+
+		$entity_id  = $this->entity_factory->create( array(
+			'post_title'   => 'John Smith Entity',
+			'post_excerpt' => 'Lorem Ipsum',
+		) );
+		$entity_uri = $this->entity_service->get_uri( $entity_id );
+		$entity_url = get_permalink( $entity_id );
+		$this->entity_type_service->set( $entity_id, 'http://schema.org/Organization' );
+
+		$this->assertGreaterThan( 0, $this->user_service->set_entity( $author_id, $entity_id ) );
+
+		// Create a post that includes an img of an attachment and an external URL.
+		$post = $this->factory->post->create_and_get( array(
+			'post_author' => $author_id,
+		) );
+
+		//
+		$references = array();
+		$jsonld     = $this->post_to_jsonld_converter->convert( $post->ID, $references );
+
+		$this->assertEquals( $entity_uri, $jsonld['author']['@id'] );
+		$this->assertEquals( 'Organization', $jsonld['author']['@type'] );
+		$this->assertEquals( 'Lorem Ipsum', $jsonld['author']['description'] );
+		$this->assertEquals( 'John Smith Entity', $jsonld['author']['name'] );
+		$this->assertEquals( $entity_url, $jsonld['author']['mainEntityOfPage'] );
+		$this->assertEquals( $entity_url, $jsonld['author']['url'] );
+
 	}
 
 }

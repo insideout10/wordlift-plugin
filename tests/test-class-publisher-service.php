@@ -18,6 +18,10 @@
  */
 class Wordlift_Publisher_Service_Test extends Wordlift_Unit_Test_Case {
 
+	private $entity_type_service;
+
+	private $entity_service;
+
 	/**
 	 * {@inheritdoc}
 	 */
