@@ -80,12 +80,12 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$jsonld['headline'] = $post->post_title;
 
 		// Get the author.
-		$author    = get_the_author_meta( 'display_name', $post->post_author );
-		$author_id = $this->user_service->get_uri( $post->post_author );
+		$author     = get_the_author_meta( 'display_name', $post->post_author );
+		$author_uri = $this->user_service->get_uri( $post->post_author );
 
 		$jsonld['author'] = array(
 			'@type' => 'Person',
-			'@id'   => $author_id,
+			'@id'   => $author_uri,
 			'name'  => $author,
 		);
 
@@ -135,6 +135,22 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		}
 
 		return $jsonld;
+	}
+
+	private function get_author( &$jsonld, $author_id, $author ) {
+
+		// Get the entity bound to this user.
+		$entity_id = get_user_meta( $author_id, 'wl_person', true );
+
+		// If there's no entity bound return a simple author structure.
+		if ( empty( $entity_id ) ) {
+			return array(
+				'@type' => 'Person',
+				'@id'   => $author_id,
+				'name'  => $author,
+			);
+		}
+
 	}
 
 	/**
@@ -194,8 +210,8 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Copy over some useful properties.
 		//
 		// See https://developers.google.com/search/docs/data-types/articles
-		$params['publisher']['logo']['@type']  = 'ImageObject';
-		$params['publisher']['logo']['url']    = $attachment[0];
+		$params['publisher']['logo']['@type'] = 'ImageObject';
+		$params['publisher']['logo']['url']   = $attachment[0];
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
 		//
