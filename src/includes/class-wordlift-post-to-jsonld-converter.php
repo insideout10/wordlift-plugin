@@ -93,6 +93,10 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		$jsonld['datePublished'] = get_post_time( 'Y-m-d\TH:i', true, $post, false );
 		$jsonld['dateModified']  = get_post_modified_time( 'Y-m-d\TH:i', true, $post, false );
 
+		// Get the word count for the post.
+		$post_adapter        = new Wordlift_Post_Adapter( $post_id );
+		$jsonld['wordCount'] = $post_adapter->word_count();
+		
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
