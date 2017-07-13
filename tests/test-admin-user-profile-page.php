@@ -17,7 +17,7 @@
 class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 
 	/**
-	 * @var \Wordlift_Admin_Person_Element $admin_person_element
+	 * @var \Wordlift_Admin_Author_Element $admin_person_element
 	 */
 	private $admin_person_element;
 
@@ -29,7 +29,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->admin_person_element = $this->getMockBuilder( Wordlift_Admin_Person_Element::class )
+		$this->admin_person_element = $this->getMockBuilder( Wordlift_Admin_Author_Element::class )
 		                                   ->disableOriginalConstructor()
 		                                   ->setMethods( array() )
 		                                   ->getMock();

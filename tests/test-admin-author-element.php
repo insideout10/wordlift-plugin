@@ -21,7 +21,7 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 	 *
 	 * @since  3.14.0
 	 * @access private
-	 * @var \Wordlift_Admin_Person_Element $admin_person_element The {@link Wordlift_Admin_Person_Element} to test.
+	 * @var \Wordlift_Admin_Author_Element $admin_person_element The {@link Wordlift_Admin_Person_Element} to test.
 	 */
 	private $admin_person_element;
 
@@ -57,7 +57,7 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 		                                   ->disableOriginalConstructor()
 		                                   ->setMethods( array( 'render' ) )
 		                                   ->getMock();
-		$this->admin_person_element = new Wordlift_Admin_Person_Element( $this->publisher_service, $this->select2_element );
+		$this->admin_person_element = new Wordlift_Admin_Author_Element( $this->publisher_service, $this->select2_element );
 
 	}
 

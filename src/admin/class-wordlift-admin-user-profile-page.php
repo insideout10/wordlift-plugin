@@ -23,20 +23,20 @@ class Wordlift_Admin_User_Profile_Page {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @var \Wordlift_Admin_Person_Element $plugin The person entity
+	 * @var \Wordlift_Admin_Author_Element $plugin The person entity
 	 *                selection element rendering the possible persons.
 	 */
-	private $person_element;
+	private $author_element;
 
 	/**
 	 * Create the {@link Wordlift_Admin_User_Profile_Page} instance.
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param \Wordlift_Admin_Person_Element $person_element The person entity selection
+	 * @param \Wordlift_Admin_Author_Element $author_element The person entity selection
 	 *                                                       element rendering the possible persons.
 	 */
-	function __construct( $person_element ) {
+	function __construct( $author_element ) {
 
 		/*
 		 * When an admin (or similar permissions) edits his own profile a
@@ -51,7 +51,7 @@ class Wordlift_Admin_User_Profile_Page {
 			'edit_user_profile_update',
 		) );
 
-		$this->person_element = $person_element;
+		$this->author_element = $author_element;
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Wordlift_Admin_User_Profile_Page {
 				</th>
 				<td>
 					<?php
-					$this->person_element->render( array(
+					$this->author_element->render( array(
 						'id'             => 'wl_person',
 						'name'           => 'wl_person',
 						'current_entity' => get_user_meta( $user->ID, 'wl_person', true ),
