@@ -151,14 +151,14 @@ class Wordlift_Admin_User_Profile_Page {
 		// Deny and enable the edit entity capability
 		if ( isset( $_POST['wl_can_edit_entities'] ) ) {
 			// User has capability so remove the deny indication if present.
-			delete_user_meta( $user_id, 'wl_can_edit_entities' );
+			delete_user_meta( $user_id, 'wl_deny_edit_entity' );
 		} else {
 			$user = get_user_by( 'id', $user_id );
 
 			// Only editors are handled in the profile UI, ignore the rest.
 			if ( in_array( 'editor', (array) $user->roles ) ) {
 				// The user explicitly do not have the capability.
-				update_user_meta( $user_id, 'wl_can_edit_entities', true );
+				update_user_meta( $user_id, 'wl_deny_edit_entity', true );
 			}
 		}
 

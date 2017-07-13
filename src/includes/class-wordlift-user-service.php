@@ -285,7 +285,7 @@ class Wordlift_User_Service {
 			// Check that if a user is an editor.
 			if ( in_array( 'editor', (array) $user->roles ) ) {
 				// Check the deny flag and turn the capability "off" if it is on.
-				$deny = get_user_meta( $user_id, 'wl_can_edit_entities', true );
+				$deny = get_user_meta( $user_id, 'wl_deny_edit_entity', true );
 				if ( $deny ) {
 					$allcaps[ $cap[0] ] = false;
 				}
