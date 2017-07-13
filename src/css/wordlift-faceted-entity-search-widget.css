@@ -2595,6 +2595,7 @@
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li:before {
   content: '';
+  display: none;
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li .wl-checkbox {
   top: 0;
