@@ -75,12 +75,12 @@ class Wordlift_Admin_User_Profile_Page {
 		}
 
 		?>
-		<h2><?php esc_html_e( 'Wordlift', 'wordlift' ); ?></h2>
+		<h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
 
 		<table class="form-table">
 			<tr class="user-description-wrap">
 				<th><label
-						for="wl_person"><?php _e( 'Schema.org Publisher', 'wordlift' ); ?></label>
+						for="wl_person"><?php _e( 'Author from the vocabulary', 'wordlift' ); ?></label>
 				</th>
 				<td>
 					<?php
@@ -90,7 +90,7 @@ class Wordlift_Admin_User_Profile_Page {
 						'current_entity' => get_user_meta( $user->ID, 'wl_person', true ),
 					) );
 					?>
-					<p class="description"><?php _e( 'The Publisher entity to associate with this user.', 'wordlift' ); ?></p>
+					<p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
 		</table>

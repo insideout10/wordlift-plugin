@@ -99,12 +99,6 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 		//
 		$this->assertEquals( $this->admin_person_element, $result );
 
-		// Check that the filter has been set.
-		$this->assertEquals( 999, has_filter( 'admin_footer', array(
-			$this->admin_person_element,
-			'initialize_select2',
-		) ) );
-
 	}
 
 }

@@ -70,19 +70,16 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 		$data              = $this->publisher_service->query();
 
 		// Set a default to show when no entity is associated and a way to unassign.
-		array_unshift( $data, '' );
+		array_unshift( $data, array(
+			'id'            => '',
+			'text'          => __( '<em>(none)</em>', 'wordlift' ),
+			'type'          => '',
+			'thumbnail_url' => plugin_dir_url( dirname( __FILE__ ) ) . 'images/pixel.png',
+		) );
 
 		// Finally do the render, passing along also the current selected entity
 		// id and the options data.
 		$this->do_render( $params, $current_entity_id, $data );
-
-		/*
-		 * Since we need to support wp version before 4.5, adding the select2
-		 * initialization needs to be done in the old ugly way.
-		 * Not using closure to prevent multiple hook registry in the unlikely Event
-		 * of this class being used more then once on a page.
-		 */
-		add_action( 'admin_footer', array( $this, 'initialize_select2' ), 999 );
 
 	}
 
@@ -98,6 +95,9 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 	 * @return \Wordlift_Admin_Author_Element $this Return this element.
 	 */
 	protected function do_render( $params, $current_post_id, $data ) {
+
+		// Queue the script which will initialize the select and style it.
+		wp_enqueue_script( 'wl-author-element', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-author-element.bundle.js', array( 'wordlift-select2' ) );
 
 		// Prepare the URLs for entities which don't have logos.
 		$person_thumbnail_url       = plugin_dir_url( dirname( __FILE__ ) ) . 'images/person.png';
@@ -126,36 +126,6 @@ class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 
 		// Finally return the element instance.
 		return $this;
-	}
-
-	/**
-	 * Add the JS code to initialize select2.
-	 *
-	 * @since 3.14.0
-	 */
-	public function initialize_select2() {
-		?>
-		<script type="text/javascript">
-			jQuery( document ).ready( function( $ ) {
-				$( '.wl-select2-element' ).each( function( index, element ) {
-					const $e = $( element );
-					$e.select2(
-						{
-							width: '100%',
-							data: $e.data( 'wl-select2-data' ),
-							escapeMarkup: function( markup ) {
-								return markup;
-							},
-							templateResult: _.template( $e.data( 'wl-select2-template-result' ) ),
-							templateSelection: _.template( $e.data( 'wl-select2-template-selection' ) ),
-							containerCssClass: 'wl-admin-settings-page-select2',
-							dropdownCssClass: 'wl-admin-settings-page-select2',
-						}
-					);
-				} );
-			} );
-		</script>
-		<?php
 	}
 
 }
