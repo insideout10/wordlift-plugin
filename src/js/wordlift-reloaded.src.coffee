@@ -1903,22 +1903,28 @@ $(
           )
       ])
 
+    addClassToBody = () ->
+      # Get the editor body.
+      $body = $( editor.getBody() )
+
+      # Whether the postbox is closed.
+      closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
+
+      # Add or remove the class according to the postbox status.
+      if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
+
+
     # Add a `wl-postbox-closed` class to the editor body when the classification
     # metabox is closed.
     $(document).on( 'postbox-toggled', (e, postbox) ->
       # Bail out if it's not our postbox.
       return if 'wordlift_entities_box' isnt postbox.id
 
-      # Whether the postbox is closed.
-      closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
-
-      # Get the editor body.
-      $body = $( editor.getBody() )
-
-      # Add or remove the class according to the postbox status.
-      if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
+      addClassToBody()
     )
 
+    # Set the initial state on the editor's body.
+    editor.on('init', () -> addClassToBody())
 
     # Check whether the postbox is closed.
     closed = $('#wordlift_entities_box').hasClass('closed')

@@ -1803,7 +1803,7 @@
       });
     }
   ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
-    var closed, fireEvent, startAnalysis;
+    var addClassToBody, closed, fireEvent, startAnalysis;
     if (editor.id !== "content") {
       return;
     }
@@ -1865,18 +1865,24 @@
         }
       ]);
     };
-    $(document).on('postbox-toggled', function(e, postbox) {
+    addClassToBody = function() {
       var $body, closed;
-      if ('wordlift_entities_box' !== postbox.id) {
-        return;
-      }
-      closed = $('#wordlift_entities_box').hasClass('closed');
       $body = $(editor.getBody());
+      closed = $('#wordlift_entities_box').hasClass('closed');
       if (closed) {
         return $body.addClass('wl-postbox-closed');
       } else {
         return $body.removeClass('wl-postbox-closed');
       }
+    };
+    $(document).on('postbox-toggled', function(e, postbox) {
+      if ('wordlift_entities_box' !== postbox.id) {
+        return;
+      }
+      return addClassToBody();
+    });
+    editor.on('init', function() {
+      return addClassToBody();
     });
     closed = $('#wordlift_entities_box').hasClass('closed');
     if (!closed) {
