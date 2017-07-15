@@ -18,6 +18,13 @@ class Wordlift_User_Service {
 	const URI_META_KEY = '_wl_uri';
 
 	/**
+	 * The user meta key where the deny entity edit flag is stored.
+	 *
+	 * @since 3.1.7
+	 */
+	const DENY_ENTITY_EDIT_META_KEY = 'wl_deny_edit_entity';
+
+	/**
 	 * The Log service.
 	 *
 	 * @since 3.1.7
@@ -253,6 +260,68 @@ class Wordlift_User_Service {
 	}
 
 	/**
+	 * Mark an editor user as denied from editing entities.
+	 * Does nothing if the user is not an editor
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param integer	$user_id	The ID of the user
+	 */
+	function deny_editor_entity_editing( $user_id ) {
+		 $user = get_user_by( 'id', $user_id );
+
+		 // Only editors are handled in the profile UI, ignore the rest.
+		if ( in_array( 'editor', (array) $user->roles ) ) {
+			 // The user explicitly do not have the capability.
+			 update_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY, true );
+		}
+	}
+
+	/**
+	 * Remove the "deny entity editing" mark from an editor user.
+	 * Does nothing if the user is not an editor
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param integer	$user_id	The ID of the user
+	 */
+	function enable_editor_entity_editing( $user_id ) {
+		 $user = get_user_by( 'id', $user_id );
+
+		 // Only editors are handled in the profile UI, ignore the rest.
+		if ( in_array( 'editor', (array) $user->roles ) ) {
+			 // The user explicitly do not have the capability.
+			 delete_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY );
+		}
+	}
+
+	/**
+	 * Check if an editor can edit entities.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The user id of the user being checked.
+	 *
+	 * @return bool	false if it is an editor that is denied from edit entities, true otherwise.
+	 */
+	function editor_can_edit_entities( $user_id ) {
+
+		// If not an editor just return true.
+		$user = get_user_by( 'id', $user_id );
+		if ( ! in_array( 'editor', (array) $user->roles ) ) {
+			return true;
+		}
+
+		// Check if the user explicitly denied.
+		$deny = get_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY, true );
+		if ( $deny ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Filter capabilities of user.
 	 *
 	 * Deny the capability of managing and editing entities for some users.
@@ -280,15 +349,9 @@ class Wordlift_User_Service {
 			( 'delete_wordlift_entity' == $cap[0] )
 		) {
 			$user_id = $args[1];
-			$user = get_user_by( 'id', $user_id );
 
-			// Check that if a user is an editor.
-			if ( in_array( 'editor', (array) $user->roles ) ) {
-				// Check the deny flag and turn the capability "off" if it is on.
-				$deny = get_user_meta( $user_id, 'wl_deny_edit_entity', true );
-				if ( $deny ) {
-					$allcaps[ $cap[0] ] = false;
-				}
+			if ( ! self::editor_can_edit_entities( $user_id ) ) {
+				$allcaps[ $cap[0] ] = false;
 			}
 		}
 

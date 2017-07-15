@@ -94,38 +94,11 @@ class Wordlift_Admin_User_Profile_Page {
 						<label for="wl_can_edit_entities"><?php esc_html_e( 'Can edit entities', 'wordlift' )?></label>
 					</th>
 					<td>
-						<input id="wl_can_edit_entities" name="wl_can_edit_entities" type="checkbox" <?php checked( $this->user_can_edit_entities( $user->ID ) ) ?>
+						<input id="wl_can_edit_entities" name="wl_can_edit_entities" type="checkbox" <?php checked( Wordlift_User_Service::get_instance()->editor_can_edit_entities( $user->ID ) ) ?>
 					</td>
 			<?php } ?>
 		</table>
 		<?php
-	}
-
-	/**
-	 * Check if a user can edit entities.
-	 *
-	 * Done by checking the wordlift_edit_entity capability of rule and user
-	 *
-	 * @since 3.14.0
-	 *
-	 * @param int $user_id The user id of the user being checked.
-	 */
-	function user_can_edit_entities( $user_id ) {
-
-		// First check if the user explicitly denied.
-		$deny = get_user_meta( $user_id, 'wl_deny_edit_entity', true );
-		if ( $deny ) {
-			return false;
-		}
-
-		// If not denied check if it is an editor which enabled by default.
-		$user = get_user_by( 'id', $user_id );
-		if ( in_array( 'editor', (array) $user->roles ) ) {
-			return true;
-		}
-
-		// Should not get here from the UI, but for completeness
-		return false;
 	}
 
 	/**
@@ -151,15 +124,9 @@ class Wordlift_Admin_User_Profile_Page {
 		// Deny and enable the edit entity capability
 		if ( isset( $_POST['wl_can_edit_entities'] ) ) {
 			// User has capability so remove the deny indication if present.
-			delete_user_meta( $user_id, 'wl_deny_edit_entity' );
+			Wordlift_User_Service::get_instance()->enable_editor_entity_editing( $user_id );
 		} else {
-			$user = get_user_by( 'id', $user_id );
-
-			// Only editors are handled in the profile UI, ignore the rest.
-			if ( in_array( 'editor', (array) $user->roles ) ) {
-				// The user explicitly do not have the capability.
-				update_user_meta( $user_id, 'wl_deny_edit_entity', true );
-			}
+			Wordlift_User_Service::get_instance()->deny_editor_entity_editing( $user_id );
 		}
 
 	}
