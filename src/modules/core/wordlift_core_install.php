@@ -241,7 +241,7 @@ function wl_core_upgrade_db_3_12_3_14() {
 
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
-	wl_core_upgrade_db_3_12_3_14();
+
 	if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
 
 		wl_core_upgrade_db_to_1_0();
