@@ -93,12 +93,12 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the enable_editor_entity_editing function clearing user meta correctly
+	 * Test the allow_editor_entity_editing function clearing user meta correctly
 	 * for editors.
 	 *
 	 * @since 3.14.0
 	 */
-	function test_enable_editor_entity_editing() {
+	function test_allow_editor_entity_editing() {
 		$user_service = Wordlift_User_Service::get_instance();
 
 		// Test editor.
@@ -106,7 +106,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		$user->add_role( 'editor' );
 
 		$user_service->deny_editor_entity_editing( $user->ID );
-		$user_service->enable_editor_entity_editing( $user->ID );
+		$user_service->allow_editor_entity_editing( $user->ID );
 		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
 		$this->assertEmpty( $meta );
 	}
@@ -131,7 +131,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		$user_service->deny_editor_entity_editing( $user->ID );
 		$this->AssertFalse( $user_service->editor_can_edit_entities( $user->ID ) );
 
-		$user_service->enable_editor_entity_editing( $user->ID );
+		$user_service->allow_editor_entity_editing( $user->ID );
 		$this->AssertTrue( $user_service->editor_can_edit_entities( $user->ID ) );
 	}
 

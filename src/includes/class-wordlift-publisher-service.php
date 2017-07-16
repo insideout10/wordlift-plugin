@@ -21,20 +21,12 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param  string $type   The type of the query to do. A value of "person"
-	 *                        indicates to count only persons, while a value of
-	 *                        "both" indicates that organizations should be
-	 *                        counted as well.
-	 *
 	 * @return int The number of potential publishers.
 	 */
-	public function count( $type = 'both' ) {
+	public function count() {
 
 		// Get the global `wpdb` instance.
 		global $wpdb;
-
-		// Get the type clause.
-		$type_query = $this->get_type_clause( $type );
 
 		// Run the query and get the count.
 		$count = $wpdb->get_var( $wpdb->prepare(
@@ -49,7 +41,7 @@ class Wordlift_Publisher_Service {
 			"  LEFT JOIN $wpdb->postmeta m" .
 			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
 			'  WHERE p.post_type = %s' .
-			'   AND t.name IN ( ' . $type_query . ' )' .
+			"   AND t.name IN ( 'Organization', 'Person' )" .
 			'   AND tt.taxonomy = %s' .
 			' ORDER BY p.post_title',
 			Wordlift_Entity_Service::TYPE_NAME,
@@ -66,21 +58,14 @@ class Wordlift_Publisher_Service {
 	 *
 	 * @since 3.11.0
 	 *
-	 * @param string $filter  The title filter.
-	 * @param string $type    The type of the query to do. A value of "person"
-	 *                        indicates to count only persons, while a value of
-	 *                        "both" indicates that organizations should be
-	 *                        counted as well.
+	 * @param string $filter The title filter.
 	 *
 	 * @return array An array of results.
 	 */
-	public function query( $filter = '', $type = 'both' ) {
+	public function query( $filter = '' ) {
 
 		// Get the global `wpdb` instance.
 		global $wpdb;
-
-		// Get the type clause.
-		$type_query = $this->get_type_clause( $type );
 
 		// Run the query and get the results.
 		$results = $wpdb->get_results( $wpdb->prepare(
@@ -95,8 +80,7 @@ class Wordlift_Publisher_Service {
 			"  LEFT JOIN $wpdb->postmeta m" .
 			"   ON m.post_id = p.id AND m.meta_key = '_thumbnail_id'" .
 			'  WHERE p.post_type = %s' .
-			// @codingStandardsIgnoreLine
-			'   AND t.name IN ( ' . $type_query . ' )' .
+			"   AND t.name IN ( 'Organization', 'Person' )" .
 			'   AND tt.taxonomy = %s' .
 			'   AND p.post_title LIKE %s' .
 			' ORDER BY p.post_title',
@@ -134,19 +118,6 @@ class Wordlift_Publisher_Service {
 		$image = wp_get_attachment_image_src( $attachment_id, $size );
 
 		return isset( $image['0'] ) ? $image['0'] : false;
-	}
-
-	/**
-	 * @since 3.14.0
-	 *
-	 * @param string $type 'person', or 'both'.
-	 *
-	 * @return string The type clause, `'Person'` if `$type` is 'person' otherwise
-	 *                `'Person', 'Organization'`.
-	 */
-	private function get_type_clause( $type = 'both' ) {
-
-		return "'Person'" . ( 'person' !== $type ? ", 'Organization'" : '' );
 	}
 
 }

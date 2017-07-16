@@ -19,24 +19,37 @@
 class Wordlift_Admin_User_Profile_Page {
 
 	/**
-	 * The {@link Wordlift_Admin_Person_Element} Wordlift_Admin_Person_Element instance.
+	 * The {@link Wordlift_Admin_Person_Element} instance.
 	 *
-	 * @since 3.14.0
-	 *
-	 * @var \Wordlift_Admin_Person_Element $plugin The person entity
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Admin_Author_Element $plugin The person entity
 	 *                selection element rendering the possible persons.
 	 */
-	private $person_element;
+	private $author_element;
+
+	/**
+	 * The {@link Wordlift_User_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 */
+	private $user_service;
 
 	/**
 	 * Create the {@link Wordlift_Admin_User_Profile_Page} instance.
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param \Wordlift_Admin_Person_Element $person_element The person entity selection
-	 *                                                      element rendering the possible persons.
+	 * @param \Wordlift_Admin_Author_Element $author_element The person entity selection
+	 *                                                       element rendering the possible persons.
+	 * @param \Wordlift_User_Service         $user_service   The {@link Wordlift_User_Service} instance.
 	 */
-	function __construct( $person_element ) {
+	function __construct( $author_element, $user_service ) {
+
+		$this->author_element = $author_element;
+		$this->user_service   = $user_service;
 
 		/*
 		 * When an admin (or similar permissions) edits his own profile a
@@ -50,8 +63,11 @@ class Wordlift_Admin_User_Profile_Page {
 			$this,
 			'edit_user_profile_update',
 		) );
+		add_action( 'personal_options_update', array(
+			$this,
+			'edit_user_profile_update',
+		) );
 
-		$this->person_element = $person_element;
 	}
 
 	/**
@@ -69,34 +85,37 @@ class Wordlift_Admin_User_Profile_Page {
 		if ( ! current_user_can( 'edit_users' ) ) {
 			return;
 		}
+
 		?>
-		<h2><?php esc_html_e( 'Wordlift', 'wordlift' ); ?></h2>
+		<h2><?php esc_html_e( 'WordLift', 'wordlift' ); ?></h2>
 
 		<table class="form-table">
 			<tr class="user-description-wrap">
 				<th><label
-						for="wl_person"><?php _e( 'Schema.org Publisher', 'wordlift' ); ?></label>
+						for="wl_person"><?php _e( 'Author from the vocabulary', 'wordlift' ); ?></label>
 				</th>
 				<td>
 					<?php
-					$this->person_element->render( array(
+					$this->author_element->render( array(
 						'id'             => 'wl_person',
 						'name'           => 'wl_person',
-						'current_entity' => get_user_meta( $user->ID, 'wl_person', true ),
+						'current_entity' => $this->user_service->get_entity( $user->ID ),
 					) );
 					?>
-					<p class="description"><?php _e( 'The Publisher entity to associate with this user.', 'wordlift' ); ?></p>
+					<p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
 			<?php if ( in_array( 'editor', (array) $user->roles ) ) { ?>
-				<tr>
-					<th>
-						<label for="wl_can_edit_entities"><?php esc_html_e( 'Can edit entities', 'wordlift' )?></label>
-					</th>
-					<td>
-						<input id="wl_can_edit_entities" name="wl_can_edit_entities" type="checkbox" <?php checked( Wordlift_User_Service::get_instance()->editor_can_edit_entities( $user->ID ) ) ?>
-					</td>
-			<?php } ?>
+			<tr>
+				<th>
+					<label
+						for="wl_can_edit_entities"><?php esc_html_e( 'Can edit entities', 'wordlift' ) ?></label>
+				</th>
+				<td>
+					<input id="wl_can_edit_entities" name="wl_can_edit_entities"
+					       type="checkbox" <?php checked( Wordlift_User_Service::get_instance()->editor_can_edit_entities( $user->ID ) ) ?>
+				</td>
+				<?php } ?>
 		</table>
 		<?php
 	}
@@ -116,18 +135,36 @@ class Wordlift_Admin_User_Profile_Page {
 			return;
 		}
 
-		// Update the entity id in the user meta
-		if ( isset( $_POST['wl_person'] ) ) {
-			update_user_meta( $user_id, 'wl_person', intval( $_POST['wl_person'] ) );
-		}
+		// Link an entity to the user.
+		$this->link_entity( $user_id, $_POST );
 
 		// Deny and enable the edit entity capability
 		if ( isset( $_POST['wl_can_edit_entities'] ) ) {
 			// User has capability so remove the deny indication if present.
-			Wordlift_User_Service::get_instance()->enable_editor_entity_editing( $user_id );
+			$this->user_service->allow_editor_entity_editing( $user_id );
 		} else {
-			Wordlift_User_Service::get_instance()->deny_editor_entity_editing( $user_id );
+			$this->user_service->deny_editor_entity_editing( $user_id );
 		}
+
+	}
+
+	/**
+	 * Link an entity (specified in the `$_POST` array) to the {@link WP_User}
+	 * with the specified `id`.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int   $user_id The {@link WP_User} `id`.
+	 * @param array $post    The `$_POST` array.
+	 */
+	private function link_entity( $user_id, $post ) {
+
+		// Bail out if the `wl_person` parameter isn't set.
+		if ( ! isset( $post['wl_person'] ) || ! is_numeric( $post['wl_person'] ) ) {
+			return;
+		}
+
+		$this->user_service->set_entity( $user_id, intval( $post['wl_person'] ) );
 
 	}
 

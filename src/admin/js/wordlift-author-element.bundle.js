@@ -63,161 +63,66 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 148);
+/******/ 	return __webpack_require__(__webpack_require__.s = 150);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 106:
+/***/ 108:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__delay__ = __webpack_require__(35);
-/**
- * Validators: Key Validator.
- *
- * Validate WordLift's key in inputs.
- *
- * @since 3.11.0
- */
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 /**
- * Internal dependencies
+ * Created by david on 21/02/2017.
  */
 
-
-// Map $ to jQuery.
 var $ = jQuery;
 
 /**
- * Create a key validator on the element with the specified selector.
+ * Create a Select2 element on the element identified by the selector.
  *
  * @since 3.11.0
  * @param {string} selector The element selector.
+ * @param {Object} args Custom options.
+ * @constructor
  */
-var KeyValidator = function KeyValidator(selector) {
-	$(selector).on('keyup', function () {
-		// Get a jQuery reference to the object.
+var Select2 = function Select2(selector) {
+	var args = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	// Cycle through each element to create `Select2`.
+	$(selector).each(function () {
+		//
 		var $this = $(this);
 
-		// Remove any preexisting states, including the `untouched` class
-		// which is set initially to prevent displaying the
-		// `valid`/`invalid` indicator.
-		$this.removeClass('untouched valid invalid');
+		var options = _extends({}, {
+			width: '100%',
+			data: $this.data('wl-select2-data'),
+			escapeMarkup: function escapeMarkup(markup) {
+				return markup;
+			},
+			templateResult: _.template($this.data('wl-select2-template-result')),
+			templateSelection: _.template($this.data('wl-select2-template-selection'))
+		}, args);
 
-		// Delay execution of the validation.
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__delay__["a" /* default */])($this, function () {
-			// Post the validation request.
-			wp.ajax.post('wl_validate_key', { key: $this.val() }).done(function (data) {
-				// If the key is valid then set the process class.
-				if (data && data.valid) {
-					$this.addClass('valid');
-				} else {
-					$this.addClass('invalid');
-				}
-			});
-		});
+		// Create the tabs and set the default active element.
+		$this.select2(options);
 	});
 };
 
-// Finally export the `KeyValidator` function.
-/* harmony default export */ __webpack_exports__["a"] = (KeyValidator);
+// Finally export `Select2`.
+/* harmony default export */ __webpack_exports__["a"] = (Select2);
 
 /***/ }),
 
-/***/ 107:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/**
- * Media Uploader.
- *
- * Provide a function to use WordPress' Media Uploader by binding a button's
- * click event.
- *
- * @since 3.11.0
- */
-
-// Set a reference to jQuery.
-var $ = jQuery;
-
-/**
- * Hook WordPress' Media Uploader.
- *
- * @since 3.11.0
- * @param {string} selector The button's selector.
- * @param {Object} options The Media Uploader's options.
- * @param {Function} callback A callback function which will receive the
- *     selected attachment.
- * @constructor
- */
-var MediaUploader = function MediaUploader(selector, options, callback) {
-  // Create a WP media uploader.
-  var uploader = wp.media(options);
-
-  // Catch `select` events on the uploader.
-  uploader.on('select', function () {
-    // Get the selected attachment.
-    callback(uploader.state().get('selection').first().toJSON());
-  });
-
-  // Add logo.
-  $(selector).on('click', function () {
-    uploader.open();
-  });
-};
-
-// Finally export the `MediaUploader`.
-/* harmony default export */ __webpack_exports__["a"] = (MediaUploader);
-
-/***/ }),
-
-/***/ 109:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/**
- * Tabs.
- *
- * Create a tabbed UI.
- *
- * @since 3.11.0
- */
-
-// Set a reference to jQuery.
-var $ = jQuery;
-
-/**
- * Create a tabbed UI on the element with the specified selector.
- *
- * @since 3.11.0
- * @param {string} selector The selector.
- * @constructor
- */
-var Tabs = function Tabs(selector) {
-  // Although in jQuery UI 1.12 it's possible to configure the css
-  // classes, WP 4.2 uses jQuery 1.11.
-  $(selector).each(function () {
-    //
-    var $this = $(this);
-
-    // Create the tabs and set the default active element.
-    $this.tabs({ active: $this.data('active') });
-  });
-};
-
-// Finally export `Tabs`.
-/* harmony default export */ __webpack_exports__["a"] = (Tabs);
-
-/***/ }),
-
-/***/ 112:
+/***/ 113:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(271);
+var content = __webpack_require__(272);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -243,18 +148,18 @@ if(false) {
 
 /***/ }),
 
-/***/ 148:
+/***/ 150:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss__ = __webpack_require__(112);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__styles_index_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__styles_index_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_key_validator__ = __webpack_require__(106);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__common_media_uploader__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_tabs__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__common_select2__ = __webpack_require__(108);
 /**
- * Entry: wordlift-admin-settings-page.js
+ * Entry: wordlift-admin-user-profile-page.js
+ *
+ * @since 3.14.0
  */
 
 /**
@@ -263,44 +168,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-//import Select2 from '../common/select2';
-
 /**
  * UI interactions on the WordLift Settings page
  *
- * @since 3.11.0
+ * @since 3.14.0
  */
-(function ($, settings) {
-	$(function () {
-		// Attach the WL key validator to the `#wl-key` element.
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_key_validator__["a" /* default */])('#wl-key');
-
-		// Attach the Media Uploader to the #wl-publisher-logo
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__common_media_uploader__["a" /* default */])('#wl-publisher-media-uploader', {
-			title: settings.l10n.logo_selection_title,
-			button: settings.l10n.logo_selection_button,
-			multiple: false,
-			library: { type: 'image' }
-		}, function (attachment) {
-			// Set the selected image as the preview image
-			$('#wl-publisher-media-uploader-preview').attr('src', attachment.url).show();
-
-			// Set the logo id.
-			$('#wl-publisher-media-uploader-id').val(attachment.id);
-		});
-
-		// Create the tabs.
-		__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__common_tabs__["a" /* default */])('.wl-tabs-element');
-
-		//			// Create the Select2.
-		//			Select2( '.wl-select2-element',
-		//					 {
-		//						 containerCssClass: 'wl-admin-settings-page-select2',
-		//						 dropdownCssClass: 'wl-admin-settings-page-select2'
-		//					 } );
-	});
-})(jQuery, wlSettings);
+(function ($) {
+  $(function () {
+    // Create the Select2.
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__common_select2__["a" /* default */])('.wl-select2-element', {
+      containerCssClass: 'wl-select2-container',
+      dropdownCssClass: 'wl-select2-dropdown'
+    });
+  });
+})(jQuery);
 
 /***/ }),
 
@@ -478,7 +359,7 @@ module.exports = function (css) {
 
 /***/ }),
 
-/***/ 271:
+/***/ 272:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(20)(undefined);
@@ -486,24 +367,10 @@ exports = module.exports = __webpack_require__(20)(undefined);
 
 
 // module
-exports.push([module.i, "#wl-settings-page input::-ms-clear {\n  display: none; }\n\n#wl-settings-page #wl-entity-base-path,\n#wl-settings-page #wl-key {\n  width: 100%;\n  max-width: 480px;\n  height: 32px;\n  padding: 0 8px;\n  line-height: 32px;\n  font-size: 14px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0;\n  transition: 50ms border-color ease-in-out;\n  background-position: 448px 8px;\n  background-repeat: no-repeat; }\n  #wl-settings-page #wl-entity-base-path.valid,\n  #wl-settings-page #wl-key.valid {\n    background-image: url(" + __webpack_require__(275) + ");\n    padding-right: 32px; }\n  #wl-settings-page #wl-entity-base-path.invalid,\n  #wl-settings-page #wl-key.invalid {\n    background-image: url(" + __webpack_require__(274) + ");\n    padding-right: 32px; }\n\n#wl-settings-page #wl-entity-base-path {\n  background-color: #f5f5f5; }\n\n#wl-settings-page .wl-tabs-element {\n  border-radius: 0;\n  border: 0;\n  background: none; }\n  #wl-settings-page .wl-tabs-element .nav-tab-wrapper {\n    border-radius: 0;\n    border: 0;\n    border-bottom: 1px solid #ccc;\n    background: none;\n    padding-bottom: 0;\n    padding-left: 6px; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab {\n      border-radius: 0;\n      border: 1px solid #ccc !important;\n      background: #e4e4e4;\n      color: #555;\n      margin: 0 3px 0 0;\n      vertical-align: top;\n      white-space: nowrap; }\n      #wl-settings-page .wl-tabs-element .nav-tab-wrapper .nav-tab:focus {\n        box-shadow: none;\n        outline: none; }\n    #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active, #wl-settings-page .wl-tabs-element .nav-tab-wrapper .ui-state-active:hover {\n      border-bottom: 1px solid #f1f1f1 !important;\n      background: #f1f1f1;\n      color: #000; }\n\n.ui-tabs .ui-tabs-panel {\n  max-width: 480px;\n  min-height: 32px;\n  border-radius: 2px;\n  padding: 0 !important;\n  margin: 16px 0; }\n  .ui-tabs .ui-tabs-panel * {\n    vertical-align: middle; }\n  .ui-tabs .ui-tabs-panel p {\n    max-height: 32px;\n    margin: 0;\n    width: 100%;\n    color: #4a4a4a; }\n\n.select2-container--default .select2-selection--single {\n  overflow: hidden;\n  padding: 0 0;\n  line-height: 28px;\n  font-size: 12px; }\n\n.wl-select2-thumbnail {\n  margin-right: 8px; }\n\n#tabs-2 p {\n  margin: 8px 0; }\n  #tabs-2 p:first-of-type {\n    margin-top: 24px; }\n\n#wl-publisher-name input,\n#wl-site-language {\n  width: 100%;\n  max-width: 480px;\n  min-height: 32px;\n  margin-top: 8px;\n  padding: 4px 8px;\n  color: #32373c;\n  border-radius: 4px;\n  border: 1px solid #ddd;\n  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);\n  background-color: #fff;\n  outline: 0; }\n\n#wl-publisher-type {\n  max-width: 480px;\n  width: 100%; }\n  #wl-publisher-type span {\n    width: 45%;\n    display: inline-block; }\n\n#wl-publisher-media-uploader {\n  height: 32px;\n  float: left; }\n\n#wl-publisher-media-uploader-preview {\n  max-width: 256px;\n  max-height: 256px;\n  margin-bottom: 16px;\n  display: block; }\n", ""]);
+exports.push([module.i, ".wl-select2-element + span {\n  max-width: 500px; }\n\n.wl-select2-container.select2-selection, .wl-select2-container .select2-selection, .wl-select2-dropdown.select2-selection, .wl-select2-dropdown .select2-selection {\n  min-height: 32px;\n  max-height: 32px;\n  overflow-y: auto; }\n\n.wl-select2-container .wl-select2-thumbnail, .wl-select2-dropdown .wl-select2-thumbnail {\n  width: 24px;\n  height: 24px;\n  display: inline-block;\n  background: no-repeat center;\n  background-size: contain;\n  margin: 4px 8px 4px 0; }\n\n.wl-select2-container .wl-select2-type, .wl-select2-dropdown .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.wl-select2-container .select2-results__options, .wl-select2-dropdown .select2-results__options {\n  color: #666 !important; }\n\n.wl-select2-container .select2-results__option .wl-select2-type, .wl-select2-dropdown .select2-results__option .wl-select2-type {\n  float: right;\n  line-height: 32px;\n  font-weight: 600; }\n\n.wl-select2-container .select2-results__option--highlighted, .wl-select2-dropdown .select2-results__option--highlighted {\n  background-color: #f5f5f5 !important;\n  color: #2E92FF !important; }\n", ""]);
 
 // exports
 
-
-/***/ }),
-
-/***/ 274:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAA8ElEQVR42p3UOw7CMBAEUNNADRI3ACQogVPkqxQu4A40FHAgSiipcpVQUnEAqkjLDsJRkMU4wtIqv/FLnNgxaCLSkzi2kiR7sXZsAk2zK62jZNkax23kJFEkKN2/a2DyC9HMRjM1su9tmm6dbh3iYQRpZZ9aQ4Ph4ATBPMQr5PBO0IlhBEHmbFxDuMH8ehDkKrvdAEZHLIyEse6Ij2E4BCo5wr8OnxphhGN/IxwLIyU6BTFJ0yWdJ9b2ESZYhQyWyIEhnaZGni/cL6Gm84Rjt+aG+BVgFX8uXDzEx6oGKYrZV0DVkQ5zajo0PIFi8/bQXxTkJIW2nf39AAAAAElFTkSuQmCC"
-
-/***/ }),
-
-/***/ 275:
-/***/ (function(module, exports) {
-
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABcAAAARCAYAAAA2cze9AAAA0ElEQVR4Aa3NgeYCQRDH8fMH/AkgAZrZVAQIhFCP0TuUIgB70wUCBAlIz7S7LgQgvUAh6jodN8Gmxh4D7refbxTyo1P3nzL6C4vmYGxgrS08tMHzwqpBONjiThvI3u5KKTYDw3xk1LwcJmmjF1tYklNDOcyXOOgXQ4ejHL6XVacmApjP4uw1XB1aldjAhX9yQArz2HVqniEHJDAHcPMpIIb5Iey9AYvTb2FRQAB7AgJYEBDAgoAAFgQ8sCxABrcFjDft1DgK/VHartNRVX999wQwVJB5+G9izgAAAABJRU5ErkJggg=="
 
 /***/ }),
 
@@ -865,49 +732,7 @@ function updateLink (link, options, obj) {
 }
 
 
-/***/ }),
-
-/***/ 35:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/**
- * Delay a function call by half a second.
- *
- * Any function can be delayed using `delay`. The timeout for the call is bound
- * to the provided element. If another function call is delayed on the same
- * element, any previous timeout is cancelled.
- *
- * This function is used to validate in real-time inputs when the user presses
- * a key, but allowing the user to press more keys (hence the delay).
- *
- * @since 3.9.0
- *
- * @param {Object} $elem A jQuery element reference which will hold the timeout
- *     reference.
- * @param {Function} fn The function to call.
- * @param {number} timeout The timeout, by default 500 ms.
- * @param {...Object} args Additional arguments for the callback.
- */
-var delay = function delay($elem, fn) {
-  for (var _len = arguments.length, args = Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
-    args[_key - 3] = arguments[_key];
-  }
-
-  var timeout = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
-
-  // Clear a validation timeout.
-  clearTimeout($elem.data('timeout'));
-
-  // Validate the key, after a delay, so that another key is pressed, this
-  // validation is cancelled.
-  $elem.data('timeout', setTimeout.apply(undefined, [fn, timeout].concat(args)));
-};
-
-// Finally export the `delay` function.
-/* harmony default export */ __webpack_exports__["a"] = (delay);
-
 /***/ })
 
 /******/ });
-//# sourceMappingURL=wordlift-admin-settings-page.bundle.js.map
+//# sourceMappingURL=wordlift-author-element.bundle.js.map

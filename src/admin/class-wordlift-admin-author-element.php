@@ -1,9 +1,9 @@
 <?php
 /**
- * Elements: Person element.
+ * Elements: Author Element.
  *
- * A complex element that displays the current person entity associated with a User
- * and enables selecting a new one.
+ * A complex element that displays the current person/organization entity
+ * associated with a User and enables selecting a new one.
  *
  * @since      3.14.0
  * @package    Wordlift
@@ -17,7 +17,7 @@
  * @package    Wordlift
  * @subpackage Wordlift/admin
  */
-class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
+class Wordlift_Admin_Author_Element implements Wordlift_Admin_Element {
 
 	/**
 	 * The {@link Wordlift_Publisher_Service} instance.
@@ -67,15 +67,43 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 		) );
 
 		$current_entity_id = $params['current_entity'];
-		$current_entity    = $current_entity_id ? get_post( $current_entity_id ) : null;
+		$data              = $this->publisher_service->query();
+
+		// Set a default to show when no entity is associated and a way to unassign.
+		array_unshift( $data, array(
+			'id'            => '0',
+			'text'          => __( '<em>(none)</em>', 'wordlift' ),
+			'type'          => '',
+			'thumbnail_url' => plugin_dir_url( dirname( __FILE__ ) ) . 'images/pixel.png',
+		) );
+
+		// Finally do the render, passing along also the current selected entity
+		// id and the options data.
+		return $this->do_render( $params, $current_entity_id, $data );
+	}
+
+	/**
+	 * Render the `select` using the provided parameters.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param array $params          The array of parameters from the `render` function.
+	 * @param int   $current_post_id The currently selected {@link WP_Post} `id`.
+	 * @param array $data            An array of Select2 options.
+	 *
+	 * @return \Wordlift_Admin_Author_Element $this Return this element.
+	 */
+	protected function do_render( $params, $current_post_id, $data ) {
+
+		// Queue the script which will initialize the select and style it.
+		wp_enqueue_script( 'wl-author-element', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/wordlift-author-element.bundle.js', array( 'wordlift-select2' ) );
 
 		// Prepare the URLs for entities which don't have logos.
 		$person_thumbnail_url       = plugin_dir_url( dirname( __FILE__ ) ) . 'images/person.png';
 		$organization_thumbnail_url = plugin_dir_url( dirname( __FILE__ ) ) . 'images/organization.png';
 
-		$data = $this->publisher_service->query();
-		// Set a default to show when no entity is associated and a way to unassign.
-		$data[0] = '';
+		// Get the current post.
+		$current_post = $current_post_id ? get_post( $current_post_id ) : null;
 
 		// Finally render the Select.
 		$this->select_element->render( array(
@@ -84,9 +112,9 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 			// Name.
 			'name'               => $params['name'],
 			// The selected id.
-			'value'              => $current_entity_id,
+			'value'              => $current_post_id,
 			// The selected item (must be in the options for Select2 to display it).
-			'options'            => $current_entity ? array( $current_entity->ID => $current_entity->post_title ) : array(),
+			'options'            => $current_post ? array( $current_post->ID => $current_post->post_title ) : array(),
 			// The list of available options.
 			'data'               => $data,
 			// The HTML template for each option.
@@ -95,47 +123,8 @@ class Wordlift_Admin_Person_Element implements Wordlift_Admin_Element {
 			'template-selection' => "<div class='wl-select2-selection'><span class='wl-select2-thumbnail' style='background-image: url( <%= obj.thumbnail_url || ( 'Organization' === obj.type ? '$organization_thumbnail_url' : '$person_thumbnail_url' ) %> );'>&nbsp;</span><span class='wl-select2'><%= obj.text %></span><span class='wl-select2-type'><%= obj.type %></span></div>",
 		) );
 
-		/*
-		 * Since we need to support wp version before 4.5, adding the select2
-		 * initialization needs to be done in the old ugly way.
-		 * Not using closure to prevent multiple hook registry in the unlikely Event
-		 * of this class being used more then once on a page.
-		 */
-
-		add_action( 'admin_footer', array( $this, 'initialize_select2' ), 999 );
-
 		// Finally return the element instance.
 		return $this;
-	}
-
-	/**
-	 * Add the JS code to initialize select2.
-	 *
-	 * @since 3.14.0
-	 */
-	public function initialize_select2() {
-		?>
-		<script type="text/javascript">
-			jQuery( document ).ready( function( $ ) {
-				$( '.wl-select2-element' ).each( function( index, element ) {
-					const $e = $( element );
-					$e.select2(
-						{
-							width: '100%',
-							data: $e.data( 'wl-select2-data' ),
-							escapeMarkup: function( markup ) {
-								return markup;
-							},
-							templateResult: _.template( $e.data( 'wl-select2-template-result' ) ),
-							templateSelection: _.template( $e.data( 'wl-select2-template-selection' ) ),
-							containerCssClass: 'wl-admin-settings-page-select2',
-							dropdownCssClass: 'wl-admin-settings-page-select2',
-						}
-					);
-				} );
-			} );
-		</script>
-		<?php
 	}
 
 }

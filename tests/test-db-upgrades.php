@@ -103,7 +103,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			) );
 		}
 
-		update_site_option( 'wl_db_version', '1.0' );
+		update_option( 'wl_db_version', '1.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
 		wl_core_upgrade_db_1_0_to_3_10();
@@ -134,7 +134,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 
 		wp_insert_term( 'dummy', 'wl_entity_type', array( 'parent' => 1 ) );
 
-		update_site_option( 'wl_db_version', '3.10' );
+		update_option( 'wl_db_version', '3.10' );
 
 		// now call the upgrade routine and check that the dummy term still has a parent
 		wl_core_upgrade_db_1_0_to_3_10();

@@ -20,14 +20,21 @@ class Wordlift_User_Service {
 	/**
 	 * The user meta key where the deny entity edit flag is stored.
 	 *
-	 * @since 3.1.7
+	 * @since 3.14.0
 	 */
-	const DENY_ENTITY_EDIT_META_KEY = 'wl_deny_edit_entity';
+	const DENY_ENTITY_EDIT_META_KEY = '_wl_deny_entity_edit';
+
+	/**
+	 * The meta key holding the entity id representing a {@link WP_User}.
+	 *
+	 * @since 3.14.0
+	 */
+	const ENTITY_META_KEY = '_wl_entity';
 
 	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -36,7 +43,7 @@ class Wordlift_User_Service {
 	/**
 	 * The singleton instance of the User service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_User_Service $user_service The singleton instance of the User service.
 	 */
@@ -99,9 +106,9 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param int $post_id Post ID.
-	 * @param WP_Post $post Post object.
-	 * @param bool $update Whether this is an existing post being updated or not.
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @param bool    $update  Whether this is an existing post being updated or not.
 	 */
 	public function wp_insert_post( $post_id, $post, $update ) {
 
@@ -128,6 +135,39 @@ class Wordlift_User_Service {
 		// Send the query to the triple store.
 		rl_execute_sparql_update_query( $delete . $insert );
 
+	}
+
+	/**
+	 * Set the `id` of the entity representing a {@link WP_User}.
+	 *
+	 * If the `id` is set to 0 (or less) then the meta is deleted.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User}.
+	 * @param int $value   The entity {@link WP_Post} `id`.
+	 *
+	 * @return bool|int  Meta ID if the key didn't exist, true on successful update, false on failure.
+	 */
+	public function set_entity( $user_id, $value ) {
+
+		return 0 < $value
+			? update_user_meta( $user_id, self::ENTITY_META_KEY, $value )
+			: delete_user_meta( $user_id, self::ENTITY_META_KEY );
+	}
+
+	/**
+	 * Get the {@link WP_Post} `id` of the entity representing a {@link WP_User}.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User}'s `id`.
+	 *
+	 * @return string The entity {@link WP_Post} `id` or an empty string if not set.
+	 */
+	public function get_entity( $user_id ) {
+
+		return get_user_meta( $user_id, self::ENTITY_META_KEY, true );
 	}
 
 	/**
@@ -179,7 +219,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param int $user_id The user's id.
+	 * @param int    $user_id  The user's id.
 	 * @param string $user_uri The user's uri.
 	 *
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.
@@ -265,16 +305,18 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param integer	$user_id	The ID of the user
+	 * @param integer $user_id The ID of the user
 	 */
 	public function deny_editor_entity_editing( $user_id ) {
-		 $user = get_user_by( 'id', $user_id );
 
-		 // Only editors are handled in the profile UI, ignore the rest.
-		if ( in_array( 'editor', (array) $user->roles ) ) {
-			 // The user explicitly do not have the capability.
-			 update_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY, true );
+		// Bail out if the user is not an editor.
+		if ( ! $this->is_editor( $user_id ) ) {
+			return;
 		}
+
+		// The user explicitly do not have the capability.
+		update_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY, true );
+
 	}
 
 	/**
@@ -283,16 +325,37 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.14.0
 	 *
-	 * @param integer	$user_id	The ID of the user
+	 * @param integer $user_id The ID of the user
 	 */
-	public function enable_editor_entity_editing( $user_id ) {
-		 $user = get_user_by( 'id', $user_id );
+	public function allow_editor_entity_editing( $user_id ) {
 
-		 // Only editors are handled in the profile UI, ignore the rest.
-		if ( in_array( 'editor', (array) $user->roles ) ) {
-			 // The user explicitly do not have the capability.
-			 delete_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY );
+		// Bail out if the user is not an editor.
+		if ( ! $this->is_editor( $user_id ) ) {
+			return;
 		}
+
+		// The user explicitly do not have the capability.
+		delete_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY );
+
+	}
+
+	/**
+	 * Check whether the {@link WP_User} with the specified `id` is an editor,
+	 * i.e. has the `editor` role.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User} `id`.
+	 *
+	 * @return bool True if the {@link WP_User} is an editor otherwise false.
+	 */
+	private function is_editor( $user_id ) {
+
+		// Get the user.
+		$user = get_user_by( 'id', $user_id );
+
+		// Return true, if the user is found and has the `editor` role.
+		return is_a( $user, 'WP_User' ) && in_array( 'editor', (array) $user->roles );
 	}
 
 	/**
@@ -302,7 +365,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param int $user_id The user id of the user being checked.
 	 *
-	 * @return bool	false if it is an editor that is denied from edit entities, true otherwise.
+	 * @return bool    false if it is an editor that is denied from edit entities, true otherwise.
 	 */
 	public function editor_can_edit_entities( $user_id ) {
 
