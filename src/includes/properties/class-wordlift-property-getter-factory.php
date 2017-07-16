@@ -6,6 +6,7 @@ require_once( 'class-wordlift-entity-property-service.php' );
 require_once( 'class-wordlift-location-property-service.php' );
 require_once( 'class-wordlift-url-property-service.php' );
 require_once( 'class-wordlift-double-property-service.php' );
+require_once( 'class-wordlift-duration-property-service.php' );
 
 /**
  * A Wordlift_Property_Getter_Factory, which instantiate a configured
@@ -40,6 +41,11 @@ class Wordlift_Property_Getter_Factory {
 		$property_getter->register( new Wordlift_Double_Property_Service(), array(
 			Wordlift_Schema_Service::FIELD_GEO_LATITUDE,
 			Wordlift_Schema_Service::FIELD_GEO_LONGITUDE,
+		) );
+
+		$property_getter->register( new Wordlift_Duration_Property_Service( $entity_service ), array(
+			Wordlift_Schema_Service::FIELD_PREP_TIME,
+			Wordlift_Schema_Service::FIELD_TOTAL_TIME,
 		) );
 
 		return $property_getter;
