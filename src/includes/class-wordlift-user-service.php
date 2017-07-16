@@ -22,7 +22,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.14.0
 	 */
-	const DENY_ENTITY_EDIT_META_KEY = '_wl_deny_entity_edit';
+	const DENY_ENTITY_CREATE_META_KEY = '_wl_deny_entity_create';
 
 	/**
 	 * The meta key holding the entity id representing a {@link WP_User}.
@@ -307,7 +307,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param integer $user_id The ID of the user
 	 */
-	public function deny_editor_entity_editing( $user_id ) {
+	public function deny_editor_entity_create( $user_id ) {
 
 		// Bail out if the user is not an editor.
 		if ( ! $this->is_editor( $user_id ) ) {
@@ -315,7 +315,7 @@ class Wordlift_User_Service {
 		}
 
 		// The user explicitly do not have the capability.
-		update_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY, true );
+		update_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY, 'yes' );
 
 	}
 
@@ -327,7 +327,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param integer $user_id The ID of the user
 	 */
-	public function allow_editor_entity_editing( $user_id ) {
+	public function allow_editor_entity_create( $user_id ) {
 
 		// Bail out if the user is not an editor.
 		if ( ! $this->is_editor( $user_id ) ) {
@@ -335,8 +335,22 @@ class Wordlift_User_Service {
 		}
 
 		// The user explicitly do not have the capability.
-		delete_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY );
+		delete_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY );
 
+	}
+
+	/**
+	 * Get whether the 'deny editor entity editing' flag is set.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User} `id`.
+	 *
+	 * @return int bool True if editing is denied otherwise false.
+	 */
+	public function is_deny_editor_entity_create( $user_id ) {
+
+		return 'yes' === get_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY, true );
 	}
 
 	/**
@@ -349,7 +363,7 @@ class Wordlift_User_Service {
 	 *
 	 * @return bool True if the {@link WP_User} is an editor otherwise false.
 	 */
-	private function is_editor( $user_id ) {
+	public function is_editor( $user_id ) {
 
 		// Get the user.
 		$user = get_user_by( 'id', $user_id );
@@ -359,7 +373,7 @@ class Wordlift_User_Service {
 	}
 
 	/**
-	 * Check if an editor can edit entities.
+	 * Check if an editor can create entities.
 	 *
 	 * @since 3.14.0
 	 *
@@ -367,21 +381,15 @@ class Wordlift_User_Service {
 	 *
 	 * @return bool    false if it is an editor that is denied from edit entities, true otherwise.
 	 */
-	public function editor_can_edit_entities( $user_id ) {
+	public function editor_can_create_entities( $user_id ) {
 
-		// If not an editor just return true.
-		$user = get_user_by( 'id', $user_id );
-		if ( ! in_array( 'editor', (array) $user->roles ) ) {
+		// Return true if not an editor.
+		if ( ! $this->is_editor( $user_id ) ) {
 			return true;
 		}
 
 		// Check if the user explicitly denied.
-		$deny = get_user_meta( $user_id, self::DENY_ENTITY_EDIT_META_KEY, true );
-		if ( $deny ) {
-			return false;
-		}
-
-		return true;
+		return ! $this->is_deny_editor_entity_create( $user_id );
 	}
 
 	/**
@@ -396,6 +404,8 @@ class Wordlift_User_Service {
 	 * @param array $args    [0] Requested capability
 	 *                       [1] User ID
 	 *                       [2] Associated object ID
+	 *
+	 * @return array The capabilities array.
 	 */
 	public function has_cap( $allcaps, $cap, $args ) {
 		/*
@@ -413,7 +423,7 @@ class Wordlift_User_Service {
 		) {
 			$user_id = $args[1];
 
-			if ( ! self::editor_can_edit_entities( $user_id ) ) {
+			if ( ! $this->editor_can_create_entities( $user_id ) ) {
 				$allcaps[ $cap[0] ] = false;
 			}
 		}

@@ -264,15 +264,10 @@ class Wordlift_Entity_Service {
 	public function save_post( $post_id, $post, $update ) {
 
 		// Avoid doing anything if post is autosave or a revision.
-
 		if ( wp_is_post_autosave( $post ) || wp_is_post_revision( $post ) ) {
 			return;
 		}
 
-		// Bail out if the user do not have the capability to edit the entity.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return;
-		}
 		// We're setting the alternative label that have been provided via the UI
 		// (in fact we're using $_REQUEST), while save_post may be also called
 		// programmatically by some other function: we need to check therefore if

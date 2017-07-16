@@ -67,72 +67,72 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the deny_editor_entity_editing function setting user meta correctly
+	 * Test the deny_editor_entity_create function setting user meta correctly
 	 * for editors and non editors.
 	 *
 	 * @since 3.14.0
 	 */
-	function test_deny_editor_entity_editing() {
+	function test_deny_editor_entity_create() {
 		$user_service = Wordlift_User_Service::get_instance();
 
 		// Test editor.
 		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
 		$user->add_role( 'editor' );
 
-		$user_service->deny_editor_entity_editing( $user->ID );
-		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
+		$user_service->deny_editor_entity_create( $user->ID );
+		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, true );
 		$this->assertNotEmpty( $meta );
 
 		// Test non editor.
 		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser2' ) );
 		$user->add_role( 'administrator' );
 
-		$user_service->deny_editor_entity_editing( $user->ID );
-		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
+		$user_service->deny_editor_entity_create( $user->ID );
+		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, true );
 		$this->assertEmpty( $meta );
 	}
 
 	/**
-	 * Test the allow_editor_entity_editing function clearing user meta correctly
+	 * Test the allow_editor_entity_create function clearing user meta correctly
 	 * for editors.
 	 *
 	 * @since 3.14.0
 	 */
-	function test_allow_editor_entity_editing() {
+	function test_allow_editor_entity_create() {
 		$user_service = Wordlift_User_Service::get_instance();
 
 		// Test editor.
 		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
 		$user->add_role( 'editor' );
 
-		$user_service->deny_editor_entity_editing( $user->ID );
-		$user_service->allow_editor_entity_editing( $user->ID );
-		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
+		$user_service->deny_editor_entity_create( $user->ID );
+		$user_service->allow_editor_entity_create( $user->ID );
+		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, true );
 		$this->assertEmpty( $meta );
 	}
 
 	/**
-	 * Test the editor_can_edit_entities function returning correctly the entity
+	 * Test the editor_can_create_entities function returning correctly the entity
 	 * editing state for the user
 	 *
 	 * @since 3.14.0
 	 */
-	function test_editor_can_edit_entities() {
+	function test_editor_can_create_entities() {
 		$user_service = Wordlift_User_Service::get_instance();
 
 		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
 
 		// Test as non editor.
-		$this->AssertTrue( $user_service->editor_can_edit_entities( $user->ID ) );
+		$this->AssertTrue( $user_service->editor_can_create_entities( $user->ID ) );
 
 		// Test as editor.
 		$user->add_role( 'editor' );
 
-		$user_service->deny_editor_entity_editing( $user->ID );
-		$this->AssertFalse( $user_service->editor_can_edit_entities( $user->ID ) );
+		$user_service->deny_editor_entity_create( $user->ID );
+		$this->AssertFalse( $user_service->editor_can_create_entities( $user->ID ) );
 
-		$user_service->allow_editor_entity_editing( $user->ID );
-		$this->AssertTrue( $user_service->editor_can_edit_entities( $user->ID ) );
+		$user_service->allow_editor_entity_create( $user->ID );
+		$this->AssertTrue( $user_service->editor_can_create_entities( $user->ID ) );
 	}
 
 	/**
@@ -167,7 +167,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		}
 
 		// Denied capability for denied editors.
-		$user_service->deny_editor_entity_editing( $user->ID );
+		$user_service->deny_editor_entity_create( $user->ID );
 		foreach ( $caps_to_test as $cap ) {
 			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
 
@@ -185,7 +185,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		$user_service = Wordlift_User_Service::get_instance();
 		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
 		$user->add_role( 'editor' );
-		$user_service->deny_editor_entity_editing( $user->ID );
+		$user_service->deny_editor_entity_create( $user->ID );
 
 		$this->assertFalse( user_can( $user->ID, 'edit_wordlift_entity' ) );
 	}

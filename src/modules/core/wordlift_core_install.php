@@ -229,7 +229,7 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$admins->add_cap( 'read_private_wordlift_entities' );
 	$admins->add_cap( 'delete_wordlift_entity' );
 
-	// Assign capabilities to manipulate entities to admins.
+	// Assign capabilities to manipulate entities to editors.
 	$editors = get_role( 'editor' );
 
 	$editors->add_cap( 'edit_wordlift_entity' );

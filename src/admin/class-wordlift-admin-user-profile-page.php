@@ -105,15 +105,15 @@ class Wordlift_Admin_User_Profile_Page {
 					<p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
-			<?php if ( in_array( 'editor', (array) $user->roles ) ) { ?>
+			<?php if ( $this->user_service->is_editor( $user->ID ) ) { ?>
 			<tr>
 				<th>
 					<label
-						for="wl_can_edit_entities"><?php esc_html_e( 'Can edit entities', 'wordlift' ) ?></label>
+						for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ) ?></label>
 				</th>
 				<td>
-					<input id="wl_can_edit_entities" name="wl_can_edit_entities"
-					       type="checkbox" <?php checked( Wordlift_User_Service::get_instance()->editor_can_edit_entities( $user->ID ) ) ?>
+					<input id="wl_can_create_entities" name="wl_can_create_entities"
+					       type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ) ?>
 				</td>
 				<?php } ?>
 		</table>
@@ -139,11 +139,11 @@ class Wordlift_Admin_User_Profile_Page {
 		$this->link_entity( $user_id, $_POST );
 
 		// Deny and enable the edit entity capability
-		if ( isset( $_POST['wl_can_edit_entities'] ) ) {
+		if ( isset( $_POST['wl_can_create_entities'] ) ) {
 			// User has capability so remove the deny indication if present.
-			$this->user_service->allow_editor_entity_editing( $user_id );
+			$this->user_service->allow_editor_entity_create( $user_id );
 		} else {
-			$this->user_service->deny_editor_entity_editing( $user_id );
+			$this->user_service->deny_editor_entity_create( $user_id );
 		}
 
 	}
