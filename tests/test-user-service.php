@@ -1,5 +1,4 @@
 <?php
-require_once( 'functions.php' );
 
 /**
  * Test the {@link Wordlift_User_Service}.
@@ -53,7 +52,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 
 			// Try to change the nicename and check that the URI doesn't change.
 			wp_update_user( array(
-				'ID'            => $user_id,
+				'ID' => $user_id,
 				'user_nicename' => uniqid( 'nicename-' ),
 			) );
 
@@ -151,27 +150,36 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		);
 
 		$user_service = Wordlift_User_Service::get_instance();
-		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user         = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
 
 		// No capability change for non editors.
 		foreach ( $caps_to_test as $cap ) {
-			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
+			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array(
+				$cap,
+				$user->ID,
+			) );
 			$this->assertEmpty( $allowed_cap );
 		}
 
 		// No capability change for editors which are not denied
 		$user->add_role( 'editor' );
 		foreach ( $caps_to_test as $cap ) {
-			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
+			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array(
+				$cap,
+				$user->ID,
+			) );
 			$this->assertEmpty( $allowed_cap );
 		}
 
 		// Denied capability for denied editors.
 		$user_service->deny_editor_entity_create( $user->ID );
 		foreach ( $caps_to_test as $cap ) {
-			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
+			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array(
+				$cap,
+				$user->ID,
+			) );
 
-			// $this->assertFalse( $allowed_cap[ $cap ] ] );
+			$this->assertFalse( $allowed_cap[ $cap ] );
 		}
 	}
 
@@ -183,7 +191,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 	 */
 	function test_user_cap_filter() {
 		$user_service = Wordlift_User_Service::get_instance();
-		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user         = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
 		$user->add_role( 'editor' );
 		$user_service->deny_editor_entity_create( $user->ID );
 
