@@ -93,7 +93,8 @@
                     delay($this, function () {
 
                         // An empty value or a value starting/ending with an alphanumeric character.
-                        if (0 === $this.val().length || /^[a-z0-9]+(?:[a-z0-9\-_]*[a-z0-9]+)?$/i.test($this.val()))
+                        // An empty value is avaible only when WP permalink structure is set as '/%postname%/'
+                        if ((0 === $this.val().length && '/%postname%/' === settings.permalink) || /^[a-z0-9]+(?:[a-z0-9\-_]*[a-z0-9]+)?$/i.test($this.val()))
                             $this.addClass('valid');
                         else
                             $this.addClass('invalid');
