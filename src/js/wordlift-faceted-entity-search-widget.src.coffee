@@ -273,8 +273,8 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
 
 ])
 
-.controller('FacetedSearchWidgetController', ['DataRetrieverService', 'configuration', '$scope', '$log',
-  (DataRetrieverService, configuration, $scope, $log)->
+.controller('FacetedSearchWidgetController', ['DataRetrieverService', 'configuration', '$scope', 'filterEntitiesByTypeFilter', '$log',
+  (DataRetrieverService, configuration, $scope, filterEntitiesByTypeFilter, $log)->
     $scope.entity = undefined
     $scope.posts = []
     $scope.facets = []
@@ -316,7 +316,6 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
 
       DataRetrieverService.load('posts', Object.keys($scope.conditions))
 
-
     $scope.$on "postsLoaded", (event, posts) ->
       $log.debug "Referencing posts for item #{configuration.post_id} ..."
       $scope.posts = posts
@@ -324,6 +323,10 @@ angular.module('wordlift.facetedsearch.widget', ['wordlift.ui.carousel', 'wordli
     $scope.$on "facetsLoaded", (event, facets) ->
       $log.debug "Referencing facets for item #{configuration.post_id} ..."
       $scope.facets = facets
+
+    # When the facets are updated, recalculate the list for each box.
+    $scope.$watch 'facets', (facets) ->
+      type.entities = filterEntitiesByTypeFilter( facets, type.types ) for type in $scope.supportedTypes
 
 ])
 # Retrieve post
@@ -363,10 +366,10 @@ $(
         <i class="wl-toggle-off" ng-show="configuration.attrs.show_facets" ng-click="toggleFacets()"></i>
       </h4>
       <div ng-show="configuration.attrs.show_facets" class="wl-facets" ng-show="filteringEnabled">
-        <div class="wl-facets-container" ng-repeat="box in supportedTypes">
+        <div class="wl-facets-container" ng-repeat="box in supportedTypes" ng-hide="0 === box.entities.length">
           <h5>{{configuration.l10n[box.scope]}}</h5>
           <ul>
-            <li class="entity" ng-repeat="entity in facets | orderBy:[ '-counter', '-createdAt' ] | filterEntitiesByType:box.types | limitTo:entityLimit" ng-click="addCondition(entity)">     
+            <li class="entity" ng-repeat="entity in box.entities | orderBy:[ '-counter', '-createdAt' ] | limitTo:entityLimit" ng-click="addCondition(entity)">
                 <span class="wl-label" ng-class=" { 'selected' : isInConditions(entity) }">
                   {{entity.label}}
                 </span>
