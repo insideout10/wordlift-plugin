@@ -143,4 +143,35 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 		$this->assertEquals( 1, $term->parent );
 	}
 
+	/**
+	 * Test that the upgrade to 3.14 adds entity editing capabilities
+	 * to editors and admins.
+	 *
+	 * @since   3.14.0
+	 **/
+	public function test_3_12_to_3_14_upgrade() {
+
+		$caps_to_test = array(
+			'edit_wordlift_entity',
+			'edit_wordlift_entities',
+			'edit_others_wordlift_entities',
+			'publish_wordlift_entities',
+			'read_private_wordlift_entities',
+			'delete_wordlift_entity',
+		);
+
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user->add_role( 'editor' );
+
+		foreach ( $caps_to_test as $cap ) {
+			$this->assertTrue( user_can( $user->ID, $cap ) );
+		}
+
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser2' ) );
+		$user->add_role( 'administrator' );
+
+		foreach ( $caps_to_test as $cap ) {
+			$this->assertTrue( user_can( $user->ID, $cap ) );
+		}
+	}
 }

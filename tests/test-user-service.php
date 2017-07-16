@@ -66,4 +66,127 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 
 	}
 
+	/**
+	 * Test the deny_editor_entity_editing function setting user meta correctly
+	 * for editors and non editors.
+	 *
+	 * @since 3.14.0
+	 */
+	function test_deny_editor_entity_editing() {
+		$user_service = Wordlift_User_Service::get_instance();
+
+		// Test editor.
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user->add_role( 'editor' );
+
+		$user_service->deny_editor_entity_editing( $user->ID );
+		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
+		$this->assertNotEmpty( $meta );
+
+		// Test non editor.
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser2' ) );
+		$user->add_role( 'administrator' );
+
+		$user_service->deny_editor_entity_editing( $user->ID );
+		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
+		$this->assertEmpty( $meta );
+	}
+
+	/**
+	 * Test the enable_editor_entity_editing function clearing user meta correctly
+	 * for editors.
+	 *
+	 * @since 3.14.0
+	 */
+	function test_enable_editor_entity_editing() {
+		$user_service = Wordlift_User_Service::get_instance();
+
+		// Test editor.
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user->add_role( 'editor' );
+
+		$user_service->deny_editor_entity_editing( $user->ID );
+		$user_service->enable_editor_entity_editing( $user->ID );
+		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_EDIT_META_KEY, true );
+		$this->assertEmpty( $meta );
+	}
+
+	/**
+	 * Test the editor_can_edit_entities function returning correctly the entity
+	 * editing state for the user
+	 *
+	 * @since 3.14.0
+	 */
+	function test_editor_can_edit_entities() {
+		$user_service = Wordlift_User_Service::get_instance();
+
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+
+		// Test as non editor.
+		$this->AssertTrue( $user_service->editor_can_edit_entities( $user->ID ) );
+
+		// Test as editor.
+		$user->add_role( 'editor' );
+
+		$user_service->deny_editor_entity_editing( $user->ID );
+		$this->AssertFalse( $user_service->editor_can_edit_entities( $user->ID ) );
+
+		$user_service->enable_editor_entity_editing( $user->ID );
+		$this->AssertTrue( $user_service->editor_can_edit_entities( $user->ID ) );
+	}
+
+	/**
+	 * Test the has_cap function setting correctly the capabilities
+	 *
+	 * @since 3.14.0
+	 */
+	function test_has_cap() {
+		$caps_to_test = array(
+			'edit_wordlift_entity',
+			'edit_wordlift_entities',
+			'edit_others_wordlift_entities',
+			'publish_wordlift_entities',
+			'read_private_wordlift_entities',
+			'delete_wordlift_entity',
+		);
+
+		$user_service = Wordlift_User_Service::get_instance();
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+
+		// No capability change for non editors.
+		foreach ( $caps_to_test as $cap ) {
+			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
+			$this->assertEmpty( $allowed_cap );
+		}
+
+		// No capability change for editors which are not denied
+		$user->add_role( 'editor' );
+		foreach ( $caps_to_test as $cap ) {
+			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
+			$this->assertEmpty( $allowed_cap );
+		}
+
+		// Denied capability for denied editors.
+		$user_service->deny_editor_entity_editing( $user->ID );
+		foreach ( $caps_to_test as $cap ) {
+			$allowed_cap = $user_service->has_cap( array(), array( $cap ), array( $cap, $user->ID ) );
+
+			// $this->assertFalse( $allowed_cap[ $cap ] ] );
+		}
+	}
+
+	/**
+	 * test user cap filter integration
+	 *
+	 * @since 3.14.0
+	 *
+	 */
+	function test_user_cap_filter() {
+		$user_service = Wordlift_User_Service::get_instance();
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user->add_role( 'editor' );
+		$user_service->deny_editor_entity_editing( $user->ID );
+
+		$this->assertFalse( user_can( $user->ID, 'edit_wordlift_entity' ) );
+	}
 }
