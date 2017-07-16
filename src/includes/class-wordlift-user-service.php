@@ -267,7 +267,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param integer	$user_id	The ID of the user
 	 */
-	function deny_editor_entity_editing( $user_id ) {
+	public function deny_editor_entity_editing( $user_id ) {
 		 $user = get_user_by( 'id', $user_id );
 
 		 // Only editors are handled in the profile UI, ignore the rest.
@@ -285,7 +285,7 @@ class Wordlift_User_Service {
 	 *
 	 * @param integer	$user_id	The ID of the user
 	 */
-	function enable_editor_entity_editing( $user_id ) {
+	public function enable_editor_entity_editing( $user_id ) {
 		 $user = get_user_by( 'id', $user_id );
 
 		 // Only editors are handled in the profile UI, ignore the rest.
@@ -304,7 +304,7 @@ class Wordlift_User_Service {
 	 *
 	 * @return bool	false if it is an editor that is denied from edit entities, true otherwise.
 	 */
-	function editor_can_edit_entities( $user_id ) {
+	public function editor_can_edit_entities( $user_id ) {
 
 		// If not an editor just return true.
 		$user = get_user_by( 'id', $user_id );
@@ -334,7 +334,7 @@ class Wordlift_User_Service {
 	 *                       [1] User ID
 	 *                       [2] Associated object ID
 	 */
-	function has_cap( $allcaps, $cap, $args ) {
+	public function has_cap( $allcaps, $cap, $args ) {
 		/*
 		 * For entity management/editing related capabilities
 		 * check that an editor was not explicitly denied (in user profile)
