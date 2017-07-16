@@ -96,7 +96,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 		// Get the word count for the post.
 		$post_adapter        = new Wordlift_Post_Adapter( $post_id );
 		$jsonld['wordCount'] = $post_adapter->word_count();
-		
+
 		// Set the publisher.
 		$this->set_publisher( $jsonld );
 
@@ -138,7 +138,18 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 
 		}
 
-		return $jsonld;
+		/**
+		 * Call the `wl_post_jsonld` filter.
+		 *
+		 * @api
+		 *
+		 * @since 3.14.0
+		 *
+		 * @param array $jsonld     The JSON-LD structure.
+		 * @param int   $post_id    The {@link WP_Post} `id`.
+		 * @param array $references The array of referenced entities.
+		 */
+		return apply_filters( 'wl_post_jsonld', $jsonld, $post_id, $references );
 	}
 
 	/**
