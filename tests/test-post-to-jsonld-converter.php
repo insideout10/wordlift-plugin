@@ -1099,6 +1099,58 @@ class Wordlift_Post_To_Jsonld_Converter_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Test that the `wl_post_jsonld` filter is not called on inexistent posts.
+	 *
+	 * @since 3.14.0
+	 */
+	public function test_convert_post_not_found() {
+
+		$called = 0;
+
+		add_filter( 'wl_post_jsonld', function () use ( &$called ) {
+			$called ++;
+		} );
+
+		$result = $this->post_to_jsonld_converter->convert( PHP_INT_MAX );
+
+		$this->assertNull( $result, "Calling convert on a post not found returns NULL." );
+
+		$this->assertEquals( 0, $called, "When the post is not found `wl_post_jsonld` is not found." );
+
+	}
+
+	/**
+	 * Test that the `wl_post_jsonld` filter is called on posts and that it's
+	 * possible to tweak the JSON-LD structure.
+	 *
+	 * @since 3.14.0
+	 */
+	public function test_convert_post() {
+
+		$called = 0;
+
+		add_filter( 'wl_post_jsonld', function ( $jsonld ) use ( &$called ) {
+			$called ++;
+			$jsonld['check'] = true;
+
+			return $jsonld;
+		} );
+
+		$post_id = $this->factory->post->create();
+
+		$result = $this->post_to_jsonld_converter->convert( $post_id );
+
+		$this->assertTrue( is_array( $result ), 'Convert returns an array.' );
+
+		$this->assertArrayHasKey( 'check', $result );
+
+		$this->assertTrue( $result['check'] );
+
+		$this->assertEquals( 1, $called, 'Filter `wl_post_jsonld` is called once.' );
+
+	}
+
+	/**
 	 * Get the word count for a {@link WP_Post}.
 	 *
 	 * @since 3.14.0
