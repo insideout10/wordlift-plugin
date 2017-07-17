@@ -138,6 +138,21 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.14.0 (????-??-??) =
+
+= 3.13.3 (2017-07-12) =
+* Enhancement: [#558](https://github.com/insideout10/wordlift-plugin/issues/558): Link to the settings page in the message about unset key.
+* Enhancement: [#412](https://github.com/insideout10/wordlift-plugin/issues/412): Add a toggle to disable WordLift's analysis on certain pages/post.
+
+= 3.13.2 (2017-07-09) =
+* Fix: [#575](https://github.com/insideout10/wordlift-plugin/issues/575): Cron is unreliable on some web sites.
+* Fix: [#576](https://github.com/insideout10/wordlift-plugin/issues/576): Error 404 on a WooCommerce Product Page.
+* Fix: [#571](https://github.com/insideout10/wordlift-plugin/issues/571): Faceted Search not displaying correctly.
+* Fix: [#568](https://github.com/insideout10/wordlift-plugin/issues/568): Trying to get property of non-object in class-wordlift-sharethis-service.php.
+
+= 3.13.1 (2017-06-29) =
+* Fix: [#569](https://github.com/insideout10/wordlift-plugin/issues/569): Explicitly enabling an entity link doesn't work.
+
 = 3.13.0 (2017-06-22) =
 * Feature: [#550](https://github.com/insideout10/wordlift-plugin/issues/550): Limit the number of entities.
 * Fix: [#541](https://github.com/insideout10/wordlift-plugin/issues/541): AMP version of a page with a map displays a gray box.

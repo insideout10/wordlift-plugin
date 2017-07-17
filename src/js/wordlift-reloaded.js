@@ -225,7 +225,7 @@
         template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : isActive() }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
           '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
-            var ctrl, w;
+            var ctrl, resizeFn, w;
             w = angular.element($window);
             $scope.setItemWidth = function() {
               return $element.width() / $scope.visibleElements();
@@ -276,7 +276,7 @@
             $scope.position = 0;
             $scope.currentPaneIndex = 0;
             $scope.areControlsVisible = false;
-            w.bind('resize', function() {
+            resizeFn = function() {
               var j, len, pane, ref;
               $scope.itemWidth = $scope.setItemWidth();
               $scope.setPanesWrapperWidth();
@@ -286,6 +286,12 @@
                 pane.scope.setWidth($scope.itemWidth);
               }
               return $scope.$apply();
+            };
+            w.bind('resize', function() {
+              return resizeFn;
+            });
+            w.bind('load', function() {
+              return resizeFn;
             });
             ctrl = this;
             ctrl.registerPane = function(scope, element, first) {
@@ -810,7 +816,7 @@
           box: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.12.1';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.13.3';
         },
         link: function($scope, $element, $attrs, $ctrl) {
           $scope.configuration = configuration;
@@ -956,7 +962,7 @@
           entity: '='
         },
         templateUrl: function() {
-          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.12.1';
+          return configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.13.3';
         }
       };
     }
@@ -1552,7 +1558,7 @@
         },
         embedAnalysis: (function(_this) {
           return function(analysis) {
-            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, traslator;
+            var annotation, annotationId, ed, element, em, entities, entity, html, isDirty, j, len, ref, ref1, ref2, ref3, traslator;
             ed = EditorAdapter.getEditor();
             html = EditorAdapter.getHTML();
             entities = findEntities(html);
@@ -1573,9 +1579,12 @@
               if (-1 < ((ref1 = annotation.cssClass) != null ? ref1.indexOf('wl-no-link') : void 0)) {
                 element += ' wl-no-link';
               }
-              ref2 = annotation.entityMatches;
-              for (j = 0, len = ref2.length; j < len; j++) {
-                em = ref2[j];
+              if (-1 < ((ref2 = annotation.cssClass) != null ? ref2.indexOf('wl-link') : void 0)) {
+                element += ' wl-link';
+              }
+              ref3 = annotation.entityMatches;
+              for (j = 0, len = ref3.length; j < len; j++) {
+                em = ref3[j];
                 entity = analysis.entities[em.entityId];
                 if (indexOf.call(entity.occurrences, annotationId) >= 0) {
                   element += " disambiguated wl-" + entity.mainType + "\" itemid=\"" + entity.id;
@@ -1786,7 +1795,7 @@
     return configurationProvider.setConfiguration(window.wordlift);
   });
 
-  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.12.1'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
+  $(container = $("<div\n      id=\"wordlift-edit-post-wrapper\"\n      ng-controller=\"EditPostWidgetController\"\n      ng-include=\"configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.13.3'\">\n    </div>").appendTo('#wordlift-edit-post-outer-wrapper'), spinner = $("<div class=\"wl-widget-spinner\">\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-blogger\">\n    <circle cx=\"10\" cy=\"10\" r=\"6\" class=\"wl-blogger-shape\"></circle>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-editorial\">\n    <rect x=\"4\" y=\"4\" width=\"12\" height=\"12\" class=\"wl-editorial-shape\"></rect>\n  </svg>\n  <svg transform-origin=\"10 10\" id=\"wl-widget-spinner-enterprise\">\n    <polygon points=\"3,10 6.5,4 13.4,4 16.9,10 13.4,16 6.5,16\" class=\"wl-enterprise-shape\"></polygon>\n  </svg>\n</div> ").appendTo('#wordlift_entities_box .ui-sortable-handle'), injector = angular.bootstrap($('#wordlift-edit-post-wrapper'), ['wordlift.editpost.widget']), injector.invoke([
     '$rootScope', '$log', function($rootScope, $log) {
       $rootScope.$on('analysisServiceStatusUpdated', function(event, status) {
         var css;
@@ -1800,7 +1809,7 @@
       });
     }
   ]), tinymce.PluginManager.add('wordlift', function(editor, url) {
-    var fireEvent;
+    var addClassToBody, closed, fireEvent, startAnalysis;
     if (editor.id !== "content") {
       return;
     }
@@ -1846,7 +1855,7 @@
         return results1;
       }
     ]);
-    fireEvent(editor, "LoadContent", function(e) {
+    startAnalysis = function() {
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {
           return $rootScope.$apply(function() {
@@ -1861,7 +1870,37 @@
           });
         }
       ]);
+    };
+    addClassToBody = function() {
+      var $body, closed;
+      $body = $(editor.getBody());
+      closed = $('#wordlift_entities_box').hasClass('closed');
+      if (closed) {
+        return $body.addClass('wl-postbox-closed');
+      } else {
+        return $body.removeClass('wl-postbox-closed');
+      }
+    };
+    $(document).on('postbox-toggled', function(e, postbox) {
+      if ('wordlift_entities_box' !== postbox.id) {
+        return;
+      }
+      return addClassToBody();
     });
+    editor.on('init', function() {
+      return addClassToBody();
+    });
+    closed = $('#wordlift_entities_box').hasClass('closed');
+    if (!closed) {
+      fireEvent(editor, 'LoadContent', startAnalysis);
+    } else {
+      $(document).on('postbox-toggled', function(e, postbox) {
+        if ('wordlift_entities_box' !== postbox.id) {
+          return;
+        }
+        return startAnalysis();
+      });
+    }
     fireEvent(editor, "NodeChange", function(e) {
       return injector.invoke([
         'AnalysisService', 'EditorService', '$rootScope', '$log', function(AnalysisService, EditorService, $rootScope, $log) {

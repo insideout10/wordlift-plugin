@@ -156,7 +156,7 @@ class Wordlift_Import_Service {
 		$stmt = sprintf( 'INSERT DATA { <%s> <%s> %s };', Wordlift_Sparql_Service::escape_uri( $s ), Wordlift_Sparql_Service::escape_uri( $p ), $o );
 
 		// Finally queue the statement.
-		$this->sparql_service->queue( $stmt );
+		$this->sparql_service->execute( $stmt );
 
 	}
 

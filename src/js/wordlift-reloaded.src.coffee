@@ -277,6 +277,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
     $scope.setPanesWrapperWidth = ()->
+      # console.debug { "Setting panes wrapper width...", Object.assign( {}, $scope ) }
       $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
       $scope.position = 0;
       $scope.currentPaneIndex = 0
@@ -288,13 +289,18 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
     $scope.currentPaneIndex = 0
     $scope.areControlsVisible = false
 
-    w.bind 'resize', ()->
-        
+    # The resize function is called when the window is resized to recalculate
+    # sizes. It is also called at load for the first calculation.
+    resizeFn = () ->
       $scope.itemWidth = $scope.setItemWidth();
       $scope.setPanesWrapperWidth()
       for pane in $scope.panes
         pane.scope.setWidth $scope.itemWidth
       $scope.$apply()
+
+    # Bind the window resize event.
+    w.bind 'resize', ()-> resizeFn
+    w.bind 'load', ()-> resizeFn
 
     ctrl = @
     ctrl.registerPane = (scope, element, first)->
@@ -323,7 +329,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.splice unregisterPaneIndex, 1
       $scope.setPanesWrapperWidth()
-  ]   
+  ]
 ])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
@@ -815,7 +821,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityForm', [])
       onReset: '&'
       box: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.12.1'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-form.html?ver=3.13.3'
 
     link: ($scope, $element, $attrs, $ctrl) ->  
 
@@ -938,7 +944,7 @@ angular.module('wordlift.editpost.widget.directives.wlEntityInputBox', [])
     scope:
       entity: '='
     templateUrl: ()->
-      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.12.1'
+      configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-directive-entity-input-box.html?ver=3.13.3'
 ])
 angular.module('wordlift.editpost.widget.services.EditorAdapter', [
   'wordlift.editpost.widget.services.EditorAdapter'
@@ -1570,6 +1576,9 @@ angular.module('wordlift.editpost.widget.services.EditorService', [
           # Add the `wl-no-link` class if it was present in the original annotation.
           element += ' wl-no-link' if -1 < annotation.cssClass?.indexOf('wl-no-link')
 
+          # Add the `wl-link` class if it was present in the original annotation.
+          element += ' wl-link' if -1 < annotation.cssClass?.indexOf('wl-link')
+
           # Loop annotation to see which has to be preselected
           for em in annotation.entityMatches
             entity = analysis.entities[em.entityId]
@@ -1799,7 +1808,7 @@ $(
   	<div
       id="wordlift-edit-post-wrapper"
       ng-controller="EditPostWidgetController"
-      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.12.1'">
+      ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-editpost-widget.html?ver=3.13.3'">
     </div>
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
@@ -1877,19 +1886,19 @@ $(
           break
     ])
 
-    # Perform analysis once tinymce is loaded
-    fireEvent(editor, "LoadContent", (e) ->
+    # Define the callback to call to start the analysis.
+    startAnalysis = () ->
       injector.invoke(['AnalysisService', 'EditorService', '$rootScope', '$log'
         (AnalysisService, EditorService, $rootScope, $log) ->
-          # execute the following commands in the angular js context.
+# execute the following commands in the angular js context.
           $rootScope.$apply(->
-            # Get the html content of the editor.
+# Get the html content of the editor.
             html = editor.getContent format: 'raw'
 
             if "" isnt html
               EditorService.updateContentEditableStatus false
               AnalysisService.perform html
-            # Get the text content from the Html.
+# Get the text content from the Html.
 #            text = Traslator.create(html).getText()
 #            if text.match /[a-zA-Z0-9]+/
 #              # Disable tinymce editing
@@ -1899,7 +1908,43 @@ $(
 #              $log.warn "Blank content: nothing to do!"
           )
       ])
+
+    addClassToBody = () ->
+      # Get the editor body.
+      $body = $( editor.getBody() )
+
+      # Whether the postbox is closed.
+      closed = $( '#wordlift_entities_box' ).hasClass( 'closed' )
+
+      # Add or remove the class according to the postbox status.
+      if closed then $body.addClass( 'wl-postbox-closed' ) else $body.removeClass( 'wl-postbox-closed' )
+
+
+    # Add a `wl-postbox-closed` class to the editor body when the classification
+    # metabox is closed.
+    $(document).on( 'postbox-toggled', (e, postbox) ->
+      # Bail out if it's not our postbox.
+      return if 'wordlift_entities_box' isnt postbox.id
+
+      addClassToBody()
     )
+
+    # Set the initial state on the editor's body.
+    editor.on('init', () -> addClassToBody())
+
+    # Check whether the postbox is closed.
+    closed = $('#wordlift_entities_box').hasClass('closed')
+
+    # Start the analysis if the postbox isn't closed.
+    if !closed then fireEvent( editor, 'LoadContent', startAnalysis ) else
+      # If the postbox is closed, hook to the `postbox-toggled` event and start
+      # the analysis as soon as the postbox is opened.
+      $(document).on( 'postbox-toggled', (e, postbox) ->
+        # Bail out if it's not our postbox.
+        return if 'wordlift_entities_box' isnt postbox.id
+
+        startAnalysis()
+      )
 
     # Fires when the user changes node location using the mouse or keyboard in the TinyMCE editor.
     fireEvent(editor, "NodeChange", (e) ->

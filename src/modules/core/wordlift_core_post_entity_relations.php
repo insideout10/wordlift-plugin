@@ -261,7 +261,7 @@ function wl_core_get_related_entity_ids( $subject_id, $filters = array() ) {
 
 	$filters = wl_core_validate_filters_for_related( $filters );
 
-	return wl_core_inner_get_related_entities( "post_ids", $subject_id, $filters['predicate'], $filters['status'] );
+	return wl_core_inner_get_related_entities( 'post_ids', $subject_id, $filters['predicate'], $filters['status'] );
 }
 
 /**

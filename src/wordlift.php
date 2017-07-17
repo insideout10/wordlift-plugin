@@ -15,7 +15,7 @@
  * Plugin Name:       WordLift
  * Plugin URI:        https://wordlift.io
  * Description:       WordLift brings the power of AI to organize content, attract new readers and get their attention. To activate the plugin ​<a href="https://wordlift.io/">visit our website</a>.
- * Version:           3.13.0
+ * Version:           3.14.0-dev
  * Author:            WordLift, Insideout10
  * Author URI:        https://wordlift.io
  * License:           GPL-2.0+
@@ -97,53 +97,40 @@ function wl_write_log_hide_key( $text ) {
 	return str_ireplace( wl_configuration_get_key(), '<hidden>', $text );
 }
 
-/**
- * Write the query to the buffer file.
- *
- * @since 3.0.0
- *
- * @param string $query A SPARQL query.
- */
-function wl_queue_sparql_update_query( $query ) {
-
-	$filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
-	file_put_contents( $filename, $query . "\n", FILE_APPEND );
-
-	wl_write_log( "wl_queue_sparql_update_query [ filename :: $filename ]" );
-}
-
-/**
- * Execute the SPARQL query from the buffer saved for the specified request id.
- *
- * @param int $request_id The request ID.
- */
-function wl_execute_saved_sparql_update_query( $request_id ) {
-
-	$filename = WL_TEMP_DIR . $request_id . '.sparql';
-
-	// If the file doesn't exist, exit.
-	if ( ! file_exists( $filename ) ) {
-		wl_write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
-
-		return;
-	}
-
-	wl_write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
-
-	// Get the query saved in the file.
-	$query = file_get_contents( $filename );
-
-	// Execute the SPARQL query.
-	rl_execute_sparql_update_query( $query, false );
-
-	// Reindex the triple store.
-	wordlift_reindex_triple_store();
-
-	// Delete the temporary file.
-	unlink( $filename );
-}
-
-add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
+///**
+// * Execute the SPARQL query from the buffer saved for the specified request id.
+// *
+// * @deprecated
+// *
+// * @param int $request_id The request ID.
+// */
+//function wl_execute_saved_sparql_update_query( $request_id ) {
+//
+//	$filename = WL_TEMP_DIR . $request_id . '.sparql';
+//
+//	// If the file doesn't exist, exit.
+//	if ( ! file_exists( $filename ) ) {
+//		wl_write_log( "wl_execute_saved_sparql_update_query : file doesn't exist [ filename :: $filename ]" );
+//
+//		return;
+//	}
+//
+//	wl_write_log( "wl_execute_saved_sparql_update_query [ filename :: $filename ]" );
+//
+//	// Get the query saved in the file.
+//	$query = file_get_contents( $filename );
+//
+//	// Execute the SPARQL query.
+//	rl_execute_sparql_update_query( $query, false );
+//
+//	// Reindex the triple store.
+//	wordlift_reindex_triple_store();
+//
+//	// Delete the temporary file.
+//	unlink( $filename );
+//}
+//
+//add_action( 'wl_execute_saved_sparql_update_query', 'wl_execute_saved_sparql_update_query', 10, 1 );
 
 /**
  * Enable microdata schema.org tagging.
@@ -496,34 +483,34 @@ function wl_force_to_array( $value ) {
 	return $value;
 }
 
-/**
- * Schedule the execution of SPARQL Update queries before the WordPress look ends.
- */
-function wl_shutdown() {
-
-	// Get the filename to the temporary SPARQL file.
-	$filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
-
-	// If WordLift is buffering SPARQL queries, we're admins and a buffer exists, then schedule it.
-	if ( WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists( $filename ) ) {
-
-		// The request ID.
-		$args = array( WL_REQUEST_ID );
-
-		// Schedule the execution of the SPARQL query with the request ID.
-		wp_schedule_single_event( time(), 'wl_execute_saved_sparql_update_query', $args );
-
-		// Check that the request is scheduled.
-		$timestamp = wp_next_scheduled( 'wl_execute_saved_sparql_update_query', $args );
-
-		// Spawn the cron.
-		spawn_cron();
-
-		wl_write_log( "wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]" );
-	}
-}
-
-add_action( 'shutdown', 'wl_shutdown' );
+///**
+// * Schedule the execution of SPARQL Update queries before the WordPress look ends.
+// */
+//function wl_shutdown() {
+//
+//	// Get the filename to the temporary SPARQL file.
+//	$filename = WL_TEMP_DIR . WL_REQUEST_ID . '.sparql';
+//
+//	// If WordLift is buffering SPARQL queries, we're admins and a buffer exists, then schedule it.
+//	if ( WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING && is_admin() && file_exists( $filename ) ) {
+//
+//		// The request ID.
+//		$args = array( WL_REQUEST_ID );
+//
+//		// Schedule the execution of the SPARQL query with the request ID.
+//		wp_schedule_single_event( time(), 'wl_execute_saved_sparql_update_query', $args );
+//
+//		// Check that the request is scheduled.
+//		$timestamp = wp_next_scheduled( 'wl_execute_saved_sparql_update_query', $args );
+//
+//		// Spawn the cron.
+//		spawn_cron();
+//
+//		wl_write_log( "wl_shutdown [ request id :: " . WL_REQUEST_ID . " ][ timestamp :: $timestamp ]" );
+//	}
+//}
+//
+//add_action( 'shutdown', 'wl_shutdown' );
 
 /**
  * Replaces the *itemid* attributes URIs with the WordLift URIs.
@@ -630,10 +617,6 @@ require_once( 'admin/wordlift_admin_ajax_related_posts.php' );
 
 // Load the wl_chord TinyMCE button and configuration dialog.
 require_once( 'admin/wordlift_admin_shortcodes.php' );
-
-// Provide syncing features.
-require_once( 'admin/wordlift_admin_sync.php' );
-//}
 
 // load languages.
 // TODO: the following call gives for granted that the plugin is in the wordlift directory,

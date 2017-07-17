@@ -45,16 +45,14 @@ class Wordlift_Activator {
 			$configuration_service->set_key( '' );
 		}
 
-		wl_core_install_entity_type_data();
-		wl_core_install_create_relation_instance_table();
-		flush_rewrite_rules();
+		// Intentionally go through the whole upgrade procedure to be DRY.
+		wl_core_update_db_check();
 
 		// If WordLift's key is not configured, set `_wl_activation_redirect` transient. We won't redirect here, because we can't give
 		// for granted that we're in a browser admin session.
 		if ( '' === $configuration_service->get_key() ) {
 			set_transient( '_wl_activation_redirect', true, 30 );
 		}
-
 	}
 
 }

@@ -18,9 +18,16 @@ class Wordlift_User_Service {
 	const URI_META_KEY = '_wl_uri';
 
 	/**
+	 * The meta key holding the entity id representing a {@link WP_User}.
+	 *
+	 * @since 3.14.0
+	 */
+	const ENTITY_META_KEY = '_wl_entity';
+
+	/**
 	 * The Log service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_Log_Service $log_service The Log service.
 	 */
@@ -29,7 +36,7 @@ class Wordlift_User_Service {
 	/**
 	 * The singleton instance of the User service.
 	 *
-	 * @since 3.1.7
+	 * @since  3.1.7
 	 * @access private
 	 * @var \Wordlift_User_Service $user_service The singleton instance of the User service.
 	 */
@@ -91,9 +98,9 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param int $post_id Post ID.
-	 * @param WP_Post $post Post object.
-	 * @param bool $update Whether this is an existing post being updated or not.
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @param bool    $update  Whether this is an existing post being updated or not.
 	 */
 	public function wp_insert_post( $post_id, $post, $update ) {
 
@@ -120,6 +127,39 @@ class Wordlift_User_Service {
 		// Send the query to the triple store.
 		rl_execute_sparql_update_query( $delete . $insert );
 
+	}
+
+	/**
+	 * Set the `id` of the entity representing a {@link WP_User}.
+	 *
+	 * If the `id` is set to 0 (or less) then the meta is deleted.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User}.
+	 * @param int $value   The entity {@link WP_Post} `id`.
+	 *
+	 * @return bool|int  Meta ID if the key didn't exist, true on successful update, false on failure.
+	 */
+	public function set_entity( $user_id, $value ) {
+
+		return 0 < $value
+			? update_user_meta( $user_id, self::ENTITY_META_KEY, $value )
+			: delete_user_meta( $user_id, self::ENTITY_META_KEY );
+	}
+
+	/**
+	 * Get the {@link WP_Post} `id` of the entity representing a {@link WP_User}.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User}'s `id`.
+	 *
+	 * @return string The entity {@link WP_Post} `id` or an empty string if not set.
+	 */
+	public function get_entity( $user_id ) {
+
+		return get_user_meta( $user_id, self::ENTITY_META_KEY, true );
 	}
 
 	/**
@@ -171,7 +211,7 @@ class Wordlift_User_Service {
 	 *
 	 * @since 3.1.7
 	 *
-	 * @param int $user_id The user's id.
+	 * @param int    $user_id  The user's id.
 	 * @param string $user_uri The user's uri.
 	 *
 	 * @return int|bool Meta ID if the key didn't exist, true on successful update, false on failure.

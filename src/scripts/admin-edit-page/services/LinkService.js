@@ -22,7 +22,7 @@ class LinkService {
 	 * Create an `LinkService` instance.
 	 *
 	 * @since 3.13.0
-	 * @param {bool} linkByDefault Whether to link by default.
+	 * @param {boolean} linkByDefault Whether to link by default.
 	 */
 	constructor( linkByDefault ) {
 		// Set the `link by default` setting.
@@ -84,9 +84,13 @@ class LinkService {
 	 */
 	getLink( occurrences ) {
 		return occurrences.reduce( ( acc, id ) => {
-			return acc || this.linkByDefault
-				? ! EditorService.get().dom.hasClass( id, 'wl-no-link' )
-				: EditorService.get().dom.hasClass( id, 'wl-link' );
+			const dom = EditorService.get().dom;
+
+			return acc || (
+					this.linkByDefault
+						? ! dom.hasClass( id, 'wl-no-link' )
+						: dom.hasClass( id, 'wl-link' )
+				);
 		}, false );
 	}
 
