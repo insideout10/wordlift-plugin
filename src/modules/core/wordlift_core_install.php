@@ -11,6 +11,8 @@
  */
 function wl_core_install_entity_type_data() {
 
+	Wordlift_Log_Service::get_instance()->debug('Installing Entity Type data...');
+
 	// Ensure the custom type and the taxonomy are registered.
 	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
@@ -101,6 +103,8 @@ function wl_core_install_entity_type_data() {
 
 	}
 
+	Wordlift_Log_Service::get_instance()->debug('Entity Type data installed.');
+
 }
 
 /**
@@ -148,7 +152,6 @@ EOF;
 function wl_core_upgrade_db_to_1_0() {
 
 	if ( ! get_option( 'wl_db_version' ) ) {
-		wl_core_install_entity_type_data();
 		wl_core_install_create_relation_instance_table();
 	}
 
@@ -251,6 +254,8 @@ function wl_core_upgrade_db_3_12_3_14() {
 
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
+
+	wl_core_install_entity_type_data();
 
 	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
 
