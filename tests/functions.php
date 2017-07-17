@@ -666,6 +666,9 @@ function wl_test_get_write_log_handler() {
  */
 function wl_configure_wordpress_test() {
 
+	// Ensure we don't have the `wl_db_version` set.
+	delete_option( 'wl_db_version' );
+
 	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
 	// Simulate WordLift activation.

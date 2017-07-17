@@ -53,6 +53,7 @@ class Wordlift_Activator {
 		if ( '' === $configuration_service->get_key() ) {
 			set_transient( '_wl_activation_redirect', true, 30 );
 		}
+
 	}
 
 }

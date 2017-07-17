@@ -13,14 +13,6 @@ function wl_core_install_entity_type_data() {
 
 	Wordlift_Log_Service::get_instance()->debug('Installing Entity Type data...');
 
-	// Ensure the custom type and the taxonomy are registered.
-	Wordlift_Entity_Post_Type_Service::get_instance()->register();
-
-	wl_entity_type_taxonomy_register();
-
-	// Ensure the custom taxonomy for dbpedia topics is registered
-	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
-
 	// Set the taxonomy data.
 	// Note: parent types must be defined before child types.
 	$terms = array(
@@ -255,10 +247,16 @@ function wl_core_upgrade_db_3_12_3_14() {
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
-	wl_core_install_entity_type_data();
+	// Ensure the custom type and the taxonomy are registered.
+	Wordlift_Entity_Post_Type_Service::get_instance()->register();
+
+	wl_entity_type_taxonomy_register();
+
+	// Ensure the custom taxonomy for dbpedia topics is registered
+	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
 
 	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
-
+		wl_core_install_entity_type_data();
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
