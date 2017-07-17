@@ -902,7 +902,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 				self::FIELD_RECIPE_INGREDIENT   => array(
-					'predicate'   => ' http://schema.org/recipeIngredient',
+					'predicate'   => 'http://schema.org/recipeIngredient',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => array(
@@ -913,7 +913,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 				self::FIELD_RECIPE_INSTRUCTIONS => array(
-					'predicate'   => ' http://schema.org/recipeInstructions',
+					'predicate'   => 'http://schema.org/recipeInstructions',
 					'type'        => self::DATA_TYPE_MULTILINE,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
@@ -923,7 +923,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 				self::FIELD_RECIPE_YIELD        => array(
-					'predicate'   => ' http://schema.org/recipeYield',
+					'predicate'   => 'http://schema.org/recipeYield',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
@@ -932,7 +932,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 				self::FIELD_PREP_TIME           => array(
-					'predicate'   => ' http://schema.org/prepTime',
+					'predicate'   => 'http://schema.org/prepTime',
 					'type'        => self::DATA_TYPE_DURATION,
 					'export_type' => 'xsd:time',
 					'constraints' => '',
@@ -942,7 +942,7 @@ class Wordlift_Schema_Service {
 					),
 				),
 				self::FIELD_TOTAL_TIME          => array(
-					'predicate'   => ' http://schema.org/totalTime',
+					'predicate'   => 'http://schema.org/totalTime',
 					'type'        => self::DATA_TYPE_DURATION,
 					'export_type' => 'xsd:time',
 					'constraints' => '',

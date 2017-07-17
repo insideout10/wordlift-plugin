@@ -1,19 +1,29 @@
 <?php
-require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/WL_Metabox.php' );
-require_once( dirname( __FILE__ ) . '/../src/admin/WL_Metabox/class-wordlift-metabox-field-duration.php' );
+/**
+ * Tests: Duration Field Metabox Test.
+ *
+ * @since      3.14.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
+ */
 
 /**
  * Test the {@link Wordlift_Metabox_Field_Duration} class.
  *
- * @since 3.14.0
+ * @since      3.14.0
+ * @package    Wordlift
+ * @subpackage Wordlift/tests
  */
-class Wordlift_Metabox_Field_Duration_Test  extends Wordlift_Unit_Test_Case {
+class Wordlift_Metabox_Field_Duration_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test sanitization usually done during updated. Value should match
-	 * the regex
+	 * the regex.
+	 *
+	 * @since 3.14.0
 	 */
 	function test_sanitize_data_filter() {
+
 		$field = new Wordlift_Metabox_Field_Duration( array() );
 
 		// Simple minutes value should pass.
@@ -27,5 +37,7 @@ class Wordlift_Metabox_Field_Duration_Test  extends Wordlift_Unit_Test_Case {
 
 		// Fail on garbage.
 		$this->assertNull( $field->sanitize_data_filter( 'some minutes' ) );
+
 	}
+
 }

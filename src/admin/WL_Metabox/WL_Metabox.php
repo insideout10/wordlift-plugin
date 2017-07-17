@@ -1,4 +1,11 @@
 <?php
+/**
+ * Metaboxes.
+ *
+ * @since      3.1.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin/WL_Metabox
+ */
 
 require_once( 'WL_Metabox_Field.php' );
 require_once( 'WL_Metabox_Field_date.php' );
@@ -10,9 +17,11 @@ require_once( 'class-wordlift-metabox-field-duration.php' );
 require_once( 'class-wordlift-metabox-field-multiline.php' );
 
 /**
- * Class WL_Metabox
+ * Define the {@link WL_Metabox} class.
  *
- * @since 3.1.0
+ * @since      3.1.0
+ * @package    Wordlift
+ * @subpackage Wordlift/admin/WL_Metabox
  */
 class WL_Metabox {
 
@@ -133,12 +142,15 @@ class WL_Metabox {
 			}
 
 		}
+
 	}
 
 	/**
-	 * Separes metaboxes in simple and grouped.
+	 * Separates metaboxes in simple and grouped.
 	 *
 	 * @param array $custom_fields Information on the entity type.
+	 *
+	 * @return array
 	 */
 	public function group_properties_by_input_field( $custom_fields ) {
 
