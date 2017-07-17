@@ -336,7 +336,7 @@ class Wordlift_Schema_Service {
 			'person'        => $this->get_person_schema(),
 			'place'         => $this->get_place_schema(),
 			'localbusiness' => $this->get_local_business_schema(),
-			'recipe' 		=> $this->get_recipe_schema(),
+			'recipe'        => $this->get_recipe_schema(),
 		);
 
 	}
@@ -888,56 +888,75 @@ class Wordlift_Schema_Service {
 			'css_class'     => 'wl-recipe',
 			'uri'           => 'http://schema.org/Recipe',
 			'same_as'       => array(),
-			'custom_fields' => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
-
 			'custom_fields' => array(
-				self::FIELD_RECIPE_CUISINE        => array(
+				self::FIELD_RECIPE_CUISINE      => array(
 					'predicate'   => 'http://schema.org/recipeCuisine',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
+					'metabox'     => array(
+						'label' => __( 'Recipe cuisine', 'wordlift' ),
+					),
 				),
-				self::FIELD_RECIPE_INGREDIENT        => array(
+				self::FIELD_RECIPE_INGREDIENT   => array(
 					'predicate'   => ' http://schema.org/recipeIngredient',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => array(
 						'cardinality' => INF,
 					),
+					'metabox'     => array(
+						'label' => __( 'Recipe ingredient', 'wordlift' ),
+					),
 				),
-				self::FIELD_RECIPE_INSTRUCTIONS        => array(
+				self::FIELD_RECIPE_INSTRUCTIONS => array(
 					'predicate'   => ' http://schema.org/recipeInstructions',
 					'type'        => self::DATA_TYPE_MULTILINE,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Multiline',
+						'label' => __( 'Recipe instructions', 'wordlift' ),
+					),
 				),
 				self::FIELD_RECIPE_YIELD        => array(
 					'predicate'   => ' http://schema.org/recipeYield',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
 					'constraints' => '',
+					'metabox'     => array(
+						'label' => __( 'Recipe number of servings', 'wordlift' ),
+					),
 				),
-				self::FIELD_PREP_TIME        => array(
+				self::FIELD_PREP_TIME           => array(
 					'predicate'   => ' http://schema.org/prepTime',
 					'type'        => self::DATA_TYPE_DURATION,
 					'export_type' => 'xsd:time',
 					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Duration',
+						'label' => __( 'Recipe preparation time', 'wordlift' ),
+					),
 				),
-				self::FIELD_TOTAL_TIME        => array(
+				self::FIELD_TOTAL_TIME          => array(
 					'predicate'   => ' http://schema.org/totalTime',
 					'type'        => self::DATA_TYPE_DURATION,
 					'export_type' => 'xsd:time',
 					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Duration',
+						'label' => __( 'Recipe total time', 'wordlift' ),
+					),
 				),
 			),
 		);
 
-		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_creative_work_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		// Merge the custom fields with those provided by the parent schema.
+		$parent_schema           = $this->get_creative_work_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
 
 		return $schema;
 	}

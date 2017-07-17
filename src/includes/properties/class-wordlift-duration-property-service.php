@@ -1,16 +1,21 @@
 <?php
 /**
+ * Properties: Duration Property.
+ *
  * This file is part of the properties group of files which handle the duration
  * property of entities.
  *
- * @since   3.14.0
- * @package Wordlift
+ * @since      3.14.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/properties
  */
 
 /**
  * Process references to time durations, convert them into proper  ISO 8601 duration format.
  *
- * @since 3.14.0
+ * @since      3.14.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/properties
  */
 class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Service {
 
@@ -29,4 +34,5 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 			return 'PT' . str_replace( ':', 'H', $value ) . 'M';
 		}, parent::get( $post_id, $meta_key ) );
 	}
+
 }
