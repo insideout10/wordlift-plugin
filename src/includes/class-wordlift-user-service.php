@@ -18,6 +18,13 @@ class Wordlift_User_Service {
 	const URI_META_KEY = '_wl_uri';
 
 	/**
+	 * The user meta key where the deny entity edit flag is stored.
+	 *
+	 * @since 3.14.0
+	 */
+	const DENY_ENTITY_CREATE_META_KEY = '_wl_deny_entity_create';
+
+	/**
 	 * The meta key holding the entity id representing a {@link WP_User}.
 	 *
 	 * @since 3.14.0
@@ -53,6 +60,7 @@ class Wordlift_User_Service {
 
 		self::$instance = $this;
 
+		add_filter( 'user_has_cap', array( $this, 'has_cap' ), 10, 3 );
 	}
 
 	/**
@@ -291,4 +299,135 @@ class Wordlift_User_Service {
 		return $query;
 	}
 
+	/**
+	 * Mark an editor user as denied from editing entities.
+	 * Does nothing if the user is not an editor
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param integer $user_id The ID of the user
+	 */
+	public function deny_editor_entity_create( $user_id ) {
+
+		// Bail out if the user is not an editor.
+		if ( ! $this->is_editor( $user_id ) ) {
+			return;
+		}
+
+		// The user explicitly do not have the capability.
+		update_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY, 'yes' );
+
+	}
+
+	/**
+	 * Remove the "deny entity editing" mark from an editor user.
+	 * Does nothing if the user is not an editor
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param integer $user_id The ID of the user
+	 */
+	public function allow_editor_entity_create( $user_id ) {
+
+		// Bail out if the user is not an editor.
+		if ( ! $this->is_editor( $user_id ) ) {
+			return;
+		}
+
+		// The user explicitly do not have the capability.
+		delete_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY );
+
+	}
+
+	/**
+	 * Get whether the 'deny editor entity editing' flag is set.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User} `id`.
+	 *
+	 * @return int bool True if editing is denied otherwise false.
+	 */
+	public function is_deny_editor_entity_create( $user_id ) {
+
+		return 'yes' === get_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY, true );
+	}
+
+	/**
+	 * Check whether the {@link WP_User} with the specified `id` is an editor,
+	 * i.e. has the `editor` role.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The {@link WP_User} `id`.
+	 *
+	 * @return bool True if the {@link WP_User} is an editor otherwise false.
+	 */
+	public function is_editor( $user_id ) {
+
+		// Get the user.
+		$user = get_user_by( 'id', $user_id );
+
+		// Return true, if the user is found and has the `editor` role.
+		return is_a( $user, 'WP_User' ) && in_array( 'editor', (array) $user->roles );
+	}
+
+	/**
+	 * Check if an editor can create entities.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int $user_id The user id of the user being checked.
+	 *
+	 * @return bool    false if it is an editor that is denied from edit entities, true otherwise.
+	 */
+	public function editor_can_create_entities( $user_id ) {
+
+		// Return true if not an editor.
+		if ( ! $this->is_editor( $user_id ) ) {
+			return true;
+		}
+
+		// Check if the user explicitly denied.
+		return ! $this->is_deny_editor_entity_create( $user_id );
+	}
+
+	/**
+	 * Filter capabilities of user.
+	 *
+	 * Deny the capability of managing and editing entities for some users.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param array $allcaps All the capabilities of the user
+	 * @param array $cap     [0] Required capability
+	 * @param array $args    [0] Requested capability
+	 *                       [1] User ID
+	 *                       [2] Associated object ID
+	 *
+	 * @return array The capabilities array.
+	 */
+	public function has_cap( $allcaps, $cap, $args ) {
+		/*
+		 * For entity management/editing related capabilities
+		 * check that an editor was not explicitly denied (in user profile)
+		 * the capability.
+		 */
+		if (
+			( 'edit_wordlift_entity' == $cap[0] ) ||
+			( 'edit_wordlift_entities' == $cap[0] ) ||
+			( 'edit_others_wordlift_entities' == $cap[0] ) ||
+			( 'publish_wordlift_entities' == $cap[0] ) ||
+			( 'read_private_wordlift_entities' == $cap[0] ) ||
+			( 'delete_wordlift_entity' == $cap[0] )
+		) {
+			$user_id = $args[1];
+
+			if ( ! $this->editor_can_create_entities( $user_id ) ) {
+				$allcaps[ $cap[0] ] = false;
+			}
+		}
+
+		return $allcaps;
+	}
 }

@@ -13,7 +13,7 @@
 	<!-- CREATE NEW ENTITY BTN -->
 	<div
 		ng-click="setCurrentEntity(newEntity)"
-		ng-hide="currentEntity || analysisFailed"
+		ng-hide="currentEntity || analysisFailed || !canCreateEntities"
 		ng-include="configuration.defaultWordLiftPath + 'templates/wordlift-widget-be/wordlift-create-entity-btn.html?ver=3.13.3'">
 	</div>
 

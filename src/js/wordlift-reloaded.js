@@ -436,6 +436,7 @@
       $scope.relatedPosts = void 0;
       $scope.currentEntity = void 0;
       $scope.currentEntityType = void 0;
+      $scope.canCreateEntities = AnalysisService.canCreateEntities;
       $scope.setCurrentEntity = function(entity, entityType) {
         var annotation;
         $scope.currentEntity = entity;
@@ -1285,6 +1286,11 @@
           if ((wlSettings.itemId != null)) {
             args.data.exclude = [wlSettings.itemId];
           }
+          if (this.canCreateEntities) {
+            args.data.scope = 'all';
+          } else {
+            args.data.scope = 'local';
+          }
         }
         return $http(args);
       };
@@ -1369,6 +1375,7 @@
         }
         return results1;
       };
+      service.canCreateEntities = (wlSettings['can_create_entities'] != null) && 'yes' === wlSettings['can_create_entities'];
       return service;
     }
   ]);

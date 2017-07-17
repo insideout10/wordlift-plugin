@@ -57,8 +57,12 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		$this->user_service = $this->getMockBuilder( Wordlift_Admin_Author_Element::class )
 		                           ->disableOriginalConstructor()
 		                           ->setMethods( array(
+			                           'allow_editor_entity_create',
+			                           'deny_editor_entity_create',
+			                           'editor_can_create_entities',
 			                           'get_entity',
 			                           'set_entity',
+			                           'is_editor',
 		                           ) )
 		                           ->getMock();
 
@@ -138,6 +142,16 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		                   ->with( $this->equalTo( $target_user->ID ) )
 		                   ->willReturn( '' );
 
+		$this->user_service->expects( $this->once() )
+		                   ->method( 'is_editor' )
+		                   ->with( $this->equalTo( $target_user->ID ) )
+		                   ->willReturn( true );
+
+		$this->user_service->expects( $this->once() )
+		                   ->method( 'editor_can_create_entities' )
+		                   ->with( $this->equalTo( $target_user->ID ) )
+		                   ->willReturn( true );
+
 		ob_clean();
 		$this->user_profile_page->edit_user_profile( $target_user );
 		$result = ob_get_clean();
@@ -196,10 +210,25 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 		// Set the requested entity id.
 		$_POST['wl_person'] = 1;
 
-		$this->user_service->expects( $this->once() )
+		$this->user_service->expects( $this->exactly( 2 ) )
 		                   ->method( 'set_entity' )
 		                   ->with( $this->equalTo( $target_user_id ), $this->equalTo( 1 ) )
 		                   ->willReturn( true );
+
+		$this->user_service->expects( $this->once() )
+		                   ->method( 'deny_editor_entity_create' )
+		                   ->with( $this->equalTo( $target_user_id ) )
+		                   ->willReturn( true );
+
+		// Update the user profile.
+		$this->user_profile_page->edit_user_profile_update( $target_user_id );
+
+		$this->user_service->expects( $this->once() )
+		                   ->method( 'allow_editor_entity_create' )
+		                   ->with( $this->equalTo( $target_user_id ) )
+		                   ->willReturn( true );
+
+		$_POST['wl_can_create_entities'] = '1';
 
 		// Update the user profile.
 		$this->user_profile_page->edit_user_profile_update( $target_user_id );

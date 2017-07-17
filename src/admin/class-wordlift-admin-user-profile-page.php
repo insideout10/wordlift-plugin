@@ -105,6 +105,18 @@ class Wordlift_Admin_User_Profile_Page {
 					<p class="description"><?php _e( 'The entity, person or organization, from the vocabulary to associate with this author.', 'wordlift' ); ?></p>
 				</td>
 			</tr>
+			<?php if ( $this->user_service->is_editor( $user->ID ) ) { ?>
+			<tr>
+				<th>
+					<label
+						for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ) ?></label>
+				</th>
+				<td>
+					<input id="wl_can_create_entities"
+					       name="wl_can_create_entities"
+					       type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ) ?>
+				</td>
+				<?php } ?>
 		</table>
 		<?php
 	}
@@ -124,12 +136,36 @@ class Wordlift_Admin_User_Profile_Page {
 			return;
 		}
 
+		// Link an entity to the user.
+		$this->link_entity( $user_id, $_POST );
+
+		// Deny and enable the edit entity capability
+		if ( isset( $_POST['wl_can_create_entities'] ) ) {
+			// User has capability so remove the deny indication if present.
+			$this->user_service->allow_editor_entity_create( $user_id );
+		} else {
+			$this->user_service->deny_editor_entity_create( $user_id );
+		}
+
+	}
+
+	/**
+	 * Link an entity (specified in the `$_POST` array) to the {@link WP_User}
+	 * with the specified `id`.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param int   $user_id The {@link WP_User} `id`.
+	 * @param array $post    The `$_POST` array.
+	 */
+	private function link_entity( $user_id, $post ) {
+
 		// Bail out if the `wl_person` parameter isn't set.
-		if ( ! isset( $_POST['wl_person'] ) || ! is_numeric( $_POST['wl_person'] ) ) {
+		if ( ! isset( $post['wl_person'] ) || ! is_numeric( $post['wl_person'] ) ) {
 			return;
 		}
 
-		$this->user_service->set_entity( $user_id, intval( $_POST['wl_person'] ) );
+		$this->user_service->set_entity( $user_id, intval( $post['wl_person'] ) );
 
 	}
 
