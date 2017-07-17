@@ -24,45 +24,25 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	 *
 	 * @return array A JSON-LD array.
 	 */
-	public function create_schema( $request ) {
+	public function create_schema() {
 
-		// Check if we have home/blog page id.
-		if ( isset( $request['id'] ) ) {
-			$post_id = $request['id'];
+		// Create new jsonld.
+		$jsonld = array(
+			'@context'      => 'http://schema.org',
+			'@type'         => 'WebSite',
+			'name'          => get_bloginfo( 'name' ),
+			'alternateName' => get_bloginfo( 'description' ),
+			'url'           => home_url( '/' ),
+		);
 
-			// Get the base JSON-LD and the list of entities referenced by this entity.
-			$jsonld = parent::convert( $post_id, $references );
-		} else {
-			// Create new jsonld, because we don't have id.
-			$jsonld = array(
-				'@context' => 'http://schema.org',
-			);
-		}
+		// Add publisher information.
+		$this->set_publisher( $jsonld );
 
-		// Change the jsonld to include site info, rather page info.
-		$this->apply_website_info_to_json_ld( $jsonld );
-
-		// Add seach action to jsonld
+		// Add search action.
 		$this->set_search_action( $jsonld );
 
+		// Return the jsonld schema.
 		return $jsonld;
-	}
-
-	/**
-	 * Update the JSON-LD structure to match the `WebSite` schema.org class.
-	 *
-	 * @since 3.14.0
-	 *
-	 * @param array $params  The JSON-LD structure.
-	*/
-	public function apply_website_info_to_json_ld( &$params ) {
-		// Change values so they will be accurate for homepage
-
-		// Change schema properties.
-		$params['@type']       = 'WebSite';
-		$params['headline']    = get_bloginfo( 'name' );
-		$params['description'] = get_bloginfo( 'description' );
-		$params['url']         = home_url( '/' );
 	}
 
 	/**

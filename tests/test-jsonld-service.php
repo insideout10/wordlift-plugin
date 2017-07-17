@@ -53,6 +53,15 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	private $jsonld_service;
 
 	/**
+	 * A {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service A {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
@@ -67,6 +76,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$this->entity_service                  = $wordlift->get_entity_service();
 		$this->entity_post_to_jsonld_converter = $wordlift->get_entity_post_to_jsonld_converter();
 		$this->jsonld_service                  = $wordlift->get_jsonld_service();
+		$this->configuration_service           = $wordlift->get_configuration_service();
 
 	}
 
@@ -252,14 +262,17 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$name        = rand_str();
 		$description = rand_str();
 
+		// Set publisher.
+		$publisher = $this->entity_factory->create_and_get();
+		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
+		$this->configuration_service->set_publisher_id( $publisher->ID );
+
 		// Create homepage
 		$homepage_id = $this->factory->post->create( array(
 			'post_title' => $name,
 			'post_type'  => 'page',
 		) );
-
-		// Get url
-		$home_uri = $this->entity_service->get_uri( $homepage_id );
 
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
@@ -267,10 +280,10 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		update_option( 'blogdescription', $description );
 
 		// Get site info
-		$headline    = get_bloginfo( 'name' );
-		$description = get_bloginfo( 'description' );
-		$url         = home_url( '/' );
-		$target      = $url . '?s={search_term_string}';
+		$name           = get_bloginfo( 'name' );
+		$alternate_name = get_bloginfo( 'description' );
+		$url            = home_url( '/' );
+		$target         = $url . '?s={search_term_string}';
 
 		// Set up a default request
 		$_GET['action']   = 'wl_jsonld';
@@ -285,40 +298,40 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		}
 
 		// Get response
-		$response = json_decode( $this->_last_response );
+		$response = json_decode( $this->_last_response, 1 );
+
+
 		$this->assertTrue( is_array( $response ) );
 
-		$this->assertCount( 1, $response );
+		$this->assertArrayHasKey( '@context', $response );
+		$this->assertEquals( 'http://schema.org', $response['@context'] );
 
-		$jsonld_1 = get_object_vars( $response[0] );
+		$this->assertArrayHasKey( '@type', $response );
+		$this->assertEquals( 'WebSite', $response['@type'] );
 
-		$this->assertTrue( is_array( $jsonld_1 ) );
-		$this->assertArrayHasKey( '@context', $jsonld_1 );
-		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+		$this->assertArrayHasKey( 'alternateName', $response );
+		$this->assertEquals( $alternate_name, $response['alternateName'] );
 
-		$this->assertArrayHasKey( '@id', $jsonld_1 );
-		$this->assertEquals( $home_uri, $jsonld_1['@id'] );
+		$this->assertArrayHasKey( 'name', $response );
+		$this->assertEquals( $name, $response['name'] );
 
-		$this->assertArrayHasKey( '@type', $jsonld_1 );
-		$this->assertEquals( 'WebSite', $jsonld_1['@type'] );
-
-		$this->assertArrayHasKey( 'description', $jsonld_1 );
-		$this->assertEquals( $description, $jsonld_1['description'] );
-
-		$this->assertArrayHasKey( 'headline', $jsonld_1 );
-		$this->assertEquals( $headline, $jsonld_1['headline'] );
-
-		$this->assertArrayHasKey( 'url', $jsonld_1 );
-		$this->assertEquals( $url, $jsonld_1['url'] );
+		$this->assertArrayHasKey( 'url', $response );
+		$this->assertEquals( $url, $response['url'] );
 
 		// Get potentital action
-		$potential_action = get_object_vars( $jsonld_1['potentialAction'] );
+		$potential_action = $response['potentialAction'];
 
 		$this->assertArrayHasKey( '@type', $potential_action );
 		$this->assertEquals( 'SearchAction', $potential_action['@type'] );
 
 		$this->assertArrayHasKey( 'target', $potential_action );
 		$this->assertEquals( $target, $potential_action['target'] );
+
+		// Check the publisher.
+		$this->assertCount( 3, $response['publisher'] );
+		$this->assertEquals( 'Person', $response['publisher']['@type'] );
+		$this->assertEquals( $publisher_uri, $response['publisher']['@id'] );
+		$this->assertEquals( $publisher->post_title, $response['publisher']['name'] );
 
 	}
 
@@ -340,6 +353,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		// Get url
 		$home_uri = $this->entity_service->get_uri( $homepage_id );
 
+		// Set publisher.
+		$publisher = $this->entity_factory->create_and_get();
+		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
+		$this->configuration_service->set_publisher_id( $publisher->ID );
+
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
 		update_option( 'page_on_front', $homepage_id );
@@ -354,6 +373,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		// Set up a default request
 		$_GET['action'] = 'wl_jsonld';
 		$_GET['id']     = $homepage_id;
+		$_GET['homepage'] = 'true';
 
 		// Diable WebSite schema
 		add_filter( 'wordlift_disable_website_json_ld', '__return_true' );
@@ -371,23 +391,32 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$this->assertCount( 1, $response );
 
-		$jsonld_1 = get_object_vars( $response[0] );
+		$jsonld = get_object_vars( $response[0] );
 
-		$this->assertTrue( is_array( $jsonld_1 ) );
-		$this->assertArrayHasKey( '@context', $jsonld_1 );
-		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+		$this->assertTrue( is_array( $jsonld ) );
 
-		$this->assertArrayHasKey( '@id', $jsonld_1 );
-		$this->assertEquals( $home_uri, $jsonld_1['@id'] );
+		$this->assertArrayHasKey( '@context', $jsonld );
+		$this->assertEquals( 'http://schema.org', $jsonld['@context'] );
 
-		$this->assertArrayHasKey( '@type', $jsonld_1 );
-		$this->assertNotEquals( 'WebSite', $jsonld_1['@type'] );
+		$this->assertArrayHasKey( '@id', $jsonld );
+		$this->assertEquals( $home_uri, $jsonld['@id'] );
 
-		$this->assertArrayHasKey( 'description', $jsonld_1 );
-		$this->assertNotEquals( $description, $jsonld_1['description'] );
+		$this->assertArrayHasKey( '@type', $jsonld );
+		$this->assertNotEquals( 'WebSite', $jsonld['@type'] );
 
-		$this->assertArrayHasKey( 'headline', $jsonld_1 );
-		$this->assertNotEquals( $headline, $jsonld_1['headline'] );
+		$this->assertArrayHasKey( 'description', $jsonld );
+		$this->assertNotEquals( $description, $jsonld['description'] );
+
+		$this->assertArrayHasKey( 'headline', $jsonld );
+		$this->assertNotEquals( $headline, $jsonld['headline'] );
+
+		$publisher_2 = get_object_vars( $jsonld['publisher'] );
+
+		// Check the publisher.
+		$this->assertCount( 3, $publisher_2 );
+		$this->assertEquals( 'Organization', $publisher_2['@type'] );
+		$this->assertEquals( $publisher_uri, $publisher_2['@id'] );
+		$this->assertEquals( $publisher->post_title, $publisher_2['name'] );
 	}
 
 	/**
@@ -401,6 +430,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		// Set our page as homepage & update the site description
 		update_option( 'blogdescription', $description );
 
+		// Set publisher.
+		$publisher = $this->entity_factory->create_and_get();
+		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Organization' );
+		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
+		$this->configuration_service->set_publisher_id( $publisher->ID );
+
 		// Get site info
 		$headline    = get_bloginfo( 'name' );
 		$description = get_bloginfo( 'description' );
@@ -408,7 +443,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$target      = $url . '?s={search_term_string}';
 
 		$_GET['action']   = 'wl_jsonld';
-		$_GET['homepage'] = true;
+		$_GET['homepage'] = 'true';
 
 		// Make the request
 		try {
@@ -417,31 +452,26 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			unset( $e );
 		}
 
-		$response = json_decode( $this->_last_response );
+		$response = json_decode( $this->_last_response, 1 );
 
 		$this->assertTrue( is_array( $response ) );
 
-		$this->assertCount( 1, $response );
+		$this->assertArrayHasKey( '@context', $response );
+		$this->assertEquals( 'http://schema.org', $response['@context'] );
 
-		$jsonld_1 = get_object_vars( $response[0] );
+		$this->assertArrayHasKey( '@type', $response );
+		$this->assertEquals( 'WebSite', $response['@type'] );
 
-		$this->assertTrue( is_array( $jsonld_1 ) );
-		$this->assertArrayHasKey( '@context', $jsonld_1 );
-		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+		$this->assertArrayHasKey( 'alternateName', $response );
+		$this->assertEquals( $description, $response['alternateName'] );
 
-		$this->assertArrayHasKey( '@type', $jsonld_1 );
-		$this->assertEquals( 'WebSite', $jsonld_1['@type'] );
+		$this->assertArrayHasKey( 'name', $response );
+		$this->assertEquals( $headline, $response['name'] );
 
-		$this->assertArrayHasKey( 'description', $jsonld_1 );
-		$this->assertEquals( $description, $jsonld_1['description'] );
+		$this->assertArrayHasKey( 'url', $response );
+		$this->assertEquals( $url, $response['url'] );
 
-		$this->assertArrayHasKey( 'headline', $jsonld_1 );
-		$this->assertEquals( $headline, $jsonld_1['headline'] );
-
-		$this->assertArrayHasKey( 'url', $jsonld_1 );
-		$this->assertEquals( $url, $jsonld_1['url'] );
-
-		$potential_action = get_object_vars( $jsonld_1['potentialAction'] );
+		$potential_action = $response['potentialAction'];
 
 		$this->assertArrayHasKey( '@type', $potential_action );
 		$this->assertEquals( 'SearchAction', $potential_action['@type'] );
@@ -451,6 +481,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$this->assertArrayHasKey( 'target', $potential_action );
 		$this->assertEquals( $target, $potential_action['target'] );
+
+		// Check the publisher.
+		$this->assertCount( 3, $response['publisher'] );
+		$this->assertEquals( 'Organization', $response['publisher']['@type'] );
+		$this->assertEquals( $publisher_uri, $response['publisher']['@id'] );
+		$this->assertEquals( $publisher->post_title, $response['publisher']['name'] );
 	}
 
 	/**
@@ -468,8 +504,11 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			'post_type'  => 'page',
 		) );
 
-		// Get url
-		$home_uri = $this->entity_service->get_uri( $homepage_id );
+		// Set publisher.
+		$publisher = $this->entity_factory->create_and_get();
+		$this->entity_type_service->set( $publisher->ID, 'http://schema.org/Person' );
+		$publisher_uri = $this->entity_service->get_uri( $publisher->ID );
+		$this->configuration_service->set_publisher_id( $publisher->ID );
 
 		// Set our page as homepage & update the site description
 		update_option( 'show_on_front', 'page' );
@@ -501,34 +540,26 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 			unset( $e );
 		}
 
-		$response = json_decode( $this->_last_response );
+		$response = json_decode( $this->_last_response, 1 );
 
 		$this->assertTrue( is_array( $response ) );
 
-		$this->assertCount( 1, $response );
+		$this->assertArrayHasKey( '@context', $response );
+		$this->assertEquals( 'http://schema.org', $response['@context'] );
 
-		$jsonld_1 = get_object_vars( $response[0] );
+		$this->assertArrayHasKey( '@type', $response );
+		$this->assertEquals( 'WebSite', $response['@type'] );
 
-		$this->assertTrue( is_array( $jsonld_1 ) );
-		$this->assertArrayHasKey( '@context', $jsonld_1 );
-		$this->assertEquals( 'http://schema.org', $jsonld_1['@context'] );
+		$this->assertArrayHasKey( 'alternateName', $response );
+		$this->assertEquals( $description, $response['alternateName'] );
 
-		$this->assertArrayHasKey( '@id', $jsonld_1 );
-		$this->assertEquals( $home_uri, $jsonld_1['@id'] );
+		$this->assertArrayHasKey( 'name', $response );
+		$this->assertEquals( $headline, $response['name'] );
 
-		$this->assertArrayHasKey( '@type', $jsonld_1 );
-		$this->assertEquals( 'WebSite', $jsonld_1['@type'] );
+		$this->assertArrayHasKey( 'url', $response );
+		$this->assertEquals( $url, $response['url'] );
 
-		$this->assertArrayHasKey( 'description', $jsonld_1 );
-		$this->assertEquals( $description, $jsonld_1['description'] );
-
-		$this->assertArrayHasKey( 'headline', $jsonld_1 );
-		$this->assertEquals( $headline, $jsonld_1['headline'] );
-
-		$this->assertArrayHasKey( 'url', $jsonld_1 );
-		$this->assertEquals( $url, $jsonld_1['url'] );
-
-		$potential_action = get_object_vars( $jsonld_1['potentialAction'] );
+		$potential_action = $response['potentialAction'];
 
 		$this->assertArrayHasKey( '@type', $potential_action );
 		$this->assertEquals( 'SearchAction', $potential_action['@type'] );
@@ -538,6 +569,12 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		$this->assertArrayHasKey( 'target', $potential_action );
 		$this->assertEquals( $modified_target, $potential_action['target'] );
+
+		// Check the publisher.
+		$this->assertCount( 3, $response['publisher'] );
+		$this->assertEquals( 'Person', $response['publisher']['@type'] );
+		$this->assertEquals( $publisher_uri, $response['publisher']['@id'] );
+		$this->assertEquals( $publisher->post_title, $response['publisher']['name'] );
 	}
 
 	/**

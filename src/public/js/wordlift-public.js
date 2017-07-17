@@ -22,7 +22,7 @@
 
 			// Check that we have param that indicates we are on homepage, and add it to the requestData.
 			if ( typeof( settings.isHome ) !== 'undefined' ) {
-				requestData.homepage = 'true';
+				requestData.homepage = true;
 			}
 
 			// Request the JSON-LD data.

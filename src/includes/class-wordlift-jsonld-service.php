@@ -89,10 +89,8 @@ class Wordlift_Jsonld_Service {
 				// Set a reference to the website_converter.
 				$website_converter = $this->website_converter;
 
-				$jsonld = array( $website_converter->create_schema( $_REQUEST ) );
-
 				// Send JSON-LD.
-				wp_send_json( $jsonld );
+				wp_send_json( $website_converter->create_schema() );
 			}
 		}
 

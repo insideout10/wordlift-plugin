@@ -144,7 +144,7 @@ class Wordlift_Post_To_Jsonld_Converter extends Wordlift_Abstract_Post_To_Jsonld
 	 *
 	 * @param array $params The parameters array.
 	 */
-	private function set_publisher( &$params ) {
+	protected function set_publisher( &$params ) {
 
 		// If the publisher id isn't set don't do anything.
 		if ( null === $publisher_id = $this->configuration_service->get_publisher_id() ) {
