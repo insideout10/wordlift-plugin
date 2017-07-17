@@ -12,7 +12,7 @@
  * @since   3.10.0
  * @package Wordlift
  */
-class Wordlift_Install_Test extends WP_UnitTestCase {
+class Wordlift_Install_Test extends Wordlift_Unit_Test_Case {
 
 	/**
 	 * Test that all terms in the entity taxonomy are properly created,
