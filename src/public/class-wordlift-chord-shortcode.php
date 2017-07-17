@@ -1,9 +1,18 @@
 <?php
+/**
+ * Shortcodes: Chord Shortcode.
+ *
+ * @since      3.5.4
+ * @package    Wordlift
+ * @subpackage Wordlift/public
+ */
 
 /**
  * The `wl_chord` shortcode.
  *
- * @since 3.5.4
+ * @since      3.5.4
+ * @package    Wordlift
+ * @subpackage Wordlift/public
  */
 class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 
@@ -11,6 +20,23 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
 	 * {@inheritdoc}
 	 */
 	const SHORTCODE = 'wl_chord';
+
+	/**
+	 * Create a {@link Wordlift_Chord_Shortcode} instance.
+	 *
+	 * @since      3.5.4
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		// Hook to the `amp_post_template_css` to hide ourselves when in AMP
+		// rendering.
+		add_action( 'amp_post_template_css', array(
+			$this,
+			'amp_post_template_css',
+		) );
+
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -85,6 +111,23 @@ class Wordlift_Chord_Shortcode extends Wordlift_Shortcode {
         margin-bottom:10px">
 </div>
 EOF;
+	}
+
+	/**
+	 * Customize the CSS when in AMP.
+	 *
+	 * See https://github.com/Automattic/amp-wp/blob/master/readme.md#custom-css
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param object $amp_template The template.
+	 */
+	public function amp_post_template_css( $amp_template ) {
+
+		// Hide the `wl-chord` when in AMP.
+		?>
+		.wl-chord { display: none; }
+		<?php
 	}
 
 }
