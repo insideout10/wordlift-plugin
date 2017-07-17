@@ -112,7 +112,8 @@ class Wordlift_Admin_User_Profile_Page {
 						for="wl_can_create_entities"><?php esc_html_e( 'Can create new entities', 'wordlift' ) ?></label>
 				</th>
 				<td>
-					<input id="wl_can_create_entities" name="wl_can_create_entities"
+					<input id="wl_can_create_entities"
+					       name="wl_can_create_entities"
 					       type="checkbox" <?php checked( $this->user_service->editor_can_create_entities( $user->ID ) ) ?>
 				</td>
 				<?php } ?>

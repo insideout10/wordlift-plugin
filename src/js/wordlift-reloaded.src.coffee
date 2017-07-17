@@ -277,6 +277,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
     $scope.setPanesWrapperWidth = ()->
+      # console.debug { "Setting panes wrapper width...", Object.assign( {}, $scope ) }
       $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
       $scope.position = 0;
       $scope.currentPaneIndex = 0
@@ -288,13 +289,18 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
     $scope.currentPaneIndex = 0
     $scope.areControlsVisible = false
 
-    w.bind 'resize', ()->
-        
+    # The resize function is called when the window is resized to recalculate
+    # sizes. It is also called at load for the first calculation.
+    resizeFn = () ->
       $scope.itemWidth = $scope.setItemWidth();
       $scope.setPanesWrapperWidth()
       for pane in $scope.panes
         pane.scope.setWidth $scope.itemWidth
       $scope.$apply()
+
+    # Bind the window resize event.
+    w.bind 'resize', ()-> resizeFn
+    w.bind 'load', ()-> resizeFn
 
     ctrl = @
     ctrl.registerPane = (scope, element, first)->
@@ -323,7 +329,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.splice unregisterPaneIndex, 1
       $scope.setPanesWrapperWidth()
-  ]   
+  ]
 ])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
