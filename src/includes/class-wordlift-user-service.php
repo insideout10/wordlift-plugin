@@ -419,7 +419,10 @@ class Wordlift_User_Service {
 			( 'edit_others_wordlift_entities' == $cap[0] ) ||
 			( 'publish_wordlift_entities' == $cap[0] ) ||
 			( 'read_private_wordlift_entities' == $cap[0] ) ||
-			( 'delete_wordlift_entity' == $cap[0] )
+			( 'delete_wordlift_entity' == $cap[0] ) ||
+			( 'delete_others_wordlift_entities' == $cap[0] ) ||
+			( 'delete_published_wordlift_entities' == $cap[0] ) ||
+			( 'delete_private_wordlift_entities' == $cap[0] )
 		) {
 			$user_id = $args[1];
 

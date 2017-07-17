@@ -228,6 +228,10 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$admins->add_cap( 'publish_wordlift_entities' );
 	$admins->add_cap( 'read_private_wordlift_entities' );
 	$admins->add_cap( 'delete_wordlift_entity' );
+	$admins->add_cap( 'delete_wordlift_entities' );
+	$admins->add_cap( 'delete_others_wordlift_entities' );
+	$admins->add_cap( 'delete_published_wordlift_entities' );
+	$admins->add_cap( 'delete_private_wordlift_entities' );
 
 	// Assign capabilities to manipulate entities to editors.
 	$editors = get_role( 'editor' );
@@ -238,6 +242,10 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$editors->add_cap( 'publish_wordlift_entities' );
 	$editors->add_cap( 'read_private_wordlift_entities' );
 	$editors->add_cap( 'delete_wordlift_entity' );
+	$editors->add_cap( 'delete_wordlift_entities' );
+	$editors->add_cap( 'delete_others_wordlift_entities' );
+	$editors->add_cap( 'delete_published_wordlift_entities' );
+	$editors->add_cap( 'delete_private_wordlift_entities' );
 }
 
 // Check db status on automated plugins updates

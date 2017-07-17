@@ -158,6 +158,10 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			'publish_wordlift_entities',
 			'read_private_wordlift_entities',
 			'delete_wordlift_entity',
+			'delete_wordlift_entities',
+			'delete_others_wordlift_entities',
+			'delete_published_wordlift_entities',
+			'delete_private_wordlift_entities',
 		);
 
 		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );

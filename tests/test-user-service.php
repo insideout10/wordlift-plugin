@@ -147,6 +147,10 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 			'publish_wordlift_entities',
 			'read_private_wordlift_entities',
 			'delete_wordlift_entity',
+			'delete_wordlift_entities',
+			'delete_others_wordlift_entities',
+			'delete_published_wordlift_entities',
+			'delete_private_wordlift_entities',
 		);
 
 		$user_service = Wordlift_User_Service::get_instance();
