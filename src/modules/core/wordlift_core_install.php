@@ -11,13 +11,7 @@
  */
 function wl_core_install_entity_type_data() {
 
-	// Ensure the custom type and the taxonomy are registered.
-	Wordlift_Entity_Post_Type_Service::get_instance()->register();
-
-	wl_entity_type_taxonomy_register();
-
-	// Ensure the custom taxonomy for dbpedia topics is registered
-	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
+	Wordlift_Log_Service::get_instance()->debug( 'Installing Entity Type data...' );
 
 	// Set the taxonomy data.
 	// Note: parent types must be defined before child types.
@@ -101,6 +95,8 @@ function wl_core_install_entity_type_data() {
 
 	}
 
+	Wordlift_Log_Service::get_instance()->debug( 'Entity Type data installed.' );
+
 }
 
 /**
@@ -148,7 +144,6 @@ EOF;
 function wl_core_upgrade_db_to_1_0() {
 
 	if ( ! get_option( 'wl_db_version' ) ) {
-		wl_core_install_entity_type_data();
 		wl_core_install_create_relation_instance_table();
 	}
 
@@ -213,11 +208,19 @@ function wl_core_upgrade_db_3_10_3_12() {
 /**
  * Upgrade the DB structure to the one expected by the 3.14 release.
  *
- * Add the capabilities to manage entities to admins and editors
+ * Add Recipe entity.
  *
- * @since 3.12.0
+ * @since 3.14.0
  */
 function wl_core_upgrade_db_3_12_3_14() {
+	$result = wp_insert_term(
+		'Recipe',
+		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+		array(
+			'slug'        => 'recipe',
+			'description' => 'A Recipe.',
+		)
+	);
 
 	// Assign capabilities to manipulate entities to admins.
 	$admins = get_role( 'administrator' );
@@ -251,8 +254,16 @@ function wl_core_upgrade_db_3_12_3_14() {
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
-	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+	// Ensure the custom type and the taxonomy are registered.
+	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
+	wl_entity_type_taxonomy_register();
+
+	// Ensure the custom taxonomy for dbpedia topics is registered
+	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
+
+	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+		wl_core_install_entity_type_data();
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();

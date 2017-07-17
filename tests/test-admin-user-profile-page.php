@@ -49,12 +49,12 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->admin_person_element = $this->getMockBuilder( Wordlift_Admin_Author_Element::class )
+		$this->admin_person_element = $this->getMockBuilder( 'Wordlift_Admin_Author_Element' )
 		                                   ->disableOriginalConstructor()
 		                                   ->setMethods( array() )
 		                                   ->getMock();
 
-		$this->user_service = $this->getMockBuilder( Wordlift_Admin_Author_Element::class )
+		$this->user_service = $this->getMockBuilder( 'Wordlift_Admin_Author_Element' )
 		                           ->disableOriginalConstructor()
 		                           ->setMethods( array(
 			                           'allow_editor_entity_create',

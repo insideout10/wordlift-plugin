@@ -49,14 +49,16 @@ class Wordlift_Admin_Person_Element_Test extends Wordlift_Unit_Test_Case {
 	function setUp() {
 		parent::setUp();
 
-		$this->publisher_service    = $this->getMockBuilder( Wordlift_Publisher_Service::class )
-		                                   ->disableOriginalConstructor()
-		                                   ->setMethods( array( 'query' ) )
-		                                   ->getMock();
-		$this->select2_element      = $this->getMockBuilder( Wordlift_Admin_Select2_Element::class )
-		                                   ->disableOriginalConstructor()
-		                                   ->setMethods( array( 'render' ) )
-		                                   ->getMock();
+		$this->publisher_service = $this->getMockBuilder( 'Wordlift_Publisher_Service' )
+		                                ->disableOriginalConstructor()
+		                                ->setMethods( array( 'query' ) )
+		                                ->getMock();
+
+		$this->select2_element = $this->getMockBuilder( 'Wordlift_Admin_Select2_Element' )
+		                              ->disableOriginalConstructor()
+		                              ->setMethods( array( 'render' ) )
+		                              ->getMock();
+
 		$this->admin_person_element = new Wordlift_Admin_Author_Element( $this->publisher_service, $this->select2_element );
 
 	}
