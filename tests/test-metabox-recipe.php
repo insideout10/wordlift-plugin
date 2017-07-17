@@ -51,7 +51,7 @@ class WL_Metabox_Recipe_Test extends Wordlift_Unit_Test_Case {
 		$metabox->instantiate_fields( $entity_post_id );
 
 		// Check that the fields are all `WL_Metabox_Field`s.
-		$this->assertContainsOnlyInstancesOf( WL_Metabox_Field::class, $metabox->fields );
+		$this->assertContainsOnlyInstancesOf( 'WL_Metabox_Field', $metabox->fields );
 
 		// Check that the recipe fields are there.
 		$this->assertNotNull( $this->get_by_meta_name( $metabox->fields, 'wl_schema_recipe_cuisine' ) );
