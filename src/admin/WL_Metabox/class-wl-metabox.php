@@ -25,6 +25,13 @@ require_once( 'class-wordlift-metabox-field-multiline.php' );
  */
 class WL_Metabox {
 
+	/**
+	 * The metabox custom fields for the current {@link WP_Post}.
+	 *
+	 * @since  3.1.0
+	 * @access public
+	 * @var array $fields The metabox custom fields.
+	 */
 	public $fields;
 
 	/**
@@ -128,6 +135,7 @@ class WL_Metabox {
 
 				// Build the requested field as WL_Metabox_Field_ object.
 				$this->add_field( $info );
+
 			}
 
 			// Loop over grouped properties.
@@ -139,6 +147,7 @@ class WL_Metabox {
 
 				// Build the requested field group as WL_Metabox_Field_ object.
 				$this->add_field( $info, true );
+
 			}
 
 		}
@@ -164,7 +173,7 @@ class WL_Metabox {
 			if ( isset( $property['predicate'] ) && isset( $property['type'] ) ) {
 
 				// Check if input_field is defined.
-				if ( isset( $property['input_field'] ) && $property['input_field'] !== '' ) {
+				if ( isset( $property['input_field'] ) && '' !== $property['input_field'] ) {
 
 					$grouped_key = $property['input_field'];
 
@@ -186,20 +195,22 @@ class WL_Metabox {
 	 * Add a Field to the current Metabox, based on the description of the Field.
 	 * This method is a rude factory for Field objects.
 	 *
-	 * @param array $args
-	 * @param bool  $grouped Flag to distinguish between simple and grouped Fields
+	 * @param array $args    The field's information.
+	 * @param bool  $grouped Flag to distinguish between simple and grouped fields.
 	 */
 	public function add_field( $args, $grouped = false ) {
 
 		if ( $grouped ) {
-			// Special fields (sameas, coordinates, etc.).
 
+			// Special fields (sameas, coordinates, etc.).
+			//
 			// Build Field with a custom class (e.g. WL_Metabox_Field_date).
 			$field_class = 'WL_Metabox_Field_' . key( $args );
 
 		} else {
-			// Simple fields (string, uri, boolean, etc.).
 
+			// Simple fields (string, uri, boolean, etc.).
+			//
 			// Which field? We want to use the class that is specific for the field.
 			$meta      = key( $args );
 			$this_meta = $args[ $meta ];
@@ -209,11 +220,11 @@ class WL_Metabox {
 
 				$field_class = $this_meta['metabox']['class'];
 
-			} elseif ( ! isset( $this_meta['type'] ) || ( $this_meta['type'] == Wordlift_Schema_Service::DATA_TYPE_STRING ) ) {
+			} elseif ( ! isset( $this_meta['type'] ) || Wordlift_Schema_Service::DATA_TYPE_STRING === $this_meta['type'] ) {
 
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
-
+				//
 				// Use default WL_Metabox_Field (manages strings).
 				$field_class = 'WL_Metabox_Field';
 
@@ -221,17 +232,26 @@ class WL_Metabox {
 
 				// TODO: all fields should explicitly declare the required WL_Metabox.
 				// When they will remove this.
-
+				//
 				// Build Field with a custom class (e.g. WL_Metabox_Field_date).
 				$field_class = 'WL_Metabox_Field_' . $this_meta['type'];
 
 			}
+
 		}
+		// End if().
 
 		// Call apropriate constructor (e.g. WL_Metabox_Field_... ).
 		$this->fields[] = new $field_class( $args );
 	}
 
+	/**
+	 * Save the form data for the specified entity {@link WP_Post}'s id.
+	 *
+	 * @since 3.5.4
+	 *
+	 * @param int $entity_id The entity's {@link WP_Post}'s id.
+	 */
 	public function save_form_data( $entity_id ) {
 
 		// Build Field objects.
