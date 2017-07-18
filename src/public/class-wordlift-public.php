@@ -107,6 +107,11 @@ class Wordlift_Public {
 			$settings['postId'] = get_the_ID();
 		}
 
+		// Add flag that we are on home/blog page.
+		if ( is_home() || is_front_page()  ) {
+			$settings['isHome'] = true;
+		}
+
 		// Note that we switched the js to be loaded in footer, since it is loading
 		// the json-ld representation.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-public.js', array( 'jquery' ), $this->version, true );

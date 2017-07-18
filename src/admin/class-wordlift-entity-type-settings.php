@@ -31,6 +31,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wordlift_Admin_Entity_Type_Settings {
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
+	 * Create a {@link Wordlift_Admin_Entity_Type_Settings} instance.
+	 *
+	 * @since 3.14.0
+	 */
+	public function __construct() {
+
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Admin_Entity_Type_Settings' );
+
+	}
+
+	/**
 	 * Handle menu registration.
 	 *
 	 * The registration is required, although we do not want to actually to add
@@ -207,10 +227,11 @@ class Wordlift_Admin_Entity_Type_Settings {
 
 		if ( isset( $settings[ $term_id ] ) ) {
 			return $settings[ $term_id ];
-		} else {
-			null;
 		}
 
+		$this->log->warn( "No settings found for term id $term_id." );
+
+		return null;
 	}
 
 }

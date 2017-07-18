@@ -66,7 +66,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 */
 	public function get_metabox_label() {
 
-		return 'Web Site(s)';
+		return __( 'Web Site(s)', 'wordlift' );
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	public function get( $post_id ) {
 
 		// Get the schema:url values set in WP.
-		$values = get_post_meta( $post_id, self::META_KEY, FALSE );
+		$values = get_post_meta( $post_id, self::META_KEY, false );
 
 		// If the property has never been set, we set its default value the first
 		// time to <permalink>.
@@ -112,7 +112,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 		// If there's only one value and that value is empty, we return NULL, i.e.
 		// variable not set.
 		if ( 1 === count( $values ) && empty( $values[0] ) ) {
-			return NULL;
+			return null;
 		}
 
 		// Finally return whatever values the editor set.
@@ -135,15 +135,15 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $s The subject URI.
-	 * @param int $post_id The post id.
+	 * @param string $s       The subject URI.
+	 * @param int    $post_id The post id.
 	 *
 	 * @return string The insert query or an empty string.
 	 */
 	public function get_insert_query( $s, $post_id ) {
 
 		// If we have no value, return an empty string (no query).
-		if ( NULL === ( $values = $this->get( $post_id ) ) ) {
+		if ( null === ( $values = $this->get( $post_id ) ) ) {
 			return '';
 		}
 
@@ -166,10 +166,10 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param mixed $value The original value.
-	 * @param int $object_id The post id.
-	 * @param string $meta_key The meta key. We expect wl_schema_url or we return straight the value.
-	 * @param bool $single Whether to return a single value.
+	 * @param mixed  $value     The original value.
+	 * @param int    $object_id The post id.
+	 * @param string $meta_key  The meta key. We expect wl_schema_url or we return straight the value.
+	 * @param bool   $single    Whether to return a single value.
 	 *
 	 * @return array|mixed|NULL|string
 	 */
@@ -204,7 +204,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 
 		add_filter( 'get_post_metadata', array(
 			$this,
-			'get_post_metadata'
+			'get_post_metadata',
 		), 10, 4 );
 
 	}
@@ -213,7 +213,7 @@ class Wordlift_Schema_Url_Property_Service extends Wordlift_Property_Service {
 
 		remove_filter( 'get_post_metadata', array(
 			$this,
-			'get_post_metadata'
+			'get_post_metadata',
 		), 10 );
 
 	}

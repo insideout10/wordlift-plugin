@@ -194,7 +194,7 @@ class Wordlift_Configuration_Service {
 	 *
 	 * @since 3.9.0
 	 *
-	 * @return WordLift's key or an empty string if not set.
+	 * @return string WordLift's key or an empty string if not set.
 	 */
 	public function get_key() {
 
@@ -362,12 +362,18 @@ class Wordlift_Configuration_Service {
 	 */
 	function maybe_update_dataset_uri( $value, $old_value ) {
 
+		// Check the old key value and the new one. Here we're only handling the
+		// case where the key hasn't changed and the dataset URI isn't set. The
+		// other case, i.e. a new key is inserted, is handled at `update_key`.
+		$old_key = isset( $old_value['key'] ) ? $old_value['key'] : '';
+		$new_key = isset( $value['key'] ) ? $value['key'] : '';
+
 		$dataset_uri = $this->get_dataset_uri();
 
-		if ( ! empty( $value ) && $value == $old_value && empty( $dataset_uri ) ) {
+		if ( ! empty( $new_key ) && $new_key === $old_key && empty( $dataset_uri ) ) {
 
 			// make the request to the remote server to try to get the dataset uri
-			$this->get_remote_dataset_uri( $value );
+			$this->get_remote_dataset_uri( $new_key );
 		}
 
 		return $value;

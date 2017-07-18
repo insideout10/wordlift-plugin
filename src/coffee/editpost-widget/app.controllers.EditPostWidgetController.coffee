@@ -91,6 +91,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   $scope.currentEntity = undefined
   $scope.currentEntityType = undefined
 
+  # Whether the current user can create entities.
+  #
+  # @see https://github.com/insideout10/wordlift-plugin/issues/561
+  $scope.canCreateEntities = AnalysisService.canCreateEntities
+
   $scope.setCurrentEntity = (entity, entityType)->
 
     $scope.currentEntity = entity

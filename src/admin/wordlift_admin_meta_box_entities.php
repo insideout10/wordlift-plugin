@@ -11,7 +11,7 @@
 function wl_register_metaboxes() {
 
 	// Load metabox classes
-	require_once( 'WL_Metabox/WL_Metabox.php' );
+	require_once( 'WL_Metabox/class-wl-metabox.php' );
 
 	$wl_metabox = new WL_Metabox();     // Everything is done inside here with the correct timing
 }

@@ -41,28 +41,51 @@ class Wordlift_Admin {
 	private $version;
 
 	/**
+	 * The {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
+	 * The {@link Wordlift_User_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_User_Service $user_service The {@link Wordlift_User_Service} instance.
+	 */
+	private $user_service;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.0.0
+	 * @since  1.0.0
 	 *
-	 * @param   string                           $plugin_name           The name of this plugin.
-	 * @param   string                           $version               The version of this plugin.
-	 * @param    \Wordlift_Configuration_Service $configuration_service The configuration service.
-	 * @param    \Wordlift_Notice_Service        $notice_service        The notice service.
+	 * @param string                          $plugin_name           The name of this plugin.
+	 * @param string                          $version               The version of this plugin.
+	 * @param \Wordlift_Configuration_Service $configuration_service The configuration service.
+	 * @param \Wordlift_Notice_Service        $notice_service        The notice service.
+	 * @param \Wordlift_User_Service          $user_service          The {@link Wordlift_User_Service} instance.
 	 */
-	public function __construct( $plugin_name, $version, $configuration_service, $notice_service ) {
+	public function __construct( $plugin_name, $version, $configuration_service, $notice_service, $user_service ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+
+		$this->configuration_service = $configuration_service;
+		$this->user_service          = $user_service;
 
 		$dataset_uri = $configuration_service->get_dataset_uri();
 		$key         = $configuration_service->get_key();
 
 		if ( empty( $dataset_uri ) ) {
+			$settings_page = Wordlift_Admin_Settings_Page::get_instance();
 			if ( empty( $key ) ) {
-				$error = __( 'WordLift\'s key is unset: WordLift requires a key.', 'wordlift' );
+				$error = sprintf( esc_html__( "WordLift's key isn't set, please open the %s to set WordLift's key.", 'wordlift' ), '<a href="' . $settings_page->get_url() . '">' . esc_html__( 'settings page', 'wordlift' ) . '</a>' );
 			} else {
-				$error = __( 'WordLift\'s dataset URI is unset: please retry WordLift\'s configuration.', 'wordlift' );
+				$error = sprintf( esc_html__( "WordLift's dataset URI is not configured: please open the %s to set WordLift's key again.", 'wordlift' ), '<a href="' . $settings_page->get_url() . '">' . esc_html__( 'settings page', 'wordlift' ) . '</a>' );
 			}
 			$notice_service->add_error( $error );
 		}
@@ -111,8 +134,6 @@ class Wordlift_Admin {
 		 * class.
 		 */
 
-		$configuration_service = Wordlift_Configuration_Service::get_instance();
-
 		// Enqueue the admin scripts.
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wordlift-admin.bundle.js', array(
 			'jquery',
@@ -123,13 +144,17 @@ class Wordlift_Admin {
 		// Set the basic params.
 		$params = array(
 			// @todo scripts in admin should use wp.post.
-			'ajax_url'        => admin_url( 'admin-ajax.php' ),
+			'ajax_url'            => admin_url( 'admin-ajax.php' ),
 			// @todo remove specific actions from settings.
-			'action'          => 'entity_by_title',
-			'datasetUri'      => $configuration_service->get_dataset_uri(),
-			'language'        => $configuration_service->get_language_code(),
-			'link_by_default' => $configuration_service->is_link_by_default(),
-			'l10n'            => array(
+			'action'              => 'entity_by_title',
+			'datasetUri'          => $this->configuration_service->get_dataset_uri(),
+			'language'            => $this->configuration_service->get_language_code(),
+			'link_by_default'     => $this->configuration_service->is_link_by_default(),
+			// Whether the current user is allowed to create new entities.
+			//
+			// @see https://github.com/insideout10/wordlift-plugin/issues/561
+			'can_create_entities' => current_user_can( 'edit_wordlift_entities' ) ? 'yes' : 'no',
+			'l10n'                => array(
 				'You already published an entity with the same name' => __( 'You already published an entity with the same name: ', 'wordlift' ),
 				'logo_selection_title'                               => __( 'WordLift Choose Logo', 'wordlift' ),
 				'logo_selection_button'                              => array( 'text' => __( 'Choose Logo', 'wordlift' ) ),

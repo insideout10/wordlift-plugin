@@ -19,6 +19,15 @@
 class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 
 	/**
+	 * A singleton instance of the Notice service.
+	 *
+	 * @since 3.2.0
+	 * @access private
+	 * @var \Wordlift_Notice_Service $instance A singleton instance of the Notice service.
+	 */
+	private static $instance;
+
+	/**
 	 * A {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.11.0
@@ -95,6 +104,18 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 		$this->language_select_element = $language_select_element;
 		$this->publisher_element       = $publisher_element;
 
+		self::$instance = $this;
+	}
+
+	/**
+	 * Get the singleton instance of the Notice service.
+	 *
+	 * @since 3.14.0
+	 * @return \Wordlift_Admin_Settings_Page The singleton instance of the settings page service.
+	 */
+	public static function get_instance() {
+
+		return self::$instance;
 	}
 
 	/**

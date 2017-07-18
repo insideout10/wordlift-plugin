@@ -107,6 +107,7 @@ abstract class Wordlift_Property_Service {
 	 * The definition of the property returned as a compatible array.
 	 *
 	 * @deprecated
+	 *
 	 * @since 3.6.0
 	 * @return array An array of property definitions.
 	 */
@@ -117,14 +118,14 @@ abstract class Wordlift_Property_Service {
 			'predicate'   => $this->get_rdf_predicate(),
 			'export_type' => $this->get_rdf_data_type(),
 			'constraints' => array(
-				'cardinality' => $this->get_cardinality()
+				'cardinality' => $this->get_cardinality(),
 			),
 			// Use the standard metabox for these URI (the URI metabox creates local entities).
 			'metabox'     => array(
 				'class' => $this->get_metabox_class(),
-				'label' => $this->get_metabox_label()
+				'label' => $this->get_metabox_label(),
 			),
-			'sanitize'    => array( $this, 'sanitize' )
+			'sanitize'    => array( $this, 'sanitize' ),
 		);
 	}
 
