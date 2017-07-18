@@ -187,7 +187,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
 			// Refactor data as per schema.org specifications.
-			return $this->set_image_size( array(
+			return Wordlift_Abstract_Post_To_Jsonld_Converter::set_image_size( array(
 				'@type' => 'ImageObject',
 				'url'   => $attachment[0],
 			), $attachment );
@@ -210,7 +210,7 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 	 *
 	 * @return array The enriched `ImageObject` array.
 	 */
-	private function set_image_size( $image, $attachment ) {
+	public static function set_image_size( $image, $attachment ) {
 
 		// If you specify a "width" or "height" value you should leave out
 		// 'px'. For example: "width":"4608px" should be "width":"4608".
