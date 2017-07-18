@@ -83,7 +83,7 @@ class Wordlift_Jsonld_Service {
 			 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output.
 			 *
 			 * @since  3.14.0
-			 * @api bool $display_search Whether or not to display json+ld search on the frontend.
+			 * @api    bool $display_search Whether or not to display json+ld search on the frontend.
 			 */
 			if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
 				// Set a reference to the website_converter.
