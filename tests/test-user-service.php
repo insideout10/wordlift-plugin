@@ -79,7 +79,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		$user->add_role( 'editor' );
 
 		$user_service->deny_editor_entity_create( $user->ID );
-		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, true );
+		$meta = get_user_option( Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, $user->ID );
 		$this->assertNotEmpty( $meta );
 
 		// Test non editor.
@@ -87,7 +87,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 		$user->add_role( 'administrator' );
 
 		$user_service->deny_editor_entity_create( $user->ID );
-		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, true );
+		$meta = get_user_option( Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, $user->ID );
 		$this->assertEmpty( $meta );
 	}
 
@@ -106,7 +106,7 @@ class UserServiceTest extends Wordlift_Unit_Test_Case {
 
 		$user_service->deny_editor_entity_create( $user->ID );
 		$user_service->allow_editor_entity_create( $user->ID );
-		$meta = get_user_meta( $user->ID, Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, true );
+		$meta = get_user_option( Wordlift_User_Service::DENY_ENTITY_CREATE_META_KEY, $user->ID );
 		$this->assertEmpty( $meta );
 	}
 

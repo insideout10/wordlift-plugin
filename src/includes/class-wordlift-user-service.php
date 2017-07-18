@@ -315,7 +315,7 @@ class Wordlift_User_Service {
 		}
 
 		// The user explicitly do not have the capability.
-		update_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY, 'yes' );
+		update_user_option( $user_id, self::DENY_ENTITY_CREATE_META_KEY, 'yes' );
 
 	}
 
@@ -335,7 +335,7 @@ class Wordlift_User_Service {
 		}
 
 		// The user explicitly do not have the capability.
-		delete_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY );
+		delete_user_option( $user_id, self::DENY_ENTITY_CREATE_META_KEY );
 
 	}
 
@@ -350,7 +350,7 @@ class Wordlift_User_Service {
 	 */
 	public function is_deny_editor_entity_create( $user_id ) {
 
-		return 'yes' === get_user_meta( $user_id, self::DENY_ENTITY_CREATE_META_KEY, true );
+		return 'yes' === get_user_option( self::DENY_ENTITY_CREATE_META_KEY, $user_id );
 	}
 
 	/**
