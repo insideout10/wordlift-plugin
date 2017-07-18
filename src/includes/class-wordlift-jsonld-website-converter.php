@@ -42,8 +42,16 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 		// Add search action.
 		$this->set_search_action( $jsonld );
 
-		// Return the jsonld schema.
-		return $jsonld;
+		/**
+		 * Call the `wl_website_jsonld` filter.
+		 *
+		 * @api
+		 *
+		 * @since 3.14.0
+		 *
+		 * @param array $jsonld The JSON-LD structure.
+		 */
+		return apply_filters( 'wl_website_jsonld', $jsonld );
 	}
 
 	/**

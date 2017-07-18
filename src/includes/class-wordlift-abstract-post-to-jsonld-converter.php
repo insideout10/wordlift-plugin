@@ -187,22 +187,44 @@ abstract class Wordlift_Abstract_Post_To_Jsonld_Converter implements Wordlift_Po
 			$attachment = wp_get_attachment_image_src( $item, 'full' );
 
 			// Refactor data as per schema.org specifications.
-			return array(
-				'@type'  => 'ImageObject',
-				'url'    => $attachment[0],
-				// If you specify a "width" or "height" value you should leave out
-				// 'px'. For example: "width":"4608px" should be "width":"4608".
-				//
-				// See https://github.com/insideout10/wordlift-plugin/issues/451
-				'width'  => $attachment[1],
-				'height' => $attachment[2],
-			);
+			return $this->set_image_size( array(
+				'@type' => 'ImageObject',
+				'url'   => $attachment[0],
+			), $attachment );
 		}, array_merge( $ids, $embeds, $gallery ) );
 
 		if ( 0 < sizeof( $images ) ) {
 			$jsonld['image'] = $images;
 		};
 
+	}
+
+	/**
+	 * Process the provided array by adding the width / height if the values
+	 * are available and are greater than 0.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @param array $image      The `ImageObject` array.
+	 * @param array $attachment The attachment array.
+	 *
+	 * @return array The enriched `ImageObject` array.
+	 */
+	private function set_image_size( $image, $attachment ) {
+
+		// If you specify a "width" or "height" value you should leave out
+		// 'px'. For example: "width":"4608px" should be "width":"4608".
+		//
+		// See https://github.com/insideout10/wordlift-plugin/issues/451
+		if ( isset( $attachment[1] ) && is_numeric( $attachment[1] ) && 0 < $attachment[1] ) {
+			$image['width'] = $attachment[1];
+		}
+
+		if ( isset( $attachment[2] ) && is_numeric( $attachment[2] ) && 0 < $attachment[2] ) {
+			$image['height'] = $attachment[2];
+		}
+
+		return $image;
 	}
 
 }
