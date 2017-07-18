@@ -646,7 +646,8 @@ function wl_configure_wordpress_test() {
 
 	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
 	$configuration_service->set_key( getenv( 'WORDLIFT_KEY' ) );
-	if ( empty( $configuration_service->get_dataset_uri() ) ) {
+	$dataset_uri = $configuration_service->get_dataset_uri()
+	if ( empty( $dataset_uri ) ) {
 		die( 'The dataset URI is not set (maybe the WordLift key is not valid?)' );
 	}
 
