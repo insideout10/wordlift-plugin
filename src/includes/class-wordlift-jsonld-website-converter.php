@@ -25,12 +25,15 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	public function create_schema() {
 
 		// Create new jsonld.
+		$home_url = home_url( '/' );
+
 		$jsonld = array(
 			'@context'      => 'http://schema.org',
 			'@type'         => 'WebSite',
+			'@id'           => "$home_url#website",
 			'name'          => get_bloginfo( 'name' ),
 			'alternateName' => get_bloginfo( 'description' ),
-			'url'           => home_url( '/' ),
+			'url'           => $home_url,
 		);
 
 		// Add publisher information.
