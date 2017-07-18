@@ -417,4 +417,17 @@ class Wordlift_Configuration_Service {
 		$this->set( 'wl_general_settings', self::LINK_BY_DEFAULT, true === $value ? 'yes' : 'no' );
 	}
 
+	/**
+	 * Get the URL to perform batch analyses.
+	 *
+	 * @since 3.14.0
+	 *
+	 * @return string The URL to call to perform the batch analyzes.
+	 */
+	public function get_batch_analysis_url() {
+
+		return WL_CONFIG_WORDLIFT_API_URL_DEFAULT_VALUE . 'batch-analyses';
+
+	}
+
 }

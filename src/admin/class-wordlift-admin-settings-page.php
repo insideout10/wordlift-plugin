@@ -21,7 +21,7 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 	/**
 	 * A singleton instance of the Notice service.
 	 *
-	 * @since 3.2.0
+	 * @since  3.2.0
 	 * @access private
 	 * @var \Wordlift_Notice_Service $instance A singleton instance of the Notice service.
 	 */
@@ -209,13 +209,13 @@ class Wordlift_Admin_Settings_Page extends Wordlift_Admin_Page {
 			'id'          => 'wl-key',
 			'name'        => 'wl_general_settings[' . Wordlift_Configuration_Service::KEY . ']',
 			'value'       => $this->configuration_service->get_key(),
-			'description' => _x( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
+			'description' => __( 'Insert the <a href="https://www.wordlift.io/blogger">WordLift Key</a> you received via email.', 'wordlift' ),
 		);
 
 		// Set the class for the key field based on the validity of the key.
 		// Class should be "untouched" for an empty (virgin) value, "valid"
 		// if the key is valid, or "invalid" otherwise.
-		$validation_service = new Wordlift_Key_Validation_Service();
+		$validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
 
 		if ( empty( $key_args['value'] ) ) {
 			$key_args['css_class'] = 'untouched';
