@@ -139,7 +139,6 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.14.0 (2017-07-18) =
-
 * Fix: [#577](https://github.com/insideout10/wordlift-plugin/issues/577): Faceted Search posts' list doesn't show
 * Fix: [#526](https://github.com/insideout10/wordlift-plugin/issues/526): Multisite network activation fails to create the entity types on newly created subsites.
 * Enhancement: [#565](https://github.com/insideout10/wordlift-plugin/issues/565): Allow empty vocabulary path on compatible Permalink configuration.
@@ -151,6 +150,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 * Enhancement: [#533](https://github.com/insideout10/wordlift-plugin/issues/533): Add the schema:wordCount property to schema:Article.
 * Enhancement: [#524](https://github.com/insideout10/wordlift-plugin/issues/524): Adding support for schema.org/Recipe.
 * Enhancement: [#481](https://github.com/insideout10/wordlift-plugin/issues/481): Improve authors.
+* Enhancement: [#468](https://github.com/insideout10/wordlift-plugin/issues/468): schema.org/WebSite markup.
 * Enhancement: [#379](https://github.com/insideout10/wordlift-plugin/issues/379): Overlaps should prefer local entities.
 
 = 3.13.3 (2017-07-12) =
