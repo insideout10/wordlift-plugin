@@ -9,7 +9,6 @@ import './styles/index.scss';
 import KeyValidator from '../common/key-validator';
 import MediaUploader from '../common/media-uploader';
 import Tabs from '../common/tabs';
-//import Select2 from '../common/select2';
 
 /**
  * UI interactions on the WordLift Settings page
@@ -38,13 +37,6 @@ import Tabs from '../common/tabs';
 
 			// Create the tabs.
 			Tabs( '.wl-tabs-element' );
-
-//			// Create the Select2.
-//			Select2( '.wl-select2-element',
-//					 {
-//						 containerCssClass: 'wl-admin-settings-page-select2',
-//						 dropdownCssClass: 'wl-admin-settings-page-select2'
-//					 } );
 		} );
 	}
 )( jQuery, wlSettings );
