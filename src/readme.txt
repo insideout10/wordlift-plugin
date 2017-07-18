@@ -22,7 +22,7 @@ WordLift brings the power of Artificial Intelligence to beautifully organize con
 
 **WordLift** helps you organize posts and pages adding facts, links and media to build **beautifully structured websites**, for both humans and search engines. <br />
 **WordLift** lets you create, own and publish your own [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph).<br />
-**WordLift** publishes your content as [Linked Open Data](http://docs.wordlift.io/en/latest/key-concepts.html#linked-open-data) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
+**WordLift** publishes your content as [Linked Open Data](https://wordlift.io/blog/en/entity/linked-data/) following [Tim Berners-Lee‘s Linked Data Principles](http://www.w3.org/DesignIssues/LinkedData.html).<br />
 
 = Features =
 
@@ -85,7 +85,7 @@ Organizing web content around an internal vocabulary rather than traditional web
 
 = How does it work? =
 
-To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/#how-it-works) on our [website](https://wordlift.io). <br />
+To know more about how **WordLift** works, please [watch the step-by-step video tutorials](https://wordlift.io/how-it-works) on our [website](https://wordlift.io). <br />
 **WordLift** works in subsequent stages. <br />
 
 1. The first step provides a **full text analysis** and suggests concepts and relationships found in open vocabularies (such as *DBpedia*, *Wikidata*, *GeoNames*, etc) to help writers **classify** and **enrich** their content and structure it for search engines like Google, according to schema.org vocabulary. <br />
@@ -98,12 +98,12 @@ To know more about how **WordLift** works, please [watch the step-by-step video 
 
 = What are the languages supported by WordLift? =
 
-WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Français (French), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish).
+WordLift currently supports 32 languages: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
 
 = Is there a free trial? =
 
-No. We do not offer a *free trial* but your monthly subscription comes with a **14-day 100% money back guarantee**. If after two weeks you are not happy with WordLift, [contact us](mailto:support@wordlift.io) and we will refund you right away, no questions asked. <br />
-We do offer **free additional months** though, with the purchase of our 6-month or 12-month packages. [Check it out](https://wordlift.io/#plan-and-price)
+Yes! All of our subscriptions come with a **14-day free trial**. If after two weeks you are not happy with WordLift, [contact us](mailto:support@wordlift.io) and we will cancel your subscription, no questions asked.
+In addition, with the purchase of our 6-month or 12-month packages, we offer free additional months. [Check it out](https://wordlift.io/pricing/)!
 
 = Who owns the structured metadata created with WordLift? =
 
@@ -634,7 +634,7 @@ Change wording for invalid or missing text selection on entity creation workflow
 * First public release
 
 == More Information ==
-WordLift is **happily developed** by [WordLift](https://wordlift.io), an innovative Italian startup founded in 2016 and based in downtown Rome.
+WordLift is **happily developed** by [WordLift](https://wordlift.io), an innovative Italian startup founded in 2017 and based in downtown Rome.
 
 Our goal is to **help blogger, journalists and content creators connect and share experiences with their readers** as well as **structuring knowledge in machine-readable form**.
 
