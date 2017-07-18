@@ -42,6 +42,8 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  * @param string $content The content to analyze.
  *
  * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
+ *
+ * @throws Exception
  */
 function wl_analyze_content( $content ) {
 

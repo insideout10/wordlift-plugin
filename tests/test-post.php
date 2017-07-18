@@ -55,9 +55,6 @@ class PostTest extends Wordlift_Unit_Test_Case {
 			'post_status'    => 'any',
 		) ) ) );
 
-		// Empty the remote dataset.
-		rl_empty_dataset();
-
 		// Get the count of triples.
 		$counts = rl_count_triples();
 		$this->assertNotNull( $counts );
@@ -122,33 +119,6 @@ class PostTest extends Wordlift_Unit_Test_Case {
 //		// Delete the test post.
 //		$this->deletePost( $post_id );
 //	}
-
-	/**
-	 * Test a simple sparql query against Redlink to check whether SPARQL queries work fine.
-	 */
-	function testSPARQLQueries() {
-
-		// Get the SPARQL template from the file.
-		$filename        = dirname( __FILE__ ) . '/linked_data.sparql.template';
-		$sparql_template = file_get_contents( $filename );
-
-		// Get the user ID and dataset name.
-		$user_id      = wl_configuration_get_redlink_user_id();
-		$dataset_name = wl_configuration_get_redlink_dataset_name();
-
-		// Set the entity URI.
-		$uri = sprintf( "http://data.redlink.io/%s/%s/entity/Linked_Open_Data", $user_id, $dataset_name );
-
-		// Apply the URI to the SPARQL template.
-		$sparql = str_replace( '{uri}', $uri, $sparql_template );
-
-		// Run the query.
-		$result = wl_execute_sparql_query( $sparql );
-
-		$this->assertTrue( $result );
-
-		$this->checkEntityWithData( $uri, 'Linked Open Data', 'http://example.org/?post_type=entity&p=1978' );
-	}
 
 	/**
 	 * Test saving entities passed via a metabox.

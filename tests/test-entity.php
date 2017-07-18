@@ -27,9 +27,6 @@ class EntityTest extends Wordlift_Unit_Test_Case {
 		// Configure WordPress with the test settings.
 		wl_configure_wordpress_test();
 
-		// Reset data on the remote dataset.
-		rl_empty_dataset();
-
 		// Check that the dataset is empty.
 //        $this->assertEquals( array(
 //            'subjects'   => 0,

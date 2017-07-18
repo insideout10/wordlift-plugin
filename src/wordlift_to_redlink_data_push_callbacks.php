@@ -30,10 +30,10 @@ function wl_push_post_to_redlink( $post ) {
 		return;
 	}
 
-	// wl_write_log( "wl_push_post_to_redlink [ post id :: $post->ID ][ uri :: $uri ]" );
+	$configuration_service = Wordlift_Configuration_Service::get_instance();
 
 	// Get the site language in order to define the literals language.
-	$site_language = wl_configuration_get_site_language();
+	$site_language = $configuration_service->get_language_code();
 
 	// save the author and get the author URI.
 	$author_uri = wl_sparql_escape_uri( Wordlift_User_Service::get_instance()
@@ -161,8 +161,10 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 		return;
 	}
 
+	$configuration_service = Wordlift_Configuration_Service::get_instance();
+
 	// Get the site language in order to define the literals language.
-	$site_language = wl_configuration_get_site_language();
+	$site_language = $configuration_service->get_language_code();
 
 	// get the title and content as label and description.
 	$label     = wordlift_esc_sparql( $entity_post->post_title );
@@ -183,7 +185,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 			$predicate = $cf['predicate'];
 			if ( ! in_array( $predicate, $predicates_to_be_deleted ) ) {
 				$predicates_to_be_deleted[] = $predicate;
-				$delete_stmt .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
+				$delete_stmt                .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
 			}
 		}
 	}
@@ -192,7 +194,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	if ( null !== $same_as = wl_schema_get_value( $entity_post->ID, 'sameAs' ) ) {
 		foreach ( $same_as as $same_as_uri ) {
 			$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
-			$sparql .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
+			$sparql          .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
 		}
 	}
 
@@ -215,7 +217,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 
 	if ( null != $main_type ) {
 		$main_type_uri = wl_sparql_escape_uri( $main_type['uri'] );
-		$sparql .= " <$uri_e> a <$main_type_uri> . \n";
+		$sparql        .= " <$uri_e> a <$main_type_uri> . \n";
 
 		// The type define custom fields that hold additional data about the entity.
 		// For example Events may have start/end dates, Places may have coordinates.
@@ -270,7 +272,7 @@ function wl_push_entity_post_to_redlink( $entity_post ) {
 	// Support type are only schema.org ones: it could be null
 	foreach ( $type_uris as $type_uri ) {
 		$type_uri = wl_sparql_escape_uri( $type_uri );
-		$sparql .= "<$uri_e> a <$type_uri> . \n";
+		$sparql   .= "<$uri_e> a <$type_uri> . \n";
 	}
 
 	// get related entities.
@@ -326,7 +328,7 @@ function wl_get_sparql_post_references( $post_id ) {
 	// Build the SPARQL fragment.
 	$sparql = '';
 	foreach ( $related as $id ) {
-		$uri = wordlift_esc_sparql( wl_get_entity_uri( $id ) );
+		$uri    = wordlift_esc_sparql( wl_get_entity_uri( $id ) );
 		$sparql .= "<$post_uri> dct:references <$uri> . ";
 	}
 

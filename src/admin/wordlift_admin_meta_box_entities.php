@@ -117,9 +117,11 @@ function wl_entities_box_content( $post ) {
 		json_encode( wl_serialize_entity( $topic_id ) ) :
 		'undefined';
 
+	$configuration_service = Wordlift_Configuration_Service::get_instance();
+
 	$default_thumbnail_path = WL_DEFAULT_THUMBNAIL_PATH;
 	$default_path           = WL_DEFAULT_PATH;
-	$dataset_uri            = wl_configuration_get_redlink_dataset_uri();
+	$dataset_uri            = $configuration_service->get_dataset_uri();
 	$current_post_uri       = wl_get_entity_uri( $post->ID );
 
 	// Retrieve the current post author
@@ -127,7 +129,7 @@ function wl_entities_box_content( $post ) {
 	// Retrive the published date
 	$published_date = get_the_time( 'Y-m-d', $post->ID );
 	// Current language
-	$current_language = wl_configuration_get_site_language();
+	$current_language = $configuration_service->get_language_code();
 
 	echo <<<EOF
     <script type="text/javascript">

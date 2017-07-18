@@ -26,7 +26,7 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function test_adding_and_query() {
 
-		$batch_service = new Wordlift_Batch_analysis_Service( new Wordlift() );
+		$batch_service = new Wordlift_Batch_Analysis_Service( new Wordlift(), Wordlift_Configuration_Service::get_instance() );
 
 		// Test single post addition.
 		$batch_service->enqueue_for_analysis( 1, 'default' );
@@ -58,7 +58,8 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 
 		if ( 'analyze' == $this->http_filter_stage ) {
 			$this->http_filter_stage = 'query';
-			$this->analyzed_request = $request;
+			$this->analyzed_request  = $request;
+
 			return $this->analyze_sim_response;
 		} else {
 			return $this->query_sim_response;
@@ -71,18 +72,21 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @since 3.14.0
 	 */
 	public function test_send_analyze_request() {
-		$batch_service = new Wordlift_Batch_analysis_Service( new Wordlift() );
+		$batch_service = new Wordlift_Batch_Analysis_Service( new Wordlift(), Wordlift_Configuration_Service::get_instance() );
 
-		add_filter( 'pre_http_request', array( $this, 'simulate_response' ), 10, 3 );
+		add_filter( 'pre_http_request', array(
+			$this,
+			'simulate_response',
+		), 10, 3 );
 
 		/*
 		 * Test behavior with non existing posts.
 		 * No message should be sent, queues should be cleared.
 		 */
-		$this->http_filter_stage = 'analyze';
+		$this->http_filter_stage    = 'analyze';
 		$this->analyze_sim_response = array();
-		$this->query_sim_response = array();
-		$this->analyzed_request = null;
+		$this->query_sim_response   = array();
+		$this->analyzed_request     = null;
 		wp_clear_scheduled_hook( 'wl_batch_analyze' );
 
 		$batch_service->enqueue_for_analysis( 1, 'default' );
@@ -108,19 +112,19 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 		 */
 
 		$post_id = $this->factory->post->create( array(
-			 'post_type'    => 'post',
-			 'post_content' => 'test content',
-			 'post_title'   => 'test post',
-			 'post_status'  => 'publish',
+			'post_type'    => 'post',
+			'post_content' => 'test content',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 
-		$this->http_filter_stage = 'analyze';
+		$this->http_filter_stage    = 'analyze';
 		$this->analyze_sim_response = array();
-		$this->query_sim_response = array(
+		$this->query_sim_response   = array(
 			'response' => array( 'code' => 200 ),
-			'body' => json_encode( array( 'content' => 'analyzed' ) ),
+			'body'     => json_encode( array( 'content' => 'analyzed' ) ),
 		);
-		$this->analyzed_request = null;
+		$this->analyzed_request     = null;
 		wp_clear_scheduled_hook( 'wl_batch_analyze' );
 
 		$batch_service->enqueue_for_analysis( $post_id, 'default' );
@@ -153,19 +157,19 @@ class Wordlift_Batch_Analysis_Service_Test extends Wordlift_Unit_Test_Case {
 		 */
 
 		$post_id = $this->factory->post->create( array(
-			 'post_type'    => 'post',
-			 'post_content' => 'test content',
-			 'post_title'   => 'test post',
-			 'post_status'  => 'publish',
+			'post_type'    => 'post',
+			'post_content' => 'test content',
+			'post_title'   => 'test post',
+			'post_status'  => 'publish',
 		) );
 
-		$this->http_filter_stage = 'analyze';
+		$this->http_filter_stage    = 'analyze';
 		$this->analyze_sim_response = array();
-		$this->query_sim_response = array(
+		$this->query_sim_response   = array(
 			'response' => array( 'code' => 500 ),
-			'body' => json_encode( array( 'content' => 'analyzed' ) ),
+			'body'     => json_encode( array( 'content' => 'analyzed' ) ),
 		);
-		$this->analyzed_request = null;
+		$this->analyzed_request     = null;
 		wp_clear_scheduled_hook( 'wl_batch_analyze' );
 
 		$batch_service->enqueue_for_analysis( $post_id, 'default' );
