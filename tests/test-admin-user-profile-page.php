@@ -136,6 +136,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
+		grant_super_admin( $current_user_id );
 
 		$this->user_service->expects( $this->once() )
 		                   ->method( 'get_entity' )
@@ -206,6 +207,7 @@ class Wordlift_Admin_User_Profile_Page_Test extends Wordlift_Unit_Test_Case {
 			'role' => 'administrator',
 		) );
 		wp_set_current_user( $current_user_id );
+		grant_super_admin( $current_user_id );
 
 		// Set the requested entity id.
 		$_POST['wl_person'] = 1;
