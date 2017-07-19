@@ -139,6 +139,8 @@ You can open your datasets to the public, attaching to it a free or a commercial
 == Changelog ==
 
 = 3.14.0 (2017-07-18) =
+* Fix: [#582](https://github.com/insideout10/wordlift-plugin/issues/582): Empty area on Timeline w/o events.
+* Fix: [#581](https://github.com/insideout10/wordlift-plugin/issues/581): Date Picker doesn't open.
 * Fix: [#577](https://github.com/insideout10/wordlift-plugin/issues/577): Faceted Search posts' list doesn't show
 * Fix: [#526](https://github.com/insideout10/wordlift-plugin/issues/526): Multisite network activation fails to create the entity types on newly created subsites.
 * Enhancement: [#565](https://github.com/insideout10/wordlift-plugin/issues/565): Allow empty vocabulary path on compatible Permalink configuration.
