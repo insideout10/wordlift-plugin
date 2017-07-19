@@ -1,5 +1,5 @@
 (function() {
-  var $, container, injector;
+  var $;
 
   $ = jQuery;
 
@@ -585,8 +585,6 @@
     }
   ]);
 
-  $ = jQuery;
-
   angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives']).provider("configuration", function() {
     var _configuration, provider;
     _configuration = void 0;
@@ -657,13 +655,20 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), 0 < $('.wl-navigator-widget').size() ? (injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
-    'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
-      return $rootScope.$apply(function() {
-        return DataRetrieverService.load();
-      });
+  jQuery(function($) {
+    var injector;
+    $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n  <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n  <wl-navigator-items></wl-navigator-items>\n</div>").appendTo('.wl-navigator-widget');
+    if (0 < $('.wl-navigator-widget').length) {
+      injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']);
+      return injector.invoke([
+        'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
+          return $rootScope.$apply(function() {
+            return DataRetrieverService.load();
+          });
+        }
+      ]);
     }
-  ])) : void 0);
+  });
 
 }).call(this);
 

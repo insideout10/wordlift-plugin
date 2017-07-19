@@ -610,9 +610,6 @@ angular.module('wordlift.utils.directives', [])
       finally
         $document[0].body.style.webkitUserSelect = ''
 ])
-# Set the well-known $ reference to jQuery.
-$ = jQuery
-
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives'])
 .provider("configuration", ()->
@@ -701,22 +698,25 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
   configurationProvider.setConfiguration window.wl_navigator_params
 ])
 
-$(
-  container = $("""
-  	<div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
-      <h4 class="wl-headline">{{configuration.attrs.title}}</h4>
-      <wl-navigator-items></wl-navigator-items>
-    </div>
-  """)
-  .appendTo('.wl-navigator-widget')
 
-# If there are navigator widgets on the page activate them.
-  if 0 < $('.wl-navigator-widget').size()
+jQuery( ($) ->
+
+  $("""
+  <div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
+    <h4 class="wl-headline">{{configuration.attrs.title}}</h4>
+    <wl-navigator-items></wl-navigator-items>
+  </div>
+""")
+    .appendTo('.wl-navigator-widget')
+
+  # If there are navigator widgets on the page activate them.
+  if 0 < $('.wl-navigator-widget').length
     injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
     injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
-# execute the following commands in the angular js context.
+      # execute the following commands in the angular js context.
       $rootScope.$apply(-> DataRetrieverService.load())
     ])
+
 )
 
 

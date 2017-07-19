@@ -1,12 +1,18 @@
 <?php
-///**
-// * Shortcode to print the in-post navigator
-// */
-//function wordlift_register_shortcode_navigator() {
-//	add_shortcode( 'wl_navigator', 'wordlift_shortcode_navigator' );
-//}
+/**
+ * Shortcodes: Navigator Support Functions.
+ *
+ * @since      3.0.0
+ * @package    Wordlift
+ * @subpackage Wordlift/shortcodes
+ */
 
-function wl_shortcode_navigator_ajax( $http_raw_data = NULL ) {
+/**
+ * The Navigator Ajax function.
+ *
+ * @since 3.0.0
+ */
+function wl_shortcode_navigator_ajax() {
 
 	// Post ID must be defined
 	if ( ! isset( $_GET['post_id'] ) ) {
@@ -19,7 +25,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = NULL ) {
 	$current_post    = get_post( $current_post_id );
 
 	// Post ID has to match an existing item
-	if ( NULL === $current_post ) {
+	if ( null === $current_post ) {
 		wp_die( 'No valid post_id given' );
 
 		return;
@@ -38,13 +44,13 @@ function wl_shortcode_navigator_ajax( $http_raw_data = NULL ) {
 			WL_WHEN_RELATION,
 			WL_WHERE_RELATION,
 			WL_WHAT_RELATION,
-			WL_WHO_RELATION
+			WL_WHO_RELATION,
 		) as $predicate
 	) {
 
 		$related_entities = array_merge( $related_entities, wl_core_get_related_entities( $current_post_id, array(
 			'predicate' => $predicate,
-			'status'    => 'publish'
+			'status'    => 'publish',
 		) ) );
 
 	}
@@ -53,7 +59,7 @@ function wl_shortcode_navigator_ajax( $http_raw_data = NULL ) {
 
 		// take the id of posts referencing the entity
 		$referencing_posts = wl_core_get_related_posts( $related_entity->ID, array(
-			'status' => 'publish'
+			'status' => 'publish',
 		) );
 
 		// loop over them and take the first one which is not already in the $related_posts
@@ -71,13 +77,13 @@ function wl_shortcode_navigator_ajax( $http_raw_data = NULL ) {
 						'post'   => array(
 							'permalink' => get_post_permalink( $referencing_post->ID ),
 							'title'     => $referencing_post->post_title,
-							'thumbnail' => $thumbnail
+							'thumbnail' => $thumbnail,
 						),
 						'entity' => array(
 							'label'     => $serialized_entity['label'],
 							'mainType'  => $serialized_entity['mainType'],
-							'permalink' => get_post_permalink( $related_entity->ID )
-						)
+							'permalink' => get_post_permalink( $related_entity->ID ),
+						),
 					);
 
 					// Be sure no more than 1 post for entity is returned
