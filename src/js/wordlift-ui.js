@@ -247,7 +247,7 @@
       container = $(this);
       buildTimeline = function(data) {
         if (data.timeline == null) {
-          container.hide();
+          container.parent().hide();
           return;
         }
         return new TL.Timeline(container.attr('id'), data.timeline, options.settings);
