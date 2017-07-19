@@ -64,8 +64,8 @@ class WL_Metabox_Field_date extends WL_Metabox_Field {
 
 		return <<<EOF
 			<div class="wl-input-wrapper">
-				<input type="text" class="$this->meta_name" value="$picker_date" style="width:88%" />
-				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$date" />
+				<!-- <input type="text" class="$this->meta_name" value="$picker_date" style="width:88%" /> -->
+				<input type="text" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$date" style="width:88%" />
 				<button class="button wl-remove-input wl-button" type="button" style="width:10%">Remove</button>
 			</div>
 EOF;
@@ -74,7 +74,8 @@ EOF;
 	public function html_wrapper_close() {
 
 		// Should the widget include time picker?
-		$timepicker = json_encode( $this->timepicker );
+		$timepicker  = json_encode( $this->timepicker );
+		$date_format = json_encode( $this->date_format );
 
 		// Set up the datetimepicker.
 		//
@@ -86,26 +87,11 @@ EOF;
 
 					$( function() {
 
-						$( '.$this->meta_name[type=text]' ).wldatetimepicker( {
-							// Format of date time displayed at the input.
-							dateFormat: 'yy/mm/dd',
-							timeFormat: 'HH:mm',
-
-							// The hidden field used to store the value, and the format.
-							altField: $( '.$this->meta_name[type=hidden]' ),
-							altFormat: 'yy-mm-dd',
-							altFieldTimeOnly: false,
-							altSeparator:'T',
-							altTimeFormat: 'HH:mm',
-							altTimeSuffix:':00Z',
-
-							// Widget UI options.
-							showTimepicker: $timepicker,
-							changeMonth: true,
-							changeYear: true,
-							yearRange : 'c-15:c+15'
-						});
-
+						$( '.$this->meta_name[type=text]' ).flatpickr( {
+							enableTime: $timepicker,
+							time_24hr: true,
+							dateFormat: $date_format
+						 } );
 					} );
 				} ) ( jQuery );
 			</script>
