@@ -1,3 +1,5 @@
-(function ($) {
-    $.fn.wldatetimepicker = $.fn.datetimepicker;
-})(jQuery);
+(
+	function( $ ) {
+		$.fn.wldatetimepicker = $.fn.datetimepicker;
+	}
+)( jQuery );
