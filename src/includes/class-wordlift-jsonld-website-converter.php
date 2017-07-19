@@ -63,12 +63,12 @@ class Wordlift_Website_Jsonld_Converter extends Wordlift_Post_To_Jsonld_Converte
 	 */
 	private function set_search_action( &$params ) {
 		/**
-		 * Filter: 'wordlift_json_ld_search_url' - Allows filtering of the search URL.
+		 * Filter: 'wl_jsonld_search_url' - Allows filtering of the search URL.
 		 *
 		 * @since  3.14.0
 		 * @api    string $search_url The search URL for this site with a `{search_term_string}` variable.
 		 */
-		$search_url = apply_filters( 'wordlift_json_ld_search_url', home_url( '/' ) . '?s={search_term_string}' );
+		$search_url = apply_filters( 'wl_jsonld_search_url', home_url( '/' ) . '?s={search_term_string}' );
 
 		// Add search action
 		$params['potentialAction'] = array(
