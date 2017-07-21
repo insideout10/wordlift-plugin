@@ -14,7 +14,7 @@ import styled from 'styled-components';
  */
 const EditLink = styled.i`
 	cursor: pointer;
-	display: block;
+	display: ${ props => props.edit ? 'block' : 'none !important' };
 	position: absolute;
 	right: 20px;
 	top: 9px;

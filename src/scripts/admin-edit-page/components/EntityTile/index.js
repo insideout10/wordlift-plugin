@@ -180,6 +180,7 @@ class EntityTile extends React.Component {
 						Link </Switch>
 					<Category>{ this.props.entity.mainType }</Category>
 					<EditLink onClick={ this.onEditClick }
+							  edit={ this.props.entity.edit }
 							  className="fa fa-pencil" />
 				</Drawer>
 				<ArrowToggle onClick={ this.onArrowToggleClick }
