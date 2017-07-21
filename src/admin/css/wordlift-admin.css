@@ -114,3 +114,7 @@
     color: gray;
     cursor: default;
 }
+
+.wp-admin.post-type-entity .categorydiv #wl_entity_type-all {
+    max-height: 220px;
+}

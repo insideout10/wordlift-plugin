@@ -28,7 +28,7 @@ class Wordlift_Metabox_Field_Multiline extends WL_Metabox_Field {
 		$html          = <<<EOF
 			<div class="wl-input-wrapper">
 				<textarea id="$esc_meta_name" class="$esc_meta_name" name="wl_metaboxes[$esc_meta_name][]" style="width:88%">$esc_text</textarea>
-				<button class="button wl-remove-input wl-button" type="button" style="width:10 % ">Remove</button>
+				<button class="button wl-remove-input wl-button" type="button">Remove</button>
 			</div>
 EOF;
 
