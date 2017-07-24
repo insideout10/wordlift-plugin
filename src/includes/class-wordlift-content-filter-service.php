@@ -131,8 +131,50 @@ class Wordlift_Content_Filter_Service {
 		// Get the link.
 		$href = get_permalink( $post );
 
+		$title = $this->get_link_title( $post->ID, $label );
+		if ( ! empty( $title ) ) {
+			$title = ' title="' . esc_attr( $title ) . '"';
+		}
+
 		// Return the link.
-		return "<a class='wl-entity-page-link' href='$href'>$label</a>";
+		return "<a class='wl-entity-page-link'" . $title . " href='$href'>$label</a>";
 	}
 
+	/**
+	 * Get a string to be used as a title attribute in links to a post
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int		$post_id 		The post id of the post being linked.
+	 * @param string	$ignore_label 	A label to ignore.
+	 *
+	 * @return string	The title to be used in the link. An empty string when
+	 *					there is no alternative that is not the $ignore_label.
+	 */
+	function get_link_title( $post_id, $ignore_label ) {
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		// Get possible alternative labels we can select from
+		$labels = $entity_service->get_alternative_labels( $post_id );
+
+		/*
+		 * Since the original text might use an alternative label than the
+		 * Entity title, add the title itself which is not returned by the api.
+		 */
+		$labels[] = get_the_title( $post_id );
+
+		// Add some randomness to the label selection
+		shuffle( $labels );
+
+		// Select the first label which is not to be ignored.
+		$title = '';
+		foreach ( $labels as $label ) {
+			if ( $label != $ignore_label ) {
+				$title = $label;
+				break;
+			}
+		}
+
+		return $title;
+	}
 }
