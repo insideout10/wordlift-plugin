@@ -152,10 +152,9 @@ class Wordlift_Content_Filter_Service {
 	 *					there is no alternative that is not the $ignore_label.
 	 */
 	function get_link_title( $post_id, $ignore_label ) {
-		$entity_service = Wordlift_Entity_Service::get_instance();
 
 		// Get possible alternative labels we can select from
-		$labels = $entity_service->get_alternative_labels( $post_id );
+		$labels = $this->entity_service->get_alternative_labels( $post_id );
 
 		/*
 		 * Since the original text might use an alternative label than the
