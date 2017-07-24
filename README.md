@@ -94,7 +94,7 @@ To know more about how **WordLift** works, please [watch the step-by-step video 
 
 ### <a name="what"></a> What are the languages supported by WordLift?
 
-WordLift currently supports the following languages: English, 中文 (Chinese), Español (Spanish), Русский (Russian), Português (Portuguese), Français (French), Deutsch (German), Italiano (Italian), Nederlands (Dutch), Svenska (Swedish) and Dansk (Danish).
+WordLift currently supports **32 languages**: Chinese, Danish, German, English, French, Italian, Dutch, Russian, Spanish, Portuguese, Swedish, Turkish, Albanian, Belarusian, Bulgarian, Catalan, Croatian, Czech, Estonian, Finnish, Hungarian, Icelandic, Indonesian, Latvian, Lithuanian, Norwegian, Polish, Romanian, Serbian, Slovak, Slovenian, Ukrainian.
 
 ### <a name="data"></a> Who owns the structured metadata created with WordLift?
 
@@ -106,11 +106,13 @@ You can open your datasets to the public, attaching to it a free or a commercial
 ### <a name="contribute"></a> How to contribute
 
 Are you ready to contribute? Head over our [Contributing Guide][contributing].
+Feel free to pop into [Gitter][gitter.im/wordlift/home] if you have any questions for us.
 
 ### <a name="info"></a> Further Info
 
 For further info please head to [WordLift's web site][wordlift] or to the [plugin's documentation][docs_wordlift].
 
 [contributing]: https://github.com/insideout10/wordlift-plugin/blob/develop/CONTRIBUTING.md
+[Gitter]: https://gitter.im/wordlift/home
 [wordlift]: https://wordlift.io
 [docs_wordlift]: http://docs.wordlift.io
