@@ -17,6 +17,11 @@
  */
 
 /**
+ * Styles
+ */
+import './index.scss';
+
+/**
  * External dependencies
  */
 import React from 'react';
@@ -33,6 +38,7 @@ import App from './components/App';
 import AnnotationEvent from './angular/AnnotationEvent';
 import ReceiveAnalysisResultsEvent from './angular/ReceiveAnalysisResultsEvent';
 import UpdateOccurrencesForEntityEvent from './angular/UpdateOccurrencesForEntityEvent';
+import Location from './components/Location';
 // import log from '../modules/log';
 
 // Start-up the application when the `wlEntityList` Angular directive is
@@ -46,7 +52,7 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 	ReactDOM.render(
 		// Following is `react-redux` syntax for binding the `store` with the
 		// container down to the components.
-		<Provider store={ store }>
+		<Provider store={store}>
 			<App />
 		</Provider>,
 		document.getElementById( 'wl-entity-list' )
@@ -64,4 +70,15 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 	// `updateOccurrencesForEntity` event and dispatches the related action in
 	// Redux.
 	store.dispatch( UpdateOccurrencesForEntityEvent() );
+} );
+
+//### Article Metadata: Location Created Widget.
+wp.wordlift.on( 'includeContentLoaded.articleMetadata', function() {
+	// Check for Geolocation support.
+	const geoLocation = false; // "geolocation" in navigator;
+
+	ReactDOM.render(
+		<Location geoLocation={geoLocation} />,
+		document.getElementById( 'wl-location-created-input' )
+	)
 } );

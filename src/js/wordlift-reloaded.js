@@ -1809,10 +1809,15 @@
         css = status ? 'wl-spinner-running' : '';
         return $('.wl-widget-spinner svg').attr('class', css);
       });
-      return $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
+      $rootScope.$on('geoLocationStatusUpdated', function(event, status) {
         var css;
         css = status ? 'wl-spinner-running' : '';
         return $('.wl-widget-spinner svg').attr('class', css);
+      });
+      return $rootScope.$on('$includeContentLoaded', function(event, templateName) {
+        if (-1 < templateName.indexOf('/wordlift-article-metadata.html')) {
+          return wp.wordlift.trigger('includeContentLoaded.articleMetadata');
+        }
       });
     }
   ]), tinymce.PluginManager.add('wordlift', function(editor, url) {

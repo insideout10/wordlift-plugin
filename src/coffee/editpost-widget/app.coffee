@@ -32,7 +32,7 @@ $(
   """)
   .appendTo('#wordlift-edit-post-outer-wrapper')
 
-  # Add svg based spinner code
+# Add svg based spinner code
   spinner = $("""
     <div class="wl-widget-spinner">
       <svg transform-origin="10 10" id="wl-widget-spinner-blogger">
@@ -59,6 +59,12 @@ $(
     $rootScope.$on 'geoLocationStatusUpdated', (event, status) ->
       css = if status then 'wl-spinner-running' else ''
       $('.wl-widget-spinner svg').attr 'class', css
+
+    # Listen for include content loaded events and route them to the
+    # `wp.wordlift.trigger`.
+    $rootScope.$on '$includeContentLoaded', (event, templateName) ->
+      if -1 < templateName.indexOf( '/wordlift-article-metadata.html' )
+        wp.wordlift.trigger 'includeContentLoaded.articleMetadata'
   ])
 
   # Add WordLift as a plugin of the TinyMCE editor.
