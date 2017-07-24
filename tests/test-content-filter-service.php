@@ -138,7 +138,8 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
-		return $this->factory->post->create();
+		$pid = $this->factory->post->create();
+		return get_post( $pid );
 	}
 
 	/**
