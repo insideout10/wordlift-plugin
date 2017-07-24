@@ -413,6 +413,14 @@ class Wordlift_User_Service {
 		 * check that an editor was not explicitly denied (in user profile)
 		 * the capability.
 		 */
+
+		/*
+		 * Need protection against the case of edit_user and likes which do not
+		 * require a capability, just request one.
+		 */
+		if ( empty( $cap ) ) {
+			return $allcaps;
+		}
 		if (
 			( 'edit_wordlift_entity' == $cap[0] ) ||
 			( 'edit_wordlift_entities' == $cap[0] ) ||
