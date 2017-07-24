@@ -106,7 +106,7 @@ You can open your datasets to the public, attaching to it a free or a commercial
 ### <a name="contribute"></a> How to contribute
 
 Are you ready to contribute? Head over our [Contributing Guide][contributing].
-Feel free to pop into [Gitter][gitter.im/wordlift/home] if you have any questions for us.
+Feel free to pop into [Gitter wordlift/home][Gitter] if you have any questions for us.
 
 ### <a name="info"></a> Further Info
 
