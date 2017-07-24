@@ -75,7 +75,8 @@ wp.wordlift.on( 'wlEntityList.loaded', function() {
 //### Article Metadata: Location Created Widget.
 wp.wordlift.on( 'includeContentLoaded.articleMetadata', function() {
 	// Check for Geolocation support.
-	const geoLocation = false; // "geolocation" in navigator;
+	const geoLocation = "geolocation" in navigator;
+
 
 	ReactDOM.render(
 		<Location geoLocation={geoLocation} />,
