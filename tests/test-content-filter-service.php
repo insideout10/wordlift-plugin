@@ -143,6 +143,19 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	}
 
 	/**
+	 * Mock {@link Wordlift_Entity_Service} get_alternative_labels function.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id Post id.
+	 *
+	 * @return mixed An array  of alternative labels.
+	 */
+	public function get_alternative_labels( $post_id ) {
+		return array( 'label 1', 'label 2' );
+	}
+
+	/**
 	 * Test a content with an entity marked as `wl-no-link`.
 	 *
 	 * @since 3.13.0
