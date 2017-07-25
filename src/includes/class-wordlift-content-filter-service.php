@@ -168,7 +168,7 @@ class Wordlift_Content_Filter_Service {
 		// Select the first label which is not to be ignored.
 		$title = '';
 		foreach ( $labels as $label ) {
-			if ( $label != $ignore_label ) {
+			if ( strcasecmp( $label, $ignore_label ) != 0 ) {
 				$title = $label;
 				break;
 			}
