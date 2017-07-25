@@ -45,6 +45,15 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	private $configuration_service;
 
 	/**
+	 * Array of synonyms to the simulate entity title.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var array
+	 */
+	private $synonym_labels;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function setUp() {
@@ -79,6 +88,9 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 
 		// Add a filter to set the permalink to a fixed value we can test.
 		add_filter( 'post_link', array( $this, 'post_link' ), 10, 3 );
+
+		// test with no synonym
+		$this->synonym_labels = array();
 
 		// The content.
 		$content = '<span id="urn:enhancement-4b54b56d-7142-5dd3-adc6-27e51c70fdad" class="textannotation disambiguated wl-person" itemid="http://data.example.org/entity">Matt Mullenweg</span> would love to see what we\'re achieving with WordLift for <span id="urn:enhancement-7aa39603-d48f-8ac8-5437-c74b3b0e28ef" class="textannotation">WordPress</span>!';
@@ -138,7 +150,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 */
 	public function get_entity_post_by_uri( $uri ) {
 
-		$pid = $this->factory->post->create();
+		$pid = $this->factory->post->create( array( 'post_title' => 'Matt Mullenweg' ) );
 		return get_post( $pid );
 	}
 
@@ -152,7 +164,7 @@ class Wordlift_Content_Filter_Service_Test extends Wordlift_Unit_Test_Case {
 	 * @return mixed An array  of alternative labels.
 	 */
 	public function get_alternative_labels( $post_id ) {
-		return array( 'label 1', 'label 2' );
+		return $this->synonym_labels;
 	}
 
 	/**
