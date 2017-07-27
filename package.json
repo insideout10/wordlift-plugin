@@ -2,7 +2,7 @@
   "name": "WordLift",
   "description": "Serendipity for Bloggers. WordLift brings the power of Artificial Intelligence to Web Publishers.",
   "version": "3.15.0-dev",
-  "author": "WordLift",
+	  "author": "WordLift",
   "homepage": "https://wordift.io/",
   "license": "GPL-3.0",
   "repository": {
