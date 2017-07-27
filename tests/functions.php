@@ -550,43 +550,6 @@ function wl_get_entity_annotation_best_match( $entity_annotations ) {
 	return $entity_annotations[0];
 }
 
-function wl_execute_sparql_query( $query ) {
-
-	// construct the API URL.
-	$url = wl_configuration_get_query_update_url();
-
-	// Prepare the request.
-	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method'  => 'POST',
-		'headers' => array(
-			'Accept'       => 'application/json',
-			'Content-type' => 'application/sparql-update; charset=utf-8',
-		),
-		'body'    => $query,
-	) );
-
-	// Send the request.
-	$response = wp_remote_post( $url, $args );
-
-	// If an error has been raised, return the error.
-	if ( is_wp_error( $response ) || 200 !== $response['response']['code'] ) {
-
-		echo "wl_execute_sparql_query ================================\n";
-//        echo "[ api url :: $api_url ]\n"; -- enabling this will print out the key.
-		echo " request : \n";
-		var_dump( $args );
-		echo " response: \n";
-		var_dump( $response );
-		echo " response body: \n";
-		echo $response['body'];
-		echo "=======================================================\n";
-
-		return false;
-	}
-
-	return true;
-}
-
 /**
  * Erase all posts and entity posts from the blog.
  */
@@ -666,44 +629,26 @@ function wl_test_get_write_log_handler() {
  */
 function wl_configure_wordpress_test() {
 
+	$configuration_service = Wordlift_Configuration_Service::get_instance();
+
+	// Ensure we don't have the `wl_db_version` set.
+	delete_option( 'wl_db_version' );
+
 	add_filter( 'wl_write_log_handler', 'wl_test_get_write_log_handler' );
 
 	// Simulate WordLift activation.
 	activate_wordlift();
 
 	// If the WordLift key is set, then we'll configure it, otherwise we configure Redlink.
-	if ( false !== getenv( 'WORDLIFT_KEY' ) ) {
+	if ( false === getenv( 'WORDLIFT_KEY' ) ) {
+		die( "WordLift's key is required, set the `WORDLIFT_KEY` environment." );
+	}
 
-		// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
-		wl_configuration_set_key( getenv( 'WORDLIFT_KEY' ) );
-		if ( '' === wl_configuration_get_redlink_dataset_uri() ) {
-			die( 'The Redlink dataset URI is not set (maybe the WordLift key is not valid?)' );
-		}
-
-	} else {
-		// TODO: remove this part.
-		// or use Redlink.
-
-		// Set the dataset name to the specified dataset or define it based on the current environment.
-		$dataset_name = ( false !== getenv( 'REDLINK_DATASET_NAME' ) ? getenv( 'REDLINK_DATASET_NAME' )
-			: str_replace( '.', '-',
-				sprintf( '%s-php-%s.%s-wp-%s-ms-%s', 'wordlift-tests', PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
-					getenv( 'WP_VERSION' ), getenv( 'WP_MULTISITE' ) ) )
-		);
-
-		$app_name = ( false !== getenv( 'REDLINK_APP_NAME' ) ? getenv( 'REDLINK_APP_NAME' ) : 'wordlift' );
-
-		// Check that the API_URL env is set.
-		if ( false === getenv( 'API_URL' ) ) {
-			die( 'The API_URL environment variable is not set.' );
-		}
-
-		wl_configuration_set_redlink_key( getenv( 'REDLINK_APP_KEY' ) );
-		wl_configuration_set_redlink_user_id( getenv( 'REDLINK_USER_ID' ) );
-		wl_configuration_set_api_url( getenv( 'API_URL' ) );
-		wl_configuration_set_redlink_dataset_name( $dataset_name );
-		wl_configuration_set_redlink_application_name( $app_name );
-		wl_configuration_set_redlink_dataset_uri( 'http://data.redlink.io/' . getenv( 'REDLINK_USER_ID' ) . '/' . $dataset_name );
+	// When setting the WordLift Key, the Redlink dataset URI is provisioned by WordLift Server.
+	$configuration_service->set_key( getenv( 'WORDLIFT_KEY' ) );
+	$dataset_uri = $configuration_service->get_dataset_uri();
+	if ( empty( $dataset_uri ) ) {
+		die( 'The dataset URI is not set (maybe the WordLift key is not valid?)' );
 	}
 
 }
@@ -775,10 +720,9 @@ function rl_count_triples() {
 /**
  * Execute the provided query against the SPARQL SELECT Redlink end-point and return the response.
  *
- * @param string $query  A SPARQL query.
- * @param string $accept The mime type for the response format (default = 'text/csv').
+ * @param string $query A SPARQL query.
  *
- * @return WP_Response|WP_Error A WP_Response instance in successful otherwise a WP_Error.
+ * @return WP_Error|WP_Response A WP_Response instance in successful otherwise a WP_Error.
  */
 function rl_sparql_select( $query ) {
 
@@ -786,7 +730,7 @@ function rl_sparql_select( $query ) {
 	$sparql = rl_sparql_prefixes() . "\n" . $query;
 
 	// Get the SPARQL SELECT URL.
-	$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
+	$url = wl_configuration_get_query_select_url() . urlencode( $sparql );
 
 	// Prepare the request.
 	$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
@@ -795,45 +739,6 @@ function rl_sparql_select( $query ) {
 	wl_write_log( "SPARQL Select [ sparql :: $sparql ][ url :: $url ][ args :: " . var_export( $args, true ) . " ]" );
 
 	return wp_remote_get( $url, $args );
-}
-
-
-/**
- * Empty the dataset bound to this WordPress install.
- * @return WP_Response|WP_Error A WP_Response in case of success, otherwise a WP_Error.
- */
-function rl_empty_dataset() {
-
-	// TODO: re-enable, but as of Dec 2014 the call is too slow.
-	return;
-
-	// Get the empty dataset URL.
-	$url = rl_empty_dataset_url();
-
-	// Prepare the request.
-	$args = array_merge_recursive( unserialize( WL_REDLINK_API_HTTP_OPTIONS ), array(
-		'method' => 'DELETE',
-	) );
-
-	// Send the request.
-	return wp_remote_request( $url, $args );
-}
-
-
-/**
- * Get the Redlink URL to delete a dataset data (doesn't delete the dataset itself).
- * @return string
- */
-function rl_empty_dataset_url() {
-
-	// get the configuration.
-	$dataset_id = wl_configuration_get_redlink_dataset_name();
-	$app_key    = wl_configuration_get_redlink_key();
-
-	// construct the API URL.
-	$url = sprintf( '%s/data/%s?key=%s', wl_configuration_get_api_url(), $dataset_id, $app_key );
-
-	return $url;
 }
 
 /**

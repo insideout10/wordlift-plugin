@@ -22,7 +22,8 @@ const config = [
 			'wordlift-admin': './src/admin/js/wordlift-admin.js',
 			'wordlift-admin-edit-page': './src/scripts/admin-edit-page/index.js',
 			'wordlift-admin-settings-page': './src/scripts/admin-settings-page/index.js',
-			'wordlift-admin-tinymce': './src/scripts/admin-tinymce/index.js'
+			'wordlift-admin-tinymce': './src/scripts/admin-tinymce/index.js',
+			'wordlift-author-element': './src/scripts/author-element/index.js'
 		},
 		output: {
 			path: path.resolve( __dirname, 'src/admin/js' ),

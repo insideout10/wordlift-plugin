@@ -42,6 +42,8 @@ add_action( 'wp_ajax_wordlift_analyze', 'wl_ajax_analyze_action' );
  * @param string $content The content to analyze.
  *
  * @return string Returns null on failure, or the WP_Error, or a WP_Response with the response.
+ *
+ * @throws Exception
  */
 function wl_analyze_content( $content ) {
 
@@ -72,7 +74,7 @@ function wl_analyze_content( $content ) {
 
 		Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
 
-		throw new Exception( $response->get_error_message(), $response->get_error_code() );
+		throw new Exception( $response->get_error_message(), is_numeric( $response->get_error_code() ) ? $response->get_error_code() : - 1 );
 	}
 
 	// Get the status code.

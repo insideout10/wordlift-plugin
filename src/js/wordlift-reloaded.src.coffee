@@ -277,6 +277,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
     $scope.setPanesWrapperWidth = ()->
+      # console.debug { "Setting panes wrapper width...", Object.assign( {}, $scope ) }
       $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
       $scope.position = 0;
       $scope.currentPaneIndex = 0
@@ -288,13 +289,18 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
     $scope.currentPaneIndex = 0
     $scope.areControlsVisible = false
 
-    w.bind 'resize', ()->
-        
+    # The resize function is called when the window is resized to recalculate
+    # sizes. It is also called at load for the first calculation.
+    resizeFn = () ->
       $scope.itemWidth = $scope.setItemWidth();
       $scope.setPanesWrapperWidth()
       for pane in $scope.panes
         pane.scope.setWidth $scope.itemWidth
       $scope.$apply()
+
+    # Bind the window resize event.
+    w.bind 'resize', ()-> resizeFn
+    w.bind 'load', ()-> resizeFn
 
     ctrl = @
     ctrl.registerPane = (scope, element, first)->
@@ -323,7 +329,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.splice unregisterPaneIndex, 1
       $scope.setPanesWrapperWidth()
-  ]   
+  ]
 ])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
@@ -440,6 +446,11 @@ angular.module('wordlift.editpost.widget.controllers.EditPostWidgetController', 
   # A reference to the current entity
   $scope.currentEntity = undefined
   $scope.currentEntityType = undefined
+
+  # Whether the current user can create entities.
+  #
+  # @see https://github.com/insideout10/wordlift-plugin/issues/561
+  $scope.canCreateEntities = AnalysisService.canCreateEntities
 
   $scope.setCurrentEntity = (entity, entityType)->
 
@@ -1232,6 +1243,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         #
         # See https://github.com/insideout10/wordlift-plugin/issues/345
         if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
+        # Set the scope according to the user capability.
+        if @canCreateEntities then args.data.scope = 'all' else args.data.scope = 'local'
 
       return $http(args)
 
@@ -1329,6 +1342,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
           analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation
           analysis.annotations[textAnnotation.id].entityMatches.push {entityId: entity.id, confidence: 1}
           analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]
+
+    # Set the scope according to the user permissions.
+    #
+    # See https://github.com/insideout10/wordlift-plugin/issues/561
+    service.canCreateEntities = wlSettings['can_create_entities']? and 'yes' is wlSettings['can_create_entities']
 
     service
 

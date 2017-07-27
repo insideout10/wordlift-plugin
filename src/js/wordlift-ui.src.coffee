@@ -271,7 +271,7 @@ $.fn.extend
 
   timeline: (options) ->
 
-#
+    #
     options = $.extend {dataEndpoint: null, settings: {}}, options
 
     # Create a reference to dom wrapper element
@@ -281,7 +281,7 @@ $.fn.extend
     # See: https://github.com/NUKnightLab/TimelineJS
     buildTimeline = (data) ->
       if not data.timeline?
-        container.hide()
+        container.parent().hide()
         return
 
       # TimelineJS v3 constructor.
@@ -450,6 +450,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
       $scope.currentPaneIndex = $scope.currentPaneIndex - 1
     
     $scope.setPanesWrapperWidth = ()->
+      # console.debug { "Setting panes wrapper width...", Object.assign( {}, $scope ) }
       $scope.panesWidth = ( $scope.panes.length * $scope.itemWidth ) 
       $scope.position = 0;
       $scope.currentPaneIndex = 0
@@ -461,13 +462,18 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
     $scope.currentPaneIndex = 0
     $scope.areControlsVisible = false
 
-    w.bind 'resize', ()->
-        
+    # The resize function is called when the window is resized to recalculate
+    # sizes. It is also called at load for the first calculation.
+    resizeFn = () ->
       $scope.itemWidth = $scope.setItemWidth();
       $scope.setPanesWrapperWidth()
       for pane in $scope.panes
         pane.scope.setWidth $scope.itemWidth
       $scope.$apply()
+
+    # Bind the window resize event.
+    w.bind 'resize', ()-> resizeFn
+    w.bind 'load', ()-> resizeFn
 
     ctrl = @
     ctrl.registerPane = (scope, element, first)->
@@ -496,7 +502,7 @@ angular.module('wordlift.ui.carousel', ['ngTouch'])
 
       $scope.panes.splice unregisterPaneIndex, 1
       $scope.setPanesWrapperWidth()
-  ]   
+  ]
 ])
 .directive('wlCarouselPane', ['$log', ($log)->
   require: '^wlCarousel'
@@ -604,9 +610,6 @@ angular.module('wordlift.utils.directives', [])
       finally
         $document[0].body.style.webkitUserSelect = ''
 ])
-# Set the well-known $ reference to jQuery.
-$ = jQuery
-
 # Create the main AngularJS module, and set it dependent on controllers and directives.
 angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives'])
 .provider("configuration", ()->
@@ -695,22 +698,25 @@ angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.u
   configurationProvider.setConfiguration window.wl_navigator_params
 ])
 
-$(
-  container = $("""
-  	<div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
-      <h4 class="wl-headline">{{configuration.attrs.title}}</h4>
-      <wl-navigator-items></wl-navigator-items>
-    </div>
-  """)
-  .appendTo('.wl-navigator-widget')
 
-# If there are navigator widgets on the page activate them.
-  if 0 < $('.wl-navigator-widget').size()
+jQuery( ($) ->
+
+  $("""
+  <div ng-controller="NavigatorWidgetController" ng-show="items.length > 0">
+    <h4 class="wl-headline">{{configuration.attrs.title}}</h4>
+    <wl-navigator-items></wl-navigator-items>
+  </div>
+""")
+    .appendTo('.wl-navigator-widget')
+
+  # If there are navigator widgets on the page activate them.
+  if 0 < $('.wl-navigator-widget').length
     injector = angular.bootstrap $('.wl-navigator-widget'), ['wordlift.navigator.widget']
     injector.invoke(['DataRetrieverService', '$rootScope', '$log', (DataRetrieverService, $rootScope, $log) ->
-# execute the following commands in the angular js context.
+      # execute the following commands in the angular js context.
       $rootScope.$apply(-> DataRetrieverService.load())
     ])
+
 )
 
 

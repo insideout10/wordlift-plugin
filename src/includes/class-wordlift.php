@@ -247,6 +247,15 @@ class Wordlift {
 	protected $jsonld_service;
 
 	/**
+	 * A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 *
+	 * @since  3.14.0
+	 * @access protected
+	 * @var \Wordlift_Website_Jsonld_Converter $jsonld_website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 */
+	protected $jsonld_website_converter;
+
+	/**
 	 *
 	 * @since  3.7.0
 	 * @access private
@@ -271,6 +280,15 @@ class Wordlift {
 	 * @var \Wordlift_Admin_Settings_Page $settings_page The 'WordLift Settings' page.
 	 */
 	protected $settings_page;
+
+	/**
+	 * The 'WordLift Batch analysis' page.
+	 *
+	 * @since  3.14.0
+	 * @access protected
+	 * @var \Wordlift_Batch_Analysis_Page $sbatch_analysis_page The 'WordLift batcch analysis' page.
+	 */
+	protected $batch_analysis_page;
 
 	/**
 	 * The install wizard page.
@@ -472,6 +490,24 @@ class Wordlift {
 	protected $related_entities_cloud_widget;
 
 	/**
+	 * The {@link Wordlift_Admin_Author_Element} instance.
+	 *
+	 * @since  3.14.0
+	 * @access protected
+	 * @var \Wordlift_Admin_Author_Element $author_element The {@link Wordlift_Admin_Author_Element} instance.
+	 */
+	protected $author_element;
+
+	/**
+	 * The {@link Wordlift_Batch_Analysis_Service} instance.
+	 *
+	 * @since  3.14.0
+	 * @access protected
+	 * @var \Wordlift_Batch_Analysis_Service $batch_analysis_service The {@link Wordlift_Batch_Analysis_Service} instance.
+	 */
+	protected $batch_analysis_service;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -494,7 +530,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.13.3';
+		$this->version     = '3.14.0-qa';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
@@ -676,6 +712,7 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-postid-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-to-jsonld-converter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-to-jsonld-converter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-jsonld-website-converter.php';
 
 		/**
 		 * Load the content filter.
@@ -698,6 +735,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-publisher-ajax-adapter.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-post-adapter.php';
+
 		/**
 		 * Load the WordLift key validation service.
 		 */
@@ -708,6 +747,7 @@ class Wordlift {
 
 		// Load the `Wordlift_Event_Entity_Page_Service` class definition.
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
 
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
@@ -781,13 +821,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-select2-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-language-select-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-tabs-element.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-author-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-publisher-element.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-batch-analysis-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-settings-page-action-link.php';
 
 		/** Admin Pages */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-post-edit-page.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-user-profile-page.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-status-page.php';
 
 		/**
@@ -900,6 +943,8 @@ class Wordlift {
 		// Initialize the AMP service.
 		new Wordlift_AMP_Service();
 
+		$this->batch_analysis_service = new Wordlift_Batch_Analysis_Service( $this, $this->configuration_service );
+
 		$this->entity_types_taxonomy_walker = new Wordlift_Entity_Types_Taxonomy_Walker();
 
 		$this->topic_taxonomy_service = new Wordlift_Topic_Taxonomy_Service();
@@ -937,12 +982,13 @@ class Wordlift {
 		// Instantiate the JSON-LD service.
 		$property_getter                       = Wordlift_Property_Getter_Factory::create( $this->entity_service );
 		$this->entity_post_to_jsonld_converter = new Wordlift_Entity_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $property_getter );
-		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service );
+		$this->post_to_jsonld_converter        = new Wordlift_Post_To_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
 		$this->postid_to_jsonld_converter      = new Wordlift_Postid_To_Jsonld_Converter( $this->entity_service, $this->entity_post_to_jsonld_converter, $this->post_to_jsonld_converter );
-		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter );
+		$this->jsonld_website_converter        = new Wordlift_Website_Jsonld_Converter( $this->entity_type_service, $this->entity_service, $this->user_service, $attachment_service, $this->configuration_service, $this->entity_post_to_jsonld_converter );
+		$this->jsonld_service                  = new Wordlift_Jsonld_Service( $this->entity_service, $this->postid_to_jsonld_converter, $this->jsonld_website_converter );
 
 		// Create an instance of the Key Validation service. This service is later hooked to provide an AJAX call (only for admins).
-		$this->key_validation_service = new Wordlift_Key_Validation_Service();
+		$this->key_validation_service = new Wordlift_Key_Validation_Service( $this->configuration_service );
 
 		// Create an instance of the Publisher Service and the AJAX Adapter.
 		$publisher_service            = new Wordlift_Publisher_Service();
@@ -963,9 +1009,11 @@ class Wordlift {
 		$this->language_select_element = new Wordlift_Admin_Language_Select_Element();
 		$tabs_element                  = new Wordlift_Admin_Tabs_Element();
 		$this->publisher_element       = new Wordlift_Admin_Publisher_Element( $this->configuration_service, $publisher_service, $tabs_element, $this->select2_element );
+		$this->author_element          = new Wordlift_Admin_Author_Element( $publisher_service, $this->select2_element );
 
 		$this->download_your_data_page   = new Wordlift_Admin_Download_Your_Data_Page( $this->configuration_service );
 		$this->settings_page             = new Wordlift_Admin_Settings_Page( $this->configuration_service, $this->entity_service, $this->input_element, $this->language_select_element, $this->publisher_element, $this->radio_input_element );
+		$this->batch_analysis_page       = new Wordlift_Batch_Analysis_Page( $this->batch_analysis_service );
 		$this->settings_page_action_link = new Wordlift_Admin_Settings_Page_Action_Link( $this->settings_page );
 
 		// Pages.
@@ -991,6 +1039,9 @@ class Wordlift {
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
+
+		// User Profile.
+		new Wordlift_Admin_User_Profile_Page( $this->author_element, $this->user_service );
 
 		$this->event_entity_page_service = new Wordlift_Event_Entity_Page_Service();
 
@@ -1033,7 +1084,8 @@ class Wordlift {
 			$this->get_plugin_name(),
 			$this->get_version(),
 			$this->configuration_service,
-			$this->notice_service
+			$this->notice_service,
+			$this->user_service
 		);
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
@@ -1120,6 +1172,10 @@ class Wordlift {
 
 		// Hook the menu creation on the general wordlift menu creation
 		$this->loader->add_action( 'wl_admin_menu', $this->settings_page, 'admin_menu', 10, 2 );
+		if ( defined( 'WORDLIFT_BATCH' ) && WORDLIFT_BATCH ) {
+			// Add the functionality only if a flag is set in wp-config.php .
+			$this->loader->add_action( 'wl_admin_menu', $this->batch_analysis_page, 'admin_menu', 10, 2 );
+		}
 
 		// Hook key update.
 		$this->loader->add_action( 'pre_update_option_wl_general_settings', $this->configuration_service, 'maybe_update_dataset_uri', 10, 2 );

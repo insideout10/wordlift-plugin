@@ -2518,7 +2518,7 @@
 }
 #wordlift-faceted-entity-search-widget {
   font-size: inherit;
-  padding: 0em;
+  padding: 0;
   margin: 0.8em 0;
 }
 #wordlift-faceted-entity-search-widget .wl-headline {
@@ -2565,7 +2565,7 @@
   list-style-type: none;
 }
 #wordlift-faceted-entity-search-widget .wl-facets {
-  margin: 0em;
+  margin: 0;
   border-top: #ccc 1px solid;
   overflow: hidden;
 }
@@ -2588,7 +2588,7 @@
 }
 #wordlift-faceted-entity-search-widget .wl-facets .wl-facets-container li {
   padding: 0;
-  margin: 0em 0em 0.2em 0em;
+  margin: 0 0 0.2em 0;
   line-height: 1.2em;
   position: relative;
   color: #666;
@@ -2736,6 +2736,6 @@
   cursor: pointer;
 }
 #wordlift-faceted-entity-search-widget .wl-posts {
-  padding: 0em;
-  margin: 0em;
+  padding: 0;
+  margin: 0;
 }

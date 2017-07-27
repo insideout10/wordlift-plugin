@@ -270,7 +270,7 @@ EOF;
 		// Prepare the SPARQL statement by prepending the default namespaces.
 		$sparql = rl_sparql_prefixes() . "\n" . $query;
 		// Get the SPARQL SELECT URL.
-		$url = wl_configuration_get_query_select_url( 'csv' ) . urlencode( $sparql );
+		$url = wl_configuration_get_query_select_url() . urlencode( $sparql );
 		// Prepare the request.
 		$args = unserialize( WL_REDLINK_API_HTTP_OPTIONS );
 

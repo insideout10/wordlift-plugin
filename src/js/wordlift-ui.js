@@ -1,5 +1,5 @@
 (function() {
-  var $, container, injector;
+  var $;
 
   $ = jQuery;
 
@@ -247,7 +247,7 @@
       container = $(this);
       buildTimeline = function(data) {
         if (data.timeline == null) {
-          container.hide();
+          container.parent().hide();
           return;
         }
         return new TL.Timeline(container.attr('id'), data.timeline, options.settings);
@@ -370,7 +370,7 @@
         template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : isActive() }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
           '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
-            var ctrl, w;
+            var ctrl, resizeFn, w;
             w = angular.element($window);
             $scope.setItemWidth = function() {
               return $element.width() / $scope.visibleElements();
@@ -421,7 +421,7 @@
             $scope.position = 0;
             $scope.currentPaneIndex = 0;
             $scope.areControlsVisible = false;
-            w.bind('resize', function() {
+            resizeFn = function() {
               var j, len, pane, ref;
               $scope.itemWidth = $scope.setItemWidth();
               $scope.setPanesWrapperWidth();
@@ -431,6 +431,12 @@
                 pane.scope.setWidth($scope.itemWidth);
               }
               return $scope.$apply();
+            };
+            w.bind('resize', function() {
+              return resizeFn;
+            });
+            w.bind('load', function() {
+              return resizeFn;
             });
             ctrl = this;
             ctrl.registerPane = function(scope, element, first) {
@@ -579,8 +585,6 @@
     }
   ]);
 
-  $ = jQuery;
-
   angular.module('wordlift.navigator.widget', ['wordlift.ui.carousel', 'wordlift.utils.directives']).provider("configuration", function() {
     var _configuration, provider;
     _configuration = void 0;
@@ -651,13 +655,20 @@
     }
   ]);
 
-  $(container = $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n      <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n      <wl-navigator-items></wl-navigator-items>\n    </div>").appendTo('.wl-navigator-widget'), 0 < $('.wl-navigator-widget').size() ? (injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']), injector.invoke([
-    'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
-      return $rootScope.$apply(function() {
-        return DataRetrieverService.load();
-      });
+  jQuery(function($) {
+    var injector;
+    $("<div ng-controller=\"NavigatorWidgetController\" ng-show=\"items.length > 0\">\n  <h4 class=\"wl-headline\">{{configuration.attrs.title}}</h4>\n  <wl-navigator-items></wl-navigator-items>\n</div>").appendTo('.wl-navigator-widget');
+    if (0 < $('.wl-navigator-widget').length) {
+      injector = angular.bootstrap($('.wl-navigator-widget'), ['wordlift.navigator.widget']);
+      return injector.invoke([
+        'DataRetrieverService', '$rootScope', '$log', function(DataRetrieverService, $rootScope, $log) {
+          return $rootScope.$apply(function() {
+            return DataRetrieverService.load();
+          });
+        }
+      ]);
     }
-  ])) : void 0);
+  });
 
 }).call(this);
 

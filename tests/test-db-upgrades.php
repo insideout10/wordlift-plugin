@@ -103,7 +103,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 			) );
 		}
 
-		update_site_option( 'wl_db_version', '1.0' );
+		update_option( 'wl_db_version', '1.0' );
 
 		// now call the upgrade routine and check that everything is Flatten
 		wl_core_upgrade_db_1_0_to_3_10();
@@ -134,7 +134,7 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 
 		wp_insert_term( 'dummy', 'wl_entity_type', array( 'parent' => 1 ) );
 
-		update_site_option( 'wl_db_version', '3.10' );
+		update_option( 'wl_db_version', '3.10' );
 
 		// now call the upgrade routine and check that the dummy term still has a parent
 		wl_core_upgrade_db_1_0_to_3_10();
@@ -143,4 +143,39 @@ class Wordlift_DB_Upgrade_Test extends WP_UnitTestCase {
 		$this->assertEquals( 1, $term->parent );
 	}
 
+	/**
+	 * Test that the upgrade to 3.14 adds entity editing capabilities
+	 * to editors and admins.
+	 *
+	 * @since   3.14.0
+	 **/
+	public function test_3_12_to_3_14_upgrade() {
+
+		$caps_to_test = array(
+			'edit_wordlift_entity',
+			'edit_wordlift_entities',
+			'edit_others_wordlift_entities',
+			'publish_wordlift_entities',
+			'read_private_wordlift_entities',
+			'delete_wordlift_entity',
+			'delete_wordlift_entities',
+			'delete_others_wordlift_entities',
+			'delete_published_wordlift_entities',
+			'delete_private_wordlift_entities',
+		);
+
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser' ) );
+		$user->add_role( 'editor' );
+
+		foreach ( $caps_to_test as $cap ) {
+			$this->assertTrue( user_can( $user->ID, $cap ) );
+		}
+
+		$user = $this->factory->user->create_and_get( array( 'user_login' => 'wluser2' ) );
+		$user->add_role( 'administrator' );
+
+		foreach ( $caps_to_test as $cap ) {
+			$this->assertTrue( user_can( $user->ID, $cap ) );
+		}
+	}
 }

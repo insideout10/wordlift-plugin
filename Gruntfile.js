@@ -187,7 +187,7 @@ module.exports = function ( grunt ) {
                    dot: true,
                    spawn: false,
                    interval: 2000,
-                   livereload: true,
+                   livereload: false,
                }
             },
             coffee: {

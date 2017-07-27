@@ -1,4 +1,11 @@
 <?php
+/**
+ * Factories: Property Getter Factory.
+ *
+ * @since      3.8.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/properties
+ */
 
 require_once( 'class-wordlift-property-getter.php' );
 require_once( 'class-wordlift-simple-property-service.php' );
@@ -6,17 +13,21 @@ require_once( 'class-wordlift-entity-property-service.php' );
 require_once( 'class-wordlift-location-property-service.php' );
 require_once( 'class-wordlift-url-property-service.php' );
 require_once( 'class-wordlift-double-property-service.php' );
+require_once( 'class-wordlift-duration-property-service.php' );
 
 /**
  * A Wordlift_Property_Getter_Factory, which instantiate a configured
  * {@link Wordlift_Property_Getter}.
  *
- * @since 3.8.0
+ * @since      3.8.0
+ * @package    Wordlift
+ * @subpackage Wordlift/includes/properties
  */
 class Wordlift_Property_Getter_Factory {
 
 	/**
 	 * Create a {@link Wordlift_Property_Getter} instance.
+	 *
 	 * @since 3.8.0
 	 *
 	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
@@ -40,6 +51,12 @@ class Wordlift_Property_Getter_Factory {
 		$property_getter->register( new Wordlift_Double_Property_Service(), array(
 			Wordlift_Schema_Service::FIELD_GEO_LATITUDE,
 			Wordlift_Schema_Service::FIELD_GEO_LONGITUDE,
+		) );
+
+		$property_getter->register( new Wordlift_Duration_Property_Service(), array(
+			Wordlift_Schema_Service::FIELD_PREP_TIME,
+			Wordlift_Schema_Service::FIELD_COOK_TIME,
+			Wordlift_Schema_Service::FIELD_TOTAL_TIME,
 		) );
 
 		return $property_getter;

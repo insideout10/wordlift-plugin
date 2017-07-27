@@ -11,13 +11,7 @@
  */
 function wl_core_install_entity_type_data() {
 
-	// Ensure the custom type and the taxonomy are registered.
-	Wordlift_Entity_Post_Type_Service::get_instance()->register();
-
-	wl_entity_type_taxonomy_register();
-
-	// Ensure the custom taxonomy for dbpedia topics is registered
-	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
+	Wordlift_Log_Service::get_instance()->debug( 'Installing Entity Type data...' );
 
 	// Set the taxonomy data.
 	// Note: parent types must be defined before child types.
@@ -101,6 +95,8 @@ function wl_core_install_entity_type_data() {
 
 	}
 
+	Wordlift_Log_Service::get_instance()->debug( 'Entity Type data installed.' );
+
 }
 
 /**
@@ -147,7 +143,7 @@ EOF;
  */
 function wl_core_upgrade_db_to_1_0() {
 
-	if ( ! get_site_option( 'wl_db_version' ) ) {
+	if ( ! get_option( 'wl_db_version' ) ) {
 		wl_core_install_create_relation_instance_table();
 	}
 
@@ -163,7 +159,7 @@ function wl_core_upgrade_db_to_1_0() {
 function wl_core_upgrade_db_1_0_to_3_10() {
 
 	// If the DB version is less than 3.10, than flatten the txonomy.
-	if ( version_compare( get_site_option( 'wl_db_version' ), '3.9', '<=' ) ) {
+	if ( version_compare( get_option( 'wl_db_version' ), '3.9', '<=' ) ) {
 
 		$term_slugs = array(
 			'thing',
@@ -204,20 +200,75 @@ function wl_core_upgrade_db_3_10_3_12() {
 	 * initialization does the same, avoid possible race conditions by
 	 * deferring the actual flush to a later hook.
 	 */
-	add_action('wp_loaded', function () {
+	add_action( 'wp_loaded', function () {
 		flush_rewrite_rules();
-	});
+	} );
+}
+
+/**
+ * Upgrade the DB structure to the one expected by the 3.14 release.
+ *
+ * Add Recipe entity.
+ *
+ * @since 3.14.0
+ */
+function wl_core_upgrade_db_3_12_3_14() {
+	$result = wp_insert_term(
+		'Recipe',
+		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+		array(
+			'slug'        => 'recipe',
+			'description' => 'A Recipe.',
+		)
+	);
+
+	// Assign capabilities to manipulate entities to admins.
+	$admins = get_role( 'administrator' );
+
+	$admins->add_cap( 'edit_wordlift_entity' );
+	$admins->add_cap( 'edit_wordlift_entities' );
+	$admins->add_cap( 'edit_others_wordlift_entities' );
+	$admins->add_cap( 'publish_wordlift_entities' );
+	$admins->add_cap( 'read_private_wordlift_entities' );
+	$admins->add_cap( 'delete_wordlift_entity' );
+	$admins->add_cap( 'delete_wordlift_entities' );
+	$admins->add_cap( 'delete_others_wordlift_entities' );
+	$admins->add_cap( 'delete_published_wordlift_entities' );
+	$admins->add_cap( 'delete_private_wordlift_entities' );
+
+	// Assign capabilities to manipulate entities to editors.
+	$editors = get_role( 'editor' );
+
+	$editors->add_cap( 'edit_wordlift_entity' );
+	$editors->add_cap( 'edit_wordlift_entities' );
+	$editors->add_cap( 'edit_others_wordlift_entities' );
+	$editors->add_cap( 'publish_wordlift_entities' );
+	$editors->add_cap( 'read_private_wordlift_entities' );
+	$editors->add_cap( 'delete_wordlift_entity' );
+	$editors->add_cap( 'delete_wordlift_entities' );
+	$editors->add_cap( 'delete_others_wordlift_entities' );
+	$editors->add_cap( 'delete_published_wordlift_entities' );
+	$editors->add_cap( 'delete_private_wordlift_entities' );
 }
 
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
-	if ( get_site_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+	// Ensure the custom type and the taxonomy are registered.
+	Wordlift_Entity_Post_Type_Service::get_instance()->register();
 
+	wl_entity_type_taxonomy_register();
+
+	// Ensure the custom taxonomy for dbpedia topics is registered
+	Wordlift_Topic_Taxonomy_Service::get_instance()->init();
+
+	if ( get_option( 'wl_db_version' ) != WL_DB_VERSION ) {
+		wl_core_install_entity_type_data();
 		wl_core_upgrade_db_to_1_0();
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
-		update_site_option( 'wl_db_version', WL_DB_VERSION );
+		wl_core_upgrade_db_3_12_3_14();
+		update_option( 'wl_db_version', WL_DB_VERSION );
 
 	}
 

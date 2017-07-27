@@ -221,6 +221,8 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
         #
         # See https://github.com/insideout10/wordlift-plugin/issues/345
         if (wlSettings.itemId?) then args.data.exclude = [wlSettings.itemId]
+        # Set the scope according to the user capability.
+        if @canCreateEntities then args.data.scope = 'all' else args.data.scope = 'local'
 
       return $http(args)
 
@@ -318,6 +320,11 @@ angular.module('wordlift.editpost.widget.services.AnalysisService', [
           analysis.entities[entity.id].annotations[textAnnotation.id] = textAnnotation
           analysis.annotations[textAnnotation.id].entityMatches.push {entityId: entity.id, confidence: 1}
           analysis.annotations[textAnnotation.id].entities[entity.id] = analysis.entities[entity.id]
+
+    # Set the scope according to the user permissions.
+    #
+    # See https://github.com/insideout10/wordlift-plugin/issues/561
+    service.canCreateEntities = wlSettings['can_create_entities']? and 'yes' is wlSettings['can_create_entities']
 
     service
 

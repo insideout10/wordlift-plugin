@@ -225,7 +225,7 @@
         template: "<div class=\"wl-carousel\" ng-class=\"{ 'active' : areControlsVisible }\" ng-show=\"panes.length > 0\" ng-mouseover=\"showControls()\" ng-mouseleave=\"hideControls()\">\n  <div class=\"wl-panes\" ng-style=\"{ width: panesWidth, left: position }\" ng-transclude ng-swipe-left=\"next()\" ng-swipe-right=\"prev()\" ></div>\n  <div class=\"wl-carousel-arrows\" ng-show=\"areControlsVisible\" ng-class=\"{ 'active' : isActive() }\">\n    <i class=\"wl-angle left\" ng-click=\"prev()\" ng-show=\"isPrevArrowVisible()\" />\n    <i class=\"wl-angle right\" ng-click=\"next()\" ng-show=\"isNextArrowVisible()\" />\n  </div>\n</div>",
         controller: [
           '$scope', '$element', '$attrs', '$log', function($scope, $element, $attrs, $log) {
-            var ctrl, w;
+            var ctrl, resizeFn, w;
             w = angular.element($window);
             $scope.setItemWidth = function() {
               return $element.width() / $scope.visibleElements();
@@ -276,7 +276,7 @@
             $scope.position = 0;
             $scope.currentPaneIndex = 0;
             $scope.areControlsVisible = false;
-            w.bind('resize', function() {
+            resizeFn = function() {
               var j, len, pane, ref;
               $scope.itemWidth = $scope.setItemWidth();
               $scope.setPanesWrapperWidth();
@@ -286,6 +286,12 @@
                 pane.scope.setWidth($scope.itemWidth);
               }
               return $scope.$apply();
+            };
+            w.bind('resize', function() {
+              return resizeFn;
+            });
+            w.bind('load', function() {
+              return resizeFn;
             });
             ctrl = this;
             ctrl.registerPane = function(scope, element, first) {
@@ -430,6 +436,7 @@
       $scope.relatedPosts = void 0;
       $scope.currentEntity = void 0;
       $scope.currentEntityType = void 0;
+      $scope.canCreateEntities = AnalysisService.canCreateEntities;
       $scope.setCurrentEntity = function(entity, entityType) {
         var annotation;
         $scope.currentEntity = entity;
@@ -1279,6 +1286,11 @@
           if ((wlSettings.itemId != null)) {
             args.data.exclude = [wlSettings.itemId];
           }
+          if (this.canCreateEntities) {
+            args.data.scope = 'all';
+          } else {
+            args.data.scope = 'local';
+          }
         }
         return $http(args);
       };
@@ -1363,6 +1375,7 @@
         }
         return results1;
       };
+      service.canCreateEntities = (wlSettings['can_create_entities'] != null) && 'yes' === wlSettings['can_create_entities'];
       return service;
     }
   ]);

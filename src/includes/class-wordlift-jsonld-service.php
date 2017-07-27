@@ -31,18 +31,30 @@ class Wordlift_Jsonld_Service {
 	 */
 	private $converter;
 
+
+	/**
+	 * A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 *
+	 * @since  3.14.0
+	 * @access private
+	 * @var \Wordlift_Website_Jsonld_Converter A {@link Wordlift_Website_Jsonld_Converter} instance.
+	 */
+	private $website_converter;
+
 	/**
 	 * Create a JSON-LD service.
 	 *
 	 * @since 3.8.0
 	 *
-	 * @param \Wordlift_Entity_Service $entity_service A {@link Wordlift_Entity_Service} instance.
-	 * @param \Wordlift_Post_Converter $converter      A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Entity_Service           $entity_service    A {@link Wordlift_Entity_Service} instance.
+	 * @param \Wordlift_Post_Converter           $converter         A {@link Wordlift_Uri_To_Jsonld_Converter} instance.
+	 * @param \Wordlift_Website_Jsonld_Converter $website_converter A {@link Wordlift_Website_Jsonld_Converter} instance.
 	 */
-	public function __construct( $entity_service, $converter ) {
+	public function __construct( $entity_service, $converter, $website_converter ) {
 
-		$this->entity_service = $entity_service;
-		$this->converter      = $converter;
+		$this->entity_service    = $entity_service;
+		$this->converter         = $converter;
+		$this->website_converter = $website_converter;
 
 	}
 
@@ -64,6 +76,23 @@ class Wordlift_Jsonld_Service {
 		// See https://github.com/insideout10/wordlift-plugin/issues/406.
 		// See https://codex.wordpress.org/AJAX_in_Plugins.
 		ob_clean();
+
+		// Switch to Website converter if is home page.
+		if ( isset( $_REQUEST['homepage'] ) ) {
+			/**
+			 * Filter: 'wordlift_disable_website_json_ld' - Allow disabling of the json+ld output.
+			 *
+			 * @since  3.14.0
+			 * @api    bool $display_search Whether or not to display json+ld search on the frontend.
+			 */
+			if ( ! apply_filters( 'wordlift_disable_website_json_ld', false ) ) {
+				// Set a reference to the website_converter.
+				$website_converter = $this->website_converter;
+
+				// Send JSON-LD.
+				wp_send_json( $website_converter->create_schema() );
+			}
+		}
 
 		// If no id has been provided return an empty array.
 		if ( ! isset( $_REQUEST['id'] ) ) {
