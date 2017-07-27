@@ -40,7 +40,8 @@ const entities = function( state = Map(), action ) {
 					x => Object.assign( x, {
 						link: LinkService.getLink( x.occurrences ),
 						local: 0 === x.id.indexOf( wlSettings.datasetUri ),
-						w: WsService.getW( x )
+						w: WsService.getW( x ),
+						edit: 'no' !== wlSettings.can_create_entities
 					} )
 				)
 				// Sort by confidence.

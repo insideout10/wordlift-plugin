@@ -295,14 +295,12 @@ class WL_Metabox {
 	 */
 	public function enqueue_scripts_and_styles() {
 
-		// Load the jquery-ui-timepicker-addon library.
-		wp_enqueue_style( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.css' );
-		wp_enqueue_script( 'jquery-ui-timepicker-addon', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js', array( 'jquery-ui-datepicker' ), '1.6.3', true );
+		// Use the minified version if PW_DEBUG isn't set.
+		$min = ! defined( 'WP_DEBUG' ) || ! WP_DEBUG ? '.min' : '';
 
-		wp_enqueue_script( 'jquery-ui-timepicker-no-conflict', dirname( plugin_dir_url( __FILE__ ) ) . '/js/jquery.datetimepicker.no-conflict.js', array(
-			'jquery-ui-datepicker',
-			'jquery-ui-timepicker-addon',
-		) );
+		// Load the jquery-ui-timepicker-addon library.
+		wp_enqueue_style( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.css", array(), '3.0.6' );
+		wp_enqueue_script( 'wl-flatpickr', dirname( plugin_dir_url( __FILE__ ) ) . "/js/flatpickr/flatpickr$min.js", array( 'jquery' ), '3.0.6', true );
 
 		// Leaflet.
 		wp_enqueue_style( 'leaflet', dirname( dirname( plugin_dir_url( __FILE__ ) ) ) . '/bower_components/leaflet/dist/leaflet.css' );

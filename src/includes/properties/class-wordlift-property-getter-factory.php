@@ -53,8 +53,9 @@ class Wordlift_Property_Getter_Factory {
 			Wordlift_Schema_Service::FIELD_GEO_LONGITUDE,
 		) );
 
-		$property_getter->register( new Wordlift_Duration_Property_Service( $entity_service ), array(
+		$property_getter->register( new Wordlift_Duration_Property_Service(), array(
 			Wordlift_Schema_Service::FIELD_PREP_TIME,
+			Wordlift_Schema_Service::FIELD_COOK_TIME,
 			Wordlift_Schema_Service::FIELD_TOTAL_TIME,
 		) );
 

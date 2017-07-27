@@ -21,8 +21,8 @@ import Select2 from '../common/select2';
 			// Create the Select2.
 			Select2( '.wl-select2-element',
 					 {
-						 containerCssClass: 'wl-select2-container',
-						 dropdownCssClass: 'wl-select2-dropdown'
+//						 containerCssClass: 'wl-select2-container'
+//						 dropdownCssClass: 'wl-select2-dropdown'
 					 } );
 		} );
 	}

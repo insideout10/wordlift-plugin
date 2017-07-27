@@ -74,7 +74,7 @@ function wl_analyze_content( $content ) {
 
 		Wordlift_Log_Service::get_logger( 'wl_analyze_content' )->error( $message );
 
-		throw new Exception( $response->get_error_message(), $response->get_error_code() );
+		throw new Exception( $response->get_error_message(), is_numeric( $response->get_error_code() ) ? $response->get_error_code() : - 1 );
 	}
 
 	// Get the status code.

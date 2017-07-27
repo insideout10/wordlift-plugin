@@ -197,6 +197,13 @@ class Wordlift_Schema_Service {
 	const FIELD_RECIPE_INGREDIENT = 'wl_schema_recipe_ingredient';
 
 	/**
+	 * The 'calories' field name.
+	 *
+	 * @since 3.14.0
+	 */
+	const FIELD_NUTRITION_INFO_CALORIES = 'wl_schema_nutrition_information_calories';
+
+	/**
 	 * The 'recipeInstructions' field name.
 	 *
 	 * @since 3.14.0
@@ -216,6 +223,13 @@ class Wordlift_Schema_Service {
 	 * @since 3.14.0
 	 */
 	const FIELD_PREP_TIME = 'wl_schema_prep_time';
+
+	/**
+	 * The 'cookTime' field name.
+	 *
+	 * @since 3.14.0
+	 */
+	const FIELD_COOK_TIME = 'wl_schema_cook_time';
 
 	/**
 	 * The 'totalTime' field name.
@@ -892,7 +906,7 @@ class Wordlift_Schema_Service {
 				'subtitle' => '{{id}}',
 			),
 			'custom_fields' => array(
-				self::FIELD_RECIPE_CUISINE      => array(
+				self::FIELD_RECIPE_CUISINE          => array(
 					'predicate'   => 'http://schema.org/recipeCuisine',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -901,7 +915,7 @@ class Wordlift_Schema_Service {
 						'label' => __( 'Recipe cuisine', 'wordlift' ),
 					),
 				),
-				self::FIELD_RECIPE_INGREDIENT   => array(
+				self::FIELD_RECIPE_INGREDIENT       => array(
 					'predicate'   => 'http://schema.org/recipeIngredient',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -912,7 +926,7 @@ class Wordlift_Schema_Service {
 						'label' => __( 'Recipe ingredient', 'wordlift' ),
 					),
 				),
-				self::FIELD_RECIPE_INSTRUCTIONS => array(
+				self::FIELD_RECIPE_INSTRUCTIONS     => array(
 					'predicate'   => 'http://schema.org/recipeInstructions',
 					'type'        => self::DATA_TYPE_MULTILINE,
 					'export_type' => 'xsd:string',
@@ -922,7 +936,7 @@ class Wordlift_Schema_Service {
 						'label' => __( 'Recipe instructions', 'wordlift' ),
 					),
 				),
-				self::FIELD_RECIPE_YIELD        => array(
+				self::FIELD_RECIPE_YIELD            => array(
 					'predicate'   => 'http://schema.org/recipeYield',
 					'type'        => self::DATA_TYPE_STRING,
 					'export_type' => 'xsd:string',
@@ -931,24 +945,54 @@ class Wordlift_Schema_Service {
 						'label' => __( 'Recipe number of servings', 'wordlift' ),
 					),
 				),
-				self::FIELD_PREP_TIME           => array(
+				self::FIELD_RECIPE_INGREDIENT       => array(
+					'predicate'   => 'http://schema.org/recipeIngredient',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => array(
+						'cardinality' => INF,
+					),
+					'metabox'     => array(
+						'label' => __( 'Recipe ingredient', 'wordlift' ),
+					),
+				),
+				self::FIELD_NUTRITION_INFO_CALORIES => array(
+					'predicate'   => 'http://schema.org/calories',
+					'type'        => self::DATA_TYPE_STRING,
+					'export_type' => 'xsd:string',
+					'constraints' => '',
+					'metabox'     => array(
+						'label' => __( 'Calories (e.g. 240 calories)', 'wordlift' ),
+					),
+				),
+				self::FIELD_PREP_TIME               => array(
 					'predicate'   => 'http://schema.org/prepTime',
 					'type'        => self::DATA_TYPE_DURATION,
 					'export_type' => 'xsd:time',
 					'constraints' => '',
 					'metabox'     => array(
 						'class' => 'Wordlift_Metabox_Field_Duration',
-						'label' => __( 'Recipe preparation time', 'wordlift' ),
+						'label' => __( 'Recipe preparation time (e.g. 1:30)', 'wordlift' ),
 					),
 				),
-				self::FIELD_TOTAL_TIME          => array(
+				self::FIELD_COOK_TIME               => array(
+					'predicate'   => 'http://schema.org/cookTime',
+					'type'        => self::DATA_TYPE_DURATION,
+					'export_type' => 'xsd:time',
+					'constraints' => '',
+					'metabox'     => array(
+						'class' => 'Wordlift_Metabox_Field_Duration',
+						'label' => __( 'Recipe cook time (e.g. 1:30)', 'wordlift' ),
+					),
+				),
+				self::FIELD_TOTAL_TIME              => array(
 					'predicate'   => 'http://schema.org/totalTime',
 					'type'        => self::DATA_TYPE_DURATION,
 					'export_type' => 'xsd:time',
 					'constraints' => '',
 					'metabox'     => array(
 						'class' => 'Wordlift_Metabox_Field_Duration',
-						'label' => __( 'Recipe total time', 'wordlift' ),
+						'label' => __( 'Recipe total time (e.g. 1:30)', 'wordlift' ),
 					),
 				),
 			),

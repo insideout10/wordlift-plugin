@@ -528,7 +528,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$_GET['id']       = $homepage_id;
 		$_GET['homepage'] = true;
 
-		add_filter( 'wordlift_json_ld_search_url', array(
+		add_filter( 'wl_jsonld_search_url', array(
 			$this,
 			'change_search_url'
 		) );
@@ -578,7 +578,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	}
 
 	/**
-	 * Test the filter `wordlift_json_ld_search_url`.
+	 * Test the filter `wl_jsonld_search_url`.
 	 *
 	 * @since 3.14.0
 	 *

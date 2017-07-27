@@ -138,7 +138,22 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
-= 3.14.0 (????-??-??) =
+= 3.14.0 (2017-07-18) =
+* Fix: [#582](https://github.com/insideout10/wordlift-plugin/issues/582): Empty area on Timeline w/o events.
+* Fix: [#581](https://github.com/insideout10/wordlift-plugin/issues/581): Date Picker doesn't open.
+* Fix: [#577](https://github.com/insideout10/wordlift-plugin/issues/577): Faceted Search posts' list doesn't show
+* Fix: [#526](https://github.com/insideout10/wordlift-plugin/issues/526): Multisite network activation fails to create the entity types on newly created subsites.
+* Enhancement: [#565](https://github.com/insideout10/wordlift-plugin/issues/565): Allow empty vocabulary path on compatible Permalink configuration.
+* Enhancement: [#562](https://github.com/insideout10/wordlift-plugin/issues/562): Annotate archival content using my vocabulary.
+* Enhancement: [#561](https://github.com/insideout10/wordlift-plugin/issues/561): Add the capability to create new entities in the vocabulary.
+* Enhancement: [#551](https://github.com/insideout10/wordlift-plugin/issues/551): Make Chord compatible with AMP.
+* Enhancement: [#546](https://github.com/insideout10/wordlift-plugin/issues/546): Extend the JSON-LD and allow customizations.
+* Enhancement: [#536](https://github.com/insideout10/wordlift-plugin/issues/536): Hide labels that do not have associated entities in the Faceted Search Widget.
+* Enhancement: [#533](https://github.com/insideout10/wordlift-plugin/issues/533): Add the schema:wordCount property to schema:Article.
+* Enhancement: [#524](https://github.com/insideout10/wordlift-plugin/issues/524): Adding support for schema.org/Recipe.
+* Enhancement: [#481](https://github.com/insideout10/wordlift-plugin/issues/481): Improve authors.
+* Enhancement: [#468](https://github.com/insideout10/wordlift-plugin/issues/468): schema.org/WebSite markup.
+* Enhancement: [#379](https://github.com/insideout10/wordlift-plugin/issues/379): Overlaps should prefer local entities.
 
 = 3.13.3 (2017-07-12) =
 * Enhancement: [#558](https://github.com/insideout10/wordlift-plugin/issues/558): Link to the settings page in the message about unset key.

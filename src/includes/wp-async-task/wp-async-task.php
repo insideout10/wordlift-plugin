@@ -157,8 +157,7 @@ if ( ! class_exists( 'WP_Async_Task' ) ) {
 
 				$url = admin_url( 'admin-post.php' );
 
-				error_log( "Launching [ url :: $url ][ " . var_export( $request_args, true ) . " ]..." );
-				error_log( var_export( wp_remote_post( $url, $request_args ), true ) );
+				wp_remote_post( $url, $request_args );
 			}
 		}
 
