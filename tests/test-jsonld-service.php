@@ -371,8 +371,8 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 		$target      = $url . '?s={search_term_string}';
 
 		// Set up a default request
-		$_GET['action'] = 'wl_jsonld';
-		$_GET['id']     = $homepage_id;
+		$_GET['action']   = 'wl_jsonld';
+		$_GET['id']       = $homepage_id;
 		$_GET['homepage'] = 'true';
 
 		// Diable WebSite schema
@@ -530,7 +530,7 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 
 		add_filter( 'wl_jsonld_search_url', array(
 			$this,
-			'change_search_url'
+			'change_search_url',
 		) );
 
 		// Make the request
@@ -589,4 +589,46 @@ class Wordlift_Jsonld_Service_Test extends Wordlift_Ajax_Unit_Test_Case {
 	public function change_search_url( $url ) {
 		return str_replace( '{search_term_string}', '', $url );
 	}
+
+	/**
+	 * Test a recipe mentioned in a post.
+	 *
+	 * @since 3.14.1
+	 */
+	public function test_post_mentioning_a_recipe() {
+
+		$post_id = $this->factory->post->create( array(
+			'type'   => 'post',
+			'status' => 'public',
+		) );
+
+		$recipe_post_id = $this->entity_factory->create( array(
+			'status' => 'public',
+		) );
+		$this->entity_type_service->set( $recipe_post_id, 'http://schema.org/Recipe' );
+
+		wl_core_add_relation_instance( $post_id, WL_WHAT_RELATION, $recipe_post_id );
+
+		// Set up a default request
+		$_GET['action'] = 'wl_jsonld';
+		$_GET['id']     = $post_id;
+
+		// Make the request
+		try {
+			$this->_handleAjax( 'wl_jsonld' );
+		} catch ( WPAjaxDieContinueException $e ) {
+			unset( $e );
+		}
+
+		$response = json_decode( $this->_last_response );
+
+		// Check that the recipe is there.
+		$instances = array_filter( $response, function ( $item ) {
+			return 'Recipe' === $item->{'@type'};
+		} );
+
+		$this->assertCount( 1, $instances );
+
+	}
+
 }
