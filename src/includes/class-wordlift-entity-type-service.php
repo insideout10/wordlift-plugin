@@ -103,12 +103,18 @@ class Wordlift_Entity_Type_Service {
 
 			case 'post':
 			case 'page':
-				// Posts and pages are considered Articles.
-				return array(
-					'uri'       => 'http://schema.org/Article',
-					'css_class' => 'wl-post',
-				);
+				// Posts and pages might be associate with entity type, by default they are articles.
 
+				$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+				if ( 0 === count( $terms ) ) {
+					return array(
+						'uri'       => 'http://schema.org/Article',
+						'css_class' => 'wl-post',
+					);
+				}
+
+				return $this->schema_service->get_schema( $terms[0]->slug );
 			default:
 				// Everything else is considered a Creative Work.
 				return array(

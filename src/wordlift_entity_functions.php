@@ -226,7 +226,7 @@ function wl_get_meta_constraints( $property_name ) {
 		}
 	}
 
-	return NULL;
+	return null;
 }
 
 /**
@@ -236,7 +236,7 @@ function wl_get_meta_constraints( $property_name ) {
  *
  * @return array|null if $entity_id was specified, return custom_fields for that entity's type. Otherwise returns all custom_fields
  */
-function wl_entity_taxonomy_get_custom_fields( $entity_id = NULL ) {
+function wl_entity_taxonomy_get_custom_fields( $entity_id = null ) {
 
 	if ( is_null( $entity_id ) ) {
 
@@ -245,7 +245,7 @@ function wl_entity_taxonomy_get_custom_fields( $entity_id = NULL ) {
 		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array( 'hide_empty' => 0 ) );
 
 		if ( is_wp_error( $terms ) ) {
-			return NULL;
+			return null;
 		}
 
 		$custom_fields = array();

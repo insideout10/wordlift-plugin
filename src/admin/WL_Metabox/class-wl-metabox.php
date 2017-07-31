@@ -65,7 +65,7 @@ class WL_Metabox {
 		add_meta_box( $id, $title, array(
 			$this,
 			'html',
-		), Wordlift_Entity_Service::TYPE_NAME, 'normal', 'high' );
+		), array( Wordlift_Entity_Service::TYPE_NAME, 'post', 'page' ), 'normal', 'high' );
 
 		// Add filter to change the metabox CSS class.
 		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
@@ -149,7 +149,6 @@ class WL_Metabox {
 				$this->add_field( $info, true );
 
 			}
-
 		}
 
 	}

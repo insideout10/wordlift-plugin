@@ -251,6 +251,24 @@ function wl_core_upgrade_db_3_12_3_14() {
 	$editors->add_cap( 'delete_private_wordlift_entities' );
 }
 
+/**
+ * Upgrade the DB structure to the one expected by the 3.15 release.
+ *
+ * Add explicit Article entity.
+ *
+ * @since 3.15.0
+ */
+function wl_core_upgrade_db_3_14_3_15() {
+	$result = wp_insert_term(
+		'Article',
+		Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+		array(
+			'slug'        => 'Article',
+			'description' => 'An Article.',
+		)
+	);
+}
+
 // Check db status on automated plugins updates
 function wl_core_update_db_check() {
 
@@ -268,6 +286,7 @@ function wl_core_update_db_check() {
 		wl_core_upgrade_db_1_0_to_3_10();
 		wl_core_upgrade_db_3_10_3_12();
 		wl_core_upgrade_db_3_12_3_14();
+		wl_core_upgrade_db_3_14_3_15();
 		update_option( 'wl_db_version', WL_DB_VERSION );
 
 	}

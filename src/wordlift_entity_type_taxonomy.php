@@ -43,7 +43,7 @@ function wl_entity_type_taxonomy_register() {
 		'show_in_quick_edit' => false,
 	);
 
-	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, 'entity', $args );
+	register_taxonomy( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array( 'entity', 'post', 'page' ), $args );
 
 	// Add filter to change the metabox CSS class
 	add_filter( 'postbox_classes_entity_wl_entity_typediv', 'wl_admin_metaboxes_add_css_class' );
@@ -61,22 +61,6 @@ function wl_entity_type_taxonomy_register() {
 function wl_entity_type_taxonomy_get_type( $post_id ) {
 
 	return Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
-
-	//	$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-	//
-	//	if ( is_wp_error( $terms ) ) {
-	//		// TODO: handle error
-	//		return NULL;
-	//	}
-	//
-	//	// If there are not terms associated, return null.
-	//	if ( 0 === count( $terms ) ) {
-	//		return NULL;
-	//	}
-	//
-	//	// Return the entity type with the specified id.
-	//	return Wordlift_Schema_Service::get_instance()
-	//	                              ->get_schema( $terms[0]->slug );
 }
 
 /**

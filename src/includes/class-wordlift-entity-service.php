@@ -91,7 +91,8 @@ class Wordlift_Entity_Service {
 	}
 
 	/**
-	 * Determines whether a post is an entity or not.
+	 * Determines whether a post is an entity or not. Entity is in this context
+	 * something which is not an article.
 	 *
 	 * @since 3.1.0
 	 *
@@ -101,7 +102,17 @@ class Wordlift_Entity_Service {
 	 */
 	public function is_entity( $post_id ) {
 
-		return ( self::TYPE_NAME === get_post_type( $post_id ) );
+		$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+		if ( 0 === count( $terms ) ) {
+			return false;
+		}
+
+		if ( 'article' != $terms[0]->slug ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
