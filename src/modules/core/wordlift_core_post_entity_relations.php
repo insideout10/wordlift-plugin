@@ -48,7 +48,7 @@ function wl_core_get_relation_instances_table_name() {
  * @param int    $object_id  The entity post ID.
  *
  * @uses   $wpdb->replace() to perform the query
- * @return (integer|boolean) Return then relation instance ID or false
+ * @return integer|boolean Return then relation instance ID or false
  */
 function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 

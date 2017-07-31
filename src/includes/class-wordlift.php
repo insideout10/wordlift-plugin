@@ -530,7 +530,7 @@ class Wordlift {
 	public function __construct() {
 
 		$this->plugin_name = 'wordlift';
-		$this->version     = '3.14.0';
+		$this->version     = '3.14.1';
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();

@@ -37,7 +37,7 @@ const entities = function( state = Map(), action ) {
 			// preset it here according to the `occurrences` settings.
 			return Map( action.results.entities )
 				.map(
-					x => Object.assign( x, {
+					x => Object.assign( {}, x, {
 						link: LinkService.getLink( x.occurrences ),
 						local: 0 === x.id.indexOf( wlSettings.datasetUri ),
 						w: WsService.getW( x ),
