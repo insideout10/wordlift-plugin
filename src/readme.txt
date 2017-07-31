@@ -2,7 +2,7 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: semantic seo, schema.org, seo, artificial intelligence, content recommendation, semantic web, related posts, timeline, knowledge graph, interactive map, linked data
+Tags: schema.org, semantic seo, seo, artificial intelligence, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
 
 Requires at least: 4.2
 Tested up to: 4.8
