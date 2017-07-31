@@ -8,7 +8,7 @@ Tested up to: 4.8
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
+WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.
 
 == Description ==
 
