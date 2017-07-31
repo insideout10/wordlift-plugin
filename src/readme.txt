@@ -138,6 +138,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 
 == Changelog ==
 
+= 3.14.1 (2017-07-30) =
+* Fix: [#594](https://github.com/insideout10/wordlift-plugin/issues/594): Recipes appear as Things in the classification box.
+* Fix: [#593](https://github.com/insideout10/wordlift-plugin/issues/593): Recipes mentioned in posts/pages do not appear in the JSON-LD.
+
 = 3.14.0 (2017-07-18) =
 * Fix: [#582](https://github.com/insideout10/wordlift-plugin/issues/582): Empty area on Timeline w/o events.
 * Fix: [#581](https://github.com/insideout10/wordlift-plugin/issues/581): Date Picker doesn't open.
