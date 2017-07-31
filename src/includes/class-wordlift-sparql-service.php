@@ -80,7 +80,7 @@ class Wordlift_Sparql_Service {
 		$this->log->debug( "Running SPARQL queries..." );
 
 		// Look for a free temporary filename.
-		for ( $index = 1; $index < 1000; $index ++ ) {
+		for ( $index = 1; $index < PHP_INT_MAX; $index ++ ) {
 			$filename = WL_TEMP_DIR . $request_id . "-$index.sparql";
 
 			// Bail out if there are no files left.
@@ -136,7 +136,7 @@ class Wordlift_Sparql_Service {
 	private function get_temporary_file_for_sparql() {
 
 		// Look for a free temporary filename.
-		for ( $index = 1; $index < 1000; $index ++ ) {
+		for ( $index = 1; $index < PHP_INT_MAX; $index ++ ) {
 			$filename = WL_TEMP_DIR . WL_REQUEST_ID . "-$index.sparql";
 
 			if ( ! file_exists( $filename ) ) {
@@ -153,7 +153,7 @@ class Wordlift_Sparql_Service {
 			}
 		}
 
-		throw new Exception( 'Cannot create a temporary file.' );
+		throw new Exception( 'Cannot create a temporary file [ ' . WL_TEMP_DIR . WL_REQUEST_ID . ' ].' );
 	}
 
 	/**
