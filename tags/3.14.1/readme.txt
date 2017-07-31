@@ -3,13 +3,12 @@ Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
 Tags: schema.org, semantic seo, seo, artificial intelligence, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
-
 Requires at least: 4.2
 Tested up to: 4.8
 Stable tag: 3.14.1
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
+WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.
 
 == Description ==
 
