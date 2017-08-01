@@ -98,7 +98,7 @@ class Wordlift_Import_Service {
 	public function wp_import_post_meta( $postmeta, $post_id, $post ) {
 
 		// If we're not dealing with entity posts, return the original post meta.
-		if ( ! is_entity( $post_id ) ) {
+		if ( ! $this->entity_service->is_entity( $post_id ) ) {
 			return $postmeta;
 		}
 

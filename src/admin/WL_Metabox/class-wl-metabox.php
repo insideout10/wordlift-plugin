@@ -59,6 +59,14 @@ class WL_Metabox {
 	 */
 	public function add_main_metabox() {
 
+		// Build the fields we need to print.
+		$this->instantiate_fields( get_the_ID() );
+
+		// Bailout if there are no actual fields, we do not need a metabox in that case.
+		if ( empty( $this->fields ) ) {
+			return;
+		}
+
 		// Add main metabox (will print also the inner fields).
 		$id    = uniqid( 'wl-metabox-' );
 		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
@@ -79,9 +87,6 @@ class WL_Metabox {
 	 * @param WP_Post $post The post.
 	 */
 	public function html( $post ) {
-
-		// Build the fields we need to print.
-		$this->instantiate_fields( $post->ID );
 
 		// Loop over the fields.
 		foreach ( $this->fields as $field ) {
@@ -115,6 +120,13 @@ class WL_Metabox {
 		$entity_type = wl_entity_taxonomy_get_custom_fields( $post_id );
 
 		if ( isset( $entity_type ) ) {
+
+			/*
+			 * Might not have any relevant meta box field, for example for articles,
+			 * therefor make sure fields are at least an empty array to help the considered
+			 * in other functions using it.
+			 */
+			 $this->fields = array();
 
 			/**
 			 * In some special case, properties must be grouped in one field (e.g. coordinates) or dealed with custom methods.
