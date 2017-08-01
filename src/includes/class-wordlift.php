@@ -908,8 +908,6 @@ class Wordlift {
 
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
-		$this->linked_data_service = new Wordlift_Linked_Data_Service();
-
 		// Create an instance of the Schema service.
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
 		$this->schema_service        = new Wordlift_Schema_Service();
@@ -963,6 +961,8 @@ class Wordlift {
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
 
 		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
+
+		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service );
 
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
