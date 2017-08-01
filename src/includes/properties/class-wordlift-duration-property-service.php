@@ -24,6 +24,11 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 	 */
 	function get( $post_id, $meta_key ) {
 
+		// Get the values and filter out the empty ones (or the ones with 00:00).
+		$values = array_filter( parent::get( $post_id, $meta_key ), function ( $item ) {
+			return ! empty( $item ) && '00:00' !== $item;
+		} );
+
 		/*
 		 * Map the value in the meta
 		 * The UI for the meta date enable two forms, a number of minutes
@@ -32,7 +37,7 @@ class Wordlift_Duration_Property_Service extends Wordlift_Simple_Property_Servic
 		 */
 		return array_map( function ( $value ) {
 			return 'PT' . str_replace( ':', 'H', $value ) . 'M';
-		}, parent::get( $post_id, $meta_key ) );
+		}, $values );
 	}
 
 }

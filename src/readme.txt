@@ -2,14 +2,13 @@
 Author URL: https://wordlift.io
 Plugin URL: https://wordlift.io
 Contributors: wordlift, insideout10, ziodave
-Tags: semantic seo, schema.org, seo, artificial intelligence, content recommendation, semantic web, related posts, timeline, knowledge graph, interactive map, linked data
-
+Tags: schema.org, semantic seo, seo, artificial intelligence, linked data, semantic web, content recommendation, related posts, timeline, knowledge graph, interactive map 
 Requires at least: 4.2
 Tested up to: 4.8
 Stable tag: {version}
 License: GPLv2 or later
 
-WordLift brings the power of Artificial Intelligence to beautifully organize content. Attract new readers and get their true attention.
+WordLift brings the power of Artificial Intelligence to organize content. Attract new readers and get their true attention with top notch semantic seo.
 
 == Description ==
 
@@ -137,6 +136,10 @@ You can open your datasets to the public, attaching to it a free or a commercial
 9. The WordLift Dashboard. Your [knowledge graph](http://docs.wordlift.io/en/latest/key-concepts.html#knowledge-graph) at a glance.
 
 == Changelog ==
+
+= 3.14.1 (2017-07-30) =
+* Fix: [#594](https://github.com/insideout10/wordlift-plugin/issues/594): Recipes appear as Things in the classification box.
+* Fix: [#593](https://github.com/insideout10/wordlift-plugin/issues/593): Recipes mentioned in posts/pages do not appear in the JSON-LD.
 
 = 3.14.0 (2017-07-18) =
 * Fix: [#582](https://github.com/insideout10/wordlift-plugin/issues/582): Empty area on Timeline w/o events.
