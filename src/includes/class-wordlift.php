@@ -508,6 +508,15 @@ class Wordlift {
 	protected $batch_analysis_service;
 
 	/**
+	 * The {@link Wordlift_Entity_Type_Adapter} instance.
+	 *
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Entity_Type_Adapter $entity_type_adapter The {@link Wordlift_Entity_Type_Adapter} instance.
+	 */
+	protected $entity_type_adapter;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -752,6 +761,7 @@ class Wordlift {
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
@@ -995,7 +1005,8 @@ class Wordlift {
 		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
 
 		/** Adapters. */
-		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
+		$this->tinymce_adapter     = new Wordlift_Tinymce_Adapter( $this );
+		$this->entity_type_adapter = new Wordlift_Entity_Type_Adapter( $this->entity_type_service );
 
 		/** Async Tasks. */
 		new Wordlift_Sparql_Query_Async_Task();
@@ -1202,6 +1213,8 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
+		$this->loader->add_action( 'wp_insert_post', $this->entity_type_adapter, 'insert_post', 10, 3 );
+
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
 			$this->loader->add_filter( 'map_meta_cap', $this->entity_type_admin_page, 'restrict_super_admin', 10, 4 );
@@ -1257,6 +1270,8 @@ class Wordlift {
 		$this->loader->add_action( 'pre_get_posts', $this->event_entity_page_service, 'pre_get_posts', 10, 1 );
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+
+		$this->loader->add_action( 'wp_insert_post', $this->entity_type_adapter, 'insert_post', 10, 3 );
 
 	}
 

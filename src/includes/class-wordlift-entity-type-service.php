@@ -76,7 +76,14 @@ class Wordlift_Entity_Type_Service {
 	 *
 	 * @param int $post_id The post id.
 	 *
-	 * @return array|null An array of type properties or null if no term is associated
+	 * @return array|null {
+	 * An array of type properties or null if no term is associated
+	 *
+	 * @type string css_class     The css class, e.g. `wl-thing`.
+	 * @type string uri           The schema.org class URI, e.g. `http://schema.org/Thing`.
+	 * @type array  same_as       An array of same as attributes.
+	 * @type array  custom_fields An array of custom fields.
+	 * }
 	 */
 	public function get( $post_id ) {
 
@@ -118,8 +125,8 @@ class Wordlift_Entity_Type_Service {
 			default:
 				// Everything else is considered a Creative Work.
 				return array(
-					'uri'       => 'http://schema.org/CreativeWork',
-					'css_class' => 'wl-creative-work',
+					'uri'       => 'http://schema.org/Thing',
+					'css_class' => 'wl-thing',
 				);
 		}
 
@@ -175,6 +182,26 @@ class Wordlift_Entity_Type_Service {
 			}
 		}
 
+	}
+
+
+	/**
+	 * Check whether an entity type is set for the {@link WP_Post} with the
+	 * specified id.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id The {@link WP_Post}'s `id`.
+	 *
+	 * @return bool True if an entity type is set otherwise false.
+	 */
+	public function has_entity_type( $post_id ) {
+
+		// Get the post terms for the specified post ID.
+		$terms = wp_get_post_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+
+		// True if there's at least one term bound to the post.
+		return ( 0 < count( $terms ) );
 	}
 
 }
