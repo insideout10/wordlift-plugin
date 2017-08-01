@@ -408,7 +408,6 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	public function get_schema( $name ) {
-
 		// Check if the schema exists and, if not, return NULL.
 		if ( ! isset( $this->schema[ $name ] ) ) {
 			return null;
