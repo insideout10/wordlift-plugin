@@ -343,6 +343,7 @@ class Wordlift_Schema_Service {
 		// Set the taxonomy data.
 		// Note: parent types must be defined before child types.
 		$this->schema = array(
+			'articel'		=> $this->get_article_schema(),
 			'thing'         => $this->get_thing_schema(),
 			'creative-work' => $this->get_creative_work_schema(),
 			'event'         => $this->get_event_schema(),
@@ -1001,6 +1002,31 @@ class Wordlift_Schema_Service {
 		// Merge the custom fields with those provided by the parent schema.
 		$parent_schema           = $this->get_creative_work_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+
+		return $schema;
+	}
+
+	/**
+	 * Get the 'article' schema.
+	 *
+	 * @return array An array with the schema configuration.
+	 *
+	 * @since 3.15.0
+	 */
+	private function get_article_schema() {
+
+		$schema = array(
+			'label'         => 'Article',
+			'description'   => 'An Article.',
+			'parents'       => array(),
+			'css_class'     => 'wl-article',
+			'uri'           => 'http://schema.org/Article',
+			'same_as'       => array(),
+			'templates'     => array(
+				'subtitle' => '{{id}}',
+			),
+			'custom_fields' => array(),
+		);
 
 		return $schema;
 	}
