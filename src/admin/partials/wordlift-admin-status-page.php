@@ -16,7 +16,7 @@ if ( 0 < count( $not_found_uris ) ) {
 
 	$first_id = key( $not_found_uris );
 	// Re-push the entity to the Linked Data Cloud.
-	wl_linked_data_push_to_redlink( $first_id );
+	Wordlift_Linked_Data_Service::get_instance()->push( $first_id );
 
 }
 ?>

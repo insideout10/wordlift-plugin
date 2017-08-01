@@ -174,7 +174,7 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 	}
 
 	// Push the post to Redlink.
-	wl_linked_data_push_to_redlink( $post->ID );
+	Wordlift_Linked_Data_Service::get_instance()->push( $post->ID );
 
 	add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 }
@@ -400,7 +400,7 @@ function wl_save_entity( $entity_data ) {
 
 	// The entity is pushed to Redlink on save by the function hooked to save_post.
 	// save the entity in the triple store.
-	wl_linked_data_push_to_redlink( $post_id );
+	Wordlift_Linked_Data_Service::get_instance()->push( $post_id );
 
 	// finally return the entity post.
 	return get_post( $post_id );
@@ -455,31 +455,3 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 	return $entities;
 }
 
-/**
- * Push the post with the specified ID to Redlink.
- *
- * @since 3.0.0
- *
- * @param int $post_id The post ID.
- */
-function wl_linked_data_push_to_redlink( $post_id ) {
-
-	// Get the post.
-	$post = get_post( $post_id );
-
-	// wl_write_log( "wl_linked_data_push_to_redlink [ post id :: $post_id ][ post type :: $post->post_type ]" );
-
-	// Call the method on behalf of the post type.
-	switch ( $post->post_type ) {
-		case 'entity':
-			wl_push_entity_post_to_redlink( $post );
-			break;
-		default:
-			wl_push_post_to_redlink( $post );
-	}
-
-	// Reindex the triple store if buffering is turned off.
-	if ( false === WL_ENABLE_SPARQL_UPDATE_QUERIES_BUFFERING ) {
-		wordlift_reindex_triple_store();
-	}
-}

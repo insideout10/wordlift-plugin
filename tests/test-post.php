@@ -212,7 +212,7 @@ class PostTest extends Wordlift_Unit_Test_Case {
 
 		// TODO: synchronize data.
 		// NOTICE: this requires a published post!
-		wl_linked_data_push_to_redlink( $post_id );
+		Wordlift_Linked_Data_Service::get_instance()->push( $post_id );
 
 		// Check that the entities are created in WordPress.
 		$this->assertCount( count( $entities ), $entity_posts );
