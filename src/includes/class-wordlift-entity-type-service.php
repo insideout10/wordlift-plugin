@@ -80,47 +80,34 @@ class Wordlift_Entity_Type_Service {
 	 */
 	public function get( $post_id ) {
 
-		// Return the correct entity type according to the post type.
-		switch ( get_post_type( $post_id ) ) {
+		$post_type = get_post_type( $post_id );
+		if ( Wordlift_Entity_Service::is_valid_entity_post_type( $post_type ) ) {
+			// Get the type from the associated classification.
 
-			case 'entity':
-				// Get the type from the associated classification.
+			$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
-				$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+			if ( is_wp_error( $terms ) ) {
+				// TODO: handle error
+				return null;
+			}
 
-				if ( is_wp_error( $terms ) ) {
-					// TODO: handle error
-					return null;
-				}
-
-				// If there are not terms associated, return null.
-				if ( 0 === count( $terms ) ) {
-					return null;
-				}
-
-				// Return the entity type with the specified id.
-				return $this->schema_service->get_schema( $terms[0]->slug );
-
-			case 'post':
-			case 'page':
-				// Posts and pages might be associate with entity type, by default they are articles.
-
-				$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
-
-				if ( 0 === count( $terms ) ) {
-					return array(
-						'uri'       => 'http://schema.org/Article',
-						'css_class' => 'wl-post',
-					);
-				}
-
-				return $this->schema_service->get_schema( $terms[0]->slug );
-			default:
-				// Everything else is considered a Creative Work.
+			// If there are not terms associated, default to article.
+			if ( 0 === count( $terms ) ) {
 				return array(
-					'uri'       => 'http://schema.org/CreativeWork',
-					'css_class' => 'wl-creative-work',
+					'uri'       => 'http://schema.org/Article',
+					'css_class' => 'wl-post',
 				);
+			}
+
+			// Return the entity type with the specified id.
+			return $this->schema_service->get_schema( $terms[0]->slug );
+
+		} else {
+			// Everything else is considered a Creative Work.
+			return array(
+				'uri'       => 'http://schema.org/CreativeWork',
+				'css_class' => 'wl-creative-work',
+			);
 		}
 
 	}
