@@ -144,11 +144,14 @@ class Wordlift_Entity_Type_Service {
 
 		// If the type URI is empty we remove the type.
 		if ( empty( $type_uri ) ) {
+			$this->log->debug( "Removing entity type for post $post_id..." );
 
 			wp_set_object_terms( $post_id, null, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 			return;
 		}
+
+		$this->log->debug( "Setting entity type for post $post_id..." );
 
 		// Get all the terms bound to the wl_entity_type taxonomy.
 		$terms = get_terms( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
@@ -161,16 +164,17 @@ class Wordlift_Entity_Type_Service {
 			'fields'     => 'all',
 		) );
 
-		$this->log->error( "Type not found [ post id :: $post_id ][ type uri :: $type_uri ]" );
-
 		// Check which term matches the specified URI.
 		foreach ( $terms as $term ) {
 
 			$term_id   = $term->term_id;
 			$term_slug = $term->slug;
 
+			$this->log->trace( "Parsing term {$term->slug}..." );
+
 			// Load the type data.
 			$type = $this->schema_service->get_schema( $term_slug );
+
 			// Set the related term ID.
 			if ( $type_uri === $type['uri'] || $type_uri === $type['css_class'] ) {
 
@@ -181,6 +185,8 @@ class Wordlift_Entity_Type_Service {
 				return;
 			}
 		}
+
+		$this->log->error( "Type not found [ post id :: $post_id ][ type uri :: $type_uri ]" );
 
 	}
 

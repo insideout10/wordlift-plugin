@@ -21,6 +21,15 @@
 class Wordlift_Entity_Type_Adapter {
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The {@link Wordlift_Entity_Type_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -37,6 +46,8 @@ class Wordlift_Entity_Type_Adapter {
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
 	 */
 	public function __construct( $entity_type_service ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Entity_Type_Adapter' );
 
 		$this->entity_type_service = $entity_type_service;
 
@@ -58,20 +69,21 @@ class Wordlift_Entity_Type_Adapter {
 	 */
 	public function insert_post( $post_id, $post, $update ) {
 
-		// Bail out if this is an update.
-		if ( $update ) {
-			return;
-		}
-
 		// Bail out if the post isn't `page` or `post`.
 		if ( ! in_array( $post->post_type, array( 'post', 'page' ) ) ) {
+			$this->log->debug( "Ignoring `{$post->post_type}` post type." );
+
 			return;
 		}
 
 		// Bail out if the post already has an entity type.
 		if ( $this->entity_type_service->has_entity_type( $post_id ) ) {
+			$this->log->debug( "Post $post_id has already an entity type." );
+
 			return;
 		}
+
+		$this->log->debug( "Setting `Article` entity type for post $post_id." );
 
 		// Finally set the default entity type.
 		$this->entity_type_service->set( $post_id, 'http://schema.org/Article' );
