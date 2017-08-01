@@ -1132,7 +1132,7 @@ class Wordlift {
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
-		$this->loader->add_action( 'save_post_entity', $this->rating_service, 'set_rating_for', 10, 1 );
+		$this->loader->add_action( 'save_post', $this->rating_service, 'set_rating_for', 20, 1 );
 
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 		$this->loader->add_action( 'in_admin_header', $this->rating_service, 'in_admin_header' );
@@ -1213,7 +1213,7 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
-		$this->loader->add_action( 'wp_insert_post', $this->entity_type_adapter, 'insert_post', 10, 3 );
+		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
@@ -1271,7 +1271,8 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
-		$this->loader->add_action( 'wp_insert_post', $this->entity_type_adapter, 'insert_post', 10, 3 );
+		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
+		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
 	}
 

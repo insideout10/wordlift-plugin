@@ -533,11 +533,11 @@ class Wordlift_Entity_Service {
 	static function valid_entity_post_type() {
 
 		// Ignore builtins in the call to avoid getting attachments.
-		$public_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
-		$public_types[] = 'post';
-		$public_types[] = 'page';
+		$post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
+		$post_types[] = 'post';
+		$post_types[] = 'page';
 
-		return apply_filter( 'wl_valid_entoty_post_types', $post_types );
+		return apply_filters( 'wl_valid_entoty_post_types', $post_types );
 	}
 
 	/**
@@ -554,6 +554,6 @@ class Wordlift_Entity_Service {
 	 */
 	static function is_valid_entity_post_type( $post_type ) {
 
-		return in_array( $post_type, $this->valid_entity_post_type() ), true );
+		return in_array( $post_type, self::valid_entity_post_type(), true );
 	}
 }

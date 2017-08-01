@@ -54,9 +54,9 @@ class Wordlift_Entity_Type_Adapter {
 	}
 
 	/**
-	 * Hook to `wp_insert_post`.
+	 * Hook to `save_post`.
 	 *
-	 * This function is called when the `wp_insert_post` action is run. The
+	 * This function is called when the `save_post` action is run. The
 	 * function checks whether an Entity Type term (from the Entity Types
 	 * taxonomy) is already assigned and, if not, it calls {@link Wordlift_Entity_Type_Service}
 	 * to set the default taxonomy term.
@@ -67,11 +67,11 @@ class Wordlift_Entity_Type_Adapter {
 	 * @param WP_Post $post    The {@link WP_Post} instance.
 	 * @param boolean $update  Whether it's an update.
 	 */
-	public function insert_post( $post_id, $post, $update ) {
+	public function save_post( $post_id, $post, $update ) {
 
-		// Bail out if the post isn't `page` or `post`.
-		if ( ! in_array( $post->post_type, array( 'post', 'page' ) ) ) {
+		if ( ! in_array( $post->post_type, Wordlift_Entity_Service::valid_entity_post_type() ) ) {
 			$this->log->debug( "Ignoring `{$post->post_type}` post type." );
+			// Bail out if the post isn't can not be an entity.
 
 			return;
 		}
@@ -86,7 +86,13 @@ class Wordlift_Entity_Type_Adapter {
 		$this->log->debug( "Setting `Article` entity type for post $post_id." );
 
 		// Finally set the default entity type.
-		$this->entity_type_service->set( $post_id, 'http://schema.org/Article' );
+
+		// For entities use a Thing
+		if ( 'entity' === $post->post_type ) {
+			$this->entity_type_service->set( $post_id, 'http://schema.org/Thing' );
+		} else {
+			$this->entity_type_service->set( $post_id, apply_filters( 'wl_default_entity_type_for_post_type', 'http://schema.org/Article', $post->post_type ) );
+		}
 
 	}
 
