@@ -13,8 +13,8 @@ function wl_push_post_to_redlink( $post ) {
 	}
 
 	// Defensive. making sure entities are not handled HRTime\PerformanceCounter
-	if ( 'entiti' === $post->post_type ) {
-		return
+	if ( 'entity' === $post->post_type ) {
+		return;
 	}
 
 	// Only handle published valid post types.
