@@ -18,7 +18,7 @@ class Wordlift_Sparql_Service {
 	 * @access private
 	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
 	 */
-	private $log;
+	private static $log;
 
 	/**
 	 * The {@link Wordlift_Sparql_Service} singleton instance.
@@ -36,7 +36,7 @@ class Wordlift_Sparql_Service {
 	 */
 	public function __construct() {
 
-		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Sparql_Service' );
+		self::$log = Wordlift_Log_Service::get_logger( 'Wordlift_Sparql_Service' );
 
 		self::$instance = $this;
 
@@ -77,7 +77,7 @@ class Wordlift_Sparql_Service {
 	 */
 	public function run_sparql_query( $request_id ) {
 
-		$this->log->debug( "Running SPARQL queries..." );
+		self::$log->debug( "Running SPARQL queries..." );
 
 		// Look for a free temporary filename.
 		for ( $index = 1; $index < PHP_INT_MAX; $index ++ ) {
@@ -88,7 +88,7 @@ class Wordlift_Sparql_Service {
 				break;
 			}
 
-			$this->log->debug( "Running SPARQL from $filename..." );
+			self::$log->debug( "Running SPARQL from $filename..." );
 
 			// Get the query saved in the file.
 			$query = file_get_contents( $filename );
@@ -117,7 +117,7 @@ class Wordlift_Sparql_Service {
 		// Get a temporary filename.
 		$filename = $this->get_temporary_file_for_sparql();
 
-		$this->log->debug( "Buffering SPARQL to file $filename..." );
+		self::$log->debug( "Buffering SPARQL to file $filename..." );
 
 		// Write the contents to the temporary filename.
 		file_put_contents( $filename, $stmt . "\n", FILE_APPEND );
@@ -190,42 +190,40 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @return string The formatted value for SPARQL statements.
 	 */
-	public function format( $value, $type ) {
+	public static function format( $value, $type = null, $language = null ) {
 
 		// see https://www.w3.org/TR/sparql11-query/.
 
 		switch ( $type ) {
 
 			case Wordlift_Schema_Service::DATA_TYPE_BOOLEAN:
-
 				// SPARQL supports 'true' and 'false', so we evaluate the $value
 				// and return true/false accordingly.
 				return $value ? 'true' : 'false';
 
 			case Wordlift_Schema_Service::DATA_TYPE_DATE:
-
 				return sprintf( '"%s"^^xsd:date', self::escape( $value ) );
 
-
 			case Wordlift_Schema_Service::DATA_TYPE_DOUBLE:
-
 				return sprintf( '"%s"^^xsd:double', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_INTEGER:
-
 				return sprintf( '"%s"^^xsd:integer', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_STRING:
-
 				return sprintf( '"%s"^^xsd:string', self::escape( $value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_URI:
-
 				return sprintf( '<%s>', self::escape_uri( $value ) );
+
+			case null:
+				$language_tag = ( null !== $language ? "@$language" : '' );
+
+				return sprintf( '"%s"%s', self::escape( $value ), $language_tag );
 
 			default:
 
-				$this->log->warn( "Unknown data type [ type :: $type ]" );
+				self::$log->warn( "Unknown data type [ type :: $type ]" );
 
 				// Try to insert the value anyway.
 				return sprintf( '"%s"', self::escape( $value ) );
