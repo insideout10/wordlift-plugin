@@ -343,7 +343,7 @@ class Wordlift_Schema_Service {
 		// Set the taxonomy data.
 		// Note: parent types must be defined before child types.
 		$this->schema = array(
-			'articel'		=> $this->get_article_schema(),
+			'article'       => $this->get_article_schema(),
 			'thing'         => $this->get_thing_schema(),
 			'creative-work' => $this->get_creative_work_schema(),
 			'event'         => $this->get_event_schema(),
@@ -408,7 +408,6 @@ class Wordlift_Schema_Service {
 	 * @since 3.1.0
 	 */
 	public function get_schema( $name ) {
-
 		// Check if the schema exists and, if not, return NULL.
 		if ( ! isset( $this->schema[ $name ] ) ) {
 			return null;
