@@ -73,7 +73,15 @@ class WL_Metabox {
 		add_meta_box( $id, $title, array(
 			$this,
 			'html',
+<<<<<<< HEAD
 		), Wordlift_Entity_Service::valid_entity_post_type(), 'normal', 'high' );
+=======
+		), array(
+			Wordlift_Entity_Service::TYPE_NAME,
+			'post',
+			'page',
+		), 'normal', 'high' );
+>>>>>>> origin/feature/#596_Associate-posts-with-entity-raxonomy/leta-post-to-be-equivalent-to-an-entity
 
 		// Add filter to change the metabox CSS class.
 		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
@@ -126,7 +134,7 @@ class WL_Metabox {
 			 * therefor make sure fields are at least an empty array to help the considered
 			 * in other functions using it.
 			 */
-			 $this->fields = array();
+			$this->fields = array();
 
 			/**
 			 * In some special case, properties must be grouped in one field (e.g. coordinates) or dealed with custom methods.
@@ -296,7 +304,8 @@ class WL_Metabox {
 			}
 		}
 
-		wl_linked_data_push_to_redlink( $entity_id );
+		Wordlift_Linked_Data_Service::get_instance()->push( $entity_id );
+
 	}
 
 	/**

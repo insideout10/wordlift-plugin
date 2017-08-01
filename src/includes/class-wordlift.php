@@ -517,9 +517,16 @@ class Wordlift {
 	protected $entity_type_adapter;
 
 	/**
-	 * {@link Wordlift}'s singleton instance.
+	 * The {@link Wordlift_Linked_Data_Service} instance.
 	 *
-	 * @since  3.11.2
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Linked_Data_Service $linked_data_service The {@link Wordlift_Linked_Data_Service} instance.
+	 */
+	protected $linked_data_service;
+
+	/**
+	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
 	 * @access private
@@ -601,35 +608,14 @@ class Wordlift {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sanitizer.php';
 
-		/**
-		 * The Redirect service.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-redirect-service.php';
-
-		/**
-		 * The Log service.
-		 */
+		/** Services. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-log-service.php';
-
-		/**
-		 * The configuration service.
-		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-redirect-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-configuration-service.php';
-
-		/**
-		 * The entity post type service (this is the WordPress post type, not the entity schema type).
-		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-post-type-service.php';
-
-		/**
-		 * The entity type service (i.e. the schema type).
-		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-type-service.php';
-
-		/**
-		 * The entity link service.
-		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-entity-link-service.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-linked-data-service.php';
 
 		/**
 		 * The Query builder.
@@ -904,6 +890,7 @@ class Wordlift {
 		global $wl_logger;
 		$wl_logger = Wordlift_Log_Service::get_logger( 'WordLift' );
 
+		/** Services. */
 		// Create the configuration service.
 		$this->configuration_service = new Wordlift_Configuration_Service();
 
@@ -920,6 +907,8 @@ class Wordlift {
 		$this->thumbnail_service = new Wordlift_Thumbnail_Service();
 
 		$this->sparql_service = new Wordlift_Sparql_Service();
+
+		$this->linked_data_service = new Wordlift_Linked_Data_Service();
 
 		// Create an instance of the Schema service.
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );

@@ -177,24 +177,97 @@ class Wordlift_Entity_Type_Service {
 
 	}
 
-
 	/**
 	 * Check whether an entity type is set for the {@link WP_Post} with the
 	 * specified id.
 	 *
 	 * @since 3.15.0
 	 *
-	 * @param int $post_id The {@link WP_Post}'s `id`.
+	 * @param int    $post_id The {@link WP_Post}'s `id`.
+	 * @param string $uri     The entity type URI.
 	 *
 	 * @return bool True if an entity type is set otherwise false.
 	 */
-	public function has_entity_type( $post_id ) {
+	public function has_entity_type( $post_id, $uri = null ) {
 
-		// Get the post terms for the specified post ID.
-		$terms = wp_get_post_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
+		// If an URI hasn't been specified just check whether we have at least
+		// one entity type.
+		if ( null === $uri ) {
 
-		// True if there's at least one term bound to the post.
-		return ( 0 < count( $terms ) );
+			// Get the post terms for the specified post ID.
+			$terms = $this->get_post_terms( $post_id );
+
+			// True if there's at least one term bound to the post.
+			return ( 0 < count( $terms ) );
+		}
+
+		// Check whether the post has an entity type with that URI.
+		return ( null !== $this->get_term_by_uri( $post_id, $uri ) );
+	}
+
+	/**
+	 * Get the list of entity types' terms for the specified {@link WP_Post}.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id The {@link WP_Post} id.
+	 *
+	 * @return array|WP_Error An array of entity types' terms or {@link WP_Error}.
+	 */
+	private function get_post_terms( $post_id ) {
+
+		return wp_get_post_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, array(
+			'hide_empty' => false,
+			// Because of #334 (and the AAM plugin) we changed fields from 'id=>slug' to 'all'.
+			// An issue has been opened with the AAM plugin author as well.
+			//
+			// see https://github.com/insideout10/wordlift-plugin/issues/334
+			// see https://wordpress.org/support/topic/idslug-not-working-anymore?replies=1#post-8806863
+			'fields'     => 'all',
+		) );
+	}
+
+	/**
+	 * Get an entity type term given its URI.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int    $post_id The {@link WP_Post} id.
+	 * @param string $uri     The entity type URI.
+	 *
+	 * @return array|null {
+	 * An array of entity type properties or null if no term is associated
+	 *
+	 * @type string css_class     The css class, e.g. `wl-thing`.
+	 * @type string uri           The schema.org class URI, e.g. `http://schema.org/Thing`.
+	 * @type array  same_as       An array of same as attributes.
+	 * @type array  custom_fields An array of custom fields.
+	 * }
+	 */
+	private function get_term_by_uri( $post_id, $uri ) {
+
+		// Get the post terms bound to the specified post.
+		$terms = $this->get_post_terms( $post_id );
+
+		// Look for a term if the specified URI.
+		foreach ( $terms as $term ) {
+			// Get the schema by slug.
+			$schema = $this->schema_service->get_schema( $term->slug );
+
+			// Continue to the next one, if a schema isn't found (or hasn't got
+			// and URI.
+			if ( null === $schema || ! isset( $schema['uri'] ) ) {
+				continue;
+			}
+
+			// Return the schema if the URI matches.
+			if ( $uri === $schema['uri'] ) {
+				return $schema;
+			}
+		}
+
+		// Return null.
+		return null;
 	}
 
 }

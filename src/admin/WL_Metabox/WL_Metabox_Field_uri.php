@@ -10,7 +10,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 	public function sanitize_data_filter( $value ) {
 
 		if ( empty( $value ) ) {
-			return NULL;
+			return null;
 		}
 
 		// Check that the inserted URI, ID or name does not point to a saved entity.
@@ -34,9 +34,8 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$new_entity_id = wp_insert_post( array(
 				'post_status' => 'publish',
 				'post_type'   => Wordlift_Entity_Service::TYPE_NAME,
-				'post_title'  => $value
+				'post_title'  => $value,
 			) );
-			$new_entity    = get_post( $new_entity_id );
 
 			$type = 'http://schema.org/' . ( isset( $this->expected_uri_type ) ? $this->expected_uri_type[0] : 'Thing' );
 
@@ -46,7 +45,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			$new_uri = wl_build_entity_uri( $new_entity_id );
 			wl_set_entity_uri( $new_entity_id, $new_uri );
 
-			wl_push_entity_post_to_redlink( $new_entity );
+			Wordlift_Linked_Data_Service::get_instance()->push( $new_entity_id );
 
 			// Update the value that will be saved as meta
 			$value = $new_entity_id;
@@ -77,7 +76,7 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 	public function html_input( $default_entity_identifier ) {
 
 		if ( empty( $default_entity_identifier ) ) {
-			$entity = NULL;
+			$entity = null;
 		} elseif ( is_numeric( $default_entity_identifier ) ) {
 			$entity = get_post( $default_entity_identifier );
 		} else {
