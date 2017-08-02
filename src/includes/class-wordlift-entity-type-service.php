@@ -83,33 +83,45 @@ class Wordlift_Entity_Type_Service {
 	 * @type string uri           The schema.org class URI, e.g. `http://schema.org/Thing`.
 	 * @type array  same_as       An array of same as attributes.
 	 * @type array  custom_fields An array of custom fields.
+	 * @type array  linked_data   An array of {@link Wordlift_Sparql_Tuple_Rendition}.
 	 * }
 	 */
 	public function get( $post_id ) {
 
+		$this->log->debug( "Getting the post type for post $post_id..." );
+
 		$post_type = get_post_type( $post_id );
+
 		if ( Wordlift_Entity_Service::is_valid_entity_post_type( $post_type ) ) {
 			// Get the type from the associated classification.
 
 			$terms = wp_get_object_terms( $post_id, Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME );
 
 			if ( is_wp_error( $terms ) ) {
+				$this->log->error( "An error occurred while getting the post type for post $post_id: " . $terms->get_error_message() );
+
 				// TODO: handle error
 				return null;
 			}
 
 			// If there are not terms associated, default to article.
 			if ( 0 === count( $terms ) ) {
+				$this->log->info( "Post $post_id has no terms, returning `Article`." );
+
 				return array(
 					'uri'       => 'http://schema.org/Article',
 					'css_class' => 'wl-post',
 				);
 			}
 
+			$this->log->info( "Found {$terms[0]->slug} term for post $post_id." );
+
 			// Return the entity type with the specified id.
 			return $this->schema_service->get_schema( $terms[0]->slug );
 
 		} else {
+			$this->log->info( "Returning `Thing` for post $post_id." );
+
 			// Everything else is considered a Creative Work.
 			return array(
 				'uri'       => 'http://schema.org/Thing',

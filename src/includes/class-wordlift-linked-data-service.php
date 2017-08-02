@@ -19,6 +19,15 @@
 class Wordlift_Linked_Data_Service {
 
 	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	private $log;
+
+	/**
 	 * The {@link Wordlift_Entity_Service} instance.
 	 *
 	 * @since  3.15.0
@@ -37,6 +46,15 @@ class Wordlift_Linked_Data_Service {
 	private $entity_type_service;
 
 	/**
+	 * The {@link Wordlift_Schema_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Schema_Service $schema_service The {@link Wordlift_Schema_Service} instance.
+	 */
+	private $schema_service;
+
+	/**
 	 * The {@link Wordlift_Linked_Data_Service} singleton instance.
 	 *
 	 * @since  3.15.0
@@ -52,11 +70,15 @@ class Wordlift_Linked_Data_Service {
 	 *
 	 * @param \Wordlift_Entity_Service      $entity_service      The {@link Wordlift_Entity_Service} instance.
 	 * @param \Wordlift_Entity_Type_Service $entity_type_service The {@link Wordlift_Entity_Type_Service} instance.
+	 * @param \Wordlift_Schema_Service      $schema_service      The {@link Wordlift_Schema_Service} instance.
 	 */
-	public function __construct( $entity_service, $entity_type_service ) {
+	public function __construct( $entity_service, $entity_type_service, $schema_service ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Linked_Data_Service' );
 
 		$this->entity_service      = $entity_service;
 		$this->entity_type_service = $entity_type_service;
+		$this->schema_service      = $schema_service;
 
 		self::$instance = $this;
 
@@ -86,14 +108,20 @@ class Wordlift_Linked_Data_Service {
 	 */
 	public function push( $post_id ) {
 
+		$this->log->debug( "Pushing post $post_id..." );
+
 		// Bail out if it's not an entity: we do NOT publish non entities or
 		// entities of type `Article`s.
 		if ( ! $this->entity_service->is_entity( $post_id ) ) {
+			$this->log->debug( "Post $post_id is not an entity." );
+
 			return;
 		}
 
 		// Bail out if the entity type is `Article`.
-		if ( ! $this->entity_type_service->has_entity_type( $post_id, 'http://schema.org/Article' ) ) {
+		if ( $this->entity_type_service->has_entity_type( $post_id, 'http://schema.org/Article' ) ) {
+			$this->log->debug( "Post $post_id is an `Article`." );
+
 			return;
 		}
 
@@ -115,25 +143,51 @@ class Wordlift_Linked_Data_Service {
 	 * @param int $post_id The {@link WP_Post}'s id.
 	 */
 	private function do_push( $post_id ) {
+		$this->log->debug( "Pushing post $post_id..." );
 
+		// Get the post.
 		$post = get_post( $post_id );
+
+		// Bail out if the post isn't found.
+		if ( null === $post ) {
+			$this->log->debug( "Post $post_id not found." );
+
+			return;
+		}
 
 		// Bail out if the post isn't published.
 		if ( 'publish' !== $post->post_status ) {
+			$this->log->debug( "Post $post_id not published." );
+
 			return;
+		}
+
+		// Bail out if the URI isn't valid.
+		if ( ! $this->has_valid_uri( $post_id ) ) {
+			$this->log->debug( "Post $post_id URI invalid." );
+
+			return;
+		}
+
+		// Get the delete statements.
+		$deletes = $this->get_delete_statements( $post_id );
+
+//		var_dump( $deletes );
+
+		// Run the delete queries.
+		rl_execute_sparql_update_query( implode( "\n", $deletes ) );
+
+		$type        = $this->entity_type_service->get( $post_id );
+		$linked_data = $type['linked_data'];
+
+		/** @var \Wordlift_Sparql_Tuple_Rendition $item */
+		foreach ( $linked_data as $item ) {
+//			var_dump( $item->get( $post_id ) );
 		}
 
 		// get the entity URI and the SPARQL escaped version.
 		$uri   = wl_get_entity_uri( $post->ID );
 		$uri_e = wl_sparql_escape_uri( $uri );
-
-		// If the URI ends with a trailing slash, then we have a problem.
-		if ( '/' === substr( $uri, - 1, 1 ) ) {
-
-			wl_write_log( "wl_push_entity_post_to_redlink : the URI is invalid [ post ID :: $post->ID ][ URI :: $uri ]" );
-
-			return;
-		}
 
 		$configuration_service = Wordlift_Configuration_Service::get_instance();
 
@@ -148,21 +202,7 @@ class Wordlift_Linked_Data_Service {
 		// wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $post->ID ][ uri :: $uri ][ label :: $label ]" );
 
 		// create a new empty statement.
-		$delete_stmt = '';
-		$sparql      = '';
-
-		// delete on RL all statements regarding properties set from WL (necessary when changing entity type)
-		$all_custom_fields        = wl_entity_taxonomy_get_custom_fields();
-		$predicates_to_be_deleted = array();
-		foreach ( $all_custom_fields as $type => $fields ) {
-			foreach ( $fields as $cf ) {
-				$predicate = $cf['predicate'];
-				if ( ! in_array( $predicate, $predicates_to_be_deleted ) ) {
-					$predicates_to_be_deleted[] = $predicate;
-					$delete_stmt                .= "DELETE { <$uri_e> <$predicate> ?o } WHERE  { <$uri_e> <$predicate> ?o };\n";
-				}
-			}
-		}
+		$sparql = '';
 
 		// Set the same as.
 		if ( null !== $same_as = wl_schema_get_value( $post->ID, 'sameAs' ) ) {
@@ -264,24 +304,76 @@ class Wordlift_Linked_Data_Service {
 		// Add SPARQL stmts to write the schema:image.
 		$sparql .= wl_get_sparql_images( $uri, $post->ID );
 
-		$query = rl_sparql_prefixes() . <<<EOF
-    $delete_stmt
-    DELETE { <$uri_e> rdfs:label ?o } WHERE  { <$uri_e> rdfs:label ?o };
-    DELETE { <$uri_e> dct:title ?o } WHERE  { <$uri_e> dct:title ?o };
-    DELETE { <$uri_e> owl:sameAs ?o . } WHERE  { <$uri_e> owl:sameAs ?o . };
-    DELETE { <$uri_e> schema:description ?o . } WHERE  { <$uri_e> schema:description ?o . };
-    DELETE { <$uri_e> schema:url ?o . } WHERE  { <$uri_e> schema:url ?o . };
-    DELETE { <$uri_e> a ?o . } WHERE  { <$uri_e> a ?o . };
-    DELETE { <$uri_e> dct:relation ?o . } WHERE  { <$uri_e> dct:relation ?o . };
-    DELETE { <$uri_e> schema:image ?o . } WHERE  { <$uri_e> schema:image ?o . };
-    INSERT DATA { $sparql };
-EOF;
+		$query = rl_sparql_prefixes() . "\nINSERT DATA { $sparql };";
 
 		// Add schema:url.
 		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
 		                                              ->get_insert_query( $uri, $post->ID );
 
+//		wp_die( '<pre>' . htmlentities( $query ) . '</pre>' );
 		rl_execute_sparql_update_query( $query );
+	}
+
+	/**
+	 * Check if an entity's {@link WP_Post} has a valid URI.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id The entity's {@link WP_Post}'s id.
+	 *
+	 * @return bool True if the URI is valid otherwise false.
+	 */
+	private function has_valid_uri( $post_id ) {
+
+		// Get the entity's URI.
+		$uri = $this->entity_service->get_uri( $post_id );
+
+		// If the URI isn't found, return false.
+		if ( null === $uri ) {
+			return false;
+		}
+
+		// If the URI ends with a trailing slash, return false.
+		if ( '/' === substr( $uri, - 1 ) ) {
+			return false;
+		}
+
+		// URI is valid.
+		return true;
+	}
+
+	/**
+	 * Get the delete statements.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param int $post_id The {@link WP_Post}'s id.
+	 *
+	 * @return array An array of delete statements.
+	 */
+	private function get_delete_statements( $post_id ) {
+
+		// Get the entity URI.
+		$uri = $this->entity_service->get_uri( $post_id );
+
+		// Prepare the delete statements with the entity as subject.
+		$as_subject = array_map( function ( $item ) use ( $uri ) {
+			return Wordlift_Query_Builder::new_instance()
+			                             ->delete()
+			                             ->statement( $uri, $item, '?o' )
+			                             ->build();
+		}, $this->schema_service->get_all_predicates() );
+
+		// Prepare the delete statements with the entity as object.
+		$as_object = array_map( function ( $item ) use ( $uri ) {
+			return Wordlift_Query_Builder::new_instance()
+			                             ->delete()
+			                             ->statement( '?s', $item, $uri, Wordlift_Query_Builder::OBJECT_URI )
+			                             ->build();
+		}, $this->schema_service->get_all_predicates() );
+
+		// Merge the delete statements and return them.
+		return array_merge( $as_subject, $as_object );
 	}
 
 }

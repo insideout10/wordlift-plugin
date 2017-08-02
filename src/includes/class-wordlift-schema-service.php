@@ -324,21 +324,63 @@ class Wordlift_Schema_Service {
 	 *
 	 * @since  3.1.0
 	 * @access private
-	 * @var \Wordlift_Log_Service $log_service The Log service.
+	 * @var \Wordlift_Log_Service $log The Log service.
 	 */
-	private $log_service;
+	private $log;
+
+	/**
+	 * The {@link Wordlift_Post_Property_Storage_Factory} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Storage_Factory $storage_factory The {@link Wordlift_Post_Property_Storage_Factory} instance.
+	 */
+	private $storage_factory;
+
+	/**
+	 * The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 */
+	private $rendition_factory;
+
+	/**
+	 * The {@link Wordlift_Configuration_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var \Wordlift_Configuration_Service $configuration_service The {@link Wordlift_Configuration_Service} instance.
+	 */
+	private $configuration_service;
+
+	/**
+	 * The web site configured language code.
+	 *
+	 * @since  3.15.0
+	 * @access private
+	 * @var string $language_code The web site configured language code.
+	 */
+	private $language_code;
 
 	/**
 	 * Wordlift_Schema_Service constructor.
 	 *
 	 * @since 3.1.0
+	 *
+	 * @param \Wordlift_Storage_Factory                $storage_factory       The {@link Wordlift_Post_Property_Storage_Factory} instance.
+	 * @param \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory     The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 * @param \Wordlift_Configuration_Service          $configuration_service The {@link Wordlift_Configuration_Service} instance.
 	 */
-	public function __construct() {
+	public function __construct( $storage_factory, $rendition_factory, $configuration_service ) {
 
-		$this->log_service = Wordlift_Log_Service::get_logger( 'Wordlift_Schema_Service' );
+		$this->log = Wordlift_Log_Service::get_logger( 'Wordlift_Schema_Service' );
 
-		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
-		self::$instance = $this;
+		$this->storage_factory       = $storage_factory;
+		$this->rendition_factory     = $rendition_factory;
+		$this->configuration_service = $configuration_service;
+		$this->language_code         = $this->configuration_service->get_language_code();
 
 		// Set the taxonomy data.
 		// Note: parent types must be defined before child types.
@@ -353,6 +395,9 @@ class Wordlift_Schema_Service {
 			'localbusiness' => $this->get_local_business_schema(),
 			'recipe'        => $this->get_recipe_schema(),
 		);
+
+		// Create a singleton instance of the Schema service, useful to provide static functions to global functions.
+		self::$instance = $this;
 
 	}
 
@@ -471,6 +516,41 @@ class Wordlift_Schema_Service {
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
+			'linked_data'   => array(
+				//### rdfs:label.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_title(),
+					Wordlift_Query_Builder::RDFS_LABEL_URI,
+					null,
+					$this->language_code
+				),
+				//### dct:title.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_title(),
+					'http://purl.org/dc/terms/title',
+					null,
+					$this->language_code
+				),
+				//### schema:description.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_description_no_tags_no_shortcodes(),
+					'http://schema.org/description',
+					null,
+					$this->language_code
+				),
+				//### owl:sameAs.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_SAME_AS ),
+					'http://www.w3.org/2002/07/owl#sameAs',
+					self::DATA_TYPE_URI )
+				,
+				//### rdf:type.
+				$this->rendition_factory->create(
+					$this->storage_factory->schema_class( $this ),
+					Wordlift_Query_Builder::RDFS_TYPE_URI,
+					self::DATA_TYPE_URI )
+				,
+			),
 		);
 
 	}
@@ -506,14 +586,16 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -557,14 +639,16 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -666,14 +750,16 @@ class Wordlift_Schema_Service {
 					'constraints' => '',
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -743,14 +829,16 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 
@@ -841,14 +929,16 @@ class Wordlift_Schema_Service {
 					'input_field' => 'address',
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -873,6 +963,7 @@ class Wordlift_Schema_Service {
 				'https://schema.org/Store',
 			),
 			'custom_fields' => array(),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -882,6 +973,7 @@ class Wordlift_Schema_Service {
 		$place_schema            = $this->get_place_schema();
 		$organization_schema     = $this->get_organization_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $place_schema['custom_fields'], $organization_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $place_schema['linked_data'], $organization_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -902,6 +994,7 @@ class Wordlift_Schema_Service {
 			'css_class'     => 'wl-recipe',
 			'uri'           => 'http://schema.org/Recipe',
 			'same_as'       => array(),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -1001,6 +1094,7 @@ class Wordlift_Schema_Service {
 		// Merge the custom fields with those provided by the parent schema.
 		$parent_schema           = $this->get_creative_work_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -1028,6 +1122,40 @@ class Wordlift_Schema_Service {
 		);
 
 		return $schema;
+	}
+
+	/**
+	 * Get all the predicates.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array An array of predicates.
+	 */
+	public function get_all_predicates() {
+
+		// Get the custom fields.
+		$fields = array_reduce( $this->schema, function ( $carry, $item ) {
+			return array_merge( $carry, $item['custom_fields'] );
+		}, array() );
+
+		// Create a new array of predicates from the custom fields. The initial
+		// array contains just the `http://www.w3.org/1999/02/22-rdf-syntax-ns#type`
+		// (a, rdf:type) predicate (use the full URI).
+		$predicates = array_reduce( $fields, function ( $carry, $item ) {
+			return array_merge( $carry, (array) $item['predicate'] );
+		}, array(
+			'http://www.w3.org/1999/02/22-rdf-syntax-ns#type',
+			'http://www.w3.org/2000/01/rdf-schema#label',
+			'http://purl.org/dc/terms/title',
+			'http://purl.org/dc/terms/relation',
+			'http://www.w3.org/2002/07/owl#sameAs',
+			'http://schema.org/description',
+			'http://schema.org/url',
+			'http://schema.org/image',
+		) );
+
+		// Finally return the predicates array.
+		return $predicates;
 	}
 
 }

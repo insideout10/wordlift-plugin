@@ -526,6 +526,24 @@ class Wordlift {
 	protected $linked_data_service;
 
 	/**
+	 * The {@link Wordlift_Storage_Factory} instance.
+	 *
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Storage_Factory $storage_factory The {@link Wordlift_Storage_Factory} instance.
+	 */
+	protected $storage_factory;
+
+	/**
+	 * The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 *
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 */
+	protected $rendition_factory;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -744,6 +762,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
 
+		/** Linked Data. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/intf-wordlift-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-property-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-taxonomy-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-schema-class-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
+
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
@@ -908,9 +936,7 @@ class Wordlift {
 
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
-		// Create an instance of the Schema service.
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
-		$this->schema_service        = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.
 		$this->notice_service = new Wordlift_Notice_Service();
@@ -924,8 +950,16 @@ class Wordlift {
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
 
+		/** Linked Data. */
+		$this->storage_factory   = new Wordlift_Storage_Factory();
+		$this->rendition_factory = new Wordlift_Sparql_Tuple_Rendition_Factory( $this->entity_service );
+
+		$this->schema_service        = new Wordlift_Schema_Service( $this->storage_factory, $this->rendition_factory, $this->configuration_service );
+
 		// Create a new instance of the Redirect service.
-		$this->redirect_service = new Wordlift_Redirect_Service( $this->entity_service );
+		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_service );
+		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
+		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service, $this->schema_service );
 
 		// Initialize the shortcodes.
 		new Wordlift_Navigator_Shortcode();
@@ -959,10 +993,6 @@ class Wordlift {
 
 		// Create a Rebuild Service instance, which we'll later bound to an ajax call.
 		$this->rebuild_service = new Wordlift_Rebuild_Service( $this->sparql_service, $uri_service );
-
-		$this->entity_type_service = new Wordlift_Entity_Type_Service( $this->schema_service );
-
-		$this->linked_data_service = new Wordlift_Linked_Data_Service( $this->entity_service, $this->entity_type_service );
 
 		// Create the entity rating service.
 		$this->rating_service = new Wordlift_Rating_Service( $this->entity_service, $this->entity_type_service, $this->notice_service );
