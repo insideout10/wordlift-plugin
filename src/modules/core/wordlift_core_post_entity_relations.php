@@ -422,6 +422,23 @@ function wl_core_sql_query_builder( $args ) {
 	// Retrieve Wordlift relation instances table name
 	$table_name = wl_core_get_relation_instances_table_name();
 
+	/*
+	 * Since we want Find only articles, based on the entity type, we need
+	 * to figure out the relevant sql statements to add to the join and where
+	 * parts.
+	 */
+
+	$tax_query = array(
+	    array(
+	        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+	        'field'    => 'slug',
+	        'terms'    => 'article',
+	    )
+	);
+
+	// Use "p" as the table to match the initial join.
+	$tax_sql = get_tax_sql( $tax_query, 'p', 'ID' );
+
 	// Sql Action
 	$sql = "SELECT ";
 	// Determine what has to be returned depending on 'get' argument value
@@ -438,9 +455,16 @@ function wl_core_sql_query_builder( $args ) {
 	$join_column = $args['as'] . "_id";
 
 	$sql .= " FROM $wpdb->posts as p JOIN $table_name as r ON p.id = r.$join_column";
+	$sql .= $tax_sql['join'];
 
 	// Sql add post type filter
-	$sql .= $wpdb->prepare( " AND p.post_type = %s AND", $args['post_type'] );
+	$post_types = Wordlift_Entity_Service::valid_entity_post_type();
+	if ( 1 === count( $post_types ) ) {
+		$post_type = $post_types[0];
+		$sql .= $wpdb->prepare( " AND p.post_type = %s AND", $post_type );
+	} else {
+		$sql .= " AND p.post_type IN ('" . join( "', '", esc_sql( $post_types ) ) . "') AND";
+	}
 
 	// Sql add post status filter
 	if ( isset( $args['post_status'] ) && ! is_null( $args['post_status'] ) ) {
@@ -475,6 +499,10 @@ function wl_core_sql_query_builder( $args ) {
 		// Sql Inner Join clausole
 		$sql .= $wpdb->prepare( " AND r.predicate = %s", $args['with_predicate'] );
 	}
+
+	// Add the taxonomy related sql.
+	$sql .= $tax_sql['where'];
+
 	// Add a group by clause to avoid duplicated rows
 	// @todo: isn't a distinct a better choice?
 	$sql .= " GROUP BY p.id";
