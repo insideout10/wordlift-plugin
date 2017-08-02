@@ -533,9 +533,7 @@ class Wordlift_Entity_Service {
 	static function valid_entity_post_type() {
 
 		// Ignore builtins in the call to avoid getting attachments.
-		$post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
-		$post_types[] = 'post';
-		$post_types[] = 'page';
+		$post_types = array( 'post', 'page', 'entity' );
 
 		return apply_filters( 'wl_valid_entoty_post_types', $post_types );
 	}
