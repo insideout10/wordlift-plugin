@@ -70,10 +70,14 @@ class WL_Metabox {
 		// Add main metabox (will print also the inner fields).
 		$id    = uniqid( 'wl-metabox-' );
 		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
-		add_meta_box( $id, $title, array(
-			$this,
-			'html',
-		), Wordlift_Entity_Service::valid_entity_post_type(), 'normal', 'high' );
+
+		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
+		foreach (Wordlift_Entity_Service::valid_entity_post_type() as $screen) {
+			add_meta_box( $id, $title, array(
+				$this,
+				'html',
+			), $screen, 'normal', 'high' );
+		}
 
 		// Add filter to change the metabox CSS class.
 		add_filter( "postbox_classes_entity_$id", 'wl_admin_metaboxes_add_css_class' );
