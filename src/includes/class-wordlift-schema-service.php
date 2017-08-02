@@ -571,6 +571,18 @@ class Wordlift_Schema_Service {
 					Wordlift_Query_Builder::RDFS_TYPE_URI,
 					self::DATA_TYPE_URI )
 				,
+				//### schema:image.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_images(),
+					Wordlift_Query_Builder::SCHEMA_IMAGE_URI,
+					self::DATA_TYPE_URI )
+				,
+				//### dct:relation.
+				$this->rendition_factory->create(
+					$this->storage_factory->relations(),
+					Wordlift_Query_Builder::DCTERMS_RELATION_URI,
+					self::DATA_TYPE_URI )
+				,
 			),
 		);
 

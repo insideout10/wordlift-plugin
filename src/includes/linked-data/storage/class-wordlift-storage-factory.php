@@ -138,4 +138,14 @@ class Wordlift_Storage_Factory {
 		return new Wordlift_Post_Meta_Uri_Storage( $meta_key, $this->entity_service );
 	}
 
+	public function post_images() {
+
+		return new Wordlift_Post_Image_Storage();
+	}
+
+	public function relations() {
+
+		return new Wordlift_Post_Related_Storage( $this->entity_service );
+	}
+
 }

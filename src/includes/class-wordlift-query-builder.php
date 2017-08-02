@@ -117,6 +117,11 @@ class Wordlift_Query_Builder {
 	const DCTERMS_REFERENCES_URI = 'http://purl.org/dc/terms/references';
 
 	/**
+	 * @since 3.15.0
+	 */
+	const DCTERMS_RELATION_URI = 'http://purl.org/dc/terms/relation';
+
+	/**
 	 * The RDF label.
 	 *
 	 * @since 3.1.7

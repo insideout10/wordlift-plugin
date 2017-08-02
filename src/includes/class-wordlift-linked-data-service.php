@@ -179,28 +179,12 @@ class Wordlift_Linked_Data_Service {
 		$inserts = $this->get_insert_statements( $post_id );
 		$sparql  = implode( "\n", $inserts );
 
-		// get the entity URI and the SPARQL escaped version.
-		$uri   = wl_get_entity_uri( $post->ID );
-		$uri_e = wl_sparql_escape_uri( $uri );
-
-		// get related entities.
-		$related_entities_ids = wl_core_get_related_entity_ids( $post->ID );
-
-		if ( is_array( $related_entities_ids ) ) {
-			foreach ( $related_entities_ids as $post_id ) {
-				$related_entity_uri = wl_sparql_escape_uri( wl_get_entity_uri( $post_id ) );
-				// create a two-way relationship.
-				$sparql .= " <$uri_e> dct:relation <$related_entity_uri> . \n";
-				$sparql .= " <$related_entity_uri> dct:relation <$uri_e> . \n";
-			}
-		}
-
-		// Add SPARQL stmts to write the schema:image.
-		$sparql .= wl_get_sparql_images( $uri, $post->ID );
 
 		$query = rl_sparql_prefixes() . "\nINSERT DATA { $sparql };";
 
 		// Add schema:url.
+		// get the entity URI and the SPARQL escaped version.
+		$uri   = $this->entity_service->get_uri( $post->ID );
 		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
 		                                              ->get_insert_query( $uri, $post->ID );
 
