@@ -72,7 +72,7 @@ class WL_Metabox {
 		$title = get_the_title() . ' ' . __( 'properties', 'wordlift' );
 
 		// WordPress 4.2 do not accept an array of screens as parameter, have to do be explicit.
-		foreach (Wordlift_Entity_Service::valid_entity_post_type() as $screen) {
+		foreach ( Wordlift_Entity_Service::valid_entity_post_type() as $screen ) {
 			add_meta_box( $id, $title, array(
 				$this,
 				'html',
