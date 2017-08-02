@@ -150,6 +150,11 @@ class Wordlift_Rating_Service {
 	 */
 	public function set_rating_for( $post_id ) {
 
+		// Called from a general hook due to call sequence issue, therefor need to check the post type.
+		if ( 'entity' !== get_post_type( $post_id ) ) {
+			return;
+		}
+
 		// Calculate rating for the given post.
 		$rating = $this->calculate_rating_for( $post_id );
 

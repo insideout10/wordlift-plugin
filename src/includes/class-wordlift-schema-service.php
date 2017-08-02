@@ -544,6 +544,12 @@ class Wordlift_Schema_Service {
 					'http://www.w3.org/2002/07/owl#sameAs',
 					self::DATA_TYPE_URI )
 				,
+				//### rdf:type.
+				$this->rendition_factory->create(
+					$this->storage_factory->schema_class( $this ),
+					Wordlift_Query_Builder::RDFS_TYPE_URI,
+					self::DATA_TYPE_URI )
+				,
 			),
 		);
 
@@ -580,14 +586,16 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -631,14 +639,16 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -740,14 +750,16 @@ class Wordlift_Schema_Service {
 					'constraints' => '',
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -817,14 +829,16 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 
@@ -915,14 +929,16 @@ class Wordlift_Schema_Service {
 					'input_field' => 'address',
 				),
 			),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
 		);
 
 		// Merge the custom fields with those provided by the thing schema.
-		$thing_schema            = $this->get_thing_schema();
-		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $thing_schema['custom_fields'] );
+		$parent_schema           = $this->get_thing_schema();
+		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -947,6 +963,7 @@ class Wordlift_Schema_Service {
 				'https://schema.org/Store',
 			),
 			'custom_fields' => array(),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -956,6 +973,7 @@ class Wordlift_Schema_Service {
 		$place_schema            = $this->get_place_schema();
 		$organization_schema     = $this->get_organization_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $place_schema['custom_fields'], $organization_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $place_schema['linked_data'], $organization_schema['linked_data'] );
 
 		return $schema;
 	}
@@ -976,6 +994,7 @@ class Wordlift_Schema_Service {
 			'css_class'     => 'wl-recipe',
 			'uri'           => 'http://schema.org/Recipe',
 			'same_as'       => array(),
+			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -1075,6 +1094,7 @@ class Wordlift_Schema_Service {
 		// Merge the custom fields with those provided by the parent schema.
 		$parent_schema           = $this->get_creative_work_schema();
 		$schema['custom_fields'] = array_merge( $schema['custom_fields'], $parent_schema['custom_fields'] );
+		$schema['linked_data']   = array_merge( $schema['linked_data'], $parent_schema['linked_data'] );
 
 		return $schema;
 	}

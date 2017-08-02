@@ -98,10 +98,7 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
-			'post_type'   => $entity_only ? 'entity' : array(
-				'entity',
-				'post',
-			),
+			'post_type'   => $entity_only ? 'entity' : Wordlift_Entity_Service::valid_entity_post_type(),
 		), $offset, $max );
 
 		// Redirect to the next chunk.

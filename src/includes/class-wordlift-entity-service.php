@@ -520,4 +520,40 @@ class Wordlift_Entity_Service {
 		return get_posts( $args );
 	}
 
+	/**
+	 * The list of post type names which can be used for entities
+	 *
+	 * Criteria is that the post type is public. The list of valid post types
+	 * can be overridden with a filter.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @return array Array containing the names of the valid post types.
+	 */
+	static function valid_entity_post_type() {
+
+		// Ignore builtins in the call to avoid getting attachments.
+		$post_types = get_post_types( array( 'public' => true, '_builtin' => false ) );
+		$post_types[] = 'post';
+		$post_types[] = 'page';
+
+		return apply_filters( 'wl_valid_entoty_post_types', $post_types );
+	}
+
+	/**
+	 * Determines whether a post type can be used for entities.
+	 *
+	 * Criteria is that the post type is public. The list of valid post types
+	 * can be overridden with a filter.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param string $post_type A post type name.
+	 *
+	 * @return bool Return true if the post type can be used for entities, otherwise false.
+	 */
+	static function is_valid_entity_post_type( $post_type ) {
+
+		return in_array( $post_type, self::valid_entity_post_type(), true );
+	}
 }

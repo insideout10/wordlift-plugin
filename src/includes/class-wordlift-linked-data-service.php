@@ -172,10 +172,18 @@ class Wordlift_Linked_Data_Service {
 		// Get the delete statements.
 		$deletes = $this->get_delete_statements( $post_id );
 
-		var_dump( $deletes );
+//		var_dump( $deletes );
 
 		// Run the delete queries.
 		rl_execute_sparql_update_query( implode( "\n", $deletes ) );
+
+		$type        = $this->entity_type_service->get( $post_id );
+		$linked_data = $type['linked_data'];
+
+		/** @var \Wordlift_Sparql_Tuple_Rendition $item */
+		foreach ( $linked_data as $item ) {
+//			var_dump( $item->get( $post_id ) );
+		}
 
 		// get the entity URI and the SPARQL escaped version.
 		$uri   = wl_get_entity_uri( $post->ID );
@@ -302,7 +310,7 @@ class Wordlift_Linked_Data_Service {
 		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
 		                                              ->get_insert_query( $uri, $post->ID );
 
-		wp_die( '<pre>' . htmlentities( $query ) . '</pre>' );
+//		wp_die( '<pre>' . htmlentities( $query ) . '</pre>' );
 		rl_execute_sparql_update_query( $query );
 	}
 

@@ -120,19 +120,10 @@ class Wordlift_Entity_Link_Service {
 
 		// Add our own post type to the query.
 		$post_types = '' === $query->get( 'post_type' )
-			? $this->get_default_post_types()
+			? Wordlift_Entity_Service::valid_entity_post_type()
 			: array_merge( (array) $query->get( 'post_type' ), (array) $this->entity_type_service->get_post_type() );
 		$query->set( 'post_type', $post_types );
 
-	}
-
-	private function get_default_post_types() {
-
-		return array(
-			'post',
-			$this->entity_type_service->get_post_type(),
-			'page',
-		);
 	}
 
 	/**

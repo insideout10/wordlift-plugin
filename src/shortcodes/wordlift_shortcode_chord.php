@@ -8,13 +8,18 @@
  * @return mixed
  */
 function wl_shortcode_chord_most_referenced_entity_id() {
-	// Get the last 20 posts by post date.
-	// For each post get the entities they reference.
+	// Get the last 20 articles by post date.
+	// For each article get the entities they reference.
 	$post_ids = get_posts( array(
 		'numberposts' => 20,
-		'post_type'   => 'post',
+		'post_type'   => Wordlift_Entity_Service::valid_entity_post_type(),
 		'fields'      => 'ids', //only get post IDs
 		'post_status' => 'published',
+		'tax_query'   => array(
+			'taxonomy'	=> entity_type_service::TAXONOMY_NAME,
+			'field'		=> 'slug',
+			'terms'		=> 'article',
+		),
 		'orderby'     => 'post_date',
 		'order'       => 'DESC',
 	) );

@@ -12,8 +12,13 @@ function wl_push_post_to_redlink( $post ) {
 		return;
 	}
 
-	// Only handle published posts.
-	if ( 'post' !== $post->post_type or 'publish' !== $post->post_status ) {
+	// Defensive. making sure entities are not handled HRTime\PerformanceCounter
+	if ( 'entity' === $post->post_type ) {
+		return;
+	}
+
+	// Only handle published valid post types.
+	if ( ! Wordlift_Entity_Service::is_valid_entity_post_type( $post->post_type ) or 'publish' !== $post->post_status ) {
 		wl_write_log( "wl_push_post_to_redlink : not a post or not published [ post type :: $post->post_type ][ post status :: $post->post_status ]" );
 
 		return;

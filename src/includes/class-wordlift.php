@@ -526,6 +526,24 @@ class Wordlift {
 	protected $linked_data_service;
 
 	/**
+	 * The {@link Wordlift_Storage_Factory} instance.
+	 *
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Storage_Factory $storage_factory The {@link Wordlift_Storage_Factory} instance.
+	 */
+	protected $storage_factory;
+
+	/**
+	 * The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 *
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Sparql_Tuple_Rendition_Factory $rendition_factory The {@link Wordlift_Sparql_Tuple_Rendition_Factory} instance.
+	 */
+	protected $rendition_factory;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -744,6 +762,16 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-event-entity-page-service.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-batch-analysis-service.php';
 
+		/** Linked Data. */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/intf-wordlift-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-property-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-taxonomy-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-schema-class-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
+
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
@@ -908,9 +936,7 @@ class Wordlift {
 
 		$this->sparql_service = new Wordlift_Sparql_Service();
 
-		// Create an instance of the Schema service.
 		$schema_url_property_service = new Wordlift_Schema_Url_Property_Service( $this->sparql_service );
-		$this->schema_service        = new Wordlift_Schema_Service();
 
 		// Create an instance of the Notice service.
 		$this->notice_service = new Wordlift_Notice_Service();
@@ -923,6 +949,12 @@ class Wordlift {
 
 		// Create a new instance of the Timeline service and Timeline shortcode.
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
+
+		/** Linked Data. */
+		$this->storage_factory   = new Wordlift_Storage_Factory();
+		$this->rendition_factory = new Wordlift_Sparql_Tuple_Rendition_Factory( $this->entity_service );
+
+		$this->schema_service        = new Wordlift_Schema_Service( $this->storage_factory, $this->rendition_factory, $this->configuration_service );
 
 		// Create a new instance of the Redirect service.
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_service );
@@ -1119,7 +1151,7 @@ class Wordlift {
 		// Hook save_post to the entity service to update custom fields (such as alternate labels).
 		// We have a priority of 9 because we want to be executed before data is sent to Redlink.
 		$this->loader->add_action( 'save_post', $this->entity_service, 'save_post', 9, 3 );
-		$this->loader->add_action( 'save_post_entity', $this->rating_service, 'set_rating_for', 10, 1 );
+		$this->loader->add_action( 'save_post', $this->rating_service, 'set_rating_for', 20, 1 );
 
 		$this->loader->add_action( 'edit_form_before_permalink', $this->entity_service, 'edit_form_before_permalink', 10, 1 );
 		$this->loader->add_action( 'in_admin_header', $this->rating_service, 'in_admin_header' );
@@ -1200,7 +1232,7 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
-		$this->loader->add_action( 'wp_insert_post', $this->entity_type_adapter, 'insert_post', 10, 3 );
+		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
@@ -1258,7 +1290,8 @@ class Wordlift {
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
 
-		$this->loader->add_action( 'wp_insert_post', $this->entity_type_adapter, 'insert_post', 10, 3 );
+		// This hook have to run before the rating service, as otherwise the post might not be a proper entity when rating is done.
+		$this->loader->add_action( 'save_post', $this->entity_type_adapter, 'save_post', 9, 3 );
 
 	}
 

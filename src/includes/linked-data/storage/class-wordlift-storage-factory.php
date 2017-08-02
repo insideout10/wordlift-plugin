@@ -17,4 +17,10 @@ class Wordlift_Storage_Factory {
 		return new Wordlift_Post_Meta_Storage( $meta_key );
 	}
 
+	public function schema_class( $schema_service ) {
+
+		return new Wordlift_Post_Schema_Class_Storage( Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME, $schema_service );
+
+	}
+
 }

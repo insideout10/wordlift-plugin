@@ -9,6 +9,7 @@
 class Wordlift_Post_Property_Storage extends Wordlift_Storage {
 
 	const TITLE = 'title';
+
 	const DESCRIPTION_NO_TAGS_NO_SHORTCODES = 'description_no_tags_no_shortcodes';
 
 	private $property;
