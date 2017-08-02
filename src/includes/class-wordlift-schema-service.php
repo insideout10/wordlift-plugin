@@ -538,6 +538,20 @@ class Wordlift_Schema_Service {
 					null,
 					$this->language_code
 				),
+				//### rdfs:label.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
+					Wordlift_Query_Builder::RDFS_LABEL_URI,
+					null,
+					$this->language_code
+				),
+				//### dct:title.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( Wordlift_Entity_Service::ALTERNATIVE_LABEL_META_KEY ),
+					'http://purl.org/dc/terms/title',
+					null,
+					$this->language_code
+				),
 				//### schema:description.
 				$this->rendition_factory->create(
 					$this->storage_factory->post_description_no_tags_no_shortcodes(),

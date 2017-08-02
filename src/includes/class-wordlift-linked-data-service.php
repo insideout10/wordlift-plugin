@@ -172,124 +172,16 @@ class Wordlift_Linked_Data_Service {
 		// Get the delete statements.
 		$deletes = $this->get_delete_statements( $post_id );
 
-//		var_dump( $deletes );
-
 		// Run the delete queries.
 		rl_execute_sparql_update_query( implode( "\n", $deletes ) );
 
-		$type        = $this->entity_type_service->get( $post_id );
-		$linked_data = $type['linked_data'];
-
-		/** @var \Wordlift_Sparql_Tuple_Rendition $item */
-		foreach ( $linked_data as $item ) {
-			var_dump( $item->get( $post_id ) );
-		}
-
-//		wp_die();
+		// Get the insert statements.
+		$inserts = $this->get_insert_statements( $post_id );
+		$sparql  = implode( "\n", $inserts );
 
 		// get the entity URI and the SPARQL escaped version.
 		$uri   = wl_get_entity_uri( $post->ID );
 		$uri_e = wl_sparql_escape_uri( $uri );
-
-		$configuration_service = Wordlift_Configuration_Service::get_instance();
-
-		// Get the site language in order to define the literals language.
-		$site_language = $configuration_service->get_language_code();
-
-		// get the title and content as label and description.
-		$label     = wordlift_esc_sparql( $post->post_title );
-		$descr     = wordlift_esc_sparql( wp_strip_all_tags( strip_shortcodes( $post->post_content ) ) );
-		$permalink = wl_sparql_escape_uri( get_permalink( $post->ID ) );
-
-		// wl_write_log( "wl_push_entity_post_to_redlink [ entity post id :: $post->ID ][ uri :: $uri ][ label :: $label ]" );
-
-		// create a new empty statement.
-		$sparql = '';
-
-		// Set the same as.
-		if ( null !== $same_as = wl_schema_get_value( $post->ID, 'sameAs' ) ) {
-			foreach ( $same_as as $same_as_uri ) {
-				$same_as_uri_esc = wl_sparql_escape_uri( $same_as_uri );
-				$sparql          .= "<$uri_e> owl:sameAs <$same_as_uri_esc> . \n";
-			}
-		}
-
-		// set the label
-		$sparql .= "<$uri_e> dct:title \"$label\"@$site_language . \n";
-		$sparql .= "<$uri_e> rdfs:label \"$label\"@$site_language . \n";
-
-		// Set the alternative labels.
-		$alt_labels = $this->entity_service->get_alternative_labels( $post->ID );
-		foreach ( $alt_labels as $alt_label ) {
-			$sparql .= sprintf( '<%s> rdfs:label "%s"@%s . ', $uri_e, Wordlift_Sparql_Service::escape( $alt_label ), $site_language );
-		}
-
-		// set the description.
-		if ( ! empty( $descr ) ) {
-			$sparql .= "<$uri_e> schema:description \"$descr\"@$site_language . \n";
-		}
-
-		$main_type = wl_entity_type_taxonomy_get_type( $post->ID );
-
-		if ( null != $main_type ) {
-			$main_type_uri = wl_sparql_escape_uri( $main_type['uri'] );
-			$sparql        .= " <$uri_e> a <$main_type_uri> . \n";
-
-			// The type define custom fields that hold additional data about the entity.
-			// For example Events may have start/end dates, Places may have coordinates.
-			// The value in the export fields must be rewritten as triple predicates, this
-			// is what we're going to do here.
-
-//		wl_write_log( 'wl_push_entity_post_to_redlink : checking if entity has export fields [ type :: ' . var_export( $main_type, true ) . ' ]' );
-
-			if ( isset( $main_type['custom_fields'] ) ) {
-				foreach ( $main_type['custom_fields'] as $field => $settings ) {
-
-					// schema:url uses the new Property Service. Hopefully all others will follow suit.
-					if ( Wordlift_Schema_Url_Property_Service::META_KEY === $field ) {
-						continue;
-					}
-
-					// wl_write_log( "wl_push_entity_post_to_redlink : entity has export fields" );
-
-					$predicate = wordlift_esc_sparql( $settings['predicate'] );
-					if ( ! isset( $settings['export_type'] ) || empty( $settings['export_type'] ) ) {
-						$type = null;
-					} else {
-						$type = $settings['export_type'];
-					}
-
-					foreach ( get_post_meta( $post->ID, $field ) as $value ) {
-						$sparql .= " <$uri_e> <$predicate> ";
-
-						if ( ! is_null( $type ) && ( substr( $type, 0, 4 ) == 'http' ) ) {
-							// Type is defined by a raw uri (es. http://schema.org/PostalAddress)
-
-							// Extract uri if the value is numeric
-							if ( is_numeric( $value ) ) {
-								$value = wl_get_entity_uri( $value );
-							}
-
-							$sparql .= '<' . wl_sparql_escape_uri( $value ) . '>';
-						} else {
-							// Type is defined in another way (es. xsd:double)
-							$sparql .= '"' . wordlift_esc_sparql( $value ) . '"^^' . wordlift_esc_sparql( $type );
-						}
-
-						$sparql .= " . \n";
-					}
-				}
-			}
-		}
-
-		// Get the entity types.
-		$type_uris = wl_get_entity_rdf_types( $post->ID );
-
-		// Support type are only schema.org ones: it could be null
-		foreach ( $type_uris as $type_uri ) {
-			$type_uri = wl_sparql_escape_uri( $type_uri );
-			$sparql   .= "<$uri_e> a <$type_uri> . \n";
-		}
 
 		// get related entities.
 		$related_entities_ids = wl_core_get_related_entity_ids( $post->ID );
@@ -312,7 +204,6 @@ class Wordlift_Linked_Data_Service {
 		$query .= Wordlift_Schema_Url_Property_Service::get_instance()
 		                                              ->get_insert_query( $uri, $post->ID );
 
-//		wp_die( '<pre>' . htmlentities( $query ) . '</pre>' );
 		rl_execute_sparql_update_query( $query );
 	}
 
@@ -376,6 +267,22 @@ class Wordlift_Linked_Data_Service {
 
 		// Merge the delete statements and return them.
 		return array_merge( $as_subject, $as_object );
+	}
+
+	private function get_insert_statements( $post_id ) {
+
+		$type       = $this->entity_type_service->get( $post_id );
+		$properties = $type['linked_data'];
+
+		$statements = array();
+		/** @var Wordlift_Sparql_Tuple_Rendition $property */
+		foreach ( $properties as $property ) {
+			foreach ( $property->get( $post_id ) as $statement ) {
+				$statements[] = $statement;
+			}
+		}
+
+		return $statements;
 	}
 
 }

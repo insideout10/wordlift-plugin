@@ -66,7 +66,7 @@ class Wordlift_Sparql_Tuple_Rendition {
 		// Map the values to tuples.
 		return array_map( function ( $item ) use ( $uri, $predicate, $data_type, $language ) {
 
-			return sprintf( '<%s> <%s> %s',
+			return sprintf( '<%s> <%s> %s . ',
 				Wordlift_Sparql_Service::escape_uri( $uri ),
 				Wordlift_Sparql_Service::escape_uri( $predicate ),
 				Wordlift_Sparql_Service::format( $item, $data_type, $language )
