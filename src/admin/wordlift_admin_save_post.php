@@ -78,7 +78,8 @@ function rl_delete_post( $post ) {
 	}
 
 	// if the post is an entity and has exported properties, delete the related predicates.
-	if ( Wordlift_Entity_Service::TYPE_NAME === $post->post_type ) {
+	$entity_service = Wordlift_Entity_Service::get_instance();
+	if ( $entity_service->is_entity( $post->ID ) ) {
 		$type = wl_entity_type_taxonomy_get_type( $post->ID );
 
 		if ( isset( $type['custom_fields'] ) ) {

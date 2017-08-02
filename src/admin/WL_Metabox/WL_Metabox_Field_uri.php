@@ -17,10 +17,10 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		if ( is_numeric( $value ) ) {
 			$absent_from_db = is_null( get_post( $value ) );                           // search by ID
 		} else {
-			$absent_from_db =
-				is_null( Wordlift_Entity_Service::get_instance()
-				                                ->get_entity_post_by_uri( $value ) ) &&                      // search by uri
-				is_null( get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::TYPE_NAME ) );   // search by name
+			$entity_service = Wordlift_Entity_Service::get_instance();
+			$possible_match = get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
+			$absent_from_db = ( $possible_match && $entity_service->is_entity( $possible_match->ID ) );
+			$absent_from_db = $absent_from_db && is_null( $entity_service->get_entity_post_by_uri( $value ) );
 		}
 
 		// Is it an URI?
@@ -106,10 +106,9 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 				<input type="hidden" class="$this->meta_name" name="wl_metaboxes[$this->meta_name][]" value="$value" />
 				<button class="button wl-remove-input wl-button" type="button">Remove</button>
 				<div class="wl-input-notice"></div>
-			</div>		
+			</div>
 EOF;
 
 		return $html;
 	}
 }
-

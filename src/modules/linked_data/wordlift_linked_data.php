@@ -182,32 +182,6 @@ function wl_linked_data_save_post_and_related_entities( $post_id ) {
 add_action( 'wl_linked_data_save_post', 'wl_linked_data_save_post_and_related_entities' );
 
 /**
- * Adds default schema type "Thing" as soon as an entity is created.
- */
-function wordlift_save_post_add_default_schema_type( $entity_id ) {
-
-	$entity = get_post( $entity_id );
-
-	// Avoid doing anything if post is autosave or a revision.
-
-	if ( wp_is_post_autosave( $entity ) || wp_is_post_revision( $entity ) ) {
-		return;
-	}
-
-	$entity_type = wl_schema_get_types( $entity_id );
-
-	// Assign type 'Thing' if we are dealing with an entity without type
-	if ( $entity->post_type == Wordlift_Entity_Service::TYPE_NAME && is_null( $entity_type ) ) {
-		wl_schema_set_types( $entity_id, 'Thing' );
-	}
-
-}
-
-// Priority 1 (default is 10) because we want the default type to be set as soon as possible
-// Attatched to save_post because *wl_linked_data_save_post* does not always fire
-add_action( 'save_post', 'wordlift_save_post_add_default_schema_type', 1 );
-
-/**
  * Save the specified data as an entity in WordPress. This method only create new entities. When an existing entity is
  * found (by its URI), then the original post is returned.
  *
@@ -454,4 +428,3 @@ function wl_linked_data_content_get_embedded_entities( $content ) {
 
 	return $entities;
 }
-
