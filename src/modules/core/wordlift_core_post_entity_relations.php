@@ -501,7 +501,7 @@ function wl_core_sql_query_builder( $args ) {
 		$sql .= ' AND';
 	}
 	if ( isset( $args['related_to__in'] ) ) {
-		$sql .= ' r.$filtering_column IN (' . implode( ',', $args['related_to__in'] ) . ')';
+		$sql .= " r.$filtering_column IN (" . implode( ',', $args['related_to__in'] ) . ')';
 	}
 	if ( isset( $args['post__not_in'] ) ) {
 		$sql .= ' AND r.' . $args['as'] . '_id NOT IN (' . implode( ',', $args['post__not_in'] ) . ')';
