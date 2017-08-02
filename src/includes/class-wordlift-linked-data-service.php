@@ -182,8 +182,10 @@ class Wordlift_Linked_Data_Service {
 
 		/** @var \Wordlift_Sparql_Tuple_Rendition $item */
 		foreach ( $linked_data as $item ) {
-//			var_dump( $item->get( $post_id ) );
+			var_dump( $item->get( $post_id ) );
 		}
+
+//		wp_die();
 
 		// get the entity URI and the SPARQL escaped version.
 		$uri   = wl_get_entity_uri( $post->ID );

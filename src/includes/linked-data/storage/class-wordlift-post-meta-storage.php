@@ -23,7 +23,7 @@ class Wordlift_Post_Meta_Storage extends Wordlift_Storage {
 
 	public function get( $post_id ) {
 
-		return $post = get_post_meta( $post_id, $this->meta_key );
+		return get_post_meta( $post_id, $this->meta_key );
 	}
 
 }

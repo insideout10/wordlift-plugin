@@ -253,6 +253,13 @@ class Wordlift_Schema_Service {
 	const DATA_TYPE_DATE = 'date';
 
 	/**
+	 * The 'dateTime' data type name.
+	 *
+	 * @since 3.15.0
+	 */
+	const DATA_TYPE_DATE_TIME = 'dateTime';
+
+	/**
 	 * The 'time' data type name.
 	 *
 	 * @since 3.14.0
@@ -586,7 +593,14 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-			'linked_data'   => array(),
+			'linked_data'   => array(
+				//### schema:author.
+				$this->rendition_factory->create(
+					$this->storage_factory->author_uri(),
+					Wordlift_Query_Builder::SCHEMA_AUTHOR_URI,
+					self::DATA_TYPE_URI )
+				,
+			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -639,7 +653,26 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-			'linked_data'   => array(),
+			'linked_data'   => array(
+				//### schema:startDate.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_DATE_END ),
+					'http://schema.org/startDate',
+					self::DATA_TYPE_DATE_TIME )
+				,
+				//### schema:endDate.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_DATE_END ),
+					'http://schema.org/endDate',
+					self::DATA_TYPE_DATE_TIME )
+				,
+				//### schema:location.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_LOCATION ),
+					'http://schema.org/location',
+					self::DATA_TYPE_URI )
+				,
+			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -750,7 +783,29 @@ class Wordlift_Schema_Service {
 					'constraints' => '',
 				),
 			),
-			'linked_data'   => array(),
+			'linked_data'   => array(
+				//### schema:legalName.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_LEGAL_NAME ),
+					'http://schema.org/legalName'
+				),
+				//### schema:founder.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_FOUNDER ),
+					'http://schema.org/founder',
+					self::DATA_TYPE_URI
+				),
+				//### schema:email.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_EMAIL ),
+					'http://schema.org/email'
+				),
+				//### schema:telephone.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_TELEPHONE ),
+					'http://schema.org/telephone'
+				),
+			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -829,7 +884,37 @@ class Wordlift_Schema_Service {
 					),
 				),
 			),
-			'linked_data'   => array(),
+			'linked_data'   => array(
+				//### schema:knows.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_KNOWS ),
+					'http://schema.org/knows',
+					self::DATA_TYPE_URI
+				),
+				//### schema:birthDate.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_BIRTH_DATE ),
+					'http://schema.org/birthDate',
+					self::DATA_TYPE_DATE
+				),
+				//### schema:birthPlace.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_BIRTH_PLACE ),
+					'http://schema.org/birthPlace',
+					self::DATA_TYPE_URI
+				),
+				//### schema:affiliation.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta_to_uri( self::FIELD_AFFILIATION ),
+					'http://schema.org/affiliation',
+					self::DATA_TYPE_URI
+				),
+				//### schema:email.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_EMAIL ),
+					'http://schema.org/email'
+				),
+			),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -994,7 +1079,6 @@ class Wordlift_Schema_Service {
 			'css_class'     => 'wl-recipe',
 			'uri'           => 'http://schema.org/Recipe',
 			'same_as'       => array(),
-			'linked_data'   => array(),
 			'templates'     => array(
 				'subtitle' => '{{id}}',
 			),
@@ -1087,6 +1171,36 @@ class Wordlift_Schema_Service {
 						'class' => 'Wordlift_Metabox_Field_Duration',
 						'label' => __( 'Recipe total time (e.g. 1:30)', 'wordlift' ),
 					),
+				),
+			),
+			'linked_data'   => array(
+				//### schema:recipeCuisine.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_RECIPE_CUISINE ),
+					'http://schema.org/recipeCuisine'
+				),
+				//### schema:recipeIngredient.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_RECIPE_INGREDIENT ),
+					'http://schema.org/recipeIngredient'
+				),
+				//### schema:prepTime.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_PREP_TIME ),
+					'http://schema.org/prepTime',
+					self::DATA_TYPE_DURATION
+				),
+				//### schema:cookTime.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_COOK_TIME ),
+					'http://schema.org/cookTime',
+					self::DATA_TYPE_DURATION
+				),
+				//### schema:totalTime.
+				$this->rendition_factory->create(
+					$this->storage_factory->post_meta( self::FIELD_TOTAL_TIME ),
+					'http://schema.org/totalTime',
+					self::DATA_TYPE_DURATION
 				),
 			),
 		);

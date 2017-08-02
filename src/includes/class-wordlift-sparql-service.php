@@ -185,8 +185,9 @@ class Wordlift_Sparql_Service {
 	 *
 	 * @since 3.6.0
 	 *
-	 * @param string $value The value.
-	 * @param string $type  The value type.
+	 * @param string      $value    The value.
+	 * @param string      $type     The value type.
+	 * @param string|null $language The language tag or null if not set.
 	 *
 	 * @return string The formatted value for SPARQL statements.
 	 */
@@ -202,7 +203,22 @@ class Wordlift_Sparql_Service {
 				return $value ? 'true' : 'false';
 
 			case Wordlift_Schema_Service::DATA_TYPE_DATE:
-				return sprintf( '"%s"^^xsd:date', self::escape( $value ) );
+				$date       = date_create_from_format( 'Y/m/d', $value );
+				$date_value = date_format( $date, 'Y-m-d' );
+
+				return sprintf( '"%s"^^xsd:date', self::escape( $date_value ) );
+
+			case Wordlift_Schema_Service::DATA_TYPE_DATE_TIME:
+				$date       = date_create_from_format( 'Y/m/d H:i', $value );
+				$date_value = date_format( $date, 'Y-m-d\TH:i:00' );
+
+				return sprintf( '"%s"^^xsd:dateTime', self::escape( $date_value ) );
+
+			case Wordlift_Schema_Service::DATA_TYPE_DURATION:
+				$time       = date_create_from_format( 'H:i', $value );
+				$time_value = sprintf( 'PT%dH%dM', date_format( $time, 'H' ), intval( date_format( $time, 'i' ) ) );
+
+				return sprintf( '"%s"^^xsd:duration', self::escape( $time_value ) );
 
 			case Wordlift_Schema_Service::DATA_TYPE_DOUBLE:
 				return sprintf( '"%s"^^xsd:double', self::escape( $value ) );

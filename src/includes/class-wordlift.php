@@ -768,6 +768,8 @@ class Wordlift {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-property-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-taxonomy-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-schema-class-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-author-storage.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-post-meta-uri-storage.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/storage/class-wordlift-storage-factory.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/linked-data/rendition/class-wordlift-sparql-tuple-rendition-factory.php';
@@ -951,10 +953,10 @@ class Wordlift {
 		$this->timeline_service = new Wordlift_Timeline_Service( $this->entity_service );
 
 		/** Linked Data. */
-		$this->storage_factory   = new Wordlift_Storage_Factory();
+		$this->storage_factory   = new Wordlift_Storage_Factory( $this->entity_service, $this->user_service );
 		$this->rendition_factory = new Wordlift_Sparql_Tuple_Rendition_Factory( $this->entity_service );
 
-		$this->schema_service        = new Wordlift_Schema_Service( $this->storage_factory, $this->rendition_factory, $this->configuration_service );
+		$this->schema_service = new Wordlift_Schema_Service( $this->storage_factory, $this->rendition_factory, $this->configuration_service );
 
 		// Create a new instance of the Redirect service.
 		$this->redirect_service    = new Wordlift_Redirect_Service( $this->entity_service );

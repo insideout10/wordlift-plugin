@@ -537,7 +537,7 @@ class Wordlift_Entity_Service {
 		$post_types[] = 'post';
 		$post_types[] = 'page';
 
-		return apply_filters( 'wl_valid_entoty_post_types', $post_types );
+		return apply_filters( 'wl_valid_entity_post_types', $post_types );
 	}
 
 	/**
