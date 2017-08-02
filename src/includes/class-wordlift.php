@@ -508,6 +508,24 @@ class Wordlift {
 	protected $batch_analysis_service;
 
 	/**
+	 * The {@link Wordlift_Sample_Data_Service} instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Sample_Data_Service $sample_data_service The {@link Wordlift_Sample_Data_Service} instance.
+	 */
+	protected $sample_data_service;
+
+	/**
+	 * The {@link Wordlift_Sample_Data_Ajax_Adapter} instance.
+	 *
+	 * @since  3.12.0
+	 * @access protected
+	 * @var \Wordlift_Sample_Data_Ajax_Adapter $sample_data_ajax_adapter The {@link Wordlift_Sample_Data_Ajax_Adapter} instance.
+	 */
+	protected $sample_data_ajax_adapter;
+
+	/**
 	 * {@link Wordlift}'s singleton instance.
 	 *
 	 * @since  3.11.2
@@ -695,6 +713,8 @@ class Wordlift {
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-property-factory.php';
 
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-service.php';
+
 		/**
 		 * The WordLift rebuild service, used to rebuild the remote dataset using the local data.
 		 */
@@ -752,6 +772,7 @@ class Wordlift {
 		/** Adapters. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-tinymce-adapter.php';
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-newrelic-adapter.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wordlift-sample-data-ajax-adapter.php';
 
 		/** Async Tasks. */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wp-async-task/wp-async-task.php';
@@ -994,6 +1015,9 @@ class Wordlift {
 		$publisher_service            = new Wordlift_Publisher_Service();
 		$this->publisher_ajax_adapter = new Wordlift_Publisher_Ajax_Adapter( $publisher_service );
 
+		$this->sample_data_service      = new Wordlift_Sample_Data_Service( $this->entity_type_service, $this->configuration_service );
+		$this->sample_data_ajax_adapter = new Wordlift_Sample_Data_Ajax_Adapter( $this->sample_data_service );
+
 		/** Adapters. */
 		$this->tinymce_adapter = new Wordlift_Tinymce_Adapter( $this );
 
@@ -1201,6 +1225,9 @@ class Wordlift {
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce_adapter, 'mce_external_plugins', 10, 1 );
 
 		$this->loader->add_action( 'wp_async_wl_run_sparql_query', $this->sparql_service, 'run_sparql_query', 10, 1 );
+
+		$this->loader->add_action( 'wp_ajax_wl_sample_data_create', $this->sample_data_ajax_adapter, 'create' );
+		$this->loader->add_action( 'wp_ajax_wl_sample_data_delete', $this->sample_data_ajax_adapter, 'delete' );
 
 		// Hooks to restrict multisite super admin from manipulating entity types.
 		if ( is_multisite() ) {
