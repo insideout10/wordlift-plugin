@@ -98,7 +98,6 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			wl_linked_data_save_post( $post->ID );
 		}, array(
 			'post_status' => 'publish',
-			'post_type'   => $entity_only ? 'entity' : Wordlift_Entity_Service::valid_entity_post_type(),
 		), $offset, $max );
 
 		// Redirect to the next chunk.
@@ -163,7 +162,13 @@ class Wordlift_Rebuild_Service extends Wordlift_Listable {
 			'orderby'     => 'ID',
 			'order'       => 'ASC',
 			'post_status' => 'any',
-			'post_type'   => 'post',
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_type(),
+			'tax_query'   => array(
+				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+				'field'    => 'slug',
+				'terms'    => 'article',
+				'operator ' => 'NOT IN',
+			),
 		) ) );
 	}
 
