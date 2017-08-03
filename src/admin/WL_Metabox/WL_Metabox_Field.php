@@ -1,11 +1,20 @@
 <?php
 
 /**
- * All custom WL_Metabox_Filed(s) must extend this class.
+ * All custom WL_Metabox_Field(s) must extend this class.
  * This class deals with saving the most basic data type, strings.
  * Use the methods that are useful or overwrite them if you need custom behaviour.
  */
 class WL_Metabox_Field {
+
+	/**
+	 * A {@link Wordlift_Log_Service} instance.
+	 *
+	 * @since  3.15.0
+	 * @access protected
+	 * @var \Wordlift_Log_Service $log A {@link Wordlift_Log_Service} instance.
+	 */
+	protected $log;
 
 	public $meta_name;
 	public $raw_custom_field;
@@ -20,6 +29,8 @@ class WL_Metabox_Field {
 	 * @param array $args
 	 */
 	public function __construct( $args ) {
+
+		$this->log = Wordlift_Log_Service::get_logger( 'WL_Metabox_Field' );
 
 		if ( empty( $args ) ) {
 			return;
@@ -76,7 +87,7 @@ class WL_Metabox_Field {
 	 */
 	public function html_nonce() {
 
-		return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', TRUE, FALSE );
+		return wp_nonce_field( 'wordlift_' . $this->meta_name . '_entity_box', 'wordlift_' . $this->meta_name . '_entity_box_nonce', true, false );
 	}
 
 	/**
@@ -91,7 +102,7 @@ class WL_Metabox_Field {
 		$nonce_verify = 'wordlift_' . $this->meta_name . '_entity_box';
 
 		if ( ! isset( $_POST[ $nonce_name ] ) ) {
-			return FALSE;
+			return false;
 		}
 
 		// Verify that the nonce is valid.
@@ -158,7 +169,7 @@ class WL_Metabox_Field {
 			return $value;
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**

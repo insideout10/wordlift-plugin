@@ -16,7 +16,7 @@ function wl_shortcode_chord_most_referenced_entity_id() {
 		'fields'      => 'ids', //only get post IDs
 		'post_status' => 'published',
 		'tax_query'   => array(
-			'taxonomy'	=> entity_type_service::TAXONOMY_NAME,
+			'taxonomy'	=> Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 			'field'		=> 'slug',
 			'terms'		=> 'article',
 		),

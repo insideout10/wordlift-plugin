@@ -1,11 +1,28 @@
 <?php
+/**
+ * Metaboxes: URI Field Metabox.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ * @package Wordlift/admin/WL_Metabox
+ */
 
-
+/**
+ * Define the {@link WL_Metabox_Field_uri} class.
+ *
+ * @since   3.0.0
+ * @package Wordlift
+ * @package Wordlift/admin/WL_Metabox
+ */
 class WL_Metabox_Field_uri extends WL_Metabox_Field {
 
 	/**
 	 * Only accept URIs or local entity IDs.
 	 * Build new entity if the user inputted a name that is not present in DB.
+	 *
+	 * @param mixed $value The value to sanitize.
+	 *
+	 * @return int|mixed|WP_Error
 	 */
 	public function sanitize_data_filter( $value ) {
 
@@ -13,15 +30,21 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 			return null;
 		}
 
-		// Check that the inserted URI, ID or name does not point to a saved entity.
-		if ( is_numeric( $value ) ) {
-			$absent_from_db = is_null( get_post( $value ) );                           // search by ID
-		} else {
-			$entity_service = Wordlift_Entity_Service::get_instance();
-			$possible_match = get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
-			$absent_from_db = ( $possible_match && $entity_service->is_entity( $possible_match->ID ) );
-			$absent_from_db = $absent_from_db && is_null( $entity_service->get_entity_post_by_uri( $value ) );
-		}
+//		// Check that the inserted URI, ID or name does not point to a saved entity.
+//		if ( is_numeric( $value ) ) {
+//			$absent_from_db = is_null( get_post( $value ) );                           // search by ID
+//		} else {
+//			// When the editor types a string in the input box, we try to find
+//			// an entity with that title and, if not found, we create that entity.
+//			$absent_from_db = $this->exists( $value );
+//		}
+
+		// Check that the inserted URI, ID or name does not point to a saved
+		// entity or when the editor types a string in the input box, we try to
+		// find an entity with that title and, if not found, we create that entity.
+		$absent_from_db = is_numeric( $value )
+			? is_null( get_post( $value ) )
+			: ! $this->exists( $value );
 
 		// Is it an URI?
 		$name_is_uri = strpos( $value, 'http' ) === 0;
@@ -52,6 +75,38 @@ class WL_Metabox_Field_uri extends WL_Metabox_Field {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Check whether an entity exists given a value.
+	 *
+	 * @since 3.15.0
+	 *
+	 * @param string $value An entity URI or a title string..
+	 *
+	 * @return bool True if the entity exists otherwise false.
+	 */
+	private function exists( $value ) {
+
+		// When the editor types a string in the input box, we try to find
+		// an entity with that title and, if not found, we create that entity.
+		$entity_service = Wordlift_Entity_Service::get_instance();
+
+		// Try looking for an entity by URI.
+		$found_by_uri = null !== $entity_service->get_entity_post_by_uri( $value );
+
+		// Return true if found.
+		if ( $found_by_uri ) {
+			$this->log->debug( "Found entity for $value." );
+
+			return true;
+		}
+
+		// Try looking for an entity by title, get any potential candidate.
+		$candidate = get_page_by_title( $value, OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
+
+		// If a candidate has been found and it's an entity.
+		return null !== $candidate && $entity_service->is_entity( $candidate->ID );
 	}
 
 	public function html_wrapper_open() {

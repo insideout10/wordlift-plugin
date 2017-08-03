@@ -48,7 +48,7 @@ function wl_core_get_relation_instances_table_name() {
  * @param int    $object_id  The entity post ID.
  *
  * @uses   $wpdb->replace() to perform the query
- * @return integer|boolean Return then relation instance ID or false
+ * @return integer|boolean Return then relation instance ID or false.
  */
 function wl_core_add_relation_instance( $subject_id, $predicate, $object_id ) {
 
@@ -345,33 +345,26 @@ function wl_core_sql_query_builder( $args ) {
 
 	// Prepare interaction with db
 	global $wpdb;
+
 	// Retrieve Wordlift relation instances table name
 	$table_name = wl_core_get_relation_instances_table_name();
 
-	/*
-	 * Since we want Find only articles, based on the entity type, we need
-	 * to figure out the relevant sql statements to add to the join and where
-	 * parts.
-	 */
+	// When type is set to `post` we're looking for `post`s that are not
+	// configured as entities.
+	// When the type is set to `entity` we're looking also for `post`s that are
+	// configured as entities.
 
-	if ( 'entity' === $args['post_type'] ) {
-		$tax_query = array(
-			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'article',
-				'operator' => 'NOT IN',
-			),
-		);
-	} else {
-		$tax_query = array(
-			array(
-				'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-				'field'    => 'slug',
-				'terms'    => 'article',
-			),
-		);
-	}
+	// Since we want Find only articles, based on the entity type, we need
+	// to figure out the relevant sql statements to add to the join and where
+	// parts.
+	$tax_query = array(
+		array(
+			'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+			'field'    => 'slug',
+			'terms'    => 'article',
+			'operator' => 'entity' === $args['post_type'] ? 'NOT IN' : 'IN',
+		),
+	);
 
 	// Use "p" as the table to match the initial join.
 	$tax_sql = get_tax_sql( $tax_query, 'p', 'ID' );
@@ -431,9 +424,9 @@ function wl_core_sql_query_builder( $args ) {
 	if ( isset( $args['post__in'] ) ) {
 		$sql .= ' AND r.' . $args['as'] . '_id IN (' . implode( ',', $args['post__in'] ) . ')';
 	}
-	// Add predicate filter if required
+	// Add predicate filter if required.
 	if ( isset( $args['with_predicate'] ) ) {
-		// Sql Inner Join clausole
+		// Sql Inner Join clause.
 		$sql .= $wpdb->prepare( ' AND r.predicate = %s', $args['with_predicate'] );
 	}
 
@@ -462,7 +455,9 @@ function wl_core_sql_query_builder( $args ) {
  * @uses   wl_core_sql_query_builder() to compose the sql statement
  * @uses   wpdb() instance to perform the query
  *
- * @param array $args Arguments to be used in the query builder.
+ * @param array  $args Arguments to be used in the query builder.
+ *
+ * @param string $returned_type
  *
  * @return array|false List of WP_Post objects or list of WP_Post ids. False in case of error or invalid params
  */

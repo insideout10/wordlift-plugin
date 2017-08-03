@@ -260,7 +260,10 @@ class MetaboxTest extends Wordlift_Unit_Test_Case {
 		) );
 
 		// Verify data is loaded correctly from DB
-		$new_entity = get_page_by_title( 'Annibale', OBJECT, Wordlift_Entity_Service::TYPE_NAME );
+		$new_entity = get_page_by_title( 'Annibale', OBJECT, Wordlift_Entity_Service::valid_entity_post_types() );
+
+		$this->assertNotNull( $new_entity, 'A new entity must be automatically created in `$field->save_data`.' );
+
 		$field->get_data();
 		$this->assertEquals( array(
 			$person_id,

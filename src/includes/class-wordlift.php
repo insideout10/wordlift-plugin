@@ -88,10 +88,10 @@ class Wordlift {
 	 * The Schema service.
 	 *
 	 * @since  3.3.0
-	 * @access private
+	 * @access protected
 	 * @var \Wordlift_Schema_Service $schema_service The Schema service.
 	 */
-	private $schema_service;
+	protected $schema_service;
 
 	/**
 	 * The Entity service.

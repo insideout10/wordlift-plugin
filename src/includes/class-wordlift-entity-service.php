@@ -122,15 +122,19 @@ class Wordlift_Entity_Service {
 	 *
 	 * @param integer $post_id An entity post id.
 	 *
-	 * @return string Returns an uri.
+	 * @param string  $default The default classification scope, `what` if not
+	 *                         provided.
+	 *
+	 * @return string Returns a classification scope (e.g. 'what').
 	 */
-	public function get_classification_scope_for( $post_id ) {
+	public function get_classification_scope_for( $post_id, $default = WL_WHAT_RELATION ) {
 
 		if ( false === $this->is_entity( $post_id ) ) {
-			return null;
+			return $default;
 		}
+
 		// Retrieve the entity type
-		$entity_type_arr = wl_entity_type_taxonomy_get_type( $post_id );
+		$entity_type_arr = Wordlift_Entity_Type_Service::get_instance()->get( $post_id );
 		$entity_type     = str_replace( 'wl-', '', $entity_type_arr['css_class'] );
 		// Retrieve classification boxes configuration
 		$classification_boxes = unserialize( WL_CORE_POST_CLASSIFICATION_BOXES );
@@ -140,9 +144,7 @@ class Wordlift_Entity_Service {
 			}
 		}
 
-		// or null
-		return null;
-
+		return $default;
 	}
 
 
@@ -231,12 +233,12 @@ class Wordlift_Entity_Service {
 				),
 			),
 			$tax_query = array(
-			    array(
-			        'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
-			        'field'    => 'slug',
-			        'terms'    => 'article',
+				array(
+					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
+					'field'    => 'slug',
+					'terms'    => 'article',
 					'operator' => 'NOT IN',
-			    ),
+				),
 			),
 		);
 
@@ -449,17 +451,17 @@ class Wordlift_Entity_Service {
 	public function count() {
 
 		$posts = get_posts( array(
-			'post_type' => Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_type'   => Wordlift_Entity_Service::valid_entity_post_types(),
 			'post_status' => 'publish',
-			'tax_query' => array(
+			'tax_query'   => array(
 				array(
 					'taxonomy' => Wordlift_Entity_Types_Taxonomy_Service::TAXONOMY_NAME,
 					'field'    => 'slug',
 					'terms'    => 'article',
 				),
 			),
-			'fields' => 'ids',
-		));
+			'fields'      => 'ids',
+		) );
 
 		$count = count( $posts );
 
@@ -575,4 +577,5 @@ class Wordlift_Entity_Service {
 
 		return in_array( $post_type, self::valid_entity_post_types(), true );
 	}
+
 }
