@@ -830,7 +830,7 @@ class Wordlift {
 		 * The class to customize the entity list admin page.
 		 */
 		if ( is_admin() ) {
-			 require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-type-metabox-service.php';
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wordlift-admin-entity-type-metabox-service.php';
 		}
 
 		/**
@@ -1097,9 +1097,6 @@ class Wordlift {
 		// create an instance of the entity type list admin page controller.
 		$this->entity_type_admin_page = new Wordlift_Admin_Entity_Taxonomy_List_Page();
 
-		// create an instance of the entity type metabox controller.
-		$this->entity_type_metabox_service = new Wordlift_Admin_Entity_Type_MetaBox_Service();
-
 		// create an instance of the entity type etting admin page controller.
 		$this->entity_type_settings_admin_page = new Wordlift_Admin_Entity_Type_Settings();
 
@@ -1117,6 +1114,11 @@ class Wordlift {
 		$this->content_filter_service = new Wordlift_Content_Filter_Service( $this->entity_service, $this->configuration_service );
 
 		$this->category_taxonomy_service = new Wordlift_Category_Taxonomy_Service( $this->entity_post_type_service );
+
+		if ( is_admin() ) {
+			// create an instance of the entity type metabox controller.
+			$this->entity_type_metabox_service = new Wordlift_Admin_Entity_Type_MetaBox_Service();
+		}
 
 		// User Profile.
 		new Wordlift_Admin_User_Profile_Page( $this->author_element, $this->user_service );
