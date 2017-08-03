@@ -222,7 +222,7 @@ class Wordlift_Entity_Service {
 		$query_args = array(
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'post_type'      => Wordlift_Entity_Service::valid_entity_post_types(),
+			'post_type'      => Wordlift_Entity_Service::valid_entity_post_type(),
 			'meta_query'     => array(
 				array(
 					'key'     => WL_ENTITY_URL_META_NAME,
@@ -556,7 +556,7 @@ class Wordlift_Entity_Service {
 		// Ignore builtins in the call to avoid getting attachments.
 		$post_types = array( 'post', 'page', 'entity' );
 
-		return apply_filters( 'wl_valid_entity_post_types', $post_types );
+		return apply_filters( 'wl_valid_entity_post_type', $post_types );
 	}
 
 	/**
